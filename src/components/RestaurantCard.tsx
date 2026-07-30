@@ -3,7 +3,7 @@ import type { Restaurant } from "@/data/restaurants";
 export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
   const isCalm = restaurant.status === "calm";
   return (
-    <div className="cursor-pointer rounded-xl border border-zinc-200 bg-white p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-md">
+    <div className="cursor-pointer rounded-xl border border-zinc-200 bg-white p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-pm-orange-border hover:shadow-md active:scale-[0.98]">
       <p className="mb-0.5 text-sm font-medium">{restaurant.name}</p>
       <p className="mb-2 text-xs text-zinc-500">
         {restaurant.cuisine} &middot; {restaurant.neighborhood}

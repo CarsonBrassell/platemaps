@@ -19,8 +19,8 @@ export default function MapPage() {
               onClick={() => setSelected(neighborhood)}
               className={
                 neighborhood === selected
-                  ? "rounded-full bg-pm-orange-tint px-3 py-1.5 text-sm font-medium text-pm-orange-text transition-colors"
-                  : "rounded-full bg-pm-grey-tint px-3 py-1.5 text-sm text-pm-grey-text transition-colors hover:bg-zinc-200"
+                  ? "rounded-full bg-pm-orange-tint px-3 py-1.5 text-sm font-medium text-pm-orange-text transition-transform active:scale-95"
+                  : "rounded-full bg-pm-grey-tint px-3 py-1.5 text-sm text-pm-grey-text transition-all hover:bg-pm-orange-tint/60 hover:text-pm-orange-text active:scale-95"
               }
             >
               {neighborhood}
