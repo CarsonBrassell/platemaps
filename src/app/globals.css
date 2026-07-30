@@ -33,3 +33,21 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes trending-glow {
+  0%, 100% {
+    box-shadow: 0 0 6px 0px rgba(251, 146, 60, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 18px 3px rgba(251, 146, 60, 0.6);
+  }
+}
+
+.trending-glow {
+  animation: trending-glow 2.4s ease-in-out infinite;
+}
+
+.trending-glow:hover {
+  animation-play-state: paused;
+  box-shadow: 0 0 22px 4px rgba(251, 146, 60, 0.75);
+}

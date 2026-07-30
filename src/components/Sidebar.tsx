@@ -23,6 +23,24 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
+function TrendingIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      className="shrink-0 text-pm-orange-text"
+      aria-hidden="true"
+    >
+      <polyline points="3 17 9 11 13 15 21 7" />
+      <polyline points="14 7 21 7 21 14" />
+    </svg>
+  );
+}
+
 const listItem = (selected: boolean) =>
   selected
     ? "rounded-md bg-pm-orange-tint px-2 py-1.5 text-sm font-medium text-pm-orange-text transition-transform active:scale-[0.97]"
@@ -31,6 +49,7 @@ const listItem = (selected: boolean) =>
 export function Sidebar() {
   const [cuisineOpen, setCuisineOpen] = useState(false);
   const [affordableOpen, setAffordableOpen] = useState(false);
+  const [trendingOpen, setTrendingOpen] = useState(false);
   const [selectedCuisine, setSelectedCuisine] = useState<string | null>(null);
 
   return (
@@ -70,18 +89,33 @@ export function Sidebar() {
       )}
       {!cuisineOpen && <div className="mb-3" />}
 
-      <p className="mb-2 text-sm font-bold text-pm-orange-text">Trending</p>
-      <div className="mb-4 flex flex-col gap-0.5">
-        {trending.map((name) => (
-          <span key={name} className={listItem(false)}>
-            {name}
-          </span>
-        ))}
-      </div>
+      <button
+        onClick={() => setTrendingOpen((open) => !open)}
+        className="mb-2 flex w-full items-center justify-between text-sm font-bold text-pm-orange-text transition-transform active:scale-[0.97]"
+      >
+        Trending
+        <Chevron open={trendingOpen} />
+      </button>
+      {trendingOpen && (
+        <div className="mb-4 flex flex-col gap-2">
+          {trending.map((name) => (
+            <div
+              key={name}
+              className="trending-glow flex cursor-pointer items-center gap-2 rounded-lg border-2 border-pm-orange bg-white px-3 py-2 text-sm font-medium text-pm-orange-text transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
+            >
+              <TrendingIcon />
+              {name}
+            </div>
+          ))}
+        </div>
+      )}
+      {!trendingOpen && <div className="mb-2" />}
 
       <p className="mb-2 text-sm font-bold text-pm-orange-text">Quick filters</p>
       <div className="flex flex-col gap-0.5">
-        <span className={listItem(false)}>Open now</span>
+        <span className={listItem(false)}>Breakfast/lunch</span>
+        <span className={listItem(false)}>Dinner</span>
+        <span className={listItem(false)}>Dessert</span>
 
         <button
           onClick={() => setAffordableOpen((open) => !open)}
