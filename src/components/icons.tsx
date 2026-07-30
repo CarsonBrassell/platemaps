@@ -11,10 +11,20 @@ export function StarIcon({ className = "" }: { className?: string }) {
 
 export function PlateStarIcon({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" opacity="0.4" />
-      <circle cx="12" cy="12" r="6.5" stroke="currentColor" strokeWidth="1.5" />
-      <g transform="translate(6.4 6.4) scale(0.56)">
+    <svg viewBox="0 0 32 24" fill="none" className={className} aria-hidden="true">
+      <g stroke="currentColor" strokeWidth="1.3" strokeLinecap="round">
+        <line x1="1.6" y1="3" x2="1.6" y2="9" />
+        <line x1="3" y1="3" x2="3" y2="9" />
+        <line x1="4.4" y1="3" x2="4.4" y2="9" />
+        <line x1="3" y1="9" x2="3" y2="20" />
+      </g>
+      <g stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M29 3c1.1 1.9 1.1 4.6 0 6.4-.5.8-1.2.8-1.2 0V3" />
+        <line x1="29.2" y1="9.4" x2="29.2" y2="20" />
+      </g>
+      <circle cx="16" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" opacity="0.4" />
+      <circle cx="16" cy="12" r="6.5" stroke="currentColor" strokeWidth="1.5" />
+      <g transform="translate(10.4 6.4) scale(0.56)">
         <path d={STAR_PATH} fill="currentColor" />
       </g>
     </svg>

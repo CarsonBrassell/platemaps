@@ -251,6 +251,13 @@ function AccountOverview() {
       </div>
 
       <div className="mb-6 grid grid-cols-3 gap-3">
+        <div className="trending-glow flex flex-col items-center justify-center gap-0.5 rounded-xl border-2 border-pm-orange bg-white px-3 py-3">
+          <div className="flex items-center gap-1">
+            <PlateStarIcon className="h-6 w-8 text-pm-orange" />
+            <p className="text-lg font-bold text-pm-orange-text">{account.points}</p>
+          </div>
+          <p className="text-xs font-medium text-pm-orange-text">PM Points</p>
+        </div>
         <div className="col-span-2 grid grid-cols-2 divide-x divide-zinc-200 rounded-xl border border-zinc-200">
           <div className="px-3 py-3 text-center">
             <p className="text-lg font-medium text-zinc-900">{myPosts.length}</p>
@@ -261,17 +268,10 @@ function AccountOverview() {
             <p className="text-xs text-zinc-500">Comments</p>
           </div>
         </div>
-        <div className="trending-glow flex flex-col items-center justify-center gap-0.5 rounded-xl border-2 border-pm-orange bg-pm-orange-tint px-3 py-3">
-          <div className="flex items-center gap-1">
-            <PlateStarIcon className="h-6 w-6 text-pm-orange" />
-            <p className="text-lg font-bold text-pm-orange-text">{account.points}</p>
-          </div>
-          <p className="text-xs font-medium text-pm-orange-text">PM Points</p>
-        </div>
       </div>
 
       <div className="mb-6 flex items-center gap-3 rounded-xl border border-pm-orange-border bg-pm-orange-tint px-4 py-3">
-        <PlateStarIcon className="h-6 w-6 shrink-0 text-pm-orange" />
+        <PlateStarIcon className="h-6 w-8 shrink-0 text-pm-orange" />
         <p className="text-sm text-pm-orange-text">
           Earn PM Points by posting (+10), liking (+2), and commenting (+5) on the Feed.
         </p>
