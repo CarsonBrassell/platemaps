@@ -80,11 +80,16 @@ export const restaurants: Restaurant[] = [
 ];
 
 export const neighborhoods = [
+  "Gaslamp Quarter",
+  "Little Italy",
   "North Park",
-  "Barrio Logan",
+  "Hillcrest",
+  "Pacific Beach",
   "La Jolla",
-  "Gaslamp",
   "Ocean Beach",
+  "Barrio Logan",
+  "South Park",
+  "East Village",
 ];
 
 export const cuisines = [

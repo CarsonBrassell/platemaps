@@ -47,21 +47,40 @@ const listItem = (selected: boolean) =>
     : "rounded-md px-2 py-1.5 text-sm text-zinc-500 transition-all hover:bg-pm-orange-tint/60 hover:text-pm-orange-text active:scale-[0.97]";
 
 export function Sidebar() {
+  const [neighborhoodOpen, setNeighborhoodOpen] = useState(false);
   const [cuisineOpen, setCuisineOpen] = useState(false);
   const [affordableOpen, setAffordableOpen] = useState(false);
   const [trendingOpen, setTrendingOpen] = useState(false);
+  const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null);
   const [selectedCuisine, setSelectedCuisine] = useState<string | null>(null);
 
   return (
     <aside className="w-[180px] shrink-0">
       <p className="mb-2 text-sm font-bold text-pm-orange-text">Neighborhoods</p>
-      <div className="mb-4 flex flex-col gap-0.5">
-        {neighborhoods.map((n, i) => (
-          <span key={n} className={listItem(i === 0)}>
-            {n}
-          </span>
-        ))}
-      </div>
+      <button
+        onClick={() => setNeighborhoodOpen((open) => !open)}
+        className="mb-1 flex w-full items-center justify-between rounded-lg border border-pm-orange-border bg-white px-3 py-2 text-sm font-medium text-zinc-600 shadow-sm transition-all hover:bg-pm-orange-tint/40 active:scale-[0.97]"
+      >
+        <span>{selectedNeighborhood ?? "All neighborhoods"}</span>
+        <Chevron open={neighborhoodOpen} />
+      </button>
+      {neighborhoodOpen && (
+        <div className="mb-4 mt-1 flex flex-col gap-0.5 rounded-lg border border-zinc-200 bg-white p-1 shadow-sm">
+          {neighborhoods.map((n) => (
+            <button
+              key={n}
+              onClick={() => {
+                setSelectedNeighborhood(n);
+                setNeighborhoodOpen(false);
+              }}
+              className={`w-full text-left ${listItem(n === selectedNeighborhood)}`}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+      )}
+      {!neighborhoodOpen && <div className="mb-3" />}
 
       <p className="mb-2 text-sm font-bold text-pm-orange-text">Cuisine</p>
       <button
