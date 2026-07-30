@@ -6,6 +6,8 @@ export type Restaurant = {
   distance: string;
   status: "calm" | "urgent";
   statusLabel: string;
+  rating: number;
+  reviewCount: number;
 };
 
 export const restaurants: Restaurant[] = [
@@ -17,6 +19,8 @@ export const restaurants: Restaurant[] = [
     distance: "0.6 mi",
     status: "calm",
     statusLabel: "No wait",
+    rating: 4.7,
+    reviewCount: 892,
   },
   {
     id: "2",
@@ -26,6 +30,8 @@ export const restaurants: Restaurant[] = [
     distance: "1.2 mi",
     status: "urgent",
     statusLabel: "Closes in 45 min",
+    rating: 4.5,
+    reviewCount: 341,
   },
   {
     id: "3",
@@ -35,6 +41,8 @@ export const restaurants: Restaurant[] = [
     distance: "0.3 mi",
     status: "calm",
     statusLabel: "Open til 6pm",
+    rating: 4.6,
+    reviewCount: 1204,
   },
   {
     id: "4",
@@ -44,6 +52,8 @@ export const restaurants: Restaurant[] = [
     distance: "2.1 mi",
     status: "urgent",
     statusLabel: "25 min wait",
+    rating: 4.4,
+    reviewCount: 2758,
   },
   {
     id: "5",
@@ -53,6 +63,8 @@ export const restaurants: Restaurant[] = [
     distance: "3.4 mi",
     status: "calm",
     statusLabel: "No wait",
+    rating: 4.8,
+    reviewCount: 967,
   },
   {
     id: "6",
@@ -62,6 +74,8 @@ export const restaurants: Restaurant[] = [
     distance: "4.0 mi",
     status: "calm",
     statusLabel: "Open til 9pm",
+    rating: 4.3,
+    reviewCount: 1583,
   },
 ];
 

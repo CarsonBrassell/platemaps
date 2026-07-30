@@ -51,8 +51,8 @@ export function Header() {
             href={link.href}
             className={
               pathname === link.href
-                ? "inline-block border-b-2 border-pm-orange pb-1 font-medium text-white transition-transform active:scale-95"
-                : "inline-block border-b-2 border-transparent pb-1 text-white/65 transition-all hover:text-white/90 active:scale-95"
+                ? "inline-block border-b-2 border-pm-orange pb-1 font-medium text-white transition-transform duration-200 hover:-translate-y-0.5 hover:scale-110 active:scale-95"
+                : "inline-block border-b-2 border-transparent pb-1 text-white/65 transition-all duration-200 hover:-translate-y-0.5 hover:scale-110 hover:text-white active:scale-95"
             }
           >
             {link.label}

@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { resizeImageToDataUrl } from "@/lib/image";
+import { PlateStarIcon } from "@/components/icons";
 
 const inputClass =
   "mb-4 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-pm-orange focus:outline-none";
@@ -16,21 +17,6 @@ type Post = {
   restaurant?: string;
   comments: { id: string }[];
 };
-
-function StarIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className="shrink-0 text-pm-orange"
-      aria-hidden="true"
-    >
-      <polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.5 5.5 21 7 14 2 9.3 9 8.5" />
-    </svg>
-  );
-}
 
 function UtensilsIcon() {
   return (
@@ -264,23 +250,28 @@ function AccountOverview() {
         </div>
       </div>
 
-      <div className="mb-6 grid grid-cols-3 divide-x divide-zinc-200 rounded-xl border border-zinc-200">
-        <div className="px-3 py-3 text-center">
-          <p className="text-lg font-medium text-zinc-900">{myPosts.length}</p>
-          <p className="text-xs text-zinc-500">Posts</p>
+      <div className="mb-6 grid grid-cols-3 gap-3">
+        <div className="col-span-2 grid grid-cols-2 divide-x divide-zinc-200 rounded-xl border border-zinc-200">
+          <div className="px-3 py-3 text-center">
+            <p className="text-lg font-medium text-zinc-900">{myPosts.length}</p>
+            <p className="text-xs text-zinc-500">Posts</p>
+          </div>
+          <div className="px-3 py-3 text-center">
+            <p className="text-lg font-medium text-zinc-900">{commentCount}</p>
+            <p className="text-xs text-zinc-500">Comments</p>
+          </div>
         </div>
-        <div className="px-3 py-3 text-center">
-          <p className="text-lg font-medium text-zinc-900">{commentCount}</p>
-          <p className="text-xs text-zinc-500">Comments</p>
-        </div>
-        <div className="px-3 py-3 text-center">
-          <p className="text-lg font-medium text-pm-orange-text">{account.points}</p>
-          <p className="text-xs text-zinc-500">PM Points</p>
+        <div className="trending-glow flex flex-col items-center justify-center gap-0.5 rounded-xl border-2 border-pm-orange bg-pm-orange-tint px-3 py-3">
+          <div className="flex items-center gap-1">
+            <PlateStarIcon className="h-6 w-6 text-pm-orange" />
+            <p className="text-lg font-bold text-pm-orange-text">{account.points}</p>
+          </div>
+          <p className="text-xs font-medium text-pm-orange-text">PM Points</p>
         </div>
       </div>
 
       <div className="mb-6 flex items-center gap-3 rounded-xl border border-pm-orange-border bg-pm-orange-tint px-4 py-3">
-        <StarIcon />
+        <PlateStarIcon className="h-6 w-6 shrink-0 text-pm-orange" />
         <p className="text-sm text-pm-orange-text">
           Earn PM Points by posting (+10), liking (+2), and commenting (+5) on the Feed.
         </p>
