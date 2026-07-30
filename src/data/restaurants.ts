@@ -72,3 +72,18 @@ export const neighborhoods = [
   "Gaslamp",
   "Ocean Beach",
 ];
+
+export const cuisines = [
+  "Mexican",
+  "Baja seafood",
+  "Japanese",
+  "Italian",
+  "American",
+  "Californian",
+  "Asian fusion",
+  "Mediterranean",
+  "Indian",
+  "Thai",
+  "BBQ",
+  "Vegan",
+];
