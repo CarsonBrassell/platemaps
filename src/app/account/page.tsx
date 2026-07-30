@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
+import { resizeImageToDataUrl } from "@/lib/image";
 
 const inputClass =
   "mb-4 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-pm-orange focus:outline-none";
@@ -47,6 +48,23 @@ function UtensilsIcon() {
       <path d="M7 2v9" />
       <path d="M5 2v9" />
       <path d="M19 2c-1.7 0-3 2-3 4.5S17.3 11 19 11v11" />
+    </svg>
+  );
+}
+
+function CameraIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden="true"
+    >
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+      <circle cx="12" cy="13" r="4" />
     </svg>
   );
 }
@@ -166,8 +184,11 @@ function AuthForm() {
 }
 
 function AccountOverview() {
-  const { account, signOut } = useAuth();
+  const { account, signOut, updateAvatar } = useAuth();
   const [myPosts, setMyPosts] = useState<Post[]>([]);
+  const [avatarError, setAvatarError] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!account) return;
@@ -182,15 +203,64 @@ function AccountOverview() {
 
   const commentCount = myPosts.reduce((sum, p) => sum + p.comments.length, 0);
 
+  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setAvatarError("Choose an image file.");
+      return;
+    }
+    setAvatarError("");
+    setUploading(true);
+    try {
+      const dataUrl = await resizeImageToDataUrl(file);
+      const error = await updateAvatar(dataUrl);
+      if (error) setAvatarError(error);
+    } catch {
+      setAvatarError("Couldn't read that image, try another.");
+    }
+    setUploading(false);
+  }
+
   return (
     <div className="bg-white px-5 py-8">
       <div className="mb-6 flex items-center gap-5">
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-pm-orange text-xl font-medium text-white">
-          {initials(account.name)}
-        </div>
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="group relative h-16 w-16 shrink-0 rounded-full transition-transform active:scale-95 disabled:opacity-60"
+          aria-label="Change profile photo"
+        >
+          {account.avatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={account.avatarUrl}
+              alt=""
+              className="h-16 w-16 rounded-full object-cover"
+            />
+          ) : (
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-pm-orange text-xl font-medium text-white">
+              {initials(account.name)}
+            </div>
+          )}
+          <span className="absolute bottom-0 right-0 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-pm-orange text-white transition-transform group-hover:scale-110">
+            <CameraIcon />
+          </span>
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleAvatarChange}
+          className="hidden"
+        />
         <div>
           <h1 className="text-lg font-medium text-zinc-900">{account.name}</h1>
           <p className="text-sm text-zinc-500">{account.email}</p>
+          {uploading && <p className="mt-1 text-xs text-zinc-500">Uploading...</p>}
+          {avatarError && <p className="mt-1 text-xs text-red-600">{avatarError}</p>}
         </div>
       </div>
 

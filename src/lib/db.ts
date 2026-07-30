@@ -12,6 +12,7 @@ export type User = {
   email: string;
   passwordHash: string;
   points: number;
+  avatarUrl?: string;
 };
 
 export type Comment = {
@@ -26,6 +27,7 @@ export type Post = {
   id: string;
   userId: string;
   authorName: string;
+  authorAvatarUrl?: string;
   text: string;
   restaurant?: string;
   createdAt: string;

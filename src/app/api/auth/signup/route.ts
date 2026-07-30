@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "node:crypto";
-import { getUsers, saveUsers, getSessions, saveSessions } from "@/lib/db";
+import { getUsers, saveUsers, getSessions, saveSessions, type User } from "@/lib/db";
 import { SESSION_COOKIE, SESSION_MAX_AGE } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const user = { id: randomUUID(), name, email, passwordHash, points: 0 };
+  const user: User = { id: randomUUID(), name, email, passwordHash, points: 0 };
   users.push(user);
   saveUsers(users);
 
@@ -43,5 +43,6 @@ export async function POST(req: NextRequest) {
     name: user.name,
     email: user.email,
     points: user.points,
+    avatarUrl: user.avatarUrl,
   });
 }

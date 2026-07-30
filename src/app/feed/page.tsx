@@ -18,6 +18,7 @@ type Post = {
   id: string;
   userId: string;
   authorName: string;
+  authorAvatarUrl?: string;
   text: string;
   restaurant?: string;
   createdAt: string;
@@ -268,9 +269,18 @@ function PostCard({
   return (
     <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
       <div className="flex items-center gap-2 p-3">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-orange text-xs font-medium text-white">
-          {initials(post.authorName)}
-        </div>
+        {post.authorAvatarUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={post.authorAvatarUrl}
+            alt=""
+            className="h-8 w-8 shrink-0 rounded-full object-cover"
+          />
+        ) : (
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-orange text-xs font-medium text-white">
+            {initials(post.authorName)}
+          </div>
+        )}
         <div>
           <p className="text-sm font-medium">{post.authorName}</p>
           <p className="text-xs text-zinc-500">{relativeTime(post.createdAt)}</p>

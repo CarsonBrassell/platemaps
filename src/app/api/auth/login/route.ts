@@ -42,5 +42,6 @@ export async function POST(req: NextRequest) {
     name: user.name,
     email: user.email,
     points: user.points,
+    avatarUrl: user.avatarUrl,
   });
 }

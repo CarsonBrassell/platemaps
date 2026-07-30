@@ -63,9 +63,18 @@ export function Header() {
         <div className="rounded-lg bg-pm-charcoal-light px-3 py-1.5 text-sm text-white">
           San Diego, CA
         </div>
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-pm-orange text-xs font-medium text-white">
-          {isSignedIn && account ? initials(account.name) : "?"}
-        </div>
+        {isSignedIn && account?.avatarUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={account.avatarUrl}
+            alt=""
+            className="h-8 w-8 shrink-0 rounded-full object-cover"
+          />
+        ) : (
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-orange text-xs font-medium text-white">
+            {isSignedIn && account ? initials(account.name) : "?"}
+          </div>
+        )}
       </div>
     </header>
   );

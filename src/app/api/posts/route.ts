@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
     id: randomUUID(),
     userId: user.id,
     authorName: user.name,
+    authorAvatarUrl: user.avatarUrl,
     text: String(text).trim(),
     restaurant: restaurant ? String(restaurant).trim() : undefined,
     createdAt: new Date().toISOString(),

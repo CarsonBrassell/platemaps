@@ -2,7 +2,13 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-type Account = { id: string; name: string; email: string; points: number };
+type Account = {
+  id: string;
+  name: string;
+  email: string;
+  points: number;
+  avatarUrl?: string;
+};
 
 type AuthContextValue = {
   account: Account | null;
@@ -12,6 +18,7 @@ type AuthContextValue = {
   signIn: (email: string, password: string) => Promise<string | null>;
   signOut: () => Promise<void>;
   refresh: () => Promise<void>;
+  updateAvatar: (avatarUrl: string) => Promise<string | null>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -67,9 +74,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccount(null);
   }
 
+  async function updateAvatar(avatarUrl: string) {
+    const res = await fetch("/api/auth/avatar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ avatarUrl }),
+    });
+    if (!res.ok) return parseError(res);
+    setAccount(await res.json());
+    return null;
+  }
+
   return (
     <AuthContext.Provider
-      value={{ account, isSignedIn: !!account, loading, signUp, signIn, signOut, refresh }}
+      value={{
+        account,
+        isSignedIn: !!account,
+        loading,
+        signUp,
+        signIn,
+        signOut,
+        refresh,
+        updateAvatar,
+      }}
     >
       {children}
     </AuthContext.Provider>
