@@ -9,9 +9,9 @@ export default function MapPage() {
   const query = encodeURIComponent(`${selected}, San Diego, CA`);
 
   return (
-    <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm dark:border-zinc-800">
+    <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
       <Header />
-      <div className="flex flex-col gap-4 bg-white px-5 py-4 dark:bg-zinc-950">
+      <div className="flex flex-col gap-4 bg-white px-5 py-4">
         <div className="flex flex-wrap gap-2">
           {neighborhoods.map((neighborhood) => (
             <button

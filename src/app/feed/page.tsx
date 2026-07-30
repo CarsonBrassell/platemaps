@@ -29,13 +29,13 @@ const activity = [
 
 export default function FeedPage() {
   return (
-    <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm dark:border-zinc-800">
+    <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
       <Header />
-      <div className="flex flex-col gap-3 bg-white px-5 py-4 dark:bg-zinc-950">
+      <div className="flex flex-col gap-3 bg-white px-5 py-4">
         {activity.map((item) => (
           <div
             key={item.id}
-            className="rounded-xl border border-zinc-200 bg-white p-3 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+            className="rounded-xl border border-zinc-200 bg-white p-3 shadow-sm"
           >
             <p className="mb-1 text-sm">{item.text}</p>
             <p className="text-xs text-zinc-500">
