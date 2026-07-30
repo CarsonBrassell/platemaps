@@ -47,8 +47,8 @@ export function Header() {
             href={link.href}
             className={
               pathname === link.href
-                ? "font-medium text-pm-orange"
-                : "text-white/65"
+                ? "border-b-2 border-pm-orange pb-1 font-medium text-white"
+                : "border-b-2 border-transparent pb-1 text-white/65"
             }
           >
             {link.label}
