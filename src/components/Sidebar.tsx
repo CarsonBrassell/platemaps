@@ -10,7 +10,7 @@ export function Sidebar() {
             key={n}
             className={
               i === 0
-                ? "rounded-md bg-pm-blue-tint px-2 py-1.5 text-sm font-medium text-pm-blue-text"
+                ? "rounded-md bg-pm-grey-tint px-2 py-1.5 text-sm font-medium text-pm-grey-text"
                 : "px-2 py-1.5 text-sm text-zinc-500"
             }
           >

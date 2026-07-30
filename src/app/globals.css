@@ -3,13 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --pm-navy: #0b2545;
-  --pm-navy-light: #173a63;
-  --pm-red: #c8102e;
-  --pm-red-tint: #fbe7ea;
-  --pm-red-text: #8a1224;
-  --pm-blue-tint: #e5eef7;
-  --pm-blue-text: #0b2545;
+  --pm-charcoal: #27272a;
+  --pm-charcoal-light: #3f3f46;
+  --pm-orange: #ea580c;
+  --pm-orange-tint: #ffedd5;
+  --pm-orange-text: #9a3412;
+  --pm-grey-tint: #f4f4f5;
+  --pm-grey-text: #3f3f46;
 }
 
 @theme inline {
@@ -17,13 +17,13 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --color-pm-navy: var(--pm-navy);
-  --color-pm-navy-light: var(--pm-navy-light);
-  --color-pm-red: var(--pm-red);
-  --color-pm-red-tint: var(--pm-red-tint);
-  --color-pm-red-text: var(--pm-red-text);
-  --color-pm-blue-tint: var(--pm-blue-tint);
-  --color-pm-blue-text: var(--pm-blue-text);
+  --color-pm-charcoal: var(--pm-charcoal);
+  --color-pm-charcoal-light: var(--pm-charcoal-light);
+  --color-pm-orange: var(--pm-orange);
+  --color-pm-orange-tint: var(--pm-orange-tint);
+  --color-pm-orange-text: var(--pm-orange-text);
+  --color-pm-grey-tint: var(--pm-grey-tint);
+  --color-pm-grey-text: var(--pm-grey-text);
 }
 
 @media (prefers-color-scheme: dark) {

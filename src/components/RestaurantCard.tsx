@@ -11,8 +11,8 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
       <span
         className={
           isCalm
-            ? "rounded-md bg-pm-blue-tint px-2 py-1 text-xs font-medium text-pm-blue-text"
-            : "rounded-md bg-pm-red-tint px-2 py-1 text-xs font-medium text-pm-red-text"
+            ? "rounded-md bg-pm-grey-tint px-2 py-1 text-xs font-medium text-pm-grey-text"
+            : "rounded-md bg-pm-orange-tint px-2 py-1 text-xs font-medium text-pm-orange-text"
         }
       >
         {restaurant.statusLabel}
