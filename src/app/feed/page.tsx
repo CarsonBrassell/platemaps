@@ -106,6 +106,141 @@ function UtensilsIcon() {
   );
 }
 
+function PlusIcon() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden="true"
+    >
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden="true"
+    >
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  );
+}
+
+function ComposeModal({
+  isSignedIn,
+  onClose,
+  onCreated,
+}: {
+  isSignedIn: boolean;
+  onClose: () => void;
+  onCreated: (post: Post, pointsEarned: number) => void;
+}) {
+  const [text, setText] = useState("");
+  const [restaurant, setRestaurant] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError("");
+    if (!text.trim()) {
+      setError("Write something to post.");
+      return;
+    }
+    setSubmitting(true);
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, restaurant: restaurant || undefined }),
+    });
+    const data = await res.json();
+    setSubmitting(false);
+    if (!res.ok) {
+      setError(data.error ?? "Something went wrong.");
+      return;
+    }
+    onCreated(data.post, data.pointsEarned);
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="w-full max-w-sm rounded-xl bg-white shadow-lg">
+        <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3">
+          <p className="text-sm font-medium text-zinc-900">New post</p>
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="text-zinc-500 transition-transform active:scale-90"
+          >
+            <CloseIcon />
+          </button>
+        </div>
+
+        <div className="p-4">
+          {isSignedIn ? (
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3 flex aspect-square flex-col items-center justify-center gap-2 rounded-lg bg-pm-orange-tint">
+                <UtensilsIcon />
+                <span className="text-sm text-pm-orange-text">
+                  {restaurant || "Your food photo goes here"}
+                </span>
+              </div>
+
+              <textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Write a caption..."
+                rows={3}
+                className="mb-2 w-full resize-none rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-pm-orange focus:outline-none"
+              />
+              <input
+                value={restaurant}
+                onChange={(e) => setRestaurant(e.target.value)}
+                placeholder="Tag a restaurant (optional)"
+                className="mb-3 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-pm-orange focus:outline-none"
+              />
+
+              {error && <p className="mb-2 text-sm text-red-600">{error}</p>}
+
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-zinc-500">Earn 10 PM Points for posting</p>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="rounded-lg bg-pm-orange px-4 py-1.5 text-sm font-medium text-white transition-transform active:scale-[0.97] disabled:opacity-60"
+                >
+                  Share
+                </button>
+              </div>
+            </form>
+          ) : (
+            <p className="text-sm text-zinc-500">
+              <Link href="/account" className="font-medium text-pm-orange-text">
+                Sign in
+              </Link>{" "}
+              to post to the feed and start earning PM Points.
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function PostCard({
   post,
   currentUserId,
@@ -207,11 +342,8 @@ function PostCard({
 export default function FeedPage() {
   const { account, isSignedIn, refresh } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
-  const [text, setText] = useState("");
-  const [restaurant, setRestaurant] = useState("");
-  const [error, setError] = useState("");
-  const [pointsEarned, setPointsEarned] = useState<number | null>(null);
-  const [submitting, setSubmitting] = useState(false);
+  const [composeOpen, setComposeOpen] = useState(false);
+  const [pointsBanner, setPointsBanner] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/posts")
@@ -219,30 +351,16 @@ export default function FeedPage() {
       .then((data) => setPosts(data.posts));
   }, []);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setError("");
-    setPointsEarned(null);
-    if (!text.trim()) {
-      setError("Write something to post.");
-      return;
-    }
-    setSubmitting(true);
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, restaurant: restaurant || undefined }),
-    });
-    const data = await res.json();
-    setSubmitting(false);
-    if (!res.ok) {
-      setError(data.error ?? "Something went wrong.");
-      return;
-    }
-    setPosts((prev) => [data.post, ...prev]);
-    setPointsEarned(data.pointsEarned);
-    setText("");
-    setRestaurant("");
+  useEffect(() => {
+    if (pointsBanner === null) return;
+    const timeout = setTimeout(() => setPointsBanner(null), 3000);
+    return () => clearTimeout(timeout);
+  }, [pointsBanner]);
+
+  function handleCreated(post: Post, pointsEarned: number) {
+    setPosts((prev) => [post, ...prev]);
+    setPointsBanner(pointsEarned);
+    setComposeOpen(false);
     refresh();
   }
 
@@ -285,73 +403,56 @@ export default function FeedPage() {
   return (
     <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
       <Header />
-      <div className="mx-auto flex max-w-md flex-col gap-3 bg-white px-5 py-4">
-        {isSignedIn ? (
-          <form
-            onSubmit={handleSubmit}
-            className="rounded-xl border border-zinc-200 bg-white p-3 shadow-sm"
+      <div className="mx-auto flex max-w-md flex-col bg-white px-5 py-4">
+        <div className="mb-3 flex items-center justify-between border-b border-zinc-100 pb-3">
+          <p className="text-lg font-medium text-zinc-900">Feed</p>
+          <button
+            onClick={() => setComposeOpen(true)}
+            aria-label="New post"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-zinc-700 transition-all hover:bg-zinc-100 active:scale-90"
           >
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Share a find, a wait time, a special..."
-              rows={2}
-              className="mb-2 w-full resize-none rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-pm-orange focus:outline-none"
-            />
-            <input
-              value={restaurant}
-              onChange={(e) => setRestaurant(e.target.value)}
-              placeholder="Tag a restaurant (optional)"
-              className="mb-2 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-pm-orange focus:outline-none"
-            />
-            <div className="flex items-center justify-between">
-              <p className="text-xs text-zinc-500">Earn 10 PM Points for posting</p>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="rounded-lg bg-pm-orange px-3 py-1.5 text-sm font-medium text-white transition-transform active:scale-[0.97] disabled:opacity-60"
-              >
-                Post
-              </button>
-            </div>
-            {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-            {pointsEarned !== null && (
-              <p className="mt-2 text-sm font-medium text-pm-orange-text">
-                +{pointsEarned} PM Points earned
-              </p>
-            )}
-          </form>
-        ) : (
-          <div className="rounded-xl border border-zinc-200 bg-white p-3 text-sm text-zinc-500 shadow-sm">
-            <Link href="/account" className="font-medium text-pm-orange-text">
-              Sign in
-            </Link>{" "}
-            to post, like, and comment - and start earning PM Points.
-          </div>
+            <PlusIcon />
+          </button>
+        </div>
+
+        {pointsBanner !== null && (
+          <p className="mb-3 rounded-lg bg-pm-orange-tint px-3 py-2 text-sm font-medium text-pm-orange-text">
+            +{pointsBanner} PM Points earned
+          </p>
         )}
 
-        {posts.map((post) => (
-          <PostCard
-            key={post.id}
-            post={post}
-            currentUserId={account?.id ?? null}
-            onLike={handleLike}
-            onComment={handleComment}
-          />
-        ))}
+        <div className="flex flex-col gap-3">
+          {posts.map((post) => (
+            <PostCard
+              key={post.id}
+              post={post}
+              currentUserId={account?.id ?? null}
+              onLike={handleLike}
+              onComment={handleComment}
+            />
+          ))}
 
-        {activity.map((item) => (
-          <div
-            key={item.id}
-            className="rounded-xl border border-zinc-200 bg-white p-3 shadow-sm"
-          >
-            <p className="mb-1 text-sm">{item.text}</p>
-            <p className="text-xs text-zinc-500">
-              {item.place} &middot; {item.time}
-            </p>
-          </div>
-        ))}
+          {activity.map((item) => (
+            <div
+              key={item.id}
+              className="rounded-xl border border-zinc-200 bg-white p-3 shadow-sm"
+            >
+              <p className="mb-1 text-sm">{item.text}</p>
+              <p className="text-xs text-zinc-500">
+                {item.place} &middot; {item.time}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {composeOpen && (
+        <ComposeModal
+          isSignedIn={isSignedIn}
+          onClose={() => setComposeOpen(false)}
+          onCreated={handleCreated}
+        />
+      )}
     </div>
   );
 }
