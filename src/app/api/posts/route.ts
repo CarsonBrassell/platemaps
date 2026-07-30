@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { text } = await req.json();
+  const { text, restaurant } = await req.json();
   if (!text || !String(text).trim()) {
     return NextResponse.json({ error: "Write something to post." }, { status: 400 });
   }
@@ -30,7 +30,11 @@ export async function POST(req: NextRequest) {
     userId: user.id,
     authorName: user.name,
     text: String(text).trim(),
+    restaurant: restaurant ? String(restaurant).trim() : undefined,
     createdAt: new Date().toISOString(),
+    likedBy: [],
+    likePointsAwardedTo: [],
+    comments: [],
   };
   posts.push(post);
   savePosts(posts);

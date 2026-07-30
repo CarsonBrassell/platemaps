@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
+import { initials } from "@/lib/format";
 
 const NAV_LINKS = [
   { href: "/", label: "Discover" },
@@ -10,14 +11,6 @@ const NAV_LINKS = [
   { href: "/map", label: "Map" },
   { href: "/account", label: "My account" },
 ];
-
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/);
-  return parts
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase() ?? "")
-    .join("");
-}
 
 export function Header() {
   const pathname = usePathname();

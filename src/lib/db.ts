@@ -14,12 +14,24 @@ export type User = {
   points: number;
 };
 
-export type Post = {
+export type Comment = {
   id: string;
   userId: string;
   authorName: string;
   text: string;
   createdAt: string;
+};
+
+export type Post = {
+  id: string;
+  userId: string;
+  authorName: string;
+  text: string;
+  restaurant?: string;
+  createdAt: string;
+  likedBy: string[];
+  likePointsAwardedTo: string[];
+  comments: Comment[];
 };
 
 function readJson<T>(file: string, initial: T): T {

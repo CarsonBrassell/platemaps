@@ -3,12 +3,12 @@
 :root {
   --background: #f4f4f5;
   --foreground: #171717;
-  --pm-charcoal: #27272a;
-  --pm-charcoal-light: #3f3f46;
-  --pm-orange: #fb923c;
-  --pm-orange-tint: #ffedd5;
-  --pm-orange-text: #c2410c;
-  --pm-orange-border: #fdba74;
+  --pm-charcoal: #2b211c;
+  --pm-charcoal-light: #47372f;
+  --pm-orange: #e8875a;
+  --pm-orange-tint: #fbe8dd;
+  --pm-orange-text: #b5502b;
+  --pm-orange-border: #eab08c;
   --pm-grey-tint: #f4f4f5;
   --pm-grey-text: #3f3f46;
 }
@@ -36,10 +36,10 @@ body {
 
 @keyframes trending-glow {
   0%, 100% {
-    box-shadow: 0 0 6px 0px rgba(251, 146, 60, 0.35);
+    box-shadow: 0 0 6px 0px rgba(232, 135, 90, 0.35);
   }
   50% {
-    box-shadow: 0 0 18px 3px rgba(251, 146, 60, 0.6);
+    box-shadow: 0 0 18px 3px rgba(232, 135, 90, 0.6);
   }
 }
 
@@ -49,5 +49,5 @@ body {
 
 .trending-glow:hover {
   animation-play-state: paused;
-  box-shadow: 0 0 22px 4px rgba(251, 146, 60, 0.75);
+  box-shadow: 0 0 22px 4px rgba(232, 135, 90, 0.75);
 }
