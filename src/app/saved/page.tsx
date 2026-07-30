@@ -2,9 +2,9 @@ import { Header } from "@/components/Header";
 
 export default function SavedPage() {
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-5xl flex-1 flex-col">
+    <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm dark:border-zinc-800">
       <Header />
-      <div className="flex flex-1 items-center justify-center bg-white px-5 py-16 text-center dark:bg-black">
+      <div className="flex items-center justify-center bg-white px-5 py-16 text-center dark:bg-zinc-950">
         <div>
           <p className="mb-1 text-base font-medium">Nothing saved yet</p>
           <p className="text-sm text-zinc-500">

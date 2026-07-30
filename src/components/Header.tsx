@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
   { href: "/", label: "Discover" },
+  { href: "/feed", label: "Feed" },
   { href: "/map", label: "Map" },
   { href: "/saved", label: "Saved" },
 ];
@@ -13,12 +14,12 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="flex items-center justify-between gap-4 rounded-t-xl bg-pm-charcoal px-5 py-3.5">
+    <header className="flex items-center justify-between gap-4 bg-pm-charcoal px-5 py-3.5">
       <div className="flex items-center gap-4">
         <Link href="/" className="text-base font-medium text-white">
           PlateMap
         </Link>
-        <div className="hidden items-center gap-2 rounded-lg bg-pm-charcoal-light px-3 py-1.5 sm:flex">
+        <div className="hidden items-center gap-2 rounded-lg bg-pm-charcoal-light px-3 py-1.5 transition-colors focus-within:ring-1 focus-within:ring-pm-orange sm:flex">
           <svg
             width="16"
             height="16"
@@ -47,8 +48,8 @@ export function Header() {
             href={link.href}
             className={
               pathname === link.href
-                ? "border-b-2 border-pm-orange pb-1 font-medium text-white"
-                : "border-b-2 border-transparent pb-1 text-white/65"
+                ? "border-b-2 border-pm-orange pb-1 font-medium text-white transition-colors"
+                : "border-b-2 border-transparent pb-1 text-white/65 transition-colors hover:text-white/90"
             }
           >
             {link.label}

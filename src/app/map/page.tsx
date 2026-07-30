@@ -9,9 +9,9 @@ export default function MapPage() {
   const query = encodeURIComponent(`${selected}, San Diego, CA`);
 
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-5xl flex-1 flex-col">
+    <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm dark:border-zinc-800">
       <Header />
-      <div className="flex flex-1 flex-col gap-4 bg-white px-5 py-4 dark:bg-black">
+      <div className="flex flex-col gap-4 bg-white px-5 py-4 dark:bg-zinc-950">
         <div className="flex flex-wrap gap-2">
           {neighborhoods.map((neighborhood) => (
             <button
@@ -19,8 +19,8 @@ export default function MapPage() {
               onClick={() => setSelected(neighborhood)}
               className={
                 neighborhood === selected
-                  ? "rounded-md bg-pm-orange-tint px-3 py-1.5 text-sm font-medium text-pm-orange-text"
-                  : "rounded-md bg-pm-grey-tint px-3 py-1.5 text-sm text-pm-grey-text"
+                  ? "rounded-full bg-pm-orange-tint px-3 py-1.5 text-sm font-medium text-pm-orange-text transition-colors"
+                  : "rounded-full bg-pm-grey-tint px-3 py-1.5 text-sm text-pm-grey-text transition-colors hover:bg-zinc-200"
               }
             >
               {neighborhood}
