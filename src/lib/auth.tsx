@@ -2,57 +2,75 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-type Account = { name: string; email: string; password: string };
+type Account = { id: string; name: string; email: string; points: number };
 
 type AuthContextValue = {
   account: Account | null;
   isSignedIn: boolean;
-  signUp: (account: Account) => void;
-  signIn: (email: string, password: string) => boolean;
-  signOut: () => void;
+  loading: boolean;
+  signUp: (name: string, email: string, password: string) => Promise<string | null>;
+  signIn: (email: string, password: string) => Promise<string | null>;
+  signOut: () => Promise<void>;
+  refresh: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
-const ACCOUNT_KEY = "platemap-account";
-const SESSION_KEY = "platemap-signed-in";
+
+async function parseError(res: Response) {
+  try {
+    const data = await res.json();
+    return data.error ?? "Something went wrong.";
+  } catch {
+    return "Something went wrong.";
+  }
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<Account | null>(null);
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  async function refresh() {
+    const res = await fetch("/api/auth/me");
+    const data = await res.json();
+    setAccount(data.user);
+  }
 
   useEffect(() => {
-    const stored = localStorage.getItem(ACCOUNT_KEY);
-    if (stored) setAccount(JSON.parse(stored));
-    setIsSignedIn(localStorage.getItem(SESSION_KEY) === "true");
+    refresh().finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const signUp = (newAccount: Account) => {
-    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(newAccount));
-    localStorage.setItem(SESSION_KEY, "true");
-    setAccount(newAccount);
-    setIsSignedIn(true);
-  };
+  async function signUp(name: string, email: string, password: string) {
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
+    if (!res.ok) return parseError(res);
+    setAccount(await res.json());
+    return null;
+  }
 
-  const signIn = (email: string, password: string) => {
-    const stored = localStorage.getItem(ACCOUNT_KEY);
-    if (!stored) return false;
-    const existing: Account = JSON.parse(stored);
-    if (existing.email === email && existing.password === password) {
-      localStorage.setItem(SESSION_KEY, "true");
-      setAccount(existing);
-      setIsSignedIn(true);
-      return true;
-    }
-    return false;
-  };
+  async function signIn(email: string, password: string) {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) return parseError(res);
+    setAccount(await res.json());
+    return null;
+  }
 
-  const signOut = () => {
-    localStorage.setItem(SESSION_KEY, "false");
-    setIsSignedIn(false);
-  };
+  async function signOut() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setAccount(null);
+  }
 
   return (
-    <AuthContext.Provider value={{ account, isSignedIn, signUp, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ account, isSignedIn: !!account, loading, signUp, signIn, signOut, refresh }}
+    >
       {children}
     </AuthContext.Provider>
   );
