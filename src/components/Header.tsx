@@ -19,7 +19,9 @@ export function Header() {
   return (
     <header className="flex items-center justify-between gap-4 bg-pm-charcoal px-5 py-3.5">
       <div className="flex items-center gap-4">
-        <Link href="/" className="text-base font-medium text-white">
+        <Link href="/" className="flex items-center gap-2 text-base font-medium text-white">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="" className="h-9 w-auto" />
           PlateMap
         </Link>
         <div className="hidden items-center gap-2 rounded-lg bg-pm-charcoal-light px-3 py-1.5 transition-colors focus-within:ring-1 focus-within:ring-pm-orange sm:flex">
