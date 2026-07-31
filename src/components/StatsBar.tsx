@@ -1,18 +1,72 @@
-export function StatsBar() {
+"use client";
+
+import { useEffect, useState } from "react";
+
+function LocationIcon() {
   return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-1 border-b border-black/5 bg-pm-orange-tint px-5 py-2.5">
-      <span className="flex items-center gap-1.5 text-sm font-medium text-pm-orange-text">
-        <span className="h-1.5 w-1.5 rounded-full bg-pm-orange" aria-hidden="true" />
-        142 spots open right now
-      </span>
-      <span className="flex items-center gap-1.5 text-sm text-pm-orange-text">
-        <span className="h-1.5 w-1.5 rounded-full bg-pm-orange/50" aria-hidden="true" />
-        18 with no wait
-      </span>
-      <span className="flex items-center gap-1.5 text-sm text-pm-orange-text">
-        <span className="h-1.5 w-1.5 rounded-full bg-pm-orange/50" aria-hidden="true" />
-        6 closing soon
-      </span>
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="shrink-0 text-pm-orange-text"
+      aria-hidden="true"
+    >
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="shrink-0"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 3" />
+    </svg>
+  );
+}
+
+export function StatsBar() {
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setNow(new Date());
+    const interval = setInterval(() => setNow(new Date()), 30_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const time = now?.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "America/Los_Angeles",
+  });
+
+  return (
+    <div className="flex items-center gap-2 border-b border-black/5 bg-pm-orange-tint px-5 py-2.5">
+      <LocationIcon />
+      <span className="text-sm font-medium text-pm-orange-text">San Diego, California</span>
+      {time && (
+        <span className="flex items-center gap-1 text-sm text-pm-orange-text/80">
+          <ClockIcon />
+          {time} local time
+        </span>
+      )}
     </div>
   );
 }

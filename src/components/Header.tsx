@@ -62,9 +62,6 @@ export function Header() {
         ))}
       </nav>
       <div className="flex items-center gap-3">
-        <div className="rounded-lg bg-pm-charcoal-light px-3 py-1.5 text-sm text-white">
-          San Diego, CA
-        </div>
         {isSignedIn && account?.avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
