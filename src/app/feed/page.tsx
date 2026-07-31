@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Leaderboard } from "@/components/Leaderboard";
 import { useAuth } from "@/lib/auth";
-import { initials, relativeTime } from "@/lib/format";
+import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { UtensilsIcon, BookmarkIcon, MoreIcon } from "@/components/icons";
 
 type Comment = {
@@ -288,9 +288,10 @@ function PostCard({
   }
 
   const visibleComments = showAllComments ? post.comments : post.comments.slice(-1);
+  const palette = avatarPalette(post.authorName);
 
   return (
-    <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+    <div className={`overflow-hidden rounded-xl border-2 ${palette.border} bg-white shadow-sm`}>
       <div className="flex items-center gap-2 p-3">
         {post.authorAvatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -300,7 +301,9 @@ function PostCard({
             className="h-8 w-8 shrink-0 rounded-full object-cover"
           />
         ) : (
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-orange text-xs font-medium text-white">
+          <div
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-medium text-white ${palette.avatarBg}`}
+          >
             {initials(post.authorName)}
           </div>
         )}
@@ -431,6 +434,7 @@ function DemoPostCard({ post }: { post: (typeof demoPosts)[number] }) {
 
   const likeCount = post.likeCount + (liked ? 1 : 0);
   const visibleComments = showAllComments ? post.comments : post.comments.slice(-1);
+  const palette = avatarPalette(post.authorName);
 
   function handleDoubleTap() {
     setShowHeartPop(true);
@@ -439,9 +443,11 @@ function DemoPostCard({ post }: { post: (typeof demoPosts)[number] }) {
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+    <div className={`overflow-hidden rounded-xl border-2 ${palette.border} bg-white shadow-sm`}>
       <div className="flex items-center gap-2 p-3">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-orange text-xs font-medium text-white">
+        <div
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-medium text-white ${palette.avatarBg}`}
+        >
           {initials(post.authorName)}
         </div>
         <div className="flex-1">
