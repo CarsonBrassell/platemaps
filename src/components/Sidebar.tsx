@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { neighborhoods, cuisines } from "@/data/restaurants";
+import { neighborhoods, cuisines, restaurants } from "@/data/restaurants";
 
-const trending = ["Mariscos German", "Sushi Ota"];
+const trending = restaurants.filter((r) => r.trending).map((r) => r.name);
 const priceRanges = ["$", "$$", "$$$", "$$$$"];
 
 function Chevron({ open }: { open: boolean }) {

@@ -8,6 +8,7 @@ export type Restaurant = {
   statusLabel: string;
   rating: number;
   reviewCount: number;
+  trending?: boolean;
 };
 
 export const restaurants: Restaurant[] = [
@@ -21,6 +22,7 @@ export const restaurants: Restaurant[] = [
     statusLabel: "No wait",
     rating: 4.7,
     reviewCount: 892,
+    trending: true,
   },
   {
     id: "2",
@@ -65,6 +67,7 @@ export const restaurants: Restaurant[] = [
     statusLabel: "No wait",
     rating: 4.8,
     reviewCount: 967,
+    trending: true,
   },
   {
     id: "6",

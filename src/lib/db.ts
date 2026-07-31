@@ -33,6 +33,7 @@ export type Post = {
   createdAt: string;
   likedBy: string[];
   likePointsAwardedTo: string[];
+  savedBy: string[];
   comments: Comment[];
 };
 

@@ -13,8 +13,10 @@ const inputClass =
 type Post = {
   id: string;
   userId: string;
+  authorName: string;
   text: string;
   restaurant?: string;
+  savedBy: string[];
   comments: { id: string }[];
 };
 
@@ -172,6 +174,7 @@ function AuthForm() {
 function AccountOverview() {
   const { account, signOut, updateAvatar } = useAuth();
   const [myPosts, setMyPosts] = useState<Post[]>([]);
+  const [savedPosts, setSavedPosts] = useState<Post[]>([]);
   const [avatarError, setAvatarError] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -180,9 +183,10 @@ function AccountOverview() {
     if (!account) return;
     fetch("/api/posts")
       .then((res) => res.json())
-      .then((data: { posts: Post[] }) =>
-        setMyPosts(data.posts.filter((p) => p.userId === account.id))
-      );
+      .then((data: { posts: Post[] }) => {
+        setMyPosts(data.posts.filter((p) => p.userId === account.id));
+        setSavedPosts(data.posts.filter((p) => p.savedBy.includes(account.id)));
+      });
   }, [account]);
 
   if (!account) return null;
@@ -251,11 +255,9 @@ function AccountOverview() {
       </div>
 
       <div className="mb-6 grid grid-cols-3 gap-3">
-        <div className="trending-glow flex flex-col items-center justify-center gap-0.5 rounded-xl border-2 border-pm-orange bg-white px-3 py-3">
-          <div className="flex items-center gap-1">
-            <PlateStarIcon className="h-6 w-8 text-pm-orange" />
-            <p className="text-lg font-bold text-pm-orange-text">{account.points}</p>
-          </div>
+        <div className="trending-glow flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-pm-orange bg-white px-3 py-3">
+          <PlateStarIcon className="h-7 w-9 text-pm-orange" />
+          <p className="text-lg font-bold leading-none text-pm-orange-text">{account.points}</p>
           <p className="text-xs font-medium text-pm-orange-text">PM Points</p>
         </div>
         <div className="col-span-2 grid grid-cols-2 divide-x divide-zinc-200 rounded-xl border border-zinc-200">
@@ -303,12 +305,34 @@ function AccountOverview() {
       )}
 
       <p className="mb-2 text-sm font-bold text-pm-orange-text">Saved</p>
-      <div className="rounded-xl border border-zinc-200 bg-white p-6 text-center">
-        <p className="mb-1 text-sm font-medium">Nothing saved yet</p>
-        <p className="text-sm text-zinc-500">
-          Save a spot from the discover feed to see it here.
-        </p>
-      </div>
+      {savedPosts.length > 0 ? (
+        <div className="mb-2 grid grid-cols-3 gap-1">
+          {savedPosts.map((post) => (
+            <div
+              key={post.id}
+              className="flex aspect-square flex-col items-center justify-center gap-1 overflow-hidden rounded-lg bg-pm-orange-tint p-2 text-center"
+            >
+              {post.restaurant ? (
+                <>
+                  <UtensilsIcon />
+                  <span className="line-clamp-2 text-xs font-medium text-pm-orange-text">
+                    {post.restaurant}
+                  </span>
+                </>
+              ) : (
+                <span className="line-clamp-4 text-xs text-pm-orange-text">{post.text}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-xl border border-zinc-200 bg-white p-6 text-center">
+          <p className="mb-1 text-sm font-medium">Nothing saved yet</p>
+          <p className="text-sm text-zinc-500">
+            Bookmark a post from the Feed to see it here.
+          </p>
+        </div>
+      )}
 
       <button
         onClick={signOut}

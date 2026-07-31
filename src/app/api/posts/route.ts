@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
     createdAt: new Date().toISOString(),
     likedBy: [],
     likePointsAwardedTo: [],
+    savedBy: [],
     comments: [],
   };
   posts.push(post);

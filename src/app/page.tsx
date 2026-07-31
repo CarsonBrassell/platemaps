@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { StatsBar } from "@/components/StatsBar";
 import { Sidebar } from "@/components/Sidebar";
 import { RestaurantCard } from "@/components/RestaurantCard";
+import { OurPicks } from "@/components/OurPicks";
 import { restaurants } from "@/data/restaurants";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
     <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
       <Header />
       <StatsBar />
+      <OurPicks />
       <div className="flex gap-4 bg-white px-5 py-4">
         <Sidebar />
         <div className="flex-1 border-l border-zinc-100 pl-4">

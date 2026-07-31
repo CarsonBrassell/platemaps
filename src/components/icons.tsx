@@ -9,6 +9,57 @@ export function StarIcon({ className = "" }: { className?: string }) {
   );
 }
 
+export function UtensilsIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M3 2v7a2 2 0 0 0 2 2v11" />
+      <path d="M7 2v9" />
+      <path d="M5 2v9" />
+      <path d="M19 2c-1.7 0-3 2-3 4.5S17.3 11 19 11v11" />
+    </svg>
+  );
+}
+
+export function BookmarkIcon({
+  filled = false,
+  className = "",
+}: {
+  filled?: boolean;
+  className?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill={filled ? "currentColor" : "none"}
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M6 3a2 2 0 0 0-2 2v16l8-4.5 8 4.5V5a2 2 0 0 0-2-2H6z" />
+    </svg>
+  );
+}
+
+export function MoreIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <circle cx="5" cy="12" r="1.8" />
+      <circle cx="12" cy="12" r="1.8" />
+      <circle cx="19" cy="12" r="1.8" />
+    </svg>
+  );
+}
+
 export function PlateStarIcon({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 24" fill="none" className={className} aria-hidden="true">
