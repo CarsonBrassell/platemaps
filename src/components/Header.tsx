@@ -17,12 +17,12 @@ export function Header() {
   const { account, isSignedIn } = useAuth();
 
   return (
-    <header className="flex items-center justify-between gap-4 bg-pm-charcoal px-5 py-3.5">
+    <header className="flex items-center justify-between gap-4 bg-pm-charcoal px-5 py-3">
       <div className="flex items-center gap-4">
-        <Link href="/" className="flex items-center gap-2 text-base font-medium text-white">
+        <Link href="/" className="flex items-center gap-3 text-2xl font-bold text-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="" className="h-9 w-auto" />
-          PlateMap
+          <img src="/logo.png" alt="" className="h-16 w-auto" />
+          PlateMaps
         </Link>
         <div className="hidden items-center gap-2 rounded-lg bg-pm-charcoal-light px-3 py-1.5 transition-colors focus-within:ring-1 focus-within:ring-pm-orange sm:flex">
           <svg
@@ -42,19 +42,19 @@ export function Header() {
             type="text"
             placeholder="Search restaurants..."
             aria-label="Search restaurants"
-            className="w-40 bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none"
+            className="w-32 bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none"
           />
         </div>
       </div>
-      <nav className="hidden items-center gap-5 text-sm sm:flex">
+      <nav className="hidden items-center gap-4 text-sm sm:flex">
         {NAV_LINKS.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             className={
               pathname === link.href
-                ? "inline-block border-b-2 border-pm-orange pb-1 font-medium text-white transition-transform duration-200 hover:-translate-y-0.5 hover:scale-110 active:scale-95"
-                : "inline-block border-b-2 border-transparent pb-1 text-white/65 transition-all duration-200 hover:-translate-y-0.5 hover:scale-110 hover:text-white active:scale-95"
+                ? "inline-block whitespace-nowrap border-b-2 border-pm-orange pb-1 font-medium text-white transition-transform duration-200 hover:-translate-y-0.5 hover:scale-110 active:scale-95"
+                : "inline-block whitespace-nowrap border-b-2 border-transparent pb-1 text-white/65 transition-all duration-200 hover:-translate-y-0.5 hover:scale-110 hover:text-white active:scale-95"
             }
           >
             {link.label}
