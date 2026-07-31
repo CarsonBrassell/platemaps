@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { Leaderboard } from "@/components/Leaderboard";
 import { useAuth } from "@/lib/auth";
 import { initials, relativeTime } from "@/lib/format";
 import { UtensilsIcon, BookmarkIcon, MoreIcon } from "@/components/icons";
@@ -28,30 +29,39 @@ type Post = {
   comments: Comment[];
 };
 
-const activity = [
+const demoPosts = [
   {
-    id: "a1",
-    text: "Karina's Tacos just posted a special: fish taco plate, $12",
-    place: "Karina's Tacos · Ocean Beach",
-    time: "12m ago",
+    id: "d1",
+    authorName: "Jordan Ellis",
+    time: "3h ago",
+    restaurant: "Mariscos German",
+    text: "Best fish tacos I've had in years!",
+    likeCount: 24,
+    comments: [
+      { id: "d1c1", authorName: "Maya R.", text: "Need to try this!" },
+      { id: "d1c2", authorName: "Chris P.", text: "Their salsa verde is unreal" },
+    ],
   },
   {
-    id: "a2",
-    text: "Mariscos German is running with no wait right now",
-    place: "Mariscos German · Barrio Logan",
-    time: "28m ago",
+    id: "d2",
+    authorName: "Priya Nair",
+    time: "1d ago",
+    restaurant: "Communal Coffee",
+    text: "Sunday brunch never disappoints.",
+    likeCount: 18,
+    comments: [{ id: "d2c1", authorName: "Sam K.", text: "Their lattes are perfect" }],
   },
   {
-    id: "a3",
-    text: "5 people checked in at Communal Coffee in the last hour",
-    place: "Communal Coffee · North Park",
-    time: "1h ago",
-  },
-  {
-    id: "a4",
-    text: "Herb and Wood is filling up, wait climbing to 25 min",
-    place: "Herb and Wood · Little Italy",
-    time: "2h ago",
+    id: "d3",
+    authorName: "Diego Alvarez",
+    time: "2d ago",
+    restaurant: "Herb and Wood",
+    text: "Date night done right.",
+    likeCount: 31,
+    comments: [
+      { id: "d3c1", authorName: "Taylor B.", text: "Adding this to our list" },
+      { id: "d3c2", authorName: "Jamie L.", text: "So good" },
+    ],
   },
 ];
 
@@ -414,11 +424,96 @@ function PostCard({
   );
 }
 
+function DemoPostCard({ post }: { post: (typeof demoPosts)[number] }) {
+  const [liked, setLiked] = useState(false);
+  const [showAllComments, setShowAllComments] = useState(false);
+  const [showHeartPop, setShowHeartPop] = useState(false);
+
+  const likeCount = post.likeCount + (liked ? 1 : 0);
+  const visibleComments = showAllComments ? post.comments : post.comments.slice(-1);
+
+  function handleDoubleTap() {
+    setShowHeartPop(true);
+    setLiked(true);
+    setTimeout(() => setShowHeartPop(false), 800);
+  }
+
+  return (
+    <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+      <div className="flex items-center gap-2 p-3">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-orange text-xs font-medium text-white">
+          {initials(post.authorName)}
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-medium">{post.authorName}</p>
+          <p className="text-xs text-zinc-500">{post.time}</p>
+        </div>
+        <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs text-zinc-400">
+          Example
+        </span>
+      </div>
+
+      <div
+        onDoubleClick={handleDoubleTap}
+        className="relative flex aspect-[4/3] select-none flex-col items-center justify-center gap-2 bg-pm-orange-tint"
+      >
+        <UtensilsIcon className="h-7 w-7 text-pm-orange-text" />
+        <span className="text-sm font-medium text-pm-orange-text">{post.restaurant}</span>
+        {showHeartPop && (
+          <HeartIcon
+            filled
+            className="heart-pop pointer-events-none absolute h-16 w-16 text-pm-orange"
+          />
+        )}
+      </div>
+
+      <div className="p-3">
+        <div className="mb-2 flex items-center gap-4">
+          <button
+            onClick={() => setLiked((v) => !v)}
+            className="flex items-center gap-1.5 transition-transform active:scale-90"
+          >
+            <HeartIcon filled={liked} />
+            <span className="text-sm text-zinc-600">{likeCount}</span>
+          </button>
+          <div className="flex items-center gap-1.5">
+            <CommentIcon />
+            <span className="text-sm text-zinc-600">{post.comments.length}</span>
+          </div>
+        </div>
+
+        <p className="mb-2 text-sm">
+          <span className="font-medium">{post.authorName}</span> {post.text}
+        </p>
+
+        {post.comments.length > 0 && (
+          <div className="flex flex-col gap-1">
+            {!showAllComments && post.comments.length > 1 && (
+              <button
+                onClick={() => setShowAllComments(true)}
+                className="text-left text-xs text-zinc-500 hover:text-zinc-700"
+              >
+                View all {post.comments.length} comments
+              </button>
+            )}
+            {visibleComments.map((c) => (
+              <p key={c.id} className="text-sm">
+                <span className="font-medium">{c.authorName}</span> {c.text}
+              </p>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function FeedPage() {
   const { account, isSignedIn, refresh } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [composeOpen, setComposeOpen] = useState(false);
   const [pointsBanner, setPointsBanner] = useState<number | null>(null);
+  const [leaderboardKey, setLeaderboardKey] = useState(0);
 
   useEffect(() => {
     fetch("/api/posts")
@@ -437,6 +532,7 @@ export default function FeedPage() {
     setPointsBanner(pointsEarned);
     setComposeOpen(false);
     refresh();
+    setLeaderboardKey((k) => k + 1);
   }
 
   async function handleLike(postId: string) {
@@ -456,7 +552,10 @@ export default function FeedPage() {
           : p
       )
     );
-    if (data.pointsEarned > 0) refresh();
+    if (data.pointsEarned > 0) {
+      refresh();
+      setLeaderboardKey((k) => k + 1);
+    }
   }
 
   async function handleSave(postId: string) {
@@ -492,6 +591,7 @@ export default function FeedPage() {
       )
     );
     refresh();
+    setLeaderboardKey((k) => k + 1);
   }
 
   async function handleDelete(postId: string) {
@@ -503,49 +603,45 @@ export default function FeedPage() {
   return (
     <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
       <Header />
-      <div className="mx-auto flex max-w-md flex-col bg-white px-5 py-4">
-        <div className="mb-3 flex items-center justify-between border-b border-zinc-100 pb-3">
-          <p className="text-lg font-medium text-zinc-900">Feed</p>
-          <button
-            onClick={() => setComposeOpen(true)}
-            aria-label="New post"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-zinc-700 transition-all hover:bg-zinc-100 active:scale-90"
-          >
-            <PlusIcon />
-          </button>
-        </div>
-
-        {pointsBanner !== null && (
-          <p className="mb-3 rounded-lg bg-pm-orange-tint px-3 py-2 text-sm font-medium text-pm-orange-text">
-            +{pointsBanner} PM Points earned
-          </p>
-        )}
-
-        <div className="flex flex-col gap-3">
-          {posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              currentUserId={account?.id ?? null}
-              onLike={handleLike}
-              onSave={handleSave}
-              onComment={handleComment}
-              onDelete={handleDelete}
-            />
-          ))}
-
-          {activity.map((item) => (
-            <div
-              key={item.id}
-              className="rounded-xl border border-zinc-200 bg-white p-3 shadow-sm"
+      <div className="flex justify-center gap-4 bg-white px-5 py-4">
+        <div className="flex w-full max-w-md flex-col">
+          <div className="mb-3 flex items-center justify-between border-b border-zinc-100 pb-3">
+            <p className="text-lg font-medium text-zinc-900">Feed</p>
+            <button
+              onClick={() => setComposeOpen(true)}
+              aria-label="New post"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-zinc-700 transition-all hover:bg-zinc-100 active:scale-90"
             >
-              <p className="mb-1 text-sm">{item.text}</p>
-              <p className="text-xs text-zinc-500">
-                {item.place} &middot; {item.time}
-              </p>
-            </div>
-          ))}
+              <PlusIcon />
+            </button>
+          </div>
+
+          {pointsBanner !== null && (
+            <p className="mb-3 rounded-lg bg-pm-orange-tint px-3 py-2 text-sm font-medium text-pm-orange-text">
+              +{pointsBanner} PM Points earned
+            </p>
+          )}
+
+          <div className="flex flex-col gap-3">
+            {posts.map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                currentUserId={account?.id ?? null}
+                onLike={handleLike}
+                onSave={handleSave}
+                onComment={handleComment}
+                onDelete={handleDelete}
+              />
+            ))}
+
+            {demoPosts.map((post) => (
+              <DemoPostCard key={post.id} post={post} />
+            ))}
+          </div>
         </div>
+
+        <Leaderboard key={leaderboardKey} />
       </div>
 
       {composeOpen && (

@@ -12,8 +12,29 @@ export type User = {
   email: string;
   passwordHash: string;
   points: number;
+  monthlyPoints: number;
+  monthlyPointsMonth: string;
   avatarUrl?: string;
 };
+
+function currentMonthKey(): string {
+  const now = new Date();
+  return `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+}
+
+export function addPoints(user: User, amount: number) {
+  const monthKey = currentMonthKey();
+  if (user.monthlyPointsMonth !== monthKey) {
+    user.monthlyPointsMonth = monthKey;
+    user.monthlyPoints = 0;
+  }
+  user.points += amount;
+  user.monthlyPoints += amount;
+}
+
+export function effectiveMonthlyPoints(user: User): number {
+  return user.monthlyPointsMonth === currentMonthKey() ? user.monthlyPoints : 0;
+}
 
 export type Comment = {
   id: string;

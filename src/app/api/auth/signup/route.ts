@@ -21,7 +21,15 @@ export async function POST(req: NextRequest) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const user: User = { id: randomUUID(), name, email, passwordHash, points: 0 };
+  const user: User = {
+    id: randomUUID(),
+    name,
+    email,
+    passwordHash,
+    points: 0,
+    monthlyPoints: 0,
+    monthlyPointsMonth: "",
+  };
   users.push(user);
   saveUsers(users);
 
