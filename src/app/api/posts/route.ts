@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { getPosts, savePosts, getUsers, saveUsers, addPoints } from "@/lib/db";
+import { getPosts, createPost, addPointsToUser } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
 const POINTS_PER_POST = 10;
 
 export async function GET() {
-  const posts = getPosts();
+  const posts = await getPosts();
   return NextResponse.json({ posts: posts.slice().reverse() });
 }
 
@@ -24,30 +24,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Write something to post." }, { status: 400 });
   }
 
-  const posts = getPosts();
-  const post = {
+  const post = await createPost({
     id: randomUUID(),
     userId: user.id,
     authorName: user.name,
     authorAvatarUrl: user.avatarUrl,
     text: String(text).trim(),
     restaurant: restaurant ? String(restaurant).trim() : undefined,
-    createdAt: new Date().toISOString(),
-    upvotedBy: [],
-    downvotedBy: [],
-    votePointsAwardedTo: [],
-    savedBy: [],
-    comments: [],
-  };
-  posts.push(post);
-  savePosts(posts);
+  });
 
-  const users = getUsers();
-  const freshUser = users.find((u) => u.id === user.id);
-  if (freshUser) {
-    addPoints(freshUser, POINTS_PER_POST);
-    saveUsers(users);
-  }
+  const freshUser = await addPointsToUser(user.id, POINTS_PER_POST);
 
   return NextResponse.json({
     post,

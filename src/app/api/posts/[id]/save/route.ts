@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPosts, savePosts } from "@/lib/db";
+import { getPostById, toggleSave } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
 export async function POST(
@@ -12,17 +12,11 @@ export async function POST(
   }
 
   const { id } = await params;
-  const posts = getPosts();
-  const post = posts.find((p) => p.id === id);
+  const post = await getPostById(id);
   if (!post) {
     return NextResponse.json({ error: "Post not found." }, { status: 404 });
   }
 
-  const alreadySaved = post.savedBy.includes(user.id);
-  post.savedBy = alreadySaved
-    ? post.savedBy.filter((uid) => uid !== user.id)
-    : [...post.savedBy, user.id];
-  savePosts(posts);
-
-  return NextResponse.json({ saved: !alreadySaved });
+  const saved = await toggleSave(id, user.id);
+  return NextResponse.json({ saved });
 }

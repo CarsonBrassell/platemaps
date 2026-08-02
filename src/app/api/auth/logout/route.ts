@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getSessions, saveSessions } from "@/lib/db";
+import { deleteSession } from "@/lib/db";
 import { SESSION_COOKIE } from "@/lib/session";
 
 export async function POST() {
@@ -8,9 +8,7 @@ export async function POST() {
   const token = cookieStore.get(SESSION_COOKIE)?.value;
 
   if (token) {
-    const sessions = getSessions();
-    delete sessions[token];
-    saveSessions(sessions);
+    await deleteSession(token);
   }
 
   cookieStore.delete(SESSION_COOKIE);

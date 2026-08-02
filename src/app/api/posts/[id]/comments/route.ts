@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { getPosts, savePosts, getUsers, saveUsers, addPoints } from "@/lib/db";
+import { getPostById, addComment, addPointsToUser } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
 const COMMENT_POINTS = 5;
@@ -20,28 +20,18 @@ export async function POST(
   }
 
   const { id } = await params;
-  const posts = getPosts();
-  const post = posts.find((p) => p.id === id);
+  const post = await getPostById(id);
   if (!post) {
     return NextResponse.json({ error: "Post not found." }, { status: 404 });
   }
 
-  const comment = {
+  const comment = await addComment(id, {
     id: randomUUID(),
     userId: user.id,
-    authorName: user.name,
     text: String(text).trim(),
-    createdAt: new Date().toISOString(),
-  };
-  post.comments.push(comment);
-  savePosts(posts);
+  });
 
-  const users = getUsers();
-  const freshUser = users.find((u) => u.id === user.id);
-  if (freshUser) {
-    addPoints(freshUser, COMMENT_POINTS);
-    saveUsers(users);
-  }
+  const freshUser = await addPointsToUser(user.id, COMMENT_POINTS);
 
   return NextResponse.json({
     comment,

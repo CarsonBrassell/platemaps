@@ -41,14 +41,13 @@ type Post = {
   text: string;
   restaurant?: string;
   createdAt: string;
-  upvotedBy: string[];
-  downvotedBy: string[];
+  likedBy: string[];
   savedBy: string[];
   comments: Comment[];
 };
 
 function hotScore(post: Post) {
-  const net = post.upvotedBy.length - post.downvotedBy.length;
+  const net = post.likedBy.length;
   const ageHours = (Date.now() - new Date(post.createdAt).getTime()) / 3_600_000;
   return net / Math.pow(ageHours + 2, 1.5);
 }
@@ -125,26 +124,6 @@ function ArrowUpIcon({ className }: { className?: string }) {
     >
       <path d="M12 19V5" />
       <path d="M5 12l7-7 7 7" />
-    </svg>
-  );
-}
-
-function ArrowDownIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M12 5v14" />
-      <path d="M5 12l7 7 7-7" />
     </svg>
   );
 }
@@ -312,7 +291,7 @@ function ComposeModal({
 function PostCard({
   post,
   currentUserId,
-  onVote,
+  onLike,
   onSave,
   onComment,
   onDelete,
@@ -320,7 +299,7 @@ function PostCard({
 }: {
   post: Post;
   currentUserId: string | null;
-  onVote: (postId: string, direction: "up" | "down") => void;
+  onLike: (postId: string) => void;
   onSave: (postId: string) => void;
   onComment: (postId: string, text: string) => Promise<void>;
   onDelete: (postId: string) => void;
@@ -333,14 +312,8 @@ function PostCard({
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const myVote = currentUserId
-    ? post.upvotedBy.includes(currentUserId)
-      ? "up"
-      : post.downvotedBy.includes(currentUserId)
-        ? "down"
-        : null
-    : null;
-  const score = post.upvotedBy.length - post.downvotedBy.length;
+  const liked = currentUserId ? post.likedBy.includes(currentUserId) : false;
+  const score = post.likedBy.length;
   const saved = currentUserId ? post.savedBy.includes(currentUserId) : false;
   const isOwner = currentUserId === post.userId;
 
@@ -367,7 +340,7 @@ function PostCard({
   function handleDoubleTap() {
     if (!currentUserId) return;
     setShowVotePop(true);
-    if (myVote !== "up") onVote(post.id, "up");
+    if (!liked) onLike(post.id);
     setTimeout(() => setShowVotePop(false), 800);
   }
 
@@ -449,32 +422,23 @@ function PostCard({
         <div className="mb-2 flex items-center gap-4">
           <div className="flex items-center gap-1 rounded-full bg-zinc-100/80 px-1.5 py-1 ring-1 ring-inset ring-zinc-200/60">
             <button
-              onClick={() => onVote(post.id, "up")}
+              onClick={() => onLike(post.id)}
               disabled={!currentUserId}
-              aria-label="Upvote"
+              aria-label={liked ? "Unlike" : "Like"}
+              aria-pressed={liked}
               className="transition-transform active:scale-90 disabled:opacity-50"
             >
-              <ArrowUpIcon className={myVote === "up" ? "text-pm-orange" : "text-zinc-400"} />
+              <ArrowUpIcon className={liked ? "text-pm-orange" : "text-zinc-400"} />
             </button>
             <span
               className={
                 score > 0
                   ? "min-w-[1.5rem] text-center text-sm font-semibold text-pm-orange-text"
-                  : score < 0
-                    ? "min-w-[1.5rem] text-center text-sm font-semibold text-red-500"
-                    : "min-w-[1.5rem] text-center text-sm font-semibold text-zinc-600"
+                  : "min-w-[1.5rem] text-center text-sm font-semibold text-zinc-600"
               }
             >
               {score}
             </span>
-            <button
-              onClick={() => onVote(post.id, "down")}
-              disabled={!currentUserId}
-              aria-label="Downvote"
-              className="transition-transform active:scale-90 disabled:opacity-50"
-            >
-              <ArrowDownIcon className={myVote === "down" ? "text-blue-500" : "text-zinc-400"} />
-            </button>
           </div>
           <div className="flex items-center gap-1.5">
             <CommentIcon />
@@ -624,13 +588,9 @@ function FeedPageInner() {
     refresh();
   }
 
-  async function handleVote(postId: string, direction: "up" | "down") {
+  async function handleLike(postId: string) {
     if (!account) return;
-    const res = await fetch(`/api/posts/${postId}/vote`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ direction }),
-    });
+    const res = await fetch(`/api/posts/${postId}/like`, { method: "POST" });
     if (!res.ok) return;
     const data = await res.json();
     setPosts((prev) =>
@@ -638,14 +598,9 @@ function FeedPageInner() {
         p.id === postId
           ? {
               ...p,
-              upvotedBy:
-                data.myVote === "up"
-                  ? [...p.upvotedBy.filter((uid: string) => uid !== account.id), account.id]
-                  : p.upvotedBy.filter((uid: string) => uid !== account.id),
-              downvotedBy:
-                data.myVote === "down"
-                  ? [...p.downvotedBy.filter((uid: string) => uid !== account.id), account.id]
-                  : p.downvotedBy.filter((uid: string) => uid !== account.id),
+              likedBy: data.liked
+                ? [...p.likedBy.filter((uid: string) => uid !== account.id), account.id]
+                : p.likedBy.filter((uid: string) => uid !== account.id),
             }
           : p
       )
@@ -720,8 +675,8 @@ function FeedPageInner() {
           id: p.id,
           restaurantId: restaurant.id,
           text: bubbleTextFromPost(p.text),
-          score: p.upvotedBy.length - p.downvotedBy.length,
-          upvotes: p.upvotedBy.length,
+          score: p.likedBy.length,
+          upvotes: p.likedBy.length,
           createdAt: p.createdAt,
           rating: ratingFromPost(p.text),
           dishPrefix: dishPrefixFromPost(p.text),
@@ -814,7 +769,7 @@ function FeedPageInner() {
                 <PostCard
                   post={post}
                   currentUserId={account?.id ?? null}
-                  onVote={handleVote}
+                  onLike={handleLike}
                   onSave={handleSave}
                   onComment={handleComment}
                   onDelete={handleDelete}

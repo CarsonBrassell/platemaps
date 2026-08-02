@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getSessions, getUsers } from "@/lib/db";
+import { getSessionUserId, getUserById } from "@/lib/db";
 import { SESSION_COOKIE } from "@/lib/session";
 
 export async function GET() {
@@ -8,12 +8,10 @@ export async function GET() {
   const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (!token) return NextResponse.json({ user: null });
 
-  const sessions = getSessions();
-  const userId = sessions[token];
+  const userId = await getSessionUserId(token);
   if (!userId) return NextResponse.json({ user: null });
 
-  const users = getUsers();
-  const user = users.find((u) => u.id === userId);
+  const user = await getUserById(userId);
   if (!user) return NextResponse.json({ user: null });
 
   return NextResponse.json({
