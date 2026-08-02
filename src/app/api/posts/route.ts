@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { getPosts, savePosts, getUsers, saveUsers } from "@/lib/db";
+import { getPosts, savePosts, getUsers, saveUsers, addPoints } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
 const POINTS_PER_POST = 10;
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
   const users = getUsers();
   const freshUser = users.find((u) => u.id === user.id);
   if (freshUser) {
-    freshUser.points += POINTS_PER_POST;
+    addPoints(freshUser, POINTS_PER_POST);
     saveUsers(users);
   }
 

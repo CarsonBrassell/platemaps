@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getPosts, savePosts, getUsers, saveUsers } from "@/lib/db";
+import { getPosts, savePosts, getUsers, saveUsers, addPoints } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
 const VOTE_POINTS = 2;
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const users = getUsers();
     const freshUser = users.find((u) => u.id === user.id);
     if (freshUser) {
-      freshUser.points += pointsEarned;
+      addPoints(freshUser, pointsEarned);
       saveUsers(users);
       points = freshUser.points;
     }

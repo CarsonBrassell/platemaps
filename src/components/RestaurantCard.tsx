@@ -13,7 +13,10 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
         <UtensilsIcon className="h-5 w-5 text-zinc-400 transition-transform duration-300 group-hover:scale-110 group-hover:text-pm-orange-text" />
       </div>
       <div className="p-3">
-        <p className="mb-0.5 text-sm font-medium">{restaurant.name}</p>
+        <div className="mb-0.5 flex items-start justify-between gap-2">
+          <p className="truncate text-sm font-medium">{restaurant.name}</p>
+          <span className="shrink-0 text-xs text-zinc-400">{restaurant.distance}</span>
+        </div>
         <div className="mb-1 flex items-center gap-1">
           <StarIcon className="h-3.5 w-3.5 text-pm-orange" />
           <span className="text-xs font-medium text-zinc-700">

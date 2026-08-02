@@ -140,7 +140,7 @@ function bubbleIcon(comment: MapComment, offsetY: number) {
             ? `<span style="font-weight: 700; color: #b5502b;">${escapeHtml(comment.rating)}</span>`
             : ""
         }
-        <span>▲ ${comment.upvotes}</span>
+        <span style="color: #16a34a; font-weight: 600;">▲ ${comment.upvotes}</span>
         ${comment.createdAt ? `<span>${escapeHtml(relativeTime(comment.createdAt))}</span>` : ""}
       </div>`
     : "";

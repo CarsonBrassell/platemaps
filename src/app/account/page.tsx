@@ -87,6 +87,10 @@ function AuthForm() {
   return (
     <div className="flex justify-center bg-white px-5 py-12">
       <form onSubmit={handleSubmit} className="w-full max-w-sm">
+        <div className="mb-6 flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="PlateMap" className="h-16 w-auto" />
+        </div>
         <div className="mb-6 flex rounded-lg bg-zinc-100 p-1 ring-1 ring-inset ring-zinc-200/60">
           <button
             type="button"
