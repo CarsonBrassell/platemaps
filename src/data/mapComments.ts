@@ -1,3 +1,5 @@
+import { dishesByRestaurant } from "@/data/dishes";
+
 export type MapComment = {
   id: string;
   restaurantId: string;
@@ -7,6 +9,8 @@ export type MapComment = {
   createdAt?: string;
   rating?: string | null;
   dishPrefix?: string | null;
+  postId?: string;
+  dishId?: string;
 };
 
 type RawComment = {
@@ -163,9 +167,15 @@ function seedHash(id: string) {
   return hash;
 }
 
+function findDishId(restaurantId: string, dishName: string): string | undefined {
+  const dishes = dishesByRestaurant[restaurantId] ?? [];
+  return dishes.find((d) => d.name.toLowerCase() === dishName.toLowerCase())?.id;
+}
+
 // These are seed flavor comments, not real posts — give each a believable
 // upvote count and age, and, for the ones about a specific dish, a rating
-// that renders as the same orange "Dish XX%" prefix a real food review gets.
+// that renders as the same orange "Dish XX%" prefix a real food review gets,
+// linked to that dish's real id in the menu when the names match.
 export const mapCommentsByRestaurant: Record<string, MapComment[]> = Object.fromEntries(
   Object.entries(rawCommentsByRestaurant).map(([restaurantId, comments]) => [
     restaurantId,
@@ -178,6 +188,7 @@ export const mapCommentsByRestaurant: Record<string, MapComment[]> = Object.from
         upvotes: 2 + (seed % 23),
         createdAt: new Date(Date.now() - (1 + (seed % 71)) * 3_600_000).toISOString(),
         dishPrefix: c.dish ? `${c.dish} ${70 + (seed % 29)}%` : null,
+        dishId: c.dish ? findDishId(restaurantId, c.dish) : undefined,
       };
     }),
   ]),

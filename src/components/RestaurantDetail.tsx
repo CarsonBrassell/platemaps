@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Restaurant } from "@/data/restaurants";
 import { dishStats, type Dish } from "@/data/dishes";
 import { RestaurantHeader } from "@/components/RestaurantHeader";
@@ -18,8 +19,19 @@ export function RestaurantDetail({
   restaurant: Restaurant;
   dishes: Dish[];
 }) {
+  const searchParams = useSearchParams();
   const [myVotes, setMyVotes] = useState<Record<string, "yes" | "no" | undefined>>({});
   const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
+
+  // Deep link from a map comment bubble ("view this dish in the menu").
+  useEffect(() => {
+    const dishId = searchParams.get("dish");
+    if (dishId && dishes.some((dish) => dish.id === dishId)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSelectedDishId(dishId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const dishesWithStats = useMemo(
     () =>

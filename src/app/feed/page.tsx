@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Suspense, useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import { initials, relativeTime } from "@/lib/format";
@@ -10,6 +11,7 @@ import { UtensilsIcon, BookmarkIcon, MoreIcon } from "@/components/icons";
 import { restaurants } from "@/data/restaurants";
 import { regionNames, regionForCoordinate } from "@/data/regions";
 import { mapCommentsByRestaurant, type MapComment } from "@/data/mapComments";
+import { dishesByRestaurant } from "@/data/dishes";
 
 const RestaurantMap = dynamic(
   () => import("@/components/RestaurantMap").then((mod) => mod.RestaurantMap),
@@ -65,9 +67,19 @@ function ratingFromPost(text: string): string | null {
 
 // Food reviews are prefixed "@Name - Dish X%;" — pulled out so the bubble
 // can lead with "Dish X%" highlighted, ahead of whatever else was written.
+function dishNameFromPost(text: string): string | null {
+  const match = text.match(/^@.+? - (.+?)\s\d{1,3}%;/);
+  return match ? match[1] : null;
+}
+
 function dishPrefixFromPost(text: string): string | null {
   const match = text.match(/^@.+? - (.+?)\s(\d{1,3})%;/);
   return match ? `${match[1]} ${match[2]}%` : null;
+}
+
+function findDishId(restaurantId: string, dishName: string): string | undefined {
+  const dishes = dishesByRestaurant[restaurantId] ?? [];
+  return dishes.find((d) => d.name.toLowerCase() === dishName.toLowerCase())?.id;
 }
 
 const activity = [
@@ -304,6 +316,7 @@ function PostCard({
   onSave,
   onComment,
   onDelete,
+  highlighted,
 }: {
   post: Post;
   currentUserId: string | null;
@@ -311,6 +324,7 @@ function PostCard({
   onSave: (postId: string) => void;
   onComment: (postId: string, text: string) => Promise<void>;
   onDelete: (postId: string) => void;
+  highlighted?: boolean;
 }) {
   const [commentText, setCommentText] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -360,7 +374,13 @@ function PostCard({
   const visibleComments = showAllComments ? post.comments : post.comments.slice(-1);
 
   return (
-    <div className="card-lift overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+    <div
+      className={
+        highlighted
+          ? "card-lift overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm ring-2 ring-pm-orange ring-offset-2 transition-shadow"
+          : "card-lift overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm transition-shadow"
+      }
+    >
       <div className="flex items-center gap-2 p-3">
         {post.authorAvatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -521,13 +541,25 @@ function PostCard({
 }
 
 export default function FeedPage() {
+  return (
+    <Suspense fallback={null}>
+      <FeedPageInner />
+    </Suspense>
+  );
+}
+
+function FeedPageInner() {
   const { account, isSignedIn, refresh } = useAuth();
+  const searchParams = useSearchParams();
+  const highlightPostId = searchParams.get("post");
   const [posts, setPosts] = useState<Post[]>([]);
   const [composeOpen, setComposeOpen] = useState(false);
   const [pointsBanner, setPointsBanner] = useState<number | null>(null);
   const [view, setView] = useState<"feed" | "map">("feed");
   const [selectedRegion, setSelectedRegion] = useState("Downtown");
+  const [highlightedPost, setHighlightedPost] = useState<string | null>(null);
   const chipRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const postRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
     fetch("/api/posts")
@@ -536,7 +568,7 @@ export default function FeedPage() {
   }, []);
 
   useEffect(() => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation || highlightPostId) return;
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setSelectedRegion(regionForCoordinate(position.coords.latitude, position.coords.longitude));
@@ -546,7 +578,30 @@ export default function FeedPage() {
       },
       { timeout: 5000 },
     );
-  }, []);
+  }, [highlightPostId]);
+
+  // Deep link from a map comment bubble ("view this comment in the feed") —
+  // jump to Feed view, the post's region, and scroll it into view with a
+  // brief highlight ring.
+  useEffect(() => {
+    if (!highlightPostId || posts.length === 0) return;
+    const post = posts.find((p) => p.id === highlightPostId);
+    if (!post) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setView("feed");
+    const region = restaurantRegion(post.restaurant);
+    if (region) setSelectedRegion(region);
+    setHighlightedPost(highlightPostId);
+    const scrollTimeout = setTimeout(() => {
+      postRefs.current[highlightPostId]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 150);
+    const clearTimeout_ = setTimeout(() => setHighlightedPost(null), 3000);
+    return () => {
+      clearTimeout(scrollTimeout);
+      clearTimeout(clearTimeout_);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [highlightPostId, posts]);
 
   useEffect(() => {
     chipRefs.current[selectedRegion]?.scrollIntoView({
@@ -659,16 +714,21 @@ export default function FeedPage() {
   for (const restaurant of restaurants) {
     const real: MapComment[] = posts
       .filter((p) => p.restaurant === restaurant.name)
-      .map((p) => ({
-        id: p.id,
-        restaurantId: restaurant.id,
-        text: bubbleTextFromPost(p.text),
-        score: p.upvotedBy.length - p.downvotedBy.length,
-        upvotes: p.upvotedBy.length,
-        createdAt: p.createdAt,
-        rating: ratingFromPost(p.text),
-        dishPrefix: dishPrefixFromPost(p.text),
-      }))
+      .map((p) => {
+        const dishName = dishNameFromPost(p.text);
+        return {
+          id: p.id,
+          restaurantId: restaurant.id,
+          text: bubbleTextFromPost(p.text),
+          score: p.upvotedBy.length - p.downvotedBy.length,
+          upvotes: p.upvotedBy.length,
+          createdAt: p.createdAt,
+          rating: ratingFromPost(p.text),
+          dishPrefix: dishPrefixFromPost(p.text),
+          postId: p.id,
+          dishId: dishName ? findDishId(restaurant.id, dishName) : undefined,
+        };
+      })
       .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
     mapComments[restaurant.id] = [...real, ...(mapCommentsByRestaurant[restaurant.id] ?? [])];
   }
@@ -745,15 +805,22 @@ export default function FeedPage() {
         ) : (
           <div className="grid auto-rows-min grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
-              <PostCard
+              <div
                 key={post.id}
-                post={post}
-                currentUserId={account?.id ?? null}
-                onVote={handleVote}
-                onSave={handleSave}
-                onComment={handleComment}
-                onDelete={handleDelete}
-              />
+                ref={(el) => {
+                  postRefs.current[post.id] = el;
+                }}
+              >
+                <PostCard
+                  post={post}
+                  currentUserId={account?.id ?? null}
+                  onVote={handleVote}
+                  onSave={handleSave}
+                  onComment={handleComment}
+                  onDelete={handleDelete}
+                  highlighted={post.id === highlightedPost}
+                />
+              </div>
             ))}
 
             {filteredActivity.map((item) => (
