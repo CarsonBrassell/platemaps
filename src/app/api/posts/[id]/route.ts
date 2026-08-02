@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPosts, savePosts } from "@/lib/db";
+import { getPostById, deletePost } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
 export async function DELETE(
@@ -12,8 +12,7 @@ export async function DELETE(
   }
 
   const { id } = await params;
-  const posts = getPosts();
-  const post = posts.find((p) => p.id === id);
+  const post = await getPostById(id);
   if (!post) {
     return NextResponse.json({ error: "Post not found." }, { status: 404 });
   }
@@ -24,6 +23,6 @@ export async function DELETE(
     );
   }
 
-  savePosts(posts.filter((p) => p.id !== id));
+  await deletePost(id);
   return NextResponse.json({ ok: true });
 }

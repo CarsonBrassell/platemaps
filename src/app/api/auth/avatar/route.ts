@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getUsers, saveUsers } from "@/lib/db";
+import { updateUserAvatar } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
 const MAX_AVATAR_LENGTH = 2_000_000;
@@ -18,14 +18,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "That image is too large." }, { status: 413 });
   }
 
-  const users = getUsers();
-  const freshUser = users.find((u) => u.id === user.id);
+  const freshUser = await updateUserAvatar(user.id, avatarUrl);
   if (!freshUser) {
     return NextResponse.json({ error: "Account not found." }, { status: 404 });
   }
-
-  freshUser.avatarUrl = avatarUrl;
-  saveUsers(users);
 
   return NextResponse.json({
     id: freshUser.id,

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPosts, savePosts, getUsers, saveUsers, addPoints } from "@/lib/db";
+import { getPostById, toggleLike, addPointsToUser } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
 const LIKE_POINTS = 2;
@@ -14,41 +14,19 @@ export async function POST(
   }
 
   const { id } = await params;
-  const posts = getPosts();
-  const post = posts.find((p) => p.id === id);
+  const post = await getPostById(id);
   if (!post) {
     return NextResponse.json({ error: "Post not found." }, { status: 404 });
   }
 
-  const alreadyLiked = post.likedBy.includes(user.id);
-  let pointsEarned = 0;
-
-  if (alreadyLiked) {
-    post.likedBy = post.likedBy.filter((uid) => uid !== user.id);
-  } else {
-    post.likedBy.push(user.id);
-    if (!post.likePointsAwardedTo.includes(user.id)) {
-      post.likePointsAwardedTo.push(user.id);
-      pointsEarned = LIKE_POINTS;
-    }
-  }
-  savePosts(posts);
+  const { liked, likeCount, firstTimeLike } = await toggleLike(id, user.id);
+  const pointsEarned = firstTimeLike ? LIKE_POINTS : 0;
 
   let points = user.points;
   if (pointsEarned > 0) {
-    const users = getUsers();
-    const freshUser = users.find((u) => u.id === user.id);
-    if (freshUser) {
-      addPoints(freshUser, pointsEarned);
-      saveUsers(users);
-      points = freshUser.points;
-    }
+    const freshUser = await addPointsToUser(user.id, pointsEarned);
+    points = freshUser?.points ?? points;
   }
 
-  return NextResponse.json({
-    liked: !alreadyLiked,
-    likeCount: post.likedBy.length,
-    pointsEarned,
-    points,
-  });
+  return NextResponse.json({ liked, likeCount, pointsEarned, points });
 }

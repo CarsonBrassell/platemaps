@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "node:crypto";
-import { getUsers, getSessions, saveSessions } from "@/lib/db";
+import { getUserByEmail, createSession } from "@/lib/db";
 import { SESSION_COOKIE, SESSION_MAX_AGE } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
@@ -12,10 +12,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Fill in every field." }, { status: 400 });
   }
 
-  const users = getUsers();
-  const user = users.find(
-    (u) => u.email.toLowerCase() === String(email).toLowerCase()
-  );
+  const user = await getUserByEmail(String(email));
 
   if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
     return NextResponse.json(
@@ -25,9 +22,7 @@ export async function POST(req: NextRequest) {
   }
 
   const token = randomUUID();
-  const sessions = getSessions();
-  sessions[token] = user.id;
-  saveSessions(sessions);
+  await createSession(token, user.id);
 
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, token, {

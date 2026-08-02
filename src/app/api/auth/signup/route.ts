@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "node:crypto";
-import { getUsers, saveUsers, getSessions, saveSessions, type User } from "@/lib/db";
+import { getUserByEmail, createUser, createSession } from "@/lib/db";
 import { SESSION_COOKIE, SESSION_MAX_AGE } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
@@ -12,8 +12,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Fill in every field." }, { status: 400 });
   }
 
-  const users = getUsers();
-  if (users.some((u) => u.email.toLowerCase() === String(email).toLowerCase())) {
+  if (await getUserByEmail(String(email))) {
     return NextResponse.json(
       { error: "An account with that email already exists." },
       { status: 409 }
@@ -21,22 +20,15 @@ export async function POST(req: NextRequest) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const user: User = {
+  const user = await createUser({
     id: randomUUID(),
     name,
     email,
     passwordHash,
-    points: 0,
-    monthlyPoints: 0,
-    monthlyPointsMonth: "",
-  };
-  users.push(user);
-  saveUsers(users);
+  });
 
   const token = randomUUID();
-  const sessions = getSessions();
-  sessions[token] = user.id;
-  saveSessions(sessions);
+  await createSession(token, user.id);
 
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, token, {
