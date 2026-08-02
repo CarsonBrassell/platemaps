@@ -2,10 +2,26 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import { initials, relativeTime } from "@/lib/format";
 import { UtensilsIcon, BookmarkIcon, MoreIcon } from "@/components/icons";
+import { restaurants } from "@/data/restaurants";
+import { regionNames, regionForCoordinate } from "@/data/regions";
+import { mapCommentsByRestaurant, type MapComment } from "@/data/mapComments";
+
+const RestaurantMap = dynamic(
+  () => import("@/components/RestaurantMap").then((mod) => mod.RestaurantMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-[540px] w-full items-center justify-center rounded-xl bg-zinc-100 text-sm text-zinc-400">
+        Loading map...
+      </div>
+    ),
+  },
+);
 
 type Comment = {
   id: string;
@@ -23,10 +39,36 @@ type Post = {
   text: string;
   restaurant?: string;
   createdAt: string;
-  likedBy: string[];
+  upvotedBy: string[];
+  downvotedBy: string[];
   savedBy: string[];
   comments: Comment[];
 };
+
+function hotScore(post: Post) {
+  const net = post.upvotedBy.length - post.downvotedBy.length;
+  const ageHours = (Date.now() - new Date(post.createdAt).getTime()) / 3_600_000;
+  return net / Math.pow(ageHours + 2, 1.5);
+}
+
+function bubbleTextFromPost(text: string) {
+  const match = text.match(/^@[^;]+;\s*/);
+  return match ? text.slice(match[0].length) : text;
+}
+
+// Restaurant reviews are prefixed "@Name X stars;" — anything else (plain
+// comments, and food reviews handled separately below) has no star rating.
+function ratingFromPost(text: string): string | null {
+  const stars = text.match(/^@.*?\s(\d)\sstars?;/);
+  return stars ? `${stars[1]}★` : null;
+}
+
+// Food reviews are prefixed "@Name - Dish X%;" — pulled out so the bubble
+// can lead with "Dish X%" highlighted, ahead of whatever else was written.
+function dishPrefixFromPost(text: string): string | null {
+  const match = text.match(/^@.+? - (.+?)\s(\d{1,3})%;/);
+  return match ? `${match[1]} ${match[2]}%` : null;
+}
 
 const activity = [
   {
@@ -55,19 +97,42 @@ const activity = [
   },
 ];
 
-function HeartIcon({ filled, className }: { filled: boolean; className?: string }) {
+function ArrowUpIcon({ className }: { className?: string }) {
   return (
     <svg
       width="18"
       height="18"
       viewBox="0 0 24 24"
-      fill={filled ? "currentColor" : "none"}
+      fill="none"
       stroke="currentColor"
-      strokeWidth="2"
-      className={className ?? (filled ? "text-pm-orange" : "text-zinc-500")}
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
       aria-hidden="true"
     >
-      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
+      <path d="M12 19V5" />
+      <path d="M5 12l7-7 7 7" />
+    </svg>
+  );
+}
+
+function ArrowDownIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M12 5v14" />
+      <path d="M5 12l7 7 7-7" />
     </svg>
   );
 }
@@ -160,14 +225,14 @@ function ComposeModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-sm rounded-xl bg-white shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-[2px]">
+      <div className="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3">
-          <p className="text-sm font-medium text-zinc-900">New post</p>
+          <p className="text-sm font-semibold text-zinc-900">New post</p>
           <button
             onClick={onClose}
             aria-label="Close"
-            className="text-zinc-500 transition-transform active:scale-90"
+            className="rounded-full p-1 text-zinc-500 transition-all hover:bg-zinc-100 active:scale-90"
           >
             <CloseIcon />
           </button>
@@ -176,9 +241,17 @@ function ComposeModal({
         <div className="p-4">
           {isSignedIn ? (
             <form onSubmit={handleSubmit}>
-              <div className="mb-3 flex aspect-square flex-col items-center justify-center gap-2 rounded-lg bg-pm-orange-tint">
-                <UtensilsIcon className="h-7 w-7 text-pm-orange-text" />
-                <span className="text-sm text-pm-orange-text">
+              <div className="relative mb-3 flex aspect-square flex-col items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-br from-pm-orange-tint via-orange-100 to-pm-orange/25">
+                <div
+                  className="absolute inset-0 opacity-40"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(circle at 20% 25%, rgba(255,255,255,0.7), transparent 40%), radial-gradient(circle at 80% 80%, rgba(181,80,43,0.18), transparent 45%)",
+                  }}
+                  aria-hidden="true"
+                />
+                <UtensilsIcon className="relative h-7 w-7 text-pm-orange-text" />
+                <span className="relative text-sm text-pm-orange-text">
                   {restaurant || "Your food photo goes here"}
                 </span>
               </div>
@@ -227,14 +300,14 @@ function ComposeModal({
 function PostCard({
   post,
   currentUserId,
-  onLike,
+  onVote,
   onSave,
   onComment,
   onDelete,
 }: {
   post: Post;
   currentUserId: string | null;
-  onLike: (postId: string) => void;
+  onVote: (postId: string, direction: "up" | "down") => void;
   onSave: (postId: string) => void;
   onComment: (postId: string, text: string) => Promise<void>;
   onDelete: (postId: string) => void;
@@ -242,11 +315,18 @@ function PostCard({
   const [commentText, setCommentText] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [showAllComments, setShowAllComments] = useState(false);
-  const [showHeartPop, setShowHeartPop] = useState(false);
+  const [showVotePop, setShowVotePop] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const liked = currentUserId ? post.likedBy.includes(currentUserId) : false;
+  const myVote = currentUserId
+    ? post.upvotedBy.includes(currentUserId)
+      ? "up"
+      : post.downvotedBy.includes(currentUserId)
+        ? "down"
+        : null
+    : null;
+  const score = post.upvotedBy.length - post.downvotedBy.length;
   const saved = currentUserId ? post.savedBy.includes(currentUserId) : false;
   const isOwner = currentUserId === post.userId;
 
@@ -272,15 +352,15 @@ function PostCard({
 
   function handleDoubleTap() {
     if (!currentUserId) return;
-    setShowHeartPop(true);
-    if (!liked) onLike(post.id);
-    setTimeout(() => setShowHeartPop(false), 800);
+    setShowVotePop(true);
+    if (myVote !== "up") onVote(post.id, "up");
+    setTimeout(() => setShowVotePop(false), 800);
   }
 
   const visibleComments = showAllComments ? post.comments : post.comments.slice(-1);
 
   return (
-    <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+    <div className="card-lift overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
       <div className="flex items-center gap-2 p-3">
         {post.authorAvatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -327,29 +407,55 @@ function PostCard({
       {post.restaurant && (
         <div
           onDoubleClick={handleDoubleTap}
-          className="relative flex aspect-[4/3] select-none flex-col items-center justify-center gap-2 bg-pm-orange-tint"
+          className="relative flex aspect-[4/3] select-none flex-col items-center justify-center gap-2 overflow-hidden bg-gradient-to-br from-pm-orange-tint via-orange-100 to-pm-orange/25"
         >
-          <UtensilsIcon className="h-7 w-7 text-pm-orange-text" />
-          <span className="text-sm font-medium text-pm-orange-text">{post.restaurant}</span>
-          {showHeartPop && (
-            <HeartIcon
-              filled
-              className="heart-pop pointer-events-none absolute h-16 w-16 text-pm-orange"
-            />
+          <div
+            className="absolute inset-0 opacity-40"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 20% 25%, rgba(255,255,255,0.7), transparent 40%), radial-gradient(circle at 80% 80%, rgba(181,80,43,0.18), transparent 45%)",
+            }}
+            aria-hidden="true"
+          />
+          <UtensilsIcon className="relative h-7 w-7 text-pm-orange-text" />
+          <span className="relative text-sm font-medium text-pm-orange-text">{post.restaurant}</span>
+          {showVotePop && (
+            <ArrowUpIcon className="heart-pop pointer-events-none absolute h-16 w-16 text-pm-orange" />
           )}
         </div>
       )}
 
       <div className="p-3">
         <div className="mb-2 flex items-center gap-4">
-          <button
-            onClick={() => onLike(post.id)}
-            disabled={!currentUserId}
-            className="flex items-center gap-1.5 transition-transform active:scale-90 disabled:opacity-50"
-          >
-            <HeartIcon filled={liked} />
-            <span className="text-sm text-zinc-600">{post.likedBy.length}</span>
-          </button>
+          <div className="flex items-center gap-1 rounded-full bg-zinc-100/80 px-1.5 py-1 ring-1 ring-inset ring-zinc-200/60">
+            <button
+              onClick={() => onVote(post.id, "up")}
+              disabled={!currentUserId}
+              aria-label="Upvote"
+              className="transition-transform active:scale-90 disabled:opacity-50"
+            >
+              <ArrowUpIcon className={myVote === "up" ? "text-pm-orange" : "text-zinc-400"} />
+            </button>
+            <span
+              className={
+                score > 0
+                  ? "min-w-[1.5rem] text-center text-sm font-semibold text-pm-orange-text"
+                  : score < 0
+                    ? "min-w-[1.5rem] text-center text-sm font-semibold text-red-500"
+                    : "min-w-[1.5rem] text-center text-sm font-semibold text-zinc-600"
+              }
+            >
+              {score}
+            </span>
+            <button
+              onClick={() => onVote(post.id, "down")}
+              disabled={!currentUserId}
+              aria-label="Downvote"
+              className="transition-transform active:scale-90 disabled:opacity-50"
+            >
+              <ArrowDownIcon className={myVote === "down" ? "text-blue-500" : "text-zinc-400"} />
+            </button>
+          </div>
           <div className="flex items-center gap-1.5">
             <CommentIcon />
             <span className="text-sm text-zinc-600">{post.comments.length}</span>
@@ -419,12 +525,36 @@ export default function FeedPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [composeOpen, setComposeOpen] = useState(false);
   const [pointsBanner, setPointsBanner] = useState<number | null>(null);
+  const [view, setView] = useState<"feed" | "map">("feed");
+  const [selectedRegion, setSelectedRegion] = useState("Downtown");
+  const chipRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   useEffect(() => {
     fetch("/api/posts")
       .then((res) => res.json())
       .then((data) => setPosts(data.posts));
   }, []);
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setSelectedRegion(regionForCoordinate(position.coords.latitude, position.coords.longitude));
+      },
+      () => {
+        // Permission denied or unavailable — keep the Downtown default.
+      },
+      { timeout: 5000 },
+    );
+  }, []);
+
+  useEffect(() => {
+    chipRefs.current[selectedRegion]?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [selectedRegion]);
 
   useEffect(() => {
     if (pointsBanner === null) return;
@@ -439,9 +569,13 @@ export default function FeedPage() {
     refresh();
   }
 
-  async function handleLike(postId: string) {
+  async function handleVote(postId: string, direction: "up" | "down") {
     if (!account) return;
-    const res = await fetch(`/api/posts/${postId}/like`, { method: "POST" });
+    const res = await fetch(`/api/posts/${postId}/vote`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ direction }),
+    });
     if (!res.ok) return;
     const data = await res.json();
     setPosts((prev) =>
@@ -449,9 +583,14 @@ export default function FeedPage() {
         p.id === postId
           ? {
               ...p,
-              likedBy: data.liked
-                ? [...p.likedBy, account.id]
-                : p.likedBy.filter((uid: string) => uid !== account.id),
+              upvotedBy:
+                data.myVote === "up"
+                  ? [...p.upvotedBy.filter((uid: string) => uid !== account.id), account.id]
+                  : p.upvotedBy.filter((uid: string) => uid !== account.id),
+              downvotedBy:
+                data.myVote === "down"
+                  ? [...p.downvotedBy.filter((uid: string) => uid !== account.id), account.id]
+                  : p.downvotedBy.filter((uid: string) => uid !== account.id),
             }
           : p
       )
@@ -500,19 +639,76 @@ export default function FeedPage() {
     setPosts((prev) => prev.filter((p) => p.id !== postId));
   }
 
+  function restaurantRegion(name?: string) {
+    const restaurant = name ? restaurants.find((r) => r.name === name) : undefined;
+    return restaurant ? regionForCoordinate(restaurant.lat, restaurant.lng) : undefined;
+  }
+
+  function activityRegion(place: string) {
+    return restaurantRegion(place.split(" · ")[0]);
+  }
+
+  const filteredPosts = posts
+    .filter((p) => restaurantRegion(p.restaurant) === selectedRegion)
+    .sort((a, b) => hotScore(b) - hotScore(a));
+  const filteredActivity = activity.filter((item) => activityRegion(item.place) === selectedRegion);
+
+  // Real posted comments/reviews show up on the map first, most-liked first,
+  // followed by the seeded flavor comments as filler.
+  const mapComments: Record<string, MapComment[]> = {};
+  for (const restaurant of restaurants) {
+    const real: MapComment[] = posts
+      .filter((p) => p.restaurant === restaurant.name)
+      .map((p) => ({
+        id: p.id,
+        restaurantId: restaurant.id,
+        text: bubbleTextFromPost(p.text),
+        score: p.upvotedBy.length - p.downvotedBy.length,
+        upvotes: p.upvotedBy.length,
+        createdAt: p.createdAt,
+        rating: ratingFromPost(p.text),
+        dishPrefix: dishPrefixFromPost(p.text),
+      }))
+      .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+    mapComments[restaurant.id] = [...real, ...(mapCommentsByRestaurant[restaurant.id] ?? [])];
+  }
+
   return (
-    <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
+    <div className="app-shell mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-2xl border border-zinc-200/60">
       <Header />
-      <div className="mx-auto flex max-w-md flex-col bg-white px-5 py-4">
+      <div className="flex w-full flex-col bg-white px-5 py-4">
         <div className="mb-3 flex items-center justify-between border-b border-zinc-100 pb-3">
-          <p className="text-lg font-medium text-zinc-900">Feed</p>
-          <button
-            onClick={() => setComposeOpen(true)}
-            aria-label="New post"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-zinc-700 transition-all hover:bg-zinc-100 active:scale-90"
-          >
-            <PlusIcon />
-          </button>
+          <div className="flex items-center gap-1 rounded-full bg-zinc-100 p-1 ring-1 ring-inset ring-zinc-200/60">
+            <button
+              onClick={() => setView("feed")}
+              className={
+                view === "feed"
+                  ? "rounded-full bg-white px-3 py-1 text-sm font-medium text-zinc-900 shadow-sm transition-transform active:scale-95"
+                  : "rounded-full px-3 py-1 text-sm text-zinc-500 transition-all hover:text-zinc-700 active:scale-95"
+              }
+            >
+              Feed
+            </button>
+            <button
+              onClick={() => setView("map")}
+              className={
+                view === "map"
+                  ? "rounded-full bg-white px-3 py-1 text-sm font-medium text-zinc-900 shadow-sm transition-transform active:scale-95"
+                  : "rounded-full px-3 py-1 text-sm text-zinc-500 transition-all hover:text-zinc-700 active:scale-95"
+              }
+            >
+              Map view
+            </button>
+          </div>
+          {view === "feed" && (
+            <button
+              onClick={() => setComposeOpen(true)}
+              aria-label="New post"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-zinc-700 transition-all hover:bg-zinc-100 active:scale-90"
+            >
+              <PlusIcon />
+            </button>
+          )}
         </div>
 
         {pointsBanner !== null && (
@@ -521,31 +717,71 @@ export default function FeedPage() {
           </p>
         )}
 
-        <div className="flex flex-col gap-3">
-          {posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              currentUserId={account?.id ?? null}
-              onLike={handleLike}
-              onSave={handleSave}
-              onComment={handleComment}
-              onDelete={handleDelete}
-            />
-          ))}
+        {view === "feed" && (
+          <div className="mb-3 flex flex-wrap gap-2">
+            {regionNames.map((region) => (
+              <button
+                key={region}
+                ref={(el) => {
+                  chipRefs.current[region] = el;
+                }}
+                onClick={() => setSelectedRegion(region)}
+                className={
+                  region === selectedRegion
+                    ? "shrink-0 rounded-full bg-pm-orange-tint px-3 py-1.5 text-sm font-medium text-pm-orange-text transition-transform active:scale-95"
+                    : "shrink-0 rounded-full bg-pm-grey-tint px-3 py-1.5 text-sm text-pm-grey-text transition-all hover:bg-pm-orange-tint/60 hover:text-pm-orange-text active:scale-95"
+                }
+              >
+                {region}
+              </button>
+            ))}
+          </div>
+        )}
 
-          {activity.map((item) => (
-            <div
-              key={item.id}
-              className="rounded-xl border border-zinc-200 bg-white p-3 shadow-sm"
-            >
-              <p className="mb-1 text-sm">{item.text}</p>
-              <p className="text-xs text-zinc-500">
-                {item.place} &middot; {item.time}
+        {view === "map" ? (
+          <div className="overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
+            <RestaurantMap restaurants={restaurants} commentsByRestaurant={mapComments} />
+          </div>
+        ) : (
+          <div className="grid auto-rows-min grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredPosts.map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                currentUserId={account?.id ?? null}
+                onVote={handleVote}
+                onSave={handleSave}
+                onComment={handleComment}
+                onDelete={handleDelete}
+              />
+            ))}
+
+            {filteredActivity.map((item) => (
+              <div
+                key={item.id}
+                className="card-lift flex gap-2.5 rounded-xl border border-zinc-200 bg-white p-3 shadow-sm"
+              >
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pm-orange-tint text-pm-orange-text">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="mb-1 text-sm">{item.text}</p>
+                  <p className="text-xs text-zinc-500">
+                    {item.place} &middot; {item.time}
+                  </p>
+                </div>
+              </div>
+            ))}
+
+            {filteredPosts.length === 0 && filteredActivity.length === 0 && (
+              <p className="col-span-full py-6 text-center text-sm text-zinc-400">
+                Nothing in {selectedRegion} yet.
               </p>
-            </div>
-          ))}
-        </div>
+            )}
+          </div>
+        )}
       </div>
 
       {composeOpen && (

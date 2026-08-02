@@ -56,7 +56,13 @@ export function Sidebar() {
 
   return (
     <aside className="w-[180px] shrink-0">
-      <p className="mb-2 text-sm font-bold text-pm-orange-text">Neighborhoods</p>
+      <p className="mb-2 flex items-center gap-1.5 text-sm font-bold text-pm-orange-text">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z" />
+          <circle cx="12" cy="10" r="2.5" />
+        </svg>
+        Neighborhoods
+      </p>
       <button
         onClick={() => setNeighborhoodOpen((open) => !open)}
         className="mb-1 flex w-full items-center justify-between rounded-lg border border-pm-orange-border bg-white px-3 py-2 text-sm font-medium text-zinc-600 shadow-sm transition-all hover:bg-pm-orange-tint/40 active:scale-[0.97]"
@@ -82,7 +88,15 @@ export function Sidebar() {
       )}
       {!neighborhoodOpen && <div className="mb-3" />}
 
-      <p className="mb-2 text-sm font-bold text-pm-orange-text">Cuisine</p>
+      <p className="mb-2 flex items-center gap-1.5 text-sm font-bold text-pm-orange-text">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" aria-hidden="true">
+          <path d="M3 2v7a2 2 0 0 0 2 2v11" />
+          <path d="M7 2v9" />
+          <path d="M5 2v9" />
+          <path d="M19 2c-1.7 0-3 2-3 4.5S17.3 11 19 11v11" />
+        </svg>
+        Cuisine
+      </p>
       <button
         onClick={() => setCuisineOpen((open) => !open)}
         className="mb-1 flex w-full items-center justify-between rounded-lg border border-pm-orange-border bg-white px-3 py-2 text-sm font-medium text-zinc-600 shadow-sm transition-all hover:bg-pm-orange-tint/40 active:scale-[0.97]"
@@ -130,7 +144,12 @@ export function Sidebar() {
       )}
       {!trendingOpen && <div className="mb-2" />}
 
-      <p className="mb-2 text-sm font-bold text-pm-orange-text">Quick filters</p>
+      <p className="mb-2 flex items-center gap-1.5 text-sm font-bold text-pm-orange-text">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+        </svg>
+        Quick filters
+      </p>
       <div className="flex flex-col gap-0.5">
         <span className={listItem(false)}>Breakfast/lunch</span>
         <span className={listItem(false)}>Dinner</span>

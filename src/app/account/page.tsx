@@ -87,7 +87,7 @@ function AuthForm() {
   return (
     <div className="flex justify-center bg-white px-5 py-12">
       <form onSubmit={handleSubmit} className="w-full max-w-sm">
-        <div className="mb-6 flex rounded-lg border border-zinc-200 p-1">
+        <div className="mb-6 flex rounded-lg bg-zinc-100 p-1 ring-1 ring-inset ring-zinc-200/60">
           <button
             type="button"
             onClick={() => {
@@ -96,8 +96,8 @@ function AuthForm() {
             }}
             className={
               mode === "signup"
-                ? "flex-1 rounded-md bg-pm-orange-tint py-1.5 text-sm font-medium text-pm-orange-text transition-all"
-                : "flex-1 rounded-md py-1.5 text-sm text-zinc-500 transition-all"
+                ? "flex-1 rounded-md bg-white py-1.5 text-sm font-medium text-pm-orange-text shadow-sm transition-all"
+                : "flex-1 rounded-md py-1.5 text-sm text-zinc-500 transition-all hover:text-zinc-700"
             }
           >
             Sign up
@@ -110,8 +110,8 @@ function AuthForm() {
             }}
             className={
               mode === "login"
-                ? "flex-1 rounded-md bg-pm-orange-tint py-1.5 text-sm font-medium text-pm-orange-text transition-all"
-                : "flex-1 rounded-md py-1.5 text-sm text-zinc-500 transition-all"
+                ? "flex-1 rounded-md bg-white py-1.5 text-sm font-medium text-pm-orange-text shadow-sm transition-all"
+                : "flex-1 rounded-md py-1.5 text-sm text-zinc-500 transition-all hover:text-zinc-700"
             }
           >
             Log in
@@ -214,45 +214,56 @@ function AccountOverview() {
   }
 
   return (
-    <div className="bg-white px-5 py-8">
-      <div className="mb-6 flex items-center gap-5">
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={uploading}
-          className="group relative h-16 w-16 shrink-0 rounded-full transition-transform active:scale-95 disabled:opacity-60"
-          aria-label="Change profile photo"
-        >
-          {account.avatarUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={account.avatarUrl}
-              alt=""
-              className="h-16 w-16 rounded-full object-cover"
-            />
-          ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-pm-orange text-xl font-medium text-white">
-              {initials(account.name)}
-            </div>
-          )}
-          <span className="absolute bottom-0 right-0 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-pm-orange text-white transition-transform group-hover:scale-110">
-            <CameraIcon />
-          </span>
-        </button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleAvatarChange}
-          className="hidden"
+    <div className="bg-white">
+      <div className="relative h-24 overflow-hidden bg-gradient-to-br from-pm-charcoal-light to-pm-charcoal">
+        <div
+          className="absolute inset-0 opacity-70"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 15% 20%, rgba(232,135,90,0.35), transparent 45%), radial-gradient(circle at 85% 80%, rgba(232,135,90,0.2), transparent 45%)",
+          }}
+          aria-hidden="true"
         />
-        <div>
-          <h1 className="text-lg font-medium text-zinc-900">{account.name}</h1>
-          <p className="text-sm text-zinc-500">{account.email}</p>
-          {uploading && <p className="mt-1 text-xs text-zinc-500">Uploading...</p>}
-          {avatarError && <p className="mt-1 text-xs text-red-600">{avatarError}</p>}
-        </div>
       </div>
+      <div className="px-5 pb-8">
+        <div className="mb-6 flex items-end gap-5">
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="group relative -mt-10 h-20 w-20 shrink-0 rounded-full ring-4 ring-white transition-transform active:scale-95 disabled:opacity-60"
+            aria-label="Change profile photo"
+          >
+            {account.avatarUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={account.avatarUrl}
+                alt=""
+                className="h-20 w-20 rounded-full object-cover"
+              />
+            ) : (
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-pm-orange text-2xl font-medium text-white">
+                {initials(account.name)}
+              </div>
+            )}
+            <span className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-pm-orange text-white transition-transform group-hover:scale-110">
+              <CameraIcon />
+            </span>
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            className="hidden"
+          />
+          <div className="pb-1">
+            <h1 className="text-lg font-semibold text-zinc-900">{account.name}</h1>
+            <p className="text-sm text-zinc-500">{account.email}</p>
+            {uploading && <p className="mt-1 text-xs text-zinc-500">Uploading...</p>}
+            {avatarError && <p className="mt-1 text-xs text-red-600">{avatarError}</p>}
+          </div>
+        </div>
 
       <div className="mb-6 grid grid-cols-3 gap-3">
         <div className="trending-glow flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-pm-orange bg-white px-3 py-3">
@@ -260,7 +271,7 @@ function AccountOverview() {
           <p className="text-lg font-bold leading-none text-pm-orange-text">{account.points}</p>
           <p className="text-xs font-medium text-pm-orange-text">PM Points</p>
         </div>
-        <div className="col-span-2 grid grid-cols-2 divide-x divide-zinc-200 rounded-xl border border-zinc-200">
+        <div className="card-lift col-span-2 grid grid-cols-2 divide-x divide-zinc-200 rounded-xl border border-zinc-200 shadow-sm">
           <div className="px-3 py-3 text-center">
             <p className="text-lg font-medium text-zinc-900">{myPosts.length}</p>
             <p className="text-xs text-zinc-500">Posts</p>
@@ -286,7 +297,7 @@ function AccountOverview() {
             {myPosts.map((post) => (
               <div
                 key={post.id}
-                className="flex aspect-square flex-col items-center justify-center gap-1 overflow-hidden rounded-lg bg-pm-orange-tint p-2 text-center"
+                className="card-lift flex aspect-square flex-col items-center justify-center gap-1 overflow-hidden rounded-lg bg-gradient-to-br from-pm-orange-tint to-orange-100 p-2 text-center"
               >
                 {post.restaurant ? (
                   <>
@@ -326,7 +337,7 @@ function AccountOverview() {
           ))}
         </div>
       ) : (
-        <div className="rounded-xl border border-zinc-200 bg-white p-6 text-center">
+        <div className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50/60 p-6 text-center">
           <p className="mb-1 text-sm font-medium">Nothing saved yet</p>
           <p className="text-sm text-zinc-500">
             Bookmark a post from the Feed to see it here.
@@ -334,12 +345,13 @@ function AccountOverview() {
         </div>
       )}
 
-      <button
-        onClick={signOut}
-        className="mt-6 rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-600 transition-all hover:bg-zinc-50 active:scale-[0.97]"
-      >
-        Log out
-      </button>
+        <button
+          onClick={signOut}
+          className="mt-6 rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-600 transition-all hover:bg-zinc-50 active:scale-[0.97]"
+        >
+          Log out
+        </button>
+      </div>
     </div>
   );
 }
@@ -348,7 +360,7 @@ export default function AccountPage() {
   const { isSignedIn, loading } = useAuth();
 
   return (
-    <div className="mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
+    <div className="app-shell mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-2xl border border-zinc-200/60">
       <Header />
       {!loading && (isSignedIn ? <AccountOverview /> : <AuthForm />)}
     </div>

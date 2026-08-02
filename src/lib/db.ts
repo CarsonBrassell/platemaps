@@ -31,8 +31,9 @@ export type Post = {
   text: string;
   restaurant?: string;
   createdAt: string;
-  likedBy: string[];
-  likePointsAwardedTo: string[];
+  upvotedBy: string[];
+  downvotedBy: string[];
+  votePointsAwardedTo: string[];
   savedBy: string[];
   comments: Comment[];
 };

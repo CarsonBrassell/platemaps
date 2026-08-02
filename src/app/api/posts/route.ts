@@ -33,8 +33,9 @@ export async function POST(req: NextRequest) {
     text: String(text).trim(),
     restaurant: restaurant ? String(restaurant).trim() : undefined,
     createdAt: new Date().toISOString(),
-    likedBy: [],
-    likePointsAwardedTo: [],
+    upvotedBy: [],
+    downvotedBy: [],
+    votePointsAwardedTo: [],
     savedBy: [],
     comments: [],
   };
