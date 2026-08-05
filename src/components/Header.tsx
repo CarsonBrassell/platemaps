@@ -16,14 +16,21 @@ export function Header() {
   const { account, isSignedIn } = useAuth();
 
   return (
-    <header className="flex items-center justify-between gap-4 bg-gradient-to-b from-pm-charcoal-light to-pm-charcoal px-5 py-3">
-      <div className="flex items-center gap-4">
-        <Link href="/" className="font-display flex items-center gap-2.5 text-xl font-semibold tracking-tight text-white">
+    <header className="flex items-center justify-between gap-5 bg-gradient-to-b from-pm-charcoal-light to-pm-charcoal px-6 py-3.5">
+      <div className="flex items-center gap-7">
+        <Link
+          href="/"
+          className="font-display group flex shrink-0 items-center gap-3 text-[22px] font-semibold tracking-tight text-white"
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="" className="h-10 w-10 rounded-lg object-contain shadow-sm shadow-pm-orange/40" />
-          PlateMap
+          <img
+            src="/logo.png"
+            alt=""
+            className="h-14 w-14 rounded-xl object-contain shadow-sm shadow-pm-orange/40 transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-3"
+          />
+          PlateMaps
         </Link>
-        <div className="hidden items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 ring-1 ring-inset ring-white/10 transition-all focus-within:bg-white/[0.14] focus-within:ring-pm-orange/70 sm:flex">
+        <div className="hidden items-center gap-2.5 rounded-full bg-white/10 px-4 py-2 ring-1 ring-inset ring-white/10 transition-all hover:bg-white/[0.14] focus-within:bg-white/[0.14] focus-within:ring-pm-orange/70 sm:flex">
           <svg
             width="16"
             height="16"
@@ -41,7 +48,7 @@ export function Header() {
             type="text"
             placeholder="Search restaurants..."
             aria-label="Search restaurants"
-            className="w-32 bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none"
+            className="w-40 bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none lg:w-56"
           />
         </div>
       </div>

@@ -38,7 +38,7 @@ export function SideNav({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/logo.png" alt="" className="h-9 w-9 rounded-lg object-contain" />
         <span className="font-display text-lg font-semibold tracking-tight text-zinc-900">
-          Plate Maps
+          PlateMaps
         </span>
       </Link>
 

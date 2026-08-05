@@ -10,6 +10,8 @@ type RestaurantPhotoProps = {
   sizes: string;
   /** Set on above-the-fold photos so they are not lazy-loaded. */
   priority?: boolean;
+  /** Extra classes on the image itself — used for hover transforms. */
+  className?: string;
 };
 
 /**
@@ -26,6 +28,7 @@ export function RestaurantPhoto({
   fallback,
   sizes,
   priority,
+  className = "",
 }: RestaurantPhotoProps) {
   if (!photo) return <>{fallback}</>;
 
@@ -40,7 +43,7 @@ export function RestaurantPhoto({
       fill
       sizes={sizes}
       priority={priority}
-      className="object-cover"
+      className={`object-cover ${className}`}
     />
   );
 }

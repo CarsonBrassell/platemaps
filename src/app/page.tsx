@@ -1,26 +1,16 @@
 import { Header } from "@/components/Header";
 import { StatsBar } from "@/components/StatsBar";
-import { Sidebar } from "@/components/Sidebar";
-import { RestaurantCard } from "@/components/RestaurantCard";
-import { OurPicks } from "@/components/OurPicks";
+import { DiscoverBrowser } from "@/components/DiscoverBrowser";
 import { restaurants } from "@/data/restaurants";
 
 export default function Home() {
   return (
-    <div className="app-shell mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-2xl border border-zinc-200/60">
+    <div className="app-shell mx-auto my-6 w-full max-w-6xl overflow-hidden rounded-2xl border border-zinc-200/60">
       <Header />
       <StatsBar />
-      <OurPicks />
-      <div className="flex gap-5 bg-white px-5 py-5">
-        <Sidebar />
-        <div className="flex-1 border-l border-zinc-100 pl-5">
-          <div className="grid auto-rows-min grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {restaurants.map((restaurant) => (
-              <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Filters sit beside the content rather than below the picks strip, so
+          the rail starts level with the top of the page. */}
+      <DiscoverBrowser restaurants={restaurants} />
     </div>
   );
 }

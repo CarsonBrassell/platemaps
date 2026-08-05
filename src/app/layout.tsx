@@ -19,7 +19,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "PlateMap",
+  title: "PlateMaps",
   description: "Find great food near you in San Diego, ranked by what's happening right now.",
 };
 
