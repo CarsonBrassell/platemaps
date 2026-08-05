@@ -1,3 +1,6 @@
+import { relativeTime } from "@/lib/format";
+import type { MapComment } from "@/data/mapComments";
+
 type SheetDish = {
   id: string;
   name: string;
@@ -6,16 +9,24 @@ type SheetDish = {
   total: number;
 };
 
+/** Enough to give a sense of the room without turning the sheet into a feed. */
+const VISIBLE_COMMENTS = 3;
+
 export function DishSheet({
   dish,
   myVote,
+  comments,
   onVote,
   onClose,
+  onSeeAll,
 }: {
   dish: SheetDish;
   myVote: "yes" | "no" | undefined;
+  /** Comments about this specific dish, newest first. */
+  comments: MapComment[];
   onVote: (vote: "yes" | "no") => void;
   onClose: () => void;
+  onSeeAll: () => void;
 }) {
   const pct = dish.pct ?? 0;
   const radius = 30;
@@ -104,6 +115,45 @@ export function DishSheet({
               No
             </button>
           </div>
+
+          {/* What people said about this dish, in the sheet itself. These
+              comments already existed, but only at the very bottom of the page
+              mixed in with every other comment about the restaurant — so the
+              opinions most relevant to the dish you just tapped were the ones
+              you had to scroll furthest to find. */}
+          {comments.length > 0 && (
+            <div className="mt-6 border-t border-zinc-100 pt-4">
+              <p className="mb-3 text-sm font-medium text-zinc-700">
+                What people said about this
+              </p>
+              <ul className="flex flex-col gap-3">
+                {comments.slice(0, VISIBLE_COMMENTS).map((comment) => (
+                  <li key={comment.id} className="flex flex-col gap-1">
+                    <p className="text-sm leading-snug text-zinc-700">
+                      {comment.dishPrefix && (
+                        <span className="font-medium text-pm-orange-text">
+                          {comment.dishPrefix}{" "}
+                        </span>
+                      )}
+                      {comment.text}
+                    </p>
+                    <div className="flex items-center gap-2 text-xs text-zinc-400">
+                      {comment.upvotes !== undefined && <span>{comment.upvotes} upvotes</span>}
+                      {comment.createdAt && <span>{relativeTime(comment.createdAt)}</span>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={onSeeAll}
+                className="mt-3 text-xs font-medium text-pm-orange-text underline decoration-pm-orange-border underline-offset-2 transition-colors hover:text-pm-charcoal"
+              >
+                {comments.length > VISIBLE_COMMENTS
+                  ? `See all ${comments.length} comments`
+                  : "See all comments"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
