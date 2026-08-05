@@ -10,7 +10,9 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
       href={`/restaurant/${restaurant.id}`}
       className="card-lift group block overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm hover:border-pm-orange-border active:scale-[0.98]"
     >
-      <div className="relative flex h-16 items-center justify-center overflow-hidden bg-gradient-to-br from-pm-grey-tint to-zinc-100">
+      {/* h-16 was sized for an icon placeholder. With real photography the
+          card can afford roughly 16:10, which is enough to read a dish. */}
+      <div className="relative flex h-32 items-center justify-center overflow-hidden bg-gradient-to-br from-pm-grey-tint to-zinc-100">
         <RestaurantPhoto
           photo={restaurant.photo}
           photoAlt={restaurant.photoAlt}
