@@ -64,7 +64,7 @@ export function DishSheet({
               </div>
             )}
             <div className="min-w-0">
-              <p className="text-lg font-semibold text-zinc-900">{dish.name}</p>
+              <p className="font-display text-xl font-medium text-zinc-900">{dish.name}</p>
               <p className="mt-0.5 text-sm text-zinc-500">{dish.price}</p>
             </div>
           </div>

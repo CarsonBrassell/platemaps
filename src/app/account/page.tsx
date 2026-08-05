@@ -122,7 +122,7 @@ function AuthForm() {
           </button>
         </div>
 
-        <h1 className="mb-1 text-lg font-medium text-zinc-900">
+        <h1 className="mb-1 text-xl font-medium text-zinc-900">
           {mode === "signup" ? "Create your account" : "Welcome back"}
         </h1>
         <p className="mb-6 text-sm text-zinc-500">
@@ -262,7 +262,7 @@ function AccountOverview() {
             className="hidden"
           />
           <div className="pb-1">
-            <h1 className="text-lg font-semibold text-zinc-900">{account.name}</h1>
+            <h1 className="text-xl font-medium text-zinc-900">{account.name}</h1>
             <p className="text-sm text-zinc-500">{account.email}</p>
             {uploading && <p className="mt-1 text-xs text-zinc-500">Uploading...</p>}
             {avatarError && <p className="mt-1 text-xs text-red-600">{avatarError}</p>}

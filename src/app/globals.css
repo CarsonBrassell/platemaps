@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f4f5;
-  --foreground: #171717;
+  /* Warm Editorial ground: bone paper, warm white cards, deepened terracotta. */
+  --background: #faf6f0;
+  --foreground: #2b211c;
   --pm-charcoal: #2b211c;
   --pm-charcoal-light: #47372f;
-  --pm-orange: #e8875a;
-  --pm-orange-tint: #fbe8dd;
-  --pm-orange-text: #b5502b;
-  --pm-orange-border: #eab08c;
-  --pm-grey-tint: #f4f4f5;
-  --pm-grey-text: #3f3f46;
+  --pm-orange: #d96f45;
+  --pm-orange-tint: #f7e3d6;
+  --pm-orange-text: #a8471f;
+  --pm-orange-border: #e5c3ac;
+  --pm-grey-tint: #efe9e0;
+  --pm-grey-text: #6f6155;
 }
 
 @theme inline {
@@ -18,6 +19,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces);
   --color-pm-charcoal: var(--pm-charcoal);
   --color-pm-charcoal-light: var(--pm-charcoal-light);
   --color-pm-orange: var(--pm-orange);
@@ -26,16 +28,45 @@
   --color-pm-orange-border: var(--pm-orange-border);
   --color-pm-grey-tint: var(--pm-grey-tint);
   --color-pm-grey-text: var(--pm-grey-text);
+
+  /* The neutral ramp is retuned in place rather than renamed. ~140 `zinc-*`
+     classes are already spread across 14 components; redefining the scale
+     here recolors all of them at once and keeps the swap reversible in one
+     file. The steps are warm greige (hue ~30deg, low saturation) and land
+     exactly on the palette's border / muted / text values at 200, 500 and
+     900, so existing pairings keep their intended contrast. */
+  --color-zinc-50: #faf7f2;
+  --color-zinc-100: #f3ece2;
+  --color-zinc-200: #e8ded0;
+  --color-zinc-300: #d8c9b6;
+  --color-zinc-400: #b6a494;
+  --color-zinc-500: #8a7a6d;
+  --color-zinc-600: #6f6155;
+  --color-zinc-700: #574b41;
+  --color-zinc-800: #423931;
+  --color-zinc-900: #2b211c;
+  --color-zinc-950: #1c1512;
 }
 
 body {
   background:
-    radial-gradient(ellipse 900px 500px at 12% -10%, rgba(232, 135, 90, 0.14), transparent 60%),
-    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(43, 33, 28, 0.06), transparent 55%),
+    radial-gradient(ellipse 900px 500px at 12% -10%, rgba(217, 111, 69, 0.1), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(43, 33, 28, 0.05), transparent 55%),
     var(--background);
   background-attachment: fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Display face for names and titles. Fraunces is set a touch lighter than the
+   sans it replaces — at display sizes its contrast already reads as emphasis,
+   so bold weights make it look shouty. */
+.font-display,
+h1,
+h2,
+h3 {
+  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  letter-spacing: -0.005em;
 }
 
 .app-shell {
@@ -61,10 +92,10 @@ body {
 
 @keyframes trending-glow {
   0%, 100% {
-    box-shadow: 0 0 6px 0px rgba(232, 135, 90, 0.35);
+    box-shadow: 0 0 6px 0px rgba(217, 111, 69, 0.35);
   }
   50% {
-    box-shadow: 0 0 18px 3px rgba(232, 135, 90, 0.6);
+    box-shadow: 0 0 18px 3px rgba(217, 111, 69, 0.6);
   }
 }
 
@@ -74,7 +105,7 @@ body {
 
 .trending-glow:hover {
   animation-play-state: paused;
-  box-shadow: 0 0 22px 4px rgba(232, 135, 90, 0.75);
+  box-shadow: 0 0 22px 4px rgba(217, 111, 69, 0.75);
 }
 
 @keyframes heart-pop {
@@ -98,6 +129,17 @@ body {
 
 .heart-pop {
   animation: heart-pop 0.8s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trending-glow {
+    animation: none;
+    box-shadow: 0 0 10px 1px rgba(217, 111, 69, 0.45);
+  }
+
+  .card-lift:hover {
+    transform: none;
+  }
 }
 
 .map-bubble-text {
@@ -149,7 +191,7 @@ body {
 
 .map-fun-tiles .leaflet-control-zoom a {
   border-radius: 8px !important;
-  background: white !important;
+  background: #fffdfa !important;
   color: var(--pm-orange-text) !important;
   border: 1px solid var(--pm-orange-border) !important;
   font-weight: 700;
@@ -160,14 +202,14 @@ body {
 }
 
 .map-fun-tiles .leaflet-control-attribution {
-  background: rgba(255, 255, 255, 0.75) !important;
+  background: rgba(255, 253, 250, 0.78) !important;
   color: var(--pm-grey-text) !important;
   border-radius: 6px 0 0 0;
   font-size: 10px !important;
 }
 
 .map-fun-tiles.leaflet-container {
-  background: #fdf6ee;
+  background: #f5ece0;
 }
 
 .restaurant-pin {

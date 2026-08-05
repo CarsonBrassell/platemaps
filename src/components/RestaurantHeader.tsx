@@ -22,7 +22,7 @@ export function RestaurantHeader({ restaurant }: { restaurant: Restaurant }) {
         )}
       </div>
       <div className="px-5 py-4">
-        <h1 className="text-xl font-semibold text-zinc-900">{restaurant.name}</h1>
+        <h1 className="text-2xl font-medium text-zinc-900">{restaurant.name}</h1>
         <p className="mt-0.5 text-sm text-zinc-500">
           {restaurant.cuisine} &middot; {restaurant.walkTime} &middot; {restaurant.closingTime}
         </p>

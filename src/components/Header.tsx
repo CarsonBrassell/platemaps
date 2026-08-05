@@ -18,7 +18,7 @@ export function Header() {
   return (
     <header className="flex items-center justify-between gap-4 bg-gradient-to-b from-pm-charcoal-light to-pm-charcoal px-5 py-3">
       <div className="flex items-center gap-4">
-        <Link href="/" className="flex items-center gap-2.5 text-xl font-bold tracking-tight text-white">
+        <Link href="/" className="font-display flex items-center gap-2.5 text-xl font-semibold tracking-tight text-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.png" alt="" className="h-10 w-10 rounded-lg object-contain shadow-sm shadow-pm-orange/40" />
           PlateMap
