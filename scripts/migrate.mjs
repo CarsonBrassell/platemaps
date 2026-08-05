@@ -55,6 +55,11 @@ const statements = [
   `ALTER TABLE posts ADD COLUMN IF NOT EXISTS location_label TEXT`,
   `ALTER TABLE posts ADD COLUMN IF NOT EXISTS tags TEXT[] NOT NULL DEFAULT '{}'`,
   `ALTER TABLE posts ADD COLUMN IF NOT EXISTS media JSONB NOT NULL DEFAULT '[]'::jsonb`,
+  // Room vibe (one value off a five-stop scale) and the amenity chips picked
+  // in the review composer. Amenities are kept apart from `tags` so the card
+  // can style "Outdoor seating" differently from "Dessert".
+  `ALTER TABLE posts ADD COLUMN IF NOT EXISTS vibe TEXT`,
+  `ALTER TABLE posts ADD COLUMN IF NOT EXISTS amenities TEXT[] NOT NULL DEFAULT '{}'`,
 
   // Every point award is written here as well as folded into users.points.
   // The ledger is what makes today/week/month leaderboards and rank deltas

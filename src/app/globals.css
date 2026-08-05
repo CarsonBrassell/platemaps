@@ -348,3 +348,96 @@ h3 {
     filter: drop-shadow(0 0 3px rgba(232, 89, 12, 0.55));
   }
 }
+
+/* --- Review composer -------------------------------------------------- */
+
+@keyframes emoji-pop {
+  0%   { transform: scale(1) rotate(0deg); }
+  40%  { transform: scale(1.28) rotate(-6deg); }
+  70%  { transform: scale(0.96) rotate(3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes chip-pop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+@keyframes step-in {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes step-in-back {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Re-keyed on every value change, so the face reacts to each drag stop. */
+.emoji-pop { animation: emoji-pop 0.34s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.chip-pop  { animation: chip-pop 0.22s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.step-in   { animation: step-in 0.24s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.step-in-back { animation: step-in-back 0.24s cubic-bezier(0.2, 0.8, 0.3, 1); }
+
+/* Emoji sliders. The track is painted by the element's own background so the
+   filled portion can be driven from a --fill custom property in React. */
+.emoji-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--pm-orange) 0%,
+    var(--pm-orange) var(--fill, 50%),
+    var(--pm-grey-tint) var(--fill, 50%),
+    var(--pm-grey-tint) 100%
+  );
+  outline: none;
+  cursor: pointer;
+}
+
+.emoji-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 26px;
+  width: 26px;
+  border-radius: 999px;
+  background: #fff;
+  border: 3px solid var(--pm-orange);
+  box-shadow: 0 2px 6px rgba(43, 33, 28, 0.22);
+  transition: transform 0.15s ease;
+}
+
+.emoji-slider::-webkit-slider-thumb:hover { transform: scale(1.14); }
+.emoji-slider:active::-webkit-slider-thumb { transform: scale(0.94); }
+
+.emoji-slider::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 999px;
+  background: #fff;
+  border: 3px solid var(--pm-orange);
+  box-shadow: 0 2px 6px rgba(43, 33, 28, 0.22);
+}
+
+.emoji-slider:focus-visible {
+  outline: 2px solid var(--pm-orange);
+  outline-offset: 4px;
+}
+
+/* Fills left-to-right as the composer advances. */
+.step-progress {
+  transition: width 0.32s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emoji-pop,
+  .chip-pop,
+  .step-in,
+  .step-in-back { animation: none; }
+  .step-progress { transition: none; }
+  .emoji-slider::-webkit-slider-thumb { transition: none; }
+}

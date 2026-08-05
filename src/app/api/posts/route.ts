@@ -4,6 +4,7 @@ import { getPosts, createPost, awardPoints, type PostMedia } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
 import { FOOD_TAGS } from "@/data/foodTags";
+import { AMENITY_LABELS, VIBE_LABELS } from "@/data/reviewScales";
 
 const MAX_MEDIA = 4;
 const MAX_MEDIA_LENGTH = 4_000_000;
@@ -50,14 +51,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: media.error }, { status: 400 });
   }
 
-  // Unknown tags are dropped rather than rejected — the client picks from a
+  // Unknown values are dropped rather than rejected — the client picks from a
   // fixed list, so anything else is noise, not a user-correctable mistake.
-  const tags = Array.isArray(body.tags)
-    ? (body.tags as unknown[])
-        .filter((t): t is string => typeof t === "string")
-        .filter((t) => (FOOD_TAGS as readonly string[]).includes(t))
-        .slice(0, FOOD_TAGS.length)
-    : [];
+  const pickFrom = (raw: unknown, allowed: readonly string[]) =>
+    Array.isArray(raw)
+      ? (raw as unknown[])
+          .filter((t): t is string => typeof t === "string")
+          .filter((t) => allowed.includes(t))
+          .slice(0, allowed.length)
+      : [];
+
+  const tags = pickFrom(body.tags, FOOD_TAGS as readonly string[]);
+  const amenities = pickFrom(body.amenities, AMENITY_LABELS);
+  const vibe =
+    typeof body.vibe === "string" && VIBE_LABELS.includes(body.vibe) ? body.vibe : undefined;
 
   let parsedRating: number | undefined;
   if (rating !== undefined && rating !== null && rating !== "") {
@@ -81,6 +88,8 @@ export async function POST(req: NextRequest) {
     rating: parsedRating,
     locationLabel: locationLabel ? String(locationLabel).trim().slice(0, 120) : undefined,
     tags,
+    amenities,
+    vibe,
     media,
   });
 

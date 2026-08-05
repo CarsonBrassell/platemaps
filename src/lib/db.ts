@@ -324,6 +324,8 @@ export type Post = {
   rating?: number;
   locationLabel?: string;
   tags: string[];
+  amenities: string[];
+  vibe?: string;
   media: PostMedia[];
   createdAt: string;
   likedBy: string[];
@@ -372,6 +374,8 @@ async function hydratePosts(postRows: any[]): Promise<Post[]> {
       rating: row.rating === null || row.rating === undefined ? undefined : Number(row.rating),
       locationLabel: row.location_label ?? undefined,
       tags: (row.tags as string[] | null) ?? [],
+      amenities: (row.amenities as string[] | null) ?? [],
+      vibe: row.vibe ?? undefined,
       media: (row.media as PostMedia[] | null) ?? [],
       createdAt: new Date(row.created_at).toISOString(),
       likedBy: likeRows.filter((l) => l.post_id === postId && l.liked).map((l) => l.user_id as string),
@@ -399,6 +403,7 @@ async function hydratePosts(postRows: any[]): Promise<Post[]> {
 const POST_SELECT = `
   SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
          p.dish_name, p.price, p.rating, p.location_label, p.tags, p.media,
+         p.amenities, p.vibe,
          u.name AS author_name, u.avatar_url AS author_avatar_url,
          u.points AS author_points
   FROM posts p
@@ -429,19 +434,23 @@ export async function createPost(data: {
   rating?: number;
   locationLabel?: string;
   tags?: string[];
+  amenities?: string[];
+  vibe?: string;
   media?: PostMedia[];
 }): Promise<Post> {
   const tags = data.tags ?? [];
+  const amenities = data.amenities ?? [];
   const media = data.media ?? [];
   const rows = await sql`
     INSERT INTO posts (
       id, user_id, text, restaurant, dish_name, price, rating,
-      location_label, tags, media
+      location_label, tags, media, amenities, vibe
     )
     VALUES (
       ${data.id}, ${data.userId}, ${data.text}, ${data.restaurant ?? null},
       ${data.dishName ?? null}, ${data.price ?? null}, ${data.rating ?? null},
-      ${data.locationLabel ?? null}, ${tags}, ${JSON.stringify(media)}::jsonb
+      ${data.locationLabel ?? null}, ${tags}, ${JSON.stringify(media)}::jsonb,
+      ${amenities}, ${data.vibe ?? null}
     )
     RETURNING created_at
   `;
@@ -458,6 +467,8 @@ export async function createPost(data: {
     rating: data.rating,
     locationLabel: data.locationLabel,
     tags,
+    amenities,
+    vibe: data.vibe,
     media,
     createdAt: new Date(rows[0].created_at).toISOString(),
     likedBy: [],

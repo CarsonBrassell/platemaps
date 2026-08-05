@@ -8,6 +8,7 @@ import { PointsBadge } from "./PointsBadge";
 import { MoreIcon, StarIcon, FlagIcon, EyeOffIcon, FlameIcon } from "@/components/icons";
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { tagAccent } from "@/data/foodTags";
+import { amenityEmoji, vibeEmoji } from "@/data/reviewScales";
 import type { Post } from "./types";
 
 /** Handle shown next to the avatar — "Maya Ellis" reads as "mayaellis". */
@@ -325,14 +326,29 @@ export function FoodPostCard({
           </button>
         )}
 
-        {post.tags.length > 0 && (
+        {(post.tags.length > 0 || post.amenities.length > 0 || post.vibe) && (
           <ul className="mt-2.5 flex flex-wrap gap-1.5">
+            {post.vibe && (
+              <li className="flex items-center gap-1 rounded-full bg-pm-charcoal px-2 py-0.5 text-[11px] font-medium text-white">
+                <span aria-hidden="true">{vibeEmoji(post.vibe)}</span>
+                {post.vibe}
+              </li>
+            )}
             {post.tags.map((tag) => (
               <li
                 key={tag}
                 className={`rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset ${tagAccent(tag)}`}
               >
                 {tag}
+              </li>
+            ))}
+            {post.amenities.map((a) => (
+              <li
+                key={a}
+                className="flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[11px] font-medium text-zinc-600 ring-1 ring-inset ring-zinc-200"
+              >
+                <span aria-hidden="true">{amenityEmoji(a)}</span>
+                {a}
               </li>
             ))}
           </ul>

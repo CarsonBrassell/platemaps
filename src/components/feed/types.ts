@@ -28,6 +28,8 @@ export type Post = {
   rating?: number;
   locationLabel?: string;
   tags: string[];
+  amenities: string[];
+  vibe?: string;
   media: PostMedia[];
   createdAt: string;
   likedBy: string[];

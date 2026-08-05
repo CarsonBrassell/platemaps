@@ -40,10 +40,15 @@ const RestaurantMap = dynamic(
   },
 );
 
-/** Recency-weighted score: a fresh post with a few likes outranks a stale hit. */
+/**
+ * Recency-weighted score: a fresh post with a few likes outranks a stale hit.
+ *
+ * The +1 matters — without it every unliked post scores zero, so a review you
+ * just published would sort to the very bottom of the feed and look lost.
+ */
 function hotScore(post: Post) {
   const ageHours = (Date.now() - new Date(post.createdAt).getTime()) / 3_600_000;
-  return post.likedBy.length / Math.pow(ageHours + 2, 1.5);
+  return (post.likedBy.length + 1) / Math.pow(ageHours + 2, 1.5);
 }
 
 /* The map bubbles predate structured post fields, so seeded comments still
