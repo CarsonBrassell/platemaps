@@ -1,17 +1,35 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState, type FormEvent } from "react";
-import Link from "next/link";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
-import { initials, relativeTime, avatarPalette } from "@/lib/format";
-import { UtensilsIcon, BookmarkIcon, MoreIcon } from "@/components/icons";
 import { restaurants } from "@/data/restaurants";
 import { regionNames, regionForCoordinate } from "@/data/regions";
 import { mapCommentsByRestaurant, type MapComment } from "@/data/mapComments";
 import { dishesByRestaurant } from "@/data/dishes";
+import { PinIcon } from "@/components/icons";
+
+import { FeedHeader } from "@/components/feed/FeedHeader";
+import { FeedTabs } from "@/components/feed/FeedTabs";
+import { CreatePostComposer } from "@/components/feed/CreatePostComposer";
+import { CreatePostModal } from "@/components/feed/CreatePostModal";
+import { FoodPostCard } from "@/components/feed/FoodPostCard";
+import { CommentsPanel } from "@/components/feed/CommentsPanel";
+import { Leaderboard } from "@/components/feed/Leaderboard";
+import { TrendingRail } from "@/components/feed/TrendingRail";
+import { FeedSkeleton } from "@/components/feed/FeedSkeleton";
+import {
+  EmptyFeedState,
+  FeedErrorState,
+  OfflineBanner,
+  EndOfFeed,
+} from "@/components/feed/EmptyFeedState";
+import { SideNav, type NavKey } from "@/components/feed/SideNav";
+import { MobileNavigation } from "@/components/feed/MobileNavigation";
+import { Dialog } from "@/components/feed/Dialog";
+import type { FeedTab, Post } from "@/components/feed/types";
 
 const RestaurantMap = dynamic(
   () => import("@/components/RestaurantMap").then((mod) => mod.RestaurantMap),
@@ -19,53 +37,31 @@ const RestaurantMap = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex h-[540px] w-full items-center justify-center rounded-xl bg-zinc-100 text-sm text-zinc-400">
-        Loading map...
+        Loading map…
       </div>
     ),
   },
 );
 
-type Comment = {
-  id: string;
-  userId: string;
-  authorName: string;
-  text: string;
-  createdAt: string;
-};
-
-type Post = {
-  id: string;
-  userId: string;
-  authorName: string;
-  authorAvatarUrl?: string;
-  text: string;
-  restaurant?: string;
-  createdAt: string;
-  likedBy: string[];
-  savedBy: string[];
-  comments: Comment[];
-};
-
+/** Recency-weighted score: a fresh post with a few likes outranks a stale hit. */
 function hotScore(post: Post) {
-  const net = post.likedBy.length;
   const ageHours = (Date.now() - new Date(post.createdAt).getTime()) / 3_600_000;
-  return net / Math.pow(ageHours + 2, 1.5);
+  return post.likedBy.length / Math.pow(ageHours + 2, 1.5);
 }
 
+/* The map bubbles predate structured post fields, so seeded comments still
+   encode rating and dish in the caption ("@Name 4 stars;"). Structured
+   columns win when a post has them; these parsers cover the rest. */
 function bubbleTextFromPost(text: string) {
   const match = text.match(/^@[^;]+;\s*/);
   return match ? text.slice(match[0].length) : text;
 }
 
-// Restaurant reviews are prefixed "@Name X stars;" — anything else (plain
-// comments, and food reviews handled separately below) has no star rating.
 function ratingFromPost(text: string): string | null {
   const stars = text.match(/^@.*?\s(\d)\sstars?;/);
   return stars ? `${stars[1]}★` : null;
 }
 
-// Food reviews are prefixed "@Name - Dish X%;" — pulled out so the bubble
-// can lead with "Dish X%" highlighted, ahead of whatever else was written.
 function dishNameFromPost(text: string): string | null {
   const match = text.match(/^@.+? - (.+?)\s\d{1,3}%;/);
   return match ? match[1] : null;
@@ -77,438 +73,13 @@ function dishPrefixFromPost(text: string): string | null {
 }
 
 function findDishId(restaurantId: string, dishName: string): string | undefined {
-  const dishes = dishesByRestaurant[restaurantId] ?? [];
-  return dishes.find((d) => d.name.toLowerCase() === dishName.toLowerCase())?.id;
+  return dishesByRestaurant[restaurantId]?.find(
+    (d) => d.name.toLowerCase() === dishName.toLowerCase(),
+  )?.id;
 }
 
-const activity = [
-  {
-    id: "a1",
-    text: "Karina's Tacos just posted a special: fish taco plate, $12",
-    place: "Karina's Tacos · Ocean Beach",
-    time: "12m ago",
-  },
-  {
-    id: "a2",
-    text: "Mariscos German is running with no wait right now",
-    place: "Mariscos German · Barrio Logan",
-    time: "28m ago",
-  },
-  {
-    id: "a3",
-    text: "5 people checked in at Communal Coffee in the last hour",
-    place: "Communal Coffee · North Park",
-    time: "1h ago",
-  },
-  {
-    id: "a4",
-    text: "Herb and Wood is filling up, wait climbing to 25 min",
-    place: "Herb and Wood · Little Italy",
-    time: "2h ago",
-  },
-];
-
-function ArrowUpIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M12 19V5" />
-      <path d="M5 12l7-7 7 7" />
-    </svg>
-  );
-}
-
-function CommentIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      className="text-zinc-500"
-      aria-hidden="true"
-    >
-      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-    </svg>
-  );
-}
-
-function PlusIcon() {
-  return (
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <line x1="12" y1="5" x2="12" y2="19" />
-      <line x1="5" y1="12" x2="19" y2="12" />
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-  );
-}
-
-function ComposeModal({
-  isSignedIn,
-  onClose,
-  onCreated,
-}: {
-  isSignedIn: boolean;
-  onClose: () => void;
-  onCreated: (post: Post, pointsEarned: number) => void;
-}) {
-  const [text, setText] = useState("");
-  const [restaurant, setRestaurant] = useState("");
-  const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setError("");
-    if (!text.trim()) {
-      setError("Write something to post.");
-      return;
-    }
-    setSubmitting(true);
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, restaurant: restaurant || undefined }),
-    });
-    const data = await res.json();
-    setSubmitting(false);
-    if (!res.ok) {
-      setError(data.error ?? "Something went wrong.");
-      return;
-    }
-    onCreated(data.post, data.pointsEarned);
-  }
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-[2px]">
-      <div className="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl">
-        <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3">
-          <p className="text-sm font-semibold text-zinc-900">New post</p>
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="rounded-full p-1 text-zinc-500 transition-all hover:bg-zinc-100 active:scale-90"
-          >
-            <CloseIcon />
-          </button>
-        </div>
-
-        <div className="p-4">
-          {isSignedIn ? (
-            <form onSubmit={handleSubmit}>
-              <div className="relative mb-3 flex aspect-square flex-col items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-br from-pm-orange-tint via-orange-100 to-pm-orange/25">
-                <div
-                  className="absolute inset-0 opacity-40"
-                  style={{
-                    backgroundImage:
-                      "radial-gradient(circle at 20% 25%, rgba(255,255,255,0.7), transparent 40%), radial-gradient(circle at 80% 80%, rgba(181,80,43,0.18), transparent 45%)",
-                  }}
-                  aria-hidden="true"
-                />
-                <UtensilsIcon className="relative h-7 w-7 text-pm-orange-text" />
-                <span className="relative text-sm text-pm-orange-text">
-                  {restaurant || "Your food photo goes here"}
-                </span>
-              </div>
-
-              <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Write a caption..."
-                rows={3}
-                className="mb-2 w-full resize-none rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-pm-orange focus:outline-none"
-              />
-              <input
-                value={restaurant}
-                onChange={(e) => setRestaurant(e.target.value)}
-                placeholder="Tag a restaurant (optional)"
-                className="mb-3 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-pm-orange focus:outline-none"
-              />
-
-              {error && <p className="mb-2 text-sm text-red-600">{error}</p>}
-
-              <div className="flex items-center justify-between">
-                <p className="text-xs text-zinc-500">Earn 10 PM Points for posting</p>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="rounded-lg bg-pm-orange px-4 py-1.5 text-sm font-medium text-white transition-transform active:scale-[0.97] disabled:opacity-60"
-                >
-                  Share
-                </button>
-              </div>
-            </form>
-          ) : (
-            <p className="text-sm text-zinc-500">
-              <Link href="/account" className="font-medium text-pm-orange-text">
-                Sign in
-              </Link>{" "}
-              to post to the feed and start earning PM Points.
-            </p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PostCard({
-  post,
-  currentUserId,
-  onLike,
-  onSave,
-  onComment,
-  onDelete,
-  highlighted,
-  hottest,
-}: {
-  post: Post;
-  currentUserId: string | null;
-  onLike: (postId: string) => void;
-  onSave: (postId: string) => void;
-  onComment: (postId: string, text: string) => Promise<void>;
-  onDelete: (postId: string) => void;
-  highlighted?: boolean;
-  hottest?: boolean;
-}) {
-  const [commentText, setCommentText] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [showAllComments, setShowAllComments] = useState(false);
-  const [showVotePop, setShowVotePop] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  const liked = currentUserId ? post.likedBy.includes(currentUserId) : false;
-  const score = post.likedBy.length;
-  const saved = currentUserId ? post.savedBy.includes(currentUserId) : false;
-  const isOwner = currentUserId === post.userId;
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    function handleClick(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [menuOpen]);
-
-  async function handleComment(e: FormEvent) {
-    e.preventDefault();
-    if (!commentText.trim()) return;
-    setSubmitting(true);
-    await onComment(post.id, commentText);
-    setCommentText("");
-    setSubmitting(false);
-  }
-
-  function handleDoubleTap() {
-    if (!currentUserId) return;
-    setShowVotePop(true);
-    if (!liked) onLike(post.id);
-    setTimeout(() => setShowVotePop(false), 800);
-  }
-
-  const visibleComments = showAllComments ? post.comments : post.comments.slice(-1);
-
-  return (
-    <div
-      className={
-        highlighted
-          ? "card-lift overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm ring-2 ring-pm-orange ring-offset-2 transition-shadow"
-          : "card-lift overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm transition-shadow"
-      }
-    >
-      <div className="flex items-center gap-2 p-3">
-        {post.authorAvatarUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={post.authorAvatarUrl}
-            alt=""
-            className="h-8 w-8 shrink-0 rounded-full object-cover"
-          />
-        ) : (
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-orange text-xs font-medium text-white">
-            {initials(post.authorName)}
-          </div>
-        )}
-        <div className="flex-1">
-          <p className="text-sm font-medium">{post.authorName}</p>
-          <p className="text-xs text-zinc-500">{relativeTime(post.createdAt)}</p>
-        </div>
-        {isOwner && (
-          <div ref={menuRef} className="relative">
-            <button
-              onClick={() => setMenuOpen((open) => !open)}
-              aria-label="Post options"
-              className="rounded-full p-1 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600"
-            >
-              <MoreIcon className="h-4 w-4" />
-            </button>
-            {menuOpen && (
-              <div className="absolute right-0 top-full z-10 mt-1 w-32 rounded-lg border border-zinc-200 bg-white p-1 shadow-md">
-                <button
-                  onClick={() => {
-                    setMenuOpen(false);
-                    onDelete(post.id);
-                  }}
-                  className="w-full rounded-md px-3 py-1.5 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {post.restaurant && (
-        <div
-          onDoubleClick={handleDoubleTap}
-          className="relative flex aspect-[4/3] select-none flex-col items-center justify-center gap-2 overflow-hidden bg-gradient-to-br from-pm-orange-tint via-orange-100 to-pm-orange/25"
-        >
-          <div
-            className="absolute inset-0 opacity-40"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 20% 25%, rgba(255,255,255,0.7), transparent 40%), radial-gradient(circle at 80% 80%, rgba(181,80,43,0.18), transparent 45%)",
-            }}
-            aria-hidden="true"
-          />
-          <UtensilsIcon className="relative h-7 w-7 text-pm-orange-text" />
-          <span className="relative text-sm font-medium text-pm-orange-text">{post.restaurant}</span>
-          {hottest && (
-            <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-pm-orange px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
-              🔥 Hot
-            </span>
-          )}
-          {showVotePop && (
-            <ArrowUpIcon className="heart-pop pointer-events-none absolute h-16 w-16 text-pm-orange" />
-          )}
-        </div>
-      )}
-
-      <div className="p-3">
-        <div className="mb-2 flex items-center gap-4">
-          <div className="flex items-center gap-1 rounded-full bg-zinc-100/80 px-1.5 py-1 ring-1 ring-inset ring-zinc-200/60">
-            <button
-              onClick={() => onLike(post.id)}
-              disabled={!currentUserId}
-              aria-label={liked ? "Unlike" : "Like"}
-              aria-pressed={liked}
-              className="transition-transform active:scale-90 disabled:opacity-50"
-            >
-              <ArrowUpIcon className={liked ? "text-pm-orange" : "text-zinc-400"} />
-            </button>
-            <span
-              className={
-                score > 0
-                  ? "min-w-[1.5rem] text-center text-sm font-semibold text-pm-orange-text"
-                  : "min-w-[1.5rem] text-center text-sm font-semibold text-zinc-600"
-              }
-            >
-              {score}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <CommentIcon />
-            <span className="text-sm text-zinc-600">{post.comments.length}</span>
-          </div>
-          <button
-            onClick={() => onSave(post.id)}
-            disabled={!currentUserId}
-            aria-label={saved ? "Unsave" : "Save"}
-            className="ml-auto transition-transform active:scale-90 disabled:opacity-50"
-          >
-            <BookmarkIcon
-              filled={saved}
-              className={saved ? "h-[18px] w-[18px] text-pm-orange" : "h-[18px] w-[18px] text-zinc-500"}
-            />
-          </button>
-        </div>
-
-        <p className="mb-2 text-sm">
-          <span className="font-medium">{post.authorName}</span> {post.text}
-        </p>
-
-        {post.comments.length > 0 && (
-          <div className="mb-2 flex flex-col gap-1">
-            {!showAllComments && post.comments.length > 1 && (
-              <button
-                onClick={() => setShowAllComments(true)}
-                className="text-left text-xs text-zinc-500 hover:text-zinc-700"
-              >
-                View all {post.comments.length} comments
-              </button>
-            )}
-            {visibleComments.map((c) => (
-              <p key={c.id} className="text-sm">
-                <span className="font-medium">{c.authorName}</span> {c.text}
-              </p>
-            ))}
-          </div>
-        )}
-
-        {currentUserId && (
-          <form
-            onSubmit={handleComment}
-            className="flex items-center gap-2 border-t border-zinc-100 pt-2"
-          >
-            <input
-              value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
-              placeholder="Add a comment..."
-              className="flex-1 text-sm outline-none placeholder:text-zinc-400"
-            />
-            <button
-              type="submit"
-              disabled={submitting || !commentText.trim()}
-              className="text-sm font-medium text-pm-orange-text transition-transform active:scale-95 disabled:opacity-40"
-            >
-              Post
-            </button>
-          </form>
-        )}
-      </div>
-    </div>
-  );
+function firstName(name: string) {
+  return name.trim().split(/\s+/)[0] ?? name;
 }
 
 export default function FeedPage() {
@@ -523,424 +94,573 @@ function FeedPageInner() {
   const { account, isSignedIn, refresh } = useAuth();
   const searchParams = useSearchParams();
   const highlightPostId = searchParams.get("post");
-  const [posts, setPosts] = useState<Post[]>([]);
+
+  const [posts, setPosts] = useState<Post[] | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [offline, setOffline] = useState(false);
+  /** Bumped by "Try again" to re-run the feed fetch effect. */
+  const [reloadKey, setReloadKey] = useState(0);
+
+  const [tab, setTab] = useState<FeedTab>("for-you");
+  const [navKey, setNavKey] = useState<NavKey>("home");
+  const [region, setRegion] = useState("Downtown");
+  const [showMap, setShowMap] = useState(false);
+
   const [composeOpen, setComposeOpen] = useState(false);
-  const [pointsBanner, setPointsBanner] = useState<number | null>(null);
-  const [view, setView] = useState<"feed" | "map">("feed");
-  const [selectedRegion, setSelectedRegion] = useState("Downtown");
-  const [highlightedPost, setHighlightedPost] = useState<string | null>(null);
-  const [sort, setSort] = useState<"hot" | "new" | "top">("hot");
-  const [authorFilter, setAuthorFilter] = useState<string | null>(null);
-  const chipRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
+  const [ranksOpen, setRanksOpen] = useState(false);
+
+  const [following, setFollowing] = useState<string[]>([]);
+  const [pointsToast, setPointsToast] = useState<Record<string, string>>({});
+  const [banner, setBanner] = useState<string | null>(null);
+  const [highlighted, setHighlighted] = useState<string | null>(null);
+  const [ranksVersion, setRanksVersion] = useState(0);
+
   const postRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+  // Every state write happens in a promise callback rather than the effect
+  // body, and is dropped if the effect was cleaned up first.
   useEffect(() => {
+    let cancelled = false;
     fetch("/api/posts")
-      .then((res) => res.json())
-      .then((data) => setPosts(data.posts));
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("failed"))))
+      .then((data) => {
+        if (cancelled) return;
+        setPosts(data.posts as Post[]);
+        setLoadError(false);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setPosts((prev) => prev ?? []);
+        setLoadError(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [reloadKey]);
+
+  useEffect(() => {
+    if (!isSignedIn) return;
+    let cancelled = false;
+    fetch("/api/follows")
+      .then((r) => r.json())
+      .then((d) => {
+        if (!cancelled) setFollowing(d.following ?? []);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [isSignedIn]);
+
+  // Derived rather than cleared on sign-out, so signing out doesn't need a
+  // synchronous setState inside the effect above. Memoised because it feeds
+  // the feed-filtering useMemo below.
+  const followingIds = useMemo(
+    () => (isSignedIn ? following : []),
+    [isSignedIn, following],
+  );
+
+  useEffect(() => {
+    function sync() {
+      setOffline(!navigator.onLine);
+    }
+    sync();
+    window.addEventListener("online", sync);
+    window.addEventListener("offline", sync);
+    return () => {
+      window.removeEventListener("online", sync);
+      window.removeEventListener("offline", sync);
+    };
   }, []);
 
+  // Geolocation only seeds the Nearby region, and never overrides a deep link.
   useEffect(() => {
     if (!navigator.geolocation || highlightPostId) return;
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setSelectedRegion(regionForCoordinate(position.coords.latitude, position.coords.longitude));
-      },
-      () => {
-        // Permission denied or unavailable — keep the Downtown default.
-      },
+      (pos) => setRegion(regionForCoordinate(pos.coords.latitude, pos.coords.longitude)),
+      () => {},
       { timeout: 5000 },
     );
   }, [highlightPostId]);
 
-  // Deep link from a map comment bubble ("view this comment in the feed") —
-  // jump to Feed view, the post's region, and scroll it into view with a
-  // brief highlight ring.
+  // Deep link from a map bubble. "For You" is unfiltered, so switching to it
+  // guarantees the target post is actually in the list before we scroll.
   useEffect(() => {
-    if (!highlightPostId || posts.length === 0) return;
-    const post = posts.find((p) => p.id === highlightPostId);
-    if (!post) return;
+    if (!highlightPostId || !posts?.some((p) => p.id === highlightPostId)) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setView("feed");
-    const region = restaurantRegion(post.restaurant);
-    if (region) setSelectedRegion(region);
-    setHighlightedPost(highlightPostId);
-    const scrollTimeout = setTimeout(() => {
+    setShowMap(false);
+    setTab("for-you");
+    setNavKey("home");
+    setHighlighted(highlightPostId);
+    const scroll = setTimeout(() => {
       postRefs.current[highlightPostId]?.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 150);
-    const clearTimeout_ = setTimeout(() => setHighlightedPost(null), 3000);
+    const clear = setTimeout(() => setHighlighted(null), 3000);
     return () => {
-      clearTimeout(scrollTimeout);
-      clearTimeout(clearTimeout_);
+      clearTimeout(scroll);
+      clearTimeout(clear);
     };
-     
   }, [highlightPostId, posts]);
 
   useEffect(() => {
-    chipRefs.current[selectedRegion]?.scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "nearest",
-    });
-  }, [selectedRegion]);
+    if (!banner) return;
+    const t = setTimeout(() => setBanner(null), 3000);
+    return () => clearTimeout(t);
+  }, [banner]);
 
-  useEffect(() => {
-    if (pointsBanner === null) return;
-    const timeout = setTimeout(() => setPointsBanner(null), 3000);
-    return () => clearTimeout(timeout);
-  }, [pointsBanner]);
+  function flashPoints(postId: string, message: string) {
+    setPointsToast((prev) => ({ ...prev, [postId]: message }));
+    setTimeout(
+      () =>
+        setPointsToast((prev) => {
+          const next = { ...prev };
+          delete next[postId];
+          return next;
+        }),
+      1800,
+    );
+  }
 
-  function handleCreated(post: Post, pointsEarned: number) {
-    setPosts((prev) => [post, ...prev]);
-    setPointsBanner(pointsEarned);
-    setComposeOpen(false);
-    refresh();
+  function patchPost(postId: string, patch: (p: Post) => Post) {
+    setPosts((prev) => (prev ? prev.map((p) => (p.id === postId ? patch(p) : p)) : prev));
   }
 
   async function handleLike(postId: string) {
     if (!account) return;
-    const res = await fetch(`/api/posts/${postId}/like`, { method: "POST" });
-    if (!res.ok) return;
-    const data = await res.json();
-    setPosts((prev) =>
-      prev.map((p) =>
-        p.id === postId
-          ? {
-              ...p,
-              likedBy: data.liked
-                ? [...p.likedBy.filter((uid: string) => uid !== account.id), account.id]
-                : p.likedBy.filter((uid: string) => uid !== account.id),
-            }
-          : p
-      )
-    );
-    if (data.pointsEarned > 0) refresh();
+    const current = posts?.find((p) => p.id === postId);
+    if (!current) return;
+
+    const wasLiked = current.likedBy.includes(account.id);
+    // Optimistic: flip immediately, reconcile (or revert) when the server answers.
+    patchPost(postId, (p) => ({
+      ...p,
+      likedBy: wasLiked
+        ? p.likedBy.filter((id) => id !== account.id)
+        : [...p.likedBy, account.id],
+    }));
+
+    try {
+      const res = await fetch(`/api/posts/${postId}/like`, { method: "POST" });
+      if (!res.ok) throw new Error("failed");
+      const data = await res.json();
+
+      patchPost(postId, (p) => ({
+        ...p,
+        likedBy: data.liked
+          ? [...p.likedBy.filter((id) => id !== account.id), account.id]
+          : p.likedBy.filter((id) => id !== account.id),
+        authorPoints: p.authorPoints + (data.authorPointsEarned ?? 0),
+      }));
+
+      if (data.authorPointsEarned > 0) {
+        flashPoints(
+          postId,
+          data.milestone
+            ? `+${data.authorPointsEarned} for ${firstName(data.authorName)} · ${data.milestone.likes} likes!`
+            : `+${data.authorPointsEarned} point for ${firstName(data.authorName)}`,
+        );
+        setRanksVersion((v) => v + 1);
+        if (data.authorId === account.id) refresh();
+      }
+    } catch {
+      patchPost(postId, (p) => ({
+        ...p,
+        likedBy: wasLiked
+          ? [...p.likedBy.filter((id) => id !== account.id), account.id]
+          : p.likedBy.filter((id) => id !== account.id),
+      }));
+      setBanner("Couldn't save that like.");
+    }
   }
 
   async function handleSave(postId: string) {
     if (!account) return;
-    const res = await fetch(`/api/posts/${postId}/save`, { method: "POST" });
-    if (!res.ok) return;
-    const data = await res.json();
-    setPosts((prev) =>
-      prev.map((p) =>
-        p.id === postId
-          ? {
-              ...p,
-              savedBy: data.saved
-                ? [...p.savedBy, account.id]
-                : p.savedBy.filter((uid: string) => uid !== account.id),
-            }
-          : p
-      )
-    );
+    const current = posts?.find((p) => p.id === postId);
+    if (!current) return;
+    const wasSaved = current.savedBy.includes(account.id);
+
+    patchPost(postId, (p) => ({
+      ...p,
+      savedBy: wasSaved
+        ? p.savedBy.filter((id) => id !== account.id)
+        : [...p.savedBy, account.id],
+    }));
+
+    try {
+      const res = await fetch(`/api/posts/${postId}/save`, { method: "POST" });
+      if (!res.ok) throw new Error("failed");
+      const data = await res.json();
+      patchPost(postId, (p) => ({
+        ...p,
+        savedBy: data.saved
+          ? [...p.savedBy.filter((id) => id !== account.id), account.id]
+          : p.savedBy.filter((id) => id !== account.id),
+      }));
+    } catch {
+      patchPost(postId, (p) => ({
+        ...p,
+        savedBy: wasSaved
+          ? [...p.savedBy.filter((id) => id !== account.id), account.id]
+          : p.savedBy.filter((id) => id !== account.id),
+      }));
+      setBanner("Couldn't update your saved plates.");
+    }
   }
 
-  async function handleComment(postId: string, commentText: string) {
-    const res = await fetch(`/api/posts/${postId}/comments`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: commentText }),
-    });
-    if (!res.ok) return;
-    const data = await res.json();
-    setPosts((prev) =>
-      prev.map((p) =>
-        p.id === postId ? { ...p, comments: [...p.comments, data.comment] } : p
-      )
-    );
-    refresh();
+  async function handleComment(postId: string, text: string): Promise<string | null> {
+    try {
+      const res = await fetch(`/api/posts/${postId}/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+      const data = await res.json();
+      if (!res.ok) return data.error ?? "Couldn't post that comment.";
+
+      patchPost(postId, (p) => ({
+        ...p,
+        comments: [...p.comments, data.comment],
+        authorPoints: p.authorPoints + (data.authorPointsEarned ?? 0),
+      }));
+      if (data.authorPointsEarned > 0) {
+        setRanksVersion((v) => v + 1);
+        if (data.authorId === account?.id) refresh();
+      }
+      return null;
+    } catch {
+      return "Couldn't reach PlateMap. Check your connection.";
+    }
+  }
+
+  async function handleLikeComment(postId: string, commentId: string) {
+    if (!account) return;
+    patchPost(postId, (p) => ({
+      ...p,
+      comments: p.comments.map((c) =>
+        c.id === commentId
+          ? {
+              ...c,
+              likedBy: c.likedBy.includes(account.id)
+                ? c.likedBy.filter((id) => id !== account.id)
+                : [...c.likedBy, account.id],
+            }
+          : c,
+      ),
+    }));
+    try {
+      await fetch(`/api/comments/${commentId}/like`, { method: "POST" });
+    } catch {
+      setBanner("Couldn't save that.");
+    }
   }
 
   async function handleDelete(postId: string) {
-    const res = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
-    if (!res.ok) return;
-    setPosts((prev) => prev.filter((p) => p.id !== postId));
+    const snapshot = posts;
+    setPosts((prev) => (prev ? prev.filter((p) => p.id !== postId) : prev));
+    try {
+      const res = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("failed");
+    } catch {
+      setPosts(snapshot);
+      setBanner("Couldn't delete that post.");
+    }
   }
 
-  function restaurantRegion(name?: string) {
-    const restaurant = name ? restaurants.find((r) => r.name === name) : undefined;
-    return restaurant ? regionForCoordinate(restaurant.lat, restaurant.lng) : undefined;
+  async function handleToggleFollow(userId: string) {
+    const wasFollowing = following.includes(userId);
+    setFollowing((prev) => (wasFollowing ? prev.filter((id) => id !== userId) : [...prev, userId]));
+    try {
+      const res = await fetch("/api/follows", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      if (!res.ok) throw new Error("failed");
+    } catch {
+      setFollowing((prev) =>
+        wasFollowing ? [...prev, userId] : prev.filter((id) => id !== userId),
+      );
+      setBanner("Couldn't update who you follow.");
+    }
   }
 
-  function activityRegion(place: string) {
-    return restaurantRegion(place.split(" · ")[0]);
+  async function handleShare(post: Post): Promise<string | null> {
+    const url = `${globalThis.location?.origin ?? ""}/feed?post=${post.id}`;
+    const title = post.dishName ?? post.restaurant ?? "A plate on PlateMap";
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, text: post.text, url });
+        return null;
+      }
+      await navigator.clipboard.writeText(url);
+      return "Link copied";
+    } catch {
+      // A cancelled native share throws too — staying silent is correct there.
+      return null;
+    }
   }
 
-  const regionPosts = posts
-    .filter((p) => restaurantRegion(p.restaurant) === selectedRegion)
-    .sort((a, b) => hotScore(b) - hotScore(a));
+  function handleCreated(post: Post, pointsEarned: number) {
+    setPosts((prev) => (prev ? [post, ...prev] : [post]));
+    setComposeOpen(false);
+    setBanner(`+${pointsEarned} PM Points earned`);
+    setRanksVersion((v) => v + 1);
+    refresh();
+  }
 
-  const hottestPostId = regionPosts[0]?.id ?? null;
+  const restaurantRegion = useCallback((name?: string) => {
+    const r = name ? restaurants.find((x) => x.name === name) : undefined;
+    return r ? regionForCoordinate(r.lat, r.lng) : undefined;
+  }, []);
 
-  const sorters: Record<typeof sort, (a: Post, b: Post) => number> = {
-    hot: (a, b) => hotScore(b) - hotScore(a),
-    new: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    top: (a, b) => b.likedBy.length - a.likedBy.length,
-  };
+  const visiblePosts = useMemo(() => {
+    if (!posts) return [];
+    const list = [...posts];
 
-  const filteredPosts = regionPosts
-    .filter((p) => !authorFilter || p.userId === authorFilter)
-    .slice()
-    .sort(sorters[sort]);
-  const filteredActivity = authorFilter
-    ? []
-    : activity.filter((item) => activityRegion(item.place) === selectedRegion);
+    if (navKey === "saved") {
+      return account ? list.filter((p) => p.savedBy.includes(account.id)) : [];
+    }
 
-  // Instagram-style "stories" strip: one avatar per author currently posting
-  // in this region, most recently active first.
-  const storyAuthors = Array.from(
-    regionPosts
-      .slice()
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      .reduce((map, p) => {
-        if (!map.has(p.userId)) {
-          map.set(p.userId, { userId: p.userId, name: p.authorName, avatarUrl: p.authorAvatarUrl });
-        }
-        return map;
-      }, new Map<string, { userId: string; name: string; avatarUrl?: string }>())
-      .values()
+    switch (tab) {
+      case "nearby":
+        return list
+          .filter((p) => restaurantRegion(p.restaurant) === region)
+          .sort((a, b) => hotScore(b) - hotScore(a));
+      case "following":
+        return list
+          .filter((p) => followingIds.includes(p.userId))
+          .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
+      case "trending":
+        return list.sort((a, b) => b.likedBy.length - a.likedBy.length);
+      default:
+        return list.sort((a, b) => hotScore(b) - hotScore(a));
+    }
+  }, [posts, navKey, tab, region, followingIds, account, restaurantRegion]);
+
+  const mapComments = useMemo(() => {
+    const out: Record<string, MapComment[]> = {};
+    for (const restaurant of restaurants) {
+      const real: MapComment[] = (posts ?? [])
+        .filter((p) => p.restaurant === restaurant.name)
+        .map((p) => {
+          const parsedDish = dishNameFromPost(p.text);
+          const dish = p.dishName ?? parsedDish ?? undefined;
+          return {
+            id: p.id,
+            restaurantId: restaurant.id,
+            text: bubbleTextFromPost(p.text),
+            score: p.likedBy.length,
+            upvotes: p.likedBy.length,
+            createdAt: p.createdAt,
+            rating: p.rating !== undefined ? `${p.rating.toFixed(1)}★` : ratingFromPost(p.text),
+            dishPrefix:
+              p.dishName && p.rating !== undefined
+                ? `${p.dishName} ${p.rating.toFixed(1)}/10`
+                : dishPrefixFromPost(p.text),
+            postId: p.id,
+            dishId: dish ? findDishId(restaurant.id, dish) : undefined,
+          };
+        })
+        .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+      out[restaurant.id] = [...real, ...(mapCommentsByRestaurant[restaurant.id] ?? [])];
+    }
+    return out;
+  }, [posts]);
+
+  const activePost = commentsPostId
+    ? (posts?.find((p) => p.id === commentsPostId) ?? null)
+    : null;
+
+  const navAccount = account
+    ? { name: account.name, points: account.points, avatarUrl: account.avatarUrl }
+    : null;
+
+  function navigate(key: Extract<NavKey, "home" | "saved" | "leaderboard">) {
+    if (key === "leaderboard") {
+      setRanksOpen(true);
+      return;
+    }
+    setNavKey(key);
+    setShowMap(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  const mapToggle = (
+    <button
+      type="button"
+      onClick={() => setShowMap((m) => !m)}
+      aria-pressed={showMap}
+      className={`mb-1 flex min-h-11 shrink-0 items-center gap-1.5 rounded-full px-3 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+        showMap
+          ? "bg-pm-charcoal font-medium text-white"
+          : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
+      }`}
+    >
+      <PinIcon className="h-4 w-4" />
+      Map
+    </button>
   );
 
-  // Real posted comments/reviews show up on the map first, most-liked first,
-  // followed by the seeded flavor comments as filler.
-  const mapComments: Record<string, MapComment[]> = {};
-  for (const restaurant of restaurants) {
-    const real: MapComment[] = posts
-      .filter((p) => p.restaurant === restaurant.name)
-      .map((p) => {
-        const dishName = dishNameFromPost(p.text);
-        return {
-          id: p.id,
-          restaurantId: restaurant.id,
-          text: bubbleTextFromPost(p.text),
-          score: p.likedBy.length,
-          upvotes: p.likedBy.length,
-          createdAt: p.createdAt,
-          rating: ratingFromPost(p.text),
-          dishPrefix: dishPrefixFromPost(p.text),
-          postId: p.id,
-          dishId: dishName ? findDishId(restaurant.id, dishName) : undefined,
-        };
-      })
-      .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
-    mapComments[restaurant.id] = [...real, ...(mapCommentsByRestaurant[restaurant.id] ?? [])];
-  }
+  const feedColumn = (
+    <>
+      <FeedHeader region={region} regions={regionNames} onRegionChange={setRegion} />
+
+      {navKey === "saved" ? (
+        <div className="mb-4 flex items-center justify-between gap-3 border-b border-zinc-200 pb-2">
+          <h2 className="font-display text-base font-semibold text-zinc-900">Saved plates</h2>
+          <button
+            type="button"
+            onClick={() => navigate("home")}
+            className="min-h-11 text-sm font-medium text-pm-orange-text hover:underline"
+          >
+            Back to feed
+          </button>
+        </div>
+      ) : (
+        <FeedTabs active={tab} onChange={setTab} right={mapToggle} />
+      )}
+
+      {offline && <OfflineBanner />}
+
+      {banner && (
+        <p
+          role="status"
+          className="mb-4 rounded-xl bg-pm-orange-tint px-4 py-2.5 text-sm font-medium text-pm-orange-text"
+        >
+          {banner}
+        </p>
+      )}
+
+      {showMap && navKey !== "saved" ? (
+        <div className="overflow-hidden rounded-2xl border border-zinc-200 shadow-sm">
+          <RestaurantMap restaurants={restaurants} commentsByRestaurant={mapComments} />
+        </div>
+      ) : (
+        <>
+          {navKey !== "saved" && (
+            <div className="mb-4">
+              <CreatePostComposer
+                name={account?.name}
+                avatarUrl={account?.avatarUrl}
+                isSignedIn={isSignedIn}
+                onOpen={() => setComposeOpen(true)}
+              />
+            </div>
+          )}
+
+          {posts === null ? (
+            <FeedSkeleton />
+          ) : loadError && posts.length === 0 ? (
+            <FeedErrorState onRetry={() => setReloadKey((k) => k + 1)} />
+          ) : visiblePosts.length === 0 ? (
+            navKey === "saved" ? (
+              <div className="rounded-2xl border border-dashed border-zinc-300 bg-white/60 px-6 py-12 text-center">
+                <p className="font-display text-base font-semibold text-zinc-900">
+                  Nothing saved yet
+                </p>
+                <p className="mx-auto mt-1 max-w-xs text-sm text-zinc-500">
+                  Tap the bookmark on a plate and it&apos;ll show up here.
+                </p>
+              </div>
+            ) : (
+              <EmptyFeedState
+                tab={tab}
+                region={region}
+                isSignedIn={isSignedIn}
+                onCreate={() => setComposeOpen(true)}
+              />
+            )
+          ) : (
+            <>
+              <div className="flex flex-col gap-4">
+                {visiblePosts.map((post) => (
+                  <div
+                    key={post.id}
+                    ref={(el) => {
+                      postRefs.current[post.id] = el;
+                    }}
+                  >
+                    <FoodPostCard
+                      post={post}
+                      currentUserId={account?.id ?? null}
+                      isFollowing={followingIds.includes(post.userId)}
+                      highlighted={post.id === highlighted}
+                      pointsToast={pointsToast[post.id] ?? null}
+                      onLike={handleLike}
+                      onSave={handleSave}
+                      onShare={handleShare}
+                      onOpenComments={setCommentsPostId}
+                      onDelete={handleDelete}
+                      onToggleFollow={handleToggleFollow}
+                    />
+                  </div>
+                ))}
+              </div>
+              <EndOfFeed />
+            </>
+          )}
+        </>
+      )}
+    </>
+  );
 
   return (
-    <div className="app-shell mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-2xl border border-zinc-200/60">
+    <div className="app-shell mx-auto my-6 w-full max-w-7xl overflow-hidden rounded-2xl border border-zinc-200/60">
       <Header />
-      <div className="flex w-full flex-col bg-white px-5 py-4">
-        <div className="mb-3 flex items-center justify-between border-b border-zinc-100 pb-3">
-          <div className="flex items-center gap-1 rounded-full bg-zinc-100 p-1 ring-1 ring-inset ring-zinc-200/60">
-            <button
-              onClick={() => setView("feed")}
-              className={
-                view === "feed"
-                  ? "rounded-full bg-white px-3 py-1 text-sm font-medium text-zinc-900 shadow-sm transition-transform active:scale-95"
-                  : "rounded-full px-3 py-1 text-sm text-zinc-500 transition-all hover:text-zinc-700 active:scale-95"
-              }
-            >
-              Feed
-            </button>
-            <button
-              onClick={() => setView("map")}
-              className={
-                view === "map"
-                  ? "rounded-full bg-white px-3 py-1 text-sm font-medium text-zinc-900 shadow-sm transition-transform active:scale-95"
-                  : "rounded-full px-3 py-1 text-sm text-zinc-500 transition-all hover:text-zinc-700 active:scale-95"
-              }
-            >
-              Map view
-            </button>
-          </div>
-          {view === "feed" && (
-            <button
-              onClick={() => setComposeOpen(true)}
-              aria-label="New post"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-zinc-700 transition-all hover:bg-zinc-100 active:scale-90"
-            >
-              <PlusIcon />
-            </button>
-          )}
-        </div>
 
-        {pointsBanner !== null && (
-          <p className="mb-3 rounded-lg bg-pm-orange-tint px-3 py-2 text-sm font-medium text-pm-orange-text">
-            +{pointsBanner} PM Points earned
-          </p>
-        )}
+      <div className="bg-white/40 px-4 pb-24 pt-5 sm:px-6 lg:pb-8">
+        <div className="mx-auto flex w-full max-w-6xl gap-8">
+          <aside className="hidden w-52 shrink-0 lg:block">
+            <SideNav
+              activeKey={navKey}
+              account={navAccount}
+              onNavigate={navigate}
+              onCreate={() => setComposeOpen(true)}
+            />
+          </aside>
 
-        {view === "feed" && (
-          <div className="mb-3 flex flex-wrap gap-2">
-            {regionNames.map((region) => (
-              <button
-                key={region}
-                ref={(el) => {
-                  chipRefs.current[region] = el;
-                }}
-                onClick={() => setSelectedRegion(region)}
-                className={
-                  region === selectedRegion
-                    ? "shrink-0 rounded-full bg-pm-orange-tint px-3 py-1.5 text-sm font-medium text-pm-orange-text transition-transform active:scale-95"
-                    : "shrink-0 rounded-full bg-pm-grey-tint px-3 py-1.5 text-sm text-pm-grey-text transition-all hover:bg-pm-orange-tint/60 hover:text-pm-orange-text active:scale-95"
-                }
-              >
-                {region}
-              </button>
-            ))}
-          </div>
-        )}
+          <main className="min-w-0 flex-1 lg:max-w-[640px]">{feedColumn}</main>
 
-        {view === "feed" && storyAuthors.length > 0 && (
-          <div className="mb-4 flex gap-3 overflow-x-auto pb-1">
-            <button
-              onClick={() => setComposeOpen(true)}
-              className="flex shrink-0 flex-col items-center gap-1 transition-transform active:scale-95"
-            >
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-zinc-300 text-zinc-400 transition-colors hover:border-pm-orange hover:text-pm-orange-text">
-                <PlusIcon />
-              </span>
-              <span className="text-[11px] text-zinc-500">Post</span>
-            </button>
-            {storyAuthors.map((author) => {
-              const palette = avatarPalette(author.name);
-              const active = authorFilter === author.userId;
-              return (
-                <button
-                  key={author.userId}
-                  onClick={() => setAuthorFilter(active ? null : author.userId)}
-                  className="flex shrink-0 flex-col items-center gap-1 transition-transform active:scale-95"
-                >
-                  <span
-                    className={
-                      active
-                        ? "rounded-full bg-gradient-to-tr from-pm-orange via-orange-400 to-amber-300 p-[2px]"
-                        : "rounded-full bg-gradient-to-tr from-purple-500 via-pink-500 to-amber-400 p-[2px] opacity-70 transition-opacity hover:opacity-100"
-                    }
-                  >
-                    <span className="block rounded-full bg-white p-[2px]">
-                      {author.avatarUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={author.avatarUrl}
-                          alt=""
-                          className="h-12 w-12 rounded-full object-cover"
-                        />
-                      ) : (
-                        <span
-                          className={`flex h-12 w-12 items-center justify-center rounded-full ${palette.avatarBg} text-sm font-medium text-white`}
-                        >
-                          {initials(author.name)}
-                        </span>
-                      )}
-                    </span>
-                  </span>
-                  <span className="max-w-14 truncate text-[11px] text-zinc-500">
-                    {author.name.split(" ")[0]}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        )}
-
-        {view === "feed" && (
-          <div className="mb-3 flex items-center justify-between">
-            <div className="flex items-center gap-1 rounded-full bg-zinc-100 p-1 ring-1 ring-inset ring-zinc-200/60">
-              {(
-                [
-                  ["hot", "🔥 Hot"],
-                  ["new", "🆕 New"],
-                  ["top", "⭐ Top"],
-                ] as const
-              ).map(([value, label]) => (
-                <button
-                  key={value}
-                  onClick={() => setSort(value)}
-                  className={
-                    sort === value
-                      ? "rounded-full bg-white px-3 py-1 text-xs font-medium text-zinc-900 shadow-sm transition-transform active:scale-95"
-                      : "rounded-full px-3 py-1 text-xs text-zinc-500 transition-all hover:text-zinc-700 active:scale-95"
-                  }
-                >
-                  {label}
-                </button>
-              ))}
+          <aside className="hidden w-80 shrink-0 xl:block">
+            <div className="sticky top-6 flex flex-col gap-4">
+              <Leaderboard currentUserId={account?.id ?? null} refreshKey={ranksVersion} />
+              <TrendingRail />
             </div>
-            {authorFilter && (
-              <button
-                onClick={() => setAuthorFilter(null)}
-                className="text-xs font-medium text-pm-orange-text hover:underline"
-              >
-                Clear filter
-              </button>
-            )}
-          </div>
-        )}
-
-        {view === "map" ? (
-          <div className="overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
-            <RestaurantMap restaurants={restaurants} commentsByRestaurant={mapComments} />
-          </div>
-        ) : (
-          <div className="grid auto-rows-min grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredPosts.map((post) => (
-              <div
-                key={post.id}
-                ref={(el) => {
-                  postRefs.current[post.id] = el;
-                }}
-              >
-                <PostCard
-                  post={post}
-                  currentUserId={account?.id ?? null}
-                  onLike={handleLike}
-                  onSave={handleSave}
-                  onComment={handleComment}
-                  onDelete={handleDelete}
-                  highlighted={post.id === highlightedPost}
-                  hottest={sort === "hot" && post.id === hottestPostId}
-                />
-              </div>
-            ))}
-
-            {filteredActivity.map((item) => (
-              <div
-                key={item.id}
-                className="card-lift flex gap-2.5 rounded-xl border border-zinc-200 bg-white p-3 shadow-sm"
-              >
-                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pm-orange-tint text-pm-orange-text">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z" />
-                  </svg>
-                </span>
-                <div>
-                  <p className="mb-1 text-sm">{item.text}</p>
-                  <p className="text-xs text-zinc-500">
-                    {item.place} &middot; {item.time}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-            {filteredPosts.length === 0 && filteredActivity.length === 0 && (
-              <p className="col-span-full py-6 text-center text-sm text-zinc-400">
-                {authorFilter
-                  ? "No posts from this person in " + selectedRegion + " yet."
-                  : "Nothing in " + selectedRegion + " yet."}
-              </p>
-            )}
-          </div>
-        )}
+          </aside>
+        </div>
       </div>
 
+      <MobileNavigation
+        activeKey={navKey}
+        onNavigate={navigate}
+        onCreate={() => setComposeOpen(true)}
+      />
+
       {composeOpen && (
-        <ComposeModal
+        <CreatePostModal
           isSignedIn={isSignedIn}
           onClose={() => setComposeOpen(false)}
           onCreated={handleCreated}
         />
+      )}
+
+      {activePost && (
+        <CommentsPanel
+          post={activePost}
+          currentUserId={account?.id ?? null}
+          onClose={() => setCommentsPostId(null)}
+          onSubmit={handleComment}
+          onLikeComment={handleLikeComment}
+        />
+      )}
+
+      {ranksOpen && (
+        <Dialog title="Leaderboard" onClose={() => setRanksOpen(false)} variant="panel">
+          <div className="p-4">
+            <Leaderboard currentUserId={account?.id ?? null} refreshKey={ranksVersion} />
+          </div>
+        </Dialog>
       )}
     </div>
   );

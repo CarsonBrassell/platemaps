@@ -1,4 +1,11 @@
-export function resizeImageToDataUrl(file: File, size = 128): Promise<string> {
+/**
+ * Centre-crops `file` to a `size`x`size` JPEG data URL.
+ *
+ * Post photos pass a much larger `size` than avatars do, so `quality` is
+ * tunable — at 1080px the default 0.85 produces data URLs big enough to be
+ * awkward as Postgres rows.
+ */
+export function resizeImageToDataUrl(file: File, size = 128, quality = 0.85): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -16,7 +23,7 @@ export function resizeImageToDataUrl(file: File, size = 128): Promise<string> {
         const sx = (img.width - minSide) / 2;
         const sy = (img.height - minSide) / 2;
         ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
-        resolve(canvas.toDataURL("image/jpeg", 0.85));
+        resolve(canvas.toDataURL("image/jpeg", quality));
       };
       img.onerror = () => reject(new Error("Could not read image"));
       img.src = reader.result as string;

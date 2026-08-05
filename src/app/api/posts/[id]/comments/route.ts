@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { getPostById, addComment, addPointsToUser } from "@/lib/db";
+import { getPostById, addComment, awardPoints } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
-
-const COMMENT_POINTS = 5;
+import { POINT_RULES } from "@/lib/points";
 
 export async function POST(
   req: Request,
@@ -28,14 +27,20 @@ export async function POST(
   const comment = await addComment(id, {
     id: randomUUID(),
     userId: user.id,
-    text: String(text).trim(),
+    text: String(text).trim().slice(0, 1_000),
   });
 
-  const freshUser = await addPointsToUser(user.id, COMMENT_POINTS);
+  // The author earns for the discussion their post attracts; commenting on
+  // your own post pays nothing.
+  const isSelfComment = post.userId === user.id;
+  if (!isSelfComment) {
+    await awardPoints(post.userId, POINT_RULES.receiveComment, `comment:${comment.id}`);
+  }
 
   return NextResponse.json({
     comment,
-    pointsEarned: COMMENT_POINTS,
-    points: freshUser?.points ?? user.points + COMMENT_POINTS,
+    authorId: post.userId,
+    authorName: post.authorName,
+    authorPointsEarned: isSelfComment ? 0 : POINT_RULES.receiveComment,
   });
 }

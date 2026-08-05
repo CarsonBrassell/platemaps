@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { getPostById, toggleLike, addPointsToUser } from "@/lib/db";
+import { getPostById, toggleLike, awardPoints } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
-
-const LIKE_POINTS = 2;
+import { POINT_RULES, milestoneFor } from "@/lib/points";
 
 export async function POST(
   _req: Request,
@@ -20,13 +19,32 @@ export async function POST(
   }
 
   const { liked, likeCount, firstTimeLike } = await toggleLike(id, user.id);
-  const pointsEarned = firstTimeLike ? LIKE_POINTS : 0;
 
-  let points = user.points;
-  if (pointsEarned > 0) {
-    const freshUser = await addPointsToUser(user.id, pointsEarned);
-    points = freshUser?.points ?? points;
+  // Points go to the author, not the liker. `firstTimeLike` is true only the
+  // first time this particular user likes this post, so unlike/relike can't
+  // farm the author's total. Self-likes pay nothing.
+  const isSelfLike = post.userId === user.id;
+  let authorPointsEarned = 0;
+
+  if (firstTimeLike && !isSelfLike) {
+    await awardPoints(post.userId, POINT_RULES.receiveLike, `like:${id}:${user.id}`);
+    authorPointsEarned += POINT_RULES.receiveLike;
   }
 
-  return NextResponse.json({ liked, likeCount, pointsEarned, points });
+  // Milestones fire on the exact crossing, so a post that dips below and
+  // climbs back doesn't pay out twice (the ledger's unique reason also guards).
+  const milestone = liked ? milestoneFor(likeCount) : null;
+  if (milestone && !isSelfLike) {
+    await awardPoints(post.userId, milestone.bonus, `milestone:${id}:${milestone.likes}`);
+    authorPointsEarned += milestone.bonus;
+  }
+
+  return NextResponse.json({
+    liked,
+    likeCount,
+    authorId: post.userId,
+    authorName: post.authorName,
+    authorPointsEarned,
+    milestone: milestone && !isSelfLike ? milestone : null,
+  });
 }

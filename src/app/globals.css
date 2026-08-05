@@ -221,3 +221,105 @@ h3 {
 .restaurant-pin:hover {
   transform: scale(1.18) translateY(-2px);
 }
+
+/* --- Feed motion ------------------------------------------------------ */
+/* Durations stay at or under 300ms; every one is disabled wholesale by the
+   reduced-motion block at the end of this section. */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes sheet-in {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes points-float {
+  0%   { opacity: 0; transform: translateY(4px) scale(0.9); }
+  25%  { opacity: 1; transform: translateY(-2px) scale(1); }
+  75%  { opacity: 1; transform: translateY(-8px) scale(1); }
+  100% { opacity: 0; transform: translateY(-16px) scale(0.96); }
+}
+
+@keyframes like-burst {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shimmer {
+  from { background-position: -180% 0; }
+  to   { background-position: 180% 0; }
+}
+
+@keyframes rank-rise {
+  from { background-color: rgba(217, 111, 69, 0.16); }
+  to   { background-color: transparent; }
+}
+
+.animate-fade-in   { animation: fade-in 0.18s ease-out; }
+.animate-dialog-in { animation: dialog-in 0.2s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.animate-sheet-in  { animation: sheet-in 0.26s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.animate-rank-rise { animation: rank-rise 1.2s ease-out; }
+
+/* Floating "+1 point for maya" chip shown after a like lands. */
+.points-float {
+  animation: points-float 1.6s ease-out forwards;
+}
+
+.like-burst {
+  animation: like-burst 0.28s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+/* Skeleton blocks: a warm sweep rather than a grey pulse, so loading state
+   still reads as the same paper surface as the loaded card. */
+.skeleton {
+  background-image: linear-gradient(
+    90deg,
+    var(--pm-grey-tint) 0%,
+    #f7f2ea 45%,
+    var(--pm-grey-tint) 90%
+  );
+  background-size: 180% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+/* Horizontal snap track for the post media carousel. */
+.snap-track {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.snap-track::-webkit-scrollbar { display: none; }
+
+.snap-item { scroll-snap-align: center; scroll-snap-stop: always; }
+
+/* Keyboard focus stays visible on every interactive surface in the feed. */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--pm-orange);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-dialog-in,
+  .animate-sheet-in,
+  .animate-rank-rise,
+  .points-float,
+  .like-burst,
+  .skeleton {
+    animation: none;
+  }
+
+  .points-float { opacity: 1; }
+  .snap-track { scroll-behavior: auto; }
+}
