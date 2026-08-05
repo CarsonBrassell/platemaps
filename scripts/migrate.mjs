@@ -91,6 +91,16 @@ const statements = [
     PRIMARY KEY (comment_id, user_id)
   )`,
   `CREATE INDEX IF NOT EXISTS idx_comment_likes_comment ON comment_likes(comment_id)`,
+
+  // "Would you eat this?" — a yes/no verdict per person per post, kept apart
+  // from likes so a plate can be popular and still divisive.
+  `CREATE TABLE IF NOT EXISTS post_votes (
+    post_id TEXT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    vote BOOLEAN NOT NULL,
+    PRIMARY KEY (post_id, user_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_post_votes_post ON post_votes(post_id)`,
 ];
 
 for (const statement of statements) {

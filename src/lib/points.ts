@@ -13,6 +13,12 @@ export const POINT_RULES = {
   receiveLike: 1,
   /** Awarded to the author each time someone comments on their post. */
   receiveComment: 2,
+  /**
+   * Awarded to the *voter* the first time they answer "would you eat this?"
+   * on a post. The exception to the author-earns rule: this one exists to
+   * pull people into voting, so it pays the person doing it.
+   */
+  castVote: 1,
 } as const;
 
 /**
@@ -31,6 +37,7 @@ export const POINT_RULE_COPY: ReadonlyArray<{ label: string; value: string }> = 
   { label: "Post a plate", value: `+${POINT_RULES.createPost}` },
   { label: "Someone likes your post", value: `+${POINT_RULES.receiveLike}` },
   { label: "Someone comments on your post", value: `+${POINT_RULES.receiveComment}` },
+  { label: "You answer “would you eat this?”", value: `+${POINT_RULES.castVote}` },
   ...LIKE_MILESTONES.map((m) => ({
     label: `Your post hits ${m.likes} likes`,
     value: `+${m.bonus} bonus`,

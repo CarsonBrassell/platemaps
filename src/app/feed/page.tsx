@@ -112,6 +112,7 @@ function FeedPageInner() {
 
   const [following, setFollowing] = useState<string[]>([]);
   const [pointsToast, setPointsToast] = useState<Record<string, string>>({});
+  const [votePoints, setVotePoints] = useState<Record<string, number>>({});
   const [banner, setBanner] = useState<string | null>(null);
   const [highlighted, setHighlighted] = useState<string | null>(null);
   const [ranksVersion, setRanksVersion] = useState(0);
@@ -260,6 +261,72 @@ function FeedPageInner() {
           : p.likedBy.filter((id) => id !== account.id),
       }));
       setBanner("Couldn't save that like.");
+    }
+  }
+
+  async function handleVote(postId: string, vote: boolean) {
+    if (!account) return;
+    const current = posts?.find((p) => p.id === postId);
+    if (!current) return;
+
+    const had = current.votedYesBy.includes(account.id)
+      ? true
+      : current.votedNoBy.includes(account.id)
+        ? false
+        : null;
+
+    // Optimistic: drop any previous verdict, then apply the new one unless
+    // this tap was un-voting the same side.
+    const next = had === vote ? null : vote;
+    patchPost(postId, (p) => ({
+      ...p,
+      votedYesBy: p.votedYesBy.filter((id) => id !== account.id).concat(next === true ? [account.id] : []),
+      votedNoBy: p.votedNoBy.filter((id) => id !== account.id).concat(next === false ? [account.id] : []),
+    }));
+
+    try {
+      const res = await fetch(`/api/posts/${postId}/vote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vote }),
+      });
+      if (!res.ok) throw new Error("failed");
+      const data = await res.json();
+
+      // Reconcile against the server's counts rather than trusting the guess.
+      patchPost(postId, (p) => {
+        const others = {
+          yes: p.votedYesBy.filter((id) => id !== account.id),
+          no: p.votedNoBy.filter((id) => id !== account.id),
+        };
+        return {
+          ...p,
+          votedYesBy: data.myVote === true ? [...others.yes, account.id] : others.yes,
+          votedNoBy: data.myVote === false ? [...others.no, account.id] : others.no,
+        };
+      });
+
+      if (data.pointsEarned > 0) {
+        setVotePoints((prev) => ({ ...prev, [postId]: data.pointsEarned }));
+        setTimeout(
+          () =>
+            setVotePoints((prev) => {
+              const copy = { ...prev };
+              delete copy[postId];
+              return copy;
+            }),
+          1800,
+        );
+        setRanksVersion((v) => v + 1);
+        refresh();
+      }
+    } catch {
+      patchPost(postId, (p) => ({
+        ...p,
+        votedYesBy: p.votedYesBy.filter((id) => id !== account.id).concat(had === true ? [account.id] : []),
+        votedNoBy: p.votedNoBy.filter((id) => id !== account.id).concat(had === false ? [account.id] : []),
+      }));
+      setBanner("Couldn't save your vote.");
     }
   }
 
@@ -562,12 +629,15 @@ function FeedPageInner() {
                       highlighted={post.id === highlighted}
                       trending={trendingIds.has(post.id)}
                       pointsToast={pointsToast[post.id] ?? null}
+                      votePoints={votePoints[post.id] ?? null}
                       onLike={handleLike}
                       onSave={handleSave}
                       onShare={handleShare}
+                      onVote={handleVote}
                       onOpenComments={setCommentsPostId}
                       onDelete={handleDelete}
                       onToggleFollow={handleToggleFollow}
+                      onRequireSignIn={() => setBanner("Sign in to join in — it takes a second.")}
                     />
                   </div>
                 ))}

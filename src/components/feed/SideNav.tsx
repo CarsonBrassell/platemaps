@@ -10,6 +10,7 @@ import {
 } from "@/components/icons";
 import { PointsBadge } from "./PointsBadge";
 import { initials, avatarPalette } from "@/lib/format";
+import { BrandMark, WordMark } from "@/components/BrandMark";
 
 export type NavKey = "home" | "explore" | "leaderboard" | "saved" | "profile";
 
@@ -34,12 +35,9 @@ export function SideNav({
 
   return (
     <nav aria-label="Main" className="sticky top-6 flex flex-col gap-1">
-      <Link href="/" className="mb-3 flex items-center gap-2.5 px-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.png" alt="" className="h-9 w-9 rounded-lg object-contain" />
-        <span className="font-display text-lg font-semibold tracking-tight text-zinc-900">
-          PlateMaps
-        </span>
+      <Link href="/" className="group mb-3 flex items-center gap-2.5 px-2 text-lg">
+        <BrandMark tone="dark" className="h-10 w-10 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" />
+        <WordMark tone="dark" />
       </Link>
 
       <button

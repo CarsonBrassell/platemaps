@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PostMediaCarousel } from "./PostMediaCarousel";
 import { PostActions } from "./PostActions";
+import { WouldYouEat } from "./WouldYouEat";
 import { PointsBadge } from "./PointsBadge";
 import { MoreIcon, StarIcon, FlagIcon, EyeOffIcon, FlameIcon } from "@/components/icons";
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
@@ -43,12 +44,15 @@ export function FoodPostCard({
   highlighted,
   trending,
   pointsToast,
+  votePoints,
   onLike,
   onSave,
   onShare,
+  onVote,
   onOpenComments,
   onDelete,
   onToggleFollow,
+  onRequireSignIn,
 }: {
   post: Post;
   currentUserId: string | null;
@@ -57,12 +61,16 @@ export function FoodPostCard({
   /** Among the hottest plates right now — earns the glowing flame. */
   trending?: boolean;
   pointsToast: string | null;
+  /** Points just earned for voting, shown inside the verdict block. */
+  votePoints: number | null;
   onLike: (postId: string) => void;
   onSave: (postId: string) => void;
   onShare: (post: Post) => Promise<string | null>;
+  onVote: (postId: string, vote: boolean) => void;
   onOpenComments: (postId: string) => void;
   onDelete: (postId: string) => void;
   onToggleFollow: (userId: string) => void;
+  onRequireSignIn: () => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -291,6 +299,24 @@ export function FoodPostCard({
         )}
       </div>
 
+      <WouldYouEat
+        yes={post.votedYesBy.length}
+        no={post.votedNoBy.length}
+        myVote={
+          currentUserId
+            ? post.votedYesBy.includes(currentUserId)
+              ? true
+              : post.votedNoBy.includes(currentUserId)
+                ? false
+                : null
+            : null
+        }
+        canVote={!!currentUserId}
+        pointsEarned={votePoints}
+        onVote={(vote) => onVote(post.id, vote)}
+        onRequireSignIn={onRequireSignIn}
+      />
+
       <div className="pt-1.5">
         <PostActions
           liked={liked}
@@ -303,6 +329,7 @@ export function FoodPostCard({
           onComment={() => onOpenComments(post.id)}
           onSave={() => onSave(post.id)}
           onShare={() => onShare(post)}
+          onRequireSignIn={onRequireSignIn}
         />
       </div>
 

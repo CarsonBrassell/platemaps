@@ -331,6 +331,8 @@ export type Post = {
   likedBy: string[];
   likePointsAwardedTo: string[];
   savedBy: string[];
+  votedYesBy: string[];
+  votedNoBy: string[];
   comments: Comment[];
 };
 
@@ -339,7 +341,7 @@ async function hydratePosts(postRows: any[]): Promise<Post[]> {
   if (postRows.length === 0) return [];
   const ids = postRows.map((r) => r.id as string);
 
-  const [likeRows, saveRows, commentRows, commentLikeRows] = await Promise.all([
+  const [likeRows, saveRows, commentRows, commentLikeRows, voteRows] = await Promise.all([
     sql`SELECT post_id, user_id, liked, awarded_points FROM post_likes WHERE post_id = ANY(${ids})`,
     sql`SELECT post_id, user_id FROM post_saves WHERE post_id = ANY(${ids})`,
     sql`
@@ -356,6 +358,7 @@ async function hydratePosts(postRows: any[]): Promise<Post[]> {
       JOIN comments c ON c.id = cl.comment_id
       WHERE c.post_id = ANY(${ids})
     `,
+    sql`SELECT post_id, user_id, vote FROM post_votes WHERE post_id = ANY(${ids})`,
   ]);
 
   return postRows.map((row) => {
@@ -383,6 +386,12 @@ async function hydratePosts(postRows: any[]): Promise<Post[]> {
         .filter((l) => l.post_id === postId && l.awarded_points)
         .map((l) => l.user_id as string),
       savedBy: saveRows.filter((s) => s.post_id === postId).map((s) => s.user_id as string),
+      votedYesBy: voteRows
+        .filter((v) => v.post_id === postId && v.vote)
+        .map((v) => v.user_id as string),
+      votedNoBy: voteRows
+        .filter((v) => v.post_id === postId && !v.vote)
+        .map((v) => v.user_id as string),
       comments: commentRows
         .filter((c) => c.post_id === postId)
         .map((c) => ({
@@ -474,6 +483,8 @@ export async function createPost(data: {
     likedBy: [],
     likePointsAwardedTo: [],
     savedBy: [],
+    votedYesBy: [],
+    votedNoBy: [],
     comments: [],
   };
 }
@@ -558,4 +569,44 @@ export async function toggleSave(postId: string, userId: string): Promise<boolea
   }
   await sql`INSERT INTO post_saves (post_id, user_id) VALUES (${postId}, ${userId})`;
   return true;
+}
+
+/**
+ * Records a "would you eat this" verdict. Tapping the same side again clears
+ * it; tapping the other side switches. Reports whether this is the person's
+ * first verdict on the post, which is what the points award keys off.
+ */
+export async function castVote(
+  postId: string,
+  userId: string,
+  vote: boolean
+): Promise<{ myVote: boolean | null; yes: number; no: number; firstVote: boolean }> {
+  const existing = await sql`
+    SELECT vote FROM post_votes WHERE post_id = ${postId} AND user_id = ${userId}
+  `;
+  const previous = existing[0]?.vote as boolean | undefined;
+
+  if (previous === vote) {
+    await sql`DELETE FROM post_votes WHERE post_id = ${postId} AND user_id = ${userId}`;
+  } else {
+    await sql`
+      INSERT INTO post_votes (post_id, user_id, vote)
+      VALUES (${postId}, ${userId}, ${vote})
+      ON CONFLICT (post_id, user_id) DO UPDATE SET vote = ${vote}
+    `;
+  }
+
+  const counts = await sql`
+    SELECT
+      count(*) FILTER (WHERE vote)::int AS yes,
+      count(*) FILTER (WHERE NOT vote)::int AS no
+    FROM post_votes WHERE post_id = ${postId}
+  `;
+
+  return {
+    myVote: previous === vote ? null : vote,
+    yes: counts[0].yes as number,
+    no: counts[0].no as number,
+    firstVote: previous === undefined,
+  };
 }

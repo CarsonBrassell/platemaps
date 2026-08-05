@@ -299,3 +299,26 @@ export function FlameIcon({ className = "" }: IconProps) {
     </svg>
   );
 }
+
+/**
+ * Solid-fill thumbs, drawn to sit alongside StarIcon and PlateStarIcon rather
+ * than the outlined feed icons — the "would you eat this?" verdict is a
+ * headline control, so it gets the weightier treatment.
+ */
+export function ThumbUpIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M6.5 10.5H4.2A2.2 2.2 0 0 0 2 12.7v7.1A2.2 2.2 0 0 0 4.2 22h2.3z" opacity="0.55" />
+      <path d="M8.5 10.8 13 2.2a1.7 1.7 0 0 1 3.2.8v5.4h4.1a2.2 2.2 0 0 1 2.15 2.67l-1.62 7.3A2.5 2.5 0 0 1 18.4 22H8.5z" />
+    </svg>
+  );
+}
+
+export function ThumbDownIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M6.5 13.5H4.2A2.2 2.2 0 0 1 2 11.3V4.2A2.2 2.2 0 0 1 4.2 2h2.3z" opacity="0.55" />
+      <path d="M8.5 13.2 13 21.8a1.7 1.7 0 0 0 3.2-.8v-5.4h4.1a2.2 2.2 0 0 0 2.15-2.67l-1.62-7.3A2.5 2.5 0 0 0 18.4 2H8.5z" />
+    </svg>
+  );
+}

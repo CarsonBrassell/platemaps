@@ -34,6 +34,8 @@ export type Post = {
   createdAt: string;
   likedBy: string[];
   savedBy: string[];
+  votedYesBy: string[];
+  votedNoBy: string[];
   comments: Comment[];
 };
 

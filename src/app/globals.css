@@ -441,3 +441,80 @@ h3 {
   .step-progress { transition: none; }
   .emoji-slider::-webkit-slider-thumb { transition: none; }
 }
+
+/* --- "Would you eat this?" verdict ------------------------------------ */
+
+@keyframes thumb-slam {
+  0%   { transform: scale(1) rotate(0deg); }
+  30%  { transform: scale(1.45) rotate(-14deg); }
+  55%  { transform: scale(0.88) rotate(7deg); }
+  75%  { transform: scale(1.12) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes thumb-slam-down {
+  0%   { transform: scale(1) rotate(0deg); }
+  30%  { transform: scale(1.45) rotate(14deg); }
+  55%  { transform: scale(0.88) rotate(-7deg); }
+  75%  { transform: scale(1.12) rotate(3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Six sparks thrown outward from the button that was pressed. Each gets its
+   own --angle from React so the burst reads as a ring rather than a line. */
+@keyframes spark-fly {
+  0%   { opacity: 1; transform: rotate(var(--angle)) translateY(0) scale(1); }
+  100% { opacity: 0; transform: rotate(var(--angle)) translateY(-26px) scale(0.3); }
+}
+
+@keyframes verdict-ring {
+  0%   { opacity: 0.75; transform: scale(0.6); }
+  100% { opacity: 0; transform: scale(1.9); }
+}
+
+@keyframes result-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bar-grow {
+  from { width: 0%; }
+}
+
+.thumb-slam      { animation: thumb-slam 0.55s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.thumb-slam-down { animation: thumb-slam-down 0.55s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.spark           { animation: spark-fly 0.6s ease-out forwards; }
+.verdict-ring    { animation: verdict-ring 0.6s ease-out forwards; }
+.result-in       { animation: result-in 0.3s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.bar-grow        { animation: bar-grow 0.55s cubic-bezier(0.2, 0.8, 0.3, 1); }
+
+/* Save confirmation pop on the bookmark. */
+@keyframes save-pop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.5) rotate(-8deg); }
+  65%  { transform: scale(0.9) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes save-toast {
+  0%   { opacity: 0; transform: translateY(6px) scale(0.9); }
+  20%  { opacity: 1; transform: translateY(0) scale(1); }
+  80%  { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-8px) scale(0.96); }
+}
+
+.save-pop   { animation: save-pop 0.45s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.save-toast { animation: save-toast 1.6s ease-out forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb-slam,
+  .thumb-slam-down,
+  .spark,
+  .verdict-ring,
+  .result-in,
+  .bar-grow,
+  .save-pop,
+  .save-toast { animation: none; }
+  .save-toast { opacity: 1; }
+  .spark { display: none; }
+}

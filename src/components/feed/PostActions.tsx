@@ -17,6 +17,7 @@ export function PostActions({
   onComment,
   onSave,
   onShare,
+  onRequireSignIn,
 }: {
   liked: boolean;
   likeCount: number;
@@ -30,13 +31,36 @@ export function PostActions({
   onSave: () => void;
   /** Resolves with a short confirmation to flash, or null to stay silent. */
   onShare: () => Promise<string | null>;
+  /** Called instead of the action when nobody is signed in. */
+  onRequireSignIn: () => void;
 }) {
   const [burst, setBurst] = useState(false);
+  const [savePop, setSavePop] = useState(false);
+  const [savedToast, setSaved_toast] = useState(false);
   const [shareNote, setShareNote] = useState<string | null>(null);
 
   // Driven by the click rather than by `liked` changing, so the heart only
   // pops for the person who pressed it.
+  function handleSave() {
+    if (!canInteract) {
+      onRequireSignIn();
+      return;
+    }
+    // Only celebrate adding, not removing.
+    if (!saved) {
+      setSavePop(true);
+      setSaved_toast(true);
+      setTimeout(() => setSavePop(false), 460);
+      setTimeout(() => setSaved_toast(false), 1650);
+    }
+    onSave();
+  }
+
   function handleLike() {
+    if (!canInteract) {
+      onRequireSignIn();
+      return;
+    }
     if (!liked) {
       setBurst(true);
       setTimeout(() => setBurst(false), 300);
@@ -59,7 +83,6 @@ export function PostActions({
       <button
         type="button"
         onClick={handleLike}
-        disabled={!canInteract}
         aria-pressed={liked}
         aria-label={liked ? "Unlike this plate" : "Like this plate"}
         className={action}
@@ -80,17 +103,20 @@ export function PostActions({
         <ShareIcon className="h-[21px] w-[21px]" />
       </button>
 
+      {/* Not disabled when signed out — a dead control gives no clue why
+          nothing happened, so it prompts to sign in instead. */}
       <button
         type="button"
-        onClick={onSave}
-        disabled={!canInteract}
+        onClick={handleSave}
         aria-pressed={saved}
         aria-label={saved ? "Remove from saved" : "Save this plate"}
         className={`${action} ml-auto`}
       >
         <BookmarkIcon
           filled={saved}
-          className={`h-[21px] w-[21px] ${saved ? "text-pm-orange" : ""}`}
+          className={`h-[21px] w-[21px] ${saved ? "text-pm-orange" : ""} ${
+            savePop ? "save-pop" : ""
+          }`}
         />
       </button>
 
@@ -102,6 +128,14 @@ export function PostActions({
           className="points-float pointer-events-none absolute -top-1 left-2 rounded-full bg-pm-orange px-2 py-0.5 text-[11px] font-semibold text-white shadow-sm"
         >
           {pointsToast}
+        </span>
+      )}
+      {savedToast && (
+        <span
+          role="status"
+          className="save-toast pointer-events-none absolute -top-1 right-2 rounded-full bg-pm-orange px-2 py-0.5 text-[11px] font-semibold text-white shadow-sm"
+        >
+          Saved
         </span>
       )}
       {shareNote && (

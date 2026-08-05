@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
+import { BrandMark, WordMark } from "@/components/BrandMark";
 
 const NAV_LINKS = [
   { href: "/", label: "Discover" },
@@ -18,17 +19,19 @@ export function Header() {
   return (
     <header className="flex items-center justify-between gap-5 bg-gradient-to-b from-pm-charcoal-light to-pm-charcoal px-6 py-3.5">
       <div className="flex items-center gap-7">
-        <Link
-          href="/"
-          className="font-display group flex shrink-0 items-center gap-3 text-[22px] font-semibold tracking-tight text-white"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo.png"
-            alt=""
-            className="h-14 w-14 rounded-xl object-contain shadow-sm shadow-pm-orange/40 transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-3"
-          />
-          PlateMaps
+        <Link href="/" className="group flex shrink-0 items-center gap-3 text-[26px]">
+          <span className="relative flex h-16 w-16 items-center justify-center">
+            {/* Glow sits behind the mark and blooms on hover. */}
+            <span
+              className="absolute inset-1 rounded-full bg-pm-orange/25 blur-lg transition-all duration-300 group-hover:bg-pm-orange/45 group-hover:blur-xl"
+              aria-hidden="true"
+            />
+            <BrandMark
+              tone="light"
+              className="relative h-16 w-16 drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110"
+            />
+          </span>
+          <WordMark tone="light" />
         </Link>
         <div className="hidden items-center gap-2.5 rounded-full bg-white/10 px-4 py-2 ring-1 ring-inset ring-white/10 transition-all hover:bg-white/[0.14] focus-within:bg-white/[0.14] focus-within:ring-pm-orange/70 sm:flex">
           <svg
