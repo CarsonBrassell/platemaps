@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   HomeIcon,
   CompassIcon,
-  TrophyIcon,
   BookmarkIcon,
   UserIcon,
   PlusIcon,
@@ -57,15 +56,6 @@ export function SideNav({
         <CompassIcon className="h-5 w-5 shrink-0" />
         Explore
       </Link>
-
-      <button
-        type="button"
-        onClick={() => onNavigate("leaderboard")}
-        className={`${item} ${idle} xl:hidden`}
-      >
-        <TrophyIcon className="h-5 w-5 shrink-0" />
-        Leaderboard
-      </button>
 
       <button
         type="button"

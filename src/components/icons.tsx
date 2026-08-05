@@ -279,3 +279,23 @@ export function WifiOffIcon({ className = "" }: IconProps) {
     </svg>
   );
 }
+
+/**
+ * Hand-built flame for trending plates. Two stacked solid paths rather than a
+ * gradient, so repeated instances need no duplicated <defs> ids — the glow is
+ * a CSS drop-shadow (see .flame-glow) so it can be disabled for reduced motion.
+ */
+export function FlameIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path
+        fill="#e8590c"
+        d="M13.1 1.6c.7 3.4-.6 5.3-2.2 6.9-1.9 1.9-4.4 3.7-4.4 7.2a7.5 7.5 0 0 0 15 0c0-2.9-1.2-5-2.6-6.8-.4 1.3-1.2 2.2-2.3 2.7 1-3.6-.4-7.6-3.5-10z"
+      />
+      <path
+        fill="#fbbf24"
+        d="M12 22a3.9 3.9 0 0 1-3.9-3.9c0-2 1.4-3.2 2.5-4.5.4 1.1 1.1 1.8 2 2.2-.5-1.8 0-3.6 1.2-5 1.3 1.5 2.1 3.1 2.1 5.2A3.9 3.9 0 0 1 12 22z"
+      />
+    </svg>
+  );
+}

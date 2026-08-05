@@ -323,3 +323,28 @@ h3 {
   .points-float { opacity: 1; }
   .snap-track { scroll-behavior: auto; }
 }
+
+/* Trending flame. The pulse is a drop-shadow so it glows without shifting
+   layout; scale stays tiny so a row of cards doesn't feel jittery. */
+@keyframes flame-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(232, 89, 12, 0.5));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 7px rgba(251, 191, 36, 0.85));
+    transform: scale(1.08);
+  }
+}
+
+.flame-glow {
+  animation: flame-glow 1.9s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flame-glow {
+    animation: none;
+    filter: drop-shadow(0 0 3px rgba(232, 89, 12, 0.55));
+  }
+}

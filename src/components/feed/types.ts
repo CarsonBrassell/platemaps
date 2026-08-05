@@ -53,4 +53,4 @@ export type UserRank = {
 
 export type LeaderboardWindow = "today" | "week" | "month" | "all";
 
-export type FeedTab = "for-you" | "nearby" | "following" | "trending";
+export type FeedTab = "for-you" | "following" | "map";

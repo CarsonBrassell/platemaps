@@ -1,15 +1,13 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import { restaurants } from "@/data/restaurants";
-import { regionNames, regionForCoordinate } from "@/data/regions";
 import { mapCommentsByRestaurant, type MapComment } from "@/data/mapComments";
 import { dishesByRestaurant } from "@/data/dishes";
-import { PinIcon } from "@/components/icons";
 
 import { FeedHeader } from "@/components/feed/FeedHeader";
 import { FeedTabs } from "@/components/feed/FeedTabs";
@@ -18,7 +16,6 @@ import { CreatePostModal } from "@/components/feed/CreatePostModal";
 import { FoodPostCard } from "@/components/feed/FoodPostCard";
 import { CommentsPanel } from "@/components/feed/CommentsPanel";
 import { Leaderboard } from "@/components/feed/Leaderboard";
-import { TrendingRail } from "@/components/feed/TrendingRail";
 import { FeedSkeleton } from "@/components/feed/FeedSkeleton";
 import {
   EmptyFeedState,
@@ -103,8 +100,6 @@ function FeedPageInner() {
 
   const [tab, setTab] = useState<FeedTab>("for-you");
   const [navKey, setNavKey] = useState<NavKey>("home");
-  const [region, setRegion] = useState("Downtown");
-  const [showMap, setShowMap] = useState(false);
 
   const [composeOpen, setComposeOpen] = useState(false);
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
@@ -174,22 +169,11 @@ function FeedPageInner() {
     };
   }, []);
 
-  // Geolocation only seeds the Nearby region, and never overrides a deep link.
-  useEffect(() => {
-    if (!navigator.geolocation || highlightPostId) return;
-    navigator.geolocation.getCurrentPosition(
-      (pos) => setRegion(regionForCoordinate(pos.coords.latitude, pos.coords.longitude)),
-      () => {},
-      { timeout: 5000 },
-    );
-  }, [highlightPostId]);
-
   // Deep link from a map bubble. "For You" is unfiltered, so switching to it
   // guarantees the target post is actually in the list before we scroll.
   useEffect(() => {
     if (!highlightPostId || !posts?.some((p) => p.id === highlightPostId)) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setShowMap(false);
     setTab("for-you");
     setNavKey("home");
     setHighlighted(highlightPostId);
@@ -409,11 +393,6 @@ function FeedPageInner() {
     refresh();
   }
 
-  const restaurantRegion = useCallback((name?: string) => {
-    const r = name ? restaurants.find((x) => x.name === name) : undefined;
-    return r ? regionForCoordinate(r.lat, r.lng) : undefined;
-  }, []);
-
   const visiblePosts = useMemo(() => {
     if (!posts) return [];
     const list = [...posts];
@@ -422,21 +401,27 @@ function FeedPageInner() {
       return account ? list.filter((p) => p.savedBy.includes(account.id)) : [];
     }
 
-    switch (tab) {
-      case "nearby":
-        return list
-          .filter((p) => restaurantRegion(p.restaurant) === region)
-          .sort((a, b) => hotScore(b) - hotScore(a));
-      case "following":
-        return list
-          .filter((p) => followingIds.includes(p.userId))
-          .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
-      case "trending":
-        return list.sort((a, b) => b.likedBy.length - a.likedBy.length);
-      default:
-        return list.sort((a, b) => hotScore(b) - hotScore(a));
+    if (tab === "following") {
+      return list
+        .filter((p) => followingIds.includes(p.userId))
+        .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
     }
-  }, [posts, navKey, tab, region, followingIds, account, restaurantRegion]);
+    return list.sort((a, b) => hotScore(b) - hotScore(a));
+  }, [posts, navKey, tab, followingIds, account]);
+
+  /* The flame marks the few genuinely hot plates, computed over every post
+     rather than the current tab so a card keeps its badge wherever it shows
+     up. The likes floor stops a quiet feed from flaming everything. */
+  const trendingIds = useMemo(() => {
+    if (!posts) return new Set<string>();
+    return new Set(
+      [...posts]
+        .filter((p) => p.likedBy.length >= 3)
+        .sort((a, b) => hotScore(b) - hotScore(a))
+        .slice(0, 3)
+        .map((p) => p.id),
+    );
+  }, [posts]);
 
   const mapComments = useMemo(() => {
     const out: Record<string, MapComment[]> = {};
@@ -482,32 +467,17 @@ function FeedPageInner() {
       return;
     }
     setNavKey(key);
-    setShowMap(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  const mapToggle = (
-    <button
-      type="button"
-      onClick={() => setShowMap((m) => !m)}
-      aria-pressed={showMap}
-      className={`mb-1 flex min-h-11 shrink-0 items-center gap-1.5 rounded-full px-3 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-        showMap
-          ? "bg-pm-charcoal font-medium text-white"
-          : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
-      }`}
-    >
-      <PinIcon className="h-4 w-4" />
-      Map
-    </button>
-  );
+  const showMap = tab === "map" && navKey !== "saved";
 
   const feedColumn = (
     <>
-      <FeedHeader region={region} regions={regionNames} onRegionChange={setRegion} />
+      <FeedHeader />
 
       {navKey === "saved" ? (
-        <div className="mb-4 flex items-center justify-between gap-3 border-b border-zinc-200 pb-2">
+        <div className="mb-5 flex items-center justify-between gap-3 border-b border-zinc-200 pb-2">
           <h2 className="font-display text-base font-semibold text-zinc-900">Saved plates</h2>
           <button
             type="button"
@@ -518,7 +488,7 @@ function FeedPageInner() {
           </button>
         </div>
       ) : (
-        <FeedTabs active={tab} onChange={setTab} right={mapToggle} />
+        <FeedTabs active={tab} onChange={setTab} />
       )}
 
       {offline && <OfflineBanner />}
@@ -532,7 +502,7 @@ function FeedPageInner() {
         </p>
       )}
 
-      {showMap && navKey !== "saved" ? (
+      {showMap ? (
         <div className="overflow-hidden rounded-2xl border border-zinc-200 shadow-sm">
           <RestaurantMap restaurants={restaurants} commentsByRestaurant={mapComments} />
         </div>
@@ -566,7 +536,6 @@ function FeedPageInner() {
             ) : (
               <EmptyFeedState
                 tab={tab}
-                region={region}
                 isSignedIn={isSignedIn}
                 onCreate={() => setComposeOpen(true)}
               />
@@ -586,6 +555,7 @@ function FeedPageInner() {
                       currentUserId={account?.id ?? null}
                       isFollowing={followingIds.includes(post.userId)}
                       highlighted={post.id === highlighted}
+                      trending={trendingIds.has(post.id)}
                       pointsToast={pointsToast[post.id] ?? null}
                       onLike={handleLike}
                       onSave={handleSave}
@@ -625,7 +595,6 @@ function FeedPageInner() {
           <aside className="hidden w-80 shrink-0 xl:block">
             <div className="sticky top-6 flex flex-col gap-4">
               <Leaderboard currentUserId={account?.id ?? null} refreshKey={ranksVersion} />
-              <TrendingRail />
             </div>
           </aside>
         </div>

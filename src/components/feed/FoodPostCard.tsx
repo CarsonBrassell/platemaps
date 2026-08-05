@@ -5,7 +5,7 @@ import Link from "next/link";
 import { PostMediaCarousel } from "./PostMediaCarousel";
 import { PostActions } from "./PostActions";
 import { PointsBadge } from "./PointsBadge";
-import { MoreIcon, StarIcon, PinIcon, FlagIcon, EyeOffIcon } from "@/components/icons";
+import { MoreIcon, StarIcon, FlagIcon, EyeOffIcon, FlameIcon } from "@/components/icons";
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { tagAccent } from "@/data/foodTags";
 import type { Post } from "./types";
@@ -40,6 +40,7 @@ export function FoodPostCard({
   currentUserId,
   isFollowing,
   highlighted,
+  trending,
   pointsToast,
   onLike,
   onSave,
@@ -52,6 +53,8 @@ export function FoodPostCard({
   currentUserId: string | null;
   isFollowing: boolean;
   highlighted?: boolean;
+  /** Among the hottest plates right now — earns the glowing flame. */
+  trending?: boolean;
   pointsToast: string | null;
   onLike: (postId: string) => void;
   onSave: (postId: string) => void;
@@ -116,7 +119,9 @@ export function FoodPostCard({
       className={`card-lift overflow-hidden rounded-2xl border bg-white shadow-sm ${
         highlighted
           ? "border-pm-orange ring-2 ring-pm-orange ring-offset-2"
-          : "border-zinc-200/80"
+          : trending
+            ? "border-orange-200"
+            : "border-zinc-200/80"
       }`}
     >
       <header className="flex items-center gap-3 px-4 pt-4">
@@ -227,14 +232,25 @@ export function FoodPostCard({
 
       {/* Dish leads the card — it outranks the poster in the hierarchy. */}
       <div className="px-4 pb-3 pt-2.5">
-        <h3
-          id={`post-${post.id}-title`}
-          className="font-display text-[19px] font-semibold leading-snug tracking-tight text-zinc-900"
-        >
-          {post.dishName ?? post.restaurant ?? "A plate worth sharing"}
-        </h3>
+        <div className="flex items-start gap-2">
+          <h3
+            id={`post-${post.id}-title`}
+            className="font-display flex-1 text-[21px] font-semibold leading-tight tracking-tight text-zinc-900"
+          >
+            {post.dishName ?? post.restaurant ?? "A plate worth sharing"}
+          </h3>
+          {trending && (
+            <span
+              className="mt-0.5 flex shrink-0 items-center gap-1 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 py-0.5 pl-1 pr-2 text-[11px] font-bold uppercase tracking-wide text-pm-orange-text ring-1 ring-inset ring-orange-200"
+              title="Trending right now"
+            >
+              <FlameIcon className="flame-glow h-4 w-4" />
+              Hot
+            </span>
+          )}
+        </div>
         {post.restaurant && (
-          <p className="mt-0.5 text-sm text-zinc-600">
+          <p className="mt-1 text-sm text-zinc-600">
             at <span className="font-medium text-pm-orange-text">{post.restaurant}</span>
           </p>
         )}
@@ -248,20 +264,29 @@ export function FoodPostCard({
         />
 
         {(post.rating !== undefined || post.price) && (
-          <div className="pointer-events-none absolute bottom-3 left-3 flex items-center gap-1.5">
-            {post.rating !== undefined && (
-              <span className="flex items-center gap-1 rounded-full bg-pm-charcoal/75 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
-                <StarIcon className="h-3.5 w-3.5 text-amber-300" />
-                {post.rating.toFixed(1)}
-                <span className="font-normal text-white/70">/10</span>
-              </span>
-            )}
-            {post.price && (
-              <span className="rounded-full bg-white/92 px-2.5 py-1 text-xs font-semibold text-zinc-800 backdrop-blur-sm">
-                {post.price}
-              </span>
-            )}
-          </div>
+          <>
+            {/* Scrim so the pills stay legible over a bright photo. */}
+            <div
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-pm-charcoal/55 to-transparent"
+              aria-hidden="true"
+            />
+            <div className="pointer-events-none absolute bottom-3 left-3 flex items-center gap-1.5">
+              {post.rating !== undefined && (
+                <span className="flex items-baseline gap-1 rounded-full bg-white/95 px-2.5 py-1 shadow-sm backdrop-blur-sm">
+                  <StarIcon className="h-3.5 w-3.5 translate-y-0.5 text-pm-orange" />
+                  <span className="text-sm font-bold text-zinc-900">
+                    {post.rating.toFixed(1)}
+                  </span>
+                  <span className="text-[10px] font-medium text-zinc-500">/10</span>
+                </span>
+              )}
+              {post.price && (
+                <span className="rounded-full bg-pm-charcoal/80 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                  {post.price}
+                </span>
+              )}
+            </div>
+          </>
         )}
       </div>
 
@@ -333,13 +358,6 @@ export function FoodPostCard({
               </p>
             )}
           </div>
-        )}
-
-        {post.locationLabel && (
-          <p className="mt-3 flex items-center gap-1 text-xs text-zinc-400">
-            <PinIcon className="h-3.5 w-3.5" />
-            {post.locationLabel}
-          </p>
         )}
       </div>
     </article>

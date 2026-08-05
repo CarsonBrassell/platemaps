@@ -32,12 +32,10 @@ const primaryButton =
 
 export function EmptyFeedState({
   tab,
-  region,
   onCreate,
   isSignedIn,
 }: {
   tab: string;
-  region: string;
   onCreate: () => void;
   isSignedIn: boolean;
 }) {
@@ -65,8 +63,8 @@ export function EmptyFeedState({
   return (
     <Shell
       icon={<UtensilsIcon className="h-6 w-6" />}
-      title={`Nothing in ${region} yet`}
-      body="No one has posted a plate around here today. Be the first and pick up the points."
+      title="No plates yet"
+      body="No one has posted around here today. Be the first and pick up the points."
       action={
         <button type="button" onClick={onCreate} className={primaryButton}>
           <PlusIcon className="h-4 w-4" />
