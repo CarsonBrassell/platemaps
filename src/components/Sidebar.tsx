@@ -50,7 +50,7 @@ export function Sidebar() {
   const [neighborhoodOpen, setNeighborhoodOpen] = useState(false);
   const [cuisineOpen, setCuisineOpen] = useState(false);
   const [affordableOpen, setAffordableOpen] = useState(false);
-  const [trendingOpen, setTrendingOpen] = useState(false);
+  const [trendingOpen, setTrendingOpen] = useState(true);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null);
   const [selectedCuisine, setSelectedCuisine] = useState<string | null>(null);
 
