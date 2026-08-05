@@ -45,6 +45,18 @@ export function RestaurantHeader({ restaurant }: { restaurant: Restaurant }) {
             ({restaurant.reviewCount.toLocaleString()} ratings)
           </span>
         </div>
+        {/* Yelp's display requirements: content sourced from them has to be
+            credited and linked back to the business's own Yelp page. */}
+        {restaurant.yelpUrl && (
+          <a
+            href={restaurant.yelpUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-flex items-center gap-1 text-xs text-zinc-400 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-pm-orange-text hover:decoration-pm-orange-border"
+          >
+            Photo and rating via Yelp
+          </a>
+        )}
       </div>
     </div>
   );
