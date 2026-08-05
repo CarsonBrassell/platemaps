@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { restaurants } from "@/data/restaurants";
 import { StarIcon, UtensilsIcon } from "@/components/icons";
+import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 
 export function OurPicks() {
   const picks = restaurants.filter((r) => r.trending).slice(0, 2);
@@ -21,16 +22,34 @@ export function OurPicks() {
             href={`/restaurant/${r.id}`}
             className="trending-glow group block overflow-hidden rounded-xl border-2 border-pm-orange bg-white transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98]"
           >
-            <div className="relative flex aspect-[16/9] items-center justify-center overflow-hidden bg-gradient-to-br from-pm-orange-tint via-orange-100 to-pm-orange/25">
-              <div
-                className="absolute inset-0 opacity-40"
-                style={{
-                  backgroundImage:
-                    "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.7), transparent 40%), radial-gradient(circle at 80% 80%, rgba(181,80,43,0.18), transparent 45%)",
-                }}
-                aria-hidden="true"
+            {/* A full 16:9 is worth it for a real photo and is just a large
+                empty box without one, so the band collapses until there is
+                something to show. */}
+            <div
+              className={`relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-pm-orange-tint via-orange-100 to-pm-orange/25 ${
+                r.photo ? "aspect-[16/9]" : "h-20"
+              }`}
+            >
+              <RestaurantPhoto
+                photo={r.photo}
+                photoAlt={r.photoAlt}
+                sizes="(max-width: 640px) 100vw, 300px"
+                /* Above the fold on the homepage, and only ever two of them. */
+                priority
+                fallback={
+                  <>
+                    <div
+                      className="absolute inset-0 opacity-40"
+                      style={{
+                        backgroundImage:
+                          "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.7), transparent 40%), radial-gradient(circle at 80% 80%, rgba(181,80,43,0.18), transparent 45%)",
+                      }}
+                      aria-hidden="true"
+                    />
+                    <UtensilsIcon className="relative h-8 w-8 text-pm-orange-text transition-transform duration-300 group-hover:scale-110" />
+                  </>
+                }
               />
-              <UtensilsIcon className="relative h-8 w-8 text-pm-orange-text transition-transform duration-300 group-hover:scale-110" />
               <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-pm-orange-text shadow-sm backdrop-blur-sm">
                 Trending
               </span>

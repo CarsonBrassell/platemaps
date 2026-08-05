@@ -1,20 +1,32 @@
 import type { Restaurant } from "@/data/restaurants";
 import { StarRating } from "@/components/StarRating";
 import { UtensilsIcon } from "@/components/icons";
+import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 
 export function RestaurantHeader({ restaurant }: { restaurant: Restaurant }) {
   return (
     <div className="border-b border-zinc-100">
       <div className="relative flex h-28 items-center justify-center overflow-hidden bg-gradient-to-br from-pm-orange-tint via-orange-100 to-pm-orange/30">
-        <div
-          className="absolute inset-0 opacity-50"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 15% 20%, rgba(255,255,255,0.8), transparent 40%), radial-gradient(circle at 85% 85%, rgba(181,80,43,0.2), transparent 45%)",
-          }}
-          aria-hidden="true"
+        <RestaurantPhoto
+          photo={restaurant.photo}
+          photoAlt={restaurant.photoAlt}
+          sizes="(max-width: 768px) 100vw, 640px"
+          /* The hero of the detail page — never lazy-load it. */
+          priority
+          fallback={
+            <>
+              <div
+                className="absolute inset-0 opacity-50"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 15% 20%, rgba(255,255,255,0.8), transparent 40%), radial-gradient(circle at 85% 85%, rgba(181,80,43,0.2), transparent 45%)",
+                }}
+                aria-hidden="true"
+              />
+              <UtensilsIcon className="relative h-10 w-10 text-pm-orange-text/90" />
+            </>
+          }
         />
-        <UtensilsIcon className="relative h-10 w-10 text-pm-orange-text/90" />
         {restaurant.trending && (
           <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-pm-orange-text shadow-sm backdrop-blur-sm">
             Trending

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Restaurant } from "@/data/restaurants";
 import { StarIcon, UtensilsIcon } from "@/components/icons";
+import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 
 export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
   const isCalm = restaurant.status === "calm";
@@ -10,7 +11,14 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
       className="card-lift group block overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm hover:border-pm-orange-border active:scale-[0.98]"
     >
       <div className="relative flex h-16 items-center justify-center overflow-hidden bg-gradient-to-br from-pm-grey-tint to-zinc-100">
-        <UtensilsIcon className="h-5 w-5 text-zinc-400 transition-transform duration-300 group-hover:scale-110 group-hover:text-pm-orange-text" />
+        <RestaurantPhoto
+          photo={restaurant.photo}
+          photoAlt={restaurant.photoAlt}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 200px"
+          fallback={
+            <UtensilsIcon className="h-5 w-5 text-zinc-400 transition-transform duration-300 group-hover:scale-110 group-hover:text-pm-orange-text" />
+          }
+        />
       </div>
       <div className="p-3">
         <div className="mb-0.5 flex items-start justify-between gap-2">
