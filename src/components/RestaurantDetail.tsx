@@ -9,8 +9,10 @@ import { TopPicks } from "@/components/TopPicks";
 import { FullMenu } from "@/components/FullMenu";
 import { DishSheet } from "@/components/DishSheet";
 import { RestaurantComments } from "@/components/RestaurantComments";
+import { mapCommentsByRestaurant } from "@/data/mapComments";
 
 const TOP_PICKS_COUNT = 7;
+const COMMENTS_ANCHOR = "restaurant-comments";
 
 export function RestaurantDetail({
   restaurant,
@@ -71,6 +73,25 @@ export function RestaurantDetail({
     ? dishesWithStats.find((dish) => dish.id === selectedDishId)
     : undefined;
 
+  // Comments already tagged to this dish, newest first.
+  const selectedDishComments = useMemo(() => {
+    if (!selectedDishId) return [];
+    return (mapCommentsByRestaurant[restaurant.id] ?? [])
+      .filter((comment) => comment.dishId === selectedDishId)
+      .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));
+  }, [restaurant.id, selectedDishId]);
+
+  /** Close the sheet and drop the reader at the full comment thread. */
+  function handleSeeAllComments() {
+    setSelectedDishId(null);
+    // Wait for the sheet to unmount so the anchor is actually in the layout.
+    requestAnimationFrame(() => {
+      document
+        .getElementById(COMMENTS_ANCHOR)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
   function handleVote(vote: "yes" | "no") {
     if (!selectedDishId) return;
     setMyVotes((prev) => ({
@@ -84,13 +105,17 @@ export function RestaurantDetail({
       <RestaurantHeader restaurant={restaurant} />
       <TopPicks dishes={topPicks} onSelect={setSelectedDishId} />
       <FullMenu sections={sections} onSelect={setSelectedDishId} />
-      <RestaurantComments restaurant={restaurant} dishes={dishes} />
+      <div id={COMMENTS_ANCHOR} className="scroll-mt-4">
+        <RestaurantComments restaurant={restaurant} dishes={dishes} />
+      </div>
       {selectedDish && (
         <DishSheet
           dish={selectedDish}
           myVote={myVotes[selectedDish.id]}
+          comments={selectedDishComments}
           onVote={handleVote}
           onClose={() => setSelectedDishId(null)}
+          onSeeAll={handleSeeAllComments}
         />
       )}
     </div>
