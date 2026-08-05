@@ -43,8 +43,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    refresh().finally(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        const data = await res.json();
+        if (!cancelled) setAccount(data.user);
+      } catch {
+        // A failed session lookup means signed-out, not broken — fall through
+        // so the app renders instead of sitting on the loading state forever.
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   async function signUp(name: string, email: string, password: string) {

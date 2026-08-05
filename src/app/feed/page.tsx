@@ -564,7 +564,7 @@ function FeedPageInner() {
       clearTimeout(scrollTimeout);
       clearTimeout(clearTimeout_);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [highlightPostId, posts]);
 
   useEffect(() => {
