@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
-import { initials, relativeTime } from "@/lib/format";
+import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { UtensilsIcon, BookmarkIcon, MoreIcon } from "@/components/icons";
 import { restaurants } from "@/data/restaurants";
 import { regionNames, regionForCoordinate } from "@/data/regions";
@@ -296,6 +296,7 @@ function PostCard({
   onComment,
   onDelete,
   highlighted,
+  hottest,
 }: {
   post: Post;
   currentUserId: string | null;
@@ -304,6 +305,7 @@ function PostCard({
   onComment: (postId: string, text: string) => Promise<void>;
   onDelete: (postId: string) => void;
   highlighted?: boolean;
+  hottest?: boolean;
 }) {
   const [commentText, setCommentText] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -412,6 +414,11 @@ function PostCard({
           />
           <UtensilsIcon className="relative h-7 w-7 text-pm-orange-text" />
           <span className="relative text-sm font-medium text-pm-orange-text">{post.restaurant}</span>
+          {hottest && (
+            <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-pm-orange px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
+              🔥 Hot
+            </span>
+          )}
           {showVotePop && (
             <ArrowUpIcon className="heart-pop pointer-events-none absolute h-16 w-16 text-pm-orange" />
           )}
@@ -522,6 +529,8 @@ function FeedPageInner() {
   const [view, setView] = useState<"feed" | "map">("feed");
   const [selectedRegion, setSelectedRegion] = useState("Downtown");
   const [highlightedPost, setHighlightedPost] = useState<string | null>(null);
+  const [sort, setSort] = useState<"hot" | "new" | "top">("hot");
+  const [authorFilter, setAuthorFilter] = useState<string | null>(null);
   const chipRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const postRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -658,10 +667,40 @@ function FeedPageInner() {
     return restaurantRegion(place.split(" · ")[0]);
   }
 
-  const filteredPosts = posts
+  const regionPosts = posts
     .filter((p) => restaurantRegion(p.restaurant) === selectedRegion)
     .sort((a, b) => hotScore(b) - hotScore(a));
-  const filteredActivity = activity.filter((item) => activityRegion(item.place) === selectedRegion);
+
+  const hottestPostId = regionPosts[0]?.id ?? null;
+
+  const sorters: Record<typeof sort, (a: Post, b: Post) => number> = {
+    hot: (a, b) => hotScore(b) - hotScore(a),
+    new: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    top: (a, b) => b.likedBy.length - a.likedBy.length,
+  };
+
+  const filteredPosts = regionPosts
+    .filter((p) => !authorFilter || p.userId === authorFilter)
+    .slice()
+    .sort(sorters[sort]);
+  const filteredActivity = authorFilter
+    ? []
+    : activity.filter((item) => activityRegion(item.place) === selectedRegion);
+
+  // Instagram-style "stories" strip: one avatar per author currently posting
+  // in this region, most recently active first.
+  const storyAuthors = Array.from(
+    regionPosts
+      .slice()
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .reduce((map, p) => {
+        if (!map.has(p.userId)) {
+          map.set(p.userId, { userId: p.userId, name: p.authorName, avatarUrl: p.authorAvatarUrl });
+        }
+        return map;
+      }, new Map<string, { userId: string; name: string; avatarUrl?: string }>())
+      .values()
+  );
 
   // Real posted comments/reviews show up on the map first, most-liked first,
   // followed by the seeded flavor comments as filler.
@@ -753,6 +792,93 @@ function FeedPageInner() {
           </div>
         )}
 
+        {view === "feed" && storyAuthors.length > 0 && (
+          <div className="mb-4 flex gap-3 overflow-x-auto pb-1">
+            <button
+              onClick={() => setComposeOpen(true)}
+              className="flex shrink-0 flex-col items-center gap-1 transition-transform active:scale-95"
+            >
+              <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-zinc-300 text-zinc-400 transition-colors hover:border-pm-orange hover:text-pm-orange-text">
+                <PlusIcon />
+              </span>
+              <span className="text-[11px] text-zinc-500">Post</span>
+            </button>
+            {storyAuthors.map((author) => {
+              const palette = avatarPalette(author.name);
+              const active = authorFilter === author.userId;
+              return (
+                <button
+                  key={author.userId}
+                  onClick={() => setAuthorFilter(active ? null : author.userId)}
+                  className="flex shrink-0 flex-col items-center gap-1 transition-transform active:scale-95"
+                >
+                  <span
+                    className={
+                      active
+                        ? "rounded-full bg-gradient-to-tr from-pm-orange via-orange-400 to-amber-300 p-[2px]"
+                        : "rounded-full bg-gradient-to-tr from-purple-500 via-pink-500 to-amber-400 p-[2px] opacity-70 transition-opacity hover:opacity-100"
+                    }
+                  >
+                    <span className="block rounded-full bg-white p-[2px]">
+                      {author.avatarUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={author.avatarUrl}
+                          alt=""
+                          className="h-12 w-12 rounded-full object-cover"
+                        />
+                      ) : (
+                        <span
+                          className={`flex h-12 w-12 items-center justify-center rounded-full ${palette.avatarBg} text-sm font-medium text-white`}
+                        >
+                          {initials(author.name)}
+                        </span>
+                      )}
+                    </span>
+                  </span>
+                  <span className="max-w-14 truncate text-[11px] text-zinc-500">
+                    {author.name.split(" ")[0]}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {view === "feed" && (
+          <div className="mb-3 flex items-center justify-between">
+            <div className="flex items-center gap-1 rounded-full bg-zinc-100 p-1 ring-1 ring-inset ring-zinc-200/60">
+              {(
+                [
+                  ["hot", "🔥 Hot"],
+                  ["new", "🆕 New"],
+                  ["top", "⭐ Top"],
+                ] as const
+              ).map(([value, label]) => (
+                <button
+                  key={value}
+                  onClick={() => setSort(value)}
+                  className={
+                    sort === value
+                      ? "rounded-full bg-white px-3 py-1 text-xs font-medium text-zinc-900 shadow-sm transition-transform active:scale-95"
+                      : "rounded-full px-3 py-1 text-xs text-zinc-500 transition-all hover:text-zinc-700 active:scale-95"
+                  }
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            {authorFilter && (
+              <button
+                onClick={() => setAuthorFilter(null)}
+                className="text-xs font-medium text-pm-orange-text hover:underline"
+              >
+                Clear filter
+              </button>
+            )}
+          </div>
+        )}
+
         {view === "map" ? (
           <div className="overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
             <RestaurantMap restaurants={restaurants} commentsByRestaurant={mapComments} />
@@ -774,6 +900,7 @@ function FeedPageInner() {
                   onComment={handleComment}
                   onDelete={handleDelete}
                   highlighted={post.id === highlightedPost}
+                  hottest={sort === "hot" && post.id === hottestPostId}
                 />
               </div>
             ))}
@@ -799,7 +926,9 @@ function FeedPageInner() {
 
             {filteredPosts.length === 0 && filteredActivity.length === 0 && (
               <p className="col-span-full py-6 text-center text-sm text-zinc-400">
-                Nothing in {selectedRegion} yet.
+                {authorFilter
+                  ? "No posts from this person in " + selectedRegion + " yet."
+                  : "Nothing in " + selectedRegion + " yet."}
               </p>
             )}
           </div>
