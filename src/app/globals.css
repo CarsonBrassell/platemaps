@@ -169,10 +169,12 @@ h3 {
   word-break: break-word;
 }
 
+/* No box-shadow here: the ink drop-shadow lives on the bubble's wrapper so it
+   traces the box and tail together, and a box-only shadow would break that
+   silhouette on hover. */
 .map-bubble:hover .map-bubble-box,
 .map-bubble-box:hover {
   max-width: 300px !important;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6), 0 0 18px rgba(232, 135, 90, 0.18);
 }
 
 /* The neo-noir look now lives entirely in our own vector style

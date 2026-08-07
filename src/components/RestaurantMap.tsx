@@ -84,6 +84,11 @@ const BUBBLE_TEXT_ROW_HEIGHT = 22;
 const BUBBLE_META_ROW_HEIGHT = 14;
 const BUBBLE_MIN_WIDTH = 50;
 const BUBBLE_GAP = 6;
+/** Ink and fill, shared by the bubble box and the tail drawn beneath it. */
+const BUBBLE_FILL = "#1d2126";
+const BUBBLE_INK = "#e8875a";
+/** How far the tail spike hangs below the box, after its overlap of the border. */
+const BUBBLE_TAIL_HEIGHT = 22;
 
 type Rect = { x: number; y: number; w: number; h: number };
 
@@ -184,40 +189,49 @@ function bubbleElement(comment: MapComment, offsetY: number, zoom: number) {
 
   const el = document.createElement("div");
   el.className = "map-bubble";
+  /* Comic speech bubble drawn with a brush-pen line: a clean rounded
+     rectangle whose stroke is heavy down the left and along the bottom and
+     thin across the top and right, as though laid down in one pass. Uneven
+     border-widths give that weight for free, and unlike a wobbly radius it
+     survives the box being resized by its text.
+
+     The offset drop-shadow sits on the wrapper rather than the box so it
+     traces box and tail as one silhouette; a box-shadow would stop at the
+     box and leave the tail flat. */
   el.innerHTML = `<div style="
       display: inline-block;
       position: relative;
       transform: translate(${offsetX}px, -${offsetY}px);
       cursor: pointer;
+      filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.55));
     ">
       <div class="map-bubble-box" style="
         max-width: ${maxWidth}px;
-        background: #1d2126;
-        border: 1px solid rgba(232,135,90,0.55);
-        border-radius: 12px;
+        background: ${BUBBLE_FILL};
+        border-style: solid;
+        border-color: ${BUBBLE_INK};
+        border-width: 2px 2px 3px 4px;
+        border-radius: 9px;
         padding: 3px 8px;
         font-size: 11px;
         line-height: 1.3;
         color: #d6d9dd;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.55), 0 0 14px rgba(232,135,90,0.12);
       ">
         <div class="map-bubble-text" style="max-width: ${maxWidth - 16}px;">${dishHtml}${escapeHtml(comment.text)}</div>
         ${metaRow}
       </div>
-      <div style="
-        position: absolute; bottom: -7px; left: 14px;
-        width: 0; height: 0;
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        border-top: 7px solid #83513e;
-      "></div>
-      <div style="
-        position: absolute; bottom: -5.5px; left: 15px;
-        width: 0; height: 0;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 6px solid #1d2126;
-      "></div>
+      <svg width="40" height="26" viewBox="0 0 40 26" style="
+        position: absolute; left: -4px; top: calc(100% - 3px); overflow: visible;
+      ">
+        <!-- Two filled paths rather than a stroked one, so the spike carries
+             the same uneven weight as the box: the ink shape, then a smaller
+             fill inset inside it. The inset stops short of the point, which
+             is what leaves the tip solid ink as the two edges converge. Its
+             mouth also covers the box's bottom border, so the outline reads
+             as flowing around the tail instead of cutting across it. -->
+        <path d="M30 0 L0 25 L14 0 Z" fill="${BUBBLE_INK}" />
+        <path d="M26 0 L10 15 L17 0 Z" fill="${BUBBLE_FILL}" />
+      </svg>
     </div>`;
   return el;
 }
@@ -390,7 +404,14 @@ export function RestaurantMap({
           if (stackIndex >= limit) break;
           const width = estimateBubbleWidth(comment, zoom);
           const height = bubbleHeight(comment);
-          const rect: Rect = { x: point.x + 12, y: point.y - offsetY, w: width, h: height };
+          // The tail is part of the bubble's footprint, so nothing else gets
+          // placed over it.
+          const rect: Rect = {
+            x: point.x + 12,
+            y: point.y - offsetY,
+            w: width,
+            h: height + BUBBLE_TAIL_HEIGHT,
+          };
           if (placed.some((r) => rectsOverlap(rect, r))) continue;
           placed.push(rect);
 
@@ -412,7 +433,7 @@ export function RestaurantMap({
             .addTo(map!);
           bubbleMarkersRef.current.push(marker);
 
-          offsetY += height + BUBBLE_GAP + 7;
+          offsetY += height + BUBBLE_GAP + BUBBLE_TAIL_HEIGHT;
           stackIndex++;
         }
       }
