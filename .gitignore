@@ -42,3 +42,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# AI tooling — settings.local.json is machine-specific, and the installed
+# skills are regenerable with `npx impeccable install`
+/.claude/

@@ -31,7 +31,7 @@ const RestaurantMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[540px] w-full items-center justify-center rounded-xl bg-zinc-100 text-sm text-zinc-400">
+      <div className="flex h-[540px] w-full items-center justify-center rounded-xl bg-[#15171a] text-sm text-zinc-500">
         Loading map…
       </div>
     ),
@@ -564,7 +564,7 @@ function FeedPageInner() {
       )}
 
       {showMap ? (
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-zinc-700/60 shadow-md">
           <RestaurantMap restaurants={restaurants} commentsByRestaurant={mapComments} />
         </div>
       ) : (
