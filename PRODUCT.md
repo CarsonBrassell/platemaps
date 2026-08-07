@@ -31,7 +31,7 @@ Explicitly *not* positioning: PM Points and the leaderboard are a supply-side me
 - Used at the moment of deciding — frequently one-handed, on a phone, close to mealtime — which makes proximity and open-now state load-bearing rather than decorative.
 - Scope today is San Diego County: 36 seeded restaurants across Little Italy, North Park, Hillcrest, Pacific Beach, Point Loma, Liberty Station, La Jolla, Mission Valley, Del Mar, Chula Vista, La Mesa, Alpine and others.
 - Open/closed and "closing soon" are computed in `America/Los_Angeles` from real closing times, not stored labels.
-- Deployed on Vercel (project `platemap`) from `github.com/CarsonBrassell/platemaps`.
+- Deployed on Vercel (project `platemaps`) from `github.com/CarsonBrassell/platemaps`, served at `platemap-five.vercel.app`.
 
 ## Capabilities and Constraints
 
@@ -61,7 +61,7 @@ Undecided, to be recorded rather than assumed:
 
 ## Brand Commitments
 
-- Name: **PlateMaps**, plural, everywhere a user can encounter it — copy, share titles, image alt text, page title. The Vercel project slug and its `platemap-five.vercel.app` URL are still singular; those are deployment identifiers rather than brand surfaces, and renaming them would break the live URL for no user-visible gain.
+- Name: **PlateMaps**, plural, everywhere — copy, share titles, image alt text, page title, the npm package, the repo, and the Vercel project. The original `platemap-five.vercel.app` URL survives as an alias on the renamed project, so links already in the wild keep working.
 - Logo mark and wordmark assets in `public/` (`logo-mark.png`, `logo.png`), rendered through `BrandMark` / `WordMark`.
 - A warm orange accent (`--pm-orange`, the `#e8875a` family) against charcoal, carried through primary actions, pins, and the map's streetlight glow.
 
