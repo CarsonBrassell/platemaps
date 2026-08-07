@@ -322,3 +322,12 @@ export function ThumbDownIcon({ className = "" }: IconProps) {
     </svg>
   );
 }
+
+export function ChefHatIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M6.6 10.4A4.3 4.3 0 0 1 8 2.05a4.6 4.6 0 0 1 8 0 4.3 4.3 0 0 1 1.4 8.35V14H6.6z" />
+      <path d="M6.6 15.6h10.8v3.1a2.3 2.3 0 0 1-2.3 2.3H8.9a2.3 2.3 0 0 1-2.3-2.3z" opacity="0.55" />
+    </svg>
+  );
+}

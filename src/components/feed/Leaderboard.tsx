@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { LeaderboardRow } from "./LeaderboardRow";
 import { LeaderboardSkeleton } from "./FeedSkeleton";
 import { PointsInfoModal } from "./PointsInfoModal";
-import { TrophyIcon, InfoIcon } from "@/components/icons";
+import { ChefHatIcon, InfoIcon } from "@/components/icons";
 import { formatPoints } from "@/lib/points";
 import type { LeaderboardEntry, LeaderboardWindow, UserRank } from "./types";
 
@@ -14,6 +14,14 @@ const WINDOWS: ReadonlyArray<{ value: LeaderboardWindow; label: string }> = [
   { value: "month", label: "Month" },
   { value: "all", label: "All time" },
 ];
+
+/** Menu-card kicker under the title, so the window is legible at a glance. */
+const SERVICE: Record<LeaderboardWindow, string> = {
+  today: "Today's service",
+  week: "This week's service",
+  month: "This month's service",
+  all: "All time",
+};
 
 export function Leaderboard({
   currentUserId,
@@ -66,18 +74,24 @@ export function Leaderboard({
   return (
     <section
       aria-labelledby="leaderboard-heading"
-      className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm"
+      className="overflow-hidden rounded-2xl border border-pm-orange-border/60 bg-gradient-to-b from-orange-50/70 to-white shadow-sm"
     >
-      <div className="flex items-center gap-2 border-b border-zinc-100 px-4 py-3">
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-pm-orange-tint text-pm-orange-text">
-          <TrophyIcon className="h-4 w-4" />
+      {/* Header reads like the top of a menu: rule, kicker, plated title. */}
+      <div className="flex items-center gap-2.5 border-b border-dashed border-pm-orange-border/70 px-4 py-3.5">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-pm-orange-text ring-2 ring-pm-orange-border/70">
+          <ChefHatIcon className="h-[18px] w-[18px]" />
         </span>
-        <h2
-          id="leaderboard-heading"
-          className="font-display flex-1 text-sm font-semibold text-zinc-900"
-        >
-          Top eaters
-        </h2>
+        <span className="min-w-0 flex-1">
+          <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-pm-orange-text/70">
+            {SERVICE[window]}
+          </span>
+          <h2
+            id="leaderboard-heading"
+            className="font-display truncate text-[15px] font-semibold tracking-tight text-zinc-900"
+          >
+            Top Eaters
+          </h2>
+        </span>
         <button
           type="button"
           onClick={() => setInfoOpen(true)}
@@ -91,7 +105,7 @@ export function Leaderboard({
       <div
         role="tablist"
         aria-label="Leaderboard period"
-        className="flex gap-1 border-b border-zinc-100 px-3 py-2"
+        className="flex gap-1 border-b border-dashed border-pm-orange-border/50 px-3 py-2"
       >
         {WINDOWS.map((w) => (
           <button
@@ -126,8 +140,8 @@ export function Leaderboard({
           </div>
         ) : entries.length === 0 ? (
           <p className="px-3 py-6 text-center text-sm text-zinc-500">
-            No points scored{window === "today" ? " today" : " in this window"} yet. Post a
-            plate and take the top spot.
+            Kitchen&apos;s quiet{window === "today" ? " today" : ""}. Post a plate and take the
+            pass.
           </p>
         ) : (
           <ul className="flex flex-col gap-0.5">
@@ -143,9 +157,12 @@ export function Leaderboard({
       </div>
 
       {you && currentUserId && !inTopList && (
-        <div className="border-t border-zinc-100 bg-pm-grey-tint/40 px-4 py-3">
+        <div className="border-t border-dashed border-pm-orange-border/70 bg-white/70 px-4 py-3">
+          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-pm-orange-text/70">
+            Your table
+          </p>
           <div className="flex items-baseline justify-between gap-3">
-            <span className="text-xs text-zinc-500">Your rank</span>
+            <span className="text-xs text-zinc-500">Your seat</span>
             <span className="font-display text-sm font-semibold text-zinc-900">
               {you.rank ? `#${you.rank}` : "Unranked"}
             </span>
@@ -161,7 +178,7 @@ export function Leaderboard({
               <span className="font-semibold text-zinc-700">
                 {formatPoints(you.pointsToNext)}
               </span>{" "}
-              more to pass the next spot.
+              more to take the next seat.
             </p>
           )}
         </div>
