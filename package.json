@@ -1,5 +1,5 @@
 {
-  "name": "platemap",
+  "name": "platemaps",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,26 +7,28 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "postinstall": "node scripts/copy-maplibre-worker.mjs",
     "db:migrate": "node scripts/migrate.mjs",
     "db:seed": "node scripts/seed-demo.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
     "bcryptjs": "^3.0.3",
-    "leaflet": "^1.9.4",
+    "maplibre-gl": "^6.2.0",
     "next": "16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.115.0",
     "@tailwindcss/postcss": "^4",
-    "@types/leaflet": "^1.9.22",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "zod": "^4.4.3"
   }
 }

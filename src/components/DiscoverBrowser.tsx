@@ -21,8 +21,16 @@ export function DiscoverBrowser({ restaurants }: { restaurants: Restaurant[] }) 
   const [cuisine, setCuisine] = useState<string | null>(null);
   const [quick, setQuick] = useState<QuickFilter[]>([]);
 
+  const isOpenNow = quick.includes("open-now");
+
   // Same clock the open/closed pills use, so "Open now" agrees with them.
-  const now = useSyncExternalStore(subscribeToClock, getClockSnapshot, getServerClockSnapshot);
+  // Only subscribed while that filter is actually on — otherwise every
+  // restaurant card would re-render each minute for a value nothing reads.
+  const now = useSyncExternalStore(
+    isOpenNow ? subscribeToClock : () => () => {},
+    isOpenNow ? getClockSnapshot : () => null,
+    getServerClockSnapshot,
+  );
 
   const hasFilters = neighborhood !== null || cuisine !== null || quick.length > 0;
 
@@ -32,7 +40,7 @@ export function DiscoverBrowser({ restaurants }: { restaurants: Restaurant[] }) 
       if (cuisine && r.cuisine !== cuisine) return false;
       if (quick.includes("top-rated") && r.rating < TOP_RATED_FROM) return false;
       if (quick.includes("trending") && !r.trending) return false;
-      if (quick.includes("open-now")) {
+      if (isOpenNow) {
         // Before mount there is no clock, so this filter can't be evaluated
         // yet; leaving everything in beats flashing an empty grid.
         if (!now) return true;
@@ -40,7 +48,7 @@ export function DiscoverBrowser({ restaurants }: { restaurants: Restaurant[] }) 
       }
       return true;
     });
-  }, [restaurants, neighborhood, cuisine, quick, now]);
+  }, [restaurants, neighborhood, cuisine, quick, isOpenNow, now]);
 
   function clearAll() {
     setNeighborhood(null);

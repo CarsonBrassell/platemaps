@@ -23,9 +23,7 @@ import {
   OfflineBanner,
   EndOfFeed,
 } from "@/components/feed/EmptyFeedState";
-import { SideNav, type NavKey } from "@/components/feed/SideNav";
-import { MobileNavigation } from "@/components/feed/MobileNavigation";
-import { Dialog } from "@/components/feed/Dialog";
+import type { NavKey } from "@/components/feed/SideNav";
 import type { FeedTab, Post } from "@/components/feed/types";
 
 const RestaurantMap = dynamic(
@@ -33,7 +31,7 @@ const RestaurantMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[540px] w-full items-center justify-center rounded-xl bg-zinc-100 text-sm text-zinc-400">
+      <div className="flex h-[540px] w-full items-center justify-center rounded-xl bg-[#15171a] text-sm text-zinc-500">
         Loading map…
       </div>
     ),
@@ -104,11 +102,12 @@ function FeedPageInner() {
   const [reloadKey, setReloadKey] = useState(0);
 
   const [tab, setTab] = useState<FeedTab>("for-you");
-  const [navKey, setNavKey] = useState<NavKey>("home");
+  const [navKey, setNavKey] = useState<NavKey>(
+    searchParams.get("view") === "saved" ? "saved" : "home",
+  );
 
   const [composeOpen, setComposeOpen] = useState(false);
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
-  const [ranksOpen, setRanksOpen] = useState(false);
 
   const [following, setFollowing] = useState<string[]>([]);
   const [pointsToast, setPointsToast] = useState<Record<string, string>>({});
@@ -385,7 +384,7 @@ function FeedPageInner() {
       }
       return null;
     } catch {
-      return "Couldn't reach PlateMap. Check your connection.";
+      return "Couldn't reach PlateMaps. Check your connection.";
     }
   }
 
@@ -443,7 +442,7 @@ function FeedPageInner() {
 
   async function handleShare(post: Post): Promise<string | null> {
     const url = `${globalThis.location?.origin ?? ""}/feed?post=${post.id}`;
-    const title = post.dishName ?? post.restaurant ?? "A plate on PlateMap";
+    const title = post.dishName ?? post.restaurant ?? "A plate on PlateMaps";
     try {
       if (navigator.share) {
         await navigator.share({ title, text: post.text, url });
@@ -529,19 +528,6 @@ function FeedPageInner() {
     ? (posts?.find((p) => p.id === commentsPostId) ?? null)
     : null;
 
-  const navAccount = account
-    ? { name: account.name, points: account.points, avatarUrl: account.avatarUrl }
-    : null;
-
-  function navigate(key: Extract<NavKey, "home" | "saved" | "leaderboard">) {
-    if (key === "leaderboard") {
-      setRanksOpen(true);
-      return;
-    }
-    setNavKey(key);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
   const showMap = tab === "map" && navKey !== "saved";
 
   const feedColumn = (
@@ -553,7 +539,10 @@ function FeedPageInner() {
           <h2 className="font-display text-base font-semibold text-zinc-900">Saved plates</h2>
           <button
             type="button"
-            onClick={() => navigate("home")}
+            onClick={() => {
+              setNavKey("home");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
             className="min-h-11 text-sm font-medium text-pm-orange-text hover:underline"
           >
             Back to feed
@@ -575,7 +564,7 @@ function FeedPageInner() {
       )}
 
       {showMap ? (
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-zinc-700/60 shadow-md">
           <RestaurantMap restaurants={restaurants} commentsByRestaurant={mapComments} />
         </div>
       ) : (
@@ -654,17 +643,8 @@ function FeedPageInner() {
     <div className="app-shell mx-auto my-6 w-full max-w-7xl overflow-hidden rounded-2xl border border-zinc-200/60">
       <Header />
 
-      <div className="bg-white/40 px-4 pb-24 pt-5 sm:px-6 lg:pb-8">
+      <div className="bg-white/40 px-4 pb-8 pt-5 sm:px-6">
         <div className="mx-auto flex w-full max-w-6xl gap-8">
-          <aside className="hidden w-52 shrink-0 lg:block">
-            <SideNav
-              activeKey={navKey}
-              account={navAccount}
-              onNavigate={navigate}
-              onCreate={() => setComposeOpen(true)}
-            />
-          </aside>
-
           <main className="min-w-0 flex-1 lg:max-w-[640px]">{feedColumn}</main>
 
           <aside className="hidden w-80 shrink-0 xl:block">
@@ -674,12 +654,6 @@ function FeedPageInner() {
           </aside>
         </div>
       </div>
-
-      <MobileNavigation
-        activeKey={navKey}
-        onNavigate={navigate}
-        onCreate={() => setComposeOpen(true)}
-      />
 
       {composeOpen && (
         <CreatePostModal
@@ -697,14 +671,6 @@ function FeedPageInner() {
           onSubmit={handleComment}
           onLikeComment={handleLikeComment}
         />
-      )}
-
-      {ranksOpen && (
-        <Dialog title="Leaderboard" onClose={() => setRanksOpen(false)} variant="panel">
-          <div className="p-4">
-            <Leaderboard currentUserId={account?.id ?? null} refreshKey={ranksVersion} />
-          </div>
-        </Dialog>
       )}
     </div>
   );
