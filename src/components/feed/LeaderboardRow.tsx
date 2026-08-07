@@ -136,7 +136,7 @@ export function LeaderboardRow({
       <div className="flex shrink-0 flex-col items-end gap-0.5">
         <span className="flex items-center gap-1 whitespace-nowrap text-sm font-bold text-pm-orange-text">
           <PlateStarIcon className="h-3.5 w-[18px]" />
-          {formatPoints(entry.points)}
+          <span className="tabular-nums">{formatPoints(entry.points)}</span>
           <span className="sr-only"> PM Points</span>
         </span>
         <RankDelta change={entry.rankChange} />
