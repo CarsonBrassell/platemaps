@@ -384,7 +384,7 @@ function FeedPageInner() {
       }
       return null;
     } catch {
-      return "Couldn't reach PlateMap. Check your connection.";
+      return "Couldn't reach PlateMaps. Check your connection.";
     }
   }
 
@@ -442,7 +442,7 @@ function FeedPageInner() {
 
   async function handleShare(post: Post): Promise<string | null> {
     const url = `${globalThis.location?.origin ?? ""}/feed?post=${post.id}`;
-    const title = post.dishName ?? post.restaurant ?? "A plate on PlateMap";
+    const title = post.dishName ?? post.restaurant ?? "A plate on PlateMaps";
     try {
       if (navigator.share) {
         await navigator.share({ title, text: post.text, url });

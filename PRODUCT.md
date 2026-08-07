@@ -58,11 +58,10 @@ Undecided, to be recorded rather than assumed:
 
 - Whether San Diego is the permanent scope or the first market.
 - Whether Yelp remains a live dependency or was seed data for launch.
-- The product name is inconsistent in shipped code: the wordmark, page title and repo say **PlateMaps**, while `package.json`, the Vercel project and one feed error string say **PlateMap**. One spelling needs to win.
 
 ## Brand Commitments
 
-- Name: **PlateMaps** (subject to the inconsistency noted above).
+- Name: **PlateMaps**, plural, everywhere a user can encounter it — copy, share titles, image alt text, page title. The Vercel project slug and its `platemap-five.vercel.app` URL are still singular; those are deployment identifiers rather than brand surfaces, and renaming them would break the live URL for no user-visible gain.
 - Logo mark and wordmark assets in `public/` (`logo-mark.png`, `logo.png`), rendered through `BrandMark` / `WordMark`.
 - A warm orange accent (`--pm-orange`, the `#e8875a` family) against charcoal, carried through primary actions, pins, and the map's streetlight glow.
 

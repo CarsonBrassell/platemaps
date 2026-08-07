@@ -80,7 +80,7 @@ export function FeedErrorState({ onRetry }: { onRetry: () => void }) {
     <Shell
       icon={<WifiOffIcon className="h-6 w-6" />}
       title="Couldn't load the feed"
-      body="Something went wrong reaching PlateMap. Your connection may have dropped."
+      body="Something went wrong reaching PlateMaps. Your connection may have dropped."
       action={
         <button type="button" onClick={onRetry} className={primaryButton}>
           Try again
