@@ -76,15 +76,20 @@ function spreadHash(id: string) {
   return hash;
 }
 
-// Matches the bubble's own CSS: how far above the marker the first bubble's
-// top sits, and the row heights that make up its box (text row, plus an
-// optional meta row of rating/upvotes/timestamp for real posted comments).
-// Raised from 46 so the box clears the pin's outer halo instead of sitting on
-// it. The tail no longer reaches down here — it is a short detail on the box's
-// edge — so this is purely the gap between a bubble and its own marker.
+// How far above the marker the first bubble's top sits — clears the pin's
+// outer halo (radius 15) with room for the tail below the box.
 const BUBBLE_TOP_OFFSET = 72;
-const BUBBLE_TEXT_ROW_HEIGHT = 26;
-const BUBBLE_META_ROW_HEIGHT = 22;
+// The box's own box model, named so bubbleHeight and the tail's seam are
+// derived from the same numbers the CSS below actually uses instead of a
+// separately hand-measured guess that can drift out of sync with it.
+const BUBBLE_BORDER = 2;
+const BUBBLE_PADDING_Y = 4;
+/** Measured from a real rendered bubble: a one-line comment, and the same
+ * comment's rating/upvote/timestamp row when it has one. Rounded up a
+ * couple of px as a safety margin for collision spacing, not measured tight. */
+const BUBBLE_TEXT_ROW_HEIGHT = 16;
+const BUBBLE_META_ROW_HEIGHT = 20;
+const BUBBLE_META_GAP = 3;
 const BUBBLE_MIN_WIDTH = 50;
 /** A meta row holds sparkle-rating, the upvote chip and a timestamp. */
 const BUBBLE_META_MIN_WIDTH = 118;
@@ -93,15 +98,24 @@ const BUBBLE_GAP = 6;
 const BUBBLE_FILL = "#f6ead8";
 const BUBBLE_INK = "#2b211c";
 const BUBBLE_POP = "#d96f45";
-/** How far the tail spike hangs below the box, after its overlap of the border. */
-const BUBBLE_TAIL_HEIGHT = 10;
+// Fixed tail size rather than one computed per comment — it is a small
+// decorative gesture below the box, not something that needs to track the
+// box's own width or text length, and a fixed size can't fall out of sync
+// with the box the way a computed one already has once (see bubbleElement).
+const BUBBLE_TAIL_WIDTH = 16;
+const BUBBLE_TAIL_HEIGHT = 12;
+const BUBBLE_TAIL_LEFT = 10;
+/** Thickness of the tail's ink outline, to roughly match the box's border. */
+const BUBBLE_TAIL_INSET = 3;
 
 type Rect = { x: number; y: number; w: number; h: number };
 
 function bubbleHeight(comment: MapComment) {
-  return comment.upvotes !== undefined
-    ? BUBBLE_TEXT_ROW_HEIGHT + BUBBLE_META_ROW_HEIGHT
-    : BUBBLE_TEXT_ROW_HEIGHT;
+  const border = BUBBLE_BORDER * 2;
+  const padding = BUBBLE_PADDING_Y * 2;
+  const meta =
+    comment.upvotes !== undefined ? BUBBLE_META_GAP + BUBBLE_META_ROW_HEIGHT : 0;
+  return border + padding + BUBBLE_TEXT_ROW_HEIGHT + meta;
 }
 
 // The closer you zoom in, the more room a bubble gets before its text is
@@ -218,50 +232,39 @@ function bubbleElement(
       </div>`
     : "";
 
-  /* Tail proportioned against the bubble itself rather than against the
-     distance down to the pin. Running it all the way to the pin made it as
-     long as the box was tall, which at this size read as a stray line the
-     bubble happened to be sitting on: a speech bubble's tail is a detail on
-     its edge, not a connector. It only has to gesture downward — the pin is
-     already a lit marker directly below and needs no line drawn to it.
+  /* A plain triangle built from CSS borders, not a hand-plotted SVG path:
+     two stacked triangles (a slightly larger ink one behind a smaller fill
+     one) read as an outlined tail with no path math to get wrong. The seam
+     against the box is `-${BUBBLE_BORDER}px`, the box's own border width,
+     not a separately guessed pixel value — so it cannot go back to silently
+     drifting out of sync with the box the way the previous "-4px" did once
+     the box's border weight changed out from under it.
 
-     Its leading edge drops off the box's bottom-left, hooks to a point, and
-     the trailing edge returns as a hairline that rejoins the box to the
-     right. That asymmetry is the whole character of it. */
-  const drop = Math.min(15, Math.max(9, Math.round(bubbleHeight(comment) * 0.4)));
-  const leadX = 4;
-  // Also clamped against the bubble's own width, so a narrow one can't wear a
-  // mouth that spans most of its bottom edge.
-  const mouthWidth = Math.min(drop * 0.85, estimateBubbleWidth(comment, zoom) * 0.28);
-  const trailX = leadX + mouthWidth;
-  const tipX = leadX - drop * 0.5;
-  const mouthMid = (leadX + trailX) / 2;
-  /* Inner fill inset further along the leading edge than the trailing one —
-     the same heavy-left/thin-right weight the box carries — and stopping at
-     68% of the run so the two edges converge into a solid point. The insets
-     are fractions of the mouth rather than fixed pixels: at this size fixed
-     ones would cross over on a short mouth and turn the fill inside out. */
-  const innerLeadX = (leadX + 0.42 * mouthWidth).toFixed(1);
-  const innerTrailX = (trailX - 0.16 * mouthWidth).toFixed(1);
-  const innerTipX = (mouthMid + 0.68 * (tipX - mouthMid)).toFixed(1);
-  const innerTipY = (0.68 * drop).toFixed(1);
-  const tailW = Math.ceil(trailX + 4);
-  const tailH = Math.ceil(drop + 6);
-  /* Only the bubble nearest the pin gets a tail. Higher ones in a stack sit
-     70px+ away, and a sliver that long would run straight through the bubbles
-     beneath it — their grouping already reads from proximity alone.
-
-     pointer-events are off so the tail's bounding box, which is far wider than
-     the ink inside it, doesn't swallow clicks meant for the map. */
+     Only the bubble nearest the pin gets one — the rest of a stack sits well
+     clear of their own markers and does not need to gesture at anything.
+     pointer-events stay off so it never steals a click meant for the box or
+     the map beneath it. */
   const tail =
     stackIndex === 0
-      ? `<svg width="${tailW}" height="${tailH}" viewBox="0 0 ${tailW} ${tailH}" style="
-          position: absolute; left: 0; top: calc(100% - 4px);
-          overflow: visible; pointer-events: none;
+      ? `<div style="
+          position: absolute; left: ${BUBBLE_TAIL_LEFT}px; top: 100%;
+          pointer-events: none;
         ">
-          <path d="M${trailX.toFixed(1)} 0 L${tipX} ${drop} L${leadX} 0 Z" fill="${BUBBLE_INK}" />
-          <path d="M${innerTrailX} 0 L${innerTipX} ${innerTipY} L${innerLeadX} 0 Z" fill="${BUBBLE_FILL}" />
-        </svg>`
+          <div style="
+            position: absolute; top: -${BUBBLE_BORDER}px; left: 0;
+            width: 0; height: 0; border-radius: 2px;
+            border-left: ${BUBBLE_TAIL_WIDTH / 2}px solid transparent;
+            border-right: ${BUBBLE_TAIL_WIDTH / 2}px solid transparent;
+            border-top: ${BUBBLE_TAIL_HEIGHT}px solid ${BUBBLE_INK};
+          "></div>
+          <div style="
+            position: absolute; top: -${BUBBLE_BORDER}px; left: ${BUBBLE_TAIL_INSET}px;
+            width: 0; height: 0; border-radius: 2px;
+            border-left: ${BUBBLE_TAIL_WIDTH / 2 - BUBBLE_TAIL_INSET}px solid transparent;
+            border-right: ${BUBBLE_TAIL_WIDTH / 2 - BUBBLE_TAIL_INSET}px solid transparent;
+            border-top: ${BUBBLE_TAIL_HEIGHT - BUBBLE_TAIL_INSET}px solid ${BUBBLE_FILL};
+          "></div>
+        </div>`
       : "";
 
   const el = document.createElement("div");
@@ -285,10 +288,10 @@ function bubbleElement(
       <div class="map-bubble-box" style="
         max-width: ${maxWidth}px;
         background: ${BUBBLE_FILL};
-        border: 2px solid ${BUBBLE_INK};
+        border: ${BUBBLE_BORDER}px solid ${BUBBLE_INK};
         border-radius: 11px;
         box-shadow: inset 0 0 0 2px ${BUBBLE_FILL}, inset 0 0 0 3px rgba(43,33,28,0.45);
-        padding: 4px 10px;
+        padding: ${BUBBLE_PADDING_Y}px 10px;
         font-size: 11px;
         line-height: 1.35;
         color: #3c2f27;
@@ -482,15 +485,14 @@ export function RestaurantMap({
           if (stackIndex >= limit) break;
           const width = estimateBubbleWidth(comment, zoom);
           const height = bubbleHeight(comment);
-          // The tail is part of the bubble's footprint, so nothing else gets
-          // placed over it. Only the first bubble has one, and it runs the
-          // whole way from the box's top edge down to the pin — which is
-          // exactly offsetY.
+          // The tail is part of the bubble's footprint too, so nothing else
+          // gets placed over it — only the nearest-the-pin bubble in a stack
+          // draws one (see bubbleElement), so only its rect grows to include it.
           const rect: Rect = {
             x: point.x + 12,
             y: point.y - offsetY,
             w: width,
-            h: stackIndex === 0 ? offsetY : height,
+            h: height + (stackIndex === 0 ? BUBBLE_TAIL_HEIGHT : 0),
           };
           if (placed.some((r) => rectsOverlap(rect, r))) continue;
           placed.push(rect);
