@@ -10,8 +10,21 @@ export type Restaurant = {
   lng: number;
   status: "calm" | "urgent";
   statusLabel: string;
+  /**
+   * Review-count-weighted blend of the source ratings below, written by
+   * `scripts/blend-ratings.mjs`. Where no Google match was found this is just
+   * the Yelp rating.
+   */
   rating: number;
   reviewCount: number;
+  /**
+   * The component ratings behind `rating`, kept so any figure the app shows
+   * can be traced back to what produced it. Nothing renders these.
+   */
+  yelpRating?: number;
+  yelpReviewCount?: number;
+  googleRating?: number;
+  googleReviewCount?: number;
   trending?: boolean;
   /**
    * Optional photo. Omit it and cards fall back to the utensils placeholder,

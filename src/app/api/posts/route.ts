@@ -4,7 +4,7 @@ import { getPosts, createPost, awardPoints, type PostMedia } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
 import { FOOD_TAGS } from "@/data/foodTags";
-import { AMENITY_LABELS, VIBE_LABELS } from "@/data/reviewScales";
+import { AMENITY_LABELS, ROOM_LABELS } from "@/data/reviewScales";
 
 const MAX_MEDIA = 4;
 const MAX_MEDIA_LENGTH = 4_000_000;
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
   const tags = pickFrom(body.tags, FOOD_TAGS as readonly string[]);
   const amenities = pickFrom(body.amenities, AMENITY_LABELS);
   const vibe =
-    typeof body.vibe === "string" && VIBE_LABELS.includes(body.vibe) ? body.vibe : undefined;
+    typeof body.vibe === "string" && ROOM_LABELS.includes(body.vibe) ? body.vibe : undefined;
 
   let parsedRating: number | undefined;
   if (rating !== undefined && rating !== null && rating !== "") {

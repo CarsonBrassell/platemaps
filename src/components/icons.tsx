@@ -238,6 +238,27 @@ export function ChevronIcon({ className = "" }: IconProps) {
   );
 }
 
+/* Feed vote arrows. Deliberately arrows rather than the filled thumbs above:
+   thumbs carried the "would you eat this?" verdict vocabulary, and an up/down
+   score on a post means something different — worth reading, not worth eating. */
+export function ArrowUpIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">
+      <path d="M12 19V5" />
+      <path d="m5 12 7-7 7 7" />
+    </svg>
+  );
+}
+
+export function ArrowDownIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">
+      <path d="M12 5v14" />
+      <path d="m19 12-7 7-7-7" />
+    </svg>
+  );
+}
+
 export function FlagIcon({ className = "" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">

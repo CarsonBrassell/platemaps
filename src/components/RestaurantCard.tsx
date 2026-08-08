@@ -36,6 +36,15 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
             Trending
           </span>
         )}
+        {/* Yelp wants their photos credited wherever they appear. The whole
+            card is already one <Link>, so this can't be the anchor back to the
+            business's Yelp page without nesting anchors — that link lives on
+            the detail page's header, which is one tap away. */}
+        {restaurant.photo && (
+          <span className="absolute bottom-2 right-2 whitespace-nowrap rounded bg-black/45 px-1.5 py-0.5 text-[9px] font-medium text-white/90 backdrop-blur-sm">
+            Photo: Yelp
+          </span>
+        )}
       </div>
 
       <div className="p-3.5">

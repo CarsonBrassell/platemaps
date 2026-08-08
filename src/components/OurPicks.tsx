@@ -60,6 +60,13 @@ export function OurPicks() {
               <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-pm-orange-text shadow-sm backdrop-blur-sm">
                 Trending
               </span>
+              {/* Same credit the grid cards carry — see the note in
+                  RestaurantCard for why it isn't the link back. */}
+              {r.photo && (
+                <span className="absolute bottom-2 right-2 whitespace-nowrap rounded bg-black/45 px-1.5 py-0.5 text-[9px] font-medium text-white/90 backdrop-blur-sm">
+                  Photo: Yelp
+                </span>
+              )}
             </div>
             <div className="p-3.5">
               <p className="font-display text-[15px] font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pm-orange-text">

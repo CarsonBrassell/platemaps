@@ -19,7 +19,10 @@ export default async function RestaurantPage({
   return (
     <div className="app-shell mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-2xl border border-zinc-200/60">
       <Header />
-      <div className="mx-auto max-w-md bg-white">
+      {/* Phone-width column on small screens, but released on lg so the menu
+          and the comment thread can sit side by side rather than leaving
+          ~575px of the shell empty next to a single narrow column. */}
+      <div className="mx-auto max-w-md bg-white lg:max-w-none">
         <div className="border-b border-zinc-100 px-5 py-3">
           <Link
             href="/"

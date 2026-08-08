@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import { restaurants } from "@/data/restaurants";
@@ -12,7 +12,6 @@ import { dishesByRestaurant } from "@/data/dishes";
 import { FeedHeader } from "@/components/feed/FeedHeader";
 import { FeedTabs } from "@/components/feed/FeedTabs";
 import { CreatePostComposer } from "@/components/feed/CreatePostComposer";
-import { CreatePostModal } from "@/components/feed/CreatePostModal";
 import { FoodPostCard } from "@/components/feed/FoodPostCard";
 import { CommentsPanel } from "@/components/feed/CommentsPanel";
 import { Leaderboard } from "@/components/feed/Leaderboard";
@@ -39,14 +38,23 @@ const RestaurantMap = dynamic(
 );
 
 /**
- * Recency-weighted score: a fresh post with a few likes outranks a stale hit.
+ * Net votes, floored at zero. Ranking ran on likes until the heart was
+ * replaced by up/down arrows; downvotes now pull a post back down, but the
+ * floor keeps the score positive so the curve below behaves.
+ */
+function netVotes(post: Post) {
+  return Math.max(0, post.votedYesBy.length - post.votedNoBy.length);
+}
+
+/**
+ * Recency-weighted score: a fresh post with a few votes outranks a stale hit.
  *
- * The +1 matters — without it every unliked post scores zero, so a review you
+ * The +1 matters — without it every unvoted post scores zero, so a review you
  * just published would sort to the very bottom of the feed and look lost.
  */
 function hotScore(post: Post) {
   const ageHours = (Date.now() - new Date(post.createdAt).getTime()) / 3_600_000;
-  return (post.likedBy.length + 1) / Math.pow(ageHours + 2, 1.5);
+  return (netVotes(post) + 1) / Math.pow(ageHours + 2, 1.5);
 }
 
 /* The map bubbles predate structured post fields, so seeded comments still
@@ -78,10 +86,6 @@ function findDishId(restaurantId: string, dishName: string): string | undefined 
   )?.id;
 }
 
-function firstName(name: string) {
-  return name.trim().split(/\s+/)[0] ?? name;
-}
-
 export default function FeedPage() {
   return (
     <Suspense fallback={null}>
@@ -92,8 +96,11 @@ export default function FeedPage() {
 
 function FeedPageInner() {
   const { account, isSignedIn, refresh } = useAuth();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const highlightPostId = searchParams.get("post");
+  /** Points just awarded by /post, so the return trip confirms what was earned. */
+  const earned = searchParams.get("earned");
 
   const [posts, setPosts] = useState<Post[] | null>(null);
   const [loadError, setLoadError] = useState(false);
@@ -106,11 +113,9 @@ function FeedPageInner() {
     searchParams.get("view") === "saved" ? "saved" : "home",
   );
 
-  const [composeOpen, setComposeOpen] = useState(false);
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
 
   const [following, setFollowing] = useState<string[]>([]);
-  const [pointsToast, setPointsToast] = useState<Record<string, string>>({});
   const [votePoints, setVotePoints] = useState<Record<string, number>>({});
   const [banner, setBanner] = useState<string | null>(null);
   const [highlighted, setHighlighted] = useState<string | null>(null);
@@ -198,70 +203,25 @@ function FeedPageInner() {
     return () => clearTimeout(t);
   }, [banner]);
 
-  function flashPoints(postId: string, message: string) {
-    setPointsToast((prev) => ({ ...prev, [postId]: message }));
-    setTimeout(
-      () =>
-        setPointsToast((prev) => {
-          const next = { ...prev };
-          delete next[postId];
-          return next;
-        }),
-      1800,
-    );
-  }
+  // Coming back from /post. The points were already awarded server-side; this
+  // just confirms them, and nudges the leaderboard to re-read the new standing.
+  useEffect(() => {
+    const points = Number(earned);
+    if (!Number.isFinite(points) || points <= 0) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setBanner(`+${points} PM Points earned`);
+    setRanksVersion((v) => v + 1);
+  }, [earned]);
+
 
   function patchPost(postId: string, patch: (p: Post) => Post) {
     setPosts((prev) => (prev ? prev.map((p) => (p.id === postId ? patch(p) : p)) : prev));
   }
 
-  async function handleLike(postId: string) {
-    if (!account) return;
-    const current = posts?.find((p) => p.id === postId);
-    if (!current) return;
-
-    const wasLiked = current.likedBy.includes(account.id);
-    // Optimistic: flip immediately, reconcile (or revert) when the server answers.
-    patchPost(postId, (p) => ({
-      ...p,
-      likedBy: wasLiked
-        ? p.likedBy.filter((id) => id !== account.id)
-        : [...p.likedBy, account.id],
-    }));
-
-    try {
-      const res = await fetch(`/api/posts/${postId}/like`, { method: "POST" });
-      if (!res.ok) throw new Error("failed");
-      const data = await res.json();
-
-      patchPost(postId, (p) => ({
-        ...p,
-        likedBy: data.liked
-          ? [...p.likedBy.filter((id) => id !== account.id), account.id]
-          : p.likedBy.filter((id) => id !== account.id),
-        authorPoints: p.authorPoints + (data.authorPointsEarned ?? 0),
-      }));
-
-      if (data.authorPointsEarned > 0) {
-        flashPoints(
-          postId,
-          data.milestone
-            ? `+${data.authorPointsEarned} for ${firstName(data.authorName)} · ${data.milestone.likes} likes!`
-            : `+${data.authorPointsEarned} point for ${firstName(data.authorName)}`,
-        );
-        setRanksVersion((v) => v + 1);
-        if (data.authorId === account.id) refresh();
-      }
-    } catch {
-      patchPost(postId, (p) => ({
-        ...p,
-        likedBy: wasLiked
-          ? [...p.likedBy.filter((id) => id !== account.id), account.id]
-          : p.likedBy.filter((id) => id !== account.id),
-      }));
-      setBanner("Couldn't save that like.");
-    }
-  }
+  /* Liking is gone from the card — the heart was replaced by up/down arrows,
+     which run through handleVote below. `likedBy` and /api/posts/[id]/like are
+     left in place: existing rows still carry likes, and nothing reads them now
+     that ranking runs on votes. */
 
   async function handleVote(postId: string, vote: boolean) {
     if (!account) return;
@@ -456,14 +416,6 @@ function FeedPageInner() {
     }
   }
 
-  function handleCreated(post: Post, pointsEarned: number) {
-    setPosts((prev) => (prev ? [post, ...prev] : [post]));
-    setComposeOpen(false);
-    setBanner(`+${pointsEarned} PM Points earned`);
-    setRanksVersion((v) => v + 1);
-    refresh();
-  }
-
   const visiblePosts = useMemo(() => {
     if (!posts) return [];
     const list = [...posts];
@@ -482,12 +434,12 @@ function FeedPageInner() {
 
   /* The flame marks the few genuinely hot plates, computed over every post
      rather than the current tab so a card keeps its badge wherever it shows
-     up. The likes floor stops a quiet feed from flaming everything. */
+     up. The vote floor stops a quiet feed from flaming everything. */
   const trendingIds = useMemo(() => {
     if (!posts) return new Set<string>();
     return new Set(
       [...posts]
-        .filter((p) => p.likedBy.length >= 3)
+        .filter((p) => netVotes(p) >= 3)
         .sort((a, b) => hotScore(b) - hotScore(a))
         .slice(0, 3)
         .map((p) => p.id),
@@ -506,8 +458,9 @@ function FeedPageInner() {
             id: p.id,
             restaurantId: restaurant.id,
             text: bubbleTextFromPost(p.text),
-            score: p.likedBy.length,
-            upvotes: p.likedBy.length,
+            score: netVotes(p),
+            upvotes: p.votedYesBy.length,
+            upvotedByMe: account ? p.votedYesBy.includes(account.id) : false,
             createdAt: p.createdAt,
             rating: p.rating !== undefined ? `${p.rating.toFixed(1)}★` : ratingFromPost(p.text),
             dishPrefix:
@@ -522,7 +475,7 @@ function FeedPageInner() {
       out[restaurant.id] = [...real, ...(mapCommentsByRestaurant[restaurant.id] ?? [])];
     }
     return out;
-  }, [posts]);
+  }, [posts, account]);
 
   const activePost = commentsPostId
     ? (posts?.find((p) => p.id === commentsPostId) ?? null)
@@ -565,7 +518,15 @@ function FeedPageInner() {
 
       {showMap ? (
         <div className="overflow-hidden rounded-2xl border border-zinc-700/60 shadow-md">
-          <RestaurantMap restaurants={restaurants} commentsByRestaurant={mapComments} />
+          <RestaurantMap
+            restaurants={restaurants}
+            commentsByRestaurant={mapComments}
+            /* handleVote, not handleLike: every number the map chip shows is
+               read from votedYesBy above, and handleVote toggles that same
+               field — passing a yes vote it already holds clears it. Wiring
+               this to likes would have shown one count and changed another. */
+            onUpvote={isSignedIn ? (postId) => handleVote(postId, true) : undefined}
+          />
         </div>
       ) : (
         <>
@@ -575,7 +536,6 @@ function FeedPageInner() {
                 name={account?.name}
                 avatarUrl={account?.avatarUrl}
                 isSignedIn={isSignedIn}
-                onOpen={() => setComposeOpen(true)}
               />
             </div>
           )}
@@ -598,7 +558,7 @@ function FeedPageInner() {
               <EmptyFeedState
                 tab={tab}
                 isSignedIn={isSignedIn}
-                onCreate={() => setComposeOpen(true)}
+                onCreate={() => router.push("/post")}
               />
             )
           ) : (
@@ -617,9 +577,7 @@ function FeedPageInner() {
                       isFollowing={followingIds.includes(post.userId)}
                       highlighted={post.id === highlighted}
                       trending={trendingIds.has(post.id)}
-                      pointsToast={pointsToast[post.id] ?? null}
                       votePoints={votePoints[post.id] ?? null}
-                      onLike={handleLike}
                       onSave={handleSave}
                       onShare={handleShare}
                       onVote={handleVote}
@@ -654,14 +612,6 @@ function FeedPageInner() {
           </aside>
         </div>
       </div>
-
-      {composeOpen && (
-        <CreatePostModal
-          isSignedIn={isSignedIn}
-          onClose={() => setComposeOpen(false)}
-          onCreated={handleCreated}
-        />
-      )}
 
       {activePost && (
         <CommentsPanel

@@ -9,15 +9,12 @@ import { restaurants } from "@/data/restaurants";
 import { useAuth } from "@/lib/auth";
 import { SideNav, type NavKey } from "@/components/feed/SideNav";
 import { MobileNavigation } from "@/components/feed/MobileNavigation";
-import { CreatePostModal } from "@/components/feed/CreatePostModal";
 import { Dialog } from "@/components/feed/Dialog";
 import { Leaderboard } from "@/components/feed/Leaderboard";
-import type { Post } from "@/components/feed/types";
 
 export default function Home() {
   const router = useRouter();
-  const { account, isSignedIn } = useAuth();
-  const [composeOpen, setComposeOpen] = useState(false);
+  const { account } = useAuth();
   const [ranksOpen, setRanksOpen] = useState(false);
 
   const navAccount = account
@@ -32,11 +29,6 @@ export default function Home() {
     router.push(key === "saved" ? "/feed?view=saved" : "/feed");
   }
 
-  function handleCreated(post: Post) {
-    setComposeOpen(false);
-    router.push(`/feed?post=${post.id}`);
-  }
-
   return (
     <div className="app-shell mx-auto my-6 w-full max-w-7xl overflow-hidden rounded-2xl border border-zinc-200/60">
       <Header />
@@ -48,7 +40,7 @@ export default function Home() {
             activeKey="explore"
             account={navAccount}
             onNavigate={navigate}
-            onCreate={() => setComposeOpen(true)}
+            onCreate={() => router.push("/post")}
           />
         </aside>
 
@@ -62,16 +54,8 @@ export default function Home() {
       <MobileNavigation
         activeKey="explore"
         onNavigate={navigate}
-        onCreate={() => setComposeOpen(true)}
+        onCreate={() => router.push("/post")}
       />
-
-      {composeOpen && (
-        <CreatePostModal
-          isSignedIn={isSignedIn}
-          onClose={() => setComposeOpen(false)}
-          onCreated={handleCreated}
-        />
-      )}
 
       {ranksOpen && (
         <Dialog title="Leaderboard" onClose={() => setRanksOpen(false)} variant="panel">

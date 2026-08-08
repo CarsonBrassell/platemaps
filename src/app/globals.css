@@ -169,12 +169,26 @@ h3 {
   word-break: break-word;
 }
 
-/* No box-shadow here: the ink drop-shadow lives on the bubble's wrapper so it
-   traces the box and tail together, and a box-only shadow would break that
-   silhouette on hover. */
+/* No box-shadow here: the ticket's pop and ink shadows live on the bubble's
+   wrapper so they trace the box and tail together, and a box-only shadow
+   would break that silhouette on hover. */
 .map-bubble:hover .map-bubble-box,
 .map-bubble-box:hover {
   max-width: 300px !important;
+}
+
+.map-upvote-chip {
+  transition: transform 0.1s ease;
+}
+
+.map-upvote-chip:hover {
+  transform: scale(1.08);
+}
+
+/* A stamped-down press rather than a lighten/darken, to match the flat
+   retro-ticket ink the chip is drawn in. */
+.map-upvote-chip:active {
+  transform: scale(0.94);
 }
 
 /* The neo-noir look now lives entirely in our own vector style
@@ -516,6 +530,93 @@ h3 {
   transition: width 0.32s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
+/* The dish recommendation meter. A range input underneath — drag, click-to-jump,
+   arrow keys, Home/End and touch all come from the platform — with the track
+   thickened until it reads as a vessel being filled rather than a slider being
+   nudged. The fill is painted by the element's own background from --fill. */
+.pct-meter {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(
+    to right,
+    var(--pm-orange) 0%,
+    var(--pm-orange) var(--fill, 50%),
+    var(--pm-grey-tint) var(--fill, 50%),
+    var(--pm-grey-tint) 100%
+  );
+  box-shadow: inset 0 1px 3px rgba(43, 33, 28, 0.14);
+  outline: none;
+  cursor: ew-resize;
+  transition: background 0.12s linear;
+}
+
+.pct-meter::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 56px;
+  width: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 1px 5px rgba(43, 33, 28, 0.4);
+  cursor: grab;
+}
+
+/* Firefox draws its own track above the element background, so it is cleared
+   out and the thumb sized to match the Chromium rendering. */
+.pct-meter::-moz-range-track {
+  height: 56px;
+  background: transparent;
+  border: none;
+}
+
+.pct-meter::-moz-range-thumb {
+  height: 56px;
+  width: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 1px 5px rgba(43, 33, 28, 0.4);
+  cursor: grab;
+}
+
+.pct-meter:focus-visible {
+  outline: 2px solid var(--pm-orange);
+  outline-offset: 3px;
+}
+
+/* The shutter's confirmation: one frame of white over the viewport, the way a
+   camera answers the button. Short enough that four shots in a row don't
+   strobe. */
+@keyframes shutter-flash {
+  from { opacity: 0.85; }
+  to   { opacity: 0; }
+}
+
+.shutter-flash {
+  animation: shutter-flash 0.18s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shutter-flash { animation: none; opacity: 0; }
+}
+
+/* Stars fill up to the pointer, so the sweep between them has to be quick
+   enough to feel like one gesture rather than five separate fades. */
+.star-pick {
+  transition:
+    color 0.1s ease,
+    transform 0.16s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+/* Only the star under the pointer lifts — it marks where the fill stops. */
+.star-pick-on {
+  transform: scale(1.12);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .emoji-pop,
   .chip-pop,
@@ -523,6 +624,9 @@ h3 {
   .step-in-back { animation: none; }
   .step-progress { transition: none; }
   .emoji-slider::-webkit-slider-thumb { transition: none; }
+  .pct-meter { transition: none; }
+  .star-pick { transition: none; }
+  .star-pick-on { transform: none; }
 }
 
 /* --- "Would you eat this?" verdict ------------------------------------ */

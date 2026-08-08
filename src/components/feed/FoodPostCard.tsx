@@ -4,12 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PostMediaCarousel } from "./PostMediaCarousel";
 import { PostActions } from "./PostActions";
-import { WouldYouEat } from "./WouldYouEat";
 import { PointsBadge } from "./PointsBadge";
 import { MoreIcon, StarIcon, FlagIcon, EyeOffIcon, FlameIcon } from "@/components/icons";
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { tagAccent } from "@/data/foodTags";
-import { amenityEmoji, vibeEmoji } from "@/data/reviewScales";
+import { amenityEmoji, vibeChip } from "@/data/reviewScales";
 import type { Post } from "./types";
 
 /** Handle shown next to the avatar — "Maya Ellis" reads as "mayaellis". */
@@ -43,9 +42,7 @@ export function FoodPostCard({
   isFollowing,
   highlighted,
   trending,
-  pointsToast,
   votePoints,
-  onLike,
   onSave,
   onShare,
   onVote,
@@ -60,10 +57,8 @@ export function FoodPostCard({
   highlighted?: boolean;
   /** Among the hottest plates right now — earns the glowing flame. */
   trending?: boolean;
-  pointsToast: string | null;
-  /** Points just earned for voting, shown inside the verdict block. */
+  /** Points just earned for voting, floated above the action row. */
   votePoints: number | null;
-  onLike: (postId: string) => void;
   onSave: (postId: string) => void;
   onShare: (post: Post) => Promise<string | null>;
   onVote: (postId: string, vote: boolean) => void;
@@ -77,7 +72,13 @@ export function FoodPostCard({
   const [status, setStatus] = useState<"live" | "hidden" | "reported" | "deleted">("live");
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const liked = currentUserId ? post.likedBy.includes(currentUserId) : false;
+  const myVote = currentUserId
+    ? post.votedYesBy.includes(currentUserId)
+      ? true
+      : post.votedNoBy.includes(currentUserId)
+        ? false
+        : null
+    : null;
   const saved = currentUserId ? post.savedBy.includes(currentUserId) : false;
   const isOwner = currentUserId === post.userId;
   const palette = avatarPalette(post.authorName);
@@ -121,6 +122,9 @@ export function FoodPostCard({
   }
 
   const meta = [relativeTime(post.createdAt), post.locationLabel].filter(Boolean).join(" · ");
+  // Reads either vocabulary the `vibe` column has held — "Lively", or "Food"
+  // written back out as "Best at food".
+  const roomChip = post.vibe ? vibeChip(post.vibe) : null;
 
   return (
     <article
@@ -299,33 +303,18 @@ export function FoodPostCard({
         )}
       </div>
 
-      <WouldYouEat
-        yes={post.votedYesBy.length}
-        no={post.votedNoBy.length}
-        myVote={
-          currentUserId
-            ? post.votedYesBy.includes(currentUserId)
-              ? true
-              : post.votedNoBy.includes(currentUserId)
-                ? false
-                : null
-            : null
-        }
-        canVote={!!currentUserId}
-        pointsEarned={votePoints}
-        onVote={(vote) => onVote(post.id, vote)}
-        onRequireSignIn={onRequireSignIn}
-      />
-
       <div className="pt-1.5">
         <PostActions
-          liked={liked}
-          likeCount={post.likedBy.length}
+          upvotes={post.votedYesBy.length}
+          downvotes={post.votedNoBy.length}
+          myVote={myVote}
           commentCount={post.comments.length}
           saved={saved}
           canInteract={!!currentUserId}
-          pointsToast={pointsToast}
-          onLike={() => onLike(post.id)}
+          /* Voting is what earns points now that the verdict block is gone, so
+             its "+1" reuses the same float the like milestones used to. */
+          pointsToast={votePoints ? `+${votePoints} point${votePoints === 1 ? "" : "s"}` : null}
+          onVote={(vote) => onVote(post.id, vote)}
           onComment={() => onOpenComments(post.id)}
           onSave={() => onSave(post.id)}
           onShare={() => onShare(post)}
@@ -355,10 +344,10 @@ export function FoodPostCard({
 
         {(post.tags.length > 0 || post.amenities.length > 0 || post.vibe) && (
           <ul className="mt-2.5 flex flex-wrap gap-1.5">
-            {post.vibe && (
+            {roomChip && (
               <li className="flex items-center gap-1 rounded-full bg-pm-charcoal px-2 py-0.5 text-[11px] font-medium text-white">
-                <span aria-hidden="true">{vibeEmoji(post.vibe)}</span>
-                {post.vibe}
+                {roomChip.emoji && <span aria-hidden="true">{roomChip.emoji}</span>}
+                {roomChip.text}
               </li>
             )}
             {post.tags.map((tag) => (

@@ -103,10 +103,25 @@ export function RestaurantDetail({
   return (
     <div>
       <RestaurantHeader restaurant={restaurant} />
-      <TopPicks dishes={topPicks} onSelect={setSelectedDishId} />
-      <FullMenu sections={sections} onSelect={setSelectedDishId} />
-      <div id={COMMENTS_ANCHOR} className="scroll-mt-4">
-        <RestaurantComments restaurant={restaurant} dishes={dishes} />
+
+      {/* The thread used to start below the full menu, which on a long menu put
+          it a screen or more down. On lg it moves into a rail beside the picks
+          and the menu; below lg the columns collapse back to the original
+          stacked order. The rail sticks and scrolls on its own so the comments
+          stay in view however far down the menu the reader gets. */}
+      <div className="lg:flex lg:items-start">
+        <div className="min-w-0 lg:flex-1">
+          <TopPicks dishes={topPicks} onSelect={setSelectedDishId} />
+          <FullMenu sections={sections} onSelect={setSelectedDishId} />
+        </div>
+        <div
+          id={COMMENTS_ANCHOR}
+          className="scroll-mt-4 lg:w-[400px] lg:shrink-0 lg:border-l lg:border-zinc-100"
+        >
+          <div className="lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
+            <RestaurantComments restaurant={restaurant} dishes={dishes} />
+          </div>
+        </div>
       </div>
       {selectedDish && (
         <DishSheet

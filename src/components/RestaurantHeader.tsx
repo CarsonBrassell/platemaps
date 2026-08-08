@@ -46,7 +46,9 @@ export function RestaurantHeader({ restaurant }: { restaurant: Restaurant }) {
           </span>
         </div>
         {/* Yelp's display requirements: content sourced from them has to be
-            credited and linked back to the business's own Yelp page. */}
+            credited and linked back to the business's own Yelp page. This now
+            covers the photo only — `rating` is a blend of several sources
+            rather than Yelp's figure, so crediting it to them would be wrong. */}
         {restaurant.yelpUrl && (
           <a
             href={restaurant.yelpUrl}
@@ -54,7 +56,7 @@ export function RestaurantHeader({ restaurant }: { restaurant: Restaurant }) {
             rel="noopener noreferrer"
             className="mt-2 inline-flex items-center gap-1 text-xs text-zinc-400 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-pm-orange-text hover:decoration-pm-orange-border"
           >
-            Photo and rating via Yelp
+            Photo via Yelp
           </a>
         )}
       </div>

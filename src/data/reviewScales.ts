@@ -47,8 +47,31 @@ export const AMENITIES: ReadonlyArray<{ emoji: string; label: string }> = [
   { emoji: "🎵", label: "Good music" },
 ];
 
+/**
+ * The one thing a restaurant does better than anything else it does.
+ *
+ * Superlative on purpose — a place that is "good at food" is every place, and a
+ * list where everything can be ticked tells a reader nothing. It shares the
+ * `vibe` column with the room scale above rather than opening a second one, so
+ * posts written under either vocabulary keep rendering.
+ */
+export const BEST_AT: ReadonlyArray<{ emoji: string; label: string }> = [
+  { emoji: "🍳", label: "Food" },
+  { emoji: "🕯️", label: "Ambiance" },
+  { emoji: "🙋", label: "Service" },
+  { emoji: "📖", label: "Menu variety" },
+  { emoji: "🍸", label: "Drinks" },
+  { emoji: "💸", label: "Value" },
+  { emoji: "⚡", label: "Speed" },
+  { emoji: "🍰", label: "Dessert" },
+];
+
 export const AMENITY_LABELS: readonly string[] = AMENITIES.map((a) => a.label);
 export const VIBE_LABELS: readonly string[] = VIBES.map((v) => v.label);
+export const BEST_AT_LABELS: readonly string[] = BEST_AT.map((b) => b.label);
+
+/** Everything the `vibe` column is allowed to hold, old vocabulary and new. */
+export const ROOM_LABELS: readonly string[] = [...VIBE_LABELS, ...BEST_AT_LABELS];
 
 /** Emoji for an amenity label, for rendering it back on a post card. */
 export function amenityEmoji(label: string) {
@@ -57,4 +80,14 @@ export function amenityEmoji(label: string) {
 
 export function vibeEmoji(label: string) {
   return VIBES.find((v) => v.label === label)?.emoji;
+}
+
+/**
+ * How a `vibe` value reads on a post card. "Lively" says what it means on its
+ * own; "Food" does not, so the newer vocabulary gets its sentence back.
+ */
+export function vibeChip(label: string): { emoji?: string; text: string } {
+  const best = BEST_AT.find((b) => b.label === label);
+  if (best) return { emoji: best.emoji, text: `Best at ${label.toLowerCase()}` };
+  return { emoji: vibeEmoji(label), text: label };
 }
