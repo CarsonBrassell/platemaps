@@ -6,6 +6,8 @@ export type MapComment = {
   text: string;
   score?: number;
   upvotes?: number;
+  /** Whether the signed-in user has already upvoted the underlying post. */
+  upvotedByMe?: boolean;
   createdAt?: string;
   rating?: string | null;
   dishPrefix?: string | null;

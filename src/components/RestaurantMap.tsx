@@ -83,13 +83,16 @@ function spreadHash(id: string) {
 // it. The tail no longer reaches down here — it is a short detail on the box's
 // edge — so this is purely the gap between a bubble and its own marker.
 const BUBBLE_TOP_OFFSET = 72;
-const BUBBLE_TEXT_ROW_HEIGHT = 22;
-const BUBBLE_META_ROW_HEIGHT = 14;
+const BUBBLE_TEXT_ROW_HEIGHT = 26;
+const BUBBLE_META_ROW_HEIGHT = 22;
 const BUBBLE_MIN_WIDTH = 50;
+/** A meta row holds sparkle-rating, the upvote chip and a timestamp. */
+const BUBBLE_META_MIN_WIDTH = 118;
 const BUBBLE_GAP = 6;
-/** Ink and fill, shared by the bubble box and the tail drawn beneath it. */
-const BUBBLE_FILL = "#1d2126";
-const BUBBLE_INK = "#e8875a";
+/** Retro ticket palette: cream card, dark chocolate ink, terracotta pop. */
+const BUBBLE_FILL = "#f6ead8";
+const BUBBLE_INK = "#2b211c";
+const BUBBLE_POP = "#d96f45";
 /** How far the tail spike hangs below the box, after its overlap of the border. */
 const BUBBLE_TAIL_HEIGHT = 10;
 
@@ -111,10 +114,13 @@ function bubbleMaxWidthForZoom(zoom: number) {
 }
 
 // Rough text-width estimate (no DOM measurement available at layout time) —
-// generous on purpose so we under-place rather than risk visual overlap.
+// generous on purpose so we under-place rather than risk visual overlap. A
+// meta row can't shrink below what its sparkle-rating, chip and timestamp
+// need, so it sets a floor of its own.
 function estimateBubbleWidth(comment: MapComment, zoom: number) {
   const length = (comment.dishPrefix ? comment.dishPrefix.length + 1 : 0) + comment.text.length;
-  return Math.min(bubbleMaxWidthForZoom(zoom), Math.max(BUBBLE_MIN_WIDTH, 16 + length * 5.5));
+  const floor = comment.upvotes !== undefined ? BUBBLE_META_MIN_WIDTH : BUBBLE_MIN_WIDTH;
+  return Math.min(bubbleMaxWidthForZoom(zoom), Math.max(floor, 16 + length * 5.5));
 }
 
 function rectsOverlap(a: Rect, b: Rect) {
@@ -168,29 +174,46 @@ function bubbleElement(
   offsetY: number,
   zoom: number,
   stackIndex: number,
+  canUpvote: boolean,
 ) {
   const offsetX = 12;
   const hasMeta = comment.upvotes !== undefined;
   const maxWidth = bubbleMaxWidthForZoom(zoom);
   const dishHtml = comment.dishPrefix
-    ? `<span class="map-dish-link" style="color: #f0a879; font-weight: 700; cursor: pointer;">${escapeHtml(comment.dishPrefix)}</span> `
+    ? `<span class="map-dish-link" style="color: ${BUBBLE_POP}; font-weight: 700; font-style: italic; font-family: var(--font-fraunces), Georgia, serif; cursor: pointer;">${escapeHtml(comment.dishPrefix)}</span> `
     : "";
+  /* Upvoting is liking the underlying post, so only comments that came from a
+     real post get the live chip; seeded map chatter keeps a static count. The
+     chip is a real button — screen readers on the map get a pressable control
+     with state, not a decorated span. */
+  const upvoteHtml =
+    comment.postId && canUpvote
+      ? `<button type="button" class="map-upvote-chip" aria-pressed="${comment.upvotedByMe ? "true" : "false"}" aria-label="Upvote this plate" style="
+          display: inline-flex; align-items: center; gap: 3px;
+          padding: 1px 7px; border-radius: 999px;
+          border: 1.5px solid ${BUBBLE_INK};
+          background: ${comment.upvotedByMe ? BUBBLE_POP : "transparent"};
+          color: ${comment.upvotedByMe ? "#fff6ec" : BUBBLE_INK};
+          font-size: 9.5px; font-weight: 800; line-height: 1.6;
+          cursor: pointer;
+        ">▲ ${comment.upvotes}</button>`
+      : `<span style="color: #2f7d4f; font-weight: 700;">▲ ${comment.upvotes}</span>`;
   const metaRow = hasMeta
     ? `<div style="
         display: flex;
         align-items: center;
-        gap: 5px;
-        margin-top: 2px;
-        font-size: 9px;
-        color: #7d858e;
+        gap: 6px;
+        margin-top: 3px;
+        font-size: 9.5px;
+        color: #8a7a6d;
         white-space: nowrap;
       ">
         ${
           comment.rating
-            ? `<span style="font-weight: 700; color: #f0a879;">${escapeHtml(comment.rating)}</span>`
+            ? `<span style="font-weight: 800; color: ${BUBBLE_POP};">✦ ${escapeHtml(comment.rating)}</span>`
             : ""
         }
-        <span style="color: #7ddba3; font-weight: 600;">▲ ${comment.upvotes}</span>
+        ${upvoteHtml}
         ${comment.createdAt ? `<span>${escapeHtml(relativeTime(comment.createdAt))}</span>` : ""}
       </div>`
     : "";
@@ -202,10 +225,9 @@ function bubbleElement(
      its edge, not a connector. It only has to gesture downward — the pin is
      already a lit marker directly below and needs no line drawn to it.
 
-     Its leading edge drops off the box's bottom-left in the same heavy ink as
-     the left border, hooks to a point, and the trailing edge returns as a
-     hairline that rejoins the box to the right. That asymmetry is the whole
-     character of it. */
+     Its leading edge drops off the box's bottom-left, hooks to a point, and
+     the trailing edge returns as a hairline that rejoins the box to the
+     right. That asymmetry is the whole character of it. */
   const drop = Math.min(15, Math.max(9, Math.round(bubbleHeight(comment) * 0.4)));
   const leadX = 4;
   // Also clamped against the bubble's own width, so a narrow one can't wear a
@@ -244,35 +266,34 @@ function bubbleElement(
 
   const el = document.createElement("div");
   el.className = "map-bubble";
-  /* Comic speech bubble drawn with a brush-pen line: a clean rounded
-     rectangle whose stroke is heavy down the left and along the bottom and
-     thin across the top and right, as though laid down in one pass. Uneven
-     border-widths give that weight for free, and unlike a wobbly radius it
-     survives the box being resized by its text.
+  /* Retro diner ticket: cream card, even chocolate-ink outline with a
+     pinstripe just inside it (the inset shadows stack outward-in: cream gap,
+     then a half-tone ink line), and a hard terracotta pop-shadow thrown
+     down-right like a 70s menu sticker. The soft dark shadow under it keeps
+     the card readable when it happens to sit over bright street glow.
 
-     The offset drop-shadow sits on the wrapper rather than the box so it
-     traces box and tail as one silhouette; a box-shadow would stop at the
-     box and leave the tail flat. */
+     Both shadows live on the wrapper rather than the box so they trace box
+     and tail as one silhouette; a box-shadow would stop at the box and leave
+     the tail flat. */
   el.innerHTML = `<div style="
       display: inline-block;
       position: relative;
       transform: translate(${offsetX}px, -${offsetY}px);
       cursor: pointer;
-      filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.55));
+      filter: drop-shadow(3px 3px 0 ${BUBBLE_POP}) drop-shadow(0 5px 8px rgba(0,0,0,0.35));
     ">
       <div class="map-bubble-box" style="
         max-width: ${maxWidth}px;
         background: ${BUBBLE_FILL};
-        border-style: solid;
-        border-color: ${BUBBLE_INK};
-        border-width: 1.5px 1.5px 4.5px 7px;
-        border-radius: 9px;
-        padding: 3px 8px;
+        border: 2px solid ${BUBBLE_INK};
+        border-radius: 11px;
+        box-shadow: inset 0 0 0 2px ${BUBBLE_FILL}, inset 0 0 0 3px rgba(43,33,28,0.45);
+        padding: 4px 10px;
         font-size: 11px;
-        line-height: 1.3;
-        color: #d6d9dd;
+        line-height: 1.35;
+        color: #3c2f27;
       ">
-        <div class="map-bubble-text" style="max-width: ${maxWidth - 16}px;">${dishHtml}${escapeHtml(comment.text)}</div>
+        <div class="map-bubble-text" style="max-width: ${maxWidth - 20}px;">${dishHtml}${escapeHtml(comment.text)}</div>
         ${metaRow}
       </div>
       ${tail}
@@ -283,9 +304,12 @@ function bubbleElement(
 export function RestaurantMap({
   restaurants,
   commentsByRestaurant,
+  onUpvote,
 }: {
   restaurants: Restaurant[];
   commentsByRestaurant: Record<string, MapComment[]>;
+  /** Omitted when nobody is signed in, which is what hides the upvote chips. */
+  onUpvote?: (postId: string) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
@@ -293,6 +317,16 @@ export function RestaurantMap({
   const bubbleMarkersRef = useRef<Marker[]>([]);
   /** False until the first fitBounds has played the opening dive. */
   const hasFitRef = useRef(false);
+  /* Held in a ref so a new callback identity each render doesn't re-run the
+     marker effect — the handler is read at click time, not at bind time.
+     Synced in an effect rather than during render: writing a ref while
+     rendering is a lint error, since it makes the render's output depend on
+     mutation order instead of props/state alone. */
+  const onUpvoteRef = useRef(onUpvote);
+  useEffect(() => {
+    onUpvoteRef.current = onUpvote;
+  }, [onUpvote]);
+  const canUpvote = !!onUpvote;
   const router = useRouter();
 
   useEffect(() => {
@@ -461,9 +495,17 @@ export function RestaurantMap({
           if (placed.some((r) => rectsOverlap(rect, r))) continue;
           placed.push(rect);
 
-          const el = bubbleElement(comment, offsetY, zoom, stackIndex);
+          const el = bubbleElement(comment, offsetY, zoom, stackIndex, canUpvote);
           el.addEventListener("click", (e) => {
             const target = e.target as HTMLElement;
+            const upvoteChip = target.closest(".map-upvote-chip");
+            if (upvoteChip) {
+              // Upvoting stays on the map rather than opening the post — the
+              // whole point of putting the chip here is not having to leave.
+              e.stopPropagation();
+              if (comment.postId) onUpvoteRef.current?.(comment.postId);
+              return;
+            }
             if (target.closest(".map-dish-link")) {
               router.push(
                 comment.dishId
@@ -491,7 +533,7 @@ export function RestaurantMap({
     return () => {
       map.off("moveend", renderBubbles);
     };
-  }, [restaurants, commentsByRestaurant, router]);
+  }, [restaurants, commentsByRestaurant, router, canUpvote]);
 
   return <div ref={containerRef} className="map-fun-tiles h-[540px] w-full rounded-xl" />;
 }
