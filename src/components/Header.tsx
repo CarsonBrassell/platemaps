@@ -20,7 +20,10 @@ export function Header() {
   return (
     <header className="flex items-center justify-between gap-5 bg-gradient-to-b from-pm-charcoal-light to-pm-charcoal px-6 py-3.5">
       <div className="flex items-center gap-7">
-        <Link href="/" className="group flex shrink-0 items-center gap-3 text-[26px]">
+        <Link
+          href="/"
+          className="group flex shrink-0 items-center gap-3 rounded-lg text-[26px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
+        >
           <span className="relative flex h-16 w-16 items-center justify-center">
             {/* Glow sits behind the mark and blooms on hover. */}
             <span
@@ -43,8 +46,8 @@ export function Header() {
             href={link.href}
             className={
               pathname === link.href
-                ? "inline-block whitespace-nowrap border-b-2 border-pm-orange pb-1 font-medium text-white transition-transform duration-200 hover:-translate-y-0.5 hover:scale-110 active:scale-95"
-                : "inline-block whitespace-nowrap border-b-2 border-transparent pb-1 text-white/65 transition-all duration-200 hover:-translate-y-0.5 hover:scale-110 hover:text-white active:scale-95"
+                ? "inline-block whitespace-nowrap border-b-2 border-pm-orange pb-1 font-medium text-white transition-transform duration-200 hover:-translate-y-0.5 hover:scale-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
+                : "inline-block whitespace-nowrap border-b-2 border-transparent pb-1 text-white/65 transition-all duration-200 hover:-translate-y-0.5 hover:scale-110 hover:text-white active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
             }
           >
             {link.label}

@@ -19,14 +19,14 @@ export function OurPicks() {
           </svg>
           Our picks
         </h2>
-        <span className="text-xs text-zinc-400">Featured this week</span>
+        <span className="text-xs text-zinc-500">Featured this week</span>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {picks.map((r) => (
           <Link
             key={r.id}
             href={`/restaurant/${r.id}`}
-            className="trending-glow group block overflow-hidden rounded-xl border-2 border-pm-orange bg-white transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98]"
+            className="trending-glow group block overflow-hidden rounded-xl border-2 border-pm-orange bg-white transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
           >
             {/* A full 16:9 is worth it for a real photo and is just a large
                 empty box without one, so the band collapses until there is
@@ -63,7 +63,7 @@ export function OurPicks() {
               {/* Same credit the grid cards carry — see the note in
                   RestaurantCard for why it isn't the link back. */}
               {r.photo && (
-                <span className="absolute bottom-2 right-2 whitespace-nowrap rounded bg-black/45 px-1.5 py-0.5 text-[9px] font-medium text-white/90 backdrop-blur-sm">
+                <span className="absolute bottom-2 right-2 whitespace-nowrap rounded bg-black/45 px-1.5 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur-sm">
                   Photo: Yelp
                 </span>
               )}
@@ -74,8 +74,10 @@ export function OurPicks() {
               </p>
               <div className="mb-1 mt-1 flex items-center gap-1">
                 <StarIcon className="h-3.5 w-3.5 text-pm-orange" />
-                <span className="text-xs font-medium text-zinc-700">{r.rating.toFixed(1)}</span>
-                <span className="text-xs text-zinc-400">
+                <span className="text-xs font-medium tabular-nums text-zinc-700">
+                  {r.rating.toFixed(1)}
+                </span>
+                <span className="text-xs tabular-nums text-zinc-500">
                   ({r.reviewCount.toLocaleString()})
                 </span>
               </div>

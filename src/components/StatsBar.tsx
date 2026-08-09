@@ -66,7 +66,9 @@ export function StatsBar() {
         <LocationIcon />
         <span className="text-sm font-medium text-pm-orange-text">San Diego, California</span>
         {time && (
-          <span className="flex items-center gap-1 text-sm text-pm-orange-text/80">
+          /* tabular-nums so the bar doesn't shimmy a pixel when 9:59 ticks
+             over to 10:00. */
+          <span className="flex items-center gap-1 text-sm tabular-nums text-pm-orange-text/80">
             <ClockIcon />
             {time} local time
           </span>

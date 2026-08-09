@@ -8,7 +8,7 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
   return (
     <Link
       href={`/restaurant/${restaurant.id}`}
-      className="card-lift group block overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:border-pm-orange-border active:scale-[0.98]"
+      className="card-lift group block overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:border-pm-orange-border active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
     >
       {/* h-16 was sized for an icon placeholder. With real photography the
           card can afford roughly 16:10, which is enough to read a dish. */}
@@ -26,8 +26,10 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
             context — one less row competing for attention. */}
         <span className="absolute bottom-2 left-2 flex items-baseline gap-1 rounded-full bg-white/95 px-2 py-0.5 shadow-sm backdrop-blur-sm">
           <StarIcon className="h-3 w-3 translate-y-0.5 text-pm-orange" />
-          <span className="text-xs font-bold text-zinc-900">{restaurant.rating.toFixed(1)}</span>
-          <span className="text-[10px] text-zinc-500">
+          <span className="text-xs font-bold tabular-nums text-zinc-900">
+            {restaurant.rating.toFixed(1)}
+          </span>
+          <span className="text-[10px] tabular-nums text-zinc-500">
             ({restaurant.reviewCount.toLocaleString()})
           </span>
         </span>
@@ -41,7 +43,7 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
             business's Yelp page without nesting anchors — that link lives on
             the detail page's header, which is one tap away. */}
         {restaurant.photo && (
-          <span className="absolute bottom-2 right-2 whitespace-nowrap rounded bg-black/45 px-1.5 py-0.5 text-[9px] font-medium text-white/90 backdrop-blur-sm">
+          <span className="absolute bottom-2 right-2 whitespace-nowrap rounded bg-black/45 px-1.5 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur-sm">
             Photo: Yelp
           </span>
         )}
@@ -52,7 +54,9 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
           <p className="font-display truncate text-[15px] font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pm-orange-text">
             {restaurant.name}
           </p>
-          <span className="shrink-0 pt-0.5 text-xs text-zinc-400">{restaurant.distance}</span>
+          <span className="shrink-0 pt-0.5 text-xs tabular-nums text-zinc-500">
+            {restaurant.distance}
+          </span>
         </div>
         <p className="mb-2.5 mt-0.5 truncate text-xs text-zinc-500">
           {restaurant.cuisine} &middot; {restaurant.neighborhood}
