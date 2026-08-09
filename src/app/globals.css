@@ -705,3 +705,113 @@ h3 {
   .save-toast { opacity: 1; }
   .spark { display: none; }
 }
+
+/* --- Percent meter, excited --------------------------------------------
+   The meter gets hotter the harder you'd push a dish. Four tiers, set from
+   a data-heat attribute on the input so the paint is CSS and the component
+   only decides which band it's in. Fill colour is driven by --hot so the
+   gradient stops stay in one place. */
+
+.pct-meter[data-heat] {
+  background: linear-gradient(
+    to right,
+    var(--hot-a, var(--pm-orange)) 0%,
+    var(--hot-b, var(--pm-orange)) var(--fill, 50%),
+    var(--pm-grey-tint) var(--fill, 50%),
+    var(--pm-grey-tint) 100%
+  );
+}
+
+/* Cool: a plate you'd warn someone off. Desaturated, no motion. */
+.pct-meter[data-heat="cool"] {
+  --hot-a: #b6a494;
+  --hot-b: #8a7a6d;
+}
+
+/* Warm: the honest middle. The brand orange, sitting still. */
+.pct-meter[data-heat="warm"] {
+  --hot-a: #e8a06f;
+  --hot-b: var(--pm-orange);
+}
+
+/* Hot: worth ordering. Deepens toward the thumb and breathes. */
+.pct-meter[data-heat="hot"] {
+  --hot-a: var(--pm-orange);
+  --hot-b: #d1451f;
+  animation: meter-breathe 1.8s ease-in-out infinite;
+}
+
+/* Blazing: order it twice. Adds a travelling sheen over the fill and a
+   glow that spills past the track. */
+.pct-meter[data-heat="blazing"] {
+  --hot-a: #f0893a;
+  --hot-b: #c62d12;
+  animation: meter-breathe 1.15s ease-in-out infinite;
+}
+
+@keyframes meter-breathe {
+  0%, 100% { box-shadow: inset 0 1px 3px rgba(43,33,28,0.14), 0 0 0 rgba(217,111,69,0); }
+  50%      { box-shadow: inset 0 1px 3px rgba(43,33,28,0.14), 0 0 18px 2px rgba(217,111,69,0.45); }
+}
+
+/* Sheen rides a wrapper rather than the input, because a range element can't
+   carry a pseudo-element in every engine. */
+.meter-shell { position: relative; }
+
+.meter-shell[data-heat="blazing"]::after,
+.meter-shell[data-heat="hot"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.42) 50%,
+    transparent 65%
+  );
+  /* Clipped to the filled portion so the sheen never runs over empty track. */
+  clip-path: inset(0 calc(100% - var(--fill, 50%)) 0 0 round 16px);
+  background-size: 220% 100%;
+  animation: meter-sheen 1.9s linear infinite;
+}
+
+.meter-shell[data-heat="blazing"]::after { animation-duration: 1.15s; }
+
+@keyframes meter-sheen {
+  from { background-position: 140% 0; }
+  to   { background-position: -60% 0; }
+}
+
+/* The number reacts too — a small kick on each step up at the top end. */
+@keyframes pct-kick {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
+.pct-kick { animation: pct-kick 0.22s cubic-bezier(0.2, 0.8, 0.3, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pct-meter[data-heat="hot"],
+  .pct-meter[data-heat="blazing"],
+  .meter-shell[data-heat]::after,
+  .pct-kick {
+    animation: none;
+  }
+  .meter-shell[data-heat]::after { display: none; }
+}
+
+/* Slow idle bloom behind the mark — enough to pull the eye to the corner
+   without reading as a notification. */
+@keyframes logo-glow {
+  0%, 100% { opacity: 0.55; transform: scale(0.94); }
+  50%      { opacity: 1;    transform: scale(1.06); }
+}
+
+.logo-glow { animation: logo-glow 3.6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-glow { animation: none; opacity: 0.8; }
+}

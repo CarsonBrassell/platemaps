@@ -18,18 +18,23 @@ export function Header() {
   const { account, isSignedIn } = useAuth();
 
   return (
-    <header className="flex items-center justify-between gap-5 bg-gradient-to-b from-pm-charcoal-light to-pm-charcoal px-6 py-3.5">
+    <header className="flex items-center justify-between gap-5 bg-gradient-to-b from-pm-charcoal-light to-pm-charcoal px-6 py-2.5">
       <div className="flex items-center gap-7">
-        <Link href="/" className="group flex shrink-0 items-center gap-3 text-[26px]">
-          <span className="relative flex h-16 w-16 items-center justify-center">
-            {/* Glow sits behind the mark and blooms on hover. */}
+        <Link href="/" className="group flex shrink-0 items-center gap-3.5 text-[30px]">
+          <span className="relative flex h-[76px] w-[76px] items-center justify-center">
+            {/* Two glows: a slow idle pulse to catch the eye, and a brighter
+                one that blooms on hover. */}
             <span
-              className="absolute inset-1 rounded-full bg-pm-orange/25 blur-lg transition-all duration-300 group-hover:bg-pm-orange/45 group-hover:blur-xl"
+              className="logo-glow absolute inset-0 rounded-full bg-pm-orange/30 blur-xl transition-all duration-300 group-hover:bg-pm-orange/60 group-hover:blur-2xl"
+              aria-hidden="true"
+            />
+            <span
+              className="absolute inset-2 rounded-full bg-pm-orange/20 blur-md"
               aria-hidden="true"
             />
             <BrandMark
               tone="light"
-              className="relative h-16 w-16 drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110"
+              className="relative h-[76px] w-[76px] drop-shadow-[0_3px_10px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110 group-active:scale-95"
             />
           </span>
           <WordMark tone="light" />

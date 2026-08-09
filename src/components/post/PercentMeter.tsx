@@ -15,6 +15,17 @@ export function bandForPercent(pct: number) {
 }
 
 /**
+ * How excited the meter should look. The paint for each tier lives in CSS —
+ * this only decides which one applies.
+ */
+function heatFor(pct: number) {
+  if (pct >= 95) return "blazing";
+  if (pct >= 80) return "hot";
+  if (pct >= 40) return "warm";
+  return "cool";
+}
+
+/**
  * How hard you'd push this dish on someone else, 0–100%.
  *
  * It rides on a native range input rather than pointer maths on a div: drag
@@ -23,6 +34,10 @@ export function bandForPercent(pct: number) {
  * track is thick enough to read as a meter you are filling, not a slider you are
  * nudging, and the fill is drawn by the element's own background from a `--fill`
  * custom property, the same trick the composer's emoji sliders use.
+ *
+ * Steps by 1 so 97 and 98 are sayable, and gets visibly hotter as it climbs:
+ * colour deepens, the track breathes, and past 80 a sheen travels across the
+ * filled portion.
  */
 export function PercentMeter({
   id,
@@ -35,6 +50,9 @@ export function PercentMeter({
   onChange: (pct: number) => void;
   label: string;
 }) {
+  const heat = heatFor(value);
+  const fill = `${value}%`;
+
   return (
     <div>
       <div className="mb-3 flex items-end justify-between gap-3">
@@ -42,28 +60,44 @@ export function PercentMeter({
           {label}
         </label>
         <p className="text-right">
-          <span className="font-display block text-4xl font-semibold leading-none tracking-tight text-pm-orange-text tabular-nums">
+          {/* Keyed on the value so each step re-fires the kick; only at the
+              top end, where the extra emphasis is the point. */}
+          <span
+            key={heat === "blazing" || heat === "hot" ? value : "still"}
+            className={`font-display block text-4xl font-semibold leading-none tracking-tight tabular-nums ${
+              heat === "blazing" || heat === "hot" ? "pct-kick" : ""
+            } ${heat === "cool" ? "text-zinc-500" : "text-pm-orange-text"}`}
+          >
             {value}%
           </span>
         </p>
       </div>
 
-      <input
-        id={id}
-        type="range"
-        min={0}
-        max={100}
-        step={5}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        aria-valuetext={`${value} percent — ${bandForPercent(value)}`}
-        className="pct-meter"
-        style={{ ["--fill" as string]: `${value}%` }}
-      />
+      <div className="meter-shell" data-heat={heat} style={{ ["--fill" as string]: fill }}>
+        <input
+          id={id}
+          type="range"
+          min={0}
+          max={100}
+          step={1}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          aria-valuetext={`${value} percent — ${bandForPercent(value)}`}
+          className="pct-meter"
+          data-heat={heat}
+          style={{ ["--fill" as string]: fill }}
+        />
+      </div>
 
       <div className="mt-2 flex items-baseline justify-between text-xs">
         <span className="text-zinc-400">0%</span>
-        <span className="font-semibold text-zinc-900">{bandForPercent(value)}</span>
+        <span
+          className={`font-semibold transition-colors ${
+            heat === "blazing" ? "text-pm-orange-text" : "text-zinc-900"
+          }`}
+        >
+          {bandForPercent(value)}
+        </span>
         <span className="text-zinc-400">100%</span>
       </div>
     </div>
