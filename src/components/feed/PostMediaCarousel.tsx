@@ -111,7 +111,7 @@ export function PostMediaCarousel({
 
   if (media.length === 0) {
     return (
-      <div className="aspect-[3/2] w-full select-none">
+      <div className="aspect-[16/9] w-full select-none">
         <MediaFallback label={restaurant ?? dishName} />
       </div>
     );
@@ -128,7 +128,7 @@ export function PostMediaCarousel({
       <div
         ref={trackRef}
         onScroll={onScroll}
-        className={`snap-track flex aspect-[3/2] w-full overflow-x-auto ${
+        className={`snap-track flex aspect-[16/9] w-full overflow-x-auto ${
           single ? "overflow-x-hidden" : ""
         }`}
         role={single ? undefined : "group"}
