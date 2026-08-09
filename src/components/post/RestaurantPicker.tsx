@@ -51,7 +51,7 @@ export function RestaurantPicker({
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search by name, cuisine or neighborhood"
         autoComplete="off"
-        className="min-h-11 w-full rounded-xl border border-zinc-300 bg-white px-3.5 text-base transition-colors placeholder:text-zinc-400 focus:border-pm-orange focus:outline-none"
+        className="min-h-11 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 text-base transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
       />
 
       <p className="mt-2 text-xs text-zinc-400" role="status">
@@ -61,7 +61,7 @@ export function RestaurantPicker({
       </p>
 
       {matches.length === 0 ? (
-        <div className="mt-3 rounded-xl border border-dashed border-zinc-300 px-4 py-8 text-center">
+        <div className="mt-3 rounded-xl bg-pm-grey-tint/50 px-4 py-8 text-center">
           <p className="text-sm font-medium text-zinc-700">No match for “{query.trim()}”</p>
           <p className="mt-1 text-sm text-zinc-500">
             PlateMaps covers San Diego County so far — try a nearby neighborhood.
@@ -105,7 +105,7 @@ export function RestaurantPicker({
         <button
           type="button"
           onClick={onSkip}
-          className="mt-4 min-h-11 w-full rounded-xl border border-dashed border-zinc-300 px-4 text-sm text-zinc-500 transition-colors hover:border-zinc-400 hover:text-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+          className="mt-4 min-h-11 w-full rounded-full bg-pm-grey-tint/60 px-4 text-sm text-pm-grey-text transition-colors hover:bg-pm-grey-tint hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
         >
           Not about a particular place
         </button>

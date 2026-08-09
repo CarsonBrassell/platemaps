@@ -8,15 +8,14 @@ export type MapComment = {
   upvotes?: number;
   /** Whether the signed-in user has already upvoted the underlying post. */
   upvotedByMe?: boolean;
+  /** Whether the signed-in user has already hearted the underlying post —
+      only meaningful when the map is showing Friends-sourced data. */
+  heartedByMe?: boolean;
   createdAt?: string;
   rating?: string | null;
   dishPrefix?: string | null;
-  /**
-   * First photo off the underlying post, shown as a thumbnail in the bubble.
-   * Seeded comments have none — the bubble falls back to text alone.
-   */
-  photo?: string;
-  photoAlt?: string;
+  /** Replies on the underlying post. Seeded chatter has none and shows none. */
+  commentCount?: number;
   postId?: string;
   dishId?: string;
 };

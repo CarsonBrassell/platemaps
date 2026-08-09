@@ -14,6 +14,7 @@ const VISIBLE_COMMENTS = 3;
 
 export function DishSheet({
   dish,
+  restaurantName,
   myVote,
   comments,
   onVote,
@@ -21,6 +22,8 @@ export function DishSheet({
   onSeeAll,
 }: {
   dish: SheetDish;
+  /** For the mono byline under the dish name — "$3.25 · TACOS EL GORDO". */
+  restaurantName: string;
   myVote: "yes" | "no" | undefined;
   /** Comments about this specific dish, newest first. */
   comments: MapComment[];
@@ -28,22 +31,24 @@ export function DishSheet({
   onClose: () => void;
   onSeeAll: () => void;
 }) {
-  const pct = dish.pct ?? 0;
-  const radius = 30;
-  const circumference = 2 * Math.PI * radius;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 backdrop-blur-[2px]" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-pm-charcoal/45 backdrop-blur-[2px]"
+      onClick={onClose}
+    >
+      {/* The sheet itself is a slice of the cream page, so the score card and
+          the comments card inside it read as white cards on cream — the same
+          grammar as everywhere else. */}
       <div
-        className="w-full max-w-md rounded-t-2xl bg-white pb-[env(safe-area-inset-bottom)] shadow-2xl"
+        className="animate-sheet-in max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-2xl bg-[#F7F4EC] pb-[env(safe-area-inset-bottom)]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative flex justify-center pt-2.5">
-          <div className="h-1 w-10 rounded-full bg-zinc-200" />
+          <div className="h-1 w-10 rounded-full bg-zinc-300" />
           <button
             onClick={onClose}
             aria-label="Close"
-            className="absolute right-4 top-2 flex h-7 w-7 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600"
+            className="absolute right-4 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -52,67 +57,60 @@ export function DishSheet({
           </button>
         </div>
 
-        <div className="px-5 pb-6 pt-3">
-          <div className="flex items-center gap-4">
-            {dish.pct !== null && (
-              <div className="relative flex h-16 w-16 shrink-0 items-center justify-center">
-                <svg width="64" height="64" viewBox="0 0 64 64" className="-rotate-90">
-                  <circle cx="32" cy="32" r={radius} fill="none" stroke="#f4f4f5" strokeWidth="6" />
-                  <circle
-                    cx="32"
-                    cy="32"
-                    r={radius}
-                    fill="none"
-                    stroke="#e8875a"
-                    strokeWidth="6"
-                    strokeLinecap="round"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={circumference - (pct / 100) * circumference}
-                    style={{ transition: "stroke-dashoffset 0.6s ease" }}
-                  />
-                </svg>
-                <span className="absolute text-sm font-bold text-pm-orange-text">{pct}%</span>
-              </div>
-            )}
-            <div className="min-w-0">
-              <p className="font-display text-xl font-medium text-zinc-900">{dish.name}</p>
-              <p className="mt-0.5 text-sm text-zinc-500">{dish.price}</p>
-            </div>
-          </div>
+        <div className="px-4 pb-6 pt-3">
+          {/* Photo slot. Dish photos don't exist yet, so a warm tone block
+              holds the aspect ratio deliberately — no gray box, no icon. */}
+          <div className="aspect-[2/1] w-full rounded-xl bg-[var(--pm-tone-2)]" aria-hidden="true" />
 
-          <div className="mt-3">
+          <h2 className="mt-4 font-display text-2xl font-semibold text-zinc-900">{dish.name}</h2>
+          <p className="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-zinc-500">
+            {dish.price} · {restaurantName}
+          </p>
+
+          {/* The score card: oversized orange mono percentage, denominator in
+              small mono beside it. */}
+          <div className="mt-4 flex items-center gap-4 rounded-2xl bg-white px-5 py-4">
             {dish.pct !== null ? (
-              <span className="text-sm text-zinc-400">
-                would get it again &middot; {dish.total.toLocaleString()} ratings
-              </span>
+              <>
+                <span className="font-mono text-5xl font-bold tabular-nums leading-none text-pm-orange">
+                  {dish.pct}%
+                </span>
+                <span className="font-mono text-xs leading-relaxed text-zinc-500">
+                  said good
+                  <br />
+                  {dish.total.toLocaleString()} {dish.total === 1 ? "vote" : "votes"}
+                </span>
+              </>
             ) : (
-              <span className="text-sm text-zinc-400">No ratings yet &mdash; be the first</span>
+              <span className="font-mono text-xs text-zinc-500">
+                No votes yet — be the first
+              </span>
             )}
           </div>
 
-          <p className="mb-2 mt-5 text-sm font-medium text-zinc-700">Would you get this again?</p>
-          <div className="flex gap-2.5">
+          <p className="mono-label mb-2 mt-5 text-zinc-500">Your verdict</p>
+          <div className="flex flex-col gap-2">
             <button
               onClick={() => onVote("yes")}
               aria-pressed={myVote === "yes"}
               className={
                 myVote === "yes"
-                  ? "flex-1 rounded-xl border-2 border-pm-orange bg-pm-orange-tint py-3 text-sm font-semibold text-pm-orange-text transition-transform active:scale-[0.97]"
-                  : "flex-1 rounded-xl border-2 border-zinc-200 py-3 text-sm font-semibold text-zinc-600 transition-transform active:scale-[0.97]"
+                  ? "min-h-11 w-full rounded-full bg-pm-orange py-3 text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                  : "min-h-11 w-full rounded-full bg-pm-grey-tint py-3 text-sm font-semibold text-pm-grey-text transition-transform hover:text-zinc-900 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
               }
             >
-              Yes
+              Good — I&apos;d get it again
             </button>
             <button
               onClick={() => onVote("no")}
               aria-pressed={myVote === "no"}
               className={
                 myVote === "no"
-                  ? "flex-1 rounded-xl border-2 border-pm-charcoal bg-pm-charcoal py-3 text-sm font-semibold text-white transition-transform active:scale-[0.97]"
-                  : "flex-1 rounded-xl border-2 border-zinc-200 py-3 text-sm font-semibold text-zinc-600 transition-transform active:scale-[0.97]"
+                  ? "min-h-11 w-full rounded-full bg-pm-orange py-3 text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                  : "min-h-11 w-full rounded-full bg-pm-grey-tint py-3 text-sm font-semibold text-pm-grey-text transition-transform hover:text-zinc-900 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
               }
             >
-              No
+              Not for me
             </button>
           </div>
 
@@ -122,23 +120,14 @@ export function DishSheet({
               opinions most relevant to the dish you just tapped were the ones
               you had to scroll furthest to find. */}
           {comments.length > 0 && (
-            <div className="mt-6 border-t border-zinc-100 pt-4">
-              <p className="mb-3 text-sm font-medium text-zinc-700">
-                What people said about this
-              </p>
+            <div className="mt-4 rounded-2xl bg-white px-5 py-4">
+              <p className="mono-label mb-3 text-zinc-500">What people said</p>
               <ul className="flex flex-col gap-3">
                 {comments.slice(0, VISIBLE_COMMENTS).map((comment) => (
                   <li key={comment.id} className="flex flex-col gap-1">
-                    <p className="text-sm leading-snug text-zinc-700">
-                      {comment.dishPrefix && (
-                        <span className="font-medium text-pm-orange-text">
-                          {comment.dishPrefix}{" "}
-                        </span>
-                      )}
-                      {comment.text}
-                    </p>
-                    <div className="flex items-center gap-2 text-xs text-zinc-400">
-                      {comment.upvotes !== undefined && <span>{comment.upvotes} upvotes</span>}
+                    <p className="text-sm leading-snug text-zinc-700">{comment.text}</p>
+                    <div className="flex items-center gap-2.5 font-mono text-xs text-zinc-500">
+                      {comment.upvotes !== undefined && <span>▲ {comment.upvotes}</span>}
                       {comment.createdAt && <span>{relativeTime(comment.createdAt)}</span>}
                     </div>
                   </li>
@@ -146,7 +135,7 @@ export function DishSheet({
               </ul>
               <button
                 onClick={onSeeAll}
-                className="mt-3 text-xs font-medium text-pm-orange-text underline decoration-pm-orange-border underline-offset-2 transition-colors hover:text-pm-charcoal"
+                className="mt-3 font-mono text-xs font-medium text-zinc-700 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
               >
                 {comments.length > VISIBLE_COMMENTS
                   ? `See all ${comments.length} comments`

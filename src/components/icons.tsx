@@ -159,6 +159,18 @@ export function UserIcon({ className = "" }: IconProps) {
   );
 }
 
+/** Two figures, for Friends — the single UserIcon reads as "you", not "them". */
+export function UsersIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">
+      <circle cx="9" cy="8" r="3.5" />
+      <path d="M2.5 21a6.5 6.5 0 0 1 13 0" />
+      <path d="M16 5.2a3.5 3.5 0 0 1 0 6.6" />
+      <path d="M18 14.4a6.5 6.5 0 0 1 3.5 5.8" />
+    </svg>
+  );
+}
+
 export function PlusIcon({ className = "" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">

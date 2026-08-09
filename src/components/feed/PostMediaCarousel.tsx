@@ -1,24 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { UtensilsIcon, ChevronIcon, PlayIcon } from "@/components/icons";
+import { ChevronIcon, PlayIcon } from "@/components/icons";
 import type { PostMedia } from "./types";
 
-/** Warm gradient stand-in used when a post has no media, or its image 404s. */
+/** Warm tone block standing in when a post has no media, or its image 404s —
+ *  a deliberate field of warm neutral, not a gray box or an icon. */
 function MediaFallback({ label }: { label?: string }) {
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-pm-orange-tint via-orange-100 to-pm-orange/25">
-      <div
-        className="absolute inset-0 opacity-40"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 25%, rgba(255,255,255,0.7), transparent 40%), radial-gradient(circle at 80% 80%, rgba(181,80,43,0.18), transparent 45%)",
-        }}
-        aria-hidden="true"
-      />
-      <UtensilsIcon className="relative h-8 w-8 text-pm-orange-text" />
+    <div className="flex h-full w-full items-end bg-[var(--pm-tone-1)] p-4">
       {label && (
-        <span className="relative px-6 text-center text-sm font-medium text-pm-orange-text">
+        <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#8d8064]">
           {label}
         </span>
       )}
@@ -69,7 +61,7 @@ function VideoSlide({ item, active }: { item: PostMedia; active: boolean }) {
       />
       {!playing && (
         <span className="absolute inset-0 flex items-center justify-center bg-pm-charcoal/25">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-pm-charcoal shadow-lg transition-transform group-hover:scale-105">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-pm-charcoal transition-transform group-hover:scale-105">
             <PlayIcon className="ml-0.5 h-6 w-6" />
           </span>
         </span>
@@ -162,7 +154,7 @@ export function PostMediaCarousel({
               type="button"
               onClick={() => goTo(index - 1)}
               aria-label="Previous photo"
-              className="absolute left-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-pm-charcoal shadow-md transition-opacity hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange sm:flex sm:opacity-0 sm:group-hover/media:opacity-100 sm:focus-visible:opacity-100"
+              className="absolute left-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-pm-charcoal transition-opacity hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange sm:flex sm:opacity-0 sm:group-hover/media:opacity-100 sm:focus-visible:opacity-100"
             >
               <ChevronIcon className="h-5 w-5 rotate-180" />
             </button>
@@ -172,13 +164,13 @@ export function PostMediaCarousel({
               type="button"
               onClick={() => goTo(index + 1)}
               aria-label="Next photo"
-              className="absolute right-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-pm-charcoal shadow-md transition-opacity hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange sm:flex sm:opacity-0 sm:group-hover/media:opacity-100 sm:focus-visible:opacity-100"
+              className="absolute right-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-pm-charcoal transition-opacity hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange sm:flex sm:opacity-0 sm:group-hover/media:opacity-100 sm:focus-visible:opacity-100"
             >
               <ChevronIcon className="h-5 w-5" />
             </button>
           )}
 
-          <div className="absolute right-3 top-3 rounded-full bg-pm-charcoal/65 px-2 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
+          <div className="absolute right-2.5 top-2.5 rounded-full bg-white/95 px-2 py-0.5 font-mono text-[11px] font-medium tabular-nums text-zinc-700">
             {index + 1}/{media.length}
           </div>
 

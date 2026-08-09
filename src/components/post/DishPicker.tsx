@@ -60,7 +60,7 @@ export function DishPicker({
             onChange={(e) => setQuery(e.target.value)}
             placeholder={`Search ${restaurantName}'s menu`}
             autoComplete="off"
-            className="min-h-11 w-full rounded-xl border border-zinc-300 bg-white px-3.5 text-base transition-colors placeholder:text-zinc-400 focus:border-pm-orange focus:outline-none"
+            className="min-h-11 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 text-base transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
           />
 
           {sections.length === 0 ? (
@@ -134,7 +134,7 @@ export function DishPicker({
                 onChange={(e) => setCustom(e.target.value)}
                 placeholder="Hot honey pepperoni pizza"
                 maxLength={120}
-                className="min-h-11 flex-1 rounded-xl border border-zinc-300 bg-white px-3.5 text-base transition-colors placeholder:text-zinc-400 focus:border-pm-orange focus:outline-none"
+                className="min-h-11 flex-1 rounded-xl bg-pm-grey-tint/60 px-3.5 text-base transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
               />
               <button
                 type="button"

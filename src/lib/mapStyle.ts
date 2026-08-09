@@ -1,4 +1,4 @@
-import type { StyleSpecification } from "maplibre-gl";
+﻿import type { StyleSpecification } from "maplibre-gl";
 
 /**
  * PlateMaps' own neo-noir night style, written from scratch.

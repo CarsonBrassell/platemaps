@@ -6,59 +6,70 @@ type PickDish = {
   total: number;
 };
 
+/* Warm tone blocks stand where dish photos don't exist yet. Cycled by
+   position so adjacent cards don't repeat the same tone. */
+const TONES = ["var(--pm-tone-1)", "var(--pm-tone-2)", "var(--pm-tone-3)"];
+
 export function TopPicks({
   dishes,
+  ratedBy,
   onSelect,
 }: {
   dishes: PickDish[];
+  /** Total dish ratings across this restaurant's whole menu. */
+  ratedBy: number;
   onSelect: (dishId: string) => void;
 }) {
   if (dishes.length === 0) return null;
 
   return (
-    <div className="border-b-8 border-zinc-100 px-5 py-5">
-      <h2 className="mb-4 flex items-center gap-2 text-lg font-medium text-zinc-900">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-pm-orange" aria-hidden="true">
-          <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.957c.3.922-.755 1.688-1.538 1.118l-3.367-2.447a1 1 0 00-1.176 0l-3.367 2.447c-.783.57-1.838-.196-1.538-1.118l1.286-3.957a1 1 0 00-.363-1.118L4.98 9.384c-.784-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z" />
-        </svg>
-        Top picks
-      </h2>
-      <div className="flex flex-col divide-y divide-zinc-100">
+    <section aria-label="Top dishes">
+      {/* The section label sits on the cream ground — the white cards below
+          are the grouping, not a container around them. */}
+      <h2 className="mono-label px-1 text-zinc-500">The Hits</h2>
+
+      <div className="mt-3 grid grid-cols-2 gap-3">
         {dishes.map((dish, i) => (
           <button
             key={dish.id}
             onClick={() => onSelect(dish.id)}
-            className="group flex items-center gap-3 py-3.5 text-left transition-colors active:bg-pm-orange-tint/40"
+            className="card-lift group flex flex-col overflow-hidden rounded-2xl bg-white text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
           >
-            <span
-              className={
-                i === 0
-                  ? "flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pm-orange text-[11px] font-bold text-white"
-                  : "flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint text-[11px] font-bold text-pm-grey-text"
-              }
-            >
-              {i + 1}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-base font-semibold text-zinc-900 transition-colors group-hover:text-pm-orange-text">
+            <div
+              className="m-2 aspect-[4/3] shrink-0 rounded-[10px]"
+              style={{ background: TONES[i % TONES.length] }}
+              aria-hidden="true"
+            />
+            <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-0.5">
+              <p className="text-sm font-medium leading-snug text-zinc-900 transition-colors group-hover:text-pm-orange-text">
                 {dish.name}
               </p>
-              <p className="mt-0.5 text-xs text-zinc-400">
-                {dish.price} &middot; {dish.total.toLocaleString()} ratings
-              </p>
-              <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-zinc-100">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-pm-orange to-pm-orange-text/90 transition-all duration-500"
-                  style={{ width: `${dish.pct ?? 0}%` }}
-                />
+              <div className="mt-auto flex items-baseline justify-between gap-2 pt-2">
+                <span className="font-mono text-xs text-zinc-500">{dish.price}</span>
+                {/* The recommendation percentage — one of the accent's jobs.
+                    Bold at this size so the lighter accent still clears the
+                    large-text contrast bar. */}
+                <span className="font-mono text-xl font-bold tabular-nums text-pm-orange">
+                  {dish.pct}%
+                </span>
               </div>
             </div>
-            <span className="shrink-0 text-2xl font-extrabold tabular-nums text-pm-orange-text">
-              {dish.pct}%
-            </span>
           </button>
         ))}
       </div>
-    </div>
+
+      {/* Machine footer: the denominator, and the way onward. */}
+      <div className="mono-label mt-3.5 flex flex-wrap items-center justify-between gap-2 px-1 text-zinc-500">
+        <span>
+          Rated by {ratedBy.toLocaleString()} locals
+        </span>
+        <a
+          href="#full-menu"
+          className="rounded-full text-zinc-700 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
+        >
+          See full menu →
+        </a>
+      </div>
+    </section>
   );
 }

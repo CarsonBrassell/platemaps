@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { RestaurantDetail } from "@/components/RestaurantDetail";
 import { restaurants } from "@/data/restaurants";
 import { dishesByRestaurant } from "@/data/dishes";
+import { getRestaurantAspectTally } from "@/lib/db";
 
 export default async function RestaurantPage({
   params,
@@ -15,18 +16,20 @@ export default async function RestaurantPage({
   if (!restaurant) notFound();
 
   const dishes = dishesByRestaurant[id] ?? [];
+  // Fetched here rather than in RestaurantDetail because that component is a
+  // client component and this reads the database directly.
+  const aspectTally = await getRestaurantAspectTally(id);
 
   return (
-    <div className="app-shell mx-auto my-6 w-full max-w-5xl overflow-hidden rounded-2xl border border-zinc-200/60">
+    /* No shell card: the page is the cream ground, and each section below is
+       its own white card sitting on it. */
+    <div className="mx-auto w-full max-w-5xl pb-12">
       <Header />
-      {/* Phone-width column on small screens, but released on lg so the menu
-          and the comment thread can sit side by side rather than leaving
-          ~575px of the shell empty next to a single narrow column. */}
-      <div className="mx-auto max-w-md bg-white lg:max-w-none">
-        <div className="border-b border-zinc-100 px-5 py-3">
+      <div className="px-4 sm:px-6">
+        <div className="py-2">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-sm text-zinc-500 transition-all hover:-translate-x-0.5 hover:text-pm-orange-text"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-full text-sm text-zinc-500 transition-all hover:-translate-x-0.5 hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M15 18l-6-6 6-6" />
@@ -34,7 +37,12 @@ export default async function RestaurantPage({
             Back to discover
           </Link>
         </div>
-        <RestaurantDetail restaurant={restaurant} dishes={dishes} />
+        {/* Phone-width column on small screens, but released on lg so the menu
+            and the comment thread can sit side by side rather than leaving
+            ~575px of the column empty next to a single narrow strip. */}
+        <div className="mx-auto max-w-md lg:max-w-none">
+          <RestaurantDetail restaurant={restaurant} dishes={dishes} aspectTally={aspectTally} />
+        </div>
       </div>
     </div>
   );

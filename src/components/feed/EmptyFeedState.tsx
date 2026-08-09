@@ -16,8 +16,8 @@ function Shell({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-dashed border-zinc-300 bg-white/60 px-6 py-12 text-center">
-      <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-pm-orange-tint text-pm-orange-text">
+    <div className="flex flex-col items-center rounded-2xl bg-white px-6 py-12 text-center">
+      <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-pm-grey-tint text-pm-grey-text">
         {icon}
       </span>
       <p className="font-display text-base font-semibold text-zinc-900">{title}</p>
@@ -28,7 +28,7 @@ function Shell({
 }
 
 const primaryButton =
-  "inline-flex min-h-11 items-center gap-2 rounded-full bg-pm-orange px-5 text-sm font-medium text-white transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+  "inline-flex min-h-11 items-center gap-2 rounded-full bg-pm-orange px-5 text-sm font-medium text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
 export function EmptyFeedState({
   tab,
@@ -39,15 +39,15 @@ export function EmptyFeedState({
   onCreate: () => void;
   isSignedIn: boolean;
 }) {
-  if (tab === "following") {
+  if (tab === "friends") {
     return (
       <Shell
         icon={<CompassIcon className="h-6 w-6" />}
-        title="Your following feed is quiet"
+        title="Your friends feed is quiet"
         body={
           isSignedIn
-            ? "Follow a few people whose taste you trust and their plates will land here."
-            : "Sign in to follow people and build a feed of the eaters you actually trust."
+            ? "Add a few friends whose taste you trust and their plates will land here."
+            : "Sign in to add friends and build a feed of the eaters you actually trust."
         }
         action={
           !isSignedIn && (
@@ -104,8 +104,8 @@ export function OfflineBanner() {
 
 export function EndOfFeed() {
   return (
-    <p className="py-8 text-center text-sm text-zinc-400">
-      That&apos;s every plate around here. Check back after lunch.
+    <p className="mono-label py-8 text-center text-zinc-500">
+      That&apos;s every plate around here · check back after lunch
     </p>
   );
 }

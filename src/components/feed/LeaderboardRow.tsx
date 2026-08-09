@@ -1,47 +1,27 @@
 "use client";
 
-import { PlateStarIcon } from "@/components/icons";
 import { initials, avatarPalette } from "@/lib/format";
 import { formatPoints } from "@/lib/points";
 import type { LeaderboardEntry } from "./types";
 
-/**
- * Top three are plated on metal and get a kitchen title; everyone below is a
- * plain numeral. The rim colours stay muted — a full metallic gradient next
- * to the warm paper reads as costume jewellery.
- */
-const STATIONS: Record<number, { rim: string; plate: string; title: string }> = {
-  1: {
-    rim: "ring-amber-300",
-    plate: "bg-gradient-to-br from-amber-50 to-amber-200 text-amber-900",
-    title: "Head chef",
-  },
-  2: {
-    rim: "ring-zinc-300",
-    plate: "bg-gradient-to-br from-zinc-50 to-zinc-200 text-zinc-700",
-    title: "Sous chef",
-  },
-  3: {
-    rim: "ring-orange-300",
-    plate: "bg-gradient-to-br from-orange-50 to-orange-200 text-orange-900",
-    title: "Line cook",
-  },
+/** Kitchen titles for the top three; everyone below is just a number. */
+const STATIONS: Record<number, string> = {
+  1: "Head chef",
+  2: "Sous chef",
+  3: "Line cook",
 };
 
-/** Rank rendered as a plate: outer rim, inner well, number in the middle. */
-function PlateRank({ rank }: { rank: number }) {
-  const station = STATIONS[rank];
-  if (!station) {
+/** Rank as a machine value: mono numeral, tan coin for the podium. */
+function Rank({ rank }: { rank: number }) {
+  if (!STATIONS[rank]) {
     return (
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-dashed border-zinc-300 text-xs font-semibold text-zinc-400">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center font-mono text-xs tabular-nums text-zinc-500">
         {rank}
       </span>
     );
   }
   return (
-    <span
-      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ring-2 ring-offset-1 ring-offset-transparent ${station.rim} ${station.plate} text-xs font-bold shadow-sm`}
-    >
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xs font-semibold tabular-nums text-zinc-900">
       {rank}
     </span>
   );
@@ -49,11 +29,11 @@ function PlateRank({ rank }: { rank: number }) {
 
 function RankDelta({ change }: { change: number | null }) {
   if (change === null) {
-    return <span className="text-[10px] font-medium text-zinc-400">new</span>;
+    return <span className="font-mono text-[10px] text-zinc-500">new</span>;
   }
   if (change === 0) {
     return (
-      <span className="text-[10px] text-zinc-300" aria-label="No change in rank">
+      <span className="font-mono text-[10px] text-zinc-400" aria-label="No change in rank">
         —
       </span>
     );
@@ -61,22 +41,14 @@ function RankDelta({ change }: { change: number | null }) {
   const up = change > 0;
   return (
     <span
-      className={`flex items-center gap-0.5 text-[10px] font-semibold ${
-        up ? "text-emerald-600" : "text-zinc-400"
+      className={`font-mono text-[10px] font-medium tabular-nums ${
+        up ? "text-emerald-700" : "text-zinc-500"
       }`}
       aria-label={`${up ? "Up" : "Down"} ${Math.abs(change)} ${
         Math.abs(change) === 1 ? "place" : "places"
       }`}
     >
-      <svg
-        viewBox="0 0 12 12"
-        className={`h-2.5 w-2.5 ${up ? "" : "rotate-180"}`}
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path d="M6 2 10 8H2z" />
-      </svg>
-      {Math.abs(change)}
+      {up ? "▲" : "▽"} {Math.abs(change)}
     </span>
   );
 }
@@ -95,21 +67,21 @@ export function LeaderboardRow({
   return (
     <li
       className={`flex items-center gap-2.5 rounded-xl px-2 py-2 transition-colors ${
-        isCurrentUser ? "bg-pm-orange-tint/60 ring-1 ring-inset ring-pm-orange-border" : ""
+        isCurrentUser ? "bg-pm-orange-tint/60" : ""
       } ${entry.rankChange !== null && entry.rankChange > 0 ? "animate-rank-rise" : ""}`}
     >
-      <PlateRank rank={entry.rank} />
+      <Rank rank={entry.rank} />
 
       {entry.avatarUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={entry.avatarUrl}
           alt=""
-          className="h-9 w-9 shrink-0 rounded-full object-cover ring-2 ring-white"
+          className="h-9 w-9 shrink-0 rounded-full object-cover"
         />
       ) : (
         <span
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${palette.avatarBg} text-xs font-semibold text-white ring-2 ring-white`}
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${palette.avatarBg} font-mono text-xs font-semibold text-white`}
         >
           {initials(entry.name)}
         </span>
@@ -121,10 +93,10 @@ export function LeaderboardRow({
         <span className="min-w-0">
           <span className="font-display block truncate text-sm font-semibold text-zinc-900">
             {entry.name}
-            {isCurrentUser && <span className="ml-1 text-xs text-pm-orange-text">(you)</span>}
+            {isCurrentUser && <span className="ml-1 font-mono text-xs text-zinc-600">(you)</span>}
           </span>
-          <span className="block truncate text-[11px] text-zinc-500">
-            {station ? `${station.title} · ${plates}` : plates}
+          <span className="block truncate font-mono text-[11px] text-zinc-500">
+            {station ? `${station} · ${plates}` : plates}
           </span>
         </span>
         <span
@@ -134,9 +106,8 @@ export function LeaderboardRow({
       </div>
 
       <div className="flex shrink-0 flex-col items-end gap-0.5">
-        <span className="flex items-center gap-1 whitespace-nowrap text-sm font-bold text-pm-orange-text">
-          <PlateStarIcon className="h-3.5 w-[18px]" />
-          <span className="tabular-nums">{formatPoints(entry.points)}</span>
+        <span className="whitespace-nowrap font-mono text-sm font-semibold tabular-nums text-zinc-900">
+          {formatPoints(entry.points)}
           <span className="sr-only"> PM Points</span>
         </span>
         <RankDelta change={entry.rankChange} />

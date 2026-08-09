@@ -29,19 +29,20 @@ import type { PostMedia } from "@/components/feed/types";
  * of post this is.
  *
  * From there one fork picks the instrument: five stars for a restaurant, a
- * percentage meter for a dish off its real menu, or neither for a comment. Both
- * ratings land in the existing 0–10 `rating` column — stars doubled, a
- * percentage divided by ten — so the feed, the map pins and the hot score keep
- * reading one number and nothing downstream had to learn a second scale.
+ * percentage meter for a dish off its real menu, or neither for a comment.
+ * Both land in the `rating` column in their own native scale — stars stay
+ * 1–5, the meter stays 0–100 — tagged with `ratingKind` so the feed renders
+ * each one back as the instrument it actually was, not a number flattened
+ * onto one shared scale.
  */
 type Step = "photo" | "kind" | "where" | "dish" | "rate" | "detail";
 
-const shell = "app-shell mx-auto my-6 w-full max-w-7xl overflow-hidden rounded-2xl border border-zinc-200/60";
+const shell = "mx-auto w-full max-w-7xl pb-12";
 const noteField =
-  "w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-base transition-colors placeholder:text-zinc-400 focus:border-pm-orange focus:outline-none";
-const legend = "mb-1.5 block text-xs font-semibold uppercase tracking-wide text-zinc-500";
+  "w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-base transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
+const legend = "mono-label mb-1.5 block text-zinc-500";
 const chip =
-  "min-h-9 rounded-full px-3 text-xs font-medium ring-1 ring-inset transition-all hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+  "min-h-9 rounded-full px-3 text-xs font-medium transition-all hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
 export default function PostPage() {
   const router = useRouter();
@@ -63,6 +64,7 @@ export default function PostPage() {
   const [photos, setPhotos] = useState<PhotoDraft[]>([]);
   const [note, setNote] = useState("");
   const [bestAt, setBestAt] = useState<string | null>(null);
+  const [worstAt, setWorstAt] = useState<string | null>(null);
 
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -105,6 +107,7 @@ export default function PostPage() {
       setStars(0);
       setPct(80);
       setBestAt(null);
+      setWorstAt(null);
     }
     setKind(next);
     go(2);
@@ -167,10 +170,38 @@ export default function PostPage() {
 
   function payload() {
     const media = photos.map<PostMedia>((p) => ({ url: p.url, type: "image", alt: altFor() }));
-    const shared = { restaurant: place?.name, locationLabel: place?.distance, media };
+    // restaurantId/lat/lng ride along so the post can be geo-filtered later
+    // with no further migration — see the restaurantId columns in lib/db.ts.
+    // photosPublic itself isn't sent: the API route reads it server-side from
+    // the signed-in user's current toggle, so it can't be spoofed by the
+    // client and always reflects the setting at the true moment of posting.
+    const shared = {
+      restaurant: place?.name,
+      restaurantId: place?.id,
+      restaurantLat: place?.lat,
+      restaurantLng: place?.lng,
+      locationLabel: place?.distance,
+      media,
+    };
 
+    // Rating rides in whatever scale it was collected on — stars stay 1-5,
+    // the meter stays 0-100 — with ratingKind saying which, so the feed can
+    // render it back as the same instrument instead of a flattened /10
+    // number. The API route re-validates both against that kind; this isn't
+    // the only place the range is enforced.
     if (kind === "restaurant") {
-      return { ...shared, text: note.trim(), rating: stars * 2, vibe: bestAt ?? undefined };
+      return {
+        ...shared,
+        text: note.trim(),
+        rating: stars,
+        ratingKind: "restaurant" as const,
+        // `vibe` keeps carrying the best-at pick so existing post cards keep
+        // rendering their chip; bestAspect/worstAspect are what the new
+        // per-aspect scores are actually built from.
+        vibe: bestAt ?? undefined,
+        bestAspect: bestAt ?? undefined,
+        worstAspect: worstAt ?? undefined,
+      };
     }
     if (kind === "dish") {
       return {
@@ -178,7 +209,8 @@ export default function PostPage() {
         text: note.trim(),
         dishName: dish?.name,
         price: dish?.price,
-        rating: pct / 10,
+        rating: pct,
+        ratingKind: "dish" as const,
       };
     }
     return { ...shared, text: note.trim() };
@@ -320,7 +352,7 @@ export default function PostPage() {
           )}
 
           {step === "rate" && kind === "restaurant" && (
-            <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+            <div className="rounded-2xl bg-white p-5">
               <p id="stars-label" className="text-sm font-semibold text-zinc-800">
                 Your rating
               </p>
@@ -331,7 +363,7 @@ export default function PostPage() {
           )}
 
           {step === "rate" && kind === "dish" && (
-            <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+            <div className="rounded-2xl bg-white p-5">
               <PercentMeter
                 id="dish-meter"
                 value={pct}
@@ -388,8 +420,51 @@ export default function PostPage() {
                           onClick={() => setBestAt(on ? null : b.label)}
                           className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
                             on
-                              ? "bg-pm-charcoal text-white ring-pm-charcoal"
-                              : "bg-white text-zinc-600 ring-zinc-200 hover:text-pm-orange-text"
+                              ? "bg-pm-charcoal text-white"
+                              : "bg-pm-grey-tint text-pm-grey-text hover:text-zinc-900"
+                          }`}
+                        >
+                          <span aria-hidden="true">{b.emoji}</span>
+                          {b.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </fieldset>
+              )}
+
+              {/* The other half of the signal. Without it the only thing a
+                  restaurant can ever be rated on is what it's best at, so no
+                  weakness is visible anywhere in the app — a place with great
+                  food and bad service reads as pure praise.
+
+                  Optional on purpose: one tap, skippable, and skipping just
+                  means this review has nothing negative to report rather than
+                  everything being fine. The chip already chosen as "best" is
+                  disabled here, since the same aspect can't be both. */}
+              {kind === "restaurant" && (
+                <fieldset>
+                  <legend className={legend}>
+                    Anything let you down?{" "}
+                    <span className="normal-case text-zinc-400">(optional)</span>
+                  </legend>
+                  <div className="flex flex-wrap gap-1.5">
+                    {BEST_AT.map((b) => {
+                      const on = worstAt === b.label;
+                      const isBest = bestAt === b.label;
+                      return (
+                        <button
+                          key={b.label}
+                          type="button"
+                          aria-pressed={on}
+                          disabled={isBest}
+                          onClick={() => setWorstAt(on ? null : b.label)}
+                          className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
+                            isBest
+                              ? "cursor-not-allowed bg-pm-grey-tint/40 text-zinc-400"
+                              : on
+                                ? "bg-red-700 text-white"
+                                : "bg-pm-grey-tint text-pm-grey-text hover:text-red-700"
                           }`}
                         >
                           <span aria-hidden="true">{b.emoji}</span>
@@ -402,8 +477,8 @@ export default function PostPage() {
               )}
 
               {/* A last look at what the card will say, so posting isn't a leap. */}
-              <div className="rounded-xl bg-pm-grey-tint/50 px-4 py-3 ring-1 ring-inset ring-zinc-200/70">
-                <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+              <div className="rounded-xl bg-pm-grey-tint/50 px-4 py-3">
+                <p className="mono-label text-zinc-500">
                   How it will read
                 </p>
                 <p className="font-display mt-1 text-base font-semibold text-zinc-900">

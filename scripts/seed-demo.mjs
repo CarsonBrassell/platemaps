@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Seeds demo eaters and plates so a fresh database has a feed and a
  * leaderboard worth looking at. Idempotent: re-running replaces the demo rows
  * and leaves real accounts alone.
@@ -9,8 +9,17 @@
  */
 import { neon } from "@neondatabase/serverless";
 import { randomUUID, randomBytes } from "node:crypto";
+import { restaurants } from "../src/data/restaurants.ts";
 
 const sql = neon(process.env.DATABASE_URL);
+
+/** POSTS below reference restaurants by name; this resolves id/lat/lng for
+    the restaurant_id/restaurant_lat/restaurant_lng columns. */
+function findRestaurant(name) {
+  const match = restaurants.find((r) => r.name === name);
+  if (!match) throw new Error(`No restaurant named "${name}" in data/restaurants.ts`);
+  return match;
+}
 
 const photo = (id) =>
   `https://images.unsplash.com/photo-${id}?w=1080&q=80&fm=jpg&fit=crop`;
@@ -32,7 +41,7 @@ const POSTS = [
     restaurant: "Landini's Pizzeria",
     text: "Crispy crust, spicy honey, and definitely worth ordering again. Got there right at open and walked straight in.",
     price: "$18",
-    rating: 9.2,
+    rating: 92,
     location: "0.8 miles away",
     tags: ["Dinner", "Fine Dining"],
     photos: [1513104890138 + "-7c749659a591", "1565299624946-b28f40a0ae38"],
@@ -49,7 +58,7 @@ const POSTS = [
     restaurant: "Tacos El Gordo",
     text: "Still the best $4.50 in the city. Smoked marlin, no line at 11am on a Tuesday.",
     price: "$4.50",
-    rating: 9.6,
+    rating: 96,
     location: "0.6 miles away",
     tags: ["Lunch", "Hidden Gem", "Under $15"],
     photos: ["1551782450-a2132b4ba21d"],
@@ -63,7 +72,7 @@ const POSTS = [
     restaurant: "Breakfast Republic",
     text: "Sat in the garden for an hour and nobody rushed me. The bun is laminated properly — shatters when you pull it.",
     price: "$9",
-    rating: 8.4,
+    rating: 84,
     location: "1.1 miles away",
     tags: ["Breakfast", "Coffee"],
     photos: ["1567620905732-2d1ec7ab7445"],
@@ -77,7 +86,7 @@ const POSTS = [
     restaurant: "Sushi Ota",
     text: "Ordered the chirashi instead of omakase and regret nothing. Everything tasted like it was cut that morning.",
     price: "$32",
-    rating: 9.4,
+    rating: 94,
     location: "2.4 miles away",
     tags: ["Dinner", "Fine Dining"],
     photos: ["1546069901-ba9599a7e63c", "1504674900247-0877df9cc836"],
@@ -94,12 +103,13 @@ const POSTS = [
     restaurant: "Buona Forchetta",
     text: "Came for the pizza, stayed for this. Soaked all the way through, not soggy. Split it and still wanted my own.",
     price: "$8",
-    rating: 8.9,
+    rating: 89,
     location: "6.2 miles away",
     tags: ["Dessert", "Under $15"],
     photos: ["1559847844-5315695dadae"],
     hours: 40,
     likes: ["priya", "diego"],
+    dislikes: ["sam"],
     comments: [{ user: "priya", text: "Their dessert case is criminally underrated" }],
   },
   {
@@ -108,12 +118,15 @@ const POSTS = [
     restaurant: "Mitch's Seafood",
     text: "Ate it standing at the rail watching the boats come in. Batter was light, tartar had actual dill in it.",
     price: "$21",
-    rating: 8.7,
+    rating: 87,
     location: "4.0 miles away",
     tags: ["Lunch"],
     photos: ["1541592106381-b31e9677c0e5"],
     hours: 52,
     likes: ["ben"],
+    // The one seeded plate that lands underwater, so the feed has a negative
+    // net score to render and the card's minus sign is exercised.
+    dislikes: ["maya", "priya"],
     comments: [],
   },
 ];
@@ -146,28 +159,49 @@ async function main() {
   for (const p of POSTS) {
     const postId = randomUUID();
     const createdAt = hoursAgo(p.hours);
+    const restaurant = findRestaurant(p.restaurant);
     await sql`
-      INSERT INTO posts (id, user_id, text, restaurant, dish_name, price, rating,
-                         location_label, tags, media, created_at)
-      VALUES (${postId}, ${ids[p.user]}, ${p.text}, ${p.restaurant}, ${p.dish},
-              ${p.price}, ${p.rating}, ${p.location}, ${p.tags},
+      INSERT INTO posts (id, user_id, text, restaurant, restaurant_id, restaurant_lat,
+                         restaurant_lng, dish_name, price, rating, rating_kind,
+                         location_label, tags, media, photos_public, created_at)
+      VALUES (${postId}, ${ids[p.user]}, ${p.text}, ${p.restaurant}, ${restaurant.id},
+              ${restaurant.lat}, ${restaurant.lng}, ${p.dish}, ${p.price}, ${p.rating},
+              -- Every seeded post names a dish, so all of them are dish
+              -- reviews and their ratings are percentages (0-100), matching
+              -- what the composer's meter produces.
+              'dish', ${p.location}, ${p.tags},
               ${JSON.stringify(
                 p.photos.map((id) => ({
                   url: photo(id),
                   type: "image",
                   alt: `${p.dish} at ${p.restaurant}`,
                 })),
-              )}::jsonb, ${createdAt.toISOString()})
+              )}::jsonb,
+              -- Demo accounts can't log in, so there's no real privacy
+              -- decision being overridden here — true so the seeded Discover
+              -- feed actually shows photos instead of looking broken.
+              true, ${createdAt.toISOString()})
     `;
     await award(p.user, 10, `post:${postId}`, createdAt);
 
-    for (const likerKey of p.likes) {
+    for (const upvoterKey of p.likes) {
       await sql`
-        INSERT INTO post_likes (post_id, user_id, liked, awarded_points)
-        VALUES (${postId}, ${ids[likerKey]}, true, true)
+        INSERT INTO post_upvotes (post_id, user_id)
+        VALUES (${postId}, ${ids[upvoterKey]})
         ON CONFLICT DO NOTHING
       `;
-      await award(p.user, 1, `like:${postId}:${ids[likerKey]}`, hoursAgo(p.hours - 1));
+      await award(p.user, 1, `upvote:${postId}:${ids[upvoterKey]}`, hoursAgo(p.hours - 1));
+    }
+
+    // Downvotes pay the author nothing and take nothing away — no award call
+    // here is the whole rule. Nobody seeded appears in both lists for a post;
+    // the app enforces that in castVote, the seed just doesn't violate it.
+    for (const downvoterKey of p.dislikes ?? []) {
+      await sql`
+        INSERT INTO post_downvotes (post_id, user_id)
+        VALUES (${postId}, ${ids[downvoterKey]})
+        ON CONFLICT DO NOTHING
+      `;
     }
 
     for (const [i, c] of p.comments.entries()) {
@@ -179,6 +213,358 @@ async function main() {
       `;
       await award(p.user, 2, `comment:${commentId}`, hoursAgo(Math.max(p.hours - 1 - i, 0.2)));
     }
+  }
+
+  /*
+   * Captions for the seeded restaurant reviews. Three variants per aspect,
+   * cycled by index, because every review sharing one templated sentence
+   * turned the restaurant page's comment rail into a wall of the same line
+   * repeated twenty times — which reads as broken seed data, not a busy
+   * restaurant.
+   */
+  const PRAISE = {
+    Food: [
+      "The kitchen is the reason to come here.",
+      "Food is the standout, full stop.",
+      "Everything that came out of that kitchen landed.",
+      "Whatever they're doing back there, it's working.",
+      "Came for one thing, ate three. No regrets.",
+    ],
+    Drinks: [
+      "The drinks list is the draw.",
+      "They know exactly what they're doing behind that bar.",
+      "Best pours in the neighborhood, easily.",
+      "Would come back for the bar alone.",
+      "Somebody behind that bar actually cares.",
+    ],
+    Service: [
+      "The staff make this place.",
+      "Quick, friendly, never hovering. Rare.",
+      "They actually look after you here.",
+      "Treated like a regular on the first visit.",
+      "Nobody made me feel like a table number.",
+    ],
+    Ambiance: [
+      "The room is the whole point.",
+      "Good place to sit a while and not be rushed.",
+      "Worth coming for the space alone.",
+      "Stayed two hours longer than I meant to.",
+      "The kind of room you tell people about.",
+    ],
+    Value: [
+      "Hard to beat for the price.",
+      "You get a lot more than you pay for.",
+      "Cheapest good meal for blocks.",
+      "Left full and the bill still surprised me.",
+      "Portions like this at this price shouldn't exist.",
+    ],
+    Speed: [
+      "In and out before my break was over.",
+      "Fastest lunch around here.",
+      "No standing around waiting.",
+      "Ordered, sat down, food arrived. That fast.",
+      "Perfect when you've got forty minutes.",
+    ],
+    "Menu variety": [
+      "Menu goes deep — something for everyone.",
+      "Took three visits to get through what I wanted to try.",
+      "Plenty to pick from, which is rare around here.",
+      "Brought a picky group and everyone found something.",
+      "Still working my way down the menu.",
+    ],
+    Dessert: [
+      "Save room. The dessert is the point.",
+      "Best course here is the last one.",
+      "Don't skip the sweets, seriously.",
+      "Ordered dessert for the table and then a second one.",
+      "The dessert is what I keep thinking about.",
+    ],
+  };
+
+  const GRIPE = {
+    Food: [
+      "Kitchen is the weak link, though.",
+      "Wish the food kept up with the rest of it.",
+      "Food didn't do it for me.",
+      "The plates were the least interesting part.",
+      "Everything else beats what's on the plate.",
+    ],
+    Drinks: [
+      "Drinks felt like an afterthought.",
+      "Bar side needs work.",
+      "I'd skip the cocktails.",
+      "Stick to what's on tap.",
+      "Nothing on the drinks list stood out.",
+    ],
+    Service: [
+      "Service dragged, though.",
+      "Took a while to get anyone's attention.",
+      "Front of house could be sharper.",
+      "Waited a long time for a check.",
+      "Felt understaffed the whole time.",
+    ],
+    Ambiance: [
+      "Room's a bit grim, though.",
+      "Not somewhere you'd linger.",
+      "The space could use some love.",
+      "Loud enough that we gave up talking.",
+      "Get it to go — the room's nothing.",
+    ],
+    Value: [
+      "Pricey for what it is, though.",
+      "Bill added up faster than I expected.",
+      "Not cheap.",
+      "Good, but I felt the price after.",
+      "Portions don't match the number at the bottom.",
+    ],
+    Speed: [
+      "Slow, though.",
+      "Be ready to wait.",
+      "Not a quick stop.",
+      "Don't come here on a lunch break.",
+      "The wait is the price of admission.",
+    ],
+    "Menu variety": [
+      "Menu's thin, though.",
+      "Wish there were more options.",
+      "Not much to choose from.",
+      "Same few things every visit.",
+      "Hard if anyone in your group is picky.",
+    ],
+    Dessert: [
+      "Dessert was forgettable.",
+      "Skip the sweets.",
+      "Dessert menu is an afterthought.",
+      "Nothing worth saving room for.",
+      "Get dessert somewhere else.",
+    ],
+  };
+
+  /*
+   * Restaurant reviews, which is what the per-aspect block on a restaurant
+   * page is built from. The dish posts above are dish reviews and carry no
+   * aspect verdicts.
+   *
+   * Each entry is [bestAspect, worstAspect|null, stars, count], repeated
+   * `count` times, so a restaurant ends up with a believable spread rather
+   * than one vote per aspect.
+   *
+   * These four are hand-written because each is a case worth being able to
+   * look at. Every other restaurant is generated below — the block used to
+   * render on these four pages and nowhere else.
+   */
+  const HAND_WRITTEN = [
+    {
+      restaurant: "Landini's Pizzeria",
+      verdicts: [
+        ["Food", null, 5, 7],
+        ["Food", "Speed", 4, 3],
+        ["Value", null, 5, 2],
+        ["Ambiance", "Service", 4, 2],
+        ["Service", null, 3, 1],
+      ],
+    },
+    {
+      restaurant: "Sushi Ota",
+      verdicts: [
+        ["Food", null, 5, 9],
+        ["Service", null, 5, 4],
+        ["Food", "Value", 4, 4],
+        ["Ambiance", "Value", 4, 2],
+      ],
+    },
+    {
+      restaurant: "Tacos El Gordo",
+      verdicts: [
+        ["Value", null, 5, 6],
+        ["Speed", null, 5, 4],
+        ["Food", "Ambiance", 4, 5],
+        ["Food", "Service", 4, 3],
+      ],
+    },
+    {
+      restaurant: "Ballast Point Brewing",
+      // The case worth seeing on a page: drinks carry it, the kitchen drags.
+      verdicts: [
+        ["Drinks", "Food", 4, 8],
+        ["Ambiance", "Food", 4, 4],
+        ["Drinks", null, 5, 3],
+        ["Service", "Value", 3, 2],
+      ],
+    },
+  ];
+
+  /*
+   * Which aspects a kind of place tends to be praised and faulted for. Used
+   * only to give a generated restaurant a shape — a brewery whose drinks and
+   * room carry it reads differently from a sandwich counter that wins on speed
+   * and price, and a page where all eight aspects sit on the same number says
+   * nothing at all.
+   *
+   * `strong` is weighted toward its first entry, `also` gets the occasional
+   * nod, `weak` is what the complaints land on. Anything omitted stays
+   * unremarked and is left off the page rather than scored badly for never
+   * having come up.
+   */
+  const CUISINE_PROFILE = {
+    Breweries: { strong: ["Drinks", "Ambiance"], also: ["Menu variety"], weak: ["Food"] },
+    Bars: { strong: ["Drinks", "Ambiance"], also: ["Service"], weak: ["Value"] },
+    "Tapas Bars": { strong: ["Menu variety", "Drinks"], also: ["Ambiance"], weak: ["Value"] },
+    Pizza: { strong: ["Food", "Value"], also: ["Speed"], weak: ["Ambiance"] },
+    Mexican: { strong: ["Value", "Food"], also: ["Speed"], weak: ["Ambiance"] },
+    "Sushi Bars": { strong: ["Food", "Service"], also: ["Menu variety"], weak: ["Value"] },
+    Seafood: { strong: ["Food", "Ambiance"], also: ["Service"], weak: ["Value"] },
+    "New American": { strong: ["Food", "Ambiance"], also: ["Service"], weak: ["Value"] },
+    American: { strong: ["Food", "Service"], also: ["Value"], weak: ["Menu variety"] },
+    Diners: { strong: ["Service", "Value"], also: ["Dessert"], weak: ["Food"] },
+    "Breakfast & Brunch": { strong: ["Food", "Service"], also: ["Dessert"], weak: ["Speed"] },
+    Thai: { strong: ["Food", "Value"], also: ["Service"], weak: ["Ambiance"] },
+    Italian: { strong: ["Food", "Service"], also: ["Dessert"], weak: ["Value"] },
+    Barbeque: { strong: ["Food", "Value"], also: ["Menu variety"], weak: ["Speed"] },
+    Sandwiches: { strong: ["Speed", "Value"], also: ["Food"], weak: ["Ambiance"] },
+    Korean: { strong: ["Food", "Menu variety"], also: ["Service"], weak: ["Speed"] },
+  };
+
+  const DEFAULT_PROFILE = { strong: ["Food", "Service"], also: ["Ambiance"], weak: ["Value"] };
+
+  /** Stable per-restaurant seed, so re-seeding doesn't reshuffle every page. */
+  function seedOf(text) {
+    let h = 0;
+    for (const ch of text) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    return h;
+  }
+
+  /**
+   * A believable review spread for one restaurant, as a flat list of
+   * { best, worst, stars }.
+   *
+   * The star ratings are built to average back to the restaurant's own real
+   * Yelp/Google rating rather than to an invented number — that average is
+   * what src/lib/aspectScores.ts uses as the baseline every aspect moves away
+   * from, so the whole block stays anchored to the one figure here that came
+   * from outside.
+   */
+  function generateReviews(restaurant) {
+    const profile = CUISINE_PROFILE[restaurant.cuisine] ?? DEFAULT_PROFILE;
+    const seed = seedOf(`${restaurant.id}:${restaurant.name}`);
+    const count = 9 + (seed % 5); // 9-13 reviews
+
+    // Start everyone at 4 stars, then move as many as it takes to 5 (or down
+    // to 3) for the mean to land on the real rating.
+    const stars = Array(count).fill(4);
+    let remainder = Math.round(restaurant.rating * count) - 4 * count;
+    for (let i = 0; remainder > 0 && i < count; i++, remainder--) stars[i] = 5;
+    for (let i = count - 1; remainder < 0 && i >= 0; i--, remainder++) stars[i] = 3;
+
+    // Praise is drawn from a weighted bag; the leading strength comes up
+    // roughly twice as often as the second, which is what makes one aspect
+    // clearly top the list instead of a flat tie.
+    const bag = [];
+    profile.strong.forEach((aspect, i) => {
+      for (let n = 0; n < (i === 0 ? 3 : 2); n++) bag.push(aspect);
+    });
+    for (const aspect of profile.also ?? []) bag.push(aspect);
+
+    // A well-rated place collects fewer complaints. They attach to the lowest
+    // -starred reviews, since that's who was disappointed.
+    const faults = Math.max(1, Math.round(count * (4.6 - restaurant.rating) * 0.5));
+
+    return stars.map((rating, i) => {
+      const best = bag[(i + seed) % bag.length];
+      let worst = null;
+      if (i >= count - faults) {
+        const weak = profile.weak;
+        worst = weak[(i + seed) % weak.length];
+        // A review can't call the same aspect both the best thing and the
+        // letdown — and post_aspect_votes is keyed on (post_id, aspect), so
+        // the second row would be dropped anyway.
+        if (worst === best) worst = weak.find((w) => w !== best) ?? null;
+      }
+      return { best, worst, stars: rating };
+    });
+  }
+
+  /** Expands the hand-written [best, worst, stars, count] tuples to the same
+      flat shape the generator returns. */
+  function expand(verdicts) {
+    return verdicts.flatMap(([best, worst, stars, count]) =>
+      Array.from({ length: count }, () => ({ best, worst, stars })),
+    );
+  }
+
+  const handWritten = new Map(
+    HAND_WRITTEN.map((entry) => [entry.restaurant, expand(entry.verdicts)]),
+  );
+
+  /* Every restaurant gets reviews — the aspect block is part of what a
+     restaurant page is, and 32 of the 36 pages were rendering without one. */
+  const ASPECT_REVIEWS = restaurants.map((restaurant) => ({
+    restaurant: restaurant.name,
+    reviews: handWritten.get(restaurant.name) ?? generateReviews(restaurant),
+  }));
+
+  /*
+   * Deliberately uneven: a flat round-robin across ~400 reviews hands every
+   * demo eater the same number of 10-point awards and flattens the leaderboard
+   * the HISTORY block below is shaping.
+   */
+  const REVIEW_AUTHORS = [
+    "diego", "maya", "diego", "ben", "priya", "maya",
+    "diego", "sam", "priya", "maya", "ben", "diego",
+  ];
+
+  let reviewSeq = 0;
+  for (const entry of ASPECT_REVIEWS) {
+    const restaurant = findRestaurant(entry.restaurant);
+    // Per-restaurant caption counters, so a page's comment rail cycles through
+    // the whole pool before it repeats a line.
+    const said = {};
+    const pick = (pool, key) => {
+      const n = said[key] ?? 0;
+      said[key] = n + 1;
+      return pool[n % pool.length];
+    };
+
+    /* One restaurant's reviews go in together. Each review is still ordered
+       internally — the vote rows reference the post — but 36 batches instead
+       of ~1,400 serial round trips is the difference between a seed that takes
+       seconds and one that takes minutes. */
+    const writes = entry.reviews.map(({ best, worst, stars }) => {
+      const author = REVIEW_AUTHORS[reviewSeq % REVIEW_AUTHORS.length];
+      const hours = 6 + reviewSeq * 3;
+      const postId = randomUUID();
+      const createdAt = hoursAgo(hours);
+      reviewSeq++;
+
+      const caption = [
+        pick(PRAISE[best], `+${best}`),
+        worst ? pick(GRIPE[worst], `-${worst}`) : null,
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+      return (async () => {
+        await sql`
+          INSERT INTO posts (id, user_id, text, restaurant, restaurant_id, restaurant_lat,
+                             restaurant_lng, rating, rating_kind, vibe, photos_public, created_at)
+          VALUES (${postId}, ${ids[author]}, ${caption},
+                  ${entry.restaurant}, ${restaurant.id}, ${restaurant.lat}, ${restaurant.lng},
+                  ${stars}, 'restaurant', ${best}, true, ${createdAt.toISOString()})
+        `;
+        await sql`
+          INSERT INTO post_aspect_votes (post_id, aspect, sentiment)
+          VALUES (${postId}, ${best}, 'praise') ON CONFLICT DO NOTHING
+        `;
+        if (worst) {
+          await sql`
+            INSERT INTO post_aspect_votes (post_id, aspect, sentiment)
+            VALUES (${postId}, ${worst}, 'fault') ON CONFLICT DO NOTHING
+          `;
+        }
+        await award(author, 10, `post:${postId}`, createdAt);
+      })();
+    });
+    await Promise.all(writes);
   }
 
   // Older history so the week/month windows have depth. The 8-13 day old
@@ -207,19 +593,49 @@ async function main() {
     `;
   }
 
-  // Everyone follows Maya and Diego, so a signed-in user's Following tab has
-  // something in it after one tap.
+  // Everyone is mutual friends with Maya and Diego, so opening the demo and
+  // switching to the Friends tab shows something rather than the empty state.
+  // friendships has no direction, but its rows are stored under a canonical
+  // (user_a < user_b) ordering, same as acceptFriendRequest in lib/db.ts.
   for (const u of USERS) {
     for (const target of ["maya", "diego"]) {
       if (u.key === target) continue;
+      const [a, b] = ids[u.key] < ids[target] ? [ids[u.key], ids[target]] : [ids[target], ids[u.key]];
       await sql`
-        INSERT INTO follows (follower_id, following_id)
-        VALUES (${ids[u.key]}, ${ids[target]}) ON CONFLICT DO NOTHING
+        INSERT INTO friendships (user_a, user_b)
+        VALUES (${a}, ${b}) ON CONFLICT DO NOTHING
       `;
     }
   }
 
-  console.log(`Seeded ${USERS.length} demo eaters and ${POSTS.length} plates.`);
+  /*
+   * Friend every real account on this database with Maya, Diego and Priya, so
+   * the Friends tab has something in it the moment you sign in.
+   *
+   * This lives in the seed rather than a one-off script because the DELETE at
+   * the top of main() drops the demo users, and friendships cascade with
+   * them — so any friendship made by hand disappears on the next re-seed and
+   * the tab silently goes empty again. Dev convenience only: it assumes every
+   * non-demo account on this database is yours.
+   */
+  const realUsers = await sql`
+    SELECT id FROM users WHERE email NOT LIKE '%@demo.platemaps.app'
+  `;
+  for (const real of realUsers) {
+    for (const key of ["maya", "diego", "priya"]) {
+      const [a, b] = real.id < ids[key] ? [real.id, ids[key]] : [ids[key], real.id];
+      await sql`
+        INSERT INTO friendships (user_a, user_b) VALUES (${a}, ${b}) ON CONFLICT DO NOTHING
+      `;
+    }
+  }
+
+  console.log(
+    `Seeded ${USERS.length} demo eaters, ${POSTS.length} plates and ${reviewSeq} restaurant ` +
+      `reviews across ${ASPECT_REVIEWS.length} places, and friended ${realUsers.length} ` +
+      `real account(s) with Maya, Diego and Priya.`,
+  );
 }
 
 main();
+

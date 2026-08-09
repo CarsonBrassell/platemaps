@@ -30,9 +30,12 @@ export function CreatePostComposer({
 
   if (!isSignedIn) {
     return (
-      <div className="rounded-2xl border border-zinc-200/80 bg-white px-4 py-3.5 shadow-sm">
+      <div className="rounded-2xl bg-white px-4 py-3.5">
         <p className="text-sm text-zinc-600">
-          <Link href="/account" className="font-medium text-pm-orange-text hover:underline">
+          <Link
+            href="/account"
+            className="font-medium text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:decoration-zinc-500"
+          >
             Sign in
           </Link>{" "}
           to post what you&apos;re eating and start earning PM Points.
@@ -50,14 +53,14 @@ export function CreatePostComposer({
   }
 
   return (
-    <div className="rounded-2xl border border-zinc-200/80 bg-white p-3 shadow-sm">
+    <div className="rounded-2xl bg-white p-3">
       <div className="flex items-center gap-3">
         {avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={avatarUrl} alt="" className="h-10 w-10 shrink-0 rounded-full object-cover" />
         ) : (
           <span
-            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${palette.avatarBg} text-sm font-semibold text-white`}
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${palette.avatarBg} font-mono text-sm font-semibold text-white`}
           >
             {initials(name ?? "?")}
           </span>
@@ -92,7 +95,7 @@ export function CreatePostComposer({
 
       <Link
         href="/post"
-        className="mt-2.5 flex min-h-11 items-center gap-2 rounded-xl border border-dashed border-zinc-300 px-3.5 text-sm text-zinc-500 transition-colors hover:border-pm-orange hover:bg-pm-orange-tint/30 hover:text-pm-orange-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        className="mt-2.5 flex min-h-11 items-center gap-2 rounded-full bg-pm-grey-tint/60 px-4 text-sm text-pm-grey-text transition-colors hover:bg-pm-grey-tint hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
       >
         <ChatIcon className="h-4 w-4 shrink-0" />
         Just leave a comment

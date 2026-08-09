@@ -1,24 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  /* Warm Editorial ground: bone paper, warm white cards, deepened terracotta. */
-  --background: #faf6f0;
-  --foreground: #2b211c;
-  --pm-charcoal: #2b211c;
-  --pm-charcoal-light: #47372f;
-  --pm-orange: #d96f45;
-  --pm-orange-tint: #f7e3d6;
-  --pm-orange-text: #a8471f;
-  --pm-orange-border: #e5c3ac;
-  --pm-grey-tint: #efe9e0;
-  --pm-grey-text: #6f6155;
+  /* Warm editorial ground: cream page, white cards, one burnt-orange accent.
+     The accent has two voices: --pm-orange for fills, selected states and
+     large display numerals (4.26:1 on white — large text only), and
+     --pm-orange-text for orange type at body sizes (5.8:1, passes 4.5:1). */
+  --background: #f7f4ec;
+  --foreground: #232019;
+  --pm-charcoal: #232019;
+  --pm-charcoal-light: #3a332a;
+  --pm-orange: #c9591f;
+  --pm-orange-tint: #f3e0d3;
+  --pm-orange-text: #a8481a;
+  --pm-orange-border: #e3c4ac;
+  --pm-grey-tint: #ede8dc;
+  --pm-grey-text: #665c4e;
+  /* Warm neutral tone blocks standing where dish photos don't exist yet —
+     deliberate blocks of warm tone, never gray boxes or icon placeholders. */
+  --pm-tone-1: #eee5d2;
+  --pm-tone-2: #e6dcc6;
+  --pm-tone-3: #efe8da;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Prose is the human voice: the platform's own sans, no webfont. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-spline-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-display: var(--font-fraunces);
   --color-pm-charcoal: var(--pm-charcoal);
   --color-pm-charcoal-light: var(--pm-charcoal-light);
@@ -32,30 +41,45 @@
   /* The neutral ramp is retuned in place rather than renamed. ~140 `zinc-*`
      classes are already spread across 14 components; redefining the scale
      here recolors all of them at once and keeps the swap reversible in one
-     file. The steps are warm greige (hue ~30deg, low saturation) and land
-     exactly on the palette's border / muted / text values at 200, 500 and
-     900, so existing pairings keep their intended contrast. */
-  --color-zinc-50: #faf7f2;
-  --color-zinc-100: #f3ece2;
-  --color-zinc-200: #e8ded0;
-  --color-zinc-300: #d8c9b6;
-  --color-zinc-400: #b6a494;
-  --color-zinc-500: #8a7a6d;
-  --color-zinc-600: #6f6155;
-  --color-zinc-700: #574b41;
-  --color-zinc-800: #423931;
-  --color-zinc-900: #2b211c;
-  --color-zinc-950: #1c1512;
+     file. The steps are warm greige in the cream family: 400 is the brief's
+     muted #A79E8D (decorative and large-text muted), 500 is the darkest step
+     of the same hue that still clears 4.5:1 on white for the 11-12px
+     timestamps and sublabels that sit on it, 900 is the near-black warm. */
+  --color-zinc-50: #fbf9f3;
+  --color-zinc-100: #f2eee3;
+  --color-zinc-200: #e7e1d2;
+  --color-zinc-300: #d6cdb9;
+  --color-zinc-400: #a79e8d;
+  --color-zinc-500: #7e7261;
+  --color-zinc-600: #665c4e;
+  --color-zinc-700: #4e463b;
+  --color-zinc-800: #3a332a;
+  --color-zinc-900: #232019;
+  --color-zinc-950: #171410;
 }
 
 body {
-  background:
-    radial-gradient(ellipse 900px 500px at 12% -10%, rgba(217, 111, 69, 0.1), transparent 60%),
-    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(43, 33, 28, 0.05), transparent 55%),
-    var(--background);
-  background-attachment: fixed;
+  /* Flat cream, nothing painted over it. Grouping comes from white cards
+     sitting on this ground — no gradients, no shadows, no hairlines. */
+  background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Below `sm` the fixed bottom nav (MobileNav) covers the last ~73px of the
+   page, so every screen buys that back here rather than each one remembering
+   its own padding. Matches the bar: 56px row + 8px padding + 1px edge. */
+@media (max-width: 639px) {
+  body {
+    padding-bottom: calc(73px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Selection in the house colours instead of the browser's blue — the kind of
+   place the palette should already live. */
+::selection {
+  background: var(--pm-orange-tint);
+  color: var(--pm-charcoal);
 }
 
 /* Display face for names and titles. Fraunces is set a touch lighter than the
@@ -69,43 +93,26 @@ h3 {
   letter-spacing: -0.005em;
 }
 
-.app-shell {
-  box-shadow:
-    0 1px 2px rgba(43, 33, 28, 0.04),
-    0 20px 40px -20px rgba(43, 33, 28, 0.22),
-    0 0 0 1px rgba(43, 33, 28, 0.04);
+/* Small uppercase machine label — section headings, spot numbers, footers.
+   One class so the tracking and size stay identical everywhere. */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
 }
 
+/* Cards carry no shadow — hover is a lift only. */
 .card-lift {
   transition:
     transform 0.18s ease,
-    box-shadow 0.18s ease,
     border-color 0.18s ease;
 }
 
 .card-lift:hover {
   transform: translateY(-2px);
-  box-shadow:
-    0 1px 2px rgba(43, 33, 28, 0.04),
-    0 16px 28px -14px rgba(43, 33, 28, 0.22);
-}
-
-@keyframes trending-glow {
-  0%, 100% {
-    box-shadow: 0 0 6px 0px rgba(217, 111, 69, 0.35);
-  }
-  50% {
-    box-shadow: 0 0 18px 3px rgba(217, 111, 69, 0.6);
-  }
-}
-
-.trending-glow {
-  animation: trending-glow 2.4s ease-in-out infinite;
-}
-
-.trending-glow:hover {
-  animation-play-state: paused;
-  box-shadow: 0 0 22px 4px rgba(217, 111, 69, 0.75);
 }
 
 @keyframes heart-pop {
@@ -132,11 +139,6 @@ h3 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .trending-glow {
-    animation: none;
-    box-shadow: 0 0 10px 1px rgba(217, 111, 69, 0.45);
-  }
-
   .card-lift:hover {
     transform: none;
   }
@@ -161,39 +163,131 @@ h3 {
   z-index: 10000 !important;
 }
 
+/* 276px, not 280: the box below opens to a 300px border-box, and its own
+   padding (11) and border (1) on each side leave exactly 276 inside. */
 .map-bubble:hover .map-bubble-text,
 .map-bubble-box:hover .map-bubble-text {
   white-space: normal;
   overflow: visible;
-  max-width: 280px !important;
+  max-width: 276px !important;
   word-break: break-word;
 }
 
-/* No box-shadow here: the ticket's pop and ink shadows live on the bubble's
-   wrapper so they trace the box and tail together, and a box-only shadow
-   would break that silhouette on hover. */
+/* No box-shadow on hover either — the bubble is a flat card by design, and
+   growing a shadow only on hover would make the resting state look unfinished
+   rather than deliberate. */
 .map-bubble:hover .map-bubble-box,
 .map-bubble-box:hover {
   max-width: 300px !important;
 }
 
-.map-upvote-chip {
+/* What was actually said, under the dish that leads the bubble. Collapsed at
+   rest so the map reads as one line per plate, and revealed on hover — the
+   same gesture that already widens the box. */
+.map-bubble-more {
+  display: none;
+  margin-top: 2px;
+  font-size: 10.5px;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.map-bubble:hover .map-bubble-more,
+.map-bubble-box:hover .map-bubble-more {
+  display: block;
+}
+
+/* The dish leading a bubble is a reference to another record in the app — it
+   links into that dish's own menu entry — so it is styled the way a social
+   feed styles an @handle or a #tag: the accent colour and a face of its own,
+   marking "this is a thing in here you can go to," not just emphasis.
+
+   The face is the same Fraunces-with-WONK the feed card's .plate-headline
+   uses, so a dish reads as the same kind of object wherever it appears.
+
+   `--pm-orange-text` (5.48:1 on the bubble's #faf7f2) rather than `--pm-orange`
+   (3.11:1, which fails at this 12px size).
+
+   Underline only on hover, so a map full of bubbles isn't a map full of
+   underlines. */
+.map-dish-link {
+  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  font-variation-settings: "SOFT" 8, "WONK" 1;
+  color: var(--pm-orange-text);
+  letter-spacing: -0.01em;
+}
+
+.map-dish-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Reachable by keyboard (role="link" + tabindex in RestaurantMap.tsx), so it
+   owes the same orange ring every other control in the app shows. */
+.map-dish-link:focus-visible {
+  outline: 2px solid var(--pm-orange);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* One rule for both bubble chips. They are never both on the same bubble —
+   Discover bubbles upvote, Friends bubbles heart — but they are the same
+   control in two moods, and the heart previously had no styling of its own at
+   all: no focus ring, no press feedback. */
+.map-upvote-chip,
+.map-heart-chip {
+  position: relative;
   transition: transform 0.1s ease;
 }
 
-.map-upvote-chip:hover {
+/* The meta row sets at 10px, so the chip's own glyph is about 19x15 — far too
+   small a target for a phone, which is where this map is used. The hit area is
+   grown with a pseudo-element rather than padding so the row's measured height
+   stays exactly what bubbleHeight() in RestaurantMap.tsx computes. The top
+   inset stops short of the 5px meta gap so it can't swallow a click meant for
+   the dish reference above. */
+.map-upvote-chip::before,
+.map-heart-chip::before {
+  content: "";
+  position: absolute;
+  inset: -4px -6px -8px -6px;
+}
+
+/* Built as raw DOM inside the map, so the app's focus-visible convention has
+   to be restated here rather than arriving via Tailwind classes. */
+.map-upvote-chip:focus-visible,
+.map-heart-chip:focus-visible {
+  outline: 2px solid var(--pm-orange);
+  outline-offset: 2px;
+}
+
+.map-upvote-chip:hover,
+.map-heart-chip:hover {
   transform: scale(1.08);
 }
 
-/* A stamped-down press rather than a lighten/darken, to match the flat
-   retro-ticket ink the chip is drawn in. */
-.map-upvote-chip:active {
+.map-upvote-chip:active,
+.map-heart-chip:active {
   transform: scale(0.94);
 }
 
-/* The neo-noir look now lives entirely in our own vector style
+@media (prefers-reduced-motion: reduce) {
+  .map-upvote-chip,
+  .map-heart-chip {
+    transition: none;
+  }
+
+  .map-upvote-chip:hover,
+  .map-heart-chip:hover,
+  .map-upvote-chip:active,
+  .map-heart-chip:active {
+    transform: none;
+  }
+}
+
+/* The neo-noir night look lives entirely in our own vector style
    (src/lib/mapStyle.ts) — no tile filters needed. These rules just dress
-   MapLibre's controls to match. */
+   MapLibre's controls to match the dark map. */
 .map-fun-tiles {
   background: #191c22;
 }
@@ -201,7 +295,7 @@ h3 {
 .map-fun-tiles .maplibregl-ctrl-group {
   background: #1d2126 !important;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: none !important;
   border: 1px solid rgba(232, 135, 90, 0.4);
   overflow: hidden;
 }
@@ -251,7 +345,6 @@ h3 {
   border-radius: 8px;
   padding: 3px 9px;
   font-size: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
   pointer-events: none;
 }
 
@@ -345,11 +438,9 @@ h3 {
   100% { opacity: 0; transform: translateY(-16px) scale(0.96); }
 }
 
-@keyframes like-burst {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.28); }
-  100% { transform: scale(1); }
-}
+/* No like-burst / save-pop here on purpose: the feed's action row is
+   color-only on press. Icons that scale under the cursor make the card twitch
+   at the moment you're reading what you just did to it. See PostActions. */
 
 @keyframes shimmer {
   from { background-position: -180% 0; }
@@ -369,10 +460,6 @@ h3 {
 /* Floating "+1 point for maya" chip shown after a like lands. */
 .points-float {
   animation: points-float 1.6s ease-out forwards;
-}
-
-.like-burst {
-  animation: like-burst 0.28s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
 /* Skeleton blocks: a warm sweep rather than a grey pulse, so loading state
@@ -412,38 +499,12 @@ h3 {
   .animate-sheet-in,
   .animate-rank-rise,
   .points-float,
-  .like-burst,
   .skeleton {
     animation: none;
   }
 
   .points-float { opacity: 1; }
   .snap-track { scroll-behavior: auto; }
-}
-
-/* Trending flame. The pulse is a drop-shadow so it glows without shifting
-   layout; scale stays tiny so a row of cards doesn't feel jittery. */
-@keyframes flame-glow {
-  0%, 100% {
-    filter: drop-shadow(0 0 2px rgba(232, 89, 12, 0.5));
-    transform: scale(1);
-  }
-  50% {
-    filter: drop-shadow(0 0 7px rgba(251, 191, 36, 0.85));
-    transform: scale(1.08);
-  }
-}
-
-.flame-glow {
-  animation: flame-glow 1.9s ease-in-out infinite;
-  transform-origin: center bottom;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .flame-glow {
-    animation: none;
-    filter: drop-shadow(0 0 3px rgba(232, 89, 12, 0.55));
-  }
 }
 
 /* --- Review composer -------------------------------------------------- */
@@ -675,14 +736,7 @@ h3 {
 .result-in       { animation: result-in 0.3s cubic-bezier(0.2, 0.8, 0.3, 1); }
 .bar-grow        { animation: bar-grow 0.55s cubic-bezier(0.2, 0.8, 0.3, 1); }
 
-/* Save confirmation pop on the bookmark. */
-@keyframes save-pop {
-  0%   { transform: scale(1); }
-  35%  { transform: scale(1.5) rotate(-8deg); }
-  65%  { transform: scale(0.9) rotate(4deg); }
-  100% { transform: scale(1) rotate(0deg); }
-}
-
+/* Save confirmation is the toast alone — the bookmark itself only fills. */
 @keyframes save-toast {
   0%   { opacity: 0; transform: translateY(6px) scale(0.9); }
   20%  { opacity: 1; transform: translateY(0) scale(1); }
@@ -690,7 +744,6 @@ h3 {
   100% { opacity: 0; transform: translateY(-8px) scale(0.96); }
 }
 
-.save-pop   { animation: save-pop 0.45s cubic-bezier(0.2, 0.8, 0.3, 1); }
 .save-toast { animation: save-toast 1.6s ease-out forwards; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -700,7 +753,6 @@ h3 {
   .verdict-ring,
   .result-in,
   .bar-grow,
-  .save-pop,
   .save-toast { animation: none; }
   .save-toast { opacity: 1; }
   .spark { display: none; }
@@ -803,15 +855,15 @@ h3 {
   .meter-shell[data-heat]::after { display: none; }
 }
 
-/* Slow idle bloom behind the mark — enough to pull the eye to the corner
-   without reading as a notification. */
-@keyframes logo-glow {
-  0%, 100% { opacity: 0.55; transform: scale(0.94); }
-  50%      { opacity: 1;    transform: scale(1.06); }
+/* Idle breathe on the mark. Scale only — the design rules rule out a glow,
+   which would mean a shadow or gradient on a cream ground. */
+@keyframes logo-bob {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.045); }
 }
 
-.logo-glow { animation: logo-glow 3.6s ease-in-out infinite; }
+.logo-bob { animation: logo-bob 3.6s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .logo-glow { animation: none; opacity: 0.8; }
+  .logo-bob { animation: none; }
 }
