@@ -461,6 +461,10 @@ function FeedPageInner() {
             score: netVotes(p),
             upvotes: p.votedYesBy.length,
             upvotedByMe: account ? p.votedYesBy.includes(account.id) : false,
+            // Every post already reaches the map; until now its photo stopped
+            // at the bubble and only appeared after a click through to /feed.
+            photo: p.media.find((m) => m.type === "image")?.url,
+            photoAlt: p.media.find((m) => m.type === "image")?.alt,
             createdAt: p.createdAt,
             rating: p.rating !== undefined ? `${p.rating.toFixed(1)}★` : ratingFromPost(p.text),
             dishPrefix:

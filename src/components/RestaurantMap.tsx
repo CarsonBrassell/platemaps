@@ -94,6 +94,9 @@ const BUBBLE_MIN_WIDTH = 50;
 /** A meta row holds sparkle-rating, the upvote chip and a timestamp. */
 const BUBBLE_META_MIN_WIDTH = 118;
 const BUBBLE_GAP = 6;
+/** Photo thumbnail rides to the left of the text when the post has one. */
+const BUBBLE_PHOTO_SIZE = 38;
+const BUBBLE_PHOTO_GAP = 7;
 /** Retro ticket palette: cream card, dark chocolate ink, terracotta pop. */
 const BUBBLE_FILL = "#f6ead8";
 const BUBBLE_INK = "#2b211c";
@@ -115,7 +118,11 @@ function bubbleHeight(comment: MapComment) {
   const padding = BUBBLE_PADDING_Y * 2;
   const meta =
     comment.upvotes !== undefined ? BUBBLE_META_GAP + BUBBLE_META_ROW_HEIGHT : 0;
-  return border + padding + BUBBLE_TEXT_ROW_HEIGHT + meta;
+  const rows = BUBBLE_TEXT_ROW_HEIGHT + meta;
+  // A thumbnail sits beside the rows rather than above them, so it sets a
+  // floor on the box instead of adding to it.
+  const inner = comment.photo ? Math.max(rows, BUBBLE_PHOTO_SIZE) : rows;
+  return border + padding + inner;
 }
 
 // The closer you zoom in, the more room a bubble gets before its text is
@@ -127,6 +134,21 @@ function bubbleMaxWidthForZoom(zoom: number) {
   return 130;
 }
 
+/** What a thumbnail adds to the box, or 0 when the comment has no photo. */
+function photoAllowance(comment: MapComment) {
+  return comment.photo ? BUBBLE_PHOTO_SIZE + BUBBLE_PHOTO_GAP : 0;
+}
+
+/**
+ * The box's own max-width. A thumbnail widens the ceiling rather than eating
+ * into it: the zoom widths above are what the *text* is allowed, and taking
+ * the photo out of that budget left a meta row — which is nowrap and can't
+ * shrink — overflowing its own card.
+ */
+function bubbleWidthCap(comment: MapComment, zoom: number) {
+  return bubbleMaxWidthForZoom(zoom) + photoAllowance(comment);
+}
+
 // Rough text-width estimate (no DOM measurement available at layout time) —
 // generous on purpose so we under-place rather than risk visual overlap. A
 // meta row can't shrink below what its sparkle-rating, chip and timestamp
@@ -134,7 +156,11 @@ function bubbleMaxWidthForZoom(zoom: number) {
 function estimateBubbleWidth(comment: MapComment, zoom: number) {
   const length = (comment.dishPrefix ? comment.dishPrefix.length + 1 : 0) + comment.text.length;
   const floor = comment.upvotes !== undefined ? BUBBLE_META_MIN_WIDTH : BUBBLE_MIN_WIDTH;
-  return Math.min(bubbleMaxWidthForZoom(zoom), Math.max(floor, 16 + length * 5.5));
+  const photo = photoAllowance(comment);
+  return Math.min(
+    bubbleWidthCap(comment, zoom),
+    Math.max(floor + photo, 16 + length * 5.5 + photo),
+  );
 }
 
 function rectsOverlap(a: Rect, b: Rect) {
@@ -192,7 +218,7 @@ function bubbleElement(
 ) {
   const offsetX = 12;
   const hasMeta = comment.upvotes !== undefined;
-  const maxWidth = bubbleMaxWidthForZoom(zoom);
+  const maxWidth = bubbleWidthCap(comment, zoom);
   const dishHtml = comment.dishPrefix
     ? `<span class="map-dish-link" style="color: ${BUBBLE_POP}; font-weight: 700; font-style: italic; font-family: var(--font-fraunces), Georgia, serif; cursor: pointer;">${escapeHtml(comment.dishPrefix)}</span> `
     : "";
@@ -212,6 +238,20 @@ function bubbleElement(
           cursor: pointer;
         ">▲ ${comment.upvotes}</button>`
       : `<span style="color: #2f7d4f; font-weight: 700;">▲ ${comment.upvotes}</span>`;
+  /* The post's own photo, which until now stopped at the feed — a bubble could
+     only hint at a plate it had a picture of. Square-cropped and ink-bordered
+     so it reads as part of the ticket rather than pasted onto it. Decorative by
+     default: the comment text beside it already says what it is. */
+  const photoHtml = comment.photo
+    ? `<img src="${escapeHtml(comment.photo)}" alt="${escapeHtml(comment.photoAlt ?? "")}" width="${BUBBLE_PHOTO_SIZE}" height="${BUBBLE_PHOTO_SIZE}" loading="lazy" style="
+        width: ${BUBBLE_PHOTO_SIZE}px; height: ${BUBBLE_PHOTO_SIZE}px;
+        flex: none; object-fit: cover; display: block;
+        border: 1.5px solid ${BUBBLE_INK}; border-radius: 6px;
+        background: ${BUBBLE_FILL};
+      " />`
+    : "";
+  const textMaxWidth = maxWidth - 20 - photoAllowance(comment);
+
   const metaRow = hasMeta
     ? `<div style="
         display: flex;
@@ -296,8 +336,10 @@ function bubbleElement(
         line-height: 1.35;
         color: #3c2f27;
       ">
-        <div class="map-bubble-text" style="max-width: ${maxWidth - 20}px;">${dishHtml}${escapeHtml(comment.text)}</div>
+        ${photoHtml ? `<div style="display: flex; align-items: flex-start; gap: ${BUBBLE_PHOTO_GAP}px;">${photoHtml}<div style="min-width: 0; flex: 1;">` : ""}
+        <div class="map-bubble-text" style="max-width: ${textMaxWidth}px;">${dishHtml}${escapeHtml(comment.text)}</div>
         ${metaRow}
+        ${photoHtml ? `</div></div>` : ""}
       </div>
       ${tail}
     </div>`;

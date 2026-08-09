@@ -11,6 +11,22 @@ export function FullMenu({
   sections: { section: string; dishes: MenuDish[] }[];
   onSelect: (dishId: string) => void;
 }) {
+  if (sections.length === 0) {
+    return (
+      <div className="px-5 py-5">
+        <p className="mb-3 text-base font-bold text-zinc-900">Full menu</p>
+        {/* An honest gap rather than an empty heading: not every restaurant's
+            menu has been read in yet, and saying so beats a blank panel. */}
+        <div className="rounded-xl border border-dashed border-zinc-300 px-4 py-8 text-center">
+          <p className="text-sm font-medium text-zinc-700">No menu here yet</p>
+          <p className="mx-auto mt-1 max-w-xs text-sm text-zinc-500">
+            Post a plate from here and the dish you name becomes the first one on it.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="px-5 py-5">
       <p className="mb-3 text-base font-bold text-zinc-900">Full menu</p>
