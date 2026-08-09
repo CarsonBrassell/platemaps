@@ -77,9 +77,12 @@ export function RestaurantSearch() {
     }
   }
 
+  // The width lives on this wrapper rather than on the input so the field can
+  // shrink below its preferred size when the header row is tight, instead of
+  // holding its size and running under the nav.
   return (
-    <div ref={wrapRef} className="relative hidden sm:block">
-      <div className="flex items-center gap-2.5 rounded-full bg-white/10 px-4 py-2 ring-1 ring-inset ring-white/10 transition-all hover:bg-white/[0.14] focus-within:bg-white/[0.14] focus-within:ring-pm-orange/70">
+    <div ref={wrapRef} className="relative hidden w-40 min-w-0 sm:block lg:w-56">
+      <div className="flex items-center gap-2.5 rounded-full bg-white px-4 py-2 transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-pm-orange">
         <svg
           width="16"
           height="16"
@@ -87,7 +90,7 @@ export function RestaurantSearch() {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          className="shrink-0 text-white/50"
+          className="shrink-0 text-zinc-500"
           aria-hidden="true"
         >
           <circle cx="11" cy="11" r="7" />
@@ -109,7 +112,7 @@ export function RestaurantSearch() {
           aria-controls="search-results"
           role="combobox"
           autoComplete="off"
-          className="w-40 bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none lg:w-56"
+          className="w-full min-w-0 bg-transparent text-sm text-zinc-900 placeholder:text-zinc-500 focus:outline-none"
         />
         {query && (
           <button
@@ -119,7 +122,7 @@ export function RestaurantSearch() {
               setOpen(false);
             }}
             aria-label="Clear search"
-            className="shrink-0 text-white/50 transition-colors hover:text-white"
+            className="shrink-0 text-zinc-500 transition-colors hover:text-zinc-900"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
               <path d="M18 6 6 18M6 6l12 12" />
@@ -132,7 +135,7 @@ export function RestaurantSearch() {
         <ul
           id="search-results"
           role="listbox"
-          className="absolute left-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-xl border border-zinc-200 bg-white py-1 shadow-xl"
+          className="absolute left-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl bg-white py-1.5"
         >
           {results.length === 0 ? (
             <li className="px-4 py-3 text-sm text-zinc-500">
@@ -157,8 +160,8 @@ export function RestaurantSearch() {
                       {r.cuisine} · {r.neighborhood}
                     </span>
                   </span>
-                  <span className="flex shrink-0 items-center gap-0.5 text-xs font-medium text-zinc-600">
-                    <StarIcon className="h-3 w-3 text-pm-orange" />
+                  <span className="flex shrink-0 items-center gap-1 font-mono text-xs font-medium tabular-nums text-zinc-600">
+                    <StarIcon className="h-3 w-3 text-zinc-400" />
                     {r.rating.toFixed(1)}
                   </span>
                 </Link>

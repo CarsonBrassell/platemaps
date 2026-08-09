@@ -9,6 +9,8 @@ import { TopPicks } from "@/components/TopPicks";
 import { FullMenu } from "@/components/FullMenu";
 import { DishSheet } from "@/components/DishSheet";
 import { RestaurantComments } from "@/components/RestaurantComments";
+import { RestaurantAspects } from "@/components/RestaurantAspects";
+import type { RestaurantAspectTally } from "@/lib/db";
 import { mapCommentsByRestaurant } from "@/data/mapComments";
 
 const TOP_PICKS_COUNT = 7;
@@ -17,9 +19,12 @@ const COMMENTS_ANCHOR = "restaurant-comments";
 export function RestaurantDetail({
   restaurant,
   dishes,
+  aspectTally,
 }: {
   restaurant: Restaurant;
   dishes: Dish[];
+  /** Read server-side in the page — see the note there. */
+  aspectTally: RestaurantAspectTally;
 }) {
   const searchParams = useSearchParams();
   const [myVotes, setMyVotes] = useState<Record<string, "yes" | "no" | undefined>>({});
@@ -100,8 +105,12 @@ export function RestaurantDetail({
     }));
   }
 
+  // Everyone who has weighed in on a dish here — the denominator behind the
+  // hits grid's footer line.
+  const ratedBy = dishesWithStats.reduce((sum, dish) => sum + dish.total, 0);
+
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <RestaurantHeader restaurant={restaurant} />
 
       {/* The thread used to start below the full menu, which on a long menu put
@@ -109,14 +118,17 @@ export function RestaurantDetail({
           and the menu; below lg the columns collapse back to the original
           stacked order. The rail sticks and scrolls on its own so the comments
           stay in view however far down the menu the reader gets. */}
-      <div className="lg:flex lg:items-start">
-        <div className="min-w-0 lg:flex-1">
-          <TopPicks dishes={topPicks} onSelect={setSelectedDishId} />
+      <div className="lg:flex lg:items-start lg:gap-4">
+        <div className="flex min-w-0 flex-col gap-4 lg:flex-1">
+          {/* Above the dish picks: what the place is like overall comes before
+              what to order at it. */}
+          <RestaurantAspects tally={aspectTally} />
+          <TopPicks dishes={topPicks} ratedBy={ratedBy} onSelect={setSelectedDishId} />
           <FullMenu sections={sections} onSelect={setSelectedDishId} />
         </div>
         <div
           id={COMMENTS_ANCHOR}
-          className="scroll-mt-4 lg:w-[400px] lg:shrink-0 lg:border-l lg:border-zinc-100"
+          className="mt-4 scroll-mt-4 lg:mt-0 lg:w-[400px] lg:shrink-0"
         >
           <div className="lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
             <RestaurantComments restaurant={restaurant} dishes={dishes} />
@@ -126,6 +138,7 @@ export function RestaurantDetail({
       {selectedDish && (
         <DishSheet
           dish={selectedDish}
+          restaurantName={restaurant.name}
           myVote={myVotes[selectedDish.id]}
           comments={selectedDishComments}
           onVote={handleVote}

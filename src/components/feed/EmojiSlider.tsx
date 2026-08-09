@@ -41,7 +41,7 @@ export function EmojiSlider({
   const fill = ((value - min) / (max - min)) * 100;
 
   return (
-    <div className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+    <div className="rounded-2xl bg-white p-4">
       <div className="mb-3 flex items-baseline justify-between gap-3">
         <label htmlFor={id} className="text-sm font-semibold text-zinc-800">
           {label}

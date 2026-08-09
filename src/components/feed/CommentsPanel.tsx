@@ -53,19 +53,22 @@ export function CommentsPanel({
         onChange={(e) => setText(e.target.value)}
         placeholder="Add a comment…"
         maxLength={1000}
-        className="min-h-11 flex-1 rounded-full border border-zinc-300 bg-white px-4 text-sm transition-colors placeholder:text-zinc-400 focus:border-pm-orange focus:outline-none"
+        className="min-h-11 flex-1 rounded-full bg-pm-grey-tint/60 px-4 text-sm transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
       />
       <button
         type="submit"
         disabled={submitting || !text.trim()}
-        className="min-h-11 shrink-0 rounded-full bg-pm-orange px-4 text-sm font-medium text-white transition-transform hover:brightness-105 active:scale-[0.97] disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        className="min-h-11 shrink-0 rounded-full bg-pm-orange px-4 text-sm font-medium text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
       >
         {submitting ? "Posting…" : "Post"}
       </button>
     </form>
   ) : (
     <p className="text-sm text-zinc-500">
-      <Link href="/account" className="font-medium text-pm-orange-text hover:underline">
+      <Link
+        href="/account"
+        className="font-medium text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:decoration-zinc-500"
+      >
         Sign in
       </Link>{" "}
       to join the conversation.
@@ -114,7 +117,7 @@ export function CommentsPanel({
                   />
                 ) : (
                   <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${palette.avatarBg} text-[11px] font-semibold text-white`}
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${palette.avatarBg} font-mono text-[11px] font-semibold text-white`}
                   >
                     {initials(comment.authorName)}
                   </span>
@@ -122,12 +125,12 @@ export function CommentsPanel({
 
                 <div className="min-w-0 flex-1">
                   <p className="text-sm leading-relaxed text-zinc-800">
-                    <span className="font-medium text-zinc-900">
+                    <span className="font-mono text-[13px] font-medium text-zinc-900">
                       {handleFor(comment.authorName)}
                     </span>{" "}
                     {comment.text}
                   </p>
-                  <p className="mt-0.5 text-xs text-zinc-400">
+                  <p className="mt-0.5 font-mono text-xs text-zinc-500">
                     {relativeTime(comment.createdAt)}
                     {comment.likedBy.length > 0 &&
                       ` · ${comment.likedBy.length} ${

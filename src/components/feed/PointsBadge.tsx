@@ -20,7 +20,7 @@ export function PointsBadge({
   const sm = size === "sm";
   return (
     <span
-      className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-pm-orange-tint/70 px-1.5 py-0.5 font-medium tabular-nums text-pm-orange-text ring-1 ring-inset ring-pm-orange-border/60 ${
+      className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-pm-grey-tint px-2 py-0.5 font-mono font-medium tabular-nums text-pm-grey-text ${
         sm ? "text-[11px]" : "text-xs"
       } ${className}`}
     >

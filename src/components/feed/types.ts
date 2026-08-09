@@ -42,9 +42,12 @@ export type Post = {
   /** Snapshot of the author's share-photos setting at post time — see lib/db.ts. */
   photosPublic: boolean;
   createdAt: string;
-  /** Public, ranks Discover. */
+  /** Public, ranks Discover. Shown as the net score, never on its own. */
   upvoteCount: number;
+  downvoteCount: number;
   upvotedByMe: boolean;
+  /** Never true at the same time as upvotedByMe — see castVote in lib/db.ts. */
+  downvotedByMe: boolean;
   /** Private acknowledgment. Never a count — see lib/db.ts's getHeartsForAuthor. */
   heartedByMe: boolean;
   savedBy: string[];
@@ -69,4 +72,17 @@ export type UserRank = {
 
 export type LeaderboardWindow = "today" | "week" | "month" | "all";
 
+/**
+ * The three feeds on /feed. They are genuinely three different queries, not
+ * one list sliced three ways — and the friend feed is the one that changes the
+ * card itself: likes instead of votes, no counts, no points.
+ */
 export type FeedTab = "discover" | "friends" | "map";
+
+/**
+ * Which surface the feed is showing. Named for the nav that used to switch
+ * between them; that nav is archived (see archive/nav), but the feed still
+ * uses "home" vs "saved" to pick which list it fetches, so the type outlived
+ * the rail it was written for.
+ */
+export type NavKey = "home" | "explore" | "leaderboard" | "saved" | "profile";

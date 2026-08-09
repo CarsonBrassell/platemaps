@@ -13,7 +13,7 @@ export function PointsInfoModal({ onClose }: { onClose: () => void }) {
           and comment your post picks up adds to your total.
         </p>
 
-        <ul className="divide-y divide-zinc-100 rounded-xl bg-pm-grey-tint/50 px-4 ring-1 ring-inset ring-zinc-200/70">
+        <ul className="divide-y divide-zinc-100 rounded-xl bg-pm-grey-tint/50 px-4">
           {POINT_RULE_COPY.map((rule) => (
             <li key={rule.label} className="flex items-center justify-between gap-4 py-2.5">
               <span className="text-sm text-zinc-700">{rule.label}</span>

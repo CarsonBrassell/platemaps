@@ -1,4 +1,4 @@
-# Product
+﻿# Product
 
 <!-- impeccable:product-schema 1 -->
 
@@ -68,46 +68,36 @@ Observed in existing copy but not user-confirmed as binding: plain, direct, sent
 
 ## Aesthetic Direction
 
-A subtle terminal/utilitarian influence — technical feeling, but reads as a normal app, not a theme or a costume. Supersedes the earlier "Warm Editorial" look (serif display face, `--pm-orange` `#e8875a`/`#d96f45` family, rounded-2xl cards, drop shadows) currently in `globals.css`; that CSS has not yet been rebuilt to this direction.
+**Warm Editorial (2026-08-09)** — warm, airy, photo-forward, with an editorial
+typographic layer. This supersedes both the original launch look and the
+briefly-recorded terminal/utilitarian direction; it is built and shipped, and
+the binding rules live in `DESIGN.md` (summarized in `AGENTS.md`).
 
-- **Type split by authorship.** Monospace for anything machine-generated — numbers, prices, percentages, rating counts, timestamps, usernames, distances, and small uppercase section labels. Normal sans-serif for anything a human wrote — restaurant names, dish names, captions.
-- **Light warm background, not dark.** Normal contrast, not a high-contrast or neon treatment.
-- **Border radius 0–4px max.** No rounded cards.
-- **Hairline borders as dividers**, not card containers — structure comes from a 1px rule between regions, not a bordered/shadowed box around each one.
-- **No shadows, no gradients.**
-- **One accent color (orange), used on at most three elements per screen.** Restraint is the point; an accent applied everywhere stops reading as an accent.
-- **Section labels:** uppercase, monospace, wide letter-spacing, small and muted.
-- **Vote arrows as `▲`**, not icon-library glyphs.
+- **Type split by authorship, three voices.** Fraunces 600–700 for proper
+  names and screen titles; monospace (Spline Sans Mono) for every number and
+  machine-generated value — prices, percentages, vote counts, timestamps,
+  usernames, distances, and small uppercase section labels; system sans for
+  anything a human wrote in prose.
+- **Cream ground `#F7F4EC`; white cards, 14–16px radius.** No borders, no
+  shadows, no gradients — grouping is white-on-cream, never an outline.
+- **Pills.** Chips, tabs and buttons are fully rounded; selected state is
+  orange `#C9591F` with cream text, unselected is tan `#EDE8DC` with muted
+  text.
+- **One accent color (orange), spent only on** recommendation percentages and
+  vote counts, the selected state, and the primary action. More than about
+  three orange elements beyond per-card data numbers is too many. Small orange
+  text uses the darker `--pm-orange-text` `#A8481A` for contrast.
+- **Photos lead; honest gaps are warm.** Missing photos render as flat warm
+  tone blocks at the correct aspect ratio, never gray boxes or icons.
+- **The map is ours, and it stays night.** The neo-noir dark vector style
+  (`NEO_NOIR_STYLE`), its glowing beacon pins, and its dark chrome are
+  preserved exactly as built before the Warm Editorial pass — a confirmed
+  exception to the cream world, framed in a white card.
+- **Vote arrows as `▲`/`△`**, in the mono, not icon-library glyphs.
 
-### The plate reference — a deliberate exception
-
-A **named plate** is set in **Fraunces with its `WONK` axis engaged** and in
-**`--pm-orange-text`**, wherever it appears:
-
-- the feed card's headline (`.plate-headline`) — the dish, or the restaurant
-  when the post is a restaurant review;
-- the dish leading a map bubble (`.map-dish-link`), which additionally
-  underlines on hover because it navigates to that dish's menu entry.
-
-The reasoning is the one social feeds use for `@handle` and `#tag`: a plate is
-a record in this app, and type is what tells you so before you click. Text that
-is *not* a reference — a bubble whose comment names no dish — stays in the UI
-sans, which is what keeps the treatment meaningful.
-
-This is a confirmed exception to two rules above, not drift from them:
-
-- It overrides *"normal sans-serif for … dish names"*. The plate is the unit of
-  truth this product is built on (Principle 1); the type says so before the
-  copy does.
-- It is exempt from the three-oranges-per-screen limit, because a feed of *n*
-  cards necessarily shows *n* headlines. The limit still binds everything else
-  on the card — which is why the "at {restaurant}" line beneath the headline was
-  demoted to neutral rather than left orange.
-
-`--pm-orange-text` (#a8471f, 5.85:1 on white), never `--pm-orange` (3.33:1),
-which only clears the large-text contrast bar and fails as soon as the headline
-wraps or shrinks.
-
+The earlier "plate reference" exception (Fraunces + orange dish headlines on
+feed cards) is retired: the feed card now names its plate in the bottom row as
+a compact mono reference, per DESIGN.md.
 ## Evidence on Hand
 
 - **Real restaurant data** — 36 businesses with genuine names, cuisines, coordinates, ratings, review counts, closing times and photos, generated by `scripts/fetch-restaurants.mjs` and `scripts/fetch-photos.mjs` from Yelp Fusion. See `src/data/restaurants.ts` and `public/restaurants/`.

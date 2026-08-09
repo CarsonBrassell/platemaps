@@ -62,6 +62,19 @@ export const BEST_AT: ReadonlyArray<{ emoji: string; label: string }> = [
   { emoji: "📖", label: "Menu variety" },
   { emoji: "🍸", label: "Drinks" },
   { emoji: "💸", label: "Value" },
+];
+
+/**
+ * Chips the composer used to offer and no longer does.
+ *
+ * Kept solely so a post written while they existed still reads as a sentence
+ * on its feed card — see `vibeChip`. Deliberately NOT part of
+ * `BEST_AT_LABELS` or `ROOM_LABELS`: a retired chip must stay unpickable in
+ * the composer, unwritable through /api/posts, and absent from both the
+ * restaurant page's category scores and Discover's "Rated well for" facet.
+ * Votes already in `post_aspect_votes` for these simply stop being counted.
+ */
+const RETIRED_BEST_AT: ReadonlyArray<{ emoji: string; label: string }> = [
   { emoji: "⚡", label: "Speed" },
   { emoji: "🍰", label: "Dessert" },
 ];
@@ -87,7 +100,9 @@ export function vibeEmoji(label: string) {
  * own; "Food" does not, so the newer vocabulary gets its sentence back.
  */
 export function vibeChip(label: string): { emoji?: string; text: string } {
-  const best = BEST_AT.find((b) => b.label === label);
+  // Retired chips are read here but nowhere else, so an old "Speed" post keeps
+  // saying "Best at speed" instead of degrading to a bare "Speed".
+  const best = [...BEST_AT, ...RETIRED_BEST_AT].find((b) => b.label === label);
   if (best) return { emoji: best.emoji, text: `Best at ${label.toLowerCase()}` };
   return { emoji: vibeEmoji(label), text: label };
 }

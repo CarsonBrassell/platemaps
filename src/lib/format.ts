@@ -6,13 +6,15 @@ export function initials(name: string) {
     .join("");
 }
 
+/* Warm, muted tones from the cream family — enough variation to tell people
+   apart at a glance without breaking the one-accent palette. */
 const AVATAR_PALETTE = [
-  { avatarBg: "bg-teal-500", border: "border-teal-200" },
-  { avatarBg: "bg-blue-500", border: "border-blue-200" },
-  { avatarBg: "bg-rose-500", border: "border-rose-200" },
-  { avatarBg: "bg-purple-500", border: "border-purple-200" },
-  { avatarBg: "bg-amber-500", border: "border-amber-200" },
-  { avatarBg: "bg-emerald-500", border: "border-emerald-200" },
+  { avatarBg: "bg-[#8a7d64]", border: "border-zinc-200" },
+  { avatarBg: "bg-[#9c8065]", border: "border-zinc-200" },
+  { avatarBg: "bg-[#7d8a6e]", border: "border-zinc-200" },
+  { avatarBg: "bg-[#6e838a]", border: "border-zinc-200" },
+  { avatarBg: "bg-[#a08457]", border: "border-zinc-200" },
+  { avatarBg: "bg-[#877867]", border: "border-zinc-200" },
 ];
 
 export function avatarPalette(name: string) {

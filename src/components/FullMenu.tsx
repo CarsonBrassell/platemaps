@@ -13,45 +13,42 @@ export function FullMenu({
 }) {
   if (sections.length === 0) {
     return (
-      <div className="px-5 py-5">
-        <p className="mb-3 text-base font-bold text-zinc-900">Full menu</p>
+      <section id="full-menu" className="scroll-mt-4 rounded-2xl bg-white px-5 py-5 sm:px-6">
+        <h2 className="mono-label text-zinc-500">Full menu</h2>
         {/* An honest gap rather than an empty heading: not every restaurant's
             menu has been read in yet, and saying so beats a blank panel. */}
-        <div className="rounded-xl border border-dashed border-zinc-300 px-4 py-8 text-center">
+        <div className="mt-4 rounded-xl bg-pm-grey-tint/60 px-4 py-8 text-center">
           <p className="text-sm font-medium text-zinc-700">No menu here yet</p>
           <p className="mx-auto mt-1 max-w-xs text-sm text-zinc-500">
             Post a plate from here and the dish you name becomes the first one on it.
           </p>
         </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="px-5 py-5">
-      <p className="mb-3 text-base font-bold text-zinc-900">Full menu</p>
-      <div className="flex flex-col gap-5">
+    <section id="full-menu" className="scroll-mt-4 rounded-2xl bg-white px-5 py-5 sm:px-6">
+      <h2 className="mono-label text-zinc-500">Full menu</h2>
+      <div className="mt-4 flex flex-col gap-6">
         {sections.map(({ section, dishes }) => (
           <div key={section}>
-            <p className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {section}
-              <span className="h-px flex-1 bg-zinc-100" aria-hidden="true" />
-            </p>
-            <div className="flex flex-col divide-y divide-zinc-100">
+            <p className="mono-label mb-1.5 text-zinc-500">{section}</p>
+            <div className="flex flex-col">
               {dishes.map((dish) => (
                 <button
                   key={dish.id}
                   onClick={() => onSelect(dish.id)}
-                  className="flex items-center justify-between gap-4 rounded-lg px-2 py-2.5 text-left text-sm transition-colors hover:bg-pm-orange-tint/40 active:bg-pm-orange-tint/60"
+                  className="flex min-h-11 items-center justify-between gap-4 rounded-xl px-2 py-2.5 text-left text-sm transition-colors hover:bg-pm-grey-tint/50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-pm-orange active:bg-pm-grey-tint"
                 >
                   <span className="text-zinc-700">{dish.name}</span>
-                  <span className="shrink-0 font-medium text-zinc-500">{dish.price}</span>
+                  <span className="shrink-0 font-mono text-xs text-zinc-500">{dish.price}</span>
                 </button>
               ))}
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

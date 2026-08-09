@@ -4,7 +4,7 @@ import { getPosts, createPost, awardPoints, type PostMedia } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
 import { FOOD_TAGS } from "@/data/foodTags";
-import { AMENITY_LABELS, ROOM_LABELS } from "@/data/reviewScales";
+import { AMENITY_LABELS, ROOM_LABELS, BEST_AT_LABELS } from "@/data/reviewScales";
 
 const MAX_MEDIA = 4;
 const MAX_MEDIA_LENGTH = 4_000_000;
@@ -107,6 +107,18 @@ export async function POST(req: NextRequest) {
     parsedRating = Math.round(n);
   }
 
+  /* Aspect verdicts. Unknown labels are dropped rather than rejected — the
+     client picks from a fixed chip list, same as tags and amenities above.
+     The same aspect can't be both the best and the worst thing; if a client
+     sends that, the fault is what gets dropped, since the praise came from
+     the required chip and the letdown from the optional one. */
+  const pickAspect = (raw: unknown) =>
+    typeof raw === "string" && BEST_AT_LABELS.includes(raw) ? raw : undefined;
+
+  const bestAspect = pickAspect(body.bestAspect);
+  const rawWorst = pickAspect(body.worstAspect);
+  const worstAspect = rawWorst && rawWorst !== bestAspect ? rawWorst : undefined;
+
   const post = await createPost({
     id: randomUUID(),
     userId: user.id,
@@ -130,6 +142,8 @@ export async function POST(req: NextRequest) {
     // Snapshot of the author's CURRENT toggle, frozen onto the row — not read
     // live later. See the photosPublic note on createPost in lib/db.ts.
     photosPublic: user.sharePhotosPublicly,
+    bestAspect,
+    worstAspect,
   });
 
   const freshUser = await awardPoints(user.id, POINT_RULES.createPost, `post:${post.id}`);

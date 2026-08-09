@@ -17,20 +17,16 @@ export function OpenStatePill({ closingTime }: { closingTime: string }) {
 
   // Pre-mount placeholder holds the pill's height so the card doesn't reflow.
   if (!now) {
-    return <span className="inline-flex h-[26px] items-center" aria-hidden="true" />;
+    return <span className="inline-flex h-7 items-center" aria-hidden="true" />;
   }
 
   const state = openStateFor(closingTime, now);
   const calm = state.status === "calm";
 
+  /* One tan pill whatever the state — urgency is carried by the dot, not by
+     spending the accent color on a status chip. */
   return (
-    <span
-      className={
-        calm
-          ? "inline-flex items-center gap-1 rounded-full bg-pm-grey-tint px-2.5 py-1 text-xs font-medium text-pm-grey-text"
-          : "inline-flex items-center gap-1 rounded-full bg-pm-orange-tint px-2.5 py-1 text-xs font-medium text-pm-orange-text"
-      }
-    >
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-pm-grey-tint px-3 py-1.5 font-mono text-xs font-medium text-pm-grey-text">
       <span
         className={
           state.kind === "closed"

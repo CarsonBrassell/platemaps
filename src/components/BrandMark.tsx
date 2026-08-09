@@ -28,25 +28,16 @@ export function BrandMark({ className = "" }: { className?: string; tone?: "ligh
 }
 
 /**
- * Wordmark. "Plate" sits in the display serif, "Maps" picks up the brand
- * orange, and a short rule underlines the join — enough contrast that the
- * two halves read as one lockup rather than a plain string.
+ * Wordmark: the name, whole, in the display serif. The pin artwork beside it
+ * already carries the brand orange, so the letters stay in ink — the accent
+ * color is reserved for percentages, selection, and the primary action.
  */
 export function WordMark({ tone = "light" }: { tone?: "light" | "dark" }) {
   const base = tone === "light" ? "text-white" : "text-zinc-900";
-  const accent = tone === "light" ? "text-pm-orange" : "text-pm-orange-text";
 
   return (
-    <span className="relative inline-flex flex-col leading-none">
-      <span className={`font-display font-semibold tracking-[-0.03em] ${base}`}>
-        Plate<span className={accent}>Maps</span>
-      </span>
-      <span
-        className={`mt-1 h-[2px] w-8 rounded-full bg-gradient-to-r ${
-          tone === "light" ? "from-pm-orange to-transparent" : "from-pm-orange-text to-transparent"
-        } transition-all duration-300 group-hover:w-full`}
-        aria-hidden="true"
-      />
+    <span className={`font-display font-semibold leading-none tracking-[-0.03em] ${base}`}>
+      PlateMaps
     </span>
   );
 }

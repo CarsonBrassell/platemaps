@@ -8,16 +8,19 @@ import {
   UserIcon,
   PlusIcon,
 } from "@/components/icons";
-import { PointsBadge } from "./PointsBadge";
+import { PointsBadge } from "@/components/feed/PointsBadge";
 import { initials, avatarPalette } from "@/lib/format";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 
+/* ARCHIVED — not rendered anywhere. See archive/README.md.
+   The live copy of this type is src/components/feed/types.ts; it is repeated
+   here so the archive compiles on its own. */
 export type NavKey = "home" | "explore" | "leaderboard" | "saved" | "profile";
 
 const item =
   "flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 const idle = "text-zinc-600 hover:bg-white hover:text-zinc-900";
-const active = "bg-white font-semibold text-zinc-900 shadow-sm ring-1 ring-zinc-200/70";
+const active = "bg-white font-semibold text-zinc-900";
 
 /** Desktop-only rail. The mobile equivalent is MobileNavigation. */
 export function SideNav({
@@ -78,7 +81,7 @@ export function SideNav({
         {pendingRequestCount > 0 && (
           <span
             aria-label={`${pendingRequestCount} pending friend ${pendingRequestCount === 1 ? "request" : "requests"}`}
-            className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-pm-orange px-1 text-[10px] font-bold text-white"
+            className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-pm-orange px-1 font-mono text-[10px] font-semibold tabular-nums text-[#F7F4EC]"
           >
             {pendingRequestCount}
           </span>
@@ -88,7 +91,7 @@ export function SideNav({
       <button
         type="button"
         onClick={onCreate}
-        className="mt-3 flex min-h-11 items-center justify-center gap-2 rounded-full bg-pm-orange px-4 text-sm font-semibold text-white shadow-sm transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        className="mt-3 flex min-h-11 items-center justify-center gap-2 rounded-full bg-pm-orange px-4 text-sm font-semibold text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
       >
         <PlusIcon className="h-4 w-4" />
         Create Post
@@ -108,7 +111,7 @@ export function SideNav({
             />
           ) : (
             <span
-              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${palette.avatarBg} text-xs font-semibold text-white`}
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${palette.avatarBg} font-mono text-xs font-semibold text-white`}
             >
               {initials(account.name)}
             </span>

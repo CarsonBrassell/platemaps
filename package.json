@@ -9,6 +9,7 @@
     "lint": "eslint",
     "postinstall": "node scripts/copy-maplibre-worker.mjs",
     "ratings:blend": "node --env-file=.env.local scripts/blend-ratings.mjs",
+    "aspects:preview": "node scripts/preview-aspect-scores.mjs",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "db:seed": "node --env-file=.env.local scripts/seed-demo.mjs"
   },

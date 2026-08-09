@@ -1,80 +1,159 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { RestaurantSearch } from "@/components/RestaurantSearch";
+import { MobileNav } from "@/components/MobileNav";
+import { PlusIcon } from "@/components/icons";
 
-const NAV_LINKS = [
-  { href: "/", label: "Discover" },
+/* Split in two so the compose button can sit in the middle of the oval rather
+   than hanging off one end — posting is the one thing this row exists to
+   invite, and the centre is the only position that doesn't rank it against the
+   places you browse. */
+const NAV_LEFT = [
   { href: "/feed", label: "Feed" },
-  { href: "/account", label: "My account" },
+  { href: "/", label: "Discover" },
+];
+const NAV_RIGHT = [
+  { href: "/friends", label: "Friends" },
+  { href: "/account", label: "Profile" },
 ];
 
 export function Header() {
   const pathname = usePathname();
   const { account, isSignedIn } = useAuth();
 
+  /* Incoming friend requests, shown as a dot on Friends.
+   *
+   * This is the only place in the app that surfaces a pending request outside
+   * /friends itself — it used to be a badge on the side rail's Profile row,
+   * which went away with the rail. A dot rather than a number on purpose: the
+   * count isn't the point, and a bare integer next to "Friends" reads as a
+   * friend count, which this product never displays. */
+  const [hasRequests, setHasRequests] = useState(false);
+
+  useEffect(() => {
+    // No reset branch on sign-out: the dot's render is gated on isSignedIn
+    // below, so a stale true from a previous session is simply never read.
+    if (!isSignedIn) return;
+    let cancelled = false;
+    fetch("/api/friends")
+      .then((res) => res.json())
+      .then((data: { incoming?: unknown[] }) => {
+        if (!cancelled) setHasRequests((data.incoming?.length ?? 0) > 0);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+    // Re-read on navigation so answering a request clears the dot.
+  }, [isSignedIn, pathname]);
+
+  const navPill = (link: { href: string; label: string }) => {
+    const current = pathname === link.href;
+    return (
+      <Link
+        key={link.href}
+        href={link.href}
+        aria-current={current ? "page" : undefined}
+        className={`inline-flex min-h-9 items-center whitespace-nowrap rounded-full px-4 transition-[color,background-color,scale] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+          current
+            ? "bg-pm-orange font-medium text-[#F7F4EC]"
+            : "text-pm-grey-text hover:text-zinc-900 motion-safe:hover:scale-105"
+        }`}
+      >
+        {link.label}
+        {link.href === "/friends" && isSignedIn && hasRequests && (
+          <span
+            aria-label="You have friend requests waiting"
+            role="status"
+            className="ml-1.5 h-1.5 w-1.5 shrink-0 self-start rounded-full bg-pm-orange"
+          />
+        )}
+      </Link>
+    );
+  };
+
   return (
-    <header className="flex items-center justify-between gap-5 bg-gradient-to-b from-pm-charcoal-light to-pm-charcoal px-6 py-3.5">
-      <div className="flex items-center gap-7">
+    <>
+    {/* Sits directly on the cream ground — the header is not a card. */}
+    <header className="flex items-center justify-between gap-5 px-5 py-4 sm:px-6">
+      {/* min-w-0 so the search yields first when the row gets tight — the nav
+          and the avatar are fixed-size, so without it the search runs under
+          the nav instead of narrowing. */}
+      <div className="flex min-w-0 items-center gap-5">
         <Link
           href="/"
-          className="group flex shrink-0 items-center gap-3 rounded-lg text-[26px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
+          className="group flex shrink-0 items-center gap-2.5 rounded-lg text-[22px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
         >
-          <span className="relative flex h-16 w-16 items-center justify-center">
-            {/* Glow sits behind the mark and blooms on hover. */}
-            <span
-              className="absolute inset-1 rounded-full bg-pm-orange/25 blur-lg transition-all duration-300 group-hover:bg-pm-orange/45 group-hover:blur-xl"
-              aria-hidden="true"
-            />
-            <BrandMark
-              tone="light"
-              className="relative h-16 w-16 drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110"
-            />
-          </span>
-          <WordMark tone="light" />
+          <BrandMark
+            tone="dark"
+            className="h-11 w-11 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110"
+          />
+          <WordMark tone="dark" />
         </Link>
         <RestaurantSearch />
       </div>
-      <nav className="hidden items-center gap-4 text-sm sm:flex">
-        {NAV_LINKS.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={
-              pathname === link.href
-                ? "inline-block whitespace-nowrap border-b-2 border-pm-orange pb-1 font-medium text-white transition-transform duration-200 hover:-translate-y-0.5 hover:scale-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
-                : "inline-block whitespace-nowrap border-b-2 border-transparent pb-1 text-white/65 transition-all duration-200 hover:-translate-y-0.5 hover:scale-110 hover:text-white active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
-            }
-          >
-            {link.label}
-          </Link>
-        ))}
+      {/* Top-level navigation wears the pill treatment (design swapped with
+          the feed's tab bar): an oval tan track encasing the pills, the page
+          you're on filled orange, unselected pills growing slightly on
+          hover. */}
+      <nav className="hidden shrink-0 items-center rounded-full bg-pm-grey-tint p-1.5 text-sm sm:flex">
+        {NAV_LEFT.map(navPill)}
+        {/* The compose button. Orange because posting is the primary action,
+            and a circle rather than a pill so it reads as the one control here
+            that does something instead of going somewhere. */}
+        <Link
+          href="/post"
+          aria-label="Create post"
+          className="-my-0.5 mx-1.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-orange text-[#F7F4EC] transition-[scale,filter] duration-200 ease-out hover:brightness-105 active:scale-95 motion-safe:hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
+        >
+          <PlusIcon className="h-5 w-5" />
+        </Link>
+        {NAV_RIGHT.map(navPill)}
       </nav>
-      <div className="flex items-center gap-3">
-        <div className="hidden items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-sm text-white ring-1 ring-inset ring-white/10 sm:flex">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-pm-orange" aria-hidden="true">
-            <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z" />
-            <circle cx="12" cy="10" r="2.5" />
-          </svg>
+      <div className="flex shrink-0 items-center gap-4">
+        {/* The city is a machine value: monospace, quiet. */}
+        <span className="mono-label hidden whitespace-nowrap text-zinc-500 sm:block">
           San Diego, CA
-        </div>
-        {isSignedIn && account?.avatarUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={account.avatarUrl}
-            alt=""
-            className="h-8 w-8 shrink-0 rounded-full object-cover ring-2 ring-white/15 transition-transform hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-orange text-xs font-medium text-white ring-2 ring-white/15 transition-transform hover:scale-105">
-            {isSignedIn && account ? initials(account.name) : "?"}
-          </div>
-        )}
+        </span>
+        {/* The only route to /account now that the nav row dropped it, so it
+            carries a real label and a full-size target rather than being a
+            36px decoration that happens to be clickable. */}
+        <Link
+          href="/account"
+          aria-label={isSignedIn && account ? `Your account, ${account.name}` : "Sign in"}
+          aria-current={pathname === "/account" ? "page" : undefined}
+          className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        >
+          {isSignedIn && account?.avatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={account.avatarUrl}
+              alt=""
+              className={`h-9 w-9 shrink-0 rounded-full object-cover transition-transform hover:scale-105 ${
+                pathname === "/account" ? "ring-2 ring-pm-orange ring-offset-2" : ""
+              }`}
+            />
+          ) : (
+            <div
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xs font-medium text-pm-grey-text transition-transform hover:scale-105 ${
+                pathname === "/account" ? "ring-2 ring-pm-orange ring-offset-2" : ""
+              }`}
+            >
+              {isSignedIn && account ? initials(account.name) : "?"}
+            </div>
+          )}
+        </Link>
       </div>
     </header>
+    {/* Rendered here rather than in each page: Header is already on all of
+        them, so this keeps the two halves of one menu in one file. */}
+    <MobileNav hasRequests={isSignedIn && hasRequests} />
+    </>
   );
 }

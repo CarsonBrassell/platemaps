@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -103,11 +103,18 @@ const BUBBLE_GAP = 6;
    and gradients out. */
 const BUBBLE_FILL = "#faf7f2";
 const BUBBLE_INK = "#2b211c";
-const BUBBLE_MUTED = "#8a7a6d";
+/* The meta row sets at 10px, so it owes 4.5:1 against BUBBLE_FILL. DESIGN.md's
+   muted step (`zinc-500` #7E7261) is tuned against white and lands at 4.40:1 on
+   this warm fill — just under — so the bubble carries the next step down. */
+const BUBBLE_MUTED = "#776B5B";
 const BUBBLE_EDGE = "rgba(43,33,28,0.16)";
-const BUBBLE_POP = "#d96f45";
+/* The accent's small-text voice (`--pm-orange-text`), 5.45:1 on BUBBLE_FILL —
+   the same reasoning .map-dish-link already documents one file over. The fill
+   orange (`--pm-orange`, and the lighter #d96f45 this used to be) is a
+   large-text colour; at the meta row's 10px it renders at 3.11:1. */
+const BUBBLE_POP = "#A8481A";
 const BUBBLE_RADIUS = 8;
-const MONO = "var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace";
+const MONO = "var(--font-spline-mono), ui-monospace, SFMono-Regular, Menlo, monospace";
 // Fixed tail size rather than one computed per comment — it is a small
 // gesture below the box, not something that needs to track the box's own
 // width or text length, and a fixed size can't fall out of sync with the box
@@ -256,8 +263,13 @@ function bubbleElement(
   /* The plate leads, in the poster's own words and the poster's own face. The
      score it earned is a computed number and is set in mono beside it, down in
      the meta row. */
+  /* Kept a span rather than promoted to a button: .map-bubble-text truncates
+     its headline with text-overflow, which only applies to inline content, and
+     a button is an atomic inline-level box that would clip mid-glyph instead.
+     So it earns the keyboard affordances a link owes by hand — focusable, named
+     as a link, and activated on Enter by the handler bound below. */
   const headlineHtml = split
-    ? `<span class="map-dish-link" style="cursor: pointer;">${escapeHtml(split.name)}</span>`
+    ? `<span class="map-dish-link" role="link" tabindex="0" style="cursor: pointer;">${escapeHtml(split.name)}</span>`
     : escapeHtml(comment.text);
   /* Which reaction the chip is depends on which feed the bubble's data came
      from — Discover bubbles upvote (public count, matches the number every
@@ -629,6 +641,9 @@ export function RestaurantMap({
             mode,
             mode === "discover" ? canUpvote : canHeart,
           );
+          const dishHref = comment.dishId
+            ? `/restaurant/${restaurant.id}?dish=${comment.dishId}`
+            : `/restaurant/${restaurant.id}`;
           el.addEventListener("click", (e) => {
             const target = e.target as HTMLElement;
             const upvoteChip = target.closest(".map-upvote-chip");
@@ -646,14 +661,20 @@ export function RestaurantMap({
               return;
             }
             if (target.closest(".map-dish-link")) {
-              router.push(
-                comment.dishId
-                  ? `/restaurant/${restaurant.id}?dish=${comment.dishId}`
-                  : `/restaurant/${restaurant.id}`,
-              );
+              router.push(dishHref);
             } else {
               router.push(comment.postId ? `/feed?post=${comment.postId}` : "/feed");
             }
+          });
+          /* The two chips are real buttons, so the platform already fires their
+             click from the keyboard. Only the dish reference — a span, for the
+             truncation reason above — has to answer Enter itself. Space stays
+             unbound: this is a link, and links don't activate on Space. */
+          el.addEventListener("keydown", (e) => {
+            if (e.key !== "Enter") return;
+            if (!(e.target as HTMLElement).closest(".map-dish-link")) return;
+            e.preventDefault();
+            router.push(dishHref);
           });
           const marker = new Marker({ element: el, anchor: "top-left" })
             .setLngLat([restaurant.lng, restaurant.lat])

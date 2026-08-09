@@ -16,7 +16,7 @@ function LocationIcon() {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="shrink-0 text-pm-orange-text"
+      className="shrink-0"
       aria-hidden="true"
     >
       <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
@@ -60,17 +60,21 @@ export function StatsBar() {
   const openCount = states.filter((s) => s.kind === "open" || s.kind === "soon").length;
   const closingSoonCount = states.filter((s) => s.kind === "soon").length;
 
+  /* Everything in this strip is machine-derived — clock, counts — so the
+     whole line sets in the small uppercase mono, quiet on the cream. */
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1.5 border-b border-pm-orange-border/40 bg-gradient-to-r from-pm-orange-tint via-pm-orange-tint to-orange-50 px-5 py-2.5">
-      <div className="flex flex-wrap items-center gap-2">
-        <LocationIcon />
-        <span className="text-sm font-medium text-pm-orange-text">San Diego, California</span>
+    <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1.5 px-5 py-1.5 sm:px-6">
+      <div className="mono-label flex flex-wrap items-center gap-x-4 gap-y-1 text-zinc-500">
+        <span className="flex items-center gap-1.5">
+          <LocationIcon />
+          San Diego, CA
+        </span>
         {time && (
           /* tabular-nums so the bar doesn't shimmy a pixel when 9:59 ticks
              over to 10:00. */
-          <span className="flex items-center gap-1 text-sm tabular-nums text-pm-orange-text/80">
+          <span className="flex items-center gap-1.5 tabular-nums">
             <ClockIcon />
-            {time} local time
+            {time}
           </span>
         )}
       </div>
@@ -81,29 +85,16 @@ export function StatsBar() {
           restaurants they described. Rendered only once the clock exists, for
           the same hydration reason as the time above. */}
       {now && (
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-1.5">
-          <span className="flex items-center gap-1.5 text-sm font-medium text-pm-orange-text">
-            <span className="relative flex h-2 w-2" aria-hidden="true">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-pm-orange/60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-pm-orange" />
+        <div className="mono-label flex flex-wrap items-center gap-x-4 gap-y-1 text-zinc-500">
+          <span className="flex items-center gap-1.5">
+            <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-600/60" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-600" />
             </span>
-            {openCount} open right now
+            {openCount} open now
           </span>
-          <span className="flex items-center gap-1.5 text-sm text-pm-orange-text/90">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 7v5l3 2" />
-            </svg>
-            {restaurants.length} spots on the map
-          </span>
-          <span className="flex items-center gap-1.5 text-sm text-pm-orange-text/90">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M12 9v4" />
-              <path d="M12 17h.01" />
-              <path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0z" />
-            </svg>
-            {closingSoonCount} closing within the hour
-          </span>
+          <span className="tabular-nums">{restaurants.length} spots</span>
+          <span className="tabular-nums">{closingSoonCount} closing soon</span>
         </div>
       )}
     </div>

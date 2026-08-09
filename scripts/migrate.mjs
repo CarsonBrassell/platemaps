@@ -193,6 +193,55 @@ const statements = [
   // cuisines table to constrain against.
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS favorite_cuisine TEXT`,
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS favorite_restaurant_id TEXT`,
+
+  // --- Per-aspect verdicts -------------------------------------------------
+  //
+  // One row per aspect a review had an opinion about. A review may name one
+  // aspect the best thing about a place and one that let them down, so at most
+  // two rows per post — the PK enforces one verdict per aspect per post, and
+  // the app enforces at most one of each sentiment.
+  //
+  // Deliberately NOT a star rating per aspect: someone naming an aspect the
+  // best thing will always rate it 4-5 and someone naming a letdown will
+  // always rate it 1-2, so the star repeats what the chip said and costs an
+  // extra tap. Magnitude comes from how many reviews agree — see
+  // src/lib/aspectScores.ts.
+  `CREATE TABLE IF NOT EXISTS post_aspect_votes (
+    post_id TEXT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    aspect TEXT NOT NULL,
+    sentiment TEXT NOT NULL CHECK (sentiment IN ('praise', 'fault')),
+    PRIMARY KEY (post_id, aspect)
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_post_aspect_votes_post ON post_aspect_votes(post_id)`,
+
+  // The old composer stored the single best-at pick in `vibe`, which it shares
+  // with the room-vibe vocabulary ("Lively"). Lift those into real praise
+  // votes so existing reviews contribute to the new scores instead of being
+  // stranded. Only the BEST_AT labels move; room vibes stay where they are.
+  // ON CONFLICT makes this re-runnable.
+  `INSERT INTO post_aspect_votes (post_id, aspect, sentiment)
+     SELECT id, vibe, 'praise' FROM posts
+     WHERE vibe IN ('Food','Ambiance','Service','Menu variety','Drinks','Value','Speed','Dessert')
+     ON CONFLICT DO NOTHING`,
+
+  // --- Downvotes -----------------------------------------------------------
+  //
+  // The other half of Discover's vote pair. A separate table rather than a
+  // `direction` column on post_upvotes, for the same reason hearts are their
+  // own table: the ranking query names exactly the tables it is allowed to
+  // read, so no column-value mistake can quietly turn a downvote into an
+  // upvote in a count(*).
+  //
+  // Mutual exclusivity (nobody is both up and down on one post) is enforced
+  // in castVote, which deletes the opposite row before inserting — a CHECK
+  // can't span two tables.
+  `CREATE TABLE IF NOT EXISTS post_downvotes (
+    post_id TEXT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (post_id, user_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_post_downvotes_post ON post_downvotes(post_id)`,
 ];
 
 for (const statement of statements) {

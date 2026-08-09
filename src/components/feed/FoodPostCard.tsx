@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PostMediaCarousel } from "./PostMediaCarousel";
-import { PostActions } from "./PostActions";
+import { PostActions, type VoteDirection } from "./PostActions";
 import { PointsBadge } from "./PointsBadge";
 import { StarRating } from "@/components/StarRating";
 import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon } from "@/components/icons";
@@ -19,7 +19,7 @@ function handleFor(name: string) {
 
 function Tombstone({ title, body, onUndo }: { title: string; body: string; onUndo?: () => void }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white/70 px-5 py-6 text-sm">
+    <div className="flex items-center gap-3 rounded-2xl bg-white px-5 py-6 text-sm">
       <div className="flex-1">
         <p className="font-medium text-zinc-800">{title}</p>
         <p className="mt-0.5 text-zinc-500">{body}</p>
@@ -40,50 +40,79 @@ function Tombstone({ title, body, onUndo }: { title: string; body: string; onUnd
 /** Where two users stand — mirrors lib/db.ts's FriendStatus. */
 export type FriendStatus = "none" | "friends" | "requested" | "incoming";
 
-export function FoodPostCard({
-  post,
-  currentUserId,
-  /**
-   * Which feed this card is rendering inside of. Drives which reaction
-   * control PostActions shows (upvote vs heart) — a post is never rendered
-   * with both. Photo visibility itself is NOT decided here: getDiscoverFeed
-   * already strips `media` server-side for a post whose author hasn't opted
-   * into public photos, so this component just renders whatever `post.media`
-   * it was handed. That keeps the privacy rule enforced at the one place a
-   * network payload is actually shaped, rather than duplicated as a second,
-   * client-trust-only gate here.
-   */
-  surface,
-  friendStatus,
-  highlighted,
-  trending,
-  reactPoints,
-  onSave,
-  onShare,
-  onReact,
-  onOpenComments,
-  onDelete,
-  onAddFriend,
-  onRequireSignIn,
-}: {
+type SharedCardProps = {
   post: Post;
   currentUserId: string | null;
-  surface: "discover" | "friends";
   friendStatus: FriendStatus;
   highlighted?: boolean;
-  /** Among the hottest plates right now — earns the glowing flame. */
-  trending?: boolean;
-  /** Points just earned for upvoting, floated above the action row. Hearts earn none. */
-  reactPoints: number | null;
   onSave: (postId: string) => void;
   onShare: (post: Post) => Promise<string | null>;
-  onReact: (postId: string) => void;
   onOpenComments: (postId: string) => void;
   onDelete: (postId: string) => void;
-  /** Only ever called when friendStatus is "none" — see the header button below. */
-  onAddFriend: (userId: string) => void;
+  /**
+   * Only ever called when friendStatus is "none" — see the header button
+   * below. Omitted on a screen where every author is already a friend, which
+   * is why that button is rendered on the handler's presence too.
+   */
+  onAddFriend?: (userId: string) => void;
   onRequireSignIn: () => void;
-}) {
+};
+
+/**
+ * `surface` is which feed this card is rendering inside of, and it decides
+ * which reaction the card offers — a post is never rendered with both. It's a
+ * discriminated union for the same reason PostActions' props are: a friends
+ * card cannot be handed a vote handler, a trending flame or a points toast,
+ * because those aren't fields its variant has. The friends feed's freedom from
+ * scoring is then a type, not a habit.
+ *
+ * Photo visibility is NOT decided here: getDiscoverFeed already strips `media`
+ * server-side for a post whose author hasn't opted into public photos, so this
+ * component just renders whatever `post.media` it was handed. That keeps the
+ * privacy rule enforced at the one place a network payload is actually shaped,
+ * rather than duplicated as a second, client-trust-only gate here.
+ */
+type FoodPostCardProps = SharedCardProps &
+  (
+    | {
+        surface: "discover";
+        /** Among the hottest plates right now — earns the glowing flame. */
+        trending?: boolean;
+        /** Points just earned for upvoting, floated above the action row. */
+        reactPoints: number | null;
+        /** Up/down. Pressing the direction already held clears the vote. */
+        onVote: (postId: string, direction: VoteDirection) => void;
+      }
+    | {
+        surface: "friends";
+        /** The heart. Awards nothing and counts nothing — see PostActions. */
+        onReact: (postId: string) => void;
+      }
+  );
+
+export function FoodPostCard(props: FoodPostCardProps) {
+  const {
+    post,
+    currentUserId,
+    friendStatus,
+    highlighted,
+    onSave,
+    onShare,
+    onOpenComments,
+    onDelete,
+    onAddFriend,
+    onRequireSignIn,
+  } = props;
+
+  /* Flattened out of the union once, here, rather than reached through `props`
+     inside the JSX: narrowing a parameter doesn't survive into the event
+     handlers below, and these read as what they are — a control the other
+     surface simply doesn't have. Called with `?.` for the same reason. */
+  const onVote = props.surface === "discover" ? props.onVote : null;
+  const onReact = props.surface === "friends" ? props.onReact : null;
+  const reactPoints = props.surface === "discover" ? props.reactPoints : null;
+  const trending = props.surface === "discover" && props.trending;
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [status, setStatus] = useState<"live" | "hidden" | "reported" | "deleted">("live");
@@ -139,12 +168,8 @@ export function FoodPostCard({
   return (
     <article
       aria-labelledby={`post-${post.id}-title`}
-      className={`card-lift overflow-hidden rounded-2xl border bg-white shadow-sm ${
-        highlighted
-          ? "border-pm-orange ring-2 ring-pm-orange ring-offset-2"
-          : trending
-            ? "border-orange-200"
-            : "border-zinc-200/80"
+      className={`overflow-hidden rounded-2xl bg-white ${
+        highlighted ? "ring-2 ring-pm-orange" : ""
       }`}
     >
       <header className="flex items-center gap-3 px-4 pt-4">
@@ -158,11 +183,11 @@ export function FoodPostCard({
             <img
               src={post.authorAvatarUrl}
               alt=""
-              className="h-10 w-10 rounded-full object-cover ring-2 ring-white"
+              className="h-10 w-10 rounded-full object-cover"
             />
           ) : (
             <span
-              className={`flex h-10 w-10 items-center justify-center rounded-full ${palette.avatarBg} text-sm font-semibold text-white`}
+              className={`flex h-10 w-10 items-center justify-center rounded-full ${palette.avatarBg} font-mono text-sm font-semibold text-white`}
             >
               {initials(post.authorName)}
             </span>
@@ -170,13 +195,26 @@ export function FoodPostCard({
         </Link>
 
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
-            <span className="truncate text-sm font-medium text-zinc-800">
+          {/* Handle and timestamp share one row, both machine values, both
+              mono — the brief's card opens exactly this way. */}
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <span className="truncate font-mono text-[13px] font-medium text-zinc-900">
               {handleFor(post.authorName)}
             </span>
-            <PointsBadge points={post.authorPoints} />
+            <span className="truncate font-mono text-xs text-zinc-500">{meta}</span>
           </div>
-          <p className="mt-0.5 truncate text-xs text-zinc-500">{meta}</p>
+          <div className="mt-1 flex items-center gap-1.5">
+            <PointsBadge points={post.authorPoints} />
+            {trending && (
+              <span
+                className="flex items-center gap-1 rounded-full bg-pm-grey-tint py-0.5 pl-1.5 pr-2 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-pm-grey-text"
+                title="Trending right now"
+              >
+                <FlameIcon className="h-3 w-3" />
+                Hot
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Mutual friends only — a one-directional follow isn't a state this
@@ -184,7 +222,7 @@ export function FoodPostCard({
             than accepting inline, since accepting needs the request's id and
             this card only ever received a friendIds/outgoing summary, not the
             full request list. */}
-        {currentUserId && !isOwner && friendStatus === "none" && (
+        {currentUserId && !isOwner && friendStatus === "none" && onAddFriend && (
           <button
             type="button"
             onClick={() => onAddFriend(post.userId)}
@@ -201,7 +239,7 @@ export function FoodPostCard({
         {currentUserId && !isOwner && friendStatus === "incoming" && (
           <Link
             href="/account"
-            className="hidden min-h-9 shrink-0 items-center rounded-full bg-pm-orange px-3 text-xs font-medium text-white transition-colors hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange sm:flex"
+            className="hidden min-h-9 shrink-0 items-center rounded-full bg-pm-orange px-3 text-xs font-medium text-[#F7F4EC] transition-colors hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange sm:flex"
           >
             Respond
           </Link>
@@ -226,7 +264,7 @@ export function FoodPostCard({
           {menuOpen && (
             <div
               role="menu"
-              className="absolute right-0 top-full z-20 mt-1 w-44 overflow-hidden rounded-xl border border-zinc-200 bg-white p-1 shadow-lg"
+              className="absolute right-0 top-full z-20 mt-1 w-44 overflow-hidden rounded-xl bg-white p-1 ring-1 ring-zinc-200"
             >
               {isOwner ? (
                 <button
@@ -271,36 +309,31 @@ export function FoodPostCard({
         </div>
       </header>
 
-      {/* Dish leads the card — it outranks the poster in the hierarchy. */}
-      <div className="px-4 pb-3 pt-2.5">
-        <div className="flex items-start gap-2">
-          <h3
-            id={`post-${post.id}-title`}
-            className="plate-headline flex-1 text-[22px] font-semibold leading-tight"
+      {/* The poster's own words, in the human voice, before the photo. */}
+      {post.text && (
+        <div className="px-4 pt-3">
+          <p
+            className={`text-sm leading-relaxed text-zinc-700 ${
+              expanded ? "" : "line-clamp-3"
+            }`}
           >
-            {post.dishName ?? post.restaurant ?? "A plate worth sharing"}
-          </h3>
-          {trending && (
-            <span
-              className="mt-0.5 flex shrink-0 items-center gap-1 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 py-0.5 pl-1 pr-2 text-[11px] font-bold uppercase tracking-wide text-pm-orange-text ring-1 ring-inset ring-orange-200"
-              title="Trending right now"
+            {post.text}
+          </p>
+          {post.text.length > 140 && (
+            <button
+              type="button"
+              onClick={() => setExpanded((e) => !e)}
+              className="mt-0.5 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
             >
-              <FlameIcon className="flame-glow h-4 w-4" />
-              Hot
-            </span>
+              {expanded ? "Show less" : "Show more"}
+            </button>
           )}
         </div>
-        {/* Neutral now that the headline above carries the accent. Two oranges
-            stacked one line apart cancel each other out — neither reads as the
-            thing to look at. */}
-        {post.restaurant && post.dishName && (
-          <p className="mt-1 text-sm text-zinc-600">
-            at <span className="font-medium text-zinc-800">{post.restaurant}</span>
-          </p>
-        )}
-      </div>
+      )}
 
-      <div className="relative">
+      {/* Photo inset from the card edge, both radii visible — the same move
+          as the restaurant page's hero. */}
+      <div className="relative mx-2.5 mt-3 overflow-hidden rounded-xl">
         <PostMediaCarousel
           media={post.media}
           dishName={post.dishName}
@@ -308,54 +341,70 @@ export function FoodPostCard({
         />
 
         {(post.rating !== undefined || post.price) && (
-          <>
-            {/* Scrim so the pills stay legible over a bright photo. */}
-            <div
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-pm-charcoal/55 to-transparent"
-              aria-hidden="true"
-            />
-            <div className="pointer-events-none absolute bottom-3 left-3 flex items-center gap-1.5">
-              {/* Exactly two ways a rating can read, because there are
-                  exactly two ways to make one: five stars for a restaurant,
-                  a percentage for a dish. There is deliberately no third
-                  branch — a 0-10 fallback is what let an impossible "9.2
-                  stars" render, and the app has no control that produces a
-                  9.2. Pre-split rows were converted by
-                  scripts/backfill-rating-kind.mjs. */}
-              {post.rating !== undefined && post.ratingKind === "restaurant" && (
-                <span className="flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1 shadow-sm backdrop-blur-sm">
-                  <StarRating rating={post.rating} className="h-3 w-3" />
-                  <span className="text-xs font-bold text-zinc-900">{post.rating}/5</span>
+          <div className="pointer-events-none absolute bottom-2.5 left-2.5 flex items-center gap-1.5">
+            {/* Exactly two ways a rating can read, because there are
+                exactly two ways to make one: five stars for a restaurant,
+                a percentage for a dish. There is deliberately no third
+                branch — a 0-10 fallback is what let an impossible "9.2
+                stars" render, and the app has no control that produces a
+                9.2. Pre-split rows were converted by
+                scripts/backfill-rating-kind.mjs. */}
+            {post.rating !== undefined && post.ratingKind === "restaurant" && (
+              <span className="flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1">
+                <StarRating rating={post.rating} className="h-3 w-3" />
+                <span className="font-mono text-xs font-semibold tabular-nums text-zinc-900">
+                  {post.rating}/5
                 </span>
-              )}
-              {post.rating !== undefined && post.ratingKind === "dish" && (
-                <span className="flex items-baseline gap-0.5 rounded-full bg-white/95 px-2.5 py-1 shadow-sm backdrop-blur-sm">
-                  <span className="text-sm font-bold text-zinc-900">{post.rating}</span>
-                  <span className="text-xs font-bold text-zinc-900">%</span>
-                  <span className="ml-1 text-[10px] font-medium text-zinc-500">would order</span>
+              </span>
+            )}
+            {post.rating !== undefined && post.ratingKind === "dish" && (
+              <span className="flex items-baseline gap-1 rounded-full bg-white/95 px-2.5 py-1">
+                <span className="font-mono text-xs font-semibold tabular-nums text-zinc-900">
+                  {post.rating}%
                 </span>
-              )}
-              {post.price && (
-                <span className="rounded-full bg-pm-charcoal/80 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
-                  {post.price}
-                </span>
-              )}
-            </div>
-          </>
+                <span className="font-mono text-[10px] text-zinc-500">would order</span>
+              </span>
+            )}
+            {post.price && (
+              <span className="rounded-full bg-white/95 px-2.5 py-1 font-mono text-xs font-medium tabular-nums text-zinc-700">
+                {post.price}
+              </span>
+            )}
+          </div>
         )}
       </div>
 
-      <div className="pt-1.5">
-        {surface === "discover" ? (
+      {/* Restaurant · dish gets its own line now that the row below it is
+          split left-and-right — the dish is a record in this app, so it sets
+          in the mono. */}
+      <h3
+        id={`post-${post.id}-title`}
+        className="truncate px-4 pt-2.5 text-[13px] leading-snug"
+      >
+        {post.restaurant && <span className="text-zinc-600">{post.restaurant}</span>}
+        {post.restaurant && post.dishName && <span className="text-zinc-400"> · </span>}
+        {post.dishName && (
+          <span className="font-mono font-medium text-zinc-900">{post.dishName}</span>
+        )}
+        {!post.restaurant && !post.dishName && (
+          <span className="text-zinc-600">A plate worth sharing</span>
+        )}
+      </h3>
+
+      {/* The verdict on the left, everything you can do about it on the
+          right. PostActions owns the split itself. */}
+      <div className="flex items-center px-4 pb-1 pt-1">
+        {props.surface === "discover" ? (
           <PostActions
             surface="discover"
             upvoteCount={post.upvoteCount}
-            upvoted={post.upvotedByMe}
+            downvoteCount={post.downvoteCount}
+            myVote={post.upvotedByMe ? "up" : post.downvotedByMe ? "down" : null}
             commentCount={post.comments.length}
             saved={saved}
             canInteract={!!currentUserId}
             pointsToast={reactPoints ? `+${reactPoints} point${reactPoints === 1 ? "" : "s"}` : null}
-            onReact={() => onReact(post.id)}
+            onVote={(direction) => onVote?.(post.id, direction)}
             onComment={() => onOpenComments(post.id)}
             onSave={() => onSave(post.id)}
             onShare={() => onShare(post)}
@@ -370,7 +419,7 @@ export function FoodPostCard({
             canInteract={!!currentUserId}
             // Hearts earn no points — nothing to float here, ever.
             pointsToast={null}
-            onReact={() => onReact(post.id)}
+            onReact={() => onReact?.(post.id)}
             onComment={() => onOpenComments(post.id)}
             onSave={() => onSave(post.id)}
             onShare={() => onShare(post)}
@@ -380,29 +429,10 @@ export function FoodPostCard({
       </div>
 
       <div className="px-4 pb-4">
-        {post.text && (
-          <p
-            className={`text-sm leading-relaxed text-zinc-700 ${
-              expanded ? "" : "line-clamp-3"
-            }`}
-          >
-            {post.text}
-          </p>
-        )}
-        {post.text.length > 140 && (
-          <button
-            type="button"
-            onClick={() => setExpanded((e) => !e)}
-            className="mt-0.5 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            {expanded ? "Show less" : "Show more"}
-          </button>
-        )}
-
         {(post.tags.length > 0 || post.amenities.length > 0 || post.vibe) && (
-          <ul className="mt-2.5 flex flex-wrap gap-1.5">
+          <ul className="mt-1.5 flex flex-wrap gap-1.5">
             {roomChip && (
-              <li className="flex items-center gap-1 rounded-full bg-pm-charcoal px-2 py-0.5 text-[11px] font-medium text-white">
+              <li className="flex items-center gap-1 rounded-full bg-pm-grey-tint px-2.5 py-1 text-[11px] font-medium text-pm-grey-text">
                 {roomChip.emoji && <span aria-hidden="true">{roomChip.emoji}</span>}
                 {roomChip.text}
               </li>
@@ -410,7 +440,7 @@ export function FoodPostCard({
             {post.tags.map((tag) => (
               <li
                 key={tag}
-                className={`rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset ${tagAccent(tag)}`}
+                className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${tagAccent(tag)}`}
               >
                 {tag}
               </li>
@@ -418,7 +448,7 @@ export function FoodPostCard({
             {post.amenities.map((a) => (
               <li
                 key={a}
-                className="flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[11px] font-medium text-zinc-600 ring-1 ring-inset ring-zinc-200"
+                className="flex items-center gap-1 rounded-full bg-pm-grey-tint px-2.5 py-1 text-[11px] font-medium text-pm-grey-text"
               >
                 <span aria-hidden="true">{amenityEmoji(a)}</span>
                 {a}
@@ -428,19 +458,19 @@ export function FoodPostCard({
         )}
 
         {post.comments.length > 0 && (
-          <div className="mt-3 border-t border-zinc-100 pt-2.5">
+          <div className="mt-2.5">
             {post.comments.length > 1 && (
               <button
                 type="button"
                 onClick={() => onOpenComments(post.id)}
-                className="text-xs text-zinc-500 transition-colors hover:text-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                className="font-mono text-xs text-zinc-500 transition-colors hover:text-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
               >
                 View all {post.comments.length} comments
               </button>
             )}
             {topComment && (
               <p className="mt-1 line-clamp-2 text-sm text-zinc-700">
-                <span className="font-medium text-zinc-900">
+                <span className="font-mono text-[13px] font-medium text-zinc-900">
                   {handleFor(topComment.authorName)}
                 </span>{" "}
                 {topComment.text}

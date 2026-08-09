@@ -16,11 +16,11 @@ type Variant =
 
 const PANEL_CLASS: Record<Variant, string> = {
   modal:
-    "w-full max-w-lg rounded-2xl bg-white shadow-2xl animate-dialog-in max-h-[90dvh] flex flex-col",
+    "w-full max-w-lg rounded-2xl bg-white animate-dialog-in max-h-[90dvh] flex flex-col",
   sheet:
-    "w-full sm:max-w-xl rounded-t-3xl sm:rounded-2xl bg-white shadow-2xl animate-sheet-in sm:animate-dialog-in max-h-[92dvh] flex flex-col",
+    "w-full sm:max-w-xl rounded-t-2xl sm:rounded-2xl bg-white animate-sheet-in sm:animate-dialog-in max-h-[92dvh] flex flex-col",
   panel:
-    "w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl bg-white shadow-2xl animate-sheet-in sm:animate-dialog-in max-h-[85dvh] sm:max-h-[80dvh] flex flex-col",
+    "w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl bg-white animate-sheet-in sm:animate-dialog-in max-h-[85dvh] sm:max-h-[80dvh] flex flex-col",
 };
 
 const WRAP_CLASS: Record<Variant, string> = {
@@ -108,7 +108,7 @@ export function Dialog({
         aria-labelledby={headingId}
         className={PANEL_CLASS[variant]}
       >
-        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-zinc-200 px-5 py-3.5">
+        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-zinc-100 px-5 py-3.5">
           <h2 id={headingId} className="font-display text-base font-semibold text-zinc-900">
             {title}
           </h2>
@@ -125,7 +125,7 @@ export function Dialog({
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">{children}</div>
 
         {footer && (
-          <div className="shrink-0 border-t border-zinc-200 bg-white px-5 py-3">{footer}</div>
+          <div className="shrink-0 border-t border-zinc-100 bg-white px-5 py-3">{footer}</div>
         )}
       </div>
     </div>

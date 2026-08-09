@@ -344,8 +344,16 @@ export type Post = {
    * exist — anyone can already see the count — so this is just a total.
    */
   upvoteCount: number;
+  /**
+   * Public too, and the other half of the pair Discover ranks on. Shown to
+   * readers only as the net score (upvotes minus downvotes) — the card never
+   * prints "12 people disliked this" next to someone's dinner.
+   */
+  downvoteCount: number;
   /** Whether the requesting viewer has upvoted this post. False with no viewer. */
   upvotedByMe: boolean;
+  /** Whether the requesting viewer has downvoted it. Never true alongside upvotedByMe. */
+  downvotedByMe: boolean;
   /**
    * Whether the requesting viewer has hearted this post. Deliberately NOT a
    * full heartedBy list — the author-only "who hearted this" view is a
@@ -375,46 +383,66 @@ async function hydratePosts(
   if (postRows.length === 0) return [];
   const ids = postRows.map((r) => r.id as string);
 
-  const [saveRows, commentRows, commentLikeRows, upvoteCountRows, myUpvoteRows, myHeartRows] =
-    await Promise.all([
-      sql`SELECT post_id, user_id FROM post_saves WHERE post_id = ANY(${ids})`,
-      sql`
-        SELECT c.id, c.post_id, c.user_id, c.text, c.created_at,
-               u.name AS author_name, u.avatar_url AS author_avatar_url
-        FROM comments c
-        JOIN users u ON u.id = c.user_id
-        WHERE c.post_id = ANY(${ids})
-        ORDER BY c.created_at ASC
-      `,
-      sql`
-        SELECT cl.comment_id, cl.user_id
-        FROM comment_likes cl
-        JOIN comments c ON c.id = cl.comment_id
-        WHERE c.post_id = ANY(${ids})
-      `,
-      sql`
-        SELECT post_id, count(*)::int AS count
-        FROM post_upvotes WHERE post_id = ANY(${ids})
-        GROUP BY post_id
-      `,
-      // Scoped to the viewer's own row only — never the full upvoter list's
-      // counterpart for hearts, and upvotes are public anyway so this is just
-      // a convenience, not a privacy boundary.
-      viewerId
-        ? sql`SELECT post_id FROM post_upvotes WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}`
-        : Promise.resolve([]),
-      // The privacy boundary: this is the ONLY heart data hydratePosts ever
-      // reads, and it is scoped to "did this one viewer heart it" — never the
-      // full list of who did. getHeartsForAuthor is the only place that list
-      // exists, and it is access-checked there. Skipped entirely when the
-      // caller is Discover — see includeHearts above.
-      viewerId && includeHearts
-        ? sql`SELECT post_id FROM post_hearts WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}`
-        : Promise.resolve([]),
-    ]);
+  const [
+    saveRows,
+    commentRows,
+    commentLikeRows,
+    upvoteCountRows,
+    downvoteCountRows,
+    myUpvoteRows,
+    myDownvoteRows,
+    myHeartRows,
+  ] = await Promise.all([
+    sql`SELECT post_id, user_id FROM post_saves WHERE post_id = ANY(${ids})`,
+    sql`
+      SELECT c.id, c.post_id, c.user_id, c.text, c.created_at,
+             u.name AS author_name, u.avatar_url AS author_avatar_url
+      FROM comments c
+      JOIN users u ON u.id = c.user_id
+      WHERE c.post_id = ANY(${ids})
+      ORDER BY c.created_at ASC
+    `,
+    sql`
+      SELECT cl.comment_id, cl.user_id
+      FROM comment_likes cl
+      JOIN comments c ON c.id = cl.comment_id
+      WHERE c.post_id = ANY(${ids})
+    `,
+    sql`
+      SELECT post_id, count(*)::int AS count
+      FROM post_upvotes WHERE post_id = ANY(${ids})
+      GROUP BY post_id
+    `,
+    sql`
+      SELECT post_id, count(*)::int AS count
+      FROM post_downvotes WHERE post_id = ANY(${ids})
+      GROUP BY post_id
+    `,
+    // Scoped to the viewer's own row only — never the full upvoter list's
+    // counterpart for hearts, and upvotes are public anyway so this is just
+    // a convenience, not a privacy boundary.
+    viewerId
+      ? sql`SELECT post_id FROM post_upvotes WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}`
+      : Promise.resolve([]),
+    viewerId
+      ? sql`SELECT post_id FROM post_downvotes WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}`
+      : Promise.resolve([]),
+    // The privacy boundary: this is the ONLY heart data hydratePosts ever
+    // reads, and it is scoped to "did this one viewer heart it" — never the
+    // full list of who did. getHeartsForAuthor is the only place that list
+    // exists, and it is access-checked there. Skipped entirely when the
+    // caller is Discover — see includeHearts above.
+    viewerId && includeHearts
+      ? sql`SELECT post_id FROM post_hearts WHERE post_id = ANY(${ids}) AND user_id = ${viewerId}`
+      : Promise.resolve([]),
+  ]);
 
   const upvoteCounts = new Map(upvoteCountRows.map((r) => [r.post_id as string, r.count as number]));
+  const downvoteCounts = new Map(
+    downvoteCountRows.map((r) => [r.post_id as string, r.count as number]),
+  );
   const myUpvotes = new Set(myUpvoteRows.map((r) => r.post_id as string));
+  const myDownvotes = new Set(myDownvoteRows.map((r) => r.post_id as string));
   const myHearts = new Set(myHeartRows.map((r) => r.post_id as string));
 
   return postRows.map((row) => {
@@ -443,7 +471,9 @@ async function hydratePosts(
       photosPublic: row.photos_public ?? false,
       createdAt: new Date(row.created_at).toISOString(),
       upvoteCount: upvoteCounts.get(postId) ?? 0,
+      downvoteCount: downvoteCounts.get(postId) ?? 0,
       upvotedByMe: myUpvotes.has(postId),
+      downvotedByMe: myDownvotes.has(postId),
       heartedByMe: myHearts.has(postId),
       savedBy: saveRows.filter((s) => s.post_id === postId).map((s) => s.user_id as string),
       comments: commentRows
@@ -486,13 +516,17 @@ export async function getPostById(id: string, viewerId: string | null = null): P
 }
 
 /**
- * Discover feed: every post, ranked by recency with steep time decay and
- * upvotes as a secondary factor. Same curve as the old client-side hotScore
- * (`(votes + 1) / (ageHours + 2)^1.5`), moved server-side because it now has
- * to join post_upvotes.
+ * Discover feed: every post, ranked by recency with steep time decay and the
+ * net vote score as a secondary factor. Same curve as the old client-side
+ * hotScore (`(votes + 1) / (ageHours + 2)^1.5`), moved server-side because it
+ * now has to join the vote tables.
  *
- * This function — and only this function plus getUpvoteCounts below — is
- * allowed to touch post_upvotes for ranking/counting purposes. It must never
+ * The numerator is floored at zero: a heavily downvoted plate should sink to
+ * "as if nobody voted", not sort *below* older neutral posts by going
+ * negative and inverting the age decay.
+ *
+ * This function — and only this function — is allowed to touch post_upvotes
+ * and post_downvotes for ranking/counting purposes. It must never
  * be extended to join post_hearts; that is the one invariant this whole
  * feature exists to hold. If you're adding a signal to this query, it does
  * not belong here unless it is public.
@@ -509,21 +543,23 @@ export async function getDiscoverFeed(viewerId: string | null, limit = 30): Prom
            p.dish_name, p.price, p.rating, p.rating_kind, p.location_label, p.tags, p.media,
            p.amenities, p.vibe, p.photos_public,
            u.name AS author_name, u.avatar_url AS author_avatar_url,
-           u.points AS author_points,
-           COALESCE(uv.count, 0)::int AS upvote_count
+           u.points AS author_points
     FROM posts p
     JOIN users u ON u.id = p.user_id
     LEFT JOIN (
       SELECT post_id, count(*) AS count FROM post_upvotes GROUP BY post_id
     ) uv ON uv.post_id = p.id
+    LEFT JOIN (
+      SELECT post_id, count(*) AS count FROM post_downvotes GROUP BY post_id
+    ) dv ON dv.post_id = p.id
     ORDER BY
-      (COALESCE(uv.count, 0) + 1)
+      (GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0) + 1)
         / POWER(EXTRACT(EPOCH FROM (now() - p.created_at)) / 3600 + 2, 1.5) DESC
     LIMIT ${limit}
   `;
   const posts = await hydratePosts(rows, viewerId, /* includeHearts */ false);
-  // hydratePosts already computed upvoteCount from a fresh count; the ranking
-  // query's own count was only needed for ORDER BY and is discarded here.
+  // hydratePosts recounts both directions itself; the ranking query's counts
+  // were only ever needed for ORDER BY, so they aren't selected at all.
   return posts.map((p) => ({
     ...p,
     media: p.photosPublic ? p.media : [],
@@ -580,6 +616,10 @@ export async function createPost(data: {
    * never drifts if the setting changes later.
    */
   photosPublic: boolean;
+  /** The aspect this review called the best thing about the place. */
+  bestAspect?: string;
+  /** The aspect that let them down, if they named one. */
+  worstAspect?: string;
 }): Promise<Post> {
   const tags = data.tags ?? [];
   const amenities = data.amenities ?? [];
@@ -599,6 +639,25 @@ export async function createPost(data: {
     )
     RETURNING created_at
   `;
+
+  /* One row per aspect the review had an opinion about. Written after the
+     post so the FK holds, and guarded so a client that sends the same aspect
+     as both its best and its worst can't write a self-cancelling pair — the
+     table's PK would reject the second row anyway, but failing quietly here
+     is better than surfacing a constraint error for a nonsense input. */
+  const aspectVotes: Array<[string, "praise" | "fault"]> = [];
+  if (data.bestAspect) aspectVotes.push([data.bestAspect, "praise"]);
+  if (data.worstAspect && data.worstAspect !== data.bestAspect) {
+    aspectVotes.push([data.worstAspect, "fault"]);
+  }
+  for (const [aspect, sentiment] of aspectVotes) {
+    await sql`
+      INSERT INTO post_aspect_votes (post_id, aspect, sentiment)
+      VALUES (${data.id}, ${aspect}, ${sentiment})
+      ON CONFLICT DO NOTHING
+    `;
+  }
+
   return {
     id: data.id,
     userId: data.userId,
@@ -622,7 +681,9 @@ export async function createPost(data: {
     photosPublic: data.photosPublic,
     createdAt: new Date(rows[0].created_at).toISOString(),
     upvoteCount: 0,
+    downvoteCount: 0,
     upvotedByMe: false,
+    downvotedByMe: false,
     heartedByMe: false,
     savedBy: [],
     comments: [],
@@ -672,32 +733,63 @@ export async function toggleCommentLike(
   return { liked: existing.length === 0, likeCount: rows[0].count as number };
 }
 
-/**
- * Discover's upvote. Public — the count this returns is exactly what every
- * viewer of the post sees, including the requester's own toggle. Mirrors the
- * old toggleLike, which this replaces: post_likes is retired, not this
- * function's shape.
- */
-export async function toggleUpvote(
-  postId: string,
-  userId: string
-): Promise<{ upvoted: boolean; upvoteCount: number; firstTimeUpvote: boolean }> {
-  const existing = await sql`
-    SELECT 1 FROM post_upvotes WHERE post_id = ${postId} AND user_id = ${userId}
-  `;
-  const firstTimeUpvote = existing.length === 0;
+/** Which way a viewer voted on a post, or null for no vote at all. */
+export type VoteDirection = "up" | "down";
 
-  if (firstTimeUpvote) {
+/**
+ * Discover's vote. Public in every direction — the counts this returns are
+ * exactly what every viewer of the post sees, including the requester's own
+ * state. Mirrors the old toggleLike, which this replaces: post_likes is
+ * retired, not this function's shape.
+ *
+ * Three-state, not two toggles: pressing the direction you already hold
+ * clears your vote, pressing the other one switches sides. The opposite row
+ * is deleted before the new one is written, which is what keeps "nobody is
+ * both up and down on a post" true — the two tables can't express that
+ * constraint themselves.
+ */
+export async function castVote(
+  postId: string,
+  userId: string,
+  direction: VoteDirection,
+): Promise<{
+  myVote: VoteDirection | null;
+  upvoteCount: number;
+  downvoteCount: number;
+  firstTimeUpvote: boolean;
+}> {
+  const [hadUp, hadDown] = await Promise.all([
+    sql`SELECT 1 FROM post_upvotes WHERE post_id = ${postId} AND user_id = ${userId}`,
+    sql`SELECT 1 FROM post_downvotes WHERE post_id = ${postId} AND user_id = ${userId}`,
+  ]);
+  const held: VoteDirection | null =
+    hadUp.length > 0 ? "up" : hadDown.length > 0 ? "down" : null;
+
+  // Pressing what you already hold is "take it back".
+  const myVote = held === direction ? null : direction;
+
+  await sql`DELETE FROM post_upvotes WHERE post_id = ${postId} AND user_id = ${userId}`;
+  await sql`DELETE FROM post_downvotes WHERE post_id = ${postId} AND user_id = ${userId}`;
+  if (myVote === "up") {
     await sql`INSERT INTO post_upvotes (post_id, user_id) VALUES (${postId}, ${userId})`;
-  } else {
-    await sql`DELETE FROM post_upvotes WHERE post_id = ${postId} AND user_id = ${userId}`;
+  } else if (myVote === "down") {
+    await sql`INSERT INTO post_downvotes (post_id, user_id) VALUES (${postId}, ${userId})`;
   }
 
-  const countRows = await sql`
-    SELECT count(*)::int AS count FROM post_upvotes WHERE post_id = ${postId}
-  `;
+  const [upRows, downRows] = await Promise.all([
+    sql`SELECT count(*)::int AS count FROM post_upvotes WHERE post_id = ${postId}`,
+    sql`SELECT count(*)::int AS count FROM post_downvotes WHERE post_id = ${postId}`,
+  ]);
 
-  return { upvoted: firstTimeUpvote, upvoteCount: countRows[0].count as number, firstTimeUpvote };
+  return {
+    myVote,
+    upvoteCount: upRows[0].count as number,
+    downvoteCount: downRows[0].count as number,
+    // Only an upvote that wasn't already there pays the author — switching
+    // away from a downvote counts, re-pressing an upvote you already had
+    // doesn't, and a downvote never does.
+    firstTimeUpvote: myVote === "up" && held !== "up",
+  };
 }
 
 /**
@@ -755,6 +847,117 @@ export async function getHeartsForAuthor(
   }));
 }
 
+export type ActivityKind = "comment" | "heart" | "upvote";
+
+export type ActivityEvent = {
+  /** `kind:commentId` or `kind:postId:actorId` — unique across all three kinds. */
+  id: string;
+  kind: ActivityKind;
+  createdAt: string;
+  actorId: string;
+  actorName: string;
+  actorAvatarUrl?: string;
+  postId: string;
+  postRestaurant?: string;
+  /** Static-array id, so the reference line can link to the restaurant page. */
+  postRestaurantId?: string;
+  postDishName?: string;
+  postText: string;
+  /** The comment body. Only ever set on kind "comment". */
+  text?: string;
+};
+
+/**
+ * What other people did to YOUR plates — comments, hearts and upvotes in one
+ * chronological list, for the activity section on /account.
+ *
+ * Same access rule as getHeartsForAuthor, enforced the same way: by
+ * construction rather than by trusting the caller. The `mine` CTE is the only
+ * source of post ids in this query, and it is filtered to `user_id = userId`,
+ * so every branch below can only ever reach reactions on posts this user
+ * wrote. There is no argument that widens it — pass someone else's id and you
+ * get their activity for their posts, never a mix.
+ *
+ * That makes this the second place a full heart list is materialized, after
+ * getHeartsForAuthor. Both are author-only; if you add a third, it must be
+ * too. It is NOT a heart count for anyone else, and nothing here feeds
+ * Discover's ranking — getDiscoverFeed still never names post_hearts.
+ *
+ * Upvoter identity is new here. Upvotes are the public reaction (the count is
+ * on every card already), so naming who cast one to the person they voted for
+ * discloses nothing the act itself didn't — but keep it to this surface, and
+ * do not fold actor names into the public upvoteCount on Post.
+ *
+ * Your own reactions to your own posts are excluded from every branch: this
+ * list answers "what did other people do", and self-activity is noise in it.
+ */
+export async function getActivityForAuthor(
+  userId: string,
+  limit = 40
+): Promise<ActivityEvent[]> {
+  const rows = await sql`
+    WITH mine AS (
+      SELECT id, restaurant, restaurant_id, dish_name, text
+      FROM posts WHERE user_id = ${userId}
+    )
+    SELECT 'comment' AS kind,
+           'comment:' || c.id AS event_id,
+           c.created_at,
+           c.text AS body,
+           u.id AS actor_id, u.name AS actor_name, u.avatar_url AS actor_avatar_url,
+           m.id AS post_id, m.restaurant, m.restaurant_id, m.dish_name,
+           m.text AS post_text
+    FROM comments c
+    JOIN mine m ON m.id = c.post_id
+    JOIN users u ON u.id = c.user_id
+    WHERE c.user_id <> ${userId}
+
+    UNION ALL
+
+    SELECT 'heart',
+           'heart:' || h.post_id || ':' || h.user_id,
+           h.created_at,
+           NULL::text,
+           u.id, u.name, u.avatar_url,
+           m.id, m.restaurant, m.restaurant_id, m.dish_name, m.text
+    FROM post_hearts h
+    JOIN mine m ON m.id = h.post_id
+    JOIN users u ON u.id = h.user_id
+    WHERE h.user_id <> ${userId}
+
+    UNION ALL
+
+    SELECT 'upvote',
+           'upvote:' || v.post_id || ':' || v.user_id,
+           v.created_at,
+           NULL::text,
+           u.id, u.name, u.avatar_url,
+           m.id, m.restaurant, m.restaurant_id, m.dish_name, m.text
+    FROM post_upvotes v
+    JOIN mine m ON m.id = v.post_id
+    JOIN users u ON u.id = v.user_id
+    WHERE v.user_id <> ${userId}
+
+    ORDER BY created_at DESC
+    LIMIT ${limit}
+  `;
+
+  return rows.map((r) => ({
+    id: r.event_id as string,
+    kind: r.kind as ActivityKind,
+    createdAt: new Date(r.created_at as string).toISOString(),
+    actorId: r.actor_id as string,
+    actorName: r.actor_name as string,
+    actorAvatarUrl: (r.actor_avatar_url as string | null) ?? undefined,
+    postId: r.post_id as string,
+    postRestaurant: (r.restaurant as string | null) ?? undefined,
+    postRestaurantId: (r.restaurant_id as string | null) ?? undefined,
+    postDishName: (r.dish_name as string | null) ?? undefined,
+    postText: r.post_text as string,
+    text: (r.body as string | null) ?? undefined,
+  }));
+}
+
 export async function toggleSave(postId: string, userId: string): Promise<boolean> {
   const existing = await sql`
     SELECT 1 FROM post_saves WHERE post_id = ${postId} AND user_id = ${userId}
@@ -767,10 +970,11 @@ export async function toggleSave(postId: string, userId: string): Promise<boolea
   return true;
 }
 
-// castVote ("would you eat this?") is gone — post_votes fed the up/down arrow
-// pair that toggleUpvote/toggleHeart just replaced. See the note above
-// post_votes in migrate.mjs: the table is left in place with its data, this
-// function just no longer exists to write to it.
+// The old "would you eat this?" verdict wrote to post_votes. Nothing does
+// anymore — see the note above post_votes in migrate.mjs, the table is left in
+// place with its data. The up/down pair came back with castVote above, but it
+// writes post_upvotes/post_downvotes; do not repoint it at post_votes, whose
+// rows mean a different question.
 
 // --- Friends: mutual friend requests ------------------------------------
 
@@ -891,6 +1095,41 @@ export async function getFriendIds(userId: string): Promise<string[]> {
   return rows.map((r) => r.friend_id as string);
 }
 
+export type FriendSummary = {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+  points: number;
+};
+
+/**
+ * The same people getFriendIds returns, but as rows a list can render.
+ *
+ * Kept separate from getFriendIds rather than folded into it: that one is
+ * called on every feed load to decide button states across a whole page of
+ * posts, and it stays a bare id list precisely so it doesn't drag a users
+ * join along a hot path.
+ *
+ * Ordered by name so the list doesn't reshuffle between loads. Nothing here
+ * returns a total, and callers must not render one — friend counts never
+ * display anywhere in this product.
+ */
+export async function getFriends(userId: string): Promise<FriendSummary[]> {
+  const rows = await sql`
+    SELECT u.id, u.name, u.avatar_url, u.points
+    FROM friendships f
+    JOIN users u ON u.id = CASE WHEN f.user_a = ${userId} THEN f.user_b ELSE f.user_a END
+    WHERE f.user_a = ${userId} OR f.user_b = ${userId}
+    ORDER BY u.name ASC
+  `;
+  return rows.map((r) => ({
+    id: r.id as string,
+    name: r.name as string,
+    avatarUrl: (r.avatar_url as string | null) ?? undefined,
+    points: r.points as number,
+  }));
+}
+
 /** Incoming (need this user's response) and outgoing (awaiting the other side). */
 export async function getPendingFriendRequests(
   userId: string
@@ -956,6 +1195,130 @@ export type PublicProfile = {
   favoriteCuisine?: string;
   favoriteRestaurantId?: string;
 };
+
+// --- Per-aspect verdicts ---------------------------------------------------
+
+export type RestaurantAspectTally = {
+  /** Average star rating across this restaurant's own PlateMaps reviews. */
+  overall: number;
+  /** How many restaurant-kind reviews that average is drawn from. */
+  reviewCount: number;
+  /** praised / faulted counts, keyed by aspect. Aspects nobody voted on are absent. */
+  votes: Record<string, { praised: number; faulted: number }>;
+};
+
+/**
+ * Everything src/lib/aspectScores.ts needs to score one restaurant: its own
+ * average rating, how many reviews that came from, and the signed aspect
+ * tallies.
+ *
+ * Scoped to `rating_kind = 'restaurant'` on purpose. A dish review's rating is
+ * a percentage about one plate, not a verdict on the place, so folding it into
+ * the overall would mix two different measurements — and it's the restaurant
+ * reviews that carry the aspect votes anyway.
+ */
+export async function getRestaurantAspectTally(
+  restaurantId: string,
+): Promise<RestaurantAspectTally> {
+  const [summaryRows, voteRows] = await Promise.all([
+    sql`
+      SELECT COALESCE(AVG(rating), 0)::float AS overall, count(*)::int AS review_count
+      FROM posts
+      WHERE restaurant_id = ${restaurantId}
+        AND rating_kind = 'restaurant'
+        AND rating IS NOT NULL
+    `,
+    sql`
+      SELECT v.aspect,
+             count(*) FILTER (WHERE v.sentiment = 'praise')::int AS praised,
+             count(*) FILTER (WHERE v.sentiment = 'fault')::int   AS faulted
+      FROM post_aspect_votes v
+      JOIN posts p ON p.id = v.post_id
+      WHERE p.restaurant_id = ${restaurantId}
+        AND p.rating_kind = 'restaurant'
+      GROUP BY v.aspect
+    `,
+  ]);
+
+  const votes: Record<string, { praised: number; faulted: number }> = {};
+  for (const row of voteRows) {
+    votes[row.aspect as string] = {
+      praised: row.praised as number,
+      faulted: row.faulted as number,
+    };
+  }
+
+  return {
+    overall: summaryRows[0]?.overall ?? 0,
+    reviewCount: summaryRows[0]?.review_count ?? 0,
+    votes,
+  };
+}
+
+/**
+ * The same tally as above, for every restaurant at once, keyed by id.
+ *
+ * Discover's "Rated well for" filter needs all 36 before it can decide which
+ * cards to show or print a single facet count, and 36 round trips to do it
+ * would be absurd — this is the same two aggregates grouped by restaurant
+ * instead of filtered to one.
+ *
+ * Restaurants nobody has reviewed are simply absent from the result rather
+ * than present with zeroes; a caller filtering on an aspect wants "no signal"
+ * and "no match" to look the same from the outside, and aspectScores already
+ * reports a 0-review tally as an honest null.
+ */
+export async function getAllRestaurantAspectTallies(): Promise<
+  Record<string, RestaurantAspectTally>
+> {
+  const [summaryRows, voteRows] = await Promise.all([
+    sql`
+      SELECT restaurant_id,
+             COALESCE(AVG(rating), 0)::float AS overall,
+             count(*)::int AS review_count
+      FROM posts
+      WHERE rating_kind = 'restaurant'
+        AND rating IS NOT NULL
+        AND restaurant_id IS NOT NULL
+      GROUP BY restaurant_id
+    `,
+    sql`
+      SELECT p.restaurant_id,
+             v.aspect,
+             count(*) FILTER (WHERE v.sentiment = 'praise')::int AS praised,
+             count(*) FILTER (WHERE v.sentiment = 'fault')::int   AS faulted
+      FROM post_aspect_votes v
+      JOIN posts p ON p.id = v.post_id
+      WHERE p.rating_kind = 'restaurant'
+        AND p.restaurant_id IS NOT NULL
+      GROUP BY p.restaurant_id, v.aspect
+    `,
+  ]);
+
+  const tallies: Record<string, RestaurantAspectTally> = {};
+  for (const row of summaryRows) {
+    tallies[row.restaurant_id as string] = {
+      overall: row.overall as number,
+      reviewCount: row.review_count as number,
+      votes: {},
+    };
+  }
+
+  // Votes can only belong to a post that carries a rating of its own, so a
+  // vote row without a summary row means a review with aspect taps and no
+  // star — skipped rather than given a zeroed tally, which would score every
+  // aspect against an overall of 0.
+  for (const row of voteRows) {
+    const tally = tallies[row.restaurant_id as string];
+    if (!tally) continue;
+    tally.votes[row.aspect as string] = {
+      praised: row.praised as number,
+      faulted: row.faulted as number,
+    };
+  }
+
+  return tallies;
+}
 
 /**
  * What a profile page is allowed to show, by construction: this selects

@@ -13,6 +13,7 @@ import { FeedHeader } from "@/components/feed/FeedHeader";
 import { FeedTabs } from "@/components/feed/FeedTabs";
 import { CreatePostComposer } from "@/components/feed/CreatePostComposer";
 import { FoodPostCard, type FriendStatus } from "@/components/feed/FoodPostCard";
+import { usePostFeed } from "@/components/feed/usePostFeed";
 import { CommentsPanel } from "@/components/feed/CommentsPanel";
 import { Leaderboard } from "@/components/feed/Leaderboard";
 import { FeedSkeleton } from "@/components/feed/FeedSkeleton";
@@ -22,15 +23,20 @@ import {
   OfflineBanner,
   EndOfFeed,
 } from "@/components/feed/EmptyFeedState";
-import type { NavKey } from "@/components/feed/SideNav";
-import type { FeedTab, Post } from "@/components/feed/types";
+import type { FeedTab, NavKey, Post } from "@/components/feed/types";
 
 const RestaurantMap = dynamic(
   () => import("@/components/RestaurantMap").then((mod) => mod.RestaurantMap),
   {
     ssr: false,
+    /* Same height and radius as the map it stands in for, so the card doesn't
+       resize under the user when the chunk lands. Dark, because what arrives
+       is the night map, not the cream page. */
     loading: () => (
-      <div className="flex h-[540px] w-full items-center justify-center rounded-xl bg-[#15171a] text-sm text-zinc-500">
+      <div
+        role="status"
+        className="flex h-[540px] w-full items-center justify-center rounded-xl bg-[#191c22] font-mono text-sm text-[#8b939c]"
+      >
         Loading map…
       </div>
     ),
@@ -101,17 +107,14 @@ export default function FeedPage() {
 }
 
 function FeedPageInner() {
-  const { account, isSignedIn, refresh } = useAuth();
+  const { account, isSignedIn } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const highlightPostId = searchParams.get("post");
   /** Points just awarded by /post, so the return trip confirms what was earned. */
   const earned = searchParams.get("earned");
 
-  const [posts, setPosts] = useState<Post[] | null>(null);
-  const [loadError, setLoadError] = useState(false);
-  const [offline, setOffline] = useState(false);
-  /** Bumped by "Try again" to re-run the feed fetch effect. */
+  /** Bumped by "Try again" to re-run the feed fetch. */
   const [reloadKey, setReloadKey] = useState(0);
 
   const [tab, setTab] = useState<FeedTab>("discover");
@@ -121,57 +124,56 @@ function FeedPageInner() {
 
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
   /** Which feed backs the Map tab's bubbles — its own switch, independent of
-      `tab`, so leaving the map for Discover or Friends and coming back
-      doesn't reset which one you had picked. */
+      `tab`, so leaving the map for another feed and coming back doesn't reset
+      which one you had picked. */
   const [mapSource, setMapSource] = useState<"discover" | "friends">("discover");
 
   // Friend graph, scoped to just what a card needs to render its button —
-  // the full request objects (with ids to accept/decline against) live in
-  // the account page's request panel, which fetches /api/friends itself.
+  // the full request objects (with ids to accept/decline against) live on
+  // /friends, which fetches /api/friends itself.
   const [friendIds, setFriendIds] = useState<string[]>([]);
   const [outgoingIds, setOutgoingIds] = useState<string[]>([]);
   const [incomingIds, setIncomingIds] = useState<string[]>([]);
 
-  const [reactPoints, setReactPoints] = useState<Record<string, number>>({});
-  const [banner, setBanner] = useState<string | null>(null);
   const [highlighted, setHighlighted] = useState<string | null>(null);
   const [ranksVersion, setRanksVersion] = useState(0);
 
   const postRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   /*
-   * Discover and Friends are genuinely different queries now, not one list
-   * sliced two ways client-side: Discover is server-ranked and photo-gated,
-   * Friends is a server-side audience filter with no ranking at all. Map
-   * reads whichever of the two `mapSource` currently points at — it's a view
-   * onto one or the other, not a third surface with its own query. Saved
-   * needs every post regardless of which feed it surfaced in, since a save
-   * doesn't forget which feed you found it on.
+   * Which query backs the screen. The three tabs are three genuinely different
+   * requests, not one list sliced client-side: Discover is server-ranked and
+   * photo-gated, the friend feed is a server-side audience filter with no
+   * ranking at all, and the map feed draws whichever of the two `mapSource`
+   * points at. Saved needs every post regardless of which feed it surfaced in,
+   * since a save doesn't forget where you found it.
    */
-  useEffect(() => {
-    let cancelled = false;
-    const url =
-      navKey === "saved"
-        ? "/api/posts"
-        : tab === "friends" || (tab === "map" && mapSource === "friends")
-          ? "/api/posts/friends"
-          : "/api/posts/discover";
-    fetch(url)
-      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("failed"))))
-      .then((data) => {
-        if (cancelled) return;
-        setPosts(data.posts as Post[]);
-        setLoadError(false);
-      })
-      .catch(() => {
-        if (cancelled) return;
-        setPosts((prev) => prev ?? []);
-        setLoadError(true);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [navKey, tab, mapSource, reloadKey]);
+  const endpoint =
+    navKey === "saved"
+      ? "/api/posts"
+      : tab === "friends" || (tab === "map" && mapSource === "friends")
+        ? "/api/posts/friends"
+        : "/api/posts/discover";
+
+  const {
+    posts,
+    loadError,
+    offline,
+    banner,
+    setBanner,
+    reactPoints,
+    vote: handleVote,
+    heart: handleHeart,
+    save: handleSave,
+    comment: handleComment,
+    likeComment: handleLikeComment,
+    remove: handleDelete,
+    share: handleShare,
+  } = usePostFeed({
+    endpoint,
+    reloadKey,
+    onPointsAwarded: () => setRanksVersion((v) => v + 1),
+  });
 
   useEffect(() => {
     // No reset-to-empty branch here: every place that reads these three
@@ -194,19 +196,6 @@ function FeedPageInner() {
     };
   }, [isSignedIn]);
 
-  useEffect(() => {
-    function sync() {
-      setOffline(!navigator.onLine);
-    }
-    sync();
-    window.addEventListener("online", sync);
-    window.addEventListener("offline", sync);
-    return () => {
-      window.removeEventListener("online", sync);
-      window.removeEventListener("offline", sync);
-    };
-  }, []);
-
   // Deep link from a map bubble or a shared /feed?post= link. Discover is
   // ranked and capped rather than "every post" now, so a link to a post
   // that's since cooled off its top slice won't be found here — a known,
@@ -227,32 +216,22 @@ function FeedPageInner() {
     };
   }, [highlightPostId, posts]);
 
-  useEffect(() => {
-    if (!banner) return;
-    const t = setTimeout(() => setBanner(null), 3000);
-    return () => clearTimeout(t);
-  }, [banner]);
-
   // Coming back from /post. The points were already awarded server-side; this
   // just confirms them, and nudges the leaderboard to re-read the new standing.
   useEffect(() => {
     const points = Number(earned);
     if (!Number.isFinite(points) || points <= 0) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setBanner(`+${points} PM Points earned`);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRanksVersion((v) => v + 1);
-  }, [earned]);
-
-  function patchPost(postId: string, patch: (p: Post) => Post) {
-    setPosts((prev) => (prev ? prev.map((p) => (p.id === postId ? patch(p) : p)) : prev));
-  }
+  }, [earned, setBanner]);
 
   /**
-   * Which reaction a given post's card should render. On Discover/Friends
-   * tabs the surface is just the active tab. In Saved — which draws from
-   * every post regardless of which feed it came from — it's derived per
-   * post from the actual friend graph, so a saved plate from a friend still
-   * lets you heart it rather than defaulting every saved card to upvote.
+   * Which reaction a given post's card should render. On the Feed and Friend
+   * feed tabs the surface is just the active tab. In Saved — which draws from
+   * every post regardless of which feed it came from — it's derived per post
+   * from the actual friend graph, so a saved plate by a friend keeps its like
+   * rather than acquiring a pair of vote arrows it never had.
    */
   function surfaceForPost(post: Post): "discover" | "friends" {
     if (navKey === "saved") return friendIds.includes(post.userId) ? "friends" : "discover";
@@ -264,155 +243,6 @@ function FeedPageInner() {
     if (outgoingIds.includes(userId)) return "requested";
     if (incomingIds.includes(userId)) return "incoming";
     return "none";
-  }
-
-  async function handleReact(postId: string, surface: "discover" | "friends") {
-    if (!account) return;
-    const current = posts?.find((p) => p.id === postId);
-    if (!current) return;
-
-    if (surface === "discover") {
-      const wasUpvoted = current.upvotedByMe;
-      const prevCount = current.upvoteCount;
-      patchPost(postId, (p) => ({
-        ...p,
-        upvotedByMe: !wasUpvoted,
-        upvoteCount: p.upvoteCount + (wasUpvoted ? -1 : 1),
-      }));
-
-      try {
-        const res = await fetch(`/api/posts/${postId}/upvote`, { method: "POST" });
-        if (!res.ok) throw new Error("failed");
-        const data = await res.json();
-        patchPost(postId, (p) => ({ ...p, upvotedByMe: data.upvoted, upvoteCount: data.upvoteCount }));
-
-        if (data.authorPointsEarned > 0) {
-          setReactPoints((prev) => ({ ...prev, [postId]: data.authorPointsEarned }));
-          setTimeout(
-            () =>
-              setReactPoints((prev) => {
-                const copy = { ...prev };
-                delete copy[postId];
-                return copy;
-              }),
-            1800,
-          );
-          setRanksVersion((v) => v + 1);
-          if (data.authorId === account.id) refresh();
-        }
-      } catch {
-        patchPost(postId, (p) => ({ ...p, upvotedByMe: wasUpvoted, upvoteCount: prevCount }));
-        setBanner("Couldn't save your upvote.");
-      }
-      return;
-    }
-
-    // Hearts: no count anywhere, so there's nothing to reconcile beyond the
-    // toggle itself.
-    const wasHearted = current.heartedByMe;
-    patchPost(postId, (p) => ({ ...p, heartedByMe: !wasHearted }));
-    try {
-      const res = await fetch(`/api/posts/${postId}/heart`, { method: "POST" });
-      if (!res.ok) throw new Error("failed");
-      const data = await res.json();
-      patchPost(postId, (p) => ({ ...p, heartedByMe: data.hearted }));
-    } catch {
-      patchPost(postId, (p) => ({ ...p, heartedByMe: wasHearted }));
-      setBanner("Couldn't save that.");
-    }
-  }
-
-  async function handleSave(postId: string) {
-    if (!account) return;
-    const current = posts?.find((p) => p.id === postId);
-    if (!current) return;
-    const wasSaved = current.savedBy.includes(account.id);
-
-    patchPost(postId, (p) => ({
-      ...p,
-      savedBy: wasSaved
-        ? p.savedBy.filter((id) => id !== account.id)
-        : [...p.savedBy, account.id],
-    }));
-
-    try {
-      const res = await fetch(`/api/posts/${postId}/save`, { method: "POST" });
-      if (!res.ok) throw new Error("failed");
-      const data = await res.json();
-      patchPost(postId, (p) => ({
-        ...p,
-        savedBy: data.saved
-          ? [...p.savedBy.filter((id) => id !== account.id), account.id]
-          : p.savedBy.filter((id) => id !== account.id),
-      }));
-    } catch {
-      patchPost(postId, (p) => ({
-        ...p,
-        savedBy: wasSaved
-          ? [...p.savedBy.filter((id) => id !== account.id), account.id]
-          : p.savedBy.filter((id) => id !== account.id),
-      }));
-      setBanner("Couldn't update your saved plates.");
-    }
-  }
-
-  async function handleComment(postId: string, text: string): Promise<string | null> {
-    try {
-      const res = await fetch(`/api/posts/${postId}/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
-      const data = await res.json();
-      if (!res.ok) return data.error ?? "Couldn't post that comment.";
-
-      patchPost(postId, (p) => ({
-        ...p,
-        comments: [...p.comments, data.comment],
-        authorPoints: p.authorPoints + (data.authorPointsEarned ?? 0),
-      }));
-      if (data.authorPointsEarned > 0) {
-        setRanksVersion((v) => v + 1);
-        if (data.authorId === account?.id) refresh();
-      }
-      return null;
-    } catch {
-      return "Couldn't reach PlateMaps. Check your connection.";
-    }
-  }
-
-  async function handleLikeComment(postId: string, commentId: string) {
-    if (!account) return;
-    patchPost(postId, (p) => ({
-      ...p,
-      comments: p.comments.map((c) =>
-        c.id === commentId
-          ? {
-              ...c,
-              likedBy: c.likedBy.includes(account.id)
-                ? c.likedBy.filter((id) => id !== account.id)
-                : [...c.likedBy, account.id],
-            }
-          : c,
-      ),
-    }));
-    try {
-      await fetch(`/api/comments/${commentId}/like`, { method: "POST" });
-    } catch {
-      setBanner("Couldn't save that.");
-    }
-  }
-
-  async function handleDelete(postId: string) {
-    const snapshot = posts;
-    setPosts((prev) => (prev ? prev.filter((p) => p.id !== postId) : prev));
-    try {
-      const res = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("failed");
-    } catch {
-      setPosts(snapshot);
-      setBanner("Couldn't delete that post.");
-    }
   }
 
   /**
@@ -442,22 +272,6 @@ function FeedPageInner() {
     }
   }
 
-  async function handleShare(post: Post): Promise<string | null> {
-    const url = `${globalThis.location?.origin ?? ""}/feed?post=${post.id}`;
-    const title = post.dishName ?? post.restaurant ?? "A plate on PlateMaps";
-    try {
-      if (navigator.share) {
-        await navigator.share({ title, text: post.text, url });
-        return null;
-      }
-      await navigator.clipboard.writeText(url);
-      return "Link copied";
-    } catch {
-      // A cancelled native share throws too — staying silent is correct there.
-      return null;
-    }
-  }
-
   const visiblePosts = useMemo(() => {
     if (!posts) return [];
     if (navKey === "saved") {
@@ -474,10 +288,13 @@ function FeedPageInner() {
      shown on — the badge only ever appears on the Discover tab. */
   const trendingIds = useMemo(() => {
     if (!posts || navKey === "saved" || tab !== "discover") return new Set<string>();
+    // Net score, the same number the card prints — a plate that collected 12
+    // ups and 11 downs is an argument, not a hot plate.
+    const net = (p: Post) => p.upvoteCount - p.downvoteCount;
     return new Set(
       [...posts]
-        .filter((p) => p.upvoteCount >= 3)
-        .sort((a, b) => b.upvoteCount - a.upvoteCount)
+        .filter((p) => net(p) >= 3)
+        .sort((a, b) => net(b) - net(a))
         .slice(0, 3)
         .map((p) => p.id),
     );
@@ -495,8 +312,9 @@ function FeedPageInner() {
             id: p.id,
             restaurantId: restaurant.id,
             text: bubbleTextFromPost(p.text),
-            score: p.upvoteCount,
-            upvotes: p.upvoteCount,
+            // Net, so the bubble and the card never disagree about a plate.
+            score: p.upvoteCount - p.downvoteCount,
+            upvotes: p.upvoteCount - p.downvoteCount,
             upvotedByMe: p.upvotedByMe,
             heartedByMe: p.heartedByMe,
             commentCount: p.comments.length,
@@ -524,7 +342,7 @@ function FeedPageInner() {
       <FeedHeader />
 
       {navKey === "saved" ? (
-        <div className="mb-5 flex items-center justify-between gap-3 border-b border-zinc-200 pb-2">
+        <div className="mb-5 flex items-center justify-between gap-3">
           <h2 className="font-display text-base font-semibold text-zinc-900">Saved plates</h2>
           <button
             type="button"
@@ -532,7 +350,7 @@ function FeedPageInner() {
               setNavKey("home");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="min-h-11 text-sm font-medium text-pm-orange-text hover:underline"
+            className="min-h-11 rounded-full text-sm font-medium text-zinc-700 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
           >
             Back to feed
           </button>
@@ -553,49 +371,57 @@ function FeedPageInner() {
       )}
 
       {showMap ? (
-        <div className="overflow-hidden rounded-2xl border border-zinc-700/60 shadow-md">
+        <div className="overflow-hidden rounded-2xl bg-white">
           {/* The map's own Discover/Friends switch — separate from the tab
               bar above, since leaving the map and coming back shouldn't
               reset which source you'd picked. Which source is active decides
               both what the bubbles show and which reaction they offer. */}
-          <div
-            role="tablist"
-            aria-label="Map data source"
-            className="flex gap-1 border-b border-zinc-800 bg-[#15171a] px-3 py-2"
-          >
-            {(["discover", "friends"] as const).map((source) => (
-              <button
-                key={source}
-                type="button"
-                role="tab"
-                aria-selected={mapSource === source}
-                onClick={() => setMapSource(source)}
-                className={`min-h-9 rounded-full px-3 text-xs font-medium capitalize transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-                  mapSource === source
-                    ? "bg-pm-orange text-white"
-                    : "text-zinc-400 hover:bg-white/10 hover:text-zinc-200"
-                }`}
-              >
-                {source}
-              </button>
-            ))}
+          {/* A segmented switch, not another pill tab bar — this is a data
+              source toggle inside the map card, one rank below the screen's
+              own tabs. Tan track, white selected segment, mono labels. */}
+          <div className="flex px-2.5 py-2.5">
+            <div
+              role="tablist"
+              aria-label="Map data source"
+              className="inline-flex rounded-full bg-pm-grey-tint p-1"
+            >
+              {(["discover", "friends"] as const).map((source) => (
+                <button
+                  key={source}
+                  type="button"
+                  role="tab"
+                  aria-selected={mapSource === source}
+                  onClick={() => setMapSource(source)}
+                  className={`min-h-8 rounded-full px-3.5 font-mono text-[11px] font-medium uppercase tracking-[0.12em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+                    mapSource === source
+                      ? "bg-white text-zinc-900"
+                      : "text-pm-grey-text hover:text-zinc-900"
+                  }`}
+                >
+                  {source}
+                </button>
+              ))}
+            </div>
           </div>
 
+          {/* Inset like the photo in a hero card, so the map's own radius
+              reads inside the card's. The map container clips itself. */}
+          <div className="px-2.5 pb-2.5 [&>div]:overflow-hidden">
+          {/* The bubble chip stays upvote-only — there's no room on a map pin
+              for a pair — but the number it shows is the same net score the
+              card shows. Downvoting happens on the card. */}
           <RestaurantMap
             restaurants={restaurants}
             commentsByRestaurant={mapComments}
             mode={mapSource}
             onUpvote={
               isSignedIn && mapSource === "discover"
-                ? (postId) => handleReact(postId, "discover")
+                ? (postId) => handleVote(postId, "up")
                 : undefined
             }
-            onHeart={
-              isSignedIn && mapSource === "friends"
-                ? (postId) => handleReact(postId, "friends")
-                : undefined
-            }
+            onHeart={isSignedIn && mapSource === "friends" ? handleHeart : undefined}
           />
+          </div>
         </div>
       ) : (
         <>
@@ -615,7 +441,7 @@ function FeedPageInner() {
             <FeedErrorState onRetry={() => setReloadKey((k) => k + 1)} />
           ) : visiblePosts.length === 0 ? (
             navKey === "saved" ? (
-              <div className="rounded-2xl border border-dashed border-zinc-300 bg-white/60 px-6 py-12 text-center">
+              <div className="rounded-2xl bg-white px-6 py-12 text-center">
                 <p className="font-display text-base font-semibold text-zinc-900">
                   Nothing saved yet
                 </p>
@@ -633,31 +459,45 @@ function FeedPageInner() {
           ) : (
             <>
               <div className="flex flex-col gap-4">
-                {visiblePosts.map((post) => (
-                  <div
-                    key={post.id}
-                    ref={(el) => {
-                      postRefs.current[post.id] = el;
-                    }}
-                  >
-                    <FoodPostCard
-                      post={post}
-                      currentUserId={account?.id ?? null}
-                      surface={surfaceForPost(post)}
-                      friendStatus={friendStatusFor(post.userId)}
-                      highlighted={post.id === highlighted}
-                      trending={trendingIds.has(post.id)}
-                      reactPoints={reactPoints[post.id] ?? null}
-                      onSave={handleSave}
-                      onShare={handleShare}
-                      onReact={(postId) => handleReact(postId, surfaceForPost(post))}
-                      onOpenComments={setCommentsPostId}
-                      onDelete={handleDelete}
-                      onAddFriend={handleAddFriend}
-                      onRequireSignIn={() => setBanner("Sign in to join in — it takes a second.")}
-                    />
-                  </div>
-                ))}
+                {visiblePosts.map((post) => {
+                  /* Split at the call site rather than passed as a string:
+                     FoodPostCard's props are a union on `surface`, so the
+                     vote handler and the heart handler cannot both reach one
+                     card — which is exactly the guarantee the two feeds
+                     depend on. */
+                  const shared = {
+                    post,
+                    currentUserId: account?.id ?? null,
+                    friendStatus: friendStatusFor(post.userId),
+                    highlighted: post.id === highlighted,
+                    onSave: handleSave,
+                    onShare: handleShare,
+                    onOpenComments: setCommentsPostId,
+                    onDelete: handleDelete,
+                    onAddFriend: handleAddFriend,
+                    onRequireSignIn: () => setBanner("Sign in to join in — it takes a second."),
+                  };
+                  return (
+                    <div
+                      key={post.id}
+                      ref={(el) => {
+                        postRefs.current[post.id] = el;
+                      }}
+                    >
+                      {surfaceForPost(post) === "discover" ? (
+                        <FoodPostCard
+                          {...shared}
+                          surface="discover"
+                          trending={trendingIds.has(post.id)}
+                          reactPoints={reactPoints[post.id] ?? null}
+                          onVote={handleVote}
+                        />
+                      ) : (
+                        <FoodPostCard {...shared} surface="friends" onReact={handleHeart} />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
               <EndOfFeed />
             </>
@@ -668,10 +508,12 @@ function FeedPageInner() {
   );
 
   return (
-    <div className="app-shell mx-auto my-6 w-full max-w-7xl overflow-hidden rounded-2xl border border-zinc-200/60">
+    /* No shell card: the cream page is the ground, and each card below sits
+       directly on it. */
+    <div className="mx-auto w-full max-w-7xl pb-12">
       <Header />
 
-      <div className="bg-white/40 px-4 pb-8 pt-5 sm:px-6">
+      <div className="px-4 pt-2 sm:px-6">
         <div className="mx-auto flex w-full max-w-6xl gap-8">
           <main className="min-w-0 flex-1 lg:max-w-[640px]">{feedColumn}</main>
 
@@ -695,3 +537,4 @@ function FeedPageInner() {
     </div>
   );
 }
+

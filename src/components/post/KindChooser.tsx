@@ -5,7 +5,7 @@ import { StarIcon, ChatIcon, ChevronIcon } from "@/components/icons";
 export type PostKind = "restaurant" | "dish" | "comment";
 
 const row =
-  "group flex w-full items-center gap-4 rounded-2xl border border-zinc-200/80 bg-white p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-pm-orange hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+  "group flex w-full items-center gap-4 rounded-2xl bg-white p-4 text-left transition-all hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
 /**
  * The fork every post goes through, whether it started with a photo or with
@@ -53,7 +53,7 @@ export function KindChooser({ onChoose }: { onChoose: (kind: PostKind) => void }
           <span className="block h-2.5 overflow-hidden rounded-full bg-pm-grey-tint">
             <span className="block h-full w-[85%] rounded-full bg-pm-orange transition-all duration-300 group-hover:w-full" />
           </span>
-          <span className="mt-1 block text-right text-[11px] font-semibold text-pm-orange-text">
+          <span className="mt-1 block text-right font-mono text-[11px] font-semibold tabular-nums text-pm-orange-text">
             85%
           </span>
         </span>
@@ -65,7 +65,7 @@ export function KindChooser({ onChoose }: { onChoose: (kind: PostKind) => void }
       <button
         type="button"
         onClick={() => onChoose("comment")}
-        className="flex min-h-11 w-full items-center gap-2.5 rounded-xl border border-dashed border-zinc-300 bg-white/50 px-4 py-3 text-left text-sm text-zinc-600 transition-colors hover:border-pm-orange hover:bg-white hover:text-pm-orange-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        className="flex min-h-11 w-full items-center gap-2.5 rounded-full bg-pm-grey-tint/60 px-4 py-3 text-left text-sm text-pm-grey-text transition-colors hover:bg-pm-grey-tint hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
       >
         <ChatIcon className="h-4 w-4 shrink-0" />
         <span className="flex-1">
