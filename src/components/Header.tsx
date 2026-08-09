@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { BrandMark, WordMark } from "@/components/BrandMark";
+import { RestaurantSearch } from "@/components/RestaurantSearch";
 
 const NAV_LINKS = [
   { href: "/", label: "Discover" },
@@ -33,27 +34,7 @@ export function Header() {
           </span>
           <WordMark tone="light" />
         </Link>
-        <div className="hidden items-center gap-2.5 rounded-full bg-white/10 px-4 py-2 ring-1 ring-inset ring-white/10 transition-all hover:bg-white/[0.14] focus-within:bg-white/[0.14] focus-within:ring-pm-orange/70 sm:flex">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className="shrink-0 text-white/50"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="7" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <input
-            type="text"
-            placeholder="Search restaurants..."
-            aria-label="Search restaurants"
-            className="w-40 bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none lg:w-56"
-          />
-        </div>
+        <RestaurantSearch />
       </div>
       <nav className="hidden items-center gap-4 text-sm sm:flex">
         {NAV_LINKS.map((link) => (

@@ -8,7 +8,7 @@ export type QuickFilter = "open-now" | "top-rated" | "trending";
 export const QUICK_FILTERS: ReadonlyArray<{ value: QuickFilter; label: string }> = [
   { value: "open-now", label: "Open now" },
   { value: "top-rated", label: "Top rated" },
-  { value: "trending", label: "Trending" },
+  { value: "trending", label: "Promoted" },
 ];
 
 function Chevron({ open }: { open: boolean }) {

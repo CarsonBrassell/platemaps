@@ -33,7 +33,7 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
         </span>
         {restaurant.trending && (
           <span className="absolute right-2 top-2 rounded-full bg-pm-orange px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
-            Trending
+            Promoted
           </span>
         )}
         {/* Yelp wants their photos credited wherever they appear. The whole

@@ -58,7 +58,7 @@ export function OurPicks() {
                 }
               />
               <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-pm-orange-text shadow-sm backdrop-blur-sm">
-                Trending
+                Promoted
               </span>
               {/* Same credit the grid cards carry — see the note in
                   RestaurantCard for why it isn't the link back. */}
