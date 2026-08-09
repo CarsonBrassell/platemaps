@@ -21,6 +21,9 @@ export async function GET() {
       email: user.email,
       points: user.points,
       avatarUrl: user.avatarUrl,
+      sharePhotosPublicly: user.sharePhotosPublicly,
+      favoriteCuisine: user.favoriteCuisine,
+      favoriteRestaurantId: user.favoriteRestaurantId,
     },
   });
 }

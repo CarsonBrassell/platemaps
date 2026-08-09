@@ -63,9 +63,50 @@ Undecided, to be recorded rather than assumed:
 
 - Name: **PlateMaps**, plural, everywhere — copy, share titles, image alt text, page title, the npm package, the repo, and the Vercel project. The original `platemap-five.vercel.app` URL survives as an alias on the renamed project, so links already in the wild keep working.
 - Logo mark and wordmark assets in `public/` (`logo-mark.png`, `logo.png`), rendered through `BrandMark` / `WordMark`.
-- A warm orange accent (`--pm-orange`, the `#e8875a` family) against charcoal, carried through primary actions, pins, and the map's streetlight glow.
 
 Observed in existing copy but not user-confirmed as binding: plain, direct, sentence-case voice with no marketing hype.
+
+## Aesthetic Direction
+
+A subtle terminal/utilitarian influence — technical feeling, but reads as a normal app, not a theme or a costume. Supersedes the earlier "Warm Editorial" look (serif display face, `--pm-orange` `#e8875a`/`#d96f45` family, rounded-2xl cards, drop shadows) currently in `globals.css`; that CSS has not yet been rebuilt to this direction.
+
+- **Type split by authorship.** Monospace for anything machine-generated — numbers, prices, percentages, rating counts, timestamps, usernames, distances, and small uppercase section labels. Normal sans-serif for anything a human wrote — restaurant names, dish names, captions.
+- **Light warm background, not dark.** Normal contrast, not a high-contrast or neon treatment.
+- **Border radius 0–4px max.** No rounded cards.
+- **Hairline borders as dividers**, not card containers — structure comes from a 1px rule between regions, not a bordered/shadowed box around each one.
+- **No shadows, no gradients.**
+- **One accent color (orange), used on at most three elements per screen.** Restraint is the point; an accent applied everywhere stops reading as an accent.
+- **Section labels:** uppercase, monospace, wide letter-spacing, small and muted.
+- **Vote arrows as `▲`**, not icon-library glyphs.
+
+### The plate reference — a deliberate exception
+
+A **named plate** is set in **Fraunces with its `WONK` axis engaged** and in
+**`--pm-orange-text`**, wherever it appears:
+
+- the feed card's headline (`.plate-headline`) — the dish, or the restaurant
+  when the post is a restaurant review;
+- the dish leading a map bubble (`.map-dish-link`), which additionally
+  underlines on hover because it navigates to that dish's menu entry.
+
+The reasoning is the one social feeds use for `@handle` and `#tag`: a plate is
+a record in this app, and type is what tells you so before you click. Text that
+is *not* a reference — a bubble whose comment names no dish — stays in the UI
+sans, which is what keeps the treatment meaningful.
+
+This is a confirmed exception to two rules above, not drift from them:
+
+- It overrides *"normal sans-serif for … dish names"*. The plate is the unit of
+  truth this product is built on (Principle 1); the type says so before the
+  copy does.
+- It is exempt from the three-oranges-per-screen limit, because a feed of *n*
+  cards necessarily shows *n* headlines. The limit still binds everything else
+  on the card — which is why the "at {restaurant}" line beneath the headline was
+  demoted to neutral rather than left orange.
+
+`--pm-orange-text` (#a8471f, 5.85:1 on white), never `--pm-orange` (3.33:1),
+which only clears the large-text contrast bar and fails as soon as the headline
+wraps or shrinks.
 
 ## Evidence on Hand
 

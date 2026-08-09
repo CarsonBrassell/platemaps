@@ -23,19 +23,31 @@ export type Post = {
   authorPoints: number;
   text: string;
   restaurant?: string;
+  restaurantId?: string;
+  restaurantLat?: number;
+  restaurantLng?: number;
   dishName?: string;
   price?: string;
+  /** Native scale: 1-5 stars with ratingKind "restaurant", 0-100% with
+      ratingKind "dish". No ratingKind on a row that still has a rating means
+      the row predates the split — a flattened /10 number, kept rendering
+      that way rather than reinterpreted. */
   rating?: number;
+  ratingKind?: "restaurant" | "dish";
   locationLabel?: string;
   tags: string[];
   amenities: string[];
   vibe?: string;
   media: PostMedia[];
+  /** Snapshot of the author's share-photos setting at post time — see lib/db.ts. */
+  photosPublic: boolean;
   createdAt: string;
-  likedBy: string[];
+  /** Public, ranks Discover. */
+  upvoteCount: number;
+  upvotedByMe: boolean;
+  /** Private acknowledgment. Never a count — see lib/db.ts's getHeartsForAuthor. */
+  heartedByMe: boolean;
   savedBy: string[];
-  votedYesBy: string[];
-  votedNoBy: string[];
   comments: Comment[];
 };
 
@@ -57,4 +69,4 @@ export type UserRank = {
 
 export type LeaderboardWindow = "today" | "week" | "month" | "all";
 
-export type FeedTab = "for-you" | "following" | "map";
+export type FeedTab = "discover" | "friends" | "map";

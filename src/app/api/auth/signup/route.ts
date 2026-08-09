@@ -44,5 +44,8 @@ export async function POST(req: NextRequest) {
     email: user.email,
     points: user.points,
     avatarUrl: user.avatarUrl,
+    sharePhotosPublicly: user.sharePhotosPublicly,
+    favoriteCuisine: user.favoriteCuisine,
+    favoriteRestaurantId: user.favoriteRestaurantId,
   });
 }

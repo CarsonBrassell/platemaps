@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { resizeImageToDataUrl } from "@/lib/image";
 import { PlateStarIcon } from "@/components/icons";
+import { POINT_RULES } from "@/lib/points";
+import { cuisines, restaurants } from "@/data/restaurants";
 
 const inputClass =
   "mb-4 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-pm-orange focus:outline-none";
@@ -18,6 +21,17 @@ type Post = {
   restaurant?: string;
   savedBy: string[];
   comments: { id: string }[];
+};
+
+/** Mirrors lib/db.ts's FriendRequestSummary — that file is server-only
+    (it imports the Neon client directly), so this page keeps its own
+    client-side copy of the shape rather than importing it. */
+type FriendRequestSummary = {
+  id: string;
+  userId: string;
+  name: string;
+  avatarUrl?: string;
+  createdAt: string;
 };
 
 function UtensilsIcon() {
@@ -290,9 +304,15 @@ function AccountOverview() {
       <div className="mb-6 flex items-center gap-3 rounded-xl border border-pm-orange-border bg-pm-orange-tint px-4 py-3">
         <PlateStarIcon className="h-6 w-8 shrink-0 text-pm-orange" />
         <p className="text-sm text-pm-orange-text">
-          Earn PM Points by posting (+10), liking (+2), and commenting (+5) on the Feed.
+          Earn PM Points by posting (+{POINT_RULES.createPost}), getting upvoted (+
+          {POINT_RULES.receiveUpvote}), and getting commented on (+{POINT_RULES.receiveComment}
+          ) on Discover.
         </p>
       </div>
+
+      <FriendRequestsPanel />
+
+      <ProfileSettingsPanel />
 
       {myPosts.length > 0 && (
         <>
@@ -349,13 +369,227 @@ function AccountOverview() {
         </div>
       )}
 
+        <p className="mb-2 mt-6 text-xs text-zinc-400">
+          <Link href={`/u/${account.id}`} className="underline hover:text-zinc-600">
+            See your public profile
+          </Link>{" "}
+          — what other people see when they look you up.
+        </p>
+
         <button
           onClick={signOut}
-          className="mt-6 rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-600 transition-all hover:bg-zinc-50 active:scale-[0.97]"
+          className="rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-600 transition-all hover:bg-zinc-50 active:scale-[0.97]"
         >
           Log out
         </button>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Mutual friend requests: incoming needs this user's response, outgoing is
+ * waiting on the other side. No count of total friends is shown anywhere on
+ * this page or anywhere else — the spec is explicit that follower/friend
+ * counts never display.
+ */
+function FriendRequestsPanel() {
+  const [incoming, setIncoming] = useState<FriendRequestSummary[]>([]);
+  const [outgoing, setOutgoing] = useState<FriendRequestSummary[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [busyId, setBusyId] = useState<string | null>(null);
+
+  function load() {
+    fetch("/api/friends")
+      .then((res) => res.json())
+      .then((data: { incoming: FriendRequestSummary[]; outgoing: FriendRequestSummary[] }) => {
+        setIncoming(data.incoming ?? []);
+        setOutgoing(data.outgoing ?? []);
+        setLoaded(true);
+      })
+      .catch(() => setLoaded(true));
+  }
+
+  useEffect(load, []);
+
+  async function respond(requestId: string, action: "accept" | "decline") {
+    setBusyId(requestId);
+    try {
+      const res = await fetch("/api/friends/respond", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ requestId, action }),
+      });
+      if (res.ok) setIncoming((prev) => prev.filter((r) => r.id !== requestId));
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  // Nothing pending and nothing to show — the panel just doesn't render
+  // rather than taking up space with an empty state nobody needs to see.
+  if (loaded && incoming.length === 0 && outgoing.length === 0) return null;
+
+  return (
+    <div className="mb-6 rounded-xl border border-zinc-200 p-4">
+      <p className="mb-3 text-sm font-bold text-pm-orange-text">Friend requests</p>
+
+      {incoming.length === 0 && outgoing.length === 0 ? (
+        <p className="text-sm text-zinc-400">Loading…</p>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {incoming.map((r) => (
+            <div key={r.id} className="flex items-center gap-3">
+              {r.avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={r.avatarUrl} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" />
+              ) : (
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pm-orange text-xs font-medium text-white">
+                  {initials(r.name)}
+                </div>
+              )}
+              <p className="min-w-0 flex-1 truncate text-sm text-zinc-800">{r.name}</p>
+              <button
+                onClick={() => respond(r.id, "accept")}
+                disabled={busyId === r.id}
+                className="rounded-full bg-pm-orange px-3 py-1.5 text-xs font-medium text-white transition-transform active:scale-95 disabled:opacity-50"
+              >
+                Accept
+              </button>
+              <button
+                onClick={() => respond(r.id, "decline")}
+                disabled={busyId === r.id}
+                className="rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-50"
+              >
+                Decline
+              </button>
+            </div>
+          ))}
+
+          {outgoing.map((r) => (
+            <div key={r.id} className="flex items-center gap-3">
+              {r.avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={r.avatarUrl} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" />
+              ) : (
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-zinc-300 text-xs font-medium text-white">
+                  {initials(r.name)}
+                </div>
+              )}
+              <p className="min-w-0 flex-1 truncate text-sm text-zinc-500">{r.name}</p>
+              <span className="text-xs text-zinc-400">Request sent</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * The one global privacy decision in the whole app: whether photos default
+ * public. Off by default, per the spec — posting itself asks nothing about
+ * privacy; this is the only place that toggle lives. Also holds the two
+ * profile favorites, stored as structured references (a real cuisine off the
+ * same list Discover's filters use, a real restaurant id) rather than free
+ * text, since the point of storing them this way is to use them for taste
+ * matching later.
+ */
+function ProfileSettingsPanel() {
+  const { account, updateSettings } = useAuth();
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  if (!account) return null;
+
+  async function handleToggle() {
+    setSaving(true);
+    setError("");
+    const result = await updateSettings({ sharePhotosPublicly: !account!.sharePhotosPublicly });
+    if (result) setError(result);
+    setSaving(false);
+  }
+
+  async function handleCuisine(value: string) {
+    setSaving(true);
+    setError("");
+    const result = await updateSettings({ favoriteCuisine: value || null });
+    if (result) setError(result);
+    setSaving(false);
+  }
+
+  async function handleRestaurant(value: string) {
+    setSaving(true);
+    setError("");
+    const result = await updateSettings({ favoriteRestaurantId: value || null });
+    if (result) setError(result);
+    setSaving(false);
+  }
+
+  return (
+    <div className="mb-6 rounded-xl border border-zinc-200 p-4">
+      <p className="mb-3 text-sm font-bold text-pm-orange-text">Profile settings</p>
+
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-zinc-800">Share my photos publicly</p>
+          <p className="mt-0.5 text-xs text-zinc-500">
+            {/* Framed as forward-only on purpose — this is the one fact about
+                the toggle that isn't visually obvious from the switch itself,
+                and getting it wrong reads as a broken promise, not a UI bug. */}
+            Off by default. New posts only — turning this on won&apos;t make photos you&apos;ve
+            already shared public.
+          </p>
+        </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={account.sharePhotosPublicly}
+          onClick={handleToggle}
+          disabled={saving}
+          className={`relative h-7 w-12 shrink-0 rounded-full transition-colors disabled:opacity-50 ${
+            account.sharePhotosPublicly ? "bg-pm-orange" : "bg-zinc-300"
+          }`}
+        >
+          <span
+            className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+              account.sharePhotosPublicly ? "translate-x-6" : "translate-x-1"
+            }`}
+          />
+        </button>
+      </div>
+
+      <label className="mb-1 block text-sm font-medium text-zinc-700">Favorite cuisine</label>
+      <select
+        value={account.favoriteCuisine ?? ""}
+        onChange={(e) => handleCuisine(e.target.value)}
+        disabled={saving}
+        className={inputClass}
+      >
+        <option value="">Not set</option>
+        {cuisines.map((c) => (
+          <option key={c} value={c}>
+            {c}
+          </option>
+        ))}
+      </select>
+
+      <label className="mb-1 block text-sm font-medium text-zinc-700">Favorite restaurant</label>
+      <select
+        value={account.favoriteRestaurantId ?? ""}
+        onChange={(e) => handleRestaurant(e.target.value)}
+        disabled={saving}
+        className={inputClass}
+      >
+        <option value="">Not set</option>
+        {restaurants.map((r) => (
+          <option key={r.id} value={r.id}>
+            {r.name}
+          </option>
+        ))}
+      </select>
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   );
 }

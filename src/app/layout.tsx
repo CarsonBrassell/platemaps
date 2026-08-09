@@ -13,9 +13,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/* SOFT and WONK are Fraunces' own variable axes. WONK swaps in the swashed,
+   canted letterforms the family is named for — it's what makes this read as a
+   chosen display face rather than a generic serif. Requested explicitly here
+   because next/font only ships the axes you name. */
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
+  axes: ["SOFT", "WONK"],
 });
 
 export const metadata: Metadata = {

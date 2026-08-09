@@ -12,7 +12,7 @@ import { dishesByRestaurant } from "@/data/dishes";
 import { FeedHeader } from "@/components/feed/FeedHeader";
 import { FeedTabs } from "@/components/feed/FeedTabs";
 import { CreatePostComposer } from "@/components/feed/CreatePostComposer";
-import { FoodPostCard } from "@/components/feed/FoodPostCard";
+import { FoodPostCard, type FriendStatus } from "@/components/feed/FoodPostCard";
 import { CommentsPanel } from "@/components/feed/CommentsPanel";
 import { Leaderboard } from "@/components/feed/Leaderboard";
 import { FeedSkeleton } from "@/components/feed/FeedSkeleton";
@@ -36,26 +36,6 @@ const RestaurantMap = dynamic(
     ),
   },
 );
-
-/**
- * Net votes, floored at zero. Ranking ran on likes until the heart was
- * replaced by up/down arrows; downvotes now pull a post back down, but the
- * floor keeps the score positive so the curve below behaves.
- */
-function netVotes(post: Post) {
-  return Math.max(0, post.votedYesBy.length - post.votedNoBy.length);
-}
-
-/**
- * Recency-weighted score: a fresh post with a few votes outranks a stale hit.
- *
- * The +1 matters — without it every unvoted post scores zero, so a review you
- * just published would sort to the very bottom of the feed and look lost.
- */
-function hotScore(post: Post) {
-  const ageHours = (Date.now() - new Date(post.createdAt).getTime()) / 3_600_000;
-  return (netVotes(post) + 1) / Math.pow(ageHours + 2, 1.5);
-}
 
 /* The map bubbles predate structured post fields, so seeded comments still
    encode rating and dish in the caption ("@Name 4 stars;"). Structured
@@ -86,6 +66,32 @@ function findDishId(restaurantId: string, dishName: string): string | undefined 
   )?.id;
 }
 
+/**
+ * A post's rating as a bubble's meta row shows it, always carrying the scale
+ * it was measured on — "4/5", never a bare number. There are exactly two
+ * scales because there are exactly two controls that produce one; no 0-10
+ * fallback exists, since that's what let an impossible "9.2 stars" render.
+ *
+ * A dish review's percent lives in the dish prefix instead, so this returns
+ * null there — unless the post has no dish name to hang it on, in which case
+ * the meta row is the only place left for it to go.
+ */
+function bubbleRating(post: Post): string | null {
+  if (post.rating === undefined) return ratingFromPost(post.text);
+  if (post.ratingKind === "restaurant") return `${post.rating}/5`;
+  if (post.ratingKind === "dish") return post.dishName ? null : `${post.rating}%`;
+  return null;
+}
+
+/** The orange "Marlin taco 85%" prefix, in the dish review's own percent. */
+function bubbleDishPrefix(post: Post): string | null {
+  if (!post.dishName || post.rating === undefined) return dishPrefixFromPost(post.text);
+  if (post.ratingKind === "dish") return `${post.dishName} ${post.rating}%`;
+  // A restaurant review's stars belong to the place, not to a dish, so they
+  // never get appended to a dish name.
+  return post.dishName;
+}
+
 export default function FeedPage() {
   return (
     <Suspense fallback={null}>
@@ -108,26 +114,49 @@ function FeedPageInner() {
   /** Bumped by "Try again" to re-run the feed fetch effect. */
   const [reloadKey, setReloadKey] = useState(0);
 
-  const [tab, setTab] = useState<FeedTab>("for-you");
+  const [tab, setTab] = useState<FeedTab>("discover");
   const [navKey, setNavKey] = useState<NavKey>(
     searchParams.get("view") === "saved" ? "saved" : "home",
   );
 
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
+  /** Which feed backs the Map tab's bubbles — its own switch, independent of
+      `tab`, so leaving the map for Discover or Friends and coming back
+      doesn't reset which one you had picked. */
+  const [mapSource, setMapSource] = useState<"discover" | "friends">("discover");
 
-  const [following, setFollowing] = useState<string[]>([]);
-  const [votePoints, setVotePoints] = useState<Record<string, number>>({});
+  // Friend graph, scoped to just what a card needs to render its button —
+  // the full request objects (with ids to accept/decline against) live in
+  // the account page's request panel, which fetches /api/friends itself.
+  const [friendIds, setFriendIds] = useState<string[]>([]);
+  const [outgoingIds, setOutgoingIds] = useState<string[]>([]);
+  const [incomingIds, setIncomingIds] = useState<string[]>([]);
+
+  const [reactPoints, setReactPoints] = useState<Record<string, number>>({});
   const [banner, setBanner] = useState<string | null>(null);
   const [highlighted, setHighlighted] = useState<string | null>(null);
   const [ranksVersion, setRanksVersion] = useState(0);
 
   const postRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  // Every state write happens in a promise callback rather than the effect
-  // body, and is dropped if the effect was cleaned up first.
+  /*
+   * Discover and Friends are genuinely different queries now, not one list
+   * sliced two ways client-side: Discover is server-ranked and photo-gated,
+   * Friends is a server-side audience filter with no ranking at all. Map
+   * reads whichever of the two `mapSource` currently points at — it's a view
+   * onto one or the other, not a third surface with its own query. Saved
+   * needs every post regardless of which feed it surfaced in, since a save
+   * doesn't forget which feed you found it on.
+   */
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/posts")
+    const url =
+      navKey === "saved"
+        ? "/api/posts"
+        : tab === "friends" || (tab === "map" && mapSource === "friends")
+          ? "/api/posts/friends"
+          : "/api/posts/discover";
+    fetch(url)
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error("failed"))))
       .then((data) => {
         if (cancelled) return;
@@ -142,29 +171,28 @@ function FeedPageInner() {
     return () => {
       cancelled = true;
     };
-  }, [reloadKey]);
+  }, [navKey, tab, mapSource, reloadKey]);
 
   useEffect(() => {
+    // No reset-to-empty branch here: every place that reads these three
+    // arrays is already gated on currentUserId being set, so stale state
+    // left over from a previous sign-in is simply never looked at once
+    // isSignedIn goes false — nothing to clear.
     if (!isSignedIn) return;
     let cancelled = false;
-    fetch("/api/follows")
+    fetch("/api/friends")
       .then((r) => r.json())
       .then((d) => {
-        if (!cancelled) setFollowing(d.following ?? []);
+        if (cancelled) return;
+        setFriendIds(d.friendIds ?? []);
+        setOutgoingIds((d.outgoing ?? []).map((r: { userId: string }) => r.userId));
+        setIncomingIds((d.incoming ?? []).map((r: { userId: string }) => r.userId));
       })
       .catch(() => {});
     return () => {
       cancelled = true;
     };
   }, [isSignedIn]);
-
-  // Derived rather than cleared on sign-out, so signing out doesn't need a
-  // synchronous setState inside the effect above. Memoised because it feeds
-  // the feed-filtering useMemo below.
-  const followingIds = useMemo(
-    () => (isSignedIn ? following : []),
-    [isSignedIn, following],
-  );
 
   useEffect(() => {
     function sync() {
@@ -179,12 +207,14 @@ function FeedPageInner() {
     };
   }, []);
 
-  // Deep link from a map bubble. "For You" is unfiltered, so switching to it
-  // guarantees the target post is actually in the list before we scroll.
+  // Deep link from a map bubble or a shared /feed?post= link. Discover is
+  // ranked and capped rather than "every post" now, so a link to a post
+  // that's since cooled off its top slice won't be found here — a known,
+  // accepted gap rather than a full second fetch path for one edge case.
   useEffect(() => {
     if (!highlightPostId || !posts?.some((p) => p.id === highlightPostId)) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTab("for-you");
+    setTab("discover");
     setNavKey("home");
     setHighlighted(highlightPostId);
     const scroll = setTimeout(() => {
@@ -213,79 +243,82 @@ function FeedPageInner() {
     setRanksVersion((v) => v + 1);
   }, [earned]);
 
-
   function patchPost(postId: string, patch: (p: Post) => Post) {
     setPosts((prev) => (prev ? prev.map((p) => (p.id === postId ? patch(p) : p)) : prev));
   }
 
-  /* Liking is gone from the card — the heart was replaced by up/down arrows,
-     which run through handleVote below. `likedBy` and /api/posts/[id]/like are
-     left in place: existing rows still carry likes, and nothing reads them now
-     that ranking runs on votes. */
+  /**
+   * Which reaction a given post's card should render. On Discover/Friends
+   * tabs the surface is just the active tab. In Saved — which draws from
+   * every post regardless of which feed it came from — it's derived per
+   * post from the actual friend graph, so a saved plate from a friend still
+   * lets you heart it rather than defaulting every saved card to upvote.
+   */
+  function surfaceForPost(post: Post): "discover" | "friends" {
+    if (navKey === "saved") return friendIds.includes(post.userId) ? "friends" : "discover";
+    return tab === "friends" ? "friends" : "discover";
+  }
 
-  async function handleVote(postId: string, vote: boolean) {
+  function friendStatusFor(userId: string): FriendStatus {
+    if (friendIds.includes(userId)) return "friends";
+    if (outgoingIds.includes(userId)) return "requested";
+    if (incomingIds.includes(userId)) return "incoming";
+    return "none";
+  }
+
+  async function handleReact(postId: string, surface: "discover" | "friends") {
     if (!account) return;
     const current = posts?.find((p) => p.id === postId);
     if (!current) return;
 
-    const had = current.votedYesBy.includes(account.id)
-      ? true
-      : current.votedNoBy.includes(account.id)
-        ? false
-        : null;
-
-    // Optimistic: drop any previous verdict, then apply the new one unless
-    // this tap was un-voting the same side.
-    const next = had === vote ? null : vote;
-    patchPost(postId, (p) => ({
-      ...p,
-      votedYesBy: p.votedYesBy.filter((id) => id !== account.id).concat(next === true ? [account.id] : []),
-      votedNoBy: p.votedNoBy.filter((id) => id !== account.id).concat(next === false ? [account.id] : []),
-    }));
-
-    try {
-      const res = await fetch(`/api/posts/${postId}/vote`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ vote }),
-      });
-      if (!res.ok) throw new Error("failed");
-      const data = await res.json();
-
-      // Reconcile against the server's counts rather than trusting the guess.
-      patchPost(postId, (p) => {
-        const others = {
-          yes: p.votedYesBy.filter((id) => id !== account.id),
-          no: p.votedNoBy.filter((id) => id !== account.id),
-        };
-        return {
-          ...p,
-          votedYesBy: data.myVote === true ? [...others.yes, account.id] : others.yes,
-          votedNoBy: data.myVote === false ? [...others.no, account.id] : others.no,
-        };
-      });
-
-      if (data.pointsEarned > 0) {
-        setVotePoints((prev) => ({ ...prev, [postId]: data.pointsEarned }));
-        setTimeout(
-          () =>
-            setVotePoints((prev) => {
-              const copy = { ...prev };
-              delete copy[postId];
-              return copy;
-            }),
-          1800,
-        );
-        setRanksVersion((v) => v + 1);
-        refresh();
-      }
-    } catch {
+    if (surface === "discover") {
+      const wasUpvoted = current.upvotedByMe;
+      const prevCount = current.upvoteCount;
       patchPost(postId, (p) => ({
         ...p,
-        votedYesBy: p.votedYesBy.filter((id) => id !== account.id).concat(had === true ? [account.id] : []),
-        votedNoBy: p.votedNoBy.filter((id) => id !== account.id).concat(had === false ? [account.id] : []),
+        upvotedByMe: !wasUpvoted,
+        upvoteCount: p.upvoteCount + (wasUpvoted ? -1 : 1),
       }));
-      setBanner("Couldn't save your vote.");
+
+      try {
+        const res = await fetch(`/api/posts/${postId}/upvote`, { method: "POST" });
+        if (!res.ok) throw new Error("failed");
+        const data = await res.json();
+        patchPost(postId, (p) => ({ ...p, upvotedByMe: data.upvoted, upvoteCount: data.upvoteCount }));
+
+        if (data.authorPointsEarned > 0) {
+          setReactPoints((prev) => ({ ...prev, [postId]: data.authorPointsEarned }));
+          setTimeout(
+            () =>
+              setReactPoints((prev) => {
+                const copy = { ...prev };
+                delete copy[postId];
+                return copy;
+              }),
+            1800,
+          );
+          setRanksVersion((v) => v + 1);
+          if (data.authorId === account.id) refresh();
+        }
+      } catch {
+        patchPost(postId, (p) => ({ ...p, upvotedByMe: wasUpvoted, upvoteCount: prevCount }));
+        setBanner("Couldn't save your upvote.");
+      }
+      return;
+    }
+
+    // Hearts: no count anywhere, so there's nothing to reconcile beyond the
+    // toggle itself.
+    const wasHearted = current.heartedByMe;
+    patchPost(postId, (p) => ({ ...p, heartedByMe: !wasHearted }));
+    try {
+      const res = await fetch(`/api/posts/${postId}/heart`, { method: "POST" });
+      if (!res.ok) throw new Error("failed");
+      const data = await res.json();
+      patchPost(postId, (p) => ({ ...p, heartedByMe: data.hearted }));
+    } catch {
+      patchPost(postId, (p) => ({ ...p, heartedByMe: wasHearted }));
+      setBanner("Couldn't save that.");
     }
   }
 
@@ -382,21 +415,30 @@ function FeedPageInner() {
     }
   }
 
-  async function handleToggleFollow(userId: string) {
-    const wasFollowing = following.includes(userId);
-    setFollowing((prev) => (wasFollowing ? prev.filter((id) => id !== userId) : [...prev, userId]));
+  /**
+   * Sends a request — or, per sendFriendRequest's reciprocal case, becomes
+   * friends immediately if the other person already requested this user.
+   * The optimistic "requested" guess is corrected against the real status
+   * the server reports as soon as the response lands.
+   */
+  async function handleAddFriend(userId: string) {
+    if (!account) return;
+    setOutgoingIds((prev) => [...prev, userId]);
     try {
-      const res = await fetch("/api/follows", {
+      const res = await fetch("/api/friends/request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
       });
       if (!res.ok) throw new Error("failed");
+      const data: { status: FriendStatus } = await res.json();
+      if (data.status === "friends") {
+        setFriendIds((prev) => [...prev, userId]);
+        setOutgoingIds((prev) => prev.filter((id) => id !== userId));
+      }
     } catch {
-      setFollowing((prev) =>
-        wasFollowing ? [...prev, userId] : prev.filter((id) => id !== userId),
-      );
-      setBanner("Couldn't update who you follow.");
+      setOutgoingIds((prev) => prev.filter((id) => id !== userId));
+      setBanner("Couldn't send that request.");
     }
   }
 
@@ -418,33 +460,28 @@ function FeedPageInner() {
 
   const visiblePosts = useMemo(() => {
     if (!posts) return [];
-    const list = [...posts];
-
     if (navKey === "saved") {
-      return account ? list.filter((p) => p.savedBy.includes(account.id)) : [];
+      return account ? posts.filter((p) => p.savedBy.includes(account.id)) : [];
     }
+    // Already correctly ordered and audience-scoped by whichever endpoint
+    // the fetch effect above chose — no client-side sort left to do.
+    return posts;
+  }, [posts, navKey, account]);
 
-    if (tab === "following") {
-      return list
-        .filter((p) => followingIds.includes(p.userId))
-        .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
-    }
-    return list.sort((a, b) => hotScore(b) - hotScore(a));
-  }, [posts, navKey, tab, followingIds, account]);
-
-  /* The flame marks the few genuinely hot plates, computed over every post
-     rather than the current tab so a card keeps its badge wherever it shows
-     up. The vote floor stops a quiet feed from flaming everything. */
+  /* The flame is a Discover-only signal. Friends is explicitly not an
+     engagement-ranked feed ("no ranking, no sorting by engagement, nothing
+     gets buried"), so flaming a card there would contradict the surface it's
+     shown on — the badge only ever appears on the Discover tab. */
   const trendingIds = useMemo(() => {
-    if (!posts) return new Set<string>();
+    if (!posts || navKey === "saved" || tab !== "discover") return new Set<string>();
     return new Set(
       [...posts]
-        .filter((p) => netVotes(p) >= 3)
-        .sort((a, b) => hotScore(b) - hotScore(a))
+        .filter((p) => p.upvoteCount >= 3)
+        .sort((a, b) => b.upvoteCount - a.upvoteCount)
         .slice(0, 3)
         .map((p) => p.id),
     );
-  }, [posts]);
+  }, [posts, navKey, tab]);
 
   const mapComments = useMemo(() => {
     const out: Record<string, MapComment[]> = {};
@@ -458,19 +495,14 @@ function FeedPageInner() {
             id: p.id,
             restaurantId: restaurant.id,
             text: bubbleTextFromPost(p.text),
-            score: netVotes(p),
-            upvotes: p.votedYesBy.length,
-            upvotedByMe: account ? p.votedYesBy.includes(account.id) : false,
-            // Every post already reaches the map; until now its photo stopped
-            // at the bubble and only appeared after a click through to /feed.
-            photo: p.media.find((m) => m.type === "image")?.url,
-            photoAlt: p.media.find((m) => m.type === "image")?.alt,
+            score: p.upvoteCount,
+            upvotes: p.upvoteCount,
+            upvotedByMe: p.upvotedByMe,
+            heartedByMe: p.heartedByMe,
+            commentCount: p.comments.length,
             createdAt: p.createdAt,
-            rating: p.rating !== undefined ? `${p.rating.toFixed(1)}★` : ratingFromPost(p.text),
-            dishPrefix:
-              p.dishName && p.rating !== undefined
-                ? `${p.dishName} ${p.rating.toFixed(1)}/10`
-                : dishPrefixFromPost(p.text),
+            rating: bubbleRating(p),
+            dishPrefix: bubbleDishPrefix(p),
             postId: p.id,
             dishId: dish ? findDishId(restaurant.id, dish) : undefined,
           };
@@ -479,7 +511,7 @@ function FeedPageInner() {
       out[restaurant.id] = [...real, ...(mapCommentsByRestaurant[restaurant.id] ?? [])];
     }
     return out;
-  }, [posts, account]);
+  }, [posts]);
 
   const activePost = commentsPostId
     ? (posts?.find((p) => p.id === commentsPostId) ?? null)
@@ -522,14 +554,47 @@ function FeedPageInner() {
 
       {showMap ? (
         <div className="overflow-hidden rounded-2xl border border-zinc-700/60 shadow-md">
+          {/* The map's own Discover/Friends switch — separate from the tab
+              bar above, since leaving the map and coming back shouldn't
+              reset which source you'd picked. Which source is active decides
+              both what the bubbles show and which reaction they offer. */}
+          <div
+            role="tablist"
+            aria-label="Map data source"
+            className="flex gap-1 border-b border-zinc-800 bg-[#15171a] px-3 py-2"
+          >
+            {(["discover", "friends"] as const).map((source) => (
+              <button
+                key={source}
+                type="button"
+                role="tab"
+                aria-selected={mapSource === source}
+                onClick={() => setMapSource(source)}
+                className={`min-h-9 rounded-full px-3 text-xs font-medium capitalize transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+                  mapSource === source
+                    ? "bg-pm-orange text-white"
+                    : "text-zinc-400 hover:bg-white/10 hover:text-zinc-200"
+                }`}
+              >
+                {source}
+              </button>
+            ))}
+          </div>
+
           <RestaurantMap
             restaurants={restaurants}
             commentsByRestaurant={mapComments}
-            /* handleVote, not handleLike: every number the map chip shows is
-               read from votedYesBy above, and handleVote toggles that same
-               field — passing a yes vote it already holds clears it. Wiring
-               this to likes would have shown one count and changed another. */
-            onUpvote={isSignedIn ? (postId) => handleVote(postId, true) : undefined}
+            mode={mapSource}
+            onUpvote={
+              isSignedIn && mapSource === "discover"
+                ? (postId) => handleReact(postId, "discover")
+                : undefined
+            }
+            onHeart={
+              isSignedIn && mapSource === "friends"
+                ? (postId) => handleReact(postId, "friends")
+                : undefined
+            }
           />
         </div>
       ) : (
@@ -578,16 +643,17 @@ function FeedPageInner() {
                     <FoodPostCard
                       post={post}
                       currentUserId={account?.id ?? null}
-                      isFollowing={followingIds.includes(post.userId)}
+                      surface={surfaceForPost(post)}
+                      friendStatus={friendStatusFor(post.userId)}
                       highlighted={post.id === highlighted}
                       trending={trendingIds.has(post.id)}
-                      votePoints={votePoints[post.id] ?? null}
+                      reactPoints={reactPoints[post.id] ?? null}
                       onSave={handleSave}
                       onShare={handleShare}
-                      onVote={handleVote}
+                      onReact={(postId) => handleReact(postId, surfaceForPost(post))}
                       onOpenComments={setCommentsPostId}
                       onDelete={handleDelete}
-                      onToggleFollow={handleToggleFollow}
+                      onAddFriend={handleAddFriend}
                       onRequireSignIn={() => setBanner("Sign in to join in — it takes a second.")}
                     />
                   </div>

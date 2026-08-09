@@ -9,48 +9,45 @@
 export const POINT_RULES = {
   /** Awarded to the author when they publish a post. */
   createPost: 10,
-  /** Awarded to the author each time a different user likes their post. */
-  receiveLike: 1,
+  /**
+   * Awarded to the author each time a different user upvotes their post.
+   * Discover-only, matching upvotes themselves — hearts earn nothing, since
+   * they're meant as pure acknowledgment between friends, not currency.
+   */
+  receiveUpvote: 1,
   /** Awarded to the author each time someone comments on their post. */
   receiveComment: 2,
-  /**
-   * Awarded to the *voter* the first time they answer "would you eat this?"
-   * on a post. The exception to the author-earns rule: this one exists to
-   * pull people into voting, so it pays the person doing it.
-   */
-  castVote: 1,
 } as const;
 
 /**
- * One-off bonuses for a post crossing a like count. Each fires at most once
- * per post (enforced by a unique index on the point_events reason string).
- * Keep sorted ascending by `likes`.
+ * One-off bonuses for a post crossing an upvote count. Each fires at most
+ * once per post (enforced by a unique index on the point_events reason
+ * string). Keep sorted ascending by `upvotes`.
  */
-export const LIKE_MILESTONES: ReadonlyArray<{ likes: number; bonus: number }> = [
-  { likes: 25, bonus: 15 },
-  { likes: 100, bonus: 50 },
-  { likes: 500, bonus: 200 },
+export const UPVOTE_MILESTONES: ReadonlyArray<{ upvotes: number; bonus: number }> = [
+  { upvotes: 25, bonus: 15 },
+  { upvotes: 100, bonus: 50 },
+  { upvotes: 500, bonus: 200 },
 ];
 
 /** Human-readable rules, rendered by PointsInfoModal. */
 export const POINT_RULE_COPY: ReadonlyArray<{ label: string; value: string }> = [
   { label: "Post a plate", value: `+${POINT_RULES.createPost}` },
-  { label: "Someone likes your post", value: `+${POINT_RULES.receiveLike}` },
+  { label: "Someone upvotes your post", value: `+${POINT_RULES.receiveUpvote}` },
   { label: "Someone comments on your post", value: `+${POINT_RULES.receiveComment}` },
-  { label: "You answer “would you eat this?”", value: `+${POINT_RULES.castVote}` },
-  ...LIKE_MILESTONES.map((m) => ({
-    label: `Your post hits ${m.likes} likes`,
+  ...UPVOTE_MILESTONES.map((m) => ({
+    label: `Your post hits ${m.upvotes} upvotes`,
     value: `+${m.bonus} bonus`,
   })),
 ];
 
 /**
- * Which milestone (if any) a post crosses by moving to `likeCount`. Returns
+ * Which milestone (if any) a post crosses by moving to `upvoteCount`. Returns
  * null unless the count landed exactly on a threshold, so a post that gains
- * and loses the same like doesn't pay out twice.
+ * and loses the same upvote doesn't pay out twice.
  */
-export function milestoneFor(likeCount: number) {
-  return LIKE_MILESTONES.find((m) => m.likes === likeCount) ?? null;
+export function milestoneFor(upvoteCount: number) {
+  return UPVOTE_MILESTONES.find((m) => m.upvotes === upvoteCount) ?? null;
 }
 
 /** "1,240" — points are shown grouped everywhere they appear. */

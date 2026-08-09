@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { StatsBar } from "@/components/StatsBar";
@@ -14,8 +14,23 @@ import { Leaderboard } from "@/components/feed/Leaderboard";
 
 export default function Home() {
   const router = useRouter();
-  const { account } = useAuth();
+  const { account, isSignedIn } = useAuth();
   const [ranksOpen, setRanksOpen] = useState(false);
+  const [pendingRequestCount, setPendingRequestCount] = useState(0);
+
+  useEffect(() => {
+    if (!isSignedIn) return;
+    let cancelled = false;
+    fetch("/api/friends")
+      .then((res) => res.json())
+      .then((data: { incoming?: unknown[] }) => {
+        if (!cancelled) setPendingRequestCount(data.incoming?.length ?? 0);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [isSignedIn]);
 
   const navAccount = account
     ? { name: account.name, points: account.points, avatarUrl: account.avatarUrl }
@@ -39,6 +54,9 @@ export default function Home() {
           <SideNav
             activeKey="explore"
             account={navAccount}
+            // Derived rather than reset inside the fetch effect above, so a
+            // stale count from a previous session can't outlive sign-out.
+            pendingRequestCount={isSignedIn ? pendingRequestCount : 0}
             onNavigate={navigate}
             onCreate={() => router.push("/post")}
           />

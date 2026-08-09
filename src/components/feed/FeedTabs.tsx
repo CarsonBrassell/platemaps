@@ -3,8 +3,8 @@
 import type { FeedTab } from "./types";
 
 const TABS: ReadonlyArray<{ value: FeedTab; label: string }> = [
-  { value: "for-you", label: "For You" },
-  { value: "following", label: "Following" },
+  { value: "discover", label: "Discover" },
+  { value: "friends", label: "Friends" },
   { value: "map", label: "Map" },
 ];
 

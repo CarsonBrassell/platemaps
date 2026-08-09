@@ -40,7 +40,10 @@
   --color-zinc-200: #e8ded0;
   --color-zinc-300: #d8c9b6;
   --color-zinc-400: #b6a494;
-  --color-zinc-500: #8a7a6d;
+  /* 500 is the muted-text step — timestamps, cuisine lines, sublabels all sit
+     here at 11-12px, so it has to clear 4.5:1 on white. #8a7a6d measured 4.13
+     and quietly failed; this is the same greige a few percent darker. */
+  --color-zinc-500: #7d6e61;
   --color-zinc-600: #6f6155;
   --color-zinc-700: #574b41;
   --color-zinc-800: #423931;
@@ -58,6 +61,13 @@ body {
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Selection in the house colours instead of the browser's blue — the kind of
+   place the palette should already live. */
+::selection {
+  background: var(--pm-orange-tint);
+  color: var(--pm-charcoal);
+}
+
 /* Display face for names and titles. Fraunces is set a touch lighter than the
    sans it replaces — at display sizes its contrast already reads as emphasis,
    so bold weights make it look shouty. */
@@ -67,6 +77,26 @@ h2,
 h3 {
   font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
   letter-spacing: -0.005em;
+}
+
+/* The plate itself — the dish a post is about, or the restaurant when it's a
+   restaurant review. The one line the whole card exists to deliver, so it gets
+   the only two emphases the card spends: Fraunces with WONK engaged (its
+   swashed, canted forms) and the accent orange.
+
+   `--pm-orange-text` rather than `--pm-orange`: the lighter accent is 3.3:1 on
+   white, which only clears the large-text bar and would fail the moment this
+   wraps to a smaller size. This one is 5.85:1 and passes as body text at any
+   size the headline lands on.
+
+   The fallback stack has no WONK axis, so `font-variation-settings` is simply
+   ignored there and the line still renders as a serif — no invisible text, no
+   layout jump. */
+.plate-headline {
+  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  font-variation-settings: "SOFT" 8, "WONK" 1;
+  letter-spacing: -0.015em;
+  color: var(--pm-orange-text);
 }
 
 .app-shell {
@@ -169,24 +199,70 @@ h3 {
   word-break: break-word;
 }
 
-/* No box-shadow here: the ticket's pop and ink shadows live on the bubble's
-   wrapper so they trace the box and tail together, and a box-only shadow
-   would break that silhouette on hover. */
+/* No box-shadow on hover either — the bubble is a flat card by design, and
+   growing a shadow only on hover would make the resting state look unfinished
+   rather than deliberate. */
 .map-bubble:hover .map-bubble-box,
 .map-bubble-box:hover {
   max-width: 300px !important;
+}
+
+/* What was actually said, under the dish that leads the bubble. Collapsed at
+   rest so the map reads as one line per plate, and revealed on hover — the
+   same gesture that already widens the box. */
+.map-bubble-more {
+  display: none;
+  margin-top: 2px;
+  font-size: 10.5px;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.map-bubble:hover .map-bubble-more,
+.map-bubble-box:hover .map-bubble-more {
+  display: block;
+}
+
+/* The dish leading a bubble is a reference to another record in the app — it
+   links into that dish's own menu entry — so it is styled the way a social
+   feed styles an @handle or a #tag: the accent colour and a face of its own,
+   marking "this is a thing in here you can go to," not just emphasis.
+
+   The face is the same Fraunces-with-WONK the feed card's .plate-headline
+   uses, so a dish reads as the same kind of object wherever it appears.
+
+   `--pm-orange-text` (5.48:1 on the bubble's #faf7f2) rather than `--pm-orange`
+   (3.11:1, which fails at this 12px size).
+
+   Underline only on hover, so a map full of bubbles isn't a map full of
+   underlines. */
+.map-dish-link {
+  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  font-variation-settings: "SOFT" 8, "WONK" 1;
+  color: var(--pm-orange-text);
+  letter-spacing: -0.01em;
+}
+
+.map-dish-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .map-upvote-chip {
   transition: transform 0.1s ease;
 }
 
+/* Built as raw DOM inside the map, so the app's focus-visible convention has
+   to be restated here rather than arriving via Tailwind classes. */
+.map-upvote-chip:focus-visible {
+  outline: 2px solid var(--pm-orange);
+  outline-offset: 2px;
+}
+
 .map-upvote-chip:hover {
   transform: scale(1.08);
 }
 
-/* A stamped-down press rather than a lighten/darken, to match the flat
-   retro-ticket ink the chip is drawn in. */
 .map-upvote-chip:active {
   transform: scale(0.94);
 }

@@ -8,6 +8,9 @@ type Account = {
   email: string;
   points: number;
   avatarUrl?: string;
+  sharePhotosPublicly: boolean;
+  favoriteCuisine?: string;
+  favoriteRestaurantId?: string;
 };
 
 type AuthContextValue = {
@@ -19,6 +22,13 @@ type AuthContextValue = {
   signOut: () => Promise<void>;
   refresh: () => Promise<void>;
   updateAvatar: (avatarUrl: string) => Promise<string | null>;
+  updateSettings: (
+    settings: Partial<{
+      sharePhotosPublicly: boolean;
+      favoriteCuisine: string | null;
+      favoriteRestaurantId: string | null;
+    }>
+  ) => Promise<string | null>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -101,6 +111,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return null;
   }
 
+  async function updateSettings(
+    settings: Partial<{
+      sharePhotosPublicly: boolean;
+      favoriteCuisine: string | null;
+      favoriteRestaurantId: string | null;
+    }>
+  ) {
+    const res = await fetch("/api/account/settings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(settings),
+    });
+    if (!res.ok) return parseError(res);
+    setAccount(await res.json());
+    return null;
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -112,6 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signOut,
         refresh,
         updateAvatar,
+        updateSettings,
       }}
     >
       {children}

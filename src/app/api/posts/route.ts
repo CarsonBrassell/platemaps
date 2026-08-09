@@ -11,7 +11,8 @@ const MAX_MEDIA_LENGTH = 4_000_000;
 const MAX_CAPTION = 2_000;
 
 export async function GET() {
-  const posts = await getPosts();
+  const user = await getCurrentUser();
+  const posts = await getPosts(user?.id ?? null);
   return NextResponse.json({ posts: posts.slice().reverse() });
 }
 
@@ -40,7 +41,18 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { text, restaurant, dishName, price, rating, locationLabel } = body;
+  const { text, restaurant, restaurantId, dishName, price, rating, locationLabel } = body;
+
+  let restaurantLat: number | undefined;
+  let restaurantLng: number | undefined;
+  if (body.restaurantLat !== undefined && body.restaurantLat !== null) {
+    const n = Number(body.restaurantLat);
+    if (!Number.isNaN(n)) restaurantLat = n;
+  }
+  if (body.restaurantLng !== undefined && body.restaurantLng !== null) {
+    const n = Number(body.restaurantLng);
+    if (!Number.isNaN(n)) restaurantLng = n;
+  }
 
   if (!text || !String(text).trim()) {
     return NextResponse.json({ error: "Write something to post." }, { status: 400 });
@@ -66,13 +78,33 @@ export async function POST(req: NextRequest) {
   const vibe =
     typeof body.vibe === "string" && ROOM_LABELS.includes(body.vibe) ? body.vibe : undefined;
 
+  // Rating stays in whichever native scale the composer collected it in —
+  // 1-5 stars for a restaurant review, 0-100% for a dish review — rather than
+  // being flattened onto one shared /10 number. That's what lets the feed
+  // render it back the same way it was entered instead of guessing which
+  // scale a bare number came from.
   let parsedRating: number | undefined;
+  let parsedRatingKind: "restaurant" | "dish" | undefined;
   if (rating !== undefined && rating !== null && rating !== "") {
-    const n = Number(rating);
-    if (Number.isNaN(n) || n < 0 || n > 10) {
-      return NextResponse.json({ error: "Rating must be between 0 and 10." }, { status: 400 });
+    if (body.ratingKind !== "restaurant" && body.ratingKind !== "dish") {
+      return NextResponse.json(
+        { error: "A rating needs to say whether it's for the restaurant or a dish." },
+        { status: 400 },
+      );
     }
-    parsedRating = Math.round(n * 10) / 10;
+    parsedRatingKind = body.ratingKind;
+    const n = Number(rating);
+    if (Number.isNaN(n)) {
+      return NextResponse.json({ error: "Rating must be a number." }, { status: 400 });
+    }
+    if (parsedRatingKind === "restaurant") {
+      if (n < 1 || n > 5) {
+        return NextResponse.json({ error: "A restaurant rating is 1 to 5 stars." }, { status: 400 });
+      }
+    } else if (n < 0 || n > 100) {
+      return NextResponse.json({ error: "A dish rating is 0 to 100%." }, { status: 400 });
+    }
+    parsedRating = Math.round(n);
   }
 
   const post = await createPost({
@@ -83,14 +115,21 @@ export async function POST(req: NextRequest) {
     authorPoints: user.points + POINT_RULES.createPost,
     text: String(text).trim().slice(0, MAX_CAPTION),
     restaurant: restaurant ? String(restaurant).trim() : undefined,
+    restaurantId: restaurantId ? String(restaurantId).trim() : undefined,
+    restaurantLat,
+    restaurantLng,
     dishName: dishName ? String(dishName).trim().slice(0, 120) : undefined,
     price: price ? String(price).trim().slice(0, 20) : undefined,
     rating: parsedRating,
+    ratingKind: parsedRatingKind,
     locationLabel: locationLabel ? String(locationLabel).trim().slice(0, 120) : undefined,
     tags,
     amenities,
     vibe,
     media,
+    // Snapshot of the author's CURRENT toggle, frozen onto the row — not read
+    // live later. See the photosPublic note on createPost in lib/db.ts.
+    photosPublic: user.sharePhotosPublicly,
   });
 
   const freshUser = await awardPoints(user.id, POINT_RULES.createPost, `post:${post.id}`);

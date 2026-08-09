@@ -39,15 +39,15 @@ export function EmptyFeedState({
   onCreate: () => void;
   isSignedIn: boolean;
 }) {
-  if (tab === "following") {
+  if (tab === "friends") {
     return (
       <Shell
         icon={<CompassIcon className="h-6 w-6" />}
-        title="Your following feed is quiet"
+        title="Your friends feed is quiet"
         body={
           isSignedIn
-            ? "Follow a few people whose taste you trust and their plates will land here."
-            : "Sign in to follow people and build a feed of the eaters you actually trust."
+            ? "Add a few friends whose taste you trust and their plates will land here."
+            : "Sign in to add friends and build a feed of the eaters you actually trust."
         }
         action={
           !isSignedIn && (

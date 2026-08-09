@@ -9,8 +9,8 @@
     "lint": "eslint",
     "postinstall": "node scripts/copy-maplibre-worker.mjs",
     "ratings:blend": "node --env-file=.env.local scripts/blend-ratings.mjs",
-    "db:migrate": "node scripts/migrate.mjs",
-    "db:seed": "node scripts/seed-demo.mjs"
+    "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
+    "db:seed": "node --env-file=.env.local scripts/seed-demo.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

@@ -29,10 +29,11 @@ import type { PostMedia } from "@/components/feed/types";
  * of post this is.
  *
  * From there one fork picks the instrument: five stars for a restaurant, a
- * percentage meter for a dish off its real menu, or neither for a comment. Both
- * ratings land in the existing 0–10 `rating` column — stars doubled, a
- * percentage divided by ten — so the feed, the map pins and the hot score keep
- * reading one number and nothing downstream had to learn a second scale.
+ * percentage meter for a dish off its real menu, or neither for a comment.
+ * Both land in the `rating` column in their own native scale — stars stay
+ * 1–5, the meter stays 0–100 — tagged with `ratingKind` so the feed renders
+ * each one back as the instrument it actually was, not a number flattened
+ * onto one shared scale.
  */
 type Step = "photo" | "kind" | "where" | "dish" | "rate" | "detail";
 
@@ -167,10 +168,27 @@ export default function PostPage() {
 
   function payload() {
     const media = photos.map<PostMedia>((p) => ({ url: p.url, type: "image", alt: altFor() }));
-    const shared = { restaurant: place?.name, locationLabel: place?.distance, media };
+    // restaurantId/lat/lng ride along so the post can be geo-filtered later
+    // with no further migration — see the restaurantId columns in lib/db.ts.
+    // photosPublic itself isn't sent: the API route reads it server-side from
+    // the signed-in user's current toggle, so it can't be spoofed by the
+    // client and always reflects the setting at the true moment of posting.
+    const shared = {
+      restaurant: place?.name,
+      restaurantId: place?.id,
+      restaurantLat: place?.lat,
+      restaurantLng: place?.lng,
+      locationLabel: place?.distance,
+      media,
+    };
 
+    // Rating rides in whatever scale it was collected on — stars stay 1-5,
+    // the meter stays 0-100 — with ratingKind saying which, so the feed can
+    // render it back as the same instrument instead of a flattened /10
+    // number. The API route re-validates both against that kind; this isn't
+    // the only place the range is enforced.
     if (kind === "restaurant") {
-      return { ...shared, text: note.trim(), rating: stars * 2, vibe: bestAt ?? undefined };
+      return { ...shared, text: note.trim(), rating: stars, ratingKind: "restaurant" as const, vibe: bestAt ?? undefined };
     }
     if (kind === "dish") {
       return {
@@ -178,7 +196,8 @@ export default function PostPage() {
         text: note.trim(),
         dishName: dish?.name,
         price: dish?.price,
-        rating: pct / 10,
+        rating: pct,
+        ratingKind: "dish" as const,
       };
     }
     return { ...shared, text: note.trim() };

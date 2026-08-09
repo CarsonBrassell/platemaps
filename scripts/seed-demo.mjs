@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Seeds demo eaters and plates so a fresh database has a feed and a
  * leaderboard worth looking at. Idempotent: re-running replaces the demo rows
  * and leaves real accounts alone.
@@ -9,8 +9,17 @@
  */
 import { neon } from "@neondatabase/serverless";
 import { randomUUID, randomBytes } from "node:crypto";
+import { restaurants } from "../src/data/restaurants.ts";
 
 const sql = neon(process.env.DATABASE_URL);
+
+/** POSTS below reference restaurants by name; this resolves id/lat/lng for
+    the restaurant_id/restaurant_lat/restaurant_lng columns. */
+function findRestaurant(name) {
+  const match = restaurants.find((r) => r.name === name);
+  if (!match) throw new Error(`No restaurant named "${name}" in data/restaurants.ts`);
+  return match;
+}
 
 const photo = (id) =>
   `https://images.unsplash.com/photo-${id}?w=1080&q=80&fm=jpg&fit=crop`;
@@ -32,7 +41,7 @@ const POSTS = [
     restaurant: "Landini's Pizzeria",
     text: "Crispy crust, spicy honey, and definitely worth ordering again. Got there right at open and walked straight in.",
     price: "$18",
-    rating: 9.2,
+    rating: 92,
     location: "0.8 miles away",
     tags: ["Dinner", "Fine Dining"],
     photos: [1513104890138 + "-7c749659a591", "1565299624946-b28f40a0ae38"],
@@ -49,7 +58,7 @@ const POSTS = [
     restaurant: "Tacos El Gordo",
     text: "Still the best $4.50 in the city. Smoked marlin, no line at 11am on a Tuesday.",
     price: "$4.50",
-    rating: 9.6,
+    rating: 96,
     location: "0.6 miles away",
     tags: ["Lunch", "Hidden Gem", "Under $15"],
     photos: ["1551782450-a2132b4ba21d"],
@@ -63,7 +72,7 @@ const POSTS = [
     restaurant: "Breakfast Republic",
     text: "Sat in the garden for an hour and nobody rushed me. The bun is laminated properly — shatters when you pull it.",
     price: "$9",
-    rating: 8.4,
+    rating: 84,
     location: "1.1 miles away",
     tags: ["Breakfast", "Coffee"],
     photos: ["1567620905732-2d1ec7ab7445"],
@@ -77,7 +86,7 @@ const POSTS = [
     restaurant: "Sushi Ota",
     text: "Ordered the chirashi instead of omakase and regret nothing. Everything tasted like it was cut that morning.",
     price: "$32",
-    rating: 9.4,
+    rating: 94,
     location: "2.4 miles away",
     tags: ["Dinner", "Fine Dining"],
     photos: ["1546069901-ba9599a7e63c", "1504674900247-0877df9cc836"],
@@ -94,7 +103,7 @@ const POSTS = [
     restaurant: "Buona Forchetta",
     text: "Came for the pizza, stayed for this. Soaked all the way through, not soggy. Split it and still wanted my own.",
     price: "$8",
-    rating: 8.9,
+    rating: 89,
     location: "6.2 miles away",
     tags: ["Dessert", "Under $15"],
     photos: ["1559847844-5315695dadae"],
@@ -108,7 +117,7 @@ const POSTS = [
     restaurant: "Mitch's Seafood",
     text: "Ate it standing at the rail watching the boats come in. Batter was light, tartar had actual dill in it.",
     price: "$21",
-    rating: 8.7,
+    rating: 87,
     location: "4.0 miles away",
     tags: ["Lunch"],
     photos: ["1541592106381-b31e9677c0e5"],
@@ -146,28 +155,38 @@ async function main() {
   for (const p of POSTS) {
     const postId = randomUUID();
     const createdAt = hoursAgo(p.hours);
+    const restaurant = findRestaurant(p.restaurant);
     await sql`
-      INSERT INTO posts (id, user_id, text, restaurant, dish_name, price, rating,
-                         location_label, tags, media, created_at)
-      VALUES (${postId}, ${ids[p.user]}, ${p.text}, ${p.restaurant}, ${p.dish},
-              ${p.price}, ${p.rating}, ${p.location}, ${p.tags},
+      INSERT INTO posts (id, user_id, text, restaurant, restaurant_id, restaurant_lat,
+                         restaurant_lng, dish_name, price, rating, rating_kind,
+                         location_label, tags, media, photos_public, created_at)
+      VALUES (${postId}, ${ids[p.user]}, ${p.text}, ${p.restaurant}, ${restaurant.id},
+              ${restaurant.lat}, ${restaurant.lng}, ${p.dish}, ${p.price}, ${p.rating},
+              -- Every seeded post names a dish, so all of them are dish
+              -- reviews and their ratings are percentages (0-100), matching
+              -- what the composer's meter produces.
+              'dish', ${p.location}, ${p.tags},
               ${JSON.stringify(
                 p.photos.map((id) => ({
                   url: photo(id),
                   type: "image",
                   alt: `${p.dish} at ${p.restaurant}`,
                 })),
-              )}::jsonb, ${createdAt.toISOString()})
+              )}::jsonb,
+              -- Demo accounts can't log in, so there's no real privacy
+              -- decision being overridden here — true so the seeded Discover
+              -- feed actually shows photos instead of looking broken.
+              true, ${createdAt.toISOString()})
     `;
     await award(p.user, 10, `post:${postId}`, createdAt);
 
-    for (const likerKey of p.likes) {
+    for (const upvoterKey of p.likes) {
       await sql`
-        INSERT INTO post_likes (post_id, user_id, liked, awarded_points)
-        VALUES (${postId}, ${ids[likerKey]}, true, true)
+        INSERT INTO post_upvotes (post_id, user_id)
+        VALUES (${postId}, ${ids[upvoterKey]})
         ON CONFLICT DO NOTHING
       `;
-      await award(p.user, 1, `like:${postId}:${ids[likerKey]}`, hoursAgo(p.hours - 1));
+      await award(p.user, 1, `upvote:${postId}:${ids[upvoterKey]}`, hoursAgo(p.hours - 1));
     }
 
     for (const [i, c] of p.comments.entries()) {
@@ -207,19 +226,48 @@ async function main() {
     `;
   }
 
-  // Everyone follows Maya and Diego, so a signed-in user's Following tab has
-  // something in it after one tap.
+  // Everyone is mutual friends with Maya and Diego, so opening the demo and
+  // switching to the Friends tab shows something rather than the empty state.
+  // friendships has no direction, but its rows are stored under a canonical
+  // (user_a < user_b) ordering, same as acceptFriendRequest in lib/db.ts.
   for (const u of USERS) {
     for (const target of ["maya", "diego"]) {
       if (u.key === target) continue;
+      const [a, b] = ids[u.key] < ids[target] ? [ids[u.key], ids[target]] : [ids[target], ids[u.key]];
       await sql`
-        INSERT INTO follows (follower_id, following_id)
-        VALUES (${ids[u.key]}, ${ids[target]}) ON CONFLICT DO NOTHING
+        INSERT INTO friendships (user_a, user_b)
+        VALUES (${a}, ${b}) ON CONFLICT DO NOTHING
       `;
     }
   }
 
-  console.log(`Seeded ${USERS.length} demo eaters and ${POSTS.length} plates.`);
+  /*
+   * Friend every real account on this database with Maya, Diego and Priya, so
+   * the Friends tab has something in it the moment you sign in.
+   *
+   * This lives in the seed rather than a one-off script because the DELETE at
+   * the top of main() drops the demo users, and friendships cascade with
+   * them — so any friendship made by hand disappears on the next re-seed and
+   * the tab silently goes empty again. Dev convenience only: it assumes every
+   * non-demo account on this database is yours.
+   */
+  const realUsers = await sql`
+    SELECT id FROM users WHERE email NOT LIKE '%@demo.platemaps.app'
+  `;
+  for (const real of realUsers) {
+    for (const key of ["maya", "diego", "priya"]) {
+      const [a, b] = real.id < ids[key] ? [real.id, ids[key]] : [ids[key], real.id];
+      await sql`
+        INSERT INTO friendships (user_a, user_b) VALUES (${a}, ${b}) ON CONFLICT DO NOTHING
+      `;
+    }
+  }
+
+  console.log(
+    `Seeded ${USERS.length} demo eaters and ${POSTS.length} plates, ` +
+      `and friended ${realUsers.length} real account(s) with Maya, Diego and Priya.`,
+  );
 }
 
 main();
+

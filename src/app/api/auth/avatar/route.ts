@@ -29,5 +29,8 @@ export async function POST(req: Request) {
     email: freshUser.email,
     points: freshUser.points,
     avatarUrl: freshUser.avatarUrl,
+    sharePhotosPublicly: freshUser.sharePhotosPublicly,
+    favoriteCuisine: freshUser.favoriteCuisine,
+    favoriteRestaurantId: freshUser.favoriteRestaurantId,
   });
 }

@@ -23,11 +23,15 @@ const active = "bg-white font-semibold text-zinc-900 shadow-sm ring-1 ring-zinc-
 export function SideNav({
   activeKey,
   account,
+  /** Incoming friend requests awaiting a response — not a friend count, which
+      the spec says never displays. Omitted or zero renders no badge at all. */
+  pendingRequestCount = 0,
   onNavigate,
   onCreate,
 }: {
   activeKey: NavKey;
   account: { name: string; points: number; avatarUrl?: string } | null;
+  pendingRequestCount?: number;
   onNavigate: (key: Extract<NavKey, "home" | "saved" | "leaderboard">) => void;
   onCreate: () => void;
 }) {
@@ -65,9 +69,20 @@ export function SideNav({
         Saved
       </button>
 
-      <Link href="/account" className={`${item} ${activeKey === "profile" ? active : idle}`}>
+      <Link
+        href="/account"
+        className={`${item} relative ${activeKey === "profile" ? active : idle}`}
+      >
         <UserIcon className="h-5 w-5 shrink-0" />
         Profile
+        {pendingRequestCount > 0 && (
+          <span
+            aria-label={`${pendingRequestCount} pending friend ${pendingRequestCount === 1 ? "request" : "requests"}`}
+            className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-pm-orange px-1 text-[10px] font-bold text-white"
+          >
+            {pendingRequestCount}
+          </span>
+        )}
       </Link>
 
       <button
