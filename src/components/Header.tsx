@@ -11,10 +11,11 @@ import { MobileNav } from "@/components/MobileNav";
 import { NavDot } from "@/components/NavDot";
 import { PlusIcon } from "@/components/icons";
 
-/* Split in two so the compose button can sit in the middle of the oval rather
-   than hanging off one end — posting is the one thing this row exists to
-   invite, and the centre is the only position that doesn't rank it against the
-   places you browse. */
+/* Still split in two so the compose button sits in the middle of the row
+   rather than hanging off one end — posting is the one thing this row exists
+   to invite, and the centre is the only position that doesn't rank it against
+   the places you browse. The tan oval that used to hold them is gone; the
+   split survives it. */
 const NAV_LEFT = [
   { href: "/feed", label: "Feed" },
   { href: "/", label: "Discover" },
@@ -42,7 +43,22 @@ export function Header() {
      on the side rail's Profile row, which went away with the rail. */
   const alerts = useNavAlerts();
 
-  const navPill = (link: { href: string; label: string }) => {
+  /* Nav items are mono section labels — the same voice as THE HITS and FULL
+     MENU — rather than pills. "You are here" is carried by the 5px orange
+     bullet plus the accent's small-text voice, not by a filled shape.
+
+     Two contrast notes, both load-bearing:
+     - `text-pm-grey-text` (#665C4E), not zinc-500. DESIGN.md's zinc-500 clears
+       4.5:1 on *white*; this row sits on the cream ground, where it only makes
+       4.28:1 and fails at 11px. #665C4E makes 5.96:1 on cream.
+     - The bullet is decorative and hidden from screen readers: `aria-current`
+       already states the same thing, and colour is never the sole indicator
+       because the label's own colour changes with it.
+
+     Weight is deliberately not part of the active state. `.mono-label` lives
+     unlayered in globals.css, so it outranks Tailwind's layered `font-*`
+     utilities and any weight set here would be silently dropped. */
+  const navItem = (link: { href: string; label: string }) => {
     const current = pathname === link.href;
     const dot = DOTS[link.href];
     return (
@@ -50,14 +66,18 @@ export function Header() {
         key={link.href}
         href={link.href}
         aria-current={current ? "page" : undefined}
-        className={`inline-flex min-h-9 items-center whitespace-nowrap rounded-full px-4 transition-[color,background-color,scale] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange xl:px-5 ${
-          current
-            ? "bg-pm-orange font-medium text-[#F7F4EC]"
-            : "text-pm-grey-text hover:text-zinc-900 motion-safe:hover:scale-105"
+        className={`mono-label inline-flex min-h-11 items-center gap-2 whitespace-nowrap rounded-full px-2.5 transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+          current ? "text-pm-orange-text" : "text-pm-grey-text hover:bg-pm-grey-tint hover:text-zinc-900"
         }`}
       >
+        <span
+          aria-hidden
+          className={`h-[5px] w-[5px] shrink-0 rounded-full transition-colors duration-200 ${
+            current ? "bg-pm-orange" : "bg-transparent"
+          }`}
+        />
         {link.label}
-        {dot && alerts[dot.slot] && <NavDot label={dot.label} className="ml-1.5 self-start" />}
+        {dot && alerts[dot.slot] && <NavDot label={dot.label} className="ml-0.5" />}
       </Link>
     );
   };
@@ -79,14 +99,16 @@ export function Header() {
         ≈ search+avatar — which is what makes the gaps either side of the nav
         equal. Moving weight between them breaks the symmetry, not the centring.
 
-        The grid starts at lg because that is where the row can actually hold a
-        centred 364px oval: equal columns need 2×(brand+city) + oval + gutters,
-        which does not fit until ~1024. Below lg the oval is hidden in favour of
+        The grid starts at xl, not lg. Equal columns need 2×(brand+city) + the
+        nav + gutters, and the nav row is 553px now that it carries a named
+        compose button instead of a 44px circle — measured, that wants 1259px
+        of viewport. It used to be a 364px oval, which is why this sat at lg;
+        the label is what moved it. Below xl the row is hidden in favour of
         MobileNav and this is a plain two-end flex row. */}
-    <header className="flex items-center justify-between gap-5 px-5 py-4 sm:px-6 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
+    <header className="flex items-center justify-between gap-5 px-5 py-4 sm:px-6 xl:grid xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
       {/* min-w-0 so this group yields when the row gets tight rather than
           shoving the nav off centre. */}
-      <div className="flex min-w-0 items-center gap-4">
+      <div className="flex min-w-0 flex-col items-start">
         <Link
           href="/"
           className="group flex shrink-0 items-center gap-2.5 rounded-lg text-[22px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange"
@@ -97,38 +119,72 @@ export function Header() {
           />
           <WordMark tone="dark" />
         </Link>
-        {/* The city is a machine value: monospace, quiet. Sits with the brand
-            because the product is scoped to one city — "PlateMaps, San Diego"
-            reads as one thought, and it gives the left group enough mass to
-            balance the search on the right. */}
-        {/* lg and up only. It is whitespace-nowrap and cannot shrink, so
-            between sm and lg — where the nav oval is already showing but the
-            row is still narrow — it collided with the nav. */}
-        <span className="mono-label hidden whitespace-nowrap text-zinc-500 lg:block">
+        {/* The city is a machine value: monospace, quiet. It belongs to the
+            brand, not to the menu — the product is scoped to one city and
+            "PlateMaps, San Diego" is one thought. Set beside the wordmark it
+            sat on the nav's own baseline and read as a fifth destination, so it
+            is stacked under the wordmark instead: `pl-[70px]` puts it past the
+            60px mark and its 10px gap so it hangs off the name rather than the
+            pin, and the negative top margin pulls it back inside the mark's
+            60px band so the row height is unchanged.
+
+            Deliberately outside the Link: it is not part of the accessible
+            name of the home link. */}
+        {/* xl and up only, in step with the nav. It is whitespace-nowrap and
+            cannot shrink, so at any width where the nav row is showing but the
+            header is still narrow, it collides with the nav. */}
+        <span className="mono-label -mt-[13px] hidden whitespace-nowrap pl-[70px] text-zinc-500 xl:block">
           San Diego, CA
         </span>
       </div>
-      {/* Top-level navigation wears the pill treatment (design swapped with
-          the feed's tab bar): an oval tan track encasing the pills, the page
-          you're on filled orange, unselected pills growing slightly on
-          hover. */}
-      {/* The oval grows at xl, not lg. It is the grid's `auto` column, so extra
-          width comes straight out of both side gaps — which are only 6px and
-          20px at 1024, where the row is already full. From 1280 up there is
-          130px+ a side to spend. */}
-      <nav className="hidden shrink-0 items-center rounded-full bg-pm-grey-tint p-1.5 text-sm lg:flex xl:p-2">
-        {NAV_LEFT.map(navPill)}
-        {/* The compose button. Orange because posting is the primary action,
-            and a circle rather than a pill so it reads as the one control here
-            that does something instead of going somewhere. */}
+      {/* Top-level navigation sits directly on the cream — no track, no fill.
+          The tan oval is gone: grouping here is the row's own rhythm, and the
+          only coloured thing left is the compose circle.
+
+          Still the grid's `auto` column, now `xl:flex` in lockstep with
+          MobileNav's `xl:hidden` (see MobileNav's header comment) — exactly one
+          of the two is ever on screen. The handoff moved lg → xl when the
+          compose button gained its label: the row measures 553px against the
+          oval's 364px, which over-subscribed a 1024px header by 235px. */}
+      {/* What holds the five slots together is proximity, not an edge. A tan
+          rule under the group was tried and removed: it spanned only the nav,
+          so it began and ended in cream and read as a stray underline, and at
+          `--pm-grey-tint` on `--background` (~1.1:1) it was too faint to look
+          deliberate anyway. More to the point, grouping by outline is the one
+          thing this design system rules out — see the Shape section.
+
+          So the spacing does the work. Slots sit `px-2.5` apart (20px between
+          labels, tight enough to read as one run) while the grid leaves 100px+
+          of cream between the nav and the brand and search either side. Near
+          things group; far things separate. Nothing is drawn.
+
+          No vertical padding: the bare 44px slots centre in the 60px row at
+          the same y as the wordmark and the search field. */}
+      <nav aria-label="Main" className="hidden shrink-0 items-center xl:flex">
+        {NAV_LEFT.map(navItem)}
+        {/* The compose button, named rather than left as a bare glyph. Orange
+            because posting is the primary action, and the only filled shape in
+            a row that is otherwise plain type — that contrast is what marks it
+            as the one control here that does something instead of going
+            somewhere.
+
+            Its label is sans, not mono, and that is the type rule rather than
+            an oversight: DESIGN.md splits the voices by who wrote the text, and
+            a button label is human prose. It also keeps the label off the
+            worst contrast pairing in the app — cream on orange is 3.87:1, which
+            is fine at this 14px weight (the same pairing the selected pill used
+            to ship) and would be indefensible at the 11px the mono labels use.
+
+            Focus ring is ink, not orange: an orange ring on an orange fill
+            would not be visible. */}
         <Link
           href="/post"
-          aria-label="Create post"
-          className="-my-0.5 mx-1.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-orange text-[#F7F4EC] transition-[scale,filter] duration-200 ease-out hover:brightness-105 active:scale-95 motion-safe:hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900 xl:mx-2.5"
+          className="mx-2.5 flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-pm-orange px-4 text-sm font-medium text-[#F7F4EC] transition-[scale,filter] duration-200 ease-out hover:brightness-105 active:scale-95 motion-safe:hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
         >
-          <PlusIcon className="h-5 w-5" />
+          <PlusIcon className="h-4 w-4 shrink-0" />
+          Post a plate
         </Link>
-        {NAV_RIGHT.map(navPill)}
+        {NAV_RIGHT.map(navItem)}
       </nav>
       {/* Massed to match the left group so the nav stays between equal gaps —
           the search is the bulk of it, which is why its width is pinned rather

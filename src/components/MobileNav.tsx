@@ -7,11 +7,14 @@ import { NavDot } from "@/components/NavDot";
 import { HomeIcon, CompassIcon, UsersIcon, UserIcon, PlusIcon } from "@/components/icons";
 
 /**
- * The phone and tablet counterpart to the header's pill nav, which is hidden
- * below `lg`. The two breakpoints must stay in lockstep — this is `lg:hidden`
- * and the header oval is `lg:flex` — so exactly one of them is ever on screen.
- * It used to hand off at `sm`, but between sm and lg the header row is too
- * narrow to hold the oval, and it overlapped the brand.
+ * The phone and tablet counterpart to the header's nav row, which is hidden
+ * below `xl`. The two breakpoints must stay in lockstep — this is `xl:hidden`
+ * and the header row is `xl:flex` — so exactly one of them is ever on screen.
+ * The handoff has moved outward twice for the same reason: first sm → lg, when
+ * the header row was too narrow to hold the nav oval and it overlapped the
+ * brand, then lg → xl, when the compose button gained the label "Post a plate"
+ * and the row grew from 364px to 553px. Also keep `globals.css`'s bottom-padding
+ * media query on the same number — it buys back the space this bar covers.
  *
  * Same five slots in the same order — Feed, Discover, create, Friends, Profile
  * — so the two are one menu wearing different clothes for the reach they have
@@ -84,7 +87,7 @@ export function MobileNav({ alerts }: { alerts: NavAlerts }) {
     <nav
       aria-label="Main"
       /* An overlay edge, not a grouping border — content scrolls under this. */
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur-sm lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur-sm xl:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="mx-auto flex max-w-lg items-stretch gap-1 px-2 py-2">

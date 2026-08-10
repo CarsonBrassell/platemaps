@@ -16,7 +16,14 @@ Three voices, split by **who produced the text**. Never mix them up.
 | **Human** | System sans (`font-sans`, no webfont) | Body copy, captions, buttons, post text — anything a person wrote in prose |
 
 - Section labels use the shared `.mono-label` class (11px, uppercase,
-  `tracking-[0.18em]`, weight 500) — `THE HITS`, `FULL MENU`, `YOUR VERDICT`.
+  `tracking-[0.18em]`, weight 500) — `THE HITS`, `FULL MENU`, `YOUR VERDICT`,
+  and the global nav's destinations (`FEED`, `DISCOVER`). The nav is the one
+  place the class dresses something a person navigates rather than a heading:
+  it is chrome, not a machine value, and it wears the label voice because the
+  nav reads as the page's index. Note the class lives **unlayered** in
+  `globals.css`, so it outranks Tailwind's layered `font-*` utilities — a
+  weight set alongside it is silently discarded, which is why nav state is
+  carried by colour and the bullet rather than by going semibold.
 - Mono numbers always set `tabular-nums`.
 - One deliberate exception: in the feed card's bottom row and map-bubble meta,
   a dish name is a compact *reference* to a record, and sets in **mono**, not
@@ -35,7 +42,8 @@ Tokens live in `src/app/globals.css` (`:root` + the retuned `zinc` ramp).
 | card surface | `#FFFFFF` | All cards |
 | `--foreground` / `zinc-900` | `#232019` | Primary text (near-black warm) |
 | `zinc-400` | `#A79E8D` | Muted decorative text (large sizes only) |
-| `zinc-500` | `#7E7261` | Muted *readable* text — the darkest step of the muted hue that clears 4.5:1 on white; use this for 11–12px |
+| `zinc-500` | `#7E7261` | Muted *readable* text **on white**: the darkest step of the muted hue that clears 4.5:1 there (4.5:1 exactly). On the cream ground it is only 4.28:1 and fails — see the row below |
+| `--pm-grey-text` | `#665C4E` | Muted readable text **on cream** (5.96:1). Small type sitting on `--background` rather than on a card uses this, not `zinc-500`. The header nav is the case that forced the distinction |
 | `--pm-orange` | `#C9591F` | The accent: fills, selected states, and **bold/large** numerals (4.26:1 — large text only) |
 | `--pm-orange-text` | `#A8481A` | The accent's small-text voice (5.8:1); orange type at body sizes |
 | `--pm-grey-tint` | `#EDE8DC` | Neutral chip/pill tan, quiet input fills |
@@ -43,8 +51,10 @@ Tokens live in `src/app/globals.css` (`:root` + the retuned `zinc` ramp).
 
 **One accent.** Orange appears only on: recommendation percentages / vote
 counts (data), the selected state of pills and tabs, and the primary action.
-Cream text on orange fills is `#F7F4EC`, not white. If a screen has more than
-about three orange elements beyond the per-card data numbers, remove some.
+Cream text on orange fills is `#F7F4EC`, not white — that pairing is 3.87:1,
+which carries at 14px medium and above and must never be asked to hold a
+label-sized line. If a screen has more than about three orange elements beyond
+the per-card data numbers, remove some.
 
 Semantic colors stay tiny: emerald dot = open/up, `red-700` = destructive or
 "let you down". Avatars use the muted warm `AVATAR_PALETTE` in
@@ -57,17 +67,42 @@ Semantic colors stay tiny: emerald dot = open/up, `red-700` = destructive or
   the cream; the cards under them are the grouping.
 - Chips, tabs, buttons: fully rounded pills (`rounded-full`).
   Selected = `bg-pm-orange text-[#F7F4EC]`; unselected = `bg-pm-grey-tint
-  text-pm-grey-text`.
+  text-pm-grey-text`. The global nav is the one exception and takes no fill at
+  all — see rank 1 below.
 - **Control hierarchy — three ranks, never interchangeable.** Controls that
   share one look read as one menu, so each rank has its own:
-  1. *Global nav* — one menu in two bodies, by reach. Above `sm` it is the
-     header pill group in an oval tan `bg-pm-grey-tint p-1.5` track: active
-     page is an orange pill with cream text, unselected pills grow slightly
-     (`scale-105`) on hover, and an orange circle in the middle holds the
-     compose action. Below `sm` the same five slots become the fixed bottom
-     bar (`MobileNav`) — icon over an 11px label, active in
-     `--pm-orange-text`, compose as a 56px orange circle in the centre thumb
-     position.
+  1. *Global nav* — one menu in two bodies, by reach. From `xl` it is the
+     header row sitting **directly on the cream — no track, no fill**:
+     destinations are `.mono-label` type in `--pm-grey-text`, the current page
+     in `--pm-orange-text` behind a 5px `--pm-orange` bullet, hover a tan
+     `bg-pm-grey-tint` pill. The compose action holds the middle as the row's
+     only filled shape — an orange pill reading "Post a plate".
+
+     **What groups the five slots is spacing, not an edge.** Every gap inside
+     the row is 20px between text edges (`px-2.5` on the slots, `mx-2.5` on the
+     compose pill); the grid then leaves 80px+ of bare cream between the nav
+     and the brand and search either side. Near things group, far things
+     separate, nothing is drawn. A 2px tan shelf under the group was tried and
+     removed: spanning only the nav, it began and ended in cream and read as a
+     stray underline, at ~1.1:1 on the ground it was too faint to look
+     deliberate, and grouping by outline is exactly what the Shape section
+     rules out. If the row ever needs an edge, give the *whole header* one —
+     do not underline the menu alone. Below `xl` the
+     same five slots become the fixed bottom bar (`MobileNav`) — icon over an
+     11px label, active in `--pm-orange-text`, compose as a 56px orange circle
+     in the centre thumb position.
+
+     The two breakpoints are **one switch, and three files hold it**: the
+     header row is `xl:flex`, `MobileNav` is `xl:hidden`, and `globals.css`'s
+     bottom-padding media query must name the same width — it buys back the
+     73px the fixed bar covers, and when it lagged behind, every page lost its
+     last rows on tablets. The handoff has moved outward twice, `sm` → `lg` →
+     `xl`, each time the row got wider; the named compose button took it from
+     364px to 553px, since clawed back to 505px by the tighter slot padding.
+     The header wants 1161px for equal side columns, so at `xl` it fits with
+     **~119px to spare** — anything added to the header has to earn that space
+     or move the switch again. Re-measure when you change it; this number has
+     already been wrong twice.
   2. *Screen tabs* (e.g. the feed's Discover / Friends / Map): plain text
      tabs — the active tab is semibold ink with a short orange underline
      bar. Never pills.
@@ -123,7 +158,8 @@ neighbors don't repeat.
 - **Restaurant page** — `SPOT №xxx` mono label, Fraunces name, tan metadata
   pills, `THE HITS` 2-col dish-card grid (price mono muted left, bold orange
   mono % right), mono footer `RATED BY N LOCALS · SEE FULL MENU →`.
-- **Feed** — pill tabs; post card = mono username+timestamp row, sans post
+- **Feed** — rank-2 screen tabs (plain text, orange underline on the active
+  one — not pills, whatever this line used to say); post card = mono username+timestamp row, sans post
   text, inset photo, bottom row `restaurant · dish` (dish mono) left and
   `▲ 34` orange mono right.
 - **Dish sheet** — cream sheet: tone-block photo, Fraunces name,

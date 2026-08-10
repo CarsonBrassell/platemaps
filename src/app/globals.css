@@ -75,10 +75,13 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Below `sm` the fixed bottom nav (MobileNav) covers the last ~73px of the
-   page, so every screen buys that back here rather than each one remembering
-   its own padding. Matches the bar: 56px row + 8px padding + 1px edge. */
-@media (max-width: 639px) {
+/* Wherever the fixed bottom nav (MobileNav) is on screen it covers the last
+   ~73px of the page, so every screen buys that back here rather than each one
+   remembering its own padding. Matches the bar: 56px row + 8px padding + 1px
+   edge. The breakpoint must track MobileNav's own `xl:hidden` — it sat at
+   639px while the bar already showed to 1023px, so tablets lost the bottom of
+   every page. */
+@media (max-width: 1279px) {
   body {
     padding-bottom: calc(73px + env(safe-area-inset-bottom));
   }
