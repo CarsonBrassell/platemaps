@@ -242,6 +242,23 @@ export function InfoIcon({ className = "" }: IconProps) {
   );
 }
 
+export function ClockIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5.2l3.4 2" />
+    </svg>
+  );
+}
+
+export function CheckIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">
+      <path d="m5 12.5 4.5 4.5L19 7.5" />
+    </svg>
+  );
+}
+
 export function ChevronIcon({ className = "" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">

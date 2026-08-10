@@ -18,6 +18,7 @@ import {
   neighborhoodOptions,
   priceOptions,
   searchFromFilters,
+  strongAspectStars,
   strongAspectsFrom,
   type AspectTally,
   type DiscoverFilters,
@@ -26,7 +27,7 @@ import {
   type StrongAspects,
 } from "@/lib/discoverFilters";
 import type { PriceBand } from "@/data/priceBands";
-import type { Restaurant } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurants";
 
 /**
  * Whether hydration has happened, read as an external store.
@@ -47,7 +48,7 @@ const hydratedOnServer = () => false;
  * The rail used to keep this state internally and never filter anything —
  * picking a neighbourhood changed the label and nothing else.
  */
-export function DiscoverBrowser({ restaurants }: { restaurants: Restaurant[] }) {
+export function DiscoverBrowser({ restaurants }: { restaurants: RestaurantView[] }) {
   /**
    * What the visitor has picked, or null while they haven't picked anything —
    * in which case the URL still speaks for them. See `filters` below.
@@ -127,6 +128,13 @@ export function DiscoverBrowser({ restaurants }: { restaurants: Restaurant[] }) 
   const ctx: FilterContext = useMemo(
     () => ({ now, here: nearby.coords, aspects }),
     [now, nearby.coords, aspects],
+  );
+
+  // The curated strip above the grid. Two rows out of the list this component
+  // already holds — see the note in OurPicks on why it doesn't fetch its own.
+  const picks = useMemo(
+    () => restaurants.filter((r) => r.trending).slice(0, 2),
+    [restaurants],
   );
 
   const neighborhoods = useMemo(() => neighborhoodOptions(restaurants), [restaurants]);
@@ -259,10 +267,25 @@ export function DiscoverBrowser({ restaurants }: { restaurants: Restaurant[] }) 
           onClear={clearAll}
         />
 
-        <main className="min-w-0 flex-1">
+        {/* Lifted so the top of the first row of restaurant cards is level with
+            the top of the FILTERS card — white edge to white edge, which is the
+            alignment you actually read.
+         *
+         * 25.2px is exactly what sits above those cards inside this column: the
+         * "Our picks" label's 13.2px line box + the 12px mb-3 under it. That
+         * puts the label itself up in the band between the header and the rail,
+         * which is empty at this x — the clock is far left at x≤104, the cards
+         * start at x=290.
+         *
+         * Aligning box edges rather than text needs no optical fudge, unlike
+         * the label-to-edge version this replaces.
+         *
+         * lg only — below lg the rail is `hidden` and there is no edge to align
+         * to. */}
+        <main className="min-w-0 flex-1 lg:-mt-[25.2px]">
           {/* Picks are a curated strip, not a search result — they stay put
               while a filter is on rather than disappearing. */}
-          {active === 0 && <OurPicks />}
+          {active === 0 && <OurPicks picks={picks} />}
 
           <section aria-labelledby="all-restaurants">
             <div className="mb-3 flex items-baseline justify-between gap-3 px-1">
@@ -301,9 +324,23 @@ export function DiscoverBrowser({ restaurants }: { restaurants: Restaurant[] }) 
               </div>
             ) : (
               <div className="grid auto-rows-min grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {results.map((restaurant) => (
-                  <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-                ))}
+                {results.map((restaurant) => {
+                  // Only while a category filter is on, and only from the
+                  // tallies the filter itself matched against — so the number
+                  // on the card is the number that put the card here.
+                  const stars = strongAspectStars(aspects, restaurant.id, filters.aspect);
+                  return (
+                    <RestaurantCard
+                      key={restaurant.id}
+                      restaurant={restaurant}
+                      highlight={
+                        filters.aspect && stars !== null
+                          ? { aspect: filters.aspect, stars }
+                          : null
+                      }
+                    />
+                  );
+                })}
               </div>
             )}
           </section>

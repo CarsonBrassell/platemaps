@@ -1,4 +1,4 @@
-import { dishesByRestaurant } from "@/data/dishes";
+import type { Dish } from "@/data/dishes";
 
 export type MapComment = {
   id: string;
@@ -8,6 +8,8 @@ export type MapComment = {
   upvotes?: number;
   /** Whether the signed-in user has already upvoted the underlying post. */
   upvotedByMe?: boolean;
+  /** Downvote twin of upvotedByMe — never true at the same time. */
+  downvotedByMe?: boolean;
   /** Whether the signed-in user has already hearted the underlying post —
       only meaningful when the map is showing Friends-sourced data. */
   heartedByMe?: boolean;
@@ -17,6 +19,14 @@ export type MapComment = {
   /** Replies on the underlying post. Seeded chatter has none and shows none. */
   commentCount?: number;
   postId?: string;
+  /**
+   * The dish this bubble is about, by name, as the seed data wrote it.
+   *
+   * Kept alongside `dishId` because the two are resolved at different times:
+   * the name is authored here, the id can only be looked up once the
+   * restaurant's menu has been read out of the database. See `withDishIds`.
+   */
+  dishName?: string;
   dishId?: string;
 };
 
@@ -140,9 +150,23 @@ function seedHash(id: string) {
   return hash;
 }
 
-function findDishId(restaurantId: string, dishName: string): string | undefined {
-  const dishes = dishesByRestaurant[restaurantId] ?? [];
-  return dishes.find((d) => d.name.toLowerCase() === dishName.toLowerCase())?.id;
+/**
+ * Fills in `dishId` on bubbles that name a dish, given that restaurant's menu.
+ *
+ * This used to happen at module load, against the `dishesByRestaurant` map that
+ * lived next door. Menus are database rows now, so the link can only be made
+ * where a menu has actually been loaded — the restaurant page and the feed map
+ * both already hold one. A bubble whose dish name matches nothing keeps its
+ * text and simply isn't clickable, which is what it did before too.
+ */
+export function withDishIds(
+  comments: readonly MapComment[],
+  dishes: readonly Dish[],
+): MapComment[] {
+  const byName = new Map(dishes.map((d) => [d.name.toLowerCase(), d.id]));
+  return comments.map((c) =>
+    c.dishName ? { ...c, dishId: byName.get(c.dishName.toLowerCase()) } : c,
+  );
 }
 
 // These are seed flavor comments, not real posts — give each a believable
@@ -161,7 +185,7 @@ export const mapCommentsByRestaurant: Record<string, MapComment[]> = Object.from
         upvotes: 2 + (seed % 23),
         createdAt: new Date(Date.now() - (1 + (seed % 71)) * 3_600_000).toISOString(),
         dishPrefix: c.dish ? `${c.dish} ${70 + (seed % 29)}%` : null,
-        dishId: c.dish ? findDishId(restaurantId, c.dish) : undefined,
+        dishName: c.dish,
       };
     }),
   ]),

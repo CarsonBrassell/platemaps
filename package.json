@@ -11,7 +11,8 @@
     "ratings:blend": "node --env-file=.env.local scripts/blend-ratings.mjs",
     "aspects:preview": "node scripts/preview-aspect-scores.mjs",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
-    "db:seed": "node --env-file=.env.local scripts/seed-demo.mjs"
+    "db:seed": "node --env-file=.env.local scripts/seed-demo.mjs",
+    "restaurants:import": "node --env-file=.env.local scripts/import-restaurants.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

@@ -48,10 +48,10 @@ const SCENARIOS = [
   },
   {
     title: "Taco stand — 4.1 stars",
-    note: "Dessert and Drinks are never mentioned at a taco stand. They stay unremarked, not bad.",
+    note: "Drinks are never mentioned at a taco stand. They stay unremarked, not bad.",
     overall: 4.1,
     reviews: 24,
-    votes: v({ Food: [14, 0], Value: [7, 0], Speed: [3, 0], Ambiance: [0, 5] }),
+    votes: v({ Food: [14, 0], Value: [7, 0], "Menu variety": [3, 0], Ambiance: [0, 5] }),
   },
   {
     title: "Cocktail bar, weak kitchen — 3.9 stars",

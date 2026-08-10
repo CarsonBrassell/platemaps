@@ -1,5 +1,8 @@
 import { neon } from "@neondatabase/serverless";
 import { randomUUID } from "node:crypto";
+import type { Restaurant, RestaurantView } from "@/data/restaurants";
+import type { Dish } from "@/data/dishes";
+import { bandFor } from "@/data/priceBands";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -850,12 +853,20 @@ export async function getHeartsForAuthor(
 export type ActivityKind = "comment" | "heart" | "upvote";
 
 export type ActivityEvent = {
-  /** `kind:commentId` or `kind:postId:actorId` — unique across all three kinds. */
+  /**
+   * Unique across all three kinds. Built from the comment id, or from
+   * post + actor for a heart — and from post + timestamp for an upvote, whose
+   * actor id must not appear even in a React key.
+   */
   id: string;
   kind: ActivityKind;
   createdAt: string;
-  actorId: string;
-  actorName: string;
+  /**
+   * Who did it — absent on every `upvote` row, and absent there in the SQL
+   * itself, not blanked afterwards. An upvote is anonymous to the author.
+   */
+  actorId?: string;
+  actorName?: string;
   actorAvatarUrl?: string;
   postId: string;
   postRestaurant?: string;
@@ -883,10 +894,14 @@ export type ActivityEvent = {
  * too. It is NOT a heart count for anyone else, and nothing here feeds
  * Discover's ranking — getDiscoverFeed still never names post_hearts.
  *
- * Upvoter identity is new here. Upvotes are the public reaction (the count is
- * on every card already), so naming who cast one to the person they voted for
- * discloses nothing the act itself didn't — but keep it to this surface, and
- * do not fold actor names into the public upvoteCount on Post.
+ * Upvotes are anonymous even here — the whole point of the up/down pair is
+ * that it is a verdict on a plate, and a verdict people have to sign is a
+ * different, more social thing than the one Discover ranks on. So the upvote
+ * branch below has no `users` join at all: there is no name to leak because
+ * the query never reads one, and its event id is post + timestamp rather than
+ * post + user so the actor's id can't ride along in a key either. Hearts, the
+ * friends-only reaction, do name the person — that asymmetry is the feature,
+ * not an oversight. Do not add a join to the upvote branch.
  *
  * Your own reactions to your own posts are excluded from every branch: this
  * list answers "what did other people do", and self-activity is noise in it.
@@ -928,14 +943,13 @@ export async function getActivityForAuthor(
     UNION ALL
 
     SELECT 'upvote',
-           'upvote:' || v.post_id || ':' || v.user_id,
+           'upvote:' || v.post_id || ':' || EXTRACT(EPOCH FROM v.created_at)::text,
            v.created_at,
            NULL::text,
-           u.id, u.name, u.avatar_url,
+           NULL::text, NULL::text, NULL::text,
            m.id, m.restaurant, m.restaurant_id, m.dish_name, m.text
     FROM post_upvotes v
     JOIN mine m ON m.id = v.post_id
-    JOIN users u ON u.id = v.user_id
     WHERE v.user_id <> ${userId}
 
     ORDER BY created_at DESC
@@ -946,8 +960,8 @@ export async function getActivityForAuthor(
     id: r.event_id as string,
     kind: r.kind as ActivityKind,
     createdAt: new Date(r.created_at as string).toISOString(),
-    actorId: r.actor_id as string,
-    actorName: r.actor_name as string,
+    actorId: (r.actor_id as string | null) ?? undefined,
+    actorName: (r.actor_name as string | null) ?? undefined,
     actorAvatarUrl: (r.actor_avatar_url as string | null) ?? undefined,
     postId: r.post_id as string,
     postRestaurant: (r.restaurant as string | null) ?? undefined,
@@ -1340,5 +1354,154 @@ export async function getPublicProfile(userId: string): Promise<PublicProfile | 
     points: row.points as number,
     favoriteCuisine: (row.favorite_cuisine as string | null) ?? undefined,
     favoriteRestaurantId: (row.favorite_restaurant_id as string | null) ?? undefined,
+  };
+}
+
+/* --- Restaurants and menus ---------------------------------------------- */
+
+/*
+ * These used to be `import { restaurants } from "@/data/restaurants"` in
+ * twenty files, several of them client components — so the whole array shipped
+ * to the browser. The array is seed input now (loaded by
+ * `npm run restaurants:import`) and every read goes through here.
+ *
+ * The `Restaurant` and `Dish` types still live in src/data/ rather than moving
+ * here with the queries, which inverts this file's usual rule that db.ts owns
+ * row shapes. That rule exists to keep client components from importing this
+ * module and dragging the Neon driver into the bundle; a type-only import
+ * pointing the other way costs nothing at runtime, and those two types are
+ * shared vocabulary between the seed files, the fetch scripts and the UI.
+ */
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToRestaurant(row: any): Restaurant {
+  return {
+    id: row.id,
+    name: row.name,
+    cuisine: row.cuisine,
+    neighborhood: row.neighborhood,
+    distance: row.distance,
+    walkTime: row.walk_time,
+    closingTime: row.closing_time,
+    lat: row.lat,
+    lng: row.lng,
+    status: row.status,
+    statusLabel: row.status_label,
+    rating: row.rating,
+    reviewCount: row.review_count,
+    yelpRating: row.yelp_rating ?? undefined,
+    yelpReviewCount: row.yelp_review_count ?? undefined,
+    googleRating: row.google_rating ?? undefined,
+    googleReviewCount: row.google_review_count ?? undefined,
+    trending: row.trending ?? false,
+    photo: row.photo ?? undefined,
+    photoAlt: row.photo_alt ?? undefined,
+    yelpUrl: row.yelp_url ?? undefined,
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToDish(row: any): Dish {
+  return {
+    id: row.id,
+    name: row.name,
+    description: row.description ?? undefined,
+    price: row.price,
+    section: row.section,
+    yesVotes: row.yes_votes,
+    noVotes: row.no_votes,
+  };
+}
+
+/**
+ * Every restaurant, each carrying the price band derived from its menu.
+ *
+ * The band is computed here rather than stored, for the reason data/priceBands.ts
+ * gives: it is a summary of the prices the app already shows, not a fact about
+ * the business, so it has to follow the menu automatically. That costs a second
+ * query for the price columns of every dish — cheap at this size, and the
+ * obvious thing to turn into a column maintained by the import script when the
+ * dish table is large enough to notice.
+ */
+export async function getRestaurants(): Promise<RestaurantView[]> {
+  const [restaurantRows, dishRows] = await Promise.all([
+    // Seed-file order, not id order — `id` is TEXT, so ordering by it would
+    // put "10" ahead of "2" and reshuffle the grid. See the sort_order note in
+    // scripts/migrate.mjs.
+    sql`SELECT * FROM restaurants ORDER BY sort_order, id`,
+    sql`SELECT restaurant_id, price, section FROM dishes`,
+  ]);
+
+  const menus = new Map<string, { price: string; section: string }[]>();
+  for (const row of dishRows) {
+    const id = row.restaurant_id as string;
+    const menu = menus.get(id);
+    const dish = { price: row.price as string, section: row.section as string };
+    if (menu) menu.push(dish);
+    else menus.set(id, [dish]);
+  }
+
+  return restaurantRows.map((row) => ({
+    ...rowToRestaurant(row),
+    priceBand: bandFor(menus.get(row.id as string) ?? []),
+  }));
+}
+
+export async function getRestaurantById(id: string): Promise<Restaurant | null> {
+  const rows = await sql`SELECT * FROM restaurants WHERE id = ${id}`;
+  return rows[0] ? rowToRestaurant(rows[0]) : null;
+}
+
+/** A restaurant's menu, in the order the menu itself listed it. */
+export async function getDishesForRestaurant(restaurantId: string): Promise<Dish[]> {
+  const rows = await sql`
+    SELECT * FROM dishes WHERE restaurant_id = ${restaurantId} ORDER BY sort_order
+  `;
+  return rows.map(rowToDish);
+}
+
+/**
+ * Menus for several restaurants at once, keyed by restaurant id — the shape
+ * the old `dishesByRestaurant` map had, for the two surfaces that genuinely
+ * need many menus at a time (the composer's dish picker and the feed map).
+ */
+export async function getDishesByRestaurant(
+  restaurantIds?: readonly string[],
+): Promise<Record<string, Dish[]>> {
+  if (restaurantIds && restaurantIds.length === 0) return {};
+
+  const rows = restaurantIds
+    ? await sql`
+        SELECT * FROM dishes
+        WHERE restaurant_id = ANY(${restaurantIds as string[]})
+        ORDER BY restaurant_id, sort_order
+      `
+    : await sql`SELECT * FROM dishes ORDER BY restaurant_id, sort_order`;
+
+  const byRestaurant: Record<string, Dish[]> = {};
+  for (const row of rows) {
+    const id = row.restaurant_id as string;
+    (byRestaurant[id] ??= []).push(rowToDish(row));
+  }
+  return byRestaurant;
+}
+
+/**
+ * The distinct cuisines and neighbourhoods, for the pickers that offer them as
+ * options. Derived from the rows rather than kept as a list, which is what
+ * data/restaurants.ts did — the difference is that the database does the
+ * grouping instead of the browser doing it over the whole array.
+ */
+export async function getRestaurantFacets(): Promise<{
+  cuisines: string[];
+  neighborhoods: string[];
+}> {
+  const [cuisineRows, neighborhoodRows] = await Promise.all([
+    sql`SELECT DISTINCT cuisine FROM restaurants ORDER BY cuisine`,
+    sql`SELECT DISTINCT neighborhood FROM restaurants ORDER BY neighborhood`,
+  ]);
+  return {
+    cuisines: cuisineRows.map((r) => r.cuisine as string),
+    neighborhoods: neighborhoodRows.map((r) => r.neighborhood as string),
   };
 }

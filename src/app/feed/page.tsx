@@ -5,17 +5,15 @@ import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
-import { restaurants } from "@/data/restaurants";
-import { mapCommentsByRestaurant, type MapComment } from "@/data/mapComments";
-import { dishesByRestaurant } from "@/data/dishes";
+import type { RestaurantView } from "@/data/restaurants";
+import { mapCommentsByRestaurant, withDishIds, type MapComment } from "@/data/mapComments";
+import type { Dish } from "@/data/dishes";
 
 import { FeedHeader } from "@/components/feed/FeedHeader";
 import { FeedTabs } from "@/components/feed/FeedTabs";
-import { CreatePostComposer } from "@/components/feed/CreatePostComposer";
 import { FoodPostCard, type FriendStatus } from "@/components/feed/FoodPostCard";
 import { usePostFeed } from "@/components/feed/usePostFeed";
 import { CommentsPanel } from "@/components/feed/CommentsPanel";
-import { Leaderboard } from "@/components/feed/Leaderboard";
 import { FeedSkeleton } from "@/components/feed/FeedSkeleton";
 import {
   EmptyFeedState,
@@ -66,8 +64,12 @@ function dishPrefixFromPost(text: string): string | null {
   return match ? `${match[1]} ${match[2]}%` : null;
 }
 
-function findDishId(restaurantId: string, dishName: string): string | undefined {
-  return dishesByRestaurant[restaurantId]?.find(
+function findDishId(
+  menus: Record<string, Dish[]>,
+  restaurantId: string,
+  dishName: string,
+): string | undefined {
+  return menus[restaurantId]?.find(
     (d) => d.name.toLowerCase() === dishName.toLowerCase(),
   )?.id;
 }
@@ -131,12 +133,19 @@ function FeedPageInner() {
   // Friend graph, scoped to just what a card needs to render its button —
   // the full request objects (with ids to accept/decline against) live on
   // /friends, which fetches /api/friends itself.
+  // What the map draws on. Both arrive from the API below — see that effect.
+  const [restaurants, setRestaurants] = useState<RestaurantView[]>([]);
+  const [menus, setMenus] = useState<Record<string, Dish[]>>({});
+
   const [friendIds, setFriendIds] = useState<string[]>([]);
   const [outgoingIds, setOutgoingIds] = useState<string[]>([]);
   const [incomingIds, setIncomingIds] = useState<string[]>([]);
 
   const [highlighted, setHighlighted] = useState<string | null>(null);
-  const [ranksVersion, setRanksVersion] = useState(0);
+  /* Write-only while the leaderboard is off — it was the only reader of this
+     counter. The two setter calls below are left in place so restoring the
+     leaderboard is just re-adding the <aside> and naming this value again. */
+  const [, setRanksVersion] = useState(0);
 
   const postRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -195,6 +204,42 @@ function FeedPageInner() {
       cancelled = true;
     };
   }, [isSignedIn]);
+
+  /*
+   * The map's backdrop: every restaurant, and every menu, so a bubble that
+   * names a dish can link to it.
+   *
+   * Both used to be static imports. Fetched together in one effect because the
+   * map needs both or neither — half of this data draws pins with dead dish
+   * links. The whole dish table is the unbounded call flagged in the route's
+   * own comment; the map already knows which restaurants it draws, so passing
+   * `?ids=` is where that gets fixed when the table is big enough to matter.
+   */
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const [restaurantRes, dishRes] = await Promise.all([
+          fetch("/api/restaurants"),
+          fetch("/api/restaurants/dishes"),
+        ]);
+        if (!restaurantRes.ok || !dishRes.ok) return;
+        const [{ restaurants: rows }, { dishes }] = await Promise.all([
+          restaurantRes.json() as Promise<{ restaurants: RestaurantView[] }>,
+          dishRes.json() as Promise<{ dishes: Record<string, Dish[]> }>,
+        ]);
+        if (cancelled) return;
+        setRestaurants(rows);
+        setMenus(dishes);
+      } catch {
+        // The feed itself doesn't depend on these — the list renders, and the
+        // map tab comes up empty rather than the page failing.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Deep link from a map bubble or a shared /feed?post= link. Discover is
   // ranked and capped rather than "every post" now, so a link to a post
@@ -303,6 +348,7 @@ function FeedPageInner() {
   const mapComments = useMemo(() => {
     const out: Record<string, MapComment[]> = {};
     for (const restaurant of restaurants) {
+      const menu = menus[restaurant.id] ?? [];
       const real: MapComment[] = (posts ?? [])
         .filter((p) => p.restaurant === restaurant.name)
         .map((p) => {
@@ -316,20 +362,25 @@ function FeedPageInner() {
             score: p.upvoteCount - p.downvoteCount,
             upvotes: p.upvoteCount - p.downvoteCount,
             upvotedByMe: p.upvotedByMe,
+            downvotedByMe: p.downvotedByMe,
             heartedByMe: p.heartedByMe,
             commentCount: p.comments.length,
             createdAt: p.createdAt,
             rating: bubbleRating(p),
             dishPrefix: bubbleDishPrefix(p),
             postId: p.id,
-            dishId: dish ? findDishId(restaurant.id, dish) : undefined,
+            dishId: dish ? findDishId(menus, restaurant.id, dish) : undefined,
           };
         })
         .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
-      out[restaurant.id] = [...real, ...(mapCommentsByRestaurant[restaurant.id] ?? [])];
+      // The seeded bubbles name their dish rather than carrying its id, since
+      // menus are database rows now — resolved here against the menu this
+      // restaurant actually has. See withDishIds.
+      const seeded = withDishIds(mapCommentsByRestaurant[restaurant.id] ?? [], menu);
+      out[restaurant.id] = [...real, ...seeded];
     }
     return out;
-  }, [posts]);
+  }, [posts, restaurants, menus]);
 
   const activePost = commentsPostId
     ? (posts?.find((p) => p.id === commentsPostId) ?? null)
@@ -372,14 +423,44 @@ function FeedPageInner() {
 
       {showMap ? (
         <div className="overflow-hidden rounded-2xl bg-white">
+          {/* Inset like the photo in a hero card, so the map's own radius
+              reads inside the card's. The map container clips itself. */}
+          {/* The floating switch below takes the map's top-left corner, so
+              MapLibre's zoom stack (added "top-left" in RestaurantMap) is
+              pushed down to clear it — scoped here rather than in
+              .map-fun-tiles, since every other map keeps its corner. */}
+          <div className="relative p-2.5 [&>div]:overflow-hidden [&_.maplibregl-ctrl-top-left]:pt-10">
+          {/* The bubble chip stays upvote-only — there's no room on a map pin
+              for a pair — but the number it shows is the same net score the
+              card shows. Downvoting happens on the card. */}
+          <RestaurantMap
+            restaurants={restaurants}
+            commentsByRestaurant={mapComments}
+            mode={mapSource}
+            onUpvote={
+              isSignedIn && mapSource === "discover"
+                ? (postId) => handleVote(postId, "up")
+                : undefined
+            }
+            onDownvote={
+              isSignedIn && mapSource === "discover"
+                ? (postId) => handleVote(postId, "down")
+                : undefined
+            }
+            onHeart={isSignedIn && mapSource === "friends" ? handleHeart : undefined}
+          />
+
           {/* The map's own Discover/Friends switch — separate from the tab
               bar above, since leaving the map and coming back shouldn't
               reset which source you'd picked. Which source is active decides
-              both what the bubbles show and which reaction they offer. */}
-          {/* A segmented switch, not another pill tab bar — this is a data
-              source toggle inside the map card, one rank below the screen's
-              own tabs. Tan track, white selected segment, mono labels. */}
-          <div className="flex px-2.5 py-2.5">
+              both what the bubbles show and which reaction they offer.
+
+              It floats on the night map rather than sitting in a white band
+              above it: the map is the surface it belongs to, and a band of
+              card ground above it just pushed the map down. Still a segmented
+              switch, not another pill tab bar — tan track, white selected
+              segment, mono labels — one rank below the screen's own tabs. */}
+          <div className="absolute left-5 top-5 z-10">
             <div
               role="tablist"
               aria-label="Map data source"
@@ -403,38 +484,10 @@ function FeedPageInner() {
               ))}
             </div>
           </div>
-
-          {/* Inset like the photo in a hero card, so the map's own radius
-              reads inside the card's. The map container clips itself. */}
-          <div className="px-2.5 pb-2.5 [&>div]:overflow-hidden">
-          {/* The bubble chip stays upvote-only — there's no room on a map pin
-              for a pair — but the number it shows is the same net score the
-              card shows. Downvoting happens on the card. */}
-          <RestaurantMap
-            restaurants={restaurants}
-            commentsByRestaurant={mapComments}
-            mode={mapSource}
-            onUpvote={
-              isSignedIn && mapSource === "discover"
-                ? (postId) => handleVote(postId, "up")
-                : undefined
-            }
-            onHeart={isSignedIn && mapSource === "friends" ? handleHeart : undefined}
-          />
           </div>
         </div>
       ) : (
         <>
-          {navKey !== "saved" && (
-            <div className="mb-4">
-              <CreatePostComposer
-                name={account?.name}
-                avatarUrl={account?.avatarUrl}
-                isSignedIn={isSignedIn}
-              />
-            </div>
-          )}
-
           {posts === null ? (
             <FeedSkeleton />
           ) : loadError && posts.length === 0 ? (
@@ -514,14 +567,11 @@ function FeedPageInner() {
       <Header />
 
       <div className="px-4 pt-2 sm:px-6">
+        {/* The leaderboard used to sit in an xl-only <aside> beside this
+            column. With it gone the feed is the only thing here, so it centres
+            itself rather than staying pinned left against an empty gutter. */}
         <div className="mx-auto flex w-full max-w-6xl gap-8">
-          <main className="min-w-0 flex-1 lg:max-w-[640px]">{feedColumn}</main>
-
-          <aside className="hidden w-80 shrink-0 xl:block">
-            <div className="sticky top-6 flex flex-col gap-4">
-              <Leaderboard currentUserId={account?.id ?? null} refreshKey={ranksVersion} />
-            </div>
-          </aside>
+          <main className="mx-auto min-w-0 flex-1 lg:max-w-[640px]">{feedColumn}</main>
         </div>
       </div>
 

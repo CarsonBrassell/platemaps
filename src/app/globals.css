@@ -15,6 +15,14 @@
   --pm-orange-border: #e3c4ac;
   --pm-grey-tint: #ede8dc;
   --pm-grey-text: #665c4e;
+  /* The one colour in the app that is not the accent, reserved for the unread
+     dots in the nav. It exists because those dots previously wore --pm-orange
+     and read as decoration among all the other orange — "something is waiting"
+     has to be legible in a glance from across the header. Kept warm (a red
+     with the palette's own yellow in it) and far enough off #c9591f in hue to
+     be told apart at 6px. Not for type, borders or fills: if it starts
+     appearing anywhere but a notification dot it has stopped meaning this. */
+  --pm-red: #c62a1e;
   /* Warm neutral tone blocks standing where dish photos don't exist yet —
      deliberate blocks of warm tone, never gray boxes or icon placeholders. */
   --pm-tone-1: #eee5d2;
@@ -37,6 +45,7 @@
   --color-pm-orange-border: var(--pm-orange-border);
   --color-pm-grey-tint: var(--pm-grey-tint);
   --color-pm-grey-text: var(--pm-grey-text);
+  --color-pm-red: var(--pm-red);
 
   /* The neutral ramp is retuned in place rather than renamed. ~140 `zinc-*`
      classes are already spread across 14 components; redefining the scale
@@ -144,11 +153,36 @@ h3 {
   }
 }
 
+/* The bubble's one line, as a flex row so truncation has priorities: the
+   dish name gives way first, the score is never clipped, and the trailing
+   prose takes whatever room remains. Whitespace-only nodes between the spans
+   are not rendered in flex layout, and become the ordinary word spaces when
+   hover flips this to a block below. */
 .map-bubble-text {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
   pointer-events: auto;
+}
+
+.map-line-clip {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-line-score {
+  flex: none;
+}
+
+.map-line-fill {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .map-bubble-box {
@@ -164,13 +198,24 @@ h3 {
 }
 
 /* 276px, not 280: the box below opens to a 300px border-box, and its own
-   padding (11) and border (1) on each side leave exactly 276 inside. */
+   padding (11) and border (1) on each side leave exactly 276 inside. The row
+   flips to a block here so its spans stop being flex items and flow as one
+   wrapping paragraph — same words the resting line truncated, now whole. */
 .map-bubble:hover .map-bubble-text,
 .map-bubble-box:hover .map-bubble-text {
+  display: block;
   white-space: normal;
   overflow: visible;
   max-width: 276px !important;
   word-break: break-word;
+}
+
+.map-bubble:hover .map-line-clip,
+.map-bubble-box:hover .map-line-clip,
+.map-bubble:hover .map-line-fill,
+.map-bubble-box:hover .map-line-fill {
+  display: inline;
+  overflow: visible;
 }
 
 /* No box-shadow on hover either — the bubble is a flat card by design, and
@@ -181,21 +226,10 @@ h3 {
   max-width: 300px !important;
 }
 
-/* What was actually said, under the dish that leads the bubble. Collapsed at
-   rest so the map reads as one line per plate, and revealed on hover — the
-   same gesture that already widens the box. */
-.map-bubble-more {
-  display: none;
-  margin-top: 2px;
-  font-size: 10.5px;
-  line-height: 1.35;
-  word-break: break-word;
-}
-
-.map-bubble:hover .map-bubble-more,
-.map-bubble-box:hover .map-bubble-more {
-  display: block;
-}
+/* The whole comment shares one line with the dish and its score, so there is
+   no separate collapsed body anymore: at rest the line truncates like any
+   one-liner, and the hover rules above unwrap the same text in place — same
+   words, more of them visible, no second element to reveal. */
 
 /* The dish leading a bubble is a reference to another record in the app — it
    links into that dish's own menu entry — so it is styled the way a social
@@ -230,59 +264,61 @@ h3 {
   border-radius: 2px;
 }
 
-/* One rule for both bubble chips. They are never both on the same bubble —
-   Discover bubbles upvote, Friends bubbles heart — but they are the same
-   control in two moods, and the heart previously had no styling of its own at
-   all: no focus ring, no press feedback. */
+/* One rule for the bubble chips. Discover bubbles carry the vote pair,
+   Friends bubbles the heart — the same control in different moods. State and
+   feedback are colour only: no scale, no pop, no burst, the same rule
+   PostActions states for the card's own row — a control that grows under the
+   cursor makes the bubble twitch right when you're reading what you did. */
 .map-upvote-chip,
+.map-downvote-chip,
 .map-heart-chip {
   position: relative;
-  transition: transform 0.1s ease;
 }
 
 /* The meta row sets at 10px, so the chip's own glyph is about 19x15 — far too
    small a target for a phone, which is where this map is used. The hit area is
    grown with a pseudo-element rather than padding so the row's measured height
    stays exactly what bubbleHeight() in RestaurantMap.tsx computes. The top
-   inset stops short of the 5px meta gap so it can't swallow a click meant for
+   inset stops short of the meta gap so it can't swallow a click meant for
    the dish reference above. */
 .map-upvote-chip::before,
+.map-downvote-chip::before,
 .map-heart-chip::before {
   content: "";
   position: absolute;
   inset: -4px -6px -8px -6px;
 }
 
-/* Built as raw DOM inside the map, so the app's focus-visible convention has
-   to be restated here rather than arriving via Tailwind classes. */
-.map-upvote-chip:focus-visible,
-.map-heart-chip:focus-visible {
-  outline: 2px solid var(--pm-orange);
-  outline-offset: 2px;
+/* The two vote arrows sit either side of the count, so their grown hit areas
+   pull in horizontally rather than annexing each other's half of the pair. */
+.map-upvote-chip::before,
+.map-downvote-chip::before {
+  inset: -4px -3px -8px -3px;
+}
+
+/* The pair's colours, mirroring the card row: muted until you've voted that
+   way (the hollow arrow), the orange's small-text voice when you have or when
+   the cursor is asking. #776B5B is the bubble's own muted step — see
+   BUBBLE_MUTED in RestaurantMap.tsx. */
+.map-upvote-chip,
+.map-downvote-chip {
+  color: #776b5b;
 }
 
 .map-upvote-chip:hover,
-.map-heart-chip:hover {
-  transform: scale(1.08);
+.map-downvote-chip:hover,
+.map-upvote-chip[aria-pressed="true"],
+.map-downvote-chip[aria-pressed="true"] {
+  color: var(--pm-orange-text);
 }
 
-.map-upvote-chip:active,
-.map-heart-chip:active {
-  transform: scale(0.94);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .map-upvote-chip,
-  .map-heart-chip {
-    transition: none;
-  }
-
-  .map-upvote-chip:hover,
-  .map-heart-chip:hover,
-  .map-upvote-chip:active,
-  .map-heart-chip:active {
-    transform: none;
-  }
+/* Built as raw DOM inside the map, so the app's focus-visible convention has
+   to be restated here rather than arriving via Tailwind classes. */
+.map-upvote-chip:focus-visible,
+.map-downvote-chip:focus-visible,
+.map-heart-chip:focus-visible {
+  outline: 2px solid var(--pm-orange);
+  outline-offset: 2px;
 }
 
 /* The neo-noir night look lives entirely in our own vector style

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { restaurants } from "@/data/restaurants";
+import type { Restaurant } from "@/data/restaurants";
 import { StarIcon } from "@/components/icons";
 
 /**
@@ -11,12 +11,16 @@ import { StarIcon } from "@/components/icons";
  * Matches name, cuisine and neighbourhood so "thai", "little italy" and
  * "landini" all land somewhere. Ranked so a name match beats a cuisine match
  * — typing "pizza" should reach Bronx Pizza before every pizzeria in the city.
+ *
+ * Ranks whatever the server sent for this query rather than the whole city.
+ * `/api/restaurants?q=` narrows on the same three fields, so the ordering below
+ * is unchanged — it just never needs the corpus in the browser to produce it.
  */
-function rank(query: string) {
+function rank(query: string, candidates: readonly Restaurant[]) {
   const q = query.trim().toLowerCase();
   if (!q) return [];
 
-  return restaurants
+  return candidates
     .map((r) => {
       const name = r.name.toLowerCase();
       const cuisine = r.cuisine.toLowerCase();
@@ -43,9 +47,45 @@ export function RestaurantSearch() {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
+  const [candidates, setCandidates] = useState<Restaurant[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
 
-  const results = useMemo(() => rank(query), [query]);
+  /*
+   * One request per settled query, not per keystroke.
+   *
+   * 150ms is below the point a typist notices and above the gap between
+   * characters, so a word typed at speed costs one request instead of six. The
+   * cleanup both cancels the pending timer and marks the in-flight response
+   * stale, which is what stops a slow "th" from landing after a fast "thai"
+   * and repopulating the list with the wrong matches.
+   */
+  useEffect(() => {
+    const q = query.trim();
+    // Nothing to clear: `rank` returns [] for an empty query, so whatever the
+    // last search left in state is already unreachable. Emptying it here would
+    // be a setState in an effect body to reach a state the render already has.
+    if (!q) return;
+
+    let stale = false;
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/restaurants?q=${encodeURIComponent(q)}`);
+        if (!res.ok) return;
+        const data: { restaurants: Restaurant[] } = await res.json();
+        if (!stale) setCandidates(data.restaurants);
+      } catch {
+        // A dropped search request leaves the previous matches on screen,
+        // which is a better answer than emptying the list.
+      }
+    }, 150);
+
+    return () => {
+      stale = true;
+      clearTimeout(timer);
+    };
+  }, [query]);
+
+  const results = useMemo(() => rank(query, candidates), [query, candidates]);
 
   useEffect(() => {
     if (!open) return;
@@ -80,6 +120,12 @@ export function RestaurantSearch() {
   // The width lives on this wrapper rather than on the input so the field can
   // shrink below its preferred size when the header row is tight, instead of
   // holding its size and running under the nav.
+  //
+  // Held at 224px deliberately: this field is the bulk of the header's right
+  // group, and that group is sized to match the left one (brand + city) so the
+  // centred nav oval sits between two equal gaps — 134px and 143px at 1280.
+  // Widening it here pulls the header out of symmetry, it does not decentre the
+  // nav; the grid in Header.tsx owns the centring.
   return (
     <div ref={wrapRef} className="relative hidden w-40 min-w-0 sm:block lg:w-56">
       <div className="flex items-center gap-2.5 rounded-full bg-white px-4 py-2 transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-pm-orange">
@@ -131,11 +177,14 @@ export function RestaurantSearch() {
         )}
       </div>
 
+      {/* Anchored right, not left: the field now sits in the header's right
+          group next to the avatar, and this menu is wider than the field, so a
+          left anchor would push it off the right edge of the viewport. */}
       {showing && (
         <ul
           id="search-results"
           role="listbox"
-          className="absolute left-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl bg-white py-1.5"
+          className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl bg-white py-1.5"
         >
           {results.length === 0 ? (
             <li className="px-4 py-3 text-sm text-zinc-500">

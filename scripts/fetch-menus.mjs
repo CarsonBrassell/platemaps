@@ -51,6 +51,12 @@ const MenuSchema = z.object({
     .array(
       z.object({
         name: z.string().describe("Dish name exactly as written on the menu."),
+        description: z
+          .string()
+          .describe(
+            "The menu's own one-line description of what is in the dish, trimmed to " +
+              "about 45 characters. Empty string if the menu gives none — do not invent one.",
+          ),
         price: z.string().describe('Formatted like "$12.00". Empty string if unlisted.'),
         section: z
           .string()
@@ -206,6 +212,9 @@ const body = results
         const fields = [
           `id: ${JSON.stringify(`${restaurant.id}-${i + 1}`)}`,
           `name: ${JSON.stringify(dish.name)}`,
+          // Optional in the type — leave the key off entirely rather than
+          // writing an empty string the UI would have to test for.
+          ...(dish.description ? [`description: ${JSON.stringify(dish.description)}`] : []),
           `price: ${JSON.stringify(dish.price || "—")}`,
           `section: ${JSON.stringify(dish.section)}`,
           `yesVotes: 0`,

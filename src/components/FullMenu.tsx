@@ -1,6 +1,7 @@
 type MenuDish = {
   id: string;
   name: string;
+  description?: string;
   price: string;
 };
 
@@ -39,9 +40,16 @@ export function FullMenu({
                 <button
                   key={dish.id}
                   onClick={() => onSelect(dish.id)}
-                  className="flex min-h-11 items-center justify-between gap-4 rounded-xl px-2 py-2.5 text-left text-sm transition-colors hover:bg-pm-grey-tint/50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-pm-orange active:bg-pm-grey-tint"
+                  className="flex min-h-11 items-start justify-between gap-4 rounded-xl px-2 py-2.5 text-left text-sm transition-colors hover:bg-pm-grey-tint/50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-pm-orange active:bg-pm-grey-tint"
                 >
-                  <span className="text-zinc-700">{dish.name}</span>
+                  <span className="min-w-0">
+                    <span className="block text-zinc-700">{dish.name}</span>
+                    {dish.description && (
+                      <span className="mt-0.5 block text-xs leading-snug text-zinc-500">
+                        {dish.description}
+                      </span>
+                    )}
+                  </span>
                   <span className="shrink-0 font-mono text-xs text-zinc-500">{dish.price}</span>
                 </button>
               ))}

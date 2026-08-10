@@ -242,6 +242,71 @@ const statements = [
     PRIMARY KEY (post_id, user_id)
   )`,
   `CREATE INDEX IF NOT EXISTS idx_post_downvotes_post ON post_downvotes(post_id)`,
+
+  // --- Restaurants and menus ----------------------------------------------
+  //
+  // These used to be static TypeScript imported straight into components
+  // (src/data/restaurants.ts, src/data/dishes.ts). That worked at 36 places
+  // and could not survive growth: the home page is a client component, so the
+  // entire array shipped to every visitor's browser. Postgres is the source of
+  // truth from here; the generated files are seed input for
+  // `npm run restaurants:import` and nothing in src/ imports them.
+  //
+  // Deliberately NOT foreign-keyed from posts.restaurant_id, even though it is
+  // now referenceable. `scripts/fetch-restaurants.mjs` rewrites the id space
+  // wholesale, so an FK would turn a routine data refresh into a cascade
+  // through everyone's reviews. The seam stays soft until ids are stable.
+  `CREATE TABLE IF NOT EXISTS restaurants (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    cuisine TEXT NOT NULL,
+    neighborhood TEXT NOT NULL,
+    distance TEXT NOT NULL,
+    walk_time TEXT NOT NULL,
+    closing_time TEXT NOT NULL,
+    lat DOUBLE PRECISION NOT NULL,
+    lng DOUBLE PRECISION NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('calm', 'urgent')),
+    status_label TEXT NOT NULL,
+    rating REAL NOT NULL,
+    review_count INTEGER NOT NULL DEFAULT 0,
+    yelp_rating REAL,
+    yelp_review_count INTEGER,
+    google_rating REAL,
+    google_review_count INTEGER,
+    trending BOOLEAN NOT NULL DEFAULT false,
+    photo TEXT,
+    photo_alt TEXT,
+    yelp_url TEXT
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_cuisine ON restaurants(cuisine)`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_neighborhood ON restaurants(neighborhood)`,
+
+  // `sort_order` exists because a menu is an ordered document — starters
+  // before mains — and that order is part of what was extracted. Without it
+  // the rows come back in whatever order the planner likes and the menu reads
+  // as a shuffled list.
+  `CREATE TABLE IF NOT EXISTS dishes (
+    id TEXT PRIMARY KEY,
+    restaurant_id TEXT NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    description TEXT,
+    price TEXT NOT NULL DEFAULT '',
+    section TEXT NOT NULL DEFAULT '',
+    yes_votes INTEGER NOT NULL DEFAULT 0,
+    no_votes INTEGER NOT NULL DEFAULT 0,
+    sort_order INTEGER NOT NULL DEFAULT 0
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_dishes_restaurant ON dishes(restaurant_id, sort_order)`,
+
+  // Position in the seed file, which is not decoration: fetch-restaurants.mjs
+  // walks the regions in turn, so the array arrives interleaved across San
+  // Diego rather than clustered downtown, and Discover's unsorted grid has
+  // always shown it that way. `id` cannot stand in — it is TEXT, so ordering by
+  // it puts "10" before "2" and hands the top of the grid to whichever places
+  // happen to sort early.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_sort ON restaurants(sort_order)`,
 ];
 
 for (const statement of statements) {

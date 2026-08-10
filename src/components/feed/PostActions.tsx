@@ -108,9 +108,10 @@ export function PostActions(props: PostActionsProps) {
        side rather than queueing behind three utilities. */
     <div className="relative flex w-full items-center justify-between gap-2">
       {props.surface === "discover" ? (
-        // "△ 34 ▽" in the orange mono, per the brief — hollow triangle until
-        // you've voted that way, solid after, so the state never needs a
-        // second color.
+        // "▲ 34 ▼" in the orange mono — the net score between the arrows;
+        // solid arrows always, your own vote carried by color alone. (They
+        // used to swap hollow△/solid▲, but the two glyphs render at
+        // different sizes, so voting visibly grew the arrow.)
         //
         // One number between the arrows, and it's the NET score, not the
         // upvote total. Printing "34 liked / 11 disliked" under a photo of
@@ -245,7 +246,11 @@ function VotePair({
             : "text-zinc-400 hover:text-pm-orange-text"
         }`}
       >
-        <span aria-hidden="true">{up ? (active ? "▲" : "△") : active ? "▼" : "▽"}</span>
+        {/* One glyph, never swapped: the hollow△/solid▲ state swap made the
+            arrow visibly grow on click — the outline and the filled block are
+            different sizes on screen (often different fallback fonts
+            entirely). State is the colour above, nothing else. */}
+        <span aria-hidden="true">{up ? "▲" : "▼"}</span>
       </button>
     );
   };

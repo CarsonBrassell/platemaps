@@ -474,9 +474,20 @@ export function FilterRail({
 } & FilterHandlers) {
   const active = activeFilterCount(filters);
 
-  /* A white card on the cream, like every other grouping. */
+  /* A white card on the cream, like every other grouping.
+   *
+   * `h-fit` keeps the card from stretching to the flex row's full height, but
+   * on its own it lets the rail grow past the bottom of the screen — and
+   * because the card is `sticky`, whatever hangs below the viewport can never
+   * be scrolled to. Expanding a couple of "show more" sections is enough to
+   * put Quick filters out of reach. So the height is capped to the viewport
+   * (minus the 1.5rem `top-6` offset, twice, for equal breathing room top and
+   * bottom) and the overflow scrolls inside the card instead.
+   *
+   * `overscroll-contain` stops a scroll that reaches the end of the rail from
+   * chaining to the results grid behind it. */
   return (
-    <aside className="hidden w-[230px] shrink-0 rounded-2xl bg-white p-4 lg:sticky lg:top-6 lg:block lg:h-fit">
+    <aside className="hidden w-[230px] shrink-0 rounded-2xl bg-white p-4 lg:sticky lg:top-6 lg:block lg:h-fit lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto lg:overscroll-contain">
       <div className="mb-2.5 flex min-h-6 items-center justify-between gap-2">
         <p className="font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-zinc-500">
           Filters

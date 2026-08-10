@@ -2,9 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { RestaurantDetail } from "@/components/RestaurantDetail";
-import { restaurants } from "@/data/restaurants";
-import { dishesByRestaurant } from "@/data/dishes";
-import { getRestaurantAspectTally } from "@/lib/db";
+import {
+  getDishesForRestaurant,
+  getRestaurantAspectTally,
+  getRestaurantById,
+} from "@/lib/db";
 
 export default async function RestaurantPage({
   params,
@@ -12,13 +14,17 @@ export default async function RestaurantPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const restaurant = restaurants.find((r) => r.id === id);
-  if (!restaurant) notFound();
 
-  const dishes = dishesByRestaurant[id] ?? [];
-  // Fetched here rather than in RestaurantDetail because that component is a
-  // client component and this reads the database directly.
-  const aspectTally = await getRestaurantAspectTally(id);
+  // All three read the database, which RestaurantDetail cannot do itself — it
+  // is a client component. Issued together rather than in sequence: they don't
+  // depend on each other, and awaiting them one at a time would make the page
+  // three round trips deep.
+  const [restaurant, dishes, aspectTally] = await Promise.all([
+    getRestaurantById(id),
+    getDishesForRestaurant(id),
+    getRestaurantAspectTally(id),
+  ]);
+  if (!restaurant) notFound();
 
   return (
     /* No shell card: the page is the cream ground, and each section below is

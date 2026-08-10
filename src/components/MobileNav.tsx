@@ -2,10 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { NavAlerts } from "@/lib/navAlerts";
+import { NavDot } from "@/components/NavDot";
 import { HomeIcon, CompassIcon, UsersIcon, UserIcon, PlusIcon } from "@/components/icons";
 
 /**
- * The phone counterpart to the header's pill nav, which is hidden below `sm`.
+ * The phone and tablet counterpart to the header's pill nav, which is hidden
+ * below `lg`. The two breakpoints must stay in lockstep — this is `lg:hidden`
+ * and the header oval is `lg:flex` — so exactly one of them is ever on screen.
+ * It used to hand off at `sm`, but between sm and lg the header row is too
+ * narrow to hold the oval, and it overlapped the brand.
+ *
  * Same five slots in the same order — Feed, Discover, create, Friends, Profile
  * — so the two are one menu wearing different clothes for the reach they have
  * to serve: a thumb at the bottom of a phone, a cursor at the top of a desktop.
@@ -20,19 +27,39 @@ import { HomeIcon, CompassIcon, UsersIcon, UserIcon, PlusIcon } from "@/componen
 const SLOT =
   "flex min-h-14 flex-1 flex-col items-center justify-center gap-1 rounded-lg text-[11px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-pm-orange";
 
+/* `dot` names the useNavAlerts slot this row watches, and what the dot says out
+   loud. Same two slots as the header — the two menus are one menu. */
 const LEFT = [
   { href: "/feed", label: "Feed", Icon: HomeIcon },
   { href: "/", label: "Discover", Icon: CompassIcon },
 ];
 const RIGHT = [
-  { href: "/friends", label: "Friends", Icon: UsersIcon },
-  { href: "/account", label: "Profile", Icon: UserIcon },
-];
+  {
+    href: "/friends",
+    label: "Friends",
+    Icon: UsersIcon,
+    dot: { slot: "friends", label: "You have friend requests waiting" },
+  },
+  {
+    href: "/account",
+    label: "Profile",
+    Icon: UserIcon,
+    dot: { slot: "profile", label: "You have new activity on your plates" },
+  },
+] as const satisfies ReadonlyArray<{
+  href: string;
+  label: string;
+  Icon: typeof UsersIcon;
+  dot: { slot: keyof NavAlerts; label: string };
+}>;
 
-export function MobileNav({ hasRequests }: { hasRequests: boolean }) {
+type Slot = (typeof LEFT)[number] | (typeof RIGHT)[number];
+
+export function MobileNav({ alerts }: { alerts: NavAlerts }) {
   const pathname = usePathname();
 
-  const slot = ({ href, label, Icon }: (typeof LEFT)[number]) => {
+  const slot = ({ href, label, Icon, ...rest }: Slot) => {
+    const dot = "dot" in rest ? rest.dot : undefined;
     const current = pathname === href;
     return (
       <Link
@@ -44,12 +71,8 @@ export function MobileNav({ hasRequests }: { hasRequests: boolean }) {
       >
         <span className="relative">
           <Icon className="h-6 w-6" />
-          {href === "/friends" && hasRequests && (
-            <span
-              aria-label="You have friend requests waiting"
-              role="status"
-              className="absolute -right-1 -top-0.5 h-1.5 w-1.5 rounded-full bg-pm-orange"
-            />
+          {dot && alerts[dot.slot] && (
+            <NavDot label={dot.label} className="absolute -right-1 -top-0.5" />
           )}
         </span>
         {label}
@@ -61,7 +84,7 @@ export function MobileNav({ hasRequests }: { hasRequests: boolean }) {
     <nav
       aria-label="Main"
       /* An overlay edge, not a grouping border — content scrolls under this. */
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur-sm sm:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur-sm lg:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="mx-auto flex max-w-lg items-stretch gap-1 px-2 py-2">

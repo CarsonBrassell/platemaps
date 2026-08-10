@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlateMaps — 10 primary nav options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F4EC;
+    --ink:#232019;
+    --muted:#7E7261;
+    --faint:#A79E8D;
+    --orange:#C9591F;
+    --orange-text:#A8481A;
+    --tan:#EDE8DC;
+    --tone1:#EEE5D2;
+    --tone2:#E6DCC6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  .display{font-family:"Fraunces",Georgia,"Times New Roman",serif;font-weight:700;letter-spacing:-.01em}
+  .mono{font-family:"Spline Sans Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+  .mono-label{
+    font-family:"Spline Sans Mono",ui-monospace,Menlo,Consolas,monospace;
+    font-size:11px;text-transform:uppercase;letter-spacing:.18em;font-weight:500;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:44px 24px 90px}
+
+  /* ---- page head ---- */
+  header.page{margin-bottom:40px}
+  header.page h1{font-size:clamp(30px,4.4vw,46px);margin:10px 0 12px;line-height:1.08}
+  header.page p{max-width:66ch;color:var(--muted);font-size:15.5px;margin:0}
+  .brandrow{display:flex;align-items:center;gap:10px;color:var(--faint)}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--orange)}
+
+  /* ---- current state callout ---- */
+  .now{
+    background:#fff;border-radius:16px;padding:22px 24px;margin:28px 0 8px;
+  }
+  .now h2{font-family:"Fraunces",Georgia,serif;font-size:19px;margin:0 0 4px}
+  .now p{margin:0 0 16px;color:var(--muted);font-size:14px;max-width:70ch}
+
+  /* ---- the nav mock itself ---- */
+  .navtrack{
+    display:inline-flex;align-items:center;gap:0;
+    background:var(--tan);border-radius:999px;padding:6px;
+    font-size:14px;max-width:100%;flex-wrap:nowrap;overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .navtrack::-webkit-scrollbar{display:none}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+    border-radius:999px;padding:8px 16px;color:var(--muted);
+  }
+  .pill.on{background:var(--orange);color:var(--cream);font-weight:500}
+  .pill .badge{width:6px;height:6px;border-radius:50%;background:var(--orange);align-self:flex-start;margin-top:-2px}
+  .pill.on .badge{background:var(--cream)}
+  .compose{
+    width:40px;height:40px;margin:-2px 6px;border-radius:50%;
+    background:var(--orange);color:var(--cream);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:21px;line-height:1;flex:0 0 auto;
+  }
+  .cityctl{
+    display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
+    border-radius:999px;padding:8px 15px;background:#fff;color:var(--ink);
+    font-family:"Spline Sans Mono",ui-monospace,Menlo,monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+  }
+  .caret{color:var(--faint);font-size:10px}
+  .avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--tone2);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:"Spline Sans Mono",ui-monospace,Menlo,monospace;
+    font-size:11px;font-weight:500;color:var(--muted);flex:0 0 auto;
+  }
+  .avatar.on{box-shadow:0 0 0 2px var(--cream),0 0 0 4px var(--orange)}
+
+  /* underline-style variant (screen-tab treatment) */
+  .underbar{display:inline-flex;gap:26px;align-items:flex-end;font-size:15px;flex-wrap:wrap}
+  .utab{color:var(--muted);padding-bottom:9px;position:relative;white-space:nowrap}
+  .utab.on{color:var(--ink);font-weight:600}
+  .utab.on::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:3px;
+    border-radius:999px;background:var(--orange);
+  }
+
+  /* ---- option cards ---- */
+  .grid{display:grid;gap:18px}
+  @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+  .opt{
+    background:#fff;border-radius:16px;padding:22px 22px 20px;
+    display:flex;flex-direction:column;
+  }
+  .opt.wide{grid-column:1/-1}
+  .opt .head{display:flex;align-items:baseline;gap:10px;margin-bottom:2px;flex-wrap:wrap}
+  .num{color:var(--orange-text);font-size:12px;font-weight:500}
+  .opt h3{font-family:"Fraunces",Georgia,serif;font-size:19px;font-weight:700;margin:0}
+  .src{color:var(--faint);margin:0 0 16px}
+  .src b{color:var(--muted);font-weight:500}
+  .mockarea{
+    background:var(--cream);border-radius:12px;padding:16px;margin-bottom:15px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  }
+  .why{font-size:14px;color:var(--ink);margin:0 0 9px}
+  .risk{font-size:13.5px;color:var(--muted);margin:0}
+  .risk b,.why b{color:var(--orange-text);font-weight:600}
+  .flag{
+    display:inline-block;border-radius:999px;background:var(--tan);
+    padding:3px 10px;color:var(--muted);
+  }
+  .flag.warn{background:#F6E3DA;color:#8F3A12}
+  .flag.pick{background:var(--orange);color:var(--cream)}
+
+  /* ---- phone mock ---- */
+  .phones{display:flex;gap:16px;flex-wrap:wrap;margin-top:6px}
+  .phone{
+    width:256px;background:#fff;border-radius:22px;padding:12px 12px 0;
+    display:flex;flex-direction:column;
+  }
+  .phonebody{background:var(--cream);border-radius:14px;height:150px;padding:11px;display:flex;flex-direction:column;gap:8px}
+  .ph-card{background:#fff;border-radius:10px;flex:1}
+  .ph-tone{background:var(--tone1);border-radius:10px;flex:1.3}
+  .bottombar{display:flex;align-items:flex-end;justify-content:space-between;padding:12px 2px 14px;gap:0}
+  .slot{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--faint)}
+  .slot.on{color:var(--orange-text)}
+  .slot .ic{width:20px;height:20px;border-radius:6px;background:currentColor;opacity:.85}
+  .slot .lb{
+    font-size:10px;font-family:"Spline Sans Mono",ui-monospace,Menlo,monospace;
+    letter-spacing:0;white-space:nowrap;
+  }
+  .bigplus{
+    width:46px;height:46px;border-radius:50%;background:var(--orange);color:var(--cream);
+    display:flex;align-items:center;justify-content:center;font-size:23px;flex:0 0 auto;
+    margin:0 4px 3px;
+  }
+
+  /* ---- reference table ---- */
+  .refwrap{overflow-x:auto;background:#fff;border-radius:16px;padding:6px 4px}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+  th,td{text-align:left;padding:13px 16px;vertical-align:top}
+  th{
+    font-family:"Spline Sans Mono",ui-monospace,Menlo,monospace;
+    font-size:11px;text-transform:uppercase;letter-spacing:.16em;
+    color:var(--muted);font-weight:500;border-bottom:1px solid var(--tan);
+  }
+  tbody tr+tr td{border-top:1px solid #F2EEE4}
+  td.site{font-family:"Fraunces",Georgia,serif;font-weight:600;white-space:nowrap}
+  td.nav{font-family:"Spline Sans Mono",ui-monospace,Menlo,monospace;font-size:12.5px;color:var(--orange-text)}
+  td.take{color:var(--muted)}
+
+  h2.section{font-family:"Fraunces",Georgia,serif;font-size:24px;margin:46px 0 6px}
+  p.sub{color:var(--muted);margin:0 0 20px;font-size:15px;max-width:70ch}
+  .footnote{color:var(--faint);font-size:13px;margin-top:34px;max-width:74ch}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page">
+    <div class="brandrow"><span class="dot"></span><span class="mono-label">PlateMaps · primary navigation · 10 directions</span></div>
+    <h1 class="display">What our nav could look like</h1>
+    <p>Ten directions for the top-level menu, each lifted from a real pattern on a site I opened, then redrawn in our own Warm&nbsp;Editorial clothes — tan oval track, orange selected pill, orange circle for compose. Nothing here is built yet.</p>
+  </header>
+
+  <section class="now">
+    <h2>Where we are today</h2>
+    <p>Five slots in one oval, mirrored by the phone's bottom bar. Profile appears twice — as a pill and as the avatar — and the city is dead text.</p>
+    <div class="mockarea" style="background:var(--cream)">
+      <span class="mono-label" style="color:var(--faint)">SAN DIEGO, CA</span>
+      <span class="navtrack">
+        <span class="pill on">Feed</span>
+        <span class="pill">Discover</span>
+        <span class="compose">+</span>
+        <span class="pill">Friends<span class="badge"></span></span>
+        <span class="pill">Profile</span>
+      </span>
+      <span class="avatar">CL</span>
+    </div>
+  </section>
+
+  <h2 class="section">The ten</h2>
+  <p class="sub">Each card names the site the pattern came from, what it buys us, and what it costs.</p>
+
+  <div class="grid">
+
+    <!-- 1 -->
+    <div class="opt">
+      <div class="head"><span class="num mono">01</span><h3>Map takes the fifth slot</h3></div>
+      <p class="src mono-label">after <b>Instagram · Beli</b> — five slots, compose centred</p>
+      <div class="mockarea">
+        <span class="navtrack">
+          <span class="pill">Feed</span><span class="pill on">Discover</span>
+          <span class="compose">+</span>
+          <span class="pill">Map</span><span class="pill">Profile</span>
+        </span>
+      </div>
+      <p class="why">Smallest possible move. <b>Map-first social discovery</b> is one of our three stated differentiators, yet the map is currently buried as a tab inside Feed. This promotes it to a peer.</p>
+      <p class="risk"><b>Cost:</b> Friends drops out of the top level and has to live behind the avatar — and it's the one slot carrying a notification dot.</p>
+    </div>
+
+    <!-- 2 -->
+    <div class="opt">
+      <div class="head"><span class="num mono">02</span><h3>Nouns, not screens</h3></div>
+      <p class="src mono-label">after <b>Letterboxd</b> — films · lists · members · journal</p>
+      <div class="mockarea">
+        <span class="navtrack">
+          <span class="pill on">Plates</span><span class="pill">Spots</span>
+          <span class="compose">+</span>
+          <span class="pill">People</span><span class="pill">Lists</span>
+        </span>
+      </div>
+      <p class="why">Letterboxd names <b>things, not places in the app</b>. Ours would say plainly what the unit of truth is: a plate. It also gives the mono voice something worth setting.</p>
+      <p class="risk"><b>Cost:</b> "Lists" is a capability we don't have yet — it would need saved plates to become a real destination first.</p>
+    </div>
+
+    <!-- 3 -->
+    <div class="opt wide">
+      <div class="head"><span class="num mono">03</span><h3>City-first</h3><span class="flag mono-label pick">strongest fit</span></div>
+      <p class="src mono-label">after <b>The Infatuation</b> and <b>Resy</b> — both promote a live city selector into the top bar and hide the rest</p>
+      <div class="mockarea">
+        <span class="cityctl">San Diego <span class="caret">▾</span></span>
+        <span class="navtrack">
+          <span class="pill on">Discover</span><span class="pill">Feed</span>
+          <span class="compose">+</span>
+          <span class="pill">Friends<span class="badge"></span></span>
+        </span>
+        <span class="avatar on">CL</span>
+      </div>
+      <p class="why">Both premium food sites I opened lead with the city and demote everything else. On Infatuation the entire top-level IA <em>is</em> the city chooser; Resy puts "Denver" beside the logo before any content link. We already print "San Diego, CA" — this makes it a control instead of decoration, and quietly answers the open question of whether San Diego is the first market or the only one.</p>
+      <p class="risk"><b>Cost:</b> a city selector with one city in it is a promise. Either it ships greyed with "more soon", or it waits until there's a second market. Also drops the Profile pill — the avatar already goes there.</p>
+    </div>
+
+    <!-- 4 -->
+    <div class="opt">
+      <div class="head"><span class="num mono">04</span><h3>Explore-led</h3></div>
+      <p class="src mono-label">after <b>AllTrails</b> — explore → cities · trails · points of interest</p>
+      <div class="mockarea">
+        <span class="navtrack">
+          <span class="pill on">Explore</span><span class="pill">Map</span>
+          <span class="compose">+</span>
+          <span class="pill">Feed</span><span class="pill">Saved</span>
+        </span>
+      </div>
+      <p class="why">AllTrails is the closest structural cousin we have: a map product where browsing and saving matter more than social. <b>Saved</b> is a real action in our app with nowhere to land.</p>
+      <p class="risk"><b>Cost:</b> "Explore" is vaguer than "Discover", and this pushes the social half of the product down a level.</p>
+    </div>
+
+    <!-- 5 -->
+    <div class="opt">
+      <div class="head"><span class="num mono">05</span><h3>Answer the question literally</h3></div>
+      <p class="src mono-label">our own product purpose, in nav form</p>
+      <div class="mockarea">
+        <span class="navtrack">
+          <span class="pill on">Tonight</span><span class="pill">Nearby</span>
+          <span class="compose">+</span>
+          <span class="pill">Feed</span><span class="pill">Friends</span>
+        </span>
+      </div>
+      <p class="why">"Tonight" = open now, sorted hot. "Nearby" = the map by proximity. The nav stops describing the software and starts <b>answering "what should I eat tonight?"</b> — which is the whole product.</p>
+      <p class="risk"><b>Cost:</b> "Tonight" is wrong at 11am. Would need to shift with the clock, and we already compute open state in Pacific — so it's possible, but it's real work.</p>
+    </div>
+
+    <!-- 6 -->
+    <div class="opt">
+      <div class="head"><span class="num mono">06</span><h3>Editorial verticals</h3></div>
+      <p class="src mono-label">after <b>Resy</b> — the hit list · wine · guides</p>
+      <div class="mockarea">
+        <span class="navtrack">
+          <span class="pill on">Our Picks</span><span class="pill">Near Me</span>
+          <span class="compose">+</span>
+          <span class="pill">Feed</span>
+        </span>
+      </div>
+      <p class="why">Resy's top level is <em>curation</em>, not features. We already have an "Our Picks" strip on Discover — this promotes it from a shelf to a destination and leans into the editorial half of the aesthetic.</p>
+      <p class="risk"><b>Cost:</b> curation needs a curator. Right now "Our Picks" is a short seeded list, and a top-level tab sets an expectation of regular editorial output.</p>
+    </div>
+
+    <!-- 7 -->
+    <div class="opt">
+      <div class="head"><span class="num mono">07</span><h3>Four slots, avatar owns the account</h3></div>
+      <p class="src mono-label">the smallest honest fix</p>
+      <div class="mockarea">
+        <span class="navtrack">
+          <span class="pill on">Feed</span><span class="pill">Discover</span>
+          <span class="compose">+</span>
+          <span class="pill">Friends<span class="badge"></span></span>
+        </span>
+        <span class="avatar on">CL</span>
+      </div>
+      <p class="why">Today Profile is reachable twice from one row — a pill <em>and</em> the avatar next to it. Nearly every site I looked at lets the avatar carry the account alone. <b>Removes a duplicate without inventing anything.</b></p>
+      <p class="risk"><b>Cost:</b> the phone bar has five slots and looks best balanced around the centre circle; going to four up top means the two bodies stop matching exactly.</p>
+    </div>
+
+    <!-- 8 -->
+    <div class="opt">
+      <div class="head"><span class="num mono">08</span><h3>Two ranks, visibly different</h3></div>
+      <p class="src mono-label">after <b>Letterboxd</b> and <b>Eater</b> — a thin global row over a content row</p>
+      <div class="mockarea" style="flex-direction:column;align-items:flex-start;gap:14px">
+        <span class="navtrack">
+          <span class="pill on">Discover</span><span class="pill">Feed</span>
+          <span class="compose">+</span>
+          <span class="pill">Friends</span>
+        </span>
+        <span class="underbar">
+          <span class="utab on">Hot</span><span class="utab">Open now</span>
+          <span class="utab">Top rated</span><span class="utab">Map</span>
+        </span>
+      </div>
+      <p class="why">Keeps our rule that the three ranks of control never wear the same clothes: pills for where you are, <b>underlined text tabs for what you're filtering</b>. Makes the map reachable without spending a global slot on it.</p>
+      <p class="risk"><b>Cost:</b> two stacked rows is a lot of chrome above the fold on a phone, and the fold is where the decision gets made.</p>
+    </div>
+
+    <!-- 9 -->
+    <div class="opt">
+      <div class="head"><span class="num mono">09</span><h3>Compose as a labelled pill</h3></div>
+      <p class="src mono-label">after <b>Substack</b> / <b>Strava</b> — name the action rather than drawing a plus</p>
+      <div class="mockarea">
+        <span class="navtrack">
+          <span class="pill on">Feed</span><span class="pill">Discover</span><span class="pill">Friends</span>
+        </span>
+        <span class="pill on" style="background:var(--orange);padding:10px 20px">Post a plate</span>
+      </div>
+      <p class="why">Pulls the primary action <em>out</em> of the navigation entirely, so the oval is purely "where you are" and the orange is purely "the thing to do". <b>A bare + never says what you'd be posting.</b></p>
+      <p class="risk"><b>Cost:</b> loses the centred circle, which is the single most distinctive thing about the current header — and the thumb-position argument on mobile is genuinely strong.</p>
+    </div>
+
+    <!-- 10 -->
+    <div class="opt">
+      <div class="head"><span class="num mono">10</span><h3>Leaderboard promoted</h3><span class="flag mono-label warn">I'd not ship this</span></div>
+      <p class="src mono-label">after <b>Untappd</b> / <b>Strava</b> — gamification at the top level</p>
+      <div class="mockarea">
+        <span class="navtrack">
+          <span class="pill on">Feed</span><span class="pill">Discover</span>
+          <span class="compose">+</span>
+          <span class="pill">Ranks</span><span class="pill">Profile</span>
+        </span>
+      </div>
+      <p class="why">Included so it's visibly considered. Points and the leaderboard are the reason fresh local plates keep arriving, and Untappd puts exactly this at eye level.</p>
+      <p class="risk"><b>Cost:</b> it contradicts our own principle — points are a <b>supply mechanism, not the reason the product wins</b>, and a top-level slot is the loudest possible claim that they are. It also outranks the decision the visitor actually came to make.</p>
+    </div>
+
+  </div>
+
+  <h2 class="section">On the phone</h2>
+  <p class="sub">The three I'd actually build, in the body that matters most — one-handed, near mealtime.</p>
+  <div class="phones">
+    <div class="phone">
+      <div class="phonebody"><div class="ph-tone"></div><div class="ph-card"></div></div>
+      <div class="bottombar">
+        <span class="slot"><span class="ic"></span><span class="lb">Feed</span></span>
+        <span class="slot on"><span class="ic"></span><span class="lb">Discover</span></span>
+        <span class="bigplus">+</span>
+        <span class="slot"><span class="ic"></span><span class="lb">Map</span></span>
+        <span class="slot"><span class="ic"></span><span class="lb">You</span></span>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phonebody"><div class="ph-tone"></div><div class="ph-card"></div></div>
+      <div class="bottombar">
+        <span class="slot on"><span class="ic"></span><span class="lb">Plates</span></span>
+        <span class="slot"><span class="ic"></span><span class="lb">Spots</span></span>
+        <span class="bigplus">+</span>
+        <span class="slot"><span class="ic"></span><span class="lb">People</span></span>
+        <span class="slot"><span class="ic"></span><span class="lb">You</span></span>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phonebody"><div class="ph-tone"></div><div class="ph-card"></div></div>
+      <div class="bottombar">
+        <span class="slot on"><span class="ic"></span><span class="lb">Tonight</span></span>
+        <span class="slot"><span class="ic"></span><span class="lb">Nearby</span></span>
+        <span class="bigplus">+</span>
+        <span class="slot"><span class="ic"></span><span class="lb">Feed</span></span>
+        <span class="slot"><span class="ic"></span><span class="lb">You</span></span>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section">What the real sites actually do</h2>
+  <p class="sub">Pulled live from each site's own markup, not from memory.</p>
+  <div class="refwrap">
+  <table>
+    <thead>
+      <tr><th>Site</th><th>Top-level nav, as shipped</th><th>The lesson</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="site">Letterboxd</td><td class="nav">Films · Lists · Members · Journal</td><td class="take">Four nouns. The nav names the content, never the screen.</td></tr>
+      <tr><td class="site">The Infatuation</td><td class="nav">[city ▾] · sign up · ☰</td><td class="take">The city selector <em>is</em> the navigation. Everything else hides.</td></tr>
+      <tr><td class="site">Resy</td><td class="nav">[Denver] · Hit List · Wine · Guides · ☰</td><td class="take">City beside the logo, then curation — not features.</td></tr>
+      <tr><td class="site">AllTrails</td><td class="nav">Explore → Cities · Parks · Trails · Points of Interest</td><td class="take">One "Explore" door, with the map as the product itself.</td></tr>
+      <tr><td class="site">Beli</td><td class="nav">Home · Meet the Team · Merch · Jobs · Download</td><td class="take">App-only — the web nav is marketing, so no in-product lesson.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="footnote">Mockups approximate Fraunces and Spline Sans Mono; if the webfonts don't load here they fall back to system serif and mono, so weights read slightly differently than in the app. Colours, radii and the pill hierarchy are our real tokens.</p>
+
+</div>
+</body>
+</html>

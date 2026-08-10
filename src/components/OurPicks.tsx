@@ -1,10 +1,16 @@
 import Link from "next/link";
-import { restaurants } from "@/data/restaurants";
+import type { Restaurant } from "@/data/restaurants";
 import { StarIcon } from "@/components/icons";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 
-export function OurPicks() {
-  const picks = restaurants.filter((r) => r.trending).slice(0, 2);
+/**
+ * Takes its picks as a prop rather than filtering the restaurant array itself.
+ *
+ * It renders inside `DiscoverBrowser`, which is a client component, so anything
+ * this file imports is downloaded by every visitor — and it only ever needs two
+ * rows. The caller already holds the list and does the filtering.
+ */
+export function OurPicks({ picks }: { picks: readonly Restaurant[] }) {
   if (picks.length === 0) return null;
 
   return (

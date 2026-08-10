@@ -9,8 +9,8 @@
  */
 
 import { BEST_AT_LABELS } from "@/data/reviewScales";
-import { PRICE_BANDS, priceBandFor, type PriceBand } from "@/data/priceBands";
-import type { Restaurant } from "@/data/restaurants";
+import { PRICE_BANDS, type PriceBand } from "@/data/priceBands";
+import type { RestaurantView } from "@/data/restaurants";
 import { aspectScores } from "@/lib/aspectScores";
 import { milesBetween, NEARBY_RADIUS_MI, type Coords } from "@/lib/nearby";
 import { openStateFor } from "@/lib/openState";
@@ -85,8 +85,17 @@ export function activeFilterCount(f: DiscoverFilters): number {
  */
 export const ASPECT_STRONG_STARS = 4.0;
 
-/** Which categories each restaurant is rated well for, by restaurant id. */
-export type StrongAspects = ReadonlyMap<string, ReadonlySet<string>>;
+/**
+ * Which categories each restaurant is rated well for, by restaurant id, and
+ * what each of those categories scored.
+ *
+ * The inner map carries the star score rather than the bare label so the grid
+ * can print the number beside a card without re-running the model: filtering to
+ * "rated well for Food" and then hiding the food score made the visitor open a
+ * restaurant to find out what they had just filtered on. `.has()` reads the
+ * same on a Map as it did on the Set this replaced, so matching is unchanged.
+ */
+export type StrongAspects = ReadonlyMap<string, ReadonlyMap<string, number>>;
 
 /**
  * Mirror of `RestaurantAspectTally` in lib/db.ts, which owns the shape.
@@ -113,7 +122,7 @@ export type AspectTally = {
 export function strongAspectsFrom(
   tallies: Record<string, AspectTally>,
 ): StrongAspects {
-  const strong = new Map<string, Set<string>>();
+  const strong = new Map<string, Map<string, number>>();
 
   for (const [restaurantId, tally] of Object.entries(tallies)) {
     const scored = aspectScores(
@@ -124,15 +133,29 @@ export function strongAspectsFrom(
     );
     strong.set(
       restaurantId,
-      new Set(
+      new Map(
         scored
           .filter((s) => s.stars !== null && s.stars >= ASPECT_STRONG_STARS && s.net > 0)
-          .map((s) => s.aspect),
+          .map((s) => [s.aspect, s.stars!] as const),
       ),
     );
   }
 
   return strong;
+}
+
+/**
+ * What one restaurant scored in one category, or null if it isn't rated well
+ * for it — including while the tallies are still in flight, which is the same
+ * "can't evaluate yet" null the filter context uses.
+ */
+export function strongAspectStars(
+  aspects: StrongAspects | null,
+  restaurantId: string,
+  aspect: string | null,
+): number | null {
+  if (!aspects || !aspect) return null;
+  return aspects.get(restaurantId)?.get(aspect) ?? null;
 }
 
 /* --- Matching --------------------------------------------------------- */
@@ -156,7 +179,7 @@ export type FilterContext = {
 export const NO_CONTEXT: FilterContext = { now: null, here: null, aspects: null };
 
 export function matchesFilters(
-  r: Restaurant,
+  r: RestaurantView,
   f: DiscoverFilters,
   ctx: FilterContext,
 ): boolean {
@@ -167,7 +190,7 @@ export function matchesFilters(
   if (f.cuisine && r.cuisine !== f.cuisine) return false;
   // A restaurant with no menu has no band and so matches no price — see the
   // note in data/priceBands.ts about why it isn't given a guessed one.
-  if (f.price && priceBandFor(r.id) !== f.price) return false;
+  if (f.price && r.priceBand !== f.price) return false;
   if (f.aspect && ctx.aspects) {
     if (!ctx.aspects.get(r.id)?.has(f.aspect)) return false;
   }
@@ -180,10 +203,10 @@ export function matchesFilters(
 }
 
 export function applyFilters(
-  restaurants: readonly Restaurant[],
+  restaurants: readonly RestaurantView[],
   f: DiscoverFilters,
   ctx: FilterContext,
-): Restaurant[] {
+): RestaurantView[] {
   return restaurants.filter((r) => matchesFilters(r, f, ctx));
 }
 
@@ -212,7 +235,7 @@ export type FacetOption = {
  * changed something else.
  */
 function optionsFor(
-  restaurants: readonly Restaurant[],
+  restaurants: readonly RestaurantView[],
   key: "neighborhood" | "cuisine",
 ): FacetOption[] {
   const totals = new Map<string, number>();
@@ -223,11 +246,11 @@ function optionsFor(
     .sort((a, b) => b.total - a.total || a.value.localeCompare(b.value));
 }
 
-export function neighborhoodOptions(restaurants: readonly Restaurant[]): FacetOption[] {
+export function neighborhoodOptions(restaurants: readonly RestaurantView[]): FacetOption[] {
   return optionsFor(restaurants, "neighborhood");
 }
 
-export function cuisineOptions(restaurants: readonly Restaurant[]): FacetOption[] {
+export function cuisineOptions(restaurants: readonly RestaurantView[]): FacetOption[] {
   return optionsFor(restaurants, "cuisine");
 }
 
@@ -236,10 +259,10 @@ export function cuisineOptions(restaurants: readonly Restaurant[]): FacetOption[
  * by count like the data-derived facets — money has an order of its own, and
  * shuffling `$$$` above `$` because more places land there would be nonsense.
  */
-export function priceOptions(restaurants: readonly Restaurant[]): FacetOption[] {
+export function priceOptions(restaurants: readonly RestaurantView[]): FacetOption[] {
   const totals = new Map<string, number>();
   for (const r of restaurants) {
-    const band = priceBandFor(r.id);
+    const band = r.priceBand;
     if (band) totals.set(band, (totals.get(band) ?? 0) + 1);
   }
   return PRICE_VALUES.map((value) => ({ value, total: totals.get(value) ?? 0 }));
@@ -258,8 +281,8 @@ export function priceOptions(restaurants: readonly Restaurant[]): FacetOption[] 
 export function aspectOptions(aspects: StrongAspects | null): FacetOption[] {
   const totals = new Map<string, number>();
   if (aspects) {
-    for (const set of aspects.values()) {
-      for (const aspect of set) totals.set(aspect, (totals.get(aspect) ?? 0) + 1);
+    for (const scored of aspects.values()) {
+      for (const aspect of scored.keys()) totals.set(aspect, (totals.get(aspect) ?? 0) + 1);
     }
   }
   return BEST_AT_LABELS.map((value) => ({ value, total: totals.get(value) ?? 0 })).sort(
@@ -295,7 +318,7 @@ export type FacetCounts = {
  * is picked, which tells the user nothing about where else they could go.
  */
 export function countFacets(
-  restaurants: readonly Restaurant[],
+  restaurants: readonly RestaurantView[],
   f: DiscoverFilters,
   ctx: FilterContext,
 ): FacetCounts {
@@ -334,12 +357,12 @@ export function countFacets(
     }
     if (matchesFilters(r, exceptPrice, ctx)) {
       anyPrice += 1;
-      const band = priceBandFor(r.id);
+      const band = r.priceBand;
       if (band) price.set(band, (price.get(band) ?? 0) + 1);
     }
     if (matchesFilters(r, exceptAspect, ctx)) {
       anyAspect += 1;
-      for (const label of ctx.aspects?.get(r.id) ?? []) {
+      for (const label of ctx.aspects?.get(r.id)?.keys() ?? []) {
         aspect.set(label, (aspect.get(label) ?? 0) + 1);
       }
     }
@@ -385,7 +408,7 @@ const QUICK_PARAM = "quick";
  */
 export function filtersFromSearch(
   search: string,
-  restaurants: readonly Restaurant[],
+  restaurants: readonly RestaurantView[],
 ): DiscoverFilters {
   const params = new URLSearchParams(search);
 

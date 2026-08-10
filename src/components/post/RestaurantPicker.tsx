@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { restaurants, type Restaurant } from "@/data/restaurants";
+import type { Restaurant } from "@/data/restaurants";
 
 /** "1.0 mi" → 1.0. Anything unparseable sorts to the end rather than to zero. */
 function miles(r: Restaurant) {
@@ -9,21 +9,24 @@ function miles(r: Restaurant) {
   return Number.isNaN(n) ? Number.POSITIVE_INFINITY : n;
 }
 
-const BY_DISTANCE = [...restaurants].sort((a, b) => miles(a) - miles(b));
-
 /**
- * Which of the 36 San Diego restaurants this post is about.
+ * Which San Diego restaurant this post is about.
  *
  * Closest first, because someone posting a plate is usually still sitting in the
  * place they are posting about. Search covers cuisine and neighborhood as well
  * as the name — "north park" and "tacos" are how people actually remember where
  * they ate.
+ *
+ * The list arrives as a prop rather than being imported. The composer owns
+ * fetching it once for both pickers; this component owns ordering and matching.
  */
 export function RestaurantPicker({
+  restaurants,
   selectedId,
   onSelect,
   onSkip,
 }: {
+  restaurants: readonly Restaurant[];
   selectedId: string | null;
   onSelect: (restaurant: Restaurant) => void;
   /** Offered on the comment path, where a place is optional. */
@@ -31,13 +34,18 @@ export function RestaurantPicker({
 }) {
   const [query, setQuery] = useState("");
 
+  const byDistance = useMemo(
+    () => [...restaurants].sort((a, b) => miles(a) - miles(b)),
+    [restaurants],
+  );
+
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return BY_DISTANCE;
-    return BY_DISTANCE.filter((r) =>
+    if (!q) return byDistance;
+    return byDistance.filter((r) =>
       `${r.name} ${r.cuisine} ${r.neighborhood}`.toLowerCase().includes(q),
     );
-  }, [query]);
+  }, [query, byDistance]);
 
   return (
     <div>

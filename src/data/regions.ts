@@ -1,5 +1,3 @@
-import { restaurants } from "@/data/restaurants";
-
 export type RegionSubArea = {
   name: string;
   lat: number;
@@ -171,27 +169,14 @@ export function regionForCoordinate(lat: number, lng: number): string {
   return best;
 }
 
-function validateRestaurantZoneAssignment() {
-  const counts = new Map<string, number>(regionNames.map((name) => [name, 0]));
-  const unassigned: string[] = [];
-
-  for (const restaurant of restaurants) {
-    const zone = regionForCoordinate(restaurant.lat, restaurant.lng);
-    if (!zone || !counts.has(zone)) {
-      unassigned.push(restaurant.name);
-      continue;
-    }
-    counts.set(zone, (counts.get(zone) ?? 0) + 1);
-  }
-
-  if (unassigned.length > 0) {
-    throw new Error(
-      `Zone assignment failed for ${unassigned.length} restaurant(s): ${unassigned.join(", ")}`,
-    );
-  }
-
-  const distribution = regionNames.map((name) => `${name}: ${counts.get(name)}`).join(", ");
-  console.log(`[regions] restaurant distribution — ${distribution}`);
-}
-
-validateRestaurantZoneAssignment();
+/*
+ * The zone-assignment check that used to run here, at module load, has moved
+ * to `scripts/import-restaurants.mjs`.
+ *
+ * It had to: restaurants now live in Postgres, so there is no array to walk at
+ * import time. It also belongs there — the import is the moment coordinates
+ * enter the system, which is the moment an unassignable one is worth failing
+ * on. Running it here meant a console.log on every client bundle that touched
+ * this file, to re-prove something the nearest-neighbour rule above makes
+ * structurally impossible.
+ */

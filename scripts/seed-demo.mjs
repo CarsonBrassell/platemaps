@@ -10,6 +10,7 @@
 import { neon } from "@neondatabase/serverless";
 import { randomUUID, randomBytes } from "node:crypto";
 import { restaurants } from "../src/data/restaurants.ts";
+import { BEST_AT_LABELS } from "../src/data/reviewScales.ts";
 
 const sql = neon(process.env.DATABASE_URL);
 
@@ -258,26 +259,12 @@ async function main() {
       "Left full and the bill still surprised me.",
       "Portions like this at this price shouldn't exist.",
     ],
-    Speed: [
-      "In and out before my break was over.",
-      "Fastest lunch around here.",
-      "No standing around waiting.",
-      "Ordered, sat down, food arrived. That fast.",
-      "Perfect when you've got forty minutes.",
-    ],
     "Menu variety": [
       "Menu goes deep — something for everyone.",
       "Took three visits to get through what I wanted to try.",
       "Plenty to pick from, which is rare around here.",
       "Brought a picky group and everyone found something.",
       "Still working my way down the menu.",
-    ],
-    Dessert: [
-      "Save room. The dessert is the point.",
-      "Best course here is the last one.",
-      "Don't skip the sweets, seriously.",
-      "Ordered dessert for the table and then a second one.",
-      "The dessert is what I keep thinking about.",
     ],
   };
 
@@ -317,26 +304,12 @@ async function main() {
       "Good, but I felt the price after.",
       "Portions don't match the number at the bottom.",
     ],
-    Speed: [
-      "Slow, though.",
-      "Be ready to wait.",
-      "Not a quick stop.",
-      "Don't come here on a lunch break.",
-      "The wait is the price of admission.",
-    ],
     "Menu variety": [
       "Menu's thin, though.",
       "Wish there were more options.",
       "Not much to choose from.",
       "Same few things every visit.",
       "Hard if anyone in your group is picky.",
-    ],
-    Dessert: [
-      "Dessert was forgettable.",
-      "Skip the sweets.",
-      "Dessert menu is an afterthought.",
-      "Nothing worth saving room for.",
-      "Get dessert somewhere else.",
     ],
   };
 
@@ -352,16 +325,21 @@ async function main() {
    * These four are hand-written because each is a case worth being able to
    * look at. Every other restaurant is generated below — the block used to
    * render on these four pages and nowhere else.
+   *
+   * Each list touches all six categories, same as the generator, so no page
+   * renders a partial row. The trailing single-count entries are the ones
+   * carrying a category that the hand-written shape didn't otherwise reach.
    */
   const HAND_WRITTEN = [
     {
       restaurant: "Landini's Pizzeria",
       verdicts: [
         ["Food", null, 5, 7],
-        ["Food", "Speed", 4, 3],
+        ["Food", "Menu variety", 4, 3],
         ["Value", null, 5, 2],
         ["Ambiance", "Service", 4, 2],
         ["Service", null, 3, 1],
+        ["Drinks", null, 4, 1],
       ],
     },
     {
@@ -371,15 +349,18 @@ async function main() {
         ["Service", null, 5, 4],
         ["Food", "Value", 4, 4],
         ["Ambiance", "Value", 4, 2],
+        ["Menu variety", null, 5, 2],
+        ["Drinks", null, 4, 1],
       ],
     },
     {
       restaurant: "Tacos El Gordo",
       verdicts: [
         ["Value", null, 5, 6],
-        ["Speed", null, 5, 4],
+        ["Menu variety", null, 5, 4],
         ["Food", "Ambiance", 4, 5],
         ["Food", "Service", 4, 3],
+        ["Drinks", null, 4, 1],
       ],
     },
     {
@@ -390,6 +371,7 @@ async function main() {
         ["Ambiance", "Food", 4, 4],
         ["Drinks", null, 5, 3],
         ["Service", "Value", 3, 2],
+        ["Menu variety", null, 4, 2],
       ],
     },
   ];
@@ -397,32 +379,32 @@ async function main() {
   /*
    * Which aspects a kind of place tends to be praised and faulted for. Used
    * only to give a generated restaurant a shape — a brewery whose drinks and
-   * room carry it reads differently from a sandwich counter that wins on speed
-   * and price, and a page where all eight aspects sit on the same number says
+   * room carry it reads differently from a sandwich counter that wins on food
+   * and price, and a page where all six aspects sit on the same number says
    * nothing at all.
    *
    * `strong` is weighted toward its first entry, `also` gets the occasional
-   * nod, `weak` is what the complaints land on. Anything omitted stays
-   * unremarked and is left off the page rather than scored badly for never
-   * having come up.
+   * nod, `weak` is what the complaints land on. Anything omitted still gets a
+   * single praise vote in `generateReviews`, so the profile decides a page's
+   * shape rather than which categories appear at all.
    */
   const CUISINE_PROFILE = {
     Breweries: { strong: ["Drinks", "Ambiance"], also: ["Menu variety"], weak: ["Food"] },
     Bars: { strong: ["Drinks", "Ambiance"], also: ["Service"], weak: ["Value"] },
     "Tapas Bars": { strong: ["Menu variety", "Drinks"], also: ["Ambiance"], weak: ["Value"] },
-    Pizza: { strong: ["Food", "Value"], also: ["Speed"], weak: ["Ambiance"] },
-    Mexican: { strong: ["Value", "Food"], also: ["Speed"], weak: ["Ambiance"] },
+    Pizza: { strong: ["Food", "Value"], also: ["Service"], weak: ["Ambiance"] },
+    Mexican: { strong: ["Value", "Food"], also: ["Menu variety"], weak: ["Ambiance"] },
     "Sushi Bars": { strong: ["Food", "Service"], also: ["Menu variety"], weak: ["Value"] },
     Seafood: { strong: ["Food", "Ambiance"], also: ["Service"], weak: ["Value"] },
     "New American": { strong: ["Food", "Ambiance"], also: ["Service"], weak: ["Value"] },
     American: { strong: ["Food", "Service"], also: ["Value"], weak: ["Menu variety"] },
-    Diners: { strong: ["Service", "Value"], also: ["Dessert"], weak: ["Food"] },
-    "Breakfast & Brunch": { strong: ["Food", "Service"], also: ["Dessert"], weak: ["Speed"] },
+    Diners: { strong: ["Service", "Value"], also: ["Menu variety"], weak: ["Food"] },
+    "Breakfast & Brunch": { strong: ["Food", "Service"], also: ["Menu variety"], weak: ["Value"] },
     Thai: { strong: ["Food", "Value"], also: ["Service"], weak: ["Ambiance"] },
-    Italian: { strong: ["Food", "Service"], also: ["Dessert"], weak: ["Value"] },
-    Barbeque: { strong: ["Food", "Value"], also: ["Menu variety"], weak: ["Speed"] },
-    Sandwiches: { strong: ["Speed", "Value"], also: ["Food"], weak: ["Ambiance"] },
-    Korean: { strong: ["Food", "Menu variety"], also: ["Service"], weak: ["Speed"] },
+    Italian: { strong: ["Food", "Service"], also: ["Ambiance"], weak: ["Value"] },
+    Barbeque: { strong: ["Food", "Value"], also: ["Menu variety"], weak: ["Service"] },
+    Sandwiches: { strong: ["Value", "Food"], also: ["Service"], weak: ["Ambiance"] },
+    Korean: { strong: ["Food", "Menu variety"], also: ["Service"], weak: ["Value"] },
   };
 
   const DEFAULT_PROFILE = { strong: ["Food", "Service"], also: ["Ambiance"], weak: ["Value"] };
@@ -464,6 +446,28 @@ async function main() {
       for (let n = 0; n < (i === 0 ? 3 : 2); n++) bag.push(aspect);
     });
     for (const aspect of profile.also ?? []) bag.push(aspect);
+
+    /* Whatever the profile didn't name gets a single nod each, so a page rates
+       the whole vocabulary instead of leaving two columns blank. One vote is
+       the lightest touch that still counts as a signal: damping keeps it a
+       hair above the overall rating, which reads as "came up once, nobody
+       complained" — not as a strength.
+
+       `weak` is deliberately NOT filled in here. It reaches the page through
+       the faults below, which is the honest way for a category to show up
+       low rather than being praised once and faulted three times. */
+    const named = new Set([...profile.strong, ...(profile.also ?? []), ...profile.weak]);
+    for (const aspect of BEST_AT_LABELS) if (!named.has(aspect)) bag.push(aspect);
+
+    /* The generator relies on `count >= bag.length` to guarantee every entry
+       is drawn — `best` walks consecutive indices, so a bag longer than the
+       review count would silently drop whichever aspects fall off the end. */
+    if (bag.length > count) {
+      throw new Error(
+        `${restaurant.name}: ${bag.length} praise slots but only ${count} reviews — ` +
+          `some categories would never be voted on.`,
+      );
+    }
 
     // A well-rated place collects fewer complaints. They attach to the lowest
     // -starred reviews, since that's who was disappointed.
