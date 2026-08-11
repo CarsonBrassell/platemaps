@@ -14,6 +14,9 @@ export type MapComment = {
       only meaningful when the map is showing Friends-sourced data. */
   heartedByMe?: boolean;
   createdAt?: string;
+  /** Poster's handle, shown in the bubble's mono meta row (`@DANNYQ`). Only
+      real posts carry one; seeded chatter stays anonymous. */
+  author?: string;
   rating?: string | null;
   dishPrefix?: string | null;
   /** Replies on the underlying post. Seeded chatter has none and shows none. */

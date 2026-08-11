@@ -47,7 +47,11 @@ export default async function RestaurantPage({
             and the comment thread can sit side by side rather than leaving
             ~575px of the column empty next to a single narrow strip. */}
         <div className="mx-auto max-w-md lg:max-w-none">
-          <RestaurantDetail restaurant={restaurant} dishes={dishes} aspectTally={aspectTally} />
+          <RestaurantDetail
+            restaurant={restaurant}
+            dishes={dishes}
+            aspectTally={aspectTally}
+          />
         </div>
       </div>
     </div>

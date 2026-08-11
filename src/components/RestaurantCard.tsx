@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Restaurant } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurants";
 import { StarIcon } from "@/components/icons";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { OpenStatePill } from "@/components/OpenStatePill";
@@ -18,7 +18,7 @@ export function RestaurantCard({
   restaurant,
   highlight = null,
 }: {
-  restaurant: Restaurant;
+  restaurant: RestaurantView;
   highlight?: AspectHighlight | null;
 }) {
   return (
@@ -79,7 +79,7 @@ export function RestaurantCard({
             pair. Orange tint marks it as the answer to the active filter — the
             open pill stays tan, so the two never blur together. */}
         <div className="flex flex-wrap items-center gap-1.5">
-          <OpenStatePill closingTime={restaurant.closingTime} />
+          <OpenStatePill hours={restaurant.hours} />
           {highlight && (
             <span
               className="inline-flex items-center gap-1.5 rounded-full bg-pm-orange-tint px-3 py-1.5 text-xs font-medium text-pm-orange-text"

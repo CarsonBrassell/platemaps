@@ -16,9 +16,11 @@ export function bandForPercent(pct: number) {
 
 /**
  * How excited the meter should look. The paint for each tier lives in CSS —
- * this only decides which one applies.
+ * this only decides which one applies. Exported because the feed card's
+ * percent verdict wears the same tiers (`.pct-heat`), and two copies of these
+ * thresholds would drift.
  */
-function heatFor(pct: number) {
+export function heatFor(pct: number) {
   if (pct >= 95) return "blazing";
   if (pct >= 80) return "hot";
   if (pct >= 40) return "warm";

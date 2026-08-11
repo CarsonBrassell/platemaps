@@ -40,7 +40,7 @@ export function RestaurantHeader({ restaurant }: { restaurant: Restaurant }) {
         {/* Metadata pills: open state, walk time, rating. All machine values,
             all monospace, all tan — the accent stays out of this row. */}
         <div className="mt-3.5 flex flex-wrap items-center gap-2">
-          <OpenStatePill closingTime={restaurant.closingTime} />
+          <OpenStatePill hours={restaurant.hours ?? null} />
           <span className="inline-flex items-center rounded-full bg-pm-grey-tint px-3 py-1.5 font-mono text-xs font-medium text-pm-grey-text">
             {restaurant.walkTime}
           </span>

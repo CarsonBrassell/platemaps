@@ -12,7 +12,11 @@
     "aspects:preview": "node scripts/preview-aspect-scores.mjs",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "db:seed": "node --env-file=.env.local scripts/seed-demo.mjs",
-    "restaurants:import": "node --env-file=.env.local scripts/import-restaurants.mjs"
+    "restaurants:import": "node --env-file=.env.local scripts/import-restaurants.mjs",
+    "menus:load": "node --env-file=.env.local scripts/load-menus.mjs",
+    "menus:todo": "node --env-file=.env.local scripts/menus-todo.mjs",
+    "menus:firecrawl": "node --env-file=.env.local scripts/fetch-menus-firecrawl.mjs",
+    "menus:fresh": "node --env-file=.env.local scripts/check-menu-freshness.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

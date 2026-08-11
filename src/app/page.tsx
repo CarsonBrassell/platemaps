@@ -1,36 +1,43 @@
 import { Header } from "@/components/Header";
 import { StatsBar } from "@/components/StatsBar";
 import { DiscoverBrowser } from "@/components/DiscoverBrowser";
-import { getRestaurants } from "@/lib/db";
+import { getDiscoverPage, parseShown } from "@/lib/discover";
 
 /**
- * Rebuilt at most every five minutes, rather than frozen at deploy time.
+ * Discover, filtered on the server.
  *
- * When the array was a static import this page was baked once per build, and
- * making it a server component that reads Postgres would have kept exactly that
- * behaviour — Next prerenders an `async` page with no dynamic inputs — so a
- * `npm run restaurants:import` would have changed nothing until the next
- * deploy. That is the wrong default for data a script now writes.
+ * This page has been three things. It was a client component importing the
+ * whole restaurant array, then a server component that read Postgres and handed
+ * the whole thing to the client anyway. Both server-rendered a card for every
+ * restaurant in the corpus, so the page grew with the table — measured at about
+ * 4KB per restaurant, which is a 19MB page at five thousand of them.
  *
- * Revalidation rather than `force-dynamic`: the page is public and identical
- * for every visitor, so one render shared by everyone for five minutes is the
- * right trade against a database round trip per visit. The number is a
- * freshness budget — lower it while importing, raise it once the corpus
- * settles.
+ * Now the URL is the query. `searchParams` makes this route dynamic, the
+ * filtering happens in lib/discover.ts, and what reaches the browser is one
+ * page of results plus the facet counts. Page weight no longer depends on how
+ * many restaurants exist.
+ *
+ * The cost of that is a round trip per filter change where there used to be
+ * none. `DiscoverBrowser` spends it through a transition, keeping the previous
+ * results on screen rather than blanking the grid — see the note there.
+ *
+ * Dynamic rather than revalidated: the response now depends on the query
+ * string, so there is no single rendering to cache. The expensive part, the
+ * corpus read, is cached inside lib/discover.ts instead.
  */
-export const revalidate = 300;
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const search = new URLSearchParams(
+    Object.entries(params).flatMap(([key, value]) =>
+      value === undefined ? [] : [[key, Array.isArray(value) ? value[0] : value] as [string, string]],
+    ),
+  ).toString();
 
-/**
- * A server component now, where it used to be `"use client"`.
- *
- * That directive was the whole problem: it made every module this page
- * imported part of the browser bundle, including the full restaurant array.
- * Reading the rows here and passing them down means the query cost is paid
- * once on the server, and it is the seam that lets a later change hand
- * `DiscoverBrowser` a page of results instead of the corpus.
- */
-export default async function Home() {
-  const restaurants = await getRestaurants();
+  const page = await getDiscoverPage(search, { shown: parseShown(params.shown) });
 
   return (
     /* No shell card: the cream page is the ground.
@@ -46,7 +53,7 @@ export default async function Home() {
 
       <div className="flex w-full gap-6 px-4 sm:px-6">
         <div className="min-w-0 flex-1">
-          <DiscoverBrowser restaurants={restaurants} />
+          <DiscoverBrowser page={page} />
         </div>
       </div>
     </div>

@@ -156,15 +156,16 @@ h3 {
   }
 }
 
-/* The bubble's one line, as a flex row so truncation has priorities: the
-   dish name gives way first, the score is never clipped, and the trailing
-   prose takes whatever room remains. Whitespace-only nodes between the spans
-   are not rendered in flex layout, and become the ordinary word spaces when
-   hover flips this to a block below. */
+/* The bubble's headline row: the subject hard left, its score hard right,
+   nothing else. space-between is the whole point — the number lands on the
+   same edge in every bubble, so a screenful of them reads as a column of
+   verdicts rather than as ragged sentence ends. Truncation has priorities:
+   the subject gives way first, the score is never clipped and never wraps. */
 .map-bubble-text {
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  justify-content: space-between;
+  gap: 10px;
   white-space: nowrap;
   overflow: hidden;
   pointer-events: auto;
@@ -179,13 +180,15 @@ h3 {
 
 .map-line-score {
   flex: none;
+  white-space: nowrap;
 }
 
-.map-line-fill {
-  flex: 1 1 0;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* The comment's own words. At rest the bubble is the mockup's two rows and
+   nothing else; the prose is still in the DOM, just not shown, and the hover
+   rules below reveal it. Never `visibility` or zero height — the box hugs its
+   content and has to actually grow when this appears. */
+.map-bubble-prose {
+  display: none;
 }
 
 .map-bubble-box {
@@ -194,45 +197,57 @@ h3 {
 
 /* Hovering ANY part of the bubble — box background, plain text, the
    highlighted dish span, or the rating/upvote/time row — expands it, since
-   :hover on a descendant also matches all of its ancestors up the tree. */
+   :hover on a descendant also matches all of its ancestors up the tree.
+   :focus-within is the keyboard's half of the same gesture: the dish span and
+   the vote chips are focusable, so tabbing into a bubble has to open it too,
+   or the prose below would be revealed by pointer only. */
 .map-bubble:hover,
-.map-bubble-box:hover {
+.map-bubble-box:hover,
+.map-bubble-box:focus-within {
   z-index: 10000 !important;
 }
 
 /* 276px, not 280: the box below opens to a 300px border-box, and its own
    padding (11) and border (1) on each side leave exactly 276 inside. The row
-   flips to a block here so its spans stop being flex items and flow as one
-   wrapping paragraph — same words the resting line truncated, now whole. */
+   STAYS a flex row here — flipping it to a block would let the score flow in
+   behind the name and lose the right edge the whole design hangs on. Only the
+   clipping stops, so a long subject wraps in its own column with the score
+   still pinned opposite it. */
 .map-bubble:hover .map-bubble-text,
-.map-bubble-box:hover .map-bubble-text {
-  display: block;
+.map-bubble-box:hover .map-bubble-text,
+.map-bubble-box:focus-within .map-bubble-text {
   white-space: normal;
   overflow: visible;
   max-width: 276px !important;
-  word-break: break-word;
 }
 
 .map-bubble:hover .map-line-clip,
 .map-bubble-box:hover .map-line-clip,
-.map-bubble:hover .map-line-fill,
-.map-bubble-box:hover .map-line-fill {
-  display: inline;
+.map-bubble-box:focus-within .map-line-clip {
   overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* The comment itself, revealed. Nothing a person wrote is lost by the resting
+   two-row card — it is one hover or one tab-stop away. */
+.map-bubble:hover .map-bubble-prose,
+.map-bubble-box:hover .map-bubble-prose,
+.map-bubble-box:focus-within .map-bubble-prose {
+  display: block;
+  white-space: normal;
+  word-break: break-word;
 }
 
 /* No box-shadow on hover either — the bubble is a flat card by design, and
    growing a shadow only on hover would make the resting state look unfinished
    rather than deliberate. */
 .map-bubble:hover .map-bubble-box,
-.map-bubble-box:hover {
+.map-bubble-box:hover,
+.map-bubble-box:focus-within {
   max-width: 300px !important;
 }
-
-/* The whole comment shares one line with the dish and its score, so there is
-   no separate collapsed body anymore: at rest the line truncates like any
-   one-liner, and the hover rules above unwrap the same text in place — same
-   words, more of them visible, no second element to reveal. */
 
 /* The dish leading a bubble is a reference to another record in the app — it
    links into that dish's own menu entry — so it is styled the way a social
@@ -242,15 +257,22 @@ h3 {
    The face is the same Fraunces-with-WONK the feed card's .plate-headline
    uses, so a dish reads as the same kind of object wherever it appears.
 
-   `--pm-orange-text` (5.48:1 on the bubble's #faf7f2) rather than `--pm-orange`
-   (3.11:1, which fails at this 12px size).
+   The colour is ink (#2b211c), NOT the accent, and that is deliberate: the
+   approved bubble design gives the headline row exactly one coloured value —
+   the score pinned to its right — and an orange name an em away from an
+   orange percent made the row read as two accents fighting rather than as a
+   plate and its verdict. The face and the hover underline carry the "this is
+   a thing you can go to" signal that the colour used to. (It stays a distinct
+   rule from the box's own `color` so the treatment is still one selector to
+   change, and so DESIGN.md's `.map-dish-link` reference keeps pointing
+   somewhere real.)
 
    Underline only on hover, so a map full of bubbles isn't a map full of
    underlines. */
 .map-dish-link {
   font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
   font-variation-settings: "SOFT" 8, "WONK" 1;
-  color: var(--pm-orange-text);
+  color: #2b211c;
   letter-spacing: -0.01em;
 }
 
@@ -274,7 +296,8 @@ h3 {
    cursor makes the bubble twitch right when you're reading what you did. */
 .map-upvote-chip,
 .map-downvote-chip,
-.map-heart-chip {
+.map-heart-chip,
+.map-reply-chip {
   position: relative;
 }
 
@@ -286,7 +309,8 @@ h3 {
    the dish reference above. */
 .map-upvote-chip::before,
 .map-downvote-chip::before,
-.map-heart-chip::before {
+.map-heart-chip::before,
+.map-reply-chip::before {
   content: "";
   position: absolute;
   inset: -4px -6px -8px -6px;
@@ -304,12 +328,14 @@ h3 {
    the cursor is asking. #776B5B is the bubble's own muted step — see
    BUBBLE_MUTED in RestaurantMap.tsx. */
 .map-upvote-chip,
-.map-downvote-chip {
+.map-downvote-chip,
+.map-reply-chip {
   color: #776b5b;
 }
 
 .map-upvote-chip:hover,
 .map-downvote-chip:hover,
+.map-reply-chip:hover,
 .map-upvote-chip[aria-pressed="true"],
 .map-downvote-chip[aria-pressed="true"] {
   color: var(--pm-orange-text);
@@ -319,7 +345,8 @@ h3 {
    to be restated here rather than arriving via Tailwind classes. */
 .map-upvote-chip:focus-visible,
 .map-downvote-chip:focus-visible,
-.map-heart-chip:focus-visible {
+.map-heart-chip:focus-visible,
+.map-reply-chip:focus-visible {
   outline: 2px solid var(--pm-orange);
   outline-offset: 2px;
 }
@@ -371,82 +398,148 @@ h3 {
   filter: invert(0.7);
 }
 
-.pin-tip {
-  position: absolute;
-  bottom: calc(100% + 4px);
-  left: 50%;
-  transform: translateX(-50%);
-  display: none;
+/* Neon signage: how the night map says a restaurant's name. One voice, two
+   uses — .map-name-tip is the single floating element the GPU pin layer
+   places over a hovered ember (pins are paint now, so there is no per-pin
+   element for a CSS :hover tooltip to live on), and .map-neon-sign rides
+   permanently above a comment bubble. Both flicker on like a sign getting
+   power; the flicker replays whenever the element re-enters the DOM. */
+.map-name-tip,
+.map-neon-sign {
   white-space: nowrap;
-  background: #1d2126;
-  color: #e6e8ea;
-  border: 1px solid rgba(232, 135, 90, 0.45);
-  border-radius: 8px;
-  padding: 3px 9px;
-  font-size: 12px;
+  font-family: var(--font-spline-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ffb07a;
+  text-shadow:
+    0 0 6px rgba(232, 135, 90, 0.9),
+    0 0 14px rgba(232, 135, 90, 0.45);
   pointer-events: none;
+  animation: neon-flicker 0.45s linear;
 }
 
-.restaurant-pin:hover .pin-tip {
-  display: block;
+.map-neon-sign {
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 4px;
+  font-size: 10px;
 }
 
-/* Closed-right-now restaurants cool to a grey ember: dimmer, desaturated,
-   and with the beacon pulse stilled. */
-.pin-dim {
-  opacity: 0.55;
+/* A sign whose ember the cursor is on. The restaurant has already said its
+   name here, so hovering must not print a second copy of it in a floating chip
+   an inch away — the sign that exists answers instead. A quick flicker and a
+   hotter burn: the same "this one" the tip would have said, in the voice the
+   map already uses, and it settles back to the resting glow rather than
+   staying lit, so a stack of signs never looks like several selections.
+
+   The flicker itself is driven from RestaurantMap.tsx with the Web Animations
+   API rather than by an `animation` here, deliberately: this class goes on and
+   off with the cursor, and swapping a CSS animation-name off would restart the
+   sign's power-on flicker on mouse-OUT — a flicker every time you left a pin.
+   WAAPI never touches animation-name, so only the burn below changes state. */
+.map-neon-sign.is-live {
+  color: #ffd2ae;
+  text-shadow:
+    0 0 8px rgba(232, 135, 90, 1),
+    0 0 18px rgba(232, 135, 90, 0.6);
 }
 
-.pin-dim svg {
-  filter: saturate(0.3) !important;
+/* The map's Discover/Friends switch (see /feed) — lit, not filled.
+
+   The selected segment used to take a solid cream fill, the rank-3 segmented
+   control's "white selected segment" translated for night. On tiles carrying
+   neon restaurant signs a solid chip is the brightest object on the map and
+   reads as a lamp rather than as a choice, so the segment lights up instead:
+   the label burns in the sign voice — #ffb07a and the SAME two-stop ember glow
+   as .map-neon-sign directly above — inside a hollow ember tube.
+
+   Those shadow values and this one change together. A switch glowing at a
+   different temperature from the restaurant signs it sits among reads as a
+   second light source in a city that only has one.
+
+   **No flicker here.** .map-neon-sign flickers on because a sign gains power
+   when its bubble arrives; this changes state under the reader's own finger,
+   and a control that stutters when pressed reads as a fault, not as neon.
+
+   Both segments carry a 1px border — transparent when unlit — so lighting one
+   cannot resize either. Colour lives here rather than in Tailwind classes at
+   the call site because this file is unlayered and would win the cascade
+   anyway; splitting it would only hide which rule was in charge.
+
+   Contrast on the #1d2126-ish track: lit #ffb07a 9.1:1, unlit #a7b0ba 7.4:1 —
+   the same muted step the zoom stack and the results panel already use. The
+   two states differ by glow and by hue, and `aria-selected` carries it for
+   anything that cannot see either. */
+.map-source-seg {
+  color: #a7b0ba;
+  border: 1px solid transparent;
 }
 
-.pin-dim .pin-halo {
-  animation: none;
+.map-source-seg:not(.is-on):hover {
+  color: #f7f4ec;
 }
 
-/* MapLibre positions markers with its own inline transform on the marker
-   element, so hover scaling has to live on the inner svg, not the root. */
-.restaurant-pin {
-  position: relative;
-  cursor: pointer;
+.map-source-seg.is-on {
+  color: #ffb07a;
+  border-color: rgba(232, 135, 90, 0.85);
+  background: rgba(232, 135, 90, 0.08);
+  text-shadow:
+    0 0 6px rgba(232, 135, 90, 0.9),
+    0 0 14px rgba(232, 135, 90, 0.45);
+  box-shadow:
+    0 0 10px rgba(232, 135, 90, 0.3),
+    inset 0 0 10px rgba(232, 135, 90, 0.12);
 }
 
-.restaurant-pin svg {
-  display: block;
-  transition: transform 0.15s ease;
-  transform-origin: center;
+/* The hover tip carries the name and the place's star rating on one line, so
+   it becomes a row rather than a bare text node. */
+.map-name-tip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
 }
 
-.restaurant-pin:hover svg {
-  transform: scale(1.18);
+/* The rating is the tip's second voice: the same neon, stepped back so the
+   name still leads. Not letter-spaced like the name — this is a number, and
+   the caps tracking that makes a sign read pulls digits apart. */
+.map-tip-rating {
+  letter-spacing: 0.02em;
+  opacity: 0.85;
 }
 
-/* The outer halo ring breathes outward like a beacon; disabled wholesale by
-   the reduced-motion block below. */
-.restaurant-pin .pin-halo {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: pin-pulse 2.6s ease-out infinite;
+/* The leader thread, lit like the sign above it and the ember it lands on, so
+   a bubble and its restaurant read as one annotation rather than a card with a
+   scratch under it. drop-shadow rather than text-shadow — this is a stroked
+   SVG path, and filter is what applies a glow to painted geometry. The radii
+   are tighter than .map-neon-sign's (3/7 against 6/14): the same spread around
+   a 1px hairline would smear into a fat orange smudge instead of a lit line.
+   It flickers on with the sign, and the same reduced-motion block below stops
+   both. */
+.map-leader {
+  filter:
+    drop-shadow(0 0 3px rgba(232, 135, 90, 0.9))
+    drop-shadow(0 0 7px rgba(232, 135, 90, 0.45));
+  animation: neon-flicker 0.45s linear;
 }
 
-@keyframes pin-pulse {
-  0% {
-    transform: scale(0.65);
-    opacity: 0.5;
-  }
-  70% {
-    transform: scale(1.1);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1.1);
-    opacity: 0;
-  }
+@keyframes neon-flicker {
+  0% { opacity: 0; }
+  35% { opacity: 0.85; }
+  48% { opacity: 0.15; }
+  62% { opacity: 1; }
+  74% { opacity: 0.55; }
+  100% { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .restaurant-pin .pin-halo {
+  /* .map-neon-sign.is-live keeps its brighter burn here — the hover still has
+     to be answerable without motion; it is only the flicker that goes, and
+     RestaurantMap.tsx checks the same query before playing it. */
+  .map-name-tip,
+  .map-neon-sign,
+  .map-leader {
     animation: none;
   }
 }
@@ -799,9 +892,35 @@ h3 {
 
 /* --- Percent meter, excited --------------------------------------------
    The meter gets hotter the harder you'd push a dish. Four tiers, set from
-   a data-heat attribute on the input so the paint is CSS and the component
-   only decides which band it's in. Fill colour is driven by --hot so the
-   gradient stops stay in one place. */
+   a data-heat attribute so the paint is CSS and the component only decides
+   which band it's in. The stop pairs are defined on the bare attribute —
+   not on .pct-meter — because the feed card's verdict numeral (.pct-heat)
+   wears the same tiers; the meter's motion stays scoped to .pct-meter below
+   so a card numeral can never start breathing. */
+
+/* Cool: a plate you'd warn someone off. Desaturated, no motion. */
+[data-heat="cool"] {
+  --hot-a: #b6a494;
+  --hot-b: #8a7a6d;
+}
+
+/* Warm: the honest middle. The brand orange, sitting still. */
+[data-heat="warm"] {
+  --hot-a: #e8a06f;
+  --hot-b: var(--pm-orange);
+}
+
+/* Hot: worth ordering. Deepens toward the thumb. */
+[data-heat="hot"] {
+  --hot-a: var(--pm-orange);
+  --hot-b: #d1451f;
+}
+
+/* Blazing: order it twice. */
+[data-heat="blazing"] {
+  --hot-a: #f0893a;
+  --hot-b: #c62d12;
+}
 
 .pct-meter[data-heat] {
   background: linear-gradient(
@@ -813,31 +932,27 @@ h3 {
   );
 }
 
-/* Cool: a plate you'd warn someone off. Desaturated, no motion. */
-.pct-meter[data-heat="cool"] {
-  --hot-a: #b6a494;
-  --hot-b: #8a7a6d;
-}
-
-/* Warm: the honest middle. The brand orange, sitting still. */
-.pct-meter[data-heat="warm"] {
-  --hot-a: #e8a06f;
-  --hot-b: var(--pm-orange);
-}
-
-/* Hot: worth ordering. Deepens toward the thumb and breathes. */
+/* Hot and blazing breathe — the meter only, never a .pct-heat numeral. */
 .pct-meter[data-heat="hot"] {
-  --hot-a: var(--pm-orange);
-  --hot-b: #d1451f;
   animation: meter-breathe 1.8s ease-in-out infinite;
 }
 
-/* Blazing: order it twice. Adds a travelling sheen over the fill and a
-   glow that spills past the track. */
+/* Blazing also gets the travelling sheen from .meter-shell below. */
 .pct-meter[data-heat="blazing"] {
-  --hot-a: #f0893a;
-  --hot-b: #c62d12;
   animation: meter-breathe 1.15s ease-in-out infinite;
+}
+
+/* The feed card's percent verdict, in the meter's own heat: same two stops,
+   clipped to the glyphs. Flat orange if no tier is set. */
+.pct-heat {
+  background-image: linear-gradient(
+    90deg,
+    var(--hot-a, var(--pm-orange)),
+    var(--hot-b, var(--pm-orange))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 @keyframes meter-breathe {

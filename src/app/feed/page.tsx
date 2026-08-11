@@ -13,7 +13,7 @@ import { FeedHeader } from "@/components/feed/FeedHeader";
 import { FeedTabs } from "@/components/feed/FeedTabs";
 import { FoodPostCard, type FriendStatus } from "@/components/feed/FoodPostCard";
 import { usePostFeed } from "@/components/feed/usePostFeed";
-import { CommentsPanel } from "@/components/feed/CommentsPanel";
+import { CommentsScreen } from "@/components/feed/CommentsScreen";
 import { FeedSkeleton } from "@/components/feed/FeedSkeleton";
 import {
   EmptyFeedState,
@@ -171,11 +171,12 @@ function FeedPageInner() {
     banner,
     setBanner,
     reactPoints,
+    commentReactPoints,
     vote: handleVote,
     heart: handleHeart,
     save: handleSave,
     comment: handleComment,
-    likeComment: handleLikeComment,
+    voteComment: handleVoteComment,
     remove: handleDelete,
     share: handleShare,
   } = usePostFeed({
@@ -366,6 +367,8 @@ function FeedPageInner() {
             heartedByMe: p.heartedByMe,
             commentCount: p.comments.length,
             createdAt: p.createdAt,
+            // Same "Maya Ellis" -> "mayaellis" reading the feed card uses.
+            author: p.authorName.trim().toLowerCase().replace(/\s+/g, ""),
             rating: bubbleRating(p),
             dishPrefix: bubbleDishPrefix(p),
             postId: p.id,
@@ -428,8 +431,24 @@ function FeedPageInner() {
           {/* The floating switch below takes the map's top-left corner, so
               MapLibre's zoom stack (added "top-left" in RestaurantMap) is
               pushed down to clear it — scoped here rather than in
-              .map-fun-tiles, since every other map keeps its corner. */}
-          <div className="relative p-2.5 [&>div]:overflow-hidden [&_.maplibregl-ctrl-top-left]:pt-10">
+              .map-fun-tiles, since every other map keeps its corner.
+
+              Two pushes, because the top of the map holds a different number of
+              rows at each width. From `sm` the switch and MapSearch share one
+              row, so 40px clears the switch alone (its 40px height from a 10px
+              inset, plus MapLibre's own 10px margin on the group = 50px).
+              Below `sm` the field wraps underneath and ends at 108px, so the
+              stack drops to 112px + 10px = 122px. **This pairs with MapSearch's
+              `top-16`** — the two numbers are one layout and must move
+              together; the field previously dodged sideways to `left-16`
+              instead, which is what left it sharing a row with the +/− keys. */}
+          {/* This used to also carry `[&>div]:overflow-hidden` to clip the
+              canvas to the map's rounded corners. RestaurantMap now returns a
+              positioning wrapper around its container (for the search field),
+              so `&>div` names the wrapper and the clip landed one level above
+              the radius, squaring the corners off. The map container clips
+              itself instead — the descendant selector below is unaffected. */}
+          <div className="relative p-2.5 [&_.maplibregl-ctrl-top-left]:pt-28 sm:[&_.maplibregl-ctrl-top-left]:pt-10">
           {/* The bubble chip stays upvote-only — there's no room on a map pin
               for a pair — but the number it shows is the same net score the
               card shows. Downvoting happens on the card. */}
@@ -458,13 +477,30 @@ function FeedPageInner() {
               It floats on the night map rather than sitting in a white band
               above it: the map is the surface it belongs to, and a band of
               card ground above it just pushed the map down. Still a segmented
-              switch, not another pill tab bar — tan track, white selected
-              segment, mono labels — one rank below the screen's own tabs. */}
+              switch, not another pill tab bar — one rank below the screen's own
+              tabs.
+
+              **Night dress, squared, and lit — a documented departure.**
+              DESIGN.md's rank-3 segmented control is a tan `pm-grey-tint` track
+              with a white selected segment and rounded ends, and that is still
+              correct everywhere it sits on cream. Here it does not: it floats on
+              the night tiles, where a tan pill is a cream-world control that
+              wandered onto the map, and it now shares its row with a field that
+              has no container at all (see MapSearch). So the track takes the
+              map's own near-black at 88% with a neutral hairline, and the
+              corners go square to match the field's rule.
+
+              The selected segment is not filled — it lights up, in the map's own
+              neon-sign voice. That treatment lives in `.map-source-seg` in
+              globals.css, beside `.map-neon-sign` whose glow it borrows, because
+              the two must stay the same temperature. Rank is still legible: the
+              screen's real tabs above are plain text with an orange underline,
+              and nothing else on the map is a bordered chip. */}
           <div className="absolute left-5 top-5 z-10">
             <div
               role="tablist"
               aria-label="Map data source"
-              className="inline-flex rounded-full bg-pm-grey-tint p-1"
+              className="inline-flex border border-[rgba(255,255,255,0.12)] bg-[rgba(18,22,27,0.88)] p-[3px]"
             >
               {(["discover", "friends"] as const).map((source) => (
                 <button
@@ -473,10 +509,8 @@ function FeedPageInner() {
                   role="tab"
                   aria-selected={mapSource === source}
                   onClick={() => setMapSource(source)}
-                  className={`min-h-8 rounded-full px-3.5 font-mono text-[11px] font-medium uppercase tracking-[0.12em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-                    mapSource === source
-                      ? "bg-white text-zinc-900"
-                      : "text-pm-grey-text hover:text-zinc-900"
+                  className={`map-source-seg min-h-8 px-3.5 font-mono text-[11px] font-medium uppercase tracking-[0.12em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+                    mapSource === source ? "is-on" : ""
                   }`}
                 >
                   {source}
@@ -576,12 +610,13 @@ function FeedPageInner() {
       </div>
 
       {activePost && (
-        <CommentsPanel
+        <CommentsScreen
           post={activePost}
           currentUserId={account?.id ?? null}
           onClose={() => setCommentsPostId(null)}
           onSubmit={handleComment}
-          onLikeComment={handleLikeComment}
+          onVoteComment={handleVoteComment}
+          reactPoints={commentReactPoints}
         />
       )}
     </div>

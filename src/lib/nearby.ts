@@ -15,13 +15,16 @@
 
 import { useCallback, useState, useSyncExternalStore } from "react";
 
-export type Coords = { lat: number; lng: number };
-
 /**
- * How far "nearby" reaches. Wide enough that a filter on it still returns
- * something in a county this spread out, tight enough to still mean "tonight".
+ * The geometry moved to lib/geo.ts so the server can filter on distance without
+ * importing a module that calls `useState` — see the note there. Re-exported
+ * because these were part of this file's surface first.
  */
-export const NEARBY_RADIUS_MI = 5;
+export { NEARBY_RADIUS_MI, milesBetween, type Coords } from "@/lib/geo";
+
+// A re-export does not put the name in this file's own scope, and `Nearby`
+// below is written in terms of it.
+import type { Coords } from "@/lib/geo";
 
 export type NearbyState =
   /** Never asked. The row is offered and the prompt hasn't been raised. */
@@ -36,21 +39,6 @@ export type NearbyState =
   | "failed"
   /** No geolocation API at all; the row never renders. */
   | "unsupported";
-
-const EARTH_RADIUS_MI = 3958.8;
-
-const toRadians = (deg: number) => (deg * Math.PI) / 180;
-
-/** Great-circle distance in miles. Haversine — the county is small enough that
-    the choice of formula is irrelevant, but the poles aren't its problem. */
-export function milesBetween(a: Coords, b: Coords): number {
-  const dLat = toRadians(b.lat - a.lat);
-  const dLng = toRadians(b.lng - a.lng);
-  const h =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRadians(a.lat)) * Math.cos(toRadians(b.lat)) * Math.sin(dLng / 2) ** 2;
-  return 2 * EARTH_RADIUS_MI * Math.asin(Math.min(1, Math.sqrt(h)));
-}
 
 export type Nearby = {
   state: NearbyState;

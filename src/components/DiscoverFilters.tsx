@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { BEST_AT } from "@/data/reviewScales";
 import { PRICE_BANDS, type PriceBand } from "@/data/priceBands";
 import {
@@ -21,6 +21,18 @@ import { NEARBY_RADIUS_MI, type NearbyState } from "@/lib/nearby";
  * to six rows each was a rail taller than the results beside it.
  */
 const COLLAPSED_ROWS = 3;
+
+/**
+ * A facet gets a search field of its own from this many options up.
+ *
+ * Six, because below that the whole list already fits in one glance behind a
+ * single "show more" tap, and a field costs a row of chrome plus a place for
+ * the eye to stop. It clears Neighborhood and Cuisine — the two lists long
+ * enough that scanning them is real work — and the eight categories under
+ * "Rated well for". Price stays bare: four bands with a fixed cheap-to-dear
+ * order are not something anyone would type at.
+ */
+const SEARCHABLE_FROM = 6;
 
 export type FilterHandlers = {
   onNeighborhood: (v: string | null) => void;
@@ -152,6 +164,99 @@ function FacetRow({
   );
 }
 
+/**
+ * The per-facet search field: types down the list below it, nothing else.
+ *
+ * It filters options that are already on the page rather than querying
+ * anything, so there is no debounce, no request and no loading state — the
+ * whole option set for a facet is a couple of dozen strings the rail was
+ * handed at render.
+ *
+ * Shaped as a tinted pill rather than a bordered box: DESIGN.md gives the rail
+ * a white card with no outlines inside it, and a tan track is how the rest of
+ * this UI marks something you act on within a card.
+ */
+function FacetSearch({
+  noun,
+  query,
+  onQuery,
+}: {
+  /** Plural, lowercase — "neighborhoods". Both the label and the prompt. */
+  noun: string;
+  query: string;
+  onQuery: (next: string) => void;
+}) {
+  const id = useId();
+
+  return (
+    <div className="mb-1 flex items-center gap-1.5 rounded-full bg-pm-grey-tint/60 px-2.5 transition-colors focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-pm-orange">
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        className="shrink-0 text-zinc-400"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="7" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      <label htmlFor={id} className="sr-only">
+        Search {noun}
+      </label>
+      <input
+        id={id}
+        type="text"
+        value={query}
+        onChange={(e) => onQuery(e.target.value)}
+        // Escape empties the field first and only reaches the mobile sheet's
+        // own Escape handler once there is nothing left to clear — losing a
+        // half-typed word is cheap, losing every filter you had picked is not.
+        //
+        // stopImmediatePropagation, not stopPropagation: under the App Router
+        // React delegates to the document, which is also where Dialog listens,
+        // so both handlers sit on the same node and only the immediate form
+        // stops the second one. Verified in the sheet, not assumed.
+        onKeyDown={(e) => {
+          if (e.key === "Escape" && query) {
+            e.nativeEvent.stopImmediatePropagation();
+            onQuery("");
+          }
+        }}
+        placeholder={`Search ${noun}`}
+        autoComplete="off"
+        // 13px matches the rows below; on a touch device it goes back up to
+        // 16px, under which iOS zooms the page in on focus and leaves the
+        // visitor scrolled sideways inside the filter sheet.
+        className="min-h-8 w-full min-w-0 bg-transparent text-[13px] text-zinc-900 placeholder:text-zinc-500 focus:outline-none pointer-coarse:min-h-11 pointer-coarse:text-base"
+      />
+      {query && (
+        <button
+          type="button"
+          onClick={() => onQuery("")}
+          aria-label={`Clear ${noun} search`}
+          className="-mr-1 shrink-0 rounded-full p-1 text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-pm-orange"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+      )}
+    </div>
+  );
+}
+
 function Facet({
   label,
   anyLabel,
@@ -163,7 +268,9 @@ function Facet({
   hints,
   emoji,
   monoLabels,
+  searchNoun,
   collapseAfter = COLLAPSED_ROWS,
+  childLabel,
   /** Rendered directly under the "any" row — the Nearby row lives here. */
   children,
 }: {
@@ -177,16 +284,39 @@ function Facet({
   hints?: Map<string, string>;
   emoji?: Map<string, string>;
   monoLabels?: boolean;
+  /**
+   * What this facet's options are, plural and lowercase. Supplying it offers a
+   * search field once the list is long enough to want one (SEARCHABLE_FROM);
+   * a facet with no noun never gets one.
+   */
+  searchNoun?: string;
   /** Override for a facet whose option set shouldn't be broken up. */
   collapseAfter?: number;
+  /**
+   * The label of the row passed as `children`, so search can find it. Without
+   * it a searched list simply drops that row, which is right for a row search
+   * can't read.
+   */
+  childLabel?: string;
   children?: React.ReactNode;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [query, setQuery] = useState("");
 
+  const searchable = searchNoun !== undefined && options.length >= SEARCHABLE_FROM;
+  const q = searchable ? query.trim().toLowerCase() : "";
+
+  // While searching, the list is the matches and nothing else: the fold, the
+  // "any" row and Nearby all stand down, because a list answering a typed
+  // question shouldn't also carry rows that didn't answer it. Everything comes
+  // back the moment the field is empty — the query is a lens over the list, not
+  // a filter that has been applied.
+  //
   // A selected option stays visible even when it sits past the fold, so the
   // rail never shows a filter as on without showing which one.
-  const visible =
-    expanded || options.length <= collapseAfter
+  const visible = q
+    ? options.filter((o) => o.value.toLowerCase().includes(q))
+    : expanded || options.length <= collapseAfter
       ? options
       : options
           .slice(0, collapseAfter)
@@ -197,20 +327,31 @@ function Facet({
   // Gated on the list being long enough to collapse, not on anything currently
   // being hidden — `hidden` is 0 once expanded, which is exactly when the
   // control has to stay put to offer the way back.
-  const collapsible = options.length > collapseAfter;
+  const collapsible = !q && options.length > collapseAfter;
+  const showChild = !q || (childLabel?.toLowerCase().includes(q) ?? false);
 
   return (
     <div>
       <SectionLabel>{label}</SectionLabel>
+      {searchable && (
+        <FacetSearch noun={searchNoun} query={query} onQuery={setQuery} />
+      )}
       <div className="-mx-2">
-        <FacetRow
-          label={anyLabel}
-          count={anyCount}
-          selected={value === null}
-          disabled={false}
-          onSelect={() => onChange(null)}
-        />
-        {children}
+        {!q && (
+          <FacetRow
+            label={anyLabel}
+            count={anyCount}
+            selected={value === null}
+            disabled={false}
+            onSelect={() => onChange(null)}
+          />
+        )}
+        {showChild && children}
+        {q && visible.length === 0 && !showChild && (
+          <p role="status" className="px-2.5 py-1.5 text-[12px] leading-snug text-zinc-500">
+            No {searchNoun} matching &ldquo;{query.trim()}&rdquo;.
+          </p>
+        )}
         {visible.map((option) => {
           const count = counts.get(option.value) ?? 0;
           const selected = option.value === value;
@@ -226,7 +367,14 @@ function Facet({
               // Never disable the option that is on — that would strand the
               // user inside a combination they can't back out of.
               disabled={count === 0 && !selected}
-              onSelect={() => onChange(selected ? null : option.value)}
+              // Picking ends the search. The choice is made, so the list goes
+              // back to showing it among the alternatives rather than among
+              // the letters that found it — and a stale query left in the
+              // field would keep the "any" row hidden behind it.
+              onSelect={() => {
+                setQuery("");
+                onChange(selected ? null : option.value);
+              }}
             />
           );
         })}
@@ -392,6 +540,8 @@ export function FilterControls({
         anyCount={counts.anyNeighborhood}
         value={filters.nearby ? "" : filters.neighborhood}
         onChange={onNeighborhood}
+        searchNoun="neighborhoods"
+        childLabel="Nearby"
       >
         <NearbyRow
           on={filters.nearby}
@@ -408,6 +558,7 @@ export function FilterControls({
         anyCount={counts.anyCuisine}
         value={filters.cuisine}
         onChange={onCuisine}
+        searchNoun="cuisines"
       />
       {/* Priced from the menu prices the app already shows, so places without
           a menu carry no band and no price filter can return them — hence a
@@ -436,6 +587,7 @@ export function FilterControls({
         value={filters.aspect}
         onChange={onAspect}
         emoji={ASPECT_EMOJI}
+        searchNoun="categories"
       />
       <div>
         <SectionLabel>Quick filters</SectionLabel>

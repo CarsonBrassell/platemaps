@@ -1,8 +1,14 @@
 ﻿"use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ComponentType, type RefObject } from "react";
 import { useRouter } from "next/navigation";
-import { Map as MapLibreMap, Marker, NavigationControl, setWorkerUrl } from "maplibre-gl";
+import {
+  Map as MapLibreMap,
+  Marker,
+  NavigationControl,
+  setWorkerUrl,
+  type GeoJSONSource,
+} from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 // Turbopack can't serve MapLibre's worker module (it 404s with an HTML error
@@ -11,10 +17,11 @@ import "maplibre-gl/dist/maplibre-gl.css";
 // imports are copied into /public (from node_modules/maplibre-gl/dist — keep
 // them in step when upgrading maplibre-gl) and served as plain static files.
 setWorkerUrl("/maplibre-gl-worker.mjs");
+import { MapSearch } from "@/components/MapSearch";
 import { NEO_NOIR_STYLE } from "@/lib/mapStyle";
 import { openStateFor } from "@/lib/openState";
 import { relativeTime } from "@/lib/format";
-import type { Restaurant } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurants";
 import type { MapComment } from "@/data/mapComments";
 
 // Roughly San Diego County's real extent — keeps users from panning off into
@@ -130,6 +137,9 @@ const BUBBLE_META_ROW_HEIGHT = 15;
 const BUBBLE_META_GAP = 4;
 const BUBBLE_MIN_WIDTH = 56;
 const BUBBLE_GAP = 6;
+/* Vertical room the neon restaurant sign takes above a stack's top edge —
+   part of the collision footprint so no other bubble lands on the name. */
+const NEON_SIGN_CLEARANCE = 14;
 /* Utilitarian palette: warm near-white card, hairline edge, one orange accent.
    No pop-shadow, no pinstripe, no drop shadow — over a dark map the light card
    already separates itself, and PRODUCT.md's aesthetic direction rules shadows
@@ -150,8 +160,13 @@ const BUBBLE_RADIUS = 8;
 const MONO = "var(--font-spline-mono), ui-monospace, SFMono-Regular, Menlo, monospace";
 /* The leader is drawn on the map rather than on the card, so it is the one
    part of a bubble that cannot use BUBBLE_EDGE — a 16%-alpha ink hairline is
-   invisible over the neo-noir ground. It carries the fill at 45% instead. */
-const LEADER_STROKE = "rgba(250,247,242,0.45)";
+   invisible over the neo-noir ground.
+   It is neon, the same light the ember it lands on and the sign above it are
+   made of (`.map-leader` in globals.css carries the glow and the power-on
+   flicker). A cream hairline read as a stray scratch; lit, the thread, the
+   name and the dot are visibly one annotation. The mock draws two of its
+   three leaders in this orange for the same reason. */
+const LEADER_STROKE = "#ffb07a";
 /** Local x of the run: BUBBLE_RADIUS, the first point along the bottom edge
  *  where that edge is actually straight. Anything left of it is inside the
  *  corner arc, which curves away to the right — a line there is tangent to the
@@ -164,7 +179,38 @@ const LEADER_X = BUBBLE_RADIUS;
  *  halo's r=15 at any intensity, so this only has to keep the dot off the
  *  glow rather than land on the ring. */
 const LEADER_PIN_CLEARANCE = 4;
-const LEADER_DOT = 2;
+/** Vertical share of the drop given over to the elbow's diagonal. The run
+ *  stays vertical above this, so the leader reads as a thread that nods toward
+ *  its ember at the end rather than a diagonal slash across the map. */
+const LEADER_ELBOW = 16;
+/**
+ * How far short of the pin's centre the leader stops, in px.
+ *
+ * The ember is not a fixed size — `restaurant-dots`' radius (and the halo over
+ * it) grows with zoom, so this has to as well. A fixed clearance is exactly
+ * what made the line look detached: sized for the close-up ember it left a
+ * visible gap beside the 2px dot of a county view.
+ *
+ * Tracks the core dot's radius plus a hair, so the line dies at the edge of
+ * the light at every zoom.
+ */
+function emberClearance(zoom: number) {
+  const stops: [number, number][] = [
+    [9, 3],
+    [13, 5],
+    [15, 6],
+    [18, 8],
+  ];
+  if (zoom <= stops[0][0]) return stops[0][1];
+  for (let i = 1; i < stops.length; i++) {
+    const [z1, v1] = stops[i];
+    if (zoom <= z1) {
+      const [z0, v0] = stops[i - 1];
+      return v0 + ((v1 - v0) * (zoom - z0)) / (z1 - z0);
+    }
+  }
+  return stops[stops.length - 1][1];
+}
 
 /** 9043 -> "9.0k". Keeps a hot post's count from widening the whole bubble. */
 function compactCount(n: number) {
@@ -269,14 +315,38 @@ function bubbleScoreFor(comment: MapComment): string | null {
  * own text voice (#A8481A, as .map-dish-link documents), and the two red
  * tiers run much darker than the meter's fills — deep bricks rather than
  * bright reds — so a hot percent reads as red at a glance instead of
- * blending into the orange dish name sitting an em to its left. Both clear
- * 7:1 on the fill. Star ratings aren't on the meter's scale and stay ink.
+ * blending into the ink dish name at the other end of the row. Both clear
+ * 7:1 on the fill. Star ratings aren't on the meter's scale at all — see
+ * scoreColorFor.
  */
 function heatColorForPercent(pct: number) {
   if (pct >= 95) return "#7d1d08";
   if (pct >= 80) return "#9a2c10";
   if (pct >= 40) return BUBBLE_POP;
   return BUBBLE_MUTED;
+}
+
+/** A restaurant review's score arrives as a bare ratio ("4/5"). */
+const RATIO_SCORE = /^\d+(?:\.\d+)?\/\d+$/;
+
+/**
+ * How the score reads at the right end of the headline: a dish percent as
+ * authored ("92%"), a restaurant review's stars behind the glyph the approved
+ * mockup puts in front of them ("★ 4/5"). Legacy "4★" strings already carry a
+ * star of their own and are left alone.
+ */
+function scoreLabelFor(score: string) {
+  return RATIO_SCORE.test(score) ? `★ ${score}` : score;
+}
+
+/**
+ * A percent takes the meter's heat for its value; a star rating takes the
+ * accent's small-text voice (the mockup's `.bmo`), not ink — stars are the
+ * one score that isn't on the meter's scale, and leaving them ink made them
+ * read as part of the dish name rather than as its verdict.
+ */
+function scoreColorFor(score: string) {
+  return /%$/.test(score) ? heatColorForPercent(parseInt(score, 10)) : BUBBLE_POP;
 }
 
 /**
@@ -293,23 +363,27 @@ function estimateMetaWidth(comment: MapComment) {
   if (comment.upvotes !== undefined) items.push(26 + compactCount(comment.upvotes).length * 6);
   if (comment.commentCount !== undefined) items.push(13 + String(comment.commentCount).length * 6);
   if (comment.createdAt) items.push(compactTime(comment.createdAt).length * 6);
-  const gaps = Math.max(0, items.length - 1) * 8;
+  /* 12 per boundary, not 8: the row separates its parts with a mono middot
+     (`@DANNYQ · 2H · ▲ 34`, the byline shape DESIGN.md gives the feed card),
+     so a boundary now costs two 4px gaps and a ~6px glyph rather than one gap. */
+  const gaps = Math.max(0, items.length - 1) * 12;
   return items.reduce((a, b) => a + b, 0) + gaps + (BUBBLE_PADDING_X + BUBBLE_BORDER) * 2 + 8;
 }
 
 // Rough text-width estimate (no DOM measurement available at layout time) —
-// generous on purpose so we under-place rather than risk visual overlap. The
-// whole line counts now — dish, score, and the trailing comment all share it —
-// so most bubbles sit at the zoom cap and short ones hug what they have. The
-// nowrap meta row still sets a floor, but its own, computed one — not a
-// constant.
+// generous on purpose so we under-place rather than risk visual overlap. Only
+// the headline row counts: the subject on the left and the score pinned right,
+// with the flex gap between them. The comment's prose no longer shares that
+// row (it sits in the hover-revealed .map-bubble-prose below), so a chatty
+// dish comment stops reserving a cap-wide rect for text the resting bubble
+// never shows. The nowrap meta row still sets a floor, but its own, computed
+// one — not a constant.
 function estimateBubbleWidth(comment: MapComment, zoom: number) {
   const score = bubbleScoreFor(comment);
-  const trailing = comment.dishPrefix ? comment.text.trim().length : 0;
   const line =
     22 +
-    (headlineFor(comment).length + trailing) * 5.5 +
-    (score ? 6 + score.length * 6 : 0);
+    headlineFor(comment).length * 5.5 +
+    (score ? 10 + scoreLabelFor(score).length * 6 : 0);
   const floor =
     comment.upvotes !== undefined ? estimateMetaWidth(comment) : BUBBLE_MIN_WIDTH;
   return Math.min(bubbleWidthCap(comment, zoom), Math.max(floor, line));
@@ -336,30 +410,20 @@ function escapeHtml(text: string) {
   return text.replace(/[&<>"']/g, (c) => HTML_ESCAPES[c]);
 }
 
-/**
- * intensity 0..1 scales the pin with its popularity (best comment score
- * relative to the hottest restaurant on the map); dimmed marks places that
- * are closed right now, which cool to a grey ember via .pin-dim.
- */
-function pinElement(name: string, intensity: number, dimmed: boolean) {
-  const size = Math.round(32 + 12 * intensity);
-  const glowRadius = Math.round(5 + 6 * intensity);
-  const glowAlpha = (0.45 + 0.35 * intensity).toFixed(2);
-  const el = document.createElement("div");
-  el.className = dimmed ? "restaurant-pin pin-dim" : "restaurant-pin";
-  el.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 38 38" style="filter: drop-shadow(0 0 ${glowRadius}px rgba(232,135,90,${glowAlpha}));">
-      <circle class="pin-halo" cx="19" cy="19" r="15" fill="none" stroke="#e8875a" stroke-width="1.5" opacity="0.35" />
-      <circle cx="19" cy="19" r="11" fill="none" stroke="#e8875a" stroke-width="1" opacity="0.45" />
-      <circle cx="19" cy="19" r="8" fill="#e8875a" stroke="#15171a" stroke-width="1.5" />
-      <g transform="translate(16.2,13.5)" stroke="#15171a" stroke-width="1.5" stroke-linecap="round" fill="none">
-        <line x1="1" y1="0" x2="1" y2="10.5" />
-        <path d="M0 0v3a1 1 0 0 0 2 0V0" />
-        <path d="M5.2 0c1.2 1.1 1.2 3.2 0 4.3v6.2" />
-      </g>
-    </svg>
-    <span class="pin-tip">${escapeHtml(name)}</span>`;
-  return el;
-}
+/* Restaurant pins are paint, not DOM. Each restaurant used to be its own
+ * Marker — a div holding an animated SVG that the main thread repositioned on
+ * every frame of every pan, which is what made the map stutter as the corpus
+ * grew. They now live in one unclustered GeoJSON source feeding WebGL circle
+ * layers: a thousand restaurants cost roughly what the tiles cost. Every
+ * restaurant stays its own light at every zoom — zoomed out the lights go
+ * tiny and vague and dense blocks clump purely because the real dots crowd
+ * together, like city lights seen from a plane. The DOM holds only the
+ * comment bubbles (already capped by zoom) and one shared hover name chip.
+ *
+ * Per-feature properties drive the paint the old pinElement used to compute:
+ * `intensity` 0..1 scales size and glow with the spot's best comment score,
+ * `closed` cools a spot to a dim grey ember. */
+const PIN_SOURCE = "restaurants";
 
 function bubbleElement(
   comment: MapComment,
@@ -368,46 +432,57 @@ function bubbleElement(
   stackIndex: number,
   mode: "discover" | "friends",
   canReact: boolean,
+  /** The restaurant's name, rendered as the neon sign above the bubble.
+      Passed only for the stack's pin-nearest bubble so a stack signs once. */
+  restaurantName: string | null,
 ) {
   const offsetX = 12;
   const hasMeta = comment.upvotes !== undefined;
   const maxWidth = bubbleWidthCap(comment, zoom);
   const split = comment.dishPrefix ? splitDishPrefix(comment.dishPrefix) : null;
-  /* The number the line carries right behind the thing it measures — a dish's
-     percent, or a restaurant review's stars ahead of the prose. */
+  /* The number the row carries at its far end, opposite the thing it measures
+     — a dish's percent, or a restaurant review's stars. */
   const score = bubbleScoreFor(comment);
-  /* One flowing line: the plate, its score right behind it, and then the
-     poster's own words — not a headline row with the comment exiled below it.
-     Each part keeps its own voice inline: Fraunces + accent for the dish (a
-     reference), mono ink for the score (a measurement), muted sans for the
-     prose (a person talking). At rest the line truncates like any one-liner;
-     on hover it wraps and reads whole. */
-  /* The dish stays a span rather than a button: .map-bubble-text truncates
-     with text-overflow, which only applies to inline content, and a button is
-     an atomic inline-level box that would clip mid-glyph instead. So it earns
-     the keyboard affordances a link owes by hand — focusable, named as a
-     link, and activated on Enter by the handler bound below. */
-  /* At rest the line is a flex row so truncation has priorities: the name
-     clips first (map-line-clip), the score never clips (map-line-score), and
-     the prose takes whatever is left (map-line-fill) — so "Cortado and a
-     mor… 84%" keeps its number where a single ellipsis run would have eaten
-     it. On hover the row flips to a block and the same spans flow as one
-     wrapping paragraph (see globals.css). */
-  /* A percent takes the meter's heat for its value; a star rating stays ink. */
-  const scoreColor = score && /%$/.test(score) ? heatColorForPercent(parseInt(score, 10)) : BUBBLE_INK;
+  /* The headline is a two-column row, not a flowing sentence: the subject
+     hard left, the verdict hard right, the way the reference mockup and the
+     feed's ledger card both set it. Space-between is what does it, so the
+     number lands on the same edge in every bubble on the map and the column
+     of scores can be read straight down. Voices split the way DESIGN.md's
+     three-voice rule requires: Fraunces in ink for the plate (a proper name),
+     mono for the score (a machine value), and the poster's own sans prose
+     kept off this row entirely — it lives in .map-bubble-prose below.
+
+     Truncation has priorities: the subject clips first (map-line-clip), the
+     score never clips or wraps (map-line-score), so a long plate reads
+     "Cortado and a mor… 84%" instead of losing its number to one ellipsis
+     run. On hover the row keeps its two columns and the subject simply stops
+     clipping (see globals.css).
+
+     The dish stays a span rather than a button: text-overflow only applies to
+     inline content, and a button is an atomic inline-level box that would
+     clip mid-glyph instead. So it earns the keyboard affordances a link owes
+     by hand — focusable, named as a link, and activated on Enter by the
+     handler bound below. */
   const scoreHtml = score
-    ? `<span class="map-line-score" style="font-family: ${MONO}; font-size: 10px; font-weight: 600; color: ${scoreColor};">${escapeHtml(score)}</span>`
+    ? `<span class="map-line-score" style="font-family: ${MONO}; font-size: 10px; font-weight: ${
+        /%$/.test(score) ? 700 : 600
+      }; color: ${scoreColorFor(score)};">${escapeHtml(scoreLabelFor(score))}</span>`
     : "";
+  /* No dish means no subject of its own, so what was said becomes the
+     headline — and then there is no prose left to reveal, which is why
+     proseHtml below is bound to `split` too rather than to comment.text. */
   const headlineHtml = split
-    ? `<span class="map-dish-link map-line-clip" role="link" tabindex="0" style="cursor: pointer;">${escapeHtml(split.name)}</span>
-       ${scoreHtml}
-       ${
-         comment.text.trim()
-           ? `<span class="map-line-fill" style="font-weight: 400; color: ${BUBBLE_MUTED};">${escapeHtml(comment.text)}</span>`
-           : ""
-       }`
-    : `${scoreHtml}
-       <span class="map-line-clip">${escapeHtml(comment.text)}</span>`;
+    ? `<span class="map-dish-link map-line-clip" role="link" tabindex="0" style="cursor: pointer;">${escapeHtml(split.name)}</span>${scoreHtml}`
+    : `<span class="map-line-clip">${escapeHtml(comment.text)}</span>${scoreHtml}`;
+  /* The comment itself. Hidden at rest so the bubble reads as the mockup's two
+     rows, revealed on hover or keyboard focus by the .map-bubble-prose rules
+     in globals.css — the text is always in the DOM, never dropped, so nothing
+     a person wrote becomes unreachable. Sans and muted: this is the one part
+     of the bubble a human typed. */
+  const proseHtml =
+    split && comment.text.trim()
+      ? `<div class="map-bubble-prose" style="margin-top: ${BUBBLE_META_GAP}px; font-weight: 400; line-height: 1.4; color: ${BUBBLE_MUTED};">${escapeHtml(comment.text)}</div>`
+      : "";
   /* Which reaction the chip is depends on which feed the bubble's data came
      from — Discover bubbles upvote (public count, matches the number every
      other viewer already sees), Friends bubbles heart (no count anywhere,
@@ -427,15 +502,29 @@ function bubbleElement(
             padding: 0; border: 0; background: none;
             font-family: ${MONO}; font-size: 10px; font-weight: 700; line-height: 1.5;
             cursor: pointer;`;
+  /* The vote pair keeps ONE shape on every bubble — arrow, count, arrow — so
+     the row doesn't reflow depending on who authored what. Only the controls
+     that can actually do something are buttons: seeded map chatter has no post
+     behind it, so its arrows render as plain glyphs at the muted step rather
+     than as buttons that would look live and do nothing when clicked. */
+  const staticArrowStyle = `font-family: ${MONO}; font-size: 10px; font-weight: 700; line-height: 1.5; color: ${BUBBLE_MUTED};`;
+  const votePair = (interactive: boolean) =>
+    `<span style="display: inline-flex; align-items: baseline; gap: 4px;">
+        ${
+          interactive
+            ? `<button type="button" class="map-upvote-chip" aria-pressed="${comment.upvotedByMe ? "true" : "false"}" aria-label="Upvote this plate" style="${voteButtonStyle}">▲</button>`
+            : `<span style="${staticArrowStyle}" aria-hidden="true">▲</span>`
+        }
+        <span style="font-weight: 700; color: ${BUBBLE_POP};">${count}</span>
+        ${
+          interactive
+            ? `<button type="button" class="map-downvote-chip" aria-pressed="${comment.downvotedByMe ? "true" : "false"}" aria-label="Downvote this plate" style="${voteButtonStyle}">▼</button>`
+            : `<span style="${staticArrowStyle}" aria-hidden="true">▼</span>`
+        }
+      </span>`;
   const reactionHtml =
     mode === "discover"
-      ? comment.postId && canReact
-        ? `<span style="display: inline-flex; align-items: baseline; gap: 4px;">
-            <button type="button" class="map-upvote-chip" aria-pressed="${comment.upvotedByMe ? "true" : "false"}" aria-label="Upvote this plate" style="${voteButtonStyle}">▲</button>
-            <span style="font-weight: 700; color: ${BUBBLE_POP};">${count}</span>
-            <button type="button" class="map-downvote-chip" aria-pressed="${comment.downvotedByMe ? "true" : "false"}" aria-label="Downvote this plate" style="${voteButtonStyle}">▼</button>
-          </span>`
-        : `<span style="font-weight: 700; color: ${BUBBLE_POP};">▲ ${count}</span>`
+      ? votePair(Boolean(comment.postId && canReact))
       : comment.postId && canReact
         ? `<button type="button" class="map-heart-chip" aria-pressed="${comment.heartedByMe ? "true" : "false"}" aria-label="Heart this plate" style="
             display: inline-flex; align-items: center; justify-content: center;
@@ -445,28 +534,47 @@ function bubbleElement(
           ">♥</button>`
         : "";
 
-  /* Replies, drawn rather than an emoji. Zero still shows, as in the
-     reference — the row keeps one shape whether or not anyone has replied —
-     but only for real posts; seeded chatter has no thread to count. */
-  const repliesHtml =
-    comment.commentCount !== undefined
-      ? `<span style="display: inline-flex; align-items: center; gap: 3px;">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H6l-3 3v-8a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>
-          ${comment.commentCount}
-        </span>`
-      : "";
+  /* Replies, drawn rather than an emoji, and shown on every bubble so the row
+     keeps one shape whether or not anyone has replied — as in the reference.
+     A real post opens its thread on click; seeded chatter has no thread, so it
+     shows the shape at zero and stays inert for the same reason its arrows do. */
+  const replyCount = comment.commentCount ?? 0;
+  const replyGlyph = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H6l-3 3v-8a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>`;
+  const repliesHtml = comment.postId
+    ? `<button type="button" class="map-reply-chip" aria-label="${replyCount === 1 ? "1 reply" : `${replyCount} replies`}" style="
+          display: inline-flex; align-items: center; gap: 3px;
+          padding: 0; border: 0; background: none;
+          font-family: ${MONO}; font-size: 10px; line-height: 1.5;
+          cursor: pointer;
+        ">${replyGlyph}${replyCount}</button>`
+    : `<span style="display: inline-flex; align-items: center; gap: 3px;">${replyGlyph}${replyCount}</span>`;
   const textMaxWidth = maxWidth - (BUBBLE_PADDING_X + BUBBLE_BORDER) * 2;
 
-  /* The social trail, all machine-made and all mono: the reaction cluster,
-     replies, and how long ago. The score used to open this row too, but it
-     describes the plate, not the conversation — it now sits on the headline
-     beside the name it measures, and the row it left behind is short enough
-     that the box can finally hug it. The upvote stays the row's one accent. */
+  /* The social trail, all machine-made and all mono: who said it, how long
+     ago, and what the room did about it — `@DANNYQ · 2H · ▲ 34`, handle
+     first, the same byline order DESIGN.md gives the feed's ledger card and
+     the reference mockup gives the bubble. The score used to open this row,
+     but it describes the plate rather than the conversation and now sits at
+     the far end of the headline instead. The reaction stays the row's one
+     accent.
+
+     Middot separators rather than spacing alone, since the parts are of
+     different kinds (a person, a time, a control) and the app's other byline
+     already punctuates them. They are aria-hidden so a screen reader hears
+     the values, not the furniture; estimateMetaWidth prices them per
+     boundary. */
+  const metaSeparator = '<span aria-hidden="true">·</span>';
+  const metaParts = [
+    comment.author ? `<span>@${escapeHtml(comment.author.toUpperCase())}</span>` : "",
+    comment.createdAt ? `<span>${escapeHtml(compactTime(comment.createdAt))}</span>` : "",
+    reactionHtml,
+    repliesHtml,
+  ].filter(Boolean);
   const metaRow = hasMeta
     ? `<div style="
         display: flex;
         align-items: baseline;
-        gap: 8px;
+        gap: 4px;
         margin-top: ${BUBBLE_META_GAP}px;
         font-family: ${MONO};
         font-size: 10px;
@@ -474,14 +582,22 @@ function bubbleElement(
         color: ${BUBBLE_MUTED};
         white-space: nowrap;
       ">
-        ${reactionHtml}
-        ${repliesHtml}
-        ${comment.createdAt ? `<span>${escapeHtml(compactTime(comment.createdAt))}</span>` : ""}
+        ${metaParts.join(metaSeparator)}
       </div>`
     : "";
 
   /* A leader line to the pin, the way a map annotates a feature — not a
-     speech tail. A dead-straight vertical drop: no bend, no taper, no curve.
+     speech tail. No taper, no curve: a straight run off the box's flat bottom
+     edge, then one elbow angling into the ember, exactly the two-segment path
+     the approved mock draws (`M310,296 L310,288 L348,238`, ending on the ring
+     of the dot at 352,232).
+
+     It must actually REACH the dot. This used to drop dead-straight and stop
+     20px to the pin's right, capped with a small circle of its own — which
+     reads as connected only while the ember is wide enough to swallow the
+     gap. Zoomed out the ember is a couple of px and the line visibly ended in
+     open water beside it. The mock has no terminal circle either: the
+     restaurant's own light is the terminus, so LEADER_DOT is gone.
 
      Only the bubble nearest the pin draws one. Giving every card in a stack
      its own leader was tried and is wrong: LEADER_X sits inside the column's
@@ -493,34 +609,57 @@ function bubbleElement(
 
      The wrapper below is translated to (offsetX, -offsetY) from the marker
      point, so in its own coordinates the box's top-left is (0, 0) and the
-     pin's centre is (-offsetX, offsetY) — the length is derived from those two
-     facts rather than hand-measured. It leaves the bottom edge at LEADER_X and
-     drops toward the pin.
+     pin's centre is (-offsetX, offsetY) — every number here is derived from
+     those two facts rather than hand-measured.
 
      pointer-events stay off so it never steals a click meant for the box or
      the map beneath it. */
   const drop = leaderDrop(comment, offsetY);
-  /* The svg is a narrow strip centred on the run. `top: 100%` is the box's
-     *rendered* bottom rather than a computed y, so the couple of px
-     bubbleHeight() rounds up as collision margin can't open a gap between the
-     box and its own line; that slack lands at the far end instead. */
-  const LEADER_STRIP = 8;
-  const leaderLeft = LEADER_X - LEADER_STRIP / 2;
-  /* +0.5 so a 1px stroke lands on one pixel instead of straddling two and
-     rendering as a 2px smear at half opacity. The run starts at -BUBBLE_BORDER
-     so it tucks under the box's own hairline and leaves no antialiasing seam
-     where the two meet. */
-  const runX = LEADER_STRIP / 2 + 0.5;
+  /* The svg spans from just left of the pin to just right of the run, rather
+     than riding on `overflow: visible` — the path now reaches left of the
+     box's own edge, and an SVG root that clips would eat the elbow.
+
+     `top: 100%` is the box's *rendered* bottom rather than a computed y, so
+     the couple of px bubbleHeight() rounds up as collision margin can't open
+     a gap between the box and its own line; that slack lands at the far end,
+     where the ember's radius absorbs it. */
+  const LEADER_PAD = 4;
+  const leaderLeft = -offsetX - LEADER_PAD;
+  const leaderWidth = LEADER_X + LEADER_PAD - leaderLeft;
+  /* +0.5 so the 1px vertical run lands on one pixel instead of straddling two
+     and rendering as a 2px smear at half opacity. The diagonal is off-axis
+     anyway, so it gains nothing from the same trick. */
+  const runX = LEADER_X - leaderLeft + 0.5;
+  /* The pin, in the svg's own coordinates. `offsetY - bubbleHeight` is the
+     drop to the pin's centre; leaderDrop() is that same distance already
+     backed off by LEADER_PIN_CLEARANCE, so adding it back recovers the centre
+     without re-deriving it. */
+  const pinX = -offsetX - leaderLeft;
+  const pinY = drop + LEADER_PIN_CLEARANCE;
+  /* The elbow turns late, so the leader reads as a vertical thread that just
+     nods toward its ember at the end — not as a diagonal slash across the
+     map. Clamped so a short drop degrades to a plain diagonal rather than
+     bending upward. */
+  const elbowY = Math.max(0, pinY - LEADER_ELBOW);
+  /* Stop at the edge of the light rather than inside it. The ember's radius
+     grows with zoom, so a fixed clearance is exactly what broke this: too big
+     zoomed out, swallowed zoomed in. */
+  const stop = emberClearance(zoom);
+  const dx = pinX - runX;
+  const dy = pinY - elbowY;
+  const reach = Math.hypot(dx, dy) || 1;
+  const endX = (pinX - (dx / reach) * stop).toFixed(1);
+  const endY = (pinY - (dy / reach) * stop).toFixed(1);
   const leader =
     stackIndex === 0
-      ? `<svg width="${LEADER_STRIP}" height="${drop + LEADER_DOT + 1}" style="
+      ? `<svg class="map-leader" width="${leaderWidth}" height="${pinY + LEADER_PAD}" style="
       position: absolute; left: ${leaderLeft}px; top: 100%;
       overflow: visible; pointer-events: none;
     " aria-hidden="true">
-      <line x1="${runX}" y1="-${BUBBLE_BORDER}" x2="${runX}" y2="${drop}"
-        stroke="${LEADER_STROKE}" stroke-width="1"
+      <path d="M${runX},-${BUBBLE_BORDER} L${runX},${elbowY} L${endX},${endY}"
+        fill="none" stroke="${LEADER_STROKE}" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round"
       />
-      <circle cx="${runX}" cy="${drop}" r="${LEADER_DOT}" fill="${BUBBLE_FILL}" />
     </svg>`
       : "";
 
@@ -533,18 +672,49 @@ function bubbleElement(
 
      The headline names the plate. When it resolves to a real dish it is a
      reference to that dish's own record, so it takes the .map-dish-link
-     treatment in globals.css — accent colour and the display face — the way a
-     feed styles an @handle. A bubble with no dish falls back to the comment's
-     own words and stays in the UI sans, because that text is not a reference
-     to anything. The meta row under both is machine-generated and set in
-     mono. */
+     treatment in globals.css — the display face, and ink rather than the
+     accent, since the approved mockup gives the row exactly one coloured
+     value and that is the score on the right. A bubble with no dish falls
+     back to the comment's own words and stays in the UI sans, because that
+     text is not a reference to anything. The meta row under both is
+     machine-generated and set in mono. */
+  /* The neon sign: the restaurant naming itself above its comments, in the
+     same voice a bare dot answers hover with (.map-name-tip). A "lantern"
+     heat bar along the card's base edge was tried here and removed — at real
+     bubble sizes it read as a stray orange underline, not a designed edge. */
+  const sign = restaurantName
+    ? `<div class="map-neon-sign">${escapeHtml(restaurantName)}</div>`
+    : "";
+
+  /* The card hangs from a FIXED bottom edge, and that is what keeps the leader
+     on its restaurant.
+
+     Hovering a bubble reveals its prose and widens it, so the box gets taller.
+     While the box was in normal flow it grew DOWNWARD, the wrapper grew with
+     it, and the leader — pinned to the wrapper's `top: 100%` — slid down with
+     the bottom edge and shot straight past the ember. The line moved because
+     its origin moved.
+
+     So the wrapper is locked to the resting height and the box is absolutely
+     positioned against its bottom: expanding now pushes the card UP into empty
+     map, the bottom edge never moves, and `top: 100%` is a constant. The
+     leader's geometry is exact by construction rather than by bubbleHeight()
+     happening to match what rendered.
+
+     The sign rides inside the box for the same reason — it names the card, so
+     it has to travel with the card's top rather than sit at a fixed height the
+     expanded box would grow up through. */
   el.innerHTML = `<div style="
-      display: inline-block;
       position: relative;
+      width: 0;
+      height: ${bubbleHeight(comment)}px;
       transform: translate(${offsetX}px, -${offsetY}px);
       cursor: pointer;
     ">
       <div class="map-bubble-box" style="
+        position: absolute;
+        bottom: 0;
+        left: 0;
         box-sizing: border-box;
         max-width: ${maxWidth}px;
         background: ${BUBBLE_FILL};
@@ -555,8 +725,10 @@ function bubbleElement(
         line-height: 1.35;
         color: ${BUBBLE_INK};
       ">
+        ${sign}
         <div class="map-bubble-text" style="max-width: ${textMaxWidth}px; font-weight: 600;">${headlineHtml}</div>
         ${metaRow}
+        ${proseHtml}
       </div>
       ${leader}
     </div>`;
@@ -573,8 +745,9 @@ export function RestaurantMap({
   onUpvote,
   onDownvote,
   onHeart,
+  searchField: SearchField = MapSearch,
 }: {
-  restaurants: Restaurant[];
+  restaurants: RestaurantView[];
   commentsByRestaurant: Record<string, MapComment[]>;
   mode: "discover" | "friends";
   /** Omitted when nobody is signed in, which is what hides the vote chips. */
@@ -583,11 +756,34 @@ export function RestaurantMap({
   onDownvote?: (postId: string) => void;
   /** Omitted when nobody is signed in, which is what hides the heart chips. */
   onHeart?: (postId: string) => void;
+  /**
+   * Which search field sits on the map. Omitted everywhere in the app, which is
+   * the only state `/feed` ever sees: the shipped `MapSearch` is the default and
+   * nothing about this prop changes what that page renders.
+   *
+   * It exists so `/drafts/map-search/*` can put a candidate field on the *real*
+   * map instead of a mockup — the design problem is a control read against a
+   * backdrop that moves and changes colour as you pan, which a static comp
+   * cannot answer. The map hands over its `mapRef` because that is the only
+   * thing a search field needs from it (the shipped one takes exactly the same
+   * prop), so a draft can fly the camera and read the live source without this
+   * component knowing anything about the draft.
+   *
+   * A component type rather than a render callback: passing `mapRef` to a plain
+   * function during render is a `react-hooks/refs` error, and rightly — as a
+   * JSX prop the ref is handed to React, not read.
+   */
+  searchField?: ComponentType<{ mapRef: RefObject<MapLibreMap | null> }>;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
-  const pinMarkersRef = useRef<Marker[]>([]);
   const bubbleMarkersRef = useRef<Marker[]>([]);
+  /* Restaurant id -> the neon sign already naming it on the map. A place whose
+     bubble is showing has said its name once; hovering its ember must not say
+     it a second time in a floating chip an inch away. Kept as a ref rather
+     than state because the hover handler is bound once, at layer-creation
+     time, and has to see whatever the latest bubble pass produced. */
+  const signsByRestaurantRef = useRef<Map<string, HTMLElement>>(new Map());
   /** False until the first fitBounds has played the opening dive. */
   const hasFitRef = useRef(false);
   /* Which set of restaurants the camera was last fitted to. The effect below
@@ -687,7 +883,6 @@ export function RestaurantMap({
     return () => {
       map.remove();
       mapRef.current = null;
-      pinMarkersRef.current = [];
       bubbleMarkersRef.current = [];
     };
   }, []);
@@ -704,18 +899,425 @@ export function RestaurantMap({
     const hottest = Math.max(1, ...restaurants.map((r) => bestScore(r.id)));
     const now = new Date();
 
-    for (const marker of pinMarkersRef.current) marker.remove();
-    pinMarkersRef.current = [];
-    for (const restaurant of restaurants) {
-      const intensity = bestScore(restaurant.id) / hottest;
-      const closed = openStateFor(restaurant.closingTime, now).kind === "closed";
-      const el = pinElement(restaurant.name, intensity, closed);
-      el.addEventListener("click", () => router.push(`/restaurant/${restaurant.id}`));
-      const marker = new Marker({ element: el, anchor: "center" })
-        .setLngLat([restaurant.lng, restaurant.lat])
-        .addTo(map);
-      pinMarkersRef.current.push(marker);
-    }
+    const pinData: GeoJSON.FeatureCollection = {
+      type: "FeatureCollection",
+      features: restaurants.map((restaurant) => ({
+        type: "Feature",
+        geometry: { type: "Point", coordinates: [restaurant.lng, restaurant.lat] },
+        properties: {
+          id: restaurant.id,
+          name: restaurant.name,
+          /* The place's own star rating, carried so hover can answer "how good
+             is this?" without a round trip. It is the 1-5 restaurant scale,
+             never the 0-100% dish scale — the two never mix (see AGENTS.md). */
+          rating: restaurant.rating,
+          intensity: bestScore(restaurant.id) / hottest,
+          closed: openStateFor(restaurant.hours, now).kind === "closed",
+        },
+      })),
+    };
+
+    /* Source and layers are created once, then only re-fed — recreating them
+       per vote would flash every pin. Event handlers bind at creation time and
+       read feature properties at event time, so they never go stale. */
+    const applyPinData = () => {
+      const existing = map.getSource(PIN_SOURCE) as GeoJSONSource | undefined;
+      if (existing) {
+        existing.setData(pinData);
+        return;
+      }
+      /* No clustering: merging neighbours into one synthetic blob is exactly
+         what kills the airplane-window read. Every restaurant keeps its own
+         light at every zoom; the "clump" is just real dots crowding. */
+      map.addSource(PIN_SOURCE, { type: "geojson", data: pinData });
+
+      /* The district aura: a soft pool of warm light under wherever the dots
+         crowd, drawn as a low-key heatmap so busy areas glow as an area, not
+         a shape. Sits under every dot layer; reads as the mock's Gaslamp /
+         Little Italy pools and fades to nothing where the city is quiet.
+
+         Three numbers decide whether that happens, and they only work
+         together — tune one and the others have to be re-checked on screen:
+
+         - `heatmap-intensity` sets what ONE restaurant is worth. MapLibre
+           accumulates `weight * intensity * 0.3989` at a point's centre, so
+           at ~0.3 a lone spot peaks around 0.09 density — under the ramp's
+           floor, which is the whole point: an isolated restaurant must not
+           light its own block. It used to sit near 1.6, where a single dot
+           in the middle of nowhere saturated the ramp and the map became one
+           flat orange wash.
+         - `heatmap-radius` is what actually creates contrast, because the
+           per-point peak doesn't shrink as the radius grows — a wider kernel
+           just means more neighbours land on the same pixel. Dense blocks
+           stack to density ~1 while quiet ones stay at one dot's 0.09. It
+           also has to roughly track zoom, or a "district" stops being a
+           fixed piece of ground and becomes a fixed number of screen pixels.
+         - The ramp holds ALL of the alpha from z13 up, where `heatmap-opacity`
+           is 1. Splitting it at street zoom — 0.3 in the ramp times 0.55
+           opacity — is how this layer ended up at ~0.17 effective alpha over
+           the #191c22 ground, i.e. invisible. The dead band below 0.2 density
+           is what keeps quiet neighbourhoods at literally zero rather than a
+           faint film, and the mid stops carry real light so a district doesn't
+           have to reach the top 10% of the ramp before anything shows. The
+           ramp cannot vary with zoom — `heatmap-color` only sees
+           `heatmap-density` — so the zoom fade below has to come from the
+           other two.
+
+         Below z13 the layer FADES OUT, and it takes both remaining levers to
+         do it honestly. Measured at z9 with the old flat numbers, every
+         probe across the county — Pacific Beach 0.97, Carlsbad 0.97, La
+         Jolla 0.92, Oceanside 0.88, Chula Vista 0.70 — cleared the ramp's
+         0.55 stop, so the county view was one warm ribbon down the whole
+         coastal corridor at near-max alpha, with the real core (Little Italy
+         3.88, Gaslamp 3.63) indistinguishable from it because both clamped.
+         Radius is no help here: shrinking it at z9 pulls the core down as
+         fast as the suburbs (the downtown:busy ratio only moves 4.0 → 3.4
+         from R50 to R28), so it stays on its zoom track.
+
+         - `heatmap-intensity` is NOT a brightness dial and does not ride
+           zoom for cosmetic reasons. `heatmap-radius` is in SCREEN pixels,
+           so the patch of actual ground a kernel covers shrinks every time
+           you zoom in: 50px at z9 is ~13km, 270px at z16 is only ~540m.
+           Far out that swallows hundreds of restaurants and saturates;
+           close in it holds a handful and never clears the dead band. This
+           ramp cancels that inversion, and the rule it is solved for is the
+           same at every zoom: ONE isolated restaurant stays under the band
+           and stays dark, a tight cluster of about five clears it and
+           lights. MapLibre accumulates `weight * intensity * 0.3989` per
+           point, so the ceiling is set by the LONE restaurant, not the
+           cluster: weight runs 0.4 (no posts) to 1.0 (a top-scoring spot),
+           so at 0.85 a quiet lone dot reaches only 0.14 density and stays
+           under the 0.2 band, while five stacked clear 0.6 and sit in the
+           ramp's middle. Past ~0.9 a single highly-rated restaurant starts
+           lighting its own block, which is the other failure mode.
+           The two low stops are the exception and are deliberately tiny.
+           At county scale every urban area is "dense" next to the desert,
+           so the honest reading there is RELATIVE: 0.07 at z9 puts the
+           merely-busy suburbs (Pacific Beach, Carlsbad, Chula Vista) under
+           the band and leaves only downtown's core lit. Raise those two and
+           the whole coastal corridor lights up as one ribbon again.
+         - `heatmap-opacity` then sets how strong whatever survived reads.
+           These are two different jobs and must not be confused: intensity
+           picks the districts, opacity sets their brightness. 0.75 at z9,
+           0.88 at z11, 1 at z13 — dimmer far out so the layer recedes
+           behind the dots, but deliberately NOT faint: a restaurant-heavy
+           district is meant to keep an obvious pool even fully zoomed out.
+           It must reach exactly 1 by z13 or it would disturb the approved
+           near view. */
+      map.addLayer({
+        id: "restaurant-aura",
+        type: "heatmap",
+        source: PIN_SOURCE,
+        paint: {
+          "heatmap-weight": ["+", 0.4, ["*", 0.6, ["get", "intensity"]]],
+          "heatmap-intensity": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            9,
+            0.07,
+            11,
+            0.13,
+            13,
+            0.6,
+            15,
+            0.85,
+            17,
+            1,
+            19,
+            1.1,
+          ],
+          "heatmap-radius": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            9,
+            50,
+            13,
+            115,
+            16,
+            270,
+            19,
+            420,
+          ],
+          "heatmap-opacity": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            9,
+            0.75,
+            11,
+            0.88,
+            13,
+            1,
+          ],
+          "heatmap-color": [
+            "interpolate",
+            ["linear"],
+            ["heatmap-density"],
+            0,
+            "rgba(232,135,90,0)",
+            0.2,
+            "rgba(232,135,90,0)",
+            0.35,
+            "rgba(232,135,90,0.1)",
+            0.55,
+            "rgba(232,135,90,0.24)",
+            0.75,
+            "rgba(232,135,90,0.35)",
+            1,
+            "rgba(232,135,90,0.46)",
+          ],
+        },
+      });
+
+      /* The mock's dot family, no clumping tricks: every restaurant is a
+         visible neon ember at every zoom — small crisp core in the mock's
+         #d98a5f warming toward #ffb07a as a spot's best post score rises,
+         over a soft #e8875a halo, no dark outline anywhere. Radii scale
+         gently with zoom so a dot reads at county scale and swells into a
+         proper lamp at street scale. Intensity spreads sizes, so hot spots
+         are visibly bigger lights than quiet ones. Closed spots cool to
+         small grey embers with no glow.
+         Blur rides zoom for the same reason radius does: from county height
+         a light is seen through miles of air, so it should read as an
+         indistinct smudge of glow rather than a shrunken hard dot — pulling
+         in burns the haze off and the smudges resolve into defined lamps. */
+      const byZoom = (z9: unknown, z13: unknown, z15: unknown, z18: unknown) =>
+        [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          9,
+          z9,
+          13,
+          z13,
+          15,
+          z15,
+          18,
+          z18,
+        ] as unknown as number;
+      const withIntensity = (base: number, gain: number) =>
+        ["+", base, ["*", gain, ["get", "intensity"]]];
+      map.addLayer({
+        id: "restaurant-dot-glow",
+        type: "circle",
+        source: PIN_SOURCE,
+        paint: {
+          "circle-color": "#e8875a",
+          "circle-blur": byZoom(2, 1.5, 1.15, 1),
+          "circle-opacity": [
+            "case",
+            ["get", "closed"],
+            0,
+            ["+", 0.4, ["*", 0.3, ["get", "intensity"]]],
+          ],
+          "circle-radius": byZoom(
+            withIntensity(5, 5),
+            withIntensity(8, 7),
+            withIntensity(11, 9),
+            withIntensity(16, 12),
+          ),
+        },
+      });
+      map.addLayer({
+        id: "restaurant-dot-inner",
+        type: "circle",
+        source: PIN_SOURCE,
+        paint: {
+          "circle-color": "#f0a06a",
+          "circle-blur": byZoom(1.5, 1, 0.7, 0.6),
+          "circle-opacity": ["case", ["get", "closed"], 0, 0.8],
+          "circle-radius": byZoom(
+            withIntensity(2.5, 2.5),
+            withIntensity(4, 3),
+            withIntensity(5, 4.5),
+            withIntensity(7, 5),
+          ),
+        },
+      });
+      map.addLayer({
+        id: "restaurant-dots",
+        type: "circle",
+        source: PIN_SOURCE,
+        paint: {
+          "circle-color": [
+            "case",
+            ["get", "closed"],
+            "#4b525e",
+            [
+              "interpolate",
+              ["linear"],
+              ["get", "intensity"],
+              0,
+              "#d98a5f",
+              1,
+              "#ffb07a",
+            ],
+          ],
+          "circle-blur": byZoom(1.35, 0.65, 0.3, 0.18),
+          "circle-opacity": ["case", ["get", "closed"], 0.5, 0.95],
+          "circle-radius": byZoom(
+            withIntensity(1.8, 1.6),
+            withIntensity(2.4, 2.4),
+            withIntensity(3, 3.4),
+            withIntensity(4, 4.5),
+          ),
+        },
+      });
+      /* The mock's ringed actives: the hottest spots wear a thin halo ring
+         around their light once the map is close enough to read them. */
+      map.addLayer({
+        id: "restaurant-dot-ring",
+        type: "circle",
+        source: PIN_SOURCE,
+        minzoom: 12,
+        filter: ["all", ["!", ["get", "closed"]], [">", ["get", "intensity"], 0.55]],
+        paint: {
+          "circle-color": "rgba(0,0,0,0)",
+          "circle-stroke-color": "#e8875a",
+          "circle-stroke-opacity": 0.45,
+          "circle-stroke-width": 1.2,
+          "circle-radius": byZoom(
+            withIntensity(3, 2),
+            withIntensity(4.5, 3),
+            withIntensity(6.5, 4),
+            withIntensity(10, 5),
+          ),
+        },
+      });
+
+      /* The hover/click target, and NOTHING else — fully transparent, and the
+         only layer the pointer events below are bound to.
+
+         The events used to ride a painted layer, which meant the target was
+         only ever as big as the light was drawn: a couple of px across at
+         county zoom, so a cursor sitting visually on top of an ember often hit
+         nothing at all. MapLibre hit-tests a circle by its radius alone —
+         `circle-blur` spreads the glow but not the geometry — so no amount of
+         paint tuning could fix that. This layer decouples the two: the ember
+         stays whatever size it should LOOK, and the thing you have to hit
+         stays a comfortable size at every zoom.
+         `circle-opacity: 0` still participates in queryRenderedFeatures; only
+         `visibility: none` would take it out. */
+      map.addLayer({
+        id: "restaurant-hit",
+        type: "circle",
+        source: PIN_SOURCE,
+        paint: {
+          "circle-color": "#000",
+          "circle-opacity": 0,
+          "circle-radius": byZoom(14, 16, 19, 24),
+        },
+      });
+
+      /* One shared name chip for the whole layer, shown by the map's hover
+         events — the per-pin .pin-tip died with the DOM pins. */
+      const tip = document.createElement("div");
+      tip.className = "map-name-tip";
+      const tipMarker = new Marker({ element: tip, anchor: "bottom", offset: [0, -12] });
+      /* The sign currently answering a hover, so it can be put back when the
+         cursor leaves — the flicker class has to come off something. */
+      let litSign: HTMLElement | null = null;
+      const dimSign = () => {
+        litSign?.classList.remove("is-live");
+        litSign = null;
+      };
+
+      map.on("mousemove", "restaurant-hit", (e) => {
+        /* The generous hit radius means several targets can be under one
+           cursor in a dense block, and MapLibre hands them back in RENDER
+           order, not by distance — so `features[0]` is often a neighbour
+           rather than the ember actually being pointed at. Pick the closest,
+           or hovering one light answers with another's name. */
+        let feature: (typeof e.features extends undefined ? never : NonNullable<typeof e.features>[number]) | null = null;
+        let nearest = Infinity;
+        for (const candidate of e.features ?? []) {
+          const point = map.project(
+            (candidate.geometry as GeoJSON.Point).coordinates as [number, number],
+          );
+          const distance = Math.hypot(point.x - e.point.x, point.y - e.point.y);
+          if (distance < nearest) {
+            nearest = distance;
+            feature = candidate;
+          }
+        }
+        if (!feature) return;
+        map.getCanvas().style.cursor = "pointer";
+        const id = String(feature.properties?.id ?? "");
+
+        /* If this restaurant's bubble is already on screen, its neon sign is
+           already naming it. Printing the tip too would stack a second copy of
+           the same name a few px away and read as two different places. The
+           sign it already has answers instead: a short flicker, the same "you
+           are on this one" the tip would have said, without repeating a word. */
+        const existingSign = signsByRestaurantRef.current.get(id);
+        if (existingSign) {
+          tipMarker.remove();
+          /* Only on ENTERING a sign — mousemove fires for every pixel the
+             cursor travels, and re-playing the flicker on each one would leave
+             the name permanently strobing while you rested on it. */
+          if (existingSign !== litSign) {
+            dimSign();
+            existingSign.classList.add("is-live");
+            if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+              existingSign.animate(
+                [
+                  { opacity: 1 },
+                  { opacity: 0.3, offset: 0.18 },
+                  { opacity: 1, offset: 0.34 },
+                  { opacity: 0.55, offset: 0.52 },
+                  { opacity: 1 },
+                ],
+                { duration: 400, easing: "linear" },
+              );
+            }
+            litSign = existingSign;
+          }
+          return;
+        }
+        dimSign();
+
+        /* Name in the neon voice, then the place's own score. It is the 1-5
+           star scale, so it is printed WITH its denominator — on a map that
+           also carries 0-100% dish scores, a bare "4.6" is the one number a
+           reader could take for the wrong scale. One decimal: a blended
+           rating is not an integer and rounding it to one would claim a
+           precision the blend does not have. */
+        const name = String(feature.properties?.name ?? "");
+        const rating = Number(feature.properties?.rating);
+        tip.innerHTML =
+          `<span>${escapeHtml(name)}</span>` +
+          (Number.isFinite(rating) && rating > 0
+            ? `<span class="map-tip-rating">★ ${rating.toFixed(1)}/5</span>`
+            : "");
+        const [lng, lat] = (feature.geometry as GeoJSON.Point).coordinates;
+        tipMarker.setLngLat([lng, lat]).addTo(map);
+      });
+      map.on("mouseleave", "restaurant-hit", () => {
+        map.getCanvas().style.cursor = "";
+        tipMarker.remove();
+        dimSign();
+      });
+      /* Click resolves the same way hover does — whatever the tip named under
+         the cursor has to be what opens, or the two disagree in a crowd. */
+      map.on("click", "restaurant-hit", (e) => {
+        let best: { id: unknown; d: number } | null = null;
+        for (const candidate of e.features ?? []) {
+          const point = map.project(
+            (candidate.geometry as GeoJSON.Point).coordinates as [number, number],
+          );
+          const d = Math.hypot(point.x - e.point.x, point.y - e.point.y);
+          if (!best || d < best.d) best = { id: candidate.properties?.id, d };
+        }
+        if (typeof best?.id === "string") router.push(`/restaurant/${best.id}`);
+      });
+
+    };
+    // The style loads async; until it has, sources can't be added. The off()
+    // in this effect's cleanup keeps re-runs from stacking stale handlers.
+    if (map.isStyleLoaded()) applyPinData();
+    else map.once("load", applyPinData);
 
     /* Only refit when the set of places changed — never merely because a vote
        count did. See fittedToRef above: this effect re-runs on every upvote,
@@ -773,6 +1375,7 @@ export function RestaurantMap({
       const coverage = Math.ceil(ranked.length * bubbleCoverageForZoom(zoom));
       for (const marker of bubbleMarkersRef.current) marker.remove();
       bubbleMarkersRef.current = [];
+      signsByRestaurantRef.current.clear();
 
       const placed: Rect[] = [];
       for (const restaurant of ranked.slice(0, coverage)) {
@@ -795,11 +1398,17 @@ export function RestaurantMap({
           // nearest-the-pin bubble draws one (see bubbleElement), so only its
           // rect grows — and it grows by exactly what that bubble will draw,
           // via the same leaderDrop() the drawing uses.
+          /* The pin-nearest bubble also owns the stack's neon sign above it
+             and the leader below it — both belong to its footprint. */
           const rect: Rect = {
             x: point.x + 12,
-            y: point.y - offsetY,
+            y: point.y - offsetY - (stackIndex === 0 ? NEON_SIGN_CLEARANCE : 0),
             w: width,
-            h: height + (stackIndex === 0 ? leaderDrop(comment, offsetY) : 0),
+            h:
+              height +
+              (stackIndex === 0
+                ? leaderDrop(comment, offsetY) + NEON_SIGN_CLEARANCE
+                : 0),
           };
           if (placed.some((r) => rectsOverlap(rect, r))) continue;
           placed.push(rect);
@@ -811,6 +1420,7 @@ export function RestaurantMap({
             stackIndex,
             mode,
             mode === "discover" ? canUpvote : canHeart,
+            stackIndex === 0 ? restaurant.name : null,
           );
           const dishHref = comment.dishId
             ? `/restaurant/${restaurant.id}?dish=${comment.dishId}`
@@ -837,6 +1447,14 @@ export function RestaurantMap({
               if (comment.postId) onHeartRef.current?.(comment.postId);
               return;
             }
+            /* Replies are the one chip that leaves the map — a thread cannot be
+               read in a bubble. It lands on the post the same way the card body
+               does; the branch exists so the click can't fall through to the
+               dish-reference test below and open a menu entry instead. */
+            if (target.closest(".map-reply-chip")) {
+              if (comment.postId) router.push(`/feed?post=${comment.postId}`);
+              return;
+            }
             if (target.closest(".map-dish-link")) {
               router.push(dishHref);
             } else {
@@ -857,6 +1475,11 @@ export function RestaurantMap({
             .setLngLat([restaurant.lng, restaurant.lat])
             .addTo(map!);
           bubbleMarkersRef.current.push(marker);
+          /* Register the stack's sign so hovering this restaurant's ember can
+             make the name it ALREADY has answer, instead of printing a second
+             copy of it beside itself. */
+          const signEl = el.querySelector<HTMLElement>(".map-neon-sign");
+          if (signEl) signsByRestaurantRef.current.set(restaurant.id, signEl);
 
           /* One true gap between stacked cards. Only the nearest-the-pin
              bubble grows a leader, and it hangs *below* that box, toward the
@@ -872,9 +1495,25 @@ export function RestaurantMap({
     map.on("moveend", renderBubbles);
 
     return () => {
+      map.off("load", applyPinData);
       map.off("moveend", renderBubbles);
     };
   }, [restaurants, commentsByRestaurant, router, mode, canUpvote, canHeart]);
 
-  return <div ref={containerRef} className="map-fun-tiles h-[540px] w-full rounded-xl" />;
+  /* The wrapper is only a positioning context for the search field, which has
+     to sit over the map without being inside the map's own container — MapLibre
+     binds its gesture handlers to the canvas container, and a field living in
+     there would hand every wheel and drag over the input to the map.
+
+     `overflow-hidden` moved onto the map container itself when this wrapper
+     arrived. The host (`src/app/feed/page.tsx`) used to supply it with
+     `[&>div]:overflow-hidden`, which now names this wrapper instead — leaving
+     the canvas free to square off the corners the `rounded-xl` below rounds.
+     A component that needs to clip itself should say so itself anyway. */
+  return (
+    <div className="relative">
+      <div ref={containerRef} className="map-fun-tiles h-[540px] w-full overflow-hidden rounded-xl" />
+      <SearchField mapRef={mapRef} />
+    </div>
+  );
 }

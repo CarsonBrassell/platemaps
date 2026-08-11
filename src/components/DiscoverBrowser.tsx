@@ -1,170 +1,152 @@
 "use client";
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { FilterControls, FilterRail, QuickFilterChips } from "@/components/DiscoverFilters";
 import { RestaurantCard } from "@/components/RestaurantCard";
 import { OurPicks } from "@/components/OurPicks";
 import { Dialog } from "@/components/feed/Dialog";
-import { getClockSnapshot, getServerClockSnapshot, subscribeToClock } from "@/lib/clock";
 import { useNearby } from "@/lib/nearby";
 import {
   NO_FILTERS,
   activeFilterCount,
-  applyFilters,
-  aspectOptions,
-  countFacets,
-  cuisineOptions,
-  filtersFromSearch,
-  neighborhoodOptions,
-  priceOptions,
   searchFromFilters,
-  strongAspectStars,
-  strongAspectsFrom,
-  type AspectTally,
   type DiscoverFilters,
-  type FilterContext,
   type QuickFilter,
-  type StrongAspects,
 } from "@/lib/discoverFilters";
+import type { DiscoverPage } from "@/lib/discover";
 import type { PriceBand } from "@/data/priceBands";
-import type { RestaurantView } from "@/data/restaurants";
+
+/** Kept in step with PAGE_SIZE in lib/discover.ts, which owns the real value. */
+const PAGE_SIZE = 24;
 
 /**
- * Whether hydration has happened, read as an external store.
+ * Discover's controls and grid.
  *
- * The snapshot is `false` on the server and through the hydration render, then
- * `true` — which is how a component reads something that only exists in the
- * browser without diverging from the prerendered HTML. The value can only
- * change once and React is the thing that changes it, so there is nothing to
- * subscribe to and the unsubscribe is a no-op.
- */
-const subscribeToNothing = () => () => {};
-const hydratedOnClient = () => true;
-const hydratedOnServer = () => false;
-
-/**
- * Owns Discover's filter state and applies it to the grid.
+ * This component used to own the filter state, hold every restaurant, and do
+ * the filtering and facet counting itself. All of that is on the server now
+ * (lib/discover.ts) and it renders what it is handed — which is what keeps the
+ * page a constant size no matter how many restaurants exist.
  *
- * The rail used to keep this state internally and never filter anything —
- * picking a neighbourhood changed the label and nothing else.
+ * What it still owns is the *interaction*: the URL is the query, so changing a
+ * filter means navigating, and navigating is what this manages.
  */
-export function DiscoverBrowser({ restaurants }: { restaurants: RestaurantView[] }) {
-  /**
-   * What the visitor has picked, or null while they haven't picked anything —
-   * in which case the URL still speaks for them. See `filters` below.
-   *
-   * The two are kept separate rather than collapsed into one state seeded from
-   * the URL because they can't be seeded: this page is prerendered and the URL
-   * isn't readable until hydration, so "no choice yet" and "chose nothing" have
-   * to stay distinguishable.
-   */
-  const [chosen, setChosen] = useState<DiscoverFilters | null>(null);
+export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
+  const router = useRouter();
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [aspects, setAspects] = useState<StrongAspects | null>(null);
 
-  // Same clock the open/closed pills use, so "Open now" agrees with them.
-  // Subscribed unconditionally: the rail now prints how many places each
-  // filter would return, and "Open now" can't count without knowing the time.
-  // This costs nothing extra — every card already mounts an OpenStatePill with
-  // its own subscription, so the minute tick was always reaching the grid.
-  const now = useSyncExternalStore(subscribeToClock, getClockSnapshot, getServerClockSnapshot);
+  /*
+   * The cost of moving filtering to the server is a round trip per click, and
+   * a transition is what stops that reading as jank.
+   *
+   * Inside one, React keeps the current grid mounted while the next render is
+   * in flight instead of blanking it, and `isPending` drives the dimming below.
+   * So a filter click looks like the previous answer fading rather than an
+   * empty page — which, on a fast connection, is most of what the old instant
+   * client-side filtering actually felt like.
+   */
+  const [isPending, startTransition] = useTransition();
 
   // The permission prompt goes up on the Nearby tap, not here — see lib/nearby.ts.
   const nearby = useNearby();
 
-  const isHydrated = useSyncExternalStore(
-    subscribeToNothing,
-    hydratedOnClient,
-    hydratedOnServer,
-  );
+  /**
+   * Results for the Nearby case, which cannot come from the URL.
+   *
+   * Coordinates are personal data and have no business in a query string that
+   * gets shared, logged and kept in history, so the URL carries only the intent
+   * (`nearby=1`) and the coordinates go to /api/restaurants/discover in a POST
+   * body. What comes back replaces the server-rendered page until Nearby is
+   * switched off. Everything else on screen is driven by the URL exactly as it
+   * looks like it is.
+   */
+  const [located, setLocated] = useState<DiscoverPage | null>(null);
+
+  /*
+   * Whether the located answer is the one to show, derived rather than cleared.
+   *
+   * Switching Nearby off has to drop these results immediately — a grid still
+   * filtered to five miles under a rail that says otherwise is a lie. Deriving
+   * it means that happens in the same render as the toggle, with no effect
+   * racing the navigation, and nothing to reset. While a new position-aware
+   * answer is in flight the previous one stays on screen, which is the same
+   * thing the transition dimming does everywhere else here.
+   */
+  const view = page.filters.nearby && nearby.coords && located ? located : page;
+  const { filters, results, counts, options, picks, total, shown } = view;
+  const active = activeFilterCount(filters);
 
   /**
-   * The filters a shared link asked for.
+   * Navigate to a new set of filters.
    *
-   * Read after hydration rather than during the first render: the homepage is
-   * prerendered, so parsing the URL on that pass would render a filtered grid
-   * against static HTML holding every restaurant. Reading it through
-   * useSearchParams instead would drop the whole grid out of that HTML (Next
-   * bails the subtree out of prerendering), which costs more on a phone than
-   * one corrective render does.
-   *
-   * Derived rather than latched into state by an effect: the correction is
-   * then a re-render React scheduled for itself when the snapshot flipped,
-   * not a second pass triggered by a setState after the first one committed.
+   * `shown` is deliberately dropped: after changing what you are looking for,
+   * "show me more of the last thing" is not a request anyone made, and keeping
+   * it would silently make the next query heavier than a first page.
    */
-  const fromUrl = useMemo(
-    () =>
-      isHydrated ? filtersFromSearch(window.location.search, restaurants) : NO_FILTERS,
-    [isHydrated, restaurants],
+  const apply = useCallback(
+    (next: DiscoverFilters) => {
+      const search = searchFromFilters(window.location.search, next);
+      const params = new URLSearchParams(search);
+      params.delete("shown");
+      const query = params.toString();
+      startTransition(() => router.replace(query ? `/?${query}` : "/", { scroll: false }));
+    },
+    [router],
   );
 
-  const filters = chosen ?? fromUrl;
+  const showMore = useCallback(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("shown", String(shown + PAGE_SIZE));
+    startTransition(() => router.replace(`/?${params.toString()}`, { scroll: false }));
+  }, [router, shown]);
 
-  // The one thing the filters need that isn't static. Fetched once on mount
-  // rather than lazily when the category facet is first touched: the rail
-  // prints a count beside every option from the moment it renders, so there is
-  // no interaction to hang the request off. A failure leaves `aspects` null,
-  // which the filter model reads as "can't evaluate yet" and lets everything
-  // through — the same shape as the clock before it ticks.
+  /*
+   * Fetch the located view whenever Nearby is on and there are coordinates to
+   * measure from — and drop it the moment either stops being true, so turning
+   * Nearby off cannot leave a stale distance-filtered grid on screen.
+   *
+   * Keyed on the URL as well as the coordinates: with Nearby on, every other
+   * filter change still has to be re-answered against the visitor's position,
+   * and the server-rendered page arriving from that navigation is the wrong
+   * answer to show.
+   */
+  const search = searchFromFilters("", filters);
   useEffect(() => {
-    let cancelled = false;
+    if (!filters.nearby || !nearby.coords) return;
 
-    (async () => {
+    let cancelled = false;
+    void (async () => {
       try {
-        const res = await fetch("/api/restaurants/aspects");
+        const res = await fetch("/api/restaurants/discover", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ search, shown, coords: nearby.coords }),
+        });
         if (!res.ok) return;
-        const data: { tallies: Record<string, AspectTally> } = await res.json();
-        if (!cancelled) setAspects(strongAspectsFrom(data.tallies));
+        const next: DiscoverPage = await res.json();
+        if (!cancelled) setLocated(next);
       } catch {
-        // Discover still works without category ratings; nothing to say.
+        // Leaves the server's unlocated answer on screen — a wider result set
+        // than asked for, which is the same thing the filter model does with a
+        // null position anywhere else.
       }
     })();
 
     return () => {
       cancelled = true;
     };
-  }, []);
-
-  const ctx: FilterContext = useMemo(
-    () => ({ now, here: nearby.coords, aspects }),
-    [now, nearby.coords, aspects],
-  );
-
-  // The curated strip above the grid. Two rows out of the list this component
-  // already holds — see the note in OurPicks on why it doesn't fetch its own.
-  const picks = useMemo(
-    () => restaurants.filter((r) => r.trending).slice(0, 2),
-    [restaurants],
-  );
-
-  const neighborhoods = useMemo(() => neighborhoodOptions(restaurants), [restaurants]);
-  const cuisines = useMemo(() => cuisineOptions(restaurants), [restaurants]);
-  const prices = useMemo(() => priceOptions(restaurants), [restaurants]);
-  const aspectChoices = useMemo(() => aspectOptions(aspects), [aspects]);
-
-  const results = useMemo(
-    () => applyFilters(restaurants, filters, ctx),
-    [restaurants, filters, ctx],
-  );
-  const counts = useMemo(
-    () => countFacets(restaurants, filters, ctx),
-    [restaurants, filters, ctx],
-  );
-
-  const active = activeFilterCount(filters);
+  }, [filters.nearby, nearby.coords, search, shown]);
 
   /*
-   * Every handler builds on `filters` — the current value — rather than on a
-   * `setChosen(prev => …)` updater. `prev` is null until the first pick, so an
-   * updater would spread null and drop whatever the incoming link asked for.
-   * These all run from user events, where `filters` is already the value the
-   * visitor is looking at.
+   * Every handler builds on `filters` — what is currently in effect, as
+   * resolved by the server — rather than on a state updater, because there is
+   * no local filter state left to update.
    */
 
   // Neighbourhood and Nearby are one dimension — picking either clears the
   // other, so the "where" question only ever has one answer on screen.
   function setNeighborhood(neighborhood: string | null) {
-    setChosen({ ...filters, neighborhood, nearby: false });
+    apply({ ...filters, neighborhood, nearby: false });
   }
 
   function toggleNearby() {
@@ -172,7 +154,7 @@ export function DiscoverBrowser({ restaurants }: { restaurants: RestaurantView[]
     // Asked only on the way on, and only when there's nothing cached — a
     // second tap to turn it off must never raise the prompt again.
     if (on && !nearby.coords) nearby.request();
-    setChosen({
+    apply({
       ...filters,
       nearby: on,
       neighborhood: on ? null : filters.neighborhood,
@@ -180,19 +162,19 @@ export function DiscoverBrowser({ restaurants }: { restaurants: RestaurantView[]
   }
 
   function setCuisine(cuisine: string | null) {
-    setChosen({ ...filters, cuisine });
+    apply({ ...filters, cuisine });
   }
 
   function setPrice(price: PriceBand | null) {
-    setChosen({ ...filters, price });
+    apply({ ...filters, price });
   }
 
   function setAspect(aspect: string | null) {
-    setChosen({ ...filters, aspect });
+    apply({ ...filters, aspect });
   }
 
   function toggleQuick(value: QuickFilter) {
-    setChosen({
+    apply({
       ...filters,
       quick: filters.quick.includes(value)
         ? filters.quick.filter((q) => q !== value)
@@ -201,25 +183,23 @@ export function DiscoverBrowser({ restaurants }: { restaurants: RestaurantView[]
   }
 
   function clearAll() {
-    setChosen(NO_FILTERS);
+    apply(NO_FILTERS);
   }
 
-  // Mirroring state out to an external system — the address bar — which is
-  // what an effect is actually for.
-  //
-  // replaceState, not pushState: the URL stays shareable and survives a
-  // reload, but Back still leaves the page instead of unwinding filters one
-  // tap at a time. Native history calls are wired into the Next router.
-  //
-  // Guarded on hydration so it can't run against the prerender's empty
-  // filters and wipe the parameters the visitor arrived with.
-  useEffect(() => {
-    if (!isHydrated) return;
-    const search = searchFromFilters(window.location.search, filters);
-    window.history.replaceState(null, "", search ? `?${search}` : window.location.pathname);
-  }, [isHydrated, filters]);
+  // Drops the text term and keeps every filter — the two are separate choices
+  // and a search made inside a cuisine shouldn't take the cuisine with it when
+  // it goes.
+  function clearQuery() {
+    apply({ ...filters, q: null });
+  }
 
   const nearbyProps = { state: nearby.state, count: counts.nearby };
+
+  const emptyHint = !filters.q
+    ? "Every option in the rail shows how many places it would return — the ones reading 0 are the ones ruling everything out."
+    : active > 1
+      ? "Search covers names, cuisines and neighborhoods, and the filters still apply on top of it."
+      : "Search covers names, cuisines and neighborhoods. A shorter term will reach more places.";
 
   return (
     <div>
@@ -253,10 +233,10 @@ export function DiscoverBrowser({ restaurants }: { restaurants: RestaurantView[]
         <FilterRail
           filters={filters}
           counts={counts}
-          neighborhoods={neighborhoods}
-          cuisines={cuisines}
-          prices={prices}
-          aspects={aspectChoices}
+          neighborhoods={options.neighborhoods}
+          cuisines={options.cuisines}
+          prices={options.prices}
+          aspects={options.aspects}
           nearby={nearbyProps}
           onNeighborhood={setNeighborhood}
           onNearby={toggleNearby}
@@ -288,60 +268,108 @@ export function DiscoverBrowser({ restaurants }: { restaurants: RestaurantView[]
           {active === 0 && <OurPicks picks={picks} />}
 
           <section aria-labelledby="all-restaurants">
-            <div className="mb-3 flex items-baseline justify-between gap-3 px-1">
-              <h2
-                id="all-restaurants"
-                className="font-display text-lg font-semibold tracking-tight text-zinc-900"
-              >
-                {active > 0 ? "Matching restaurants" : "All restaurants"}
-              </h2>
+            <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1">
+              {/* A searched term becomes the heading, because it is what the
+                  page is now about. Terms the rail could express never reach
+                  here — "Thai" arrives as the cuisine filter (see `promote` in
+                  lib/discoverFilters.ts), so this only ever holds the free text
+                  that is genuinely a search: a restaurant's name, a word. */}
+              <div className="flex min-w-0 items-baseline gap-2">
+                <h2
+                  id="all-restaurants"
+                  className="truncate font-display text-lg font-semibold tracking-tight text-zinc-900"
+                >
+                  {filters.q
+                    ? `Results for “${filters.q}”`
+                    : active > 0
+                      ? "Matching restaurants"
+                      : "All restaurants"}
+                </h2>
+                {/* Same underlined-text treatment as the rail's Clear, because
+                    it is the same rank of control — the quiet way out of a
+                    choice, not something competing with the results. */}
+                {filters.q && (
+                  <button
+                    type="button"
+                    onClick={clearQuery}
+                    className="shrink-0 rounded-full px-1 py-0.5 text-xs text-zinc-600 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                  >
+                    Clear search
+                  </button>
+                )}
+              </div>
               {/* Announced rather than silent: on a phone the grid change can
                   be entirely below the fold. */}
               <p
                 role="status"
                 className="mono-label shrink-0 tabular-nums text-zinc-500"
               >
-                {results.length} {results.length === 1 ? "place" : "places"}
+                {total} {total === 1 ? "place" : "places"}
               </p>
             </div>
 
             {results.length === 0 ? (
               <div className="rounded-2xl bg-white px-6 py-12 text-center">
                 <p className="text-sm font-medium text-zinc-900">
-                  Nothing matches those filters
+                  {filters.q
+                    ? `Nothing matches “${filters.q}”`
+                    : "Nothing matches those filters"}
                 </p>
                 <p className="mx-auto mt-1 max-w-xs text-[13px] text-zinc-500">
-                  Every option in the rail shows how many places it would return — the
-                  ones reading 0 are the ones ruling everything out.
+                  {emptyHint}
                 </p>
+                {/* Clears the narrower thing. With a filter also on it is
+                    genuinely ambiguous which of the two emptied the grid, and
+                    dropping the search first leaves the visitor inside the
+                    filter they chose deliberately rather than back at the top
+                    of the city. */}
                 <button
                   type="button"
-                  onClick={clearAll}
+                  onClick={filters.q ? clearQuery : clearAll}
                   className="mt-4 min-h-11 rounded-full bg-pm-orange px-5 text-[13px] font-medium text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
                 >
-                  Clear filters
+                  {filters.q ? "Clear search" : "Clear filters"}
                 </button>
               </div>
             ) : (
-              <div className="grid auto-rows-min grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {results.map((restaurant) => {
-                  // Only while a category filter is on, and only from the
-                  // tallies the filter itself matched against — so the number
-                  // on the card is the number that put the card here.
-                  const stars = strongAspectStars(aspects, restaurant.id, filters.aspect);
-                  return (
+              <>
+                {/* Dimmed, not replaced. The previous answer staying legible
+                    under a pending one is the whole reason a filter click still
+                    feels immediate now that it costs a request. */}
+                <div
+                  className={`grid auto-rows-min grid-cols-1 gap-4 transition-opacity duration-200 sm:grid-cols-2 xl:grid-cols-3 ${
+                    isPending ? "opacity-60" : "opacity-100"
+                  }`}
+                  aria-busy={isPending}
+                >
+                  {results.map((restaurant) => (
                     <RestaurantCard
                       key={restaurant.id}
                       restaurant={restaurant}
                       highlight={
-                        filters.aspect && stars !== null
-                          ? { aspect: filters.aspect, stars }
+                        filters.aspect && restaurant.aspectStars !== undefined
+                          ? { aspect: filters.aspect, stars: restaurant.aspectStars }
                           : null
                       }
                     />
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
+
+                {/* Only when there is genuinely more. The count beside it is
+                    what makes this a decision rather than a guess. */}
+                {total > shown && (
+                  <div className="mt-6 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={showMore}
+                      disabled={isPending}
+                      className="min-h-11 rounded-full bg-white px-6 text-[13px] font-medium text-zinc-700 transition-colors hover:text-zinc-900 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                    >
+                      {isPending ? "Loading…" : `Show more (${total - shown} left)`}
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </section>
         </main>
@@ -368,7 +396,7 @@ export function DiscoverBrowser({ restaurants }: { restaurants: RestaurantView[]
                 onClick={() => setSheetOpen(false)}
                 className="min-h-11 flex-1 rounded-full bg-pm-orange px-4 text-[13px] font-medium text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
               >
-                Show {results.length} {results.length === 1 ? "place" : "places"}
+                Show {total} {total === 1 ? "place" : "places"}
               </button>
             </div>
           }
@@ -377,10 +405,10 @@ export function DiscoverBrowser({ restaurants }: { restaurants: RestaurantView[]
             <FilterControls
               filters={filters}
               counts={counts}
-              neighborhoods={neighborhoods}
-              cuisines={cuisines}
-              prices={prices}
-              aspects={aspectChoices}
+              neighborhoods={options.neighborhoods}
+              cuisines={options.cuisines}
+              prices={options.prices}
+              aspects={options.aspects}
               nearby={nearbyProps}
               onNeighborhood={setNeighborhood}
               onNearby={toggleNearby}

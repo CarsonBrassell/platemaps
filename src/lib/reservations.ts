@@ -19,7 +19,7 @@
  * local clock.
  */
 
-import { localMinutes, parseClosing } from "./openState";
+import { closingMinutesFor, localMinutes, type Hours } from "./openState";
 
 /** Anything closing before 5am belongs to the *next* day. Mirrors openState. */
 const LATE_NIGHT_CUTOFF = 5 * 60;
@@ -30,7 +30,7 @@ const SLOT_STEP = 15;
 const LAST_SEATING_BEFORE_CLOSE = 45;
 /** Enough choice to feel like a board, few enough to sit in the side rail. */
 const SLOT_COUNT = 3;
-/** Used when `closingTime` is "Hours vary" and there's nothing to parse. */
+/** Used when a restaurant publishes no hours and there's nothing to derive. */
 const FALLBACK_CLOSE = 22 * 60;
 /** Where tomorrow's board starts once tonight is done. */
 const TOMORROW_OPEN = 17 * 60;
@@ -115,9 +115,11 @@ export function waitEstimate(
  * Bookable times. Rolls to tomorrow once tonight's last seating has passed,
  * so the board is never empty and never offers a table in the past.
  */
-export function reservationBoard(closingTime: string, now: Date): ReservationBoard {
-  const closes = parseClosing(closingTime) ?? FALLBACK_CLOSE;
-  const closesAt = normalize(closes);
+export function reservationBoard(hours: Hours, now: Date): ReservationBoard {
+  // Already on the continuous timeline — closingMinutesFor runs an overnight
+  // close past 1440 rather than wrapping it — so it needs no normalising, and
+  // normalising it again would push a 2am close to 26 hours out.
+  const closesAt = closingMinutesFor(hours, now) ?? normalize(FALLBACK_CLOSE);
   const nowAt = normalize(localMinutes(now));
 
   const first = ceilTo(nowAt + LEAD_MINUTES, SLOT_STEP);

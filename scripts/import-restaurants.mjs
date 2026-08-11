@@ -27,6 +27,7 @@ import { neon } from "@neondatabase/serverless";
 import { restaurants } from "../src/data/restaurants.ts";
 import { dishesByRestaurant } from "../src/data/dishes.ts";
 import { regionForCoordinate, regionNames } from "../src/data/regions.ts";
+import { bandFor } from "../src/data/priceBands.ts";
 
 const DRY_RUN = process.argv.includes("--dry");
 
@@ -83,7 +84,7 @@ const RESTAURANT_COLUMNS = [
   "closing_time", "lat", "lng", "status", "status_label", "rating",
   "review_count", "yelp_rating", "yelp_review_count", "google_rating",
   "google_review_count", "trending", "photo", "photo_alt", "yelp_url",
-  "sort_order",
+  "sort_order", "price_band",
 ];
 
 /**
@@ -100,6 +101,9 @@ function restaurantValues(r, order) {
     r.googleRating ?? null, r.googleReviewCount ?? null, r.trending ?? false,
     r.photo ?? null, r.photoAlt ?? null, r.yelpUrl ?? null,
     order,
+    // Banded here, from the same menu being written below, using the same
+    // function the app used to call per request. Null when there is no menu.
+    bandFor(dishesByRestaurant[r.id] ?? []),
   ];
 }
 

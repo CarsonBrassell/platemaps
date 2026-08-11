@@ -4,13 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PostMediaCarousel } from "./PostMediaCarousel";
 import { PostActions, type VoteDirection } from "./PostActions";
+import { heatFor } from "@/components/post/PercentMeter";
 import { PointsBadge } from "./PointsBadge";
 import { StarRating } from "@/components/StarRating";
 import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon } from "@/components/icons";
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { tagAccent } from "@/data/foodTags";
 import { amenityEmoji, vibeChip } from "@/data/reviewScales";
-import type { Post } from "./types";
+import type { Comment, Post } from "./types";
 
 /** Handle shown next to the avatar — "Maya Ellis" reads as "mayaellis". */
 function handleFor(name: string) {
@@ -121,7 +122,17 @@ export function FoodPostCard(props: FoodPostCardProps) {
   const saved = currentUserId ? post.savedBy.includes(currentUserId) : false;
   const isOwner = currentUserId === post.userId;
   const palette = avatarPalette(post.authorName);
-  const topComment = post.comments[post.comments.length - 1];
+  /* The one comment the card shows. Now that replies exist it has to be a
+     top-level one — a reply quoted alone under the photo reads as a response
+     to the post itself — and the best-scoring one rather than the newest,
+     which is what "top comment" means to anyone opening the thread. */
+  const topComment = post.comments
+    .filter((c) => c.parentId === null)
+    .reduce<Comment | undefined>((best, c) => {
+      if (!best) return c;
+      const delta = c.upvoteCount - c.downvoteCount - (best.upvoteCount - best.downvoteCount);
+      return delta > 0 ? c : best;
+    }, undefined);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -160,50 +171,151 @@ export function FoodPostCard(props: FoodPostCardProps) {
     );
   }
 
-  const meta = [relativeTime(post.createdAt), post.locationLabel].filter(Boolean).join(" · ");
+  /* What the plate *is*. Stars belong to the place, so a restaurant review
+     names the restaurant even when a dish is given; everything else leads with
+     the dish when there is one. */
+  const titleIsDish = post.ratingKind !== "restaurant" && !!post.dishName;
+  const title = titleIsDish
+    ? post.dishName
+    : (post.restaurant ?? post.dishName ?? "A plate worth sharing");
+
+  /* The poster's own words are the headline, and the name is the small line
+     above them.
+
+     A feed of plates is a feed of opinions: "Crispy crust, spicy honey, worth
+     ordering again" is why you stop scrolling, and the dish it is about is the
+     caption to that, not the other way round. The words used to sit in small
+     grey type below the photo, which is where a card puts the thing nobody is
+     expected to read.
+
+     Falls back to the name when a post has none — every post has a subject,
+     only most have something to say about it. There is then no orange line, so
+     the name is never printed twice.
+
+     Tested for content rather than for null: `text` is a nullable column that a
+     composer submitting an untouched field can land in as "", and `?? title`
+     would have made that an empty headline. */
+  const words = post.text?.trim() ? post.text : null;
+  const headline = words ?? title;
+  const kicker = words ? title : null;
+  const titleId = `post-${post.id}-title`;
+  const kickerId = `post-${post.id}-kicker`;
+
+  /* The byline opens with the handle; what follows is only what the headline
+     didn't already say. A restaurant review deliberately carries no
+     neighbourhood and no "restaurant review" label — the stars say it.
+     Price rides here only when there's no photo to wear its chip. */
+  const bylineParts = [
+    titleIsDish ? post.restaurant : post.dishName,
+    relativeTime(post.createdAt),
+    post.media.length === 0 ? post.price : null,
+  ].filter(Boolean);
+
   // Reads either vocabulary the `vibe` column has held — "Lively", or "Food"
   // written back out as "Best at food".
   const roomChip = post.vibe ? vibeChip(post.vibe) : null;
 
   return (
     <article
-      aria-labelledby={`post-${post.id}-title`}
+      // Both lines, in reading order, so the card announces itself as "Hot
+      // honey pepperoni pizza, crispy crust and spicy honey…" rather than as a
+      // quote from nowhere.
+      aria-labelledby={kicker ? `${kickerId} ${titleId}` : titleId}
       className={`overflow-hidden rounded-2xl bg-white ${
         highlighted ? "ring-2 ring-pm-orange" : ""
       }`}
     >
-      <header className="flex items-center gap-3 px-4 pt-4">
-        <Link
-          href={isOwner ? "/account" : `/u/${post.userId}`}
-          aria-label={`View ${post.authorName}'s profile`}
-          className="shrink-0 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-        >
-          {post.authorAvatarUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={post.authorAvatarUrl}
-              alt=""
-              className="h-10 w-10 rounded-full object-cover"
-            />
-          ) : (
+      <header className="px-4 pt-4">
+        {/* The dish or the restaurant, small and in the accent — a caption
+            above its picture rather than a heading over a section. Fraunces
+            because it is a proper name, --pm-orange-text because small orange
+            type needs the darker of the two accent tokens to clear 4.5:1. */}
+        {kicker && (
+          <p
+            id={kickerId}
+            className="mb-1 truncate font-display text-[13px] font-semibold leading-tight text-pm-orange-text"
+          >
+            {kicker}
+          </p>
+        )}
+
+        {/* The words and their verdict share the opening line: dish posts get
+            the percent in the composer meter's own heat, restaurant posts get
+            their stars. Exactly two branches, same as everywhere else — no
+            third scale exists to render.
+         *
+         * `items-baseline` still, so the number sits on the first line of the
+         * headline however many lines it runs to. */}
+        <div className="flex items-baseline justify-between gap-3">
+          <h3
+            id={titleId}
+            className={`min-w-0 text-[22px] font-semibold tracking-tight text-zinc-900 ${
+              words
+                ? // Prose, so it wraps and gets the looser leading; three lines
+                  // is where a headline stops being one.
+                  `leading-snug ${expanded ? "" : "line-clamp-3"}`
+                : "truncate leading-tight"
+            }`}
+          >
+            {headline}
+          </h3>
+          {post.rating !== undefined && post.ratingKind === "dish" && (
             <span
-              className={`flex h-10 w-10 items-center justify-center rounded-full ${palette.avatarBg} font-mono text-sm font-semibold text-white`}
+              data-heat={heatFor(post.rating)}
+              className="pct-heat shrink-0 font-mono text-[21px] font-bold leading-tight tabular-nums"
             >
-              {initials(post.authorName)}
+              {post.rating}%
             </span>
           )}
-        </Link>
-
-        <div className="min-w-0 flex-1">
-          {/* Handle and timestamp share one row, both machine values, both
-              mono — the brief's card opens exactly this way. */}
-          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <span className="truncate font-mono text-[13px] font-medium text-zinc-900">
-              {handleFor(post.authorName)}
+          {post.rating !== undefined && post.ratingKind === "restaurant" && (
+            <span className="flex shrink-0 items-center gap-1.5">
+              <StarRating rating={post.rating} className="h-3.5 w-3.5" />
+              <span className="font-mono text-sm font-semibold tabular-nums text-zinc-900">
+                {post.rating}/5
+              </span>
             </span>
-            <span className="truncate font-mono text-xs text-zinc-500">{meta}</span>
-          </div>
-          <div className="mt-1 flex items-center gap-1.5">
+          )}
+        </div>
+
+        {/* Sits with the text it expands, which is now up here. 140 characters
+            is roughly where three lines end at this size. */}
+        {words && words.length > 140 && (
+          <button
+            type="button"
+            onClick={() => setExpanded((e) => !e)}
+            className="mt-0.5 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+          >
+            {expanded ? "Show less" : "Show more"}
+          </button>
+        )}
+
+        <div className="mt-2 flex items-center gap-2">
+          <Link
+            href={isOwner ? "/account" : `/u/${post.userId}`}
+            aria-label={`View ${post.authorName}'s profile`}
+            className="shrink-0 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+          >
+            {post.authorAvatarUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={post.authorAvatarUrl}
+                alt=""
+                className="h-6 w-6 rounded-full object-cover"
+              />
+            ) : (
+              <span
+                className={`flex h-6 w-6 items-center justify-center rounded-full ${palette.avatarBg} font-mono text-[10px] font-semibold text-white`}
+              >
+                {initials(post.authorName)}
+              </span>
+            )}
+          </Link>
+
+          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
+            <span className="truncate font-mono text-xs text-zinc-500">
+              <span className="font-medium text-zinc-900">{handleFor(post.authorName)}</span>
+              {bylineParts.length > 0 && <> · {bylineParts.join(" · ")}</>}
+            </span>
             <PointsBadge points={post.authorPoints} />
             {trending && (
               <span
@@ -215,7 +327,6 @@ export function FoodPostCard(props: FoodPostCardProps) {
               </span>
             )}
           </div>
-        </div>
 
         {/* Mutual friends only — a one-directional follow isn't a state this
             button can land in. "Incoming" routes to the account page rather
@@ -306,94 +417,43 @@ export function FoodPostCard(props: FoodPostCardProps) {
               )}
             </div>
           )}
+          </div>
         </div>
       </header>
 
-      {/* The poster's own words, in the human voice, before the photo. */}
-      {post.text && (
-        <div className="px-4 pt-3">
-          <p
-            className={`text-sm leading-relaxed text-zinc-700 ${
-              expanded ? "" : "line-clamp-3"
-            }`}
-          >
-            {post.text}
-          </p>
-          {post.text.length > 140 && (
-            <button
-              type="button"
-              onClick={() => setExpanded((e) => !e)}
-              className="mt-0.5 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-            >
-              {expanded ? "Show less" : "Show more"}
-            </button>
+      {/* Photo only when the post actually has one — with photos scoped to the
+          friends tab, most Discover entries won't, and a ledger entry reads as
+          headline + words alone. When it exists it stays inset from the card
+          edge, both radii visible — the same move as the restaurant page's
+          hero. The rating chips that used to sit on the photo are gone: the
+          verdict lives in the headline now (rating branches are up there, and
+          pre-split rows were converted by scripts/backfill-rating-kind.mjs).
+          Only the price still wears a chip. */}
+      {post.media.length > 0 && (
+        <div className="relative mx-2.5 mt-3 overflow-hidden rounded-xl">
+          <PostMediaCarousel
+            media={post.media}
+            dishName={post.dishName}
+            restaurant={post.restaurant}
+          />
+
+          {post.price && (
+            <div className="pointer-events-none absolute bottom-2.5 left-2.5">
+              <span className="rounded-full bg-white/95 px-2.5 py-1 font-mono text-xs font-medium tabular-nums text-zinc-700">
+                {post.price}
+              </span>
+            </div>
           )}
         </div>
       )}
 
-      {/* Photo inset from the card edge, both radii visible — the same move
-          as the restaurant page's hero. */}
-      <div className="relative mx-2.5 mt-3 overflow-hidden rounded-xl">
-        <PostMediaCarousel
-          media={post.media}
-          dishName={post.dishName}
-          restaurant={post.restaurant}
-        />
-
-        {(post.rating !== undefined || post.price) && (
-          <div className="pointer-events-none absolute bottom-2.5 left-2.5 flex items-center gap-1.5">
-            {/* Exactly two ways a rating can read, because there are
-                exactly two ways to make one: five stars for a restaurant,
-                a percentage for a dish. There is deliberately no third
-                branch — a 0-10 fallback is what let an impossible "9.2
-                stars" render, and the app has no control that produces a
-                9.2. Pre-split rows were converted by
-                scripts/backfill-rating-kind.mjs. */}
-            {post.rating !== undefined && post.ratingKind === "restaurant" && (
-              <span className="flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1">
-                <StarRating rating={post.rating} className="h-3 w-3" />
-                <span className="font-mono text-xs font-semibold tabular-nums text-zinc-900">
-                  {post.rating}/5
-                </span>
-              </span>
-            )}
-            {post.rating !== undefined && post.ratingKind === "dish" && (
-              <span className="flex items-baseline gap-1 rounded-full bg-white/95 px-2.5 py-1">
-                <span className="font-mono text-xs font-semibold tabular-nums text-zinc-900">
-                  {post.rating}%
-                </span>
-                <span className="font-mono text-[10px] text-zinc-500">would order</span>
-              </span>
-            )}
-            {post.price && (
-              <span className="rounded-full bg-white/95 px-2.5 py-1 font-mono text-xs font-medium tabular-nums text-zinc-700">
-                {post.price}
-              </span>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Restaurant · dish gets its own line now that the row below it is
-          split left-and-right — the dish is a record in this app, so it sets
-          in the mono. */}
-      <h3
-        id={`post-${post.id}-title`}
-        className="truncate px-4 pt-2.5 text-[13px] leading-snug"
-      >
-        {post.restaurant && <span className="text-zinc-600">{post.restaurant}</span>}
-        {post.restaurant && post.dishName && <span className="text-zinc-400"> · </span>}
-        {post.dishName && (
-          <span className="font-mono font-medium text-zinc-900">{post.dishName}</span>
-        )}
-        {!post.restaurant && !post.dishName && (
-          <span className="text-zinc-600">A plate worth sharing</span>
-        )}
-      </h3>
+      {/* The poster's words used to sit here, in small grey type under the
+          photo. They are the headline now — see `headline` above — and printing
+          them twice was the whole reason to take them out of this slot. */}
 
       {/* The verdict on the left, everything you can do about it on the
           right. PostActions owns the split itself. */}
-      <div className="flex items-center px-4 pb-1 pt-1">
+      <div className="flex items-center px-4 pb-1 pt-2">
         {props.surface === "discover" ? (
           <PostActions
             surface="discover"

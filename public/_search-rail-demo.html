@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlateMaps — Top row demo: switch + bare underline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Static demo. Nothing on this page is interactive — every field is a div,
+   pointer events are off inside the map mocks. */
+:root {
+  --cream: #F7F4EC;
+  --ink: #232019;
+  --grey-text: #665C4E;
+  --grey-tint: #EDE8DC;
+  --orange: #C9591F;
+  --night-muted: #a7b0ba;
+  --night-text: #F7F4EC;
+  --ember: #e8875a;
+  --ember-bright: #ffb07a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  padding: 48px 20px 96px;
+}
+.sheet { max-width: 940px; margin: 0 auto; }
+h1 { font-family: "Fraunces", serif; font-weight: 700; font-size: 36px; letter-spacing: -0.01em; margin-top: 6px; }
+h2 { font-family: "Fraunces", serif; font-weight: 600; font-size: 22px; }
+.mono-label {
+  font-family: "Spline Sans Mono", monospace; font-size: 11px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--grey-text);
+}
+.lede { margin-top: 12px; color: var(--grey-text); font-size: 15px; line-height: 1.6; max-width: 66ch; }
+.note { margin-top: 12px; color: var(--grey-text); font-size: 13.5px; line-height: 1.6; max-width: 76ch; }
+.note strong { color: var(--ink); font-weight: 600; }
+.block { margin-top: 52px; }
+.block-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 4px; }
+
+/* ---------- the white card + night window ---------- */
+.map-card { margin-top: 14px; background: #fff; border-radius: 16px; padding: 10px; }
+.night {
+  position: relative; border-radius: 12px; overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(420px 190px at 20% 78%, rgba(232,135,90,0.26), transparent 66%),
+    radial-gradient(300px 150px at 58% 34%, rgba(232,135,90,0.16), transparent 70%),
+    radial-gradient(260px 130px at 80% 62%, rgba(232,135,90,0.12), transparent 72%),
+    radial-gradient(520px 260px at 96% 96%, rgba(46,78,104,0.42), transparent 70%),
+    linear-gradient(#15181c, #0e1115);
+}
+.night::before { /* street grid */
+  content: ""; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 88px, rgba(255,255,255,0.028) 88px 89px),
+    repeating-linear-gradient(0deg, transparent 0 68px, rgba(255,255,255,0.024) 68px 69px);
+}
+.night::after { /* arterials */
+  content: ""; position: absolute; inset: -20%;
+  background:
+    linear-gradient(66deg, transparent 47.8%, rgba(232,135,90,0.30) 48.1%, rgba(232,135,90,0.30) 48.6%, transparent 48.9%),
+    linear-gradient(-24deg, transparent 61.9%, rgba(232,135,90,0.20) 62.1%, rgba(232,135,90,0.20) 62.5%, transparent 62.8%);
+  filter: blur(0.4px);
+}
+.dot { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--ember-bright); box-shadow: 0 0 12px 4px rgba(232,135,90,0.5); }
+.dot.s { width: 6px; height: 6px; box-shadow: 0 0 9px 3px rgba(232,135,90,0.42); }
+.dot.cold { width: 5px; height: 5px; background: #7c848c; box-shadow: none; }
+.sign {
+  position: absolute; font-family: "Spline Sans Mono", monospace; font-size: 10px;
+  letter-spacing: 0.14em; text-transform: uppercase; color: #ffc79c;
+  text-shadow: 0 0 8px rgba(255,176,122,0.85), 0 0 18px rgba(232,135,90,0.5);
+  transform: translateX(-50%);
+}
+
+/* ---------- the top row: no fill, no rail ---------- */
+.top-row {
+  position: absolute; left: 20px; right: 20px; top: 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+}
+
+/* the switch — M's design, floating on its own */
+.seg {
+  display: flex; gap: 2px; padding: 3px;
+  background: rgba(18,22,27,0.88);
+  border: 1px solid rgba(255,255,255,0.12);
+  flex: none;
+}
+.seg span {
+  font-family: "Spline Sans Mono", monospace; font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.13em; text-transform: uppercase;
+  padding: 7px 12px 6px; color: var(--night-muted); line-height: 1;
+}
+.seg span.on { background: #E6DCC6; color: #232019; }
+
+/* the field — bare underline, no container */
+.under {
+  display: flex; align-items: center; gap: 10px;
+  width: 250px; flex: none;
+  padding: 12px 2px 9px;
+  border-bottom: 1px solid rgba(255,255,255,0.32);
+}
+.under svg { flex: none; filter: drop-shadow(0 1px 5px rgba(0,0,0,0.95)); }
+.under .ph, .under .typed {
+  font-size: 14px; text-shadow: 0 1px 7px rgba(0,0,0,0.95), 0 0 3px rgba(0,0,0,0.7);
+  white-space: nowrap;
+}
+.under .ph { color: #c8d0d8; }
+.under .typed { color: var(--night-text); }
+.under.lit { border-bottom: 2px solid var(--ember); padding-bottom: 8px; }
+.under.focus { border-bottom: 2px solid var(--ember-bright); padding-bottom: 8px; box-shadow: 0 3px 12px -6px rgba(255,176,122,0.9); }
+.caret { display: inline-block; width: 1.5px; height: 15px; background: var(--ember-bright); vertical-align: -2px; margin-left: 2px; }
+.x { margin-left: auto; color: var(--night-muted); font-size: 13px; text-shadow: 0 1px 5px rgba(0,0,0,0.9); }
+
+/* zoom stack, to prove the left column still works */
+.zoom { position: absolute; left: 20px; top: 74px; display: flex; flex-direction: column; gap: 1px; }
+.zoom span {
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  background: rgba(18,22,27,0.82); border: 1px solid rgba(255,255,255,0.12);
+  color: var(--night-muted); font-family: "Spline Sans Mono", monospace; font-size: 14px;
+}
+.zoom span + span { border-top: none; }
+
+/* labels over the mocks */
+.tag {
+  position: absolute; right: 14px; bottom: 12px;
+  font-family: "Spline Sans Mono", monospace; font-size: 10px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: rgba(167,176,186,0.8);
+}
+
+/* state strip */
+.states { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+.states .map-card { margin-top: 0; }
+.states .night { height: 132px; }
+.states .top-row { left: 14px; right: 14px; top: 14px; }
+.states .under { width: 100%; }
+.state-name { font-family: "Spline Sans Mono", monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--grey-text); margin: 8px 0 0 4px; }
+
+/* alternates */
+.alts { display: grid; grid-template-columns: 1fr; gap: 22px; margin-top: 16px; }
+.alts .map-card { margin-top: 0; }
+.alts .night { height: 200px; }
+
+/* phone mock */
+.phone-wrap { display: flex; gap: 24px; align-items: flex-start; margin-top: 16px; flex-wrap: wrap; }
+.phone { width: 340px; }
+.phone .night { height: 300px; }
+.phone .top-row { left: 12px; right: 12px; top: 12px; flex-wrap: wrap; gap: 10px; }
+.phone .under { width: 100%; }
+.phone .zoom { top: 116px; left: 12px; }
+
+.chips { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  font-family: "Spline Sans Mono", monospace; font-size: 11px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 6px 12px; border-radius: 9999px;
+  background: var(--grey-tint); color: var(--grey-text);
+}
+.chip.on { background: var(--orange); color: var(--cream); letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <p class="mono-label">Demo · Static · Not wired</p>
+  <h1>Top row — switch, then a bare line</h1>
+  <p class="lede">M's row without M's rail. The Discover/Friends switch keeps its position and its
+  squared segmented design; the search loses its box entirely and becomes a rule with text sitting on
+  it. Nothing between them — the row is held together by alignment, which is the same thing that holds
+  the header nav together on the cream side.</p>
+
+  <!-- HERO -->
+  <div class="block">
+    <div class="block-head"><span class="mono-label">01</span><h2>At rest, full size</h2></div>
+    <div class="map-card"><div class="night" style="height:420px">
+      <span class="dot" style="left:22%;top:74%"></span>
+      <span class="dot s" style="left:29%;top:66%"></span>
+      <span class="dot s" style="left:17%;top:82%"></span>
+      <span class="dot" style="left:47%;top:47%"></span>
+      <span class="dot s" style="left:53%;top:39%"></span>
+      <span class="dot s" style="left:62%;top:58%"></span>
+      <span class="dot cold" style="left:71%;top:44%"></span>
+      <span class="dot s" style="left:78%;top:70%"></span>
+      <span class="dot cold" style="left:38%;top:29%"></span>
+      <span class="sign" style="left:47%;top:40%">Birrieria</span>
+
+      <div class="top-row">
+        <span class="seg"><span class="on">Discover</span><span>Friends</span></span>
+        <span class="under">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8d0d8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="ph">Fly to a spot</span>
+        </span>
+      </div>
+      <span class="zoom"><span>+</span><span>−</span></span>
+      <span class="tag">at rest</span>
+    </div></div>
+    <p class="note"><strong>What you are looking at.</strong> The switch is unchanged in position (20px
+    in from the map's own edge) and the zoom stack sits below it exactly as it does today. The field is
+    the same 44px-tall touch target it always was — the padding carries the height, the rule just marks
+    the bottom of it. No fill means the city runs unbroken behind the row, and the only new ink on the
+    map is a 250px hairline.</p>
+    <div class="chips"><span class="chip on">this is the build</span><span class="chip">44px target kept</span></div>
+  </div>
+
+  <!-- STATES -->
+  <div class="block">
+    <div class="block-head"><span class="mono-label">02</span><h2>Three states</h2></div>
+    <p class="note" style="margin-top:2px">Rest, focus, typing. The rule carries all of it — there is no
+    box to change color, so the line thickens to 2px and warms to ember, and the ✕ is what tells focus
+    apart from a field that already has a query in it.</p>
+    <div class="states">
+      <div>
+        <div class="map-card"><div class="night">
+          <span class="dot s" style="left:26%;top:70%"></span>
+          <span class="dot s" style="left:64%;top:52%"></span>
+          <div class="top-row" style="display:block">
+            <span class="under">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8d0d8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="ph">Fly to a spot</span>
+            </span>
+          </div>
+        </div></div>
+        <p class="state-name">Rest — 32% white rule</p>
+      </div>
+      <div>
+        <div class="map-card"><div class="night">
+          <span class="dot s" style="left:30%;top:64%"></span>
+          <span class="dot s" style="left:58%;top:44%"></span>
+          <div class="top-row" style="display:block">
+            <span class="under focus">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffb07a" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="ph" style="color:#dfe4ea">Fly to a spot<span class="caret"></span></span>
+            </span>
+          </div>
+        </div></div>
+        <p class="state-name">Focus — 2px ember + glow</p>
+      </div>
+      <div>
+        <div class="map-card"><div class="night">
+          <span class="dot s" style="left:22%;top:72%"></span>
+          <span class="dot s" style="left:66%;top:48%"></span>
+          <div class="top-row" style="display:block">
+            <span class="under lit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffb07a" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="typed">tacos el g<span class="caret"></span></span>
+              <span class="x">✕</span>
+            </span>
+          </div>
+        </div></div>
+        <p class="state-name">Typing — ✕ appears</p>
+      </div>
+    </div>
+    <p class="note"><strong>The one accessibility question.</strong> An unboxed field cannot take the
+    standard orange <span style="font-family:'Spline Sans Mono',monospace;font-size:12px">outline-2</span>
+    ring without drawing the box back around it. The focus indicator here is the rule itself — 1px muted
+    to 2px ember-bright is a change of both thickness and color, and
+    <span style="font-family:'Spline Sans Mono',monospace;font-size:12px">#ffb07a</span> against the
+    tiles clears 3:1 comfortably. That is a defensible reading of the floor, but it is a deliberate
+    departure from "orange ring everywhere" and worth saying out loud before it ships.</p>
+  </div>
+
+  <!-- PHONE -->
+  <div class="block">
+    <div class="block-head"><span class="mono-label">03</span><h2>Small screen — the crowding is gone</h2></div>
+    <p class="note" style="margin-top:2px">This is the case that forced today's awkward fallback, where
+    the field drops to a second row and takes a left inset to dodge the zoom stack. With no box, the
+    field simply wraps under the switch and spans the width. Nothing overlaps, and the row below the
+    switch is no longer contested because the rule can sit above the zoom controls without colliding.</p>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="map-card"><div class="night">
+          <span class="dot" style="left:30%;top:70%"></span>
+          <span class="dot s" style="left:44%;top:58%"></span>
+          <span class="dot s" style="left:62%;top:78%"></span>
+          <span class="dot cold" style="left:70%;top:46%"></span>
+          <div class="top-row">
+            <span class="seg"><span class="on">Discover</span><span>Friends</span></span>
+            <span class="under">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8d0d8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="ph">Fly to a spot</span>
+            </span>
+          </div>
+          <span class="zoom"><span>+</span><span>−</span></span>
+          <span class="tag">375px</span>
+        </div></div>
+      </div>
+      <p class="note" style="flex:1;min-width:260px;margin-top:0">
+        <strong>Why it fits now.</strong> The switch is ~190px of a ~340px map, so a second control on
+        that line was never going to work. A boxed field wrapping underneath would have read as two
+        stacked panels; a rule reads as one line of text, which is why the wrap is acceptable here and
+        was not before.<br><br>
+        The zoom stack drops to clear both rows. That is the same 40px push it already does, just
+        measured from a taller header block.</p>
+    </div>
+  </div>
+
+  <!-- ALTERNATES -->
+  <div class="block">
+    <div class="block-head"><span class="mono-label">04</span><h2>Two things still open</h2></div>
+    <div class="alts">
+      <div>
+        <div class="map-card"><div class="night">
+          <span class="dot s" style="left:28%;top:70%"></span>
+          <span class="dot s" style="left:60%;top:50%"></span>
+          <div class="top-row">
+            <span class="seg"><span class="on">Discover</span><span>Friends</span></span>
+            <span class="under" style="width:190px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8d0d8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="ph">Fly to a spot</span>
+            </span>
+          </div>
+          <span class="tag">short rule · 190px</span>
+        </div></div>
+        <p class="note"><strong>How long is the line?</strong> Short keeps the map open but gives long
+        restaurant names nowhere to go while typing.</p>
+      </div>
+      <div>
+        <div class="map-card"><div class="night">
+          <span class="dot s" style="left:24%;top:74%"></span>
+          <span class="dot s" style="left:56%;top:46%"></span>
+          <div class="top-row">
+            <span class="seg"><span class="on">Discover</span><span>Friends</span></span>
+            <span class="under" style="width:320px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8d0d8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="ph">Fly to a spot</span>
+            </span>
+          </div>
+          <span class="tag">long rule · 320px</span>
+        </div></div>
+        <p class="note"><strong>Long reads as a header rule</strong> spanning toward the switch, and
+        never truncates a name — but it is more ink across the top of the map.</p>
+      </div>
+    </div>
+    <p class="note"><strong>The real risk, stated plainly.</strong> A rule at 32% white is legible over
+    dark blocks and over water, but the map has bright arterials with orange glow pooled under them, and
+    a hairline crossing one of those loses its edge. Mitigations, in order of preference: keep the field
+    in the top-right where the tiles are typically darkest, lift the rest state to ~40% white, or give
+    the row a very short vertical gradient scrim — which is the one thing that starts walking back
+    toward a container, so it should be the last resort rather than the first.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><span class="mono-label">05</span><h2>If this is the one</h2></div>
+    <p class="note" style="margin-top:2px">Building it touches
+    <span style="font-family:'Spline Sans Mono',monospace;font-size:12px">MapSearch.tsx</span> (the whole
+    chrome block, plus the responsive positioning comment that documents the old collision) and the map
+    host where the switch is placed, since the two now share a row and must be laid out together rather
+    than positioned independently. The dropdown is unchanged and out of scope — it keeps its dark panel,
+    which is still correct: a results list needs a surface to sit on even when the field does not.</p>
+    <div class="chips"><span class="chip">2 files</span><span class="chip">dropdown untouched</span><span class="chip">no map-style changes</span></div>
+  </div>
+</div>
+</body>
+</html>

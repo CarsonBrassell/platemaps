@@ -41,20 +41,34 @@ export async function POST(
   // Points go to the author, not the voter, and only upvotes pay: a downvote
   // never debits the author, so a pile-on can't drain someone's total. Self
   // votes pay nothing either way.
+  //
+  // Both awards below are keyed pay-once in the ledger, so `awarded` is the
+  // truth about whether anything moved: a voter re-casting an upvote they had
+  // taken back gets the vote counted and nothing paid.
   const isSelfVote = post.userId === user.id;
   let authorPointsEarned = 0;
 
   if (firstTimeUpvote && !isSelfVote) {
-    await awardPoints(post.userId, POINT_RULES.receiveUpvote, `upvote:${id}:${user.id}`);
-    authorPointsEarned += POINT_RULES.receiveUpvote;
+    const { awarded } = await awardPoints(
+      post.userId,
+      POINT_RULES.receiveUpvote,
+      `upvote:${id}:${user.id}`,
+    );
+    if (awarded) authorPointsEarned += POINT_RULES.receiveUpvote;
   }
 
   // Milestones fire on the exact crossing, so a post that dips below and
   // climbs back doesn't pay out twice (the ledger's unique reason also guards).
   const milestone = myVote === "up" ? milestoneFor(upvoteCount) : null;
+  let milestoneAwarded = false;
   if (milestone && !isSelfVote) {
-    await awardPoints(post.userId, milestone.bonus, `milestone:${id}:${milestone.upvotes}`);
-    authorPointsEarned += milestone.bonus;
+    const { awarded } = await awardPoints(
+      post.userId,
+      milestone.bonus,
+      `milestone:${id}:${milestone.upvotes}`,
+    );
+    milestoneAwarded = awarded;
+    if (awarded) authorPointsEarned += milestone.bonus;
   }
 
   return NextResponse.json({
@@ -64,6 +78,6 @@ export async function POST(
     authorId: post.userId,
     authorName: post.authorName,
     authorPointsEarned,
-    milestone: milestone && !isSelfVote ? milestone : null,
+    milestone: milestoneAwarded ? milestone : null,
   });
 }

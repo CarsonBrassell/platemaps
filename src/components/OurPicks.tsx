@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Restaurant } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurants";
 import { StarIcon } from "@/components/icons";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 
@@ -10,7 +10,7 @@ import { RestaurantPhoto } from "@/components/RestaurantPhoto";
  * this file imports is downloaded by every visitor — and it only ever needs two
  * rows. The caller already holds the list and does the filtering.
  */
-export function OurPicks({ picks }: { picks: readonly Restaurant[] }) {
+export function OurPicks({ picks }: { picks: readonly RestaurantView[] }) {
   if (picks.length === 0) return null;
 
   return (

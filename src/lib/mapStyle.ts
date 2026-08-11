@@ -13,9 +13,18 @@
  * deep harbor water, and labels that never fight the pins. Every fill sits
  * far enough from the base tone to stay legible on a dim screen.
  */
+/* Labels set in the app's own machine voice: Spline Sans Mono, self-hosted as
+   SDF glyphs under public/fonts (generated once from the Google Fonts TTF via
+   tiny-sdf — see the git history's _glyphgen.html if it ever needs re-running,
+   e.g. to add a non-latin range). The tile server only offers Noto Sans, so
+   the glyphs URL points at our own origin. Only latin (0-255) is generated;
+   a label needing another range would render without those glyphs. */
+const GLYPHS_ORIGIN =
+  typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
+
 export const NEO_NOIR_STYLE: StyleSpecification = {
   version: 8,
-  glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+  glyphs: `${GLYPHS_ORIGIN}/fonts/{fontstack}/{range}.pbf`,
   sources: {
     ofm: {
       type: "vector",
@@ -95,22 +104,10 @@ export const NEO_NOIR_STYLE: StyleSpecification = {
       },
     },
 
-    /* The signature move: big roads sit on a wide, blurred pool of
-       PlateMaps orange, like sodium streetlights seen from a rooftop. */
-    {
-      id: "road-glow-major",
-      type: "line",
-      source: "ofm",
-      "source-layer": "transportation",
-      filter: ["in", "class", "motorway", "trunk", "primary"],
-      layout: { "line-cap": "round", "line-join": "round" },
-      paint: {
-        "line-color": "#e8875a",
-        "line-opacity": 0.14,
-        "line-blur": 4,
-        "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 10, 8, 14, 18, 18, 46],
-      },
-    },
+    /* The orange arterial glow that used to pool here was removed with the
+       organic-clump redesign: the only orange light on the night map now
+       comes from the restaurants themselves, so the glow always means food,
+       never merely a big road. */
 
     {
       id: "road-path",
@@ -240,31 +237,9 @@ export const NEO_NOIR_STYLE: StyleSpecification = {
       },
     },
 
-    /* Every other eatery in the city as a faint ember, so the blocks between
-       PlateMaps pins still read as a living food scene. */
-    {
-      id: "food-pois",
-      type: "circle",
-      source: "ofm",
-      "source-layer": "poi",
-      minzoom: 13,
-      filter: [
-        "in",
-        "class",
-        "restaurant",
-        "fast_food",
-        "cafe",
-        "bar",
-        "beer",
-        "bakery",
-        "ice_cream",
-      ],
-      paint: {
-        "circle-color": "#c98757",
-        "circle-radius": ["interpolate", ["linear"], ["zoom"], 13, 1.2, 16, 2.5, 18, 4],
-        "circle-opacity": ["interpolate", ["linear"], ["zoom"], 13, 0.3, 16, 0.55],
-      },
-    },
+    /* No OSM eatery layer here on purpose: every orange light on the map has
+       to be a PlateMaps restaurant. Generic POI dots read as pins that don't
+       glow and can't be clicked, which is worse than an empty block. */
 
     {
       id: "road-labels",
@@ -275,11 +250,13 @@ export const NEO_NOIR_STYLE: StyleSpecification = {
       layout: {
         "symbol-placement": "line",
         "text-field": ["get", "name"],
-        "text-font": ["Noto Sans Regular"],
-        "text-size": ["interpolate", ["linear"], ["zoom"], 13, 10, 18, 13],
+        "text-font": ["Spline Sans Mono Regular"],
+        "text-size": ["interpolate", ["linear"], ["zoom"], 13, 9.5, 18, 12],
+        "text-transform": "uppercase",
+        "text-letter-spacing": 0.1,
       },
       paint: {
-        "text-color": "#8a92a0",
+        "text-color": "#6d747f",
         "text-halo-color": "#191c22",
         "text-halo-width": 1.2,
       },
@@ -291,12 +268,13 @@ export const NEO_NOIR_STYLE: StyleSpecification = {
       "source-layer": "water_name",
       layout: {
         "text-field": ["get", "name"],
-        "text-font": ["Noto Sans Italic"],
+        "text-font": ["Spline Sans Mono Regular"],
         "text-size": 12,
-        "text-letter-spacing": 0.15,
+        "text-transform": "uppercase",
+        "text-letter-spacing": 0.2,
       },
       paint: {
-        "text-color": "#4d7d99",
+        "text-color": "#3d6079",
         "text-halo-color": "#0f2434",
         "text-halo-width": 1,
       },
@@ -310,13 +288,13 @@ export const NEO_NOIR_STYLE: StyleSpecification = {
       minzoom: 11,
       layout: {
         "text-field": ["get", "name"],
-        "text-font": ["Noto Sans Regular"],
-        "text-size": ["interpolate", ["linear"], ["zoom"], 11, 10.5, 15, 13],
+        "text-font": ["Spline Sans Mono Regular"],
+        "text-size": ["interpolate", ["linear"], ["zoom"], 11, 10, 15, 12.5],
         "text-transform": "uppercase",
-        "text-letter-spacing": 0.12,
+        "text-letter-spacing": 0.14,
       },
       paint: {
-        "text-color": "#8f97a4",
+        "text-color": "#c6cdd8",
         "text-halo-color": "#191c22",
         "text-halo-width": 1.2,
       },
@@ -329,8 +307,10 @@ export const NEO_NOIR_STYLE: StyleSpecification = {
       filter: ["in", "class", "city", "town"],
       layout: {
         "text-field": ["get", "name"],
-        "text-font": ["Noto Sans Bold"],
-        "text-size": ["interpolate", ["linear"], ["zoom"], 10, 13, 14, 17],
+        "text-font": ["Spline Sans Mono Regular"],
+        "text-size": ["interpolate", ["linear"], ["zoom"], 10, 12, 14, 15],
+        "text-transform": "uppercase",
+        "text-letter-spacing": 0.16,
       },
       paint: {
         "text-color": "#c6cdd8",

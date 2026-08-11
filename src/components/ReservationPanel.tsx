@@ -2,7 +2,7 @@
 
 import { useState, useSyncExternalStore } from "react";
 import { getClockSnapshot, getServerClockSnapshot, subscribeToClock } from "@/lib/clock";
-import { localMinutes, openStateFor } from "@/lib/openState";
+import { localMinutes, openStateFor, type Hours } from "@/lib/openState";
 import {
   EVENING_START,
   PARTY_SIZES,
@@ -35,10 +35,10 @@ import { CheckIcon } from "@/components/icons";
  */
 export function ReservationPanel({
   restaurantId,
-  closingTime,
+  hours,
 }: {
   restaurantId: string;
-  closingTime: string;
+  hours: Hours;
 }) {
   const now = useSyncExternalStore(subscribeToClock, getClockSnapshot, getServerClockSnapshot);
   const [party, setParty] = useState<PartySize>(2);
@@ -51,10 +51,10 @@ export function ReservationPanel({
     return <div className="h-56 rounded-2xl bg-white" aria-hidden="true" />;
   }
 
-  const openState = openStateFor(closingTime, now);
+  const openState = openStateFor(hours, now);
   const isOpen = openState.kind === "open" || openState.kind === "soon";
   const wait = waitEstimate(restaurantId, now, isOpen);
-  const board = reservationBoard(closingTime, now);
+  const board = reservationBoard(hours, now);
   // "Tonight" over a board of 2pm tables would be wrong, so the evening wording
   // is earned by the times themselves rather than assumed from the day.
   const dayLabel =

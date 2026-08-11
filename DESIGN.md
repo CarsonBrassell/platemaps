@@ -25,10 +25,10 @@ Three voices, split by **who produced the text**. Never mix them up.
   weight set alongside it is silently discarded, which is why nav state is
   carried by colour and the bullet rather than by going semibold.
 - Mono numbers always set `tabular-nums`.
-- One deliberate exception: in the feed card's bottom row and map-bubble meta,
-  a dish name is a compact *reference* to a record, and sets in **mono**, not
-  Fraunces. As a *title* (dish sheet, hits grid would-be headings) the name
-  behaves normally.
+- One deliberate exception: in the feed card's mono byline and map-bubble
+  meta, a dish or restaurant name is a compact *reference* to a record, and
+  sets in **mono**, not Fraunces. As a *title* (dish sheet, the feed card's
+  headline, hits grid would-be headings) the name behaves normally.
 - Vote arrows are the text glyphs `▲` (voted) / `△` (not yet), set in mono —
   never an icon-library arrow.
 
@@ -134,13 +134,104 @@ neighbors don't repeat.
   deep harbor water. A confirmed, deliberate exception to the cream world:
   the map is a window into the night city, framed inside a white card. Never
   ship a default tile style.
-- Pins are the original beacons: orange rings with a breathing halo, sized
-  and glowed by each spot's best post score; closed spots cool to a dim grey
-  ember. Hover shows the dark name tooltip. This whole surface is preserved
-  as-was — do not restyle it to the cream system.
-- Comment bubbles are warm near-white cards with a hairline edge; the dish
-  leading a bubble keeps its Fraunces + orange reference treatment
-  (`.map-dish-link`), and the meta row is mono.
+- Pins are GPU paint, not DOM: one GeoJSON source (`PIN_SOURCE` in
+  `RestaurantMap.tsx`) feeding WebGL circle layers — every restaurant is its
+  own glowing ember at every zoom, sized and warmed (`#d98a5f` → `#ffb07a`)
+  by its best post score, closed spots cooled to small grey embers with no
+  glow. There is deliberately **no clustering**: zoomed out the lights go
+  tiny and vague, and dense blocks clump only because the real dots crowd —
+  the city-lights-from-a-plane read. Hover flickers on the neon name
+  (`.map-name-tip`, one shared element placed by the map's hover events; the
+  same voice as `.map-neon-sign` above each bubble). The look stays the
+  night-city language — do not restyle it to the cream system, and do not go
+  back to per-restaurant DOM markers: that is what made the map lag as the
+  corpus grew. **Every orange light on the map is a PlateMaps restaurant** —
+  there is no OSM eatery layer under the pins, because a generic POI dot
+  reads as a pin that doesn't glow and can't be opened.
+- Under the dots, and only there, a **district aura** (`restaurant-aura`, a
+  heatmap over the same source) pools warm `#e8875a` light where the real
+  restaurants crowd — Gaslamp, Little Italy, North Park. It is an *area*
+  glow, never a ring, a hard edge or a coloured polygon, and quiet blocks
+  fade to literally nothing rather than a faint film. A uniform wash over the
+  whole city is the failure mode; see the tuning comment on the layer before
+  touching intensity, radius or the ramp, since the three only work together.
+  **The aura eases off as you pull back, but never disappears.** It reads at
+  full strength from z13 in; below that `heatmap-intensity` ramps down so
+  everything merely busy drops under the ramp's dead band and recedes into
+  plain night, while `heatmap-opacity` eases only slightly (0.75 at z9). The
+  two do different jobs and must not be conflated: **intensity picks which
+  districts survive, opacity sets how strongly they read.** A restaurant-heavy
+  core is meant to keep an obvious pool even at the county view — dimming it
+  to a faint smudge is as wrong as the uniform wash. It is a fade, not a
+  `minzoom` cutoff, and it must arrive at full strength by exactly z13: the
+  near view is signed off and the low-zoom end is the only part in play.
+- Comment bubbles are warm near-white cards with a hairline edge, floating
+  under the restaurant's own neon sign (`.map-neon-sign`) and tethered to
+  their pin by a straight leader line — the sign names the place, so the card
+  never has to. At rest the card is **exactly two rows**, because a bubble is
+  read at a glance over a moving map and a third row is one more thing to
+  parse before you can pan again:
+  - **Row 1, the verdict:** the subject hard left, its score hard right
+    (`justify-content: space-between`). The subject is the dish when there is
+    one and the comment's own words when there isn't. A real dish keeps its
+    Fraunces reference treatment (`.map-dish-link`) but is set in **ink
+    `#2b211c`, not orange** — the row gets exactly one coloured value and it
+    is the score, since two accents an em apart read as two things competing
+    rather than as a plate and its verdict; the face and the hover underline
+    carry the "you can go here" signal the colour used to. The score is mono
+    and never truncates or wraps while the subject ellipses away in front of
+    it: the number is the whole reason the bubble is on the map, and pinning
+    it to the same edge in every bubble lets a screenful be read straight
+    down as a column. A dish percent wears the composer meter's heat
+    (`heatColorForPercent`, the same temperature `.pct-heat` uses); a
+    restaurant review shows `★ 4/5` in `--pm-orange-text`.
+  - **Row 2, the byline:** mono, muted, `@HANDLE · 2H · ▲ 34 ▼ · 💬 3` —
+    handle first, the same order and shape as the feed's ledger card, with the
+    reaction as the row's one accent. All of it is machine-made, so all of it
+    is mono. The vote pair and the reply count keep **one shape on every
+    bubble** so the row never reflows depending on who authored what — but
+    only a bubble backed by a real post renders them as buttons. Seeded map
+    chatter has nothing to vote on or reply to, so its arrows and reply count
+    are plain muted glyphs: a control that looks live and does nothing is
+    worse than an obviously static one.
+
+  The comment's prose is the one thing a human typed, and it is still in the
+  DOM — hidden at rest in `.map-bubble-prose` and revealed on hover **or
+  keyboard focus** (`:focus-within`, since the dish and the vote chips are
+  focusable and a pointer must never be the only way to reach text). Nothing
+  a poster wrote is ever dropped from the markup to make the card fit.
+
+  **Expanding grows the card upward, and that is load-bearing.** The wrapper
+  is locked to the resting height and the box is absolutely positioned against
+  its bottom edge, so revealing the prose pushes the card up into empty map
+  instead of down. While the box grew downward it dragged the wrapper's bottom
+  with it, and the leader — pinned to `top: 100%` — slid off its restaurant
+  every time the cursor landed on a bubble. The bottom edge is the leader's
+  origin; it must not move.
+- Hovering a **bare** ember answers with `.map-name-tip`: the restaurant's name
+  in the neon voice plus its **star rating, printed with its denominator**
+  (`★ 4.1/5`). The map carries both rating scales at once, so a bare `4.1`
+  next to a bubble showing `96%` is the one number a reader could take for the
+  wrong scale — see the `rating_kind` split in AGENTS.md. One decimal, never
+  rounded to an integer: a blended rating is not one, and rounding claims a
+  precision the blend does not have.
+
+  Hovering an ember that **already has a bubble** prints nothing new — its
+  neon sign is already naming it, and a tip would stack a second copy of the
+  same name a few px away and read as two different places. The existing sign
+  answers instead: `.is-live`, a brighter burn plus a short flicker. Same
+  information, no repetition.
+- **Hit targets are a layer of their own** (`restaurant-hit`, fully
+  transparent), never the painted dots. MapLibre hit-tests a circle by its
+  radius alone — `circle-blur` spreads the glow but not the geometry — so
+  binding hover to a painted layer makes the target only as big as the light
+  is drawn, which at county zoom is a couple of px and feels broken. The
+  invisible layer decouples the two: an ember stays whatever size it should
+  LOOK, and the thing you have to hit stays comfortable (14-24px) at every
+  zoom. Because a fat target catches several neighbours at once and MapLibre
+  returns them in RENDER order rather than by distance, hover and click both
+  pick the **nearest** feature to the cursor — otherwise one light answers
+  with another's name.
 - Map chrome (zoom controls, attribution) is styled by `.map-fun-tiles` in
   globals.css to match the dark tiles.
 
@@ -159,9 +250,16 @@ neighbors don't repeat.
   pills, `THE HITS` 2-col dish-card grid (price mono muted left, bold orange
   mono % right), mono footer `RATED BY N LOCALS · SEE FULL MENU →`.
 - **Feed** — rank-2 screen tabs (plain text, orange underline on the active
-  one — not pills, whatever this line used to say); post card = mono username+timestamp row, sans post
-  text, inset photo, bottom row `restaurant · dish` (dish mono) left and
-  `▲ 34` orange mono right.
+  one — not pills, whatever this line used to say); ledger post card = the
+  subject as the Fraunces headline with its verdict on the same line — dish
+  posts a bold mono percent wearing the composer meter's heat gradient
+  (`.pct-heat` + `data-heat`, stops shared with `.pct-meter`), restaurant
+  reviews stars + mono `n/5`, and never a "restaurant review" label (the
+  stars say it); below it a mono byline that opens with the handle —
+  `@handle · restaurant · 2h` — carrying no neighbourhood; inset photo only
+  when the post has media (photos are friends-tab-scoped, so most Discover
+  entries are headline + words), sans post text under the plate, `▲ 34`
+  mono in the action row.
 - **Dish sheet** — cream sheet: tone-block photo, Fraunces name,
   `$9.00 · RESTAURANT` mono byline, white score card with 48px orange mono %,
   `YOUR VERDICT` label, full-width verdict pills.

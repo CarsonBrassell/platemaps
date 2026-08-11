@@ -17,7 +17,11 @@ export function FullMenu({
       <section id="full-menu" className="scroll-mt-4 rounded-2xl bg-white px-5 py-5 sm:px-6">
         <h2 className="mono-label text-zinc-500">Full menu</h2>
         {/* An honest gap rather than an empty heading: not every restaurant's
-            menu has been read in yet, and saying so beats a blank panel. */}
+            menu has been read in yet, and saying so beats a blank panel.
+            Deliberately not a "look this up" button — a menu is something the
+            page either has or doesn't, never a chore handed to the reader.
+            Filling these in is scripts/fetch-menus.mjs's job, done ahead of
+            time so the menu is simply present when the page opens. */}
         <div className="mt-4 rounded-xl bg-pm-grey-tint/60 px-4 py-8 text-center">
           <p className="text-sm font-medium text-zinc-700">No menu here yet</p>
           <p className="mx-auto mt-1 max-w-xs text-sm text-zinc-500">

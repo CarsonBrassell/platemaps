@@ -7,12 +7,19 @@ export type PostMedia = {
 
 export type Comment = {
   id: string;
+  /** Null on a top-level comment; the comment this replies to otherwise. The
+      thread is assembled from these client-side — see CommentsScreen. */
+  parentId: string | null;
   userId: string;
   authorName: string;
   authorAvatarUrl?: string;
   text: string;
   createdAt: string;
-  likedBy: string[];
+  /** Public counts, shown only as the net score. Voters are never named. */
+  upvoteCount: number;
+  downvoteCount: number;
+  /** This viewer's vote, or null. Never both directions — see castCommentVote. */
+  myVote: "up" | "down" | null;
 };
 
 export type Post = {

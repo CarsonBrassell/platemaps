@@ -269,8 +269,8 @@ function AccountOverview() {
         <PlateStarIcon className="h-5 w-7 shrink-0 text-zinc-500" />
         <p className="text-sm text-zinc-600">
           Earn PM Points by posting (+{POINT_RULES.createPost}), getting upvoted (+
-          {POINT_RULES.receiveUpvote}), and getting commented on (+{POINT_RULES.receiveComment}
-          ) on Discover.
+          {POINT_RULES.receiveUpvote}), getting commented on (+{POINT_RULES.receiveComment}), and
+          having your comments upvoted (+{POINT_RULES.receiveCommentUpvote}) on Discover.
         </p>
       </div>
 

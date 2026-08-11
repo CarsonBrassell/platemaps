@@ -23,6 +23,11 @@ export function RestaurantDetail({
   aspectTally,
 }: {
   restaurant: Restaurant;
+  /**
+   * The menu, already read from Postgres by the page. Menus are extracted
+   * ahead of time rather than on demand, so this is simply the menu — there is
+   * no loading state and nothing for the reader to trigger.
+   */
   dishes: Dish[];
   /** Read server-side in the page — see the note there. */
   aspectTally: RestaurantAspectTally;
@@ -143,7 +148,7 @@ export function RestaurantDetail({
           <div className="lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-2rem)] lg:flex-col lg:gap-4">
             <ReservationPanel
               restaurantId={restaurant.id}
-              closingTime={restaurant.closingTime}
+              hours={restaurant.hours ?? null}
             />
             {/* The anchor stays on the comments themselves — "see all comments"
                 from the dish sheet must land on the thread, not on the booking
