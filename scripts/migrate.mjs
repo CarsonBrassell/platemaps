@@ -494,6 +494,13 @@ const statements = [
   `ALTER TABLE menu_lookups ADD COLUMN IF NOT EXISTS source_fingerprint TEXT`,
   `ALTER TABLE menu_lookups ADD COLUMN IF NOT EXISTS checked_at TIMESTAMPTZ`,
   `CREATE INDEX IF NOT EXISTS idx_menu_lookups_checked ON menu_lookups(checked_at NULLS FIRST)`,
+
+  // --- Terms/Privacy consent -------------------------------------------------
+  //
+  // Evidence that a real checkbox was checked at signup, not just that the
+  // signup form currently shows one. `createUser` stamps this itself with
+  // NOW() at insert time — there is no client-supplied timestamp to trust.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS agreed_to_terms_at TIMESTAMPTZ`,
 ];
 
 for (const statement of statements) {

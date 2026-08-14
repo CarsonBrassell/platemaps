@@ -20,6 +20,8 @@ export type User = {
   sharePhotosPublicly: boolean;
   favoriteCuisine?: string;
   favoriteRestaurantId?: string;
+  /** When they checked the Terms/Privacy box at signup — server-stamped, see createUser. */
+  agreedToTermsAt?: string;
 };
 
 function currentMonthKey(): string {
@@ -45,6 +47,7 @@ function rowToUser(row: any): User {
     sharePhotosPublicly: row.share_photos_publicly ?? false,
     favoriteCuisine: row.favorite_cuisine ?? undefined,
     favoriteRestaurantId: row.favorite_restaurant_id ?? undefined,
+    agreedToTermsAt: row.agreed_to_terms_at ?? undefined,
   };
 }
 
@@ -64,9 +67,13 @@ export async function createUser(data: {
   email: string;
   passwordHash: string;
 }): Promise<User> {
+  // agreed_to_terms_at is stamped here with the database's own clock, not a
+  // value passed in from the request — the caller (the signup route) already
+  // rejected the request if the checkbox wasn't checked, so reaching this
+  // insert means consent happened right now, not whenever a client claims.
   const rows = await sql`
-    INSERT INTO users (id, name, email, password_hash)
-    VALUES (${data.id}, ${data.name}, ${data.email}, ${data.passwordHash})
+    INSERT INTO users (id, name, email, password_hash, agreed_to_terms_at)
+    VALUES (${data.id}, ${data.name}, ${data.email}, ${data.passwordHash}, NOW())
     RETURNING *
   `;
   return rowToUser(rows[0]);

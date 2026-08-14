@@ -49,6 +49,7 @@ function AuthForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -57,13 +58,19 @@ function AuthForm() {
       setError("Fill in every field to create your account.");
       return;
     }
+    if (mode === "signup" && !agreed) {
+      setError("You must agree to the Terms of Service and Privacy Policy to create an account.");
+      return;
+    }
     if (mode === "login" && (!email || !password)) {
       setError("Enter your email and password.");
       return;
     }
     setSubmitting(true);
     const result =
-      mode === "signup" ? await signUp(name, email, password) : await signIn(email, password);
+      mode === "signup"
+        ? await signUp(name, email, password, agreed)
+        : await signIn(email, password);
     setSubmitting(false);
     if (result) setError(result);
   }
@@ -145,29 +152,48 @@ function AuthForm() {
           className={inputClass}
         />
 
+        {mode === "signup" && (
+          <label className="mb-4 flex cursor-pointer items-start gap-2.5 text-xs text-zinc-500">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => {
+                setAgreed(e.target.checked);
+                if (error) setError("");
+              }}
+              className="mt-0.5 h-4 w-4 shrink-0 accent-pm-orange"
+            />
+            <span>
+              I agree to the{" "}
+              <Link
+                href="/terms"
+                target="_blank"
+                className="underline underline-offset-2 hover:text-zinc-700"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                target="_blank"
+                className="underline underline-offset-2 hover:text-zinc-700"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </span>
+          </label>
+        )}
+
         {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || (mode === "signup" && !agreed)}
           className="w-full rounded-lg bg-pm-orange px-3 py-2 text-sm font-medium text-white transition-transform active:scale-[0.97] disabled:opacity-60"
         >
           {mode === "signup" ? "Create account" : "Log in"}
         </button>
-
-        {mode === "signup" && (
-          <p className="mt-3 text-center text-xs text-zinc-500">
-            By creating an account, you agree to our{" "}
-            <Link href="/terms" className="underline underline-offset-2">
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link href="/privacy" className="underline underline-offset-2">
-              Privacy Policy
-            </Link>
-            .
-          </p>
-        )}
       </form>
     </div>
   );
@@ -514,6 +540,16 @@ export default function AccountPage() {
     <div className="mx-auto w-full max-w-5xl pb-12">
       <Header />
       {!loading && (isSignedIn ? <AccountOverview /> : <AuthForm />)}
+
+      <div className="mt-10 flex justify-center gap-3 text-xs text-zinc-400">
+        <Link href="/terms" className="hover:text-zinc-600 hover:underline">
+          Terms of Service
+        </Link>
+        <span aria-hidden="true">&middot;</span>
+        <Link href="/privacy" className="hover:text-zinc-600 hover:underline">
+          Privacy Policy
+        </Link>
+      </div>
     </div>
   );
 }

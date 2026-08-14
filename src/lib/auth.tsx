@@ -17,7 +17,12 @@ type AuthContextValue = {
   account: Account | null;
   isSignedIn: boolean;
   loading: boolean;
-  signUp: (name: string, email: string, password: string) => Promise<string | null>;
+  signUp: (
+    name: string,
+    email: string,
+    password: string,
+    agreedToTerms: boolean
+  ) => Promise<string | null>;
   signIn: (email: string, password: string) => Promise<string | null>;
   signOut: () => Promise<void>;
   refresh: () => Promise<void>;
@@ -73,11 +78,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  async function signUp(name: string, email: string, password: string) {
+  async function signUp(
+    name: string,
+    email: string,
+    password: string,
+    agreedToTerms: boolean
+  ) {
     const res = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email, password, agreedToTerms }),
     });
     if (!res.ok) return parseError(res);
     setAccount(await res.json());

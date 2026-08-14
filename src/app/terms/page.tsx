@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { Section, List, LegalTOC } from "@/components/legal/LegalSection";
 
 export const metadata: Metadata = {
   title: "Terms of Service — PlateMaps",
@@ -33,29 +34,6 @@ const SECTIONS = [
   { id: "contact", title: "21. Contact Us" },
 ];
 
-function Section({
-  id,
-  title,
-  children,
-}: {
-  id: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="mb-9 scroll-mt-24">
-      <h2 className="font-display mb-3 text-xl font-semibold text-zinc-900 sm:text-2xl">
-        {title}
-      </h2>
-      <div className="space-y-3 text-[15px] leading-relaxed text-zinc-700">{children}</div>
-    </section>
-  );
-}
-
-function List({ children }: { children: React.ReactNode }) {
-  return <ul className="list-disc space-y-1.5 pl-5">{children}</ul>;
-}
-
 export default function TermsPage() {
   return (
     <div className="mx-auto w-full max-w-7xl pb-16">
@@ -85,20 +63,7 @@ export default function TermsPage() {
             Service.
           </div>
 
-          <nav className="mb-10 rounded-2xl bg-white p-4 sm:p-5">
-            <p className="font-mono mb-3 text-xs uppercase tracking-[0.14em] text-zinc-500">
-              Contents
-            </p>
-            <ol className="grid grid-cols-1 gap-x-6 gap-y-1.5 text-sm text-zinc-700 sm:grid-cols-2">
-              {SECTIONS.map((s) => (
-                <li key={s.id}>
-                  <a href={`#${s.id}`} className="underline-offset-2 hover:underline">
-                    {s.title}
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
+          <LegalTOC sections={SECTIONS} />
 
           <Section id="acceptance" title="1. Acceptance of Terms">
             <p>
