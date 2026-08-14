@@ -14,9 +14,14 @@
  * Inventing a band for them from cuisine or star rating would be exactly the
  * fabrication PRODUCT.md's third principle rules out — the gap stays a gap,
  * and the facet counts show it (the four bands don't add up to the total).
+ *
+ * This file used to build a whole-corpus map at module load and answer
+ * `priceBandFor(id)` from it. Menus live in Postgres now, so there is no map to
+ * build in the browser: `bandFor` is exported as plain arithmetic, `db.ts`
+ * calls it per restaurant while assembling rows, and the band arrives on the
+ * restaurant itself. What is left here imports nothing at runtime, which is
+ * what keeps it safe for the client components that read `PRICE_BANDS`.
  */
-
-import { dishesByRestaurant, type Dish } from "@/data/dishes";
 
 export type PriceBand = "$" | "$$" | "$$$" | "$$$$";
 
@@ -50,7 +55,15 @@ function parsePrice(price: string): number | null {
   return Number.isFinite(amount) && amount > 0 ? amount : null;
 }
 
-function bandFor(dishes: readonly Dish[]): PriceBand | null {
+/**
+ * The two fields banding actually reads. Narrower than `Dish` on purpose, so
+ * `db.ts` can price a restaurant from a two-column query instead of hydrating
+ * every menu it owns.
+ */
+export type PricedItem = { price: string; section: string };
+
+/** Null when there is no menu to price — an honest gap, not a "$". */
+export function bandFor(dishes: readonly PricedItem[]): PriceBand | null {
   const mains = dishes.filter((d) => !SIDE_SECTIONS.has(d.section.toLowerCase()));
   const prices = (mains.length > 0 ? mains : dishes)
     .map((d) => parsePrice(d.price))
@@ -65,18 +78,3 @@ function bandFor(dishes: readonly Dish[]): PriceBand | null {
   return "$$$$";
 }
 
-/**
- * Computed once at module load — 36 restaurants of a handful of dishes each,
- * cheaper than the import that feeds it — so the bands follow `dishes.ts`
- * automatically when `scripts/fetch-menus.mjs` regenerates it.
- */
-const bands: ReadonlyMap<string, PriceBand> = new Map(
-  Object.entries(dishesByRestaurant)
-    .map(([id, dishes]) => [id, bandFor(dishes)] as const)
-    .filter((entry): entry is readonly [string, PriceBand] => entry[1] !== null),
-);
-
-/** Null when the restaurant has no menu to price — an honest gap, not a "$". */
-export function priceBandFor(restaurantId: string): PriceBand | null {
-  return bands.get(restaurantId) ?? null;
-}

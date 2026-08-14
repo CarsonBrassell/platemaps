@@ -146,7 +146,13 @@ export async function POST(req: NextRequest) {
     worstAspect,
   });
 
-  const freshUser = await awardPoints(user.id, POINT_RULES.createPost, `post:${post.id}`);
+  // "post:<id>" is unique by construction — a post is only created once — so
+  // this one always pays and has no `awarded` to consult.
+  const { user: freshUser } = await awardPoints(
+    user.id,
+    POINT_RULES.createPost,
+    `post:${post.id}`,
+  );
 
   return NextResponse.json({
     post,

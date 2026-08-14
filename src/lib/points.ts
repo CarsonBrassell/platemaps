@@ -17,6 +17,13 @@ export const POINT_RULES = {
   receiveUpvote: 1,
   /** Awarded to the author each time someone comments on their post. */
   receiveComment: 2,
+  /**
+   * Awarded to a comment's author each time a different user upvotes it —
+   * worth the same as an upvote on a post. A comment is cheaper to write than
+   * a plate, but it is also worth far less to write badly: the thread ranks on
+   * the same score, so a reply nobody upvotes earns nothing at all.
+   */
+  receiveCommentUpvote: 1,
 } as const;
 
 /**
@@ -35,6 +42,7 @@ export const POINT_RULE_COPY: ReadonlyArray<{ label: string; value: string }> = 
   { label: "Post a plate", value: `+${POINT_RULES.createPost}` },
   { label: "Someone upvotes your post", value: `+${POINT_RULES.receiveUpvote}` },
   { label: "Someone comments on your post", value: `+${POINT_RULES.receiveComment}` },
+  { label: "Someone upvotes your comment", value: `+${POINT_RULES.receiveCommentUpvote}` },
   ...UPVOTE_MILESTONES.map((m) => ({
     label: `Your post hits ${m.upvotes} upvotes`,
     value: `+${m.bonus} bonus`,

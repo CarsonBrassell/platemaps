@@ -9,7 +9,7 @@ import { resizeImageToDataUrl } from "@/lib/image";
 import { PlateStarIcon } from "@/components/icons";
 import { ProfileActivity } from "@/components/ProfileActivity";
 import { POINT_RULES } from "@/lib/points";
-import { cuisines, restaurants } from "@/data/restaurants";
+import { cuisines } from "@/data/restaurants";
 
 const inputClass =
   "mb-4 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-sm transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
@@ -269,8 +269,8 @@ function AccountOverview() {
         <PlateStarIcon className="h-5 w-7 shrink-0 text-zinc-500" />
         <p className="text-sm text-zinc-600">
           Earn PM Points by posting (+{POINT_RULES.createPost}), getting upvoted (+
-          {POINT_RULES.receiveUpvote}), and getting commented on (+{POINT_RULES.receiveComment}
-          ) on Discover.
+          {POINT_RULES.receiveUpvote}), getting commented on (+{POINT_RULES.receiveComment}), and
+          having your comments upvoted (+{POINT_RULES.receiveCommentUpvote}) on Discover.
         </p>
       </div>
 
@@ -374,6 +374,29 @@ function ProfileSettingsPanel() {
   const { account, updateSettings } = useAuth();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  // Only the favourite-restaurant <select> needs these, and only to name the
+  // options — the id the server validates against is its own row now.
+  const [restaurants, setRestaurants] = useState<{ id: string; name: string }[]>([]);
+
+  // Above the `!account` guard, because hooks cannot run conditionally. The
+  // request is cheap and the panel is only mounted on the account screen.
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch("/api/restaurants");
+        if (!res.ok) return;
+        const data: { restaurants: { id: string; name: string }[] } = await res.json();
+        if (!cancelled) setRestaurants(data.restaurants);
+      } catch {
+        // The select falls back to "Not set" only, which is still a valid
+        // state — better than blocking the rest of the settings panel.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (!account) return null;
 

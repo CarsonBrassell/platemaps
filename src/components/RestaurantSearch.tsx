@@ -2,50 +2,82 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { restaurants } from "@/data/restaurants";
+import { useRouter } from "next/navigation";
+import type { Restaurant } from "@/data/restaurants";
+import { QUERY_PARAM } from "@/lib/discoverFilters";
+import { rank } from "@/lib/restaurantRank";
 import { StarIcon } from "@/components/icons";
 
 /**
  * Header search over the restaurant list.
  *
- * Matches name, cuisine and neighbourhood so "thai", "little italy" and
- * "landini" all land somewhere. Ranked so a name match beats a cuisine match
- * — typing "pizza" should reach Bronx Pizza before every pizzeria in the city.
+ * The ordering — name match over cuisine match, rating breaking ties, top six —
+ * lives in lib/restaurantRank.ts, since the map's search field offers the same
+ * six for the same term.
+ *
+ * ## Two answers, and Enter picks the broad one
+ *
+ * The dropdown is a shortcut to *one place*: at most six, ranked, for when you
+ * already know what you want. Enter is the other question — "show me everything
+ * like this" — and it goes to Discover with the term applied, where the rail,
+ * the counts and the grid all narrow to it together. A term naming a filter
+ * ("Thai", "North Park", "$$") arrives there as that filter rather than as a
+ * text match; lib/discoverFilters.ts does that resolution, because only the
+ * server holds the vocabulary to check a term against.
+ *
+ * So arrowing into the list is what commits to a single restaurant. Enter with
+ * nothing highlighted — which is every Enter typed straight after a word — is
+ * the search.
  */
-function rank(query: string) {
-  const q = query.trim().toLowerCase();
-  if (!q) return [];
 
-  return restaurants
-    .map((r) => {
-      const name = r.name.toLowerCase();
-      const cuisine = r.cuisine.toLowerCase();
-      const hood = r.neighborhood.toLowerCase();
-
-      let score = 0;
-      if (name.startsWith(q)) score = 100;
-      else if (name.includes(q)) score = 80;
-      else if (cuisine.startsWith(q)) score = 60;
-      else if (cuisine.includes(q)) score = 50;
-      else if (hood.startsWith(q)) score = 40;
-      else if (hood.includes(q)) score = 30;
-
-      // Rating breaks ties so the better-reviewed place surfaces first.
-      return { r, score: score === 0 ? 0 : score + r.rating };
-    })
-    .filter((x) => x.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 6)
-    .map((x) => x.r);
-}
+/** No row highlighted — the state every fresh keystroke returns to. */
+const NONE = -1;
 
 export function RestaurantSearch() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(NONE);
+  const [candidates, setCandidates] = useState<Restaurant[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const results = useMemo(() => rank(query), [query]);
+  /*
+   * One request per settled query, not per keystroke.
+   *
+   * 150ms is below the point a typist notices and above the gap between
+   * characters, so a word typed at speed costs one request instead of six. The
+   * cleanup both cancels the pending timer and marks the in-flight response
+   * stale, which is what stops a slow "th" from landing after a fast "thai"
+   * and repopulating the list with the wrong matches.
+   */
+  useEffect(() => {
+    const q = query.trim();
+    // Nothing to clear: `rank` returns [] for an empty query, so whatever the
+    // last search left in state is already unreachable. Emptying it here would
+    // be a setState in an effect body to reach a state the render already has.
+    if (!q) return;
+
+    let stale = false;
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/restaurants?q=${encodeURIComponent(q)}`);
+        if (!res.ok) return;
+        const data: { restaurants: Restaurant[] } = await res.json();
+        if (!stale) setCandidates(data.restaurants);
+      } catch {
+        // A dropped search request leaves the previous matches on screen,
+        // which is a better answer than emptying the list.
+      }
+    }, 150);
+
+    return () => {
+      stale = true;
+      clearTimeout(timer);
+    };
+  }, [query]);
+
+  const results = useMemo(() => rank(query, candidates), [query, candidates]);
 
   useEffect(() => {
     if (!open) return;
@@ -58,28 +90,61 @@ export function RestaurantSearch() {
 
   const showing = open && query.trim().length > 0;
 
+  /**
+   * Hand the term to Discover.
+   *
+   * A soft navigation, so the grid re-renders in place and the field keeps the
+   * text that produced it — searching twice in a row shouldn't cost a document
+   * load, and the term staying put is what makes the second search an edit of
+   * the first.
+   *
+   * Only `q` goes on the URL: a search from the header is a fresh question, not
+   * a narrowing of whatever the last visit to Discover had left switched on.
+   */
+  function submit() {
+    const q = query.trim();
+    if (!q) return;
+    setOpen(false);
+    setActive(NONE);
+    inputRef.current?.blur();
+    router.push(`/?${QUERY_PARAM}=${encodeURIComponent(q)}`);
+  }
+
   function onKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "Enter") {
+      // A highlighted row means the visitor arrowed to a specific restaurant
+      // and meant that one. Everything else — the common case — is the search.
+      e.preventDefault();
+      if (showing && results[active]) window.location.href = `/restaurant/${results[active].id}`;
+      else submit();
+      return;
+    }
     if (!showing) return;
     if (e.key === "Escape") {
       setOpen(false);
+      setActive(NONE);
       return;
     }
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setActive((i) => Math.min(i + 1, results.length - 1));
     } else if (e.key === "ArrowUp") {
+      // Back past the first row lands on NONE rather than sticking, so there is
+      // a way out of the list and back to plain Enter without deleting a letter.
       e.preventDefault();
-      setActive((i) => Math.max(i - 1, 0));
-    } else if (e.key === "Enter" && results[active]) {
-      // Anchors are rendered below; following the href directly keeps this
-      // working without a router import.
-      window.location.href = `/restaurant/${results[active].id}`;
+      setActive((i) => Math.max(i - 1, NONE));
     }
   }
 
   // The width lives on this wrapper rather than on the input so the field can
   // shrink below its preferred size when the header row is tight, instead of
   // holding its size and running under the nav.
+  //
+  // Held at 224px deliberately: this field is the bulk of the header's right
+  // group, and that group is sized to match the left one (brand + city) so the
+  // centred nav oval sits between two equal gaps — 134px and 143px at 1280.
+  // Widening it here pulls the header out of symmetry, it does not decentre the
+  // nav; the grid in Header.tsx owns the centring.
   return (
     <div ref={wrapRef} className="relative hidden w-40 min-w-0 sm:block lg:w-56">
       <div className="flex items-center gap-2.5 rounded-full bg-white px-4 py-2 transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-pm-orange">
@@ -97,11 +162,12 @@ export function RestaurantSearch() {
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
         <input
+          ref={inputRef}
           type="text"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            setActive(0);
+            setActive(NONE);
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
@@ -131,15 +197,18 @@ export function RestaurantSearch() {
         )}
       </div>
 
+      {/* Anchored right, not left: the field now sits in the header's right
+          group next to the avatar, and this menu is wider than the field, so a
+          left anchor would push it off the right edge of the viewport. */}
       {showing && (
         <ul
           id="search-results"
           role="listbox"
-          className="absolute left-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl bg-white py-1.5"
+          className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl bg-white py-1.5"
         >
           {results.length === 0 ? (
-            <li className="px-4 py-3 text-sm text-zinc-500">
-              Nothing matching &ldquo;{query.trim()}&rdquo;
+            <li className="px-4 pb-1 pt-3 text-sm text-zinc-500">
+              No restaurant named &ldquo;{query.trim()}&rdquo;
             </li>
           ) : (
             results.map((r, i) => (
@@ -168,6 +237,31 @@ export function RestaurantSearch() {
               </li>
             ))
           )}
+
+          {/* The way out of the shortcut and into the whole result set. It says
+              what Enter already does, because a dropdown of six is otherwise
+              the only answer anyone knows this field can give.
+           *
+           * Outside the listbox semantics — role="presentation" and no
+           * aria-selected — since it isn't one of the options being chosen
+           * between, and arrowing past the last restaurant shouldn't land on
+           * it. Keyboard reaches it as plain Enter instead. */}
+          <li role="presentation" className={results.length > 0 ? "mt-1 border-t border-zinc-100 pt-1" : ""}>
+            <button
+              type="button"
+              onClick={submit}
+              onMouseEnter={() => setActive(NONE)}
+              className="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-zinc-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              <span className="min-w-0 flex-1 truncate text-sm text-zinc-700">
+                Search Discover for{" "}
+                <span className="font-medium text-zinc-900">
+                  &ldquo;{query.trim()}&rdquo;
+                </span>
+              </span>
+              <span className="mono-label shrink-0 text-zinc-400">Enter</span>
+            </button>
+          </li>
         </ul>
       )}
     </div>

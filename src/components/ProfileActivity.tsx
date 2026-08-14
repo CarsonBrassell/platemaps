@@ -13,8 +13,9 @@ type ActivityEvent = {
   id: string;
   kind: ActivityKind;
   createdAt: string;
-  actorId: string;
-  actorName: string;
+  /** Absent on upvotes — the server doesn't send one. See ActorAvatar. */
+  actorId?: string;
+  actorName?: string;
   actorAvatarUrl?: string;
   postId: string;
   postRestaurant?: string;
@@ -42,10 +43,24 @@ const VERB: Record<ActivityKind, string> = {
 /** How many rows before the list folds. Six is about a screen on a phone. */
 const COLLAPSED_COUNT = 6;
 
-function ActorAvatar({ name, avatarUrl }: { name: string; avatarUrl?: string }) {
+/**
+ * A face for a named actor, a plain warm tone circle for an anonymous one.
+ *
+ * Upvotes arrive with no name at all — not a name this component chooses to
+ * hide, one the server never selected — so there are no initials to fall back
+ * to and nothing to reveal on hover. The blank circle is the honest render of
+ * "somebody, and that's all you get", and it's a tone block rather than a
+ * silhouette icon for the same reason missing photos are (DESIGN.md).
+ */
+function ActorAvatar({ name, avatarUrl }: { name?: string; avatarUrl?: string }) {
   if (avatarUrl) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={avatarUrl} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" />;
+  }
+  if (!name) {
+    return (
+      <div className="h-9 w-9 shrink-0 rounded-full bg-[var(--pm-tone-2)]" aria-hidden="true" />
+    );
   }
   return (
     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-[11px] font-medium text-pm-grey-text">
@@ -120,11 +135,16 @@ function PostReference({ event }: { event: ActivityEvent }) {
  * What other people did to your plates: comments, likes and upvotes in one
  * chronological list.
  *
- * Two of these three are visible nowhere else. Upvote counts show on the card
- * but never say who; hearts are private by design and only ever readable by
- * the post's author — this section is that author view, which is why it lives
- * on /account behind the session and not on the public profile at /u/[id].
- * Do not lift it there: that page deliberately has no post history at all.
+ * Hearts are private by design and only ever readable by the post's author —
+ * this section is that author view, which is why it lives on /account behind
+ * the session and not on the public profile at /u/[id]. Do not lift it there:
+ * that page deliberately has no post history at all.
+ *
+ * The two reactions are named differently on purpose. A heart comes from a
+ * friend and says who; an upvote is a verdict on the plate and stays
+ * anonymous, rendering as "Someone" with a blank tone circle. That isn't this
+ * component being coy — /api/account/activity sends no actor for an upvote at
+ * all, so there is nothing here to reveal.
  *
  * The segmented filter is a rank-3 control (tan track, white selected
  * segment, mono labels), not pills — pills here would read as screen nav.
@@ -244,12 +264,18 @@ export function ProfileActivity() {
 
                 <div className="min-w-0 flex-1">
                   <p className="flex flex-wrap items-baseline gap-x-1.5 text-sm text-zinc-600">
-                    <Link
-                      href={`/u/${event.actorId}`}
-                      className="font-medium text-zinc-900 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-                    >
-                      {event.actorName}
-                    </Link>
+                    {event.actorId && event.actorName ? (
+                      <Link
+                        href={`/u/${event.actorId}`}
+                        className="font-medium text-zinc-900 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                      >
+                        {event.actorName}
+                      </Link>
+                    ) : (
+                      /* Not a link and not a name: an upvote is anonymous, so
+                         there is nowhere for this to go. */
+                      <span className="font-medium text-zinc-900">Someone</span>
+                    )}
                     <span>{VERB[event.kind]}</span>
                     <PostReference event={event} />
                   </p>

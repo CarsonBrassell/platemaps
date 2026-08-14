@@ -4,6 +4,7 @@ import type { MapComment } from "@/data/mapComments";
 type SheetDish = {
   id: string;
   name: string;
+  description?: string;
   price: string;
   pct: number | null;
   total: number;
@@ -58,14 +59,13 @@ export function DishSheet({
         </div>
 
         <div className="px-4 pb-6 pt-3">
-          {/* Photo slot. Dish photos don't exist yet, so a warm tone block
-              holds the aspect ratio deliberately — no gray box, no icon. */}
-          <div className="aspect-[2/1] w-full rounded-xl bg-[var(--pm-tone-2)]" aria-hidden="true" />
-
-          <h2 className="mt-4 font-display text-2xl font-semibold text-zinc-900">{dish.name}</h2>
+          <h2 className="font-display text-2xl font-semibold text-zinc-900">{dish.name}</h2>
           <p className="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-zinc-500">
             {dish.price} · {restaurantName}
           </p>
+          {dish.description && (
+            <p className="mt-2 text-sm leading-snug text-zinc-700">{dish.description}</p>
+          )}
 
           {/* The score card: oversized orange mono percentage, denominator in
               small mono beside it. */}

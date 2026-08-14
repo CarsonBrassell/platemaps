@@ -25,13 +25,38 @@ import { readFile, writeFile } from "node:fs/promises";
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import { restaurants as allRestaurants } from "../src/data/restaurants.ts";
+import { dishesByRestaurant as existingMenus } from "../src/data/dishes.ts";
 
-const DATA_PATH = new URL("../src/data/restaurants.ts", import.meta.url);
 const DISHES_PATH = new URL("../src/data/dishes.ts", import.meta.url);
 
 const DRY_RUN = process.argv.includes("--dry");
 const limitFlag = process.argv.indexOf("--limit");
 const LIMIT = limitFlag !== -1 ? Number(process.argv[limitFlag + 1]) : Infinity;
+
+/**
+ * Re-extract menus for restaurants that already have one. Off by default.
+ *
+ * Without this the script walked `restaurants.slice(0, LIMIT)` — always the
+ * same prefix — so a second `--limit 50` re-bought the first fifty menus and
+ * never reached the fifty-first. At 36 restaurants that was a rounding error.
+ * At 682, where nobody is fetching the whole corpus in one run, it meant the
+ * script could not make progress at any price.
+ *
+ * Menus do go stale, so refetching has to stay possible; it just isn't what
+ * you want by default when most of the corpus has no menu at all.
+ */
+const REFETCH = process.argv.includes("--refetch");
+
+if (!process.env.ANTHROPIC_API_KEY) {
+  console.error(
+    "ANTHROPIC_API_KEY is not set.\n" +
+      "This script bills the Anthropic API per token and is NOT covered by a\n" +
+      "Claude subscription. Add the key to .env.local and re-run with\n" +
+      "--env-file=.env.local, starting with --limit 5 --dry.",
+  );
+  process.exit(1);
+}
 
 const client = new Anthropic();
 
@@ -51,6 +76,12 @@ const MenuSchema = z.object({
     .array(
       z.object({
         name: z.string().describe("Dish name exactly as written on the menu."),
+        description: z
+          .string()
+          .describe(
+            "The menu's own one-line description of what is in the dish, trimmed to " +
+              "about 45 characters. Empty string if the menu gives none — do not invent one.",
+          ),
         price: z.string().describe('Formatted like "$12.00". Empty string if unlisted.'),
         section: z
           .string()
@@ -61,17 +92,18 @@ const MenuSchema = z.object({
 });
 
 /** Pull id/name/neighborhood out of the generated restaurants array. */
-async function loadRestaurants() {
-  const src = await readFile(DATA_PATH, "utf8");
-  const out = [];
-  for (const block of src.matchAll(/\{\s*\n\s*id:\s*"([^"]+)"[\s\S]*?\n\s*\},/g)) {
-    const [text, id] = block;
-    const name = text.match(/name:\s*"([^"]+)"/)?.[1];
-    const neighborhood = text.match(/neighborhood:\s*"([^"]+)"/)?.[1];
-    const cuisine = text.match(/cuisine:\s*"([^"]+)"/)?.[1];
-    if (name) out.push({ id, name, neighborhood, cuisine });
-  }
-  return out;
+/**
+ * Which restaurants this run should spend money on.
+ *
+ * The list is imported rather than regex-scraped out of the source file — Node
+ * strips the types, so the array arrives as data and a formatting change can't
+ * quietly halve the corpus the way a pattern miss would.
+ */
+function restaurantsToFetch() {
+  const wanted = REFETCH
+    ? allRestaurants
+    : allRestaurants.filter((r) => !(existingMenus[r.id]?.length > 0));
+  return wanted.slice(0, LIMIT);
 }
 
 async function extractMenu(restaurant) {
@@ -132,8 +164,23 @@ async function extractMenu(restaurant) {
   }
 }
 
-const restaurants = (await loadRestaurants()).slice(0, LIMIT);
-console.log(`Extracting menus for ${restaurants.length} restaurants...\n`);
+const restaurants = restaurantsToFetch();
+const haveMenus = Object.keys(existingMenus).length;
+
+console.log(
+  `${allRestaurants.length} restaurants, ${haveMenus} with a menu, ` +
+    `${allRestaurants.length - haveMenus} without.`,
+);
+console.log(
+  REFETCH
+    ? `Re-extracting ${restaurants.length} (--refetch).\n`
+    : `Extracting ${restaurants.length} that have no menu yet.\n`,
+);
+
+if (restaurants.length === 0) {
+  console.log("Nothing to do.");
+  process.exit(0);
+}
 
 const results = [];
 let inputTokens = 0;
@@ -157,13 +204,35 @@ for (const restaurant of restaurants) {
   }
 }
 
-// Opus 5 list pricing, for a rough read on what a full run would cost.
-const cost = (inputTokens / 1e6) * 5 + (outputTokens / 1e6) * 25;
+/*
+ * What this cost, and what the rest of the corpus would.
+ *
+ * The per-restaurant figure is the one that matters — this script exists to be
+ * run with a small `--limit` first, and a total is useless for extrapolating
+ * unless you divide it yourself. Both numbers exclude the web search and fetch
+ * tools, which are billed per use on top and, at up to six of each per
+ * restaurant, are plausibly the larger half of the bill.
+ */
+const OPUS_INPUT_PER_MTOK = 5;
+const OPUS_OUTPUT_PER_MTOK = 25;
+
+const cost = (inputTokens / 1e6) * OPUS_INPUT_PER_MTOK + (outputTokens / 1e6) * OPUS_OUTPUT_PER_MTOK;
+const perRestaurant = cost / restaurants.length;
+const remaining = allRestaurants.length - haveMenus - results.length;
+
 console.log(
   `\n${results.length}/${restaurants.length} menus found.` +
     `\nTokens: ${inputTokens.toLocaleString()} in / ${outputTokens.toLocaleString()} out` +
-    `\nApprox model cost: $${cost.toFixed(2)} (excludes web search tool usage)`,
+    `\nModel cost: $${cost.toFixed(2)} for this run, ` +
+    `$${perRestaurant.toFixed(3)} per restaurant attempted.`,
 );
+if (remaining > 0) {
+  console.log(
+    `Extrapolated: ~$${(perRestaurant * remaining).toFixed(2)} to attempt the ` +
+      `remaining ${remaining} restaurants.`,
+  );
+}
+console.log("Both figures EXCLUDE web search and web fetch tool billing.");
 
 for (const { restaurant, menu } of results) {
   console.log(`\n--- ${restaurant.name} (${menu.confidence}) ${menu.sourceUrl}`);
@@ -199,22 +268,59 @@ if (mapEnd === -1) {
   process.exit(1);
 }
 
-const body = results
-  .map(({ restaurant, menu }) => {
-    const dishes = menu.dishes
-      .map((dish, i) => {
+/*
+ * Merge into what's already on file, don't replace it.
+ *
+ * This used to write only `results` — the menus from this run — over the whole
+ * map. That was survivable when one run covered the entire corpus. It is not
+ * survivable now: at 682 restaurants every run is partial by necessity, so a
+ * replace would delete every menu bought by every previous run. Running
+ * `--limit 50` four times would have left fifty menus and a large bill.
+ *
+ * Vote counts ride along with the dishes they belong to, so a refetch of one
+ * restaurant cannot reset another's.
+ */
+const merged = { ...existingMenus };
+for (const { restaurant, menu } of results) {
+  merged[restaurant.id] = menu.dishes.map((dish, i) => ({
+    id: `${restaurant.id}-${i + 1}`,
+    name: dish.name,
+    ...(dish.description ? { description: dish.description } : {}),
+    price: dish.price || "—",
+    section: dish.section,
+    yesVotes: 0,
+    noVotes: 0,
+  }));
+}
+
+// Ordered by restaurant id so the file's diff stays readable as it grows,
+// rather than reordering itself according to whatever this run happened to
+// fetch. Numeric where the ids are numeric, which they are.
+const orderedIds = Object.keys(merged).sort((a, b) => {
+  const na = Number(a);
+  const nb = Number(b);
+  return Number.isFinite(na) && Number.isFinite(nb) ? na - nb : a.localeCompare(b);
+});
+
+const body = orderedIds
+  .map((restaurantId) => {
+    const dishes = merged[restaurantId]
+      .map((dish) => {
         const fields = [
-          `id: ${JSON.stringify(`${restaurant.id}-${i + 1}`)}`,
+          `id: ${JSON.stringify(dish.id)}`,
           `name: ${JSON.stringify(dish.name)}`,
+          // Optional in the type — leave the key off entirely rather than
+          // writing an empty string the UI would have to test for.
+          ...(dish.description ? [`description: ${JSON.stringify(dish.description)}`] : []),
           `price: ${JSON.stringify(dish.price || "—")}`,
           `section: ${JSON.stringify(dish.section)}`,
-          `yesVotes: 0`,
-          `noVotes: 0`,
+          `yesVotes: ${dish.yesVotes ?? 0}`,
+          `noVotes: ${dish.noVotes ?? 0}`,
         ];
         return `    { ${fields.join(", ")} },`;
       })
       .join("\n");
-    return `  ${JSON.stringify(restaurant.id)}: [\n${dishes}\n  ],`;
+    return `  ${JSON.stringify(restaurantId)}: [\n${dishes}\n  ],`;
   })
   .join("\n");
 
@@ -227,4 +333,8 @@ const next =
   current.slice(mapEnd + "\n};".length);
 
 await writeFile(DISHES_PATH, next, "utf8");
-console.log(`\nWrote ${results.length} menus to src/data/dishes.ts`);
+console.log(
+  `\nWrote ${results.length} new menus into src/data/dishes.ts ` +
+    `(${orderedIds.length} menus on file now).`,
+);
+console.log("Run `npm run restaurants:import` to load them into Postgres.");

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import type { VoteDirection } from "./PostActions";
-import type { Post } from "./types";
+import type { Comment, Post } from "./types";
 
 /**
  * One list of posts and everything you can do to a card in it.
@@ -39,6 +39,8 @@ export function usePostFeed({
   const [banner, setBanner] = useState<string | null>(null);
   /** Points just earned by upvoting, keyed by post, floated above its actions. */
   const [reactPoints, setReactPoints] = useState<Record<string, number>>({});
+  /** The same, keyed by comment — floated beside that comment's score. */
+  const [commentReactPoints, setCommentReactPoints] = useState<Record<string, number>>({});
 
   useEffect(() => {
     let cancelled = false;
@@ -89,6 +91,22 @@ export function usePostFeed({
         setReactPoints((prev) => {
           const copy = { ...prev };
           delete copy[postId];
+          return copy;
+        }),
+      1800,
+    );
+    onPointsAwarded?.();
+    if (authorId === account?.id) refresh();
+  }
+
+  /** creditAuthor's twin for a comment: same float, anchored to the comment. */
+  function creditCommentAuthor(commentId: string, points: number, authorId: string) {
+    setCommentReactPoints((prev) => ({ ...prev, [commentId]: points }));
+    setTimeout(
+      () =>
+        setCommentReactPoints((prev) => {
+          const copy = { ...prev };
+          delete copy[commentId];
           return copy;
         }),
       1800,
@@ -211,12 +229,17 @@ export function usePostFeed({
     }
   }
 
-  async function comment(postId: string, text: string): Promise<string | null> {
+  /** `parentId` makes it a reply to another comment on the same post. */
+  async function comment(
+    postId: string,
+    text: string,
+    parentId: string | null = null,
+  ): Promise<string | null> {
     try {
       const res = await fetch(`/api/posts/${postId}/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, parentId }),
       });
       const data = await res.json();
       if (!res.ok) return data.error ?? "Couldn't post that comment.";
@@ -236,25 +259,60 @@ export function usePostFeed({
     }
   }
 
-  async function likeComment(postId: string, commentId: string) {
+  /**
+   * A comment's up/down. Same three-state arithmetic as `vote` above, applied
+   * to one comment in one post's list: pressing what you hold clears it, the
+   * other direction switches sides, and the optimistic patch does the full
+   * swing so a switch doesn't jump by one and then correct by two.
+   */
+  async function voteComment(postId: string, commentId: string, direction: VoteDirection) {
     if (!account) return;
-    patchPost(postId, (p) => ({
-      ...p,
-      comments: p.comments.map((c) =>
-        c.id === commentId
-          ? {
-              ...c,
-              likedBy: c.likedBy.includes(account.id)
-                ? c.likedBy.filter((id) => id !== account.id)
-                : [...c.likedBy, account.id],
-            }
-          : c,
-      ),
+    const before = posts?.find((p) => p.id === postId)?.comments.find((c) => c.id === commentId);
+    if (!before) return;
+
+    const held = before.myVote;
+    const next = held === direction ? null : direction;
+
+    function patchComment(patch: (c: Comment) => Comment) {
+      patchPost(postId, (p) => ({
+        ...p,
+        comments: p.comments.map((c) => (c.id === commentId ? patch(c) : c)),
+      }));
+    }
+
+    patchComment((c) => ({
+      ...c,
+      myVote: next,
+      upvoteCount: c.upvoteCount + (next === "up" ? 1 : 0) - (held === "up" ? 1 : 0),
+      downvoteCount: c.downvoteCount + (next === "down" ? 1 : 0) - (held === "down" ? 1 : 0),
     }));
+
     try {
-      await fetch(`/api/comments/${commentId}/like`, { method: "POST" });
+      const res = await fetch(`/api/comments/${commentId}/vote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ direction }),
+      });
+      if (!res.ok) throw new Error("failed");
+      const data = await res.json();
+      patchComment((c) => ({
+        ...c,
+        myVote: data.myVote,
+        upvoteCount: data.upvoteCount,
+        downvoteCount: data.downvoteCount,
+      }));
+
+      if (data.authorPointsEarned > 0) {
+        creditCommentAuthor(commentId, data.authorPointsEarned, data.authorId);
+      }
     } catch {
-      setBanner("Couldn't save that.");
+      patchComment((c) => ({
+        ...c,
+        myVote: before.myVote,
+        upvoteCount: before.upvoteCount,
+        downvoteCount: before.downvoteCount,
+      }));
+      setBanner("Couldn't save your vote.");
     }
   }
 
@@ -295,11 +353,12 @@ export function usePostFeed({
     banner,
     setBanner,
     reactPoints,
+    commentReactPoints,
     vote,
     heart,
     save,
     comment,
-    likeComment,
+    voteComment,
     remove,
     share,
   };

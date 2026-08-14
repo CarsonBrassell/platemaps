@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlateMaps — Map search bar concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Static concept sheet — nothing on this page is interactive on purpose.
+   Every "input" is a div; pointer events are off inside the swatches. */
+:root {
+  --cream: #F7F4EC;
+  --ink: #232019;
+  --grey-text: #665C4E;
+  --grey-tint: #EDE8DC;
+  --orange: #C9591F;
+  --orange-text: #A8481A;
+  /* night-world tokens, lifted from the map chrome */
+  --night: #1d2126;
+  --night-muted: #a7b0ba;
+  --night-cream: #F7F4EC;
+  --ember: #e8875a;
+  --ember-bright: #ffb07a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  padding: 48px 20px 96px;
+}
+.sheet { max-width: 860px; margin: 0 auto; }
+h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 34px;
+  letter-spacing: -0.01em;
+}
+.mono-label {
+  font-family: "Spline Sans Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey-text);
+}
+.lede { margin-top: 10px; color: var(--grey-text); font-size: 15px; line-height: 1.55; max-width: 62ch; }
+
+.concept { margin-top: 44px; }
+.concept-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+.concept-head h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 21px;
+}
+.concept-notes { margin: 10px 2px 0; color: var(--grey-text); font-size: 13.5px; line-height: 1.55; max-width: 74ch; }
+.concept-notes strong { color: var(--ink); font-weight: 600; }
+
+/* The white card framing the night window, same as the real map card */
+.map-card {
+  margin-top: 12px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 10px;
+}
+.night {
+  position: relative;
+  height: 190px;
+  border-radius: 12px;
+  overflow: hidden;
+  pointer-events: none; /* nothing in a swatch is clickable */
+  background:
+    radial-gradient(340px 150px at 18% 82%, rgba(232,135,90,0.20), transparent 68%),
+    radial-gradient(240px 120px at 64% 30%, rgba(232,135,90,0.13), transparent 70%),
+    radial-gradient(420px 200px at 88% 92%, rgba(52,84,110,0.35), transparent 72%),
+    linear-gradient(#15181c, #101317);
+}
+/* faint street grid */
+.night::before {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 96px, rgba(255,255,255,0.030) 96px 97px),
+    repeating-linear-gradient(0deg, transparent 0 72px, rgba(255,255,255,0.026) 72px 73px),
+    linear-gradient(64deg, transparent 47.6%, rgba(232,135,90,0.20) 48%, rgba(232,135,90,0.20) 48.7%, transparent 49.1%);
+}
+/* a few embers */
+.ember-dot {
+  position: absolute; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ember-bright);
+  box-shadow: 0 0 10px 3px rgba(232,135,90,0.55);
+}
+.ember-dot.dim { width: 5px; height: 5px; background: #d98a5f; box-shadow: 0 0 7px 2px rgba(217,138,95,0.4); }
+
+/* ---------- shared bar anatomy ---------- */
+.bar {
+  position: absolute; top: 12px; right: 12px;
+  width: 264px; min-height: 44px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px;
+  border-radius: 9999px;
+  font-size: 14px;
+}
+.bar svg { flex: none; }
+.bar .ph { color: var(--night-muted); }
+.bar .typed { color: var(--night-cream); }
+.caret { display: inline-block; width: 1px; height: 15px; background: var(--ember-bright); vertical-align: -2px; margin-left: 1px; }
+.clear-x { margin-left: auto; color: var(--night-muted); font-size: 13px; line-height: 1; }
+
+/* state tag pinned under each bar */
+.state-tag {
+  position: absolute; right: 14px; top: 62px;
+  font-family: "Spline Sans Mono", monospace;
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(167,176,186,0.75);
+}
+.night.two .bar.second { top: 108px; }
+.night.two .state-tag.second { top: 158px; }
+
+/* A — current */
+.bar.current { background: #1d2126; border: 1px solid rgba(232,135,90,0.4); }
+
+/* B — night glass */
+.bar.glass {
+  background: rgba(23,26,31,0.62);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* C — quiet hairline */
+.bar.quiet { background: #1d2126; border: 1px solid rgba(255,255,255,0.10); }
+.bar.quiet.lit { border-color: rgba(232,135,90,0.45); }
+
+/* D — neon sign */
+.bar.neon {
+  background: rgba(20,16,14,0.78);
+  border: 1px solid rgba(232,135,90,0.55);
+  box-shadow: 0 0 18px rgba(232,135,90,0.28), inset 0 0 14px rgba(232,135,90,0.10);
+}
+.bar.neon .ph { color: #cdb4a4; }
+.bar.neon svg { filter: drop-shadow(0 0 5px rgba(255,176,122,0.8)); }
+
+/* E — warm bubble card */
+.bar.bubble {
+  background: #F6F0E5;
+  border: 1px solid rgba(43,33,28,0.28);
+  border-radius: 12px;
+  box-shadow: 0 3px 16px rgba(0,0,0,0.35);
+}
+.bar.bubble .ph { color: #7E7261; }
+.bar.bubble .typed { color: #2b211c; }
+
+/* F — split pill with hint + focus ring */
+.bar.split { background: #1d2126; border: 1px solid rgba(255,255,255,0.10); padding-right: 8px; }
+.kbd {
+  margin-left: auto;
+  font-family: "Spline Sans Mono", monospace;
+  font-size: 10px; letter-spacing: 0.08em;
+  color: var(--night-muted);
+  border: 1px solid rgba(167,176,186,0.35);
+  border-radius: 6px;
+  padding: 3px 7px 2px;
+}
+.bar.focused { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+/* G — carved soft-UI (dark neumorphism) */
+.bar.carved {
+  background: linear-gradient(145deg, #232830, #181b20);
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 6px 6px 14px rgba(0,0,0,0.55), -4px -4px 10px rgba(255,255,255,0.045);
+}
+.bar.carved .well {
+  flex: 1; display: flex; align-items: center; gap: 10px;
+  margin: -4px -8px; padding: 6px 10px; border-radius: 9999px;
+  background: #14171b;
+  box-shadow: inset 3px 3px 7px rgba(0,0,0,0.6), inset -2px -2px 5px rgba(255,255,255,0.04);
+}
+
+/* H — liquid glass, iridescent hairline */
+.bar.liquid { padding: 0; border: none; background: linear-gradient(120deg, rgba(232,135,90,0.65), rgba(255,176,122,0.25) 30%, rgba(120,150,190,0.35) 65%, rgba(232,135,90,0.55)); }
+.bar.liquid .inner {
+  flex: 1; display: flex; align-items: center; gap: 10px;
+  margin: 1px; padding: 10px 15px; min-height: 42px; border-radius: 9999px;
+  background: rgba(18,21,26,0.66);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+}
+
+/* I — instrument HUD */
+.bar.hud {
+  border-radius: 0;
+  background: rgba(10,12,15,0.55);
+  border: 1px solid rgba(232,135,90,0.28);
+  font-family: "Spline Sans Mono", monospace;
+  font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase;
+}
+.bar.hud .ph { color: #b9a99a; }
+.hud-corner { position: absolute; width: 9px; height: 9px; border: 1.5px solid var(--ember-bright); }
+.hud-corner.tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+.hud-corner.tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+.hud-corner.bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+.hud-corner.br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+/* J — editorial caption */
+.bar.editorial { background: none; border: none; padding: 10px 4px; width: 250px; }
+.bar.editorial .cap {
+  font-family: "Fraunces", serif; font-style: italic; font-weight: 600;
+  font-size: 16.5px; color: #efe6d8;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.75);
+  border-bottom: 1.5px solid rgba(232,135,90,0.75);
+  padding-bottom: 6px; flex: 1;
+}
+
+/* K — terminal prompt */
+.bar.term {
+  border-radius: 8px;
+  background: rgba(13,15,18,0.88);
+  border: 1px solid rgba(255,255,255,0.08);
+  font-family: "Spline Sans Mono", monospace; font-size: 12.5px;
+}
+.bar.term .prompt { color: var(--ember-bright); }
+.bar.term .ph { color: #8b939c; }
+.block-caret { display: inline-block; width: 7px; height: 14px; background: var(--ember-bright); vertical-align: -2px; margin-left: 3px; }
+
+/* L — collapsed ember button + expanded pair */
+.fab {
+  position: absolute; top: 12px; right: 12px;
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: #1d2126; border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+}
+.night.two .fab.first ~ .bar.second { top: 108px; }
+
+/* ============ ROUND TWO: rectangular, no bubble ============ */
+.section-rule { margin-top: 60px; padding-top: 24px; border-top: 1px solid rgba(43,33,28,0.14); }
+.section-rule h2 { font-family: "Fraunces", serif; font-weight: 700; font-size: 25px; margin-top: 8px; }
+
+/* shared: square everything, kill the pill */
+.bar.rect { border-radius: 0; }
+
+/* M — full-bleed top rail, all map chrome in one bar */
+.bar.r-rail {
+  top: 0; left: 0; right: 0; width: auto; border-radius: 0;
+  background: rgba(14,17,21,0.94);
+  border-bottom: 1px solid rgba(255,255,255,0.11);
+  padding: 0 14px; min-height: 46px;
+}
+.rule-v { width: 1px; align-self: stretch; margin: 10px 4px 10px 10px; background: rgba(255,255,255,0.10); }
+.seg { display: flex; gap: 2px; padding: 3px; background: rgba(255,255,255,0.06); }
+.seg span {
+  font-family: "Spline Sans Mono", monospace; font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 4px 9px 3px; color: var(--night-muted);
+}
+.seg span.on { background: #E6DCC6; color: #232019; }
+
+/* N — bare underline, no container at all */
+.bar.r-under {
+  background: none; border: none; border-radius: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.28);
+  padding: 8px 2px; width: 258px;
+}
+.bar.r-under .ph, .bar.r-under .typed { text-shadow: 0 1px 6px rgba(0,0,0,0.85); }
+.bar.r-under.lit { border-bottom-color: var(--ember); border-bottom-width: 2px; }
+
+/* O — corner slab, flush into the map's corner */
+.bar.r-slab {
+  top: 0; right: 0; border-radius: 0; width: 258px;
+  background: rgba(16,19,23,0.93);
+  border: none; border-left: 3px solid var(--ember);
+  border-bottom: 1px solid rgba(255,255,255,0.09);
+  min-height: 46px;
+}
+
+/* P — ledger field, label stacked over the line */
+.bar.r-ledger {
+  display: block; border-radius: 2px; width: 258px;
+  background: rgba(16,19,23,0.9);
+  border: 1px solid rgba(255,255,255,0.13);
+  padding: 7px 12px 9px;
+}
+.ledger-label {
+  display: flex; justify-content: space-between;
+  font-family: "Spline Sans Mono", monospace; font-size: 9.5px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(167,176,186,0.7); margin-bottom: 5px;
+}
+.ledger-row { display: flex; align-items: center; gap: 9px; }
+
+/* Q — bracket frame, transparent plate */
+.bar.r-bracket {
+  border-radius: 0; width: 258px;
+  background: rgba(10,12,15,0.42);
+  border: 1px solid rgba(255,255,255,0.22);
+  min-height: 46px;
+}
+.tick { position: absolute; width: 6px; height: 6px; border: 1px solid rgba(255,255,255,0.55); }
+.tick.tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.tick.br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+.count {
+  margin-left: auto; font-family: "Spline Sans Mono", monospace;
+  font-size: 10px; letter-spacing: 0.1em; color: rgba(167,176,186,0.8);
+}
+
+/* R — docked bottom rail */
+.bar.r-dock {
+  top: auto; bottom: 0; left: 0; right: 0; width: auto; border-radius: 0;
+  background: rgba(14,17,21,0.95);
+  border-top: 1px solid rgba(232,135,90,0.35);
+  padding: 0 16px; min-height: 48px;
+}
+
+/* S — split slab with a scope segment */
+.bar.r-split2 {
+  border-radius: 0; width: 288px; padding: 0;
+  background: rgba(16,19,23,0.93);
+  border: 1px solid rgba(255,255,255,0.12);
+  min-height: 46px;
+}
+.r-split2 .field { flex: 1; display: flex; align-items: center; gap: 10px; padding: 0 14px; }
+.r-split2 .scope {
+  align-self: stretch; display: flex; align-items: center; padding: 0 13px;
+  border-left: 1px solid rgba(255,255,255,0.12);
+  background: rgba(232,135,90,0.12);
+  font-family: "Spline Sans Mono", monospace; font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ember-bright);
+}
+
+/* T — toolbar: search well flanked by the zoom keys */
+.bar.r-tool {
+  border-radius: 0; width: 300px; padding: 5px; gap: 5px;
+  background: rgba(14,17,21,0.94);
+  border: 1px solid rgba(255,255,255,0.11);
+}
+.r-tool .well2 {
+  flex: 1; display: flex; align-items: center; gap: 9px;
+  padding: 8px 11px; background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.tool-key {
+  width: 30px; align-self: stretch; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.06); color: var(--night-muted);
+  font-family: "Spline Sans Mono", monospace; font-size: 14px;
+}
+
+/* verdict chips */
+.verdict { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  font-family: "Spline Sans Mono", monospace;
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 6px 12px; border-radius: 9999px;
+  background: var(--grey-tint); color: var(--grey-text);
+}
+.chip.yes { background: var(--orange); color: var(--cream); letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <p class="mono-label">Concept sheet · Static · Not wired</p>
+  <h1>Map search bar</h1>
+  <p class="lede">Treatments for the fly-to-a-spot field, drawn at rest on the night map, inside its
+  white card. Nothing here is interactive and the dropdown is out of scope — this sheet only decides
+  what the bar itself wears. Everything keeps the floor: 44px+ height, mono for machine text, muted
+  <span style="font-family:'Spline Sans Mono',monospace">#a7b0ba</span> at 7.4:1 on the dark fill.
+  <strong>Round two leads</strong> — no pill, no floating bubble, square corners, and the placement
+  changes rather than just the paint.</p>
+
+  <div class="section-rule">
+    <p class="mono-label">Round two</p>
+    <h2>No bubble — rectangles, rails and slabs</h2>
+    <p class="concept-notes" style="margin-top:8px">The pill is gone in all eight. Three of them stop
+    floating altogether and attach to an edge of the map, which is the part the earlier sheet never
+    questioned: a search field does not have to be an island parked in the corner.</p>
+  </div>
+
+  <!-- M -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">M</span><h2>Full-bleed top rail</h2></div>
+    <div class="map-card"><div class="night" style="height:200px">
+      <span class="ember-dot" style="left:22%;top:72%"></span>
+      <span class="ember-dot dim" style="left:48%;top:50%"></span>
+      <span class="ember-dot dim" style="left:72%;top:78%"></span>
+      <div class="bar r-rail">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+        <span class="rule-v"></span>
+        <span class="seg"><span class="on">Discover</span><span>Friends</span></span>
+      </div>
+      <span class="state-tag" style="top:56px">one bar, all chrome</span>
+    </div></div>
+    <p class="concept-notes"><strong>Stop floating; become the map's header.</strong> The field spans the
+    full width, flush to the top edge, with the Discover/Friends switch riding the same rail behind a
+    hairline divider. This is the one concept that fixes the real problem in
+    <span style="font-family:'Spline Sans Mono',monospace;font-size:12px">MapSearch.tsx</span> — three
+    separate control islands fighting for one corner, and a small-screen fallback that drops the field
+    to a second row. One rail, nothing overlaps, and the zoom stack gets the whole left edge back.</p>
+    <div class="verdict"><span class="chip yes">strongest of the eight</span><span class="chip">solves the crowding</span></div>
+  </section>
+
+  <!-- N -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">N</span><h2>Bare underline — no container</h2></div>
+    <div class="map-card"><div class="night two" style="height:236px">
+      <span class="ember-dot" style="left:18%;top:76%"></span>
+      <span class="ember-dot dim" style="left:56%;top:46%"></span>
+      <div class="bar r-under">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c4ccd4" stroke-width="2" style="filter:drop-shadow(0 1px 4px rgba(0,0,0,0.9))"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph" style="color:#c4ccd4">Fly to a spot</span>
+      </div>
+      <span class="state-tag">at rest</span>
+      <div class="bar r-under lit second" style="top:112px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffb07a" stroke-width="2" style="filter:drop-shadow(0 1px 4px rgba(0,0,0,0.9))"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="typed">tacos<span class="caret"></span></span>
+      </div>
+      <span class="state-tag second" style="top:162px">typing</span>
+    </div></div>
+    <p class="concept-notes"><strong>Zero chrome, all structure.</strong> No fill, no box — a rule under
+    the text is the entire control, and the city runs straight underneath it. The rule thickens and
+    goes ember once you type. Nothing is hidden behind a panel, which on a map is worth real money;
+    the cost is that legibility now depends on a text shadow rather than a fill, so it wants testing
+    over the brightest arterials.</p>
+    <div class="verdict"><span class="chip">least ink</span><span class="chip">test on bright tiles</span></div>
+  </section>
+
+  <!-- O -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">O</span><h2>Corner slab, flush</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:26%;top:68%"></span>
+      <span class="ember-dot dim" style="left:60%;top:44%"></span>
+      <div class="bar r-slab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+      </div>
+      <span class="state-tag" style="top:56px">docked to the corner</span>
+    </div></div>
+    <p class="concept-notes"><strong>Half a rail.</strong> A square slab welded into the top-right corner
+    — no gap, no shadow, no floating — with a 3px ember edge on the side that faces the map, so the
+    accent is a marker rather than an outline. Cheaper than M (the switch stays where it is) and it
+    still reads as built-in rather than dropped on.</p>
+    <div class="verdict"><span class="chip">built-in</span><span class="chip">smaller change than M</span></div>
+  </section>
+
+  <!-- P -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">P</span><h2>Ledger field</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:20%;top:74%"></span>
+      <span class="ember-dot dim" style="left:52%;top:38%"></span>
+      <div class="bar r-ledger">
+        <span class="ledger-label"><span>Find</span><span>312 spots</span></span>
+        <span class="ledger-row">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="ph">Fly to a spot</span>
+        </span>
+      </div>
+      <span class="state-tag" style="top:76px">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>The app's own voice, squared.</strong> A 2px-radius block carrying a
+    real <span style="font-family:'Spline Sans Mono',monospace;font-size:12px">.mono-label</span> header
+    — <em>FIND</em> left, the corpus count right — over the input line. It is the restaurant page's
+    <em>SPOT №005</em> treatment applied to a control, so it belongs to this app in a way none of the
+    glass and neon options did. Taller than 44px, which is fine here but eats map.</p>
+    <div class="verdict"><span class="chip">most on-brand</span><span class="chip">tallest</span></div>
+  </section>
+
+  <!-- Q -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">Q</span><h2>Bracket plate</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:24%;top:66%"></span>
+      <span class="ember-dot dim" style="left:64%;top:80%"></span>
+      <div class="bar r-bracket">
+        <span class="tick tl"></span><span class="tick br"></span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+        <span class="count">SD</span>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>Barely there.</strong> A near-transparent plate held by a thin neutral
+    frame with two corner ticks, and the city readable straight through it. No accent spent at all —
+    the ember belongs to the pins, and this concept gives every drop of it back. Quieter cousin of the
+    HUD idea without the sci-fi costume.</p>
+    <div class="verdict"><span class="chip">quietest</span><span class="chip">no accent spent</span></div>
+  </section>
+
+  <!-- R -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">R</span><h2>Bottom dock</h2></div>
+    <div class="map-card"><div class="night" style="height:200px">
+      <span class="ember-dot" style="left:28%;top:44%"></span>
+      <span class="ember-dot dim" style="left:58%;top:30%"></span>
+      <div class="bar r-dock">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffb07a" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+      </div>
+      <span class="state-tag" style="top:auto;bottom:58px">thumb edge</span>
+    </div></div>
+    <p class="concept-notes"><strong>Move it to the bottom.</strong> A full-width rail on the map's lower
+    edge with an ember hairline on top. The top of a map is where you look; the bottom is where your
+    thumb already is. It clears the crowded top corner completely — but it lands near where the mobile
+    nav bar lives off-map, so the two would need checking together on a phone.</p>
+    <div class="verdict"><span class="chip">thumb-reachable</span><span class="chip">check vs MobileNav</span></div>
+  </section>
+
+  <!-- S -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">S</span><h2>Split slab with a scope</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:22%;top:70%"></span>
+      <span class="ember-dot dim" style="left:54%;top:42%"></span>
+      <div class="bar r-split2" style="right:12px">
+        <span class="field">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="ph">Fly to a spot</span>
+        </span>
+        <span class="scope">Near me</span>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>Two jobs, one rectangle.</strong> The field on the left, a squared
+    <em>NEAR ME</em> segment welded to its right edge — the one action a person wants next to typing a
+    name, and the map already has the geolocation plumbing for it. Widest of the set at 288px, and it
+    only earns that width if the scope button is genuinely wanted.</p>
+    <div class="verdict"><span class="chip">adds a real action</span><span class="chip">widest</span></div>
+  </section>
+
+  <!-- T -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">T</span><h2>Toolbar with the zoom keys</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:20%;top:72%"></span>
+      <span class="ember-dot dim" style="left:66%;top:40%"></span>
+      <div class="bar r-tool" style="right:12px">
+        <span class="well2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="ph">Fly to a spot</span>
+        </span>
+        <span class="tool-key">−</span>
+        <span class="tool-key">+</span>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>Absorb the zoom stack.</strong> A squared toolbar where the field is
+    a recessed well and the two zoom keys sit on the same plate, replacing MapLibre's floating control
+    group. Fewest separate objects on the map of any concept here. The catch is real: it means
+    restyling MapLibre's own controls rather than just this component, so it is the largest build.</p>
+    <div class="verdict"><span class="chip">fewest objects</span><span class="chip">largest build</span></div>
+  </section>
+
+  <div class="section-rule">
+    <p class="mono-label">Round one</p>
+    <h2>The pill family — kept for comparison</h2>
+    <p class="concept-notes" style="margin-top:8px">Everything below is the earlier pass: rounded,
+    floating, and varying mostly by paint. Left in place so the square options above have something to
+    be measured against.</p>
+  </div>
+
+  <!-- A -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">A</span><h2>Current — ember-edged pill</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:20%;top:74%"></span>
+      <span class="ember-dot dim" style="left:34%;top:58%"></span>
+      <span class="ember-dot dim" style="left:58%;top:36%"></span>
+      <div class="bar current">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+      </div>
+      <span class="state-tag">as shipped</span>
+    </div></div>
+    <p class="concept-notes">The baseline. The 40%-alpha ember border does the naming work, but at rest it
+    is the loudest edge on the whole map — it competes with the pins it is supposed to help you find.</p>
+    <div class="verdict"><span class="chip">baseline</span></div>
+  </section>
+
+  <!-- B -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">B</span><h2>Night glass</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:16%;top:70%"></span>
+      <span class="ember-dot dim" style="left:44%;top:44%"></span>
+      <span class="ember-dot dim" style="left:70%;top:78%"></span>
+      <div class="bar glass">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>Frosted dark glass over the tiles.</strong> Translucent fill with a light
+    blur, a neutral white hairline, and a soft drop shadow lifting it off the streets. The city glows
+    through the pill, so it reads as map furniture rather than a form control — the ember accent is
+    saved entirely for focus and for typed text. Quietest of the six while staying findable.</p>
+    <div class="verdict"><span class="chip">quiet</span><span class="chip">modern</span></div>
+  </section>
+
+  <!-- C -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">C</span><h2>Quiet hairline, ember when awake</h2></div>
+    <div class="map-card"><div class="night two" style="height:236px">
+      <span class="ember-dot" style="left:22%;top:80%"></span>
+      <span class="ember-dot dim" style="left:48%;top:30%"></span>
+      <div class="bar quiet">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+      </div>
+      <span class="state-tag">at rest</span>
+      <div class="bar quiet lit second">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffb07a" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="typed">tac<span class="caret"></span></span>
+        <span class="clear-x">✕</span>
+      </div>
+      <span class="state-tag second">typing</span>
+    </div></div>
+    <p class="concept-notes"><strong>Same pill, staged color.</strong> At rest the border is a neutral 10%
+    hairline and the whole control sits back into the night. The moment there is a query, the border
+    and the glass warm to ember — the bar literally lights up like the pins do. Keeps today's geometry,
+    fixes the always-on shout, and gives typing a visible reward.</p>
+    <div class="verdict"><span class="chip yes">recommended</span><span class="chip">smallest diff</span></div>
+  </section>
+
+  <!-- D -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">D</span><h2>Neon sign</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:26%;top:66%"></span>
+      <span class="ember-dot dim" style="left:52%;top:82%"></span>
+      <div class="bar neon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffb07a" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>The bar joins the signage.</strong> Ember-glow border and a haloed icon,
+    borrowing the <span style="font-family:'Spline Sans Mono',monospace;font-size:12px">.map-neon-sign</span> voice
+    the restaurant names already speak. Most in-world of the six — but it spends the accent permanently,
+    and a control glowing like a pin risks reading as a place, not a tool. Bold option if the map feels flat.</p>
+    <div class="verdict"><span class="chip">loud</span><span class="chip">most thematic</span></div>
+  </section>
+
+  <!-- E -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">E</span><h2>Warm card — the comment bubble's kin</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:18%;top:60%"></span>
+      <span class="ember-dot dim" style="left:40%;top:80%"></span>
+      <div class="bar bubble">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7E7261" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>Light chrome on the dark map,</strong> dressed exactly like the floating
+    comment bubbles: warm near-white, hairline edge, 12px radius. Strongest contrast and instantly
+    findable — but it wears the bubbles' clothes while being a different kind of thing, and DESIGN.md's
+    rule is that different ranks never share a look. Included to show why the dark options win.</p>
+    <div class="verdict"><span class="chip">high contrast</span><span class="chip">breaks a rule</span></div>
+  </section>
+
+  <!-- F -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">F</span><h2>Split pill with a hint, plus the focus ring</h2></div>
+    <div class="map-card"><div class="night two" style="height:236px">
+      <span class="ember-dot" style="left:30%;top:72%"></span>
+      <span class="ember-dot dim" style="left:62%;top:40%"></span>
+      <div class="bar split">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+        <span class="kbd">/</span>
+      </div>
+      <span class="state-tag">at rest</span>
+      <div class="bar split focused second">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="typed">tacos el g<span class="caret"></span></span>
+      </div>
+      <span class="state-tag second">focused</span>
+    </div></div>
+    <p class="concept-notes"><strong>C's quiet body with a mono keycap hint</strong> on the trailing edge —
+    the machine voice earning its keep as chrome, and a nudge that the field is reachable without the
+    mouse. The keycap swaps for the ✕ clear button once there is text, so the slot never crowds.
+    Second row shows the standard orange focus ring every option would share.</p>
+    <div class="verdict"><span class="chip">keyboard-friendly</span><span class="chip">pairs with C</span></div>
+  </section>
+
+  <!-- G -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">G</span><h2>Carved from the night</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:24%;top:70%"></span>
+      <span class="ember-dot dim" style="left:56%;top:44%"></span>
+      <div class="bar carved">
+        <div class="well">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="ph">Fly to a spot</span>
+        </div>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>Dark soft-UI.</strong> The pill is extruded from the night by a dual
+    shadow — deep below, a whisper of light above — and the field itself is an inset well pressed back
+    into it. Tactile without a single accent spent; depth does all the talking. The risk: DESIGN.md says
+    no shadows anywhere, and while the map is the confirmed exception, this imports a whole second
+    material language for one control.</p>
+    <div class="verdict"><span class="chip">tactile</span><span class="chip">accent-free</span></div>
+  </section>
+
+  <!-- H -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">H</span><h2>Liquid glass, iridescent hairline</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:18%;top:76%"></span>
+      <span class="ember-dot dim" style="left:66%;top:34%"></span>
+      <div class="bar liquid">
+        <div class="inner">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a7b0ba" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="ph">Fly to a spot</span>
+        </div>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>B taken upscale.</strong> Same frosted body, but the border is a 1px
+    gradient that drifts ember → cool harbor-blue → ember, the two colors the tiles are actually made
+    of — the bar looks lit by the city around it. Saturated blur behind the glass keeps the streets
+    legible through it. The most "premium" read of the set; the hairline would need contrast checking
+    on the brightest tiles.</p>
+    <div class="verdict"><span class="chip">premium</span><span class="chip">upgrade of B</span></div>
+  </section>
+
+  <!-- I -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">I</span><h2>Instrument HUD</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:28%;top:64%"></span>
+      <span class="ember-dot dim" style="left:50%;top:82%"></span>
+      <div class="bar hud">
+        <span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffb07a" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="ph">Fly to a spot</span>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>The map as an instrument.</strong> Square-cornered, near-transparent
+    plate with ember corner brackets and a mono uppercase placeholder — the machine voice dressed as
+    targeting chrome. Reads instantly as "a tool over a display", and it is the only concept that isn't
+    a pill. That's also its problem: nothing else in the app has a square corner or a bracket, so it
+    imports a fourth control rank from a genre the app doesn't otherwise speak.</p>
+    <div class="verdict"><span class="chip">technical</span><span class="chip">off-system</span></div>
+  </section>
+
+  <!-- J -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">J</span><h2>Editorial caption</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:20%;top:66%"></span>
+      <span class="ember-dot dim" style="left:44%;top:82%"></span>
+      <div class="bar editorial">
+        <span class="cap">Fly to a spot…</span>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffb07a" stroke-width="2" style="margin-bottom:4px"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>No box at all.</strong> A Fraunces italic line sitting straight on
+    the tiles over an ember rule, like a caption under a photograph — the cream world's editorial voice
+    leaning into the night window. Beautiful and zero-chrome, but it breaks the type system's core rule
+    (Fraunces is for proper names, and a prompt is chrome, not a name) and an unboxed field is harder
+    to recognize as one. Kept as the art direction outlier.</p>
+    <div class="verdict"><span class="chip">zero chrome</span><span class="chip">breaks type rule</span></div>
+  </section>
+
+  <!-- K -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">K</span><h2>Terminal prompt</h2></div>
+    <div class="map-card"><div class="night">
+      <span class="ember-dot" style="left:30%;top:76%"></span>
+      <span class="ember-dot dim" style="left:60%;top:40%"></span>
+      <div class="bar term">
+        <span class="prompt">&gt;</span>
+        <span class="ph">fly to a spot</span><span class="block-caret"></span>
+      </div>
+      <span class="state-tag">at rest</span>
+    </div></div>
+    <p class="concept-notes"><strong>A nod to the road not taken.</strong> PRODUCT.md's original
+    terminal/utilitarian direction, resurrected for one control: mono lowercase, an ember
+    <span style="font-family:'Spline Sans Mono',monospace">&gt;</span> prompt, a block caret, an 8px
+    radius strip. On the night map it genuinely works — the mono voice is already the map's machine
+    voice. But that aesthetic was explicitly not adopted, so shipping it here would re-open a settled
+    decision.</p>
+    <div class="verdict"><span class="chip">utilitarian</span><span class="chip">settled question</span></div>
+  </section>
+
+  <!-- L -->
+  <section class="concept">
+    <div class="concept-head"><span class="mono-label">L</span><h2>Collapsed ember, expands on demand</h2></div>
+    <div class="map-card"><div class="night two" style="height:236px">
+      <span class="ember-dot" style="left:26%;top:78%"></span>
+      <span class="ember-dot dim" style="left:52%;top:52%"></span>
+      <div class="fab first">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffb07a" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <span class="state-tag">collapsed · 44px</span>
+      <div class="bar quiet lit second">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffb07a" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="typed">birr<span class="caret"></span></span>
+        <span class="clear-x">✕</span>
+      </div>
+      <span class="state-tag second">opened</span>
+    </div></div>
+    <p class="concept-notes"><strong>A layout answer, not a skin.</strong> At rest the search is a single
+    44px ember-icon disc — the same footprint as a zoom button — and it opens into whichever pill wins
+    above (drawn here with C's lit state). This is aimed at the crowded small-screen row MapSearch.tsx
+    documents, where the switch, the zoom stack and the field currently fight for one edge. Costs a tap
+    before typing, which the desktop map shouldn't pay.</p>
+    <div class="verdict"><span class="chip">mobile answer</span><span class="chip">pairs with any</span></div>
+  </section>
+
+  <div class="section-rule">
+    <p class="mono-label">Verdict</p>
+    <h2>Where this sheet leans now</h2>
+    <p class="concept-notes" style="margin-top:10px"><strong>M, then O, then P.</strong> M is the real
+    answer: once the field stops being an island and becomes the map's own top rail, the corner stops
+    being contested and the small-screen second row disappears. O is M's cheap half if touching the
+    Discover/Friends switch is off the table. P is the one that looks most like this app rather than
+    like a generic dark UI — the mono label header is the restaurant page's voice. Q if the map should
+    get quieter still, N if it should get quieter than that. R and T are bigger structural bets, and S
+    only makes sense if <em>near me</em> is a feature you want on the map.</p>
+    <p class="concept-notes" style="margin-top:14px">All eight drop the pill, so all eight are a
+    deliberate break from the app's rounded chrome — the map is already DESIGN.md's confirmed
+    exception, and square map furniture reads as instrument rather than as a mislaid cream-world
+    control. Worth deciding that once, explicitly, before building any of them.</p>
+  </div>
+
+  <p class="concept-notes" style="margin-top:32px"><strong>Round one's verdict, for the record.</strong> C was the
+  pick there — it keeps the shipped geometry and simply stages the ember so the accent means
+  something again; F is C plus a keyboard hint if the slot feels bare. B is the tasteful alternative
+  if translucency over the tiles proves legible on real photos of the style — and H is B with the
+  city's own two colors braided into the hairline if it should feel more expensive. D and E are the
+  boundaries: one too loud, one borrowed from the wrong wardrobe. Of the second six, G, I, J and K
+  are deliberate excursions off-system (each note says which rule it bends); L is orthogonal — a
+  small-screen layout move that any winning skin can wear.</p>
+</div>
+</body>
+</html>

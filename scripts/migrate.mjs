@@ -242,6 +242,258 @@ const statements = [
     PRIMARY KEY (post_id, user_id)
   )`,
   `CREATE INDEX IF NOT EXISTS idx_post_downvotes_post ON post_downvotes(post_id)`,
+
+  // --- Restaurants and menus ----------------------------------------------
+  //
+  // These used to be static TypeScript imported straight into components
+  // (src/data/restaurants.ts, src/data/dishes.ts). That worked at 36 places
+  // and could not survive growth: the home page is a client component, so the
+  // entire array shipped to every visitor's browser. Postgres is the source of
+  // truth from here; the generated files are seed input for
+  // `npm run restaurants:import` and nothing in src/ imports them.
+  //
+  // Deliberately NOT foreign-keyed from posts.restaurant_id, even though it is
+  // now referenceable. `scripts/fetch-restaurants.mjs` rewrites the id space
+  // wholesale, so an FK would turn a routine data refresh into a cascade
+  // through everyone's reviews. The seam stays soft until ids are stable.
+  `CREATE TABLE IF NOT EXISTS restaurants (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    cuisine TEXT NOT NULL,
+    neighborhood TEXT NOT NULL,
+    distance TEXT NOT NULL,
+    walk_time TEXT NOT NULL,
+    closing_time TEXT NOT NULL,
+    lat DOUBLE PRECISION NOT NULL,
+    lng DOUBLE PRECISION NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('calm', 'urgent')),
+    status_label TEXT NOT NULL,
+    rating REAL NOT NULL,
+    review_count INTEGER NOT NULL DEFAULT 0,
+    yelp_rating REAL,
+    yelp_review_count INTEGER,
+    google_rating REAL,
+    google_review_count INTEGER,
+    trending BOOLEAN NOT NULL DEFAULT false,
+    photo TEXT,
+    photo_alt TEXT,
+    yelp_url TEXT
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_cuisine ON restaurants(cuisine)`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_neighborhood ON restaurants(neighborhood)`,
+
+  // `sort_order` exists because a menu is an ordered document — starters
+  // before mains — and that order is part of what was extracted. Without it
+  // the rows come back in whatever order the planner likes and the menu reads
+  // as a shuffled list.
+  `CREATE TABLE IF NOT EXISTS dishes (
+    id TEXT PRIMARY KEY,
+    restaurant_id TEXT NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    description TEXT,
+    price TEXT NOT NULL DEFAULT '',
+    section TEXT NOT NULL DEFAULT '',
+    yes_votes INTEGER NOT NULL DEFAULT 0,
+    no_votes INTEGER NOT NULL DEFAULT 0,
+    sort_order INTEGER NOT NULL DEFAULT 0
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_dishes_restaurant ON dishes(restaurant_id, sort_order)`,
+
+  // Position in the seed file, which is not decoration: fetch-restaurants.mjs
+  // walks the regions in turn, so the array arrives interleaved across San
+  // Diego rather than clustered downtown, and Discover's unsorted grid has
+  // always shown it that way. `id` cannot stand in — it is TEXT, so ordering by
+  // it puts "10" before "2" and hands the top of the grid to whichever places
+  // happen to sort early.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_sort ON restaurants(sort_order)`,
+
+  // --- Threaded comments ----------------------------------------------------
+  //
+  // A comment may hang off another comment on the same post. Self-referential
+  // and ON DELETE CASCADE, so removing a comment takes its whole subtree with
+  // it rather than orphaning replies back onto the root of the thread.
+  //
+  // No depth limit is expressed here on purpose: the renderer caps how far it
+  // *indents* (see CommentsScreen), which is a layout decision. Baking a
+  // maximum depth into the schema would make it a data decision, and the two
+  // want to change independently.
+  `ALTER TABLE comments ADD COLUMN IF NOT EXISTS parent_id TEXT REFERENCES comments(id) ON DELETE CASCADE`,
+  `CREATE INDEX IF NOT EXISTS idx_comments_parent ON comments(parent_id)`,
+
+  // --- Comment votes --------------------------------------------------------
+  //
+  // Two tables rather than a `direction` column, for the same reason post
+  // votes are split (see the Downvotes note above): a count(*) can only ever
+  // read the direction it names. Mutual exclusivity is enforced in
+  // castCommentVote, which deletes the opposite row before inserting.
+  `CREATE TABLE IF NOT EXISTS comment_upvotes (
+    comment_id TEXT NOT NULL REFERENCES comments(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (comment_id, user_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_comment_upvotes_comment ON comment_upvotes(comment_id)`,
+
+  `CREATE TABLE IF NOT EXISTS comment_downvotes (
+    comment_id TEXT NOT NULL REFERENCES comments(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (comment_id, user_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_comment_downvotes_comment ON comment_downvotes(comment_id)`,
+
+  // comment_likes is retired by the pair above, the way post_votes was retired
+  // by post_upvotes: nothing writes to it anymore, and it keeps its rows rather
+  // than being dropped. Every like it holds becomes an upvote here, once — the
+  // NOT EXISTS guard makes this a one-time backfill, so re-running the
+  // migration can never resurrect a vote somebody has since taken back.
+  `INSERT INTO comment_upvotes (comment_id, user_id)
+     SELECT comment_id, user_id FROM comment_likes
+     WHERE NOT EXISTS (SELECT 1 FROM comment_upvotes)
+     ON CONFLICT DO NOTHING`,
+
+  // --- Price band as a column ---------------------------------------------
+  //
+  // The band a restaurant's menu prices put it in, written by the import script
+  // rather than derived on every read.
+  //
+  // It used to be computed per request by pulling `price` and `section` for
+  // every dish in the table and banding them in JS — fine against 125 dishes,
+  // a full scan of the menu corpus against a real one. It only changes when
+  // dishes.ts is re-imported, which is exactly when the import runs.
+  //
+  // NULL is meaningful and is not the same as cheap: a restaurant with no menu
+  // has no band and matches no price filter. See src/data/priceBands.ts.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS price_band TEXT
+     CHECK (price_band IN ('$', '$$', '$$$', '$$$$'))`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_price_band ON restaurants(price_band)`,
+
+  // --- One upvote, one payout ----------------------------------------------
+  //
+  // Upvote awards are keyed "upvote:<post>:<voter>" and
+  // "comment-upvote:<comment>:<voter>" — deterministic per voter per item,
+  // which reads like it was meant to pay once. It wasn't: awardPoints only
+  // deduplicated the milestone prefix, so taking an upvote back and re-casting
+  // it paid the author again, every time, without limit.
+  //
+  // Two steps, and the order is load-bearing: fold the extra rows away first,
+  // then add the index that makes them impossible. The index alone would fail
+  // against the duplicates already in the table.
+  //
+  // The dedupe keeps the earliest row per reason, deletes the rest, and takes
+  // those same amounts back off the cached totals on `users`. `monthly_points`
+  // moves only for rows written in the current UTC month, and only when the
+  // user's monthly_points_month still names that month — otherwise their
+  // monthly figure is about some earlier month and this would corrupt it.
+  // (currentMonthKey in lib/db.ts is UTC, which is what to_char matches here.)
+  //
+  // Re-running is a no-op: with nothing duplicated, `removed` is empty and the
+  // UPDATE touches nobody.
+  `WITH ranked AS (
+     SELECT id, row_number() OVER (PARTITION BY reason ORDER BY created_at, id) AS rn
+     FROM point_events
+     WHERE reason LIKE 'upvote:%' OR reason LIKE 'comment-upvote:%'
+   ),
+   removed AS (
+     DELETE FROM point_events
+     WHERE id IN (SELECT id FROM ranked WHERE rn > 1)
+     RETURNING user_id, amount, created_at
+   ),
+   totals AS (
+     SELECT user_id,
+            sum(amount)::int AS all_time,
+            coalesce(sum(amount) FILTER (
+              WHERE to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM')
+                  = to_char(now() AT TIME ZONE 'UTC', 'YYYY-MM')
+            ), 0)::int AS this_month
+     FROM removed GROUP BY user_id
+   )
+   UPDATE users u
+   SET points = greatest(0, u.points - t.all_time),
+       monthly_points = CASE
+         WHEN u.monthly_points_month = to_char(now() AT TIME ZONE 'UTC', 'YYYY-MM')
+           THEN greatest(0, u.monthly_points - t.this_month)
+         ELSE u.monthly_points
+       END
+   FROM totals t
+   WHERE u.id = t.user_id`,
+
+  // This predicate is repeated verbatim in awardPoints' ON CONFLICT clause —
+  // that text is how Postgres infers which partial index it is talking about,
+  // so the two only work as a pair and have to change together.
+  //
+  // A second index rather than a wider idx_point_events_unique_reason: that
+  // one is an existing statement, and existing statements are append-only.
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_point_events_unique_upvote
+     ON point_events(reason)
+     WHERE reason LIKE 'upvote:%' OR reason LIKE 'comment-upvote:%'`,
+
+  // --- Menu lookups --------------------------------------------------------
+  //
+  // One row per restaurant we have ASKED about, whether or not a menu came
+  // back. That distinction is the whole point: `dishes` records what was found,
+  // this records what was paid for.
+  //
+  // Menu extraction is a billed Anthropic call with web search behind it — the
+  // most expensive thing this app can do — and there is no API to get a menu
+  // from, so the cost is unavoidable. What is avoidable is paying it twice.
+  // Without this table, a restaurant with no findable menu would be looked up
+  // again by every visitor who opened it, forever, at full price each time.
+  //
+  // `status` distinguishes the three outcomes, because they deserve different
+  // retry rules: 'found' is done, 'not_found' means the menu isn't on the open
+  // web and re-asking next week won't change that, 'error' is worth retrying.
+  `CREATE TABLE IF NOT EXISTS menu_lookups (
+    restaurant_id TEXT PRIMARY KEY,
+    status TEXT NOT NULL CHECK (status IN ('found', 'not_found', 'error')),
+    source_url TEXT,
+    confidence TEXT,
+    dish_count INTEGER NOT NULL DEFAULT 0,
+    requested_by TEXT REFERENCES users(id) ON DELETE SET NULL,
+    attempted_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_menu_lookups_attempted ON menu_lookups(attempted_at)`,
+
+  // --- Real opening hours ---------------------------------------------------
+  //
+  // `closing_time` was only ever half the fact, and the missing half made the
+  // site confidently wrong: with nothing but "Closes 10pm", the only question
+  // that could be asked was "is it before 10pm", so a dinner-only steakhouse
+  // read "Open til 10pm" at nine in the morning. Every dinner-only restaurant
+  // in the corpus did, and the "Open now" filter returned all of them.
+  //
+  // Stored as the whole week rather than one open/close pair, because a pair
+  // still cannot say "closed Mondays" or describe a kitchen that shuts between
+  // lunch and dinner. Yelp already returns this shape and the fetcher was
+  // discarding it; the column just stops throwing it away.
+  //
+  //   [{ "day": 0, "start": "1100", "end": "2200" }, ...]   day 0 = Monday
+  //
+  // JSONB rather than a table of slots: it is always read whole, for one
+  // restaurant, and never queried across restaurants.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS hours JSONB`,
+
+  // --- Menu freshness -------------------------------------------------------
+  //
+  // Re-extracting every menu on a schedule does not close: 682 restaurants at
+  // the achievable rate is ten days of work per week. But menus do not change
+  // weekly — prices move once or twice a year and items shift seasonally, so
+  // almost all of that work would re-read pages identical to last time.
+  //
+  // `source_fingerprint` makes the cheap check possible. It is a hash of the
+  // menu-bearing text of the source page, taken when the menu was extracted. A
+  // later pass re-fetches the page, hashes it again, and only queues a
+  // re-extraction when the two differ — HTTP and a checksum, no model, no
+  // agent, no session budget. The expensive step then runs over the handful
+  // that actually changed rather than the whole corpus.
+  //
+  // `checked_at` is when the page was last *compared*, which is not
+  // `attempted_at` — the point of the split is that most checks find nothing
+  // and must not look like re-extractions.
+  `ALTER TABLE menu_lookups ADD COLUMN IF NOT EXISTS source_fingerprint TEXT`,
+  `ALTER TABLE menu_lookups ADD COLUMN IF NOT EXISTS checked_at TIMESTAMPTZ`,
+  `CREATE INDEX IF NOT EXISTS idx_menu_lookups_checked ON menu_lookups(checked_at NULLS FIRST)`,
 ];
 
 for (const statement of statements) {

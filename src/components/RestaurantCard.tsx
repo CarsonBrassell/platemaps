@@ -1,10 +1,26 @@
 import Link from "next/link";
-import type { Restaurant } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurants";
 import { StarIcon } from "@/components/icons";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { OpenStatePill } from "@/components/OpenStatePill";
 
-export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
+/**
+ * The category the grid is currently filtered to, and what this place scored in
+ * it — from lib/discoverFilters.ts, the same model the restaurant page renders.
+ *
+ * Only passed while a "rated well for" filter is on. Without it the visitor has
+ * to open a restaurant to see the number they filtered on, which is the one
+ * thing they already told us they care about.
+ */
+export type AspectHighlight = { aspect: string; stars: number };
+
+export function RestaurantCard({
+  restaurant,
+  highlight = null,
+}: {
+  restaurant: RestaurantView;
+  highlight?: AspectHighlight | null;
+}) {
   return (
     <Link
       href={`/restaurant/${restaurant.id}`}
@@ -57,7 +73,28 @@ export function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
         <p className="mb-2.5 mt-0.5 truncate text-xs text-zinc-500">
           {restaurant.cuisine} &middot; {restaurant.neighborhood}
         </p>
-        <OpenStatePill closingTime={restaurant.closingTime} />
+        {/* The filtered category rides beside the open/closed pill rather than
+            on the photo: the photo already carries the overall rating, and two
+            star numbers stacked in the same corner read as one contradictory
+            pair. Orange tint marks it as the answer to the active filter — the
+            open pill stays tan, so the two never blur together. */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          <OpenStatePill hours={restaurant.hours} />
+          {highlight && (
+            <span
+              className="inline-flex items-center gap-1.5 rounded-full bg-pm-orange-tint px-3 py-1.5 text-xs font-medium text-pm-orange-text"
+              aria-label={`${highlight.aspect} rated ${highlight.stars.toFixed(1)} out of 5`}
+            >
+              {/* No emoji, unlike RestaurantAspects. That block sets it at
+                  14px where a fried egg still reads as one; at pill size it
+                  collapses to a coloured smudge and the label says it anyway. */}
+              {highlight.aspect}
+              <span className="font-mono font-semibold tabular-nums" aria-hidden="true">
+                {highlight.stars.toFixed(1)}
+              </span>
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );

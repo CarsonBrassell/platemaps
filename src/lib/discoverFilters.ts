@@ -9,10 +9,13 @@
  */
 
 import { BEST_AT_LABELS } from "@/data/reviewScales";
-import { PRICE_BANDS, priceBandFor, type PriceBand } from "@/data/priceBands";
-import type { Restaurant } from "@/data/restaurants";
+import { PRICE_BANDS, type PriceBand } from "@/data/priceBands";
+import type { RestaurantView } from "@/data/restaurants";
 import { aspectScores } from "@/lib/aspectScores";
-import { milesBetween, NEARBY_RADIUS_MI, type Coords } from "@/lib/nearby";
+// From lib/geo.ts, not lib/nearby.ts: this module is imported by the server
+// (lib/discover.ts) as well as by client components, and nearby.ts is a React
+// hook. See the note in geo.ts.
+import { milesBetween, NEARBY_RADIUS_MI, type Coords } from "@/lib/geo";
 import { openStateFor } from "@/lib/openState";
 
 export type QuickFilter = "open-now" | "top-rated" | "trending";
@@ -43,6 +46,17 @@ export type DiscoverFilters = {
   /** A category label from BEST_AT — "Food", "Service", "Ambiance"… */
   aspect: string | null;
   quick: QuickFilter[];
+  /**
+   * Free text from the header search, matched against name, cuisine and
+   * neighbourhood — the same three fields that search itself ranks on.
+   *
+   * It is what is *left* of a search after `filtersFromSearch` has taken out
+   * anything the rail can express: a term naming a real cuisine, neighbourhood,
+   * price band or category becomes that filter instead, so searching "Thai"
+   * lands on Discover with Thai lit up in the rail rather than on a text match
+   * that happens to return the same places. See `promote` below.
+   */
+  q: string | null;
 };
 
 export const NO_FILTERS: DiscoverFilters = {
@@ -52,6 +66,7 @@ export const NO_FILTERS: DiscoverFilters = {
   price: null,
   aspect: null,
   quick: [],
+  q: null,
 };
 
 /** How many separate choices are on — what the mobile bar's badge counts. */
@@ -62,6 +77,7 @@ export function activeFilterCount(f: DiscoverFilters): number {
     (f.cuisine ? 1 : 0) +
     (f.price ? 1 : 0) +
     (f.aspect ? 1 : 0) +
+    (f.q ? 1 : 0) +
     f.quick.length
   );
 }
@@ -85,8 +101,17 @@ export function activeFilterCount(f: DiscoverFilters): number {
  */
 export const ASPECT_STRONG_STARS = 4.0;
 
-/** Which categories each restaurant is rated well for, by restaurant id. */
-export type StrongAspects = ReadonlyMap<string, ReadonlySet<string>>;
+/**
+ * Which categories each restaurant is rated well for, by restaurant id, and
+ * what each of those categories scored.
+ *
+ * The inner map carries the star score rather than the bare label so the grid
+ * can print the number beside a card without re-running the model: filtering to
+ * "rated well for Food" and then hiding the food score made the visitor open a
+ * restaurant to find out what they had just filtered on. `.has()` reads the
+ * same on a Map as it did on the Set this replaced, so matching is unchanged.
+ */
+export type StrongAspects = ReadonlyMap<string, ReadonlyMap<string, number>>;
 
 /**
  * Mirror of `RestaurantAspectTally` in lib/db.ts, which owns the shape.
@@ -113,7 +138,7 @@ export type AspectTally = {
 export function strongAspectsFrom(
   tallies: Record<string, AspectTally>,
 ): StrongAspects {
-  const strong = new Map<string, Set<string>>();
+  const strong = new Map<string, Map<string, number>>();
 
   for (const [restaurantId, tally] of Object.entries(tallies)) {
     const scored = aspectScores(
@@ -124,15 +149,29 @@ export function strongAspectsFrom(
     );
     strong.set(
       restaurantId,
-      new Set(
+      new Map(
         scored
           .filter((s) => s.stars !== null && s.stars >= ASPECT_STRONG_STARS && s.net > 0)
-          .map((s) => s.aspect),
+          .map((s) => [s.aspect, s.stars!] as const),
       ),
     );
   }
 
   return strong;
+}
+
+/**
+ * What one restaurant scored in one category, or null if it isn't rated well
+ * for it — including while the tallies are still in flight, which is the same
+ * "can't evaluate yet" null the filter context uses.
+ */
+export function strongAspectStars(
+  aspects: StrongAspects | null,
+  restaurantId: string,
+  aspect: string | null,
+): number | null {
+  if (!aspects || !aspect) return null;
+  return aspects.get(restaurantId)?.get(aspect) ?? null;
 }
 
 /* --- Matching --------------------------------------------------------- */
@@ -155,8 +194,29 @@ export type FilterContext = {
 
 export const NO_CONTEXT: FilterContext = { now: null, here: null, aspects: null };
 
+/**
+ * The text a free-text query is matched against, lowercased once per row.
+ *
+ * `matchesFilters` runs six times per restaurant per request — once for the
+ * grid and once for each facet dimension being counted — so building this
+ * inline would lowercase the whole corpus six times over on every keystroke's
+ * worth of navigation. Keyed on the row object, which lib/discover.ts holds for
+ * the life of its 60s corpus cache; a `WeakMap` means the entries go when that
+ * cache is replaced.
+ */
+const SEARCHABLE_TEXT = new WeakMap<RestaurantView, string>();
+
+function searchable(r: RestaurantView): string {
+  let text = SEARCHABLE_TEXT.get(r);
+  if (text === undefined) {
+    text = `${r.name} ${r.cuisine} ${r.neighborhood}`.toLowerCase();
+    SEARCHABLE_TEXT.set(r, text);
+  }
+  return text;
+}
+
 export function matchesFilters(
-  r: Restaurant,
+  r: RestaurantView,
   f: DiscoverFilters,
   ctx: FilterContext,
 ): boolean {
@@ -165,25 +225,30 @@ export function matchesFilters(
     if (milesBetween(ctx.here, { lat: r.lat, lng: r.lng }) > NEARBY_RADIUS_MI) return false;
   }
   if (f.cuisine && r.cuisine !== f.cuisine) return false;
+  // Name, cuisine, neighbourhood — the same three fields the header search
+  // ranks on and /api/restaurants?q= narrows on, so a term that found a place
+  // in the dropdown still finds it here. Substring rather than ranked: this is
+  // a filter, and a filter either includes a row or doesn't.
+  if (f.q && !searchable(r).includes(f.q.toLowerCase())) return false;
   // A restaurant with no menu has no band and so matches no price — see the
   // note in data/priceBands.ts about why it isn't given a guessed one.
-  if (f.price && priceBandFor(r.id) !== f.price) return false;
+  if (f.price && r.priceBand !== f.price) return false;
   if (f.aspect && ctx.aspects) {
     if (!ctx.aspects.get(r.id)?.has(f.aspect)) return false;
   }
   if (f.quick.includes("top-rated") && r.rating < TOP_RATED_FROM) return false;
   if (f.quick.includes("trending") && !r.trending) return false;
   if (f.quick.includes("open-now") && ctx.now) {
-    if (openStateFor(r.closingTime, ctx.now).kind === "closed") return false;
+    if (openStateFor(r.hours, ctx.now).kind === "closed") return false;
   }
   return true;
 }
 
 export function applyFilters(
-  restaurants: readonly Restaurant[],
+  restaurants: readonly RestaurantView[],
   f: DiscoverFilters,
   ctx: FilterContext,
-): Restaurant[] {
+): RestaurantView[] {
   return restaurants.filter((r) => matchesFilters(r, f, ctx));
 }
 
@@ -212,7 +277,7 @@ export type FacetOption = {
  * changed something else.
  */
 function optionsFor(
-  restaurants: readonly Restaurant[],
+  restaurants: readonly RestaurantView[],
   key: "neighborhood" | "cuisine",
 ): FacetOption[] {
   const totals = new Map<string, number>();
@@ -223,11 +288,11 @@ function optionsFor(
     .sort((a, b) => b.total - a.total || a.value.localeCompare(b.value));
 }
 
-export function neighborhoodOptions(restaurants: readonly Restaurant[]): FacetOption[] {
+export function neighborhoodOptions(restaurants: readonly RestaurantView[]): FacetOption[] {
   return optionsFor(restaurants, "neighborhood");
 }
 
-export function cuisineOptions(restaurants: readonly Restaurant[]): FacetOption[] {
+export function cuisineOptions(restaurants: readonly RestaurantView[]): FacetOption[] {
   return optionsFor(restaurants, "cuisine");
 }
 
@@ -236,10 +301,10 @@ export function cuisineOptions(restaurants: readonly Restaurant[]): FacetOption[
  * by count like the data-derived facets — money has an order of its own, and
  * shuffling `$$$` above `$` because more places land there would be nonsense.
  */
-export function priceOptions(restaurants: readonly Restaurant[]): FacetOption[] {
+export function priceOptions(restaurants: readonly RestaurantView[]): FacetOption[] {
   const totals = new Map<string, number>();
   for (const r of restaurants) {
-    const band = priceBandFor(r.id);
+    const band = r.priceBand;
     if (band) totals.set(band, (totals.get(band) ?? 0) + 1);
   }
   return PRICE_VALUES.map((value) => ({ value, total: totals.get(value) ?? 0 }));
@@ -258,8 +323,8 @@ export function priceOptions(restaurants: readonly Restaurant[]): FacetOption[] 
 export function aspectOptions(aspects: StrongAspects | null): FacetOption[] {
   const totals = new Map<string, number>();
   if (aspects) {
-    for (const set of aspects.values()) {
-      for (const aspect of set) totals.set(aspect, (totals.get(aspect) ?? 0) + 1);
+    for (const scored of aspects.values()) {
+      for (const aspect of scored.keys()) totals.set(aspect, (totals.get(aspect) ?? 0) + 1);
     }
   }
   return BEST_AT_LABELS.map((value) => ({ value, total: totals.get(value) ?? 0 })).sort(
@@ -295,7 +360,7 @@ export type FacetCounts = {
  * is picked, which tells the user nothing about where else they could go.
  */
 export function countFacets(
-  restaurants: readonly Restaurant[],
+  restaurants: readonly RestaurantView[],
   f: DiscoverFilters,
   ctx: FilterContext,
 ): FacetCounts {
@@ -334,12 +399,12 @@ export function countFacets(
     }
     if (matchesFilters(r, exceptPrice, ctx)) {
       anyPrice += 1;
-      const band = priceBandFor(r.id);
+      const band = r.priceBand;
       if (band) price.set(band, (price.get(band) ?? 0) + 1);
     }
     if (matchesFilters(r, exceptAspect, ctx)) {
       anyAspect += 1;
-      for (const label of ctx.aspects?.get(r.id) ?? []) {
+      for (const label of ctx.aspects?.get(r.id)?.keys() ?? []) {
         aspect.set(label, (aspect.get(label) ?? 0) + 1);
       }
     }
@@ -377,6 +442,61 @@ const CUISINE_PARAM = "cuisine";
 const PRICE_PARAM = "price";
 const ASPECT_PARAM = "aspect";
 const QUICK_PARAM = "quick";
+export const QUERY_PARAM = "q";
+
+/**
+ * The longest search term worth carrying. Past this it is not a search, it is
+ * someone pasting a paragraph into the URL.
+ */
+const MAX_QUERY = 60;
+
+/**
+ * Turns a search term that names a filter into that filter.
+ *
+ * The header search is one field over the whole product, so people type "Thai",
+ * "North Park" and "$$" into it as readily as they type a restaurant's name.
+ * Left as free text those would still return roughly the right places, but the
+ * rail would sit there claiming no filters were on, the facet counts would
+ * describe a text match rather than a cuisine, and there would be nothing on
+ * screen to widen or step back from. Promoting the term gives the visitor the
+ * same page they would have reached by clicking, which is the one they can then
+ * keep browsing from.
+ *
+ * Only ever fills a dimension that is empty: `?q=Thai&cuisine=Mexican` is a
+ * search *within* Mexican, and quietly overwriting the filter someone already
+ * picked would be the rudest possible reading of it. Anything left unpromoted
+ * stays free text.
+ */
+function promote(
+  raw: string,
+  base: DiscoverFilters,
+  restaurants: readonly RestaurantView[],
+): DiscoverFilters {
+  const q = raw.toLowerCase();
+  const has = (key: "cuisine" | "neighborhood") =>
+    restaurants.find((r) => r[key].toLowerCase() === q)?.[key] ?? null;
+
+  const cuisine = has("cuisine");
+  if (cuisine && !base.cuisine) return { ...base, cuisine };
+
+  // Skipped while Nearby is on: the two share the "where" dimension, and a
+  // search term must not silently cancel a radius the visitor asked for.
+  const neighborhood = has("neighborhood");
+  if (neighborhood && !base.neighborhood && !base.nearby) return { ...base, neighborhood };
+
+  const price = PRICE_VALUES.find((b) => b === raw);
+  if (price && !base.price) return { ...base, price };
+
+  const aspect = BEST_AT_LABELS.find((a) => a.toLowerCase() === q);
+  if (aspect && !base.aspect) return { ...base, aspect };
+
+  const quick = QUICK_FILTERS.find((f) => f.label.toLowerCase() === q);
+  if (quick && !base.quick.includes(quick.value)) {
+    return { ...base, quick: [...base.quick, quick.value] };
+  }
+
+  return { ...base, q: raw };
+}
 
 /**
  * Values are checked against the real data on the way in, so a stale or
@@ -385,7 +505,7 @@ const QUICK_PARAM = "quick";
  */
 export function filtersFromSearch(
   search: string,
-  restaurants: readonly Restaurant[],
+  restaurants: readonly RestaurantView[],
 ): DiscoverFilters {
   const params = new URLSearchParams(search);
 
@@ -399,8 +519,9 @@ export function filtersFromSearch(
     value !== null && restaurants.some((r) => r[key] === value) ? value : null;
 
   const inNeighborhood = known("neighborhood", neighborhood);
+  const query = (params.get(QUERY_PARAM) ?? "").trim().slice(0, MAX_QUERY);
 
-  return {
+  const filters: DiscoverFilters = {
     neighborhood: inNeighborhood,
     // A link can't grant location, so this only restores the intent; the
     // radius applies once the visitor allows the prompt. Dropped outright if
@@ -413,7 +534,12 @@ export function filtersFromSearch(
     // Filtered from the canonical list rather than the URL's order, so the
     // same set of toggles always serialises to the same string.
     quick: QUICK_VALUES.filter((v) => requested.has(v)),
+    q: null,
   };
+
+  // Last, and against the filters already resolved above, so promotion can see
+  // which dimensions the URL had spoken for.
+  return query ? promote(query, filters, restaurants) : filters;
 }
 
 /** Rewrites only our keys, so anything else on the URL survives. */
@@ -431,6 +557,11 @@ export function searchFromFilters(search: string, f: DiscoverFilters): string {
   put(PRICE_PARAM, f.price);
   put(ASPECT_PARAM, f.aspect);
   put(QUICK_PARAM, f.quick.length > 0 ? f.quick.join(",") : null);
+  // A promoted term leaves `q` null, which deletes the key — so the moment the
+  // visitor touches any filter, `?q=Thai` is rewritten as the `?cuisine=Thai`
+  // it actually resolved to and the URL stops describing a search it no longer
+  // is.
+  put(QUERY_PARAM, f.q);
 
   return params.toString();
 }

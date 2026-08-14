@@ -58,6 +58,15 @@ export default function PostPage() {
 
   const [place, setPlace] = useState<Restaurant | null>(null);
   const [dish, setDish] = useState<PickedDish | null>(null);
+  /**
+   * The list the "where" step browses.
+   *
+   * Fetched once here rather than imported, because restaurants live in
+   * Postgres now and this page is a client component all the way up. Starting
+   * empty is safe: the picker renders its own empty state, and the step it
+   * belongs to is never the first one someone sees.
+   */
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [stars, setStars] = useState(0);
   const [pct, setPct] = useState(80);
 
@@ -82,6 +91,26 @@ export default function PostPage() {
       cancelled = true;
     };
   }, [handoff]);
+
+  // On mount rather than when the "where" step opens: the composer is reached
+  // by someone who has already decided to post, so the list is wanted within a
+  // tap or two, and loading it behind the photo step means it is there.
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch("/api/restaurants");
+        if (!res.ok) return;
+        const data: { restaurants: Restaurant[] } = await res.json();
+        if (!cancelled) setRestaurants(data.restaurants);
+      } catch {
+        // The picker shows its own "no match" state; nothing to add here.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const steps = useMemo<Step[]>(() => {
     if (!kind) return ["photo", "kind"];
@@ -321,6 +350,7 @@ export default function PostPage() {
 
           {step === "where" && (
             <RestaurantPicker
+              restaurants={restaurants}
               selectedId={place?.id ?? null}
               onSelect={(r) => {
                 setPlace(r);

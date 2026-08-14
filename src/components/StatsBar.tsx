@@ -1,8 +1,6 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { restaurants } from "@/data/restaurants";
-import { openStateFor } from "@/lib/openState";
 import { getClockSnapshot, getServerClockSnapshot, subscribeToClock } from "@/lib/clock";
 
 function LocationIcon() {
@@ -56,46 +54,34 @@ export function StatsBar() {
     timeZone: "America/Los_Angeles",
   });
 
-  const states = now ? restaurants.map((r) => openStateFor(r.closingTime, now)) : [];
-  const openCount = states.filter((s) => s.kind === "open" || s.kind === "soon").length;
-  const closingSoonCount = states.filter((s) => s.kind === "soon").length;
-
-  /* Everything in this strip is machine-derived — clock, counts — so the
-     whole line sets in the small uppercase mono, quiet on the cream. */
+  /* Everything in this strip is machine-derived, so the whole line sets in the
+     small uppercase mono, quiet on the cream.
+   *
+   * The "N open now / N spots / N closing soon" counts used to sit on the right
+   * of this row. They were removed deliberately — see PRODUCT.md on invented
+   * volume/wait figures. `openStateFor` still labels each restaurant card
+   * individually, which is where open/closed actually belongs; nothing else
+   * consumed these totals.
+   *
+   * No top padding: the header above already sets the row's air, and this strip
+   * is a caption hanging off it rather than a band of its own. */
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1.5 px-5 py-1.5 sm:px-6">
-      <div className="mono-label flex flex-wrap items-center gap-x-4 gap-y-1 text-zinc-500">
-        <span className="flex items-center gap-1.5">
-          <LocationIcon />
-          San Diego, CA
+    <div className="mono-label flex flex-wrap items-center gap-x-4 gap-y-1 px-5 pb-2 text-zinc-500 sm:px-6">
+      {/* lg:hidden, because the header carries the city from lg up and would
+          otherwise repeat it directly above this line. Below lg the header
+          hides it, so this is the only place it appears — the two are
+          complementary, never both and never neither. */}
+      <span className="flex items-center gap-1.5 lg:hidden">
+        <LocationIcon />
+        San Diego, CA
+      </span>
+      {time && (
+        /* tabular-nums so the bar doesn't shimmy a pixel when 9:59 ticks over
+           to 10:00. */
+        <span className="flex items-center gap-1.5 tabular-nums">
+          <ClockIcon />
+          {time}
         </span>
-        {time && (
-          /* tabular-nums so the bar doesn't shimmy a pixel when 9:59 ticks
-             over to 10:00. */
-          <span className="flex items-center gap-1.5 tabular-nums">
-            <ClockIcon />
-            {time}
-          </span>
-        )}
-      </div>
-
-      {/* Counts are derived from the restaurant list and each place's real
-          closing time. They previously read "142 spots open / 18 with no wait
-          / 6 closing soon" — fixed strings, invented alongside the placeholder
-          restaurants they described. Rendered only once the clock exists, for
-          the same hydration reason as the time above. */}
-      {now && (
-        <div className="mono-label flex flex-wrap items-center gap-x-4 gap-y-1 text-zinc-500">
-          <span className="flex items-center gap-1.5">
-            <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-600/60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-600" />
-            </span>
-            {openCount} open now
-          </span>
-          <span className="tabular-nums">{restaurants.length} spots</span>
-          <span className="tabular-nums">{closingSoonCount} closing soon</span>
-        </div>
       )}
     </div>
   );

@@ -10,8 +10,9 @@ import { FullMenu } from "@/components/FullMenu";
 import { DishSheet } from "@/components/DishSheet";
 import { RestaurantComments } from "@/components/RestaurantComments";
 import { RestaurantAspects } from "@/components/RestaurantAspects";
+import { ReservationPanel } from "@/components/ReservationPanel";
 import type { RestaurantAspectTally } from "@/lib/db";
-import { mapCommentsByRestaurant } from "@/data/mapComments";
+import { mapCommentsByRestaurant, withDishIds } from "@/data/mapComments";
 
 const TOP_PICKS_COUNT = 7;
 const COMMENTS_ANCHOR = "restaurant-comments";
@@ -22,6 +23,11 @@ export function RestaurantDetail({
   aspectTally,
 }: {
   restaurant: Restaurant;
+  /**
+   * The menu, already read from Postgres by the page. Menus are extracted
+   * ahead of time rather than on demand, so this is simply the menu — there is
+   * no loading state and nothing for the reader to trigger.
+   */
   dishes: Dish[];
   /** Read server-side in the page — see the note there. */
   aspectTally: RestaurantAspectTally;
@@ -79,12 +85,16 @@ export function RestaurantDetail({
     : undefined;
 
   // Comments already tagged to this dish, newest first.
+  //
+  // The seed bubbles name their dish rather than carrying its id, since menus
+  // live in the database now and the id can only be resolved against a menu
+  // that has been loaded — `dishes` here is that menu. See withDishIds.
   const selectedDishComments = useMemo(() => {
     if (!selectedDishId) return [];
-    return (mapCommentsByRestaurant[restaurant.id] ?? [])
+    return withDishIds(mapCommentsByRestaurant[restaurant.id] ?? [], dishes)
       .filter((comment) => comment.dishId === selectedDishId)
       .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));
-  }, [restaurant.id, selectedDishId]);
+  }, [restaurant.id, selectedDishId, dishes]);
 
   /** Close the sheet and drop the reader at the full comment thread. */
   function handleSeeAllComments() {
@@ -120,18 +130,35 @@ export function RestaurantDetail({
           stay in view however far down the menu the reader gets. */}
       <div className="lg:flex lg:items-start lg:gap-4">
         <div className="flex min-w-0 flex-col gap-4 lg:flex-1">
-          {/* Above the dish picks: what the place is like overall comes before
-              what to order at it. */}
-          <RestaurantAspects tally={aspectTally} />
+          {/* The dishes lead. Booking a table is a side errand next to what to
+              order, so it sits in the rail rather than above the picks. */}
           <TopPicks dishes={topPicks} ratedBy={ratedBy} onSelect={setSelectedDishId} />
+          <RestaurantAspects tally={aspectTally} />
           <FullMenu sections={sections} onSelect={setSelectedDishId} />
         </div>
-        <div
-          id={COMMENTS_ANCHOR}
-          className="mt-4 scroll-mt-4 lg:mt-0 lg:w-[400px] lg:shrink-0"
-        >
-          <div className="lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
-            <RestaurantComments restaurant={restaurant} dishes={dishes} />
+        {/* The rail is a column of its own: the booking card is pinned at the
+            top of it and the comments take whatever height is left and scroll,
+            so neither pushes the other out of view. */}
+        {/* `self-stretch` against the row's `items-start` is what makes the
+            sticky box below actually stick: a sticky element can only travel
+            inside its containing block, and without this the wrapper is exactly
+            as tall as the box it holds — zero travel, so the rail scrolled away
+            with the page however long the menu got. */}
+        <div className="mt-4 lg:mt-0 lg:w-[400px] lg:shrink-0 lg:self-stretch">
+          <div className="lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-2rem)] lg:flex-col lg:gap-4">
+            <ReservationPanel
+              restaurantId={restaurant.id}
+              hours={restaurant.hours ?? null}
+            />
+            {/* The anchor stays on the comments themselves — "see all comments"
+                from the dish sheet must land on the thread, not on the booking
+                card above it. */}
+            <div
+              id={COMMENTS_ANCHOR}
+              className="mt-4 scroll-mt-4 lg:mt-0 lg:min-h-0 lg:flex-1 lg:overflow-y-auto"
+            >
+              <RestaurantComments restaurant={restaurant} dishes={dishes} />
+            </div>
           </div>
         </div>
       </div>

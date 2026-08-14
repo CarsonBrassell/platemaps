@@ -106,6 +106,8 @@ a compact mono reference, per DESIGN.md.
 
 Absences future work must not fabricate: there are no testimonials, user counts, press mentions, partnerships, funding, pricing, or licensing claims. There is also **no busyness or wait-time data** — invented wait copy previously shipped and was deliberately removed in favor of honestly computed open/closed state. Do not reintroduce it.
 
+One deliberate, sanctioned exception to that last rule: `ReservationPanel` on the restaurant page is an **unshipped prototype** of a first-party booking surface, showing a walk-in wait and bookable tables. Its numbers come from `src/lib/reservations.ts`, which is a deterministic generator, not a source — the card says so on its face ("Preview · availability not live yet"). It exists to evaluate the design, and it is not a licence to fabricate elsewhere. Either wire it to a real provider or delete both files; do not quietly promote the mock to production copy by removing the disclaimer.
+
 ## Product Principles
 
 1. **The plate is the unit of truth.** Ratings, photos and verdicts belong to a specific dish; never collapse them into a restaurant average.

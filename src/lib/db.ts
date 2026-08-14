@@ -1,5 +1,9 @@
 import { neon } from "@neondatabase/serverless";
 import { randomUUID } from "node:crypto";
+import type { Restaurant, RestaurantView } from "@/data/restaurants";
+import type { Dish } from "@/data/dishes";
+import type { PriceBand } from "@/data/priceBands";
+import type { Hours } from "@/lib/openState";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -80,31 +84,61 @@ export async function updateUserAvatar(id: string, avatarUrl: string): Promise<U
  * cached totals on `users`. Every award in the app goes through here so the
  * windowed leaderboards stay consistent with users.points.
  *
- * `reason` is free-form except for milestone bonuses, which must be
- * "milestone:<postId>:<likes>" — a partial unique index on that prefix is
- * what guarantees a bonus pays out at most once.
+ * `reason` is free-form except for the pay-once awards, where the string is
+ * the idempotency key and a partial unique index on its prefix is what makes
+ * it one:
+ *
+ * - "milestone:<postId>:<upvotes>" — a bonus fires at most once per post.
+ * - "upvote:<postId>:<voterId>" and "comment-upvote:<commentId>:<voterId>" —
+ *   one voter pays one author once per item. Without this, taking an upvote
+ *   back and pressing it again paid out every single time, which turned the
+ *   arrow into a coin press.
+ *
+ * Each `ON CONFLICT` below names its index by repeating that index's own
+ * predicate; the wording has to match the CREATE UNIQUE INDEX in
+ * scripts/migrate.mjs or Postgres can't infer which index is meant.
+ *
+ * `awarded` is false when a pay-once reason had already been paid. Callers
+ * that report earnings back to the client must read it rather than assume the
+ * award happened — otherwise the UI floats "+1 point" for a payout that the
+ * database declined.
  */
 export async function awardPoints(
   userId: string,
   amount: number,
   reason: string
-): Promise<User | null> {
-  if (amount === 0) return getUserById(userId);
+): Promise<{ user: User | null; awarded: boolean }> {
+  if (amount === 0) return { user: await getUserById(userId), awarded: false };
+
+  /** Null for a free-form reason, which always writes. */
+  let inserted: { id: string }[] | null = null;
 
   if (reason.startsWith("milestone:")) {
-    const inserted = await sql`
+    inserted = (await sql`
       INSERT INTO point_events (id, user_id, amount, reason)
       VALUES (${randomUUID()}, ${userId}, ${amount}, ${reason})
       ON CONFLICT (reason) WHERE reason LIKE 'milestone:%' DO NOTHING
       RETURNING id
-    `;
-    // Already paid out — leave totals untouched.
-    if (inserted.length === 0) return getUserById(userId);
+    `) as { id: string }[];
+  } else if (reason.startsWith("upvote:") || reason.startsWith("comment-upvote:")) {
+    inserted = (await sql`
+      INSERT INTO point_events (id, user_id, amount, reason)
+      VALUES (${randomUUID()}, ${userId}, ${amount}, ${reason})
+      ON CONFLICT (reason)
+        WHERE reason LIKE 'upvote:%' OR reason LIKE 'comment-upvote:%'
+        DO NOTHING
+      RETURNING id
+    `) as { id: string }[];
   } else {
     await sql`
       INSERT INTO point_events (id, user_id, amount, reason)
       VALUES (${randomUUID()}, ${userId}, ${amount}, ${reason})
     `;
+  }
+
+  // Already paid out — leave the ledger and the totals exactly as they are.
+  if (inserted && inserted.length === 0) {
+    return { user: await getUserById(userId), awarded: false };
   }
 
   const monthKey = currentMonthKey();
@@ -118,7 +152,7 @@ export async function awardPoints(
     WHERE id = ${userId}
     RETURNING *
   `;
-  return rows[0] ? rowToUser(rows[0]) : null;
+  return { user: rows[0] ? rowToUser(rows[0]) : null, awarded: true };
 }
 
 export type LeaderboardWindow = "today" | "week" | "month" | "all";
@@ -290,12 +324,27 @@ export async function deleteSession(token: string): Promise<void> {
 
 export type Comment = {
   id: string;
+  /** Null on a top-level comment; otherwise the comment this one replies to. */
+  parentId: string | null;
   userId: string;
   authorName: string;
   authorAvatarUrl?: string;
   text: string;
   createdAt: string;
-  likedBy: string[];
+  /**
+   * Public, exactly like a post's. Rendered as the net score between the
+   * arrows, never as two numbers — and the voters themselves are never named,
+   * the same rule the post upvote list follows.
+   */
+  upvoteCount: number;
+  downvoteCount: number;
+  /**
+   * This viewer's own vote, or null. A single field rather than the two
+   * booleans on Post: the three states are mutually exclusive, and a thread
+   * renders hundreds of these, so the shape that can't express an impossible
+   * state is the one worth having here.
+   */
+  myVote: VoteDirection | null;
 };
 
 export type PostMedia = {
@@ -386,7 +435,10 @@ async function hydratePosts(
   const [
     saveRows,
     commentRows,
-    commentLikeRows,
+    commentUpvoteRows,
+    commentDownvoteRows,
+    myCommentUpvoteRows,
+    myCommentDownvoteRows,
     upvoteCountRows,
     downvoteCountRows,
     myUpvoteRows,
@@ -394,8 +446,12 @@ async function hydratePosts(
     myHeartRows,
   ] = await Promise.all([
     sql`SELECT post_id, user_id FROM post_saves WHERE post_id = ANY(${ids})`,
+    // Flat, in the order they were written. The reply tree is assembled from
+    // parent_id by whoever renders it — a recursive CTE would order the rows
+    // for one presentation (depth-first, oldest-first) and the thread offers
+    // two sorts, so the shape stays flat and the client decides.
     sql`
-      SELECT c.id, c.post_id, c.user_id, c.text, c.created_at,
+      SELECT c.id, c.post_id, c.parent_id, c.user_id, c.text, c.created_at,
              u.name AS author_name, u.avatar_url AS author_avatar_url
       FROM comments c
       JOIN users u ON u.id = c.user_id
@@ -403,11 +459,37 @@ async function hydratePosts(
       ORDER BY c.created_at ASC
     `,
     sql`
-      SELECT cl.comment_id, cl.user_id
-      FROM comment_likes cl
-      JOIN comments c ON c.id = cl.comment_id
+      SELECT cv.comment_id, count(*)::int AS count
+      FROM comment_upvotes cv
+      JOIN comments c ON c.id = cv.comment_id
       WHERE c.post_id = ANY(${ids})
+      GROUP BY cv.comment_id
     `,
+    sql`
+      SELECT cv.comment_id, count(*)::int AS count
+      FROM comment_downvotes cv
+      JOIN comments c ON c.id = cv.comment_id
+      WHERE c.post_id = ANY(${ids})
+      GROUP BY cv.comment_id
+    `,
+    // Scoped to this viewer's own rows, like the post-vote reads below — the
+    // full list of who voted on a comment is never assembled anywhere.
+    viewerId
+      ? sql`
+          SELECT cv.comment_id
+          FROM comment_upvotes cv
+          JOIN comments c ON c.id = cv.comment_id
+          WHERE c.post_id = ANY(${ids}) AND cv.user_id = ${viewerId}
+        `
+      : Promise.resolve([]),
+    viewerId
+      ? sql`
+          SELECT cv.comment_id
+          FROM comment_downvotes cv
+          JOIN comments c ON c.id = cv.comment_id
+          WHERE c.post_id = ANY(${ids}) AND cv.user_id = ${viewerId}
+        `
+      : Promise.resolve([]),
     sql`
       SELECT post_id, count(*)::int AS count
       FROM post_upvotes WHERE post_id = ANY(${ids})
@@ -445,6 +527,15 @@ async function hydratePosts(
   const myDownvotes = new Set(myDownvoteRows.map((r) => r.post_id as string));
   const myHearts = new Set(myHeartRows.map((r) => r.post_id as string));
 
+  const commentUpvotes = new Map(
+    commentUpvoteRows.map((r) => [r.comment_id as string, r.count as number]),
+  );
+  const commentDownvotes = new Map(
+    commentDownvoteRows.map((r) => [r.comment_id as string, r.count as number]),
+  );
+  const myCommentUpvotes = new Set(myCommentUpvoteRows.map((r) => r.comment_id as string));
+  const myCommentDownvotes = new Set(myCommentDownvoteRows.map((r) => r.comment_id as string));
+
   return postRows.map((row) => {
     const postId = row.id as string;
     return {
@@ -480,14 +571,19 @@ async function hydratePosts(
         .filter((c) => c.post_id === postId)
         .map((c) => ({
           id: c.id as string,
+          parentId: (c.parent_id as string | null) ?? null,
           userId: c.user_id as string,
           authorName: c.author_name as string,
           authorAvatarUrl: (c.author_avatar_url as string | null) ?? undefined,
           text: c.text as string,
           createdAt: new Date(c.created_at as string).toISOString(),
-          likedBy: commentLikeRows
-            .filter((cl) => cl.comment_id === c.id)
-            .map((cl) => cl.user_id as string),
+          upvoteCount: commentUpvotes.get(c.id as string) ?? 0,
+          downvoteCount: commentDownvotes.get(c.id as string) ?? 0,
+          myVote: myCommentUpvotes.has(c.id as string)
+            ? ("up" as const)
+            : myCommentDownvotes.has(c.id as string)
+              ? ("down" as const)
+              : null,
         })),
     };
   });
@@ -696,41 +792,88 @@ export async function deletePost(id: string): Promise<void> {
 
 export async function addComment(
   postId: string,
-  data: { id: string; userId: string; text: string }
+  data: { id: string; userId: string; text: string; parentId?: string | null }
 ): Promise<Comment> {
+  const parentId = data.parentId ?? null;
   const rows = await sql`
-    INSERT INTO comments (id, post_id, user_id, text)
-    VALUES (${data.id}, ${postId}, ${data.userId}, ${data.text})
+    INSERT INTO comments (id, post_id, user_id, text, parent_id)
+    VALUES (${data.id}, ${postId}, ${data.userId}, ${data.text}, ${parentId})
     RETURNING created_at
   `;
   const user = await getUserById(data.userId);
   return {
     id: data.id,
+    parentId,
     userId: data.userId,
     authorName: user?.name ?? "",
     authorAvatarUrl: user?.avatarUrl,
     text: data.text,
     createdAt: new Date(rows[0].created_at).toISOString(),
-    likedBy: [],
+    upvoteCount: 0,
+    downvoteCount: 0,
+    myVote: null,
   };
 }
 
-export async function toggleCommentLike(
+/**
+ * Who wrote a comment and which post it hangs off — the two things a caller
+ * needs before it can pay someone or accept a reply. Null if there's no such
+ * comment.
+ */
+export async function getCommentContext(
   commentId: string,
-  userId: string
-): Promise<{ liked: boolean; likeCount: number }> {
-  const existing = await sql`
-    SELECT 1 FROM comment_likes WHERE comment_id = ${commentId} AND user_id = ${userId}
-  `;
-  if (existing.length > 0) {
-    await sql`DELETE FROM comment_likes WHERE comment_id = ${commentId} AND user_id = ${userId}`;
-  } else {
-    await sql`INSERT INTO comment_likes (comment_id, user_id) VALUES (${commentId}, ${userId})`;
+): Promise<{ postId: string; userId: string } | null> {
+  const rows = await sql`SELECT post_id, user_id FROM comments WHERE id = ${commentId}`;
+  if (!rows[0]) return null;
+  return { postId: rows[0].post_id as string, userId: rows[0].user_id as string };
+}
+
+/**
+ * A comment's vote. Same three-state contract as castVote — pressing the
+ * direction you already hold clears it, the other one switches sides — and the
+ * same two-table shape, so the counts can't be confused with each other.
+ *
+ * `firstTimeUpvote` means the same thing it does for a post, and is what the
+ * route pays out on: switching over from a downvote counts, re-pressing an
+ * upvote already held doesn't, and a downvote never does.
+ */
+export async function castCommentVote(
+  commentId: string,
+  userId: string,
+  direction: VoteDirection,
+): Promise<{
+  myVote: VoteDirection | null;
+  upvoteCount: number;
+  downvoteCount: number;
+  firstTimeUpvote: boolean;
+}> {
+  const [hadUp, hadDown] = await Promise.all([
+    sql`SELECT 1 FROM comment_upvotes WHERE comment_id = ${commentId} AND user_id = ${userId}`,
+    sql`SELECT 1 FROM comment_downvotes WHERE comment_id = ${commentId} AND user_id = ${userId}`,
+  ]);
+  const held: VoteDirection | null =
+    hadUp.length > 0 ? "up" : hadDown.length > 0 ? "down" : null;
+  const myVote = held === direction ? null : direction;
+
+  await sql`DELETE FROM comment_upvotes WHERE comment_id = ${commentId} AND user_id = ${userId}`;
+  await sql`DELETE FROM comment_downvotes WHERE comment_id = ${commentId} AND user_id = ${userId}`;
+  if (myVote === "up") {
+    await sql`INSERT INTO comment_upvotes (comment_id, user_id) VALUES (${commentId}, ${userId})`;
+  } else if (myVote === "down") {
+    await sql`INSERT INTO comment_downvotes (comment_id, user_id) VALUES (${commentId}, ${userId})`;
   }
-  const rows = await sql`
-    SELECT count(*)::int AS count FROM comment_likes WHERE comment_id = ${commentId}
-  `;
-  return { liked: existing.length === 0, likeCount: rows[0].count as number };
+
+  const [upRows, downRows] = await Promise.all([
+    sql`SELECT count(*)::int AS count FROM comment_upvotes WHERE comment_id = ${commentId}`,
+    sql`SELECT count(*)::int AS count FROM comment_downvotes WHERE comment_id = ${commentId}`,
+  ]);
+
+  return {
+    myVote,
+    upvoteCount: upRows[0].count as number,
+    downvoteCount: downRows[0].count as number,
+    firstTimeUpvote: myVote === "up" && held !== "up",
+  };
 }
 
 /** Which way a viewer voted on a post, or null for no vote at all. */
@@ -850,12 +993,20 @@ export async function getHeartsForAuthor(
 export type ActivityKind = "comment" | "heart" | "upvote";
 
 export type ActivityEvent = {
-  /** `kind:commentId` or `kind:postId:actorId` — unique across all three kinds. */
+  /**
+   * Unique across all three kinds. Built from the comment id, or from
+   * post + actor for a heart — and from post + timestamp for an upvote, whose
+   * actor id must not appear even in a React key.
+   */
   id: string;
   kind: ActivityKind;
   createdAt: string;
-  actorId: string;
-  actorName: string;
+  /**
+   * Who did it — absent on every `upvote` row, and absent there in the SQL
+   * itself, not blanked afterwards. An upvote is anonymous to the author.
+   */
+  actorId?: string;
+  actorName?: string;
   actorAvatarUrl?: string;
   postId: string;
   postRestaurant?: string;
@@ -883,10 +1034,14 @@ export type ActivityEvent = {
  * too. It is NOT a heart count for anyone else, and nothing here feeds
  * Discover's ranking — getDiscoverFeed still never names post_hearts.
  *
- * Upvoter identity is new here. Upvotes are the public reaction (the count is
- * on every card already), so naming who cast one to the person they voted for
- * discloses nothing the act itself didn't — but keep it to this surface, and
- * do not fold actor names into the public upvoteCount on Post.
+ * Upvotes are anonymous even here — the whole point of the up/down pair is
+ * that it is a verdict on a plate, and a verdict people have to sign is a
+ * different, more social thing than the one Discover ranks on. So the upvote
+ * branch below has no `users` join at all: there is no name to leak because
+ * the query never reads one, and its event id is post + timestamp rather than
+ * post + user so the actor's id can't ride along in a key either. Hearts, the
+ * friends-only reaction, do name the person — that asymmetry is the feature,
+ * not an oversight. Do not add a join to the upvote branch.
  *
  * Your own reactions to your own posts are excluded from every branch: this
  * list answers "what did other people do", and self-activity is noise in it.
@@ -928,14 +1083,13 @@ export async function getActivityForAuthor(
     UNION ALL
 
     SELECT 'upvote',
-           'upvote:' || v.post_id || ':' || v.user_id,
+           'upvote:' || v.post_id || ':' || EXTRACT(EPOCH FROM v.created_at)::text,
            v.created_at,
            NULL::text,
-           u.id, u.name, u.avatar_url,
+           NULL::text, NULL::text, NULL::text,
            m.id, m.restaurant, m.restaurant_id, m.dish_name, m.text
     FROM post_upvotes v
     JOIN mine m ON m.id = v.post_id
-    JOIN users u ON u.id = v.user_id
     WHERE v.user_id <> ${userId}
 
     ORDER BY created_at DESC
@@ -946,8 +1100,8 @@ export async function getActivityForAuthor(
     id: r.event_id as string,
     kind: r.kind as ActivityKind,
     createdAt: new Date(r.created_at as string).toISOString(),
-    actorId: r.actor_id as string,
-    actorName: r.actor_name as string,
+    actorId: (r.actor_id as string | null) ?? undefined,
+    actorName: (r.actor_name as string | null) ?? undefined,
     actorAvatarUrl: (r.actor_avatar_url as string | null) ?? undefined,
     postId: r.post_id as string,
     postRestaurant: (r.restaurant as string | null) ?? undefined,
@@ -1340,5 +1494,262 @@ export async function getPublicProfile(userId: string): Promise<PublicProfile | 
     points: row.points as number,
     favoriteCuisine: (row.favorite_cuisine as string | null) ?? undefined,
     favoriteRestaurantId: (row.favorite_restaurant_id as string | null) ?? undefined,
+  };
+}
+
+/* --- Restaurants and menus ---------------------------------------------- */
+
+/*
+ * These used to be `import { restaurants } from "@/data/restaurants"` in
+ * twenty files, several of them client components — so the whole array shipped
+ * to the browser. The array is seed input now (loaded by
+ * `npm run restaurants:import`) and every read goes through here.
+ *
+ * The `Restaurant` and `Dish` types still live in src/data/ rather than moving
+ * here with the queries, which inverts this file's usual rule that db.ts owns
+ * row shapes. That rule exists to keep client components from importing this
+ * module and dragging the Neon driver into the bundle; a type-only import
+ * pointing the other way costs nothing at runtime, and those two types are
+ * shared vocabulary between the seed files, the fetch scripts and the UI.
+ */
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToRestaurant(row: any): Restaurant {
+  return {
+    id: row.id,
+    name: row.name,
+    cuisine: row.cuisine,
+    neighborhood: row.neighborhood,
+    distance: row.distance,
+    walkTime: row.walk_time,
+    closingTime: row.closing_time,
+    hours: row.hours ?? null,
+    lat: row.lat,
+    lng: row.lng,
+    status: row.status,
+    statusLabel: row.status_label,
+    rating: row.rating,
+    reviewCount: row.review_count,
+    yelpRating: row.yelp_rating ?? undefined,
+    yelpReviewCount: row.yelp_review_count ?? undefined,
+    googleRating: row.google_rating ?? undefined,
+    googleReviewCount: row.google_review_count ?? undefined,
+    trending: row.trending ?? false,
+    photo: row.photo ?? undefined,
+    photoAlt: row.photo_alt ?? undefined,
+    yelpUrl: row.yelp_url ?? undefined,
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToDish(row: any): Dish {
+  return {
+    id: row.id,
+    name: row.name,
+    description: row.description ?? undefined,
+    price: row.price,
+    section: row.section,
+    yesVotes: row.yes_votes,
+    noVotes: row.no_votes,
+  };
+}
+
+/**
+ * Every restaurant, each carrying the price band derived from its menu.
+ *
+ * Selects the `RestaurantView` columns rather than `*`, and that narrowing is
+ * load-bearing rather than tidiness: these rows are handed to client
+ * components, so every column named here is serialised into the page payload
+ * once per restaurant and downloaded by every visitor. `SELECT *` was sending
+ * eight fields the grid never reads. The detail page still gets the whole row
+ * from `getRestaurantById`, where it is one restaurant and something renders
+ * them.
+ *
+ * `price_band` is read, not derived. It used to be computed on every call by
+ * pulling the price and section of every dish in the table and banding them in
+ * JS — fine against 125 dishes, a full scan of the menu corpus against a real
+ * one. It changes only when menus are re-imported, so the import writes it
+ * (see scripts/import-restaurants.mjs, which calls the same `bandFor`).
+ */
+export async function getRestaurants(): Promise<RestaurantView[]> {
+  // Seed-file order, not id order — `id` is TEXT, so ordering by it would
+  // put "10" ahead of "2" and reshuffle the grid. See the sort_order note in
+  // scripts/migrate.mjs.
+  const restaurantRows = await sql`
+    SELECT id, name, cuisine, neighborhood, distance, hours,
+           lat, lng, rating, review_count, trending, photo, photo_alt, price_band
+    FROM restaurants ORDER BY sort_order, id
+  `;
+
+  return restaurantRows.map((row) => ({
+    id: row.id as string,
+    name: row.name as string,
+    cuisine: row.cuisine as string,
+    neighborhood: row.neighborhood as string,
+    distance: row.distance as string,
+    hours: (row.hours as Hours) ?? null,
+    lat: row.lat as number,
+    lng: row.lng as number,
+    rating: row.rating as number,
+    reviewCount: row.review_count as number,
+    trending: (row.trending as boolean) ?? false,
+    photo: (row.photo as string | null) ?? undefined,
+    photoAlt: (row.photo_alt as string | null) ?? undefined,
+    // Null is meaningful: no menu means no band, and no price filter matches.
+    priceBand: (row.price_band as PriceBand | null) ?? null,
+  }));
+}
+
+export async function getRestaurantById(id: string): Promise<Restaurant | null> {
+  const rows = await sql`SELECT * FROM restaurants WHERE id = ${id}`;
+  return rows[0] ? rowToRestaurant(rows[0]) : null;
+}
+
+/** A restaurant's menu, in the order the menu itself listed it. */
+export async function getDishesForRestaurant(restaurantId: string): Promise<Dish[]> {
+  const rows = await sql`
+    SELECT * FROM dishes WHERE restaurant_id = ${restaurantId} ORDER BY sort_order
+  `;
+  return rows.map(rowToDish);
+}
+
+/**
+ * Menus for several restaurants at once, keyed by restaurant id — the shape
+ * the old `dishesByRestaurant` map had, for the two surfaces that genuinely
+ * need many menus at a time (the composer's dish picker and the feed map).
+ */
+export async function getDishesByRestaurant(
+  restaurantIds?: readonly string[],
+): Promise<Record<string, Dish[]>> {
+  if (restaurantIds && restaurantIds.length === 0) return {};
+
+  const rows = restaurantIds
+    ? await sql`
+        SELECT * FROM dishes
+        WHERE restaurant_id = ANY(${restaurantIds as string[]})
+        ORDER BY restaurant_id, sort_order
+      `
+    : await sql`SELECT * FROM dishes ORDER BY restaurant_id, sort_order`;
+
+  const byRestaurant: Record<string, Dish[]> = {};
+  for (const row of rows) {
+    const id = row.restaurant_id as string;
+    (byRestaurant[id] ??= []).push(rowToDish(row));
+  }
+  return byRestaurant;
+}
+
+/**
+ * The distinct cuisines and neighbourhoods, for the pickers that offer them as
+ * options. Derived from the rows rather than kept as a list, which is what
+ * data/restaurants.ts did — the difference is that the database does the
+ * grouping instead of the browser doing it over the whole array.
+ */
+/* --- Menu lookups -------------------------------------------------------- */
+
+/*
+ * The extraction ledger. `menu_lookups` records that a restaurant's menu was
+ * ASKED ABOUT, separately from `dishes`, which records what came back. The
+ * distinction is the whole point: a restaurant whose menu isn't on the open
+ * web looks identical to one nobody has got to yet unless the attempt itself
+ * is written down, and re-attempting those is the expensive mistake.
+ *
+ * Written by scripts/load-menus.mjs as menus are filled in ahead of time.
+ * There is no per-visit lookup — see components/FullMenu.tsx.
+ */
+
+export type MenuLookup = {
+  restaurantId: string;
+  status: "found" | "not_found" | "error";
+  sourceUrl?: string;
+  confidence?: string;
+  dishCount: number;
+  attemptedAt: string;
+};
+
+/** Null when this restaurant has never been looked up — the only state in
+    which spending money on it is allowed. */
+export async function getMenuLookup(restaurantId: string): Promise<MenuLookup | null> {
+  const rows = await sql`SELECT * FROM menu_lookups WHERE restaurant_id = ${restaurantId}`;
+  const row = rows[0];
+  if (!row) return null;
+  return {
+    restaurantId: row.restaurant_id as string,
+    status: row.status as MenuLookup["status"],
+    sourceUrl: (row.source_url as string | null) ?? undefined,
+    confidence: (row.confidence as string | null) ?? undefined,
+    dishCount: row.dish_count as number,
+    attemptedAt: (row.attempted_at as Date).toISOString(),
+  };
+}
+
+/** How many lookups have been attempted since a given moment — the daily cap. */
+export async function countMenuLookupsSince(since: Date): Promise<number> {
+  const rows = await sql`
+    SELECT count(*)::int AS n FROM menu_lookups WHERE attempted_at >= ${since.toISOString()}
+  `;
+  return rows[0].n as number;
+}
+
+/**
+ * Writes the attempt. `ON CONFLICT DO NOTHING` rather than an upsert: the row
+ * means "we have already spent money asking about this", and a second attempt
+ * must not be able to quietly reset that to look unspent.
+ */
+export async function recordMenuLookup(entry: {
+  restaurantId: string;
+  status: MenuLookup["status"];
+  userId: string;
+  sourceUrl?: string;
+  confidence?: string;
+  dishCount?: number;
+}): Promise<void> {
+  await sql`
+    INSERT INTO menu_lookups
+      (restaurant_id, status, source_url, confidence, dish_count, requested_by)
+    VALUES (
+      ${entry.restaurantId}, ${entry.status}, ${entry.sourceUrl ?? null},
+      ${entry.confidence ?? null}, ${entry.dishCount ?? 0}, ${entry.userId}
+    )
+    ON CONFLICT (restaurant_id) DO NOTHING
+  `;
+}
+
+/**
+ * Swaps in a freshly read menu, as a set.
+ *
+ * Delete-then-insert rather than upsert by dish id, for the reason the import
+ * script gives: a dish that has come off the menu has to actually leave, and
+ * ids are positional within a restaurant so an upsert would leave a longer old
+ * menu's tail behind.
+ */
+export async function replaceDishesForRestaurant(
+  restaurantId: string,
+  dishes: readonly Dish[],
+): Promise<void> {
+  await sql`DELETE FROM dishes WHERE restaurant_id = ${restaurantId}`;
+  for (const [order, dish] of dishes.entries()) {
+    await sql`
+      INSERT INTO dishes
+        (id, restaurant_id, name, description, price, section, yes_votes, no_votes, sort_order)
+      VALUES (
+        ${dish.id}, ${restaurantId}, ${dish.name}, ${dish.description ?? null},
+        ${dish.price}, ${dish.section}, ${dish.yesVotes}, ${dish.noVotes}, ${order}
+      )
+    `;
+  }
+}
+
+export async function getRestaurantFacets(): Promise<{
+  cuisines: string[];
+  neighborhoods: string[];
+}> {
+  const [cuisineRows, neighborhoodRows] = await Promise.all([
+    sql`SELECT DISTINCT cuisine FROM restaurants ORDER BY cuisine`,
+    sql`SELECT DISTINCT neighborhood FROM restaurants ORDER BY neighborhood`,
+  ]);
+  return {
+    cuisines: cuisineRows.map((r) => r.cuisine as string),
+    neighborhoods: neighborhoodRows.map((r) => r.neighborhood as string),
   };
 }
