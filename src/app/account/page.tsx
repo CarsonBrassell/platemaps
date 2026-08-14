@@ -615,20 +615,27 @@ export default function AccountPage() {
   const { isSignedIn, loading } = useAuth();
 
   return (
-    /* Cream ground; the overview and auth form supply their own white cards. */
-    <div className="mx-auto w-full max-w-5xl pb-12">
+    <>
+      {/* Header owns the full viewport width — its desktop nav row needs
+          close to 1280px to lay out without squeezing, which a max-w-5xl
+          parent (1024px) doesn't give it. Nesting it inside the content
+          wrapper below made the nav column overflow into the logo and the
+          search/avatar. */}
       <Header />
-      {!loading && (isSignedIn ? <AccountOverview /> : <AuthForm />)}
+      {/* Cream ground; the overview and auth form supply their own white cards. */}
+      <div className="mx-auto w-full max-w-5xl pb-12">
+        {!loading && (isSignedIn ? <AccountOverview /> : <AuthForm />)}
 
-      <div className="mt-10 flex justify-center gap-3 text-xs text-zinc-400">
-        <Link href="/terms" className="hover:text-zinc-600 hover:underline">
-          Terms of Service
-        </Link>
-        <span aria-hidden="true">&middot;</span>
-        <Link href="/privacy" className="hover:text-zinc-600 hover:underline">
-          Privacy Policy
-        </Link>
+        <div className="mt-10 flex justify-center gap-3 text-xs text-zinc-400">
+          <Link href="/terms" className="hover:text-zinc-600 hover:underline">
+            Terms of Service
+          </Link>
+          <span aria-hidden="true">&middot;</span>
+          <Link href="/privacy" className="hover:text-zinc-600 hover:underline">
+            Privacy Policy
+          </Link>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

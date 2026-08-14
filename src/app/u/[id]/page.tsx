@@ -30,9 +30,12 @@ export default async function PublicProfilePage({
     : undefined;
 
   return (
-    <div className="mx-auto w-full max-w-2xl pb-12">
+    <>
+      {/* Header owns the full viewport width — see account/page.tsx's
+          identical comment. max-w-2xl (672px) squeezed it far worse than
+          account's max-w-5xl did. */}
       <Header />
-
+      <div className="mx-auto w-full max-w-2xl pb-12">
       <div className="mx-4 rounded-2xl bg-white px-6 py-10 text-center sm:mx-6">
         {profile.avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -87,6 +90,7 @@ export default async function PublicProfilePage({
           <ProfileBlockButton userId={profile.id} />
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
