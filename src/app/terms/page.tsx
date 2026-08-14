@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "The terms that govern your use of PlateMaps.",
 };
 
-const LAST_UPDATED = "August 5, 2026";
+const LAST_UPDATED = "August 14, 2026";
 
 const SECTIONS = [
   { id: "acceptance", title: "1. Acceptance of Terms" },
@@ -147,7 +147,8 @@ export default function TermsPage() {
               operating hours, or other listed information is current, complete, or
               accurate. The Service is provided for personal, non-commercial use unless
               you have a separate written agreement with us (for example, as a restaurant
-              partner under Section 7).
+              partner under Section 7). We may also suspend or discontinue the Service, or
+              any part of it, at any time, with or without notice.
             </p>
           </Section>
 
@@ -238,6 +239,12 @@ export default function TermsPage() {
                 rankings.
               </li>
             </List>
+            <p>
+              If you believe content on the Service violates these Terms, please report it
+              using the in-product reporting option where available, or contact us using
+              the information in Section 21. Reports of copyright infringement specifically
+              should follow the DMCA process in Section 11.
+            </p>
           </Section>
 
           <Section id="ratings" title="6. Ratings, Reviews, and Content Disclaimer">
@@ -254,6 +261,14 @@ export default function TermsPage() {
               Nothing on the Service is professional, medical, dietary, or nutritional
               advice. See Section 9 for important information about food safety and
               allergens.
+            </p>
+            <p>
+              Reviews, ratings, comments, and other content posted by users are provided by
+              those users, not by PlateMaps, and PlateMaps is an interactive computer
+              service within the meaning of Section 230 of the Communications Decency Act
+              (47 U.S.C. § 230). We do not create, write, or substantively edit user
+              reviews, and nothing in these Terms should be read as PlateMaps adopting a
+              user&rsquo;s review as its own statement.
             </p>
           </Section>
 
@@ -342,10 +357,11 @@ export default function TermsPage() {
 
           <Section id="third-party" title="10. Third-Party Content and Services">
             <p>
-              Certain restaurant information, photographs, and map data displayed on the
-              Service are provided by or sourced from third parties, including Yelp Inc.
-              and Google, under their respective terms of use, and remain the property of
-              their respective owners. We attribute this content where required (for
+              Certain restaurant information, photographs, map tiles, and geolocation data
+              displayed on the Service are provided by or sourced from third parties,
+              including Yelp Inc. and our map and mapping-data providers, under their
+              respective terms of use, and remain the property of their respective owners.
+              We attribute this content where required (for
               example, photo credit lines) but do not independently verify it and are not
               responsible for its accuracy, availability, or continued provision. The
               Service may also link to restaurant websites, ordering platforms, or other
@@ -479,7 +495,9 @@ export default function TermsPage() {
               Section prevents either party from seeking public injunctive relief in a
               court of law to the extent that a waiver of that right would be unenforceable
               under applicable law, or from bringing an issue to the attention of a
-              federal, state, or local government agency.
+              federal, state, or local government agency. This Section does not waive any
+              right that cannot be waived as a matter of law, including rights under the
+              California Consumer Legal Remedies Act (Cal. Civ. Code § 1750 et seq.).
             </p>
             <p>
               You may opt out of this arbitration agreement by sending written notice to
@@ -529,6 +547,11 @@ export default function TermsPage() {
                 <span className="font-medium text-zinc-900">Assignment.</span> You may not
                 assign these Terms without our consent; we may assign them, including in
                 connection with a merger, acquisition, or sale of assets.
+              </li>
+              <li>
+                <span className="font-medium text-zinc-900">Feedback.</span> If you send us
+                ideas, suggestions, or feedback about the Service, you agree that we may use
+                them for any purpose without compensation or obligation to you.
               </li>
               <li>
                 <span className="font-medium text-zinc-900">Force majeure.</span> We are not

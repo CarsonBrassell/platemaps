@@ -154,6 +154,20 @@ function AuthForm() {
         >
           {mode === "signup" ? "Create account" : "Log in"}
         </button>
+
+        {mode === "signup" && (
+          <p className="mt-3 text-center text-xs text-zinc-500">
+            By creating an account, you agree to our{" "}
+            <Link href="/terms" className="underline underline-offset-2">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="underline underline-offset-2">
+              Privacy Policy
+            </Link>
+            .
+          </p>
+        )}
       </form>
     </div>
   );
