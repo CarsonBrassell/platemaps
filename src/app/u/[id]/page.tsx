@@ -6,6 +6,7 @@ import { restaurants } from "@/data/restaurants";
 import { initials } from "@/lib/format";
 import { PlateStarIcon } from "@/components/icons";
 import { ProfileFriendButton } from "@/components/ProfileFriendButton";
+import { ProfileBlockButton } from "@/components/ProfileBlockButton";
 
 /**
  * The public profile — what anyone, friend or stranger, sees when they look
@@ -81,8 +82,9 @@ export default async function PublicProfilePage({
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 flex items-center justify-center gap-2">
           <ProfileFriendButton userId={profile.id} />
+          <ProfileBlockButton userId={profile.id} />
         </div>
       </div>
     </div>

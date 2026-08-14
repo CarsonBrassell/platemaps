@@ -333,6 +333,8 @@ function AccountOverview() {
 
       <ProfileSettingsPanel />
 
+      <BlockedUsersPanel />
+
       {myPosts.length > 0 && (
         <>
           <p className="mono-label mb-2 text-zinc-500">Your posts</p>
@@ -528,6 +530,83 @@ function ProfileSettingsPanel() {
       </select>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+/**
+ * The one place a block is reversible. Post cards and profile pages can
+ * create a block, but this is the only surface that lists them and lets you
+ * undo one — mirrors ProfileSettingsPanel's shell (mono-label + tinted card)
+ * rather than the friends list's white-card style, since this reads as a
+ * setting, not a social list.
+ */
+function BlockedUsersPanel() {
+  const { account } = useAuth();
+  const [blocked, setBlocked] = useState<{ id: string; name: string; avatarUrl?: string }[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [pendingId, setPendingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!account) return;
+    fetch("/api/blocks")
+      .then((res) => res.json())
+      .then((data: { blocked: { id: string; name: string; avatarUrl?: string }[] }) => {
+        setBlocked(data.blocked);
+        setLoaded(true);
+      })
+      .catch(() => setLoaded(true));
+  }, [account]);
+
+  async function handleUnblock(userId: string) {
+    setPendingId(userId);
+    const previous = blocked;
+    setBlocked((b) => b.filter((u) => u.id !== userId));
+    try {
+      const res = await fetch("/api/blocks", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      if (!res.ok) throw new Error("failed");
+    } catch {
+      setBlocked(previous);
+    }
+    setPendingId(null);
+  }
+
+  // Nothing blocked and we know it — no reason to show an empty settings
+  // card most people will never need.
+  if (!account || (loaded && blocked.length === 0)) return null;
+
+  return (
+    <div className="mb-6 rounded-xl bg-pm-grey-tint/40 p-4">
+      <p className="mono-label mb-3 text-zinc-500">Blocked</p>
+      <ul className="space-y-2">
+        {blocked.map((u) => (
+          <li key={u.id} className="flex items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-2.5">
+              {u.avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={u.avatarUrl} alt="" className="h-8 w-8 rounded-full object-cover" />
+              ) : (
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xs font-medium text-pm-grey-text">
+                  {initials(u.name)}
+                </span>
+              )}
+              <span className="truncate text-sm font-medium text-zinc-800">{u.name}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleUnblock(u.id)}
+              disabled={pendingId === u.id}
+              className="min-h-9 shrink-0 rounded-full bg-white px-3 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:opacity-50"
+            >
+              Unblock
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

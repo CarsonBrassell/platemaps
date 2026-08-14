@@ -501,6 +501,21 @@ const statements = [
   // signup form currently shows one. `createUser` stamps this itself with
   // NOW() at insert time — there is no client-supplied timestamp to trust.
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS agreed_to_terms_at TIMESTAMPTZ`,
+
+  // --- Blocking ----------------------------------------------------------
+  //
+  // Directional, unlike friendships — blocking someone needs no agreement
+  // from them, so there's no canonical-ordering trick here, just
+  // blocker_id -> blocked_id. blockUser() in lib/db.ts also tears down any
+  // existing friendship/pending request between the two before inserting.
+  `CREATE TABLE IF NOT EXISTS blocked_users (
+    blocker_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    blocked_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (blocker_id, blocked_id),
+    CHECK (blocker_id <> blocked_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_blocked_users_blocked ON blocked_users(blocked_id)`,
 ];
 
 for (const statement of statements) {
