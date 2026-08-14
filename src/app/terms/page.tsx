@@ -85,7 +85,7 @@ export default function TermsPage() {
             Service.
           </div>
 
-          <nav className="mb-10 rounded-2xl border border-pm-orange-border/60 bg-white p-4 sm:p-5">
+          <nav className="mb-10 rounded-2xl bg-white p-4 sm:p-5">
             <p className="font-mono mb-3 text-xs uppercase tracking-[0.14em] text-zinc-500">
               Contents
             </p>
