@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PlateStarIcon } from "@/components/icons";
 import { PhoneProfileFriendButton } from "@/components/mobile/PhoneProfileFriendButton";
+import { ProfileBlockButton } from "@/components/ProfileBlockButton";
 import { getPublicProfile, getRestaurantById } from "@/lib/db";
 import { initials } from "@/lib/format";
 
@@ -107,8 +108,17 @@ export default async function PhonePublicProfilePage({
           </div>
         </div>
 
-        <div className="mt-6">
+        {/* Friend and Block sit on one row: they are the two things you can do
+            about a person, and the destructive one should not read as the
+            primary action by getting a row of its own.
+
+            `ProfileBlockButton` is the web component reused unmodified, not a
+            Phone* fork — it navigates nowhere (all it does is POST /api/blocks),
+            so nothing in it can drop you out of the /m tree, and it already
+            carries the min-h-11 target this tree requires. */}
+        <div className="mt-6 flex flex-wrap items-center gap-2">
           <PhoneProfileFriendButton userId={profile.id} />
+          <ProfileBlockButton userId={profile.id} />
         </div>
       </div>
     </div>

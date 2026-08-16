@@ -472,5 +472,38 @@ export function PhoneProfileScreen() {
      and is replaced by a profile is worse than a beat of cream. */
   if (loading) return <div className="min-h-dvh" />;
 
-  return isSignedIn ? <ProfileOverview /> : <PhoneProfileAuth />;
+  return (
+    <>
+      {isSignedIn ? <ProfileOverview /> : <PhoneProfileAuth />}
+
+      {/* The legal footer the web /account page carries, on both the signed-in
+          and signed-out views for the same reason it is on both there: these
+          are the documents a visitor agreed to, and they have to be reachable
+          after signup, not only at the moment of consent. Apple checks that a
+          shipped app links them from inside itself.
+
+          Muted small text on the cream ground, so --pm-grey-text and not
+          zinc-400 — the web's zinc-400 clears 4.5:1 on a white card and does
+          not on this ground. min-h-11 because these are the only two links on
+          the screen and a thumb has to hit them. */}
+      <nav
+        aria-label="Legal"
+        className="mt-8 flex items-center justify-center gap-3 pb-4 text-xs text-pm-grey-text"
+      >
+        <Link
+          href="/terms"
+          className="inline-flex min-h-11 items-center rounded-sm px-1 underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        >
+          Terms of Service
+        </Link>
+        <span aria-hidden="true">&middot;</span>
+        <Link
+          href="/privacy"
+          className="inline-flex min-h-11 items-center rounded-sm px-1 underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+        >
+          Privacy Policy
+        </Link>
+      </nav>
+    </>
+  );
 }

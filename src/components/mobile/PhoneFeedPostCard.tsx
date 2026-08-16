@@ -5,7 +5,7 @@ import Link from "next/link";
 import { PostMediaCarousel } from "@/components/feed/PostMediaCarousel";
 import { PostActions, type VoteDirection } from "@/components/feed/PostActions";
 import { StarRating } from "@/components/StarRating";
-import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon } from "@/components/icons";
+import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/components/icons";
 import { relativeTime } from "@/lib/format";
 import { tagAccent } from "@/data/foodTags";
 import { amenityEmoji, vibeChip } from "@/data/reviewScales";
@@ -180,10 +180,34 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [status, setStatus] = useState<"live" | "hidden" | "reported" | "deleted">("live");
+  const [status, setStatus] = useState<"live" | "hidden" | "reported" | "deleted" | "blocked">(
+    "live",
+  );
+  const [blocking, setBlocking] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const reviewRef = useRef<HTMLParagraphElement>(null);
   const [clamped, setClamped] = useState(false);
+
+  /* Blocking, ported from the web card rather than reinvented: same POST to
+     /api/blocks, same optimistic tombstone. The phone card forked from the web
+     one before Carson added this, which is exactly the kind of gap a clean
+     merge hides — the feature existed on one surface and silently not on the
+     other. */
+  async function handleBlock() {
+    if (blocking) return;
+    setBlocking(true);
+    try {
+      const res = await fetch("/api/blocks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: post.userId }),
+      });
+      if (!res.ok) throw new Error("failed");
+      setStatus("blocked");
+    } catch {
+      setBlocking(false);
+    }
+  }
 
   const saved = currentUserId ? post.savedBy.includes(currentUserId) : false;
   const isOwner = currentUserId === post.userId;
@@ -256,6 +280,17 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
       <Tombstone
         title="Thanks for the report"
         body="We'll take a look at this post. It's hidden from your feed."
+      />
+    );
+  }
+  if (status === "blocked") {
+    /* No Undo, deliberately, and the same wording the web card uses: blocking
+       is not a feed preference you toggle back from a card, it is an account
+       setting. Pointing at where it lives is the honest affordance. */
+    return (
+      <Tombstone
+        title={`Blocked ${post.authorName}`}
+        body="You won't see posts from this person again. Manage this from Account settings."
       />
     );
   }
@@ -577,6 +612,18 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                   >
                     <FlagIcon className="h-4 w-4 shrink-0" />
                     Report post
+                  </button>
+                  <button
+                    role="menuitem"
+                    disabled={blocking}
+                    onClick={() => {
+                      setMenuOpen(false);
+                      void handleBlock();
+                    }}
+                    className="flex min-h-11 w-full items-center gap-2 rounded-lg px-3 text-left text-sm text-red-700 disabled:opacity-50"
+                  >
+                    <CloseIcon className="h-4 w-4 shrink-0" />
+                    Block {handleFor(post.authorName)}
                   </button>
                 </>
               )}
