@@ -420,11 +420,19 @@ h3 {
   animation: neon-flicker 0.45s linear;
 }
 
+/* The sign rides above the TOP card of a stack, so a restaurant signs its pile
+   once, at the top, rather than from inside it. It is a row because it carries
+   the plate score after the name — same pair, same order, as the hover tip.
+   `left`/`gap` here are mirrored by SIGN_LEFT/SIGN_GAP in RestaurantMap.tsx,
+   which estimates this row's width for the collision footprint. */
 .map-neon-sign {
   position: absolute;
   bottom: calc(100% + 2px);
   left: 4px;
   font-size: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
 /* A sign whose ember the cursor is on. The restaurant has already said its
@@ -446,67 +454,59 @@ h3 {
     0 0 18px rgba(232, 135, 90, 0.6);
 }
 
-/* The map's Discover/Friends switch (see /feed) — lit, not filled.
+/* The underline under the map's selected Discover/Friends label (see /feed).
+   The track and the lit tube it used to sit in are gone; the bar is all that
+   marks the choice now, so the bar is what burns.
 
-   The selected segment used to take a solid cream fill, the rank-3 segmented
-   control's "white selected segment" translated for night. On tiles carrying
-   neon restaurant signs a solid chip is the brightest object on the map and
-   reads as a lamp rather than as a choice, so the segment lights up instead:
-   the label burns in the sign voice — #ffb07a and the SAME two-stop ember glow
-   as .map-neon-sign directly above — inside a hollow ember tube.
+   Same voice as the signs above, and the same two stops — a control glowing at
+   a different temperature from the restaurant names around it reads as a
+   second light source in a city that only has one. When .map-neon-sign's
+   shadow changes, this changes with it. Box-shadow rather than text-shadow
+   because this is a painted bar, not a glyph.
 
-   Those shadow values and this one change together. A switch glowing at a
-   different temperature from the restaurant signs it sits among reads as a
-   second light source in a city that only has one.
+   No flicker: .map-neon-sign flickers because a sign gains power when its
+   bubble arrives, but this moves under the reader's own finger, and a control
+   that stutters when pressed reads as a fault rather than as neon.
 
-   **No flicker here.** .map-neon-sign flickers on because a sign gains power
-   when its bubble arrives; this changes state under the reader's own finger,
-   and a control that stutters when pressed reads as a fault, not as neon.
-
-   Both segments carry a 1px border — transparent when unlit — so lighting one
-   cannot resize either. Colour lives here rather than in Tailwind classes at
-   the call site because this file is unlayered and would win the cascade
-   anyway; splitting it would only hide which rule was in charge.
-
-   Contrast on the #1d2126-ish track: lit #ffb07a 9.1:1, unlit #a7b0ba 7.4:1 —
-   the same muted step the zoom stack and the results panel already use. The
-   two states differ by glow and by hue, and `aria-selected` carries it for
-   anything that cannot see either. */
-.map-source-seg {
-  color: #a7b0ba;
-  border: 1px solid transparent;
-}
-
-.map-source-seg:not(.is-on):hover {
-  color: #f7f4ec;
-}
-
-.map-source-seg.is-on {
-  color: #ffb07a;
-  border-color: rgba(232, 135, 90, 0.85);
-  background: rgba(232, 135, 90, 0.08);
-  text-shadow:
+   `--pm-orange` is the cream world's accent and stays there — on the night
+   tiles the ember the signs are lit in is the one that belongs. */
+.map-source-bar {
+  background: #ffb07a;
+  box-shadow:
     0 0 6px rgba(232, 135, 90, 0.9),
     0 0 14px rgba(232, 135, 90, 0.45);
-  box-shadow:
-    0 0 10px rgba(232, 135, 90, 0.3),
-    inset 0 0 10px rgba(232, 135, 90, 0.12);
 }
 
-/* The hover tip carries the name and the place's star rating on one line, so
-   it becomes a row rather than a bare text node. */
+/* The hover tip carries the name and the place's numbers on one line, so it
+   becomes a row rather than a bare text node. */
 .map-name-tip {
   display: inline-flex;
   align-items: baseline;
   gap: 7px;
 }
 
-/* The rating is the tip's second voice: the same neon, stepped back so the
+/* The plate score is the tip's second voice: the same neon, stepped back so the
    name still leads. Not letter-spaced like the name — this is a number, and
    the caps tracking that makes a sign read pulls digits apart. */
-.map-tip-rating {
+/* The same number on two surfaces — the hover tip's row and the neon sign over
+   a stack — so it keeps one setting: the sign's wide uppercase tracking pulled
+   back off a machine value, and a step quieter than the name it follows. */
+.map-tip-rating,
+.map-sign-rating {
   letter-spacing: 0.02em;
   opacity: 0.85;
+}
+
+/* The Yelp/Google blend is the third and quietest voice, and it has to lose to
+   the plate score beside it: the two are different scales, and equal weight
+   would invite reading them as one. Dimmer than .map-tip-rating rather than a
+   different hue — the map has one accent, and a second colour here would read as
+   a third kind of thing. Still ~5.5:1 on the night ground. Retired with the
+   stars themselves (SHOW_BLEND_STARS in lib/ratingDisplay.ts). */
+.map-tip-blend {
+  letter-spacing: 0.02em;
+  opacity: 0.6;
+  font-size: 0.92em;
 }
 
 /* The leader thread, lit like the sign above it and the ember it lands on, so

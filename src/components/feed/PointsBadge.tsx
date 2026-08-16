@@ -7,22 +7,35 @@ import { formatPoints } from "@/lib/points";
  * The points chip that appears next to a name. Deliberately quiet — points
  * are context on a post card, not the headline, so `sm` is the default and
  * only the leaderboard and profile use `md`.
+ *
+ * `tone` is where it is sitting, not how loud it is. On a card it is a tinted
+ * chip like every other; on a photo the tint would be a second bubble next to
+ * the handle, so the fill comes off and a dark halo does the separating
+ * instead — the same trade FoodPostCard's overlay handle makes, and MapSearch
+ * over the map before it. The halo is a filter rather than a text-shadow
+ * because it has to reach the star glyph too.
  */
 export function PointsBadge({
   points,
   size = "sm",
+  tone = "chip",
   className = "",
 }: {
   points: number;
   size?: "sm" | "md";
+  tone?: "chip" | "photo";
   className?: string;
 }) {
   const sm = size === "sm";
+  const skin =
+    tone === "photo"
+      ? "text-[#F7F4EC] [filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.9))]"
+      : "rounded-full bg-pm-grey-tint px-2 py-0.5 text-pm-grey-text";
   return (
     <span
-      className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-pm-grey-tint px-2 py-0.5 font-mono font-medium tabular-nums text-pm-grey-text ${
+      className={`inline-flex items-center gap-1 whitespace-nowrap font-mono font-medium tabular-nums ${
         sm ? "text-[11px]" : "text-xs"
-      } ${className}`}
+      } ${skin} ${className}`}
     >
       <PlateStarIcon className={sm ? "h-3 w-4" : "h-3.5 w-[18px]"} />
       {formatPoints(points)}

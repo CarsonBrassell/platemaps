@@ -12,6 +12,8 @@ import { BEST_AT_LABELS } from "@/data/reviewScales";
 import { PRICE_BANDS, type PriceBand } from "@/data/priceBands";
 import type { RestaurantView } from "@/data/restaurants";
 import { aspectScores } from "@/lib/aspectScores";
+import type { PlateScore } from "@/lib/plateScore";
+import { SHOW_BLEND_STARS } from "@/lib/ratingDisplay";
 // From lib/geo.ts, not lib/nearby.ts: this module is imported by the server
 // (lib/discover.ts) as well as by client components, and nearby.ts is a React
 // hook. See the note in geo.ts.
@@ -28,7 +30,26 @@ export const QUICK_FILTERS: ReadonlyArray<{ value: QuickFilter; label: string }>
 
 const QUICK_VALUES = QUICK_FILTERS.map((f) => f.value);
 
-export const TOP_RATED_FROM = 4.5;
+/**
+ * What "Top rated" means, in each of the two scales a restaurant carries.
+ *
+ * Which one is in force follows `SHOW_BLEND_STARS` (lib/ratingDisplay.ts), the
+ * same switch the display reads — so the filter always measures what the cards
+ * are actually showing. A visitor filtering to "Top rated" and then seeing the
+ * stars on every result is coherent; filtering on a percent nine cards in ten
+ * don't have is not.
+ *
+ * `TOP_RATED_PERCENT` is the end state and takes over the day the stars go. It
+ * excludes a restaurant whose plates haven't cleared the plate-score floor,
+ * because that restaurant is unrated rather than well-rated — which is why it
+ * cannot be the live threshold yet, and why the flag decides.
+ *
+ * 4.5 is where this sat before the plate score existed, and it is calibrated
+ * against the real blend. 85 is not calibrated against anything yet — re-check it
+ * once there are real dish ratings behind it.
+ */
+export const TOP_RATED_STARS = 4.5;
+export const TOP_RATED_PERCENT = 85;
 
 const PRICE_VALUES = PRICE_BANDS.map((b) => b.value);
 
@@ -43,7 +64,8 @@ export type DiscoverFilters = {
   nearby: boolean;
   cuisine: string | null;
   price: PriceBand | null;
-  /** A category label from BEST_AT — "Food", "Service", "Ambiance"… */
+  /** A category label from BEST_AT — "Service", "Ambiance", "Drinks"… Never
+      "Food": the plate score is the food rating, so it isn't a category. */
   aspect: string | null;
   quick: QuickFilter[];
   /**
@@ -87,25 +109,25 @@ export function activeFilterCount(f: DiscoverFilters): number {
 /**
  * The bar an aspect has to clear to count as "rated well for" it.
  *
- * Two conditions, because either alone lies. A star threshold alone would pass
- * any category at a well-reviewed place, since an unremarked aspect scores the
- * restaurant's own average — a 4.6 restaurant would read "rated well for
+ * Two conditions, because either alone lies. A score threshold alone would pass
+ * any category at a well-rated place, since an unremarked aspect scores the
+ * restaurant's own plate score — a 92% restaurant would read "rated well for
  * dessert" on the strength of never having served anyone one. Net praise alone
  * would pass the least-bad category at a mediocre place.
  *
- * Calibrated against the real tallies rather than guessed: at 4.0 the eight
- * categories return 32/26/14/13/8/7/6/3 of 36 restaurants, every option has
- * something behind it, and the average restaurant qualifies for three. Raising
- * it to 4.2 mostly just thins Service; adding a net-praise floor of 0.25
- * empties Dessert entirely.
+ * 80 is the direct translation of the 4.0/5 this was calibrated at, and the old
+ * calibration no longer transfers: the anchor changed from a Yelp-blended star
+ * average to the restaurant's own plate score, so the distribution behind these
+ * counts is a different one. Re-tune with `npm run aspects:preview` once there
+ * are real dish ratings to tune against.
  */
-export const ASPECT_STRONG_STARS = 4.0;
+export const ASPECT_STRONG_SCORE = 80;
 
 /**
  * Which categories each restaurant is rated well for, by restaurant id, and
  * what each of those categories scored.
  *
- * The inner map carries the star score rather than the bare label so the grid
+ * The inner map carries the percent score rather than the bare label so the grid
  * can print the number beside a card without re-running the model: filtering to
  * "rated well for Food" and then hiding the food score made the visitor open a
  * restaurant to find out what they had just filtered on. `.has()` reads the
@@ -122,6 +144,7 @@ export type StrongAspects = ReadonlyMap<string, ReadonlyMap<string, number>>;
  * than risk dragging the driver into the browser bundle. Keep the two in step.
  */
 export type AspectTally = {
+  /** What category scores move away from — see `aspectAnchor` in ratingDisplay.ts. */
   overall: number;
   reviewCount: number;
   votes: Record<string, { praised: number; faulted: number }>;
@@ -151,8 +174,8 @@ export function strongAspectsFrom(
       restaurantId,
       new Map(
         scored
-          .filter((s) => s.stars !== null && s.stars >= ASPECT_STRONG_STARS && s.net > 0)
-          .map((s) => [s.aspect, s.stars!] as const),
+          .filter((s) => s.score !== null && s.score >= ASPECT_STRONG_SCORE && s.net > 0)
+          .map((s) => [s.aspect, s.score!] as const),
       ),
     );
   }
@@ -165,7 +188,7 @@ export function strongAspectsFrom(
  * for it — including while the tallies are still in flight, which is the same
  * "can't evaluate yet" null the filter context uses.
  */
-export function strongAspectStars(
+export function strongAspectScore(
   aspects: StrongAspects | null,
   restaurantId: string,
   aspect: string | null,
@@ -190,9 +213,21 @@ export type FilterContext = {
   now: Date | null;
   here: Coords | null;
   aspects: StrongAspects | null;
+  /**
+   * Every restaurant's plate score, keyed by id — what "Top rated" reads. A
+   * restaurant absent from the record has no rated plates; null is the whole
+   * record still being in flight, and follows the same match-everything rule as
+   * the other two.
+   */
+  plates: Record<string, PlateScore> | null;
 };
 
-export const NO_CONTEXT: FilterContext = { now: null, here: null, aspects: null };
+export const NO_CONTEXT: FilterContext = {
+  now: null,
+  here: null,
+  aspects: null,
+  plates: null,
+};
 
 /**
  * The text a free-text query is matched against, lowercased once per row.
@@ -236,7 +271,16 @@ export function matchesFilters(
   if (f.aspect && ctx.aspects) {
     if (!ctx.aspects.get(r.id)?.has(f.aspect)) return false;
   }
-  if (f.quick.includes("top-rated") && r.rating < TOP_RATED_FROM) return false;
+  if (f.quick.includes("top-rated")) {
+    if (SHOW_BLEND_STARS) {
+      if (r.rating < TOP_RATED_STARS) return false;
+    } else if (ctx.plates) {
+      // An unrated restaurant fails this, and so does one whose plates haven't
+      // cleared the plate-score floor — see TOP_RATED_PERCENT.
+      const percent = ctx.plates[r.id]?.percent ?? null;
+      if (percent === null || percent < TOP_RATED_PERCENT) return false;
+    }
+  }
   if (f.quick.includes("trending") && !r.trending) return false;
   if (f.quick.includes("open-now") && ctx.now) {
     if (openStateFor(r.hours, ctx.now).kind === "closed") return false;

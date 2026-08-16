@@ -346,9 +346,10 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                     <RestaurantCard
                       key={restaurant.id}
                       restaurant={restaurant}
+                      score={restaurant.plateScore}
                       highlight={
-                        filters.aspect && restaurant.aspectStars !== undefined
-                          ? { aspect: filters.aspect, stars: restaurant.aspectStars }
+                        filters.aspect && restaurant.aspectScore !== undefined
+                          ? { aspect: filters.aspect, score: restaurant.aspectScore }
                           : null
                       }
                     />

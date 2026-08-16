@@ -3,6 +3,13 @@ import type { RestaurantView } from "@/data/restaurants";
 import { StarIcon } from "@/components/icons";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { OpenStatePill } from "@/components/OpenStatePill";
+import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
+import {
+  ASPECT_SCALE_MAX,
+  SHOW_BLEND_STARS,
+  aspectOutOfFive,
+  blendLabel,
+} from "@/lib/ratingDisplay";
 
 /**
  * The category the grid is currently filtered to, and what this place scored in
@@ -12,13 +19,20 @@ import { OpenStatePill } from "@/components/OpenStatePill";
  * to open a restaurant to see the number they filtered on, which is the one
  * thing they already told us they care about.
  */
-export type AspectHighlight = { aspect: string; stars: number };
+export type AspectHighlight = { aspect: string; score: number };
 
 export function RestaurantCard({
   restaurant,
+  score = EMPTY_PLATE_SCORE,
   highlight = null,
 }: {
   restaurant: RestaurantView;
+  /**
+   * What this restaurant's plates add up to. Defaults to the unrated score so a
+   * caller without the aggregate renders the honest gap rather than crashing —
+   * lib/discover.ts attaches the real one to every grid result.
+   */
+  score?: PlateScore;
   highlight?: AspectHighlight | null;
 }) {
   return (
@@ -36,14 +50,38 @@ export function RestaurantCard({
           className="transition-transform duration-500 ease-out group-hover:scale-[1.07]"
           fallback={null}
         />
-        {/* Rating rides on the photo so the body below is just name and
-            context — one less row competing for attention. */}
-        <span className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 font-mono text-xs font-medium tabular-nums text-zinc-900">
-          <StarIcon className="h-3 w-3 text-zinc-500" />
-          {restaurant.rating.toFixed(1)}
-          <span className="text-[10px] text-zinc-500">
-            ({restaurant.reviewCount.toLocaleString()})
-          </span>
+        {/* Both numbers ride on the photo so the body below is just name and
+            context — one less row competing for attention.
+
+            The plate score comes first and wears the accent, because it is ours
+            (lib/plateScore.ts); the blend's stars follow behind a divider, muted
+            and always with their denominator, because they are someone else's and
+            a bare 4.1 beside an 88% is exactly the pair a reader could misread.
+            A single star glyph rather than five: at pill size five of them plus
+            two numbers is a smudge, and the /5 already names the scale.
+
+            A restaurant with no plate score yet shows only the stars, and the
+            words for the gap move to the body row below — the blend is what
+            carries a cold-start card, but it never gets to occupy the slot that
+            says "PlateMaps rated this". */}
+        <span className="absolute bottom-2 left-2 flex items-center gap-1.5 rounded-full bg-white/95 px-2 py-0.5 font-mono text-xs tabular-nums">
+          {score.percent !== null && (
+            <span className="font-bold text-pm-orange-text">
+              {score.percent}%
+              <span className="ml-0.5 text-[10px] font-medium text-zinc-500">
+                ({score.ratingCount.toLocaleString()})
+              </span>
+            </span>
+          )}
+          {SHOW_BLEND_STARS && (
+            <>
+              {score.percent !== null && <span className="text-zinc-300">·</span>}
+              <span className="flex items-center gap-0.5 font-medium text-zinc-600">
+                <StarIcon className="h-3 w-3 text-zinc-400" />
+                {blendLabel(restaurant.rating)}
+              </span>
+            </>
+          )}
         </span>
         {restaurant.trending && (
           <span className="absolute right-2 top-2 rounded-full bg-white/95 px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-700">
@@ -74,23 +112,37 @@ export function RestaurantCard({
           {restaurant.cuisine} &middot; {restaurant.neighborhood}
         </p>
         {/* The filtered category rides beside the open/closed pill rather than
-            on the photo: the photo already carries the overall rating, and two
-            star numbers stacked in the same corner read as one contradictory
+            on the photo: the photo already carries the overall score, and two
+            percentages stacked in the same corner read as one contradictory
             pair. Orange tint marks it as the answer to the active filter — the
             open pill stays tan, so the two never blur together. */}
         <div className="flex flex-wrap items-center gap-1.5">
           <OpenStatePill hours={restaurant.hours} />
+          {/* The gap, in the body rather than over the photo — the pill up there
+              is where a PlateMaps number goes, and leaving it empty of one is the
+              honest signal. Stated in words so "we have no ratings" never reads
+              as "rated badly". */}
+          {score.percent === null && (
+            <span className="font-mono text-[11px] text-zinc-400">
+              {plateScoreLabel(score)}
+            </span>
+          )}
           {highlight && (
             <span
               className="inline-flex items-center gap-1.5 rounded-full bg-pm-orange-tint px-3 py-1.5 text-xs font-medium text-pm-orange-text"
-              aria-label={`${highlight.aspect} rated ${highlight.stars.toFixed(1)} out of 5`}
+              aria-label={`${highlight.aspect} rated ${aspectOutOfFive(highlight.score)} out of ${ASPECT_SCALE_MAX}`}
             >
               {/* No emoji, unlike RestaurantAspects. That block sets it at
                   14px where a fried egg still reads as one; at pill size it
-                  collapses to a coloured smudge and the label says it anyway. */}
+                  collapses to a coloured smudge and the label says it anyway.
+
+                  Out of 5 with its denominator, same as the restaurant page —
+                  and the category label sits right against it, which is what
+                  keeps this from reading as the sourced star rating in the
+                  pill above. */}
               {highlight.aspect}
               <span className="font-mono font-semibold tabular-nums" aria-hidden="true">
-                {highlight.stars.toFixed(1)}
+                {aspectOutOfFive(highlight.score)}/{ASPECT_SCALE_MAX}
               </span>
             </span>
           )}

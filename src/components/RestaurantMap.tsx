@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useRef, type ComponentType, type RefObject } from "react";
+import { useEffect, useMemo, useRef, type ComponentType, type RefObject } from "react";
 import { useRouter } from "next/navigation";
 import {
   Map as MapLibreMap,
@@ -22,6 +22,15 @@ import { NEO_NOIR_STYLE } from "@/lib/mapStyle";
 import { openStateFor } from "@/lib/openState";
 import { relativeTime } from "@/lib/format";
 import type { RestaurantView } from "@/data/restaurants";
+import type { PlateScore } from "@/lib/plateScore";
+import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
+
+/**
+ * A restaurant as the map needs it: the projection plus the plate score, which
+ * /api/restaurants attaches and hover prints. Optional so a caller that hasn't
+ * got the aggregate still renders a map — the tip just says the name.
+ */
+export type MapRestaurant = RestaurantView & { plateScore?: PlateScore };
 import type { MapComment } from "@/data/mapComments";
 
 // Roughly San Diego County's real extent — keeps users from panning off into
@@ -422,8 +431,105 @@ function escapeHtml(text: string) {
  *
  * Per-feature properties drive the paint the old pinElement used to compute:
  * `intensity` 0..1 scales size and glow with the spot's best comment score,
- * `closed` cools a spot to a dim grey ember. */
+ * `closed` cools a spot to a dim grey ember, `density` 0..1 says how much of a
+ * restaurant district this spot stands in (see districtDensities). */
 const PIN_SOURCE = "restaurants";
+
+/* How much ground counts as "this restaurant's district" for the aura's
+   density read. ~0.35mi is a few walkable blocks — the scale at which Little
+   Italy is one thing and the strip mall two exits up is another. Widen it and
+   a whole suburb starts reading as a district; tighten it and a single busy
+   corner stops reading as one. */
+const DISTRICT_RADIUS_MI = 0.35;
+
+/* Neighbours inside that radius for a spot to count as fully dense (1.0).
+   Weighted, not counted: a neighbour at the edge of the circle is worth much
+   less than one across the street, so the number is closer to "eight places
+   you'd walk past" than eight dots anywhere in range. Measured over the San
+   Diego corpus this puts the median restaurant near 0.3 and downtown at 1. */
+const DISTRICT_FULL_NEIGHBOURS = 8;
+
+const MI_PER_DEG_LAT = 69.05;
+
+/**
+ * Per-restaurant local density, 0..1 — the input that makes the aura's zoom
+ * fade proportional to how many restaurants are actually there.
+ *
+ * Flat-earth arithmetic rather than `milesBetween`'s haversine: this only ever
+ * measures distances under half a mile, where the two agree to a few feet, and
+ * it runs O(n²) over the whole corpus (~465k pairs at 682 restaurants), so the
+ * trig matters. The |Δlat| early-out skips almost every pair.
+ *
+ * The falloff is 1-(d/R)² rather than a plain count so the value moves
+ * smoothly as the corpus grows — a hard cutoff makes a restaurant's aura jump
+ * the moment a neighbour is added a hair inside the radius.
+ */
+function districtDensities(list: RestaurantView[]): number[] {
+  const out = new Array<number>(list.length).fill(0);
+  for (let i = 0; i < list.length; i++) {
+    const a = list[i];
+    let sum = 0;
+    for (let j = 0; j < list.length; j++) {
+      if (i === j) continue;
+      const b = list[j];
+      const dy = (a.lat - b.lat) * MI_PER_DEG_LAT;
+      if (Math.abs(dy) >= DISTRICT_RADIUS_MI) continue;
+      const dx =
+        (a.lng - b.lng) * MI_PER_DEG_LAT * Math.cos(((a.lat + b.lat) / 2) * (Math.PI / 180));
+      const d2 = (dx * dx + dy * dy) / (DISTRICT_RADIUS_MI * DISTRICT_RADIUS_MI);
+      if (d2 >= 1) continue;
+      sum += 1 - d2;
+    }
+    out[i] = Math.min(1, sum / DISTRICT_FULL_NEIGHBOURS);
+  }
+  return out;
+}
+
+/* The neon sign: the restaurant naming itself above its stack, in the same
+   voice a bare dot answers hover with (.map-name-tip) — and carrying the same
+   plate score that tip prints, because a name lit on the map and the same name
+   under the cursor must not disagree about what the place scores.
+
+   A null percent prints nothing. Below plateScore.ts's floor there is no
+   number, and the Yelp/Google blend is never borrowed into the slot a
+   PlateMaps number goes in — see the rating invariant in CLAUDE.md. The blend
+   stars the hover tip can show stay off the sign: they need their `/5` to not
+   be misread as a percent, and a sign is not a place to explain a scale.
+
+   A "lantern" heat bar along the card's base edge was tried here and removed —
+   at real bubble sizes it read as a stray orange underline, not a designed
+   edge. */
+function signPercent(restaurant: MapRestaurant) {
+  const percent = restaurant.plateScore?.percent;
+  return typeof percent === "number" ? `${percent}%` : null;
+}
+
+function signHtml(restaurant: MapRestaurant) {
+  const percent = signPercent(restaurant);
+  const rating = percent ? `<span class="map-sign-rating">${percent}</span>` : "";
+  return `<div class="map-neon-sign">${escapeHtml(restaurant.name)}${rating}</div>`;
+}
+
+/* Same trade as estimateMetaWidth: the sign has to be measured before it is in
+   the DOM, so its width is estimated from the glyph widths its CSS implies —
+   10px mono (~6px/char) plus the 0.18em tracking the uppercase sign carries,
+   and the tighter tracking .map-sign-rating sets on the percent. Only the
+   collision footprint reads this, so a few px of drift costs a few px of
+   clearance rather than a wrong-looking sign. */
+const SIGN_NAME_CHAR_WIDTH = 7.8;
+const SIGN_RATING_CHAR_WIDTH = 6.2;
+/* Matches .map-neon-sign's `gap` and `left` in globals.css. */
+const SIGN_GAP = 6;
+const SIGN_LEFT = 4;
+
+function estimateSignWidth(restaurant: MapRestaurant) {
+  const percent = signPercent(restaurant);
+  return (
+    SIGN_LEFT +
+    restaurant.name.length * SIGN_NAME_CHAR_WIDTH +
+    (percent ? SIGN_GAP + percent.length * SIGN_RATING_CHAR_WIDTH : 0)
+  );
+}
 
 function bubbleElement(
   comment: MapComment,
@@ -432,9 +538,6 @@ function bubbleElement(
   stackIndex: number,
   mode: "discover" | "friends",
   canReact: boolean,
-  /** The restaurant's name, rendered as the neon sign above the bubble.
-      Passed only for the stack's pin-nearest bubble so a stack signs once. */
-  restaurantName: string | null,
 ) {
   const offsetX = 12;
   const hasMeta = comment.upvotes !== undefined;
@@ -678,14 +781,6 @@ function bubbleElement(
      back to the comment's own words and stays in the UI sans, because that
      text is not a reference to anything. The meta row under both is
      machine-generated and set in mono. */
-  /* The neon sign: the restaurant naming itself above its comments, in the
-     same voice a bare dot answers hover with (.map-name-tip). A "lantern"
-     heat bar along the card's base edge was tried here and removed — at real
-     bubble sizes it read as a stray orange underline, not a designed edge. */
-  const sign = restaurantName
-    ? `<div class="map-neon-sign">${escapeHtml(restaurantName)}</div>`
-    : "";
-
   /* The card hangs from a FIXED bottom edge, and that is what keeps the leader
      on its restaurant.
 
@@ -725,7 +820,6 @@ function bubbleElement(
         line-height: 1.35;
         color: ${BUBBLE_INK};
       ">
-        ${sign}
         <div class="map-bubble-text" style="max-width: ${textMaxWidth}px; font-weight: 600;">${headlineHtml}</div>
         ${metaRow}
         ${proseHtml}
@@ -747,7 +841,7 @@ export function RestaurantMap({
   onHeart,
   searchField: SearchField = MapSearch,
 }: {
-  restaurants: RestaurantView[];
+  restaurants: MapRestaurant[];
   commentsByRestaurant: Record<string, MapComment[]>;
   mode: "discover" | "friends";
   /** Omitted when nobody is signed in, which is what hides the vote chips. */
@@ -887,6 +981,12 @@ export function RestaurantMap({
     };
   }, []);
 
+  /* How dense a restaurant district each spot sits in. Depends only on where
+     the restaurants are, so it must not be recomputed on every vote — the
+     effect below re-runs whenever a comment count changes, and this is the one
+     O(n²) pass in the component. */
+  const districtDensity = useMemo(() => districtDensities(restaurants), [restaurants]);
+
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -901,17 +1001,25 @@ export function RestaurantMap({
 
     const pinData: GeoJSON.FeatureCollection = {
       type: "FeatureCollection",
-      features: restaurants.map((restaurant) => ({
+      features: restaurants.map((restaurant, i) => ({
         type: "Feature",
         geometry: { type: "Point", coordinates: [restaurant.lng, restaurant.lat] },
         properties: {
           id: restaurant.id,
           name: restaurant.name,
-          /* The place's own star rating, carried so hover can answer "how good
-             is this?" without a round trip. It is the 1-5 restaurant scale,
-             never the 0-100% dish scale — the two never mix (see AGENTS.md). */
-          rating: restaurant.rating,
+          /* Both of the place's numbers, carried so hover can answer "how good
+             is this?" without a round trip. `plateScore` is ours, the same 0-100
+             percent the dish bubbles show, where -1 stands for "not enough rated
+             plates" — a GeoJSON property cannot be null and 0 is a real score.
+             `blend` is the Yelp/Google star mean, which is what a restaurant with
+             no rated plates has instead. */
+          plateScore: restaurant.plateScore?.percent ?? -1,
+          blend: restaurant.rating,
           intensity: bestScore(restaurant.id) / hottest,
+          /* Read only by the aura, and only far out: how much company this
+             restaurant keeps within a few blocks. Same index as `restaurants`
+             because districtDensity is built from that same array. */
+          density: districtDensity[i],
           closed: openStateFor(restaurant.hours, now).kind === "closed",
         },
       })),
@@ -963,17 +1071,33 @@ export function RestaurantMap({
            `heatmap-density` — so the zoom fade below has to come from the
            other two.
 
-         Below z13 the layer FADES OUT, and it takes both remaining levers to
-         do it honestly. Measured at z9 with the old flat numbers, every
-         probe across the county — Pacific Beach 0.97, Carlsbad 0.97, La
-         Jolla 0.92, Oceanside 0.88, Chula Vista 0.70 — cleared the ramp's
-         0.55 stop, so the county view was one warm ribbon down the whole
-         coastal corridor at near-max alpha, with the real core (Little Italy
-         3.88, Gaslamp 3.63) indistinguishable from it because both clamped.
-         Radius is no help here: shrinking it at z9 pulls the core down as
-         fast as the suburbs (the downtown:busy ratio only moves 4.0 → 3.4
-         from R50 to R28), so it stays on its zoom track.
+         Below z13 the layer FADES OUT, and how much it fades is the whole
+         point of the `heatmap-weight` ramp below: the fade is per-restaurant,
+         scaled by how dense a district that restaurant stands in. A packed
+         downtown block keeps essentially all of its pool at county scale; a
+         thin scatter of places loses most of its own. Measured at z9 with a
+         flat weight, every probe across the county — Pacific Beach 0.97,
+         Carlsbad 0.97, La Jolla 0.92, Oceanside 0.88, Chula Vista 0.70 —
+         cleared the ramp's 0.55 stop, so the county view was one warm ribbon
+         down the whole coastal corridor at near-max alpha, with the real core
+         (Little Italy 3.88, Gaslamp 3.63) indistinguishable from it because
+         both clamped. Radius is no help here: shrinking it at z9 pulls the
+         core down as fast as the suburbs (the downtown:busy ratio only moves
+         4.0 → 3.4 from R50 to R28), so it stays on its zoom track.
 
+         - `heatmap-weight` is the only lever that can tell one restaurant
+           from another — intensity and opacity are layer-wide, and the
+           colour ramp only ever sees `heatmap-density`. So the
+           density-proportional fade has to live here, as the one expression
+           that reads both `["zoom"]` and a feature property. At z13 and in
+           every stop above it the factor is exactly 1, which is what leaves
+           the approved near view untouched; from z13 down to z9 each
+           restaurant's weight falls toward `FAR_FLOOR` in proportion to how
+           empty its own few blocks are. A spot in a full district barely
+           moves; a lone spot ends up worth a sixth of itself and drops out
+           of the ramp entirely. Note this fades DISTRICTS, not restaurants:
+           the dots are a separate layer and every restaurant keeps its own
+           ember at every zoom regardless.
          - `heatmap-intensity` is NOT a brightness dial and does not ride
            zoom for cosmetic reasons. `heatmap-radius` is in SCREEN pixels,
            so the patch of actual ground a kernel covers shrinks every time
@@ -992,32 +1116,60 @@ export function RestaurantMap({
            lighting its own block, which is the other failure mode.
            The two low stops are the exception and are deliberately tiny.
            At county scale every urban area is "dense" next to the desert,
-           so the honest reading there is RELATIVE: 0.07 at z9 puts the
-           merely-busy suburbs (Pacific Beach, Carlsbad, Chula Vista) under
-           the band and leaves only downtown's core lit. Raise those two and
-           the whole coastal corridor lights up as one ribbon again.
+           so the honest reading there is RELATIVE — but the suppression is
+           now the weight ramp's job, per district, rather than this one
+           number's. 0.16 at z9 is the value that lands downtown at the top
+           of the colour ramp once the weight floor has taken the thin areas
+           out; it reads as a big number next to the 0.07 it replaced only
+           because most of the corpus is contributing a fraction of its
+           former weight there.
          - `heatmap-opacity` then sets how strong whatever survived reads.
            These are two different jobs and must not be confused: intensity
-           picks the districts, opacity sets their brightness. 0.75 at z9,
-           0.88 at z11, 1 at z13 — dimmer far out so the layer recedes
-           behind the dots, but deliberately NOT faint: a restaurant-heavy
-           district is meant to keep an obvious pool even fully zoomed out.
-           It must reach exactly 1 by z13 or it would disturb the approved
-           near view. */
+           and weight pick the districts, opacity sets their brightness. It
+           stays near 1 all the way out (0.92 at z9) precisely so that it is
+           NOT a second, indiscriminate fade — dimming everything here is
+           what made the dense core fade with the quiet blocks. It must
+           reach exactly 1 by z13 or it would disturb the approved near
+           view. */
       map.addLayer({
         id: "restaurant-aura",
         type: "heatmap",
         source: PIN_SOURCE,
         paint: {
-          "heatmap-weight": ["+", 0.4, ["*", 0.6, ["get", "intensity"]]],
+          /* Zoom on the outside, feature property on the inside — MapLibre
+             only accepts `["zoom"]` as the input to a top-level interpolate,
+             so the two stops are whole weight expressions rather than a
+             factor multiplied in afterwards. The z13 stop is the old flat
+             weight, unchanged: 0.4 for a place with no posts up to 1.0 for a
+             top-scoring one.
+
+             The z9 stop multiplies that by 0.15..1 across `density`, so a
+             restaurant standing alone keeps a sixth of its weight at county
+             scale while one in a full district keeps all of it. 0.15 rather
+             than 0 because a small isolated cluster should thin out, not
+             blink off — below about 0.1 the outlying beach towns disappear
+             between one zoom step and the next. */
+          "heatmap-weight": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            9,
+            [
+              "*",
+              ["+", 0.4, ["*", 0.6, ["get", "intensity"]]],
+              ["+", 0.15, ["*", 0.85, ["get", "density"]]],
+            ],
+            13,
+            ["+", 0.4, ["*", 0.6, ["get", "intensity"]]],
+          ],
           "heatmap-intensity": [
             "interpolate",
             ["linear"],
             ["zoom"],
             9,
-            0.07,
+            0.16,
             11,
-            0.13,
+            0.22,
             13,
             0.6,
             15,
@@ -1045,9 +1197,9 @@ export function RestaurantMap({
             ["linear"],
             ["zoom"],
             9,
-            0.75,
+            0.92,
             11,
-            0.88,
+            0.96,
             13,
             1,
           ],
@@ -1224,26 +1376,27 @@ export function RestaurantMap({
         litSign = null;
       };
 
-      map.on("mousemove", "restaurant-hit", (e) => {
-        /* The generous hit radius means several targets can be under one
-           cursor in a dense block, and MapLibre hands them back in RENDER
-           order, not by distance — so `features[0]` is often a neighbour
-           rather than the ember actually being pointed at. Pick the closest,
-           or hovering one light answers with another's name. */
-        let feature: (typeof e.features extends undefined ? never : NonNullable<typeof e.features>[number]) | null = null;
-        let nearest = Infinity;
-        for (const candidate of e.features ?? []) {
-          const point = map.project(
-            (candidate.geometry as GeoJSON.Point).coordinates as [number, number],
-          );
-          const distance = Math.hypot(point.x - e.point.x, point.y - e.point.y);
-          if (distance < nearest) {
-            nearest = distance;
-            feature = candidate;
-          }
-        }
-        if (!feature) return;
-        map.getCanvas().style.cursor = "pointer";
+      /**
+       * Which pin a tap has named but not yet opened.
+       *
+       * A mouse names a pin by hovering it and opens it by clicking, which is
+       * two separate gestures. A finger has only one, so on a touch screen the
+       * first tap names and the second opens — and this is the pin waiting for
+       * that second tap. Null on a mouse, where hover already did the naming.
+       */
+      let armedId: string | null = null;
+
+      /**
+       * Name a pin: light its own sign if it already has one on screen,
+       * otherwise raise the tip.
+       *
+       * Extracted so hover and the first tap run the identical code. They used
+       * to be one inline block inside `mousemove`; a touch copy would have been
+       * a second implementation of "which name goes with this dot", and the two
+       * drifting is exactly the bug where the tip says one place and the tap
+       * opens another.
+       */
+      const showName = (feature: GeoJSON.Feature) => {
         const id = String(feature.properties?.id ?? "");
 
         /* If this restaurant's bubble is already on screen, its neon sign is
@@ -1278,21 +1431,48 @@ export function RestaurantMap({
         }
         dimSign();
 
-        /* Name in the neon voice, then the place's own score. It is the 1-5
-           star scale, so it is printed WITH its denominator — on a map that
-           also carries 0-100% dish scores, a bare "4.6" is the one number a
-           reader could take for the wrong scale. One decimal: a blended
-           rating is not an integer and rounding it to one would claim a
-           precision the blend does not have. */
+        /* Name in the neon voice, then whichever numbers the place has: our
+           percent (the same scale the dish bubbles carry, so no denominator is
+           needed for it) and the blend's stars, which always print their `/5`
+           because the two sit side by side here. A place whose plates haven't
+           cleared the plate-score floor shows the stars alone — see
+           lib/plateScore.ts and lib/ratingDisplay.ts. */
         const name = String(feature.properties?.name ?? "");
-        const rating = Number(feature.properties?.rating);
-        tip.innerHTML =
-          `<span>${escapeHtml(name)}</span>` +
-          (Number.isFinite(rating) && rating > 0
-            ? `<span class="map-tip-rating">★ ${rating.toFixed(1)}/5</span>`
-            : "");
+        const percent = Number(feature.properties?.plateScore);
+        const blend = Number(feature.properties?.blend);
+        const parts = [];
+        if (Number.isFinite(percent) && percent >= 0) {
+          parts.push(`<span class="map-tip-rating">${percent}%</span>`);
+        }
+        if (SHOW_BLEND_STARS && Number.isFinite(blend) && blend > 0) {
+          parts.push(`<span class="map-tip-blend">★ ${blendLabel(blend)}</span>`);
+        }
+        tip.innerHTML = `<span>${escapeHtml(name)}</span>` + parts.join("");
         const [lng, lat] = (feature.geometry as GeoJSON.Point).coordinates;
         tipMarker.setLngLat([lng, lat]).addTo(map);
+      };
+
+      map.on("mousemove", "restaurant-hit", (e) => {
+        /* The generous hit radius means several targets can be under one
+           cursor in a dense block, and MapLibre hands them back in RENDER
+           order, not by distance — so `features[0]` is often a neighbour
+           rather than the ember actually being pointed at. Pick the closest,
+           or hovering one light answers with another's name. */
+        let feature: (typeof e.features extends undefined ? never : NonNullable<typeof e.features>[number]) | null = null;
+        let nearest = Infinity;
+        for (const candidate of e.features ?? []) {
+          const point = map.project(
+            (candidate.geometry as GeoJSON.Point).coordinates as [number, number],
+          );
+          const distance = Math.hypot(point.x - e.point.x, point.y - e.point.y);
+          if (distance < nearest) {
+            nearest = distance;
+            feature = candidate;
+          }
+        }
+        if (!feature) return;
+        map.getCanvas().style.cursor = "pointer";
+        showName(feature as unknown as GeoJSON.Feature);
       });
       map.on("mouseleave", "restaurant-hit", () => {
         map.getCanvas().style.cursor = "";
@@ -1302,15 +1482,63 @@ export function RestaurantMap({
       /* Click resolves the same way hover does — whatever the tip named under
          the cursor has to be what opens, or the two disagree in a crowd. */
       map.on("click", "restaurant-hit", (e) => {
-        let best: { id: unknown; d: number } | null = null;
+        let best: { feature: GeoJSON.Feature; id: unknown; d: number } | null = null;
         for (const candidate of e.features ?? []) {
           const point = map.project(
             (candidate.geometry as GeoJSON.Point).coordinates as [number, number],
           );
           const d = Math.hypot(point.x - e.point.x, point.y - e.point.y);
-          if (!best || d < best.d) best = { id: candidate.properties?.id, d };
+          if (!best || d < best.d) {
+            best = {
+              feature: candidate as unknown as GeoJSON.Feature,
+              id: candidate.properties?.id,
+              d,
+            };
+          }
         }
-        if (typeof best?.id === "string") router.push(`/restaurant/${best.id}`);
+        if (typeof best?.id !== "string") return;
+
+        /*
+         * On a touch screen, name it first and open it second.
+         *
+         * A mouse gets to ask "what is this?" for free by hovering, so a click
+         * can mean "open it" — the reader has already read the name. A finger
+         * has no such gesture: one tap would open a dot whose name was never
+         * shown, which on a map of a few hundred unlabelled embers is a
+         * navigation you cannot aim. So the first tap raises the name and the
+         * second commits, and a tap on a *different* pin re-aims rather than
+         * opening the one that happened to be armed.
+         *
+         * Gated on `(hover: none)` rather than on a touch-capable API: a laptop
+         * with a touchscreen still has a pointer that hovers, and should keep
+         * the one-click behaviour. This is the same question CSS asks.
+         */
+        const noHover = window.matchMedia("(hover: none)").matches;
+        if (noHover && armedId !== best.id) {
+          armedId = best.id;
+          showName(best.feature);
+          return;
+        }
+
+        router.push(`/restaurant/${best.id}`);
+      });
+
+      /* Panning or zooming disarms. Otherwise a name raised before the map
+         moved stays armed under a finger that is now somewhere else entirely,
+         and the next tap opens a restaurant the reader never pointed at. */
+      map.on("movestart", () => {
+        armedId = null;
+      });
+
+      /* A tap on empty map clears the name and the arm together — the way
+         tapping outside anything dismisses it everywhere else. `click` on the
+         map fires for the layer too, so this checks that the tap missed. */
+      map.on("click", (e) => {
+        const onPin = map.queryRenderedFeatures(e.point, { layers: ["restaurant-hit"] });
+        if (onPin.length > 0) return;
+        armedId = null;
+        tipMarker.remove();
+        dimSign();
       });
 
     };
@@ -1387,30 +1615,49 @@ export function RestaurantMap({
           (a, b) => commentHeat(b, heatAt) - commentHeat(a, heatAt),
         );
         const point = map!.project([restaurant.lng, restaurant.lat]);
+        /* Where this stack starts in `placed`. Everything from here on is this
+           restaurant's own cards, and a card is never tested against its own
+           stack: the offsets below already lay the stack out with a real gap,
+           so the only thing that test could do is reject an authored position
+           for grazing the one under it — which is exactly what used to keep
+           every stack one card deep. Other restaurants' rects still apply. */
+        const stackStart = placed.length;
         let stackIndex = 0;
-        let offsetY = BUBBLE_TOP_OFFSET;
+        // Offset (above the pin) of the last card actually placed, so a
+        // candidate skipped for colliding with a neighbour doesn't leave a
+        // hole in the stack above it.
+        let placedOffsetY = BUBBLE_TOP_OFFSET;
+        // The card the sign lands on: whichever one ends up highest.
+        let topEl: HTMLElement | null = null;
         for (const comment of comments) {
           if (stackIndex >= limit) break;
           const width = estimateBubbleWidth(comment, zoom);
           const height = bubbleHeight(comment);
+          /* Offsets measure the box's TOP edge, so a card stacked above the
+             last one has to clear that card's own height as well as the gap.
+             Advancing by only the lower card's height (which is what this did)
+             put every second card's box inside the footprint the card below it
+             reserves, so it collided with its own stack and was dropped — no
+             restaurant ever showed two comments at any zoom. */
+          const offsetY =
+            stackIndex === 0
+              ? BUBBLE_TOP_OFFSET
+              : placedOffsetY + height + BUBBLE_GAP;
           // The leader hangs below the box toward the pin, so it is part of the
           // footprint and nothing else may be placed over it. Only the
           // nearest-the-pin bubble draws one (see bubbleElement), so only its
           // rect grows — and it grows by exactly what that bubble will draw,
           // via the same leaderDrop() the drawing uses.
-          /* The pin-nearest bubble also owns the stack's neon sign above it
-             and the leader below it — both belong to its footprint. */
+          /* The sign is NOT reserved here: it crowns the stack, not this card,
+             and which card ends up on top isn't known until the stack is laid.
+             The block after this loop grows the last rect for it. */
           const rect: Rect = {
             x: point.x + 12,
-            y: point.y - offsetY - (stackIndex === 0 ? NEON_SIGN_CLEARANCE : 0),
+            y: point.y - offsetY,
             w: width,
-            h:
-              height +
-              (stackIndex === 0
-                ? leaderDrop(comment, offsetY) + NEON_SIGN_CLEARANCE
-                : 0),
+            h: height + (stackIndex === 0 ? leaderDrop(comment, offsetY) : 0),
           };
-          if (placed.some((r) => rectsOverlap(rect, r))) continue;
+          if (placed.some((r, i) => i < stackStart && rectsOverlap(rect, r))) continue;
           placed.push(rect);
 
           const el = bubbleElement(
@@ -1420,7 +1667,6 @@ export function RestaurantMap({
             stackIndex,
             mode,
             mode === "discover" ? canUpvote : canHeart,
-            stackIndex === 0 ? restaurant.name : null,
           );
           const dishHref = comment.dishId
             ? `/restaurant/${restaurant.id}?dish=${comment.dishId}`
@@ -1475,18 +1721,38 @@ export function RestaurantMap({
             .setLngLat([restaurant.lng, restaurant.lat])
             .addTo(map!);
           bubbleMarkersRef.current.push(marker);
+
+          /* Only the nearest-the-pin bubble grows a leader, and it hangs
+             *below* that box, toward the pin — never up into the gap — so
+             padding every step of the stack for it would spread the cards
+             apart for nothing. The gap itself is applied where the next
+             card's offset is computed, off this one's. */
+          placedOffsetY = offsetY;
+          topEl = el;
+          stackIndex++;
+        }
+
+        /* The sign crowns the stack. It used to ride the pin-nearest card,
+           which was the same thing while a stack was one card deep and read as
+           the name wedged into the middle of the pile once stacks worked. So
+           it goes on whichever card ended up on top, once that is known — and
+           the footprint it reserves grows on that card's rect, which is still
+           the last thing pushed, so neighbours placed after this stack see it.
+           Widening matters more than it used to: the sign now carries the
+           plate score as well as the name, and it is regularly wider than the
+           card under it. */
+        if (topEl && placed.length > stackStart) {
+          const box = topEl.querySelector<HTMLElement>(".map-bubble-box");
+          box?.insertAdjacentHTML("afterbegin", signHtml(restaurant));
+          const signEl = topEl.querySelector<HTMLElement>(".map-neon-sign");
           /* Register the stack's sign so hovering this restaurant's ember can
              make the name it ALREADY has answer, instead of printing a second
              copy of it beside itself. */
-          const signEl = el.querySelector<HTMLElement>(".map-neon-sign");
           if (signEl) signsByRestaurantRef.current.set(restaurant.id, signEl);
-
-          /* One true gap between stacked cards. Only the nearest-the-pin
-             bubble grows a leader, and it hangs *below* that box, toward the
-             pin — never up into the gap — so padding every step of the stack
-             for it would spread the cards apart for nothing. */
-          offsetY += height + BUBBLE_GAP;
-          stackIndex++;
+          const crown = placed[placed.length - 1];
+          crown.y -= NEON_SIGN_CLEARANCE;
+          crown.h += NEON_SIGN_CLEARANCE;
+          crown.w = Math.max(crown.w, estimateSignWidth(restaurant));
         }
       }
     }
@@ -1498,7 +1764,7 @@ export function RestaurantMap({
       map.off("load", applyPinData);
       map.off("moveend", renderBubbles);
     };
-  }, [restaurants, commentsByRestaurant, router, mode, canUpvote, canHeart]);
+  }, [restaurants, districtDensity, commentsByRestaurant, router, mode, canUpvote, canHeart]);
 
   /* The wrapper is only a positioning context for the search field, which has
      to sit over the map without being inside the map's own container — MapLibre

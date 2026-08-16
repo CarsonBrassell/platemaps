@@ -7,6 +7,15 @@ import type { Restaurant } from "@/data/restaurants";
 import { QUERY_PARAM } from "@/lib/discoverFilters";
 import { rank } from "@/lib/restaurantRank";
 import { StarIcon } from "@/components/icons";
+import type { PlateScore } from "@/lib/plateScore";
+import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
+
+/**
+ * A row as /api/restaurants sends it: the full restaurant plus the plate score
+ * that route attaches. Mirrored locally rather than imported from lib/db.ts,
+ * which is server-only.
+ */
+type SearchRow = Restaurant & { plateScore?: PlateScore };
 
 /**
  * Header search over the restaurant list.
@@ -38,7 +47,7 @@ export function RestaurantSearch() {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(NONE);
-  const [candidates, setCandidates] = useState<Restaurant[]>([]);
+  const [candidates, setCandidates] = useState<SearchRow[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -63,7 +72,7 @@ export function RestaurantSearch() {
       try {
         const res = await fetch(`/api/restaurants?q=${encodeURIComponent(q)}`);
         if (!res.ok) return;
-        const data: { restaurants: Restaurant[] } = await res.json();
+        const data: { restaurants: SearchRow[] } = await res.json();
         if (!stale) setCandidates(data.restaurants);
       } catch {
         // A dropped search request leaves the previous matches on screen,
@@ -229,9 +238,22 @@ export function RestaurantSearch() {
                       {r.cuisine} · {r.neighborhood}
                     </span>
                   </span>
-                  <span className="flex shrink-0 items-center gap-1 font-mono text-xs font-medium tabular-nums text-zinc-600">
-                    <StarIcon className="h-3 w-3 text-zinc-400" />
-                    {r.rating.toFixed(1)}
+                  {/* Both numbers where there are both, in the same order as
+                      every other surface: our percent in the accent, the blend's
+                      stars muted with their denominator. A row is a shortcut to
+                      one place, so this stays to two short runs. */}
+                  <span className="flex shrink-0 items-center gap-1.5 font-mono text-xs tabular-nums">
+                    {r.plateScore?.percent != null && (
+                      <span className="font-semibold text-pm-orange-text">
+                        {r.plateScore.percent}%
+                      </span>
+                    )}
+                    {SHOW_BLEND_STARS && (
+                      <span className="flex items-center gap-0.5 font-medium text-zinc-500">
+                        <StarIcon className="h-3 w-3 text-zinc-400" />
+                        {blendLabel(r.rating)}
+                      </span>
+                    )}
                   </span>
                 </Link>
               </li>

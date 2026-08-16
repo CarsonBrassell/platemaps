@@ -78,31 +78,32 @@ export async function POST(req: NextRequest) {
   const vibe =
     typeof body.vibe === "string" && ROOM_LABELS.includes(body.vibe) ? body.vibe : undefined;
 
-  // Rating stays in whichever native scale the composer collected it in —
-  // 1-5 stars for a restaurant review, 0-100% for a dish review — rather than
-  // being flattened onto one shared /10 number. That's what lets the feed
-  // render it back the same way it was entered instead of guessing which
-  // scale a bare number came from.
+  /* There is one rating scale: a 0-100 percent about one plate. `ratingKind` is
+     still written so the column stays self-describing — rows from before the
+     1-5 star restaurant review was retired carry `restaurant`, and the feed
+     reads the tag to render those back as the stars they were entered as. New
+     rows are always `dish`.
+
+     A client asking to write `restaurant` is refused rather than quietly
+     rewritten: a 1-5 number stored as a percent would read as a 4% plate, and
+     silently coercing it would put that in the average every restaurant score
+     is now derived from. */
   let parsedRating: number | undefined;
-  let parsedRatingKind: "restaurant" | "dish" | undefined;
+  let parsedRatingKind: "dish" | undefined;
   if (rating !== undefined && rating !== null && rating !== "") {
-    if (body.ratingKind !== "restaurant" && body.ratingKind !== "dish") {
+    if (body.ratingKind !== undefined && body.ratingKind !== "dish") {
       return NextResponse.json(
-        { error: "A rating needs to say whether it's for the restaurant or a dish." },
+        { error: "Ratings are a percentage on a plate. There is no restaurant rating to write." },
         { status: 400 },
       );
     }
-    parsedRatingKind = body.ratingKind;
+    parsedRatingKind = "dish";
     const n = Number(rating);
     if (Number.isNaN(n)) {
       return NextResponse.json({ error: "Rating must be a number." }, { status: 400 });
     }
-    if (parsedRatingKind === "restaurant") {
-      if (n < 1 || n > 5) {
-        return NextResponse.json({ error: "A restaurant rating is 1 to 5 stars." }, { status: 400 });
-      }
-    } else if (n < 0 || n > 100) {
-      return NextResponse.json({ error: "A dish rating is 0 to 100%." }, { status: 400 });
+    if (n < 0 || n > 100) {
+      return NextResponse.json({ error: "A rating is 0 to 100%." }, { status: 400 });
     }
     parsedRating = Math.round(n);
   }

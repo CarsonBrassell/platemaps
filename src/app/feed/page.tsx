@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
-import type { RestaurantView } from "@/data/restaurants";
+import type { MapRestaurant } from "@/components/RestaurantMap";
 import { mapCommentsByRestaurant, withDishIds, type MapComment } from "@/data/mapComments";
 import type { Dish } from "@/data/dishes";
 
@@ -76,13 +76,15 @@ function findDishId(
 
 /**
  * A post's rating as a bubble's meta row shows it, always carrying the scale
- * it was measured on — "4/5", never a bare number. There are exactly two
- * scales because there are exactly two controls that produce one; no 0-10
- * fallback exists, since that's what let an impossible "9.2 stars" render.
+ * it was measured on. Every rating written now is a percent, so that is what
+ * this produces; the `restaurant` branch is the read path for rows written
+ * before the star review was retired, and prints "4/5" with its denominator
+ * because those are still 1-5. No 0-10 fallback exists, since that's what let
+ * an impossible "9.2 stars" render.
  *
- * A dish review's percent lives in the dish prefix instead, so this returns
- * null there — unless the post has no dish name to hang it on, in which case
- * the meta row is the only place left for it to go.
+ * A percent lives in the dish prefix instead, so this returns null there —
+ * unless the post has no dish name to hang it on, in which case the meta row is
+ * the only place left for it to go.
  */
 function bubbleRating(post: Post): string | null {
   if (post.rating === undefined) return ratingFromPost(post.text);
@@ -134,7 +136,7 @@ function FeedPageInner() {
   // the full request objects (with ids to accept/decline against) live on
   // /friends, which fetches /api/friends itself.
   // What the map draws on. Both arrive from the API below — see that effect.
-  const [restaurants, setRestaurants] = useState<RestaurantView[]>([]);
+  const [restaurants, setRestaurants] = useState<MapRestaurant[]>([]);
   const [menus, setMenus] = useState<Record<string, Dish[]>>({});
 
   const [friendIds, setFriendIds] = useState<string[]>([]);
@@ -226,7 +228,7 @@ function FeedPageInner() {
         ]);
         if (!restaurantRes.ok || !dishRes.ok) return;
         const [{ restaurants: rows }, { dishes }] = await Promise.all([
-          restaurantRes.json() as Promise<{ restaurants: RestaurantView[] }>,
+          restaurantRes.json() as Promise<{ restaurants: MapRestaurant[] }>,
           dishRes.json() as Promise<{ dishes: Record<string, Dish[]> }>,
         ]);
         if (cancelled) return;
@@ -476,46 +478,55 @@ function FeedPageInner() {
 
               It floats on the night map rather than sitting in a white band
               above it: the map is the surface it belongs to, and a band of
-              card ground above it just pushed the map down. Still a segmented
-              switch, not another pill tab bar — one rank below the screen's own
-              tabs.
+              card ground above it just pushed the map down.
 
-              **Night dress, squared, and lit — a documented departure.**
-              DESIGN.md's rank-3 segmented control is a tan `pm-grey-tint` track
-              with a white selected segment and rounded ends, and that is still
-              correct everywhere it sits on cream. Here it does not: it floats on
-              the night tiles, where a tan pill is a cream-world control that
-              wandered onto the map, and it now shares its row with a field that
-              has no container at all (see MapSearch). So the track takes the
-              map's own near-black at 88% with a neutral hairline, and the
-              corners go square to match the field's rule.
+              **No container at all — a documented departure.** DESIGN.md's
+              rank-3 segmented control is a tan `pm-grey-tint` track with a white
+              selected segment, and that is still correct everywhere it sits on
+              cream. Here it did not work: on the night tiles a tan pill is a
+              cream-world control that wandered onto the map, and the track it
+              wore next (near-black, hairline, square) was still a box on a
+              picture. So it wears the screen tabs' clothes instead — bare
+              labels, the selected one carrying a short orange underline — which
+              is a rank up from where DESIGN.md files this control. That is
+              deliberate: what it switches (which audience the whole map is
+              drawn from) is closer to a tab than to a filter, and the map has
+              one other control, a field with no container either (MapSearch).
 
-              The selected segment is not filled — it lights up, in the map's own
-              neon-sign voice. That treatment lives in `.map-source-seg` in
-              globals.css, beside `.map-neon-sign` whose glow it borrows, because
-              the two must stay the same temperature. Rank is still legible: the
-              screen's real tabs above are plain text with an orange underline,
-              and nothing else on the map is a bordered chip. */}
+              What replaces the fill is the halo, the same one MapSearch's field
+              carries: without it, cream type is only as legible as the tile
+              that happens to be under it. The bar itself is lit rather than
+              painted in `--pm-orange` — it is the only mark left on the map, so
+              it burns in the map's voice; see `.map-source-bar`. */}
           <div className="absolute left-5 top-5 z-10">
             <div
               role="tablist"
               aria-label="Map data source"
-              className="inline-flex border border-[rgba(255,255,255,0.12)] bg-[rgba(18,22,27,0.88)] p-[3px]"
+              className="inline-flex items-center gap-5"
             >
-              {(["discover", "friends"] as const).map((source) => (
-                <button
-                  key={source}
-                  type="button"
-                  role="tab"
-                  aria-selected={mapSource === source}
-                  onClick={() => setMapSource(source)}
-                  className={`map-source-seg min-h-8 px-3.5 font-mono text-[11px] font-medium uppercase tracking-[0.12em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-                    mapSource === source ? "is-on" : ""
-                  }`}
-                >
-                  {source}
-                </button>
-              ))}
+              {(["discover", "friends"] as const).map((source) => {
+                const on = mapSource === source;
+                return (
+                  <button
+                    key={source}
+                    type="button"
+                    role="tab"
+                    aria-selected={on}
+                    onClick={() => setMapSource(source)}
+                    className={`relative inline-flex min-h-11 items-center rounded-sm font-mono text-[11px] font-medium uppercase tracking-[0.12em] transition-colors [text-shadow:0_1px_7px_rgba(0,0,0,0.95),0_0_3px_rgba(0,0,0,0.7)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange ${
+                      on ? "text-[#F7F4EC]" : "text-[#c8d0d8] hover:text-[#F7F4EC]"
+                    }`}
+                  >
+                    {source}
+                    {on && (
+                      <span
+                        className="map-source-bar absolute inset-x-0 bottom-2.5 h-[2px] rounded-full"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
           </div>
