@@ -6,10 +6,17 @@ import { getUserByEmail, createUser, createSession } from "@/lib/db";
 import { SESSION_COOKIE, SESSION_MAX_AGE } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
-  const { name, email, password } = await req.json();
+  const { name, email, password, agreedToTerms } = await req.json();
 
   if (!name || !email || !password) {
     return NextResponse.json({ error: "Fill in every field." }, { status: 400 });
+  }
+
+  if (agreedToTerms !== true) {
+    return NextResponse.json(
+      { error: "You must agree to the Terms of Service and Privacy Policy to create an account." },
+      { status: 400 }
+    );
   }
 
   if (await getUserByEmail(String(email))) {

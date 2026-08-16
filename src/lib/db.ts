@@ -22,6 +22,8 @@ export type User = {
   sharePhotosPublicly: boolean;
   favoriteCuisine?: string;
   favoriteRestaurantId?: string;
+  /** When they checked the Terms/Privacy box at signup — server-stamped, see createUser. */
+  agreedToTermsAt?: string;
 };
 
 function currentMonthKey(): string {
@@ -47,6 +49,7 @@ function rowToUser(row: any): User {
     sharePhotosPublicly: row.share_photos_publicly ?? false,
     favoriteCuisine: row.favorite_cuisine ?? undefined,
     favoriteRestaurantId: row.favorite_restaurant_id ?? undefined,
+    agreedToTermsAt: row.agreed_to_terms_at ?? undefined,
   };
 }
 
@@ -66,9 +69,13 @@ export async function createUser(data: {
   email: string;
   passwordHash: string;
 }): Promise<User> {
+  // agreed_to_terms_at is stamped here with the database's own clock, not a
+  // value passed in from the request — the caller (the signup route) already
+  // rejected the request if the checkbox wasn't checked, so reaching this
+  // insert means consent happened right now, not whenever a client claims.
   const rows = await sql`
-    INSERT INTO users (id, name, email, password_hash)
-    VALUES (${data.id}, ${data.name}, ${data.email}, ${data.passwordHash})
+    INSERT INTO users (id, name, email, password_hash, agreed_to_terms_at)
+    VALUES (${data.id}, ${data.name}, ${data.email}, ${data.passwordHash}, NOW())
     RETURNING *
   `;
   return rowToUser(rows[0]);
@@ -635,6 +642,10 @@ export async function getPostById(id: string, viewerId: string | null = null): P
  * place.
  */
 export async function getDiscoverFeed(viewerId: string | null, limit = 30): Promise<Post[]> {
+  // `!= ALL(empty array)` is vacuously true in Postgres, so a signed-out
+  // viewer (empty blockedIds) filters nothing — same shape as the `ANY(ids)`
+  // pattern hydratePosts already uses for viewer-scoped lookups.
+  const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
   const rows = await sql`
     SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
            p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
@@ -650,6 +661,7 @@ export async function getDiscoverFeed(viewerId: string | null, limit = 30): Prom
     LEFT JOIN (
       SELECT post_id, count(*) AS count FROM post_downvotes GROUP BY post_id
     ) dv ON dv.post_id = p.id
+    WHERE p.user_id != ALL(${blockedIds})
     ORDER BY
       (GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0) + 1)
         / POWER(EXTRACT(EPOCH FROM (now() - p.created_at)) / 3600 + 2, 1.5) DESC
@@ -671,6 +683,11 @@ export async function getDiscoverFeed(viewerId: string | null, limit = 30): Prom
  * friend's post regardless of photosPublic; that flag only gates Discover.
  */
 export async function getFriendsFeed(viewerId: string, limit = 60): Promise<Post[]> {
+  // Belt-and-suspenders: blockUser() already unfriends both sides, so a
+  // blocked user's rows are normally gone from the friendship subquery
+  // below on their own. This catches it anyway rather than trusting that
+  // invariant to hold forever.
+  const blockedIds = await getBlockedEitherWayIds(viewerId);
   const rows = await sql`
     ${sql.unsafe(POST_SELECT)}
     WHERE p.user_id IN (
@@ -678,6 +695,7 @@ export async function getFriendsFeed(viewerId: string, limit = 60): Promise<Post
       FROM friendships f
       WHERE f.user_a = ${viewerId} OR f.user_b = ${viewerId}
     )
+    AND p.user_id != ALL(${blockedIds})
     ORDER BY p.created_at DESC
     LIMIT ${limit}
   `;
@@ -1176,6 +1194,16 @@ export async function sendFriendRequest(
 ): Promise<FriendStatus> {
   if (requesterId === recipientId) return "none";
 
+  // Either direction of a block kills a friend request before it starts —
+  // same as sending it and having it silently vanish, but without ever
+  // creating the pending row.
+  const blocked = await sql`
+    SELECT 1 FROM blocked_users
+    WHERE (blocker_id = ${requesterId} AND blocked_id = ${recipientId})
+       OR (blocker_id = ${recipientId} AND blocked_id = ${requesterId})
+  `;
+  if (blocked.length > 0) return "none";
+
   const reciprocal = await sql`
     SELECT id FROM friend_requests
     WHERE requester_id = ${recipientId} AND recipient_id = ${requesterId} AND status = 'pending'
@@ -1316,6 +1344,78 @@ export async function getPendingFriendRequests(
   });
 
   return { incoming: incomingRows.map(toSummary), outgoing: outgoingRows.map(toSummary) };
+}
+
+// --- Blocking ----------------------------------------------------------
+
+export type BlockStatus = "none" | "blocked" | "blocked_by";
+
+/** Where two users stand on blocking, from viewerId's point of view. */
+export async function getBlockStatus(viewerId: string, otherId: string): Promise<BlockStatus> {
+  if (viewerId === otherId) return "none";
+  const rows = await sql`
+    SELECT blocker_id FROM blocked_users
+    WHERE (blocker_id = ${viewerId} AND blocked_id = ${otherId})
+       OR (blocker_id = ${otherId} AND blocked_id = ${viewerId})
+  `;
+  const row = rows[0] as { blocker_id: string } | undefined;
+  if (!row) return "none";
+  return row.blocker_id === viewerId ? "blocked" : "blocked_by";
+}
+
+/**
+ * Blocking tears down any existing friendship and any pending request in
+ * either direction first — being blocked shouldn't leave a friendship or an
+ * unanswered request behind it.
+ */
+export async function blockUser(blockerId: string, blockedId: string): Promise<void> {
+  if (blockerId === blockedId) return;
+  await unfriend(blockerId, blockedId);
+  await sql`
+    DELETE FROM friend_requests
+    WHERE (requester_id = ${blockerId} AND recipient_id = ${blockedId})
+       OR (requester_id = ${blockedId} AND recipient_id = ${blockerId})
+  `;
+  await sql`
+    INSERT INTO blocked_users (blocker_id, blocked_id) VALUES (${blockerId}, ${blockedId})
+    ON CONFLICT DO NOTHING
+  `;
+}
+
+export async function unblockUser(blockerId: string, blockedId: string): Promise<void> {
+  await sql`DELETE FROM blocked_users WHERE blocker_id = ${blockerId} AND blocked_id = ${blockedId}`;
+}
+
+export type BlockedUserSummary = { id: string; name: string; avatarUrl?: string };
+
+/** Who this user has blocked — for the account settings list and its unblock action. */
+export async function getBlockedUsers(userId: string): Promise<BlockedUserSummary[]> {
+  const rows = await sql`
+    SELECT u.id, u.name, u.avatar_url
+    FROM blocked_users b
+    JOIN users u ON u.id = b.blocked_id
+    WHERE b.blocker_id = ${userId}
+    ORDER BY u.name ASC
+  `;
+  return rows.map((r) => ({
+    id: r.id as string,
+    name: r.name as string,
+    avatarUrl: (r.avatar_url as string | null) ?? undefined,
+  }));
+}
+
+/**
+ * Every id blocking or blocked by this user, either direction — the feed
+ * filter. Blocking is directional in the table but symmetric in effect: if
+ * either side blocked the other, neither should see the other's posts.
+ */
+export async function getBlockedEitherWayIds(userId: string): Promise<string[]> {
+  const rows = await sql`
+    SELECT CASE WHEN blocker_id = ${userId} THEN blocked_id ELSE blocker_id END AS other_id
+    FROM blocked_users
+    WHERE blocker_id = ${userId} OR blocked_id = ${userId}
+  `;
+  return rows.map((r) => r.other_id as string);
 }
 
 // --- Profile favorites -----------------------------------------------------

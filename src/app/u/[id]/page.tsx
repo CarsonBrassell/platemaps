@@ -6,6 +6,7 @@ import { restaurants } from "@/data/restaurants";
 import { initials } from "@/lib/format";
 import { PlateStarIcon } from "@/components/icons";
 import { ProfileFriendButton } from "@/components/ProfileFriendButton";
+import { ProfileBlockButton } from "@/components/ProfileBlockButton";
 
 /**
  * The public profile — what anyone, friend or stranger, sees when they look
@@ -29,9 +30,12 @@ export default async function PublicProfilePage({
     : undefined;
 
   return (
-    <div className="mx-auto w-full max-w-2xl pb-12">
+    <>
+      {/* Header owns the full viewport width — see account/page.tsx's
+          identical comment. max-w-2xl (672px) squeezed it far worse than
+          account's max-w-5xl did. */}
       <Header />
-
+      <div className="mx-auto w-full max-w-2xl pb-12">
       <div className="mx-4 rounded-2xl bg-white px-6 py-10 text-center sm:mx-6">
         {profile.avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -81,10 +85,12 @@ export default async function PublicProfilePage({
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 flex items-center justify-center gap-2">
           <ProfileFriendButton userId={profile.id} />
+          <ProfileBlockButton userId={profile.id} />
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

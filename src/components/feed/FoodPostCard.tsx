@@ -7,7 +7,7 @@ import { PostActions, type VoteDirection } from "./PostActions";
 import { heatFor } from "@/components/post/PercentMeter";
 import { PointsBadge } from "./PointsBadge";
 import { StarRating } from "@/components/StarRating";
-import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon } from "@/components/icons";
+import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/components/icons";
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { tagAccent } from "@/data/foodTags";
 import { amenityEmoji, vibeChip } from "@/data/reviewScales";
@@ -135,7 +135,10 @@ export function FoodPostCard(props: FoodPostCardProps) {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [status, setStatus] = useState<"live" | "hidden" | "reported" | "deleted">("live");
+  const [status, setStatus] = useState<"live" | "hidden" | "reported" | "deleted" | "blocked">(
+    "live",
+  );
+  const [blocking, setBlocking] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const saved = currentUserId ? post.savedBy.includes(currentUserId) : false;
@@ -169,8 +172,32 @@ export function FoodPostCard(props: FoodPostCardProps) {
     };
   }, [menuOpen]);
 
+  async function handleBlock() {
+    if (blocking) return;
+    setBlocking(true);
+    try {
+      const res = await fetch("/api/blocks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: post.userId }),
+      });
+      if (!res.ok) throw new Error("failed");
+      setStatus("blocked");
+    } catch {
+      setBlocking(false);
+    }
+  }
+
   if (status === "deleted") {
     return <Tombstone title="Post deleted" body="This plate is no longer on the feed." />;
+  }
+  if (status === "blocked") {
+    return (
+      <Tombstone
+        title={`Blocked ${post.authorName}`}
+        body="You won't see posts from this person again. Manage this from Account settings."
+      />
+    );
   }
   if (status === "reported") {
     return (
@@ -540,6 +567,18 @@ export function FoodPostCard(props: FoodPostCardProps) {
                   >
                     <FlagIcon className="h-4 w-4 shrink-0" />
                     Report post
+                  </button>
+                  <button
+                    role="menuitem"
+                    disabled={blocking}
+                    onClick={() => {
+                      setMenuOpen(false);
+                      void handleBlock();
+                    }}
+                    className="flex w-full min-h-11 items-center gap-2 rounded-lg px-3 text-left text-sm text-red-700 transition-colors hover:bg-red-50 disabled:opacity-50"
+                  >
+                    <CloseIcon className="h-4 w-4 shrink-0" />
+                    Block {handleFor(post.authorName)}
                   </button>
                 </>
               )}

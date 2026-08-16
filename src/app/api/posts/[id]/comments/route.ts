@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { getPostById, addComment, awardPoints, getCommentContext } from "@/lib/db";
+import { getPostById, addComment, awardPoints, getCommentContext, getBlockStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
 
@@ -22,6 +22,10 @@ export async function POST(
   const post = await getPostById(id);
   if (!post) {
     return NextResponse.json({ error: "Post not found." }, { status: 404 });
+  }
+
+  if ((await getBlockStatus(user.id, post.userId)) !== "none") {
+    return NextResponse.json({ error: "You can't comment on this post." }, { status: 403 });
   }
 
   // A reply's parent has to be a comment on *this* post. Without the check a

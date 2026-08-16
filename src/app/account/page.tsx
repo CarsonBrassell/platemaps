@@ -49,6 +49,7 @@ function AuthForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -57,13 +58,19 @@ function AuthForm() {
       setError("Fill in every field to create your account.");
       return;
     }
+    if (mode === "signup" && !agreed) {
+      setError("You must agree to the Terms of Service and Privacy Policy to create an account.");
+      return;
+    }
     if (mode === "login" && (!email || !password)) {
       setError("Enter your email and password.");
       return;
     }
     setSubmitting(true);
     const result =
-      mode === "signup" ? await signUp(name, email, password) : await signIn(email, password);
+      mode === "signup"
+        ? await signUp(name, email, password, agreed)
+        : await signIn(email, password);
     setSubmitting(false);
     if (result) setError(result);
   }
@@ -145,11 +152,44 @@ function AuthForm() {
           className={inputClass}
         />
 
+        {mode === "signup" && (
+          <label className="mb-4 flex cursor-pointer items-start gap-2.5 text-xs text-zinc-500">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => {
+                setAgreed(e.target.checked);
+                if (error) setError("");
+              }}
+              className="mt-0.5 h-4 w-4 shrink-0 accent-pm-orange"
+            />
+            <span>
+              I agree to the{" "}
+              <Link
+                href="/terms"
+                target="_blank"
+                className="underline underline-offset-2 hover:text-zinc-700"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                target="_blank"
+                className="underline underline-offset-2 hover:text-zinc-700"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </span>
+          </label>
+        )}
+
         {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || (mode === "signup" && !agreed)}
           className="w-full rounded-lg bg-pm-orange px-3 py-2 text-sm font-medium text-white transition-transform active:scale-[0.97] disabled:opacity-60"
         >
           {mode === "signup" ? "Create account" : "Log in"}
@@ -292,6 +332,8 @@ function AccountOverview() {
       <ProfileActivity />
 
       <ProfileSettingsPanel />
+
+      <BlockedUsersPanel />
 
       {myPosts.length > 0 && (
         <>
@@ -492,14 +534,108 @@ function ProfileSettingsPanel() {
   );
 }
 
+/**
+ * The one place a block is reversible. Post cards and profile pages can
+ * create a block, but this is the only surface that lists them and lets you
+ * undo one — mirrors ProfileSettingsPanel's shell (mono-label + tinted card)
+ * rather than the friends list's white-card style, since this reads as a
+ * setting, not a social list.
+ */
+function BlockedUsersPanel() {
+  const { account } = useAuth();
+  const [blocked, setBlocked] = useState<{ id: string; name: string; avatarUrl?: string }[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [pendingId, setPendingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!account) return;
+    fetch("/api/blocks")
+      .then((res) => res.json())
+      .then((data: { blocked: { id: string; name: string; avatarUrl?: string }[] }) => {
+        setBlocked(data.blocked);
+        setLoaded(true);
+      })
+      .catch(() => setLoaded(true));
+  }, [account]);
+
+  async function handleUnblock(userId: string) {
+    setPendingId(userId);
+    const previous = blocked;
+    setBlocked((b) => b.filter((u) => u.id !== userId));
+    try {
+      const res = await fetch("/api/blocks", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      if (!res.ok) throw new Error("failed");
+    } catch {
+      setBlocked(previous);
+    }
+    setPendingId(null);
+  }
+
+  // Nothing blocked and we know it — no reason to show an empty settings
+  // card most people will never need.
+  if (!account || (loaded && blocked.length === 0)) return null;
+
+  return (
+    <div className="mb-6 rounded-xl bg-pm-grey-tint/40 p-4">
+      <p className="mono-label mb-3 text-zinc-500">Blocked</p>
+      <ul className="space-y-2">
+        {blocked.map((u) => (
+          <li key={u.id} className="flex items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-2.5">
+              {u.avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={u.avatarUrl} alt="" className="h-8 w-8 rounded-full object-cover" />
+              ) : (
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xs font-medium text-pm-grey-text">
+                  {initials(u.name)}
+                </span>
+              )}
+              <span className="truncate text-sm font-medium text-zinc-800">{u.name}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleUnblock(u.id)}
+              disabled={pendingId === u.id}
+              className="min-h-9 shrink-0 rounded-full bg-white px-3 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:opacity-50"
+            >
+              Unblock
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function AccountPage() {
   const { isSignedIn, loading } = useAuth();
 
   return (
-    /* Cream ground; the overview and auth form supply their own white cards. */
-    <div className="mx-auto w-full max-w-5xl pb-12">
+    <>
+      {/* Header owns the full viewport width — its desktop nav row needs
+          close to 1280px to lay out without squeezing, which a max-w-5xl
+          parent (1024px) doesn't give it. Nesting it inside the content
+          wrapper below made the nav column overflow into the logo and the
+          search/avatar. */}
       <Header />
-      {!loading && (isSignedIn ? <AccountOverview /> : <AuthForm />)}
-    </div>
+      {/* Cream ground; the overview and auth form supply their own white cards. */}
+      <div className="mx-auto w-full max-w-5xl pb-12">
+        {!loading && (isSignedIn ? <AccountOverview /> : <AuthForm />)}
+
+        <div className="mt-10 flex justify-center gap-3 text-xs text-zinc-400">
+          <Link href="/terms" className="hover:text-zinc-600 hover:underline">
+            Terms of Service
+          </Link>
+          <span aria-hidden="true">&middot;</span>
+          <Link href="/privacy" className="hover:text-zinc-600 hover:underline">
+            Privacy Policy
+          </Link>
+        </div>
+      </div>
+    </>
   );
 }
