@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { useAuth } from "@/lib/auth";
 
@@ -33,6 +34,7 @@ export function PhoneProfileAuth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
@@ -46,9 +48,16 @@ export function PhoneProfileAuth() {
       setError("Enter your email and password.");
       return;
     }
+    /* Consent is a real gate, not a formality: `signUp` sends it to the API,
+       which refuses a signup without it. The button is disabled too, so this
+       only fires for a submit that got past the disabled state. */
+    if (mode === "signup" && !agreed) {
+      setError("Please agree to the Terms and Privacy Policy to continue.");
+      return;
+    }
     setSubmitting(true);
     const result =
-      mode === "signup" ? await signUp(name, email, password) : await signIn(email, password);
+      mode === "signup" ? await signUp(name, email, password, agreed) : await signIn(email, password);
     setSubmitting(false);
     if (result) setError(result);
   }
@@ -138,6 +147,35 @@ export function PhoneProfileAuth() {
           className={inputClass}
         />
 
+        {/* The consent gate the web /account page added alongside the Terms
+            and Privacy pages. Same requirement, phone-sized: a 44px row rather
+            than the web's 16px checkbox line, and the two documents open in a
+            new tab so a half-filled form is never lost to reading them. */}
+        {mode === "signup" && (
+          <label className="mb-4 flex min-h-11 cursor-pointer items-start gap-2.5 py-1 text-xs text-zinc-500">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(event) => {
+                setAgreed(event.target.checked);
+                if (error) setError("");
+              }}
+              className="mt-0.5 h-5 w-5 shrink-0 accent-pm-orange"
+            />
+            <span className="leading-relaxed">
+              I agree to the{" "}
+              <Link href="/terms" target="_blank" className="underline underline-offset-2">
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link href="/privacy" target="_blank" className="underline underline-offset-2">
+                Privacy Policy
+              </Link>
+              .
+            </span>
+          </label>
+        )}
+
         {error && (
           <p role="alert" className="mb-4 text-sm text-red-700">
             {error}
@@ -146,7 +184,7 @@ export function PhoneProfileAuth() {
 
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || (mode === "signup" && !agreed)}
           className={`min-h-11 w-full rounded-full bg-pm-orange px-4 text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.97] disabled:opacity-60 ${FOCUS}`}
         >
           {mode === "signup" ? "Create account" : "Log in"}
