@@ -25,6 +25,12 @@ type AuthContextValue = {
   ) => Promise<string | null>;
   signIn: (email: string, password: string) => Promise<string | null>;
   signOut: () => Promise<void>;
+  /**
+   * Erase the account. Takes the password because the server re-authenticates
+   * before deleting — see /api/account. Resolves to an error string, or null
+   * once the account is gone and this context has dropped to signed-out.
+   */
+  deleteAccount: (password: string) => Promise<string | null>;
   refresh: () => Promise<void>;
   updateAvatar: (avatarUrl: string) => Promise<string | null>;
   updateSettings: (
@@ -110,6 +116,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccount(null);
   }
 
+  async function deleteAccount(password: string) {
+    const res = await fetch("/api/account", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    if (!res.ok) return parseError(res);
+    // Same drop as signOut. The server has already cleared the cookie, so this
+    // is only catching the client up — but it has to happen before the caller
+    // navigates, or the destination renders a frame against an account that no
+    // longer exists.
+    setAccount(null);
+    return null;
+  }
+
   async function updateAvatar(avatarUrl: string) {
     const res = await fetch("/api/auth/avatar", {
       method: "POST",
@@ -147,6 +168,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signUp,
         signIn,
         signOut,
+        deleteAccount,
         refresh,
         updateAvatar,
         updateSettings,

@@ -331,6 +331,36 @@ export async function deleteSession(token: string): Promise<void> {
   await sql`DELETE FROM sessions WHERE token = ${token}`;
 }
 
+/**
+ * Erase an account and everything it produced. Irreversible — there is no soft
+ * delete, no tombstone row and no recovery window, because App Store guideline
+ * 5.1.1(v) asks for deletion rather than deactivation and this app has no email
+ * channel to run a "we're deleting you in 30 days" window through.
+ *
+ * **One statement is the whole implementation, and that is on purpose.** Every
+ * foreign key pointing at `users` in scripts/migrate.mjs is
+ * `ON DELETE CASCADE` — sessions, posts, comments, the six vote tables, saves,
+ * point_events, friend_requests, friendships, blocked_users — so the row going
+ * away takes the graph with it, in one transaction, with no ordering to get
+ * wrong. The single exception is `menu_lookups.requested_by`, which is
+ * `ON DELETE SET NULL`: a menu lookup is money already spent and its result is
+ * cached for everyone, so the cache survives and only the name of who asked is
+ * forgotten. That is the correct outcome, not an oversight.
+ *
+ * **If you add a table that references `users`, it must cascade**, or the day
+ * someone deletes their account this throws a foreign-key violation instead.
+ * That is the one way this function can rot, and nothing here can catch it —
+ * the constraint lives in the database, not in this file.
+ *
+ * Comments other people wrote on the deleted user's posts go too, since they
+ * cascade from `posts`. Points other people earned by upvoting those posts are
+ * kept: `point_events` rows belong to the earner, and only reference the post
+ * through an unconstrained `reason` string.
+ */
+export async function deleteUser(userId: string): Promise<void> {
+  await sql`DELETE FROM users WHERE id = ${userId}`;
+}
+
 export type Comment = {
   id: string;
   /** Null on a top-level comment; otherwise the comment this one replies to. */

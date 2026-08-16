@@ -7,6 +7,7 @@ import { PointsBadge } from "@/components/feed/PointsBadge";
 import { CameraIcon, PlateStarIcon } from "@/components/icons";
 import { PhoneProfileActivity } from "@/components/mobile/PhoneProfileActivity";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
+import { PhoneDeleteAccountPanel } from "@/components/mobile/PhoneDeleteAccountPanel";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { resizeImageToDataUrl } from "@/lib/image";
@@ -295,6 +296,10 @@ function ProfileOverview() {
           >
             Log out
           </button>
+
+          {/* Below Log out, same order as the web account page: logging out is
+              what most people scrolling this far are reaching for. */}
+          <PhoneDeleteAccountPanel />
         </div>
       </div>
     </div>

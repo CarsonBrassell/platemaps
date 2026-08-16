@@ -8,6 +8,7 @@ import { initials } from "@/lib/format";
 import { resizeImageToDataUrl } from "@/lib/image";
 import { PlateStarIcon } from "@/components/icons";
 import { ProfileActivity } from "@/components/ProfileActivity";
+import { DeleteAccountPanel } from "@/components/account/DeleteAccountPanel";
 import { POINT_RULES } from "@/lib/points";
 import { cuisines } from "@/data/restaurants";
 
@@ -399,6 +400,12 @@ function AccountOverview() {
         >
           Log out
         </button>
+
+        {/* Dead last, below logging out, because logging out is what most
+            people reaching this end of the page actually want. */}
+        <div className="mt-8">
+          <DeleteAccountPanel />
+        </div>
       </div>
     </div>
   );
