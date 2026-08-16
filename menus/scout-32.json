@@ -1,0 +1,222 @@
+[
+  {
+    "restaurantId": "228",
+    "name": "Tamales Ancira",
+    "address": "2260 Main St, Suite 17, Chula Vista, CA 91911",
+    "sourceUrl": "https://tamalesancira.com/menu/",
+    "platform": "website",
+    "priced": false,
+    "fallbackUrl": "https://www.tripadvisor.com/Restaurant_Review-g32210-d4947117-Reviews-Tamales_Ancira-Chula_Vista_California.html",
+    "flags": "Stored neighborhood 'Imperial Beach' is WRONG — confirmed address is Chula Vista, CA 91911 (via own site). Own site menu page lists items with no dollar amounts. Check Yelp/DoorDash/MenuPix for a priced version before extracting from the unpriced site."
+  },
+  {
+    "restaurantId": "645",
+    "name": "Cafe 67",
+    "address": "12381 Mapleview St, Lakeside, CA 92040",
+    "sourceUrl": "https://www.yelp.com/menu/cafe-67-lakeside",
+    "platform": "yelp",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.allmenus.com/ca/lakeside/721115-cafe-67/menu/",
+    "flags": "Stored neighborhood correct. Own site (cafe67usa.com) homepage has menu links but no prices visible without clicking through; not independently confirmed priced. Try Yelp menu or AllMenus first."
+  },
+  {
+    "restaurantId": "680",
+    "name": "Quecho Elevated Mexican Eatery",
+    "address": "2603 B St, Julian, CA 92036",
+    "sourceUrl": "https://menucuisine.com/online-menu/quecho-elevated-mexican-eatery/",
+    "platform": "aggregator",
+    "priced": "unknown",
+    "fallbackUrl": "https://restaurantguru.com/Quecho-Elevated-Mexican-Eatery-Julian/menu",
+    "flags": "Stored neighborhood correct. Own site (quechojulian.com) homepage has no visible prices or ordering-platform link — checked directly, only 'View Menu' links to a page not confirmed priced. Try menucuisine/restaurantguru aggregators first."
+  },
+  {
+    "restaurantId": "634",
+    "name": "Tapatios Mexican Grill",
+    "address": "2335 Alpine Blvd, Ste 12, Alpine, CA 91901",
+    "sourceUrl": "https://www.allmenus.com/ca/alpine/723047-tapatios-mexican-grill-seafood/menu/",
+    "platform": "allmenus",
+    "priced": true,
+    "fallbackUrl": null,
+    "flags": "Stored neighborhood correct. Also indexed as 'Tapatio's Mexican Grill & Seafood'. Prices confirmed directly (e.g. Shredded Beef Taco Salad $6.99, Carne Asada Taco $3.85). Avoid hey-restaurants.com / restaurants-world.net — those are SEO template mirror sites, not the real business."
+  },
+  {
+    "restaurantId": "635",
+    "name": "Alpine Tavern & Grill",
+    "address": "2502 Alpine Blvd, Alpine, CA 91901",
+    "sourceUrl": "https://www.allmenus.com/ca/alpine/723577-alpine-tavern-grill/menu/",
+    "platform": "allmenus",
+    "priced": true,
+    "fallbackUrl": null,
+    "flags": "Stored neighborhood correct. Prices confirmed directly (e.g. 8pc Buffalo Wings $9.95, Hamburger $11.25)."
+  },
+  {
+    "restaurantId": "681",
+    "name": "Loft 94",
+    "address": "14145 Campo Road, Jamul, CA 91935 (inside Jamul Casino Resort)",
+    "sourceUrl": "https://www.jamulcasino.com/menu/loft-94/",
+    "platform": "website",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.allmenus.com/ca/jamul/723082-loft-94/menu/",
+    "flags": "Located inside Jamul Casino Resort, not a standalone storefront — address is the casino's. Casino restaurant pages frequently omit prices online; not independently confirmed. Check AllMenus/Sirved fallback if the casino page has no $ amounts."
+  },
+  {
+    "restaurantId": "665",
+    "name": "Mariscos Mar De Cortez",
+    "address": "109 10th St, Ramona, CA 92065",
+    "sourceUrl": "https://www.allmenus.com/ca/ramona/791287-mariscos-mar-de-cortez-mexican/menu/",
+    "platform": "allmenus",
+    "priced": true,
+    "fallbackUrl": "https://www.doordash.com/store/mariscos-mar-de-cortez-ramona-1310871/",
+    "flags": "Stored neighborhood correct. Prices confirmed directly (e.g. 2 Eggs Any Style $8.99, California Burrito $16.00, taco plates $19.99)."
+  },
+  {
+    "restaurantId": "646",
+    "name": "Giant Bambinos Pizza",
+    "address": "9534 Winter Gardens Blvd, Lakeside, CA 92040",
+    "sourceUrl": "https://www.doordash.com/store/giant-bambinos-pizza-lakeside-389591/",
+    "platform": "doordash",
+    "priced": true,
+    "fallbackUrl": "https://slicelife.com/restaurants/ca/lakeside/92040/giant-bambino-s-pizza/menu",
+    "flags": "Stored neighborhood correct. Own ordering site (giantbambinoslakeside.com/order) renders menu client-side — direct check showed only an empty cart widget, no items; use DoorDash or Slice instead."
+  },
+  {
+    "restaurantId": "636",
+    "name": "Ahi Sushi & Grill",
+    "address": "1347 Tavern Rd #28B, Alpine, CA 91901",
+    "sourceUrl": "https://www.zmenu.com/ahi-sushi-and-grill-alpine-online-menu/",
+    "platform": "zmenu",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.sirved.com/restaurant/alpine-california-usa/ahi-sushi-and-grill/624699/menus",
+    "flags": "Stored neighborhood correct. Also indexed as 'Alpine Sushi & Grill' (same business). zmenu blocked automated fetch (403) so pricing not independently confirmed — check with a real browser. Avoid hey-restaurants.com, an SEO template mirror with no prices."
+  },
+  {
+    "restaurantId": "229",
+    "name": "Hermanos Taco Shop",
+    "address": "1295 Broadway # 206, Chula Vista, CA 91911",
+    "sourceUrl": "https://hermanostacoshop.shop/menu",
+    "platform": "website",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.zmenu.com/hermanos-taco-shop-chula-vista-online-menu/",
+    "flags": "Stored neighborhood correct. Own site failed to connect during check (ECONNREFUSED) — may be down or blocking bots; use zmenu fallback if the own site doesn't load."
+  },
+  {
+    "restaurantId": "230",
+    "name": "POKÉ 123",
+    "address": "801 Palm Ave, Suite 102, Imperial Beach, CA 91932",
+    "sourceUrl": "https://www.toasttab.com/local/order/poke-123-imperial-beach",
+    "platform": "toast",
+    "priced": true,
+    "fallbackUrl": "https://www.ubereats.com/store/poke-123-801-palm-ave/sO1CCKy2Re6mV1_3Xv7E3Q",
+    "flags": "Stored neighborhood correct."
+  },
+  {
+    "restaurantId": "231",
+    "name": "Noodles Noodles",
+    "address": "1555 Palm Ave, San Diego, CA 92154",
+    "sourceUrl": "https://www.grubhub.com/restaurant/noodles-noodles-1555-palm-ave-san-diego/362120",
+    "platform": "grubhub",
+    "priced": true,
+    "fallbackUrl": "https://www.thenoodlesnoodles.com/",
+    "flags": "Stored neighborhood 'Imperial Beach' is imprecise — actual address is San Diego 92154 (Egger Highlands / near Imperial Beach but not technically in it)."
+  },
+  {
+    "restaurantId": "647",
+    "name": "Albert's Fresh Mexican Food",
+    "address": "13334 Hwy 8 Business, Lakeside, CA 92040",
+    "sourceUrl": "https://www.ubereats.com/store/alberts-fresh-mexican-food-lakeside/9AdCN9rZULuUKD_qmaJT0w",
+    "platform": "ubereats",
+    "priced": true,
+    "fallbackUrl": "https://menupages.com/alberts-mexican-food/13334-hwy-8-business-lakeside",
+    "flags": "Stored neighborhood correct. Own site (albertsmexicanfood.com/lakeside) has 'Order online'/'Order with App' buttons but no visible prices on the page itself — use UberEats."
+  },
+  {
+    "restaurantId": "318",
+    "name": "Mariscos el Mazateño",
+    "address": null,
+    "sourceUrl": null,
+    "platform": null,
+    "priced": "unknown",
+    "fallbackUrl": null,
+    "flags": "COULD NOT CONFIRM a San Ysidro, CA location exists. Every search result for this exact name resolves to a well-known Tijuana/Mexico seafood chain (Calz del Tecnológico 473, Tijuana; also a Guaymas, Sonora location) — a classic case of a name shared across the border. No U.S. business listing, Yelp page, or address was found. Flagging as difficult — verify via Google Maps or Instagram (@elmazateno_paginaoficial) whether a San Ysidro branch genuinely exists before spending extraction budget."
+  },
+  {
+    "restaurantId": "666",
+    "name": "D'Carlos",
+    "address": "1347 Main St, Ramona, CA 92065",
+    "sourceUrl": "https://www.dcarlos.com/food-menus",
+    "platform": "website",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.zmenu.com/d-carlos-ramona-online-menu/",
+    "flags": "Stored neighborhood correct. Steakhouse (est. 1977). Own site refused connection during check — may block bots; try a real browser first, fall back to zmenu."
+  },
+  {
+    "restaurantId": "623",
+    "name": "Leucadia Pizzeria Rancho Santa Fe",
+    "address": "16085 San Dieguito Rd, Rancho Santa Fe, CA 92091",
+    "sourceUrl": "https://www.ubereats.com/store/leucadia-pizzeria-rancho-santa-fe/lcU6BZmgRHmf1LNC8fmyBw",
+    "platform": "ubereats",
+    "priced": true,
+    "fallbackUrl": "https://www.doordash.com/store/leucadia-pizzeria-rsf-rancho-santa-fe-28716890/",
+    "flags": "STORED NEIGHBORHOOD IS WRONG — stored as 'Rancho Penasquitos' but the confirmed address is Rancho Santa Fe, CA 92091, a distinct area roughly 15 miles away. Also indexed/branded as 'Leucadia Pizzeria RSF'."
+  },
+  {
+    "restaurantId": "319",
+    "name": "Taco nazo",
+    "address": null,
+    "sourceUrl": null,
+    "platform": null,
+    "priced": "unknown",
+    "fallbackUrl": null,
+    "flags": "COULD NOT CONFIRM. The known 'Taco Nazo' chain (founded 1978, fish tacos, per Wikipedia) has exactly five locations — Bellflower, La Puente, South El Monte, La Habra, and Walnut — none in San Diego County. No independent San Ysidro business by this name was found either. Likely a data error, a permanently-closed independent shop, or a misspelled/renamed business (note: 'Tijuanazo', formerly 'TacoNazo', recently opened a San Diego location in Hillcrest — possibly related confusion, but that is not San Ysidro). Needs a Google Maps check before extraction."
+  },
+  {
+    "restaurantId": "320",
+    "name": "Ying Li Restaurant",
+    "address": "342 W San Ysidro Blvd, San Ysidro, CA 92173",
+    "sourceUrl": "https://www.beyondmenu.com/44065/san-ysidro/ying-li-restaurant-san-ysidro-92173.aspx",
+    "platform": "beyondmenu",
+    "priced": true,
+    "fallbackUrl": "https://www.grubhub.com/restaurant/ying-li-restaurant-342-w-san-ysidro-blvd-san-ysidro/2419018",
+    "flags": "Stored neighborhood correct. BeyondMenu blocked automated fetch (403) but the platform standardly lists prices; Grubhub is a solid fallback if needed."
+  },
+  {
+    "restaurantId": "648",
+    "name": "Gaetano's Italian Restaurant",
+    "address": "13524 Hwy 8 Business, Lakeside, CA 92040",
+    "sourceUrl": "https://gaetanositalianrestaurant1.netwaiter.com/lakeside/menu",
+    "platform": "netwaiter",
+    "priced": true,
+    "fallbackUrl": "https://www.gaetanospizzalakeside.com/menu",
+    "flags": "Stored neighborhood correct. Serving Lakeside since 1973."
+  },
+  {
+    "restaurantId": "649",
+    "name": "La Palapa Mexican Restaurant & Cocktails",
+    "address": "12169 Woodside Ave, Ste A, Lakeside, CA 92040",
+    "sourceUrl": "https://www.toasttab.com/local/order/la-palapa-mexican-restaurant-cocktails-12169-woodside-avenue",
+    "platform": "toast",
+    "priced": true,
+    "fallbackUrl": null,
+    "flags": "Stored neighborhood correct. Prices confirmed directly (e.g. Super Nachos $10.75, Machaca Burrito & Cheese Enchilada $12.95)."
+  },
+  {
+    "restaurantId": "321",
+    "name": "Sayulitas Mexican Food",
+    "address": "1270 Picador Blvd, Ste 1, San Diego, CA 92154 (Picador Plaza)",
+    "sourceUrl": "https://www.ubereats.com/store/sayulitas-mexican-food-1270-picador-blvd/H5x7ygMLRoGHARXiUE6Szg",
+    "platform": "ubereats",
+    "priced": true,
+    "fallbackUrl": "https://www.doordash.com/business/sayulitas-mexican-food-96322/menu/",
+    "flags": "CHAIN WITH ~6 SAN DIEGO LOCATIONS — this is the Picador Blvd / Picador Plaza store, the one closest to and serving the San Ysidro area (confirmed via sayulitaseats.com/places/san-ysidro). Do not confuse with the Mira Mesa (8155 Mira Mesa Blvd) location, which appeared more prominently in generic searches — verify the store before extracting."
+  },
+  {
+    "restaurantId": "624",
+    "name": "Chef Zhu",
+    "address": "7845 Highlands Village Pl, Ste C101, San Diego, CA 92129",
+    "sourceUrl": "https://pos.chowbus.com/online-ordering/store/13862",
+    "platform": "chowbus",
+    "priced": true,
+    "fallbackUrl": "https://www.chefzhusd.com/about-3",
+    "flags": "Stored neighborhood correct (Rancho Peñasquitos). Prices confirmed directly (e.g. individual rice $2.00)."
+  }
+]

@@ -106,9 +106,13 @@ Semantic colors stay tiny: emerald dot = open/up, `red-700` = destructive or
   2. *Screen tabs* (e.g. the feed's Discover / Friends / Map): plain text
      tabs — the active tab is semibold ink with a short orange underline
      bar. Never pills.
-  3. *Local switches and filters* (map source toggle, leaderboard window):
-     a segmented control — tan `bg-pm-grey-tint p-1` track, selected segment
-     white with ink text, mono labels.
+  3. *Local switches and filters* (leaderboard window): a segmented control —
+     tan `bg-pm-grey-tint p-1` track, selected segment white with ink text,
+     mono labels. **The map's Discover/Friends switch is the exception**: it
+     floats on the night tiles, where any track reads as a box on a picture, so
+     it wears the rank-2 treatment instead — bare mono labels with the halo
+     MapSearch uses, selected one underlined in orange. See the comment at its
+     call site in `src/app/feed/page.tsx`.
 - Photo areas: 10–14px radius, inset from the card edge (`m-2/2.5` +
   `rounded-[10px]`/`rounded-xl`) so both radii stay visible.
 - Inputs: tan fills (`bg-pm-grey-tint/60`), no borders; focus is the standard
@@ -182,9 +186,10 @@ neighbors don't repeat.
     and never truncates or wraps while the subject ellipses away in front of
     it: the number is the whole reason the bubble is on the map, and pinning
     it to the same edge in every bubble lets a screenful be read straight
-    down as a column. A dish percent wears the composer meter's heat
-    (`heatColorForPercent`, the same temperature `.pct-heat` uses); a
-    restaurant review shows `★ 4/5` in `--pm-orange-text`.
+    down as a column. A percent wears the composer meter's heat
+    (`heatColorForPercent`, the same temperature `.pct-heat` uses). Rows
+    written before the star review was retired show `★ 4/5` in
+    `--pm-orange-text` — a read path for old data, never produced now.
   - **Row 2, the byline:** mono, muted, `@HANDLE · 2H · ▲ 34 ▼ · 💬 3` —
     handle first, the same order and shape as the feed's ledger card, with the
     reaction as the row's one accent. All of it is machine-made, so all of it
@@ -209,12 +214,12 @@ neighbors don't repeat.
   every time the cursor landed on a bubble. The bottom edge is the leader's
   origin; it must not move.
 - Hovering a **bare** ember answers with `.map-name-tip`: the restaurant's name
-  in the neon voice plus its **star rating, printed with its denominator**
-  (`★ 4.1/5`). The map carries both rating scales at once, so a bare `4.1`
-  next to a bubble showing `96%` is the one number a reader could take for the
-  wrong scale — see the `rating_kind` split in AGENTS.md. One decimal, never
-  rounded to an integer: a blended rating is not one, and rounding claims a
-  precision the blend does not have.
+  in the neon voice plus its **plate score as a bare percent** (`88%`). There is
+  one rating scale in the product, so the denominator that used to keep `4.1`
+  from being read as a percent has nothing left to disambiguate and is gone with
+  the star scale. A restaurant whose plates haven't cleared the plate-score floor
+  prints its **name alone** — never the Yelp/Google blend, which is not ours to
+  put in the map's voice (see `src/lib/plateScore.ts`).
 
   Hovering an ember that **already has a bubble** prints nothing new — its
   neon sign is already naming it, and a tip would stack a second copy of the
@@ -246,16 +251,51 @@ neighbors don't repeat.
 
 ## Screens (reference implementations)
 
-- **Restaurant page** — `SPOT №xxx` mono label, Fraunces name, tan metadata
-  pills, `THE HITS` 2-col dish-card grid (price mono muted left, bold orange
+- **Three numbers on a restaurant page, and none may be mistakable for another.**
+  The plate score is a **percent** — it is the only percent, and it means one
+  specific thing (what the plates' ratings average to). Category scores
+  (Service, Ambiance, Drinks, Menu variety, Value) are **out of 5**, because a
+  category is a judgement about the place rather than a share of anything;
+  `aspectOutOfFive` converts them from the model's internal 0-100 and is the only
+  place that conversion happens. The sourced rating is **also out of 5**, so both
+  fives **always print their denominator** (`4.4/5`) and the category ones always
+  sit against their label. Never give a category a percent sign, and never draw
+  star glyphs for one — stars are the sourced rating's alone.
+- **Of those three, the plate score and the sourced rating must never be
+  mistakable for each other.** The plate score (ours) always leads and always wears `--pm-orange`;
+  the Yelp/Google blend follows, muted, **always with its `/5`**. That denominator
+  is not optional — it is the only thing separating `4.1` from a percent when the
+  two sit inches apart. The blend never takes the accent and never appears without
+  the plate score's slot being accounted for. Both are gated on
+  `SHOW_BLEND_STARS` (`src/lib/ratingDisplay.ts`), which is designed to be flipped
+  off; nothing may draw a star outside that flag.
+- **Restaurant page** — `SPOT №xxx` mono label, Fraunces name, then the two
+  numbers side by side: the **plate score** as a 4xl bold mono percent in
+  `--pm-orange`, naming itself in an 11px muted line directly beneath (`average of
+  all dish ratings`, then `37 ratings across 6 plates`); and the **blend** as
+  fractional-fill stars plus mono `4.3/5` at metadata size, over an 11px
+  `sourced from the web · 1,966 reviews`. Tan metadata pills below, then one 11px
+  line disclosing that star ratings are sourced from across the web and are not
+  PlateMaps ratings, carrying the `Photo via Yelp` credit. **The copy names no
+  source** — not Yelp, not Google, not "blend"; that is build detail, and naming
+  two companies reads as a partnership the product doesn't have. Both strings live
+  in `src/lib/ratingDisplay.ts`. Under the plate-score floor the stars
+  carry the block alone and `N plates rated` sits where the percent would be.
+  Then `THE HITS` 2-col dish-card grid (price mono muted left, bold orange
   mono % right), mono footer `RATED BY N LOCALS · SEE FULL MENU →`.
+- **Grid card / picks strip** — one white pill on the photo holding both: bold
+  orange mono percent with its rating count, a `zinc-300` middot, then a **single**
+  star glyph and mono `4.1/5` in `zinc-600`. One star, not five — at pill size
+  five glyphs plus two numbers is a smudge, and the `/5` names the scale anyway.
+  Under the floor the pill holds the stars only, and `No plates rated yet` moves
+  to the body row beside the open pill in 11px `zinc-400`.
 - **Feed** — rank-2 screen tabs (plain text, orange underline on the active
   one — not pills, whatever this line used to say); ledger post card = the
   subject as the Fraunces headline with its verdict on the same line — dish
   posts a bold mono percent wearing the composer meter's heat gradient
-  (`.pct-heat` + `data-heat`, stops shared with `.pct-meter`), restaurant
-  reviews stars + mono `n/5`, and never a "restaurant review" label (the
-  stars say it); below it a mono byline that opens with the handle —
+  (`.pct-heat` + `data-heat`, stops shared with `.pct-meter`); pre-retirement
+  restaurant rows still render stars + mono `n/5` and never a "restaurant
+  review" label (the stars say it); below it a mono byline that opens with the handle —
   `@handle · restaurant · 2h` — carrying no neighbourhood; inset photo only
   when the post has media (photos are friends-tab-scoped, so most Discover
   entries are headline + words), sans post text under the plate, `▲ 34`

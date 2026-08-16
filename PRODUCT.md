@@ -20,7 +20,7 @@ Answer "what should I eat tonight?" with specific, recent, nearby dish verdicts 
 
 Three confirmed differentiators:
 
-- **The dish is the unit of review, not the restaurant.** Ratings, photos, and verdicts attach to a specific plate, so a well-reviewed restaurant can hold a weak dish and an average one can hold a standout. This is what the name encodes.
+- **The dish is the unit of review, not the restaurant.** Ratings, photos, and verdicts attach to a specific plate, so a well-reviewed restaurant can hold a weak dish and an average one can hold a standout. This is what the name encodes. A restaurant's own percent exists but is derived from its plates and drills back into them — see Product Principle 1.
 - **Map-first social discovery.** You see what people around you are actually eating, placed on a map, rather than querying a directory.
 - **Recency over aggregate.** Recency-weighted "hot" ranking surfaces what is good now, in preference to averages accumulated over years.
 
@@ -37,8 +37,8 @@ Explicitly *not* positioning: PM Points and the leaderboard are a supply-side me
 
 Confirmed functionality:
 
-- **Discover** (`/`): filter by neighborhood, cuisine, open now, top rated (≥4.5) and trending; curated "Our Picks" strip; restaurant detail pages carrying dishes.
-- **Feed** (`/feed`): three-step composer — up to 4 client-resized photos, dish name, restaurant, price, distance label, 0–10 rating, room vibe, food tags, amenities, caption. Tabs are For You (recency-weighted hot score), Following, and Map.
+- **Discover** (`/`): filter by neighborhood, cuisine, open now, top rated and trending; curated "Our Picks" strip; restaurant detail pages carrying dishes. "Top rated" means ≥4.5 stars on the Yelp/Google blend while the blend is still displayed, and flips to a plate score ≥85% when the stars are retired — one flag, `SHOW_BLEND_STARS`, decides both the filter and the display so they can never disagree.
+- **Feed** (`/feed`): composer — up to 4 client-resized photos, restaurant, dish off its real menu, price, distance label, a 0–100% rating on the plate, best-at and let-you-down chips, food tags, amenities, caption. One rated path, plus a comment-only door. Tabs are For You (recency-weighted hot score), Following, and Map.
 - **Social**: like, comment, like a comment, save, follow, share, delete own post, and a "would you eat this?" yes/no verdict.
 - **PM Points**: +10 to publish, +1 per like received, +2 per comment received, +1 to the voter for a first verdict on a post; one-time bonuses at 25/100/500 likes. Leaderboard windows are Today/Week/Month/All time.
 - **Map**: a custom MapLibre GL vector style over OpenFreeMap/OpenStreetMap data. Pins scale and glow by the restaurant's best post score and dim when it is closed; comment bubbles are placed with screen-space collision avoidance and thinned by zoom.
@@ -110,7 +110,8 @@ One deliberate, sanctioned exception to that last rule: `ReservationPanel` on th
 
 ## Product Principles
 
-1. **The plate is the unit of truth.** Ratings, photos and verdicts belong to a specific dish; never collapse them into a restaurant average.
+1. **The plate is the unit of truth.** Ratings, photos and verdicts are *entered* about a specific dish, never about a place — there is one rating control in the product and it rates a plate.
+   A restaurant does carry a percent, and it is derived from its plates rather than collected: the vote-weighted average in `src/lib/plateScore.ts`. Alongside it, for now, sits the Yelp/Google star blend — displayed because at launch it is the only signal most restaurants have, always labelled as outside context, and built to be switched off (`SHOW_BLEND_STARS`) once enough plates have been rated to stand on their own. This is not the restaurant average this principle used to forbid. That one was a separate judgement about the place, entered on its own scale, competing with the dishes for the top of the screen. This one has receipts — it decomposes into the plates that produced it, it cannot exist without them, and it is absent (stated as "N plates rated", never a number) until enough plates have been rated to describe the kitchen. A summary that can only say what its parts say does not displace them.
 2. **Serve the decision, not the archive.** Proximity, open-now and recency outrank completeness and historical depth.
 3. **Real data or an honest gap.** Never invent a fact about a business; state the absence instead, and honor the attribution that real data obliges.
 4. **Supply serves demand.** The points economy exists to keep fresh local plates flowing; it must never outrank or obscure the decision the visitor came to make.
