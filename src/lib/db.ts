@@ -58,6 +58,12 @@ export async function getUserByEmail(email: string): Promise<User | null> {
   return rows[0] ? rowToUser(rows[0]) : null;
 }
 
+/** Case-insensitive, matching `idx_users_name_unique` — see its migration comment. */
+export async function getUserByName(name: string): Promise<User | null> {
+  const rows = await sql`SELECT * FROM users WHERE lower(name) = lower(${name})`;
+  return rows[0] ? rowToUser(rows[0]) : null;
+}
+
 export async function getUserById(id: string): Promise<User | null> {
   const rows = await sql`SELECT * FROM users WHERE id = ${id}`;
   return rows[0] ? rowToUser(rows[0]) : null;

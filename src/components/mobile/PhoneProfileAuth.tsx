@@ -103,16 +103,20 @@ export function PhoneProfileAuth() {
         {mode === "signup" && (
           <>
             <label htmlFor="phone-auth-name" className="mb-1 block text-sm font-medium text-zinc-700">
-              Name
+              Username
             </label>
             <input
               id="phone-auth-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Carson Brassell"
-              autoComplete="name"
+              placeholder="carsonb"
+              autoComplete="username"
+              maxLength={24}
               className={inputClass}
             />
+            <p className="-mt-2 mb-4 text-xs text-zinc-500">
+              3-24 characters — letters, numbers and underscores only, and it has to be unique.
+            </p>
           </>
         )}
 
