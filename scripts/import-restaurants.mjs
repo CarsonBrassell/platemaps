@@ -102,8 +102,11 @@ function restaurantValues(r, order) {
     r.photo ?? null, r.photoAlt ?? null, r.yelpUrl ?? null,
     order,
     // Banded here, from the same menu being written below, using the same
-    // function the app used to call per request. Null when there is no menu.
-    bandFor(dishesByRestaurant[r.id] ?? []),
+    // function `recompute-price-bands.mjs` calls. Cuisine is passed because the
+    // band estimates spend per person, and how many dishes that takes depends
+    // on the format — three tacos, one entrée. Null when there is no menu, too
+    // little of one, or a menu whose format is genuinely ambiguous.
+    bandFor(dishesByRestaurant[r.id] ?? [], r.cuisine),
   ];
 }
 
