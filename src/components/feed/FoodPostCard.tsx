@@ -18,6 +18,25 @@ function handleFor(name: string) {
   return name.trim().toLowerCase().replace(/\s+/g, "");
 }
 
+/**
+ * The author's face, at the one size this card uses it.
+ *
+ * Rendered in two places that are never both on screen for the same post: on
+ * the photo when there is one, in the meta row when there isn't.
+ */
+function Avatar({ name, url, bg }: { name: string; url?: string; bg: string }) {
+  return url ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={url} alt="" className="h-6 w-6 rounded-full object-cover" />
+  ) : (
+    <span
+      className={`flex h-6 w-6 items-center justify-center rounded-full ${bg} font-mono text-[10px] font-semibold text-white`}
+    >
+      {initials(name)}
+    </span>
+  );
+}
+
 function Tombstone({ title, body, onUndo }: { title: string; body: string; onUndo?: () => void }) {
   return (
     <div className="flex items-center gap-3 rounded-2xl bg-white px-5 py-6 text-sm">
@@ -228,10 +247,13 @@ export function FoodPostCard(props: FoodPostCardProps) {
   const titleId = `post-${post.id}-title`;
   const kickerId = `post-${post.id}-kicker`;
 
-  /* The byline opens with the handle; what follows is only what the headline
-     didn't already say. A restaurant review deliberately carries no
-     neighbourhood and no "restaurant review" label — the stars say it.
-     Price rides here only when there's no photo to wear its chip. */
+  /* Where it was and when, printed at the foot of the card under the comment
+     rather than up with the name — it is the footnote to the plate, and the
+     top of the card is for the plate and the person.
+   *
+     Only what the headline didn't already say: a restaurant review carries no
+     neighbourhood and no "restaurant review" label, the stars say it. Price
+     rides here only when there's no photo to wear its chip. */
   const bylineParts = [
     titleIsDish ? post.restaurant : post.dishName,
     relativeTime(post.createdAt),
@@ -241,6 +263,49 @@ export function FoodPostCard(props: FoodPostCardProps) {
   // Reads either vocabulary the `vibe` column has held — "Lively", or "Food"
   // written back out as "Best at food".
   const roomChip = post.vibe ? vibeChip(post.vibe) : null;
+
+  /* Whether the photo leads the card, which decides two things below: where the
+     words sit relative to it, and where the author's name is printed.
+   *
+   * With a photo the plate is what stops the scroll, so it goes first and the
+   * handle rides in its top-left corner; the verdict, the words and the dish
+   * then read as the caption underneath. With no photo there is nothing to
+   * overlay, so the name goes back into the meta row and the card is words the
+   * whole way down. The handle is printed once either way. */
+  const hasPhoto = post.media.length > 0;
+
+  /* Mutual friends only — a one-directional follow isn't a state this button
+     can land in. "Incoming" routes to the account page rather than accepting
+     inline, since accepting needs the request's id and this card only ever
+     received a friendIds/outgoing summary, not the full request list.
+   *
+     Resolved to one element up here because the meta row below only exists
+     when it has something to hold, and this is one of the two things that
+     count. */
+  const friendPill = "hidden min-h-9 shrink-0 items-center rounded-full px-3 text-xs font-medium sm:flex";
+  const friendControl =
+    !currentUserId || isOwner ? null : friendStatus === "none" ? (
+      onAddFriend && (
+        <button
+          type="button"
+          onClick={() => onAddFriend(post.userId)}
+          className={`${friendPill} bg-pm-charcoal text-white transition-colors hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
+        >
+          Add friend
+        </button>
+      )
+    ) : friendStatus === "requested" ? (
+      <span className={`${friendPill} bg-pm-grey-tint text-pm-grey-text`}>Request sent</span>
+    ) : friendStatus === "incoming" ? (
+      <Link
+        href="/account"
+        className={`${friendPill} bg-pm-orange text-[#F7F4EC] transition-colors hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
+      >
+        Respond
+      </Link>
+    ) : (
+      <span className={`${friendPill} bg-pm-grey-tint text-pm-grey-text`}>Friends</span>
+    );
 
   return (
     <article
@@ -252,9 +317,60 @@ export function FoodPostCard(props: FoodPostCardProps) {
         highlighted ? "ring-2 ring-pm-orange" : ""
       }`}
     >
-      <header className="px-4 pt-4">
+      {/* The plate itself, first, when the post has one — inset from the card
+          edge with both radii visible, the same move as the restaurant page's
+          hero. Only two things sit on it: the author's handle in the top-left
+          corner, and the price chip in the bottom-left. The rating chips that
+          used to be here are gone — the verdict lives under the photo now with
+          the words it belongs to (rating branches are in the header below, and
+          pre-split rows were converted by scripts/backfill-rating-kind.mjs). */}
+      {hasPhoto && (
+        <div className="relative mx-2.5 mt-2.5 overflow-hidden rounded-xl">
+          <PostMediaCarousel
+            media={post.media}
+            dishName={post.dishName}
+            restaurant={post.restaurant}
+          />
+
+          {/* Top-left, clear of everything the carousel puts on the photo: the
+              slide counter is top-right, the arrows are centred, the dots and
+              the price are along the bottom.
+           *
+           * Straight on the image with no chip under it, which means the halo
+           * is doing all the separating — the same answer MapSearch reaches for
+           * over the map, and for the same reason: a fill here would be a
+           * second white bubble sitting on the plate. Cream rather than pure
+           * white to stay in the palette, and the avatar gets the shadow as a
+           * filter since text-shadow cannot reach it. */}
+          <Link
+            href={isOwner ? "/account" : `/u/${post.userId}`}
+            aria-label={`View ${post.authorName}'s profile`}
+            className="absolute left-2.5 top-2.5 flex max-w-[calc(100%-5rem)] items-center gap-2 rounded-full text-[#F7F4EC] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+          >
+            <span className="shrink-0 [filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.85))]">
+              <Avatar name={post.authorName} url={post.authorAvatarUrl} bg={palette.avatarBg} />
+            </span>
+            <span className="truncate font-mono text-xs font-medium [text-shadow:0_1px_7px_rgba(0,0,0,0.95),0_0_3px_rgba(0,0,0,0.7)]">
+              {handleFor(post.authorName)}
+            </span>
+            {/* Plate points ride with the name, here and in the meta row — they
+                say who this is as much as the handle does. */}
+            <PointsBadge points={post.authorPoints} tone="photo" className="shrink-0" />
+          </Link>
+
+          {post.price && (
+            <div className="pointer-events-none absolute bottom-2.5 left-2.5">
+              <span className="rounded-full bg-white/95 px-2.5 py-1 font-mono text-xs font-medium tabular-nums text-zinc-700">
+                {post.price}
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+
+      <header className={hasPhoto ? "px-4 pt-3" : "px-4 pt-4"}>
         {/* The dish or the restaurant, small and in the accent — a caption
-            above its picture rather than a heading over a section. Fraunces
+            under its picture rather than a heading over a section. Fraunces
             because it is a proper name, --pm-orange-text because small orange
             type needs the darker of the two accent tokens to clear 4.5:1. */}
         {kicker && (
@@ -316,77 +432,89 @@ export function FoodPostCard(props: FoodPostCardProps) {
           </button>
         )}
 
-        <div className="mt-2 flex items-center gap-2">
-          <Link
-            href={isOwner ? "/account" : `/u/${post.userId}`}
-            aria-label={`View ${post.authorName}'s profile`}
-            className="shrink-0 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            {post.authorAvatarUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={post.authorAvatarUrl}
-                alt=""
-                className="h-6 w-6 rounded-full object-cover"
-              />
-            ) : (
-              <span
-                className={`flex h-6 w-6 items-center justify-center rounded-full ${palette.avatarBg} font-mono text-[10px] font-semibold text-white`}
-              >
-                {initials(post.authorName)}
-              </span>
+        {/* Only when there is something to put in it. With the handle and the
+            points on the photo, the restaurant and the time at the foot of the
+            card and the options button down in the action row, a photo post
+            that isn't trending has nothing left for this line — and an empty
+            24px row under the words is exactly the gap that made the card read
+            as half air. */}
+        {(!hasPhoto || trending || friendControl) && (
+          <div className="mt-1.5 flex items-center gap-2">
+            {/* Name and points only when they aren't already on the photo. */}
+            {!hasPhoto && (
+              <>
+                <Link
+                  href={isOwner ? "/account" : `/u/${post.userId}`}
+                  aria-label={`View ${post.authorName}'s profile`}
+                  className="flex min-w-0 items-center gap-2 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                >
+                  <Avatar name={post.authorName} url={post.authorAvatarUrl} bg={palette.avatarBg} />
+                  <span className="truncate font-mono text-xs font-medium text-zinc-900">
+                    {handleFor(post.authorName)}
+                  </span>
+                </Link>
+                <PointsBadge points={post.authorPoints} className="shrink-0" />
+              </>
             )}
-          </Link>
 
-          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
-            <span className="truncate font-mono text-xs text-zinc-500">
-              <span className="font-medium text-zinc-900">{handleFor(post.authorName)}</span>
-              {bylineParts.length > 0 && <> · {bylineParts.join(" · ")}</>}
-            </span>
-            <PointsBadge points={post.authorPoints} />
             {trending && (
               <span
-                className="flex items-center gap-1 rounded-full bg-pm-grey-tint py-0.5 pl-1.5 pr-2 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-pm-grey-text"
+                className="flex shrink-0 items-center gap-1 rounded-full bg-pm-grey-tint py-0.5 pl-1.5 pr-2 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-pm-grey-text"
                 title="Trending right now"
               >
                 <FlameIcon className="h-3 w-3" />
                 Hot
               </span>
             )}
-          </div>
 
-        {/* Mutual friends only — a one-directional follow isn't a state this
-            button can land in. "Incoming" routes to the account page rather
-            than accepting inline, since accepting needs the request's id and
-            this card only ever received a friendIds/outgoing summary, not the
-            full request list. */}
-        {currentUserId && !isOwner && friendStatus === "none" && onAddFriend && (
-          <button
-            type="button"
-            onClick={() => onAddFriend(post.userId)}
-            className="hidden min-h-9 shrink-0 rounded-full bg-pm-charcoal px-3 text-xs font-medium text-white transition-colors hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange sm:block"
-          >
-            Add friend
-          </button>
+            {friendControl && <div className="ml-auto shrink-0">{friendControl}</div>}
+          </div>
         )}
-        {currentUserId && !isOwner && friendStatus === "requested" && (
-          <span className="hidden min-h-9 shrink-0 items-center rounded-full bg-pm-grey-tint px-3 text-xs font-medium text-pm-grey-text sm:flex">
-            Request sent
-          </span>
+      </header>
+
+      {/* The verdict on the left, everything you can do about it on the
+          right. PostActions owns that split itself; the options menu is added
+          on the end of it here rather than kept on a line of its own, where a
+          44px button was costing a whole row to say nothing.
+       *
+       * Barely any padding of its own: its buttons are min-h-11 for the tap
+       * target, and that 44px is already most of a row's worth of air around
+       * a 19px icon. */}
+      <div className="flex items-center gap-1 px-4 pb-0.5 pt-0.5">
+        <div className="min-w-0 flex-1">
+        {props.surface === "discover" ? (
+          <PostActions
+            surface="discover"
+            upvoteCount={post.upvoteCount}
+            downvoteCount={post.downvoteCount}
+            myVote={post.upvotedByMe ? "up" : post.downvotedByMe ? "down" : null}
+            commentCount={post.comments.length}
+            saved={saved}
+            canInteract={!!currentUserId}
+            pointsToast={reactPoints ? `+${reactPoints} point${reactPoints === 1 ? "" : "s"}` : null}
+            onVote={(direction) => onVote?.(post.id, direction)}
+            onComment={() => onOpenComments(post.id)}
+            onSave={() => onSave(post.id)}
+            onShare={() => onShare(post)}
+            onRequireSignIn={onRequireSignIn}
+          />
+        ) : (
+          <PostActions
+            surface="friends"
+            hearted={post.heartedByMe}
+            commentCount={post.comments.length}
+            saved={saved}
+            canInteract={!!currentUserId}
+            // Hearts earn no points — nothing to float here, ever.
+            pointsToast={null}
+            onReact={() => onReact?.(post.id)}
+            onComment={() => onOpenComments(post.id)}
+            onSave={() => onSave(post.id)}
+            onShare={() => onShare(post)}
+            onRequireSignIn={onRequireSignIn}
+          />
         )}
-        {currentUserId && !isOwner && friendStatus === "incoming" && (
-          <Link
-            href="/account"
-            className="hidden min-h-9 shrink-0 items-center rounded-full bg-pm-orange px-3 text-xs font-medium text-[#F7F4EC] transition-colors hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange sm:flex"
-          >
-            Respond
-          </Link>
-        )}
-        {currentUserId && !isOwner && friendStatus === "friends" && (
-          <span className="hidden min-h-9 shrink-0 items-center rounded-full bg-pm-grey-tint px-3 text-xs font-medium text-pm-grey-text sm:flex">
-            Friends
-          </span>
-        )}
+        </div>
 
         <div ref={menuRef} className="relative shrink-0">
           <button
@@ -456,75 +584,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
               )}
             </div>
           )}
-          </div>
         </div>
-      </header>
-
-      {/* Photo only when the post actually has one — with photos scoped to the
-          friends tab, most Discover entries won't, and a ledger entry reads as
-          headline + words alone. When it exists it stays inset from the card
-          edge, both radii visible — the same move as the restaurant page's
-          hero. The rating chips that used to sit on the photo are gone: the
-          verdict lives in the headline now (rating branches are up there, and
-          pre-split rows were converted by scripts/backfill-rating-kind.mjs).
-          Only the price still wears a chip. */}
-      {post.media.length > 0 && (
-        <div className="relative mx-2.5 mt-3 overflow-hidden rounded-xl">
-          <PostMediaCarousel
-            media={post.media}
-            dishName={post.dishName}
-            restaurant={post.restaurant}
-          />
-
-          {post.price && (
-            <div className="pointer-events-none absolute bottom-2.5 left-2.5">
-              <span className="rounded-full bg-white/95 px-2.5 py-1 font-mono text-xs font-medium tabular-nums text-zinc-700">
-                {post.price}
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* The poster's words used to sit here, in small grey type under the
-          photo. They are the headline now — see `headline` above — and printing
-          them twice was the whole reason to take them out of this slot. */}
-
-      {/* The verdict on the left, everything you can do about it on the
-          right. PostActions owns the split itself. */}
-      <div className="flex items-center px-4 pb-1 pt-2">
-        {props.surface === "discover" ? (
-          <PostActions
-            surface="discover"
-            upvoteCount={post.upvoteCount}
-            downvoteCount={post.downvoteCount}
-            myVote={post.upvotedByMe ? "up" : post.downvotedByMe ? "down" : null}
-            commentCount={post.comments.length}
-            saved={saved}
-            canInteract={!!currentUserId}
-            pointsToast={reactPoints ? `+${reactPoints} point${reactPoints === 1 ? "" : "s"}` : null}
-            onVote={(direction) => onVote?.(post.id, direction)}
-            onComment={() => onOpenComments(post.id)}
-            onSave={() => onSave(post.id)}
-            onShare={() => onShare(post)}
-            onRequireSignIn={onRequireSignIn}
-          />
-        ) : (
-          <PostActions
-            surface="friends"
-            hearted={post.heartedByMe}
-            commentCount={post.comments.length}
-            saved={saved}
-            canInteract={!!currentUserId}
-            // Hearts earn no points — nothing to float here, ever.
-            pointsToast={null}
-            onReact={() => onReact?.(post.id)}
-            onComment={() => onOpenComments(post.id)}
-            onSave={() => onSave(post.id)}
-            onShare={() => onShare(post)}
-            onRequireSignIn={onRequireSignIn}
-          />
-        )}
       </div>
 
       <div className="px-4 pb-4">
@@ -576,6 +636,16 @@ export function FoodPostCard(props: FoodPostCardProps) {
               </p>
             )}
           </div>
+        )}
+
+        {/* Where and when, last — the footnote to the plate rather than part of
+            the byline. Mono because it is a proper name and a machine value,
+            zinc-500 because this is a white card and --pm-grey-text is the
+            cream-ground token. */}
+        {bylineParts.length > 0 && (
+          <p className="mt-2.5 truncate font-mono text-xs text-zinc-500">
+            {bylineParts.join(" · ")}
+          </p>
         )}
       </div>
     </article>

@@ -79,6 +79,37 @@ else
     exit 1
   fi
 
+  # Check the shapes before storing them. `-s` hides the input, which is right
+  # for a secret and awful for a paste error: on 11 Aug 2026 the connection
+  # string went into both prompts — same clipboard, nothing on screen to show
+  # it — and .env.local carried a DATABASE_URL under YELP_API_KEY for two days.
+  # Nothing noticed until fetch-restaurants.mjs sent it to Yelp as a Bearer
+  # token and Yelp echoed the database password back in seventy error bodies.
+  #
+  # Neither check prints the value it rejects.
+  case "$DB_URL" in
+    postgres://*|postgresql://*) ;;
+    *)
+      echo "That does not look like a Postgres connection string (expected postgres:// or postgresql://)."
+      echo "Nothing written — re-run when you have it."
+      exit 1
+      ;;
+  esac
+
+  if [ -n "$YELP_KEY" ]; then
+    if [ "$YELP_KEY" = "$DB_URL" ]; then
+      echo "YELP_API_KEY is identical to DATABASE_URL — looks like the same paste twice."
+      echo "Nothing written. Copy the Yelp key first, then re-run."
+      exit 1
+    fi
+    # A Yelp key is 128 URL-safe characters.
+    if ! printf '%s' "$YELP_KEY" | grep -Eq '^[A-Za-z0-9_-]{128}$'; then
+      echo "YELP_API_KEY does not look like a Yelp key (expected 128 URL-safe characters)."
+      echo "Nothing written — a key sent to the wrong service is a leaked credential."
+      exit 1
+    fi
+  fi
+
   {
     echo "# Written by setup.sh. Gitignored — never commit this file."
     echo "DATABASE_URL=$DB_URL"

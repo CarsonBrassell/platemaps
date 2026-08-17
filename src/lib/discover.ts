@@ -54,7 +54,12 @@ import {
 } from "@/lib/discoverFilters";
 import type { Coords } from "@/lib/geo";
 import type { RestaurantView } from "@/data/restaurants";
-import { getAllRestaurantAspectTallies, getRestaurants } from "@/lib/db";
+import {
+  getAllRestaurantAspectTallies,
+  getAllRestaurantPlateScores,
+  getRestaurants,
+} from "@/lib/db";
+import { EMPTY_PLATE_SCORE, type PlateScore } from "@/lib/plateScore";
 
 /** How many cards a page of results holds. */
 export const PAGE_SIZE = 24;
@@ -73,7 +78,16 @@ const MAX_SHOWN = 240;
  * so the rail could count, and that was another whole-corpus payload. The card
  * needs one number, so one number is what it is sent.
  */
-export type DiscoverResult = RestaurantView & { aspectStars?: number };
+export type DiscoverResult = RestaurantView & {
+  aspectScore?: number;
+  /**
+   * The restaurant's plate score, attached for the same reason as above: the
+   * card prints it, and the browser has no way to derive it. Always present, and
+   * carries its own null percent for a restaurant with too few rated plates —
+   * the card says so rather than falling back to a borrowed number.
+   */
+  plateScore: PlateScore;
+};
 
 export type DiscoverPage = {
   /**
@@ -100,8 +114,9 @@ export type DiscoverPage = {
     aspects: FacetOption[];
   };
   /** The curated strip. Two rows, computed here so the grid needn't hold the
-      corpus just to find the promoted ones. */
-  picks: RestaurantView[];
+      corpus just to find the promoted ones. Carries plate scores for the same
+      reason the results do — the strip prints them. */
+  picks: DiscoverResult[];
 };
 
 /**
@@ -118,6 +133,7 @@ export type DiscoverPage = {
 type Corpus = {
   restaurants: RestaurantView[];
   aspects: ReturnType<typeof strongAspectsFrom>;
+  plates: Record<string, PlateScore>;
 };
 
 const CORPUS_TTL_MS = 60_000;
@@ -128,11 +144,15 @@ function loadCorpus(): Promise<Corpus> {
   if (cached && now - cached.at < CORPUS_TTL_MS) return cached.value;
 
   const value = (async (): Promise<Corpus> => {
-    const [restaurants, tallies] = await Promise.all([
+    // Plate scores are read once and handed to the tallies, which anchor their
+    // category scores to them — otherwise the same grouped aggregate would run
+    // twice per corpus load for one number.
+    const [restaurants, plates] = await Promise.all([
       getRestaurants(),
-      getAllRestaurantAspectTallies(),
+      getAllRestaurantPlateScores(),
     ]);
-    return { restaurants, aspects: strongAspectsFrom(tallies) };
+    const tallies = await getAllRestaurantAspectTallies(plates);
+    return { restaurants, aspects: strongAspectsFrom(tallies), plates };
   })();
 
   // Stored before it resolves so concurrent requests share one read; dropped on
@@ -160,14 +180,14 @@ export async function getDiscoverPage(
   search: string,
   { shown = PAGE_SIZE, here = null }: { shown?: number; here?: Coords | null } = {},
 ): Promise<DiscoverPage> {
-  const { restaurants, aspects } = await loadCorpus();
+  const { restaurants, aspects, plates } = await loadCorpus();
   const filters = filtersFromSearch(search, restaurants);
 
   // Evaluated against the server's clock rather than the browser's. The client
   // could only supply a time it had already been told, and "open now" in a San
   // Diego product is a question about San Diego — openStateFor does the zone
   // conversion either way.
-  const ctx: FilterContext = { now: new Date(), here, aspects };
+  const ctx: FilterContext = { now: new Date(), here, aspects, plates };
 
   const matched = applyFilters(restaurants, filters, ctx);
   const limit = Math.min(Math.max(shown, PAGE_SIZE), MAX_SHOWN);
@@ -175,8 +195,11 @@ export async function getDiscoverPage(
   return {
     filters,
     results: matched.slice(0, limit).map((r) => {
-      const stars = filters.aspect ? aspects.get(r.id)?.get(filters.aspect) : undefined;
-      return stars === undefined ? r : { ...r, aspectStars: stars };
+      const score = filters.aspect ? aspects.get(r.id)?.get(filters.aspect) : undefined;
+      const plate = plates[r.id] ?? EMPTY_PLATE_SCORE;
+      return score === undefined
+        ? { ...r, plateScore: plate }
+        : { ...r, plateScore: plate, aspectScore: score };
     }),
     total: matched.length,
     shown: Math.min(limit, matched.length),
@@ -187,7 +210,10 @@ export async function getDiscoverPage(
       prices: priceOptions(restaurants),
       aspects: aspectOptions(aspects),
     },
-    picks: restaurants.filter((r) => r.trending).slice(0, 2),
+    picks: restaurants
+      .filter((r) => r.trending)
+      .slice(0, 2)
+      .map((r) => ({ ...r, plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE })),
   };
 }
 

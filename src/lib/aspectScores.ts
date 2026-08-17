@@ -1,5 +1,5 @@
 /**
- * Per-aspect star scores for a restaurant, derived from signed aspect votes.
+ * Per-aspect percent scores for a restaurant, derived from signed aspect votes.
  *
  * Rendered by src/components/RestaurantAspects.tsx on every restaurant page.
  * The model is also runnable on its own against hand-built scenarios
@@ -7,18 +7,23 @@
  *
  * ## What it measures
  *
- * Each restaurant review may name one aspect as the best thing about the
- * place, and — optionally — one aspect that let them down. Both are single
- * taps and both are skippable. That gives every aspect a signed tally rather
- * than a share of a fixed pool.
+ * Each review may name one aspect as the best thing about the place, and —
+ * optionally — one aspect that let them down. Both are single taps and both are
+ * skippable. That gives every aspect a signed tally rather than a share of a
+ * fixed pool.
  *
- * An aspect's score starts at the restaurant's own overall rating and moves
- * toward 5 on praise or toward 1 on complaints, scaled by how much room the
- * restaurant's own rating leaves in that direction:
+ * An aspect's score starts at the restaurant's own overall percent and moves
+ * toward 100 on praise or toward 0 on complaints, scaled by how much room the
+ * restaurant's own score leaves in that direction:
  *
  *   net  = (praised - faulted) / reviews        in [-1, +1]
- *   up   = overall + (5 - overall) * net        when net >= 0
- *   down = overall + (overall - 1) * net        when net <  0
+ *   up   = overall + (100 - overall) * net      when net >= 0
+ *   down = overall + (overall - 0) * net        when net <  0
+ *
+ * The scale here is the product's only rating scale — a percent. `overall` is
+ * the restaurant's plate score (src/lib/plateScore.ts), so these categories are
+ * anchored to what its dishes actually earned rather than to a separate
+ * place-level rating nobody enters any more.
  *
  * ## Why signed, and not "share of the best-at vote"
  *
@@ -37,21 +42,21 @@
  * ## Confidence damping
  *
  * Raw `net` hits its extremes on tiny samples: one review praising the food
- * gives net = +1.0 and pins food at 5.0 off a single tap. `net` is therefore
- * shrunk toward 0 — that is, toward the restaurant's overall rating — by
+ * gives net = +1.0 and pins food at 100 off a single tap. `net` is therefore
+ * shrunk toward 0 — that is, toward the restaurant's overall score — by
  * `reviews / (reviews + CONFIDENCE_K)`, so early scores stay close to the
  * overall until enough people agree to move them.
  *
- * ## Why there is no per-aspect star picker
+ * ## Why there is no per-aspect rating picker
  *
  * There was going to be one, and it earned nothing. Someone naming an aspect
- * the best thing about a place will rate it 4 or 5 every time, and someone
- * naming it a letdown will rate it 1 or 2 — the star adds a tap and repeats
- * what the chip already said.
+ * the best thing about a place will rate it near the top every time, and
+ * someone naming it a letdown will rate it near the bottom — the second
+ * instrument adds a tap and repeats what the chip already said.
  *
  * The magnitude comes from the count instead: 18 of 20 reviews calling the
  * food best is a much stronger claim than 2 of 20, and no single reviewer's
- * star rating could carry that. So a review contributes at most one +1 and
+ * own number could carry that. So a review contributes at most one +1 and
  * one −1, both by tapping a chip, and the population supplies the scale.
  */
 
@@ -73,13 +78,13 @@ export type Aspect = string;
  */
 export const CONFIDENCE_K = 5;
 
-/** The bounds a star score can occupy. 1 is the floor because a 0-star rating
-    isn't selectable in the picker — see StarPicker. */
-const MIN_STARS = 1;
-const MAX_STARS = 5;
+/** The bounds a score can occupy — the same 0–100 the dish meter spans. */
+const MIN_SCORE = 0;
+const MAX_SCORE = 100;
 
 /**
- * Two tap-counts. No stars — see "Why there is no per-aspect star picker".
+ * Two tap-counts. No second rating — see "Why there is no per-aspect rating
+ * picker".
  */
 export type AspectVotes = {
   /** Reviews naming this aspect the best thing about the place. */
@@ -90,8 +95,8 @@ export type AspectVotes = {
 
 export type AspectScore = {
   aspect: Aspect;
-  /** Null when there are no reviews at all — an honest gap, not a 0. */
-  stars: number | null;
+  /** 0–100. Null when there are no reviews at all — an honest gap, not a 0. */
+  score: number | null;
   praised: number;
   faulted: number;
   /** Signed vote balance before damping, in [-1, +1]. */
@@ -107,9 +112,8 @@ function clamp(n: number, lo: number, hi: number) {
 }
 
 /**
- * One aspect's score. `overall` is the restaurant's own average star rating
- * from its PlateMaps reviews; `reviewCount` is how many reviews that average
- * is drawn from.
+ * One aspect's score. `overall` is the restaurant's own plate score as a
+ * percent; `reviewCount` is how many reviews the aspect taps came from.
  */
 export function aspectScore(
   aspect: Aspect,
@@ -126,7 +130,7 @@ export function aspectScore(
   };
 
   if (reviewCount <= 0) {
-    return { ...base, stars: null, net: 0, confidence: 0, unremarked: true };
+    return { ...base, score: null, net: 0, confidence: 0, unremarked: true };
   }
 
   // Each review can praise at most one aspect and fault at most one, so this
@@ -136,16 +140,15 @@ export function aspectScore(
   const confidence = reviewCount / (reviewCount + k);
   const moved = net * confidence;
 
-  // Scale by the room the restaurant's own rating leaves in that direction,
-  // so praise can never push an aspect past 5 and complaints can never push
-  // one below 1 — and a 3-star place can't have a 4.9 aspect on vote share
-  // alone.
-  const stars =
+  // Scale by the room the restaurant's own score leaves in that direction, so
+  // praise can never push an aspect past 100 and complaints can never push one
+  // below 0 — and a 60% place can't have a 97% aspect on vote share alone.
+  const score =
     moved >= 0
-      ? overall + (MAX_STARS - overall) * moved
-      : overall + (overall - MIN_STARS) * moved;
+      ? overall + (MAX_SCORE - overall) * moved
+      : overall + (overall - MIN_SCORE) * moved;
 
-  return { ...base, stars: clamp(stars, MIN_STARS, MAX_STARS), net, confidence };
+  return { ...base, score: clamp(score, MIN_SCORE, MAX_SCORE), net, confidence };
 }
 
 /**
@@ -172,14 +175,14 @@ export function aspectScores(
  * chosen by tie-break.
  */
 export function bestAspect(scores: AspectScore[]): AspectScore | null {
-  const voted = scores.filter((s) => !s.unremarked && s.stars !== null);
+  const voted = scores.filter((s) => !s.unremarked && s.score !== null);
   if (voted.length === 0) return null;
-  return voted.reduce((best, s) => (s.stars! > best.stars! ? s : best));
+  return voted.reduce((best, s) => (s.score! > best.score! ? s : best));
 }
 
 /** The aspect most often called out as a letdown, if anyone did. */
 export function weakestAspect(scores: AspectScore[]): AspectScore | null {
-  const faulted = scores.filter((s) => s.faulted > 0 && s.stars !== null);
+  const faulted = scores.filter((s) => s.faulted > 0 && s.score !== null);
   if (faulted.length === 0) return null;
-  return faulted.reduce((worst, s) => (s.stars! < worst.stars! ? s : worst));
+  return faulted.reduce((worst, s) => (s.score! < worst.score! ? s : worst));
 }

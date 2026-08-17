@@ -4,6 +4,8 @@ import type { Restaurant, RestaurantView } from "@/data/restaurants";
 import type { Dish } from "@/data/dishes";
 import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
+import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
+import { aspectAnchor } from "@/lib/ratingDisplay";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -1450,38 +1452,154 @@ export type PublicProfile = {
   favoriteRestaurantId?: string;
 };
 
+// --- Plate scores ----------------------------------------------------------
+
+/**
+ * One row per distinct plate someone has rated at a restaurant.
+ *
+ * Grouped on a normalised dish name (`lower(trim(...))`) so "Al Pastor" and
+ * "al pastor" are one plate rather than two thinly-rated ones — the composer
+ * picks off a menu, but free-typed and legacy rows exist and two spellings of
+ * the same dish would each get its own confidence weight.
+ *
+ * A rated post with no dish name falls into a single empty-key bucket rather
+ * than being dropped: it is still somebody's rating of something they ate
+ * there, and dropping it would quietly shrink the sample.
+ */
+const PLATE_GROUP = `lower(trim(coalesce(dish_name, '')))`;
+
+/**
+ * What this restaurant's plates add up to — the only restaurant-level rating in
+ * the product. See src/lib/plateScore.ts for the weighting and for why a
+ * thinly-rated restaurant gets a null percent rather than a confident-looking
+ * number off two ratings.
+ */
+export async function getRestaurantPlateScore(restaurantId: string): Promise<PlateScore> {
+  const rows = await sql`
+    SELECT AVG(rating)::float AS average, count(*)::int AS ratings
+    FROM posts
+    WHERE restaurant_id = ${restaurantId}
+      AND rating_kind = 'dish'
+      AND rating IS NOT NULL
+    GROUP BY ${sql.unsafe(PLATE_GROUP)}
+  `;
+  return plateScore(rows.map(toRatedDish));
+}
+
+/**
+ * The same score for every restaurant at once, keyed by id.
+ *
+ * Discover needs all of them before it can order the grid, evaluate "Top rated"
+ * or print a facet count, exactly as with the aspect tallies below — and for the
+ * same reason this is one grouped aggregate rather than a request per card.
+ *
+ * Restaurants nobody has rated a plate at are absent rather than present with a
+ * zeroed score; `plateScore([])` is what a caller should show for them, and a
+ * missing key and an empty list mean the same thing to it.
+ */
+export async function getAllRestaurantPlateScores(): Promise<Record<string, PlateScore>> {
+  const rows = await sql`
+    SELECT restaurant_id,
+           AVG(rating)::float AS average,
+           count(*)::int AS ratings
+    FROM posts
+    WHERE rating_kind = 'dish'
+      AND rating IS NOT NULL
+      AND restaurant_id IS NOT NULL
+    GROUP BY restaurant_id, ${sql.unsafe(PLATE_GROUP)}
+  `;
+
+  const byRestaurant = new Map<string, RatedDish[]>();
+  for (const row of rows) {
+    const id = row.restaurant_id as string;
+    const list = byRestaurant.get(id);
+    if (list) list.push(toRatedDish(row));
+    else byRestaurant.set(id, [toRatedDish(row)]);
+  }
+
+  const scores: Record<string, PlateScore> = {};
+  for (const [id, dishes] of byRestaurant) scores[id] = plateScore(dishes);
+  return scores;
+}
+
+function toRatedDish(row: Record<string, unknown>): RatedDish {
+  return { average: row.average as number, ratings: row.ratings as number };
+}
+
+/**
+ * Each plate's own rating at one restaurant, keyed by its normalised name.
+ *
+ * The same grouping the plate score is built from (`PLATE_GROUP`), returned per
+ * dish instead of folded together — so the menu can print the number a plate
+ * earned and the header's percent is visibly the average of exactly these.
+ * A caller matches a menu row by `dishRatingKey(dish.name)`.
+ *
+ * This is distinct from `dishes.yes_votes`/`no_votes`, the older "would you eat
+ * this?" tally that `dishStats` reads. Both render as a percent, and that is a
+ * known problem: they answer different questions from different inputs. Ratings
+ * win where a plate has them — see the note in RestaurantDetail.
+ */
+export async function getDishRatingsForRestaurant(
+  restaurantId: string,
+): Promise<Record<string, RatedDish>> {
+  const rows = await sql`
+    SELECT ${sql.unsafe(PLATE_GROUP)} AS dish_key,
+           AVG(rating)::float AS average,
+           count(*)::int AS ratings
+    FROM posts
+    WHERE restaurant_id = ${restaurantId}
+      AND rating_kind = 'dish'
+      AND rating IS NOT NULL
+      AND dish_name IS NOT NULL
+    GROUP BY ${sql.unsafe(PLATE_GROUP)}
+  `;
+
+  const byDish: Record<string, RatedDish> = {};
+  for (const row of rows) byDish[row.dish_key as string] = toRatedDish(row);
+  return byDish;
+}
+
 // --- Per-aspect verdicts ---------------------------------------------------
 
 export type RestaurantAspectTally = {
-  /** Average star rating across this restaurant's own PlateMaps reviews. */
+  /**
+   * The percent each category score moves away from: the restaurant's plate
+   * score, or its sourced rating rescaled while it has no plate score yet. See
+   * `aspectAnchor` in lib/ratingDisplay.ts — never null, so the category block
+   * always has something to render against.
+   */
   overall: number;
-  /** How many restaurant-kind reviews that average is drawn from. */
+  /** How many rated reviews the votes could have come from. */
   reviewCount: number;
   /** praised / faulted counts, keyed by aspect. Aspects nobody voted on are absent. */
   votes: Record<string, { praised: number; faulted: number }>;
 };
 
 /**
+ * Aspect votes are read from **every** rated post, whatever its `rating_kind`.
+ *
+ * A vote is a claim about the place — "the drinks are what this bar is for" —
+ * and which instrument the review that carried it happened to use says nothing
+ * about that. Scoping these to `'dish'` when the star review was retired hid
+ * every vote written before the change, which is most of them; the taps are
+ * identical either way, so the kind of the host post is not a reason to discard
+ * one.
+ */
+const VOTE_SOURCE_POSTS = `p.rating IS NOT NULL`;
+
+/**
  * Everything src/lib/aspectScores.ts needs to score one restaurant: its own
  * average rating, how many reviews that came from, and the signed aspect
  * tallies.
  *
- * Scoped to `rating_kind = 'restaurant'` on purpose. A dish review's rating is
- * a percentage about one plate, not a verdict on the place, so folding it into
- * the overall would mix two different measurements — and it's the restaurant
- * reviews that carry the aspect votes anyway.
+ * New taps ride along on a plate review — you were at the place to eat the
+ * plate — but the read spans every rated post; see `VOTE_SOURCE_POSTS`.
  */
 export async function getRestaurantAspectTally(
   restaurantId: string,
 ): Promise<RestaurantAspectTally> {
-  const [summaryRows, voteRows] = await Promise.all([
-    sql`
-      SELECT COALESCE(AVG(rating), 0)::float AS overall, count(*)::int AS review_count
-      FROM posts
-      WHERE restaurant_id = ${restaurantId}
-        AND rating_kind = 'restaurant'
-        AND rating IS NOT NULL
-    `,
+  const [score, voteRows, sourceRows, blendRows] = await Promise.all([
+    getRestaurantPlateScore(restaurantId),
     sql`
       SELECT v.aspect,
              count(*) FILTER (WHERE v.sentiment = 'praise')::int AS praised,
@@ -1489,9 +1607,19 @@ export async function getRestaurantAspectTally(
       FROM post_aspect_votes v
       JOIN posts p ON p.id = v.post_id
       WHERE p.restaurant_id = ${restaurantId}
-        AND p.rating_kind = 'restaurant'
+        AND ${sql.unsafe(VOTE_SOURCE_POSTS)}
       GROUP BY v.aspect
     `,
+    // The denominator `net` is taken over: how many rated reviews existed to
+    // vote, not how many did. A category praised by 3 of 40 is a much weaker
+    // claim than 3 of 4, and only this count can tell them apart.
+    sql`
+      SELECT count(*)::int AS n
+      FROM posts p
+      WHERE p.restaurant_id = ${restaurantId}
+        AND ${sql.unsafe(VOTE_SOURCE_POSTS)}
+    `,
+    sql`SELECT rating FROM restaurants WHERE id = ${restaurantId}`,
   ]);
 
   const votes: Record<string, { praised: number; faulted: number }> = {};
@@ -1503,8 +1631,8 @@ export async function getRestaurantAspectTally(
   }
 
   return {
-    overall: summaryRows[0]?.overall ?? 0,
-    reviewCount: summaryRows[0]?.review_count ?? 0,
+    overall: aspectAnchor(score.percent, Number(blendRows[0]?.rating ?? 0)),
+    reviewCount: sourceRows[0]?.n ?? 0,
     votes,
   };
 }
@@ -1522,20 +1650,11 @@ export async function getRestaurantAspectTally(
  * and "no match" to look the same from the outside, and aspectScores already
  * reports a 0-review tally as an honest null.
  */
-export async function getAllRestaurantAspectTallies(): Promise<
-  Record<string, RestaurantAspectTally>
-> {
-  const [summaryRows, voteRows] = await Promise.all([
-    sql`
-      SELECT restaurant_id,
-             COALESCE(AVG(rating), 0)::float AS overall,
-             count(*)::int AS review_count
-      FROM posts
-      WHERE rating_kind = 'restaurant'
-        AND rating IS NOT NULL
-        AND restaurant_id IS NOT NULL
-      GROUP BY restaurant_id
-    `,
+export async function getAllRestaurantAspectTallies(
+  scores?: Record<string, PlateScore>,
+): Promise<Record<string, RestaurantAspectTally>> {
+  const [plateScores, voteRows, sourceRows] = await Promise.all([
+    scores ? Promise.resolve(scores) : getAllRestaurantPlateScores(),
     sql`
       SELECT p.restaurant_id,
              v.aspect,
@@ -1543,25 +1662,35 @@ export async function getAllRestaurantAspectTallies(): Promise<
              count(*) FILTER (WHERE v.sentiment = 'fault')::int   AS faulted
       FROM post_aspect_votes v
       JOIN posts p ON p.id = v.post_id
-      WHERE p.rating_kind = 'restaurant'
+      WHERE ${sql.unsafe(VOTE_SOURCE_POSTS)}
         AND p.restaurant_id IS NOT NULL
       GROUP BY p.restaurant_id, v.aspect
+    `,
+    // Rated reviews per restaurant joined to the sourced rating, so a
+    // restaurant with votes but no plate score still gets an anchor. One query
+    // rather than a second pass over `restaurants`.
+    sql`
+      SELECT r.id, r.rating, count(p.id)::int AS review_count
+      FROM restaurants r
+      LEFT JOIN posts p
+        ON p.restaurant_id = r.id AND p.rating IS NOT NULL
+      GROUP BY r.id, r.rating
     `,
   ]);
 
   const tallies: Record<string, RestaurantAspectTally> = {};
-  for (const row of summaryRows) {
-    tallies[row.restaurant_id as string] = {
-      overall: row.overall as number,
+  for (const row of sourceRows) {
+    const id = row.id as string;
+    tallies[id] = {
+      overall: aspectAnchor(plateScores[id]?.percent ?? null, Number(row.rating ?? 0)),
       reviewCount: row.review_count as number,
       votes: {},
     };
   }
 
-  // Votes can only belong to a post that carries a rating of its own, so a
-  // vote row without a summary row means a review with aspect taps and no
-  // star — skipped rather than given a zeroed tally, which would score every
-  // aspect against an overall of 0.
+  // A vote row whose restaurant isn't in the corpus (an id rewritten by a data
+  // refresh — `posts.restaurant_id` is a soft reference) is skipped rather than
+  // given a tally of its own, which would score aspects against no anchor.
   for (const row of voteRows) {
     const tally = tallies[row.restaurant_id as string];
     if (!tally) continue;

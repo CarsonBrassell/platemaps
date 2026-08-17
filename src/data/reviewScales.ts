@@ -54,9 +54,14 @@ export const AMENITIES: ReadonlyArray<{ emoji: string; label: string }> = [
  * list where everything can be ticked tells a reader nothing. It shares the
  * `vibe` column with the room scale above rather than opening a second one, so
  * posts written under either vocabulary keep rendering.
+ *
+ * **Everything here is something the plates cannot say.** Food is deliberately
+ * absent: the restaurant's plate score already *is* its food rating — the
+ * average of every dish rating left there (lib/plateScore.ts) — so a Food
+ * category would put a second, weaker food number beside the real one and invite
+ * the two to disagree. These five measure the things you can't taste.
  */
 export const BEST_AT: ReadonlyArray<{ emoji: string; label: string }> = [
-  { emoji: "🍳", label: "Food" },
   { emoji: "🕯️", label: "Ambiance" },
   { emoji: "🙋", label: "Service" },
   { emoji: "📖", label: "Menu variety" },
@@ -73,10 +78,16 @@ export const BEST_AT: ReadonlyArray<{ emoji: string; label: string }> = [
  * the composer, unwritable through /api/posts, and absent from both the
  * restaurant page's category scores and Discover's "Rated well for" facet.
  * Votes already in `post_aspect_votes` for these simply stop being counted.
+ *
+ * Food is the newest entry and the only one retired for being *redundant*
+ * rather than useless — see the note above. Its existing votes stop counting
+ * like any other retired chip, which is the intended outcome: the plate score
+ * answers that question now.
  */
 const RETIRED_BEST_AT: ReadonlyArray<{ emoji: string; label: string }> = [
   { emoji: "⚡", label: "Speed" },
   { emoji: "🍰", label: "Dessert" },
+  { emoji: "🍳", label: "Food" },
 ];
 
 export const AMENITY_LABELS: readonly string[] = AMENITIES.map((a) => a.label);

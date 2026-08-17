@@ -121,6 +121,29 @@ if (!apiKey) {
   process.exit(1);
 }
 
+/*
+ * Check the key's shape before spending it on a request.
+ *
+ * A Yelp key is 128 URL-safe characters. On 13 Aug 2026 `.env.local` held the
+ * Neon connection string under YELP_API_KEY, so every call sent
+ * `Authorization: Bearer postgresql://neondb_owner:<password>@...` to Yelp —
+ * seventy of them in one run — and Yelp echoed the whole string back in each
+ * error body. A database password went to a third party and into this
+ * terminal's scrollback because nothing looked at the value first.
+ *
+ * The error deliberately does not print the key.
+ */
+if (!/^[A-Za-z0-9_-]{128}$/.test(apiKey)) {
+  console.error(
+    `YELP_API_KEY does not look like a Yelp key (got ${apiKey.length} characters; expected 128 URL-safe ones).`,
+  );
+  console.error("Refusing to send it — an API key sent to the wrong place is a leaked credential.");
+  if (apiKey.startsWith("postgres")) {
+    console.error("It looks like a Postgres connection string. Check for a copy/paste slip in .env.local.");
+  }
+  process.exit(1);
+}
+
 /* --- Yelp --------------------------------------------------------------- */
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -321,10 +344,32 @@ async function searchArea(area, offset) {
   return yelp(url);
 }
 
+/*
+ * San Diego County. The southern edge is the one that matters: San Ysidro is
+ * the border crossing, so a search centred there returns Tijuana businesses
+ * ranked as normal results. Seven made it into the corpus that way and were
+ * only caught during menu extraction, when agents kept reporting that a
+ * restaurant's only address was in Mexico. Four of them have no US location at
+ * all — Restaurante Caesar's, Mariscos el Mazateño, La Justina and La
+ * Corriente Cevichería Nais — so no amount of neighborhood correction helps;
+ * they simply are not in San Diego.
+ *
+ * The bound is 32.534, a hair south of the border at San Ysidro, so a genuine
+ * business on the US side of the crossing still passes.
+ */
+const COUNTY = { minLat: 32.534, maxLat: 33.505, minLng: -117.61, maxLng: -116.08 };
+
+function inCounty(coords) {
+  if (!coords || coords.latitude == null || coords.longitude == null) return false;
+  const { latitude: lat, longitude: lng } = coords;
+  return lat >= COUNTY.minLat && lat <= COUNTY.maxLat && lng >= COUNTY.minLng && lng <= COUNTY.maxLng;
+}
+
 function keeps(b) {
   if (seen.has(b.id)) return false;
   if (!b.image_url) return false; // a photo is the whole point here
   if (b.is_closed) return false; // permanently closed
+  if (!inCounty(b.coordinates)) return false; // across the border, or missing coordinates
   if ((b.review_count ?? 0) < MIN_REVIEWS) return false; // too obscure to recommend
   if ((b.rating ?? 0) < MIN_RATING) return false;
   const aliases = (b.categories ?? []).map((c) => c.alias);

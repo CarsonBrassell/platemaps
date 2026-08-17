@@ -2,6 +2,11 @@ import Link from "next/link";
 import type { RestaurantView } from "@/data/restaurants";
 import { StarIcon } from "@/components/icons";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
+import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
+import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
+
+/** A pick's plate score, or the unrated one when the caller didn't attach it. */
+const score = (r: { plateScore?: PlateScore }) => r.plateScore ?? EMPTY_PLATE_SCORE;
 
 /**
  * Takes its picks as a prop rather than filtering the restaurant array itself.
@@ -10,7 +15,11 @@ import { RestaurantPhoto } from "@/components/RestaurantPhoto";
  * this file imports is downloaded by every visitor — and it only ever needs two
  * rows. The caller already holds the list and does the filtering.
  */
-export function OurPicks({ picks }: { picks: readonly RestaurantView[] }) {
+export function OurPicks({
+  picks,
+}: {
+  picks: readonly (RestaurantView & { plateScore?: PlateScore })[];
+}) {
   if (picks.length === 0) return null;
 
   return (
@@ -59,10 +68,30 @@ export function OurPicks({ picks }: { picks: readonly RestaurantView[] }) {
               <p className="font-display text-[15px] font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pm-orange-text">
                 {r.name}
               </p>
-              <div className="mb-1 mt-1 flex items-center gap-1 font-mono text-xs tabular-nums">
-                <StarIcon className="h-3 w-3 text-zinc-500" />
-                <span className="font-medium text-zinc-700">{r.rating.toFixed(1)}</span>
-                <span className="text-zinc-500">({r.reviewCount.toLocaleString()})</span>
+              {/* Both numbers, same rule and same order as the grid card: our
+                  percent in the accent first, the blend's stars muted behind a
+                  divider with their denominator. Never the blend alone dressed as
+                  ours. */}
+              <div className="mb-1 mt-1 flex items-center gap-1.5 font-mono text-xs tabular-nums">
+                {score(r).percent !== null ? (
+                  <span className="font-bold text-pm-orange-text">
+                    {score(r).percent}%
+                    <span className="ml-0.5 font-medium text-zinc-500">
+                      ({score(r).ratingCount.toLocaleString()})
+                    </span>
+                  </span>
+                ) : (
+                  <span className="text-zinc-400">{plateScoreLabel(score(r))}</span>
+                )}
+                {SHOW_BLEND_STARS && (
+                  <>
+                    <span className="text-zinc-300">·</span>
+                    <span className="flex items-center gap-0.5 font-medium text-zinc-600">
+                      <StarIcon className="h-3 w-3 text-zinc-400" />
+                      {blendLabel(r.rating)}
+                    </span>
+                  </>
+                )}
               </div>
               <p className="text-xs text-zinc-500">
                 {r.cuisine} &middot; {r.neighborhood}

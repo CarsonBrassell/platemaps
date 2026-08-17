@@ -1,9 +1,32 @@
 import type { Restaurant } from "@/data/restaurants";
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
-import { StarIcon } from "@/components/icons";
+import { StarRating } from "@/components/StarRating";
+import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
+import {
+  BLEND_CAPTION,
+  BLEND_DISCLOSURE,
+  PLATE_SCORE_CAPTION,
+  SHOW_BLEND_STARS,
+  blendLabel,
+} from "@/lib/ratingDisplay";
 
-export function RestaurantHeader({ restaurant }: { restaurant: Restaurant }) {
+/**
+ * The detail page's hero, and the one surface with room to show both numbers in
+ * full: the plate score with its sample and what it is an average of, and the
+ * blend's stars with their denominator and their provenance.
+ *
+ * Every other surface (grid card, picks strip, search rows, map tip) shows a
+ * compressed version of the same pair. All of them read `SHOW_BLEND_STARS` from
+ * lib/ratingDisplay.ts, so the stars leave everywhere at once — see that file.
+ */
+export function RestaurantHeader({
+  restaurant,
+  score = EMPTY_PLATE_SCORE,
+}: {
+  restaurant: Restaurant;
+  score?: PlateScore;
+}) {
   return (
     <section className="rounded-2xl bg-white">
       {/* Photo inset from the card edge so both radii stay visible. When no
@@ -37,34 +60,89 @@ export function RestaurantHeader({ restaurant }: { restaurant: Restaurant }) {
           {restaurant.cuisine} · {restaurant.neighborhood}
         </p>
 
-        {/* Metadata pills: open state, walk time, rating. All machine values,
-            all monospace, all tan — the accent stays out of this row. */}
+        {/* Both numbers, stacked so neither can be read as the other.
+
+            The plate score leads and is the only orange here — a percentage is
+            exactly what the accent is reserved for (DESIGN.md) — and it names
+            itself in words directly underneath, because the stars sitting beside
+            it are the reason a bare 88% would be ambiguous. The stars are the
+            same size as the metadata around them: outside context, informing
+            without competing.
+
+            When the plate score is null the stars carry the header alone and the
+            gap is stated in words, never filled with a borrowed percent. */}
+        <div className="mt-4 flex flex-wrap items-end gap-x-5 gap-y-2">
+          {score.percent !== null && (
+            <div>
+              <span className="font-mono text-4xl font-bold leading-none tabular-nums text-pm-orange">
+                {score.percent}%
+              </span>
+              <p className="mt-1.5 font-mono text-[11px] leading-tight text-zinc-500">
+                {PLATE_SCORE_CAPTION}
+                <span className="block text-zinc-400">
+                  {score.ratingCount.toLocaleString()}{" "}
+                  {score.ratingCount === 1 ? "rating" : "ratings"} across{" "}
+                  {score.dishCount} {score.dishCount === 1 ? "plate" : "plates"}
+                </span>
+              </p>
+            </div>
+          )}
+
+          {SHOW_BLEND_STARS && (
+            <div className={score.percent !== null ? "pb-0.5" : ""}>
+              <span className="flex items-center gap-1.5">
+                <StarRating rating={restaurant.rating} className="h-4 w-4" />
+                <span className="font-mono text-sm font-medium tabular-nums text-zinc-700">
+                  {blendLabel(restaurant.rating)}
+                </span>
+              </span>
+              <p className="mt-1 font-mono text-[11px] leading-tight text-zinc-400">
+                {BLEND_CAPTION} · {restaurant.reviewCount.toLocaleString()} reviews
+              </p>
+            </div>
+          )}
+
+          {/* No plate score yet — see lib/plateScore.ts for why a thinly-rated
+              place gets words instead of a confident percent. */}
+          {score.percent === null && (
+            <span className="pb-0.5 font-mono text-sm text-pm-grey-text">
+              {plateScoreLabel(score)}
+            </span>
+          )}
+        </div>
+
+        {/* Metadata pills: open state, walk time. All machine values, all
+            monospace, all tan — the accent stays out of this row. */}
         <div className="mt-3.5 flex flex-wrap items-center gap-2">
           <OpenStatePill hours={restaurant.hours ?? null} />
           <span className="inline-flex items-center rounded-full bg-pm-grey-tint px-3 py-1.5 font-mono text-xs font-medium text-pm-grey-text">
             {restaurant.walkTime}
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-pm-grey-tint px-3 py-1.5 font-mono text-xs font-medium tabular-nums text-pm-grey-text">
-            <StarIcon className="h-3 w-3 text-zinc-500" />
-            {restaurant.rating.toFixed(1)}
-            <span className="text-zinc-500">({restaurant.reviewCount.toLocaleString()})</span>
-          </span>
         </div>
 
-        {/* Yelp's display requirements: content sourced from them has to be
-            credited and linked back to the business's own Yelp page. This
-            covers the photo only — `rating` is a blend of several sources
-            rather than Yelp's figure, so crediting it to them would be wrong. */}
-        {restaurant.yelpUrl && (
-          <a
-            href={restaurant.yelpUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-1 font-mono text-[11px] text-zinc-500 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900"
-          >
-            Photo via Yelp
-          </a>
-        )}
+        {/* That the stars aren't ours, said once and plainly. Copy lives in
+            lib/ratingDisplay.ts — it names no source, on purpose; see the note
+            there.
+
+            Yelp's display requirements: content sourced from them has to be
+            credited and linked back to the business's own Yelp page. That link
+            covers the photo, and sits in this same line. */}
+        <p className="mt-3 font-mono text-[11px] text-zinc-500">
+          {SHOW_BLEND_STARS && <span className="text-zinc-400">{BLEND_DISCLOSURE}</span>}
+          {restaurant.yelpUrl && (
+            <>
+              {" · "}
+              <a
+                href={restaurant.yelpUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900"
+              >
+                Photo via Yelp
+              </a>
+            </>
+          )}
+        </p>
       </div>
     </section>
   );

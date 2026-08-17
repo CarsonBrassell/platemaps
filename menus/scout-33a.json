@@ -1,0 +1,182 @@
+[
+  {
+    "restaurantId": "667",
+    "name": "La Cocina",
+    "address": "681 Main St, Ramona, CA 92065",
+    "sourceUrl": "https://restaurantguru.com/La-Cocina-Ramona/menu",
+    "platform": "aggregator",
+    "priced": true,
+    "fallbackUrl": "http://www.lacocinamexfood.com/",
+    "flags": "stored neighborhood correct. Own site lacocinamexfood.com has no confirmed online menu with prices (priced unknown there); used aggregator restaurantguru.com which shows confirmed prices ($9.99-$12.99 combo plates) — downgrade confidence, first-party page worth a follow-up check. Avoid zmenu.com mirror."
+  },
+  {
+    "restaurantId": "322",
+    "name": "La Justina",
+    "address": "Av. Revolución 926, Zona Centro, 22000 Tijuana, Baja California, Mexico",
+    "sourceUrl": null,
+    "platform": null,
+    "priced": "unknown",
+    "fallbackUrl": "https://www.sandiegoreader.com/places/la-justina/",
+    "flags": "LIKELY DATA ERROR, not just wrong neighborhood: no US/San Ysidro location exists under this name in any source checked (Yelp, Tripadvisor, San Diego Reader, OpenTable). The only confirmed La Justina is across the border in Tijuana (Av. Revolución, near 3rd/4th). This is probably a cross-border mismatch, not a San Ysidro restaurant at all — recommend manual review before extraction rather than treating as a normal address correction."
+  },
+  {
+    "restaurantId": "650",
+    "name": "Cali Stack Burgers & Grill",
+    "address": "12336 Woodside Ave, Lakeside, CA 92040",
+    "sourceUrl": "https://order.toasttab.com/online/cali-stack-burgers-12336-woodside-ave",
+    "platform": "toast",
+    "priced": true,
+    "fallbackUrl": "https://calistackburgers.com/lakeside-cali-stack-burgers-and-grill-food-menu",
+    "flags": "stored neighborhood correct; first-party Toast ordering page, prices confirmed (Cali Stack Burger $9.99, Double Stack $11.99 on own site menu page too)"
+  },
+  {
+    "restaurantId": "323",
+    "name": "La Corriente Cevichería Nais",
+    "address": "Colombia 9350, Col. Madero (Plaza 14), 22040 Tijuana, Baja California, Mexico",
+    "sourceUrl": null,
+    "platform": null,
+    "priced": "unknown",
+    "fallbackUrl": "https://www.sandiegoreader.com/places/la-corriente-cevicheria-nais/",
+    "flags": "LIKELY DATA ERROR, same pattern as #322: no US/San Ysidro location found. All confirmed locations of this exact name are in Mexico (Tijuana Plaza 14, Mexicali, Monterrey, CDMX). San Diego Reader lists it but cites the Tijuana Plaza 14 address, not a San Diego one. A different unrelated restaurant called plain 'La Corriente' (no Nais) does exist in La Jolla/Coronado — do not conflate. Recommend manual review."
+  },
+  {
+    "restaurantId": "637",
+    "name": "La Carreta Mexican Restaurant",
+    "address": "1347 Tavern Rd, Ste 31, Alpine, CA 91901",
+    "sourceUrl": "https://lacarreta80.com/",
+    "platform": "website",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.yelp.com/biz/la-carreta-mexican-restaurant-alpine",
+    "flags": "stored neighborhood correct; family-owned since 1980. Own site found (lacarreta80.com) but menu/price page not confirmed via search — needs a direct page load to verify pricing."
+  },
+  {
+    "restaurantId": "625",
+    "name": "Bonchon Village Way",
+    "address": "6030 Village Way, Suite 104, San Diego, CA 92130",
+    "sourceUrl": "https://restaurants.bonchon.com/locations/ca/san-diego/6030-village-way-suite-104",
+    "platform": "website",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.grubhub.com/restaurant/bonchon-6030-village-way-suite-104-san-diego/2833626",
+    "flags": "MISLABELED neighborhood as predicted: 92130 is Pacific Highlands Ranch / Carmel Valley, not Rancho Penasquitos — matches the known Village Way pattern for this batch. Own chain locator page found; prices not confirmed there, use Grubhub/DoorDash as priced fallback if needed."
+  },
+  {
+    "restaurantId": "668",
+    "name": "The Barn",
+    "address": "344 Main St, Ramona, CA 92065",
+    "sourceUrl": "https://barndininganddancing.com/ramona-the-barn-dining-and-dancing-food-menu",
+    "platform": "website",
+    "priced": true,
+    "fallbackUrl": "https://www.ubereats.com/store/the-barn-bar-and-dancing/gLJiyLCNUX2TxSdhENtQ2Q",
+    "flags": "stored neighborhood correct; first-party website menu page, prices confirmed (personal pizzas from $12.00)"
+  },
+  {
+    "restaurantId": "626",
+    "name": "Joyee's Dumpling House",
+    "address": "7825 Highlands Village Pl, Ste E, San Diego, CA 92129",
+    "sourceUrl": "https://order.online/en/store/joyee-dumpling-house-highland-village-pl-23136144",
+    "platform": "order.online",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.grubhub.com/restaurant/joyee-dumpling-house-7825-highlands-village-pl-san-diego/3244981",
+    "flags": "stored neighborhood roughly correct — 92129 is Torrey Highlands, immediately adjacent to/overlapping Rancho Peñasquitos. IMPORTANT: a same-named location at 10550 Craftsman Way (4S Ranch, 92127) is marked CLOSED on Yelp — do not use that address or its own site joyeesdumpling.com, which appears to be for the closed location."
+  },
+  {
+    "restaurantId": "638",
+    "name": "Janos Pizza",
+    "address": "2754 Alpine Blvd, Alpine, CA 91901",
+    "sourceUrl": "https://slicelife.com/restaurants/ca/alpine/91901/janos-pizza/menu",
+    "platform": "slice",
+    "priced": true,
+    "fallbackUrl": "https://www.doordash.com/store/42110120",
+    "flags": "stored neighborhood correct; first-party Slice ordering page (live pricing, 5% online-order discount mentioned). Avoid janos-pizza.menu-world.com — SEO mirror per instructions."
+  },
+  {
+    "restaurantId": "669",
+    "name": "Cheers of Ramona",
+    "address": "2475 Main St, Ramona, CA 92065",
+    "sourceUrl": "https://cheersoframona.com/",
+    "platform": "website",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.allmenus.com/ca/ramona/806337-cheers-of-ramona/menu/",
+    "flags": "stored neighborhood correct. Official site cheersoframona.com found but not indexed for a menu/price page — priced unknown, needs direct check. Avoid cheers-of-ramona.res-menu.com, .weeblyte.com, .food-menu.net, .wheree.com, and zmenu.com — all auto-generated SEO mirrors, not real sources."
+  },
+  {
+    "restaurantId": "324",
+    "name": "Palm Thai Cafe",
+    "address": "4370 Palm Ave, San Diego, CA 92154",
+    "sourceUrl": "https://www.palmthaicafesandiego.com/menu",
+    "platform": "website",
+    "priced": true,
+    "fallbackUrl": "https://www.doordash.com/store/palm-thai-cafe-26184703/",
+    "flags": "stored neighborhood correct (92154 is San Ysidro). First-party website menu confirmed with prices (Pad Thai $13.95, Drunken Noodles $13.95, etc.). Note a similarly named palmthaicafe.com (LA-area 'Palms Thai') is unrelated — do not confuse."
+  },
+  {
+    "restaurantId": "651",
+    "name": "Boll Weevil",
+    "address": "9741 Winter Gardens Blvd, Lakeside, CA 92040",
+    "sourceUrl": "https://www.bollweevillakeside.com/order",
+    "platform": "website",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.grubhub.com/restaurant/boll-weevil-9741-winter-gardens-blvd-lakeside/855647",
+    "flags": "pinned the Lakeside store (9741 Winter Gardens Blvd) as instructed — Boll Weevil is a multi-location San Diego chain; do not substitute another location's page. Own ordering site found but prices not confirmed via search."
+  },
+  {
+    "restaurantId": "325",
+    "name": "Tacos El Guero",
+    "address": "2036 Dairy Mart Rd, Ste 126, San Ysidro, CA 92173",
+    "sourceUrl": "https://tacoselguero2.netwaiter.com/san-ysidro/about/",
+    "platform": "netwaiter",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.ubereats.com/store/tacos-el-guero/6OZO-xVPR3CUkuYBdLz6xg",
+    "flags": "stored neighborhood correct. First-party NetWaiter ordering platform found (not confirmed for prices via search snippet, but this is their own ordering system). Avoid tacoselguero.shop — looks like an SEO-style parked/mirror domain, not the real site."
+  },
+  {
+    "restaurantId": "627",
+    "name": "Ayu Sushi & Noodles",
+    "address": "5965 Village Way, Ste 108, San Diego, CA 92130",
+    "sourceUrl": "https://www.clover.com/online-ordering/ayu-sushi--noodles-san-diego",
+    "platform": "clover",
+    "priced": "unknown",
+    "fallbackUrl": "https://ayusushiandnoodles.com/menu",
+    "flags": "MISLABELED neighborhood: 92130 is Pacific Highlands Ranch / Carmel Valley (same Village Way as #625 Bonchon), not Rancho Penasquitos. First-party Clover ordering page found; prices not confirmed via search, own site ayusushiandnoodles.com/menu is a good first-party fallback too."
+  },
+  {
+    "restaurantId": "628",
+    "name": "Cocina del Rancho",
+    "address": "16089 San Dieguito Rd, Ste H105, Rancho Santa Fe, CA 92067",
+    "sourceUrl": "https://cocinadelrancho.com/rancho-santa-fe-cocina-del-rancho-food-menu",
+    "platform": "website",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.grubhub.com/restaurant/cocina-del-rancho-16089-san-dieguito-rd-rancho-santa-fe/1148949",
+    "flags": "MISLABELED neighborhood: the only confirmed 'Cocina del Rancho' is in Rancho Santa Fe (Del Rayo Village), roughly 15 miles from Rancho Penasquitos — a different 'Rancho' entirely, not a name collision with an unrelated business. First-party site menu page found but prices not confirmed via search."
+  },
+  {
+    "restaurantId": "326",
+    "name": "Jilberto's Mexican Food & Taco Shops",
+    "address": "3305 Palm Ave, San Diego, CA 92154",
+    "sourceUrl": "https://www.doordash.com/store/jilberto-s-mexican-food-taco-shops-san-diego-243714",
+    "platform": "aggregator",
+    "priced": true,
+    "fallbackUrl": "https://jilbertosmexican.com/",
+    "flags": "stored neighborhood correct (92154 San Ysidro zip). CAUTION: Jilberto's is a multi-location San Diego/Escondido chain — this address (3305 Palm Ave) is the confirmed San Ysidro-area store; do not substitute the Escondido location. Could not confirm which of several similarly-named domains (jilbertosmexican.com, jilbertosmexicanfood.com, jilbertostacoshopca.com) is this specific location's own site, so used DoorDash (confirmed 'Menu & Prices') as source — first-party page worth a follow-up check."
+  },
+  {
+    "restaurantId": "652",
+    "name": "Kunduz Kabob & Pizza",
+    "address": "12128 Woodside Ave, Lakeside, CA 92040",
+    "sourceUrl": "https://slicelife.com/restaurants/ca/lakeside/92040/kunduz-kabob-pizza/menu",
+    "platform": "slice",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.kunduzkabobpizza.com/",
+    "flags": "stored neighborhood correct; first-party Slice ordering page (prices not confirmed via search snippet but Slice pages are live ordering menus). Avoid zmenu.com mirror."
+  },
+  {
+    "restaurantId": "682",
+    "name": "Prime Cut Steakhouse & Seafood",
+    "address": "14145 Campo Rd, Jamul, CA 91935 (inside Jamul Casino Resort)",
+    "sourceUrl": "https://www.jamulcasino.com/menu/prime-cut-steakhouse-seafood/",
+    "platform": "website",
+    "priced": "unknown",
+    "fallbackUrl": "https://www.opentable.com/r/prime-cut-steakhouse-jamul-casino-san-diego-jamul",
+    "flags": "confirmed inside Jamul Casino Resort as anticipated; stored neighborhood 'Jamul' correct. Casino's own menu page found but prices not confirmed via search (fine-dining steakhouse — may be a call-for-pricing or seasonal menu page)."
+  }
+]

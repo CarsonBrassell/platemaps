@@ -1,0 +1,144 @@
+/*
+ * Styles that only exist inside the /m tree.
+ *
+ * Everything here is scoped under `.pm-phone-shell` on purpose. The phone
+ * version shares `globals.css` — same cream ground, same retuned zinc ramp,
+ * same Fraunces/mono/sans split — because it is the same product, not a
+ * different brand. What it does not share is the *layout* assumptions the web
+ * version bakes into `body`, and this file is where those get undone.
+ */
+
+/*
+ * globals.css pads `body` by 73px below 1280px to buy back the space the web
+ * MobileNav covers. In here there is no MobileNav — PhoneNav is the only
+ * navigation and it reserves its own space — so that padding is just a gap
+ * under the last card.
+ *
+ * `:has()` rather than a class on <body>: the root layout is shared with the
+ * web version and should not have to know this tree exists. Safari 15.4+,
+ * which is well below the iOS floor this version is being built for.
+ */
+body:has(.pm-phone-shell) {
+  padding-bottom: 0;
+}
+
+/*
+ * Full-screen screens don't scroll, and neither does the page under them.
+ *
+ * The map fills the viewport exactly, so there is nothing to scroll — but iOS
+ * Safari still rubber-bands the *document* on a downward drag, and the bounce
+ * drags the cream page background up from under a map that is supposed to run
+ * to the bottom edge. It reads as the layout coming apart.
+ *
+ * `overscroll-behavior: none` is what refuses the bounce (iOS 16+), and the
+ * `overflow: hidden` / `height: 100%` pair is the belt to its braces: with no
+ * scrollable overflow there is nothing for an older Safari to rubber-band in
+ * the first place. Both are needed — either alone leaves a gap on some version.
+ *
+ * Set as a class on <html> by whichever screen wants it (PhoneFeedScreen's map
+ * tab) rather than always-on, because the scrolling screens — discover, the two
+ * card feeds, the composer — genuinely need the document to scroll.
+ */
+html.pm-lock-scroll,
+html.pm-lock-scroll body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* The map's own gestures are MapLibre's; this stops a pan that reaches the
+   edge of the tiles from chaining out into the page behind it. */
+.pm-phone-shell .map-fun-tiles {
+  overscroll-behavior: none;
+}
+
+/*
+ * How much bottom space the scrolling content has to leave for the nav. Set per
+ * variant rather than one shared number because the three genuinely differ, and
+ * getting it wrong is invisible until the last card is half-covered.
+ *
+ * Each is: the nav's own height + the gap it floats in + the home indicator.
+ *
+ * The base value matches `arc` — the default variant — so the shell reserves
+ * the right space even before `data-nav` is stamped (the Suspense fallback in
+ * m/layout.tsx renders the shell bare).
+ */
+.pm-phone-shell {
+  --phone-nav-space: calc(96px + env(safe-area-inset-bottom));
+}
+
+/* Floating capsule: 44px slot + 12px internal padding, floating 12px up. */
+.pm-phone-shell[data-nav="pill"] {
+  --phone-nav-space: calc(80px + env(safe-area-inset-bottom));
+}
+
+/* Edge-to-edge strip: 56px row + 16px padding + 1px edge, sitting on the floor. */
+.pm-phone-shell[data-nav="strip"] {
+  --phone-nav-space: calc(73px + env(safe-area-inset-bottom));
+}
+
+/* Tan bar plus the create button's overhang, which clears the bar's top edge by
+   half its own height (28px) and would otherwise sit on top of a card. */
+.pm-phone-shell[data-nav="arc"] {
+  --phone-nav-space: calc(96px + env(safe-area-inset-bottom));
+}
+
+.pm-phone-content {
+  padding-bottom: var(--phone-nav-space);
+}
+
+/*
+ * Desktop framing.
+ *
+ * On a phone this whole block is inert and the shell is simply the viewport.
+ * On a wide screen it becomes a 390px column — iPhone 15 CSS width — centred on
+ * the cream ground, so the phone version can be designed in a desktop browser
+ * without spoofing a user agent or plugging in a handset. That is the entire
+ * reason this tree lives at a URL instead of behind UA detection.
+ *
+ * 480px is the switch: below it, a real phone in landscape or a small window
+ * should still get the true edge-to-edge layout.
+ */
+@media (min-width: 480px) {
+  .pm-phone-shell {
+    /* `width`, not `max-width`. The shell is a flex item in the root layout's
+       column flex `body`, and its auto inline margins switch off cross-axis
+       stretch — so with only a max, a screen whose content is narrower than
+       390px (a sparse form step, a signed-out card) collapses to max-content
+       while the nav stays pinned at 390px and overhangs it. Found on the
+       composer; fixed here so every screen gets it. */
+    width: 390px;
+    margin-inline: auto;
+    /* A real frame, not a column: exactly the viewport's height, scrolling
+       INSIDE (.pm-phone-content below) rather than with the page. `height`
+       is deliberately 100dvh and not a hardcoded device height, so every
+       dvh-sized thing in the app — the dialog screen variant's h-dvh, the
+       sheets' max-h-[92dvh] — measures the same box the frame clips to. */
+    height: 100dvh;
+    overflow: hidden;
+    /* The whole trick. A transformed element becomes the containing block
+       for position:fixed descendants, so the nav, the bottom sheets, the
+       comments screen and the composer's action bar all pin to THIS frame
+       instead of the desktop window — full-screen overlays now fill the
+       phone, not your monitor. translateZ(0) because it is the identity
+       transform: it changes nothing visually, it only flips that rule on.
+       On a handset none of this block applies and fixed means the real
+       viewport, which is the same box. */
+    transform: translateZ(0);
+    /* A hairline so the frame reads as a device rather than as a narrow page.
+       Deliberately breaking DESIGN.md's no-borders rule — this is chrome around
+       the design, not part of it, and it does not render on a phone. */
+    border-inline: 1px solid var(--pm-grey-tint);
+  }
+
+  /* The frame's own scroller. `overscroll-behavior: contain` stops a fast
+     wheel from spilling into the (now unscrollable) page behind it. */
+  .pm-phone-content {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* No nav repositioning rule any more: with the shell as containing block,
+     the variants' own `inset-x-0 bottom-0` already means "this frame". */
+}

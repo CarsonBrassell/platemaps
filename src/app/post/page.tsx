@@ -10,12 +10,11 @@ import { MAX_PHOTOS, resizePhotos, type PhotoDraft } from "@/lib/photos";
 import { POINT_RULES } from "@/lib/points";
 import { BEST_AT } from "@/data/reviewScales";
 import type { Restaurant } from "@/data/restaurants";
-import { CloseIcon, ChevronIcon, StarIcon } from "@/components/icons";
+import { CloseIcon, ChevronIcon } from "@/components/icons";
 import { CameraCapture } from "@/components/post/CameraCapture";
 import { KindChooser, type PostKind } from "@/components/post/KindChooser";
 import { RestaurantPicker } from "@/components/post/RestaurantPicker";
 import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
-import { StarPicker, verdictForStars } from "@/components/post/StarPicker";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
 import type { PostMedia } from "@/components/feed/types";
 
@@ -25,15 +24,20 @@ import type { PostMedia } from "@/components/feed/types";
  * The camera opens first and everything else is decided after it: a photo is
  * what a plate review is made of, so it is the opening move rather than a field
  * further down a form. The one door past it — "just leave a comment" — skips the
- * photo, not the choice; both routes meet at the same question about what kind
- * of post this is.
+ * photo, not the choice.
  *
- * From there one fork picks the instrument: five stars for a restaurant, a
- * percentage meter for a dish off its real menu, or neither for a comment.
- * Both land in the `rating` column in their own native scale — stars stay
- * 1–5, the meter stays 0–100 — tagged with `ratingKind` so the feed renders
- * each one back as the instrument it actually was, not a number flattened
- * onto one shared scale.
+ * ## One instrument
+ *
+ * There is one rating in the product and it is a percent on a plate. The meter
+ * is the only instrument here; the five-star restaurant review that used to sit
+ * beside it is gone, and with it the fork that made a poster choose between two
+ * scales before they could say anything. A restaurant's own number is no longer
+ * entered by anyone — it is what its plates add up to (lib/plateScore.ts).
+ *
+ * The place-level chips ride along on the plate review rather than getting their
+ * own flow: you were at the restaurant to eat the dish, so "best at" and "what
+ * let you down" are answerable on the same screen as the caption. That is what
+ * keeps the per-category scores alive without a second door to walk through.
  */
 type Step = "photo" | "kind" | "where" | "dish" | "rate" | "detail";
 
@@ -67,7 +71,6 @@ export default function PostPage() {
    * belongs to is never the first one someone sees.
    */
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [stars, setStars] = useState(0);
   const [pct, setPct] = useState(80);
 
   const [photos, setPhotos] = useState<PhotoDraft[]>([]);
@@ -115,7 +118,6 @@ export default function PostPage() {
   const steps = useMemo<Step[]>(() => {
     if (!kind) return ["photo", "kind"];
     if (kind === "comment") return ["photo", "kind", "where", "detail"];
-    if (kind === "restaurant") return ["photo", "kind", "where", "rate", "detail"];
     return ["photo", "kind", "where", "dish", "rate", "detail"];
   }, [kind]);
 
@@ -130,10 +132,9 @@ export default function PostPage() {
 
   function chooseKind(next: PostKind) {
     // Switching branches after backing up would otherwise carry a dish or a
-    // star count into a flow that has no place to show it.
+    // rating into a flow that has no place to show it.
     if (kind && kind !== next) {
       setDish(null);
-      setStars(0);
       setPct(80);
       setBestAt(null);
       setWorstAt(null);
@@ -153,9 +154,7 @@ export default function PostPage() {
       case "dish":
         return "What did you order?";
       case "rate":
-        return kind === "restaurant"
-          ? `How was ${place?.name ?? "it"}?`
-          : "Would you tell someone to order it?";
+        return "How good was it?";
       case "detail":
         return kind === "comment" ? "What do you want to say?" : "Anything else?";
     }
@@ -164,7 +163,6 @@ export default function PostPage() {
   /** What sits under the heading, when it adds something the heading doesn't. */
   function subtitle(): string | null {
     if (step === "photo" || step === "kind") return null;
-    if (step === "rate" && kind === "restaurant") return null;
     return [dish?.name, place?.name].filter(Boolean).join(" · ") || null;
   }
 
@@ -179,9 +177,8 @@ export default function PostPage() {
     if (current === "dish" && !dish) {
       return "Choose a dish off the menu, or type what you ordered.";
     }
-    if (current === "rate" && kind === "restaurant" && stars === 0) {
-      return "Tap a star to set your rating.";
-    }
+    // The meter has no unset state — it opens at 80 and every position is a
+    // real answer — so the rate step is never incomplete.
     if (current === "detail" && !note.trim()) {
       return kind === "comment"
         ? "Write your comment before posting."
@@ -213,25 +210,12 @@ export default function PostPage() {
       media,
     };
 
-    // Rating rides in whatever scale it was collected on — stars stay 1-5,
-    // the meter stays 0-100 — with ratingKind saying which, so the feed can
-    // render it back as the same instrument instead of a flattened /10
-    // number. The API route re-validates both against that kind; this isn't
-    // the only place the range is enforced.
-    if (kind === "restaurant") {
-      return {
-        ...shared,
-        text: note.trim(),
-        rating: stars,
-        ratingKind: "restaurant" as const,
-        // `vibe` keeps carrying the best-at pick so existing post cards keep
-        // rendering their chip; bestAspect/worstAspect are what the new
-        // per-aspect scores are actually built from.
-        vibe: bestAt ?? undefined,
-        bestAspect: bestAt ?? undefined,
-        worstAspect: worstAt ?? undefined,
-      };
-    }
+    // One rating, one scale: the meter's 0-100 percent, tagged `dish` because
+    // that is what it is about. `ratingKind` stays on the wire even though only
+    // one value is ever written — rows from before the star review was retired
+    // still carry `restaurant`, and the feed reads the tag to render those back
+    // as what they were. The API route re-validates the range; this isn't the
+    // only place it's enforced.
     if (kind === "dish") {
       return {
         ...shared,
@@ -240,6 +224,14 @@ export default function PostPage() {
         price: dish?.price,
         rating: pct,
         ratingKind: "dish" as const,
+        // `vibe` keeps carrying the best-at pick so existing post cards keep
+        // rendering their chip; bestAspect/worstAspect are what the per-aspect
+        // scores are actually built from. These used to ride on the restaurant
+        // review and now ride here, which is the only place they can — see the
+        // note at the top of this file.
+        vibe: bestAt ?? undefined,
+        bestAspect: bestAt ?? undefined,
+        worstAspect: worstAt ?? undefined,
       };
     }
     return { ...shared, text: note.trim() };
@@ -381,28 +373,17 @@ export default function PostPage() {
             />
           )}
 
-          {step === "rate" && kind === "restaurant" && (
-            <div className="rounded-2xl bg-white p-5">
-              <p id="stars-label" className="text-sm font-semibold text-zinc-800">
-                Your rating
-              </p>
-              <div className="mt-3">
-                <StarPicker value={stars} onChange={setStars} labelledBy="stars-label" />
-              </div>
-            </div>
-          )}
-
           {step === "rate" && kind === "dish" && (
             <div className="rounded-2xl bg-white p-5">
+              {/* Your own number for the plate, not a prediction about someone
+                  else — "how good was it" is the question the whole product's
+                  scale answers, and a restaurant's percent is the average of
+                  these. */}
               <PercentMeter
                 id="dish-meter"
                 value={pct}
                 onChange={setPct}
-                label={
-                  dish
-                    ? `How much would you recommend the ${dish.name.toLowerCase()}?`
-                    : "How much would you recommend it?"
-                }
+                label={dish ? `Your rating for the ${dish.name.toLowerCase()}` : "Your rating"}
               />
             </div>
           )}
@@ -431,10 +412,14 @@ export default function PostPage() {
                 />
               </div>
 
-              {kind === "restaurant" && (
+              {kind === "dish" && (
                 <fieldset>
+                  {/* "Besides the food" is doing real work, not softening the
+                      question: the rating above already scored the food, and
+                      without this line the missing Food chip reads as an
+                      oversight rather than as the point. */}
                   <legend className={legend}>
-                    What was this restaurant best at?{" "}
+                    Besides the food, what was this place best at?{" "}
                     <span className="normal-case text-zinc-400">(pick one)</span>
                   </legend>
                   <div className="flex flex-wrap gap-1.5">
@@ -472,7 +457,7 @@ export default function PostPage() {
                   means this review has nothing negative to report rather than
                   everything being fine. The chip already chosen as "best" is
                   disabled here, since the same aspect can't be both. */}
-              {kind === "restaurant" && (
+              {kind === "dish" && (
                 <fieldset>
                   <legend className={legend}>
                     Anything let you down?{" "}
@@ -521,26 +506,11 @@ export default function PostPage() {
                   )}
                 </p>
                 <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-zinc-600">
-                  {kind === "restaurant" && (
-                    <>
-                      <span className="flex gap-0.5" aria-hidden="true">
-                        {[1, 2, 3, 4, 5].map((s) => (
-                          <StarIcon
-                            key={s}
-                            className={`h-4 w-4 ${s <= stars ? "text-pm-orange" : "text-zinc-300"}`}
-                          />
-                        ))}
-                      </span>
-                      <span>
-                        {verdictForStars(stars)}
-                        {bestAt && ` · best at ${bestAt.toLowerCase()}`}
-                      </span>
-                    </>
-                  )}
                   {kind === "dish" && (
                     <span>
                       {pct}% · {bandForPercent(pct)}
                       {dish?.price ? ` · ${dish.price}` : ""}
+                      {bestAt && ` · best at ${bestAt.toLowerCase()}`}
                     </span>
                   )}
                   {kind === "comment" && (

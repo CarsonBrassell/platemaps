@@ -1,6 +1,7 @@
 import { aspectScores } from "@/lib/aspectScores";
 import { BEST_AT, BEST_AT_LABELS } from "@/data/reviewScales";
 import type { RestaurantAspectTally } from "@/lib/db";
+import { ASPECT_SCALE_MAX, aspectOutOfFive } from "@/lib/ratingDisplay";
 
 function emojiFor(aspect: string) {
   return BEST_AT.find((b) => b.label === aspect)?.emoji;
@@ -10,7 +11,7 @@ function emojiFor(aspect: string) {
  * How this restaurant's own reviews score each category.
  *
  * Scores come from src/lib/aspectScores.ts, which turns each review's best/
- * worst aspect picks into a star score — see that file for the arithmetic and
+ * worst aspect picks into a percent — see that file for the arithmetic and
  * for why an aspect nobody mentioned is left out entirely rather than scored
  * badly for never coming up.
  *
@@ -24,8 +25,8 @@ function emojiFor(aspect: string) {
  */
 export function RestaurantAspects({ tally }: { tally: RestaurantAspectTally }) {
   const scored = aspectScores(BEST_AT_LABELS, tally.overall, tally.votes, tally.reviewCount)
-    .filter((s) => !s.unremarked && s.stars !== null)
-    .sort((a, b) => b.stars! - a.stars!);
+    .filter((s) => !s.unremarked && s.score !== null)
+    .sort((a, b) => b.score! - a.score!);
 
   // Nothing measured, nothing to say — the block doesn't render an empty
   // state, it just isn't there.
@@ -48,15 +49,19 @@ export function RestaurantAspects({ tally }: { tally: RestaurantAspectTally }) {
             <span className="w-full truncate text-[11px] leading-tight text-zinc-500">
               {s.aspect}
             </span>
+            {/* Out of 5, with the denominator carried — see `aspectOutOfFive`.
+                The `/5` is muted and a step down in size so the column still
+                reads as one number at a glance rather than as a fraction. */}
             <span className="font-mono text-lg font-semibold leading-none tabular-nums text-zinc-900">
-              {s.stars!.toFixed(1)}
+              {aspectOutOfFive(s.score!)}
+              <span className="text-[11px] font-normal text-zinc-400">/{ASPECT_SCALE_MAX}</span>
             </span>
           </li>
         ))}
       </ul>
 
-      {/* The sample the numbers came from. Kept because a 4.5 with no
-          denominator is unattributable, but sized to stay out of the way. */}
+      {/* The sample the numbers came from. Kept because a bare 4.4 is
+          unattributable, but sized to stay out of the way. */}
       <p className="mono-label mt-4 text-zinc-500">
         {tally.reviewCount} {tally.reviewCount === 1 ? "review" : "reviews"}
       </p>

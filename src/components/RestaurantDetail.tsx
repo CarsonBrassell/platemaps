@@ -12,15 +12,22 @@ import { RestaurantComments } from "@/components/RestaurantComments";
 import { RestaurantAspects } from "@/components/RestaurantAspects";
 import { ReservationPanel } from "@/components/ReservationPanel";
 import type { RestaurantAspectTally } from "@/lib/db";
+import type { PlateScore, RatedDish } from "@/lib/plateScore";
+import { dishRatingKey } from "@/lib/dishRatingKey";
 import { mapCommentsByRestaurant, withDishIds } from "@/data/mapComments";
 
-const TOP_PICKS_COUNT = 7;
+/* Eight, so the grid's two columns come out even — seven left a widowed card
+   on the last row. This is the whole of "the hits": a plate outside it is still
+   in the full menu below with its percent, just not promoted. */
+const TOP_PICKS_COUNT = 8;
 const COMMENTS_ANCHOR = "restaurant-comments";
 
 export function RestaurantDetail({
   restaurant,
   dishes,
   aspectTally,
+  plateScore,
+  dishRatings,
 }: {
   restaurant: Restaurant;
   /**
@@ -31,6 +38,10 @@ export function RestaurantDetail({
   dishes: Dish[];
   /** Read server-side in the page — see the note there. */
   aspectTally: RestaurantAspectTally;
+  /** What this restaurant's plates add up to. Also read server-side. */
+  plateScore: PlateScore;
+  /** Per-plate rating averages, keyed by `dishRatingKey`. Also server-side. */
+  dishRatings: Record<string, RatedDish>;
 }) {
   const searchParams = useSearchParams();
   const [myVotes, setMyVotes] = useState<Record<string, "yes" | "no" | undefined>>({});
@@ -46,16 +57,35 @@ export function RestaurantDetail({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
+  /**
+   * Each plate's percent, and how many people it came from.
+   *
+   * A plate someone has actually rated shows **its rating average** — the same
+   * numbers the header's percent is the average of, so the page adds up. A
+   * plate nobody has rated falls back to the older "would you eat this?" yes/no
+   * tally, which is the only signal those rows have.
+   *
+   * The fallback is transitional and not something to build on: the two are
+   * different questions ("how good was this, 0-100" against "what share would
+   * order it again") wearing the same percent sign, and only the first is on the
+   * product's rating scale. It exists so restaurants whose plates aren't rated
+   * yet keep a populated menu instead of going blank overnight. It goes when the
+   * yes/no mechanism does.
+   */
   const dishesWithStats = useMemo(
     () =>
       dishes.map((dish) => {
+        const rated = dishRatings[dishRatingKey(dish.name)];
+        if (rated) {
+          return { ...dish, total: rated.ratings, pct: Math.round(rated.average) };
+        }
         const myVote = myVotes[dish.id];
         const yesVotes = dish.yesVotes + (myVote === "yes" ? 1 : 0);
         const noVotes = dish.noVotes + (myVote === "no" ? 1 : 0);
         const { total, pct } = dishStats(yesVotes, noVotes);
         return { ...dish, total, pct };
       }),
-    [dishes, myVotes],
+    [dishes, myVotes, dishRatings],
   );
 
   const topPicks = useMemo(
@@ -121,7 +151,7 @@ export function RestaurantDetail({
 
   return (
     <div className="flex flex-col gap-4">
-      <RestaurantHeader restaurant={restaurant} />
+      <RestaurantHeader restaurant={restaurant} score={plateScore} />
 
       {/* The thread used to start below the full menu, which on a long menu put
           it a screen or more down. On lg it moves into a rail beside the picks

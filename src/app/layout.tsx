@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Spline_Sans_Mono } from "next/font/google";
 import { AuthProvider } from "@/lib/auth";
 import "./globals.css";
@@ -25,6 +25,26 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   title: "PlateMaps",
   description: "Find great food near you in San Diego, ranked by what's happening right now.",
+};
+
+/**
+ * `viewport-fit=cover` is the reason this export exists, and it is load-bearing
+ * rather than cosmetic: `env(safe-area-inset-*)` resolves to `0px` unless the
+ * viewport meta opts in. Six places already spend those insets — MobileNav's
+ * bottom row, the `body` padding in globals.css, DishSheet, feed/Dialog and the
+ * composer's action bar — and every one of them was silently getting zero on a
+ * notched iPhone, which is to say the bottom nav sat under the home indicator.
+ *
+ * Next emits `width=device-width, initial-scale=1` by default but not
+ * `viewportFit`, so declaring it here is the whole fix.
+ *
+ * `maximumScale` and `userScalable` are deliberately left alone. Locking zoom
+ * is the usual next line in a snippet like this and it is an accessibility
+ * failure — pinch-zoom is how low-vision users read a menu.
+ */
+export const viewport: Viewport = {
+  viewportFit: "cover",
+  themeColor: "#F7F4EC",
 };
 
 export default function RootLayout({

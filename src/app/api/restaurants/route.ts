@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getRestaurants } from "@/lib/db";
+import { getAllRestaurantPlateScores, getRestaurants } from "@/lib/db";
+import { EMPTY_PLATE_SCORE } from "@/lib/plateScore";
 
 /**
  * The restaurant list, for client components that can't be handed it as props.
@@ -19,11 +20,25 @@ import { getRestaurants } from "@/lib/db";
  * table. The reason it exists as a parameter at all is that it is the seam to
  * move into SQL — a trigram index and a LIMIT go here, and no caller changes.
  *
+ * Each row carries its plate score (lib/plateScore.ts) alongside the projection,
+ * because a client component has no way to derive one and the map's dropdown
+ * prints it. Four small fields a row rather than a second request per surface;
+ * the callers that ignore it — the composer's picker, the account favorite
+ * picker — pay a few bytes each for the ones that don't.
+ *
  * Public: restaurants are public data and nothing here is viewer-dependent.
  */
 export async function GET(req: Request) {
   const q = new URL(req.url).searchParams.get("q")?.trim().toLowerCase();
-  const restaurants = await getRestaurants();
+  const [rows, plates] = await Promise.all([
+    getRestaurants(),
+    getAllRestaurantPlateScores(),
+  ]);
+
+  const restaurants = rows.map((r) => ({
+    ...r,
+    plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE,
+  }));
 
   if (!q) return NextResponse.json({ restaurants });
 

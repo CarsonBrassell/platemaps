@@ -5,6 +5,15 @@ import type { Map as MapLibreMap } from "maplibre-gl";
 import type { RestaurantView } from "@/data/restaurants";
 import { rank } from "@/lib/restaurantRank";
 import { StarIcon } from "@/components/icons";
+import type { PlateScore } from "@/lib/plateScore";
+import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
+
+/**
+ * A row as /api/restaurants sends it: the projection plus the plate score that
+ * route attaches. Declared here rather than imported from lib/db.ts, which is
+ * server-only — the same local-mirror rule the friends page follows.
+ */
+type MapSearchRow = RestaurantView & { plateScore?: PlateScore };
 
 /**
  * Find a restaurant and fly the camera to it.
@@ -117,7 +126,7 @@ export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> })
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(NONE);
-  const [candidates, setCandidates] = useState<RestaurantView[]>([]);
+  const [candidates, setCandidates] = useState<MapSearchRow[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -140,7 +149,7 @@ export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> })
       try {
         const res = await fetch(`/api/restaurants?q=${encodeURIComponent(q)}`);
         if (!res.ok) return;
-        const data: { restaurants: RestaurantView[] } = await res.json();
+        const data: { restaurants: MapSearchRow[] } = await res.json();
         if (!stale) setCandidates(data.restaurants);
       } catch {
         // A dropped search request leaves the previous matches on screen,
@@ -167,7 +176,7 @@ export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> })
 
   const showing = open && query.trim().length > 0;
 
-  function goTo(restaurant: RestaurantView) {
+  function goTo(restaurant: MapSearchRow) {
     const map = mapRef.current;
     if (!map) return;
     setOpen(false);
@@ -346,15 +355,25 @@ export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> })
                       {r.cuisine} · {r.neighborhood}
                     </span>
                   </span>
-                  {/* A rating is a machine value, so mono and tabular — and it
-                      prints without its denominator only because the row above
-                      it is a restaurant name, never a dish percent. The ember
-                      orange is the map's own accent rather than the cream
-                      world's --pm-orange-text, which is a colour tuned for
-                      light grounds and reads muddy here. */}
-                  <span className="flex shrink-0 items-center gap-1 font-mono text-xs font-medium tabular-nums text-[#ffb07a]">
-                    <StarIcon className="h-3 w-3" />
-                    {r.rating.toFixed(1)}
+                  {/* Both numbers — machine values, so mono and tabular. Our
+                      percent takes the ember orange, the map's own accent rather
+                      than the cream world's --pm-orange-text (a colour tuned for
+                      light grounds, which reads muddy here); the blend's stars
+                      follow in the muted chrome step with their denominator, so
+                      the pair can't be read as one scale. A restaurant with too
+                      few rated plates simply has no percent here. */}
+                  <span className="flex shrink-0 items-center gap-1.5 font-mono text-xs tabular-nums">
+                    {r.plateScore?.percent != null && (
+                      <span className="font-semibold text-[#ffb07a]">
+                        {r.plateScore.percent}%
+                      </span>
+                    )}
+                    {SHOW_BLEND_STARS && (
+                      <span className={`flex items-center gap-0.5 ${CHROME_MUTED}`}>
+                        <StarIcon className="h-3 w-3" />
+                        {blendLabel(r.rating)}
+                      </span>
+                    )}
                   </span>
                 </button>
               </li>

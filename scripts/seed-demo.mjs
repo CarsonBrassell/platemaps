@@ -10,6 +10,7 @@
 import { neon } from "@neondatabase/serverless";
 import { randomUUID, randomBytes } from "node:crypto";
 import { restaurants } from "../src/data/restaurants.ts";
+import { dishesByRestaurant } from "../src/data/dishes.ts";
 import { BEST_AT_LABELS } from "../src/data/reviewScales.ts";
 
 const sql = neon(process.env.DATABASE_URL);
@@ -314,13 +315,17 @@ async function main() {
   };
 
   /*
-   * Restaurant reviews, which is what the per-aspect block on a restaurant
-   * page is built from. The dish posts above are dish reviews and carry no
-   * aspect verdicts.
+   * Plate reviews, which is what both the per-aspect block and the restaurant's
+   * own score are built from. Every rated post in the product is one of these
+   * now — there is no separate restaurant review, and the aspect verdicts ride
+   * along on the plate (see src/app/post/page.tsx).
    *
-   * Each entry is [bestAspect, worstAspect|null, stars, count], repeated
-   * `count` times, so a restaurant ends up with a believable spread rather
-   * than one vote per aspect.
+   * Each entry is [bestAspect, worstAspect|null, tier, count], repeated `count`
+   * times, so a restaurant ends up with a believable spread rather than one vote
+   * per aspect. `tier` is 5/4/3 — how enthusiastic the review is — which
+   * `percentFor` turns into the 0-100 the column actually holds. Kept as a tier
+   * rather than rewritten as raw percents so these hand-authored shapes stay
+   * readable at a glance, and so the mapping lives in one place.
    *
    * These four are hand-written because each is a case worth being able to
    * look at. Every other restaurant is generated below — the block used to
@@ -334,20 +339,20 @@ async function main() {
     {
       restaurant: "Landini's Pizzeria",
       verdicts: [
-        ["Food", null, 5, 7],
-        ["Food", "Menu variety", 4, 3],
-        ["Value", null, 5, 2],
+        ["Value", null, 5, 7],
+        ["Value", "Menu variety", 4, 3],
+        ["Service", null, 5, 2],
         ["Ambiance", "Service", 4, 2],
-        ["Service", null, 3, 1],
+        ["Menu variety", null, 3, 1],
         ["Drinks", null, 4, 1],
       ],
     },
     {
       restaurant: "Sushi Ota",
       verdicts: [
-        ["Food", null, 5, 9],
-        ["Service", null, 5, 4],
-        ["Food", "Value", 4, 4],
+        ["Service", null, 5, 9],
+        ["Ambiance", null, 5, 4],
+        ["Service", "Value", 4, 4],
         ["Ambiance", "Value", 4, 2],
         ["Menu variety", null, 5, 2],
         ["Drinks", null, 4, 1],
@@ -358,19 +363,21 @@ async function main() {
       verdicts: [
         ["Value", null, 5, 6],
         ["Menu variety", null, 5, 4],
-        ["Food", "Ambiance", 4, 5],
-        ["Food", "Service", 4, 3],
+        ["Value", "Ambiance", 4, 5],
+        ["Service", "Ambiance", 4, 3],
         ["Drinks", null, 4, 1],
       ],
     },
     {
       restaurant: "Ballast Point Brewing",
-      // The case worth seeing on a page: drinks carry it, the kitchen drags.
+      // The case worth seeing on a page: drinks and the room carry it, and what
+      // it charges for them is the complaint. (It used to be the kitchen that
+      // dragged — that verdict now belongs to the plate score, not here.)
       verdicts: [
-        ["Drinks", "Food", 4, 8],
-        ["Ambiance", "Food", 4, 4],
+        ["Drinks", "Value", 4, 8],
+        ["Ambiance", "Value", 4, 4],
         ["Drinks", null, 5, 3],
-        ["Service", "Value", 3, 2],
+        ["Service", "Menu variety", 3, 2],
         ["Menu variety", null, 4, 2],
       ],
     },
@@ -389,25 +396,25 @@ async function main() {
    * shape rather than which categories appear at all.
    */
   const CUISINE_PROFILE = {
-    Breweries: { strong: ["Drinks", "Ambiance"], also: ["Menu variety"], weak: ["Food"] },
+    Breweries: { strong: ["Drinks", "Ambiance"], also: ["Menu variety"], weak: ["Value"] },
     Bars: { strong: ["Drinks", "Ambiance"], also: ["Service"], weak: ["Value"] },
     "Tapas Bars": { strong: ["Menu variety", "Drinks"], also: ["Ambiance"], weak: ["Value"] },
-    Pizza: { strong: ["Food", "Value"], also: ["Service"], weak: ["Ambiance"] },
-    Mexican: { strong: ["Value", "Food"], also: ["Menu variety"], weak: ["Ambiance"] },
-    "Sushi Bars": { strong: ["Food", "Service"], also: ["Menu variety"], weak: ["Value"] },
-    Seafood: { strong: ["Food", "Ambiance"], also: ["Service"], weak: ["Value"] },
-    "New American": { strong: ["Food", "Ambiance"], also: ["Service"], weak: ["Value"] },
-    American: { strong: ["Food", "Service"], also: ["Value"], weak: ["Menu variety"] },
-    Diners: { strong: ["Service", "Value"], also: ["Menu variety"], weak: ["Food"] },
-    "Breakfast & Brunch": { strong: ["Food", "Service"], also: ["Menu variety"], weak: ["Value"] },
-    Thai: { strong: ["Food", "Value"], also: ["Service"], weak: ["Ambiance"] },
-    Italian: { strong: ["Food", "Service"], also: ["Ambiance"], weak: ["Value"] },
-    Barbeque: { strong: ["Food", "Value"], also: ["Menu variety"], weak: ["Service"] },
-    Sandwiches: { strong: ["Value", "Food"], also: ["Service"], weak: ["Ambiance"] },
-    Korean: { strong: ["Food", "Menu variety"], also: ["Service"], weak: ["Value"] },
+    Pizza: { strong: ["Value", "Service"], also: ["Menu variety"], weak: ["Ambiance"] },
+    Mexican: { strong: ["Value", "Menu variety"], also: ["Service"], weak: ["Ambiance"] },
+    "Sushi Bars": { strong: ["Service", "Ambiance"], also: ["Menu variety"], weak: ["Value"] },
+    Seafood: { strong: ["Ambiance", "Service"], also: ["Drinks"], weak: ["Value"] },
+    "New American": { strong: ["Ambiance", "Drinks"], also: ["Service"], weak: ["Value"] },
+    American: { strong: ["Service", "Value"], also: ["Drinks"], weak: ["Menu variety"] },
+    Diners: { strong: ["Service", "Value"], also: ["Menu variety"], weak: ["Drinks"] },
+    "Breakfast & Brunch": { strong: ["Service", "Menu variety"], also: ["Ambiance"], weak: ["Value"] },
+    Thai: { strong: ["Value", "Menu variety"], also: ["Service"], weak: ["Ambiance"] },
+    Italian: { strong: ["Service", "Ambiance"], also: ["Drinks"], weak: ["Value"] },
+    Barbeque: { strong: ["Value", "Menu variety"], also: ["Service"], weak: ["Ambiance"] },
+    Sandwiches: { strong: ["Value", "Service"], also: ["Menu variety"], weak: ["Ambiance"] },
+    Korean: { strong: ["Menu variety", "Service"], also: ["Drinks"], weak: ["Value"] },
   };
 
-  const DEFAULT_PROFILE = { strong: ["Food", "Service"], also: ["Ambiance"], weak: ["Value"] };
+  const DEFAULT_PROFILE = { strong: ["Service", "Ambiance"], also: ["Value"], weak: ["Menu variety"] };
 
   /** Stable per-restaurant seed, so re-seeding doesn't reshuffle every page. */
   function seedOf(text) {
@@ -417,26 +424,60 @@ async function main() {
   }
 
   /**
-   * A believable review spread for one restaurant, as a flat list of
-   * { best, worst, stars }.
+   * A review tier (5/4/3) as the percent the `rating` column holds, with a small
+   * deterministic wobble so two plates rated at the same tier don't land on
+   * byte-identical averages — a page where every dish reads exactly 92% looks
+   * generated, because it is.
+   */
+  const TIER_PERCENT = { 5: 92, 4: 78, 3: 58 };
+
+  function percentFor(tier, nonce) {
+    const base = TIER_PERCENT[tier] ?? 70;
+    return Math.max(0, Math.min(100, base + ((nonce % 9) - 4)));
+  }
+
+  /**
+   * Which plates a restaurant's reviews attach to, longest-menu-first.
    *
-   * The star ratings are built to average back to the restaurant's own real
-   * Yelp/Google rating rather than to an invented number — that average is
-   * what src/lib/aspectScores.ts uses as the baseline every aspect moves away
-   * from, so the whole block stays anchored to the one figure here that came
-   * from outside.
+   * Capped at six because a restaurant's score weights each plate by how many
+   * ratings it has (src/lib/plateScore.ts) — spreading a dozen reviews across a
+   * forty-item menu would leave every plate at one rating and the whole score
+   * damped to nothing. Six plates over ~11 reviews is the shape the model was
+   * built for.
+   *
+   * A restaurant with no menu yet returns [], and its reviews are written with
+   * no dish name. Those land in one bucket and so never clear the plate-score
+   * floor, which is the honest outcome: nothing is known about its plates
+   * because none of them exist here to rate.
+   */
+  const SEED_PLATES = 6;
+
+  function platesFor(restaurant) {
+    return (dishesByRestaurant[restaurant.id] ?? []).slice(0, SEED_PLATES);
+  }
+
+  /**
+   * A believable review spread for one restaurant, as a flat list of
+   * { best, worst, tier }.
+   *
+   * The tiers are built so the reviews average back toward the restaurant's own
+   * real Yelp/Google figure rather than an invented one. That figure is not what
+   * the app displays any more — a restaurant's percent is derived from these
+   * plates, not from the blend — but it is still the only outside signal about
+   * whether a place is well or poorly regarded, so shaping seed data with it
+   * keeps the demo corpus plausible instead of uniform.
    */
   function generateReviews(restaurant) {
     const profile = CUISINE_PROFILE[restaurant.cuisine] ?? DEFAULT_PROFILE;
     const seed = seedOf(`${restaurant.id}:${restaurant.name}`);
     const count = 9 + (seed % 5); // 9-13 reviews
 
-    // Start everyone at 4 stars, then move as many as it takes to 5 (or down
-    // to 3) for the mean to land on the real rating.
-    const stars = Array(count).fill(4);
+    // Start everyone at tier 4, then move as many as it takes to 5 (or down to
+    // 3) for the mean to track the real rating.
+    const tiers = Array(count).fill(4);
     let remainder = Math.round(restaurant.rating * count) - 4 * count;
-    for (let i = 0; remainder > 0 && i < count; i++, remainder--) stars[i] = 5;
-    for (let i = count - 1; remainder < 0 && i >= 0; i--, remainder++) stars[i] = 3;
+    for (let i = 0; remainder > 0 && i < count; i++, remainder--) tiers[i] = 5;
+    for (let i = count - 1; remainder < 0 && i >= 0; i--, remainder++) tiers[i] = 3;
 
     // Praise is drawn from a weighted bag; the leading strength comes up
     // roughly twice as often as the second, which is what makes one aspect
@@ -469,11 +510,11 @@ async function main() {
       );
     }
 
-    // A well-rated place collects fewer complaints. They attach to the lowest
-    // -starred reviews, since that's who was disappointed.
+    // A well-rated place collects fewer complaints. They attach to the
+    // lowest-tier reviews, since that's who was disappointed.
     const faults = Math.max(1, Math.round(count * (4.6 - restaurant.rating) * 0.5));
 
-    return stars.map((rating, i) => {
+    return tiers.map((tier, i) => {
       const best = bag[(i + seed) % bag.length];
       let worst = null;
       if (i >= count - faults) {
@@ -484,15 +525,15 @@ async function main() {
         // the second row would be dropped anyway.
         if (worst === best) worst = weak.find((w) => w !== best) ?? null;
       }
-      return { best, worst, stars: rating };
+      return { best, worst, tier };
     });
   }
 
-  /** Expands the hand-written [best, worst, stars, count] tuples to the same
+  /** Expands the hand-written [best, worst, tier, count] tuples to the same
       flat shape the generator returns. */
   function expand(verdicts) {
-    return verdicts.flatMap(([best, worst, stars, count]) =>
-      Array.from({ length: count }, () => ({ best, worst, stars })),
+    return verdicts.flatMap(([best, worst, tier, count]) =>
+      Array.from({ length: count }, () => ({ best, worst, tier })),
     );
   }
 
@@ -533,11 +574,17 @@ async function main() {
        internally — the vote rows reference the post — but 36 batches instead
        of ~1,400 serial round trips is the difference between a seed that takes
        seconds and one that takes minutes. */
-    const writes = entry.reviews.map(({ best, worst, stars }) => {
+    /* Which plates this restaurant's reviews land on, walked round-robin so the
+       menu fills evenly rather than piling every rating onto one dish. */
+    const plates = platesFor(restaurant);
+
+    const writes = entry.reviews.map(({ best, worst, tier }, reviewIndex) => {
       const author = REVIEW_AUTHORS[reviewSeq % REVIEW_AUTHORS.length];
       const hours = 6 + reviewSeq * 3;
       const postId = randomUUID();
       const createdAt = hoursAgo(hours);
+      const plate = plates.length > 0 ? plates[reviewIndex % plates.length] : null;
+      const percent = percentFor(tier, seedOf(`${restaurant.id}:${reviewIndex}`));
       reviewSeq++;
 
       const caption = [
@@ -550,10 +597,12 @@ async function main() {
       return (async () => {
         await sql`
           INSERT INTO posts (id, user_id, text, restaurant, restaurant_id, restaurant_lat,
-                             restaurant_lng, rating, rating_kind, vibe, photos_public, created_at)
+                             restaurant_lng, dish_name, price, rating, rating_kind, vibe,
+                             photos_public, created_at)
           VALUES (${postId}, ${ids[author]}, ${caption},
                   ${entry.restaurant}, ${restaurant.id}, ${restaurant.lat}, ${restaurant.lng},
-                  ${stars}, 'restaurant', ${best}, true, ${createdAt.toISOString()})
+                  ${plate?.name ?? null}, ${plate?.price ?? null},
+                  ${percent}, 'dish', ${best}, true, ${createdAt.toISOString()})
         `;
         await sql`
           INSERT INTO post_aspect_votes (post_id, aspect, sentiment)

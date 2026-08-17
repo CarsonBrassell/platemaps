@@ -118,6 +118,10 @@ export const regions: Region[] = [
       { name: "Encinitas", lat: 33.037, lng: -117.292 },
       { name: "Carlsbad", lat: 33.1581, lng: -117.3506 },
       { name: "Oceanside", lat: 33.1959, lng: -117.3795 },
+      // Oceanside's point sits downtown, so the whole south end of the city
+      // measured nearer to Carlsbad's and was labelled Carlsbad — four
+      // restaurants along S Coast Hwy, all genuinely in Oceanside.
+      { name: "South Oceanside", lat: 33.178, lng: -117.369 },
       { name: "Cardiff", lat: 33.0161, lng: -117.2795 },
     ],
   },
@@ -131,6 +135,15 @@ export const regions: Region[] = [
       { name: "Rancho Penasquitos", lat: 32.9628, lng: -117.1653 },
       { name: "Carmel Valley", lat: 32.9595, lng: -117.234 },
       { name: "Sorrento Valley", lat: 32.902, lng: -117.1958 },
+      // These three were missing entirely, so their restaurants fell to
+      // whichever listed point happened to be nearest — all of them to
+      // Rancho Penasquitos or Rancho Bernardo. Each point is placed at the
+      // commercial centre where the restaurants actually are, not at the
+      // geographic centre of the neighbourhood, since these are reference
+      // points for a nearest-neighbour rule rather than boundary data.
+      { name: "Pacific Highlands Ranch", lat: 32.962, lng: -117.1893 }, // Village Way
+      { name: "Rancho Santa Fe", lat: 33.005, lng: -117.198 }, // between the village and Del Rayo
+      { name: "Carmel Mountain Ranch", lat: 32.9835, lng: -117.079 },
     ],
   },
   {
