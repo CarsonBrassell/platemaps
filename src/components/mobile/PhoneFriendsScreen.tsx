@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { PointsBadge } from "@/components/feed/PointsBadge";
+import { PhoneFriendsLeaderboard } from "@/components/mobile/PhoneFriendsLeaderboard";
 import { useAuth } from "@/lib/auth";
 import { initials, relativeTime } from "@/lib/format";
 
@@ -327,6 +328,10 @@ export function PhoneFriendsScreen() {
                 ))}
               </div>
             </section>
+          )}
+
+          {account && friends && (
+            <PhoneFriendsLeaderboard friends={friends} you={account} />
           )}
 
           <div className="px-4">
