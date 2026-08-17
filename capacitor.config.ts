@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.platemaps.app',
+  appId: 'com.platemapsapp.ios',
   appName: 'PlateMaps',
   // webDir is unused at runtime — PlateMaps is server-rendered, not a static
   // export, so the WebView loads the live site directly via server.url
