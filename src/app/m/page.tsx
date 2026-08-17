@@ -6,7 +6,10 @@ import type {
   PhoneFilterGroup,
   PhoneFilterModel,
 } from "@/components/mobile/PhoneFilterSheet";
+import { PhoneLayoutToggle, type PhoneLayoutOption } from "@/components/mobile/PhoneLayoutToggle";
 import { PhoneRestaurantCard } from "@/components/mobile/PhoneRestaurantCard";
+import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
+import { PhoneRestaurantCardTiny } from "@/components/mobile/PhoneRestaurantCardTiny";
 import { getDiscoverPage, parseShown, PAGE_SIZE } from "@/lib/discover";
 import {
   QUICK_FILTERS,
@@ -60,9 +63,15 @@ export default async function PhoneDiscover({
      are cut down to one. */
   const nav = first(params.nav);
 
+  // A display choice, not a filter — it never changes which restaurants
+  // match, so it's carried across every link exactly like `nav` rather than
+  // living in `search` or resetting `shown`. See PhoneLayoutToggle.
+  const rawCols = first(params.cols);
+  const cols: "1" | "3" | "5" = rawCols === "3" || rawCols === "5" ? rawCols : "1";
+
   const search = new URLSearchParams(
     Object.entries(params).flatMap(([key, value]) => {
-      if (key === "nav") return [];
+      if (key === "nav" || key === "cols") return [];
       const single = first(value);
       return single === undefined ? [] : [[key, single] as [string, string]];
     }),
@@ -71,7 +80,7 @@ export default async function PhoneDiscover({
   const page = await getDiscoverPage(search.toString(), { shown: parseShown(params.shown) });
   const { filters, counts, options } = page;
 
-  /** A URL with one param changed, everything else — including `nav` — held. */
+  /** A URL with one param changed, everything else — including `nav` and `cols` — held. */
   const hrefWith = (changes: Record<string, string | null>) => {
     const next = new URLSearchParams(search);
     for (const [key, value] of Object.entries(changes)) {
@@ -79,9 +88,18 @@ export default async function PhoneDiscover({
       else next.set(key, value);
     }
     if (nav) next.set("nav", nav);
+    // Only carry the current cols forward when this call isn't the one
+    // changing it — the loop above already applied an explicit change.
+    if (!("cols" in changes) && cols !== "1") next.set("cols", cols);
     const query = next.toString();
     return query ? `/m?${query}` : "/m";
   };
+
+  const layoutOptions: PhoneLayoutOption[] = [
+    { cols: "1", label: "1 per row", selected: cols === "1", href: hrefWith({ cols: null }) },
+    { cols: "3", label: "3 per row", selected: cols === "3", href: hrefWith({ cols: "3" }) },
+    { cols: "5", label: "5 per row", selected: cols === "5", href: hrefWith({ cols: "5" }) },
+  ];
 
   /**
    * One dimension of the sheet: the row that clears it, then every option with
@@ -283,15 +301,18 @@ export default async function PhoneDiscover({
             <BrandMark className="h-7 w-7" />
             <WordMark tone="dark" />
           </span>
-          <Link
-            href="/"
-            /* An escape hatch while both versions are live and being compared.
-               Not a permanent feature — when UA routing lands this becomes a
-               "view desktop site" affordance or disappears entirely. */
-            className="min-h-11 shrink-0 self-center rounded-full px-2 font-mono text-[11px] text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            Web version
-          </Link>
+          <span className="flex shrink-0 items-center gap-1">
+            <PhoneLayoutToggle options={layoutOptions} />
+            <Link
+              href="/"
+              /* An escape hatch while both versions are live and being compared.
+                 Not a permanent feature — when UA routing lands this becomes a
+                 "view desktop site" affordance or disappears entirely. */
+              className="min-h-11 shrink-0 self-center rounded-full px-2 font-mono text-[11px] text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              Web version
+            </Link>
+          </span>
         </div>
 
         <h1 className="font-display mt-4 text-[26px] font-semibold leading-tight tracking-tight text-zinc-900">
@@ -322,6 +343,28 @@ export default async function PhoneDiscover({
           >
             Clear filters
           </Link>
+        </div>
+      ) : cols === "3" ? (
+        <div className="grid grid-cols-3 gap-2 px-4">
+          {page.results.map((restaurant, index) => (
+            <PhoneRestaurantCardGrid
+              key={restaurant.id}
+              restaurant={restaurant}
+              score={restaurant.plateScore}
+              priority={index < 3}
+            />
+          ))}
+        </div>
+      ) : cols === "5" ? (
+        <div className="grid grid-cols-5 gap-1.5 px-4">
+          {page.results.map((restaurant, index) => (
+            <PhoneRestaurantCardTiny
+              key={restaurant.id}
+              restaurant={restaurant}
+              score={restaurant.plateScore}
+              priority={index < 5}
+            />
+          ))}
         </div>
       ) : (
         <div className="flex flex-col gap-3 px-4">
