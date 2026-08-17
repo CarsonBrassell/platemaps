@@ -29,11 +29,14 @@ import {
  *
  * Three things are shaped differently for the phone:
  *
- * - **One dimension in the flow, the rest behind a sheet.** The web rail shows
- *   neighbourhood, cuisine, price and category at once, in a 230px column. Here
- *   cuisine is a chip rail — see PhoneCuisineRail for why that is the one that
- *   got promoted — and the same four dimensions plus the quick filters live in
- *   PhoneFilterSheet, one tap away, with the same counts on every row.
+ * - **Every dimension behind one sheet.** The web rail shows neighbourhood,
+ *   cuisine, price and category at once, in a 230px column a phone doesn't
+ *   have. Here all four, plus the quick filters, live in PhoneFilterSheet, one
+ *   tap away behind the Filters button, with the same counts on every row.
+ *   Cuisine briefly also rode the row above the results as its own scrolling
+ *   chip strip — a "browse" fast path, promoted out of the sheet — but that
+ *   put the same dimension in two places at once on a screen with no room to
+ *   spare. One way in now, like every other dimension.
  * - **"Show more" is a link, not a button.** Same `?shown=` round trip the web
  *   version spends through a transition. A phone list wants an obvious end to
  *   the page more than it wants seamlessness, and a link works before hydration.
