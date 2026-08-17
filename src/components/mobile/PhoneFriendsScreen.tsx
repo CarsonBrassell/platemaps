@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { PointsBadge } from "@/components/feed/PointsBadge";
+import { PhoneFindFriends } from "@/components/mobile/PhoneFindFriends";
 import { PhoneFriendsLeaderboard } from "@/components/mobile/PhoneFriendsLeaderboard";
 import { useAuth } from "@/lib/auth";
 import { initials, relativeTime } from "@/lib/format";
@@ -263,6 +264,13 @@ export function PhoneFriendsScreen() {
         </div>
       ) : (
         <>
+          <PhoneFindFriends
+            friendIds={friends?.map((f) => f.id) ?? []}
+            incomingIds={incoming.map((r) => r.userId)}
+            outgoingIds={outgoing.map((r) => r.userId)}
+            onSent={load}
+          />
+
           {hasRequests && (
             <section aria-labelledby="phone-requests-heading" className="mb-7 px-4">
               <p id="phone-requests-heading" className="mono-label mb-2 text-pm-grey-text">

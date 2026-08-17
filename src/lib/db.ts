@@ -1418,6 +1418,43 @@ export async function getBlockedEitherWayIds(userId: string): Promise<string[]> 
   return rows.map((r) => r.other_id as string);
 }
 
+export type UserSearchResult = { id: string; name: string; avatarUrl?: string };
+
+/**
+ * Finds people to friend, by the same handle FoodPostCard already shows next
+ * to their posts. There's no separate username column — `handleFor` in that
+ * component derives one from `name` (lowercase, spaces stripped), so a search
+ * normalizes both sides the identical way rather than introducing a second
+ * notion of "username" that could drift from what's actually displayed.
+ *
+ * Excludes the searcher and anyone blocked in either direction: a block is
+ * supposed to end contact, and turning up in the other person's search
+ * results would be a way back in.
+ */
+export async function searchUsers(
+  query: string,
+  viewerId: string,
+  limit = 10,
+): Promise<UserSearchResult[]> {
+  const normalized = query.trim().toLowerCase().replace(/\s+/g, "");
+  if (!normalized) return [];
+  const blockedIds = await getBlockedEitherWayIds(viewerId);
+  const rows = await sql`
+    SELECT id, name, avatar_url
+    FROM users
+    WHERE id != ${viewerId}
+      AND id != ALL(${blockedIds})
+      AND lower(replace(name, ' ', '')) LIKE ${"%" + normalized + "%"}
+    ORDER BY name ASC
+    LIMIT ${limit}
+  `;
+  return rows.map((r) => ({
+    id: r.id as string,
+    name: r.name as string,
+    avatarUrl: (r.avatar_url as string | null) ?? undefined,
+  }));
+}
+
 // --- Profile favorites -----------------------------------------------------
 
 /**
