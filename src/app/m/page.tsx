@@ -66,8 +66,10 @@ export default async function PhoneDiscover({
   // A display choice, not a filter — it never changes which restaurants
   // match, so it's carried across every link exactly like `nav` rather than
   // living in `search` or resetting `shown`. See PhoneLayoutToggle.
+  const DEFAULT_COLS = "3";
   const rawCols = first(params.cols);
-  const cols: "1" | "3" | "5" = rawCols === "3" || rawCols === "5" ? rawCols : "1";
+  const cols: "1" | "3" | "5" =
+    rawCols === "1" || rawCols === "5" ? rawCols : DEFAULT_COLS;
 
   const search = new URLSearchParams(
     Object.entries(params).flatMap(([key, value]) => {
@@ -90,14 +92,14 @@ export default async function PhoneDiscover({
     if (nav) next.set("nav", nav);
     // Only carry the current cols forward when this call isn't the one
     // changing it — the loop above already applied an explicit change.
-    if (!("cols" in changes) && cols !== "1") next.set("cols", cols);
+    if (!("cols" in changes) && cols !== DEFAULT_COLS) next.set("cols", cols);
     const query = next.toString();
     return query ? `/m?${query}` : "/m";
   };
 
   const layoutOptions: PhoneLayoutOption[] = [
-    { cols: "1", label: "1 per row", selected: cols === "1", href: hrefWith({ cols: null }) },
-    { cols: "3", label: "3 per row", selected: cols === "3", href: hrefWith({ cols: "3" }) },
+    { cols: "1", label: "1 per row", selected: cols === "1", href: hrefWith({ cols: "1" }) },
+    { cols: "3", label: "3 per row", selected: cols === "3", href: hrefWith({ cols: null }) },
     { cols: "5", label: "5 per row", selected: cols === "5", href: hrefWith({ cols: "5" }) },
   ];
 
@@ -296,13 +298,20 @@ export default async function PhoneDiscover({
       <header className="px-4 pb-3 pt-4">
         <div className="flex items-center justify-between gap-3">
           {/* BrandMark ships at its artwork size (165×210) and relies on the
-              caller to size it — see its header comment. */}
-          <span className="flex items-center gap-2">
-            <BrandMark className="h-7 w-7" />
+              caller to size it — see its header comment. Sized and set
+              (text-[19px] on the wrapper, which is what WordMark's bare span
+              inherits) to echo the desktop header's own brand lockup — see
+              Header.tsx's `text-[22px]` Link — rather than the smaller
+              default this screen used to carry. */}
+          <span className="flex items-center gap-2.5 text-[19px]">
+            <BrandMark className="h-9 w-9" />
             <WordMark tone="dark" />
           </span>
+          {/* Rightmost element is the one circular icon, flush to the edge —
+              the same bilateral shape the desktop header closes on with its
+              avatar circle (Header.tsx), rather than a text link trailing
+              past the icon. */}
           <span className="flex shrink-0 items-center gap-1">
-            <PhoneLayoutToggle options={layoutOptions} />
             <Link
               href="/"
               /* An escape hatch while both versions are live and being compared.
@@ -312,6 +321,7 @@ export default async function PhoneDiscover({
             >
               Web version
             </Link>
+            <PhoneLayoutToggle options={layoutOptions} />
           </span>
         </div>
 
