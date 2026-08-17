@@ -349,7 +349,11 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                       score={restaurant.plateScore}
                       highlight={
                         filters.aspect && restaurant.aspectScore !== undefined
-                          ? { aspect: filters.aspect, score: restaurant.aspectScore }
+                          ? {
+                              aspect: filters.aspect,
+                              score: restaurant.aspectScore.score,
+                              praised: restaurant.aspectScore.praised,
+                            }
                           : null
                       }
                     />

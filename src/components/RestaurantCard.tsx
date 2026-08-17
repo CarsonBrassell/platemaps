@@ -4,12 +4,7 @@ import { StarIcon } from "@/components/icons";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
-import {
-  ASPECT_SCALE_MAX,
-  SHOW_BLEND_STARS,
-  aspectOutOfFive,
-  blendLabel,
-} from "@/lib/ratingDisplay";
+import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 
 /**
  * The category the grid is currently filtered to, and what this place scored in
@@ -19,7 +14,12 @@ import {
  * to open a restaurant to see the number they filtered on, which is the one
  * thing they already told us they care about.
  */
-export type AspectHighlight = { aspect: string; score: number };
+export type AspectHighlight = {
+  aspect: string;
+  /** The category's rating on 1-5. */
+  score: number;
+  praised: number;
+};
 
 export function RestaurantCard({
   restaurant,
@@ -130,19 +130,18 @@ export function RestaurantCard({
           {highlight && (
             <span
               className="inline-flex items-center gap-1.5 rounded-full bg-pm-orange-tint px-3 py-1.5 text-xs font-medium text-pm-orange-text"
-              aria-label={`${highlight.aspect} rated ${aspectOutOfFive(highlight.score)} out of ${ASPECT_SCALE_MAX}`}
+              aria-label={`${highlight.aspect} rated ${highlight.score.toFixed(1)} out of ${ASPECT_SCALE_MAX}`}
             >
               {/* No emoji, unlike RestaurantAspects. That block sets it at
                   14px where a fried egg still reads as one; at pill size it
                   collapses to a coloured smudge and the label says it anyway.
 
-                  Out of 5 with its denominator, same as the restaurant page —
-                  and the category label sits right against it, which is what
-                  keeps this from reading as the sourced star rating in the
-                  pill above. */}
+                  Out of 5 with its denominator, and the category label sits
+                  right against it — which is what keeps it from reading as the
+                  sourced star rating in the pill above. */}
               {highlight.aspect}
               <span className="font-mono font-semibold tabular-nums" aria-hidden="true">
-                {aspectOutOfFive(highlight.score)}/{ASPECT_SCALE_MAX}
+                {highlight.score.toFixed(1)}/{ASPECT_SCALE_MAX}
               </span>
             </span>
           )}

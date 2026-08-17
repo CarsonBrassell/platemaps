@@ -5,7 +5,6 @@ import type { Dish } from "@/data/dishes";
 import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
-import { aspectAnchor } from "@/lib/ratingDisplay";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -1593,12 +1592,14 @@ export async function getDishRatingsForRestaurant(
 
 export type RestaurantAspectTally = {
   /**
-   * The percent each category score moves away from: the restaurant's plate
-   * score, or its sourced rating rescaled while it has no plate score yet. See
-   * `aspectAnchor` in lib/ratingDisplay.ts — never null, so the category block
-   * always has something to render against.
+   * The restaurant's sourced rating on 1-5 — the base every category is spaced
+   * around (`aspectScores`), and the only outside number in that model.
+   *
+   * Not the plate score, on purpose: a category is a claim about the place, the
+   * plate score is a claim about its food, and anchoring categories to it made
+   * them move whenever the menu did.
    */
-  overall: number;
+  base: number;
   /** How many rated reviews the votes could have come from. */
   reviewCount: number;
   /** praised / faulted counts, keyed by aspect. Aspects nobody voted on are absent. */
@@ -1628,8 +1629,7 @@ const VOTE_SOURCE_POSTS = `p.rating IS NOT NULL`;
 export async function getRestaurantAspectTally(
   restaurantId: string,
 ): Promise<RestaurantAspectTally> {
-  const [score, voteRows, sourceRows, blendRows] = await Promise.all([
-    getRestaurantPlateScore(restaurantId),
+  const [voteRows, sourceRows, baseRows] = await Promise.all([
     sql`
       SELECT v.aspect,
              count(*) FILTER (WHERE v.sentiment = 'praise')::int AS praised,
@@ -1661,7 +1661,7 @@ export async function getRestaurantAspectTally(
   }
 
   return {
-    overall: aspectAnchor(score.percent, Number(blendRows[0]?.rating ?? 0)),
+    base: Number(baseRows[0]?.rating ?? 0),
     reviewCount: sourceRows[0]?.n ?? 0,
     votes,
   };
@@ -1680,11 +1680,10 @@ export async function getRestaurantAspectTally(
  * and "no match" to look the same from the outside, and aspectScores already
  * reports a 0-review tally as an honest null.
  */
-export async function getAllRestaurantAspectTallies(
-  scores?: Record<string, PlateScore>,
-): Promise<Record<string, RestaurantAspectTally>> {
-  const [plateScores, voteRows, sourceRows] = await Promise.all([
-    scores ? Promise.resolve(scores) : getAllRestaurantPlateScores(),
+export async function getAllRestaurantAspectTallies(): Promise<
+  Record<string, RestaurantAspectTally>
+> {
+  const [voteRows, sourceRows] = await Promise.all([
     sql`
       SELECT p.restaurant_id,
              v.aspect,
@@ -1696,9 +1695,9 @@ export async function getAllRestaurantAspectTallies(
         AND p.restaurant_id IS NOT NULL
       GROUP BY p.restaurant_id, v.aspect
     `,
-    // Rated reviews per restaurant joined to the sourced rating, so a
-    // restaurant with votes but no plate score still gets an anchor. One query
-    // rather than a second pass over `restaurants`.
+    // The sourced rating plus how many rated reviews the votes could have come
+    // from. Every restaurant is listed, including those with none, so a tally
+    // exists for any restaurant a vote row might point at.
     sql`
       SELECT r.id, r.rating, count(p.id)::int AS review_count
       FROM restaurants r
@@ -1712,7 +1711,7 @@ export async function getAllRestaurantAspectTallies(
   for (const row of sourceRows) {
     const id = row.id as string;
     tallies[id] = {
-      overall: aspectAnchor(plateScores[id]?.percent ?? null, Number(row.rating ?? 0)),
+      base: Number(row.rating ?? 0),
       reviewCount: row.review_count as number,
       votes: {},
     };

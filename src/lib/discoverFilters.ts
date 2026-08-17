@@ -107,33 +107,35 @@ export function activeFilterCount(f: DiscoverFilters): number {
 /* --- Aspects ---------------------------------------------------------- */
 
 /**
- * The bar an aspect has to clear to count as "rated well for" it.
+ * The rating a category has to clear to count as "rated well for" it — on the
+ * same 1-5 the categories are reported on, since `aspectScores` now works
+ * natively in those units.
  *
- * Two conditions, because either alone lies. A score threshold alone would pass
- * any category at a well-rated place, since an unremarked aspect scores the
- * restaurant's own plate score — a 92% restaurant would read "rated well for
- * dessert" on the strength of never having served anyone one. Net praise alone
- * would pass the least-bad category at a mediocre place.
- *
- * 80 is the direct translation of the 4.0/5 this was calibrated at, and the old
- * calibration no longer transfers: the anchor changed from a Yelp-blended star
- * average to the restaurant's own plate score, so the distribution behind these
- * counts is a different one. Re-tune with `npm run aspects:preview` once there
- * are real dish ratings to tune against.
+ * 4.0 is where this has always sat. Re-tune with `npm run aspects:preview`.
  */
-export const ASPECT_STRONG_SCORE = 80;
+export const ASPECT_STRONG_SCORE = 4.0;
 
 /**
- * Which categories each restaurant is rated well for, by restaurant id, and
- * what each of those categories scored.
+ * What a restaurant is rated well for, and what to print beside it.
  *
- * The inner map carries the percent score rather than the bare label so the grid
- * can print the number beside a card without re-running the model: filtering to
- * "rated well for Food" and then hiding the food score made the visitor open a
- * restaurant to find out what they had just filtered on. `.has()` reads the
- * same on a Map as it did on the Set this replaced, so matching is unchanged.
+ * The inner map of `StrongAspects` carries this rather than the bare label so
+ * the grid can print the figure beside a card without re-running the model:
+ * filtering to "rated well for Service" and then hiding the service figure made
+ * the visitor open a restaurant to find out what they had just filtered on.
+ * `.has()` reads the same on a Map as it did on the Set this replaced, so
+ * matching is unchanged.
+ *
+ * `score` is null for a restaurant with no plate score — it qualified on votes
+ * alone, so there is a count to show and no number. Callers must handle both;
+ * `RestaurantCard` is the one that renders them.
  */
-export type StrongAspects = ReadonlyMap<string, ReadonlyMap<string, number>>;
+export type StrongAspect = {
+  /** The category's rating on 1-5. */
+  score: number;
+  praised: number;
+};
+
+export type StrongAspects = ReadonlyMap<string, ReadonlyMap<string, StrongAspect>>;
 
 /**
  * Mirror of `RestaurantAspectTally` in lib/db.ts, which owns the shape.
@@ -144,8 +146,8 @@ export type StrongAspects = ReadonlyMap<string, ReadonlyMap<string, number>>;
  * than risk dragging the driver into the browser bundle. Keep the two in step.
  */
 export type AspectTally = {
-  /** What category scores move away from — see `aspectAnchor` in ratingDisplay.ts. */
-  overall: number;
+  /** The restaurant's sourced rating on 1-5 — see lib/db.ts. */
+  base: number;
   reviewCount: number;
   votes: Record<string, { praised: number; faulted: number }>;
 };
@@ -161,21 +163,27 @@ export type AspectTally = {
 export function strongAspectsFrom(
   tallies: Record<string, AspectTally>,
 ): StrongAspects {
-  const strong = new Map<string, Map<string, number>>();
+  const strong = new Map<string, Map<string, StrongAspect>>();
 
   for (const [restaurantId, tally] of Object.entries(tallies)) {
     const scored = aspectScores(
       BEST_AT_LABELS,
-      tally.overall,
+      tally.base,
       tally.votes,
       tally.reviewCount,
     );
+    /* Two conditions. The score bar alone would pass every category at a
+       well-rated place, since a category nobody mentioned now lands exactly on
+       the restaurant's rating — a 4.6 restaurant would read "rated well for
+       drinks" on the strength of never having served one. Requiring a positive
+       deviation means the category has to be one people actually singled out,
+       not merely one at a good restaurant. */
     strong.set(
       restaurantId,
       new Map(
         scored
-          .filter((s) => s.score !== null && s.score >= ASPECT_STRONG_SCORE && s.net > 0)
-          .map((s) => [s.aspect, s.score!] as const),
+          .filter((s) => s.score !== null && s.score >= ASPECT_STRONG_SCORE && s.deviation > 0)
+          .map((s) => [s.aspect, { score: s.score!, praised: s.praised }] as const),
       ),
     );
   }
@@ -192,7 +200,7 @@ export function strongAspectScore(
   aspects: StrongAspects | null,
   restaurantId: string,
   aspect: string | null,
-): number | null {
+): StrongAspect | null {
   if (!aspects || !aspect) return null;
   return aspects.get(restaurantId)?.get(aspect) ?? null;
 }
