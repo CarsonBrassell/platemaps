@@ -9,7 +9,10 @@ const config: CapacitorConfig = {
   // replaces the Vercel subdomain.
   webDir: 'public',
   server: {
-    url: 'https://platemap-five.vercel.app',
+    // /m is Calvin's purpose-built phone experience (own layout, own screens,
+    // same lib/ and API routes as the desktop site) — the app should load
+    // that, not the desktop site squeezed into a phone-sized WebView.
+    url: 'https://platemap-five.vercel.app/m',
     cleartext: false
   }
 };
