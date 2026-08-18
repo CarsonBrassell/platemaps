@@ -361,6 +361,9 @@ export async function deleteSession(token: string): Promise<void> {
  * cascade from `posts`. Points other people earned by upvoting those posts are
  * kept: `point_events` rows belong to the earner, and only reference the post
  * through an unconstrained `reason` string.
+ *
+ * The route calling this has already re-verified the password before reaching
+ * here — this function trusts that it has.
  */
 export async function deleteUser(userId: string): Promise<void> {
   await sql`DELETE FROM users WHERE id = ${userId}`;

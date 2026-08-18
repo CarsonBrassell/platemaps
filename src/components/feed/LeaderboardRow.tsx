@@ -2,14 +2,8 @@
 
 import { initials, avatarPalette } from "@/lib/format";
 import { formatPoints } from "@/lib/points";
+import { STATIONS } from "@/lib/stations";
 import type { LeaderboardEntry } from "./types";
-
-/** Kitchen titles for the top three; everyone below is just a number. */
-const STATIONS: Record<number, string> = {
-  1: "Head chef",
-  2: "Sous chef",
-  3: "Line cook",
-};
 
 /** Rank as a machine value: mono numeral, tan coin for the podium. */
 function Rank({ rank }: { rank: number }) {
