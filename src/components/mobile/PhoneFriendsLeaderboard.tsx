@@ -61,7 +61,7 @@ function Course({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-2.5 pb-1.5 pt-3.5">
       <span aria-hidden="true" className={DOTS} />
-      <span className="mono-label text-pm-grey-text">{label}</span>
+      <span className="mono-label text-zinc-500">{label}</span>
       <span aria-hidden="true" className={DOTS} />
     </div>
   );
@@ -91,7 +91,7 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
     >
       <span
         className={`w-7 shrink-0 font-mono text-[11px] font-medium tabular-nums ${
-          rank === 1 ? "text-pm-orange-text" : "text-pm-grey-text"
+          rank === 1 ? "text-pm-orange-text" : "text-zinc-500"
         }`}
       >
         №{rank}
@@ -110,22 +110,25 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
         </span>
       )}
 
-      {/* Name and standing left, leader dots eating the slack, price right. */}
-      <span className="flex min-w-0 flex-1 items-end gap-1.5">
-        <span className="min-w-0">
-          <span className="font-display block truncate text-[15px] font-semibold leading-tight text-zinc-900">
+      {/* A menu item, set the way a menu sets one: name, leader dots, price on
+          one line; the description on its own line beneath, where it gets the
+          full width. Both halves competing for one line was the first draft —
+          the dots collapsed to nothing on exactly the rows with the longest
+          standing line, and that line truncated mid-number. */}
+      <span className="min-w-0 flex-1">
+        <span className="flex items-end gap-1.5">
+          <span className="font-display truncate text-[15px] font-semibold leading-tight text-zinc-900">
             {isYou ? "You" : entry.name}
           </span>
-          <span className="mt-0.5 block truncate font-mono text-[11px] leading-tight tabular-nums text-pm-grey-text">
-            {standingFor(rank, gap)}
+          <span aria-hidden="true" className={`${DOTS} mb-[5px] min-w-4`} />
+          <span className="shrink-0 whitespace-nowrap font-mono text-sm font-semibold leading-none tabular-nums text-zinc-900">
+            {formatPoints(entry.points)}
+            <span className="sr-only"> PM Points</span>
           </span>
         </span>
-        <span aria-hidden="true" className={`${DOTS} mb-[7px]`} />
-      </span>
-
-      <span className="shrink-0 whitespace-nowrap font-mono text-sm font-semibold tabular-nums text-zinc-900">
-        {formatPoints(entry.points)}
-        <span className="sr-only"> PM Points</span>
+        <span className="mt-1 block truncate font-mono text-[11px] leading-tight tabular-nums text-zinc-500">
+          {standingFor(rank, gap)}
+        </span>
       </span>
     </li>
   );
@@ -158,7 +161,7 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
           >
             Friends&rsquo; Table
           </h2>
-          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-pm-grey-text">
+          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
             Ranked by PM Points
           </p>
         </div>
@@ -184,7 +187,7 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
           </>
         )}
 
-        <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-400">
+        <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
           Prices in PM Points · no substitutions
         </p>
       </div>
