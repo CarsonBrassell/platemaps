@@ -21,9 +21,10 @@ import { initials, relativeTime } from "@/lib/format";
  *
  * Three things are shaped differently for a 390px screen:
  *
- * - **Requests lead, always.** On the web they sit above the list too, but here
- *   they are the reason the nav carries a dot, and a dot that leads you to a
- *   screen where the actionable thing is below the fold is a broken promise.
+ * - **Order is Find friends, Your friends, Leaderboard, then Requests** — the
+ *   reverse of the web page's Requests-first layout. Requests still carry the
+ *   nav dot regardless of where they sit on the page, so the dot is answered
+ *   by opening the screen at all, not by what's above the fold on it.
  * - **Accept/Decline sit on their own row.** Avatar, name and two buttons do
  *   not fit across 390px at a 44px target size without shrinking the buttons to
  *   something you miss with a thumb. So the person is row one and the answer is
@@ -271,78 +272,7 @@ export function PhoneFriendsScreen() {
             onSent={load}
           />
 
-          {hasRequests && (
-            <section aria-labelledby="phone-requests-heading" className="mb-7 px-4">
-              <p id="phone-requests-heading" className="mono-label mb-2 text-pm-grey-text">
-                Requests
-              </p>
-              <div className="flex flex-col gap-2">
-                {incoming.map((r) => (
-                  <div key={r.id} className="rounded-2xl bg-white p-3.5">
-                    <div className="flex items-center gap-3">
-                      <Avatar name={r.name} avatarUrl={r.avatarUrl} />
-                      <Link
-                        href={to(`/m/u/${r.userId}`)}
-                        className={`font-display min-w-0 flex-1 truncate rounded-lg text-[16px] font-semibold leading-tight text-zinc-900 ${FOCUS}`}
-                      >
-                        {r.name}
-                      </Link>
-                      {/* Machine value, so mono. */}
-                      <time
-                        dateTime={r.createdAt}
-                        className="shrink-0 font-mono text-[11px] tabular-nums text-zinc-500"
-                      >
-                        {relativeTime(r.createdAt)}
-                      </time>
-                    </div>
-
-                    <div className="mt-3 flex gap-2">
-                      <button
-                        type="button"
-                        onClick={() => respond(r.id, "accept")}
-                        disabled={busyId === r.id}
-                        className={`min-h-11 flex-1 rounded-full bg-pm-orange text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.97] disabled:opacity-50 ${FOCUS}`}
-                      >
-                        Accept
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => respond(r.id, "decline")}
-                        disabled={busyId === r.id}
-                        className={`min-h-11 flex-1 rounded-full bg-pm-grey-tint text-sm font-medium text-pm-grey-text transition-colors active:scale-[0.97] disabled:opacity-50 ${FOCUS}`}
-                      >
-                        Decline
-                      </button>
-                    </div>
-                  </div>
-                ))}
-
-                {outgoing.map((r) => (
-                  <div
-                    key={r.id}
-                    className="flex items-center gap-3 rounded-2xl bg-white px-3.5 py-3"
-                  >
-                    <Avatar name={r.name} avatarUrl={r.avatarUrl} />
-                    <Link
-                      href={to(`/m/u/${r.userId}`)}
-                      className={`font-display min-w-0 flex-1 truncate rounded-lg text-[16px] font-semibold leading-tight text-zinc-500 ${FOCUS}`}
-                    >
-                      {r.name}
-                    </Link>
-                    {/* Machine state, so it's set in the label voice like every
-                        other non-prose value on the screen. */}
-                    <span className="mono-label shrink-0 text-zinc-500">Request sent</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {account && friends && (
-            <PhoneFriendsLeaderboard friends={friends} you={account} />
-          )}
-
-          <div className="px-4">
+          <div className="mb-7 px-4">
             <p className="mono-label mb-2 text-pm-grey-text">Your friends</p>
 
             {/* Only once there's a list worth filtering. A search box over two
@@ -476,6 +406,77 @@ export function PhoneFriendsScreen() {
               </p>
             )}
           </div>
+
+          {account && friends && (
+            <PhoneFriendsLeaderboard friends={friends} you={account} />
+          )}
+
+          {hasRequests && (
+            <section aria-labelledby="phone-requests-heading" className="mb-7 px-4">
+              <p id="phone-requests-heading" className="mono-label mb-2 text-pm-grey-text">
+                Requests
+              </p>
+              <div className="flex flex-col gap-2">
+                {incoming.map((r) => (
+                  <div key={r.id} className="rounded-2xl bg-white p-3.5">
+                    <div className="flex items-center gap-3">
+                      <Avatar name={r.name} avatarUrl={r.avatarUrl} />
+                      <Link
+                        href={to(`/m/u/${r.userId}`)}
+                        className={`font-display min-w-0 flex-1 truncate rounded-lg text-[16px] font-semibold leading-tight text-zinc-900 ${FOCUS}`}
+                      >
+                        {r.name}
+                      </Link>
+                      {/* Machine value, so mono. */}
+                      <time
+                        dateTime={r.createdAt}
+                        className="shrink-0 font-mono text-[11px] tabular-nums text-zinc-500"
+                      >
+                        {relativeTime(r.createdAt)}
+                      </time>
+                    </div>
+
+                    <div className="mt-3 flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => respond(r.id, "accept")}
+                        disabled={busyId === r.id}
+                        className={`min-h-11 flex-1 rounded-full bg-pm-orange text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.97] disabled:opacity-50 ${FOCUS}`}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => respond(r.id, "decline")}
+                        disabled={busyId === r.id}
+                        className={`min-h-11 flex-1 rounded-full bg-pm-grey-tint text-sm font-medium text-pm-grey-text transition-colors active:scale-[0.97] disabled:opacity-50 ${FOCUS}`}
+                      >
+                        Decline
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+                {outgoing.map((r) => (
+                  <div
+                    key={r.id}
+                    className="flex items-center gap-3 rounded-2xl bg-white px-3.5 py-3"
+                  >
+                    <Avatar name={r.name} avatarUrl={r.avatarUrl} />
+                    <Link
+                      href={to(`/m/u/${r.userId}`)}
+                      className={`font-display min-w-0 flex-1 truncate rounded-lg text-[16px] font-semibold leading-tight text-zinc-500 ${FOCUS}`}
+                    >
+                      {r.name}
+                    </Link>
+                    {/* Machine state, so it's set in the label voice like every
+                        other non-prose value on the screen. */}
+                    <span className="mono-label shrink-0 text-zinc-500">Request sent</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </>
       )}
     </div>

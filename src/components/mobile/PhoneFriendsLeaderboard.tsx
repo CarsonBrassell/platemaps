@@ -1,4 +1,5 @@
 import { PointsBadge } from "@/components/feed/PointsBadge";
+import { formatPoints } from "@/lib/points";
 import { initials } from "@/lib/format";
 
 type Entry = { id: string; name: string; avatarUrl?: string; points: number };
@@ -16,10 +17,15 @@ type Entry = { id: string; name: string; avatarUrl?: string; points: number };
  *
  * The `№` rank prefix is the same "machine-issued record number" idiom
  * PhoneDetailHero uses for "Spot №001" — reused rather than invented, and the
- * closest thing this design system has to a menu/ledger motif. Simplistic on
- * purpose: no medals, no separate crown for #1, per PRODUCT.md's own note
- * that points are "a capability, not the reason the product wins" — a rank
- * number and a name is the whole idea.
+ * closest thing this design system has to a menu/ledger motif. Still no
+ * medals or a separate crown for #1, per PRODUCT.md's own note that points
+ * are "a capability, not the reason the product wins" — the one deliberate
+ * escalation is the points badge itself (`tone="orange"`), because a
+ * leaderboard's whole subject is the number, unlike a post card's badge.
+ *
+ * The gap line under each row (except #1) is computed from the same sorted
+ * array, not a second query — "how far to the rank above" is just the
+ * previous row's points minus this one's.
  */
 export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; you: Entry }) {
   if (friends.length === 0) return null;
@@ -35,6 +41,7 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
         {ranked.map((entry, index) => {
           const rank = index + 1;
           const isYou = entry.id === you.id;
+          const gap = index > 0 ? ranked[index - 1].points - entry.points : 0;
           return (
             <li
               key={entry.id}
@@ -61,10 +68,23 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
                   {initials(entry.name)}
                 </span>
               )}
-              <span className="font-display min-w-0 flex-1 truncate text-[15px] font-semibold leading-tight text-zinc-900">
-                {isYou ? "You" : entry.name}
+              <span className="min-w-0 flex-1">
+                <span className="font-display block truncate text-[15px] font-semibold leading-tight text-zinc-900">
+                  {isYou ? "You" : entry.name}
+                </span>
+                {/* Rank 1 has nothing above it to close the gap on; a tie
+                    prints nothing rather than "0 to catch" reading like a bug. */}
+                {rank === 1 ? (
+                  <span className="font-mono text-[11px] text-pm-grey-text">In the lead</span>
+                ) : gap > 0 ? (
+                  <span className="font-mono text-[11px] tabular-nums text-pm-grey-text">
+                    {formatPoints(gap)} to catch №{rank - 1}
+                  </span>
+                ) : (
+                  <span className="font-mono text-[11px] text-pm-grey-text">Tied for №{rank - 1}</span>
+                )}
               </span>
-              <PointsBadge points={entry.points} size="md" />
+              <PointsBadge points={entry.points} size="md" tone="orange" />
             </li>
           );
         })}
