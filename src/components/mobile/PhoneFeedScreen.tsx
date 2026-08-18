@@ -49,10 +49,11 @@ import { PhoneFeedMapPanel } from "./PhoneFeedMapPanel";
 export function PhoneFeedScreen() {
   const { account, isSignedIn } = useAuth();
 
-  /* The map is the launch view — see PhoneFeedTabs for why, and for what it
-     costs. Everything downstream already handles `map` as a tab; the only thing
-     this line changes is which one you land on. */
-  const [tab, setTab] = useState<FeedTab>("map");
+  /* The feed is the launch view, matching `/feed` — see PhoneFeedTabs for the
+     order and for what the map costs a visitor who never opens it. Everything
+     downstream already handles every tab; the only thing this line changes is
+     which one you land on. */
+  const [tab, setTab] = useState<FeedTab>("discover");
   const [reloadKey, setReloadKey] = useState(0);
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
   /* Which feed backs the map's bubbles — its own switch, independent of `tab`,
