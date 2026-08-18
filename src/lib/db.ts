@@ -5,6 +5,7 @@ import type { Dish } from "@/data/dishes";
 import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
+import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -678,6 +679,10 @@ export async function getPostById(id: string, viewerId: string | null = null): P
  * photos_public is false has its media stripped from the payload entirely,
  * so a private photo's URL never reaches a Discover response in the first
  * place.
+ *
+ * Only the last `FEED_WINDOW_DAYS` of posts are eligible — see lib/feedWindow.
+ * The cutoff is a filter on this read, never a delete: the post stays in the
+ * table and keeps counting toward the restaurant's rating forever.
  */
 export async function getDiscoverFeed(viewerId: string | null, limit = 30): Promise<Post[]> {
   // `!= ALL(empty array)` is vacuously true in Postgres, so a signed-out
@@ -700,6 +705,7 @@ export async function getDiscoverFeed(viewerId: string | null, limit = 30): Prom
       SELECT post_id, count(*) AS count FROM post_downvotes GROUP BY post_id
     ) dv ON dv.post_id = p.id
     WHERE p.user_id != ALL(${blockedIds})
+      AND p.created_at > now() - make_interval(days => ${FEED_WINDOW_DAYS})
     ORDER BY
       (GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0) + 1)
         / POWER(EXTRACT(EPOCH FROM (now() - p.created_at)) / 3600 + 2, 1.5) DESC
@@ -719,6 +725,9 @@ export async function getDiscoverFeed(viewerId: string | null, limit = 30): Prom
  * appears. No ranking math, no engagement join — the spec is explicit that
  * this feed does not sort by engagement at all. Photos always show for a
  * friend's post regardless of photosPublic; that flag only gates Discover.
+ *
+ * Same `FEED_WINDOW_DAYS` cutoff as Discover, for the same reason and with the
+ * same guarantee: a friend's older post is out of the feed, not gone.
  */
 export async function getFriendsFeed(viewerId: string, limit = 60): Promise<Post[]> {
   // Belt-and-suspenders: blockUser() already unfriends both sides, so a
@@ -734,6 +743,7 @@ export async function getFriendsFeed(viewerId: string, limit = 60): Promise<Post
       WHERE f.user_a = ${viewerId} OR f.user_b = ${viewerId}
     )
     AND p.user_id != ALL(${blockedIds})
+    AND p.created_at > now() - make_interval(days => ${FEED_WINDOW_DAYS})
     ORDER BY p.created_at DESC
     LIMIT ${limit}
   `;
