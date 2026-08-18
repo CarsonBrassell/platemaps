@@ -25,13 +25,22 @@
  *
  * ## The two guards
  *
+ * **It never guesses a multiplier.** When the format signal is mixed — the
+ * Mexican restaurant serving both à la carte tacos and full combo plates — the
+ * answer is not to pick a multiplier and not to give up. It is to drop the
+ * share-plate sections and band on the combo plates, which are already one
+ * person's meal. See `AMBIGUOUS_SHARE_*`.
+ *
  * **It returns null rather than guess.** Same discipline as `plateScore`, which
  * refuses to publish a number off two ratings: below `MIN_PRICED_ENTREES`, or
- * when the menu's format signal is genuinely mixed (see `AMBIGUOUS_SHARE_*` —
- * the Mexican restaurant serving both combo plates and à la carte tacos, where
- * the multiplier is a coin flip worth two bands), there is no band. A null band
- * matches no price filter and the facet counts show the gap, because the four
- * bands don't add up to the total. The gap stays a gap.
+ * when a mixed menu has no full-size items left to anchor on, there is no band.
+ * A null band matches no price filter and the facet counts show the gap,
+ * because the four bands don't add up to the total. The gap stays a gap.
+ *
+ * Nulling the mixed case outright was tried first and cost 51 restaurants their
+ * band, 26 of them Mexican — a third of the largest cuisine in the corpus.
+ * "Ambiguous" was the wrong word for those menus: nothing about them is unclear,
+ * they simply sell two things at once, and one of the two answers the question.
  *
  * **It bands, it never prices.** The public output is `$$$`, never "$47 per
  * person". A band absorbs the error a multiplier introduces; a number invites
@@ -136,13 +145,17 @@ const MIN_PRICED_ENTREES = 4;
 
 /**
  * The share-plate signal is the fraction of entrée sections that look like
- * tacos/tapas/nigiri. Above the high mark it is a share-plate menu; below the
- * low mark it is not. Between them the menu is genuinely both — the Mexican
- * restaurant with combo plates *and* à la carte tacos — and picking a
- * multiplier there would move it two bands on a coin flip. Those get no band.
+ * tacos/tapas/nigiri. Above the high mark it is a share-plate menu and every
+ * entrée is scaled; below the low mark it is not and none are.
+ *
+ * Between them the menu is both — the Mexican restaurant with combo plates
+ * *and* à la carte tacos. Picking a multiplier there would move it two bands on
+ * a coin flip, so instead the share-plate sections are dropped and the band
+ * comes from what is left, which is already a meal. Only when nothing is left
+ * does that become a null.
  */
-const AMBIGUOUS_SHARE_LOW = 0.15;
-const AMBIGUOUS_SHARE_HIGH = 0.45;
+const MIXED_SHARE_LOW = 0.15;
+const MIXED_SHARE_HIGH = 0.45;
 
 /**
  * The fields banding reads. `name` is needed to spot bulk and per-person rows,
@@ -172,34 +185,40 @@ function parsePrice(price: string): number | null {
   return Number.isFinite(amount) && amount > 0 ? amount : null;
 }
 
-/** What kind of menu this is, or null when the signals genuinely conflict. */
+/**
+ * What kind of menu this is, and whether the share-plate sections should be
+ * dropped before banding. `dropShareSections` is the mixed-menu case: the
+ * format is `standard`, but only once the tacos are out of the pool.
+ */
 function formatFor(
   cuisine: string | undefined,
   sections: string[],
   perPersonRows: number,
-): Format | null {
+): { format: Format; dropShareSections: boolean } {
+  const keep = (format: Format) => ({ format, dropShareSections: false });
+
   // A menu quoting per-head prices is already the answer; never scale it.
-  if (perPersonRows > 0) return "perPerson";
+  if (perPersonRows > 0) return keep("perPerson");
 
   const c = (cuisine ?? "").toLowerCase();
 
   // Cuisine is the stronger signal wherever it is unambiguous.
-  if (c.includes("tapas") || c.includes("taco")) return "sharePlate";
-  if (c.includes("sushi")) return "sushi";
-  if (c.includes("steakhouse")) return "steakhouse";
-  if (c.includes("dim sum") || c === "chinese") return "familyStyle";
-  if (c.includes("ramen") || c.includes("pho") || c.includes("noodle")) return "oneBowl";
-  if (c.includes("burger") || c.includes("sandwich") || c.includes("deli")) return "combo";
-  if (c.includes("pizza")) return "pizza";
+  if (c.includes("tapas") || c.includes("taco")) return keep("sharePlate");
+  if (c.includes("sushi")) return keep("sushi");
+  if (c.includes("steakhouse")) return keep("steakhouse");
+  if (c.includes("dim sum") || c === "chinese") return keep("familyStyle");
+  if (c.includes("ramen") || c.includes("pho") || c.includes("noodle")) return keep("oneBowl");
+  if (c.includes("burger") || c.includes("sandwich") || c.includes("deli")) return keep("combo");
+  if (c.includes("pizza")) return keep("pizza");
 
   const shareShare =
     sections.length > 0
       ? sections.filter((s) => SHARE_SECTIONS.test(s)).length / sections.length
       : 0;
 
-  if (shareShare >= AMBIGUOUS_SHARE_HIGH) return "sharePlate";
-  if (shareShare > AMBIGUOUS_SHARE_LOW) return null; // genuinely both — see above
-  return "standard";
+  if (shareShare >= MIXED_SHARE_HIGH) return keep("sharePlate");
+  if (shareShare > MIXED_SHARE_LOW) return { format: "standard", dropShareSections: true };
+  return keep("standard");
 }
 
 export type SpendEstimate = {
@@ -230,19 +249,23 @@ export function spendEstimate(
   );
 
   const mains = singles.filter((d) => !SIDE_SECTIONS.test(d.section.trim()));
-  const pool = mains.length > 0 ? mains : singles;
+  const candidates = mains.length > 0 ? mains : singles;
+
+  const { format, dropShareSections } = formatFor(
+    cuisine,
+    candidates.map((d) => d.section).filter(Boolean),
+    perPersonRows,
+  );
+
+  // A mixed menu is banded on its full-size plates, with the tacos set aside.
+  const pool = dropShareSections
+    ? candidates.filter((d) => !SHARE_SECTIONS.test(d.section))
+    : candidates;
 
   const prices = pool
     .map((d) => parsePrice(d.price))
     .filter((p): p is number => p !== null);
   if (prices.length < MIN_PRICED_ENTREES) return null;
-
-  const format = formatFor(
-    cuisine,
-    pool.map((d) => d.section).filter(Boolean),
-    perPersonRows,
-  );
-  if (format === null) return null;
 
   const entreeMedian = median(prices);
   const perPerson = entreeMedian * FORMAT_MULTIPLIERS[format];
