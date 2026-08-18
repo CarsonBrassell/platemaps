@@ -62,7 +62,9 @@ npm run ratings:blend      # recompute blended ratings into src/data/restaurants
 npm run aspects:preview    # run the aspect-score model against scenarios; touches no DB
 ```
 
-`restaurants:import` is what makes a data refresh visible to the app — the fetch scripts only rewrite the seed files. It upserts restaurants by id and replaces dishes per restaurant, never deletes a restaurant, and supports `--dry`. Run it after `fetch-restaurants.mjs`, `fetch-menus.mjs` or `ratings:blend`.
+`restaurants:import` is what makes a data refresh visible to the app — the fetch scripts only rewrite the seed files. It upserts restaurants by id, never deletes a restaurant, and supports `--dry`. Run it after `fetch-restaurants.mjs` or `ratings:blend`.
+
+**It does not write dishes, and that is deliberate.** `src/data/dishes.ts` is placeholder data by its own header — 125 invented dishes across 19 restaurants — while the table holds ~24,800 dishes extracted from real menu pages by `npm run menus:load` from the reviewed JSON in `menus/`. The import used to replace the second with the first, destroying 665 real dishes and putting fabricated menus on live restaurant pages. Dishes are now opt-in behind `--with-dishes`, which still refuses to shrink a menu without `--force`. **Menus come from `menus:load`.** Neither flag has a legitimate use today.
 
 `scripts/migrate.mjs` is a flat array of `CREATE TABLE IF NOT EXISTS` / `ALTER TABLE ... IF NOT EXISTS` statements run in order — add to the end, never edit an existing one.
 
