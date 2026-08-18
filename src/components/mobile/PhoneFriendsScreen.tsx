@@ -3,8 +3,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { BrandMark } from "@/components/BrandMark";
 import { PointsBadge } from "@/components/feed/PointsBadge";
 import { PhoneFindFriends } from "@/components/mobile/PhoneFindFriends";
+import { PhoneFriendsHero } from "@/components/mobile/PhoneFriendsHero";
 import { PhoneFriendsLeaderboard } from "@/components/mobile/PhoneFriendsLeaderboard";
 import { useAuth } from "@/lib/auth";
 import { initials, relativeTime } from "@/lib/format";
@@ -220,15 +222,10 @@ export function PhoneFriendsScreen() {
   return (
     <div className="min-h-dvh">
       {/* Scrolls away rather than sticking — a 390px screen has ~640 usable
-          points and the nav already owns the bottom of them. Matches discover. */}
-      <header className="px-4 pb-4 pt-5">
-        <h1 className="font-display text-[26px] font-semibold leading-tight tracking-tight text-zinc-900">
-          Friends
-        </h1>
-        <p className="mt-1 text-[13px] leading-snug text-pm-grey-text">
-          Requests, and the people you&apos;ve added — their plates live in the Friend feed.
-        </p>
-      </header>
+          points and the nav already owns the bottom of them. Matches discover.
+          The faces are the list itself, so the card fills in as it loads
+          rather than reserving a slot: `friends` is null until then. */}
+      <PhoneFriendsHero friends={friends} />
 
       {error && (
         <p role="alert" className="mx-4 mb-4 rounded-2xl bg-white px-4 py-3 text-sm text-zinc-700">
@@ -250,6 +247,9 @@ export function PhoneFriendsScreen() {
         </div>
       ) : !isSignedIn ? (
         <div className="mx-4 rounded-2xl bg-white px-6 py-12 text-center">
+          <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-pm-orange-tint">
+            <BrandMark className="h-10 w-auto" />
+          </span>
           <p className="font-display text-lg font-semibold text-zinc-900">
             Sign in to see your friends
           </p>
@@ -324,6 +324,9 @@ export function PhoneFriendsScreen() {
               </div>
             ) : friends.length === 0 ? (
               <div className="rounded-2xl bg-white px-6 py-12 text-center">
+                <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-pm-orange-tint">
+                  <BrandMark className="h-10 w-auto" />
+                </span>
                 <p className="font-display text-lg font-semibold text-zinc-900">No friends yet</p>
                 <p className="mx-auto mt-1.5 max-w-[17rem] text-sm text-zinc-500">
                   Tap someone&apos;s name on a plate in the feed to add them. Their posts then show
@@ -417,8 +420,15 @@ export function PhoneFriendsScreen() {
                 Requests
               </p>
               <div className="flex flex-col gap-2">
+                {/* Incoming sits on the accent tint rather than white: it is the
+                    one thing on this screen waiting on an answer, and the tint
+                    is what the leaderboard already uses to mark the row that is
+                    about you. Outgoing stays white — nothing is being asked. */}
                 {incoming.map((r) => (
-                  <div key={r.id} className="rounded-2xl bg-white p-3.5">
+                  <div key={r.id} className="rounded-2xl bg-pm-orange-tint p-3.5">
+                    <p className="mono-label mb-2.5 text-pm-orange-text">
+                      Wants a seat at your table
+                    </p>
                     <div className="flex items-center gap-3">
                       <Avatar name={r.name} avatarUrl={r.avatarUrl} />
                       <Link
@@ -427,10 +437,13 @@ export function PhoneFriendsScreen() {
                       >
                         {r.name}
                       </Link>
-                      {/* Machine value, so mono. */}
+                      {/* Machine value, so mono. `zinc-500` is the on-*white*
+                          muted step and only clears 3.70:1 on the accent tint
+                          this card now sits on; `--pm-grey-text` makes 5.09:1
+                          there. Same distinction DESIGN.md draws for cream. */}
                       <time
                         dateTime={r.createdAt}
-                        className="shrink-0 font-mono text-[11px] tabular-nums text-zinc-500"
+                        className="shrink-0 font-mono text-[11px] tabular-nums text-pm-grey-text"
                       >
                         {relativeTime(r.createdAt)}
                       </time>
@@ -449,7 +462,7 @@ export function PhoneFriendsScreen() {
                         type="button"
                         onClick={() => respond(r.id, "decline")}
                         disabled={busyId === r.id}
-                        className={`min-h-11 flex-1 rounded-full bg-pm-grey-tint text-sm font-medium text-pm-grey-text transition-colors active:scale-[0.97] disabled:opacity-50 ${FOCUS}`}
+                        className={`min-h-11 flex-1 rounded-full bg-white text-sm font-medium text-pm-grey-text transition-colors active:scale-[0.97] disabled:opacity-50 ${FOCUS}`}
                       >
                         Decline
                       </button>
