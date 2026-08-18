@@ -529,6 +529,25 @@ const statements = [
   // obvious throwaway test signup at "cal@email") and was renamed by hand
   // first so this index can actually build.
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_users_name_unique ON users (lower(name))`,
+
+  // --- Source-agnostic restaurant identity ---------------------------------
+  //
+  // `<source>:<id>` — `yelp:tacos-el-gordo-chula-vista`, `osm:node/123`. This
+  // replaces the bare Yelp alias as the key a data refresh merges on, now that
+  // restaurants arrive from more than one place. See src/lib/sourceKey.ts.
+  //
+  // Nullable, because the column arrives empty and is filled by the next
+  // `npm run restaurants:import`, and because the table keeps restaurants that
+  // have dropped out of the seed file and have no key to give.
+  //
+  // The unique index is what actually buys anything here: it is the last line
+  // of defence against two rows claiming the same real-world restaurant, which
+  // is how posts get split across a duplicate. Partial rather than plain so the
+  // unkeyed rows don't collide with each other — Postgres already permits
+  // duplicate NULLs, but the predicate says so out loud.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS source_key TEXT`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_restaurants_source_key
+     ON restaurants (source_key) WHERE source_key IS NOT NULL`,
 ];
 
 for (const statement of statements) {

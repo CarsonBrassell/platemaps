@@ -39,6 +39,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Raw Overpass response, cached by scripts/fetch-osm-restaurants.mjs so that
+# iterating on the matching rules doesn't re-query a volunteer-run public
+# endpoint. Regenerable with --refetch, and megabytes of unreviewed API output.
+# The reviewed result, osm/san-diego.json, IS committed — same split as menus/.
+/osm/overpass-raw.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

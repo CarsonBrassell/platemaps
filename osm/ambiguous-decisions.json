@@ -1,0 +1,305 @@
+{
+  "note": "Hand-reviewed calls on pairs the matcher could not decide. duplicate = already in the corpus, do not add. distinct = a different restaurant, eligible to add. junk = not a restaurant. unsure = left out deliberately.",
+  "tally": {
+    "duplicate": 31,
+    "distinct": 9,
+    "junk": 1,
+    "unsure": 1
+  },
+  "decisions": {
+    "osm:node/368173980": {
+      "decision": "duplicate",
+      "note": "same restaurant, 0m apart",
+      "osmName": "Brigantine Seafood and Oyster Bar",
+      "existingName": "Brigantine - Portside Pier",
+      "metres": 0
+    },
+    "osm:node/444159310": {
+      "decision": "duplicate",
+      "note": "\"Restuarant\" is a typo for Ristorante",
+      "osmName": "Solare Restuarant Lounge",
+      "existingName": "Solare Ristorante",
+      "metres": 36
+    },
+    "osm:node/530764486": {
+      "decision": "duplicate",
+      "note": "Pizza vs Pizzeria, 0m",
+      "osmName": "Landini's Pizza",
+      "existingName": "Landini's Pizzeria",
+      "metres": 0
+    },
+    "osm:node/572708640": {
+      "decision": "distinct",
+      "note": "different sushi restaurants; only the cuisine word matched",
+      "osmName": "Sushiya",
+      "existingName": "Ototo Sushi",
+      "metres": 15
+    },
+    "osm:node/3048074973": {
+      "decision": "junk",
+      "note": "a parking lot tagged as the restaurant it serves",
+      "osmName": "Parking for Chicken Pie Shop",
+      "existingName": "San Diego Chicken Pie Shop",
+      "metres": 44
+    },
+    "osm:node/3638084954": {
+      "decision": "duplicate",
+      "note": "same restaurant",
+      "osmName": "The Mission",
+      "existingName": "The Mission- North Park",
+      "metres": 15
+    },
+    "osm:node/4617770589": {
+      "decision": "duplicate",
+      "note": "one Morena Blvd institution; 182m is coordinate imprecision",
+      "osmName": "JV's Mexican Food",
+      "existingName": "JV's Mexican Food",
+      "metres": 182
+    },
+    "osm:node/4812129156": {
+      "decision": "distinct",
+      "note": "only the word Restaurant matched",
+      "osmName": "Fish Restaurant",
+      "existingName": "El Indio Mexican Restaurant",
+      "metres": 38
+    },
+    "osm:node/5517976101": {
+      "decision": "duplicate",
+      "note": "same City Tacos location",
+      "osmName": "City Tacos Village Taqueria",
+      "existingName": "City Tacos",
+      "metres": 11
+    },
+    "osm:node/6403144457": {
+      "decision": "duplicate",
+      "note": "same restaurant",
+      "osmName": "The Mission",
+      "existingName": "The Mission - East Village",
+      "metres": 0
+    },
+    "osm:node/6630276289": {
+      "decision": "duplicate",
+      "note": "name truncated in OSM",
+      "osmName": "Golden House",
+      "existingName": "Golden House Chinese Restaurant",
+      "metres": 15
+    },
+    "osm:node/8853934553": {
+      "decision": "duplicate",
+      "note": "\"Famers\" is a typo for Farmer's",
+      "osmName": "Famers Table",
+      "existingName": "Farmer's Table - Chula Vista",
+      "metres": 0
+    },
+    "osm:node/9215079089": {
+      "decision": "distinct",
+      "note": "two Persian restaurants, both real",
+      "osmName": "Sadaf Restaurant",
+      "existingName": "Bandar Restaurant",
+      "metres": 65
+    },
+    "osm:node/9506309517": {
+      "decision": "distinct",
+      "note": "only the neighborhood name matched",
+      "osmName": "Farmers Table Little Italy",
+      "existingName": "Filippi's Pizza Grotto Little Italy",
+      "metres": 59
+    },
+    "osm:node/11391438869": {
+      "decision": "duplicate",
+      "note": "Ming Ky / Minh Ky spelling variant",
+      "osmName": "Ming Ky",
+      "existingName": "Minh Ky Restaurant",
+      "metres": 22
+    },
+    "osm:node/11826544614": {
+      "decision": "duplicate",
+      "note": "same Imperial Beach location",
+      "osmName": "Brigantine Seafood & Oyster Bar",
+      "existingName": "Brigantine",
+      "metres": 11
+    },
+    "osm:node/11916879971": {
+      "decision": "duplicate",
+      "note": "apostrophe and suffix only",
+      "osmName": "Valentine's",
+      "existingName": "Valentines Mexican Food",
+      "metres": 9
+    },
+    "osm:way/549418974": {
+      "decision": "duplicate",
+      "note": "same taco shop",
+      "osmName": "Don Pancho's Taco Shop",
+      "existingName": "Don Panchos",
+      "metres": 0
+    },
+    "osm:way/1108312824": {
+      "decision": "duplicate",
+      "note": "one Liberty Station location; 184m is imprecision",
+      "osmName": "Phil's BBQ",
+      "existingName": "Phil's BBQ",
+      "metres": 184
+    },
+    "osm:node/2337709434": {
+      "decision": "distinct",
+      "note": "only \"Del Mar\" matched",
+      "osmName": "Del Mar Pizza",
+      "existingName": "Sbicca Del Mar",
+      "metres": 9
+    },
+    "osm:way/31816934": {
+      "decision": "duplicate",
+      "note": "same sports bar",
+      "osmName": "The Spot",
+      "existingName": "The Spot La Jolla",
+      "metres": 30
+    },
+    "osm:way/1204976227": {
+      "decision": "duplicate",
+      "note": "same Brigantine; existing neighborhood label is slightly off",
+      "osmName": "Brigantine Seafood & Oyster Bar",
+      "existingName": "Brigantine",
+      "metres": 11
+    },
+    "osm:node/274363369": {
+      "decision": "duplicate",
+      "note": "same Sipz location",
+      "osmName": "Sipz Fusion Cafe",
+      "existingName": "Sipz - Clairemont",
+      "metres": 56
+    },
+    "osm:node/4786922289": {
+      "decision": "distinct",
+      "note": "only the word Grill matched",
+      "osmName": "Takka Sushi Bar & Grill",
+      "existingName": "Pho Ca Dao & Grill",
+      "metres": 30
+    },
+    "osm:node/6758166096": {
+      "decision": "duplicate",
+      "note": "brand tag confirms it",
+      "osmName": "The Stand",
+      "existingName": "The Stand - American Classics Redefined",
+      "metres": 11
+    },
+    "osm:node/7723071343": {
+      "decision": "duplicate",
+      "note": "spacing only",
+      "osmName": "Raki Raki Ramen",
+      "existingName": "Rakiraki Ramen & Tsukemen",
+      "metres": 0
+    },
+    "osm:node/7771798786": {
+      "decision": "duplicate",
+      "note": "same Poway location",
+      "osmName": "Taco Taco",
+      "existingName": "Taco Taco Poway",
+      "metres": 0
+    },
+    "osm:node/8046167930": {
+      "decision": "duplicate",
+      "note": "Addison is inside the Fairmont; 369m is the resort footprint",
+      "osmName": "Addison at Fairmont Grand Del Mar",
+      "existingName": "Addison",
+      "metres": 369
+    },
+    "osm:node/9080829442": {
+      "decision": "duplicate",
+      "note": "Crack Tacos / Crack Taco Shop",
+      "osmName": "Crack Tacos",
+      "existingName": "Crack Taco Shop",
+      "metres": 11
+    },
+    "osm:node/9179215678": {
+      "decision": "distinct",
+      "note": "different Poway restaurants",
+      "osmName": "Poway Social House",
+      "existingName": "Taco Taco Poway",
+      "metres": 33
+    },
+    "osm:node/9284416967": {
+      "decision": "duplicate",
+      "note": "same 369 Ramen",
+      "osmName": "369 Ramen. Poke. Chinese.",
+      "existingName": "369 Ramen & Chinese Food",
+      "metres": 0
+    },
+    "osm:node/9335661839": {
+      "decision": "distinct",
+      "note": "only the word House matched",
+      "osmName": "Joyee's Dumpling House",
+      "existingName": "Tong Sake House",
+      "metres": 36
+    },
+    "osm:node/9944351006": {
+      "decision": "unsure",
+      "note": "0m but OSM brands it a credit union — bad data, leaving out",
+      "osmName": "Robert's Jalapeños",
+      "existingName": "Jalapenos Mexican Food",
+      "metres": 0
+    },
+    "osm:node/12101659844": {
+      "decision": "duplicate",
+      "note": "same Amalfi, appears renamed",
+      "osmName": "Amalfi Cucina Italiana",
+      "existingName": "Amalfi Pizza & Bar",
+      "metres": 0
+    },
+    "osm:node/12101686688": {
+      "decision": "duplicate",
+      "note": "same Bonchon",
+      "osmName": "Bonchon Chicken",
+      "existingName": "Bonchon Village Way",
+      "metres": 24
+    },
+    "osm:node/12230459310": {
+      "decision": "duplicate",
+      "note": "same Luna Grill",
+      "osmName": "Luna Grill",
+      "existingName": "Luna Grill Pacific Highlands Ranch",
+      "metres": 0
+    },
+    "osm:node/14021159374": {
+      "decision": "duplicate",
+      "note": "transposed letters",
+      "osmName": "Tahkrai Thai",
+      "existingName": "Takhrai Thai",
+      "metres": 9
+    },
+    "osm:way/546280455": {
+      "decision": "duplicate",
+      "note": "same Kaminski's",
+      "osmName": "Kaminski's Bar & Grill",
+      "existingName": "Kaminski's Sports Lounge and BBQ",
+      "metres": 11
+    },
+    "osm:node/628224634": {
+      "decision": "distinct",
+      "note": "only the word Trattoria matched",
+      "osmName": "Vigilucci's Trattoria",
+      "existingName": "Maurizio Trattoria Italiana",
+      "metres": 15
+    },
+    "osm:node/10957413519": {
+      "decision": "duplicate",
+      "note": "same El Pueblo",
+      "osmName": "El Pueblo Mexican Restaurant",
+      "existingName": "El Pueblo Mexican Food - Cardiff",
+      "metres": 0
+    },
+    "osm:way/1283782909": {
+      "decision": "duplicate",
+      "note": "same Sushi Lounge",
+      "osmName": "Sushi Lounge",
+      "existingName": "Sushi Lounge Encinitas",
+      "metres": 152
+    },
+    "osm:node/13017713001": {
+      "decision": "duplicate",
+      "note": "Co. vs Company",
+      "osmName": "Julian Beer Co.",
+      "existingName": "Julian Beer Company",
+      "metres": 36
+    }
+  }
+}

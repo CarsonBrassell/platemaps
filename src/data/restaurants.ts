@@ -19,6 +19,19 @@ import type { Hours } from "@/lib/openState";
 
 export type Restaurant = {
   id: string;
+  /**
+   * Stable identity across data refreshes, as `<source>:<id>` — see
+   * `src/lib/sourceKey.ts`. This is what the fetch scripts merge on, so that a
+   * re-run updates a restaurant in place instead of appending a second copy
+   * and splitting its posts between the two.
+   *
+   * Optional in the type, always written in practice. Every row here carries
+   * one, and both serializers that rewrite this array emit it; the optionality
+   * exists because `sourceKeyFor()` can still recover the key from `yelpUrl`
+   * for the Yelp-sourced rows, so a row that somehow loses it degrades to the
+   * old behaviour rather than becoming unmatchable.
+   */
+  sourceKey?: string;
   name: string;
   cuisine: string;
   neighborhood: string;
@@ -133,6 +146,7 @@ export type RestaurantView = {
 export const restaurants: Restaurant[] = [
   {
     id: "1",
+    sourceKey: "yelp:ballast-point-brewing-san-diego-4",
     name: "Ballast Point Brewing",
     cuisine: "Breweries",
     neighborhood: "Little Italy",
@@ -150,6 +164,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "2",
+    sourceKey: "yelp:landinis-pizzeria-san-diego-2",
     name: "Landini's Pizzeria",
     cuisine: "Pizza",
     neighborhood: "Little Italy",
@@ -167,6 +182,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "3",
+    sourceKey: "yelp:the-waterfront-bar-and-grill-san-diego",
     name: "Waterfront Bar & Grill",
     cuisine: "Bars",
     neighborhood: "Little Italy",
@@ -184,6 +200,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "4",
+    sourceKey: "yelp:coasterra-san-diego",
     name: "Coasterra",
     cuisine: "Mexican",
     neighborhood: "Little Italy",
@@ -201,6 +218,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "5",
+    sourceKey: "yelp:buona-forchetta-san-diego-9",
     name: "Buona Forchetta",
     cuisine: "Pizza",
     neighborhood: "South Park",
@@ -218,6 +236,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "6",
+    sourceKey: "yelp:true-food-kitchen-san-diego-8",
     name: "True Food Kitchen",
     cuisine: "New American",
     neighborhood: "Mission Valley",
@@ -235,6 +254,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "7",
+    sourceKey: "yelp:sushi-ota-san-diego",
     name: "Sushi Ota",
     cuisine: "Sushi Bars",
     neighborhood: "Pacific Beach",
@@ -252,6 +272,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "8",
+    sourceKey: "yelp:pacific-beach-fish-shop-san-diego",
     name: "Pacific Beach Fish Shop",
     cuisine: "Seafood",
     neighborhood: "Pacific Beach",
@@ -269,6 +290,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "9",
+    sourceKey: "yelp:costa-brava-san-diego",
     name: "Costa Brava",
     cuisine: "Tapas Bars",
     neighborhood: "Pacific Beach",
@@ -286,6 +308,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "10",
+    sourceKey: "yelp:corvette-diner-san-diego",
     name: "Corvette Diner",
     cuisine: "Diners",
     neighborhood: "Liberty Station",
@@ -303,6 +326,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "11",
+    sourceKey: "yelp:tom-hams-lighthouse-san-diego",
     name: "Tom Ham's Lighthouse",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Liberty Station",
@@ -320,6 +344,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "12",
+    sourceKey: "yelp:mitchs-seafood-san-diego-2",
     name: "Mitch's Seafood",
     cuisine: "Seafood",
     neighborhood: "Point Loma",
@@ -337,6 +362,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "13",
+    sourceKey: "yelp:breakfast-republic-san-diego",
     name: "Breakfast Republic",
     cuisine: "Breakfast & Brunch",
     neighborhood: "North Park",
@@ -354,6 +380,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "14",
+    sourceKey: "yelp:bahn-thai-san-diego",
     name: "Bahn Thai",
     cuisine: "Thai",
     neighborhood: "University Heights",
@@ -372,6 +399,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "15",
+    sourceKey: "yelp:plumeria-san-diego-2",
     name: "Plumeria",
     cuisine: "Thai",
     neighborhood: "University Heights",
@@ -390,6 +418,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "16",
+    sourceKey: "yelp:tacos-el-gordo-chula-vista-6",
     name: "Tacos El Gordo",
     cuisine: "Mexican",
     neighborhood: "Chula Vista",
@@ -407,6 +436,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "17",
+    sourceKey: "yelp:farmers-table-chula-vista-chula-vista",
     name: "Farmer's Table - Chula Vista",
     cuisine: "New American",
     neighborhood: "Chula Vista",
@@ -424,6 +454,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "18",
+    sourceKey: "yelp:italianissimo-trattoria-chula-vista",
     name: "Italianissimo Trattoria",
     cuisine: "Italian",
     neighborhood: "Chula Vista",
@@ -441,6 +472,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "19",
+    sourceKey: "yelp:farmers-table-la-mesa-2",
     name: "Farmer's Table",
     cuisine: "New American",
     neighborhood: "La Mesa",
@@ -458,6 +490,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "20",
+    sourceKey: "yelp:cali-bbq-spring-valley",
     name: "Cali BBQ",
     cuisine: "Barbeque",
     neighborhood: "Spring Valley",
@@ -475,6 +508,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "21",
+    sourceKey: "yelp:banbu-sushi-bar-and-grill-la-mesa",
     name: "Banbu Sushi Bar & Grill",
     cuisine: "Sushi Bars",
     neighborhood: "La Mesa",
@@ -492,6 +526,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "22",
+    sourceKey: "yelp:snooze-an-a-m-eatery-san-diego-12",
     name: "Snooze, an A.M. Eatery",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Hillcrest",
@@ -509,6 +544,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "23",
+    sourceKey: "yelp:hash-house-a-go-go-san-diego",
     name: "Hash House A Go Go",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Hillcrest",
@@ -526,6 +562,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "24",
+    sourceKey: "yelp:bronx-pizza-san-diego",
     name: "Bronx Pizza",
     cuisine: "Pizza",
     neighborhood: "Hillcrest",
@@ -543,6 +580,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "25",
+    sourceKey: "yelp:the-cottage-la-jolla-la-jolla",
     name: "The Cottage La Jolla",
     cuisine: "New American",
     neighborhood: "La Jolla",
@@ -560,6 +598,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "26",
+    sourceKey: "yelp:dukes-la-jolla-la-jolla",
     name: "Duke's La Jolla",
     cuisine: "New American",
     neighborhood: "La Jolla",
@@ -577,6 +616,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "27",
+    sourceKey: "yelp:puesto-la-jolla-la-jolla-5",
     name: "Puesto La Jolla",
     cuisine: "Mexican",
     neighborhood: "La Jolla",
@@ -594,6 +634,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "28",
+    sourceKey: "yelp:jakes-del-mar-2",
     name: "Jake's",
     cuisine: "New American",
     neighborhood: "Del Mar",
@@ -611,6 +652,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "29",
+    sourceKey: "yelp:urban-plates-san-diego",
     name: "Urban Plates",
     cuisine: "New American",
     neighborhood: "Carmel Valley",
@@ -628,6 +670,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "30",
+    sourceKey: "yelp:board-and-brew-del-mar-del-mar",
     name: "Board & Brew - Del Mar",
     cuisine: "Sandwiches",
     neighborhood: "Del Mar",
@@ -645,6 +688,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "31",
+    sourceKey: "yelp:gen-korean-bbq-house-san-diego-4",
     name: "Gen Korean BBQ House",
     cuisine: "Korean",
     neighborhood: "Scripps Ranch",
@@ -662,6 +706,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "32",
+    sourceKey: "yelp:little-sakana-all-you-can-eat-sushi-san-diego-3",
     name: "Little Sakana All You Can Eat Sushi",
     cuisine: "Sushi Bars",
     neighborhood: "Mira Mesa",
@@ -679,6 +724,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "33",
+    sourceKey: "yelp:abbeys-real-texas-bbq-san-diego-4",
     name: "Abbey's Real Texas BBQ",
     cuisine: "Barbeque",
     neighborhood: "Sorrento Valley",
@@ -696,6 +742,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "34",
+    sourceKey: "yelp:janets-montana-cafe-alpine",
     name: "Janet's Montana Cafe",
     cuisine: "American",
     neighborhood: "Alpine",
@@ -714,6 +761,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "35",
+    sourceKey: "yelp:panda-machi-alpine",
     name: "Panda Machi",
     cuisine: "Sushi Bars",
     neighborhood: "Alpine",
@@ -731,6 +779,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "36",
+    sourceKey: "yelp:mediterraneo-alpine",
     name: "Mediterraneo",
     cuisine: "Italian",
     neighborhood: "Alpine",
@@ -748,6 +797,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "37",
+    sourceKey: "yelp:hodads-san-diego-8",
     name: "Hodad's",
     cuisine: "Burgers",
     neighborhood: "Cortez Hill",
@@ -765,6 +815,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "38",
+    sourceKey: "yelp:tacos-el-gordo-san-diego-7",
     name: "Tacos El Gordo",
     cuisine: "Tacos",
     neighborhood: "Gaslamp",
@@ -782,6 +833,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "39",
+    sourceKey: "yelp:izakaya-masa-san-diego",
     name: "Izakaya Masa",
     cuisine: "Izakaya",
     neighborhood: "Hillcrest",
@@ -799,6 +851,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "40",
+    sourceKey: "yelp:queenstown-public-house-san-diego",
     name: "Queenstown Public House",
     cuisine: "New American",
     neighborhood: "Little Italy",
@@ -816,6 +869,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "41",
+    sourceKey: "yelp:el-indio-mexican-restaurant-san-diego-3",
     name: "El Indio Mexican Restaurant",
     cuisine: "Mexican",
     neighborhood: "Mission Hills",
@@ -833,6 +887,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "42",
+    sourceKey: "yelp:isola-pizza-bar-san-diego",
     name: "Isola Pizza Bar",
     cuisine: "Pizza",
     neighborhood: "Little Italy",
@@ -850,6 +905,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "43",
+    sourceKey: "yelp:bandar-restaurant-san-diego-5",
     name: "Bandar Restaurant",
     cuisine: "Persian/Iranian",
     neighborhood: "Gaslamp",
@@ -867,6 +923,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "44",
+    sourceKey: "yelp:prince-street-pizza-san-diego",
     name: "Prince Street Pizza",
     cuisine: "Pizza",
     neighborhood: "Gaslamp",
@@ -884,6 +941,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "45",
+    sourceKey: "yelp:garage-buona-forchetta-coronado-2",
     name: "Garage Buona Forchetta",
     cuisine: "Italian",
     neighborhood: "Coronado",
@@ -901,6 +959,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "46",
+    sourceKey: "yelp:coco-maya-san-diego",
     name: "Coco Maya",
     cuisine: "Caribbean",
     neighborhood: "Little Italy",
@@ -918,6 +977,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "47",
+    sourceKey: "yelp:city-cruises-san-diego",
     name: "City Cruises",
     cuisine: "American",
     neighborhood: "Marina",
@@ -935,6 +995,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "48",
+    sourceKey: "yelp:turf-supper-club-san-diego",
     name: "Turf Supper Club",
     cuisine: "Steakhouses",
     neighborhood: "Golden Hill",
@@ -952,6 +1013,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "49",
+    sourceKey: "yelp:the-nolen-san-diego-3",
     name: "The Nolen",
     cuisine: "Cocktail Bars",
     neighborhood: "Gaslamp",
@@ -969,6 +1031,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "50",
+    sourceKey: "yelp:la-fachada-san-diego",
     name: "La Fachada",
     cuisine: "Mexican",
     neighborhood: "East Village",
@@ -986,6 +1049,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "51",
+    sourceKey: "yelp:influx-san-diego",
     name: "Influx",
     cuisine: "Coffee & Tea",
     neighborhood: "East Village",
@@ -1003,6 +1067,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "52",
+    sourceKey: "yelp:alberts-restaurant-san-diego",
     name: "Albert's Restaurant",
     cuisine: "American",
     neighborhood: "Bankers Hill",
@@ -1020,6 +1085,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "53",
+    sourceKey: "yelp:counterpoint-san-diego",
     name: "Counterpoint",
     cuisine: "Bars",
     neighborhood: "Golden Hill",
@@ -1037,6 +1103,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "54",
+    sourceKey: "yelp:the-regal-beagle-san-diego-2",
     name: "The Regal Beagle",
     cuisine: "Sports Bars",
     neighborhood: "Mission Hills",
@@ -1054,6 +1121,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "55",
+    sourceKey: "yelp:crown-bistro-coronado",
     name: "Crown Bistro",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Coronado",
@@ -1071,6 +1139,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "56",
+    sourceKey: "yelp:top-of-the-hyatt-san-diego",
     name: "Top of the Hyatt",
     cuisine: "Lounges",
     neighborhood: "Marina",
@@ -1088,6 +1157,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "57",
+    sourceKey: "yelp:nunus-tavern-san-diego",
     name: "Nunu's Tavern",
     cuisine: "Cocktail Bars",
     neighborhood: "Hillcrest",
@@ -1105,6 +1175,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "58",
+    sourceKey: "yelp:sovereign-modern-thai-cuisine-san-diego",
     name: "Sovereign Modern Thai Cuisine",
     cuisine: "Thai",
     neighborhood: "East Village",
@@ -1122,6 +1193,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "59",
+    sourceKey: "yelp:valentines-mexican-food-san-diego-6",
     name: "Valentines Mexican Food",
     cuisine: "Mexican",
     neighborhood: "Cortez Hill",
@@ -1139,6 +1211,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "60",
+    sourceKey: "yelp:las-brasas-taco-shop-san-diego-2",
     name: "Las Brasas Taco Shop",
     cuisine: "Mexican",
     neighborhood: "Mission Hills",
@@ -1156,6 +1229,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "61",
+    sourceKey: "yelp:wine-vault-and-bistro-san-diego",
     name: "Wine Vault & Bistro",
     cuisine: "Wine Bars",
     neighborhood: "Mission Hills",
@@ -1173,6 +1247,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "62",
+    sourceKey: "yelp:west-coast-tavern-san-diego",
     name: "West Coast Tavern",
     cuisine: "Lounges",
     neighborhood: "North Park",
@@ -1190,6 +1265,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "63",
+    sourceKey: "yelp:cosmopolitan-hotel-and-restaurant-san-diego",
     name: "Cosmopolitan Hotel and Restaurant",
     cuisine: "Hotels",
     neighborhood: "Old Town",
@@ -1207,6 +1283,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "64",
+    sourceKey: "yelp:the-friendly-tavern-san-diego",
     name: "The Friendly Tavern",
     cuisine: "Burgers",
     neighborhood: "North Park",
@@ -1224,6 +1301,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "65",
+    sourceKey: "yelp:tahona-san-diego",
     name: "Tahona",
     cuisine: "Cocktail Bars",
     neighborhood: "Old Town",
@@ -1241,6 +1319,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "66",
+    sourceKey: "yelp:hillcrest-brewing-company-san-diego",
     name: "Hillcrest Brewing Company",
     cuisine: "Pizza",
     neighborhood: "Hillcrest",
@@ -1258,6 +1337,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "67",
+    sourceKey: "yelp:el-tianguis-san-diego",
     name: "El Tianguis Rolled Taquitos",
     cuisine: "Mexican",
     neighborhood: "University Heights",
@@ -1276,6 +1356,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "68",
+    sourceKey: "yelp:the-huddle-san-diego",
     name: "The Huddle",
     cuisine: "American",
     neighborhood: "Hillcrest",
@@ -1293,6 +1374,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "69",
+    sourceKey: "yelp:phils-bbq-san-diego-10",
     name: "Phil's BBQ",
     cuisine: "Barbeque",
     neighborhood: "Liberty Station",
@@ -1310,6 +1392,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "70",
+    sourceKey: "yelp:brickyard-coffee-and-tea-san-diego",
     name: "Brickyard Coffee & Tea",
     cuisine: "Coffee & Tea",
     neighborhood: "Marina",
@@ -1327,6 +1410,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "71",
+    sourceKey: "yelp:nobu-san-diego-san-diego-3",
     name: "Nobu San Diego",
     cuisine: "Asian Fusion",
     neighborhood: "Gaslamp",
@@ -1344,6 +1428,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "72",
+    sourceKey: "yelp:provisional-kitchen-san-diego",
     name: "Provisional Kitchen",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Gaslamp",
@@ -1361,6 +1446,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "73",
+    sourceKey: "yelp:poki-one-n-half-san-diego-5",
     name: "Poki One N Half",
     cuisine: "Seafood",
     neighborhood: "North Park",
@@ -1379,6 +1465,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "74",
+    sourceKey: "yelp:daddys-hot-dogs-san-diego",
     name: "Daddy's Hot Dogs",
     cuisine: "Hot Dogs",
     neighborhood: "Hillcrest",
@@ -1396,6 +1483,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "75",
+    sourceKey: "yelp:tapas-and-beers-san-diego",
     name: "Tapas & Beers",
     cuisine: "French",
     neighborhood: "Gaslamp",
@@ -1414,6 +1502,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "76",
+    sourceKey: "yelp:the-fish-market-san-diego-san-diego-2",
     name: "The Fish Market - San Diego",
     cuisine: "Seafood",
     neighborhood: "Marina",
@@ -1431,6 +1520,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "77",
+    sourceKey: "yelp:bluewater-grill-coronado",
     name: "Bluewater Boathouse Seafood Restaurant Coronado",
     cuisine: "Seafood",
     neighborhood: "Coronado",
@@ -1448,6 +1538,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "78",
+    sourceKey: "yelp:kettner-exchange-san-diego",
     name: "Kettner Exchange",
     cuisine: "Cocktail Bars",
     neighborhood: "Little Italy",
@@ -1465,6 +1556,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "79",
+    sourceKey: "yelp:seneca-san-diego-3",
     name: "Seneca",
     cuisine: "Italian",
     neighborhood: "Little Italy",
@@ -1482,6 +1574,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "80",
+    sourceKey: "yelp:gaslamp-breakfast-company-san-diego-2",
     name: "Gaslamp Breakfast Company",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Gaslamp",
@@ -1499,6 +1592,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "81",
+    sourceKey: "yelp:punch-bowl-social-san-diego-2",
     name: "Punch Bowl Social",
     cuisine: "Gastropubs",
     neighborhood: "East Village",
@@ -1516,6 +1610,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "82",
+    sourceKey: "yelp:the-field-irish-pub-san-diego",
     name: "The Field Irish Pub",
     cuisine: "Irish",
     neighborhood: "Gaslamp",
@@ -1533,6 +1628,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "83",
+    sourceKey: "yelp:luckys-lunch-counter-san-diego",
     name: "Lucky's Lunch Counter",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Gaslamp",
@@ -1550,6 +1646,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "84",
+    sourceKey: "yelp:the-balboa-san-diego",
     name: "The Balboa",
     cuisine: "Cocktail Bars",
     neighborhood: "Cortez Hill",
@@ -1567,6 +1664,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "85",
+    sourceKey: "yelp:callie-san-diego-3",
     name: "Callie",
     cuisine: "Mediterranean",
     neighborhood: "Gaslamp",
@@ -1584,6 +1682,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "86",
+    sourceKey: "yelp:village-pizzeria-coronado-7",
     name: "Village Pizzeria",
     cuisine: "Pizza",
     neighborhood: "Coronado",
@@ -1601,6 +1700,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "87",
+    sourceKey: "yelp:carnitas-snack-shack-embarcadero-san-diego-5",
     name: "Carnitas' Snack Shack - Embarcadero",
     cuisine: "New American",
     neighborhood: "Little Italy",
@@ -1618,6 +1718,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "88",
+    sourceKey: "yelp:lucha-libre-san-diego-5",
     name: "Lucha Libre",
     cuisine: "Mexican",
     neighborhood: "Mission Hills",
@@ -1635,6 +1736,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "89",
+    sourceKey: "yelp:blue-water-san-diego-2",
     name: "Blue Water",
     cuisine: "Seafood",
     neighborhood: "Mission Hills",
@@ -1652,6 +1754,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "90",
+    sourceKey: "yelp:old-town-mexican-cafe-san-diego",
     name: "Old Town Mexican Cafe",
     cuisine: "Mexican",
     neighborhood: "Old Town",
@@ -1669,6 +1772,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "91",
+    sourceKey: "yelp:the-prado-san-diego-2",
     name: "The Prado at Balboa Park",
     cuisine: "New American",
     neighborhood: "Bankers Hill",
@@ -1686,6 +1790,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "92",
+    sourceKey: "yelp:underbelly-san-diego",
     name: "Underbelly",
     cuisine: "Bars",
     neighborhood: "Little Italy",
@@ -1703,6 +1808,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "93",
+    sourceKey: "yelp:casa-de-reyes-san-diego",
     name: "Casa De Reyes",
     cuisine: "Mexican",
     neighborhood: "Old Town",
@@ -1720,6 +1826,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "94",
+    sourceKey: "yelp:buon-appetito-san-diego",
     name: "Buon Appetito",
     cuisine: "Italian",
     neighborhood: "Little Italy",
@@ -1737,6 +1844,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "95",
+    sourceKey: "yelp:old-town-tequila-factory-san-diego-3",
     name: "Old Town Tequila Factory",
     cuisine: "Mexican",
     neighborhood: "Old Town",
@@ -1754,6 +1862,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "96",
+    sourceKey: "yelp:rockin-baja-lobster-coastal-cantina-san-diego-3",
     name: "Rockin' Baja Lobster Coastal Cantina",
     cuisine: "Seafood",
     neighborhood: "Old Town",
@@ -1771,6 +1880,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "97",
+    sourceKey: "yelp:the-waffle-spot-san-diego-3",
     name: "The Waffle Spot",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Mission Valley",
@@ -1788,6 +1898,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "98",
+    sourceKey: "yelp:parkhouse-eatery-san-diego",
     name: "Parkhouse Eatery",
     cuisine: "Breakfast & Brunch",
     neighborhood: "University Heights",
@@ -1805,6 +1916,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "99",
+    sourceKey: "yelp:brigantine-portside-pier-san-diego",
     name: "Brigantine - Portside Pier",
     cuisine: "Seafood",
     neighborhood: "Little Italy",
@@ -1822,6 +1934,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "100",
+    sourceKey: "yelp:siamo-napoli-san-diego-2",
     name: "Siamo Napoli",
     cuisine: "Italian",
     neighborhood: "North Park",
@@ -1840,6 +1953,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "101",
+    sourceKey: "yelp:petes-seafood-and-sandwich-san-diego",
     name: "Pete's Seafood and Sandwich",
     cuisine: "Cafes",
     neighborhood: "North Park",
@@ -1858,6 +1972,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "102",
+    sourceKey: "yelp:madison-san-diego-8",
     name: "Madison",
     cuisine: "Italian",
     neighborhood: "University Heights",
@@ -1875,6 +1990,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "103",
+    sourceKey: "yelp:caff%C3%A8-calabria-san-diego-5",
     name: "Caffè Calabria",
     cuisine: "Coffee & Tea",
     neighborhood: "North Park",
@@ -1892,6 +2008,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "104",
+    sourceKey: "yelp:kings-fish-house-mission-valley-san-diego",
     name: "King's Fish House - Mission Valley",
     cuisine: "Seafood",
     neighborhood: "Mission Valley",
@@ -1909,6 +2026,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "105",
+    sourceKey: "yelp:vin-de-syrah-san-diego",
     name: "Vin De Syrah",
     cuisine: "New American",
     neighborhood: "Gaslamp",
@@ -1926,6 +2044,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "106",
+    sourceKey: "yelp:colimas-mexican-grill-san-diego",
     name: "Colima's Mexican Grill",
     cuisine: "Mexican",
     neighborhood: "University Heights",
@@ -1943,6 +2062,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "107",
+    sourceKey: "yelp:trust-san-diego",
     name: "Trust",
     cuisine: "New American",
     neighborhood: "University Heights",
@@ -1960,6 +2080,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "108",
+    sourceKey: "yelp:leftys-chicago-pizzeria-san-diego-3",
     name: "Lefty's Chicago Pizzeria",
     cuisine: "Pizza",
     neighborhood: "North Park",
@@ -1977,6 +2098,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "109",
+    sourceKey: "yelp:pho-hoa-san-diego",
     name: "Pho Hoa",
     cuisine: "Vietnamese",
     neighborhood: "Talmadge",
@@ -1994,6 +2116,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "110",
+    sourceKey: "yelp:blind-lady-ale-house-san-diego",
     name: "Blind Lady Ale House",
     cuisine: "Pizza",
     neighborhood: "Normal Heights",
@@ -2011,6 +2134,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "111",
+    sourceKey: "yelp:la-vecindad-neighborhood-tacos-san-diego-2",
     name: "La Vecindad Neighborhood Tacos",
     cuisine: "Tacos",
     neighborhood: "Hillcrest",
@@ -2029,6 +2153,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "112",
+    sourceKey: "yelp:pizzeria-luigi-san-diego-2",
     name: "Pizzeria Luigi",
     cuisine: "Pizza",
     neighborhood: "University Heights",
@@ -2046,6 +2171,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "113",
+    sourceKey: "yelp:grand-ole-bbq-y-asado-san-diego-4",
     name: "Grand Ole Bbq Y Asado",
     cuisine: "Barbeque",
     neighborhood: "North Park",
@@ -2063,6 +2189,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "114",
+    sourceKey: "yelp:american-junkie-san-diego",
     name: "American Junkie",
     cuisine: "American",
     neighborhood: "Gaslamp",
@@ -2080,6 +2207,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "115",
+    sourceKey: "yelp:kingfisher-san-diego",
     name: "Kingfisher",
     cuisine: "Vietnamese",
     neighborhood: "Golden Hill",
@@ -2097,6 +2225,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "116",
+    sourceKey: "yelp:thai-time-north-park-san-diego",
     name: "Thai Time North Park",
     cuisine: "Thai",
     neighborhood: "North Park",
@@ -2114,6 +2243,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "117",
+    sourceKey: "yelp:villain-s-brewing-san-diego",
     name: "Villain’s Brewing",
     cuisine: "Brewpubs",
     neighborhood: "Gaslamp",
@@ -2132,6 +2262,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "118",
+    sourceKey: "yelp:la-bonne-table-san-diego",
     name: "La Bonne Table",
     cuisine: "French",
     neighborhood: "Hillcrest",
@@ -2149,6 +2280,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "119",
+    sourceKey: "yelp:lestats-on-park-san-diego",
     name: "Lestat's on Park",
     cuisine: "Coffee & Tea",
     neighborhood: "University Heights",
@@ -2166,6 +2298,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "120",
+    sourceKey: "yelp:great-maple-san-diego-5",
     name: "Great Maple San Diego",
     cuisine: "Breakfast & Brunch",
     neighborhood: "University Heights",
@@ -2183,6 +2316,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "121",
+    sourceKey: "yelp:cucina-urbana-san-diego-4",
     name: "Cucina Urbana",
     cuisine: "Italian",
     neighborhood: "Bankers Hill",
@@ -2200,6 +2334,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "122",
+    sourceKey: "yelp:azuki-sushi-san-diego-2",
     name: "Azuki Sushi",
     cuisine: "Sushi Bars",
     neighborhood: "Bankers Hill",
@@ -2217,6 +2352,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "123",
+    sourceKey: "yelp:lazy-dog-restaurant-and-bar-san-diego-2",
     name: "Lazy Dog Restaurant & Bar",
     cuisine: "Burgers",
     neighborhood: "Mission Valley",
@@ -2234,6 +2370,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "124",
+    sourceKey: "yelp:mister-as-san-diego",
     name: "Mister A's",
     cuisine: "New American",
     neighborhood: "Bankers Hill",
@@ -2251,6 +2388,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "125",
+    sourceKey: "yelp:el-zarape-restaurant-san-diego-4",
     name: "El Zarape Restaurant",
     cuisine: "Mexican",
     neighborhood: "University Heights",
@@ -2268,6 +2406,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "126",
+    sourceKey: "yelp:the-mission-north-park-san-diego",
     name: "The Mission- North Park",
     cuisine: "Breakfast & Brunch",
     neighborhood: "North Park",
@@ -2285,6 +2424,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "127",
+    sourceKey: "yelp:encontro-north-park-san-diego",
     name: "Encontro North Park",
     cuisine: "New American",
     neighborhood: "North Park",
@@ -2302,6 +2442,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "128",
+    sourceKey: "yelp:city-tacos-san-diego",
     name: "City Tacos",
     cuisine: "Tacos",
     neighborhood: "North Park",
@@ -2319,6 +2460,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "129",
+    sourceKey: "yelp:oscars-mexican-seafood-san-diego-6",
     name: "Oscars Mexican Seafood",
     cuisine: "Seafood",
     neighborhood: "Hillcrest",
@@ -2336,6 +2478,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "130",
+    sourceKey: "yelp:underbelly-san-diego-12",
     name: "Underbelly",
     cuisine: "Ramen",
     neighborhood: "North Park",
@@ -2353,6 +2496,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "131",
+    sourceKey: "yelp:the-kebab-shop-san-diego-5",
     name: "The Kebab Shop",
     cuisine: "Mediterranean",
     neighborhood: "Mission Valley",
@@ -2370,6 +2514,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "132",
+    sourceKey: "yelp:the-smoking-goat-san-diego",
     name: "The Smoking Goat",
     cuisine: "French",
     neighborhood: "North Park",
@@ -2387,6 +2532,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "133",
+    sourceKey: "yelp:baja-bettys-san-diego",
     name: "Baja Betty's",
     cuisine: "Bars",
     neighborhood: "Hillcrest",
@@ -2404,6 +2550,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "134",
+    sourceKey: "yelp:evolution-fast-food-san-diego",
     name: "Evolution Fast Food",
     cuisine: "Vegetarian",
     neighborhood: "University Heights",
@@ -2421,6 +2568,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "135",
+    sourceKey: "yelp:356-korean-bbq-and-bar-san-diego-5",
     name: "356 Korean BBQ & Bar",
     cuisine: "Barbeque",
     neighborhood: "University Heights",
@@ -2438,6 +2586,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "136",
+    sourceKey: "yelp:the-crack-shack-san-diego-2",
     name: "The Crack Shack",
     cuisine: "New American",
     neighborhood: "Little Italy",
@@ -2455,6 +2604,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "137",
+    sourceKey: "yelp:barbusa-san-diego",
     name: "Barbusa",
     cuisine: "Italian",
     neighborhood: "Little Italy",
@@ -2472,6 +2622,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "138",
+    sourceKey: "yelp:juniper-and-ivy-san-diego-2",
     name: "Juniper and Ivy",
     cuisine: "New American",
     neighborhood: "Little Italy",
@@ -2489,6 +2640,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "139",
+    sourceKey: "yelp:civico-1845-san-diego-2",
     name: "Civico 1845",
     cuisine: "Italian",
     neighborhood: "Little Italy",
@@ -2506,6 +2658,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "140",
+    sourceKey: "yelp:born-and-raised-san-diego-2",
     name: "Born & Raised",
     cuisine: "Steakhouses",
     neighborhood: "Little Italy",
@@ -2523,6 +2676,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "141",
+    sourceKey: "yelp:starlite-san-diego",
     name: "Starlite",
     cuisine: "Cocktail Bars",
     neighborhood: "Bankers Hill",
@@ -2540,6 +2694,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "142",
+    sourceKey: "yelp:world-famous-san-diego",
     name: "World Famous",
     cuisine: "Seafood",
     neighborhood: "Mission Beach",
@@ -2557,6 +2712,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "143",
+    sourceKey: "yelp:the-mission-san-diego-6",
     name: "The Mission",
     cuisine: "Coffee & Tea",
     neighborhood: "Mission Beach",
@@ -2574,6 +2730,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "144",
+    sourceKey: "yelp:konos-cafe-san-diego-6",
     name: "Kono's Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Mission Beach",
@@ -2591,6 +2748,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "145",
+    sourceKey: "yelp:rockys-crown-pub-san-diego",
     name: "Rocky's Crown Pub",
     cuisine: "Burgers",
     neighborhood: "Pacific Beach",
@@ -2608,6 +2766,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "146",
+    sourceKey: "yelp:fig-tree-cafe-pacific-beach",
     name: "Fig Tree Cafe",
     cuisine: "Sandwiches",
     neighborhood: "Pacific Beach",
@@ -2625,6 +2784,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "147",
+    sourceKey: "yelp:oscars-mexican-seafood-san-diego-5",
     name: "Oscars Mexican Seafood",
     cuisine: "Mexican",
     neighborhood: "Pacific Beach",
@@ -2642,6 +2802,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "148",
+    sourceKey: "yelp:pacific-beach-alehouse-san-diego",
     name: "Pacific Beach AleHouse",
     cuisine: "Breweries",
     neighborhood: "Mission Beach",
@@ -2659,6 +2820,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "149",
+    sourceKey: "yelp:jrdn-restaurant-san-diego",
     name: "JRDN Restaurant",
     cuisine: "New American",
     neighborhood: "Mission Beach",
@@ -2676,6 +2838,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "150",
+    sourceKey: "yelp:broken-yolk-cafe-san-diego-14",
     name: "Broken Yolk Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Pacific Beach",
@@ -2693,6 +2856,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "151",
+    sourceKey: "yelp:draft-san-diego-4",
     name: "Draft",
     cuisine: "American",
     neighborhood: "Mission Beach",
@@ -2710,6 +2874,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "152",
+    sourceKey: "yelp:firehouse-san-diego-2",
     name: "FIREHOUSE",
     cuisine: "American",
     neighborhood: "Mission Beach",
@@ -2727,6 +2892,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "153",
+    sourceKey: "yelp:pueblo-san-diego",
     name: "Pueblo",
     cuisine: "Seafood",
     neighborhood: "Mission Beach",
@@ -2744,6 +2910,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "154",
+    sourceKey: "yelp:enoteca-adriano-san-diego",
     name: "Enoteca Adriano",
     cuisine: "Italian",
     neighborhood: "Pacific Beach",
@@ -2762,6 +2929,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "155",
+    sourceKey: "yelp:la-playa-taco-shop-san-diego",
     name: "La Playa Taco Shop",
     cuisine: "Tacos",
     neighborhood: "Mission Beach",
@@ -2779,6 +2947,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "156",
+    sourceKey: "yelp:bay-park-fish-company-san-diego-3",
     name: "Bay Park Fish Company",
     cuisine: "Seafood",
     neighborhood: "Bay Park",
@@ -2796,6 +2965,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "157",
+    sourceKey: "yelp:pacific-beach-shore-club-san-diego",
     name: "Pacific Beach Shore Club",
     cuisine: "Bars",
     neighborhood: "Mission Beach",
@@ -2813,6 +2983,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "158",
+    sourceKey: "yelp:the-duck-dive-san-diego",
     name: "The Duck Dive",
     cuisine: "Sports Bars",
     neighborhood: "Pacific Beach",
@@ -2830,6 +3001,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "159",
+    sourceKey: "yelp:dirty-birds-san-diego",
     name: "Dirty Birds",
     cuisine: "Sports Bars",
     neighborhood: "Pacific Beach",
@@ -2847,6 +3019,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "160",
+    sourceKey: "yelp:the-fishery-san-diego",
     name: "The Fishery",
     cuisine: "Seafood Markets",
     neighborhood: "Pacific Beach",
@@ -2864,6 +3037,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "161",
+    sourceKey: "yelp:leilanis-cafe-san-diego",
     name: "Leilani's Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Pacific Beach",
@@ -2881,6 +3055,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "162",
+    sourceKey: "yelp:bare-back-grill-san-diego",
     name: "Bare Back Grill",
     cuisine: "Bars",
     neighborhood: "Pacific Beach",
@@ -2898,6 +3073,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "163",
+    sourceKey: "yelp:miss-bs-coconut-club-san-diego",
     name: "Miss B's Coconut Club",
     cuisine: "Caribbean",
     neighborhood: "Mission Beach",
@@ -2915,6 +3091,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "164",
+    sourceKey: "yelp:phils-bbq-san-diego-2",
     name: "Phil's BBQ",
     cuisine: "Barbeque",
     neighborhood: "Liberty Station",
@@ -2932,6 +3109,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "165",
+    sourceKey: "yelp:ob-noodle-house-san-diego",
     name: "OB Noodle House",
     cuisine: "Asian Fusion",
     neighborhood: "Ocean Beach",
@@ -2949,6 +3127,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "166",
+    sourceKey: "yelp:south-beach-bar-and-grille-san-diego",
     name: "South Beach Bar & Grille",
     cuisine: "Seafood",
     neighborhood: "Ocean Beach",
@@ -2966,6 +3145,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "167",
+    sourceKey: "yelp:cannonball-san-diego-3",
     name: "Cannonball",
     cuisine: "Sushi Bars",
     neighborhood: "Mission Beach",
@@ -2983,6 +3163,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "168",
+    sourceKey: "yelp:the-lot-liberty-station-san-diego-3",
     name: "THE LOT Liberty Station",
     cuisine: "Bars",
     neighborhood: "Liberty Station",
@@ -3000,6 +3181,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "169",
+    sourceKey: "yelp:wonderland-ocean-pub-san-diego",
     name: "Wonderland Ocean Pub",
     cuisine: "New American",
     neighborhood: "Ocean Beach",
@@ -3017,6 +3199,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "170",
+    sourceKey: "yelp:pizza-port-brewing-san-diego",
     name: "Pizza Port Brewing",
     cuisine: "Pizza",
     neighborhood: "Ocean Beach",
@@ -3034,6 +3217,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "171",
+    sourceKey: "yelp:classics-malt-shop-san-diego-3",
     name: "Classics Malt Shop",
     cuisine: "American",
     neighborhood: "Liberty Station",
@@ -3052,6 +3236,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "172",
+    sourceKey: "yelp:mikes-taco-club-san-diego",
     name: "Mike's Taco Club",
     cuisine: "Mexican",
     neighborhood: "Ocean Beach",
@@ -3070,6 +3255,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "173",
+    sourceKey: "yelp:stone-brewing-world-bistro-and-gardens-liberty-station-san-diego-2",
     name: "Stone Brewing World Bistro & Gardens - Liberty Station",
     cuisine: "New American",
     neighborhood: "Liberty Station",
@@ -3087,6 +3273,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "174",
+    sourceKey: "yelp:bali-hai-restaurant-san-diego",
     name: "Bali Hai Restaurant",
     cuisine: "Asian Fusion",
     neighborhood: "Point Loma",
@@ -3104,6 +3291,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "175",
+    sourceKey: "yelp:point-loma-seafoods-san-diego",
     name: "Point Loma Seafoods",
     cuisine: "Seafood Markets",
     neighborhood: "Point Loma",
@@ -3121,6 +3309,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "176",
+    sourceKey: "yelp:fig-tree-cafe-san-diego-3",
     name: "Fig Tree Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Liberty Station",
@@ -3138,6 +3327,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "177",
+    sourceKey: "yelp:ototo-sushi-san-diego-34",
     name: "Ototo Sushi",
     cuisine: "Sushi Bars",
     neighborhood: "Liberty Station",
@@ -3155,6 +3345,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "178",
+    sourceKey: "yelp:jimmys-famous-american-tavern-san-diego",
     name: "Jimmy's Famous American Tavern",
     cuisine: "New American",
     neighborhood: "Point Loma",
@@ -3172,6 +3363,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "179",
+    sourceKey: "yelp:supannee-house-of-thai-by-suree-san-diego",
     name: "Supannee House Of Thai By Suree",
     cuisine: "Thai",
     neighborhood: "Point Loma",
@@ -3189,6 +3381,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "180",
+    sourceKey: "yelp:breakfast-republic-san-diego-2",
     name: "Breakfast Republic",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Liberty Station",
@@ -3206,6 +3399,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "181",
+    sourceKey: "yelp:tender-greens-san-diego-14",
     name: "Tender Greens",
     cuisine: "New American",
     neighborhood: "Liberty Station",
@@ -3223,6 +3417,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "182",
+    sourceKey: "yelp:ob-noodle-house-bar-1502-san-diego-2",
     name: "OB Noodle House Bar 1502",
     cuisine: "Asian Fusion",
     neighborhood: "Ocean Beach",
@@ -3240,6 +3435,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "183",
+    sourceKey: "yelp:cafe-coyote-san-diego-2",
     name: "Cafe Coyote",
     cuisine: "Mexican",
     neighborhood: "Old Town",
@@ -3257,6 +3453,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "184",
+    sourceKey: "yelp:casa-guadalajara-san-diego",
     name: "Casa Guadalajara",
     cuisine: "Mexican",
     neighborhood: "Old Town",
@@ -3274,6 +3471,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "185",
+    sourceKey: "yelp:harney-sushi-san-diego-3",
     name: "Harney Sushi",
     cuisine: "Japanese",
     neighborhood: "Old Town",
@@ -3291,6 +3489,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "186",
+    sourceKey: "yelp:barra-barra-san-diego-2",
     name: "Barra Barra",
     cuisine: "Mexican",
     neighborhood: "Old Town",
@@ -3308,6 +3507,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "187",
+    sourceKey: "yelp:farmers-bottega-restaurant-san-diego",
     name: "Farmer's Bottega Restaurant",
     cuisine: "New American",
     neighborhood: "Hillcrest",
@@ -3325,6 +3525,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "188",
+    sourceKey: "yelp:officine-buona-forchetta-san-diego-4",
     name: "Officine Buona Forchetta",
     cuisine: "Pizza",
     neighborhood: "Liberty Station",
@@ -3342,6 +3543,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "189",
+    sourceKey: "yelp:raglan-public-house-san-diego",
     name: "Raglan Public House",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Ocean Beach",
@@ -3359,6 +3561,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "190",
+    sourceKey: "yelp:solare-ristorante-italiano-san-diego",
     name: "Solare Ristorante",
     cuisine: "Italian",
     neighborhood: "Liberty Station",
@@ -3376,6 +3579,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "191",
+    sourceKey: "yelp:c-level-san-diego-6",
     name: "C Level",
     cuisine: "New American",
     neighborhood: "Little Italy",
@@ -3393,6 +3597,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "192",
+    sourceKey: "yelp:island-prime-san-diego-3",
     name: "Island Prime",
     cuisine: "Seafood",
     neighborhood: "Little Italy",
@@ -3410,6 +3615,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "193",
+    sourceKey: "yelp:werewolf-san-diego",
     name: "Werewolf",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Gaslamp",
@@ -3428,6 +3634,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "194",
+    sourceKey: "yelp:puesto-at-the-headquarters-san-diego-9",
     name: "Puesto at the Headquarters",
     cuisine: "Mexican",
     neighborhood: "Marina",
@@ -3445,6 +3652,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "195",
+    sourceKey: "yelp:fogo-de-ch%C3%A3o-san-diego-3",
     name: "Fogo de Chão",
     cuisine: "Brazilian",
     neighborhood: "Gaslamp",
@@ -3462,6 +3670,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "196",
+    sourceKey: "yelp:stk-steakhouse-san-diego-san-diego",
     name: "STK Steakhouse San Diego",
     cuisine: "New American",
     neighborhood: "Gaslamp",
@@ -3480,6 +3689,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "197",
+    sourceKey: "yelp:la-puerta-san-diego",
     name: "La Puerta",
     cuisine: "Mexican",
     neighborhood: "Gaslamp",
@@ -3497,6 +3707,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "198",
+    sourceKey: "yelp:cafe-sevilla-san-diego",
     name: "Cafe Sevilla",
     cuisine: "Spanish",
     neighborhood: "Gaslamp",
@@ -3514,6 +3725,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "199",
+    sourceKey: "yelp:richard-walkers-pancake-house-san-diego",
     name: "Richard Walker's Pancake House",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Marina",
@@ -3531,6 +3743,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "200",
+    sourceKey: "yelp:greystone-prime-steakhouse-and-seafood-san-diego-3",
     name: "Greystone Prime Steakhouse & Seafood",
     cuisine: "Steakhouses",
     neighborhood: "Gaslamp",
@@ -3548,6 +3761,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "201",
+    sourceKey: "yelp:water-grill-san-diego-san-diego-2",
     name: "Water Grill - San Diego",
     cuisine: "Seafood",
     neighborhood: "Gaslamp",
@@ -3565,6 +3779,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "202",
+    sourceKey: "yelp:barleymash-san-diego",
     name: "Barleymash",
     cuisine: "Sports Bars",
     neighborhood: "Gaslamp",
@@ -3582,6 +3797,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "203",
+    sourceKey: "yelp:meze-greek-fusion-san-diego",
     name: "Meze Greek Fusion",
     cuisine: "Greek",
     neighborhood: "Gaslamp",
@@ -3599,6 +3815,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "204",
+    sourceKey: "yelp:lou-and-mickeys-san-diego",
     name: "Lou & Mickey's",
     cuisine: "Steakhouses",
     neighborhood: "Gaslamp",
@@ -3616,6 +3833,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "205",
+    sourceKey: "yelp:las-cuatro-milpas-san-diego-2",
     name: "Las Cuatro Milpas",
     cuisine: "Mexican",
     neighborhood: "Barrio Logan",
@@ -3633,6 +3851,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "206",
+    sourceKey: "yelp:rustic-root-san-diego",
     name: "Rustic Root",
     cuisine: "Cocktail Bars",
     neighborhood: "Gaslamp",
@@ -3650,6 +3869,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "207",
+    sourceKey: "yelp:miguels-cocina-coronado",
     name: "Miguel's Cocina",
     cuisine: "Mexican",
     neighborhood: "Coronado",
@@ -3667,6 +3887,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "208",
+    sourceKey: "yelp:breakfast-republic-san-diego-5",
     name: "Breakfast Republic",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Gaslamp",
@@ -3684,6 +3905,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "209",
+    sourceKey: "yelp:neighborhood-san-diego",
     name: "Neighborhood",
     cuisine: "New American",
     neighborhood: "Gaslamp",
@@ -3701,6 +3923,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "210",
+    sourceKey: "yelp:the-mission-east-village-san-diego",
     name: "The Mission - East Village",
     cuisine: "American",
     neighborhood: "East Village",
@@ -3718,6 +3941,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "211",
+    sourceKey: "yelp:cowboy-star-san-diego",
     name: "Cowboy Star",
     cuisine: "Steakhouses",
     neighborhood: "Gaslamp",
@@ -3735,6 +3959,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "212",
+    sourceKey: "yelp:ed-fernandez-restaurant-birrieria-san-diego",
     name: "Ed Fernandez Restaurant Birrieria",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Imperial Beach",
@@ -3753,6 +3978,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "213",
+    sourceKey: "yelp:katys-cafe-imperial-beach",
     name: "Katy's Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Imperial Beach",
@@ -3770,6 +3996,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "214",
+    sourceKey: "yelp:ib-forum-sports-bar-and-grill-imperial-beach",
     name: "IB Forum Sports Bar & Grill",
     cuisine: "Sports Bars",
     neighborhood: "Imperial Beach",
@@ -3787,6 +4014,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "215",
+    sourceKey: "yelp:baja-oyster-and-sushi-bar-san-diego",
     name: "Baja Oyster & Sushi Bar",
     cuisine: "Seafood",
     neighborhood: "Imperial Beach",
@@ -3804,6 +4032,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "216",
+    sourceKey: "yelp:tasty-mandarin-chula-vista",
     name: "Tasty Mandarin",
     cuisine: "Chinese",
     neighborhood: "Chula Vista",
@@ -3822,6 +4051,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "217",
+    sourceKey: "yelp:mike-hess-brewing-imperial-beach-imperial-beach-2",
     name: "Mike Hess Brewing - Imperial Beach",
     cuisine: "Breweries",
     neighborhood: "Imperial Beach",
@@ -3839,6 +4069,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "218",
+    sourceKey: "yelp:big-kahunas-imperial-beach",
     name: "Big Kahuna's",
     cuisine: "Hawaiian",
     neighborhood: "Imperial Beach",
@@ -3856,6 +4087,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "219",
+    sourceKey: "yelp:aroma-thai-imperial-beach",
     name: "Aroma Thai",
     cuisine: "Thai",
     neighborhood: "Imperial Beach",
@@ -3873,6 +4105,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "220",
+    sourceKey: "yelp:brigantine-imperial-beach",
     name: "Brigantine",
     cuisine: "Seafood",
     neighborhood: "Imperial Beach",
@@ -3890,6 +4123,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "221",
+    sourceKey: "yelp:siam-imperial-thai-kitchen-imperial-beach-3",
     name: "Siam Imperial Thai Kitchen",
     cuisine: "Thai",
     neighborhood: "Imperial Beach",
@@ -3908,6 +4142,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "222",
+    sourceKey: "yelp:don-panchos-imperial-beach-2",
     name: "Don Panchos",
     cuisine: "Tacos",
     neighborhood: "Imperial Beach",
@@ -3925,6 +4160,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "223",
+    sourceKey: "yelp:pizzeria-luigi-imperial-beach-2",
     name: "Pizzeria Luigi",
     cuisine: "Pizza",
     neighborhood: "Imperial Beach",
@@ -3942,6 +4178,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "224",
+    sourceKey: "yelp:meijo-sushi-and-japanese-cuisine-imperial-beach",
     name: "Meijo Sushi And Japanese Cuisine",
     cuisine: "Japanese",
     neighborhood: "Imperial Beach",
@@ -3959,6 +4196,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "225",
+    sourceKey: "yelp:el-tapatio-restaurant-imperial-beach",
     name: "El Tapatio Restaurant",
     cuisine: "Mexican",
     neighborhood: "Imperial Beach",
@@ -3976,6 +4214,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "226",
+    sourceKey: "yelp:armandos-mexican-food-san-diego-2",
     name: "Armando's Mexican Food",
     cuisine: "Mexican",
     neighborhood: "Imperial Beach",
@@ -3993,6 +4232,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "227",
+    sourceKey: "yelp:trident-coffee-imperial-beach-2",
     name: "Trident Coffee",
     cuisine: "Coffee & Tea",
     neighborhood: "Imperial Beach",
@@ -4010,6 +4250,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "228",
+    sourceKey: "yelp:tamales-ancira-chula-vista",
     name: "Tamales Ancira",
     cuisine: "Mexican",
     neighborhood: "Imperial Beach",
@@ -4027,6 +4268,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "229",
+    sourceKey: "yelp:hermanos-taco-shop-chula-vista",
     name: "Hermanos Taco Shop",
     cuisine: "Mexican",
     neighborhood: "Chula Vista",
@@ -4044,6 +4286,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "230",
+    sourceKey: "yelp:pok%C3%A9-123-imperial-beach-2",
     name: "POKÉ 123",
     cuisine: "Poke",
     neighborhood: "Imperial Beach",
@@ -4061,6 +4304,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "231",
+    sourceKey: "yelp:noodles-noodles-san-diego",
     name: "Noodles Noodles",
     cuisine: "Thai",
     neighborhood: "Imperial Beach",
@@ -4078,6 +4322,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "232",
+    sourceKey: "yelp:pomegranate-russian-georgian-restaurant-san-diego",
     name: "Pomegranate Russian-Georgian Restaurant",
     cuisine: "Russian",
     neighborhood: "University Heights",
@@ -4095,6 +4340,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "233",
+    sourceKey: "yelp:piacere-mio-south-park-san-diego-7",
     name: "Piacere Mio - South Park",
     cuisine: "Italian",
     neighborhood: "South Park",
@@ -4113,6 +4359,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "234",
+    sourceKey: "yelp:muzita-abyssinian-bistro-san-diego",
     name: "Muzita Abyssinian Bistro",
     cuisine: "Ethiopian",
     neighborhood: "University Heights",
@@ -4130,6 +4377,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "235",
+    sourceKey: "yelp:kindred-san-diego",
     name: "Kindred",
     cuisine: "Cocktail Bars",
     neighborhood: "South Park",
@@ -4147,6 +4395,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "236",
+    sourceKey: "yelp:broken-yolk-cafe-san-diego-10",
     name: "Broken Yolk Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "University Heights",
@@ -4164,6 +4413,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "237",
+    sourceKey: "yelp:alforon-san-diego-7",
     name: "Alforon",
     cuisine: "Mediterranean",
     neighborhood: "Rolando",
@@ -4182,6 +4432,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "238",
+    sourceKey: "yelp:ranchos-cocina-san-diego-2",
     name: "Ranchos Cocina",
     cuisine: "Vegetarian",
     neighborhood: "North Park",
@@ -4199,6 +4450,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "239",
+    sourceKey: "yelp:rudfords-restaurant-san-diego",
     name: "Rudford's Restaurant",
     cuisine: "Diners",
     neighborhood: "Normal Heights",
@@ -4216,6 +4468,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "240",
+    sourceKey: "yelp:san-diego-chicken-pie-shop-san-diego",
     name: "San Diego Chicken Pie Shop",
     cuisine: "American",
     neighborhood: "University Heights",
@@ -4233,6 +4486,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "241",
+    sourceKey: "yelp:alexanders-on-30th-san-diego-2",
     name: "Alexanders on 30th",
     cuisine: "Italian",
     neighborhood: "North Park",
@@ -4250,6 +4504,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "242",
+    sourceKey: "yelp:shrimp-heads-san-diego-2",
     name: "Shrimp Heads",
     cuisine: "Cajun/Creole",
     neighborhood: "University Heights",
@@ -4268,6 +4523,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "243",
+    sourceKey: "yelp:madi-san-diego-3",
     name: "Madi",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Kensington",
@@ -4285,6 +4541,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "244",
+    sourceKey: "yelp:ponces-mexican-restaurant-san-diego",
     name: "Ponce's Mexican Restaurant",
     cuisine: "Mexican",
     neighborhood: "Kensington",
@@ -4302,6 +4559,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "245",
+    sourceKey: "yelp:bleu-boh%C3%A8me-san-diego-6",
     name: "Bleu Bohème",
     cuisine: "French",
     neighborhood: "Kensington",
@@ -4319,6 +4577,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "246",
+    sourceKey: "yelp:dao-fu-san-diego-2",
     name: "Dao Fu",
     cuisine: "Japanese",
     neighborhood: "Normal Heights",
@@ -4336,6 +4595,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "247",
+    sourceKey: "yelp:fortunate-son-san-diego-4",
     name: "Fortunate Son",
     cuisine: "Chinese",
     neighborhood: "Normal Heights",
@@ -4353,6 +4613,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "248",
+    sourceKey: "yelp:coops-west-texas-bbq-lemon-grove-2",
     name: "Coop's West Texas BBQ",
     cuisine: "Barbeque",
     neighborhood: "Lemon Grove",
@@ -4371,6 +4632,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "249",
+    sourceKey: "yelp:tokyo-sushi-loha-san-diego",
     name: "Tokyo Sushi Loha",
     cuisine: "Sushi Bars",
     neighborhood: "Rolando",
@@ -4388,6 +4650,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "250",
+    sourceKey: "yelp:thanh-tinh-chay-san-diego",
     name: "Thanh Tinh Chay",
     cuisine: "Vietnamese",
     neighborhood: "Talmadge",
@@ -4406,6 +4669,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "251",
+    sourceKey: "yelp:kensington-cafe-san-diego",
     name: "Kensington Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Talmadge",
@@ -4423,6 +4687,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "252",
+    sourceKey: "yelp:minh-ky-restaurant-san-diego",
     name: "Minh Ky Restaurant",
     cuisine: "Chinese",
     neighborhood: "Talmadge",
@@ -4440,6 +4705,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "253",
+    sourceKey: "yelp:wei-wei-asian-express-san-diego-san-diego",
     name: "Wei Wei Asian Express - San Diego",
     cuisine: "Chinese",
     neighborhood: "Rolando",
@@ -4457,6 +4723,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "254",
+    sourceKey: "yelp:cheba-hut-toasted-subs-san-diego-7",
     name: "Cheba Hut Toasted Subs",
     cuisine: "Sandwiches",
     neighborhood: "Rolando",
@@ -4474,6 +4741,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "255",
+    sourceKey: "yelp:living-room-coffeehouse-san-diego-2",
     name: "Living Room Coffeehouse",
     cuisine: "Coffee & Tea",
     neighborhood: "Rolando",
@@ -4491,6 +4759,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "256",
+    sourceKey: "yelp:chuys-taco-shop-san-diego-2",
     name: "Chuy's Taco Shop",
     cuisine: "Mexican",
     neighborhood: "Rolando",
@@ -4508,6 +4777,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "257",
+    sourceKey: "yelp:pho-ca-dao-restaurant-san-diego",
     name: "Pho Ca Dao Restaurant",
     cuisine: "Vietnamese",
     neighborhood: "Talmadge",
@@ -4525,6 +4795,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "258",
+    sourceKey: "yelp:bowlegged-bbq-san-diego",
     name: "Bowlegged BBQ",
     cuisine: "Barbeque",
     neighborhood: "South Park",
@@ -4543,6 +4814,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "259",
+    sourceKey: "yelp:the-riviera-supper-club-and-turquoise-room-la-mesa",
     name: "The Riviera Supper Club & Turquoise Room",
     cuisine: "Steakhouses",
     neighborhood: "La Mesa",
@@ -4560,6 +4832,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "260",
+    sourceKey: "yelp:the-purple-mint-vegan-bistro-san-diego",
     name: "The Purple Mint Vegan Bistro",
     cuisine: "Vegetarian",
     neighborhood: "Talmadge",
@@ -4577,6 +4850,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "261",
+    sourceKey: "yelp:lidos-italian-foods-lemon-grove-2",
     name: "Lido's Italian Foods",
     cuisine: "Italian",
     neighborhood: "Lemon Grove",
@@ -4594,6 +4868,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "262",
+    sourceKey: "yelp:sang-dao-restaurant-san-diego-2",
     name: "Sang Dao Restaurant",
     cuisine: "Thai",
     neighborhood: "Talmadge",
@@ -4611,6 +4886,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "263",
+    sourceKey: "yelp:dirty-birds-san-diego-8",
     name: "Dirty Birds",
     cuisine: "Chicken Wings",
     neighborhood: "Rolando",
@@ -4628,6 +4904,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "264",
+    sourceKey: "yelp:so-saap-san-diego-2",
     name: "So Saap",
     cuisine: "Thai",
     neighborhood: "City Heights",
@@ -4645,6 +4922,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "265",
+    sourceKey: "yelp:sunshine-pancake-house-la-mesa",
     name: "Sunshine Pancake House",
     cuisine: "Breakfast & Brunch",
     neighborhood: "La Mesa",
@@ -4662,6 +4940,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "266",
+    sourceKey: "yelp:a-chau-san-diego",
     name: "A-Chau",
     cuisine: "Vietnamese",
     neighborhood: "Talmadge",
@@ -4679,6 +4958,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "267",
+    sourceKey: "yelp:trujillos-taco-shop-san-diego",
     name: "Trujillo's Taco Shop",
     cuisine: "Mexican",
     neighborhood: "College Area",
@@ -4696,6 +4976,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "268",
+    sourceKey: "yelp:nates-garden-grill-san-diego",
     name: "Nate's Garden Grill",
     cuisine: "American",
     neighborhood: "City Heights",
@@ -4713,6 +4994,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "269",
+    sourceKey: "yelp:himalayan-cuisine-la-mesa-2",
     name: "Himalayan Cuisine",
     cuisine: "Indian",
     neighborhood: "La Mesa",
@@ -4730,6 +5012,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "270",
+    sourceKey: "yelp:el-torito-la-mesa-3",
     name: "El Torito",
     cuisine: "Mexican",
     neighborhood: "La Mesa",
@@ -4747,6 +5030,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "271",
+    sourceKey: "yelp:giardino-neighborhood-cucina-lemon-grove",
     name: "Giardino Neighborhood Cucina",
     cuisine: "Italian",
     neighborhood: "Lemon Grove",
@@ -4764,6 +5048,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "272",
+    sourceKey: "yelp:antica-trattoria-la-mesa",
     name: "Antica Trattoria",
     cuisine: "Italian",
     neighborhood: "La Mesa",
@@ -4781,6 +5066,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "273",
+    sourceKey: "yelp:dels-hideout-san-diego-2",
     name: "Del's Hideout",
     cuisine: "Barbeque",
     neighborhood: "College Area",
@@ -4798,6 +5084,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "274",
+    sourceKey: "yelp:swamis-caf%C3%A9-la-mesa-la-mesa-2",
     name: "Swami's Café La Mesa",
     cuisine: "Cafes",
     neighborhood: "La Mesa",
@@ -4815,6 +5102,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "275",
+    sourceKey: "yelp:shawarma-guys-la-mesa-2",
     name: "Shawarma Guys",
     cuisine: "Middle Eastern",
     neighborhood: "La Mesa",
@@ -4833,6 +5121,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "276",
+    sourceKey: "yelp:city-tacos-la-mesa-2",
     name: "City Tacos",
     cuisine: "Tacos",
     neighborhood: "La Mesa",
@@ -4850,6 +5139,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "277",
+    sourceKey: "yelp:smokey-and-the-brisket-la-mesa",
     name: "Smokey and the Brisket",
     cuisine: "Barbeque",
     neighborhood: "La Mesa",
@@ -4867,6 +5157,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "278",
+    sourceKey: "yelp:chef-johns-fish-and-chips-lemon-grove",
     name: "Chef John's Fish & Chips",
     cuisine: "Fish & Chips",
     neighborhood: "Lemon Grove",
@@ -4884,6 +5175,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "279",
+    sourceKey: "yelp:the-trails-eatery-san-diego",
     name: "The Trails Eatery",
     cuisine: "Breakfast & Brunch",
     neighborhood: "College Area",
@@ -4901,6 +5193,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "280",
+    sourceKey: "yelp:gaglione-brothers-san-diego-6",
     name: "Gaglione Brothers",
     cuisine: "Sandwiches",
     neighborhood: "Serra Mesa",
@@ -4918,6 +5211,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "281",
+    sourceKey: "yelp:filippis-pizza-grotto-mission-valley-san-diego",
     name: "Filippi's Pizza Grotto Mission Valley",
     cuisine: "Italian",
     neighborhood: "Serra Mesa",
@@ -4935,6 +5229,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "282",
+    sourceKey: "yelp:burger-lounge-san-diego-5",
     name: "Burger Lounge",
     cuisine: "Burgers",
     neighborhood: "Kensington",
@@ -4952,6 +5247,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "283",
+    sourceKey: "yelp:crack-taco-shop-san-diego",
     name: "Crack Taco Shop",
     cuisine: "Tacos",
     neighborhood: "Talmadge",
@@ -4969,6 +5265,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "284",
+    sourceKey: "yelp:tacos-el-g-national-city-7",
     name: "Tacos El G",
     cuisine: "Tacos",
     neighborhood: "National City",
@@ -4986,6 +5283,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "285",
+    sourceKey: "yelp:izakaya-naruto-chula-vista",
     name: "Izakaya Naruto",
     cuisine: "Sushi Bars",
     neighborhood: "Chula Vista",
@@ -5003,6 +5301,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "286",
+    sourceKey: "yelp:de-cabeza-el-unico-chula-vista-2",
     name: "De Cabeza el Unico",
     cuisine: "Mexican",
     neighborhood: "Chula Vista",
@@ -5021,6 +5320,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "287",
+    sourceKey: "yelp:taqueria-revolucion-chula-vista",
     name: "Taqueria Revolucion",
     cuisine: "Tacos",
     neighborhood: "Chula Vista",
@@ -5038,6 +5338,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "288",
+    sourceKey: "yelp:canada-steak-burger-chula-vista",
     name: "Canada Steak Burger",
     cuisine: "Burgers",
     neighborhood: "Chula Vista",
@@ -5055,6 +5356,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "289",
+    sourceKey: "yelp:black-angus-steakhouse-chula-vista",
     name: "Black Angus Steakhouse",
     cuisine: "Steakhouses",
     neighborhood: "Chula Vista",
@@ -5072,6 +5374,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "290",
+    sourceKey: "yelp:agave-grill-and-caf%C3%A9-chula-vista",
     name: "Agave Grill & Café",
     cuisine: "Cafes",
     neighborhood: "Chula Vista",
@@ -5089,6 +5392,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "291",
+    sourceKey: "yelp:family-house-of-pancakes-chula-vista",
     name: "Family House of Pancakes",
     cuisine: "Pancakes",
     neighborhood: "Chula Vista",
@@ -5106,6 +5410,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "292",
+    sourceKey: "yelp:hanamichi-national-city",
     name: "Hanamichi",
     cuisine: "Sushi Bars",
     neighborhood: "Chula Vista",
@@ -5123,6 +5428,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "293",
+    sourceKey: "yelp:talavera-azul-chula-vista",
     name: "Talavera Azul",
     cuisine: "Mexican",
     neighborhood: "Chula Vista",
@@ -5140,6 +5446,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "294",
+    sourceKey: "yelp:el-patio-chula-vista",
     name: "El Patio",
     cuisine: "Mexican",
     neighborhood: "Chula Vista",
@@ -5157,6 +5464,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "295",
+    sourceKey: "yelp:royal-mandarin-restaurant-national-city",
     name: "Royal Mandarin Restaurant",
     cuisine: "Chinese",
     neighborhood: "National City",
@@ -5174,6 +5482,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "296",
+    sourceKey: "yelp:crab-fever-san-diego-national-city",
     name: "Crab Fever - San Diego",
     cuisine: "Cajun/Creole",
     neighborhood: "National City",
@@ -5191,6 +5500,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "297",
+    sourceKey: "yelp:titas-kitchenette-national-city",
     name: "Tita's Kitchenette",
     cuisine: "Filipino",
     neighborhood: "National City",
@@ -5208,6 +5518,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "298",
+    sourceKey: "yelp:golden-chopsticks-national-city",
     name: "Golden Chopsticks",
     cuisine: "Chinese",
     neighborhood: "National City",
@@ -5225,6 +5536,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "299",
+    sourceKey: "yelp:poke-etc-national-city-2",
     name: "Poke Etc",
     cuisine: "Hawaiian",
     neighborhood: "National City",
@@ -5243,6 +5555,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "300",
+    sourceKey: "yelp:ch%C3%A0o-xo-national-city-2",
     name: "Chào XO",
     cuisine: "Asian Fusion",
     neighborhood: "National City",
@@ -5261,6 +5574,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "301",
+    sourceKey: "yelp:el-salvadore%C3%B1o-san-diego-5",
     name: "El Salvadoreño",
     cuisine: "Salvadoran",
     neighborhood: "Golden Hill",
@@ -5278,6 +5592,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "302",
+    sourceKey: "yelp:pho-7-cow-national-city",
     name: "Pho 7 Cow",
     cuisine: "Vietnamese",
     neighborhood: "National City",
@@ -5296,6 +5611,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "303",
+    sourceKey: "yelp:sizzler-san-diego-7",
     name: "Sizzler",
     cuisine: "Seafood",
     neighborhood: "National City",
@@ -5313,6 +5629,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "304",
+    sourceKey: "yelp:tacos-el-franc-national-city-7",
     name: "Tacos El Franc",
     cuisine: "Tacos",
     neighborhood: "Chula Vista",
@@ -5330,6 +5647,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "305",
+    sourceKey: "yelp:texas-roadhouse-national-city",
     name: "Texas Roadhouse",
     cuisine: "Steakhouses",
     neighborhood: "Chula Vista",
@@ -5347,6 +5665,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "306",
+    sourceKey: "yelp:sushi-and-galbi-national-city",
     name: "Sushi & Galbi",
     cuisine: "Japanese",
     neighborhood: "National City",
@@ -5364,6 +5683,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "307",
+    sourceKey: "yelp:in-n-out-burger-national-city",
     name: "In-N-Out Burger",
     cuisine: "Burgers",
     neighborhood: "National City",
@@ -5381,6 +5701,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "308",
+    sourceKey: "yelp:cocina-35-san-diego-11",
     name: "Cocina 35",
     cuisine: "Mexican",
     neighborhood: "Otay Mesa",
@@ -5398,6 +5719,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "309",
+    sourceKey: "yelp:eriks-fresh-grill-san-diego",
     name: "Erik's Fresh Grill",
     cuisine: "Greek",
     neighborhood: "Otay Mesa",
@@ -5415,6 +5737,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "310",
+    sourceKey: "yelp:tacos-el-gordo-san-diego",
     name: "Tacos El Gordo",
     cuisine: "Mexican",
     neighborhood: "San Ysidro",
@@ -5432,6 +5755,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "311",
+    sourceKey: "yelp:golden-house-chinese-restaurant-san-diego-5",
     name: "Golden House Chinese Restaurant",
     cuisine: "Chinese",
     neighborhood: "San Ysidro",
@@ -5449,6 +5773,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "312",
+    sourceKey: "yelp:restaurante-caesars-tijuana-2",
     name: "Restaurante Caesar's",
     cuisine: "Salad",
     neighborhood: "San Ysidro",
@@ -5467,6 +5792,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "313",
+    sourceKey: "yelp:little-sakana-all-you-can-eat-sushi-san-diego-4",
     name: "Little Sakana All You Can Eat Sushi",
     cuisine: "Japanese",
     neighborhood: "San Ysidro",
@@ -5485,6 +5811,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "314",
+    sourceKey: "yelp:tacos-el-franc-tijuana",
     name: "Tacos El Franc",
     cuisine: "Tacos",
     neighborhood: "San Ysidro",
@@ -5503,6 +5830,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "315",
+    sourceKey: "yelp:lion-fish-tijuana",
     name: "Lion Fish",
     cuisine: "Bars",
     neighborhood: "San Ysidro",
@@ -5520,6 +5848,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "316",
+    sourceKey: "yelp:el-rincon-restaurant-san-diego-3",
     name: "El Rincon Restaurant",
     cuisine: "Mexican",
     neighborhood: "San Ysidro",
@@ -5537,6 +5866,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "317",
+    sourceKey: "yelp:baja-fish-mart-san-diego",
     name: "Baja Fish Mart",
     cuisine: "Seafood",
     neighborhood: "San Ysidro",
@@ -5554,6 +5884,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "318",
+    sourceKey: "yelp:mariscos-el-mazate%C3%B1o-tijuana-3",
     name: "Mariscos el Mazateño",
     cuisine: "Mexican",
     neighborhood: "San Ysidro",
@@ -5571,6 +5902,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "319",
+    sourceKey: "yelp:taco-nazo-tijuana-3",
     name: "Taco nazo",
     cuisine: "Tacos",
     neighborhood: "San Ysidro",
@@ -5588,6 +5920,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "320",
+    sourceKey: "yelp:ying-li-restaurant-san-ysidro",
     name: "Ying Li Restaurant",
     cuisine: "Chinese",
     neighborhood: "San Ysidro",
@@ -5605,6 +5938,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "321",
+    sourceKey: "yelp:sayulitas-mexican-food-san-diego-13",
     name: "Sayulitas Mexican Food",
     cuisine: "Mexican",
     neighborhood: "San Ysidro",
@@ -5622,6 +5956,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "322",
+    sourceKey: "yelp:la-justina-tijuana",
     name: "La Justina",
     cuisine: "Mexican",
     neighborhood: "San Ysidro",
@@ -5639,6 +5974,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "323",
+    sourceKey: "yelp:la-corriente-cevicher%C3%ADa-nais-tijuana-3",
     name: "La Corriente Cevichería Nais",
     cuisine: "Seafood",
     neighborhood: "San Ysidro",
@@ -5656,6 +5992,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "324",
+    sourceKey: "yelp:palm-thai-cafe-no-title",
     name: "Palm Thai Cafe",
     cuisine: "Thai",
     neighborhood: "San Ysidro",
@@ -5673,6 +6010,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "325",
+    sourceKey: "yelp:tacos-el-guero-san-ysidro",
     name: "Tacos El Guero",
     cuisine: "Mexican",
     neighborhood: "San Ysidro",
@@ -5690,6 +6028,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "326",
+    sourceKey: "yelp:jilbertos-mexican-food-and-taco-shops-san-diego",
     name: "Jilberto's Mexican Food & Taco Shops",
     cuisine: "Mexican",
     neighborhood: "San Ysidro",
@@ -5707,6 +6046,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "327",
+    sourceKey: "yelp:tj-oyster-bar-bonita",
     name: "TJ Oyster Bar",
     cuisine: "Seafood",
     neighborhood: "Bonita",
@@ -5724,6 +6064,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "328",
+    sourceKey: "yelp:manna-heaven-bbq-chula-vista-2",
     name: "Manna Heaven BBQ",
     cuisine: "Korean",
     neighborhood: "Bonita",
@@ -5741,6 +6082,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "329",
+    sourceKey: "yelp:romesco-mexiterranean-bistro-bonita-3",
     name: "Romesco Mexiterranean Bistro",
     cuisine: "Mexican",
     neighborhood: "Bonita",
@@ -5758,6 +6100,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "330",
+    sourceKey: "yelp:francos-flapjack-family-restaurant-bonita-2",
     name: "Franco's Flapjack Family Restaurant",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Bonita",
@@ -5775,6 +6118,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "331",
+    sourceKey: "yelp:tj-oyster-bar-chula-vista-4",
     name: "Tj Oyster Bar",
     cuisine: "Seafood",
     neighborhood: "Bonita",
@@ -5792,6 +6136,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "332",
+    sourceKey: "yelp:thai-taste-2-bonita",
     name: "Thai Taste 2",
     cuisine: "Thai",
     neighborhood: "Bonita",
@@ -5809,6 +6154,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "333",
+    sourceKey: "yelp:jj-s-island-grindz-bonita-2",
     name: "JJ’s Island Grindz",
     cuisine: "Sushi Bars",
     neighborhood: "Bonita",
@@ -5826,6 +6172,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "334",
+    sourceKey: "yelp:d-lish-chula-vista-4",
     name: "D'Lish",
     cuisine: "Pizza",
     neighborhood: "Bonita",
@@ -5843,6 +6190,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "335",
+    sourceKey: "yelp:el-pollo-grill-bonita-chula-vista",
     name: "El Pollo Grill - Bonita",
     cuisine: "Mexican",
     neighborhood: "Chula Vista",
@@ -5860,6 +6208,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "336",
+    sourceKey: "yelp:donnys-cafe-bonita-2",
     name: "Donnys Cafe",
     cuisine: "Cafes",
     neighborhood: "Bonita",
@@ -5878,6 +6227,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "337",
+    sourceKey: "yelp:ming-s-revolving-sushi-and-bar-chula-vista",
     name: "Ming’s Revolving Sushi & Bar",
     cuisine: "Sushi Bars",
     neighborhood: "Bonita",
@@ -5895,6 +6245,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "338",
+    sourceKey: "yelp:casa-de-pico-la-mesa",
     name: "Casa De Pico",
     cuisine: "Mexican",
     neighborhood: "La Mesa",
@@ -5912,6 +6263,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "339",
+    sourceKey: "yelp:the-hills-pub-la-mesa",
     name: "The Hills Pub",
     cuisine: "Pubs",
     neighborhood: "La Mesa",
@@ -5930,6 +6282,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "340",
+    sourceKey: "yelp:brigantine-la-mesa-3",
     name: "Brigantine",
     cuisine: "Seafood",
     neighborhood: "La Mesa",
@@ -5947,6 +6300,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "341",
+    sourceKey: "yelp:narumi-sushi-la-mesa-7",
     name: "Narumi Sushi",
     cuisine: "Japanese",
     neighborhood: "La Mesa",
@@ -5964,6 +6318,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "342",
+    sourceKey: "yelp:la-mesa-bistro-la-mesa",
     name: "La Mesa Bistro",
     cuisine: "Cafes",
     neighborhood: "La Mesa",
@@ -5981,6 +6336,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "343",
+    sourceKey: "yelp:crafted-greens-el-cajon",
     name: "Crafted Greens",
     cuisine: "American",
     neighborhood: "El Cajon",
@@ -5999,6 +6355,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "344",
+    sourceKey: "yelp:black-bear-diner-el-cajon-6",
     name: "Black Bear Diner",
     cuisine: "Diners",
     neighborhood: "El Cajon",
@@ -6016,6 +6373,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "345",
+    sourceKey: "yelp:texas-roadhouse-el-cajon-2",
     name: "Texas Roadhouse",
     cuisine: "Steakhouses",
     neighborhood: "El Cajon",
@@ -6033,6 +6391,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "346",
+    sourceKey: "yelp:black-angus-steakhouse-el-cajon",
     name: "Black Angus Steakhouse",
     cuisine: "Steakhouses",
     neighborhood: "El Cajon",
@@ -6050,6 +6409,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "347",
+    sourceKey: "yelp:hacienda-casa-blanca-el-cajon-2",
     name: "Hacienda Casa Blanca",
     cuisine: "Mexican",
     neighborhood: "El Cajon",
@@ -6067,6 +6427,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "348",
+    sourceKey: "yelp:buckboards-barbecue-and-brew-el-cajon",
     name: "Buckboard's Barbecue & Brew",
     cuisine: "New American",
     neighborhood: "El Cajon",
@@ -6085,6 +6446,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "349",
+    sourceKey: "yelp:thai-time-el-cajon",
     name: "Thai Time",
     cuisine: "Thai",
     neighborhood: "El Cajon",
@@ -6102,6 +6464,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "350",
+    sourceKey: "yelp:beef-n-bun-el-cajon",
     name: "Beef 'n Bun",
     cuisine: "Burgers",
     neighborhood: "El Cajon",
@@ -6119,6 +6482,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "351",
+    sourceKey: "yelp:finest-thai-el-cajon",
     name: "Finest Thai",
     cuisine: "Thai",
     neighborhood: "El Cajon",
@@ -6136,6 +6500,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "352",
+    sourceKey: "yelp:mal-al-sham-the-taste-of-damascus-el-cajon",
     name: "Mal Al Sham -The Taste Of Damascus",
     cuisine: "Syrian",
     neighborhood: "El Cajon",
@@ -6153,6 +6518,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "353",
+    sourceKey: "yelp:greek-chicken-el-cajon",
     name: "Greek Chicken",
     cuisine: "Greek",
     neighborhood: "El Cajon",
@@ -6170,6 +6536,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "354",
+    sourceKey: "yelp:the-breakfast-house-el-cajon",
     name: "The Breakfast House",
     cuisine: "Breakfast & Brunch",
     neighborhood: "El Cajon",
@@ -6187,6 +6554,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "355",
+    sourceKey: "yelp:greek-chicken-el-cajon-2",
     name: "Greek Chicken",
     cuisine: "Greek",
     neighborhood: "El Cajon",
@@ -6204,6 +6572,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "356",
+    sourceKey: "yelp:el-cajon-bistro-and-bakery-el-cajon-2",
     name: "El Cajon Bistro & Bakery",
     cuisine: "American",
     neighborhood: "El Cajon",
@@ -6221,6 +6590,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "357",
+    sourceKey: "yelp:hana-sushi-el-cajon",
     name: "Hana Sushi",
     cuisine: "Sushi Bars",
     neighborhood: "El Cajon",
@@ -6238,6 +6608,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "358",
+    sourceKey: "yelp:testo-pepesto-italian-restaurant-el-cajon-4",
     name: "Testo Pepesto Italian Restaurant",
     cuisine: "Italian",
     neighborhood: "El Cajon",
@@ -6255,6 +6626,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "359",
+    sourceKey: "yelp:philly-steak-subs-el-cajon-2",
     name: "Philly Steak Subs",
     cuisine: "Sandwiches",
     neighborhood: "El Cajon",
@@ -6272,6 +6644,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "360",
+    sourceKey: "yelp:china-1968-el-cajon",
     name: "China 1968",
     cuisine: "Chinese",
     neighborhood: "El Cajon",
@@ -6289,6 +6662,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "361",
+    sourceKey: "yelp:izzys-cafe-el-cajon",
     name: "Izzy's Cafe",
     cuisine: "Barbeque",
     neighborhood: "El Cajon",
@@ -6306,6 +6680,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "362",
+    sourceKey: "yelp:phils-bbq-santee",
     name: "Phil's BBQ",
     cuisine: "Barbeque",
     neighborhood: "Santee",
@@ -6323,6 +6698,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "363",
+    sourceKey: "yelp:island-style-cafe-santee",
     name: "Island Style Cafe",
     cuisine: "Hawaiian",
     neighborhood: "Santee",
@@ -6340,6 +6716,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "364",
+    sourceKey: "yelp:broken-yolk-cafe-santee-3",
     name: "Broken Yolk Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Santee",
@@ -6358,6 +6735,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "365",
+    sourceKey: "yelp:pho-ca-dao-and-grill-santee",
     name: "Pho Ca Dao & Grill",
     cuisine: "Vietnamese",
     neighborhood: "Santee",
@@ -6375,6 +6753,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "366",
+    sourceKey: "yelp:annys-fine-burger-santee",
     name: "Anny's Fine Burger",
     cuisine: "Burgers",
     neighborhood: "Santee",
@@ -6392,6 +6771,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "367",
+    sourceKey: "yelp:domo-sushi-santee",
     name: "Domo Sushi",
     cuisine: "Sushi Bars",
     neighborhood: "Santee",
@@ -6409,6 +6789,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "368",
+    sourceKey: "yelp:lucky-chinese-food-santee",
     name: "Lucky Chinese Food",
     cuisine: "Chinese",
     neighborhood: "Santee",
@@ -6426,6 +6807,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "369",
+    sourceKey: "yelp:okawa-steak-house-and-sushi-santee-2",
     name: "Okawa Steak House & Sushi",
     cuisine: "Japanese",
     neighborhood: "Santee",
@@ -6443,6 +6825,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "370",
+    sourceKey: "yelp:pepper-farm-deli-santee",
     name: "Pepper Farm Deli",
     cuisine: "Sandwiches",
     neighborhood: "Santee",
@@ -6461,6 +6844,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "371",
+    sourceKey: "yelp:janets-cafe-and-deli-santee",
     name: "Janet's Cafe and Deli",
     cuisine: "New American",
     neighborhood: "Santee",
@@ -6478,6 +6862,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "372",
+    sourceKey: "yelp:mr-birria-santee-2",
     name: "Mr.Birria",
     cuisine: "Tacos",
     neighborhood: "Santee",
@@ -6495,6 +6880,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "373",
+    sourceKey: "yelp:olive-garden-italian-restaurant-santee-3",
     name: "Olive Garden Italian Restaurant",
     cuisine: "Italian",
     neighborhood: "Santee",
@@ -6512,6 +6898,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "374",
+    sourceKey: "yelp:limoncello-la-mesa",
     name: "Limoncello",
     cuisine: "Italian",
     neighborhood: "La Mesa",
@@ -6530,6 +6917,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "375",
+    sourceKey: "yelp:casa-gabriela-la-mesa",
     name: "Casa Gabriela",
     cuisine: "Mexican",
     neighborhood: "La Mesa",
@@ -6547,6 +6935,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "376",
+    sourceKey: "yelp:surf-rider-pizza-la-mesa",
     name: "Surf Rider Pizza",
     cuisine: "Pizza",
     neighborhood: "La Mesa",
@@ -6564,6 +6953,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "377",
+    sourceKey: "yelp:dukes-old-fashioned-onion-burgers-la-mesa",
     name: "Dukes Old Fashioned Onion Burgers",
     cuisine: "Burgers",
     neighborhood: "La Mesa",
@@ -6581,6 +6971,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "378",
+    sourceKey: "yelp:johnny-bs-la-mesa",
     name: "Johnny B's",
     cuisine: "Burgers",
     neighborhood: "La Mesa",
@@ -6598,6 +6989,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "379",
+    sourceKey: "yelp:bamboo-fresh-thai-cuisine-la-mesa",
     name: "Bamboo Fresh Thai Cuisine",
     cuisine: "Thai",
     neighborhood: "La Mesa",
@@ -6615,6 +7007,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "380",
+    sourceKey: "yelp:nonnos-ristorante-italiano-la-mesa",
     name: "Nonno's Ristorante Italiano",
     cuisine: "Italian",
     neighborhood: "La Mesa",
@@ -6633,6 +7026,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "381",
+    sourceKey: "yelp:steamy-piggy-san-diego-2",
     name: "Steamy Piggy",
     cuisine: "Chinese",
     neighborhood: "Kearny Mesa",
@@ -6651,6 +7045,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "382",
+    sourceKey: "yelp:formoosa-san-diego",
     name: "formoosa",
     cuisine: "Taiwanese",
     neighborhood: "Kearny Mesa",
@@ -6669,6 +7064,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "383",
+    sourceKey: "yelp:tajima-ramen-convoy-san-diego-3",
     name: "Tajima Ramen Convoy",
     cuisine: "Ramen",
     neighborhood: "Kearny Mesa",
@@ -6686,6 +7082,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "384",
+    sourceKey: "yelp:rakiraki-ramen-and-tsukemen-san-diego",
     name: "Rakiraki Ramen & Tsukemen",
     cuisine: "Ramen",
     neighborhood: "Kearny Mesa",
@@ -6703,6 +7100,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "385",
+    sourceKey: "yelp:manna-heaven-bbq-san-diego-5",
     name: "Manna Heaven BBQ",
     cuisine: "Korean",
     neighborhood: "Kearny Mesa",
@@ -6720,6 +7118,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "386",
+    sourceKey: "yelp:flama-llama-san-diego",
     name: "Flama Llama",
     cuisine: "Latin American",
     neighborhood: "Kearny Mesa",
@@ -6738,6 +7137,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "387",
+    sourceKey: "yelp:dumpling-inn-san-diego-6",
     name: "Dumpling Inn",
     cuisine: "Chinese",
     neighborhood: "Kearny Mesa",
@@ -6755,6 +7155,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "388",
+    sourceKey: "yelp:koon-thai-kitchen-san-diego",
     name: "Koon Thai Kitchen",
     cuisine: "Thai",
     neighborhood: "Kearny Mesa",
@@ -6772,6 +7173,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "389",
+    sourceKey: "yelp:buds-louisiana-cafe-san-diego",
     name: "Bud's Louisiana Cafe",
     cuisine: "Cajun/Creole",
     neighborhood: "Kearny Mesa",
@@ -6789,6 +7191,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "390",
+    sourceKey: "yelp:kura-revolving-sushi-bar-san-diego-4",
     name: "Kura Revolving Sushi Bar",
     cuisine: "Sushi Bars",
     neighborhood: "Kearny Mesa",
@@ -6806,6 +7209,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "391",
+    sourceKey: "yelp:nishiki-ramen-kearny-mesa-san-diego",
     name: "Nishiki Ramen - Kearny Mesa",
     cuisine: "Ramen",
     neighborhood: "Kearny Mesa",
@@ -6823,6 +7227,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "392",
+    sourceKey: "yelp:menya-ultra-san-diego-5",
     name: "Menya Ultra",
     cuisine: "Ramen",
     neighborhood: "Kearny Mesa",
@@ -6840,6 +7245,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "393",
+    sourceKey: "yelp:phuong-trang-san-diego",
     name: "Phuong Trang",
     cuisine: "Vietnamese",
     neighborhood: "Kearny Mesa",
@@ -6857,6 +7263,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "394",
+    sourceKey: "yelp:cross-street-san-diego",
     name: "Cross Street",
     cuisine: "Korean",
     neighborhood: "Kearny Mesa",
@@ -6874,6 +7281,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "395",
+    sourceKey: "yelp:crab-hut-san-diego",
     name: "Crab Hut",
     cuisine: "Cajun/Creole",
     neighborhood: "Kearny Mesa",
@@ -6891,6 +7299,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "396",
+    sourceKey: "yelp:sushi-deli-3-san-diego-2",
     name: "Sushi Deli 3",
     cuisine: "Sushi Bars",
     neighborhood: "Kearny Mesa",
@@ -6908,6 +7317,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "397",
+    sourceKey: "yelp:shan-xi-magic-kitchen-san-diego-2",
     name: "Shan Xi Magic Kitchen",
     cuisine: "Chinese",
     neighborhood: "Kearny Mesa",
@@ -6925,6 +7335,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "398",
+    sourceKey: "yelp:studio-diner-san-diego",
     name: "Studio Diner",
     cuisine: "American",
     neighborhood: "Kearny Mesa",
@@ -6942,6 +7353,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "399",
+    sourceKey: "yelp:tajima-ramen-mercury-san-diego-5",
     name: "Tajima Ramen Mercury",
     cuisine: "Ramen",
     neighborhood: "Kearny Mesa",
@@ -6959,6 +7371,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "400",
+    sourceKey: "yelp:yakyudori-san-diego",
     name: "Yakyudori",
     cuisine: "Ramen",
     neighborhood: "Kearny Mesa",
@@ -6976,6 +7389,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "401",
+    sourceKey: "yelp:homestyle-hawaiian-san-diego",
     name: "Homestyle Hawaiian",
     cuisine: "Hawaiian",
     neighborhood: "Kearny Mesa",
@@ -6993,6 +7407,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "402",
+    sourceKey: "yelp:woomiok-san-diego-4",
     name: "Woomiok",
     cuisine: "Korean",
     neighborhood: "Kearny Mesa",
@@ -7011,6 +7426,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "403",
+    sourceKey: "yelp:shabumi-san-diego-7",
     name: "Shabumi",
     cuisine: "Hot Pot",
     neighborhood: "Clairemont",
@@ -7029,6 +7445,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "404",
+    sourceKey: "yelp:bulls-smokin-bbq-san-diego-2",
     name: "Bull's Smokin BBQ",
     cuisine: "Barbeque",
     neighborhood: "Bay Park",
@@ -7046,6 +7463,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "405",
+    sourceKey: "yelp:puesto-mission-valley-san-diego",
     name: "Puesto Mission Valley",
     cuisine: "Mexican",
     neighborhood: "Mission Valley",
@@ -7063,6 +7481,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "406",
+    sourceKey: "yelp:jvs-mexican-food-san-diego",
     name: "JV's Mexican Food",
     cuisine: "Mexican",
     neighborhood: "Bay Park",
@@ -7080,6 +7499,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "407",
+    sourceKey: "yelp:wa-dining-okan-san-diego-2",
     name: "Wa Dining OKAN",
     cuisine: "Japanese",
     neighborhood: "Kearny Mesa",
@@ -7097,6 +7517,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "408",
+    sourceKey: "yelp:ironside-fish-and-oyster-san-diego",
     name: "Ironside Fish & Oyster",
     cuisine: "Seafood",
     neighborhood: "Little Italy",
@@ -7114,6 +7535,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "409",
+    sourceKey: "yelp:morning-glory-san-diego-3",
     name: "Morning Glory",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Little Italy",
@@ -7131,6 +7553,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "410",
+    sourceKey: "yelp:filippis-pizza-grotto-little-italy-san-diego",
     name: "Filippi's Pizza Grotto Little Italy",
     cuisine: "Italian",
     neighborhood: "Little Italy",
@@ -7148,6 +7571,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "411",
+    sourceKey: "yelp:ristorante-illando-san-diego",
     name: "Ristorante Illando",
     cuisine: "Italian",
     neighborhood: "Little Italy",
@@ -7165,6 +7589,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "412",
+    sourceKey: "yelp:level2-at-georges-at-the-cove-temp-la-jolla-2",
     name: "Georges at the Cove",
     cuisine: "New American",
     neighborhood: "La Jolla",
@@ -7182,6 +7607,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "413",
+    sourceKey: "yelp:eddie-vs-prime-seafood-la-jolla-4",
     name: "Eddie V's Prime Seafood",
     cuisine: "Seafood",
     neighborhood: "La Jolla",
@@ -7199,6 +7625,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "414",
+    sourceKey: "yelp:shorehouse-kitchen-la-jolla",
     name: "Shorehouse Kitchen",
     cuisine: "Coffee & Tea",
     neighborhood: "La Jolla",
@@ -7216,6 +7643,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "415",
+    sourceKey: "yelp:piatti-la-jolla-4",
     name: "Piatti",
     cuisine: "Italian",
     neighborhood: "La Jolla",
@@ -7233,6 +7661,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "416",
+    sourceKey: "yelp:brockton-villa-restaurant-la-jolla",
     name: "Brockton Villa Restaurant",
     cuisine: "Seafood",
     neighborhood: "La Jolla",
@@ -7250,6 +7679,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "417",
+    sourceKey: "yelp:the-marine-room-la-jolla-2",
     name: "The Marine Room",
     cuisine: "Seafood",
     neighborhood: "La Jolla",
@@ -7267,6 +7697,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "418",
+    sourceKey: "yelp:codys-la-jolla-la-jolla",
     name: "Cody's La Jolla",
     cuisine: "Breakfast & Brunch",
     neighborhood: "La Jolla",
@@ -7284,6 +7715,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "419",
+    sourceKey: "yelp:el-pescador-fish-market-and-restaurant-la-jolla",
     name: "El Pescador Fish Market & Restaurant",
     cuisine: "Seafood",
     neighborhood: "La Jolla",
@@ -7301,6 +7733,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "420",
+    sourceKey: "yelp:barbarella-restaurant-and-bar-playa-la-jolla-2",
     name: "Barbarella Restaurant & Bar",
     cuisine: "Breakfast & Brunch",
     neighborhood: "La Jolla",
@@ -7318,6 +7751,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "421",
+    sourceKey: "yelp:the-lot-la-jolla-la-jolla-3",
     name: "THE LOT La Jolla",
     cuisine: "Cinema",
     neighborhood: "La Jolla",
@@ -7335,6 +7769,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "422",
+    sourceKey: "yelp:carolines-seaside-cafe-by-giuseppe-la-jolla",
     name: "Caroline's Seaside Cafe by Giuseppe",
     cuisine: "Cafes",
     neighborhood: "La Jolla",
@@ -7352,6 +7787,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "423",
+    sourceKey: "yelp:catania-san-diego-2",
     name: "Catania",
     cuisine: "Pizza",
     neighborhood: "La Jolla",
@@ -7370,6 +7806,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "424",
+    sourceKey: "yelp:richard-walkers-pancake-house-la-jolla-4",
     name: "Richard Walker's Pancake House",
     cuisine: "Waffles",
     neighborhood: "La Jolla",
@@ -7387,6 +7824,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "425",
+    sourceKey: "yelp:blue-ocean-harumama-la-jolla-6",
     name: "Blue Ocean/Harumama",
     cuisine: "Ramen",
     neighborhood: "La Jolla",
@@ -7404,6 +7842,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "426",
+    sourceKey: "yelp:harrys-coffee-shop-la-jolla",
     name: "Harry's Coffee Shop",
     cuisine: "American",
     neighborhood: "La Jolla",
@@ -7421,6 +7860,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "427",
+    sourceKey: "yelp:burger-lounge-la-jolla-2",
     name: "Burger Lounge",
     cuisine: "Burgers",
     neighborhood: "La Jolla",
@@ -7438,6 +7878,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "428",
+    sourceKey: "yelp:the-spot-la-jolla-la-jolla",
     name: "The Spot La Jolla",
     cuisine: "Sports Bars",
     neighborhood: "La Jolla",
@@ -7455,6 +7896,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "429",
+    sourceKey: "yelp:din-tai-fung-san-diego-9",
     name: "Din Tai Fung",
     cuisine: "Taiwanese",
     neighborhood: "UTC",
@@ -7472,6 +7914,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "430",
+    sourceKey: "yelp:haidilao-hotpot-san-diego",
     name: "Haidilao Hotpot",
     cuisine: "Hot Pot",
     neighborhood: "UTC",
@@ -7490,6 +7933,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "431",
+    sourceKey: "yelp:urban-plates-la-jolla",
     name: "Urban Plates",
     cuisine: "New American",
     neighborhood: "UTC",
@@ -7507,6 +7951,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "432",
+    sourceKey: "yelp:regents-pizzeria-san-diego-2",
     name: "Regents Pizzeria",
     cuisine: "Pizza",
     neighborhood: "UTC",
@@ -7524,6 +7969,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "433",
+    sourceKey: "yelp:snooze-an-a-m-eatery-san-diego-9",
     name: "Snooze, an A.M. Eatery",
     cuisine: "Breakfast & Brunch",
     neighborhood: "UTC",
@@ -7541,6 +7987,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "434",
+    sourceKey: "yelp:eureka-san-diego-9",
     name: "Eureka!",
     cuisine: "American",
     neighborhood: "UTC",
@@ -7558,6 +8005,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "435",
+    sourceKey: "yelp:seasons-52-san-diego-4",
     name: "Seasons 52",
     cuisine: "New American",
     neighborhood: "UTC",
@@ -7575,6 +8023,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "436",
+    sourceKey: "yelp:javiers-la-jolla-san-diego",
     name: "Javier's La Jolla",
     cuisine: "Mexican",
     neighborhood: "UTC",
@@ -7592,6 +8041,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "437",
+    sourceKey: "yelp:the-melt-la-jolla-2",
     name: "The Melt",
     cuisine: "Sandwiches",
     neighborhood: "UTC",
@@ -7609,6 +8059,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "438",
+    sourceKey: "yelp:hawaiian-fresh-seafood-san-diego-19",
     name: "Hawaiian Fresh Seafood",
     cuisine: "Poke",
     neighborhood: "Sorrento Valley",
@@ -7627,6 +8078,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "439",
+    sourceKey: "yelp:chicago-fire-grill-san-diego-2",
     name: "Chicago Fire Grill",
     cuisine: "Salad",
     neighborhood: "UTC",
@@ -7645,6 +8097,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "440",
+    sourceKey: "yelp:viet-nom-san-diego",
     name: "Viet Nom",
     cuisine: "Vietnamese",
     neighborhood: "UTC",
@@ -7663,6 +8116,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "441",
+    sourceKey: "yelp:tender-greens-san-diego-12",
     name: "Tender Greens",
     cuisine: "New American",
     neighborhood: "UTC",
@@ -7680,6 +8134,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "442",
+    sourceKey: "yelp:gravity-heights-sorrento-valley-san-diego-2",
     name: "Gravity Heights - Sorrento Valley",
     cuisine: "Brewpubs",
     neighborhood: "Sorrento Valley",
@@ -7697,6 +8152,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "443",
+    sourceKey: "yelp:true-food-kitchen-san-diego-9",
     name: "True Food Kitchen",
     cuisine: "New American",
     neighborhood: "UTC",
@@ -7714,6 +8170,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "444",
+    sourceKey: "yelp:nozomi-la-jolla",
     name: "Nozomi",
     cuisine: "Sushi Bars",
     neighborhood: "UTC",
@@ -7731,6 +8188,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "445",
+    sourceKey: "yelp:shake-shack-westfield-utc-san-diego",
     name: "Shake Shack UTC San Diego",
     cuisine: "Fast Food",
     neighborhood: "UTC",
@@ -7748,6 +8206,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "446",
+    sourceKey: "yelp:mendocino-farms-la-jolla",
     name: "Mendocino Farms",
     cuisine: "Salad",
     neighborhood: "UTC",
@@ -7765,6 +8224,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "447",
+    sourceKey: "yelp:lucrezia-la-jolla-san-diego",
     name: "Lucrezia La Jolla",
     cuisine: "Italian",
     neighborhood: "UTC",
@@ -7782,6 +8242,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "448",
+    sourceKey: "yelp:michelines-pita-house-la-jolla-2",
     name: "Micheline's Pita House La Jolla",
     cuisine: "Mediterranean",
     neighborhood: "UTC",
@@ -7799,6 +8260,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "449",
+    sourceKey: "yelp:star-anise-thai-cuisine-san-diego",
     name: "Star Anise Thai Cuisine",
     cuisine: "Thai",
     neighborhood: "UTC",
@@ -7816,6 +8278,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "450",
+    sourceKey: "yelp:bjs-restaurant-and-brewhouse-la-jolla-4",
     name: "BJ's Restaurant & Brewhouse",
     cuisine: "Pizza",
     neighborhood: "UTC",
@@ -7833,6 +8296,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "451",
+    sourceKey: "yelp:lornas-italian-kitchen-san-diego",
     name: "Lorna's Italian Kitchen",
     cuisine: "Italian",
     neighborhood: "University City",
@@ -7850,6 +8314,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "452",
+    sourceKey: "yelp:buga-korean-bbq-san-diego",
     name: "Buga Korean BBQ",
     cuisine: "Barbeque",
     neighborhood: "Clairemont",
@@ -7867,6 +8332,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "453",
+    sourceKey: "yelp:mongolian-hot-pot-san-diego-3",
     name: "Mongolian Hot Pot",
     cuisine: "Chinese",
     neighborhood: "Clairemont",
@@ -7884,6 +8350,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "454",
+    sourceKey: "yelp:aladdin-cafe-san-diego-3",
     name: "Aladdin Cafe",
     cuisine: "Mediterranean",
     neighborhood: "Clairemont",
@@ -7901,6 +8368,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "455",
+    sourceKey: "yelp:cutwater-spirits-san-diego-2",
     name: "Cutwater Spirits",
     cuisine: "Distilleries",
     neighborhood: "Mira Mesa",
@@ -7919,6 +8387,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "456",
+    sourceKey: "yelp:sipz-clairemont-san-diego-2",
     name: "Sipz - Clairemont",
     cuisine: "Vegetarian",
     neighborhood: "Clairemont",
@@ -7936,6 +8405,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "457",
+    sourceKey: "yelp:sushi-fish-attack-san-diego",
     name: "Sushi Fish Attack",
     cuisine: "Sushi Bars",
     neighborhood: "Clairemont",
@@ -7953,6 +8423,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "458",
+    sourceKey: "yelp:lolitas-mexican-food-san-diego-5",
     name: "Lolita's Mexican Food",
     cuisine: "Mexican",
     neighborhood: "Clairemont",
@@ -7970,6 +8441,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "459",
+    sourceKey: "yelp:facing-east-noodle-and-bar-san-diego-2",
     name: "Facing East Noodle & Bar",
     cuisine: "Asian Fusion",
     neighborhood: "Kearny Mesa",
@@ -7987,6 +8459,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "460",
+    sourceKey: "yelp:poseidon-on-the-beach-del-mar-2",
     name: "Poseidon on the Beach",
     cuisine: "Seafood",
     neighborhood: "Del Mar",
@@ -8004,6 +8477,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "461",
+    sourceKey: "yelp:brigantine-del-mar-4",
     name: "Brigantine",
     cuisine: "Seafood",
     neighborhood: "Solana Beach",
@@ -8021,6 +8495,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "462",
+    sourceKey: "yelp:viewpoint-brewing-del-mar-15",
     name: "Viewpoint Brewing",
     cuisine: "Breweries",
     neighborhood: "Del Mar",
@@ -8038,6 +8513,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "463",
+    sourceKey: "yelp:pacifica-del-mar-del-mar",
     name: "Pacifica Del Mar",
     cuisine: "New American",
     neighborhood: "Del Mar",
@@ -8055,6 +8531,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "464",
+    sourceKey: "yelp:ruths-chris-steak-house-del-mar-4",
     name: "Ruth's Chris Steak House",
     cuisine: "Steakhouses",
     neighborhood: "Carmel Valley",
@@ -8072,6 +8549,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "465",
+    sourceKey: "yelp:seasurf-fish-co-del-mar",
     name: "Seasurf Fish Co",
     cuisine: "Seafood",
     neighborhood: "Carmel Valley",
@@ -8090,6 +8568,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "466",
+    sourceKey: "yelp:fidels-little-mexico-solana-beach",
     name: "Fidel's Little Mexico",
     cuisine: "Mexican",
     neighborhood: "Solana Beach",
@@ -8107,6 +8586,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "467",
+    sourceKey: "yelp:market-restaurant-and-bar-del-mar-2",
     name: "Market Restaurant & Bar",
     cuisine: "New American",
     neighborhood: "Carmel Valley",
@@ -8125,6 +8605,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "468",
+    sourceKey: "yelp:marufuku-ramen-san-diego-4",
     name: "Marufuku Ramen",
     cuisine: "Ramen",
     neighborhood: "Carmel Valley",
@@ -8143,6 +8624,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "469",
+    sourceKey: "yelp:broken-yolk-cafe-del-mar",
     name: "Broken Yolk Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Carmel Valley",
@@ -8160,6 +8642,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "470",
+    sourceKey: "yelp:beeside-balcony-del-mar",
     name: "Beeside Balcony",
     cuisine: "Mediterranean",
     neighborhood: "Del Mar",
@@ -8177,6 +8660,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "471",
+    sourceKey: "yelp:bangkok-bay-solana-beach",
     name: "Bangkok Bay",
     cuisine: "Thai",
     neighborhood: "Solana Beach",
@@ -8194,6 +8678,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "472",
+    sourceKey: "yelp:il-fornaio-del-mar",
     name: "Il Fornaio",
     cuisine: "Italian",
     neighborhood: "Del Mar",
@@ -8211,6 +8696,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "473",
+    sourceKey: "yelp:north-italia-san-diego-12",
     name: "North Italia",
     cuisine: "Italian",
     neighborhood: "Carmel Valley",
@@ -8228,6 +8714,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "474",
+    sourceKey: "yelp:monarch-ocean-pub-del-mar",
     name: "Monarch Ocean Pub",
     cuisine: "Gastropubs",
     neighborhood: "Del Mar",
@@ -8245,6 +8732,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "475",
+    sourceKey: "yelp:tonys-jacal-solana-beach-2",
     name: "Tony's Jacal",
     cuisine: "Salad",
     neighborhood: "Solana Beach",
@@ -8262,6 +8750,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "476",
+    sourceKey: "yelp:davanti-enoteca-del-mar-del-mar",
     name: "Davanti Enoteca - Del Mar",
     cuisine: "Italian",
     neighborhood: "Carmel Valley",
@@ -8279,6 +8768,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "477",
+    sourceKey: "yelp:el-pueblo-mexican-food-and-bar-del-mar-del-mar",
     name: "El Pueblo Mexican Food & Bar - Del Mar",
     cuisine: "Mexican",
     neighborhood: "Solana Beach",
@@ -8296,6 +8786,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "478",
+    sourceKey: "yelp:claires-on-cedros-solana-beach",
     name: "Claire's On Cedros",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Solana Beach",
@@ -8313,6 +8804,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "479",
+    sourceKey: "yelp:pacific-coast-grill-cardiff",
     name: "Pacific Coast Grill",
     cuisine: "Seafood",
     neighborhood: "Cardiff",
@@ -8330,6 +8822,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "480",
+    sourceKey: "yelp:pizza-port-solana-beach-solana-beach",
     name: "Pizza Port - Solana Beach",
     cuisine: "Pizza",
     neighborhood: "Solana Beach",
@@ -8347,6 +8840,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "481",
+    sourceKey: "yelp:cicciottis-cardiff-by-the-sea",
     name: "Cicciotti's",
     cuisine: "Italian",
     neighborhood: "Cardiff",
@@ -8364,6 +8858,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "482",
+    sourceKey: "yelp:waverly-cardiff",
     name: "Waverly",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Cardiff",
@@ -8381,6 +8876,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "483",
+    sourceKey: "yelp:kis-restaurant-cardiff-by-the-sea",
     name: "Ki's Restaurant",
     cuisine: "New American",
     neighborhood: "Cardiff",
@@ -8398,6 +8894,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "484",
+    sourceKey: "yelp:bongiornos-solana-beach",
     name: "Bongiorno's",
     cuisine: "Pizza",
     neighborhood: "Solana Beach",
@@ -8416,6 +8913,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "485",
+    sourceKey: "yelp:sbicca-del-mar-del-mar",
     name: "Sbicca Del Mar",
     cuisine: "Wine Bars",
     neighborhood: "Del Mar",
@@ -8433,6 +8931,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "486",
+    sourceKey: "yelp:naked-cafe-solana-beach",
     name: "Naked Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Solana Beach",
@@ -8450,6 +8949,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "487",
+    sourceKey: "yelp:flower-child-del-mar",
     name: "Flower Child",
     cuisine: "Salad",
     neighborhood: "Solana Beach",
@@ -8467,6 +8967,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "488",
+    sourceKey: "yelp:the-taco-stand-encinitas",
     name: "The Taco Stand",
     cuisine: "Tacos",
     neighborhood: "Encinitas",
@@ -8484,6 +8985,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "489",
+    sourceKey: "yelp:le-papagayo-encinitas",
     name: "Le Papagayo",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Encinitas",
@@ -8501,6 +9003,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "490",
+    sourceKey: "yelp:the-crack-shack-encinitas-2",
     name: "The Crack Shack",
     cuisine: "New American",
     neighborhood: "Encinitas",
@@ -8518,6 +9021,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "491",
+    sourceKey: "yelp:union-kitchen-and-tap-encinitas-4",
     name: "Union Kitchen and Tap Encinitas",
     cuisine: "New American",
     neighborhood: "Encinitas",
@@ -8535,6 +9039,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "492",
+    sourceKey: "yelp:encinitas-fish-shop-encinitas",
     name: "Encinitas Fish Shop",
     cuisine: "Seafood",
     neighborhood: "Encinitas",
@@ -8552,6 +9057,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "493",
+    sourceKey: "yelp:breakfast-republic-encinitas",
     name: "Breakfast Republic",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Encinitas",
@@ -8569,6 +9075,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "494",
+    sourceKey: "yelp:lobster-west-encinitas",
     name: "Lobster West",
     cuisine: "Seafood",
     neighborhood: "Encinitas",
@@ -8586,6 +9093,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "495",
+    sourceKey: "yelp:pannikin-coffee-and-tea-encinitas",
     name: "Pannikin Coffee & Tea",
     cuisine: "Coffee & Tea",
     neighborhood: "Encinitas",
@@ -8603,6 +9111,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "496",
+    sourceKey: "yelp:the-bier-garden-encinitas-3",
     name: "Biergarden Encinitas",
     cuisine: "New American",
     neighborhood: "Encinitas",
@@ -8620,6 +9129,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "497",
+    sourceKey: "yelp:lotus-cafe-and-juice-bar-encinitas",
     name: "Lotus Cafe & Juice Bar",
     cuisine: "Vegetarian",
     neighborhood: "Encinitas",
@@ -8637,6 +9147,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "498",
+    sourceKey: "yelp:blue-ribbon-artisan-pizzeria-encinitas-2",
     name: "Blue Ribbon Artisan Pizzeria",
     cuisine: "Pizza",
     neighborhood: "Encinitas",
@@ -8654,6 +9165,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "499",
+    sourceKey: "yelp:cava-encinitas",
     name: "CAVA",
     cuisine: "Mediterranean",
     neighborhood: "Encinitas",
@@ -8671,6 +9183,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "500",
+    sourceKey: "yelp:solterra-winery-and-kitchen-encinitas-3",
     name: "Solterra Winery & Kitchen",
     cuisine: "Wine Bars",
     neighborhood: "Encinitas",
@@ -8688,6 +9201,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "501",
+    sourceKey: "yelp:el-pueblo-mexican-food-cardiff-cardiff",
     name: "El Pueblo Mexican Food - Cardiff",
     cuisine: "Mexican",
     neighborhood: "Cardiff",
@@ -8705,6 +9219,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "502",
+    sourceKey: "yelp:buona-forchetta-encinitas-2",
     name: "Buona Forchetta",
     cuisine: "Pizza",
     neighborhood: "Encinitas",
@@ -8722,6 +9237,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "503",
+    sourceKey: "yelp:sushi-lounge-encinitas-encinitas",
     name: "Sushi Lounge Encinitas",
     cuisine: "Sushi Bars",
     neighborhood: "Encinitas",
@@ -8739,6 +9255,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "504",
+    sourceKey: "yelp:maurizio-trattoria-italiana-encinitas",
     name: "Maurizio Trattoria Italiana",
     cuisine: "Italian",
     neighborhood: "Encinitas",
@@ -8756,6 +9273,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "505",
+    sourceKey: "yelp:qero-restaurant-encinitas-4",
     name: "Q'ero Restaurant",
     cuisine: "Latin American",
     neighborhood: "Encinitas",
@@ -8773,6 +9291,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "506",
+    sourceKey: "yelp:beach-break-cafe-oceanside",
     name: "Beach Break Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Carlsbad",
@@ -8791,6 +9310,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "507",
+    sourceKey: "yelp:campfire-carlsbad-2",
     name: "Campfire",
     cuisine: "New American",
     neighborhood: "Carlsbad",
@@ -8808,6 +9328,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "508",
+    sourceKey: "yelp:cafe-topes-carlsbad-2",
     name: "Cafe Topes",
     cuisine: "Coffee & Tea",
     neighborhood: "Carlsbad",
@@ -8825,6 +9346,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "509",
+    sourceKey: "yelp:pizza-port-carlsbad-3",
     name: "Pizza Port",
     cuisine: "Pizza",
     neighborhood: "Carlsbad",
@@ -8842,6 +9364,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "510",
+    sourceKey: "yelp:264-fresco-carlsbad-2",
     name: "264 Fresco",
     cuisine: "Italian",
     neighborhood: "Carlsbad",
@@ -8859,6 +9382,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "511",
+    sourceKey: "yelp:hooked-on-sushi-carlsbad-carlsbad-2",
     name: "Hooked on Sushi - Carlsbad",
     cuisine: "Sushi Bars",
     neighborhood: "Carlsbad",
@@ -8876,6 +9400,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "512",
+    sourceKey: "yelp:broken-yolk-cafe-oceanside-4",
     name: "Broken Yolk Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Carlsbad",
@@ -8893,6 +9418,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "513",
+    sourceKey: "yelp:texas-roadhouse-oceanside-2",
     name: "Texas Roadhouse",
     cuisine: "Steakhouses",
     neighborhood: "Carlsbad",
@@ -8910,6 +9436,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "514",
+    sourceKey: "yelp:bluewater-grill-carlsbad-4",
     name: "Bluewater Grill Seafood Restaurant & Market Carlsbad",
     cuisine: "Seafood",
     neighborhood: "Carlsbad",
@@ -8927,6 +9454,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "515",
+    sourceKey: "yelp:blue-ocean-robata-and-sushi-bar-carlsbad-3",
     name: "Blue Ocean Robata & Sushi Bar",
     cuisine: "Asian Fusion",
     neighborhood: "Carlsbad",
@@ -8944,6 +9472,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "516",
+    sourceKey: "yelp:se%C3%B1or-grubbys-carlsbad-2",
     name: "Señor Grubby's",
     cuisine: "Mexican",
     neighborhood: "Carlsbad",
@@ -8961,6 +9490,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "517",
+    sourceKey: "yelp:harumama-ramen-sushi-carlsbad-carlsbad-4",
     name: "Harumama Ramen + Sushi - Carlsbad",
     cuisine: "Ramen",
     neighborhood: "Carlsbad",
@@ -8978,6 +9508,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "518",
+    sourceKey: "yelp:dons-country-kitchen-oceanside-6",
     name: "Don's Country Kitchen",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Carlsbad",
@@ -8996,6 +9527,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "519",
+    sourceKey: "yelp:gonzo-carlsbad-8",
     name: "GONZO! ",
     cuisine: "Ramen",
     neighborhood: "Carlsbad",
@@ -9014,6 +9546,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "520",
+    sourceKey: "yelp:shorehouse-kitchen-carlsbad-4",
     name: "Shorehouse Kitchen",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Carlsbad",
@@ -9031,6 +9564,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "521",
+    sourceKey: "yelp:vigiluccis-seafood-and-steakhouse-carlsbad-2",
     name: "Vigilucci's Seafood & Steakhouse",
     cuisine: "Italian",
     neighborhood: "Carlsbad",
@@ -9048,6 +9582,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "522",
+    sourceKey: "yelp:wrench-and-rodent-seabasstropub-oceanside",
     name: "Wrench & Rodent Seabasstropub",
     cuisine: "New American",
     neighborhood: "Carlsbad",
@@ -9065,6 +9600,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "523",
+    sourceKey: "yelp:gaja-korean-bbq-oceanside-3",
     name: "Gaja Korean BBQ",
     cuisine: "Korean",
     neighborhood: "Carlsbad",
@@ -9082,6 +9618,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "524",
+    sourceKey: "yelp:board-and-brew-carlsbad-village-carlsbad",
     name: "Board & Brew - Carlsbad Village",
     cuisine: "Sandwiches",
     neighborhood: "Carlsbad",
@@ -9100,6 +9637,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "525",
+    sourceKey: "yelp:jeune-et-jolie-carlsbad",
     name: "Jeune Et Jolie",
     cuisine: "French",
     neighborhood: "Carlsbad",
@@ -9118,6 +9656,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "526",
+    sourceKey: "yelp:teri-cafe-oceanside",
     name: "Teri Cafe",
     cuisine: "Ramen",
     neighborhood: "Carlsbad",
@@ -9135,6 +9674,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "527",
+    sourceKey: "yelp:los-tacos-oceanside",
     name: "Los Tacos",
     cuisine: "Tacos",
     neighborhood: "Carlsbad",
@@ -9152,6 +9692,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "528",
+    sourceKey: "yelp:local-tap-house-and-kitchen-oceanside-2",
     name: "Local Tap House & Kitchen",
     cuisine: "New American",
     neighborhood: "Oceanside",
@@ -9169,6 +9710,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "529",
+    sourceKey: "yelp:flying-pig-pub-and-kitchen-oceanside-2",
     name: "Flying Pig Pub & Kitchen",
     cuisine: "Pubs",
     neighborhood: "Oceanside",
@@ -9186,6 +9728,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "530",
+    sourceKey: "yelp:333-pacific-oceanside",
     name: "333 Pacific",
     cuisine: "Steakhouses",
     neighborhood: "Oceanside",
@@ -9203,6 +9746,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "531",
+    sourceKey: "yelp:rockin-baja-lobster-oceanside-3",
     name: "Rockin' Baja Lobster",
     cuisine: "Mexican",
     neighborhood: "Oceanside",
@@ -9220,6 +9764,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "532",
+    sourceKey: "yelp:toasted-gastrobrunch-oceanside-5",
     name: "Toasted Gastrobrunch",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Oceanside",
@@ -9237,6 +9782,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "533",
+    sourceKey: "yelp:harney-oceanside-oceanside",
     name: "Harney Oceanside",
     cuisine: "Sushi Bars",
     neighborhood: "Oceanside",
@@ -9254,6 +9800,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "534",
+    sourceKey: "yelp:stratford-at-the-harbor-oceanside",
     name: "Stratford at the Harbor",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Oceanside",
@@ -9271,6 +9818,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "535",
+    sourceKey: "yelp:mission-ave-bar-and-grill-oceanside-5",
     name: "Mission Ave Bar and Grill",
     cuisine: "Cocktail Bars",
     neighborhood: "Oceanside",
@@ -9288,6 +9836,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "536",
+    sourceKey: "yelp:lighthouse-oyster-bar-and-grill-oceanside",
     name: "Lighthouse Oyster Bar & Grill",
     cuisine: "Seafood",
     neighborhood: "Oceanside",
@@ -9305,6 +9854,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "537",
+    sourceKey: "yelp:harbor-fish-and-chips-oceanside",
     name: "Harbor Fish & Chips",
     cuisine: "Fish & Chips",
     neighborhood: "Oceanside",
@@ -9322,6 +9872,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "538",
+    sourceKey: "yelp:guahan-grill-oceanside",
     name: "Guahan Grill",
     cuisine: "Barbeque",
     neighborhood: "Oceanside",
@@ -9339,6 +9890,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "539",
+    sourceKey: "yelp:oceanside-broiler-oceanside",
     name: "Oceanside Broiler",
     cuisine: "Seafood",
     neighborhood: "Oceanside",
@@ -9356,6 +9908,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "540",
+    sourceKey: "yelp:tanner-s-prime-burgers-oceanside",
     name: "Tanner’s Prime Burgers",
     cuisine: "Burgers",
     neighborhood: "Carlsbad",
@@ -9373,6 +9926,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "541",
+    sourceKey: "yelp:best-pizza-and-brew-oceanside-2",
     name: "Best Pizza & Brew Oceanside",
     cuisine: "Pizza",
     neighborhood: "Carlsbad",
@@ -9391,6 +9945,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "542",
+    sourceKey: "yelp:blade-1936-oceanside",
     name: "Blade 1936",
     cuisine: "Pizza",
     neighborhood: "Oceanside",
@@ -9408,6 +9963,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "543",
+    sourceKey: "yelp:angelos-burgers-oceanside-7",
     name: "Angelo's Burgers",
     cuisine: "Burgers",
     neighborhood: "Carlsbad",
@@ -9425,6 +9981,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "544",
+    sourceKey: "yelp:the-privateer-coal-fire-pizza-oceanside",
     name: "The Privateer Coal Fire Pizza",
     cuisine: "Pizza",
     neighborhood: "Carlsbad",
@@ -9442,6 +9999,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "545",
+    sourceKey: "yelp:dija-mara-oceanside",
     name: "Dija Mara",
     cuisine: "Indonesian",
     neighborhood: "Oceanside",
@@ -9459,6 +10017,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "546",
+    sourceKey: "yelp:hunter-steakhouse-oceanside",
     name: "Hunter Steakhouse",
     cuisine: "Steakhouses",
     neighborhood: "Carlsbad",
@@ -9476,6 +10035,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "547",
+    sourceKey: "yelp:johnny-ma%C3%B1anas-oceanside-2",
     name: "Johnny Mañana's",
     cuisine: "Mexican",
     neighborhood: "Oceanside",
@@ -9493,6 +10053,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "548",
+    sourceKey: "yelp:the-3rd-corner-encinitas-2",
     name: "The 3rd Corner",
     cuisine: "New American",
     neighborhood: "Encinitas",
@@ -9510,6 +10071,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "549",
+    sourceKey: "yelp:pho-ca-dao-and-grill-san-diego-3",
     name: "Pho Ca Dao & Grill",
     cuisine: "Vietnamese",
     neighborhood: "Mira Mesa",
@@ -9527,6 +10089,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "550",
+    sourceKey: "yelp:manna-heaven-bbq-san-diego-4",
     name: "Manna Heaven BBQ",
     cuisine: "Korean",
     neighborhood: "Mira Mesa",
@@ -9544,6 +10107,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "551",
+    sourceKey: "yelp:siam-nara-san-diego",
     name: "Siam Nara Thai Cuisine",
     cuisine: "Thai",
     neighborhood: "Mira Mesa",
@@ -9561,6 +10125,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "552",
+    sourceKey: "yelp:punjabi-tandoor-san-diego",
     name: "Punjabi Tandoor",
     cuisine: "Indian",
     neighborhood: "Mira Mesa",
@@ -9578,6 +10143,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "553",
+    sourceKey: "yelp:shabu-works-san-diego-5",
     name: "SHABU-WORKS",
     cuisine: "Hot Pot",
     neighborhood: "Scripps Ranch",
@@ -9596,6 +10162,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "554",
+    sourceKey: "yelp:the-boiling-crab-san-diego-10",
     name: "The Boiling Crab",
     cuisine: "Seafood",
     neighborhood: "Mira Mesa",
@@ -9613,6 +10180,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "555",
+    sourceKey: "yelp:the-kebab-shop-san-diego-2",
     name: "The Kebab Shop",
     cuisine: "Mediterranean",
     neighborhood: "Scripps Ranch",
@@ -9630,6 +10198,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "556",
+    sourceKey: "yelp:menya-ultra-mira-mesa-san-diego",
     name: "Menya Ultra - Mira Mesa",
     cuisine: "Ramen",
     neighborhood: "Mira Mesa",
@@ -9647,6 +10216,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "557",
+    sourceKey: "yelp:loving-hut-vegan-cuisine-san-diego-2",
     name: "Loving Hut Vegan Cuisine",
     cuisine: "Vegan",
     neighborhood: "Scripps Ranch",
@@ -9664,6 +10234,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "558",
+    sourceKey: "yelp:el-patron-traditional-mexican-grill-san-diego",
     name: "El Patron Traditional Mexican Grill",
     cuisine: "Mexican",
     neighborhood: "Scripps Ranch",
@@ -9681,6 +10252,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "559",
+    sourceKey: "yelp:gyu-kaku-japanese-bbq-san-diego-2",
     name: "Gyu-Kaku Japanese BBQ",
     cuisine: "Japanese",
     neighborhood: "Scripps Ranch",
@@ -9698,6 +10270,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "560",
+    sourceKey: "yelp:best-pizza-and-brew-san-diego-10",
     name: "Best Pizza & Brew",
     cuisine: "Pizza",
     neighborhood: "Mira Mesa",
@@ -9715,6 +10288,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "561",
+    sourceKey: "yelp:board-and-brew-scripps-ranch-san-diego",
     name: "Board & Brew - Scripps Ranch",
     cuisine: "Sandwiches",
     neighborhood: "Scripps Ranch",
@@ -9732,6 +10306,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "562",
+    sourceKey: "yelp:kappa-sushi-san-diego",
     name: "Kappa Sushi",
     cuisine: "Japanese",
     neighborhood: "Scripps Ranch",
@@ -9749,6 +10324,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "563",
+    sourceKey: "yelp:pho-ban-mai-san-diego",
     name: "Pho Ban Mai",
     cuisine: "Vietnamese",
     neighborhood: "Mira Mesa",
@@ -9766,6 +10342,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "564",
+    sourceKey: "yelp:seaside-buffet-san-diego",
     name: "Seaside Buffet",
     cuisine: "Buffets",
     neighborhood: "Mira Mesa",
@@ -9783,6 +10360,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "565",
+    sourceKey: "yelp:bibimboom-san-diego",
     name: "Bibimboom",
     cuisine: "Korean",
     neighborhood: "Mira Mesa",
@@ -9801,6 +10379,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "566",
+    sourceKey: "yelp:yannis-bar-and-grill-san-diego",
     name: "Yanni's Bar & Grill",
     cuisine: "Mediterranean",
     neighborhood: "Scripps Ranch",
@@ -9818,6 +10397,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "567",
+    sourceKey: "yelp:mokkoji-shabu-shabu-san-diego-2",
     name: "Mokkoji Shabu Shabu",
     cuisine: "Hot Pot",
     neighborhood: "Mira Mesa",
@@ -9836,6 +10416,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "568",
+    sourceKey: "yelp:jaunt-coffee-roasters-san-diego-2",
     name: "Jaunt Coffee Roasters",
     cuisine: "Coffee Roasteries",
     neighborhood: "Mira Mesa",
@@ -9854,6 +10435,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "569",
+    sourceKey: "yelp:nishiki-ramen-mira-mesa-san-diego",
     name: "Nishiki Ramen - Mira Mesa",
     cuisine: "Ramen",
     neighborhood: "Scripps Ranch",
@@ -9871,6 +10453,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "570",
+    sourceKey: "yelp:tasty-pot-san-diego",
     name: "Tasty Pot",
     cuisine: "Bubble Tea",
     neighborhood: "Scripps Ranch",
@@ -9888,6 +10471,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "571",
+    sourceKey: "yelp:cali-baguette-express-san-diego-3",
     name: "Cali Baguette Express",
     cuisine: "Vietnamese",
     neighborhood: "Mira Mesa",
@@ -9905,6 +10489,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "572",
+    sourceKey: "yelp:paradise-biryani-pointe-san-diego",
     name: "Paradise Biryani Pointe",
     cuisine: "Indian",
     neighborhood: "Mira Mesa",
@@ -9922,6 +10507,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "573",
+    sourceKey: "yelp:broken-yolk-cafe-san-diego-15",
     name: "Broken Yolk Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Rancho Bernardo",
@@ -9939,6 +10525,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "574",
+    sourceKey: "yelp:phils-bbq-san-diego-14",
     name: "Phil's BBQ",
     cuisine: "Barbeque",
     neighborhood: "Rancho Bernardo",
@@ -9956,6 +10543,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "575",
+    sourceKey: "yelp:pho-ca-dao-and-grill-san-diego-2",
     name: "Pho Ca Dao & Grill",
     cuisine: "Vietnamese",
     neighborhood: "Rancho Bernardo",
@@ -9973,6 +10561,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "576",
+    sourceKey: "yelp:rb-sushi-san-diego",
     name: "RB Sushi",
     cuisine: "Sushi Bars",
     neighborhood: "Rancho Bernardo",
@@ -9990,6 +10579,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "577",
+    sourceKey: "yelp:the-cork-and-craft-san-diego-5",
     name: "The Cork and Craft",
     cuisine: "American",
     neighborhood: "Rancho Bernardo",
@@ -10007,6 +10597,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "578",
+    sourceKey: "yelp:yesenias-mexican-food-san-diego",
     name: "Yesenia's Mexican Food",
     cuisine: "Mexican",
     neighborhood: "Rancho Bernardo",
@@ -10024,6 +10615,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "579",
+    sourceKey: "yelp:fish-district-san-diego-5",
     name: "FISH DISTRICT",
     cuisine: "Seafood",
     neighborhood: "Rancho Bernardo",
@@ -10041,6 +10633,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "580",
+    sourceKey: "yelp:jalapenos-mexican-food-san-diego",
     name: "Jalapenos Mexican Food",
     cuisine: "Mexican",
     neighborhood: "Rancho Bernardo",
@@ -10058,6 +10651,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "581",
+    sourceKey: "yelp:the-kebab-shop-san-diego-6",
     name: "The Kebab Shop",
     cuisine: "Mediterranean",
     neighborhood: "Rancho Bernardo",
@@ -10075,6 +10669,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "582",
+    sourceKey: "yelp:carvers-steak-and-chops-san-diego-2",
     name: "Carver's Steak & Chops",
     cuisine: "Steakhouses",
     neighborhood: "Rancho Bernardo",
@@ -10092,6 +10687,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "583",
+    sourceKey: "yelp:cafe-luna-san-diego",
     name: "Cafe Luna",
     cuisine: "Italian",
     neighborhood: "Rancho Bernardo",
@@ -10109,6 +10705,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "584",
+    sourceKey: "yelp:the-stand-american-classics-redefined-san-diego-2",
     name: "The Stand - American Classics Redefined",
     cuisine: "New American",
     neighborhood: "Rancho Bernardo",
@@ -10127,6 +10724,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "585",
+    sourceKey: "yelp:angelika-film-center-and-caf%C3%A9-carmel-mountain-san-diego-3",
     name: "Angelika Film Center & Café - Carmel Mountain",
     cuisine: "Cinema",
     neighborhood: "Rancho Bernardo",
@@ -10144,6 +10742,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "586",
+    sourceKey: "yelp:luna-grill-poway-4",
     name: "Luna Grill Poway",
     cuisine: "Mediterranean",
     neighborhood: "Poway",
@@ -10161,6 +10760,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "587",
+    sourceKey: "yelp:charm-thai-kitchen-san-diego",
     name: "Charm Thai Kitchen",
     cuisine: "Thai",
     neighborhood: "Rancho Bernardo",
@@ -10178,6 +10778,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "588",
+    sourceKey: "yelp:kangnam-korean-bbq-san-diego",
     name: "Kangnam Korean BBQ",
     cuisine: "Barbeque",
     neighborhood: "Rancho Bernardo",
@@ -10195,6 +10796,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "589",
+    sourceKey: "yelp:villa-capri-trattoria-and-wine-bar-poway-3",
     name: "Villa Capri Trattoria & Wine Bar",
     cuisine: "Italian",
     neighborhood: "Poway",
@@ -10212,6 +10814,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "590",
+    sourceKey: "yelp:boto-sushi-san-diego-4",
     name: "Boto Sushi",
     cuisine: "Sushi Bars",
     neighborhood: "Rancho Bernardo",
@@ -10229,6 +10832,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "591",
+    sourceKey: "yelp:the-incredible-cafe-san-diego",
     name: "The Incredible Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Rancho Bernardo",
@@ -10246,6 +10850,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "592",
+    sourceKey: "yelp:duffs-doggz-san-diego",
     name: "Duffs Doggz",
     cuisine: "Hot Dogs",
     neighborhood: "Rancho Bernardo",
@@ -10264,6 +10869,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "593",
+    sourceKey: "yelp:sushi-lounge-poway-poway",
     name: "Sushi Lounge - Poway",
     cuisine: "Sushi Bars",
     neighborhood: "Poway",
@@ -10281,6 +10887,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "594",
+    sourceKey: "yelp:smokin-js-bbq-poway-2",
     name: "Smokin J's BBQ",
     cuisine: "Barbeque",
     neighborhood: "Poway",
@@ -10298,6 +10905,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "595",
+    sourceKey: "yelp:kaminskis-sports-lounge-and-bbq-poway",
     name: "Kaminski's Sports Lounge and BBQ",
     cuisine: "Barbeque",
     neighborhood: "Poway",
@@ -10315,6 +10923,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "596",
+    sourceKey: "yelp:hamburger-factory-family-restaurant-poway",
     name: "Hamburger Factory Family Restaurant",
     cuisine: "Burgers",
     neighborhood: "Poway",
@@ -10332,6 +10941,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "597",
+    sourceKey: "yelp:taco-taco-poway-poway",
     name: "Taco Taco Poway",
     cuisine: "Mexican",
     neighborhood: "Poway",
@@ -10349,6 +10959,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "598",
+    sourceKey: "yelp:brigantine-poway-2",
     name: "Brigantine",
     cuisine: "Seafood",
     neighborhood: "Poway",
@@ -10366,6 +10977,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "599",
+    sourceKey: "yelp:tong-sake-house-poway",
     name: "Tong Sake House",
     cuisine: "Korean",
     neighborhood: "Poway",
@@ -10383,6 +10995,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "600",
+    sourceKey: "yelp:takhrai-thai-poway-3",
     name: "Takhrai Thai",
     cuisine: "Thai",
     neighborhood: "Poway",
@@ -10400,6 +11013,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "601",
+    sourceKey: "yelp:ju-feng-yuan-dumpling-cafe-poway",
     name: "Ju Feng Yuan Dumpling Cafe",
     cuisine: "Chinese",
     neighborhood: "Poway",
@@ -10417,6 +11031,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "602",
+    sourceKey: "yelp:bua-thai-poway",
     name: "Bua Thai",
     cuisine: "Thai",
     neighborhood: "Poway",
@@ -10434,6 +11049,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "603",
+    sourceKey: "yelp:el-ranchito-taco-shop-poway-2",
     name: "El Ranchito Taco Shop",
     cuisine: "Mexican",
     neighborhood: "Poway",
@@ -10451,6 +11067,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "604",
+    sourceKey: "yelp:369-ramen-and-chinese-food-poway-2",
     name: "369 Ramen & Chinese Food",
     cuisine: "Ramen",
     neighborhood: "Poway",
@@ -10468,6 +11085,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "605",
+    sourceKey: "yelp:north-park-produce-bakery-and-grill-poway",
     name: "North Park Produce Bakery and Grill",
     cuisine: "Persian/Iranian",
     neighborhood: "Poway",
@@ -10485,6 +11103,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "606",
+    sourceKey: "yelp:mainstream-bar-and-grill-poway",
     name: "Mainstream Bar and Grill",
     cuisine: "Bars",
     neighborhood: "Poway",
@@ -10502,6 +11121,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "607",
+    sourceKey: "yelp:francos-flapjack-family-restaurant-poway-3",
     name: "Franco's Flapjack Family Restaurant",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Poway",
@@ -10519,6 +11139,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "608",
+    sourceKey: "yelp:the-kings-craft-coffee-poway",
     name: "The Kings Craft Coffee",
     cuisine: "Coffee Roasteries",
     neighborhood: "Poway",
@@ -10536,6 +11157,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "609",
+    sourceKey: "yelp:addison-san-diego-5",
     name: "Addison",
     cuisine: "New American",
     neighborhood: "Carmel Valley",
@@ -10553,6 +11175,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "610",
+    sourceKey: "yelp:sushi-exchange-san-diego",
     name: "Sushi Exchange",
     cuisine: "Sushi Bars",
     neighborhood: "Rancho Penasquitos",
@@ -10570,6 +11193,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "611",
+    sourceKey: "yelp:rosinas-italian-restaurant-san-diego-4",
     name: "Rosina's Italian Restaurant",
     cuisine: "Italian",
     neighborhood: "Rancho Penasquitos",
@@ -10587,6 +11211,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "612",
+    sourceKey: "yelp:fresh-brothers-carmel-valley-san-diego-2",
     name: "Fresh Brothers - Carmel Valley",
     cuisine: "Salad",
     neighborhood: "Rancho Penasquitos",
@@ -10604,6 +11229,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "613",
+    sourceKey: "yelp:el-pueblo-mexican-food-and-bar-carmel-valley-san-diego",
     name: "El Pueblo Mexican Food & Bar - Carmel Valley",
     cuisine: "Mexican",
     neighborhood: "Rancho Penasquitos",
@@ -10622,6 +11248,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "614",
+    sourceKey: "yelp:fresco-pizzeria-san-diego-2",
     name: "Fresco Pizzeria",
     cuisine: "Pizza",
     neighborhood: "Rancho Penasquitos",
@@ -10639,6 +11266,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "615",
+    sourceKey: "yelp:pacific-social-san-diego-2",
     name: "Pacific Social",
     cuisine: "New American",
     neighborhood: "Rancho Penasquitos",
@@ -10656,6 +11284,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "616",
+    sourceKey: "yelp:luna-grill-pacific-highlands-ranch-san-diego-2",
     name: "Luna Grill Pacific Highlands Ranch",
     cuisine: "Mediterranean",
     neighborhood: "Rancho Penasquitos",
@@ -10673,6 +11302,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "617",
+    sourceKey: "yelp:pita-22-san-diego-2",
     name: "PITA 22",
     cuisine: "Falafel",
     neighborhood: "Rancho Penasquitos",
@@ -10691,6 +11321,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "618",
+    sourceKey: "yelp:rice-chicken-san-diego-2",
     name: "Rice Chicken",
     cuisine: "Chicken Shop",
     neighborhood: "Rancho Penasquitos",
@@ -10708,6 +11339,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "619",
+    sourceKey: "yelp:amaya-san-diego",
     name: "Amaya",
     cuisine: "New American",
     neighborhood: "Sorrento Valley",
@@ -10725,6 +11357,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "620",
+    sourceKey: "yelp:vittorios-san-diego",
     name: "Vittorio's",
     cuisine: "Italian",
     neighborhood: "Rancho Penasquitos",
@@ -10742,6 +11375,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "621",
+    sourceKey: "yelp:the-pony-room-rancho-santa-fe",
     name: "The Pony Room",
     cuisine: "Bars",
     neighborhood: "Rancho Penasquitos",
@@ -10759,6 +11393,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "622",
+    sourceKey: "yelp:amalfi-pizza-and-bar-san-diego-2",
     name: "Amalfi Pizza & Bar",
     cuisine: "Italian",
     neighborhood: "Rancho Penasquitos",
@@ -10776,6 +11411,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "623",
+    sourceKey: "yelp:leucadia-pizzeria-rancho-santa-fe-rancho-santa-fe",
     name: "Leucadia Pizzeria Rancho Santa Fe",
     cuisine: "Italian",
     neighborhood: "Rancho Penasquitos",
@@ -10793,6 +11429,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "624",
+    sourceKey: "yelp:chef-zhu-san-diego",
     name: "Chef Zhu",
     cuisine: "Chinese",
     neighborhood: "Rancho Penasquitos",
@@ -10810,6 +11447,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "625",
+    sourceKey: "yelp:bonchon-san-diego-3",
     name: "Bonchon Village Way",
     cuisine: "Chicken Wings",
     neighborhood: "Rancho Penasquitos",
@@ -10827,6 +11465,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "626",
+    sourceKey: "yelp:joyees-dumpling-house-san-diego-4",
     name: "Joyee's Dumpling House",
     cuisine: "Chinese",
     neighborhood: "Rancho Penasquitos",
@@ -10844,6 +11483,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "627",
+    sourceKey: "yelp:ayu-sushi-and-noodles-san-diego",
     name: "Ayu Sushi & Noodles",
     cuisine: "Sushi Bars",
     neighborhood: "Rancho Penasquitos",
@@ -10861,6 +11501,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "628",
+    sourceKey: "yelp:cocina-del-rancho-rancho-santa-fe",
     name: "Cocina del Rancho",
     cuisine: "Mexican",
     neighborhood: "Rancho Penasquitos",
@@ -10878,6 +11519,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "629",
+    sourceKey: "yelp:bamboo-pho-and-sushi-san-diego",
     name: "Bamboo Pho & Sushi",
     cuisine: "Sushi Bars",
     neighborhood: "Rancho Penasquitos",
@@ -10895,6 +11537,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "630",
+    sourceKey: "yelp:rigobertos-taco-shop-san-diego-2",
     name: "Rigoberto's Taco Shop",
     cuisine: "Tacos",
     neighborhood: "Mira Mesa",
@@ -10912,6 +11555,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "631",
+    sourceKey: "yelp:the-amalfi-llama-san-diego-2",
     name: "The Amalfi Llama",
     cuisine: "Italian",
     neighborhood: "UTC",
@@ -10929,6 +11573,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "632",
+    sourceKey: "yelp:natsumi-sushi-and-seafood-buffet-san-diego",
     name: "Natsumi Sushi & Seafood Buffet",
     cuisine: "Sushi Bars",
     neighborhood: "Mira Mesa",
@@ -10946,6 +11591,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "633",
+    sourceKey: "yelp:ramen-nagi-san-diego",
     name: "Ramen Nagi",
     cuisine: "Ramen",
     neighborhood: "UTC",
@@ -10963,6 +11609,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "634",
+    sourceKey: "yelp:tapatios-mexican-grill-alpine",
     name: "Tapatios Mexican Grill",
     cuisine: "Mexican",
     neighborhood: "Alpine",
@@ -10980,6 +11627,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "635",
+    sourceKey: "yelp:alpine-tavern-and-grill-alpine",
     name: "Alpine Tavern & Grill",
     cuisine: "Sports Bars",
     neighborhood: "Alpine",
@@ -10997,6 +11645,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "636",
+    sourceKey: "yelp:ahi-sushi-and-grill-alpine-3",
     name: "Ahi Sushi & Grill",
     cuisine: "Japanese",
     neighborhood: "Alpine",
@@ -11014,6 +11663,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "637",
+    sourceKey: "yelp:la-carreta-mexican-restaurant-alpine",
     name: "La Carreta Mexican Restaurant",
     cuisine: "Mexican",
     neighborhood: "Alpine",
@@ -11031,6 +11681,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "638",
+    sourceKey: "yelp:janos-pizza-alpine",
     name: "Janos Pizza",
     cuisine: "Pizza",
     neighborhood: "Alpine",
@@ -11048,6 +11699,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "639",
+    sourceKey: "yelp:al-panchos-mexican-restaurant-alpine",
     name: "Al Pancho's Mexican Restaurant",
     cuisine: "Mexican",
     neighborhood: "Alpine",
@@ -11065,6 +11717,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "640",
+    sourceKey: "yelp:alpine-taco-shop-alpine",
     name: "Alpine Taco Shop",
     cuisine: "Mexican",
     neighborhood: "Alpine",
@@ -11082,6 +11735,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "641",
+    sourceKey: "yelp:casino-inn-alpine-2",
     name: "Casino Inn",
     cuisine: "Dive Bars",
     neighborhood: "Alpine",
@@ -11099,6 +11753,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "642",
+    sourceKey: "yelp:mike-hess-brewing-alpine-alpine",
     name: "Mike Hess Brewing - Alpine",
     cuisine: "Burgers",
     neighborhood: "Alpine",
@@ -11116,6 +11771,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "643",
+    sourceKey: "yelp:eastbound-bar-and-grill-lakeside",
     name: "Eastbound Bar & Grill",
     cuisine: "Bars",
     neighborhood: "Lakeside",
@@ -11133,6 +11789,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "644",
+    sourceKey: "yelp:ottavios-italian-restaurant-lakeside",
     name: "Ottavio's Italian Restaurant",
     cuisine: "Italian",
     neighborhood: "Lakeside",
@@ -11151,6 +11808,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "645",
+    sourceKey: "yelp:cafe-67-lakeside",
     name: "Cafe 67",
     cuisine: "Diners",
     neighborhood: "Lakeside",
@@ -11168,6 +11826,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "646",
+    sourceKey: "yelp:giant-bambinos-pizza-lakeside-4",
     name: "Giant Bambinos Pizza",
     cuisine: "Pizza",
     neighborhood: "Lakeside",
@@ -11185,6 +11844,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "647",
+    sourceKey: "yelp:alberts-fresh-mexican-food-lakeside-3",
     name: "Albert's Fresh Mexican Food",
     cuisine: "Mexican",
     neighborhood: "Lakeside",
@@ -11202,6 +11862,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "648",
+    sourceKey: "yelp:gaetanos-italian-restaurant-lakeside",
     name: "Gaetano's Italian Restaurant",
     cuisine: "Italian",
     neighborhood: "Lakeside",
@@ -11219,6 +11880,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "649",
+    sourceKey: "yelp:la-palapa-mexican-restaurant-and-cocktails-lakeside",
     name: "La Palapa Mexican Restaurant & Cocktails",
     cuisine: "Mexican",
     neighborhood: "Lakeside",
@@ -11236,6 +11898,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "650",
+    sourceKey: "yelp:cali-stack-burgers-and-grill-lakeside",
     name: "Cali Stack Burgers & Grill",
     cuisine: "Cheesesteaks",
     neighborhood: "Lakeside",
@@ -11253,6 +11916,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "651",
+    sourceKey: "yelp:boll-weevil-lakeside-3",
     name: "Boll Weevil",
     cuisine: "Burgers",
     neighborhood: "Lakeside",
@@ -11270,6 +11934,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "652",
+    sourceKey: "yelp:kunduz-kabob-and-pizza-lakeside",
     name: "Kunduz Kabob & Pizza",
     cuisine: "Afghan",
     neighborhood: "Lakeside",
@@ -11287,6 +11952,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "653",
+    sourceKey: "yelp:lakeside-pho-and-grill-lakeside",
     name: "Lakeside Pho & Grill",
     cuisine: "Vietnamese",
     neighborhood: "Lakeside",
@@ -11304,6 +11970,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "654",
+    sourceKey: "yelp:new-york-giant-pizza-lakeside-2",
     name: "New York Giant Pizza",
     cuisine: "Pizza",
     neighborhood: "Lakeside",
@@ -11321,6 +11988,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "655",
+    sourceKey: "yelp:sizzle-shack-burger-el-cajon-2",
     name: "Sizzle Shack Burger",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Lakeside",
@@ -11338,6 +12006,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "656",
+    sourceKey: "yelp:los-rancheritos-mexican-food-lakeside",
     name: "Los Rancheritos Mexican Food",
     cuisine: "Mexican",
     neighborhood: "Lakeside",
@@ -11355,6 +12024,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "657",
+    sourceKey: "yelp:ranch-house-restaurant-santee",
     name: "Ranch House Restaurant",
     cuisine: "American",
     neighborhood: "Lakeside",
@@ -11372,6 +12042,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "658",
+    sourceKey: "yelp:la-posta-de-acapulco-el-cajon",
     name: "La Posta De Acapulco",
     cuisine: "Mexican",
     neighborhood: "Lakeside",
@@ -11389,6 +12060,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "659",
+    sourceKey: "yelp:marinade-on-main-ramona-2",
     name: "Marinade On Main",
     cuisine: "American",
     neighborhood: "Ramona",
@@ -11407,6 +12079,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "660",
+    sourceKey: "yelp:ramona-cafe-ramona-2",
     name: "Ramona Cafe",
     cuisine: "Breakfast & Brunch",
     neighborhood: "Ramona",
@@ -11424,6 +12097,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "661",
+    sourceKey: "yelp:country-kitchen-ramona",
     name: "Country Kitchen",
     cuisine: "American",
     neighborhood: "Ramona",
@@ -11441,6 +12115,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "662",
+    sourceKey: "yelp:up-the-hill-grill-ramona",
     name: "Up The Hill Grill",
     cuisine: "American",
     neighborhood: "Ramona",
@@ -11458,6 +12133,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "663",
+    sourceKey: "yelp:pinto-thai-ramona-ramona",
     name: "Pinto Thai Ramona",
     cuisine: "Thai",
     neighborhood: "Ramona",
@@ -11476,6 +12152,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "664",
+    sourceKey: "yelp:petes-bbq-ramona",
     name: "Pete's BBQ",
     cuisine: "Barbeque",
     neighborhood: "Ramona",
@@ -11493,6 +12170,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "665",
+    sourceKey: "yelp:mariscos-mar-de-cortez-ramona",
     name: "Mariscos Mar De Cortez",
     cuisine: "Mexican",
     neighborhood: "Ramona",
@@ -11510,6 +12188,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "666",
+    sourceKey: "yelp:d-carlos-ramona",
     name: "D'Carlos",
     cuisine: "Steakhouses",
     neighborhood: "Ramona",
@@ -11527,6 +12206,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "667",
+    sourceKey: "yelp:la-cocina-ramona",
     name: "La Cocina",
     cuisine: "Mexican",
     neighborhood: "Ramona",
@@ -11544,6 +12224,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "668",
+    sourceKey: "yelp:the-barn-ramona-2",
     name: "The Barn",
     cuisine: "Italian",
     neighborhood: "Ramona",
@@ -11561,6 +12242,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "669",
+    sourceKey: "yelp:cheers-of-ramona-ramona",
     name: "Cheers of Ramona",
     cuisine: "Burgers",
     neighborhood: "Ramona",
@@ -11578,6 +12260,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "670",
+    sourceKey: "yelp:sofies-pita-ramona-3",
     name: "Sofie's Pita",
     cuisine: "Mediterranean",
     neighborhood: "Ramona",
@@ -11595,6 +12278,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "671",
+    sourceKey: "yelp:casa-reveles-ramona-2",
     name: "Casa Reveles",
     cuisine: "Mexican",
     neighborhood: "Ramona",
@@ -11612,6 +12296,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "672",
+    sourceKey: "yelp:ramona-noodle-house-ramona",
     name: "Ramona Noodle House",
     cuisine: "Noodles",
     neighborhood: "Ramona",
@@ -11629,6 +12314,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "673",
+    sourceKey: "yelp:boll-weevil-ramona",
     name: "Boll Weevil",
     cuisine: "Burgers",
     neighborhood: "Ramona",
@@ -11646,6 +12332,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "674",
+    sourceKey: "yelp:vibes-sushi-bar-and-grill-ramona",
     name: "Vibes Sushi Bar And Grill",
     cuisine: "Sushi Bars",
     neighborhood: "Ramona",
@@ -11663,6 +12350,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "675",
+    sourceKey: "yelp:el-michoacan-ramona",
     name: "El Michoacan",
     cuisine: "Mexican",
     neighborhood: "Ramona",
@@ -11680,6 +12368,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "676",
+    sourceKey: "yelp:julian-beer-company-julian-2",
     name: "Julian Beer Company",
     cuisine: "Breweries",
     neighborhood: "Julian",
@@ -11697,6 +12386,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "677",
+    sourceKey: "yelp:romanos-restaurant-julian",
     name: "Romano's Restaurant",
     cuisine: "Sandwiches",
     neighborhood: "Julian",
@@ -11714,6 +12404,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "678",
+    sourceKey: "yelp:miners-diner-julian",
     name: "Miner's Diner",
     cuisine: "American",
     neighborhood: "Julian",
@@ -11731,6 +12422,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "679",
+    sourceKey: "yelp:soups-and-such-cafe-julian",
     name: "Soups & Such Cafe'",
     cuisine: "Sandwiches",
     neighborhood: "Julian",
@@ -11748,6 +12440,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "680",
+    sourceKey: "yelp:quecho-elevated-mexican-eatery-julian",
     name: "Quecho Elevated Mexican Eatery",
     cuisine: "Mexican",
     neighborhood: "Julian",
@@ -11765,6 +12458,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "681",
+    sourceKey: "yelp:loft-94-jamul",
     name: "Loft 94",
     cuisine: "Tapas/Small Plates",
     neighborhood: "Jamul",
@@ -11782,6 +12476,7 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: "682",
+    sourceKey: "yelp:prime-cut-steakhouse-and-seafood-jamul",
     name: "Prime Cut Steakhouse & Seafood",
     cuisine: "Steakhouses",
     neighborhood: "Jamul",

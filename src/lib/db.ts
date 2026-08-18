@@ -1818,6 +1818,7 @@ export async function getPublicProfile(userId: string): Promise<PublicProfile | 
 function rowToRestaurant(row: any): Restaurant {
   return {
     id: row.id,
+    sourceKey: row.source_key ?? undefined,
     name: row.name,
     cuisine: row.cuisine,
     neighborhood: row.neighborhood,
