@@ -34,6 +34,7 @@ type AuthContextValue = {
       favoriteRestaurantId: string | null;
     }>
   ) => Promise<string | null>;
+  deleteAccount: (password: string) => Promise<string | null>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -138,6 +139,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return null;
   }
 
+  async function deleteAccount(password: string) {
+    const res = await fetch("/api/account", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    if (!res.ok) return parseError(res);
+    setAccount(null);
+    return null;
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -150,6 +162,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         refresh,
         updateAvatar,
         updateSettings,
+        deleteAccount,
       }}
     >
       {children}

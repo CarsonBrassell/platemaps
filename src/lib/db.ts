@@ -337,6 +337,20 @@ export async function deleteSession(token: string): Promise<void> {
   await sql`DELETE FROM sessions WHERE token = ${token}`;
 }
 
+/**
+ * A real delete, not a deactivation. Every table with a foreign key to
+ * users(id) declares it ON DELETE CASCADE — posts, comments, votes, hearts,
+ * saves, friendships, friend_requests, blocked_users, sessions, point_events,
+ * all of it — except menu_lookups.requested_by, which is SET NULL so a
+ * lookup record survives losing its attribution. That means this one
+ * statement is the whole cleanup; there is nothing else to delete by hand.
+ * The route calling this has already re-verified the password before
+ * reaching here — this function trusts that it has.
+ */
+export async function deleteUser(userId: string): Promise<void> {
+  await sql`DELETE FROM users WHERE id = ${userId}`;
+}
+
 export type Comment = {
   id: string;
   /** Null on a top-level comment; otherwise the comment this one replies to. */
