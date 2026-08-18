@@ -389,7 +389,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
             <div className="min-w-0">
               <h3
                 id={titleId}
-                className="truncate font-display text-[19px] font-semibold leading-tight tracking-tight text-zinc-900"
+                className="truncate font-display text-[17px] font-semibold leading-tight tracking-tight text-zinc-900"
               >
                 {hasRestaurant ? (
                   <RestaurantRef post={post} className="decoration-1 decoration-zinc-300" />
@@ -468,7 +468,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
           {words && (
             <p
               ref={reviewRef}
-              className={`mt-1.5 text-sm leading-relaxed text-zinc-700 ${
+              className={`mt-1.5 text-[16px] leading-relaxed text-zinc-700 ${
                 expanded ? "" : "line-clamp-3"
               }`}
             >
