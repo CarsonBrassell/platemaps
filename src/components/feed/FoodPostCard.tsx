@@ -11,7 +11,7 @@ import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/componen
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { tagAccent } from "@/data/foodTags";
 import { amenityEmoji, vibeChip } from "@/data/reviewScales";
-import type { Comment, Post } from "./types";
+import type { Post } from "./types";
 
 /** Handle shown next to the avatar — "Maya Ellis" reads as "mayaellis". */
 function handleFor(name: string) {
@@ -144,18 +144,6 @@ export function FoodPostCard(props: FoodPostCardProps) {
   const saved = currentUserId ? post.savedBy.includes(currentUserId) : false;
   const isOwner = currentUserId === post.userId;
   const palette = avatarPalette(post.authorName);
-  /* The one comment the card shows. Now that replies exist it has to be a
-     top-level one — a reply quoted alone under the photo reads as a response
-     to the post itself — and the best-scoring one rather than the newest,
-     which is what "top comment" means to anyone opening the thread. */
-  const topComment = post.comments
-    .filter((c) => c.parentId === null)
-    .reduce<Comment | undefined>((best, c) => {
-      if (!best) return c;
-      const delta = c.upvoteCount - c.downvoteCount - (best.upvoteCount - best.downvoteCount);
-      return delta > 0 ? c : best;
-    }, undefined);
-
   useEffect(() => {
     if (!menuOpen) return;
     function onDocClick(e: MouseEvent) {
@@ -614,28 +602,6 @@ export function FoodPostCard(props: FoodPostCardProps) {
               </li>
             ))}
           </ul>
-        )}
-
-        {post.comments.length > 0 && (
-          <div className="mt-2.5">
-            {post.comments.length > 1 && (
-              <button
-                type="button"
-                onClick={() => onOpenComments(post.id)}
-                className="font-mono text-xs text-zinc-500 transition-colors hover:text-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-              >
-                View all {post.comments.length} comments
-              </button>
-            )}
-            {topComment && (
-              <p className="mt-1 line-clamp-2 text-sm text-zinc-700">
-                <span className="font-mono text-[13px] font-medium text-zinc-900">
-                  {handleFor(topComment.authorName)}
-                </span>{" "}
-                {topComment.text}
-              </p>
-            )}
-          </div>
         )}
 
         {/* Where and when, last — the footnote to the plate rather than part of

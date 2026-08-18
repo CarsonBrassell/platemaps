@@ -9,7 +9,7 @@ import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/componen
 import { relativeTime } from "@/lib/format";
 import { tagAccent } from "@/data/foodTags";
 import { amenityEmoji, vibeChip } from "@/data/reviewScales";
-import type { Comment, Post } from "@/components/feed/types";
+import type { Post } from "@/components/feed/types";
 import { PhoneFeedCardThumb } from "./PhoneFeedCardThumb";
 
 /**
@@ -217,17 +217,6 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
      rather than with the rest of the derived strings below because the clamp
      effect depends on it, and the tombstone returns sit between the two. */
   const words = post.text?.trim() ? post.text : null;
-
-  /* The one comment the card shows: a top-level one (a reply quoted alone
-     reads as a response to the post itself), and the best-scoring rather than
-     the newest — that is what "top comment" means to anyone opening a thread. */
-  const topComment = post.comments
-    .filter((c) => c.parentId === null)
-    .reduce<Comment | undefined>((best, c) => {
-      if (!best) return c;
-      const delta = c.upvoteCount - c.downvoteCount - (best.upvoteCount - best.downvoteCount);
-      return delta > 0 ? c : best;
-    }, undefined);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -632,10 +621,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
         </div>
       </div>
 
-      {(post.tags.length > 0 ||
-        post.amenities.length > 0 ||
-        post.vibe ||
-        post.comments.length > 0) && (
+      {(post.tags.length > 0 || post.amenities.length > 0 || post.vibe) && (
         <div className="px-4 pb-4">
           {(post.tags.length > 0 || post.amenities.length > 0 || post.vibe) && (
             <ul className="mt-1.5 flex flex-wrap gap-1.5">
@@ -664,40 +650,15 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
               ))}
             </ul>
           )}
-
-          {post.comments.length > 0 && (
-            <div className="mt-2.5">
-              {post.comments.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => onOpenComments(post.id)}
-                  className="min-h-11 font-mono text-xs text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-                >
-                  View all {post.comments.length} comments
-                </button>
-              )}
-              {topComment && (
-                <p className="mt-1 line-clamp-2 text-sm text-zinc-700">
-                  <span className="font-mono text-[13px] font-medium text-zinc-900">
-                    {handleFor(topComment.authorName)}
-                  </span>{" "}
-                  {topComment.text}
-                </p>
-              )}
-            </div>
-          )}
         </div>
       )}
 
       {/* Nothing below the action row on a bare post, so the card closes there
-          — the tags/comments block owns its own bottom padding and this only
-          replaces it when that block isn't rendered. */}
-      {!(
-        post.tags.length > 0 ||
-        post.amenities.length > 0 ||
-        post.vibe ||
-        post.comments.length > 0
-      ) && <div className="pb-3" />}
+          — the tags block owns its own bottom padding and this only replaces
+          it when that block isn't rendered. */}
+      {!(post.tags.length > 0 || post.amenities.length > 0 || post.vibe) && (
+        <div className="pb-3" />
+      )}
     </article>
   );
 }
