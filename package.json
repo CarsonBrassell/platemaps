@@ -19,6 +19,9 @@
     "menus:fresh": "node --env-file=.env.local scripts/check-menu-freshness.mjs"
   },
   "dependencies": {
+    "@capacitor/cli": "^7.6.8",
+    "@capacitor/core": "^8.5.0",
+    "@capacitor/ios": "^8.5.0",
     "@neondatabase/serverless": "^1.1.0",
     "bcryptjs": "^3.0.3",
     "maplibre-gl": "^6.2.0",

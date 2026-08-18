@@ -125,13 +125,19 @@ function AuthForm() {
 
         {mode === "signup" && (
           <>
-            <label className="mb-1 block text-sm font-medium text-zinc-700">Name</label>
+            <label className="mb-1 block text-sm font-medium text-zinc-700">Username</label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Carson Brassell"
+              placeholder="carsonb"
+              autoComplete="username"
+              maxLength={24}
               className={inputClass}
             />
+            <p className="-mt-2 mb-4 text-xs text-zinc-500">
+              3-24 characters — letters, numbers and underscores only. This is how people find and
+              @mention you, and it has to be unique.
+            </p>
           </>
         )}
 

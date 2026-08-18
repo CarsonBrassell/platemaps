@@ -516,6 +516,19 @@ const statements = [
     CHECK (blocker_id <> blocked_id)
   )`,
   `CREATE INDEX IF NOT EXISTS idx_blocked_users_blocked ON blocked_users(blocked_id)`,
+
+  // --- Usernames -----------------------------------------------------------
+  //
+  // `name` now doubles as the username — signup asks for one directly rather
+  // than a free-text display name, and it has to be unique to mean anything
+  // as a handle. Case-insensitive: FoodPostCard's handleFor() already
+  // lowercases for display, so "MayaEllis" and "mayaellis" reading as the
+  // same person is the existing behavior, not a new rule — the constraint
+  // just makes signup enforce what display already assumed. One real
+  // collision existed before this ran (two "calvin lenisnk" rows, one an
+  // obvious throwaway test signup at "cal@email") and was renamed by hand
+  // first so this index can actually build.
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_users_name_unique ON users (lower(name))`,
 ];
 
 for (const statement of statements) {
