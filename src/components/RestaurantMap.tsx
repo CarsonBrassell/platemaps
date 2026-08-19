@@ -135,6 +135,32 @@ function commentHeat(comment: MapComment, now: number) {
   return (popularity + 1) * Math.pow(0.5, ageHours / COMMENT_HALF_LIFE_HOURS);
 }
 
+/**
+ * Real posts outrank seeded chatter, before heat is even consulted.
+ *
+ * Heat alone couldn't decide this fairly, because the two aren't measuring the
+ * same thing. A real post's count is votes people actually cast — 0 or 1 on
+ * most of them today. A seeded bubble's is `2 + (seed % 23)` from
+ * data/mapComments.ts: a number invented to make an empty map look busy. There
+ * are 65 of them and they land between 2 and 24, so filler took every bubble
+ * slot in San Diego at every zoom, and the vote chips — which only render on a
+ * bubble with a post behind it — were unreachable. The downvote button on the
+ * map wasn't broken; nothing that could be clicked was ever on screen.
+ *
+ * So filler is what it was always meant to be: what fills a gap when nobody has
+ * said anything real about a place. Within each tier, `commentHeat` still
+ * decides, so the most-upvoted real post is still the one that shows.
+ */
+function isRealPost(comment: MapComment) {
+  return Boolean(comment.postId);
+}
+
+/** Sort comparator for bubbles: real before seeded, then hottest first. */
+function compareBubbles(a: MapComment, b: MapComment, now: number) {
+  if (isRealPost(a) !== isRealPost(b)) return isRealPost(a) ? -1 : 1;
+  return commentHeat(b, now) - commentHeat(a, now);
+}
+
 // Deterministic pseudo-random spread for restaurants tied at the same
 // comment score, so a partial-coverage view doesn't bunch onto one side.
 function spreadHash(id: string) {
@@ -1601,21 +1627,30 @@ export function RestaurantMap({
        the ranking can't reshuffle between the initial render and a later pan —
        a bubble that shifted down the stack mid-pan would look like a bug. */
     const heatAt = now.getTime();
-    /* Seeded with -Infinity, not 0. A zero floor here would report "neutral"
-       for a restaurant whose only comment is underwater, handing it the same
-       placement priority as one nobody has said anything bad about — the exact
-       flattening commentHeat just stopped doing per bubble. It also drops
-       restaurants with no comments at all to the bottom of `ranked`, where they
-       belong: they occupy a coverage slot and then draw nothing. */
-    const hottestComment = (id: string) =>
-      Math.max(-Infinity, ...(commentsByRestaurant[id] ?? []).map((c) => commentHeat(c, heatAt)));
+    /* The bubble this restaurant would lead with, under the same rule the stack
+       itself uses — real posts before seeded filler, then hottest. Ranking
+       restaurants on a bare heat number instead is what buried every real post:
+       a place with one genuine plate scored 0.4 lost to a place whose only
+       bubble was invented chatter scored 21. `null` when there is nothing to
+       say, which sorts last — those restaurants take a coverage slot and then
+       draw nothing. */
+    const bestBubble = (id: string): MapComment | null => {
+      const list = commentsByRestaurant[id] ?? [];
+      if (list.length === 0) return null;
+      return list.reduce((best, c) => (compareBubbles(c, best, heatAt) < 0 ? c : best));
+    };
 
-    // Rank restaurants by their hottest comment, breaking ties with a
-    // deterministic spread so an unscored subset doesn't cluster onto one side.
+    // Rank restaurants by their best bubble, breaking ties with a deterministic
+    // spread so an unscored subset doesn't cluster onto one side.
     const ranked = [...restaurants].sort((a, b) => {
-      const heatA = hottestComment(a.id);
-      const heatB = hottestComment(b.id);
-      if (heatB !== heatA) return heatB - heatA;
+      const bubbleA = bestBubble(a.id);
+      const bubbleB = bestBubble(b.id);
+      if (!bubbleA || !bubbleB) {
+        if (bubbleA === bubbleB) return spreadHash(a.id) - spreadHash(b.id);
+        return bubbleA ? -1 : 1;
+      }
+      const byBubble = compareBubbles(bubbleA, bubbleB, heatAt);
+      if (byBubble !== 0) return byBubble;
       return spreadHash(a.id) - spreadHash(b.id);
     });
 
@@ -1637,8 +1672,8 @@ export function RestaurantMap({
            guaranteed at any zoom, and the only one that draws a leader — is
            always the best recent thing anyone said about the place. Zooming in
            raises the limit, and the next-hottest appear above it in order. */
-        const comments = [...(commentsByRestaurant[restaurant.id] ?? [])].sort(
-          (a, b) => commentHeat(b, heatAt) - commentHeat(a, heatAt),
+        const comments = [...(commentsByRestaurant[restaurant.id] ?? [])].sort((a, b) =>
+          compareBubbles(a, b, heatAt),
         );
         const point = map!.project([restaurant.lng, restaurant.lat]);
         /* Where this stack starts in `placed`. Everything from here on is this
