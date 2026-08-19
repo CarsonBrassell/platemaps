@@ -641,10 +641,21 @@ function bubbleElement(
      One glyph, forever; your own vote is colour alone, driven off
      aria-pressed in globals.css (muted at rest, the orange text voice when
      pressed or hovered). Nothing scales, pops, or changes shape. */
+  /* The padding is the whole point, and the negative margin is what makes it
+     free. Drawn at 10px, the glyph gave a 13x15 hit box with 14px of dead space
+     between the two arrows — a tap needed to be accurate to about six pixels or it
+     landed on the card and navigated to the post instead of voting. That is
+     what "the downvote button doesn't work" was: it worked, you just could not
+     hit it. Padding grows the box to 25x31 and the matching negative margin
+     pulls the layout back, so nothing on the row moves and the bubble keeps its
+     measured width. 6px a side leaves 2px of clearance between the two chips,
+     so a near miss still lands on the one you aimed at rather than its
+     opposite. Still short of the 44px floor AGENTS.md sets — a bubble this size
+     cannot host one — but it is four times the area it was. */
   const voteButtonStyle = `
-            padding: 0; border: 0; background: none;
+            padding: 8px 6px; margin: -8px -6px; border: 0; background: none;
             font-family: ${MONO}; font-size: 10px; font-weight: 700; line-height: 1.5;
-            cursor: pointer;`;
+            cursor: pointer; touch-action: manipulation;`;
   /* The vote pair keeps ONE shape on every bubble — arrow, count, arrow — so
      the row doesn't reflow depending on who authored what. Only the controls
      that can actually do something are buttons: seeded map chatter has no post
@@ -860,9 +871,18 @@ function bubbleElement(
         line-height: 1.35;
         color: ${BUBBLE_INK};
       ">
+        <!-- Row order is load-bearing, and the meta row must stay last.
+             The box is anchored \`bottom: 0\`, so its bottom edge is the fixed
+             point and every row it grows takes the rows ABOVE it upward. With
+             the prose last, revealing it on hover moved the vote chips 72px up
+             — out from under the cursor that was travelling toward them. You
+             could not click the arrows with a mouse at all: by the time the
+             press landed they had left. Keeping the meta row at the bottom
+             welds it to that fixed edge, so the chips hold still and the
+             headline is what slides. -->
         <div class="map-bubble-text" style="max-width: ${textMaxWidth}px; font-weight: 600;">${headlineHtml}</div>
-        ${metaRow}
         ${proseHtml}
+        ${metaRow}
       </div>
       ${leader}
     </div>`;
