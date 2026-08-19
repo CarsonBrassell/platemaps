@@ -4,8 +4,7 @@ import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth";
-import { takePhotos } from "@/lib/photoHandoff";
-import { MAX_PHOTOS, resizePhotos, type PhotoDraft } from "@/lib/photos";
+import { type PhotoDraft } from "@/lib/photos";
 import { POINT_RULES } from "@/lib/points";
 import { BEST_AT } from "@/data/reviewScales";
 import type { Restaurant } from "@/data/restaurants";
@@ -63,12 +62,10 @@ export default function PhonePost() {
     return `${href}${href.includes("?") ? "&" : "?"}nav=${nav}`;
   };
 
-  // Photos picked on the feed travel in memory rather than through the URL, and
-  // arriving with them means the camera step has already been answered.
-  const [handoff] = useState<File[]>(() => takePhotos());
-
   const [kind, setKind] = useState<PostKind | null>(null);
-  const [index, setIndex] = useState(handoff.length > 0 ? 1 : 0);
+  // Always the camera: there is no longer a way to arrive holding photos, so
+  // no step to skip past. See CameraCapture on why the pickers went.
+  const [index, setIndex] = useState(0);
   const [back, setBack] = useState(false);
 
   const [place, setPlace] = useState<Restaurant | null>(null);
@@ -85,20 +82,6 @@ export default function PhonePost() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const errorRef = useRef<HTMLParagraphElement>(null);
-
-  // Files handed over from the feed still have to be resized before they can be
-  // posted, and the camera step they would have gone through was skipped.
-  useEffect(() => {
-    if (handoff.length === 0) return;
-    let cancelled = false;
-    void (async () => {
-      const { photos: ready } = await resizePhotos(handoff, MAX_PHOTOS);
-      if (!cancelled && ready.length) setPhotos(ready);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [handoff]);
 
   // On mount rather than when the "where" step opens: the composer is reached
   // by someone who has already decided to post, so the list is wanted within a
@@ -157,6 +140,22 @@ export default function PhonePost() {
 
   const step = steps[Math.min(index, steps.length - 1)];
   const isLast = index === steps.length - 1;
+  /* The camera takes the whole screen, so this step has no title row, no
+     progress bar and no action bar — it carries its own. See CameraCapture. */
+  const cameraStep = step === "photo" && isSignedIn && !loading;
+
+  /*
+   * Nothing scrolls behind a full-screen viewfinder.
+   *
+   * Same class the map screen uses, and the same reason: iOS still rubber-bands
+   * the document under a fixed overlay, which drags the cream page up past the
+   * edge of a picture that is supposed to run to it.
+   */
+  useEffect(() => {
+    if (!cameraStep) return;
+    document.documentElement.classList.add("pm-lock-scroll");
+    return () => document.documentElement.classList.remove("pm-lock-scroll");
+  }, [cameraStep]);
 
   function go(next: number) {
     setBack(next < index);
@@ -300,6 +299,29 @@ export default function PhonePost() {
     go(index + 1);
   }
 
+  /*
+   * The camera step is its own screen, not a step inside the form.
+   *
+   * Every other step is a question with a heading, a progress bar above it and
+   * the action bar below; the viewfinder is a picture, and chrome laid over a
+   * picture is the only arrangement a camera has ever wanted. So this branch
+   * replaces the whole layout rather than rendering inside it, and the two
+   * controls the chrome was carrying — leave, and move on — are passed down.
+   */
+  const camera = (
+    <CameraCapture
+      fullscreen
+      photos={photos}
+      onChange={setPhotos}
+      onClose={() => router.push(to("/m/feed"))}
+      onDone={() => go(index + 1)}
+      onSkip={() => {
+        setError(null);
+        go(1);
+      }}
+    />
+  );
+
   const body = (
     /* pb-20 on top of the shell's own `--phone-nav-space` padding: the action
        bar floats above the nav, so the last field has to clear both. */
@@ -347,16 +369,8 @@ export default function PhonePost() {
 
       <form id="phone-post-form" onSubmit={handleSubmit}>
         <div key={step} className={back ? "step-in-back" : "step-in"}>
-          {step === "photo" && (
-            <CameraCapture
-              photos={photos}
-              onChange={setPhotos}
-              onSkip={() => {
-                setError(null);
-                go(1);
-              }}
-            />
-          )}
+          {/* No `photo` branch: that step is the full-screen camera above,
+              rendered instead of this layout rather than inside it. */}
 
           {step === "kind" && (
             <>
@@ -596,11 +610,13 @@ export default function PhonePost() {
             </Link>
           </p>
         </div>
+      ) : cameraStep ? (
+        camera
       ) : (
         body
       )}
 
-      {isSignedIn && !loading && (
+      {isSignedIn && !loading && !cameraStep && (
         /*
          * The action bar, lifted clear of the nav.
          *

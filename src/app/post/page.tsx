@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
-import { takePhotos } from "@/lib/photoHandoff";
-import { MAX_PHOTOS, resizePhotos, type PhotoDraft } from "@/lib/photos";
+import { type PhotoDraft } from "@/lib/photos";
 import { POINT_RULES } from "@/lib/points";
 import { BEST_AT } from "@/data/reviewScales";
 import type { Restaurant } from "@/data/restaurants";
@@ -52,12 +51,10 @@ export default function PostPage() {
   const router = useRouter();
   const { isSignedIn, loading, refresh } = useAuth();
 
-  // Photos picked on the feed travel in memory rather than through the URL, and
-  // arriving with them means the camera step has already been answered.
-  const [handoff] = useState<File[]>(() => takePhotos());
-
   const [kind, setKind] = useState<PostKind | null>(null);
-  const [index, setIndex] = useState(handoff.length > 0 ? 1 : 0);
+  // Always the camera: there is no longer a way to arrive holding photos, so
+  // no step to skip past. See CameraCapture on why the pickers went.
+  const [index, setIndex] = useState(0);
   const [back, setBack] = useState(false);
 
   const [place, setPlace] = useState<Restaurant | null>(null);
@@ -80,20 +77,6 @@ export default function PostPage() {
 
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
-  // Files handed over from the feed still have to be resized before they can be
-  // posted, and the camera step they would have gone through was skipped.
-  useEffect(() => {
-    if (handoff.length === 0) return;
-    let cancelled = false;
-    void (async () => {
-      const { photos: ready } = await resizePhotos(handoff, MAX_PHOTOS);
-      if (!cancelled && ready.length) setPhotos(ready);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [handoff]);
 
   // On mount rather than when the "where" step opens: the composer is reached
   // by someone who has already decided to post, so the list is wanted within a
