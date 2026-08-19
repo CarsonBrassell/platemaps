@@ -12,7 +12,15 @@
  *    dark header that halo showed as a pale fuzz around every edge. Those
  *    pixels are un-matted in `logo-mark.png` (see scripts note in the commit).
  *
- * The artwork itself is unchanged — nothing redrawn, nothing upscaled.
+ * Nothing has ever been redrawn or upscaled here. The one edit made to the
+ * artwork since: the fork and the knife were sitting about 7px apart at the
+ * source's 165px width, which closed to roughly a pixel at the sizes this
+ * renders at, so each was moved 2px outward from the other — their own
+ * pixels lifted and re-composited, fringe and all, not repainted. The same
+ * move was applied to `logo.png` and to `src/app/icon.png` (a byte-copy of
+ * the lockup), since all three carry the same pin at the same pixel scale.
+ * `src/app/favicon.ico` is still the create-next-app default and is not this
+ * artwork at all.
  */
 export function BrandMark({ className = "" }: { className?: string; tone?: "light" | "dark" }) {
   return (
