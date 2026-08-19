@@ -691,9 +691,18 @@ export async function getPostById(id: string, viewerId: string | null = null): P
  * hotScore (`(votes + 1) / (ageHours + 2)^1.5`), moved server-side because it
  * now has to join the vote tables.
  *
- * The numerator is floored at zero: a heavily downvoted plate should sink to
- * "as if nobody voted", not sort *below* older neutral posts by going
- * negative and inverting the age decay.
+ * **A negative score sinks below everything, and the ranking is in two tiers
+ * because of the arithmetic.** The score used to be floored at zero, so a plate
+ * everybody downvoted ranked exactly like one nobody had voted on — past zero,
+ * downvotes stopped meaning anything. They mean something now.
+ *
+ * They can't mean it through the same division, though. `net / age^1.5` shrinks
+ * toward zero as a post gets older, which is what makes it decay while positive
+ * — and for a negative score, shrinking toward zero is a promotion. A month-old
+ * −9 would climb over a fresh −1. So the sort is: everything at zero or above
+ * first, on the original curve, untouched; then everything below zero, worst
+ * first, newest breaking ties. Age deliberately does not lift a negative post
+ * back up. Only votes can.
  *
  * This function — and only this function — is allowed to touch post_upvotes
  * and post_downvotes for ranking/counting purposes. It must never
@@ -715,31 +724,48 @@ export async function getDiscoverFeed(viewerId: string | null, limit = 30): Prom
   // viewer (empty blockedIds) filters nothing — same shape as the `ANY(ids)`
   // pattern hydratePosts already uses for viewer-scoped lookups.
   const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
+  // The net score is computed in a subquery rather than inline in ORDER BY:
+  // Postgres only resolves a select alias in ORDER BY when it stands alone, and
+  // every use here is inside an expression, so naming it any other way would
+  // mean writing the same COALESCE pair out three more times.
   const rows = await sql`
-    SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
-           p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
-           p.dish_name, p.price, p.rating, p.rating_kind, p.location_label, p.tags, p.media,
-           p.amenities, p.vibe, p.photos_public,
-           u.name AS author_name, u.avatar_url AS author_avatar_url,
-           u.points AS author_points
-    FROM posts p
-    JOIN users u ON u.id = p.user_id
-    LEFT JOIN (
-      SELECT post_id, count(*) AS count FROM post_upvotes GROUP BY post_id
-    ) uv ON uv.post_id = p.id
-    LEFT JOIN (
-      SELECT post_id, count(*) AS count FROM post_downvotes GROUP BY post_id
-    ) dv ON dv.post_id = p.id
-    WHERE p.user_id != ALL(${blockedIds})
-      AND p.created_at > now() - make_interval(days => ${FEED_WINDOW_DAYS})
+    SELECT * FROM (
+      SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
+             p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
+             p.dish_name, p.price, p.rating, p.rating_kind, p.location_label, p.tags, p.media,
+             p.amenities, p.vibe, p.photos_public,
+             u.name AS author_name, u.avatar_url AS author_avatar_url,
+             u.points AS author_points,
+             COALESCE(uv.count, 0) - COALESCE(dv.count, 0) AS net
+      FROM posts p
+      JOIN users u ON u.id = p.user_id
+      LEFT JOIN (
+        SELECT post_id, count(*) AS count FROM post_upvotes GROUP BY post_id
+      ) uv ON uv.post_id = p.id
+      LEFT JOIN (
+        SELECT post_id, count(*) AS count FROM post_downvotes GROUP BY post_id
+      ) dv ON dv.post_id = p.id
+      WHERE p.user_id != ALL(${blockedIds})
+        AND p.created_at > now() - make_interval(days => ${FEED_WINDOW_DAYS})
+    ) s
     ORDER BY
-      (GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0) + 1)
-        / POWER(EXTRACT(EPOCH FROM (now() - p.created_at)) / 3600 + 2, 1.5) DESC
+      -- Tier: at-or-above zero outranks everything below it, always.
+      (s.net >= 0) DESC,
+      CASE
+        -- The original curve, unchanged, for every post that isn't underwater.
+        WHEN s.net >= 0
+          THEN (s.net + 1) / POWER(EXTRACT(EPOCH FROM (now() - s.created_at)) / 3600 + 2, 1.5)
+        -- Underwater: worst first, and no age term — see the note above about
+        -- why dividing by age would float an old −9 over a fresh −1.
+        ELSE s.net
+      END DESC,
+      s.created_at DESC
     LIMIT ${limit}
   `;
   const posts = await hydratePosts(rows, viewerId, /* includeHearts */ false);
-  // hydratePosts recounts both directions itself; the ranking query's counts
-  // were only ever needed for ORDER BY, so they aren't selected at all.
+  // `net` is selected so ORDER BY can name it once instead of repeating the
+  // expression three times; hydratePosts recounts both directions itself and
+  // ignores the column.
   return posts.map((p) => ({
     ...p,
     media: p.photosPublic ? p.media : [],
