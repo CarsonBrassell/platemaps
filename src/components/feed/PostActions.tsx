@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HeartIcon, ChatIcon, ShareIcon, BookmarkIcon } from "@/components/icons";
+import { HeartIcon, ChatIcon, ShareIcon, BookmarkIcon, ArrowUpIcon, ArrowDownIcon } from "@/components/icons";
 
 /**
  * Every control in this row is color-only on press — nothing scales, pops or
@@ -45,6 +45,12 @@ type PostActionsProps =
       /** null when this viewer hasn't voted. Never both directions at once. */
       myVote: VoteDirection | null;
       onVote: (direction: VoteDirection) => void;
+      /**
+       * "arrows" (default) is the web card's ▲ N ▼ — unchanged unless a
+       * caller opts out. "pill" is the phone feed's rounded, icon-button
+       * trough (see VotePill below); nothing switches to it on its own.
+       */
+      voteStyle?: "arrows" | "pill";
     })
   | (SharedProps & {
       surface: "friends";
@@ -108,21 +114,24 @@ export function PostActions(props: PostActionsProps) {
        side rather than queueing behind three utilities. */
     <div className="relative flex w-full items-center justify-between gap-2">
       {props.surface === "discover" ? (
-        // "▲ 34 ▼" in the orange mono — the net score between the arrows;
-        // solid arrows always, your own vote carried by color alone. (They
-        // used to swap hollow△/solid▲, but the two glyphs render at
-        // different sizes, so voting visibly grew the arrow.)
-        //
-        // One number between the arrows, and it's the NET score, not the
-        // upvote total. Printing "34 liked / 11 disliked" under a photo of
-        // someone's dinner turns a plate into a scoreboard of who dislikes it;
-        // one number says the same thing about the plate without that.
-        <VotePair
-          upvoteCount={props.upvoteCount}
-          downvoteCount={props.downvoteCount}
-          myVote={props.myVote}
-          onVote={handleVote}
-        />
+        // One number between the controls either way, and it's the NET
+        // score, not the upvote total — see the shared reasoning on
+        // VotePair below; VotePill just wears it in a different shape.
+        props.voteStyle === "pill" ? (
+          <VotePill
+            upvoteCount={props.upvoteCount}
+            downvoteCount={props.downvoteCount}
+            myVote={props.myVote}
+            onVote={handleVote}
+          />
+        ) : (
+          <VotePair
+            upvoteCount={props.upvoteCount}
+            downvoteCount={props.downvoteCount}
+            myVote={props.myVote}
+            onVote={handleVote}
+          />
+        )
       ) : (
         // Friends has no vote pair at all, so the left side is empty here and
         // the utilities keep their right-hand position via ml-auto below.
@@ -271,6 +280,73 @@ function VotePair({
         {score}
       </span>
       {arrow("down")}
+    </div>
+  );
+}
+
+/**
+ * The phone feed's vote control — a single rounded trough (matching the
+ * `bg-pm-grey-tint` pill language every other secondary control on that
+ * screen already wears) instead of two bare glyphs floating in the row.
+ * Your own vote fills its half of the pill solid orange with a white icon,
+ * rather than just recoloring a tiny arrow — a bigger, more obviously
+ * pressed state for a surface read at arm's length and tapped with a thumb.
+ *
+ * Real chevron icons (ArrowUpIcon/ArrowDownIcon), not the web pair's ▲▼ text
+ * glyphs — those render at a font's whim across platforms, and a filled pill
+ * background needs an icon that centers the same way every time. Net score
+ * only, same reasoning as VotePair: one number, not an upvote/downvote
+ * scoreboard under someone's dinner.
+ */
+function VotePill({
+  upvoteCount,
+  downvoteCount,
+  myVote,
+  onVote,
+}: {
+  upvoteCount: number;
+  downvoteCount: number;
+  myVote: VoteDirection | null;
+  onVote: (direction: VoteDirection) => void;
+}) {
+  const score = upvoteCount - downvoteCount;
+
+  const segment = (direction: VoteDirection) => {
+    const active = myVote === direction;
+    const Icon = direction === "up" ? ArrowUpIcon : ArrowDownIcon;
+    return (
+      <button
+        type="button"
+        onClick={() => onVote(direction)}
+        aria-pressed={active}
+        aria-label={
+          active
+            ? direction === "up"
+              ? "Remove upvote"
+              : "Remove downvote"
+            : direction === "up"
+              ? "Upvote this plate"
+              : "Downvote this plate"
+        }
+        className={`flex min-h-11 w-9 items-center justify-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+          active ? "bg-pm-orange text-white" : "text-zinc-500 hover:text-pm-orange-text"
+        }`}
+      >
+        <Icon className="h-4 w-4" />
+      </button>
+    );
+  };
+
+  return (
+    <div className="-ml-0.5 flex items-center rounded-full bg-pm-grey-tint p-0.5">
+      {segment("up")}
+      <span
+        aria-label={`Net score ${score}`}
+        className="min-w-[2ch] px-0.5 text-center font-mono text-sm font-semibold tabular-nums text-pm-orange-text"
+      >
+        {score}
+      </span>
+      {segment("down")}
     </div>
   );
 }

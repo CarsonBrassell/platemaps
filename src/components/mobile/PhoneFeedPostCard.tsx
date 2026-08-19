@@ -389,7 +389,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
             <div className="min-w-0">
               <h3
                 id={titleId}
-                className="truncate font-display text-[17px] font-semibold leading-tight tracking-tight text-zinc-900"
+                className="truncate font-display text-[15px] font-semibold leading-tight tracking-tight text-zinc-900"
               >
                 {hasRestaurant ? (
                   <RestaurantRef post={post} className="decoration-1 decoration-zinc-300" />
@@ -515,6 +515,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
           {props.surface === "discover" ? (
             <PostActions
               surface="discover"
+              voteStyle="pill"
               upvoteCount={post.upvoteCount}
               downvoteCount={post.downvoteCount}
               myVote={post.upvotedByMe ? "up" : post.downvotedByMe ? "down" : null}

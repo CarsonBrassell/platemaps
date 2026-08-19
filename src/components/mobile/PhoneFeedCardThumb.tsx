@@ -7,8 +7,8 @@ import type { PostMedia } from "@/components/feed/types";
  * The small square photo on a non-featured feed card.
  *
  * Not `PostMediaCarousel`: that component is a full-width 16:9 swipe track with
- * arrows, dots and a slide counter, none of which survives being shrunk to 76px
- * — and a swipeable 76px box inside a vertical scroller is a gesture fight for
+ * arrows, dots and a slide counter, none of which survives being shrunk to 96px
+ * — and a swipeable 96px box inside a vertical scroller is a gesture fight for
  * no gain. The first item stands for the set here; the rest are one tap away in
  * the post's own screen.
  *
@@ -21,7 +21,7 @@ export function PhoneFeedCardThumb({ item, alt }: { item: PostMedia; alt: string
   const [failed, setFailed] = useState(false);
 
   return (
-    <div className="h-[76px] w-[76px] shrink-0 overflow-hidden rounded-xl bg-[var(--pm-tone-1)]">
+    <div className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-[var(--pm-tone-1)]">
       {item.type === "video" ? (
         /* Poster frame only — muted, never played, no controls. `preload
            ="metadata"` is what paints the first frame without pulling the
