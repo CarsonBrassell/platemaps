@@ -111,9 +111,23 @@ const COMMENT_HALF_LIFE_HOURS = 96;
  *
  * The +1 keeps age meaningful at the bottom of the scale: without it every
  * zero-vote comment ties at zero and the newest of them never wins.
+ *
+ * **A downvoted bubble sinks, and it does it in a second tier**, matching
+ * getDiscoverFeed exactly — the map and the feed have to agree about what a
+ * negative plate is worth, or the same post is buried in one and prominent in
+ * the other. The decay here is multiplicative, so the trap is the same as the
+ * feed's division: `negative * 0.5^age` rises toward zero as a post ages, which
+ * would let an old −9 outrank a fresh −1. Underwater comments therefore return
+ * their raw score, worst first, with no age term at all — and since every
+ * non-negative heat is strictly positive (the +1 guarantees it), any negative
+ * automatically sorts below every bubble that isn't underwater.
+ *
+ * This is what decides which single bubble a restaurant shows when only one
+ * fits: the hated take is now the last one standing, not the first.
  */
 function commentHeat(comment: MapComment, now: number) {
-  const popularity = Math.max(0, comment.score ?? comment.upvotes ?? 0);
+  const popularity = comment.score ?? comment.upvotes ?? 0;
+  if (popularity < 0) return popularity;
   if (!comment.createdAt) return popularity;
   const posted = Date.parse(comment.createdAt);
   if (Number.isNaN(posted)) return popularity;
@@ -994,6 +1008,12 @@ export function RestaurantMap({
     // Pin size and glow follow each restaurant's best comment score, so the
     // hottest spots read as the brightest lights on the map; closed places
     // cool to grey embers.
+    //
+    // This one keeps its zero floor, unlike the bubble ranking above. Brightness
+    // is a magnitude, not an order: an ember can be unlit but not less than
+    // unlit, and a negative here would feed a negative radius into the pin
+    // scale. A downvoted restaurant reads as cold, which is the darkest thing
+    // the map can say about it.
     const bestScore = (id: string) =>
       Math.max(0, ...(commentsByRestaurant[id] ?? []).map((c) => c.score ?? 0));
     const hottest = Math.max(1, ...restaurants.map((r) => bestScore(r.id)));
@@ -1581,8 +1601,14 @@ export function RestaurantMap({
        the ranking can't reshuffle between the initial render and a later pan —
        a bubble that shifted down the stack mid-pan would look like a bug. */
     const heatAt = now.getTime();
+    /* Seeded with -Infinity, not 0. A zero floor here would report "neutral"
+       for a restaurant whose only comment is underwater, handing it the same
+       placement priority as one nobody has said anything bad about — the exact
+       flattening commentHeat just stopped doing per bubble. It also drops
+       restaurants with no comments at all to the bottom of `ranked`, where they
+       belong: they occupy a coverage slot and then draw nothing. */
     const hottestComment = (id: string) =>
-      Math.max(0, ...(commentsByRestaurant[id] ?? []).map((c) => commentHeat(c, heatAt)));
+      Math.max(-Infinity, ...(commentsByRestaurant[id] ?? []).map((c) => commentHeat(c, heatAt)));
 
     // Rank restaurants by their hottest comment, breaking ties with a
     // deterministic spread so an unscored subset doesn't cluster onto one side.
