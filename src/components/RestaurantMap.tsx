@@ -407,15 +407,29 @@ function scoreColorFor(score: string) {
  */
 function estimateMetaWidth(comment: MapComment) {
   const items: number[] = [];
-  // Arrow + count + arrow — the full vote pair, generous for the friends
-  // bubbles that only draw a heart.
-  if (comment.upvotes !== undefined) items.push(26 + compactCount(comment.upvotes).length * 6);
+  /* The handle, which this used to leave out entirely — and it only opens the
+     row on a real post. Seeded chatter is anonymous, so every bubble the map
+     used to place happened to be one this priced correctly, and the miss stayed
+     invisible until real posts started winning bubbles. On those the row ran
+     ~50px past the box and the second arrow and the reply count hung out over
+     the map. `@` plus one 6px mono advance per character, uppercase being the
+     same width in a monospace face. */
+  if (comment.author) items.push((comment.author.length + 1) * 6);
+  /* Arrow + count + arrow — the full vote pair, generous for the friends
+     bubbles that only draw a heart. 34, not 26: each arrow occupies 13px of
+     layout (a 25px padded hit box pulled back by its own -6px margins) and the
+     flex `gap: 4px` sits on both sides of the count. 26 priced the glyphs and
+     forgot the gaps. */
+  if (comment.upvotes !== undefined) items.push(34 + compactCount(comment.upvotes).length * 6);
   if (comment.commentCount !== undefined) items.push(13 + String(comment.commentCount).length * 6);
   if (comment.createdAt) items.push(compactTime(comment.createdAt).length * 6);
-  /* 12 per boundary, not 8: the row separates its parts with a mono middot
+  /* 14 per boundary, not 8: the row separates its parts with a mono middot
      (`@DANNYQ · 2H · ▲ 34`, the byline shape DESIGN.md gives the feed card),
-     so a boundary now costs two 4px gaps and a ~6px glyph rather than one gap. */
-  const gaps = Math.max(0, items.length - 1) * 12;
+     so a boundary costs two 4px flex gaps plus the ~6px glyph between them,
+     rather than one gap. It was 12, which under-counted by 2 on every
+     boundary — invisible on a two-part seeded row, 6px of overhang on a
+     four-part real one. */
+  const gaps = Math.max(0, items.length - 1) * 14;
   return items.reduce((a, b) => a + b, 0) + gaps + (BUBBLE_PADDING_X + BUBBLE_BORDER) * 2 + 8;
 }
 
