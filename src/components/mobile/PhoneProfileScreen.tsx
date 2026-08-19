@@ -8,6 +8,7 @@ import { CameraIcon, PlateStarIcon } from "@/components/icons";
 import { PhoneProfileActivity } from "@/components/mobile/PhoneProfileActivity";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
 import { PhoneDeleteAccountPanel } from "@/components/mobile/PhoneDeleteAccountPanel";
+import { PhoneSecurityPanel } from "@/components/mobile/PhoneSecurityPanel";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { resizeImageToDataUrl } from "@/lib/image";
@@ -254,6 +255,10 @@ function ProfileOverview() {
 
           <ProfileSettingsPanel />
 
+          {/* Same order as the web account page: what the app shows about you,
+              then what you do to the account. */}
+          <PhoneSecurityPanel />
+
           {myPosts.length > 0 && (
             <>
               <p className="mono-label mb-2 text-zinc-500">Your posts</p>
@@ -319,6 +324,62 @@ function ProfileOverview() {
  * array — offering anything else would build a select whose options the server
  * rejects. Same import the web panel makes.
  */
+/**
+ * One switch row, phone dressing: a rank-3 local switch, so it wears the
+ * segmented tan track with a white selected segment rather than the web
+ * panel's iOS-style toggle. Two named options also say what the states are,
+ * which a bare track leaves you to infer.
+ *
+ * Four of these on the panel now — hand-rolling the track each time is how the
+ * third one ends up a different width and nobody notices for a month.
+ */
+function PhoneSettingSwitch({
+  label,
+  description,
+  on,
+  disabled,
+  onPick,
+}: {
+  label: string;
+  description: string;
+  on: boolean;
+  disabled: boolean;
+  onPick: () => void;
+}) {
+  return (
+    <div className="mb-4">
+      <p className="text-sm font-medium text-zinc-800">{label}</p>
+      <p className="mt-0.5 text-xs leading-snug text-zinc-500">{description}</p>
+
+      <div
+        role="group"
+        aria-label={label}
+        className="mt-2.5 flex gap-1 rounded-full bg-pm-grey-tint p-1"
+      >
+        {[
+          { value: false, label: "Off" },
+          { value: true, label: "On" },
+        ].map((option) => (
+          <button
+            key={option.label}
+            type="button"
+            aria-pressed={on === option.value}
+            onClick={() => {
+              if (on !== option.value) onPick();
+            }}
+            disabled={disabled}
+            className={`mono-label min-h-11 flex-1 rounded-full transition-colors disabled:opacity-50 ${FOCUS} ${
+              on === option.value ? "bg-white text-zinc-900" : "text-pm-grey-text"
+            }`}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ProfileSettingsPanel() {
   const { account, updateSettings } = useAuth();
   const [saving, setSaving] = useState(false);
@@ -356,6 +417,18 @@ function ProfileSettingsPanel() {
     setSaving(false);
   }
 
+  /** The three privacy switches. Same round trip as every other field here. */
+  async function handlePrivacy(
+    key: "hideFromLeaderboard" | "discoverableByUsername" | "friendRequestsOpen",
+    value: boolean
+  ) {
+    setSaving(true);
+    setError("");
+    const result = await updateSettings({ [key]: value });
+    if (result) setError(result);
+    setSaving(false);
+  }
+
   async function handleCuisine(value: string) {
     setSaving(true);
     setError("");
@@ -376,48 +449,42 @@ function ProfileSettingsPanel() {
     <div className="mb-6 rounded-xl bg-pm-grey-tint/40 p-3.5">
       <p className="mono-label mb-3 text-zinc-500">Profile settings</p>
 
-      <div className="mb-4">
-        <p className="text-sm font-medium text-zinc-800">Share my photos publicly</p>
-        <p className="mt-0.5 text-xs leading-snug text-zinc-500">
-          {/* Framed as forward-only on purpose — this is the one fact about the
-              toggle that isn't visually obvious from the switch itself, and
-              getting it wrong reads as a broken promise, not a UI bug. */}
-          Off by default. New posts only — turning this on won&apos;t make photos you&apos;ve
-          already shared public.
-        </p>
+      <PhoneSettingSwitch
+        label="Share my photos publicly"
+        /* Framed as forward-only on purpose — this is the one fact about the
+           toggle that isn't visually obvious from the switch itself, and
+           getting it wrong reads as a broken promise, not a UI bug. */
+        description="Off by default. New posts only — turning this on won't make photos you've already shared public."
+        on={account.sharePhotosPublicly}
+        disabled={saving}
+        onPick={handleToggle}
+      />
 
-        {/* A rank-3 local switch, so it wears the segmented tan track with a
-            white selected segment rather than the web panel's iOS-style toggle.
-            Two named options also say what the states are, which a bare track
-            leaves you to infer. */}
-        <div
-          role="group"
-          aria-label="Share my photos publicly"
-          className="mt-2.5 flex gap-1 rounded-full bg-pm-grey-tint p-1"
-        >
-          {[
-            { on: false, label: "Off" },
-            { on: true, label: "On" },
-          ].map((option) => (
-            <button
-              key={option.label}
-              type="button"
-              aria-pressed={account.sharePhotosPublicly === option.on}
-              onClick={() => {
-                if (account.sharePhotosPublicly !== option.on) void handleToggle();
-              }}
-              disabled={saving}
-              className={`mono-label min-h-11 flex-1 rounded-full transition-colors disabled:opacity-50 ${FOCUS} ${
-                account.sharePhotosPublicly === option.on
-                  ? "bg-white text-zinc-900"
-                  : "text-pm-grey-text"
-              }`}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <PhoneSettingSwitch
+        label="Hide me from the leaderboard"
+        description="You keep earning points and can still see your own. Friends just won't see you ranked."
+        on={account.hideFromLeaderboard}
+        disabled={saving}
+        onPick={() => void handlePrivacy("hideFromLeaderboard", !account.hideFromLeaderboard)}
+      />
+
+      <PhoneSettingSwitch
+        label="Let people find me by username"
+        description="On by default. Turning it off keeps you out of username search — people you're already friends with still see you."
+        on={account.discoverableByUsername}
+        disabled={saving}
+        onPick={() =>
+          void handlePrivacy("discoverableByUsername", !account.discoverableByUsername)
+        }
+      />
+
+      <PhoneSettingSwitch
+        label="Accept friend requests"
+        description="Turning this off stops new requests. It doesn't remove the friends you already have."
+        on={account.friendRequestsOpen}
+        disabled={saving}
+        onPick={() => void handlePrivacy("friendRequestsOpen", !account.friendRequestsOpen)}
+      />
 
       <label
         htmlFor="phone-favorite-cuisine"

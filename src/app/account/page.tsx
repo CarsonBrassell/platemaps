@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
@@ -9,6 +9,7 @@ import { resizeImageToDataUrl } from "@/lib/image";
 import { PlateStarIcon } from "@/components/icons";
 import { ProfileActivity } from "@/components/ProfileActivity";
 import { DeleteAccountPanel } from "@/components/account/DeleteAccountPanel";
+import { SecurityPanel } from "@/components/account/SecurityPanel";
 import { POINT_RULES } from "@/lib/points";
 import { cuisines } from "@/data/restaurants";
 
@@ -340,6 +341,11 @@ function AccountOverview() {
 
       <ProfileSettingsPanel />
 
+      {/* Below the settings that change what the app shows, above the block
+          list and the delete panel — reversible things first, in rough order
+          of how often anyone touches them. */}
+      <SecurityPanel />
+
       <BlockedUsersPanel />
 
       {myPosts.length > 0 && (
@@ -425,6 +431,62 @@ function AccountOverview() {
  * text, since the point of storing them this way is to use them for taste
  * matching later.
  */
+/**
+ * One switch row. Four of them on this panel now, and hand-rolling the track
+ * and knob each time is how they drift apart — the third one ends up a
+ * different width and nobody notices for a month.
+ */
+function SettingSwitch({
+  label,
+  description,
+  checked,
+  disabled,
+  onChange,
+}: {
+  label: string;
+  description: ReactNode;
+  checked: boolean;
+  disabled: boolean;
+  onChange: () => void;
+}) {
+  return (
+    <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-zinc-800">{label}</p>
+        <p className="mt-0.5 text-xs text-zinc-500">{description}</p>
+      </div>
+      {/* The button is 44px tall for the tap target; the track it draws stays
+          28px and centred inside it. They used to be the same element, which
+          made every switch on this page a 28px target — under the floor
+          AGENTS.md sets, and the kind of miss that spreads by copy-paste. */}
+      <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        aria-label={label}
+        onClick={onChange}
+        disabled={disabled}
+        className="relative h-11 w-12 shrink-0 rounded-full disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+      >
+        <span
+          className={`absolute inset-x-0 top-2 h-7 rounded-full transition-colors ${
+            checked ? "bg-pm-orange" : "bg-zinc-300"
+          }`}
+        />
+        {/* `left-1` is load-bearing. Without it the knob is an absolutely
+            positioned box with no inset, so it falls at its static position —
+            which a button centres — and the translate then pushes it off the
+            end of the track entirely. It rendered ~20px outside the pill. */}
+        <span
+          className={`absolute left-1 top-3 h-5 w-5 rounded-full bg-white transition-transform ${
+            checked ? "translate-x-5" : "translate-x-0"
+          }`}
+        />
+      </button>
+    </div>
+  );
+}
+
 function ProfileSettingsPanel() {
   const { account, updateSettings } = useAuth();
   const [saving, setSaving] = useState(false);
@@ -463,6 +525,18 @@ function ProfileSettingsPanel() {
     setSaving(false);
   }
 
+  /** The three privacy switches. Same round trip as every other field here. */
+  async function handlePrivacy(
+    key: "hideFromLeaderboard" | "discoverableByUsername" | "friendRequestsOpen",
+    value: boolean
+  ) {
+    setSaving(true);
+    setError("");
+    const result = await updateSettings({ [key]: value });
+    if (result) setError(result);
+    setSaving(false);
+  }
+
   async function handleCuisine(value: string) {
     setSaving(true);
     setError("");
@@ -483,34 +557,42 @@ function ProfileSettingsPanel() {
     <div className="mb-6 rounded-xl bg-pm-grey-tint/40 p-4">
       <p className="mono-label mb-3 text-zinc-500">Profile settings</p>
 
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-zinc-800">Share my photos publicly</p>
-          <p className="mt-0.5 text-xs text-zinc-500">
-            {/* Framed as forward-only on purpose — this is the one fact about
-                the toggle that isn't visually obvious from the switch itself,
-                and getting it wrong reads as a broken promise, not a UI bug. */}
-            Off by default. New posts only — turning this on won&apos;t make photos you&apos;ve
-            already shared public.
-          </p>
-        </div>
-        <button
-          type="button"
-          role="switch"
-          aria-checked={account.sharePhotosPublicly}
-          onClick={handleToggle}
-          disabled={saving}
-          className={`relative h-7 w-12 shrink-0 rounded-full transition-colors disabled:opacity-50 ${
-            account.sharePhotosPublicly ? "bg-pm-orange" : "bg-zinc-300"
-          }`}
-        >
-          <span
-            className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-transform ${
-              account.sharePhotosPublicly ? "translate-x-6" : "translate-x-1"
-            }`}
-          />
-        </button>
-      </div>
+      <SettingSwitch
+        label="Share my photos publicly"
+        /* Framed as forward-only on purpose — this is the one fact about the
+           toggle that isn't visually obvious from the switch itself, and
+           getting it wrong reads as a broken promise, not a UI bug. */
+        description="Off by default. New posts only — turning this on won't make photos you've already shared public."
+        checked={account.sharePhotosPublicly}
+        disabled={saving}
+        onChange={handleToggle}
+      />
+
+      <SettingSwitch
+        label="Hide me from the leaderboard"
+        description="You keep earning points and can still see your own. Friends just won't see you ranked."
+        checked={account.hideFromLeaderboard}
+        disabled={saving}
+        onChange={() => void handlePrivacy("hideFromLeaderboard", !account.hideFromLeaderboard)}
+      />
+
+      <SettingSwitch
+        label="Let people find me by username"
+        description="On by default. Turning it off keeps you out of username search — people you're already friends with still see you."
+        checked={account.discoverableByUsername}
+        disabled={saving}
+        onChange={() =>
+          void handlePrivacy("discoverableByUsername", !account.discoverableByUsername)
+        }
+      />
+
+      <SettingSwitch
+        label="Accept friend requests"
+        description="Turning this off stops new requests. It doesn't remove the friends you already have."
+        checked={account.friendRequestsOpen}
+        disabled={saving}
+        onChange={() => void handlePrivacy("friendRequestsOpen", !account.friendRequestsOpen)}
+      />
 
       <label className="mb-1 block text-sm font-medium text-zinc-700">Favorite cuisine</label>
       <select

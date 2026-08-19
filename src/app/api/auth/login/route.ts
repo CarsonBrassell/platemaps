@@ -41,5 +41,8 @@ export async function POST(req: NextRequest) {
     sharePhotosPublicly: user.sharePhotosPublicly,
     favoriteCuisine: user.favoriteCuisine,
     favoriteRestaurantId: user.favoriteRestaurantId,
+    hideFromLeaderboard: user.hideFromLeaderboard,
+    discoverableByUsername: user.discoverableByUsername,
+    friendRequestsOpen: user.friendRequestsOpen,
   });
 }

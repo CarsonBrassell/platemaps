@@ -24,6 +24,15 @@ export type User = {
   favoriteRestaurantId?: string;
   /** When they checked the Terms/Privacy box at signup — server-stamped, see createUser. */
   agreedToTermsAt?: string;
+  /**
+   * The three privacy switches. Each is enforced in the query that would
+   * otherwise expose the account — never in a component, and never by asking
+   * the caller to remember: `getLeaderboard`/`getUserRank` for the first,
+   * `searchUsers` for the second, `sendFriendRequest` for the third.
+   */
+  hideFromLeaderboard: boolean;
+  discoverableByUsername: boolean;
+  friendRequestsOpen: boolean;
 };
 
 function currentMonthKey(): string {
@@ -50,6 +59,11 @@ function rowToUser(row: any): User {
     favoriteCuisine: row.favorite_cuisine ?? undefined,
     favoriteRestaurantId: row.favorite_restaurant_id ?? undefined,
     agreedToTermsAt: row.agreed_to_terms_at ?? undefined,
+    // Defaults repeated here rather than trusted from the column, so a row read
+    // before the migration lands behaves like the app did before it existed.
+    hideFromLeaderboard: row.hide_from_leaderboard ?? false,
+    discoverableByUsername: row.discoverable_by_username ?? true,
+    friendRequestsOpen: row.friend_requests_open ?? true,
   };
 }
 
@@ -212,6 +226,7 @@ export async function getLeaderboard(
              (SELECT count(*) FROM posts po WHERE po.user_id = u.id)::int AS post_count
       FROM users u
       WHERE u.points > 0
+        AND NOT u.hide_from_leaderboard
       ORDER BY u.points DESC
       LIMIT ${limit}
     `;
@@ -226,10 +241,18 @@ export async function getLeaderboard(
     }));
   }
 
+  // Hidden users are excluded *before* RANK() runs, in both windows. Filtering
+  // them out after ranking would leave holes in the numbering — a visible 1, 3,
+  // 4 that tells everyone exactly how many people are hiding and roughly where
+  // they sit, which is the thing the switch is for.
   const rows = await sql`
-    WITH cur AS (
+    WITH ranked_users AS (
+      SELECT id FROM users WHERE NOT hide_from_leaderboard
+    ),
+    cur AS (
       SELECT user_id, SUM(amount)::int AS pts
       FROM point_events WHERE created_at >= ${bounds.start.toISOString()}
+        AND user_id IN (SELECT id FROM ranked_users)
       GROUP BY user_id
     ),
     prev AS (
@@ -237,6 +260,7 @@ export async function getLeaderboard(
       FROM point_events
       WHERE created_at >= ${bounds.prevStart.toISOString()}
         AND created_at < ${bounds.start.toISOString()}
+        AND user_id IN (SELECT id FROM ranked_users)
       GROUP BY user_id
     ),
     cur_ranked AS (
@@ -287,6 +311,7 @@ export async function getUserRank(
         WITH cur AS (
           SELECT user_id, SUM(amount)::int AS pts
           FROM point_events WHERE created_at >= ${bounds.start.toISOString()}
+            AND user_id IN (SELECT id FROM users WHERE NOT hide_from_leaderboard)
           GROUP BY user_id HAVING SUM(amount) > 0
         )
         SELECT pts, rnk, (
@@ -297,11 +322,12 @@ export async function getUserRank(
       `
     : await sql`
         SELECT pts, rnk, (
-          SELECT MIN(u2.points) FROM users u2 WHERE u2.points > r.pts
+          SELECT MIN(u2.points) FROM users u2
+          WHERE u2.points > r.pts AND NOT u2.hide_from_leaderboard
         ) AS next_pts
         FROM (
           SELECT id, points AS pts, RANK() OVER (ORDER BY points DESC)::int AS rnk
-          FROM users WHERE points > 0
+          FROM users WHERE points > 0 AND NOT hide_from_leaderboard
         ) r
         WHERE r.id = ${userId}
       `;
@@ -1252,6 +1278,14 @@ export async function sendFriendRequest(
   `;
   if (blocked.length > 0) return "none";
 
+  // The recipient closed their door. Returns "none" — the same answer a block
+  // gives — because the alternative is telling the requester something about
+  // an account that has just declined to tell them anything.
+  const closed = await sql`
+    SELECT 1 FROM users WHERE id = ${recipientId} AND NOT friend_requests_open
+  `;
+  if (closed.length > 0) return "none";
+
   const reciprocal = await sql`
     SELECT id FROM friend_requests
     WHERE requester_id = ${recipientId} AND recipient_id = ${requesterId} AND status = 'pending'
@@ -1492,6 +1526,9 @@ export async function searchUsers(
     FROM users
     WHERE id != ${viewerId}
       AND id != ALL(${blockedIds})
+      -- Opted out of being findable. Enforced here rather than filtered after,
+      -- so a hidden account never reaches a response at all.
+      AND discoverable_by_username
       AND lower(replace(name, ' ', '')) LIKE ${"%" + normalized + "%"}
     ORDER BY name ASC
     LIMIT ${limit}
@@ -1526,6 +1563,120 @@ export async function updateFavorites(
 
 export async function updatePhotoSharing(userId: string, enabled: boolean): Promise<void> {
   await sql`UPDATE users SET share_photos_publicly = ${enabled} WHERE id = ${userId}`;
+}
+
+/**
+ * The three privacy switches, written one column at a time so a caller can
+ * send one without having to know or resend the other two — the same shape
+ * `updateFavorites` uses, and the reason both take partials.
+ */
+export async function updatePrivacySettings(
+  userId: string,
+  data: {
+    hideFromLeaderboard?: boolean;
+    discoverableByUsername?: boolean;
+    friendRequestsOpen?: boolean;
+  }
+): Promise<void> {
+  if (data.hideFromLeaderboard !== undefined) {
+    await sql`UPDATE users SET hide_from_leaderboard = ${data.hideFromLeaderboard} WHERE id = ${userId}`;
+  }
+  if (data.discoverableByUsername !== undefined) {
+    await sql`UPDATE users SET discoverable_by_username = ${data.discoverableByUsername} WHERE id = ${userId}`;
+  }
+  if (data.friendRequestsOpen !== undefined) {
+    await sql`UPDATE users SET friend_requests_open = ${data.friendRequestsOpen} WHERE id = ${userId}`;
+  }
+}
+
+/**
+ * Rename. The uniqueness check belongs to the caller — the route does it
+ * against `getUserByName` so it can say "that username is taken" rather than
+ * surface a constraint violation — but `idx_users_name_unique` is what
+ * actually holds the line if two renames race.
+ *
+ * Nothing else has to change: posts, comments and the leaderboard all join
+ * `users` for the display name rather than copying it, and a handle is derived
+ * from the current name at render time. The one thing that does *not* follow
+ * the rename is history someone else already read.
+ */
+export async function updateUserName(userId: string, name: string): Promise<void> {
+  await sql`UPDATE users SET name = ${name} WHERE id = ${userId}`;
+}
+
+/** Caller hashes. This never sees a plaintext password and must not start. */
+export async function updatePasswordHash(userId: string, passwordHash: string): Promise<void> {
+  await sql`UPDATE users SET password_hash = ${passwordHash} WHERE id = ${userId}`;
+}
+
+/**
+ * Ends every session except the one making the request, which is what "log out
+ * everywhere else" has to mean — logging *this* device out too would answer a
+ * request about other devices by signing you out of the one in your hand.
+ *
+ * Returns how many were ended, because "0 other devices" and "3 other devices"
+ * deserve different sentences, and the caller can't count them afterwards.
+ */
+export async function deleteOtherSessions(userId: string, keepToken: string): Promise<number> {
+  const rows = await sql`
+    DELETE FROM sessions
+    WHERE user_id = ${userId} AND token != ${keepToken}
+    RETURNING token
+  `;
+  return rows.length;
+}
+
+/**
+ * Everything this account has written, as plain data.
+ *
+ * The rule for what goes in: things *you* produced or chose. Your posts, your
+ * comments, your saves, your points, who you're friends with. What stays out is
+ * anything that would use your export to leak somebody else — the same line
+ * `getActivityForAuthor` draws. Hearts you *received* are already author-only
+ * and stay that way here; upvotes you received are counted, never named, which
+ * is the standing rule everywhere in this app. Other people's comments on your
+ * posts are theirs, not yours, so they are counted rather than reproduced.
+ *
+ * No password hash, obviously, and no session tokens: an export lands in a
+ * downloads folder and gets emailed around, and neither of those should travel.
+ */
+export async function exportUserData(userId: string): Promise<Record<string, unknown>> {
+  const [user, posts, comments, saves, points, friends] = await Promise.all([
+    sql`SELECT id, name, email, points, avatar_url, share_photos_publicly,
+               favorite_cuisine, favorite_restaurant_id, agreed_to_terms_at,
+               hide_from_leaderboard, discoverable_by_username, friend_requests_open
+        FROM users WHERE id = ${userId}`,
+    sql`SELECT p.id, p.text, p.restaurant, p.restaurant_id, p.dish_name, p.price,
+               p.rating, p.rating_kind, p.location_label, p.tags, p.amenities, p.vibe,
+               p.photos_public, p.created_at,
+               (SELECT count(*) FROM post_upvotes v WHERE v.post_id = p.id)::int AS upvotes,
+               (SELECT count(*) FROM comments c WHERE c.post_id = p.id)::int AS comment_count
+        FROM posts p WHERE p.user_id = ${userId} ORDER BY p.created_at ASC`,
+    sql`SELECT id, post_id, text, created_at FROM comments
+        WHERE user_id = ${userId} ORDER BY created_at ASC`,
+    sql`SELECT post_id FROM post_saves WHERE user_id = ${userId}`,
+    sql`SELECT amount, reason, created_at FROM point_events
+        WHERE user_id = ${userId} ORDER BY created_at ASC`,
+    sql`SELECT u.name, f.created_at
+        FROM friendships f
+        JOIN users u ON u.id = CASE WHEN f.user_a = ${userId} THEN f.user_b ELSE f.user_a END
+        WHERE f.user_a = ${userId} OR f.user_b = ${userId}
+        ORDER BY f.created_at ASC`,
+  ]);
+
+  return {
+    exportedAt: new Date().toISOString(),
+    account: user[0] ?? null,
+    posts,
+    comments,
+    savedPostIds: saves.map((r) => r.post_id),
+    pointHistory: points,
+    friends,
+    // Photos are deliberately absent. They live as data URLs on the post rows
+    // and would multiply the file size by an order of magnitude for something
+    // the person already has in their camera roll.
+    note: "Photos are not included. Posts older than the feed window are — nothing here is ever deleted.",
+  };
 }
 
 export type PublicProfile = {

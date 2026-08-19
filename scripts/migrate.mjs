@@ -548,6 +548,21 @@ const statements = [
   `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS source_key TEXT`,
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_restaurants_source_key
      ON restaurants (source_key) WHERE source_key IS NOT NULL`,
+  // --- Account privacy switches --------------------------------------------
+  //
+  // Three separate columns rather than one "private account" flag, because
+  // they answer three different questions and people want different answers to
+  // them: being off the leaderboard is not the same as being unfindable, and
+  // neither is the same as refusing friend requests.
+  //
+  // Note the defaults differ, and each matches what the app already does
+  // today, so running this migration changes nothing for anyone until they go
+  // and change it. Hiding from the leaderboard is opt-in (false); being
+  // findable and accepting requests are opt-out (true), since an account that
+  // silently couldn't be found or friended would read as broken.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS hide_from_leaderboard BOOLEAN NOT NULL DEFAULT false`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS discoverable_by_username BOOLEAN NOT NULL DEFAULT true`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS friend_requests_open BOOLEAN NOT NULL DEFAULT true`,
 ];
 
 for (const statement of statements) {

@@ -11,6 +11,9 @@ type Account = {
   sharePhotosPublicly: boolean;
   favoriteCuisine?: string;
   favoriteRestaurantId?: string;
+  hideFromLeaderboard: boolean;
+  discoverableByUsername: boolean;
+  friendRequestsOpen: boolean;
 };
 
 type AuthContextValue = {
@@ -38,8 +41,24 @@ type AuthContextValue = {
       sharePhotosPublicly: boolean;
       favoriteCuisine: string | null;
       favoriteRestaurantId: string | null;
+      hideFromLeaderboard: boolean;
+      discoverableByUsername: boolean;
+      friendRequestsOpen: boolean;
     }>
   ) => Promise<string | null>;
+  /** Rename. Resolves to an error string, or null with the context renamed. */
+  changeUsername: (name: string) => Promise<string | null>;
+  /**
+   * Both passwords, because the server re-authenticates before writing. On
+   * success every other session is ended too, so the resolved value carries how
+   * many were — the caller needs it to say so.
+   */
+  changePassword: (
+    currentPassword: string,
+    newPassword: string
+  ) => Promise<{ error: string | null; endedElsewhere: number }>;
+  /** Ends every session but this one. Resolves to how many were ended. */
+  signOutOtherDevices: () => Promise<{ error: string | null; endedElsewhere: number }>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -142,11 +161,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return null;
   }
 
+  async function changeUsername(name: string) {
+    const res = await fetch("/api/account/username", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name }),
+    });
+    if (!res.ok) return parseError(res);
+    setAccount(await res.json());
+    return null;
+  }
+
+  async function changePassword(currentPassword: string, newPassword: string) {
+    const res = await fetch("/api/account/password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ currentPassword, newPassword }),
+    });
+    if (!res.ok) return { error: await parseError(res), endedElsewhere: 0 };
+    const data = await res.json();
+    // No setAccount: nothing the client renders changed. The password isn't in
+    // this context and the session survived on purpose.
+    return { error: null, endedElsewhere: (data.endedElsewhere as number) ?? 0 };
+  }
+
+  async function signOutOtherDevices() {
+    const res = await fetch("/api/account/sessions", { method: "DELETE" });
+    if (!res.ok) return { error: await parseError(res), endedElsewhere: 0 };
+    const data = await res.json();
+    return { error: null, endedElsewhere: (data.endedElsewhere as number) ?? 0 };
+  }
+
   async function updateSettings(
     settings: Partial<{
       sharePhotosPublicly: boolean;
       favoriteCuisine: string | null;
       favoriteRestaurantId: string | null;
+      hideFromLeaderboard: boolean;
+      discoverableByUsername: boolean;
+      friendRequestsOpen: boolean;
     }>
   ) {
     const res = await fetch("/api/account/settings", {
@@ -172,6 +225,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         refresh,
         updateAvatar,
         updateSettings,
+        changeUsername,
+        changePassword,
+        signOutOtherDevices,
       }}
     >
       {children}
