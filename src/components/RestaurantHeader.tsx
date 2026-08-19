@@ -88,7 +88,11 @@ export function RestaurantHeader({
             </div>
           )}
 
-          {SHOW_BLEND_STARS && (
+          {/* `rating` is optional now: a restaurant sourced from OpenStreetMap
+              has none until the Google pass runs. Draw nothing rather than a
+              zero-star row — an unrated place is normally unlisted, but its
+              page is still reachable by direct link. */}
+          {SHOW_BLEND_STARS && restaurant.rating != null && (
             <div className={score.percent !== null ? "pb-0.5" : ""}>
               <span className="flex items-center gap-1.5">
                 <StarRating rating={restaurant.rating} className="h-4 w-4" />
@@ -97,7 +101,9 @@ export function RestaurantHeader({
                 </span>
               </span>
               <p className="mt-1 font-mono text-[11px] leading-tight text-zinc-400">
-                {BLEND_CAPTION} · {restaurant.reviewCount.toLocaleString()} reviews
+                {BLEND_CAPTION}
+                {restaurant.reviewCount != null &&
+                  ` · ${restaurant.reviewCount.toLocaleString()} reviews`}
               </p>
             </div>
           )}

@@ -147,7 +147,10 @@ export function PhoneDetailHero({
               </span>
             )}
 
-            {SHOW_BLEND_STARS && (
+            {/* See the matching note in RestaurantHeader: `rating` is optional
+                since restaurants now arrive from OpenStreetMap unrated, and a
+                missing number is shown as absent, never as zero stars. */}
+            {SHOW_BLEND_STARS && restaurant.rating != null && (
               <div className={score.percent !== null ? "pb-0.5" : ""}>
                 <span className="flex items-center gap-1.5">
                   <StarRating rating={restaurant.rating} className="h-4 w-4" />
@@ -156,7 +159,9 @@ export function PhoneDetailHero({
                   </span>
                 </span>
                 <p className="mt-1 font-mono text-[11px] leading-tight text-zinc-500">
-                  {BLEND_CAPTION} · {restaurant.reviewCount.toLocaleString()} reviews
+                  {BLEND_CAPTION}
+                  {restaurant.reviewCount != null &&
+                    ` · ${restaurant.reviewCount.toLocaleString()} reviews`}
                 </p>
               </div>
             )}

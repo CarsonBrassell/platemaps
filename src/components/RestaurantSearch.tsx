@@ -248,7 +248,7 @@ export function RestaurantSearch() {
                         {r.plateScore.percent}%
                       </span>
                     )}
-                    {SHOW_BLEND_STARS && (
+                    {SHOW_BLEND_STARS && r.rating != null && (
                       <span className="flex items-center gap-0.5 font-medium text-zinc-500">
                         <StarIcon className="h-3 w-3 text-zinc-400" />
                         {blendLabel(r.rating)}

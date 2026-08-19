@@ -2067,10 +2067,16 @@ export async function getRestaurants(): Promise<RestaurantView[]> {
   // Seed-file order, not id order — `id` is TEXT, so ordering by it would
   // put "10" ahead of "2" and reshuffle the grid. See the sort_order note in
   // scripts/migrate.mjs.
+  // `listed` is the publication gate: a sourced rating AND a real menu, both,
+  // recomputed by scripts/publish-restaurants.mjs. It exists because the corpus
+  // now grows from OpenStreetMap, which supplies neither — rows land incomplete
+  // and are enriched afterwards, so "ready" has to be a column rather than a
+  // property of being in the table. Never drop this predicate to "show more";
+  // what it hides is restaurants that cannot say anything about themselves.
   const restaurantRows = await sql`
     SELECT id, name, cuisine, neighborhood, distance, hours,
            lat, lng, rating, review_count, trending, photo, photo_alt, price_band
-    FROM restaurants ORDER BY sort_order, id
+    FROM restaurants WHERE listed ORDER BY sort_order, id
   `;
 
   return restaurantRows.map((row) => ({
@@ -2236,9 +2242,12 @@ export async function getRestaurantFacets(): Promise<{
   cuisines: string[];
   neighborhoods: string[];
 }> {
+  // Filtered on `listed` for the same reason the grid is, and it has to stay in
+  // step with it: a filter option that matches nothing visible is a promise the
+  // results cannot keep.
   const [cuisineRows, neighborhoodRows] = await Promise.all([
-    sql`SELECT DISTINCT cuisine FROM restaurants ORDER BY cuisine`,
-    sql`SELECT DISTINCT neighborhood FROM restaurants ORDER BY neighborhood`,
+    sql`SELECT DISTINCT cuisine FROM restaurants WHERE listed ORDER BY cuisine`,
+    sql`SELECT DISTINCT neighborhood FROM restaurants WHERE listed ORDER BY neighborhood`,
   ]);
   return {
     cuisines: cuisineRows.map((r) => r.cuisine as string),

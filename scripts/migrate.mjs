@@ -548,6 +548,28 @@ const statements = [
   `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS source_key TEXT`,
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_restaurants_source_key
      ON restaurants (source_key) WHERE source_key IS NOT NULL`,
+
+  // --- Publication gate ----------------------------------------------------
+  //
+  // A restaurant is visible only once it can actually say something: a sourced
+  // rating AND a real menu. Both, or it stays off the grid.
+  //
+  // This exists because the corpus is about to grow from a source that supplies
+  // neither. OpenStreetMap gives names and coordinates for 3,937 San Diego
+  // restaurants; ratings come from a separate Google pass and menus from a
+  // separate extraction pass, and both cost something per restaurant. Without a
+  // gate, the window between "imported" and "enriched" is a Discover grid full
+  // of blank cards — and the enrichment steps *need* the row to exist first,
+  // because extraction is keyed by restaurant id. So the row has to land before
+  // it is ready, which means readiness has to be a column.
+  //
+  // Defaults to false: a new row is unproven until something proves it.
+  // `scripts/publish-restaurants.mjs` owns the value and recomputes it from the
+  // rating and the dish count — `restaurants:import` deliberately does not write
+  // this column, so a data refresh cannot silently republish a stripped row.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS listed BOOLEAN NOT NULL DEFAULT false`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_listed ON restaurants(listed)`,
+
   // --- Account privacy switches --------------------------------------------
   //
   // Three separate columns rather than one "private account" flag, because
@@ -563,6 +585,22 @@ const statements = [
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS hide_from_leaderboard BOOLEAN NOT NULL DEFAULT false`,
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS discoverable_by_username BOOLEAN NOT NULL DEFAULT true`,
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS friend_requests_open BOOLEAN NOT NULL DEFAULT true`,
+
+  // --- A restaurant may not have a rating yet ------------------------------
+  //
+  // `rating` and `review_count` were NOT NULL because every restaurant used to
+  // arrive from Yelp with both attached. Restaurants now arrive from
+  // OpenStreetMap, which has no rating field at all, and are rated by a
+  // separate Google pass afterwards.
+  //
+  // NULL means "not sourced yet" and must never be backfilled with 0 — a zero
+  // rating is a measurement, and nobody measured it. The display guarantee
+  // moved to `listed`, which stays false until a rating and a real menu both
+  // exist, so no query feeding a card can return a null rating anyway.
+  //
+  // Re-running against already-nullable columns is a no-op.
+  `ALTER TABLE restaurants ALTER COLUMN rating DROP NOT NULL`,
+  `ALTER TABLE restaurants ALTER COLUMN review_count DROP NOT NULL`,
 ];
 
 for (const statement of statements) {
