@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { initials } from "@/lib/format";
+import { avatarPalette, initials } from "@/lib/format";
 
 type SearchResult = { id: string; name: string; avatarUrl?: string };
 
@@ -87,8 +87,11 @@ export function PhoneFindFriends({
   return (
     <div className="px-4">
       <p className="mono-label mb-2 text-pm-grey-text">Find friends</p>
+      {/* Warm tone instead of plain white — a small echo of the hero and
+          leaderboard cards above and below it, rather than a bare pill
+          floating on cream. */}
       <div
-        className={`mb-2 flex min-h-11 items-center gap-2.5 rounded-full bg-white px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-pm-orange`}
+        className={`mb-2 flex min-h-11 items-center gap-2.5 rounded-full bg-[var(--pm-tone-2)] px-4 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-pm-orange`}
       >
         <svg
           width="16"
@@ -97,7 +100,7 @@ export function PhoneFindFriends({
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          className="shrink-0 text-zinc-500"
+          className="shrink-0 text-pm-orange-text"
           aria-hidden="true"
         >
           <circle cx="11" cy="11" r="7" />
@@ -160,7 +163,9 @@ export function PhoneFindFriends({
                       className="h-11 w-11 shrink-0 rounded-full object-cover"
                     />
                   ) : (
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-sm font-medium text-pm-grey-text">
+                    <span
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-mono text-sm font-medium text-white ${avatarPalette(person.name).avatarBg}`}
+                    >
                       {initials(person.name)}
                     </span>
                   )}

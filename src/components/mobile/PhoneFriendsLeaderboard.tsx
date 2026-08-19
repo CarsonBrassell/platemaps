@@ -1,5 +1,5 @@
 import { formatPoints } from "@/lib/points";
-import { initials } from "@/lib/format";
+import { avatarPalette, initials } from "@/lib/format";
 import { STATIONS } from "@/lib/stations";
 
 type Entry = { id: string; name: string; avatarUrl?: string; points: number };
@@ -105,7 +105,9 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
           className="h-9 w-9 shrink-0 rounded-full object-cover"
         />
       ) : (
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xs font-medium text-pm-grey-text">
+        <span
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-xs font-medium text-white ${avatarPalette(entry.name).avatarBg}`}
+        >
           {initials(entry.name)}
         </span>
       )}

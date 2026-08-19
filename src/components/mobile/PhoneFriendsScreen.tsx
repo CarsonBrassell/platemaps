@@ -9,7 +9,7 @@ import { PhoneFindFriends } from "@/components/mobile/PhoneFindFriends";
 import { PhoneFriendsHero } from "@/components/mobile/PhoneFriendsHero";
 import { PhoneFriendsLeaderboard } from "@/components/mobile/PhoneFriendsLeaderboard";
 import { useAuth } from "@/lib/auth";
-import { initials, relativeTime } from "@/lib/format";
+import { avatarPalette, initials, relativeTime } from "@/lib/format";
 
 /**
  * Friends, phone version.
@@ -91,13 +91,18 @@ function useMarkFriendsSeen(userId: string | undefined) {
   }, [userId]);
 }
 
+/* Each person's own hue, not one flat grey circle for the whole list — the
+   same avatarPalette FoodPostCard already uses, so a friend reads as the
+   same color here as they do on their own posts. */
 function Avatar({ name, avatarUrl }: { name: string; avatarUrl?: string }) {
   if (avatarUrl) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={avatarUrl} alt="" className="h-11 w-11 shrink-0 rounded-full object-cover" />;
   }
   return (
-    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-sm font-medium text-pm-grey-text">
+    <div
+      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-mono text-sm font-medium text-white ${avatarPalette(name).avatarBg}`}
+    >
       {initials(name)}
     </div>
   );
