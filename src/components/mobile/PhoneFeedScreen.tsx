@@ -62,6 +62,11 @@ export function PhoneFeedScreen() {
   const [sort, setSort] = useState<FeedSort>(FEED_SORT_DEFAULT);
   const [reloadKey, setReloadKey] = useState(0);
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
+  /* Set by the search FAB on the card tabs — see PhoneFeedSearch's onSearch.
+     A restaurant name, not a query object: this narrows the list already on
+     screen rather than asking the server a new question, so it clears the
+     moment the term does. */
+  const [restaurantFilter, setRestaurantFilter] = useState("");
   /* Which feed backs the map's bubbles — its own switch, independent of `tab`,
      so leaving the map for another feed and coming back doesn't reset which one
      you had picked. Lives here rather than in the panel because it also decides
@@ -124,6 +129,18 @@ export function PhoneFeedScreen() {
   const activePost = commentsPostId
     ? (posts?.find((p) => p.id === commentsPostId) ?? null)
     : null;
+
+  /* Filters the loaded list in place rather than re-querying: the point is to
+     let someone see every post about one restaurant instead of one, not to
+     ask the server a different question. Matches `dishName` too — "what has
+     everyone said about the carbonara" is the same kind of search. */
+  const visiblePosts = useMemo(() => {
+    if (!posts || !restaurantFilter) return posts;
+    const q = restaurantFilter.trim().toLowerCase();
+    return posts.filter(
+      (p) => p.restaurant?.toLowerCase().includes(q) || p.dishName?.toLowerCase().includes(q),
+    );
+  }, [posts, restaurantFilter]);
 
   /**
    * A map bubble asking to open its post.
@@ -261,6 +278,21 @@ export function PhoneFeedScreen() {
           </p>
         )}
 
+        {!showMap && posts !== null && posts.length > 0 && restaurantFilter && (
+          /* Only shown once there's something to narrow — the filter chip
+             would otherwise flash past on a still-loading or empty feed. */
+          <p className="mb-3 flex items-center justify-between gap-3 rounded-xl bg-pm-orange-tint px-4 py-2.5 text-sm font-medium text-pm-orange-text">
+            <span className="truncate">Posts about &ldquo;{restaurantFilter}&rdquo;</span>
+            <button
+              type="button"
+              onClick={() => setRestaurantFilter("")}
+              className="shrink-0 font-mono text-xs font-semibold uppercase tracking-wide underline underline-offset-2"
+            >
+              Clear
+            </button>
+          </p>
+        )}
+
         {showMap ? null : posts === null ? (
           <FeedSkeleton count={2} />
         ) : loadError && posts.length === 0 ? (
@@ -313,10 +345,21 @@ export function PhoneFeedScreen() {
               }
             />
           )
+        ) : visiblePosts && visiblePosts.length === 0 ? (
+          <PhoneFeedState
+            icon={<CompassIcon className="h-6 w-6" />}
+            title="No posts match"
+            body={`No one has posted about "${restaurantFilter}" here yet.`}
+            action={
+              <button type="button" onClick={() => setRestaurantFilter("")} className={PRIMARY}>
+                Clear search
+              </button>
+            }
+          />
         ) : (
           <>
             <div className="flex flex-col gap-3">
-              {posts.map((post, index) => {
+              {(visiblePosts ?? []).map((post, index) => {
                 /* Split at the call site rather than passed as a string: the
                    card's props are a union on `surface`, so the vote handler
                    and the heart handler cannot both reach one card — the
@@ -398,8 +441,14 @@ export function PhoneFeedScreen() {
 
       {/* Search rides the bottom-right of every tab, opposite the map's own
           Discover/Friends switch. Two skins because the map is a dark exception
-          to the cream world and the card tabs are not. */}
-      <PhoneFeedSearch tone={showMap ? "map" : "cream"} />
+          to the cream world and the card tabs are not. On the card tabs a
+          search narrows the list already on screen (onSearch); the map tab
+          gets no onSearch, so it keeps sending you to Discover — there's no
+          list there to narrow. */}
+      <PhoneFeedSearch
+        tone={showMap ? "map" : "cream"}
+        onSearch={showMap ? undefined : setRestaurantFilter}
+      />
 
       {/* The shared comments screen, reused whole. It is `Dialog`'s `screen`
           variant — a full-viewport destination with its own back arrow, which

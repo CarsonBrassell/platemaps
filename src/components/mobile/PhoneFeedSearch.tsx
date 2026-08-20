@@ -23,6 +23,14 @@ import { QUERY_PARAM } from "@/lib/discoverFilters";
  * Discover was last left on. `filtersFromSearch` promotes a term that names a
  * real cuisine or neighbourhood into that filter, so searching "thai" lands on
  * Discover with Thai lit in the rail rather than on a text match.
+ *
+ * That's the default. On the card tabs (Feed, Friends feed) `PhoneFeedScreen`
+ * passes `onSearch` instead, and a submit filters the list already on screen
+ * to posts about that restaurant rather than leaving it for Discover's grid
+ * of restaurants — a different question ("who said what about Ballast
+ * Point") than Discover answers ("show me Ballast Point"). The map tab gets
+ * no `onSearch`, so it keeps the original navigate-to-Discover behavior;
+ * there's no scrollable list on that tab to filter.
  */
 export function PhoneFeedSearch({
   /**
@@ -31,8 +39,11 @@ export function PhoneFeedSearch({
    * there and against cream everywhere else — same shape, two skins.
    */
   tone = "cream",
+  /** When set, a submit calls this instead of navigating to Discover. */
+  onSearch,
 }: {
   tone?: "map" | "cream";
+  onSearch?: (term: string) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [term, setTerm] = useState("");
@@ -50,6 +61,10 @@ export function PhoneFeedSearch({
     const q = term.trim();
     if (!q) return;
     inputRef.current?.blur();
+    if (onSearch) {
+      onSearch(q);
+      return;
+    }
     router.push(`/m?${QUERY_PARAM}=${encodeURIComponent(q)}`);
   }
 
