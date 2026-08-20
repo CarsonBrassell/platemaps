@@ -136,10 +136,11 @@ function AuthForm() {
   return (
     <div className="flex justify-center px-4 py-12">
       <form onSubmit={handleSubmit} className="w-full max-w-sm rounded-2xl bg-white p-6">
-        <div className="mb-6 flex justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="PlateMaps" className="h-16 w-auto" />
-        </div>
+        {/* No logo on this card. The Header above it already carries the mark
+            and the name, so a second lockup 100px below the first was the
+            brand introducing itself twice on one screen. The form's own
+            heading ("Create your account" / "Welcome back") is what this card
+            needs to say. */}
         <div className="mb-6 flex rounded-full bg-pm-grey-tint p-1">
           <button
             type="button"

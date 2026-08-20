@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "node:crypto";
 import { getUserByEmail, getUserByName, createUser, createSession } from "@/lib/db";
-import { SESSION_COOKIE, SESSION_MAX_AGE } from "@/lib/session";
+import { setSessionCookie } from "@/lib/session";
 
 /** Same charset a handle already renders in — no space could survive
     FoodPostCard's handleFor() anyway, so a signup that let one through would
@@ -59,13 +58,7 @@ export async function POST(req: NextRequest) {
   const token = randomUUID();
   await createSession(token, user.id);
 
-  const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    maxAge: SESSION_MAX_AGE,
-  });
+  await setSessionCookie(token);
 
   return NextResponse.json({
     id: user.id,
