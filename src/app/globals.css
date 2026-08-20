@@ -316,7 +316,7 @@ h3 {
   inset: -4px -6px -8px -6px;
 }
 
-/* The two vote arrows sit either side of the count, so their grown hit areas
+/* The two thumbs sit either side of the count, so their grown hit areas
    pull in horizontally rather than annexing each other's half of the pair. */
 .map-upvote-chip::before,
 .map-downvote-chip::before {
@@ -324,9 +324,10 @@ h3 {
 }
 
 /* The pair's colours, mirroring the card row: muted until you've voted that
-   way (the hollow arrow), the orange's small-text voice when you have or when
-   the cursor is asking. #776B5B is the bubble's own muted step — see
-   BUBBLE_MUTED in RestaurantMap.tsx. */
+   way, the orange's small-text voice when you have or when the cursor is
+   asking. The thumbs are drawn with `stroke="currentColor"`, so these rules
+   reach the SVG without naming it. #776B5B is the bubble's own muted step —
+   see BUBBLE_MUTED in RestaurantMap.tsx. */
 .map-upvote-chip,
 .map-downvote-chip,
 .map-reply-chip {

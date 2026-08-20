@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { initials, relativeTime } from "@/lib/format";
-import { ChatIcon, HeartIcon } from "@/components/icons";
+import { ChatIcon, HeartIcon, ThumbsUpIcon } from "@/components/icons";
 
 /** Mirrors lib/db.ts's ActivityKind — that module is server-only. */
 type ActivityKind = "comment" | "heart" | "upvote";
@@ -75,19 +75,16 @@ function ActorAvatar({ name, avatarUrl }: { name?: string; avatarUrl?: string })
  * badge: a heart in a different colour from an upvote would put two more
  * accents on a screen that already spends its orange on the points number.
  *
- * The upvote is the `▲` glyph in mono, not an arrow icon — vote arrows are
- * text in this design system everywhere they appear (DESIGN.md).
+ * The upvote is the same thumb the vote controls use (DESIGN.md) — one mark
+ * for one gesture, so the badge that says "someone upvoted you" and the button
+ * they pressed to do it are recognisably the same thing.
  */
 function KindBadge({ kind }: { kind: ActivityKind }) {
   return (
     <span className="absolute -bottom-0.5 -right-0.5 flex h-[18px] w-[18px] items-center justify-center rounded-full border-2 border-white bg-pm-grey-tint text-pm-grey-text">
       {kind === "comment" && <ChatIcon className="h-2.5 w-2.5" />}
       {kind === "heart" && <HeartIcon filled className="h-2.5 w-2.5" />}
-      {kind === "upvote" && (
-        <span className="font-mono text-[9px] leading-none" aria-hidden="true">
-          ▲
-        </span>
-      )}
+      {kind === "upvote" && <ThumbsUpIcon filled className="h-2.5 w-2.5" />}
     </span>
   );
 }

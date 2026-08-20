@@ -288,6 +288,52 @@ export function ArrowDownIcon({ className = "" }: IconProps) {
   );
 }
 
+/**
+ * The vote pair. `filled` paints the palm solid for the direction this viewer
+ * has actually pressed — the outline and the fill are the same path at the
+ * same size, so a thumb never changes dimensions on click. That was the
+ * failure of the old hollow-△/solid-▲ text glyphs these replaced: the two
+ * characters render at different sizes, often from different fallback fonts,
+ * so the arrow appeared to grow when you voted.
+ *
+ * ThumbsDownIcon is ThumbsUpIcon rotated 180°, not a redrawn path, so the two
+ * cannot drift apart in weight or optical size.
+ */
+export function ThumbsUpIcon({ filled = false, className = "" }: IconProps & { filled?: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      {...stroke}
+      fill={filled ? "currentColor" : "none"}
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M7 10.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.5a1 1 0 0 1 1-1h3z" />
+      <path d="M7 10.5l4.2-7.1a1 1 0 0 1 1.4-.3l.5.3a2.5 2.5 0 0 1 1 2.7L13.4 9h5.2a2 2 0 0 1 2 2.4l-1.4 7A2 2 0 0 1 17.2 20H7" />
+    </svg>
+  );
+}
+
+export function ThumbsDownIcon({
+  filled = false,
+  className = "",
+}: IconProps & { filled?: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      {...stroke}
+      fill={filled ? "currentColor" : "none"}
+      className={className}
+      aria-hidden="true"
+    >
+      <g transform="rotate(180 12 12)">
+        <path d="M7 10.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.5a1 1 0 0 1 1-1h3z" />
+        <path d="M7 10.5l4.2-7.1a1 1 0 0 1 1.4-.3l.5.3a2.5 2.5 0 0 1 1 2.7L13.4 9h5.2a2 2 0 0 1 2 2.4l-1.4 7A2 2 0 0 1 17.2 20H7" />
+      </g>
+    </svg>
+  );
+}
+
 export function FlagIcon({ className = "" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">

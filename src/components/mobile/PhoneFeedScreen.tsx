@@ -9,6 +9,8 @@ import { FeedSkeleton } from "@/components/feed/FeedSkeleton";
 import { OfflineBanner, EndOfFeed } from "@/components/feed/EmptyFeedState";
 import { UtensilsIcon, CompassIcon, WifiOffIcon, PlusIcon } from "@/components/icons";
 import type { FeedTab, Post } from "@/components/feed/types";
+import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
+import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
 import { PhoneFeedTabs } from "./PhoneFeedTabs";
@@ -54,6 +56,10 @@ export function PhoneFeedScreen() {
      downstream already handles every tab; the only thing this line changes is
      which one you land on. */
   const [tab, setTab] = useState<FeedTab>("discover");
+  /* Discover's ordering — its own state for the same reason `mapSource` below
+     has its own: leaving the feed for another tab and coming back must not
+     silently reset how you had it sorted. */
+  const [sort, setSort] = useState<FeedSort>(FEED_SORT_DEFAULT);
   const [reloadKey, setReloadKey] = useState(0);
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
   /* Which feed backs the map's bubbles — its own switch, independent of `tab`,
@@ -70,11 +76,17 @@ export function PhoneFeedScreen() {
   /* Two genuinely different queries, not one list sliced client-side: Discover
      is server-ranked and photo-gated, the friend feed is an audience filter
      with no ranking at all. The map draws whichever of the two its own switch
-     points at, which is the same rule `/feed` follows. */
+     points at, which is the same rule `/feed` follows.
+
+     The sort rides only the Discover tab. The map reads the same endpoint but
+     is not a list you scroll, so re-ranking its bubbles under a control it
+     doesn't show would change what's on screen for no visible reason. */
   const endpoint =
     tab === "friends" || (tab === "map" && mapSource === "friends")
       ? "/api/posts/friends"
-      : "/api/posts/discover";
+      : tab === "discover"
+        ? `/api/posts/discover?sort=${sort}`
+        : "/api/posts/discover";
 
   const {
     posts,
@@ -224,8 +236,13 @@ export function PhoneFeedScreen() {
           for the screens that want one. */}
       <PhoneFeedHeader />
 
-      <div className="px-4">
+      {/* Tabs left, sort right, one row. A second row of chrome above the
+          first card is expensive on a 390px screen, and the sort is a
+          modifier on the feed the tabs pick rather than a peer of them —
+          which is also why it wears rank 3 and they wear rank 2. */}
+      <div className="flex items-center justify-between gap-3 px-4">
         <PhoneFeedTabs active={tab} onChange={setTab} />
+        {tab === "discover" && <FeedSortSwitch active={sort} onChange={setSort} />}
       </div>
 
       {/* On the map tab this row is usually empty, and an empty row with

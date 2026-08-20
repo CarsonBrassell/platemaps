@@ -22,6 +22,8 @@ import {
   EndOfFeed,
 } from "@/components/feed/EmptyFeedState";
 import type { FeedTab, NavKey, Post } from "@/components/feed/types";
+import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
+import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
 
 const RestaurantMap = dynamic(
   () => import("@/components/RestaurantMap").then((mod) => mod.RestaurantMap),
@@ -122,6 +124,10 @@ function FeedPageInner() {
   const [reloadKey, setReloadKey] = useState(0);
 
   const [tab, setTab] = useState<FeedTab>("discover");
+  /* Discover's ordering. Its own state rather than part of `tab`, so leaving
+     Discover for the map and coming back doesn't reset how you had it sorted
+     — the same rule `mapSource` follows below. */
+  const [sort, setSort] = useState<FeedSort>(FEED_SORT_DEFAULT);
   const [navKey, setNavKey] = useState<NavKey>(
     searchParams.get("view") === "saved" ? "saved" : "home",
   );
@@ -159,12 +165,17 @@ function FeedPageInner() {
    * points at. Saved needs every post regardless of which feed it surfaced in,
    * since a save doesn't forget where you found it.
    */
+  /* The sort rides only the Discover tab. The map reads the same endpoint but
+     is not a list you scroll, so re-ranking its bubbles under a control it
+     doesn't show would change what's on screen for no visible reason. */
   const endpoint =
     navKey === "saved"
       ? "/api/posts"
       : tab === "friends" || (tab === "map" && mapSource === "friends")
         ? "/api/posts/friends"
-        : "/api/posts/discover";
+        : tab === "discover"
+          ? `/api/posts/discover?sort=${sort}`
+          : "/api/posts/discover";
 
   const {
     posts,
@@ -412,7 +423,14 @@ function FeedPageInner() {
           </button>
         </div>
       ) : (
-        <FeedTabs active={tab} onChange={setTab} />
+        /* The sort sits on the tab row's right, not under it: it modifies the
+           feed the tabs pick, and a second full row of chrome above the first
+           card pushes the actual plates down for a control most visits never
+           touch. Rendered only on Discover — see FeedSortSwitch. */
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          <FeedTabs active={tab} onChange={setTab} className="mb-0" />
+          {tab === "discover" && <FeedSortSwitch active={sort} onChange={setSort} />}
+        </div>
       )}
 
       {offline && <OfflineBanner />}

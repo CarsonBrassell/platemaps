@@ -5,10 +5,10 @@ import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
 import { FOOD_TAGS } from "@/data/foodTags";
 import { AMENITY_LABELS, ROOM_LABELS, BEST_AT_LABELS } from "@/data/reviewScales";
+import { MAX_POST_TEXT } from "@/lib/postLimits";
 
 const MAX_MEDIA = 4;
 const MAX_MEDIA_LENGTH = 4_000_000;
-const MAX_CAPTION = 2_000;
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -56,6 +56,16 @@ export async function POST(req: NextRequest) {
 
   if (!text || !String(text).trim()) {
     return NextResponse.json({ error: "Write something to post." }, { status: 400 });
+  }
+  /* Rejected, not truncated. Both composers cap the textarea at the same
+     number, so reaching this branch means something bypassed them — and
+     quietly deleting the end of someone's sentence is a worse answer than
+     saying it didn't fit. See lib/postLimits.ts. */
+  if (String(text).trim().length > MAX_POST_TEXT) {
+    return NextResponse.json(
+      { error: `Keep it under ${MAX_POST_TEXT} characters.` },
+      { status: 400 },
+    );
   }
 
   const media = parseMedia(body.media);
@@ -126,7 +136,7 @@ export async function POST(req: NextRequest) {
     authorName: user.name,
     authorAvatarUrl: user.avatarUrl,
     authorPoints: user.points + POINT_RULES.createPost,
-    text: String(text).trim().slice(0, MAX_CAPTION),
+    text: String(text).trim(),
     restaurant: restaurant ? String(restaurant).trim() : undefined,
     restaurantId: restaurantId ? String(restaurantId).trim() : undefined,
     restaurantLat,

@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HeartIcon, ChatIcon, ShareIcon, BookmarkIcon, ArrowUpIcon, ArrowDownIcon } from "@/components/icons";
+import {
+  HeartIcon,
+  ChatIcon,
+  ShareIcon,
+  BookmarkIcon,
+  ThumbsUpIcon,
+  ThumbsDownIcon,
+} from "@/components/icons";
 
 /**
  * Every control in this row is color-only on press — nothing scales, pops or
@@ -46,7 +53,7 @@ type PostActionsProps =
       myVote: VoteDirection | null;
       onVote: (direction: VoteDirection) => void;
       /**
-       * "arrows" (default) is the web card's ▲ N ▼ — unchanged unless a
+       * "arrows" (default) is the web card's thumb N thumb — unchanged unless a
        * caller opts out. "pill" is the phone feed's rounded, icon-button
        * trough (see VotePill below); nothing switches to it on its own.
        */
@@ -235,6 +242,7 @@ function VotePair({
   const arrow = (direction: VoteDirection) => {
     const active = myVote === direction;
     const up = direction === "up";
+    const Thumb = up ? ThumbsUpIcon : ThumbsDownIcon;
     return (
       <button
         type="button"
@@ -249,23 +257,24 @@ function VotePair({
               ? "Upvote this plate"
               : "Downvote this plate"
         }
-        className={`flex h-11 w-6 items-center justify-center font-mono text-sm leading-none transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+        className={`flex h-11 w-7 items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
           active
             ? "text-pm-orange"
             : "text-zinc-400 hover:text-pm-orange-text"
         }`}
       >
-        {/* One glyph, never swapped: the hollow△/solid▲ state swap made the
-            arrow visibly grow on click — the outline and the filled block are
-            different sizes on screen (often different fallback fonts
-            entirely). State is the colour above, nothing else. */}
-        <span aria-hidden="true">{up ? "▲" : "▼"}</span>
+        {/* Same path, same box, outline or filled — so pressing it changes
+            colour and weight but never size. That was the bug in the ▲/△ text
+            glyphs this replaced: the two characters come out of different
+            fallback fonts at different optical sizes, so the arrow appeared to
+            jump on click. */}
+        <Thumb filled={active} className="h-[18px] w-[18px]" />
       </button>
     );
   };
 
   return (
-    /* Pulled left by the arrow box's own optical padding so the triangle lines
+    /* Pulled left by the thumb box's own optical padding so the icon lines
        up with the restaurant name above it rather than floating inboard of it.
        The 44px target itself is unchanged — it just overhangs into the card's
        gutter, which is empty. */
@@ -292,11 +301,10 @@ function VotePair({
  * rather than just recoloring a tiny arrow — a bigger, more obviously
  * pressed state for a surface read at arm's length and tapped with a thumb.
  *
- * Real chevron icons (ArrowUpIcon/ArrowDownIcon), not the web pair's ▲▼ text
- * glyphs — those render at a font's whim across platforms, and a filled pill
- * background needs an icon that centers the same way every time. Net score
- * only, same reasoning as VotePair: one number, not an upvote/downvote
- * scoreboard under someone's dinner.
+ * Same thumbs as VotePair, at pill scale — the two controls are the same
+ * gesture in two shapes and must not use two different marks. Net score only,
+ * same reasoning as VotePair: one number, not an upvote/downvote scoreboard
+ * under someone's dinner.
  */
 function VotePill({
   upvoteCount,
@@ -313,7 +321,7 @@ function VotePill({
 
   const segment = (direction: VoteDirection) => {
     const active = myVote === direction;
-    const Icon = direction === "up" ? ArrowUpIcon : ArrowDownIcon;
+    const Icon = direction === "up" ? ThumbsUpIcon : ThumbsDownIcon;
     return (
       <button
         type="button"
@@ -332,7 +340,7 @@ function VotePill({
           active ? "bg-pm-orange text-white" : "text-zinc-500 hover:text-pm-orange-text"
         }`}
       >
-        <Icon className="h-4 w-4" />
+        <Icon filled={active} className="h-4 w-4" />
       </button>
     );
   };

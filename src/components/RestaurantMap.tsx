@@ -373,7 +373,7 @@ function estimateMetaWidth(comment: MapComment) {
   if (comment.commentCount !== undefined) items.push(13 + String(comment.commentCount).length * 6);
   if (comment.createdAt) items.push(compactTime(comment.createdAt).length * 6);
   /* 12 per boundary, not 8: the row separates its parts with a mono middot
-     (`@DANNYQ · 2H · ▲ 34`, the byline shape DESIGN.md gives the feed card),
+     (`@DANNYQ · 2H · 👍 34`, the byline shape DESIGN.md gives the feed card),
      so a boundary now costs two 4px gaps and a ~6px glyph rather than one gap. */
   const gaps = Math.max(0, items.length - 1) * 12;
   return items.reduce((a, b) => a + b, 0) + gaps + (BUBBLE_PADDING_X + BUBBLE_BORDER) * 2 + 8;
@@ -593,36 +593,42 @@ function bubbleElement(
      Only comments backed by a real post get a live chip; seeded map chatter
      keeps a static upvote count and gets no heart at all. */
   const count = compactCount(comment.upvotes ?? 0);
-  /* The vote pair, drawn the way the feed card draws it: "▲ 4 ▼" — the NET
-     score between the arrows. The arrows NEVER change shape: the old
-     hollow-until-voted swap (△→▲) replaced a hairline outline with a solid
-     block, and the solid glyph renders larger — the "upvote gets bigger on
-     click" the user kept seeing after every animation was already stripped.
-     One glyph, forever; your own vote is colour alone, driven off
-     aria-pressed in globals.css (muted at rest, the orange text voice when
-     pressed or hovered). Nothing scales, pops, or changes shape. */
+  /* The vote pair, drawn the way the feed card draws it — thumb, NET score,
+     thumb. Same marks as PostActions, hand-inlined as SVG because this bubble
+     is an HTML string handed to MapLibre rather than React (the reply glyph
+     below is inlined for the same reason). The thumbs NEVER change shape:
+     your own vote is colour alone, driven off aria-pressed in globals.css
+     (muted at rest, the orange text voice when pressed or hovered). Nothing
+     scales, pops, or changes shape — that was the whole complaint about the
+     old hollow-until-voted arrow swap these replaced. */
   const voteButtonStyle = `
+            display: inline-flex; align-items: center;
             padding: 0; border: 0; background: none;
-            font-family: ${MONO}; font-size: 10px; font-weight: 700; line-height: 1.5;
-            cursor: pointer;`;
+            line-height: 1; cursor: pointer;`;
   /* The vote pair keeps ONE shape on every bubble — arrow, count, arrow — so
      the row doesn't reflow depending on who authored what. Only the controls
      that can actually do something are buttons: seeded map chatter has no post
      behind it, so its arrows render as plain glyphs at the muted step rather
      than as buttons that would look live and do nothing when clicked. */
-  const staticArrowStyle = `font-family: ${MONO}; font-size: 10px; font-weight: 700; line-height: 1.5; color: ${BUBBLE_MUTED};`;
+  const staticArrowStyle = `display: inline-flex; align-items: center; line-height: 1; color: ${BUBBLE_MUTED};`;
+  /* One path, rotated for the downvote, at the meta row's 10px scale — the
+     same construction ThumbsDownIcon uses so the two cannot drift apart. */
+  const thumbGlyph = (down: boolean) =>
+    `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${
+      down ? ' transform="rotate(180)"' : ""
+    }><path d="M7 10.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.5a1 1 0 0 1 1-1h3z"/><path d="M7 10.5l4.2-7.1a1 1 0 0 1 1.4-.3l.5.3a2.5 2.5 0 0 1 1 2.7L13.4 9h5.2a2 2 0 0 1 2 2.4l-1.4 7A2 2 0 0 1 17.2 20H7"/></svg>`;
   const votePair = (interactive: boolean) =>
-    `<span style="display: inline-flex; align-items: baseline; gap: 4px;">
+    `<span style="display: inline-flex; align-items: center; gap: 4px;">
         ${
           interactive
-            ? `<button type="button" class="map-upvote-chip" aria-pressed="${comment.upvotedByMe ? "true" : "false"}" aria-label="Upvote this plate" style="${voteButtonStyle}">▲</button>`
-            : `<span style="${staticArrowStyle}" aria-hidden="true">▲</span>`
+            ? `<button type="button" class="map-upvote-chip" aria-pressed="${comment.upvotedByMe ? "true" : "false"}" aria-label="Upvote this plate" style="${voteButtonStyle}">${thumbGlyph(false)}</button>`
+            : `<span style="${staticArrowStyle}" aria-hidden="true">${thumbGlyph(false)}</span>`
         }
         <span style="font-weight: 700; color: ${BUBBLE_POP};">${count}</span>
         ${
           interactive
-            ? `<button type="button" class="map-downvote-chip" aria-pressed="${comment.downvotedByMe ? "true" : "false"}" aria-label="Downvote this plate" style="${voteButtonStyle}">▼</button>`
-            : `<span style="${staticArrowStyle}" aria-hidden="true">▼</span>`
+            ? `<button type="button" class="map-downvote-chip" aria-pressed="${comment.downvotedByMe ? "true" : "false"}" aria-label="Downvote this plate" style="${voteButtonStyle}">${thumbGlyph(true)}</button>`
+            : `<span style="${staticArrowStyle}" aria-hidden="true">${thumbGlyph(true)}</span>`
         }
       </span>`;
   const reactionHtml =
@@ -654,7 +660,7 @@ function bubbleElement(
   const textMaxWidth = maxWidth - (BUBBLE_PADDING_X + BUBBLE_BORDER) * 2;
 
   /* The social trail, all machine-made and all mono: who said it, how long
-     ago, and what the room did about it — `@DANNYQ · 2H · ▲ 34`, handle
+     ago, and what the room did about it — `@DANNYQ · 2H · 👍 34`, handle
      first, the same byline order DESIGN.md gives the feed's ledger card and
      the reference mockup gives the bubble. The score used to open this row,
      but it describes the plate rather than the conversation and now sits at

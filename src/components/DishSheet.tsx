@@ -1,3 +1,4 @@
+import { ThumbsUpIcon } from "@/components/icons";
 import { relativeTime } from "@/lib/format";
 import type { MapComment } from "@/data/mapComments";
 
@@ -127,7 +128,12 @@ export function DishSheet({
                   <li key={comment.id} className="flex flex-col gap-1">
                     <p className="text-sm leading-snug text-zinc-700">{comment.text}</p>
                     <div className="flex items-center gap-2.5 font-mono text-xs text-zinc-500">
-                      {comment.upvotes !== undefined && <span>▲ {comment.upvotes}</span>}
+                      {comment.upvotes !== undefined && (
+                        <span className="inline-flex items-center gap-1">
+                          <ThumbsUpIcon className="h-3 w-3" />
+                          {comment.upvotes}
+                        </span>
+                      )}
                       {comment.createdAt && <span>{relativeTime(comment.createdAt)}</span>}
                     </div>
                   </li>

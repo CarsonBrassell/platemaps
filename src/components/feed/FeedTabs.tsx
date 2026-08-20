@@ -18,14 +18,21 @@ const TABS: ReadonlyArray<{ value: FeedTab; label: string }> = [
 export function FeedTabs({
   active,
   onChange,
+  /** Lets a caller that owns the row's spacing cancel the default `mb-5`. */
+  className = "",
 }: {
   active: FeedTab;
   onChange: (tab: FeedTab) => void;
+  className?: string;
 }) {
   return (
     /* Plain text tabs (design swapped with the global header nav): the active
        tab is marked by weight and a short orange underline, not a pill. */
-    <div role="tablist" aria-label="Feed filter" className="mb-5 flex items-center gap-5 text-sm">
+    <div
+      role="tablist"
+      aria-label="Feed filter"
+      className={`mb-5 flex items-center gap-5 text-sm ${className}`}
+    >
       {TABS.map((tab) => {
         const on = tab.value === active;
         return (

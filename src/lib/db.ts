@@ -6,6 +6,7 @@ import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
 import { aspectAnchor } from "@/lib/ratingDisplay";
+import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -661,7 +662,32 @@ export async function getPostById(id: string, viewerId: string | null = null): P
  * so a private photo's URL never reaches a Discover response in the first
  * place.
  */
-export async function getDiscoverFeed(viewerId: string | null, limit = 30): Promise<Post[]> {
+/**
+ * The two orderings, as literal SQL keyed by a validated union.
+ *
+ * `sql.unsafe` is safe here for the same reason `POST_SELECT` uses it: what it
+ * splices is a constant chosen from this map, never a value off a request.
+ * `parseFeedSort` narrows the query string to the union before it can reach
+ * this object, so an unknown `?sort=` lands on "trending" rather than
+ * anywhere near the query. Do not extend this to interpolate a caller's
+ * string.
+ *
+ * "trending" is the curve the client-side hotScore used —
+ * `(votes + 1) / (ageHours + 2)^1.5`. The numerator is floored at zero so a
+ * heavily downvoted plate sinks to "as if nobody voted" rather than sorting
+ * *below* older neutral posts by going negative and inverting the age decay.
+ */
+const DISCOVER_ORDER: Record<FeedSort, string> = {
+  trending: `(GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0) + 1)
+        / POWER(EXTRACT(EPOCH FROM (now() - p.created_at)) / 3600 + 2, 1.5) DESC`,
+  new: `p.created_at DESC`,
+};
+
+export async function getDiscoverFeed(
+  viewerId: string | null,
+  limit = 30,
+  sort: FeedSort = FEED_SORT_DEFAULT,
+): Promise<Post[]> {
   // `!= ALL(empty array)` is vacuously true in Postgres, so a signed-out
   // viewer (empty blockedIds) filters nothing — same shape as the `ANY(ids)`
   // pattern hydratePosts already uses for viewer-scoped lookups.
@@ -682,9 +708,7 @@ export async function getDiscoverFeed(viewerId: string | null, limit = 30): Prom
       SELECT post_id, count(*) AS count FROM post_downvotes GROUP BY post_id
     ) dv ON dv.post_id = p.id
     WHERE p.user_id != ALL(${blockedIds})
-    ORDER BY
-      (GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0) + 1)
-        / POWER(EXTRACT(EPOCH FROM (now() - p.created_at)) / 3600 + 2, 1.5) DESC
+    ORDER BY ${sql.unsafe(DISCOVER_ORDER[sort])}
     LIMIT ${limit}
   `;
   const posts = await hydratePosts(rows, viewerId, /* includeHearts */ false);

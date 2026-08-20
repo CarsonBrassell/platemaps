@@ -17,6 +17,8 @@ import { RestaurantPicker } from "@/components/post/RestaurantPicker";
 import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
 import type { PostMedia } from "@/components/feed/types";
+import { CharCount } from "@/components/post/CharCount";
+import { MAX_POST_TEXT } from "@/lib/postLimits";
 
 /**
  * Posting a plate, as a page rather than a modal.
@@ -394,9 +396,15 @@ export default function PostPage() {
                   asked, and asking twice reads as though the first answer was
                   lost. */}
               <div>
-                <label htmlFor="note" className={legend}>
-                  {kind === "comment" ? "Your comment" : "In your words"}
-                </label>
+                {/* Label and counter share the line: the number belongs to the
+                    field it caps, and stacking it under the textarea puts it
+                    below the fold on a phone once the keyboard is up. */}
+                <div className="mb-1.5 flex items-baseline justify-between gap-3">
+                  <label htmlFor="note" className={`${legend} mb-0`}>
+                    {kind === "comment" ? "Your comment" : "In your words"}
+                  </label>
+                  <CharCount value={note} />
+                </div>
                 <textarea
                   id="note"
                   value={note}
@@ -407,7 +415,7 @@ export default function PostPage() {
                       : "Crispy crust, spicy honey, worth ordering again."
                   }
                   rows={kind === "comment" ? 5 : 3}
-                  maxLength={2000}
+                  maxLength={MAX_POST_TEXT}
                   className={`${noteField} resize-none`}
                 />
               </div>

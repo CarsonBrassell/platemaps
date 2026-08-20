@@ -3,7 +3,7 @@
 import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Dialog } from "./Dialog";
-import { ChatIcon } from "@/components/icons";
+import { ChatIcon, ThumbsUpIcon, ThumbsDownIcon } from "@/components/icons";
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import type { VoteDirection } from "./PostActions";
 import type { Comment, Post } from "./types";
@@ -451,11 +451,12 @@ function CommentNode({
 }
 
 /**
- * `▲ 12 ▼` — the post card's vote pair at comment scale, and the same rules:
- * one solid glyph per direction (never swapped for a hollow one, which renders
- * at a different size and makes the arrow grow under the cursor), the net
- * score between them, and a fixed-width score so a thread doesn't shuffle
- * sideways as votes land.
+ * The post card's vote pair at comment scale — the same thumbs, the same
+ * rules: one mark per direction that only ever changes colour and fill (never
+ * size, which is what made the old ▲/△ glyph swap grow under the cursor), the
+ * net score between them, and a fixed-width score so a thread doesn't shuffle
+ * sideways as votes land. A comment vote is the same gesture as a plate vote
+ * and must not be drawn with a different symbol.
  */
 function CommentVotes({
   comment,
@@ -471,6 +472,7 @@ function CommentVotes({
   const arrow = (direction: VoteDirection) => {
     const active = comment.myVote === direction;
     const up = direction === "up";
+    const Thumb = up ? ThumbsUpIcon : ThumbsDownIcon;
     return (
       <button
         type="button"
@@ -486,11 +488,11 @@ function CommentVotes({
               ? "Upvote this comment"
               : "Downvote this comment"
         }
-        className={`flex h-11 w-5 items-center justify-center font-mono text-xs leading-none transition-colors disabled:opacity-40 disabled:hover:text-zinc-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+        className={`flex h-11 w-6 items-center justify-center transition-colors disabled:opacity-40 disabled:hover:text-zinc-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
           active ? "text-pm-orange" : "text-zinc-400 hover:text-pm-orange-text"
         }`}
       >
-        <span aria-hidden="true">{up ? "▲" : "▼"}</span>
+        <Thumb filled={active} className="h-3.5 w-3.5" />
       </button>
     );
   };
