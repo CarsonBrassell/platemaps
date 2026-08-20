@@ -253,13 +253,26 @@ export function PhoneFeedScreen() {
           for the screens that want one. */}
       <PhoneFeedHeader />
 
-      {/* Tabs left, sort right, one row. A second row of chrome above the
-          first card is expensive on a 390px screen, and the sort is a
-          modifier on the feed the tabs pick rather than a peer of them —
-          which is also why it wears rank 3 and they wear rank 2. */}
-      <div className="flex items-center justify-between gap-3 px-4">
+      {/* Tabs get the row to themselves; the sort and search share the next
+          one. All three on one row is what this was, and it did not fit — the
+          tabs measure 182px and the sort switch 153px inside 343px of usable
+          width, so they were already 3px over before search asked for 36 more.
+          Both rows below the tabs are modifiers on the feed the tabs pick,
+          which is also why they wear rank 3 and the tabs wear rank 2. */}
+      <div className="px-4">
         <PhoneFeedTabs active={tab} onChange={setTab} />
-        {tab === "discover" && <FeedSortSwitch active={sort} onChange={setSort} />}
+      </div>
+
+      {/* Search owns this row and takes the sort switch as its left half — see
+          PhoneFeedSearch for why the two rows it spans have to live in one
+          component. On the card tabs a search narrows the list already on
+          screen (onSearch); the map tab gets no onSearch, so it keeps sending
+          you to Discover — there's no list there to narrow. */}
+      <div className="mt-0.5">
+        <PhoneFeedSearch
+          leading={tab === "discover" ? <FeedSortSwitch active={sort} onChange={setSort} /> : null}
+          onSearch={showMap ? undefined : setRestaurantFilter}
+        />
       </div>
 
       {/* On the map tab this row is usually empty, and an empty row with
@@ -438,17 +451,6 @@ export function PhoneFeedScreen() {
           />
         </div>
       )}
-
-      {/* Search rides the bottom-right of every tab, opposite the map's own
-          Discover/Friends switch. Two skins because the map is a dark exception
-          to the cream world and the card tabs are not. On the card tabs a
-          search narrows the list already on screen (onSearch); the map tab
-          gets no onSearch, so it keeps sending you to Discover — there's no
-          list there to narrow. */}
-      <PhoneFeedSearch
-        tone={showMap ? "map" : "cream"}
-        onSearch={showMap ? undefined : setRestaurantFilter}
-      />
 
       {/* The shared comments screen, reused whole. It is `Dialog`'s `screen`
           variant — a full-viewport destination with its own back arrow, which
