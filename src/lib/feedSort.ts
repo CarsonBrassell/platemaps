@@ -22,8 +22,8 @@ export type FeedSort = "trending" | "new";
 export const FEED_SORT_DEFAULT: FeedSort = "trending";
 
 export const FEED_SORTS: ReadonlyArray<{ value: FeedSort; label: string }> = [
-  { value: "trending", label: "Trending" },
   { value: "new", label: "New" },
+  { value: "trending", label: "Trending" },
 ];
 
 /** Anything unrecognised falls back to the default rather than erroring. */

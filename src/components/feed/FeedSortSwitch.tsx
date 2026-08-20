@@ -1,6 +1,13 @@
 "use client";
 
 import { FEED_SORTS, type FeedSort } from "@/lib/feedSort";
+import { FlameIcon } from "@/components/icons";
+
+/** The same brick-red `RestaurantMap.tsx`'s `heatColorForPercent` gives a
+    hot rating percent — reused here rather than invented fresh, so
+    "Trending" reads with the same warmth the app already uses for a
+    scorching number instead of a second, unrelated red. */
+const HEAT_RED = "#9a2c10";
 
 /**
  * Trending / New, for the Discover feed.
@@ -36,6 +43,7 @@ export function FeedSortSwitch({
     >
       {FEED_SORTS.map((sort) => {
         const on = sort.value === active;
+        const trending = sort.value === "trending";
         return (
           <button
             key={sort.value}
@@ -43,10 +51,21 @@ export function FeedSortSwitch({
             role="tab"
             aria-selected={on}
             onClick={() => onChange(sort.value)}
-            className={`min-h-8 whitespace-nowrap rounded-full px-3.5 font-mono text-[11px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
-              on ? "bg-white text-zinc-900" : "text-pm-grey-text hover:text-zinc-900"
+            style={trending && on ? { color: HEAT_RED } : undefined}
+            className={`flex min-h-8 items-center gap-1 whitespace-nowrap rounded-full px-3.5 font-mono text-[11px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+              trending
+                ? on
+                  ? "bg-white"
+                  : "text-pm-orange-text/80 hover:text-pm-orange-text"
+                : on
+                  ? "bg-white text-zinc-900"
+                  : "text-pm-grey-text hover:text-zinc-900"
             }`}
           >
+            {/* The flame's fills are its own fixed orange-to-red gradient
+                (see FlameIcon) — it isn't recolored here, it's why "Trending"
+                gets one at all. */}
+            {trending && <FlameIcon className="h-3 w-3" />}
             {sort.label}
           </button>
         );
