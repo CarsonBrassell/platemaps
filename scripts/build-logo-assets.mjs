@@ -135,6 +135,34 @@ async function favicon(out, sizes) {
   return `${out} — ${sizes.join("/")}`;
 }
 
+
+/**
+ * The iOS launch screen — the very first thing the app shows.
+ *
+ * It shipped as Capacitor's stock blue placeholder and stayed that way, so
+ * every cold start of the app flashed someone else's logo before any of ours
+ * loaded. All three slots in `Splash.imageset` (1x/2x/3x) take the same
+ * 2732² image, which is what Capacitor's own generator does — the canvas is
+ * square and oversized so it covers every device aspect from a centre crop.
+ *
+ * The mark is deliberately small in the frame (a fifth of the side): iOS
+ * centre-crops this to the screen, so anything large gets cut off on a
+ * narrow device.
+ */
+async function splash(size, out) {
+  const markWidth = Math.round(size * 0.2);
+  const composited = await sharp({
+    create: { width: size, height: size, channels: 4, background: SOURCE_CREAM },
+  })
+    .composite([
+      { input: await pin(markWidth, Math.round(markWidth / ASPECT)), gravity: "center" },
+    ])
+    .png()
+    .toBuffer();
+  for (const file of out) writeFileSync(file, composited);
+  return `${out.length} splash images — ${size}x${size}`;
+}
+
 const built = [
   await mark(660, "public/logo-mark.png"),
   /* Nothing in `src/` reads this any more — the sign-in form used to load it
@@ -147,6 +175,11 @@ const built = [
   await square(1024, "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png").then(
     () => "ios AppIcon-512@2x.png — 1024x1024, no alpha",
   ),
+  await splash(2732, [
+    "ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png",
+    "ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-1.png",
+    "ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-2.png",
+  ]),
 ];
 
 console.log(`from ${SOURCE} (crop ${BOX.width}x${BOX.height} @ ${BOX.left},${BOX.top}):`);
