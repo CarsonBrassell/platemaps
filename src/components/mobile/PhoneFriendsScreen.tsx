@@ -252,7 +252,10 @@ export function PhoneFriendsScreen() {
         </div>
       ) : !isSignedIn ? (
         <div className="mx-4 rounded-2xl bg-white px-6 py-12 text-center">
-          <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-pm-orange-tint">
+          {/* Cream disc, matching PhoneFriendsHero: the mark is supplied artwork
+              that carries its own cream background, so any other fill shows as a
+              rectangle behind it. */}
+          <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#F7F4EC]">
             <BrandMark className="h-10 w-auto" />
           </span>
           <p className="font-display text-lg font-semibold text-zinc-900">
@@ -329,7 +332,10 @@ export function PhoneFriendsScreen() {
               </div>
             ) : friends.length === 0 ? (
               <div className="rounded-2xl bg-white px-6 py-12 text-center">
-                <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-pm-orange-tint">
+                {/* Cream disc, matching PhoneFriendsHero: the mark is supplied artwork
+              that carries its own cream background, so any other fill shows as a
+              rectangle behind it. */}
+          <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#F7F4EC]">
                   <BrandMark className="h-10 w-auto" />
                 </span>
                 <p className="font-display text-lg font-semibold text-zinc-900">No friends yet</p>

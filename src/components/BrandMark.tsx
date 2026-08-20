@@ -1,26 +1,27 @@
 /**
- * The PlateMaps pin, straight from the supplied artwork.
+ * The PlateMaps pin.
  *
- * Two things were making it look blurry, neither of them resolution:
+ * **The artwork is supplied, not drawn here.** `public/logo-source.webp` is
+ * the file Carson provided, byte-for-byte, and every raster in the repo is
+ * resized from it by `npm run logo:build` — `public/logo-mark.png` (which this
+ * renders) and `public/logo.png` at 660x865, `src/app/icon.png` (512² padded),
+ * `src/app/favicon.ico` (16/32/48) and the iOS `AppIcon-512@2x.png` (1024²,
+ * opaque, since app icons may not carry alpha).
  *
- * 1. logo.png is the full stacked lockup — pin *and* the PLATE/MAPS wordmark.
- *    Fitting all of that into a 64px square left the pin about 30px tall, so
- *    it read as mush. `logo-mark.png` is the same pixels cropped to just the
- *    pin, which lets it fill the space.
- * 2. The original had ~1,150 semi-transparent edge pixels still composited
- *    against white, left over from having its background keyed out. On the
- *    dark header that halo showed as a pale fuzz around every edge. Those
- *    pixels are un-matted in `logo-mark.png` (see scripts note in the commit).
+ * There was a vector version (`public/logo-mark.svg`) and it is gone. It was a
+ * hand-drawn approximation of this same mark, and every attempt to bring it
+ * closer — a wider knife, a curved blade, more space between the utensils —
+ * shipped a logo that was not the real one. **Never trace, redraw or "improve"
+ * the mark.** If it needs to change, a new source file replaces the old one.
  *
- * Nothing has ever been redrawn or upscaled here. The one edit made to the
- * artwork since: the fork and the knife were sitting about 7px apart at the
- * source's 165px width, which closed to roughly a pixel at the sizes this
- * renders at, so each was moved 2px outward from the other — their own
- * pixels lifted and re-composited, fringe and all, not repainted. The same
- * move was applied to `logo.png` and to `src/app/icon.png` (a byte-copy of
- * the lockup), since all three carry the same pin at the same pixel scale.
- * `src/app/favicon.ico` is still the create-next-app default and is not this
- * artwork at all.
+ * The PNG keeps the artwork's own cream background rather than a keyed-out
+ * matte. That is deliberate: it is within a couple of levels of the app's
+ * `--background`, and keying a grainy background is what left a pale halo
+ * around every edge the last time this was tried.
+ *
+ * `logo-mark.png` is cropped to the mark itself, so callers keep sizing it the
+ * way they always have — `w-9 h-9` and friends letterbox it inside a square
+ * via `object-contain`, which is the intended behaviour.
  */
 export function BrandMark({ className = "" }: { className?: string; tone?: "light" | "dark" }) {
   return (
@@ -28,8 +29,8 @@ export function BrandMark({ className = "" }: { className?: string; tone?: "ligh
     <img
       src="/logo-mark.png"
       alt=""
-      width={165}
-      height={210}
+      width={660}
+      height={865}
       className={`object-contain ${className}`}
     />
   );

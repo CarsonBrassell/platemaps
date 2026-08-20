@@ -19,7 +19,17 @@ Four docs, each authoritative over a different thing. Read the relevant one befo
 npm run dev          # dev server on :3000
 npm run build        # production build
 npm run lint         # eslint over the repo
+npm run logo:build   # resize every logo raster from public/logo-source.webp
 ```
+
+**The brand mark is supplied artwork and must never be redrawn.**
+`public/logo-source.webp` is the file Carson provided; `logo:build` only crops
+its flat border and resizes — every PNG, `src/app/favicon.ico` and the iOS app
+icon come out of it. There used to be a hand-drawn `public/logo-mark.svg` that
+these were rendered from, and every pass at making it "match the reference"
+shipped a logo that was not the real one. It is deleted. If the mark changes,
+replace the source file and re-run; do not trace it, do not edit a raster by
+hand. `BrandMark.tsx` lists what gets written where.
 
 There is **no test framework** in this project — no vitest/jest/playwright, no test files, no `npm test`. Do not tell the user to run tests. Verify changes with:
 
