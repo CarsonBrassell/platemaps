@@ -41,6 +41,10 @@ type Post = {
   restaurant?: string;
   savedBy: string[];
   comments: { id: string }[];
+  /** Mirrors PostMedia in lib/db.ts — that module is server-only. */
+  media?: { url: string; type: "image" | "video"; alt?: string }[];
+  /** The author's share-photos snapshot, frozen at write time. */
+  photosPublic?: boolean;
 };
 
 const FOCUS =
@@ -73,7 +77,51 @@ function useMarkProfileSeen(userId: string | undefined) {
 }
 
 /** A square tone tile standing in for a post with no photo, per DESIGN.md. */
-function PostTile({ post, tone }: { post: Post; tone: number }) {
+/**
+ * One square in a profile grid.
+ *
+ * **A post with a photo shows the photo.** The grid used to draw a tone block
+ * with the restaurant's name on it no matter what, so a plate you posted with
+ * a picture attached arrived here as a beige tile and read as "my photo didn't
+ * save". The tone block is what DESIGN.md prescribes for a *missing* photo, not
+ * a substitute for one that exists.
+ *
+ * No name over the photo: legible text on an arbitrary picture needs a scrim,
+ * and scrims are gradients, which the shape rules forbid. The tile shows the
+ * strongest thing the post has — its photo, or failing that its restaurant,
+ * or failing that its words.
+ *
+ * `viewerId` decides whether a photo may be drawn at all. Your own plate always
+ * shows you its photo; someone else's (the Saved grid holds other people's
+ * posts) only does if it was posted public, matching what Discover would have
+ * shown you. Videos fall through to the tone block — nothing in the product
+ * produces one yet (`resizePhotos` takes images only), and a muted `<video>`
+ * autoplaying in a 3-up grid is not a thing to add by accident.
+ */
+function PostTile({
+  post,
+  tone,
+  viewerId,
+}: {
+  post: Post;
+  tone: number;
+  viewerId: string | null;
+}) {
+  const mine = post.userId === viewerId;
+  const photo =
+    mine || post.photosPublic ? post.media?.find((m) => m.type === "image") : undefined;
+
+  if (photo) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={photo.url}
+        alt={photo.alt ?? ""}
+        className="aspect-square w-full rounded-[10px] object-cover"
+      />
+    );
+  }
+
   return (
     <div
       className="flex aspect-square flex-col items-center justify-center overflow-hidden rounded-[10px] p-2 text-center"
@@ -258,7 +306,7 @@ function ProfileOverview() {
               <p className="mono-label mb-2 text-zinc-500">Your posts</p>
               <div className="mb-6 grid grid-cols-3 gap-1.5">
                 {myPosts.map((post, i) => (
-                  <PostTile key={post.id} post={post} tone={(i % 3) + 1} />
+                  <PostTile key={post.id} post={post} tone={(i % 3) + 1} viewerId={account.id} />
                 ))}
               </div>
             </>
@@ -268,7 +316,12 @@ function ProfileOverview() {
           {savedPosts.length > 0 ? (
             <div className="grid grid-cols-3 gap-1.5">
               {savedPosts.map((post, i) => (
-                <PostTile key={post.id} post={post} tone={((i + 1) % 3) + 1} />
+                <PostTile
+                  key={post.id}
+                  post={post}
+                  tone={((i + 1) % 3) + 1}
+                  viewerId={account.id}
+                />
               ))}
             </div>
           ) : (

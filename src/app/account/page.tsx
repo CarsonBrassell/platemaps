@@ -22,7 +22,65 @@ type Post = {
   restaurant?: string;
   savedBy: string[];
   comments: { id: string }[];
+  /** Mirrors PostMedia in lib/db.ts — that module is server-only. */
+  media?: { url: string; type: "image" | "video"; alt?: string }[];
+  /** The author's share-photos snapshot, frozen at write time. */
+  photosPublic?: boolean;
 };
+
+/**
+ * One square in a profile grid — the twin of PhoneProfileScreen's PostTile,
+ * and the same rule: **a post with a photo shows the photo.** Both grids used
+ * to draw a tone block with the restaurant's name on it regardless, so a plate
+ * posted with a picture arrived here beige and read as "my photo didn't save".
+ * The tone block is DESIGN.md's answer to a *missing* photo, not a stand-in for
+ * one that exists.
+ *
+ * No name over the photo: legible text on an arbitrary picture wants a scrim,
+ * and scrims are gradients, which the shape rules forbid.
+ *
+ * `viewerId` gates it. Your own plate always shows you its photo; someone
+ * else's — the Saved grid is full of other people's posts — only if it was
+ * posted public, which is what Discover would have shown you. Videos fall
+ * through to the tone block; nothing here produces one yet.
+ */
+function PostTile({
+  post,
+  tone,
+  viewerId,
+}: {
+  post: Post;
+  tone: number;
+  viewerId: string | null;
+}) {
+  const mine = post.userId === viewerId;
+  const photo =
+    mine || post.photosPublic ? post.media?.find((m) => m.type === "image") : undefined;
+
+  if (photo) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={photo.url}
+        alt={photo.alt ?? ""}
+        className="aspect-square w-full rounded-[10px] object-cover"
+      />
+    );
+  }
+
+  return (
+    <div
+      className="flex aspect-square flex-col items-center justify-center gap-1 overflow-hidden rounded-[10px] p-2 text-center"
+      style={{ background: `var(--pm-tone-${tone})` }}
+    >
+      {post.restaurant ? (
+        <span className="line-clamp-2 text-xs font-medium text-zinc-700">{post.restaurant}</span>
+      ) : (
+        <span className="line-clamp-4 text-xs text-zinc-600">{post.text}</span>
+      )}
+    </div>
+  );
+}
 
 function CameraIcon() {
   return (
@@ -346,19 +404,7 @@ function AccountOverview() {
           <p className="mono-label mb-2 text-zinc-500">Your posts</p>
           <div className="mb-6 grid grid-cols-3 gap-1.5">
             {myPosts.map((post, i) => (
-              <div
-                key={post.id}
-                className="flex aspect-square flex-col items-center justify-center gap-1 overflow-hidden rounded-[10px] p-2 text-center"
-                style={{ background: `var(--pm-tone-${(i % 3) + 1})` }}
-              >
-                {post.restaurant ? (
-                  <span className="line-clamp-2 text-xs font-medium text-zinc-700">
-                    {post.restaurant}
-                  </span>
-                ) : (
-                  <span className="line-clamp-4 text-xs text-zinc-600">{post.text}</span>
-                )}
-              </div>
+              <PostTile key={post.id} post={post} tone={(i % 3) + 1} viewerId={account.id} />
             ))}
           </div>
         </>
@@ -368,19 +414,12 @@ function AccountOverview() {
       {savedPosts.length > 0 ? (
         <div className="mb-2 grid grid-cols-3 gap-1.5">
           {savedPosts.map((post, i) => (
-            <div
+            <PostTile
               key={post.id}
-              className="flex aspect-square flex-col items-center justify-center gap-1 overflow-hidden rounded-[10px] p-2 text-center"
-              style={{ background: `var(--pm-tone-${((i + 1) % 3) + 1})` }}
-            >
-              {post.restaurant ? (
-                <span className="line-clamp-2 text-xs font-medium text-zinc-700">
-                  {post.restaurant}
-                </span>
-              ) : (
-                <span className="line-clamp-4 text-xs text-zinc-600">{post.text}</span>
-              )}
-            </div>
+              post={post}
+              tone={((i + 1) % 3) + 1}
+              viewerId={account.id}
+            />
           ))}
         </div>
       ) : (
