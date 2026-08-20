@@ -390,12 +390,23 @@ export function FoodPostCard(props: FoodPostCardProps) {
           >
             {headline}
           </h3>
+          {/* 42px, double what it was, with the scale named under it. At 21px
+              it read as a footnote to the headline it shares a line with —
+              this number is the post's verdict, so it now outweighs the
+              headline rather than annotating it. The label is there because a
+              bare percent beside a price is the one place this scale is
+              genuinely ambiguous; `items-baseline` on the row still lands the
+              numeral's baseline on the headline's first line, since a flex
+              column aligns on its own first baseline. */}
           {post.rating !== undefined && post.ratingKind === "dish" && (
-            <span
-              data-heat={heatFor(post.rating)}
-              className="pct-heat shrink-0 font-mono text-[21px] font-bold leading-tight tabular-nums"
-            >
-              {post.rating}%
+            <span className="flex shrink-0 flex-col items-end">
+              <span
+                data-heat={heatFor(post.rating)}
+                className="pct-heat font-mono text-[42px] font-bold leading-none tabular-nums"
+              >
+                {post.rating}%
+              </span>
+              <span className="mono-label mt-1 text-pm-orange-text">Rating</span>
             </span>
           )}
           {post.rating !== undefined && post.ratingKind === "restaurant" && (

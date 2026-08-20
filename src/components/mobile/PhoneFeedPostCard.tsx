@@ -387,9 +387,16 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
               can be read straight down the right edge as a column of numbers. */}
           <div className="flex items-start justify-between gap-2.5">
             <div className="min-w-0">
+              {/* Wraps to two lines rather than truncating. The verdict beside
+                  it is 38px now, which leaves ~95px of a thumbnailed card for
+                  the name — enough to turn "Landini's Pizzeria" into
+                  "Landini's P…". The score is the thing this card is for, so
+                  the name takes the second line instead of the number taking a
+                  smaller size; the right column is ~70px tall anyway, so those
+                  two lines cost the card no height at all. */}
               <h3
                 id={titleId}
-                className="truncate font-display text-[15px] font-semibold leading-tight tracking-tight text-zinc-900"
+                className="line-clamp-2 font-display text-[15px] font-semibold leading-tight tracking-tight text-zinc-900"
               >
                 {hasRestaurant ? (
                   <RestaurantRef post={post} className="decoration-1 decoration-zinc-300" />
@@ -436,13 +443,23 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                 photo wearing its chip. */}
             <div className="flex shrink-0 flex-col items-end">
               {/* Flat rust rather than the composer meter's heat gradient the
-                  web card wears: at 19px bold this is the "large/bold numeral"
+                  web card wears: this is squarely the "large/bold numeral"
                   case --pm-orange is for, and one card in a scanned column
-                  reading grey-brown because it scored 38 breaks the column. */}
+                  reading grey-brown because it scored 38 breaks the column.
+               *
+               * 38px, double what it was. At the old 19px it sat level with
+               * the price beneath it and read as one more machine value in a
+               * stack of them; the number *is* the post's verdict, so it now
+               * outweighs everything else in the row. The RATING label under
+               * it answers "percent of what" — a bare percent next to a price
+               * is the one place this scale is genuinely ambiguous. */}
               {post.rating !== undefined && post.ratingKind === "dish" && (
-                <span className="font-mono text-[19px] font-bold leading-tight tabular-nums text-pm-orange">
-                  {post.rating}%
-                </span>
+                <>
+                  <span className="font-mono text-[38px] font-bold leading-none tabular-nums text-pm-orange">
+                    {post.rating}%
+                  </span>
+                  <span className="mono-label mt-0.5 text-pm-orange-text">Rating</span>
+                </>
               )}
               {/* Pre-retirement restaurant reviews still render as the stars
                   they were entered as — never converted to a percent
