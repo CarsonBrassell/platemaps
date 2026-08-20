@@ -532,7 +532,6 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
           {props.surface === "discover" ? (
             <PostActions
               surface="discover"
-              voteStyle="pill"
               upvoteCount={post.upvoteCount}
               downvoteCount={post.downvoteCount}
               myVote={post.upvotedByMe ? "up" : post.downvotedByMe ? "down" : null}
