@@ -22,8 +22,9 @@ import { useSyncExternalStore } from "react";
  * The publish round trip is not a fixed length, so the flash cannot be either.
  * Instead the store holds two bounds and lets the network fill the middle:
  *
- * - **A floor**, so a fast publish does not strobe. Under ~1s the mark would
- *   punch in and be gone before it read as anything.
+ * - **A floor**, so a fast publish does not cut the meal short. It is derived
+ *   from `EAT` below rather than guessed, because the screen exists to play
+ *   that animation and a publish that returns in 300ms must not truncate it.
  * - **A ceiling**, so nothing can trap someone behind a white screen. If the
  *   feed never reports back — a dropped connection, a post that does not come
  *   back in the list — this closes anyway and drops them on whatever the feed
@@ -37,17 +38,54 @@ export type PostLanding = {
   earned: number;
 };
 
-/* Long enough for the mark to punch in and be read as the logo rather than a
-   blink. Rarely the binding constraint — publish plus navigation plus the
-   feed's first fetch usually costs more than this on its own. */
-const MIN_ON_SCREEN_MS = 950;
+/**
+ * How the mark gets eaten, in one place.
+ *
+ * `PostFlash` runs the bites off these numbers and the floor below is derived
+ * from them, so the screen cannot come down mid-chew. Changing the pace here
+ * moves both; there is deliberately no second copy of the timing in the
+ * component.
+ */
+export const EAT = {
+  /** After the punch has landed — the mark is bitten, not born bitten. */
+  firstBiteAt: 420,
+  biteEvery: 240,
+  bites: 6,
+  /** A beat on the crumbs before they go, so the last bite reads. */
+  crumbsAfter: 160,
+  crumbsFade: 280,
+} as const;
+
+/** Punch, six bites, gone. ~2.06s, which is the two seconds this is meant to be. */
+export const EAT_TOTAL_MS =
+  EAT.firstBiteAt + (EAT.bites - 1) * EAT.biteEvery + EAT.crumbsAfter + EAT.crumbsFade;
+
+/* The floor is the animation's own length plus a beat, because the whole point
+   of the screen is to play it: closing at the old 950ms would have cut the
+   mark in half mid-meal. */
+const MIN_ON_SCREEN_MS = EAT_TOTAL_MS + 90;
+
+/* Reduced motion never sees the meal, so it must not serve the wait either —
+   there is nothing to play, and holding a still screen for two seconds to
+   protect an animation that was switched off is just a delay. */
+const MIN_ON_SCREEN_REDUCED_MS = 650;
 
 /* The escape hatch. Nothing may hold the screen longer than this, whatever
-   the network is doing. */
-const MAX_ON_SCREEN_MS = 4000;
+   the network is doing. Above the floor by enough that a slow publish still
+   gets covered rather than being dumped out mid-request. */
+const MAX_ON_SCREEN_MS = 6000;
+
+/** Read per-open rather than cached: the setting can change between posts. */
+function reducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
 
 let open = false;
 let openedAt = 0;
+let floorMs = MIN_ON_SCREEN_MS;
 let minTimer: ReturnType<typeof setTimeout> | null = null;
 let maxTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -69,6 +107,7 @@ export function openPostFlash() {
   if (open) return;
   open = true;
   openedAt = Date.now();
+  floorMs = reducedMotion() ? MIN_ON_SCREEN_REDUCED_MS : MIN_ON_SCREEN_MS;
   clearTimers();
   maxTimer = setTimeout(finish, MAX_ON_SCREEN_MS);
   emit();
@@ -86,12 +125,12 @@ export function openPostFlash() {
 export function closePostFlash() {
   if (!open) return;
   const held = Date.now() - openedAt;
-  if (held >= MIN_ON_SCREEN_MS) {
+  if (held >= floorMs) {
     finish();
     return;
   }
   if (minTimer) return;
-  minTimer = setTimeout(finish, MIN_ON_SCREEN_MS - held);
+  minTimer = setTimeout(finish, floorMs - held);
 }
 
 function finish() {

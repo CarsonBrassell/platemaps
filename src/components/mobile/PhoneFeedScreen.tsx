@@ -160,7 +160,7 @@ export function PhoneFeedScreen() {
   }, [posts, restaurantFilter]);
 
   /*
-   * Which card to throw at the screen — derived, never stored.
+   * Which card gets spat onto the feed — derived, never stored.
    *
    * State would need an effect to set it and a timer to clear it; this needs
    * neither. The class appears on the render where the post first shows up,
@@ -458,7 +458,7 @@ export function PhoneFeedScreen() {
                     }}
                     className={`rounded-2xl transition-shadow motion-reduce:transition-none ${
                       post.id === highlighted ? "ring-2 ring-pm-orange" : ""
-                    } ${post.id === slamId ? "post-slam" : ""}`}
+                    } ${post.id === slamId ? "post-spit" : ""}`}
                   >
                     {tab === "friends" ? (
                       <PhoneFeedPostCard {...shared} surface="friends" onReact={handleHeart} />

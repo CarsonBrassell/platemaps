@@ -230,24 +230,59 @@ html.pm-lock-scroll body {
 }
 
 /*
- * The plate landing on the feed.
+ * The mark itself, inside the plate — the thing that gets eaten.
  *
- * Drops from above, overshoots into a squash, settles — the weight is in the
- * squash, not in the distance. `backwards` rather than `both` so the card is
- * hidden before the first frame but keeps NO transform afterwards: a lingering
- * `scale(1)` would leave the wrapper a containing block for anything fixed
- * inside the card.
+ * Sized here rather than on the `<img>` so the bite masks (set inline by
+ * PostFlash) resolve their percentages against the mark's own box. It shrinks
+ * to the image's width so a mask at `80% 22%` means 80% across the *pin*, not
+ * 80% across the plate it is sitting on.
  */
-@keyframes post-slam {
+.pm-phone-shell .post-flash-bitten {
+  display: inline-flex;
+  height: 56%;
+  /* Only the crumbs fade. The bites themselves are deliberately NOT
+     transitioned — a bite is instant, and easing one in makes it read as the
+     logo dissolving rather than as something taking a chunk out of it. */
+  transition:
+    opacity 0.28s ease-out,
+    transform 0.28s ease-out;
+}
+
+/* What is left after the last mouthful, going. */
+.pm-phone-shell .post-flash-gone {
+  opacity: 0;
+  transform: scale(0.82);
+}
+
+/*
+ * The plate being spat out onto the feed.
+ *
+ * It used to drop in from above, which was a fine landing but the wrong one
+ * once the mark started being eaten: the post now comes from where the mouth
+ * was. It starts small and low — roughly the middle of the screen, where the
+ * plate was sitting — tumbles slightly, then lands with the same squash and
+ * rebound the drop had. That squash is the whole weight of it; the travel is
+ * just how it gets there.
+ *
+ * `backwards` rather than `both` so the card is hidden before the first frame
+ * but keeps NO transform afterwards: a lingering `scale(1)` would leave the
+ * wrapper a containing block for anything fixed inside the card.
+ */
+@keyframes post-spit {
   0% {
     opacity: 0;
-    transform: translateY(-42px) scale(1.06);
+    transform: translateY(210px) scale(0.3) rotate(-7deg);
   }
-  58% {
+  30% {
     opacity: 1;
-    transform: translateY(0) scale(0.965);
   }
-  78% {
+  62% {
+    transform: translateY(0) scale(1.06) rotate(1.5deg);
+  }
+  80% {
+    transform: translateY(0) scale(0.965) rotate(0deg);
+  }
+  91% {
     transform: translateY(0) scale(1.012);
   }
   100% {
@@ -255,8 +290,8 @@ html.pm-lock-scroll body {
   }
 }
 
-.pm-phone-shell .post-slam {
-  animation: post-slam 0.52s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+.pm-phone-shell .post-spit {
+  animation: post-spit 0.66s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -269,7 +304,66 @@ html.pm-lock-scroll body {
   }
 
   .pm-phone-shell .post-flash-on .post-flash-disc,
-  .pm-phone-shell .post-slam {
+  .pm-phone-shell .post-spit {
     animation: none;
+  }
+
+  /* No meal either: the mark is simply shown whole and then the screen goes.
+     PostFlash still steps its timers, but with nothing transitioning and the
+     store's own floor dropped to match, none of it is drawn out. */
+  .pm-phone-shell .post-flash-bitten {
+    transition: none;
+  }
+}
+
+/* --- Opening splash ------------------------------------------------------
+   The mark, held over the app for a beat on a cold open. See PhoneSplash for
+   why this is an animation rather than a timer, and for what it covers that
+   the native iOS launch screen does not.
+
+   The hold is 1.4s and the fade 0.4s. `forwards` is what makes it stay gone —
+   without it the overlay snaps back to opacity 1 when the animation ends.
+   `visibility` is animated alongside opacity so the finished overlay leaves
+   the accessibility tree; opacity 0 alone would leave a transparent sheet
+   sitting on top of the app forever. */
+.phone-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  /* Cream, not white, and that is forced by the artwork rather than chosen:
+     `logo-mark.png` is fully opaque with its own cream ground baked in (there
+     is no transparent variant, and CLAUDE.md forbids hand-keying one), so on
+     white the mark sits in a visible pale rectangle. Cream also matches the
+     native iOS launch screen, whose splash image is the same mark on the same
+     ground — white here would flash cream → white → cream on every cold open.
+     Switch this to #fff the day a transparent mark comes out of logo:build. */
+  background: var(--background);
+  /* Never eats the first tap, even during the hold. */
+  pointer-events: none;
+  animation: phone-splash-out 1.8s ease-in forwards;
+}
+
+@keyframes phone-splash-out {
+  0%,
+  78% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Reduced motion still gets the beat, just without the cross-fade — the
+   overlay holds and then cuts. Removing it outright would take the brand
+   moment away rather than the movement, which is not what the preference
+   asks for. */
+@media (prefers-reduced-motion: reduce) {
+  .phone-splash {
+    animation-duration: 1.5s;
+    animation-timing-function: steps(1, end);
   }
 }

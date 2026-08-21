@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { PhoneShell } from "@/components/mobile/PhoneShell";
+import { PhoneSplash } from "@/components/mobile/PhoneSplash";
 import "./phone.css";
 
 /**
@@ -31,8 +32,14 @@ export default function PhoneLayout({ children }: { children: React.ReactNode })
   return (
     /* PhoneShell reads `?nav=`, and `useSearchParams` needs a Suspense boundary
        above it or it opts the whole tree into client-side rendering. */
-    <Suspense fallback={<div className="pm-phone-shell" />}>
-      <PhoneShell>{children}</PhoneShell>
-    </Suspense>
+    <>
+      {/* Outside the Suspense boundary on purpose: it must paint with the
+          first byte, not wait on whatever the shell is suspended for. It
+          mounts once per document, which in the app is once per cold open. */}
+      <PhoneSplash />
+      <Suspense fallback={<div className="pm-phone-shell" />}>
+        <PhoneShell>{children}</PhoneShell>
+      </Suspense>
+    </>
   );
 }
