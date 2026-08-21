@@ -718,8 +718,22 @@ export async function getPostById(id: string, viewerId: string | null = null): P
  * Only the last `FEED_WINDOW_DAYS` of posts are eligible — see lib/feedWindow.
  * The cutoff is a filter on this read, never a delete: the post stays in the
  * table and keeps counting toward the restaurant's rating forever.
+ *
+ * **`limit` is the binding constraint on this feed, not the window**, and the
+ * map is why that matters. `/feed`'s Map tab draws its bubbles from this same
+ * response, so this number is also how many comments the whole city gets to
+ * have. At 30 it ran out after 11 days — the cap was cutting the feed off well
+ * inside even the old fortnight, so widening FEED_WINDOW_DAYS to two months
+ * moved nothing, and searching the map for a cuisine found most of its matches
+ * silent. 120 is what makes the wider window reach anything.
+ *
+ * It costs the feed LIST the same rows, since `/feed` fetches once and renders
+ * both surfaces from it. That is the trade being made here: a longer scroll for
+ * a map that has something to say about more than thirty plates. If the list
+ * becomes the problem, the fix is to give the map its own read rather than to
+ * put this back — see the same note in lib/feedWindow.
  */
-export async function getDiscoverFeed(viewerId: string | null, limit = 30): Promise<Post[]> {
+export async function getDiscoverFeed(viewerId: string | null, limit = 120): Promise<Post[]> {
   // `!= ALL(empty array)` is vacuously true in Postgres, so a signed-out
   // viewer (empty blockedIds) filters nothing — same shape as the `ANY(ids)`
   // pattern hydratePosts already uses for viewer-scoped lookups.
