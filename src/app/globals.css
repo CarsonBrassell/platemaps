@@ -944,12 +944,34 @@ h3 {
 }
 
 /* The feed card's percent verdict, in the meter's own heat: same two stops,
-   clipped to the glyphs. Flat orange if no tier is set. */
+   clipped to the glyphs. Flat orange if no tier is set.
+
+   `--heat` (0 → 1, from heatRamp in PercentMeter.tsx) pulls the two stops
+   apart as the rating climbs past 85: the light end lightens and the dark end
+   deepens, so 99 reads as a visibly stronger gradient than 86 instead of both
+   sitting in the same "hot" tier. At --heat: 0 the mix contributes nothing and
+   this is exactly the two-stop gradient it always was, which is what keeps
+   every rating below the floor looking untouched.
+
+   `color-mix` in oklab so the interpolation stays perceptually even — the same
+   ramp in sRGB greys out through the middle. */
 .pct-heat {
+  --heat-mix: calc(var(--heat, 0) * 100%);
+  /* Plain two-stop first, color-mix second. This pair is load-bearing, not
+     belt-and-braces: `color: transparent` below means the glyphs are painted
+     *only* by this background, so a browser that does not understand
+     `color-mix` would drop the declaration and render the rating invisible.
+     An unsupported value invalidates just its own declaration, so the plain
+     gradient above survives as the floor and modern engines override it. */
   background-image: linear-gradient(
-    90deg,
+    100deg,
     var(--hot-a, var(--pm-orange)),
     var(--hot-b, var(--pm-orange))
+  );
+  background-image: linear-gradient(
+    100deg,
+    color-mix(in oklab, var(--hot-a, var(--pm-orange)), #ffb066 var(--heat-mix)),
+    color-mix(in oklab, var(--hot-b, var(--pm-orange)), #a8200a var(--heat-mix))
   );
   -webkit-background-clip: text;
   background-clip: text;

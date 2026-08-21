@@ -1,10 +1,11 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PostMediaCarousel } from "./PostMediaCarousel";
 import { PostActions, type VoteDirection } from "./PostActions";
-import { heatFor } from "@/components/post/PercentMeter";
+import { heatFor, heatRamp } from "@/components/post/PercentMeter";
 import { PointsBadge } from "./PointsBadge";
 import { StarRating } from "@/components/StarRating";
 import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/components/icons";
@@ -402,6 +403,9 @@ export function FoodPostCard(props: FoodPostCardProps) {
             <span className="flex shrink-0 flex-col items-end">
               <span
                 data-heat={heatFor(post.rating)}
+                /* The tier picks the pair of stops; --heat spreads them as the
+                   number climbs past 85. See heatRamp. */
+                style={{ "--heat": heatRamp(post.rating) } as CSSProperties}
                 className="pct-heat font-mono text-[42px] font-bold leading-none tabular-nums"
               >
                 {post.rating}%

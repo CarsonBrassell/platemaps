@@ -27,6 +27,30 @@ export function heatFor(pct: number) {
   return "cool";
 }
 
+/** Where the gradient starts opening up. Below this a rating is drawn flat. */
+export const HEAT_RAMP_FLOOR = 85;
+
+/**
+ * How far a rating has climbed past `HEAT_RAMP_FLOOR`, as 0 → 1.
+ *
+ * The four `heatFor` tiers are steps, and steps are wrong at the top of the
+ * scale: 86 and 99 are both "hot" until 95, so the two plates people actually
+ * argue about look identical. This is the continuous companion to that — the
+ * paint reads it as `--heat` and spreads the gradient's two stops further
+ * apart the higher the number goes, so the effect grows with the rating
+ * instead of jumping at a threshold.
+ *
+ * It is 0 at and below 85 on purpose. A gradient is emphasis, and emphasis on
+ * a mediocre plate is noise; below the floor every surface keeps drawing the
+ * rating the way it did before. That floor is also what lets the phone card
+ * use this at all — see the note there about a column of cards where one
+ * renders grey-brown because it scored 38.
+ */
+export function heatRamp(pct: number): number {
+  if (pct <= HEAT_RAMP_FLOOR) return 0;
+  return Math.min((pct - HEAT_RAMP_FLOOR) / (100 - HEAT_RAMP_FLOOR), 1);
+}
+
 /**
  * How hard you'd push this dish on someone else, 0–100%.
  *

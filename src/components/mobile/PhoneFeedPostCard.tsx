@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
+import { heatFor, heatRamp, HEAT_RAMP_FLOOR } from "@/components/post/PercentMeter";
 import Link from "next/link";
 import { PostMediaCarousel } from "@/components/feed/PostMediaCarousel";
 import { PostActions, type VoteDirection } from "@/components/feed/PostActions";
@@ -455,7 +457,20 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                * is the one place this scale is genuinely ambiguous. */}
               {post.rating !== undefined && post.ratingKind === "dish" && (
                 <>
-                  <span className="font-mono text-[38px] font-bold leading-none tabular-nums text-pm-orange">
+                  {/* Flat rust below the ramp's floor, gradient above it. The
+                      original objection to the web card's heat gradient down
+                      here still stands and is why the floor matters: a column
+                      of cards where one reads grey-brown because it scored 38
+                      breaks the column. Nothing below 85 is painted any
+                      differently than before — only the top of the scale opens
+                      up, and it opens further the higher the number goes. */}
+                  <span
+                    data-heat={heatFor(post.rating)}
+                    style={{ "--heat": heatRamp(post.rating) } as CSSProperties}
+                    className={`font-mono text-[38px] font-bold leading-none tabular-nums ${
+                      post.rating > HEAT_RAMP_FLOOR ? "pct-heat" : "text-pm-orange"
+                    }`}
+                  >
                     {post.rating}%
                   </span>
                   <span className="mono-label mt-0.5 text-pm-orange-text">Rating</span>
