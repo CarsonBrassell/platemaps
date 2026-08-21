@@ -48,61 +48,63 @@ import { EAT, usePostFlash } from "@/lib/postCelebration";
  * The mark's own aspect ratio (`logo-mark.png` is 660x865).
  *
  * Mask radii are given as a percentage of width and a *separate* percentage of
- * height, so this is what keeps a "circle" actually circular: a scoop that is
- * 16% of the width has to be 16 x 0.763% of the height to come out round.
+ * height, so this is what keeps a bite actually round: a scoop that is 43% of
+ * the width has to be 43 x 0.763% of the height to come out circular.
  */
 const ASPECT = 660 / 865;
 
-/** Deterministic, so the scallops are identical every render and on the server. */
-function rnd(i: number) {
-  const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
-  return x - Math.floor(x);
-}
+/**
+ * One bite, and every bite is this bite.
+ *
+ * **43% of the mark's width, because four of them have to finish it.** Four
+ * equal circles cover a rectangle when they sit on its quarter-points with a
+ * radius of the quadrant's half-diagonal — 41.2% of the width here. 43 is that
+ * with a margin. Anything smaller cannot clear the mark in four, and the
+ * previous version papered over exactly that by making its last bite an
+ * enormous one that simply wiped whatever was left, which is a deletion rather
+ * than a bite.
+ *
+ * The scallops are what make it a bite rather than a hole punch: eight bumps
+ * of a third the radius, straddling the rim, so the edge left behind is a run
+ * of round scoops. Fixed count, fixed size, evenly spaced — the bite is
+ * congruent every time, only rotated, so no two bites differ in size.
+ */
+const BITE_R = 43;
+const SCALLOPS = 8;
+const SCALLOP_R = 0.32;
+const SCALLOP_D = 1.02;
 
 type Scoop = { cx: number; cy: number; r: number };
 
-/**
- * One bite, as a cluster of overlapping scoops.
- *
- * A single circle leaves a clean arc, which reads as a hole punched in the
- * mark rather than as something bitten. A real bite — out of a cookie, which
- * is the reference — is several overlapping tooth-scoops, so its rim is a run
- * of little round bumps. That is also exactly how the bite already in the
- * supplied artwork is drawn, so this matches the brand rather than inventing
- * a second visual language for the same idea.
- *
- * Satellites sit at ~0.66-0.98 of the main radius and are ~0.26-0.48 of it, so
- * they straddle the rim: the parts outside widen the bite, the parts inside do
- * nothing, and what is left is a ragged edge.
- */
-function scoops(cx: number, cy: number, r: number, seed: number, n = 6): Scoop[] {
-  const out: Scoop[] = [{ cx, cy, r }];
-  for (let i = 0; i < n; i++) {
-    const a = (i / n) * Math.PI * 2 + rnd(seed) * 6.28;
-    const d = r * (0.66 + 0.32 * rnd(seed + i));
-    const rr = r * (0.26 + 0.22 * rnd(seed + i * 7 + 3));
-    out.push({ cx: cx + d * Math.cos(a), cy: cy + d * Math.sin(a) * ASPECT, r: rr });
+function bite(cx: number, cy: number, spin: number): Scoop[] {
+  const out: Scoop[] = [{ cx, cy, r: BITE_R }];
+  for (let i = 0; i < SCALLOPS; i++) {
+    const a = (i / SCALLOPS) * Math.PI * 2 + spin;
+    out.push({
+      cx: cx + SCALLOP_D * BITE_R * Math.cos(a),
+      /* sin is scaled by the aspect so the offset is circular in pixels, the
+         same correction `layer` makes to the radii. */
+      cy: cy + SCALLOP_D * BITE_R * Math.sin(a) * ASPECT,
+      r: SCALLOP_R * BITE_R,
+    });
   }
   return out;
 }
 
 /**
- * Where the mouth goes, in order, as a fraction of the mark's own box.
+ * The four quarter-points, taken clockwise from the top right — which is where
+ * the artwork's own bite already is, so the first mouthful widens it rather
+ * than opening a second mouth somewhere else.
  *
- * **On the stroke, not through the middle.** The pin is an outline, so a bite
- * aimed at its centre passes through empty space and takes almost nothing with
- * it — an early pass ate four mouthfuls out of the hollow and left the whole
- * orange ring standing. These walk around the ring itself: top-right (widening
- * the bite the artwork already has), the right flank, the point at the bottom,
- * the left flank. The fifth is the big one that finishes it, and it is centred
- * because by then the ring is what is left of the ring.
+ * Measured against the real artwork, this leaves 55%, 24%, 13% and then 0% of
+ * the mark's ink. It genuinely ends empty; nothing is faded away to hide a
+ * remainder.
  */
 const BITES = [
-  scoops(73, 18, 16, 1),
-  scoops(82, 46, 16, 2),
-  scoops(50, 85, 18, 3),
-  scoops(20, 44, 16, 4),
-  scoops(50, 40, 42, 5, 10),
+  bite(75, 25, 0),
+  bite(75, 75, 0.3),
+  bite(25, 75, 0.6),
+  bite(25, 25, 0.9),
 ];
 
 const layer = (c: Scoop) =>
@@ -172,11 +174,23 @@ export function PostFlash() {
 
   const mask = step > 0 ? MASKS[Math.min(step, MASKS.length) - 1] : "";
 
+  /*
+   * The flinch on each chomp.
+   *
+   * Two identical animations under two class names, alternated by parity. A
+   * CSS animation only restarts when its *name* changes, so re-applying one
+   * class on every bite would play the shake once and then sit still for the
+   * remaining three. Alternating is what re-triggers it without remounting the
+   * <img>, which would drop the decoded image and flicker.
+   */
+  const chomping = step >= 1 && step <= BITES.length;
+  const shake = chomping ? (step % 2 ? "post-flash-chomp-a" : "post-flash-chomp-b") : "";
+
   return (
     <div className={`post-flash ${open ? "post-flash-on" : ""}`} aria-hidden={!open}>
       <span className="post-flash-disc">
         <span
-          className={`post-flash-bitten ${step >= GONE ? "post-flash-gone" : ""}`}
+          className={`post-flash-bitten ${shake} ${step >= GONE ? "post-flash-gone" : ""}`}
           style={
             mask
               ? {

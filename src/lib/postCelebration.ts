@@ -48,16 +48,18 @@ export type PostLanding = {
  */
 export const EAT = {
   /** After the punch has landed — the mark is bitten, not born bitten. */
-  firstBiteAt: 500,
-  biteEvery: 480,
-  /** Five, and each one has to read as its own bite — see BITES in PostFlash. */
-  bites: 5,
-  /** A beat on the crumbs before they go, so the last bite reads. */
-  crumbsAfter: 220,
-  crumbsFade: 340,
+  firstBiteAt: 700,
+  biteEvery: 700,
+  /** Four, and four is enough to clear the mark — see BITES in PostFlash. */
+  bites: 4,
+  /* The pause on the empty plate before the post is spat out. It also has to
+     outlast the shake the fourth bite kicks off (0.2s), or the shake's
+     transform and the vanish's transition fight over the same property. */
+  crumbsAfter: 300,
+  crumbsFade: 400,
 } as const;
 
-/** Punch, five bites, gone. ~2.98s — the three seconds this is meant to be. */
+/** Punch, four bites, gone. 3.5s exactly. */
 export const EAT_TOTAL_MS =
   EAT.firstBiteAt + (EAT.bites - 1) * EAT.biteEvery + EAT.crumbsAfter + EAT.crumbsFade;
 

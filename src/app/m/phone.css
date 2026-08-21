@@ -248,6 +248,58 @@ html.pm-lock-scroll body {
     transform 0.28s ease-out;
 }
 
+/*
+ * The flinch when a bite is taken.
+ *
+ * Two identical keyframe sets under two names, alternated by PostFlash on each
+ * bite. A CSS animation only restarts when its name changes, so one name would
+ * play this once and then hold still for the remaining three bites. Duplicated
+ * deliberately — the alternative is remounting the <img> to force a restart,
+ * which drops the decoded image and flickers.
+ *
+ * Small on purpose: two or three pixels and about a degree. It is the mark
+ * taking a hit, not the mark falling over.
+ */
+@keyframes post-flash-chomp-a {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(-2.5px, 1.5px) rotate(-1.4deg);
+  }
+  45% {
+    transform: translate(2.5px, -1px) rotate(1.1deg);
+  }
+  70% {
+    transform: translate(-1.5px, 0.5px) rotate(-0.6deg);
+  }
+}
+
+@keyframes post-flash-chomp-b {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(-2.5px, 1.5px) rotate(-1.4deg);
+  }
+  45% {
+    transform: translate(2.5px, -1px) rotate(1.1deg);
+  }
+  70% {
+    transform: translate(-1.5px, 0.5px) rotate(-0.6deg);
+  }
+}
+
+.pm-phone-shell .post-flash-chomp-a {
+  animation: post-flash-chomp-a 0.2s ease-out;
+}
+
+.pm-phone-shell .post-flash-chomp-b {
+  animation: post-flash-chomp-b 0.2s ease-out;
+}
+
 /* What is left after the last mouthful, going. */
 .pm-phone-shell .post-flash-gone {
   opacity: 0;
@@ -314,6 +366,11 @@ html.pm-lock-scroll body {
      store's own floor dropped to match, none of it is drawn out. */
   .pm-phone-shell .post-flash-bitten {
     transition: none;
+  }
+
+  .pm-phone-shell .post-flash-chomp-a,
+  .pm-phone-shell .post-flash-chomp-b {
+    animation: none;
   }
 }
 
