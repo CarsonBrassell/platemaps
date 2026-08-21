@@ -6,9 +6,10 @@
  * answers it read the same module without pulling the Neon driver into the
  * browser bundle (see the note on `lib/db.ts` being server-only).
  *
- * - **Trending** is the ranking Discover has always had: net votes over a
- *   steep time decay. It is the default because a hyper-local feed is thin by
- *   construction — on a quiet evening, strict chronology shows an empty room.
+ * - **Trending** ranks public engagement — net votes *plus comments* — over a
+ *   steep time decay (`getDiscoverFeed` holds the curve). It is the default
+ *   because a hyper-local feed is thin by construction: on a quiet evening,
+ *   strict chronology shows an empty room.
  * - **New** is `created_at DESC`, nothing else. It exists so a plate posted
  *   thirty seconds ago is reachable before the ranking has any votes to work
  *   with, which is also what makes posting feel like it did something.

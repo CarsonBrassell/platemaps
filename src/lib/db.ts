@@ -642,10 +642,10 @@ export async function getPostById(id: string, viewerId: string | null = null): P
 }
 
 /**
- * Discover feed: every post, ranked by recency with steep time decay and the
- * net vote score as a secondary factor. Same curve as the old client-side
- * hotScore (`(votes + 1) / (ageHours + 2)^1.5`), moved server-side because it
- * now has to join the vote tables.
+ * Discover feed: every post, ranked by recency with steep time decay and
+ * public engagement — net votes plus comments — as the secondary factor.
+ * Moved server-side from the old client-side hotScore because it has to join
+ * the vote and comment tables.
  *
  * The numerator is floored at zero: a heavily downvoted plate should sink to
  * "as if nobody voted", not sort *below* older neutral posts by going
@@ -672,13 +672,29 @@ export async function getPostById(id: string, viewerId: string | null = null): P
  * anywhere near the query. Do not extend this to interpolate a caller's
  * string.
  *
- * "trending" is the curve the client-side hotScore used —
- * `(votes + 1) / (ageHours + 2)^1.5`. The numerator is floored at zero so a
- * heavily downvoted plate sinks to "as if nobody voted" rather than sorting
- * *below* older neutral posts by going negative and inverting the age decay.
+ * "trending" ranks engagement over a steep time decay:
+ * `(netVotes + comments + 1) / (ageHours + 2)^1.5`.
+ *
+ * The numerator used to be votes alone. Comments are in it now because they
+ * are the other public thing a plate can collect and the harder one to
+ * earn — writing a sentence costs more than tapping a thumb — so a plate
+ * people are arguing about outranks one that quietly collected the same
+ * number of votes. They are weighted equally rather than by a tuned
+ * multiplier; if a comment should count for more, that coefficient is the
+ * one knob to turn, and it belongs here where both live.
+ *
+ * The vote half is still floored at zero so a heavily downvoted plate sinks
+ * to "as if nobody voted" rather than sorting *below* older neutral posts by
+ * going negative and inverting the age decay. Comments are added outside that
+ * floor: a post can be worth reading because of its thread even when the
+ * plate itself got voted down.
+ *
+ * The decay stays. Without it "Trending" is an all-time leaderboard that
+ * never changes and a plate posted this evening can never reach — which is
+ * "Top", not "Trending", and there is already a "New" for chronology.
  */
 const DISCOVER_ORDER: Record<FeedSort, string> = {
-  trending: `(GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0) + 1)
+  trending: `(GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0) + COALESCE(cm.count, 0) + 1)
         / POWER(EXTRACT(EPOCH FROM (now() - p.created_at)) / 3600 + 2, 1.5) DESC`,
   new: `p.created_at DESC`,
 };
@@ -707,6 +723,9 @@ export async function getDiscoverFeed(
     LEFT JOIN (
       SELECT post_id, count(*) AS count FROM post_downvotes GROUP BY post_id
     ) dv ON dv.post_id = p.id
+    LEFT JOIN (
+      SELECT post_id, count(*) AS count FROM comments GROUP BY post_id
+    ) cm ON cm.post_id = p.id
     WHERE p.user_id != ALL(${blockedIds})
     ORDER BY ${sql.unsafe(DISCOVER_ORDER[sort])}
     LIMIT ${limit}
