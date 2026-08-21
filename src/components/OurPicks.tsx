@@ -4,6 +4,7 @@ import { StarIcon } from "@/components/icons";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
+import { photoCreditFor } from "@/lib/photoCredit";
 
 /** A pick's plate score, or the unrated one when the caller didn't attach it. */
 const score = (r: { plateScore?: PlateScore }) => r.plateScore ?? EMPTY_PLATE_SCORE;
@@ -57,10 +58,11 @@ export function OurPicks({
                 Promoted
               </span>
               {/* Same credit the grid cards carry — see the note in
-                  RestaurantCard for why it isn't the link back. */}
-              {r.photo && (
+                  RestaurantCard for why it isn't the link back, and why the
+                  source is derived from the URL rather than assumed. */}
+              {photoCreditFor(r.photo) && (
                 <span className="absolute bottom-2 right-2 whitespace-nowrap rounded-full bg-white/85 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600">
-                  Photo: Yelp
+                  {photoCreditFor(r.photo)}
                 </span>
               )}
             </div>

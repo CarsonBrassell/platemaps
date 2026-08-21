@@ -240,6 +240,28 @@ The seven are still in the database. `fix-neighborhoods.mjs` lists them and deli
 does not touch them — deleting a restaurant orphans whatever posts point at it, which is
 the exact hazard `fetch-restaurants.mjs` documents at the top of the file.
 
+## Capture the restaurant's own photo while you are there
+
+Extraction briefs should ask for one more field, and it is close to free:
+
+```json
+{ "photo": "https://therestaurant.com/hero.jpg", "photoAlt": "" }
+```
+
+Photos are the slowest thing in the pipeline — one Yelp call each against a free
+quota of 300 a day, and that queue is what decides when the corpus finishes. But
+the extractor is already standing on the restaurant's own website reading its
+menu, and the hero image is right there. Every photo taken that way is a Yelp
+call that never has to be spent, and it is the picture the restaurant chose of
+itself rather than a stranger's photograph of a burrito.
+
+Rules: absolute `https` URL, on the restaurant's own domain, showing the food or
+the room — not a logo, not a stock photo, not a delivery-app thumbnail.
+`load-menus.mjs` validates the URL and writes it with `COALESCE`, so it can only
+fill an empty slot and never displaces a photo already there. The credit line is
+derived from the URL host by `src/lib/photoCredit.ts`, so a restaurant-sourced
+photo correctly carries no "Photo: Yelp".
+
 ## Other things worth knowing
 
 - **The dish cap is 100** as of 20 Aug 2026, raised from 45 — convention, not schema,

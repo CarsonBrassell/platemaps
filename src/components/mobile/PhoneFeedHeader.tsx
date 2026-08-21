@@ -71,10 +71,14 @@ export function PhoneFeedHeader({ subtitle }: { subtitle?: React.ReactNode }) {
           )}
         </div>
 
-        {/* Search used to live here. It moved to the bottom-right of the screen
-            (PhoneFeedSearch) — the top-right corner is the furthest point from
-            a thumb, and this header sits above a map that wants every point of
-            height it can get. */}
+        {/* Search used to live here. It moved down to the row under the tabs
+            (PhoneFeedSearch) — the top-right corner is the furthest point on
+            the screen from a thumb holding the device.
+
+            This header does not render on the map tab at all any more: the map
+            runs to the top edge and the tabs float on it, so the title named a
+            screen you can already see and the avatar duplicated the nav's
+            Profile slot. See PhoneFeedScreen's map branch. */}
         <div className="flex shrink-0 items-center gap-1">
           {/* Signed out puts a named doorway where the face goes rather than an
               anonymous circle: /m/account is the sign-in destination the rest of

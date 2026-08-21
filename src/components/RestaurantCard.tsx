@@ -5,6 +5,7 @@ import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
+import { photoCreditFor } from "@/lib/photoCredit";
 
 /**
  * The category the grid is currently filtered to, and what this place scored in
@@ -91,10 +92,13 @@ export function RestaurantCard({
         {/* Yelp wants their photos credited wherever they appear. The whole
             card is already one <Link>, so this can't be the anchor back to the
             business's Yelp page without nesting anchors — that link lives on
-            the detail page's header, which is one tap away. */}
-        {restaurant.photo && (
+            the detail page's header, which is one tap away.
+
+            Derived rather than hardcoded: photos now also come off restaurants'
+            own sites, and those are not Yelp's to be credited for. */}
+        {photoCreditFor(restaurant.photo) && (
           <span className="absolute bottom-2 right-2 whitespace-nowrap rounded-full bg-white/85 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600">
-            Photo: Yelp
+            {photoCreditFor(restaurant.photo)}
           </span>
         )}
       </div>

@@ -81,6 +81,21 @@ for (const entry of entries) {
   for (const dish of entry.dishes ?? []) {
     if (!dish.name) problems.push(`${entry.restaurantId}: a dish has no name`);
   }
+  /*
+   * A photo URL reaches next/image, which fetches and optimises it server-side
+   * (next.config.ts now allows any https host, because restaurant photos come
+   * from thousands of them). That makes this field a server-side fetch, so it
+   * is checked here rather than trusted: absolute, https, and nothing else.
+   */
+  if (entry.photo) {
+    let ok = false;
+    try {
+      ok = new URL(entry.photo).protocol === "https:";
+    } catch {
+      ok = false;
+    }
+    if (!ok) problems.push(`${entry.restaurantId}: photo is not an absolute https URL — ${entry.photo}`);
+  }
 }
 
 if (problems.length > 0) {
@@ -126,6 +141,32 @@ for (const entry of entries) {
     dishesWritten += dishes.length;
   } else {
     notFound += 1;
+  }
+
+  /*
+   * A photo the extractor found on the restaurant's own site, if we had none.
+   *
+   * Photos are the slowest thing in the pipeline: they come from Yelp, one call
+   * each, against a free quota of 300 a day, and that queue is what decides when
+   * the corpus finishes. But the menu extractor is already standing on the
+   * restaurant's own website reading its menu, and the hero image is right
+   * there — free, no quota, and the picture the restaurant chose of itself
+   * rather than a stranger's photograph of a burrito.
+   *
+   * COALESCE, so this can only ever fill an empty slot. A Yelp photo already in
+   * place is left alone rather than churned, and re-running a batch does not
+   * flip a restaurant's image back and forth between two sources.
+   *
+   * `photoCreditFor` in src/lib/photoCredit.ts reads the host to decide whether
+   * to print "Photo: Yelp", so nothing has to be stored to keep the credit
+   * honest — a non-Yelp host simply gets no credit line.
+   */
+  if (entry.photo) {
+    await sql`
+      UPDATE restaurants
+      SET photo = COALESCE(photo, ${entry.photo}),
+          photo_alt = COALESCE(photo_alt, ${entry.photoAlt || null})
+      WHERE id = ${entry.restaurantId}`;
   }
 
   // The ledger is upserted, unlike the on-demand path which refused to

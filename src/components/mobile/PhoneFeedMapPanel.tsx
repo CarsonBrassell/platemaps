@@ -384,13 +384,7 @@ export function PhoneFeedMapPanel({
        being grouped, so there is no shape to group it into.
 
        Height is `h-full` of whatever the screen gives it, rather than the web's
-       fixed 540. See the wrapper below for how that reaches the map.
-
-       The zoom stack needs no push down any more. It used to clear two rows —
-       the source switch and the search field wrapped under it, ending at 108px
-       — and both are gone from the top edge: the switch moved to the bottom
-       (see below) and the field was removed (NoMapSearch). So the top-left is
-       empty and the controls sit at their natural inset. */
+       fixed 540. See the wrapper below for how that reaches the map. */
     <div className="h-full overflow-hidden">
       <div className="relative h-full">
         {/* Sizing the map from outside it. RestaurantMap's container is
@@ -409,7 +403,16 @@ export function PhoneFeedMapPanel({
             inset card, and a rounded corner on a full-bleed map just shows a
             wedge of cream at each corner. Same descendant-selector trick, same
             reason it beats a utility class without `!important`. */}
-        <div className="h-full [&>div]:h-full [&_.map-fun-tiles]:h-full [&_.map-fun-tiles]:rounded-none">
+        {/* The zoom stack has to clear the feed tabs, which float on the
+            top-left of the map now (PhoneFeedScreen). MapLibre puts
+            NavigationControl in `top-left` (RestaurantMap.tsx:1165) and gives
+            it a 10px inset of its own, so 56px of padding here lands it at 66px
+            — under a 44px tab row that starts at 8px. The `env()` term is the
+            same one the tab row's own top inset carries: on a handset the row
+            starts below the status bar, and the control has to follow it down
+            or the two collide again on exactly the devices that have a notch.
+            Change one, change the other. */}
+        <div className="h-full [&>div]:h-full [&_.map-fun-tiles]:h-full [&_.map-fun-tiles]:rounded-none [&_.maplibregl-ctrl-top-left]:pt-[calc(3.5rem+env(safe-area-inset-top))]">
           {/* The provider is what makes every push the map makes land in /m —
               see mapRouter above. It wraps only the map, so nothing else on the
               screen navigates through a rewritten router. */}

@@ -31,10 +31,14 @@ import { PhoneFeedMapPanel } from "./PhoneFeedMapPanel";
  * What is phone-shaped is above the cards, and it is three decisions:
  *
  * - **The map is a tab, and it is the only screen here that does not scroll.**
- *   The three tabs are the web's three. The map fills the frame between the tabs
- *   and the nav's reserved space instead of standing at the web's fixed 540px —
- *   see the layout note on the root element below, and PhoneFeedMapPanel for
- *   how that height reaches a component whose container is `h-[540px]`.
+ *   The three tabs are the web's three. On that tab the map takes the entire
+ *   frame — top edge to bottom edge, behind the floating nav — instead of
+ *   standing at the web's fixed 540px, and every control that would have sat
+ *   above it floats on it instead: the tabs top-left, the source switch
+ *   bottom-left, search bottom-right. There are two layouts in the return
+ *   below for exactly this reason; see the note on the map branch, and
+ *   PhoneFeedMapPanel for how the height reaches a component whose container is
+ *   `h-[540px]`.
  * - **No saved view.** The web feed reaches it through `?view=saved`, which is
  *   a leftover from the archived side rail; on the phone the profile tab is the
  *   obvious home for it and the nav already points there.
@@ -257,53 +261,128 @@ export function PhoneFeedScreen() {
     return () => root.classList.remove("pm-lock-scroll");
   }, [showMap]);
 
+  /*
+   * The map screen, and it is now the whole screen.
+   *
+   * The map used to start below the header, the tab row and the search row —
+   * roughly 130 points of cream above a surface whose entire job is to be
+   * looked at. It runs to the top edge instead, and the only chrome left is
+   * floated on top of it: the feed tabs at the top, the source switch at the
+   * bottom-left (PhoneFeedMapPanel owns that one) and search at the
+   * bottom-right. The header goes with the cream — its title named a screen you
+   * can now see, and its avatar duplicated the nav's Profile slot, which is
+   * still one tap away at the bottom.
+   *
+   * `h-dvh` is the whole viewport, NOT the viewport minus the nav: the map runs
+   * behind the floating nav and is visible around it. The negative bottom
+   * margin cancels `.pm-phone-content`'s `padding-bottom:
+   * var(--phone-nav-space)`, which every scrolling screen needs (it is what
+   * stops a last card hiding under the nav) and this one must undo, or the
+   * reserved strip would push these 100dvh up by its own height and reintroduce
+   * the gap. Cancelling it here rather than removing it from the shell keeps
+   * the rule correct for the screens that depend on it.
+   *
+   * On the desktop frame that dvh is the 390px shell's own height (phone.css
+   * sets it to 100dvh and clips), so this measures the frame, not the monitor.
+   */
+  if (showMap) {
+    return (
+      <>
+        <div className="relative h-dvh mb-[calc(-1*var(--phone-nav-space))]">
+          {/* The map fills the frame. `inset-0` rather than a flex child now
+              that nothing sits above it to take a share of the height. */}
+          <div className="absolute inset-0">
+            <PhoneFeedMapPanel
+              posts={posts}
+              source={mapSource}
+              onSourceChange={setMapSource}
+              isSignedIn={isSignedIn}
+              onVote={handleVote}
+              onHeart={handleHeart}
+              onOpenPost={openPost}
+            />
+          </div>
+
+          {/* What makes bare labels survive on the tiles. The night style is
+              dark almost everywhere, but "almost" is the problem — a park, a
+              lit arterial or a dense block of embers under the tab row would
+              take the muted tab with it. A scrim is the cheap fix that costs
+              the map nothing: it is strongest exactly where the text is and
+              gone by the time it reaches the content. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 bg-gradient-to-b from-black/65 via-black/25 to-transparent"
+          />
+
+          {/* The tabs, floated. `pointer-events-none` on the band and `auto`
+              back on the controls: a full-width invisible strip across the top
+              of a map is a strip you cannot pan, and panning is the map's
+              primary gesture.
+
+              The top inset respects `env(safe-area-inset-top)` because the map
+              now runs under the status bar — the cream header used to hold that
+              line and no longer exists. `max()` keeps the desktop frame, where
+              the inset is 0, at the same 8px it always had. */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-20 px-4 pt-[max(0.5rem,env(safe-area-inset-top))]">
+            <div className="pointer-events-auto inline-flex">
+              <PhoneFeedTabs active={tab} onChange={setTab} onDark />
+            </div>
+
+            {offline && (
+              <div className="pointer-events-auto mt-1">
+                <OfflineBanner />
+              </div>
+            )}
+
+            {banner && (
+              <p
+                role="status"
+                className="pointer-events-auto mt-1 rounded-xl bg-pm-orange-tint px-4 py-2.5 text-sm font-medium text-pm-orange-text"
+              >
+                {banner}
+              </p>
+            )}
+          </div>
+
+          {/* Bottom-right, opposite the source switch and in the same glass.
+              No `onSearch`: there is no list on this tab to narrow, so a submit
+              keeps its default of sending the term to Discover. */}
+          <PhoneFeedSearch placement="map" />
+        </div>
+
+        {/* Reachable from here in principle — a bubble that opens a post leaves
+            the map first (openPost switches tabs), so in practice this branch
+            renders nothing. Kept so the two layouts cannot disagree about
+            whether comments can be open. */}
+        {activePost && (
+          <CommentsScreen
+            post={activePost}
+            currentUserId={account?.id ?? null}
+            onClose={() => setCommentsPostId(null)}
+            onSubmit={handleComment}
+            onVoteComment={handleVoteComment}
+            reactPoints={commentReactPoints}
+          />
+        )}
+      </>
+    );
+  }
+
   return (
     /*
-     * Two layouts, one screen.
-     *
      * The card tabs scroll: `min-h-dvh`, and `.pm-phone-content` already carries
      * `padding-bottom: var(--phone-nav-space)` so the last card clears the nav.
-     *
-     * The map does not scroll — a map inside a scroller is a gesture fight — so
-     * on that tab the screen is locked to exactly the height the nav leaves it
-     * and the map takes whatever is left under the header and tabs. The height
-     * subtracts the *same* `--phone-nav-space` the content padding adds, so the
-     * two sum to 100dvh and nothing here pads the bottom a second time. On the
-     * desktop frame that dvh is the 390px shell's own height (phone.css sets it
-     * to 100dvh and clips), so this measures the frame, not the monitor.
      */
-    <div
-      className={
-        showMap
-          ? /* Full bleed to the bottom of the screen, with the nav floating on
-               top of the map rather than sitting under it on a cream strip.
-               Two things make that work:
-
-               `h-dvh` — the whole viewport, NOT the viewport minus the nav.
-               The map runs behind the nav and is visible around it.
-
-               The negative bottom margin cancels `.pm-phone-content`'s
-               `padding-bottom: var(--phone-nav-space)`, which every other
-               screen needs (it is what stops a last card hiding under the nav)
-               and this one must undo, or the reserved strip would push these
-               100dvh up by its own height and reintroduce the gap. Cancelling
-               it here rather than removing it from the shell keeps the rule
-               correct for the scrolling screens that depend on it. */
-            "flex h-dvh flex-col mb-[calc(-1*var(--phone-nav-space))]"
-          : "min-h-dvh"
-      }
-    >
+    <div className="min-h-dvh">
       {/*
         Scrolls away rather than sticking, the same call the discover screen
         makes: a 390px screen has roughly 640 usable points of height and the
         nav already owns the bottom ~96 of them. The nav is the thing that has
         to stay reachable, and it does.
       */}
-      {/* No subtitle. The header is the title, the search and the avatar, and
-          nothing else — the reference design gives the count no room, and it
-          was buying a line of vertical space on a screen whose whole job is to
-          show the map underneath. `PhoneFeedHeader` still takes a `subtitle`
-          for the screens that want one. */}
+      {/* No subtitle. The header is the title and the avatar and nothing else —
+          the reference design gives the count no room. `PhoneFeedHeader` still
+          takes a `subtitle` for the screens that want one. */}
       <PhoneFeedHeader />
 
       {/* Tabs get the row to themselves; the sort and search share the next
@@ -318,21 +397,17 @@ export function PhoneFeedScreen() {
 
       {/* Search owns this row and takes the sort switch as its left half — see
           PhoneFeedSearch for why the two rows it spans have to live in one
-          component. On the card tabs a search narrows the list already on
-          screen (onSearch); the map tab gets no onSearch, so it keeps sending
-          you to Discover — there's no list there to narrow. */}
+          component. Here a search narrows the list already on screen; the map
+          tab's copy of this control lives in the branch above, in the corner,
+          and keeps the navigate-to-Discover default. */}
       <div className="mt-0.5">
         <PhoneFeedSearch
           leading={tab === "discover" ? <FeedSortSwitch active={sort} onChange={setSort} /> : null}
-          onSearch={showMap ? undefined : setRestaurantFilter}
+          onSearch={setRestaurantFilter}
         />
       </div>
 
-      {/* On the map tab this row is usually empty, and an empty row with
-          padding is 8px of cream between the tabs and a map that is supposed to
-          run edge to edge. So the padding is spent only when there is something
-          to put in it. The card tabs always want it — the list lives in here. */}
-      <div className={showMap ? (offline || banner ? "px-4 pt-2" : "") : "px-4 pt-2"}>
+      <div className="px-4 pt-2">
         {offline && <OfflineBanner />}
 
         {banner && (
@@ -344,7 +419,7 @@ export function PhoneFeedScreen() {
           </p>
         )}
 
-        {!showMap && posts !== null && posts.length > 0 && restaurantFilter && (
+        {posts !== null && posts.length > 0 && restaurantFilter && (
           /* Only shown once there's something to narrow — the filter chip
              would otherwise flash past on a still-loading or empty feed. */
           <p className="mb-3 flex items-center justify-between gap-3 rounded-xl bg-pm-orange-tint px-4 py-2.5 text-sm font-medium text-pm-orange-text">
@@ -359,7 +434,7 @@ export function PhoneFeedScreen() {
           </p>
         )}
 
-        {showMap ? null : posts === null ? (
+        {posts === null ? (
           <FeedSkeleton count={2} />
         ) : loadError && posts.length === 0 ? (
           <PhoneFeedState
@@ -479,29 +554,6 @@ export function PhoneFeedScreen() {
           </>
         )}
       </div>
-
-      {showMap && (
-        /* The map's slot: everything the header, the tabs and the banner row
-           left over. `min-h-0` is what makes `flex-1` able to shrink — without
-           it the map's own content would set a floor and push the bottom of the
-           frame under the nav.
-
-           No padding at all, unlike the card tabs' 16px gutters: the map runs
-           edge to edge. It still stops above the nav, because the wrapper's
-           height already subtracts `--phone-nav-space` — that clearance is
-           bought once, up there, and must not be paid for again here. */
-        <div className="min-h-0 flex-1">
-          <PhoneFeedMapPanel
-            posts={posts}
-            source={mapSource}
-            onSourceChange={setMapSource}
-            isSignedIn={isSignedIn}
-            onVote={handleVote}
-            onHeart={handleHeart}
-            onOpenPost={openPost}
-          />
-        </div>
-      )}
 
       {/* The shared comments screen, reused whole. It is `Dialog`'s `screen`
           variant — a full-viewport destination with its own back arrow, which

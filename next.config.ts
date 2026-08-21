@@ -29,6 +29,25 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       // Yelp serves business photos from numbered s3-media hosts.
       { protocol: "https", hostname: "*.fl.yelpcdn.com" },
+
+      /*
+       * Any https host, because restaurant photos now come from the
+       * restaurants themselves.
+       *
+       * Yelp's photos cost a call against a 300-a-day quota and are user
+       * snapshots; a restaurant's own hero image is free, already on a page the
+       * menu extractor is visiting anyway, and is the picture they chose to
+       * represent themselves. What it is not is one host — it is five thousand
+       * of them, so an allowlist cannot be the mechanism.
+       *
+       * The trade is real and worth stating. This lets next/image fetch and
+       * optimise any https URL that reaches the `photo` column, so that column
+       * is now a server-side fetch primitive: only the import scripts write it,
+       * and nothing user-supplied may ever reach it. If restaurants ever gain
+       * the ability to set their own photo, this goes back to an allowlist or
+       * the images get downloaded and served from public/ instead.
+       */
+      { protocol: "https", hostname: "**" },
     ],
   },
 };

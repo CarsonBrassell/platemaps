@@ -42,9 +42,22 @@ const TABS: ReadonlyArray<{ value: FeedTab; label: string }> = [
 export function PhoneFeedTabs({
   active,
   onChange,
+  /**
+   * Drawn over the night tiles rather than on the cream ground.
+   *
+   * The map tab floats this row on top of the map now (see PhoneFeedScreen), so
+   * the two muted/active colours have to come off the tiles instead of off
+   * `#F7F4EC`. Only the ink changes — no track, no fill, no pill. This is still
+   * rank 2 wearing rank 2's clothes, which is the whole reason the row can move
+   * onto the map without turning into a third kind of control. The active
+   * underline stays `--pm-orange`: it is the one accent, and it reads on both
+   * grounds.
+   */
+  onDark = false,
 }: {
   active: FeedTab;
   onChange: (tab: FeedTab) => void;
+  onDark?: boolean;
 }) {
   return (
     <div role="tablist" aria-label="Feed filter" className="flex items-center gap-5 text-sm">
@@ -67,11 +80,20 @@ export function PhoneFeedTabs({
                row usually sits above scrolling cards, and there is nothing
                left buying that 4px back from the AGENTS.md floor. */
             className={`relative inline-flex min-h-11 items-center whitespace-nowrap rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange ${
-              on
-                ? "font-semibold text-zinc-900"
-                : /* On the cream ground, so --pm-grey-text rather than
-                     zinc-500, which is only 4.28:1 here. */
-                  "text-pm-grey-text"
+              onDark
+                ? /* Cream for the active tab and the switch's own muted
+                     `#d3dae1` for the rest, so the two controls floating on the
+                     map agree about what "not selected" looks like. Both sit on
+                     the top scrim PhoneFeedScreen lays down, which is what
+                     carries them over a bright stretch of tiles. */
+                  on
+                  ? "font-semibold text-[#F7F4EC]"
+                  : "text-[#d3dae1]"
+                : on
+                  ? "font-semibold text-zinc-900"
+                  : /* On the cream ground, so --pm-grey-text rather than
+                       zinc-500, which is only 4.28:1 here. */
+                    "text-pm-grey-text"
             }`}
           >
             {tab.label}
