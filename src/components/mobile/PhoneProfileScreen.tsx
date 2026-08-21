@@ -7,6 +7,7 @@ import { PointsBadge } from "@/components/feed/PointsBadge";
 import { CameraIcon, PlateStarIcon } from "@/components/icons";
 import { PhoneProfileActivity } from "@/components/mobile/PhoneProfileActivity";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
+import { PhoneDeleteAccountPanel } from "@/components/mobile/PhoneDeleteAccountPanel";
 import { PhoneSecurityPanel } from "@/components/mobile/PhoneSecurityPanel";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
@@ -354,93 +355,10 @@ function ProfileOverview() {
             Log out
           </button>
 
-          <div className="mt-3">
-            <PhoneDeleteAccountPanel />
-          </div>
+          {/* Below Log out, same order as the web account page: logging out is
+              what most people scrolling this far are reaching for. */}
+          <PhoneDeleteAccountPanel />
         </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * Same real, immediate deletion as the web account page's DeleteAccountPanel
- * — see lib/db.ts's deleteUser comment for exactly what goes with the
- * account (everything, cascaded) — and the same two guards: collapsed
- * behind a tap, and finished only by retyping the password, since a phone
- * left unlocked shouldn't by itself be enough to destroy an account.
- */
-function PhoneDeleteAccountPanel() {
-  const { deleteAccount } = useAuth();
-  const [open, setOpen] = useState(false);
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-
-  async function handleDelete() {
-    setSubmitting(true);
-    setError("");
-    const result = await deleteAccount(password);
-    setSubmitting(false);
-    // On success `deleteAccount` already cleared the account from context,
-    // which flips this screen to its signed-out branch — nothing left to do.
-    if (result) setError(result);
-  }
-
-  if (!open) {
-    return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className={`min-h-11 w-full rounded-full px-4 text-sm font-medium text-red-700 transition-colors active:scale-[0.98] ${FOCUS}`}
-      >
-        Delete account
-      </button>
-    );
-  }
-
-  return (
-    <div className="rounded-2xl bg-red-50 p-4">
-      <p className="mb-1 text-sm font-semibold text-red-900">Delete your account?</p>
-      <p className="mb-3 text-xs leading-relaxed text-red-800">
-        This permanently deletes your account, posts, comments, and everything else attached to
-        it. There is no undo.
-      </p>
-      <label htmlFor="phone-delete-password" className="mb-1 block text-xs font-medium text-red-900">
-        Enter your password to confirm
-      </label>
-      <input
-        id="phone-delete-password"
-        type="password"
-        value={password}
-        onChange={(e) => {
-          setPassword(e.target.value);
-          if (error) setError("");
-        }}
-        autoComplete="current-password"
-        className={`mb-3 min-h-11 w-full rounded-lg bg-white px-3 text-[16px] outline-2 outline-offset-2 outline-transparent focus:outline-pm-orange ${FOCUS}`}
-      />
-      {error && <p className="mb-3 text-xs text-red-700">{error}</p>}
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={handleDelete}
-          disabled={submitting || !password}
-          className={`min-h-11 flex-1 rounded-full bg-red-700 text-xs font-semibold text-white transition-colors active:scale-[0.97] disabled:opacity-50 ${FOCUS}`}
-        >
-          {submitting ? "Deleting…" : "Delete my account"}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setOpen(false);
-            setPassword("");
-            setError("");
-          }}
-          className={`min-h-11 flex-1 rounded-full bg-white text-xs font-medium text-red-800 ${FOCUS}`}
-        >
-          Cancel
-        </button>
       </div>
     </div>
   );

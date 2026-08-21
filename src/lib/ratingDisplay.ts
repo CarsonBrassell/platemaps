@@ -39,29 +39,18 @@
 export const SHOW_BLEND_STARS = true;
 
 /**
- * A category score as it is shown: out of 5, one decimal.
+ * The scale categories are reported on, for the `/5` a caller prints beside one.
  *
- * `aspectScores` computes on 0-100 because that is the scale of the thing it is
- * anchored to — the restaurant's plate score — and every threshold tuned against
- * it (`ASPECT_STRONG_SCORE`, `npm run aspects:preview`) is in those units. The
- * conversion is linear and lives only here, so the model keeps one set of units
- * and the display can wear another without either drifting.
+ * There is no conversion helper any more: `aspectScores` works natively in 1-5
+ * because its base is the sourced rating, which is already on that scale. What
+ * remains is the display rule.
  *
- * Out of 5 rather than a percent because a category is a judgement about the
- * place, and the page already has a percent that means something specific —
- * "this share of the plates' ratings". Service is not that, and giving it the
- * same sign invited it to be read as one.
- *
- * **Always print the denominator.** There are three numbers on a restaurant
- * page now — the plate percent, the sourced stars, and these — and two of them
- * are out of 5. `4.4` alone is ambiguous between this and the sourced rating;
- * `4.4/5` beside a labelled category is not.
+ * **Always print the denominator.** A restaurant page carries the plate percent,
+ * the sourced stars, and these — and two of the three are out of 5. `4.4` alone
+ * is ambiguous between a category and the sourced rating; `4.4/5` sitting
+ * against a category label is not.
  */
 export const ASPECT_SCALE_MAX = 5;
-
-export function aspectOutOfFive(score: number): string {
-  return ((score / 100) * ASPECT_SCALE_MAX).toFixed(1);
-}
 
 /**
  * What the plate score is, in words, wherever there is room to say it.
@@ -111,31 +100,27 @@ export const BLEND_DISCLOSURE =
   "Star ratings are sourced from across the web, not PlateMaps ratings.";
 
 /**
- * The sourced 1-5 rating on the 0-100 scale everything else in the product uses.
+ * Why the conversion and anchor helpers are gone.
  *
- * Exists for one job: giving `aspectScores` something to anchor to at a
- * restaurant whose plates aren't rated yet. It is NOT for display — a sourced
- * rating shown as a percent would be indistinguishable from a plate score, which
- * is the exact confusion `blendLabel` and its denominator exist to prevent.
+ * This module used to own three: `aspectOutOfFive` (0-100 → x/5),
+ * `blendAsPercent` (the sourced 1-5 → 0-100) and `aspectAnchor`, which picked
+ * the restaurant's plate score when it had one and the rescaled sourced rating
+ * when it did not. All three existed to move a category between two scales and
+ * two possible anchors.
+ *
+ * `aspectScores` now works natively in 1-5 around a single base — the sourced
+ * rating, supplied by `getAllRestaurantAspectTallies` in lib/db.ts — so there is
+ * no conversion left to do and no per-restaurant choice left to make. The plate
+ * score is deliberately not the base: a category is a claim about the place, the
+ * plate score is a claim about its food, and anchoring one to the other made the
+ * categories move whenever the menu did.
+ *
+ * What that costs this module's job. Under the old fallback the sourced rating
+ * set category heights only where plates were unrated; it now sets them
+ * everywhere, so a number labelled as ours is positioned at a Yelp/Google
+ * altitude on every restaurant — which is exactly what the disclosure above is
+ * for, and why `RestaurantAspects` prints "averages to <base>" against the
+ * counts. The five ratings are a breakdown of that number and the page says so.
+ * Below `MIN_REVIEWS` it shows the vote counts and no ratings at all.
  */
-export function blendAsPercent(rating: number): number {
-  return Math.max(0, Math.min(100, (rating / 5) * 100));
-}
 
-/**
- * What the per-category scores move away from: the restaurant's own plate score
- * when it has one, and the sourced rating rescaled when it doesn't.
- *
- * The fallback is what keeps the category block alive during cold start. Every
- * one of those votes is a real PlateMaps tap — someone naming what a place was
- * best at — and gating the block on a plate score meant 541 of them rendered
- * nowhere. The votes decide the *shape* (which categories lead, which drag);
- * the anchor only decides the height they sit at, so borrowing it is far less of
- * a claim than borrowing the verdict itself would be.
- *
- * It resolves to the plate score on its own the moment one exists, per
- * restaurant — the same handover as the display.
- */
-export function aspectAnchor(platePercent: number | null, blendRating: number): number {
-  return platePercent ?? blendAsPercent(blendRating);
-}

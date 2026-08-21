@@ -9,14 +9,31 @@
  * and `scripts/fetch-menus.mjs` still write them, this script loads them, and
  * the app reads Postgres. Nothing under src/ imports either array any more.
  *
- * Idempotent, and safe to re-run after either fetch script:
+ * Idempotent, and safe to re-run after either fetch script. Restaurants upsert
+ * by id: a place already in the table keeps its row and gets the new column
+ * values.
  *
- *   - Restaurants upsert by id. A place already in the table keeps its row and
- *     gets the new column values.
- *   - A restaurant's dishes are replaced as a set, not upserted one by one, so
- *     a dish dropped from a re-extracted menu actually leaves the table.
- *     Restaurants absent from dishes.ts are left alone rather than emptied —
- *     "no menu in this file" and "no menu anywhere" are different claims.
+ * ## This does NOT write dishes any more, and must not be made to by default
+ *
+ * It used to, and doing so destroyed real menus.
+ *
+ * `src/data/dishes.ts` says so in its own header: its contents are "placeholder
+ * dishes, descriptions and prices, NOT extracted from any restaurant's real
+ * menu". It carries 125 invented dishes across 19 restaurants. The database
+ * meanwhile holds ~24,800 dishes read off actual menu pages, written by
+ * `scripts/load-menus.mjs` from the reviewed JSON in `menus/`, which is the
+ * real menu pipeline and does not pass through this file at all.
+ *
+ * Because `replaceDishes` deleted a restaurant's dishes as a set before
+ * reinserting, running this script replaced real extracted menus with the
+ * placeholders — measured at 665 dishes lost across those 19 restaurants, e.g.
+ * restaurant 1 going from 42 real dishes to 6 invented ones. A fabricated menu
+ * on a live restaurant page is the precise failure PRODUCT.md is written
+ * against, and it arrived by running the documented refresh command.
+ *
+ * So dishes are opt-in now via `--with-dishes`, which still refuses to shrink a
+ * menu without `--force`. There is no good reason to pass either: to load menus,
+ * use `npm run menus:load`.
  *
  * Nothing here deletes a restaurant. A place that disappears from the seed
  * file stays in the table, because posts, aspect votes and saves reference it
@@ -28,8 +45,13 @@ import { restaurants } from "../src/data/restaurants.ts";
 import { dishesByRestaurant } from "../src/data/dishes.ts";
 import { regionForCoordinate, regionNames } from "../src/data/regions.ts";
 import { bandFor } from "../src/data/priceBands.ts";
+import { sourceKeyFor } from "../src/lib/sourceKey.ts";
 
 const DRY_RUN = process.argv.includes("--dry");
+/** Opt in to writing `src/data/dishes.ts` into the table — see the header. */
+const WITH_DISHES = process.argv.includes("--with-dishes");
+/** Allow `--with-dishes` to reduce a restaurant's dish count. */
+const FORCE = process.argv.includes("--force");
 
 if (!process.env.DATABASE_URL) {
   console.error("DATABASE_URL is not set. Pass --env-file=.env.local");
@@ -80,7 +102,7 @@ function validateZones(rows) {
 /* --- Writing ------------------------------------------------------------ */
 
 const RESTAURANT_COLUMNS = [
-  "id", "name", "cuisine", "neighborhood", "distance", "walk_time",
+  "id", "source_key", "name", "cuisine", "neighborhood", "distance", "walk_time",
   "closing_time", "lat", "lng", "status", "status_label", "rating",
   "review_count", "yelp_rating", "yelp_review_count", "google_rating",
   "google_review_count", "trending", "photo", "photo_alt", "yelp_url",
@@ -95,15 +117,21 @@ const RESTAURANT_COLUMNS = [
  */
 function restaurantValues(r, order) {
   return [
-    r.id, r.name, r.cuisine, r.neighborhood, r.distance, r.walkTime,
+    // Derived rather than read straight off the row, so a seed row that lost
+    // its `sourceKey` still lands in the table with the key its `yelpUrl`
+    // implies instead of a NULL that the next merge can't match on.
+    r.id, sourceKeyFor(r), r.name, r.cuisine, r.neighborhood, r.distance, r.walkTime,
     r.closingTime, r.lat, r.lng, r.status, r.statusLabel, r.rating,
     r.reviewCount, r.yelpRating ?? null, r.yelpReviewCount ?? null,
     r.googleRating ?? null, r.googleReviewCount ?? null, r.trending ?? false,
     r.photo ?? null, r.photoAlt ?? null, r.yelpUrl ?? null,
     order,
     // Banded here, from the same menu being written below, using the same
-    // function the app used to call per request. Null when there is no menu.
-    bandFor(dishesByRestaurant[r.id] ?? []),
+    // function `recompute-price-bands.mjs` calls. Cuisine is passed because the
+    // band estimates spend per person, and how many dishes that takes depends
+    // on the format — three tacos, one entrée. Null when there is no menu, too
+    // little of one, or a menu whose format is genuinely ambiguous.
+    bandFor(dishesByRestaurant[r.id] ?? [], r.cuisine),
   ];
 }
 
@@ -144,6 +172,38 @@ async function upsertRestaurants(rows) {
       values,
     );
   }
+}
+
+/**
+ * What `--with-dishes` would cost, per restaurant, before anything is deleted.
+ *
+ * Counts what is in the table against what the seed file would put there. A
+ * restaurant losing dishes is the signal that the table holds a real extracted
+ * menu and the file holds placeholders — the exact direction this must not
+ * silently go.
+ */
+async function dishDelta(byRestaurant) {
+  const ids = Object.keys(byRestaurant);
+  if (ids.length === 0) return { shrinking: [], lost: 0 };
+
+  const rows = await sql.query(
+    `SELECT restaurant_id, count(*)::int AS n FROM dishes
+      WHERE restaurant_id = ANY($1) GROUP BY restaurant_id`,
+    [ids],
+  );
+  const inTable = new Map(rows.map((r) => [r.restaurant_id, r.n]));
+
+  const shrinking = [];
+  let lost = 0;
+  for (const id of ids) {
+    const before = inTable.get(id) ?? 0;
+    const after = byRestaurant[id].length;
+    if (before > after) {
+      shrinking.push({ id, before, after });
+      lost += before - after;
+    }
+  }
+  return { shrinking, lost };
 }
 
 async function replaceDishes(byRestaurant) {
@@ -203,11 +263,39 @@ if (orphaned.length > 0) {
 const menuCount = Object.keys(dishesByRestaurant).length;
 const dishCount = Object.values(dishesByRestaurant).reduce((n, d) => n + d.length, 0);
 
+// Reported whether or not dishes are being written, so the number is visible
+// before someone reaches for --with-dishes rather than after.
+const { shrinking, lost } = WITH_DISHES
+  ? await dishDelta(dishesByRestaurant)
+  : { shrinking: [], lost: 0 };
+
+if (WITH_DISHES && lost > 0) {
+  console.error(
+    `\n--with-dishes would DELETE ${lost} dishes that src/data/dishes.ts does ` +
+      `not replace, across ${shrinking.length} restaurant(s):`,
+  );
+  for (const s of shrinking.slice(0, 10)) {
+    console.error(`  ${s.id}: ${s.before} in the table -> ${s.after} in the file`);
+  }
+  if (shrinking.length > 10) console.error(`  ...and ${shrinking.length - 10} more`);
+  console.error(
+    `\ndishes.ts holds placeholder menus by its own admission; the table holds ` +
+      `menus extracted from real pages. Losing the second to the first is not a ` +
+      `refresh. Use \`npm run menus:load\` instead, or --force if you are certain.`,
+  );
+  if (!FORCE) process.exit(1);
+  console.error("--force given; continuing anyway.\n");
+}
+
 if (DRY_RUN) {
   console.log(
     `Dry run — nothing written.\n` +
-      `Would upsert ${restaurants.length} restaurants and replace ` +
-      `${dishCount} dishes across ${menuCount} menus.`,
+      `Would upsert ${restaurants.length} restaurants.\n` +
+      (WITH_DISHES
+        ? `Would replace ${dishCount} dishes across ${menuCount} menus` +
+          (lost > 0 ? ` (net loss ${lost}).` : ".")
+        : `Dishes untouched (pass --with-dishes to write the ${dishCount} ` +
+          `placeholder dishes in dishes.ts — see the header first).`),
   );
   process.exit(0);
 }
@@ -215,8 +303,12 @@ if (DRY_RUN) {
 await upsertRestaurants(restaurants);
 console.log(`Upserted ${restaurants.length} restaurants.`);
 
-const written = await replaceDishes(dishesByRestaurant);
-console.log(`Wrote ${written} dishes across ${menuCount} menus.`);
+if (WITH_DISHES) {
+  const written = await replaceDishes(dishesByRestaurant);
+  console.log(`Wrote ${written} dishes across ${menuCount} menus.`);
+} else {
+  console.log(`Dishes untouched — menus come from \`npm run menus:load\`.`);
+}
 
 const [{ count: totalRestaurants }] = await sql`SELECT count(*)::int FROM restaurants`;
 const [{ count: totalDishes }] = await sql`SELECT count(*)::int FROM dishes`;

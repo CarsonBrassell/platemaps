@@ -50,6 +50,7 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 import { restaurants as existing } from "../src/data/restaurants.ts";
+import { sourceKeyFor, yelpAliasFrom, yelpSourceKey } from "../src/lib/sourceKey.ts";
 
 const DATA_PATH = new URL("../src/data/restaurants.ts", import.meta.url);
 const REGIONS_PATH = new URL("../src/data/regions.ts", import.meta.url);
@@ -219,19 +220,15 @@ function busyness(business, closedNow) {
 
 /* --- Identity ----------------------------------------------------------- */
 
-/**
- * Yelp's business alias, off the end of a business URL:
- * `https://www.yelp.com/biz/tacos-el-gordo-chula-vista` -> the last segment.
+/*
+ * The join key between a run and the file is `sourceKey` — `yelp:<alias>` for
+ * everything this script writes. It used to be the bare Yelp alias; it is
+ * namespaced now because restaurants no longer all come from Yelp. See
+ * src/lib/sourceKey.ts for why, and for the OSM and Google forms.
  *
- * This is the join key between a run and the file. It is stable across runs,
- * unlike array position, and it is already stored — `yelpUrl` has been written
- * on every row since photos were added, so no backfill is needed.
+ * `sourceKeyFor` falls back to deriving the key from `yelpUrl`, so this script
+ * still matches a row that predates the backfill rather than duplicating it.
  */
-function aliasFrom(yelpUrl) {
-  if (typeof yelpUrl !== "string") return null;
-  const match = yelpUrl.match(/\/biz\/([^/?#]+)/);
-  return match ? match[1] : null;
-}
 
 /** The next free id, as a decimal string, matching the existing convention. */
 function nextIdFrom(rows) {
@@ -246,14 +243,14 @@ function nextIdFrom(rows) {
 /* --- Search ------------------------------------------------------------- */
 
 const regions = await loadRegions();
-const byAlias = new Map();
+const bySourceKey = new Map();
 for (const r of existing) {
-  const alias = aliasFrom(r.yelpUrl);
-  if (alias) byAlias.set(alias, r);
+  const key = sourceKeyFor(r);
+  if (key) bySourceKey.set(key, r);
 }
 
 console.log(
-  `${existing.length} restaurants on file (${byAlias.size} with a Yelp alias to match on).`,
+  `${existing.length} restaurants on file (${bySourceKey.size} with a source key to match on).`,
 );
 if (!HOURS_ONLY) {
   console.log(
@@ -283,8 +280,10 @@ async function closingTimeFor(alias) {
 }
 
 if (HOURS_ONLY) {
+  // The Yelp alias specifically, not the source key — this calls Yelp's detail
+  // endpoint, so an `osm:` row has nothing to ask about and is skipped.
   const missing = existing.filter(
-    (r) => r.closingTime === "Hours vary" && aliasFrom(r.yelpUrl),
+    (r) => r.closingTime === "Hours vary" && yelpAliasFrom(r.yelpUrl),
   );
   console.log(
     `${missing.length} of ${existing.length} restaurants have no closing time. ` +
@@ -294,7 +293,7 @@ if (HOURS_ONLY) {
   const filled = new Map();
   for (const [i, r] of missing.entries()) {
     try {
-      const closingTime = await closingTimeFor(aliasFrom(r.yelpUrl));
+      const closingTime = await closingTimeFor(yelpAliasFrom(r.yelpUrl));
       if (closingTime) filled.set(r.id, closingTime);
       await sleep(150);
     } catch (err) {
@@ -442,8 +441,8 @@ if (!SKIP_HOURS) console.log("Fetching hours...");
 
 for (const [i, entry] of picked.entries()) {
   const { business } = entry;
-  const alias = aliasFrom(business.url);
-  const prior = alias ? byAlias.get(alias) : undefined;
+  const key = yelpSourceKey(business.url);
+  const prior = key ? bySourceKey.get(key) : undefined;
 
   let closingTime = prior?.closingTime ?? "Hours vary";
   let closedNow = false;
@@ -484,6 +483,9 @@ for (const [i, entry] of picked.entries()) {
   merged.set(id, {
     ...merged.get(id),
     id,
+    // Written explicitly rather than left to the fallback, so the file is the
+    // record of a restaurant's identity and not a thing re-derived on read.
+    sourceKey: key ?? prior?.sourceKey,
     name: business.name,
     cuisine: business.categories?.[0]?.title ?? "Restaurant",
     neighborhood: nearestNeighborhood(coords),
@@ -579,6 +581,9 @@ const body = rows
   .map((r) => {
     const lines = [
       `    id: ${JSON.stringify(r.id)},`,
+      // Identity, so it goes first and is never conditional — a row written
+      // without one is a row the next run will duplicate.
+      `    sourceKey: ${JSON.stringify(r.sourceKey ?? "")},`,
       `    name: ${JSON.stringify(r.name)},`,
       `    cuisine: ${JSON.stringify(r.cuisine)},`,
       `    neighborhood: ${JSON.stringify(r.neighborhood)},`,

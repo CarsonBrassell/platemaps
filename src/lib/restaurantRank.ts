@@ -28,7 +28,8 @@ export type Rankable = {
   name: string;
   cuisine: string;
   neighborhood: string;
-  rating: number;
+  /** Optional: an unrated restaurant still matches, it just cannot win a tie. */
+  rating?: number;
 };
 
 /**
@@ -54,8 +55,11 @@ export function rank<T extends Rankable>(query: string, candidates: readonly T[]
       else if (hood.startsWith(q)) score = 40;
       else if (hood.includes(q)) score = 30;
 
-      // Rating breaks ties so the better-reviewed place surfaces first.
-      return { r, score: score === 0 ? 0 : score + r.rating };
+      // Rating breaks ties so the better-reviewed place surfaces first. An
+      // unrated restaurant contributes nothing to the tiebreak rather than
+      // being ranked as if it scored zero stars — the match quality above is
+      // what actually put it in the list.
+      return { r, score: score === 0 ? 0 : score + (r.rating ?? 0) };
     })
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score)

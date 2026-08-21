@@ -193,6 +193,10 @@ const body = rows
   .map((r) => {
     const lines = [
       `    id: ${JSON.stringify(r.id)},`,
+      // Must be emitted here too. This script rewrites the whole array, so a
+      // field it doesn't know about is a field that silently disappears the
+      // first time anyone runs `npm run ratings:blend`.
+      `    sourceKey: ${JSON.stringify(r.sourceKey ?? "")},`,
       `    name: ${JSON.stringify(r.name)},`,
       `    cuisine: ${JSON.stringify(r.cuisine)},`,
       `    neighborhood: ${JSON.stringify(r.neighborhood)},`,

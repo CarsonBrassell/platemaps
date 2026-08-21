@@ -8,6 +8,7 @@ import { initials } from "@/lib/format";
 import { resizeImageToDataUrl } from "@/lib/image";
 import { PlateStarIcon } from "@/components/icons";
 import { ProfileActivity } from "@/components/ProfileActivity";
+import { DeleteAccountPanel } from "@/components/account/DeleteAccountPanel";
 import { SecurityPanel } from "@/components/account/SecurityPanel";
 import { POINT_RULES } from "@/lib/points";
 import { cuisines } from "@/data/restaurants";
@@ -452,7 +453,9 @@ function AccountOverview() {
           Log out
         </button>
 
-        <div className="mt-3">
+        {/* Dead last, below logging out, because logging out is what most
+            people reaching this end of the page actually want. */}
+        <div className="mt-8">
           <DeleteAccountPanel />
         </div>
       </div>
@@ -740,90 +743,6 @@ function BlockedUsersPanel() {
         ))}
       </ul>
     </div>
-  );
-}
-
-/**
- * Real, immediate deletion — see the comment on lib/db.ts's deleteUser for
- * exactly what goes with the account (everything, cascaded). Two guards
- * against a one-tap accident: the confirmation panel is collapsed behind a
- * click, and finishing it requires retyping the password — the same re-auth
- * `/api/auth/login` already checks, since a still-unlocked browser tab
- * shouldn't by itself be enough to destroy an account nobody meant to lose.
- */
-function DeleteAccountPanel() {
-  const { deleteAccount } = useAuth();
-  const [open, setOpen] = useState(false);
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-
-  async function handleDelete(e: FormEvent) {
-    e.preventDefault();
-    setSubmitting(true);
-    setError("");
-    const result = await deleteAccount(password);
-    setSubmitting(false);
-    // On success `deleteAccount` already cleared the account from context,
-    // which flips this page to its signed-out branch — nothing left to do.
-    if (result) setError(result);
-  }
-
-  if (!open) {
-    return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="min-h-11 rounded-full px-4 py-2 text-sm text-red-700 transition-colors hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-      >
-        Delete account
-      </button>
-    );
-  }
-
-  return (
-    <form onSubmit={handleDelete} className="rounded-xl bg-red-50 p-4">
-      <p className="mb-1 text-sm font-semibold text-red-900">Delete your account?</p>
-      <p className="mb-3 text-xs leading-relaxed text-red-800">
-        This permanently deletes your account, posts, comments, and everything else attached to
-        it. There is no undo.
-      </p>
-      <label htmlFor="delete-account-password" className="mb-1 block text-xs font-medium text-red-900">
-        Enter your password to confirm
-      </label>
-      <input
-        id="delete-account-password"
-        type="password"
-        value={password}
-        onChange={(e) => {
-          setPassword(e.target.value);
-          if (error) setError("");
-        }}
-        autoComplete="current-password"
-        className="mb-3 w-full rounded-lg bg-white px-3 py-2 text-sm outline-2 outline-offset-2 outline-transparent focus:outline-pm-orange"
-      />
-      {error && <p className="mb-3 text-xs text-red-700">{error}</p>}
-      <div className="flex gap-2">
-        <button
-          type="submit"
-          disabled={submitting || !password}
-          className="min-h-9 rounded-full bg-red-700 px-4 text-xs font-semibold text-white transition-colors hover:bg-red-800 disabled:opacity-50"
-        >
-          {submitting ? "Deleting…" : "Delete my account"}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setOpen(false);
-            setPassword("");
-            setError("");
-          }}
-          className="min-h-9 rounded-full px-4 text-xs font-medium text-red-800 hover:bg-red-100"
-        >
-          Cancel
-        </button>
-      </div>
-    </form>
   );
 }
 

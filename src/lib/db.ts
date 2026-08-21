@@ -5,8 +5,8 @@ import type { Dish } from "@/data/dishes";
 import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
-import { aspectAnchor } from "@/lib/ratingDisplay";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
+import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -365,14 +365,33 @@ export async function deleteSession(token: string): Promise<void> {
 }
 
 /**
- * A real delete, not a deactivation. Every table with a foreign key to
- * users(id) declares it ON DELETE CASCADE — posts, comments, votes, hearts,
- * saves, friendships, friend_requests, blocked_users, sessions, point_events,
- * all of it — except menu_lookups.requested_by, which is SET NULL so a
- * lookup record survives losing its attribution. That means this one
- * statement is the whole cleanup; there is nothing else to delete by hand.
- * The route calling this has already re-verified the password before
- * reaching here — this function trusts that it has.
+ * Erase an account and everything it produced. Irreversible — there is no soft
+ * delete, no tombstone row and no recovery window, because App Store guideline
+ * 5.1.1(v) asks for deletion rather than deactivation and this app has no email
+ * channel to run a "we're deleting you in 30 days" window through.
+ *
+ * **One statement is the whole implementation, and that is on purpose.** Every
+ * foreign key pointing at `users` in scripts/migrate.mjs is
+ * `ON DELETE CASCADE` — sessions, posts, comments, the six vote tables, saves,
+ * point_events, friend_requests, friendships, blocked_users — so the row going
+ * away takes the graph with it, in one transaction, with no ordering to get
+ * wrong. The single exception is `menu_lookups.requested_by`, which is
+ * `ON DELETE SET NULL`: a menu lookup is money already spent and its result is
+ * cached for everyone, so the cache survives and only the name of who asked is
+ * forgotten. That is the correct outcome, not an oversight.
+ *
+ * **If you add a table that references `users`, it must cascade**, or the day
+ * someone deletes their account this throws a foreign-key violation instead.
+ * That is the one way this function can rot, and nothing here can catch it —
+ * the constraint lives in the database, not in this file.
+ *
+ * Comments other people wrote on the deleted user's posts go too, since they
+ * cascade from `posts`. Points other people earned by upvoting those posts are
+ * kept: `point_events` rows belong to the earner, and only reference the post
+ * through an unconstrained `reason` string.
+ *
+ * The route calling this has already re-verified the password before reaching
+ * here — this function trusts that it has.
  */
 export async function deleteUser(userId: string): Promise<void> {
   await sql`DELETE FROM users WHERE id = ${userId}`;
@@ -673,9 +692,18 @@ export async function getPostById(id: string, viewerId: string | null = null): P
  * Moved server-side from the old client-side hotScore because it has to join
  * the vote and comment tables.
  *
- * The numerator is floored at zero: a heavily downvoted plate should sink to
- * "as if nobody voted", not sort *below* older neutral posts by going
- * negative and inverting the age decay.
+ * **A negative score sinks below everything, and the ranking is in two tiers
+ * because of the arithmetic.** The score used to be floored at zero, so a plate
+ * everybody downvoted ranked exactly like one nobody had voted on — past zero,
+ * downvotes stopped meaning anything. They mean something now.
+ *
+ * They can't mean it through the same division, though. `net / age^1.5` shrinks
+ * toward zero as a post gets older, which is what makes it decay while positive
+ * — and for a negative score, shrinking toward zero is a promotion. A month-old
+ * −9 would climb over a fresh −1. So the sort is: everything at zero or above
+ * first, on the original curve, untouched; then everything below zero, worst
+ * first, newest breaking ties. Age deliberately does not lift a negative post
+ * back up. Only votes can.
  *
  * This function — and only this function — is allowed to touch post_upvotes
  * and post_downvotes for ranking/counting purposes. It must never
@@ -687,6 +715,24 @@ export async function getPostById(id: string, viewerId: string | null = null): P
  * photos_public is false has its media stripped from the payload entirely,
  * so a private photo's URL never reaches a Discover response in the first
  * place.
+ *
+ * Only the last `FEED_WINDOW_DAYS` of posts are eligible — see lib/feedWindow.
+ * The cutoff is a filter on this read, never a delete: the post stays in the
+ * table and keeps counting toward the restaurant's rating forever.
+ *
+ * **`limit` is the binding constraint on this feed, not the window**, and the
+ * map is why that matters. `/feed`'s Map tab draws its bubbles from this same
+ * response, so this number is also how many comments the whole city gets to
+ * have. At 30 it ran out after 11 days — the cap was cutting the feed off well
+ * inside even the old fortnight, so widening FEED_WINDOW_DAYS to two months
+ * moved nothing, and searching the map for a cuisine found most of its matches
+ * silent. 120 is what makes the wider window reach anything.
+ *
+ * It costs the feed LIST the same rows, since `/feed` fetches once and renders
+ * both surfaces from it. That is the trade being made here: a longer scroll for
+ * a map that has something to say about more than thirty plates. If the list
+ * becomes the problem, the fix is to give the map its own read rather than to
+ * put this back — see the same note in lib/feedWindow.
  */
 /**
  * The two orderings, as literal SQL keyed by a validated union.
@@ -734,6 +780,10 @@ export async function getDiscoverFeed(
   // viewer (empty blockedIds) filters nothing — same shape as the `ANY(ids)`
   // pattern hydratePosts already uses for viewer-scoped lookups.
   const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
+  // The net score is computed in a subquery rather than inline in ORDER BY:
+  // Postgres only resolves a select alias in ORDER BY when it stands alone, and
+  // every use here is inside an expression, so naming it any other way would
+  // mean writing the same COALESCE pair out three more times.
   const rows = await sql`
     SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
            p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
@@ -753,12 +803,14 @@ export async function getDiscoverFeed(
       SELECT post_id, count(*) AS count FROM comments GROUP BY post_id
     ) cm ON cm.post_id = p.id
     WHERE p.user_id != ALL(${blockedIds})
+      AND p.created_at > now() - make_interval(days => ${FEED_WINDOW_DAYS})
     ORDER BY ${sql.unsafe(DISCOVER_ORDER[sort])}
     LIMIT ${limit}
   `;
   const posts = await hydratePosts(rows, viewerId, /* includeHearts */ false);
-  // hydratePosts recounts both directions itself; the ranking query's counts
-  // were only ever needed for ORDER BY, so they aren't selected at all.
+  // `net` is selected so ORDER BY can name it once instead of repeating the
+  // expression three times; hydratePosts recounts both directions itself and
+  // ignores the column.
   return posts.map((p) => ({
     ...p,
     media: p.photosPublic ? p.media : [],
@@ -770,6 +822,9 @@ export async function getDiscoverFeed(
  * appears. No ranking math, no engagement join — the spec is explicit that
  * this feed does not sort by engagement at all. Photos always show for a
  * friend's post regardless of photosPublic; that flag only gates Discover.
+ *
+ * Same `FEED_WINDOW_DAYS` cutoff as Discover, for the same reason and with the
+ * same guarantee: a friend's older post is out of the feed, not gone.
  */
 export async function getFriendsFeed(viewerId: string, limit = 60): Promise<Post[]> {
   // Belt-and-suspenders: blockUser() already unfriends both sides, so a
@@ -785,6 +840,7 @@ export async function getFriendsFeed(viewerId: string, limit = 60): Promise<Post
       WHERE f.user_a = ${viewerId} OR f.user_b = ${viewerId}
     )
     AND p.user_id != ALL(${blockedIds})
+    AND p.created_at > now() - make_interval(days => ${FEED_WINDOW_DAYS})
     ORDER BY p.created_at DESC
     LIMIT ${limit}
   `;
@@ -1814,12 +1870,14 @@ export async function getDishRatingsForRestaurant(
 
 export type RestaurantAspectTally = {
   /**
-   * The percent each category score moves away from: the restaurant's plate
-   * score, or its sourced rating rescaled while it has no plate score yet. See
-   * `aspectAnchor` in lib/ratingDisplay.ts — never null, so the category block
-   * always has something to render against.
+   * The restaurant's sourced rating on 1-5 — the base every category is spaced
+   * around (`aspectScores`), and the only outside number in that model.
+   *
+   * Not the plate score, on purpose: a category is a claim about the place, the
+   * plate score is a claim about its food, and anchoring categories to it made
+   * them move whenever the menu did.
    */
-  overall: number;
+  base: number;
   /** How many rated reviews the votes could have come from. */
   reviewCount: number;
   /** praised / faulted counts, keyed by aspect. Aspects nobody voted on are absent. */
@@ -1849,8 +1907,7 @@ const VOTE_SOURCE_POSTS = `p.rating IS NOT NULL`;
 export async function getRestaurantAspectTally(
   restaurantId: string,
 ): Promise<RestaurantAspectTally> {
-  const [score, voteRows, sourceRows, blendRows] = await Promise.all([
-    getRestaurantPlateScore(restaurantId),
+  const [voteRows, sourceRows, baseRows] = await Promise.all([
     sql`
       SELECT v.aspect,
              count(*) FILTER (WHERE v.sentiment = 'praise')::int AS praised,
@@ -1882,7 +1939,7 @@ export async function getRestaurantAspectTally(
   }
 
   return {
-    overall: aspectAnchor(score.percent, Number(blendRows[0]?.rating ?? 0)),
+    base: Number(baseRows[0]?.rating ?? 0),
     reviewCount: sourceRows[0]?.n ?? 0,
     votes,
   };
@@ -1901,11 +1958,10 @@ export async function getRestaurantAspectTally(
  * and "no match" to look the same from the outside, and aspectScores already
  * reports a 0-review tally as an honest null.
  */
-export async function getAllRestaurantAspectTallies(
-  scores?: Record<string, PlateScore>,
-): Promise<Record<string, RestaurantAspectTally>> {
-  const [plateScores, voteRows, sourceRows] = await Promise.all([
-    scores ? Promise.resolve(scores) : getAllRestaurantPlateScores(),
+export async function getAllRestaurantAspectTallies(): Promise<
+  Record<string, RestaurantAspectTally>
+> {
+  const [voteRows, sourceRows] = await Promise.all([
     sql`
       SELECT p.restaurant_id,
              v.aspect,
@@ -1917,9 +1973,9 @@ export async function getAllRestaurantAspectTallies(
         AND p.restaurant_id IS NOT NULL
       GROUP BY p.restaurant_id, v.aspect
     `,
-    // Rated reviews per restaurant joined to the sourced rating, so a
-    // restaurant with votes but no plate score still gets an anchor. One query
-    // rather than a second pass over `restaurants`.
+    // The sourced rating plus how many rated reviews the votes could have come
+    // from. Every restaurant is listed, including those with none, so a tally
+    // exists for any restaurant a vote row might point at.
     sql`
       SELECT r.id, r.rating, count(p.id)::int AS review_count
       FROM restaurants r
@@ -1934,7 +1990,7 @@ export async function getAllRestaurantAspectTallies(
   for (const row of sourceRows) {
     const id = row.id as string;
     tallies[id] = {
-      overall: aspectAnchor(plateScores[id]?.percent ?? null, Number(row.rating ?? 0)),
+      base: Number(row.rating ?? 0),
       reviewCount: row.review_count as number,
       votes: {},
     };
@@ -1998,6 +2054,7 @@ export async function getPublicProfile(userId: string): Promise<PublicProfile | 
 function rowToRestaurant(row: any): Restaurant {
   return {
     id: row.id,
+    sourceKey: row.source_key ?? undefined,
     name: row.name,
     cuisine: row.cuisine,
     neighborhood: row.neighborhood,
@@ -2057,24 +2114,20 @@ export async function getRestaurants(): Promise<RestaurantView[]> {
   // put "10" ahead of "2" and reshuffle the grid. See the sort_order note in
   // scripts/migrate.mjs.
   /*
-   * `WHERE listed` is the readiness gate, and this is the only place it is
-   * enforced — every discovery surface (grid, search, map, filters, the
-   * restaurants API) reads through here, so one predicate covers all of them.
+   * `WHERE listed` is the publication gate: a row is visible only once it can
+   * say something about itself. It is enforced here and in
+   * `getRestaurantFacets`, which together cover the grid, search, the map, the
+   * filter menus and the restaurants API.
    *
-   * It is not a nicety. A restaurant imported from OpenStreetMap has a name
-   * and coordinates and nothing else, and `RestaurantView.rating` is typed
-   * `number`. Seven components call `.toFixed(1)` on it, so a single unrated
-   * row in the result set threw `Cannot read properties of null` out of
-   * `RestaurantSearch` and took down the whole page for any query that
-   * happened to match its name — a failure with a far wider blast radius than
-   * the one broken listing that caused it.
+   * It is not a nicety. A restaurant imported from OpenStreetMap has a name and
+   * coordinates and nothing else, and a single unrated row in the result set
+   * threw `Cannot read properties of null` out of `RestaurantSearch` and took
+   * down the whole page for any query that matched its name — a far wider blast
+   * radius than the one broken listing that caused it.
    *
-   * Holding those rows back rather than teaching the UI to render an absence
-   * is deliberate: a card with no photo, no rating and no menu is not a
-   * degraded listing, it is an empty one, and shipping it would make the grid
-   * worse in exchange for a bigger number on the page. `listed` is recomputed
-   * from the row's own completeness by scripts/publish-check.mjs, so it says
-   * what is true rather than what somebody set once.
+   * Holding those rows back rather than teaching the UI to render an absence is
+   * deliberate: a card with no photo, no rating and no menu is not a degraded
+   * listing, it is an empty one. Never drop this predicate to "show more".
    */
   const restaurantRows = await sql`
     SELECT id, name, cuisine, neighborhood, distance, hours,

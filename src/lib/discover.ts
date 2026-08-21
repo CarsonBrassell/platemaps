@@ -51,6 +51,7 @@ import {
   type FacetCounts,
   type FacetOption,
   type FilterContext,
+  type StrongAspect,
 } from "@/lib/discoverFilters";
 import type { Coords } from "@/lib/geo";
 import type { RestaurantView } from "@/data/restaurants";
@@ -79,7 +80,7 @@ const MAX_SHOWN = 240;
  * needs one number, so one number is what it is sent.
  */
 export type DiscoverResult = RestaurantView & {
-  aspectScore?: number;
+  aspectScore?: StrongAspect;
   /**
    * The restaurant's plate score, attached for the same reason as above: the
    * card prints it, and the browser has no way to derive it. Always present, and
@@ -144,14 +145,11 @@ function loadCorpus(): Promise<Corpus> {
   if (cached && now - cached.at < CORPUS_TTL_MS) return cached.value;
 
   const value = (async (): Promise<Corpus> => {
-    // Plate scores are read once and handed to the tallies, which anchor their
-    // category scores to them — otherwise the same grouped aggregate would run
-    // twice per corpus load for one number.
-    const [restaurants, plates] = await Promise.all([
+    const [restaurants, plates, tallies] = await Promise.all([
       getRestaurants(),
       getAllRestaurantPlateScores(),
+      getAllRestaurantAspectTallies(),
     ]);
-    const tallies = await getAllRestaurantAspectTallies(plates);
     return { restaurants, aspects: strongAspectsFrom(tallies), plates };
   })();
 

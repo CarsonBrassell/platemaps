@@ -16,22 +16,43 @@ import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 type MapSearchRow = RestaurantView & { plateScore?: PlateScore };
 
 /**
- * Find a restaurant and fly the camera to it.
+ * What the field asks the map to light up: the term, and every restaurant the
+ * server matched on it — not the six the dropdown shows. `null` means no search
+ * is running and the map should go back to choosing bubbles for itself.
  *
- * ## It moves the camera; it never touches the corpus
+ * Ids rather than rows, because the map already holds the corpus and only needs
+ * to know which of it the reader is asking about.
+ */
+export type MapMatches = { query: string; ids: string[] };
+
+/**
+ * Find restaurants, light them up on the map, and fly the camera to them.
  *
- * The obvious implementation — filter the map down to what matches — is the
- * one thing this must not do. RestaurantMap refits the camera whenever the set
- * of restaurants changes (`fitKey`, guarded by `fittedToRef`), so narrowing the
- * list would snap a reader who had zoomed into a block back out to the county
- * frame on every keystroke. The map keeps showing the whole city; searching
- * only decides where the camera is pointed.
+ * ## It moves the camera, and it decides which bubbles get drawn
  *
- * For the same reason the query lives here and not in RestaurantMap: the marker
- * effect there rebuilds every bubble it renders when its deps change, so a
- * `query` anywhere in that dependency list would tear down and re-place the
- * whole map's worth of bubbles once per typed character. This component reaches
- * the map through the ref instead, the way the vote callbacks already do.
+ * The corpus itself is still never narrowed. RestaurantMap refits the camera
+ * whenever the set of restaurants changes (`fitKey`, guarded by `fittedToRef`),
+ * so handing it a shorter `restaurants` array would snap a reader who had
+ * zoomed into a block back out to the county frame on every keystroke — and the
+ * embers of everywhere else are the map's picture of the city, which a search
+ * has no business deleting. Every restaurant stays on the map and stays lit.
+ *
+ * What a search does take over is the bubble budget. The map normally rations
+ * bubbles by zoom (`bubbleCoverageForZoom`, `bubbleLimitForZoom`) and then
+ * fights over the leftovers with a collision pass, which is right when nobody
+ * has asked for anything in particular and wrong the moment somebody has: on
+ * the old behaviour, typing "mexican" left the map exactly as it was and the
+ * reader had to hunt for the answer among bubbles about everywhere else. So the
+ * matches are handed up through `onMatchesChange`, and while a search is live
+ * they get the whole budget — every match signs its name, every comment it has
+ * is a candidate, and nothing that doesn't match takes a slot.
+ *
+ * The query still lives here rather than in RestaurantMap, and for the original
+ * reason: the marker effect there rebuilds every bubble it renders when its
+ * deps change, so a `query` in that dependency list would tear down and
+ * re-place the whole map's worth of bubbles once per typed character. The
+ * matches reach it through a ref and a re-render call, the way the vote
+ * callbacks already do — see `onMatchesChange`'s note in RestaurantMap.
  *
  * ## Two search fields, and they answer different questions
  *
@@ -122,7 +143,23 @@ const FIELD_HALO = "[text-shadow:0_1px_7px_rgba(0,0,0,0.95),0_0_3px_rgba(0,0,0,0
 /** The same halo for stroked SVG, which text-shadow cannot reach. */
 const GLYPH_HALO = "[filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.95))]";
 
-export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }) {
+export function MapSearch({
+  mapRef,
+  onMatchesChange,
+}: {
+  mapRef: RefObject<MapLibreMap | null>;
+  /**
+   * Which restaurants the map should give its bubbles to, or `null` for none in
+   * particular. Called on every settled query — including the one that empties
+   * the field, which is what puts the map back the way it was.
+   *
+   * **Must be stable across renders.** It sits in the debounce effect's
+   * dependency list, so a fresh identity each render would restart the timer on
+   * every keystroke's re-render and the request would never fire. RestaurantMap
+   * supplies a `useCallback` with no deps.
+   */
+  onMatchesChange?: (matches: MapMatches | null) => void;
+}) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(NONE);
@@ -140,9 +177,14 @@ export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> })
    */
   useEffect(() => {
     const q = query.trim();
-    // Nothing to clear: `rank` returns [] for an empty query, so whatever the
-    // last search left in state is already unreachable.
-    if (!q) return;
+    if (!q) {
+      /* The dropdown needs nothing done here — `rank` returns [] for an empty
+         query, so whatever the last search left in `candidates` is already
+         unreachable. The MAP does: its bubbles are still lit for a term that no
+         longer exists, and an empty field has to give them back. */
+      onMatchesChange?.(null);
+      return;
+    }
 
     let stale = false;
     const timer = setTimeout(async () => {
@@ -150,10 +192,18 @@ export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> })
         const res = await fetch(`/api/restaurants?q=${encodeURIComponent(q)}`);
         if (!res.ok) return;
         const data: { restaurants: MapSearchRow[] } = await res.json();
-        if (!stale) setCandidates(data.restaurants);
+        if (stale) return;
+        setCandidates(data.restaurants);
+        /* Everything that matched, not the six `rank` keeps. The dropdown is a
+           shortcut to one place and six is the right length for that; the map
+           is being asked about a whole cuisine, and a "show me the Mexican
+           places" that lit six of them would be a worse answer than the one
+           the reader already had. */
+        onMatchesChange?.({ query: q, ids: data.restaurants.map((r) => r.id) });
       } catch {
         // A dropped search request leaves the previous matches on screen,
-        // which is a better answer than emptying the list.
+        // which is a better answer than emptying the list — and, now, than
+        // dropping the map back to its unsearched state mid-typing.
       }
     }, 150);
 
@@ -161,9 +211,33 @@ export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> })
       stale = true;
       clearTimeout(timer);
     };
-  }, [query]);
+  }, [query, onMatchesChange]);
 
   const results = useMemo(() => rank(query, candidates), [query, candidates]);
+
+  /**
+   * Everything the CURRENT term matches, unranked and uncapped — what "show me
+   * all of these" acts on, and what the footer counts.
+   *
+   * `candidates` is the last *settled* query's response, so between a keystroke
+   * and the debounce firing it is one or two letters behind. Re-applying the
+   * predicate here (the same three fields `/api/restaurants?q=` narrows on)
+   * keeps that stale set from being framed as if it answered the term on
+   * screen: the in-flight response only ever widens this list back out, it
+   * never contradicts it. It is also what makes the guard honest — a term with
+   * no matches leaves this empty, so Enter does nothing rather than flying to
+   * the previous search's results.
+   */
+  const matches = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return candidates.filter(
+      (r) =>
+        r.name.toLowerCase().includes(q) ||
+        r.cuisine.toLowerCase().includes(q) ||
+        r.neighborhood.toLowerCase().includes(q),
+    );
+  }, [query, candidates]);
 
   useEffect(() => {
     if (!open) return;
@@ -176,37 +250,87 @@ export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> })
 
   const showing = open && query.trim().length > 0;
 
+  /* Both camera moves below read this. MapLibre would also short-circuit their
+     animation under the query on its own (it honours it unless a move is marked
+     `essential`), but the branches are written out because relying on that would
+     leave the file with no visible sign that reduced motion was considered — and
+     `essential` is one careless prop away from silently overriding it. Same
+     query the opening dive in RestaurantMap reads. */
+  function reduceMotion() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  /** Shared by both: close the list, and hand the keyboard back to the map so
+   *  arrow keys pan from here — what someone who has just arrived somewhere
+   *  wants next. The text stays, so a second search is an edit of the first
+   *  rather than a retype, and the matches stay lit while it does. */
+  function commit() {
+    setOpen(false);
+    setActive(NONE);
+    inputRef.current?.blur();
+  }
+
   function goTo(restaurant: MapSearchRow) {
     const map = mapRef.current;
     if (!map) return;
-    setOpen(false);
-    setActive(NONE);
-    // Hands the keyboard back to the map: arrow keys pan from here, which is
-    // what someone who has just arrived somewhere wants next. The text stays,
-    // so a second search is an edit of the first rather than a retype.
-    inputRef.current?.blur();
+    commit();
 
     const camera = { center: [restaurant.lng, restaurant.lat] as [number, number], zoom: RESULT_ZOOM };
-    /* MapLibre would also short-circuit the animation under this media query
-       on its own (it honours it unless a move is marked `essential`), but the
-       branch is written out because relying on that would leave the file with
-       no visible sign that reduced motion was considered — and `essential` is
-       one careless prop away from silently overriding it. Same query the
-       opening dive in RestaurantMap reads. */
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) map.jumpTo(camera);
+    if (reduceMotion()) map.jumpTo(camera);
     else map.flyTo({ ...camera, duration: FLIGHT_MS });
+  }
+
+  /**
+   * Frame every match at once — the broad answer, for a term like "mexican"
+   * that names a kind of place rather than a place.
+   *
+   * The bubbles are already lit by the time this runs; this is only the camera
+   * catching up to them, because a reader zoomed into one block cannot see an
+   * answer spread across the county. A single match degrades to exactly what
+   * `goTo` would have done: `maxZoom` is RESULT_ZOOM, so a degenerate one-point
+   * bounds arrives at the same frame.
+   *
+   * The padding is lopsided on purpose. A bubble stack and its neon sign are
+   * drawn ABOVE the ember they belong to, tall enough to run off the top of the
+   * frame while the dot itself sits comfortably inside it, so the top edge is
+   * given roughly a stack's worth of room and the other three the map's usual
+   * inset.
+   */
+  function showAll(rows: MapSearchRow[]) {
+    const map = mapRef.current;
+    if (!map || rows.length === 0) return;
+    commit();
+
+    const lngs = rows.map((r) => r.lng);
+    const lats = rows.map((r) => r.lat);
+    const bounds: [number, number, number, number] = [
+      Math.min(...lngs),
+      Math.min(...lats),
+      Math.max(...lngs),
+      Math.max(...lats),
+    ];
+    map.fitBounds(bounds, {
+      padding: { top: 130, bottom: 28, left: 28, right: 28 },
+      maxZoom: RESULT_ZOOM,
+      ...(reduceMotion() ? { animate: false } : { duration: FLIGHT_MS }),
+    });
   }
 
   function onKeyDown(e: React.KeyboardEvent) {
     if (e.key === "Enter") {
       e.preventDefault();
-      /* Unlike the header field, Enter on nothing still picks a restaurant —
-         the top one. There is no second, broader answer to reserve it for:
-         this field cannot send the term anywhere, so refusing to act would
-         just be a dead key. */
+      /* There IS a second, broader answer now, and Enter is where it goes.
+         Arrowing to a row and pressing Enter means that place, so it flies
+         there. Enter on nothing means the term itself — every match framed at
+         once — which is what the field is for once a term can name a cuisine
+         rather than a restaurant. It used to pick the top result in that case,
+         on the reasoning that there was nothing broader to reserve the key for;
+         with a single match the two are the same move anyway (see showAll), so
+         nothing about typing a restaurant's name and hitting Enter changed. */
       if (showing) {
-        const chosen = results[active] ?? results[0];
+        const chosen = active === NONE ? null : results[active];
         if (chosen) goTo(chosen);
+        else showAll(matches);
       }
       return;
     }
@@ -327,11 +451,10 @@ export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> })
       </div>
 
       {showing && (
-        <ul
-          id="map-search-results"
-          role="listbox"
-          className={`absolute right-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl py-1.5 ${CHROME_FILL} ${CHROME_EDGE}`}
+        <div
+          className={`absolute right-0 top-full z-10 mt-2 w-full overflow-hidden rounded-2xl ${CHROME_FILL} ${CHROME_EDGE}`}
         >
+        <ul id="map-search-results" role="listbox" className="py-1.5">
           {results.length === 0 ? (
             <li className={`px-4 pb-1 pt-3 text-sm ${CHROME_MUTED}`}>
               No restaurant named &ldquo;{query.trim()}&rdquo;
@@ -380,6 +503,33 @@ export function MapSearch({ mapRef }: { mapRef: RefObject<MapLibreMap | null> })
             ))
           )}
         </ul>
+
+        {/* The broad answer, given a door of its own.
+
+            Enter already does this, but a shortcut nobody can see is not a
+            feature — and this is the half of the field that is new, so it is the
+            half that has to announce itself. It sits OUTSIDE the listbox rather
+            than as a seventh row: it is not one of the options, arrowing must
+            not land on it, and a `role="listbox"` whose children aren't all
+            options is a lie told to a screen reader. Tab reaches it; the divider
+            above says it belongs to the panel without being of the list.
+
+            Only worth offering for a term that names more than one place —
+            "show all 1 on the map" is the row above it with extra steps. */}
+        {matches.length > 1 && (
+          <button
+            type="button"
+            onClick={() => showAll(matches)}
+            className={`flex min-h-11 w-full items-center gap-2 border-t border-[rgba(255,255,255,0.1)] px-3 text-left font-mono text-[11px] uppercase tracking-[0.1em] transition-colors hover:text-[#ffb07a] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-pm-orange ${CHROME_MUTED}`}
+          >
+            {/* The count is a machine value, so it keeps the accent and the
+                tabular figures the dropdown's other numbers wear. */}
+            <span>Show all</span>
+            <span className="font-semibold tabular-nums text-[#ffb07a]">{matches.length}</span>
+            <span>on the map</span>
+          </button>
+        )}
+        </div>
       )}
     </div>
   );

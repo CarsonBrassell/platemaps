@@ -1,5 +1,3 @@
-import { resizeImageToDataUrl } from "@/lib/image";
-
 export const MAX_PHOTOS = 4;
 export const PHOTO_SIZE = 1080;
 export const PHOTO_QUALITY = 0.72;
@@ -13,38 +11,15 @@ export function photoFromDataUrl(url: string): PhotoDraft {
   return { id: `p${nextId++}`, url };
 }
 
-/**
- * Resizes chosen files down to what the post API will accept.
+/*
+ * `resizePhotos` used to live here, turning chosen files into drafts.
  *
- * Three places take photos in — the camera screen's library button, the tray on
- * the detail step, and the hand-off from the feed — and all three land here, so
- * the size, quality and per-post ceiling are decided once.
+ * It went with the last of the library pickers: every photo on a post is now
+ * taken by `CameraCapture`, which draws straight from a video frame to a canvas
+ * at these three numbers and never touches a File. The size, quality and
+ * per-post ceiling stay here because they are still the answer to "what will
+ * the post API accept", and the day another way in exists it should read them
+ * rather than pick its own.
  *
- * Errors are returned rather than thrown: one unreadable file among four should
- * cost that file, not the whole selection.
+ * `lib/image.ts` still has the File-to-data-URL resize the avatar upload uses.
  */
-export async function resizePhotos(
-  files: File[],
-  room: number,
-): Promise<{ photos: PhotoDraft[]; error: string | null }> {
-  if (room <= 0) {
-    return { photos: [], error: `Up to ${MAX_PHOTOS} photos per post.` };
-  }
-
-  let error = files.length > room ? `Only the first ${room} fit — ${MAX_PHOTOS} photos per post.` : null;
-  const photos: PhotoDraft[] = [];
-
-  for (const file of files.slice(0, room)) {
-    if (!file.type.startsWith("image/")) {
-      error = "Only image files can be added right now.";
-      continue;
-    }
-    try {
-      photos.push(photoFromDataUrl(await resizeImageToDataUrl(file, PHOTO_SIZE, PHOTO_QUALITY)));
-    } catch {
-      error = `Couldn't process ${file.name}. Try a different photo.`;
-    }
-  }
-
-  return { photos, error };
-}

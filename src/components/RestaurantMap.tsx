@@ -1,6 +1,13 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useRef, type ComponentType, type RefObject } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  type ComponentType,
+  type RefObject,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
   Map as MapLibreMap,
@@ -17,7 +24,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 // imports are copied into /public (from node_modules/maplibre-gl/dist — keep
 // them in step when upgrading maplibre-gl) and served as plain static files.
 setWorkerUrl("/maplibre-gl-worker.mjs");
-import { MapSearch } from "@/components/MapSearch";
+import { MapSearch, type MapMatches } from "@/components/MapSearch";
 import { NEO_NOIR_STYLE } from "@/lib/mapStyle";
 import { openStateFor } from "@/lib/openState";
 import { relativeTime } from "@/lib/format";
@@ -93,6 +100,26 @@ function bubbleLimitForZoom(zoom: number) {
 }
 
 /**
+ * How deep a matched restaurant's stack may go while a search is running, at
+ * any zoom.
+ *
+ * Both rations above exist to keep an unasked question from covering the city
+ * in text. A search is the asked question, so they come off: "show me the
+ * Mexican places" means every one of them, and "show me what people said" means
+ * every comment, not the one that happens to be hottest at this zoom. Coverage
+ * goes to 1 for the same reason, and only matches are candidates at all — which
+ * is what pays for this, since a search is normally asking about a few dozen
+ * restaurants where the unsearched map is rationing across seven hundred.
+ *
+ * It is a ceiling rather than `Infinity` because the collision pass is not the
+ * only cost: every candidate above it is a rect tested against every rect
+ * already down, and a restaurant with sixty comments would spend that on cards
+ * stacked a screen and a half above their own ember, where nothing is legible
+ * and nothing is reachable. Eight is about a phone's worth of height.
+ */
+const SEARCH_BUBBLE_LIMIT = 8;
+
+/**
  * Popularity halves every four days. So a comment posted today outranks one
  * from four days ago with twice its votes, and one from eight days ago with
  * four times them — recent enthusiasm surfaces without old hits being erased.
@@ -111,14 +138,54 @@ const COMMENT_HALF_LIFE_HOURS = 96;
  *
  * The +1 keeps age meaningful at the bottom of the scale: without it every
  * zero-vote comment ties at zero and the newest of them never wins.
+ *
+ * **A downvoted bubble sinks, and it does it in a second tier**, matching
+ * getDiscoverFeed exactly — the map and the feed have to agree about what a
+ * negative plate is worth, or the same post is buried in one and prominent in
+ * the other. The decay here is multiplicative, so the trap is the same as the
+ * feed's division: `negative * 0.5^age` rises toward zero as a post ages, which
+ * would let an old −9 outrank a fresh −1. Underwater comments therefore return
+ * their raw score, worst first, with no age term at all — and since every
+ * non-negative heat is strictly positive (the +1 guarantees it), any negative
+ * automatically sorts below every bubble that isn't underwater.
+ *
+ * This is what decides which single bubble a restaurant shows when only one
+ * fits: the hated take is now the last one standing, not the first.
  */
 function commentHeat(comment: MapComment, now: number) {
-  const popularity = Math.max(0, comment.score ?? comment.upvotes ?? 0);
+  const popularity = comment.score ?? comment.upvotes ?? 0;
+  if (popularity < 0) return popularity;
   if (!comment.createdAt) return popularity;
   const posted = Date.parse(comment.createdAt);
   if (Number.isNaN(posted)) return popularity;
   const ageHours = Math.max(0, (now - posted) / 3_600_000);
   return (popularity + 1) * Math.pow(0.5, ageHours / COMMENT_HALF_LIFE_HOURS);
+}
+
+/**
+ * Real posts outrank seeded chatter, before heat is even consulted.
+ *
+ * Heat alone couldn't decide this fairly, because the two aren't measuring the
+ * same thing. A real post's count is votes people actually cast — 0 or 1 on
+ * most of them today. A seeded bubble's is `2 + (seed % 23)` from
+ * data/mapComments.ts: a number invented to make an empty map look busy. There
+ * are 65 of them and they land between 2 and 24, so filler took every bubble
+ * slot in San Diego at every zoom, and the vote chips — which only render on a
+ * bubble with a post behind it — were unreachable. The downvote button on the
+ * map wasn't broken; nothing that could be clicked was ever on screen.
+ *
+ * So filler is what it was always meant to be: what fills a gap when nobody has
+ * said anything real about a place. Within each tier, `commentHeat` still
+ * decides, so the most-upvoted real post is still the one that shows.
+ */
+function isRealPost(comment: MapComment) {
+  return Boolean(comment.postId);
+}
+
+/** Sort comparator for bubbles: real before seeded, then hottest first. */
+function compareBubbles(a: MapComment, b: MapComment, now: number) {
+  if (isRealPost(a) !== isRealPost(b)) return isRealPost(a) ? -1 : 1;
+  return commentHeat(b, now) - commentHeat(a, now);
 }
 
 // Deterministic pseudo-random spread for restaurants tied at the same
@@ -192,6 +259,11 @@ const LEADER_PIN_CLEARANCE = 4;
  *  stays vertical above this, so the leader reads as a thread that nods toward
  *  its ember at the end rather than a diagonal slash across the map. */
 const LEADER_ELBOW = 16;
+/** Slack around the leader's svg root, which spans from just left of the pin to
+ *  just right of the run. Both leaders — the card's and the bare sign's — need
+ *  it: the path reaches left of its own box's edge, and an svg root that
+ *  clipped would eat the elbow. */
+const LEADER_PAD = 4;
 /**
  * How far short of the pin's centre the leader stops, in px.
  *
@@ -367,9 +439,20 @@ function scoreColorFor(score: string) {
  */
 function estimateMetaWidth(comment: MapComment) {
   const items: number[] = [];
-  // Arrow + count + arrow — the full vote pair, generous for the friends
-  // bubbles that only draw a heart.
-  if (comment.upvotes !== undefined) items.push(26 + compactCount(comment.upvotes).length * 6);
+  /* The handle, which this used to leave out entirely — and it only opens the
+     row on a real post. Seeded chatter is anonymous, so every bubble the map
+     used to place happened to be one this priced correctly, and the miss stayed
+     invisible until real posts started winning bubbles. On those the row ran
+     ~50px past the box and the second arrow and the reply count hung out over
+     the map. `@` plus one 6px mono advance per character, uppercase being the
+     same width in a monospace face. */
+  if (comment.author) items.push((comment.author.length + 1) * 6);
+  /* Arrow + count + arrow — the full vote pair, generous for the friends
+     bubbles that only draw a heart. 34, not 26: each arrow occupies 13px of
+     layout (a 25px padded hit box pulled back by its own -6px margins) and the
+     flex `gap: 4px` sits on both sides of the count. 26 priced the glyphs and
+     forgot the gaps. */
+  if (comment.upvotes !== undefined) items.push(34 + compactCount(comment.upvotes).length * 6);
   if (comment.commentCount !== undefined) items.push(13 + String(comment.commentCount).length * 6);
   if (comment.createdAt) items.push(compactTime(comment.createdAt).length * 6);
   /* 12 per boundary, not 8: the row separates its parts with a mono middot
@@ -531,6 +614,86 @@ function estimateSignWidth(restaurant: MapRestaurant) {
   );
 }
 
+/* How far above the ember a bare sign floats, and how far right — the same +12
+   column the bubbles hang in, so a searched map's signs line up with the
+   bubbled ones rather than sitting a few px off them.
+
+   Far shorter than BUBBLE_TOP_OFFSET's 72, since there is no card to clear,
+   but not as short as it could be: the sign draws the same leader down to its
+   ember that a bubble does, and the thread needs enough drop to read as a
+   thread. Below about forty the vertical run vanishes into LEADER_ELBOW's
+   diagonal and what is left is a hook, not a line. */
+const SIGN_ONLY_OFFSET_X = 12;
+const SIGN_ONLY_OFFSET_Y = 44;
+
+/**
+ * A matched restaurant with nothing to say, signing its name anyway.
+ *
+ * Signs normally crown a stack, which means a place nobody has commented on is
+ * nameless on the map — right when the map is choosing what to show for itself,
+ * and wrong the moment someone asks for "every Mexican place". Silence is an
+ * answer to that question: the reader asked where they are, not what is being
+ * said about them, and a spot that dropped out of the reply because no one has
+ * posted yet reads as the search having missed it.
+ *
+ * The sign hangs off a zero-height anchor rather than a card. `.map-neon-sign`
+ * is positioned `bottom: calc(100% + 2px)` against its parent, so a parent with
+ * no height puts it 2px above the anchor point — the same relationship it has
+ * to a bubble's top edge, with the bubble taken away.
+ *
+ * It carries the same leader down to its ember that a bubble does, and for the
+ * same reason: a name floating over a field of identical lights does not say
+ * WHICH light it names, and on a searched map — where the whole point is
+ * reading a label back to its dot — guessing by proximity fails the moment two
+ * restaurants sit a block apart. The geometry below is bubbleElement's, with
+ * the box's height taken out of it; see the long derivation there. The one
+ * substantive difference is where the run starts: a card's leader begins at
+ * BUBBLE_RADIUS, the first point along its bottom edge that is actually
+ * straight, and a bare sign has no corner to clear — but the same 8px happens
+ * to land under the sign's opening characters (it sets at `left: 4px`), so the
+ * thread hangs off the name rather than off empty map beside it.
+ */
+function signOnlyElement(restaurant: MapRestaurant, zoom: number) {
+  /* The wrapper is translated to (X, -Y) from the marker point, so in its own
+     coordinates the sign's baseline anchor is (0, 0) and the pin's centre is
+     (-X, Y). Every number here comes off those two facts. */
+  const leaderLeft = -SIGN_ONLY_OFFSET_X - LEADER_PAD;
+  const leaderWidth = LEADER_X + LEADER_PAD - leaderLeft;
+  const runX = LEADER_X - leaderLeft + 0.5;
+  const pinX = -SIGN_ONLY_OFFSET_X - leaderLeft;
+  const pinY = SIGN_ONLY_OFFSET_Y;
+  const elbowY = Math.max(0, pinY - LEADER_ELBOW);
+  const stop = emberClearance(zoom);
+  const dx = pinX - runX;
+  const dy = pinY - elbowY;
+  const reach = Math.hypot(dx, dy) || 1;
+  const endX = (pinX - (dx / reach) * stop).toFixed(1);
+  const endY = (pinY - (dy / reach) * stop).toFixed(1);
+
+  const el = document.createElement("div");
+  /* Deliberately NOT `.map-bubble` — that class carries the hover rules that
+     expand a card's prose, and there is no card here for them to act on. */
+  el.className = "map-sign-only";
+  el.innerHTML = `<div style="
+      position: relative;
+      width: 0;
+      height: 0;
+      transform: translate(${SIGN_ONLY_OFFSET_X}px, -${SIGN_ONLY_OFFSET_Y}px);
+    ">
+      ${signHtml(restaurant)}
+      <svg class="map-leader" width="${leaderWidth}" height="${pinY + LEADER_PAD}" style="
+        position: absolute; left: ${leaderLeft}px; top: 0;
+        overflow: visible; pointer-events: none;
+      " aria-hidden="true">
+        <path d="M${runX},0 L${runX},${elbowY} L${endX},${endY}"
+          fill="none" stroke="${LEADER_STROKE}" stroke-width="1"
+          stroke-linecap="round" stroke-linejoin="round"
+        />
+      </svg>
+    </div>`;
+  return el;
+}
+
 function bubbleElement(
   comment: MapComment,
   offsetY: number,
@@ -601,10 +764,19 @@ function bubbleElement(
      (muted at rest, the orange text voice when pressed or hovered). Nothing
      scales, pops, or changes shape — that was the whole complaint about the
      old hollow-until-voted arrow swap these replaced. */
+  /* The padding is the whole point, and the negative margin is what makes it
+     free. At its drawn size the mark gave a 13x15 hit box with 14px of dead
+     space between the two thumbs — a tap needed to be accurate to about six
+     pixels or it landed on the card and navigated to the post instead of
+     voting. That is what "the downvote button doesn't work" was: it worked,
+     you just could not hit it. Padding grows the box and the matching negative
+     margin pulls the layout back, so nothing on the row moves and the bubble
+     keeps its measured width. Still short of the 44px floor AGENTS.md sets — a
+     bubble this size cannot host one — but it is four times the area it was. */
   const voteButtonStyle = `
             display: inline-flex; align-items: center;
-            padding: 0; border: 0; background: none;
-            line-height: 1; cursor: pointer;`;
+            padding: 8px 6px; margin: -8px -6px; border: 0; background: none;
+            line-height: 1; cursor: pointer; touch-action: manipulation;`
   /* The vote pair keeps ONE shape on every bubble — arrow, count, arrow — so
      the row doesn't reflow depending on who authored what. Only the controls
      that can actually do something are buttons: seeded map chatter has no post
@@ -732,7 +904,6 @@ function bubbleElement(
      the couple of px bubbleHeight() rounds up as collision margin can't open
      a gap between the box and its own line; that slack lands at the far end,
      where the ember's radius absorbs it. */
-  const LEADER_PAD = 4;
   const leaderLeft = -offsetX - LEADER_PAD;
   const leaderWidth = LEADER_X + LEADER_PAD - leaderLeft;
   /* +0.5 so the 1px vertical run lands on one pixel instead of straddling two
@@ -826,9 +997,18 @@ function bubbleElement(
         line-height: 1.35;
         color: ${BUBBLE_INK};
       ">
+        <!-- Row order is load-bearing, and the meta row must stay last.
+             The box is anchored \`bottom: 0\`, so its bottom edge is the fixed
+             point and every row it grows takes the rows ABOVE it upward. With
+             the prose last, revealing it on hover moved the vote chips 72px up
+             — out from under the cursor that was travelling toward them. You
+             could not click the arrows with a mouse at all: by the time the
+             press landed they had left. Keeping the meta row at the bottom
+             welds it to that fixed edge, so the chips hold still and the
+             headline is what slides. -->
         <div class="map-bubble-text" style="max-width: ${textMaxWidth}px; font-weight: 600;">${headlineHtml}</div>
-        ${metaRow}
         ${proseHtml}
+        ${metaRow}
       </div>
       ${leader}
     </div>`;
@@ -872,8 +1052,16 @@ export function RestaurantMap({
    * A component type rather than a render callback: passing `mapRef` to a plain
    * function during render is a `react-hooks/refs` error, and rightly — as a
    * JSX prop the ref is handed to React, not read.
+   *
+   * The second prop is optional for the field's benefit, not this component's:
+   * the drafts under `/drafts/map-search/*` were written against the one-prop
+   * seam and a field that ignores it still satisfies this type. A draft that
+   * wants to light the map up simply accepts it.
    */
-  searchField?: ComponentType<{ mapRef: RefObject<MapLibreMap | null> }>;
+  searchField?: ComponentType<{
+    mapRef: RefObject<MapLibreMap | null>;
+    onMatchesChange?: (matches: MapMatches | null) => void;
+  }>;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
@@ -914,6 +1102,30 @@ export function RestaurantMap({
   const canUpvote = !!onUpvote;
   const canHeart = !!onHeart;
   const router = useRouter();
+
+  /* What the search field has asked the map to light up, and the handle to
+     redraw with it.
+
+     A ref and a manual call, rather than state and a dependency: the marker
+     effect below tears down and re-places every bubble on the map when it
+     re-runs, so a query in its dependency list would rebuild the city once per
+     typed character — the same reason the field owns the query in the first
+     place (see MapSearch's own note). The effect publishes its `renderBubbles`
+     here on every run; the field writes the matches and calls it, and the pass
+     reads the ref it always reads.
+
+     `useCallback` with no deps because MapSearch's debounce effect depends on
+     this identity — a new one each render would restart its timer forever. */
+  const matchesRef = useRef<{ ids: Set<string> } | null>(null);
+  const redrawForSearchRef = useRef<(() => void) | null>(null);
+  const handleMatchesChange = useCallback((matches: MapMatches | null) => {
+    /* A term nothing matched is treated as no search at all. Blanking the map
+       to say "no results" would be the loudest possible answer to a half-typed
+       word, and the dropdown is already saying it in one line. */
+    matchesRef.current =
+      matches && matches.ids.length > 0 ? { ids: new Set(matches.ids) } : null;
+    redrawForSearchRef.current?.();
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -1000,12 +1212,22 @@ export function RestaurantMap({
     // Pin size and glow follow each restaurant's best comment score, so the
     // hottest spots read as the brightest lights on the map; closed places
     // cool to grey embers.
+    //
+    // This one keeps its zero floor, unlike the bubble ranking above. Brightness
+    // is a magnitude, not an order: an ember can be unlit but not less than
+    // unlit, and a negative here would feed a negative radius into the pin
+    // scale. A downvoted restaurant reads as cold, which is the darkest thing
+    // the map can say about it.
     const bestScore = (id: string) =>
       Math.max(0, ...(commentsByRestaurant[id] ?? []).map((c) => c.score ?? 0));
     const hottest = Math.max(1, ...restaurants.map((r) => bestScore(r.id)));
     const now = new Date();
 
-    const pinData: GeoJSON.FeatureCollection = {
+    /* Rebuilt rather than held, because `dim` changes with the search and the
+       rest changes with the votes — one builder keeps the two from needing
+       separate update paths into the same source. Everything in here is already
+       recomputed on every vote, so a settled search costs what a vote costs. */
+    const buildPinData = (matched: Set<string> | null): GeoJSON.FeatureCollection => ({
       type: "FeatureCollection",
       features: restaurants.map((restaurant, i) => ({
         type: "Feature",
@@ -1013,6 +1235,15 @@ export function RestaurantMap({
         properties: {
           id: restaurant.id,
           name: restaurant.name,
+          /* Not what the search matched — what it DIDN'T. While a search is
+             running these places keep their ember and lose everything else:
+             the glow, the inner light and the ring all go, so the map still
+             shows the whole city but only the matches are lit enough to carry
+             a name. Without it a searched map is a field of identical lights
+             with labels floating over some of them, and there is no way to
+             read which light a label belongs to. False for everyone when
+             nothing is being searched, which is the map's normal state. */
+          dim: matched ? !matched.has(restaurant.id) : false,
           /* Both of the place's numbers, carried so hover can answer "how good
              is this?" without a round trip. `plateScore` is ours, the same 0-100
              percent the dish bubbles show, where -1 stands for "not enough rated
@@ -1029,17 +1260,30 @@ export function RestaurantMap({
           closed: openStateFor(restaurant.hours, now).kind === "closed",
         },
       })),
-    };
+    });
 
     /* Source and layers are created once, then only re-fed — recreating them
        per vote would flash every pin. Event handlers bind at creation time and
        read feature properties at event time, so they never go stale. */
     const applyPinData = () => {
+      const pinData = buildPinData(matchesRef.current?.ids ?? null);
       const existing = map.getSource(PIN_SOURCE) as GeoJSONSource | undefined;
       if (existing) {
         existing.setData(pinData);
         return;
       }
+      /* Safe to call at any time, which it has to be: the search redraw below
+         fires whenever a query settles, and MapSearch's first effect runs (with
+         an empty term) while the style is very often still loading. `addSource`
+         THROWS in that window — "Style is not done loading" — and the throw
+         landed inside a React passive effect, taking the rest of the marker
+         pass down with it and leaving the map with no bubbles at all.
+
+         Bailing is not a lost update: the `once("load")` registration at the
+         bottom of this effect calls back here, and this function reads
+         matchesRef at call time rather than closing over a snapshot, so
+         whatever the search settled on in the meantime is what gets drawn. */
+      if (!map.isStyleLoaded()) return;
       /* No clustering: merging neighbours into one synthetic blob is exactly
          what kills the airplane-window read. Every restaurant keeps its own
          light at every zoom; the "clump" is just real dots crowding. */
@@ -1257,6 +1501,23 @@ export function RestaurantMap({
         ] as unknown as number;
       const withIntensity = (base: number, gain: number) =>
         ["+", base, ["*", gain, ["get", "intensity"]]];
+      /* What a search does to everywhere it didn't match — see `dim` in
+         buildPinData. The three decorative layers switch off entirely and the
+         core dot alone survives at a low alpha, so an unmatched restaurant
+         reads as a bare ember: still there, still hoverable, no longer
+         claiming any of the reader's attention. Doing it by opacity rather
+         than by a new colour is deliberate — over the #191c22 ground a fainter
+         ember cools toward the ground on its own, and inventing a second grey
+         would put it in a conversation with `closed`, which already owns
+         #4b525e and means something entirely different. */
+      /* Measured on screen against the unsearched map rather than picked: at
+         0.34 the county view lost the city entirely — the dots are only 1.8px
+         at that zoom, and with the glow gone there was nothing left to see, so
+         a search read as "the map went dark" instead of "these ones are lit".
+         0.45 keeps a legible ember at every zoom while the matches, which
+         carry the glow, the inner light and the ring on top of a 0.95 dot,
+         stay obviously the brighter thing. */
+      const DIM_DOT_OPACITY = 0.45;
       map.addLayer({
         id: "restaurant-dot-glow",
         type: "circle",
@@ -1266,7 +1527,7 @@ export function RestaurantMap({
           "circle-blur": byZoom(2, 1.5, 1.15, 1),
           "circle-opacity": [
             "case",
-            ["get", "closed"],
+            ["any", ["get", "closed"], ["get", "dim"]],
             0,
             ["+", 0.4, ["*", 0.3, ["get", "intensity"]]],
           ],
@@ -1285,7 +1546,7 @@ export function RestaurantMap({
         paint: {
           "circle-color": "#f0a06a",
           "circle-blur": byZoom(1.5, 1, 0.7, 0.6),
-          "circle-opacity": ["case", ["get", "closed"], 0, 0.8],
+          "circle-opacity": ["case", ["any", ["get", "closed"], ["get", "dim"]], 0, 0.8],
           "circle-radius": byZoom(
             withIntensity(2.5, 2.5),
             withIntensity(4, 3),
@@ -1314,7 +1575,18 @@ export function RestaurantMap({
             ],
           ],
           "circle-blur": byZoom(1.35, 0.65, 0.3, 0.18),
-          "circle-opacity": ["case", ["get", "closed"], 0.5, 0.95],
+          /* `dim` is tested BEFORE `closed`: while a search is running, whether
+             a place is open is not the question being asked, and letting the
+             closed branch win would leave unmatched-but-closed spots brighter
+             (0.5) than unmatched-and-open ones. */
+          "circle-opacity": [
+            "case",
+            ["get", "dim"],
+            DIM_DOT_OPACITY,
+            ["get", "closed"],
+            0.5,
+            0.95,
+          ],
           "circle-radius": byZoom(
             withIntensity(1.8, 1.6),
             withIntensity(2.4, 2.4),
@@ -1330,7 +1602,12 @@ export function RestaurantMap({
         type: "circle",
         source: PIN_SOURCE,
         minzoom: 12,
-        filter: ["all", ["!", ["get", "closed"]], [">", ["get", "intensity"], 0.55]],
+        filter: [
+          "all",
+          ["!", ["get", "closed"]],
+          ["!", ["get", "dim"]],
+          [">", ["get", "intensity"], 0.55],
+        ],
         paint: {
           "circle-color": "rgba(0,0,0,0)",
           "circle-stroke-color": "#e8875a",
@@ -1587,15 +1864,30 @@ export function RestaurantMap({
        the ranking can't reshuffle between the initial render and a later pan —
        a bubble that shifted down the stack mid-pan would look like a bug. */
     const heatAt = now.getTime();
-    const hottestComment = (id: string) =>
-      Math.max(0, ...(commentsByRestaurant[id] ?? []).map((c) => commentHeat(c, heatAt)));
+    /* The bubble this restaurant would lead with, under the same rule the stack
+       itself uses — real posts before seeded filler, then hottest. Ranking
+       restaurants on a bare heat number instead is what buried every real post:
+       a place with one genuine plate scored 0.4 lost to a place whose only
+       bubble was invented chatter scored 21. `null` when there is nothing to
+       say, which sorts last — those restaurants take a coverage slot and then
+       draw nothing. */
+    const bestBubble = (id: string): MapComment | null => {
+      const list = commentsByRestaurant[id] ?? [];
+      if (list.length === 0) return null;
+      return list.reduce((best, c) => (compareBubbles(c, best, heatAt) < 0 ? c : best));
+    };
 
-    // Rank restaurants by their hottest comment, breaking ties with a
-    // deterministic spread so an unscored subset doesn't cluster onto one side.
+    // Rank restaurants by their best bubble, breaking ties with a deterministic
+    // spread so an unscored subset doesn't cluster onto one side.
     const ranked = [...restaurants].sort((a, b) => {
-      const heatA = hottestComment(a.id);
-      const heatB = hottestComment(b.id);
-      if (heatB !== heatA) return heatB - heatA;
+      const bubbleA = bestBubble(a.id);
+      const bubbleB = bestBubble(b.id);
+      if (!bubbleA || !bubbleB) {
+        if (bubbleA === bubbleB) return spreadHash(a.id) - spreadHash(b.id);
+        return bubbleA ? -1 : 1;
+      }
+      const byBubble = compareBubbles(bubbleA, bubbleB, heatAt);
+      if (byBubble !== 0) return byBubble;
       return spreadHash(a.id) - spreadHash(b.id);
     });
 
@@ -1605,38 +1897,112 @@ export function RestaurantMap({
     // text no matter how close together restaurants are.
     function renderBubbles() {
       const zoom = map!.getZoom();
-      const limit = bubbleLimitForZoom(zoom);
-      const coverage = Math.ceil(ranked.length * bubbleCoverageForZoom(zoom));
+      /* A live search takes the whole bubble budget for what it matched: every
+         match is a candidate (no coverage ration), each gets a deep stack (see
+         SEARCH_BUBBLE_LIMIT), and nothing that didn't match is drawn at all.
+         The embers underneath are untouched — the city stays lit, it just stops
+         talking about everywhere the reader didn't ask about. */
+      const matched = matchesRef.current;
+      const drawing = matched
+        ? ranked.filter((r) => matched.ids.has(r.id))
+        : ranked.slice(0, Math.ceil(ranked.length * bubbleCoverageForZoom(zoom)));
+      const limit = matched ? SEARCH_BUBBLE_LIMIT : bubbleLimitForZoom(zoom);
       for (const marker of bubbleMarkersRef.current) marker.remove();
       bubbleMarkersRef.current = [];
       signsByRestaurantRef.current.clear();
 
-      const placed: Rect[] = [];
-      for (const restaurant of ranked.slice(0, coverage)) {
-        /* Hottest first, so stackIndex 0 — the one bubble a restaurant is
-           guaranteed at any zoom, and the only one that draws a leader — is
-           always the best recent thing anyone said about the place. Zooming in
-           raises the limit, and the next-hottest appear above it in order. */
-        const comments = [...(commentsByRestaurant[restaurant.id] ?? [])].sort(
-          (a, b) => commentHeat(b, heatAt) - commentHeat(a, heatAt),
-        );
-        const point = map!.project([restaurant.lng, restaurant.lat]);
-        /* Where this stack starts in `placed`. Everything from here on is this
-           restaurant's own cards, and a card is never tested against its own
-           stack: the offsets below already lay the stack out with a real gap,
-           so the only thing that test could do is reject an authored position
-           for grazing the one under it — which is exactly what used to keep
-           every stack one card deep. Other restaurants' rects still apply. */
-        const stackStart = placed.length;
-        let stackIndex = 0;
-        // Offset (above the pin) of the last card actually placed, so a
-        // candidate skipped for colliding with a neighbour doesn't leave a
-        // hole in the stack above it.
-        let placedOffsetY = BUBBLE_TOP_OFFSET;
-        // The card the sign lands on: whichever one ends up highest.
-        let topEl: HTMLElement | null = null;
-        for (const comment of comments) {
-          if (stackIndex >= limit) break;
+      /* Rects carry their owner so a card can be tested against every OTHER
+         restaurant's footprint and none of its own. That used to be an index
+         comparison against where this stack began in `placed`, which only works
+         while a stack is laid in one uninterrupted run — and the depth rounds
+         below deliberately interleave them. Same rule, stated as what it
+         actually means: the offsets already lay a stack out with a real gap, so
+         testing a card against its own stack could only reject an authored
+         position for grazing the one under it.
+
+         `bareW` is the width before the neon sign widened it, so the crown can
+         be handed from one card to the next without the reservation it made
+         being left behind on a card that no longer wears it. */
+      type PlacedRect = Rect & { owner: string; bareW: number };
+      const placed: PlacedRect[] = [];
+
+      type Stack = {
+        restaurant: MapRestaurant;
+        point: { x: number; y: number };
+        /* Hottest first, so the first card placed — the one bubble a restaurant
+           is guaranteed at any zoom, and the only one that draws a leader — is
+           always the best recent thing anyone said about the place. */
+        comments: MapComment[];
+        /** Next comment to try. Survives across rounds. */
+        next: number;
+        /** Cards actually placed. */
+        count: number;
+        /** Offset of the last card placed, so a candidate skipped for colliding
+         *  with a neighbour doesn't leave a hole in the stack above it. */
+        lastOffsetY: number;
+        topEl: HTMLElement | null;
+        topRect: PlacedRect | null;
+      };
+
+      const stacks: Stack[] = drawing.map((restaurant) => ({
+        restaurant,
+        point: map!.project([restaurant.lng, restaurant.lat]),
+        comments: [...(commentsByRestaurant[restaurant.id] ?? [])].sort((a, b) =>
+          compareBubbles(a, b, heatAt),
+        ),
+        next: 0,
+        count: 0,
+        lastOffsetY: BUBBLE_TOP_OFFSET,
+        topEl: null,
+        topRect: null,
+      }));
+
+      /* The sign crowns the stack — whichever card ended up highest, not the
+         pin-nearest one, which read as the name wedged into the middle of the
+         pile once stacks worked. Since cards now arrive one round at a time,
+         the crown is handed upward as the stack grows: the previous top gives
+         back the clearance and the width it was holding, and the new top takes
+         them. Widening matters because the sign carries the plate score as well
+         as the name and is regularly wider than the card under it. */
+      function crown(stack: Stack) {
+        const { restaurant, topEl, topRect } = stack;
+        if (!topEl || !topRect) return;
+        const box = topEl.querySelector<HTMLElement>(".map-bubble-box");
+        box?.insertAdjacentHTML("afterbegin", signHtml(restaurant));
+        const signEl = topEl.querySelector<HTMLElement>(".map-neon-sign");
+        /* Register the stack's sign so hovering this restaurant's ember can
+           make the name it ALREADY has answer, instead of printing a second
+           copy of it beside itself. */
+        if (signEl) signsByRestaurantRef.current.set(restaurant.id, signEl);
+        topRect.y -= NEON_SIGN_CLEARANCE;
+        topRect.h += NEON_SIGN_CLEARANCE;
+        topRect.w = Math.max(topRect.bareW, estimateSignWidth(restaurant));
+      }
+
+      /** The exact inverse, so nothing the old top reserved outlives it. */
+      function uncrown(stack: Stack) {
+        const { topEl, topRect } = stack;
+        if (!topEl || !topRect) return;
+        topEl.querySelector(".map-neon-sign")?.remove();
+        topRect.y += NEON_SIGN_CLEARANCE;
+        topRect.h -= NEON_SIGN_CLEARANCE;
+        topRect.w = topRect.bareW;
+      }
+
+      /**
+       * Add up to `budget` more cards to one stack. Returns how many landed.
+       *
+       * Called with the whole limit for the unsearched map — which lays each
+       * stack in one run, exactly as it always did — and one card at a time
+       * under a search, which is what stops a chatty restaurant spending the
+       * whole map before a quiet one has been named.
+       */
+      function grow(stack: Stack, budget: number) {
+        const { restaurant, point, comments } = stack;
+        let added = 0;
+        while (added < budget && stack.count < limit && stack.next < comments.length) {
+          const comment = comments[stack.next];
+          stack.next++;
           const width = estimateBubbleWidth(comment, zoom);
           const height = bubbleHeight(comment);
           /* Offsets measure the box's TOP edge, so a card stacked above the
@@ -1646,9 +2012,9 @@ export function RestaurantMap({
              reserves, so it collided with its own stack and was dropped — no
              restaurant ever showed two comments at any zoom. */
           const offsetY =
-            stackIndex === 0
+            stack.count === 0
               ? BUBBLE_TOP_OFFSET
-              : placedOffsetY + height + BUBBLE_GAP;
+              : stack.lastOffsetY + height + BUBBLE_GAP;
           // The leader hangs below the box toward the pin, so it is part of the
           // footprint and nothing else may be placed over it. Only the
           // nearest-the-pin bubble draws one (see bubbleElement), so only its
@@ -1656,21 +2022,23 @@ export function RestaurantMap({
           // via the same leaderDrop() the drawing uses.
           /* The sign is NOT reserved here: it crowns the stack, not this card,
              and which card ends up on top isn't known until the stack is laid.
-             The block after this loop grows the last rect for it. */
-          const rect: Rect = {
+             `crown` below grows whichever rect ends up highest. */
+          const rect: PlacedRect = {
+            owner: restaurant.id,
             x: point.x + 12,
             y: point.y - offsetY,
             w: width,
-            h: height + (stackIndex === 0 ? leaderDrop(comment, offsetY) : 0),
+            bareW: width,
+            h: height + (stack.count === 0 ? leaderDrop(comment, offsetY) : 0),
           };
-          if (placed.some((r, i) => i < stackStart && rectsOverlap(rect, r))) continue;
+          if (placed.some((r) => r.owner !== restaurant.id && rectsOverlap(rect, r))) continue;
           placed.push(rect);
 
           const el = bubbleElement(
             comment,
             offsetY,
             zoom,
-            stackIndex,
+            stack.count,
             mode,
             mode === "discover" ? canUpvote : canHeart,
           );
@@ -1733,42 +2101,106 @@ export function RestaurantMap({
              padding every step of the stack for it would spread the cards
              apart for nothing. The gap itself is applied where the next
              card's offset is computed, off this one's. */
-          placedOffsetY = offsetY;
-          topEl = el;
-          stackIndex++;
+          uncrown(stack);
+          stack.lastOffsetY = offsetY;
+          stack.topEl = el;
+          stack.topRect = rect;
+          stack.count++;
+          crown(stack);
+          added++;
         }
+        return added;
+      }
 
-        /* The sign crowns the stack. It used to ride the pin-nearest card,
-           which was the same thing while a stack was one card deep and read as
-           the name wedged into the middle of the pile once stacks worked. So
-           it goes on whichever card ended up on top, once that is known — and
-           the footprint it reserves grows on that card's rect, which is still
-           the last thing pushed, so neighbours placed after this stack see it.
-           Widening matters more than it used to: the sign now carries the
-           plate score as well as the name, and it is regularly wider than the
-           card under it. */
-        if (topEl && placed.length > stackStart) {
-          const box = topEl.querySelector<HTMLElement>(".map-bubble-box");
-          box?.insertAdjacentHTML("afterbegin", signHtml(restaurant));
-          const signEl = topEl.querySelector<HTMLElement>(".map-neon-sign");
-          /* Register the stack's sign so hovering this restaurant's ember can
-             make the name it ALREADY has answer, instead of printing a second
-             copy of it beside itself. */
-          if (signEl) signsByRestaurantRef.current.set(restaurant.id, signEl);
-          const crown = placed[placed.length - 1];
-          crown.y -= NEON_SIGN_CLEARANCE;
-          crown.h += NEON_SIGN_CLEARANCE;
-          crown.w = Math.max(crown.w, estimateSignWidth(restaurant));
+      /* Breadth before depth, and only under a search does the difference show.
+         The unsearched map lays each stack in one run (`grow` with the whole
+         limit), which is what it has always done and what the zoom rations are
+         tuned against.
+
+         A search cannot afford that. `drawing` is ordered by hottest bubble, so
+         a single restaurant with eight posts would lay eight cards — a wall
+         roughly the height of the map — before the second match was even
+         considered, and every other match in that half of the county would then
+         collide against it and vanish. Which is precisely what happened once
+         the feed started carrying two months of posts: searching "mexican"
+         returned one restaurant's stack covering the frame and hiding the other
+         seventy-five. So each round offers every match exactly one more card,
+         and the rounds stop as soon as one passes with nothing placed. Everyone
+         gets named first; the chatty places get their depth out of what's
+         left. */
+      for (const stack of stacks) {
+        if (grow(stack, matched ? 1 : limit) === 0 && matched) placeSignOnly(stack);
+      }
+      if (matched) {
+        for (let round = 1; round < limit; round++) {
+          let any = false;
+          for (const stack of stacks) if (grow(stack, 1) > 0) any = true;
+          if (!any) break;
         }
+      }
+
+      /* Matched, but it got no bubble — either nobody has said anything about
+         it, or its one candidate collided with a neighbour's stack. Under a
+         search that still has to be visible: the reader asked where these
+         places ARE, and a silent one dropping off the answer reads as the
+         search having missed it. So it signs its name on its own.
+
+         Called in the breadth round, not after all the depth rounds, so a bare
+         name competes for space against every match's FIRST card rather than
+         against a map already full of second and third ones. What somebody
+         actually said still outranks a bare name — the stack that got there
+         first keeps its ground — but a quiet restaurant is no longer last in
+         line behind the chatty ones' extra cards. */
+      function placeSignOnly(stack: Stack) {
+        const { restaurant, point } = stack;
+        /* It carries a leader but no pointer events; the ember under it is the
+           click target, the same as for a restaurant with no bubble on the
+           unsearched map.
+
+           The rect runs from the sign's top edge all the way down to the pin,
+           because the leader hangs in that gap and nothing may be placed over
+           the thread — the same footprint rule the stack's own leader gets. */
+        const signWidth = estimateSignWidth(restaurant);
+        const signRect: PlacedRect = {
+          owner: restaurant.id,
+          x: point.x + SIGN_ONLY_OFFSET_X,
+          y: point.y - SIGN_ONLY_OFFSET_Y - NEON_SIGN_CLEARANCE,
+          w: signWidth,
+          bareW: signWidth,
+          h: NEON_SIGN_CLEARANCE + SIGN_ONLY_OFFSET_Y,
+        };
+        if (placed.some((r) => rectsOverlap(signRect, r))) return;
+        placed.push(signRect);
+        const el = signOnlyElement(restaurant, zoom);
+        const marker = new Marker({ element: el, anchor: "top-left" })
+          .setLngLat([restaurant.lng, restaurant.lat])
+          .addTo(map!);
+        bubbleMarkersRef.current.push(marker);
+        const signEl = el.querySelector<HTMLElement>(".map-neon-sign");
+        if (signEl) signsByRestaurantRef.current.set(restaurant.id, signEl);
       }
     }
 
     renderBubbles();
     map.on("moveend", renderBubbles);
+    /* Published for the search field's sake — see matchesRef above. Reassigned
+       on every run of this effect so the handle is never a closure over a
+       torn-down pass.
+
+       Both halves, in this order: the embers say WHICH restaurants the answer
+       is about and the bubbles say what is being said about them, so a redraw
+       that did one without the other would leave labels over dark dots or lit
+       dots with nothing to read. `moveend` keeps only `renderBubbles`, since
+       panning re-projects the boxes but cannot change what matched. */
+    redrawForSearchRef.current = () => {
+      applyPinData();
+      renderBubbles();
+    };
 
     return () => {
       map.off("load", applyPinData);
       map.off("moveend", renderBubbles);
+      redrawForSearchRef.current = null;
     };
   }, [restaurants, districtDensity, commentsByRestaurant, router, mode, canUpvote, canHeart]);
 
@@ -1785,7 +2217,7 @@ export function RestaurantMap({
   return (
     <div className="relative">
       <div ref={containerRef} className="map-fun-tiles h-[540px] w-full overflow-hidden rounded-xl" />
-      <SearchField mapRef={mapRef} />
+      <SearchField mapRef={mapRef} onMatchesChange={handleMatchesChange} />
     </div>
   );
 }

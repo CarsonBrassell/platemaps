@@ -40,22 +40,28 @@ if (!process.env.DATABASE_URL) {
 
 const sql = neon(process.env.DATABASE_URL);
 
-const restaurants = await sql`SELECT id, name, price_band FROM restaurants ORDER BY (id)::int`;
+const restaurants = await sql`SELECT id, name, cuisine, price_band FROM restaurants ORDER BY (id)::int`;
 /* One pass over the dish table rather than a query per restaurant: 24k rows is
- * nothing to hold, and 682 round trips to Neon is a minute of latency. */
-const dishes = await sql`SELECT restaurant_id, price, section FROM dishes`;
+ * nothing to hold, and 682 round trips to Neon is a minute of latency.
+ *
+ * `name` is selected because banding reads it: "Grande Party Pack" and "$89 for
+ * two" are priced for a table, and a menu saying "per person" is already
+ * quoting the answer. Neither is visible in `section`. */
+const dishes = await sql`SELECT restaurant_id, name, price, section FROM dishes`;
 
 const byRestaurant = new Map();
 for (const d of dishes) {
   if (!byRestaurant.has(d.restaurant_id)) byRestaurant.set(d.restaurant_id, []);
-  byRestaurant.get(d.restaurant_id).push({ price: d.price ?? "", section: d.section ?? "" });
+  byRestaurant
+    .get(d.restaurant_id)
+    .push({ name: d.name ?? "", price: d.price ?? "", section: d.section ?? "" });
 }
 
 const changes = [];
 const counts = { $: 0, $$: 0, $$$: 0, $$$$: 0, null: 0 };
 
 for (const r of restaurants) {
-  const band = bandFor(byRestaurant.get(r.id) ?? []);
+  const band = bandFor(byRestaurant.get(r.id) ?? [], r.cuisine);
   counts[band ?? "null"] += 1;
   if (band !== r.price_band) changes.push({ id: r.id, name: r.name, from: r.price_band, to: band });
 }
