@@ -169,8 +169,8 @@ html.pm-lock-scroll body {
   visibility: hidden;
   pointer-events: none;
   transition:
-    opacity 0.26s ease-out,
-    visibility 0s linear 0.26s;
+    opacity 0.16s ease-out,
+    visibility 0s linear 0.16s;
 }
 
 .pm-phone-shell .post-flash-on {
@@ -259,10 +259,11 @@ html.pm-lock-scroll body {
  *
  * It used to drop in from above, which was a fine landing but the wrong one
  * once the mark started being eaten: the post now comes from where the mouth
- * was. It starts small and low — roughly the middle of the screen, where the
- * plate was sitting — tumbles slightly, then lands with the same squash and
- * rebound the drop had. That squash is the whole weight of it; the travel is
- * just how it gets there.
+ * was. It starts nearly a seventh of its size and well below, cocked fifteen
+ * degrees over, and is thrown up into place — overshooting well past full size
+ * before a hard squash and a rebound. The overshoot and the squash are the
+ * drama; the travel is just how it gets there. The white above it clears in
+ * 0.16s rather than 0.26s so the card is not spat out behind a curtain.
  *
  * `backwards` rather than `both` so the card is hidden before the first frame
  * but keeps NO transform afterwards: a lingering `scale(1)` would leave the
@@ -271,19 +272,19 @@ html.pm-lock-scroll body {
 @keyframes post-spit {
   0% {
     opacity: 0;
-    transform: translateY(210px) scale(0.3) rotate(-7deg);
+    transform: translateY(255px) scale(0.14) rotate(-15deg);
   }
-  30% {
+  20% {
     opacity: 1;
   }
-  62% {
-    transform: translateY(0) scale(1.06) rotate(1.5deg);
+  52% {
+    transform: translateY(0) scale(1.16) rotate(3.5deg);
   }
-  80% {
-    transform: translateY(0) scale(0.965) rotate(0deg);
+  70% {
+    transform: translateY(0) scale(0.92) rotate(-1.5deg);
   }
-  91% {
-    transform: translateY(0) scale(1.012);
+  85% {
+    transform: translateY(0) scale(1.05) rotate(0deg);
   }
   100% {
     transform: translateY(0) scale(1);
@@ -291,7 +292,7 @@ html.pm-lock-scroll body {
 }
 
 .pm-phone-shell .post-spit {
-  animation: post-spit 0.66s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+  animation: post-spit 0.8s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -45,28 +45,95 @@ import { EAT, usePostFlash } from "@/lib/postCelebration";
  */
 
 /**
+ * The mark's own aspect ratio (`logo-mark.png` is 660x865).
+ *
+ * Mask radii are given as a percentage of width and a *separate* percentage of
+ * height, so this is what keeps a "circle" actually circular: a scoop that is
+ * 16% of the width has to be 16 x 0.763% of the height to come out round.
+ */
+const ASPECT = 660 / 865;
+
+/** Deterministic, so the scallops are identical every render and on the server. */
+function rnd(i: number) {
+  const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+type Scoop = { cx: number; cy: number; r: number };
+
+/**
+ * One bite, as a cluster of overlapping scoops.
+ *
+ * A single circle leaves a clean arc, which reads as a hole punched in the
+ * mark rather than as something bitten. A real bite — out of a cookie, which
+ * is the reference — is several overlapping tooth-scoops, so its rim is a run
+ * of little round bumps. That is also exactly how the bite already in the
+ * supplied artwork is drawn, so this matches the brand rather than inventing
+ * a second visual language for the same idea.
+ *
+ * Satellites sit at ~0.66-0.98 of the main radius and are ~0.26-0.48 of it, so
+ * they straddle the rim: the parts outside widen the bite, the parts inside do
+ * nothing, and what is left is a ragged edge.
+ */
+function scoops(cx: number, cy: number, r: number, seed: number, n = 6): Scoop[] {
+  const out: Scoop[] = [{ cx, cy, r }];
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2 + rnd(seed) * 6.28;
+    const d = r * (0.66 + 0.32 * rnd(seed + i));
+    const rr = r * (0.26 + 0.22 * rnd(seed + i * 7 + 3));
+    out.push({ cx: cx + d * Math.cos(a), cy: cy + d * Math.sin(a) * ASPECT, r: rr });
+  }
+  return out;
+}
+
+/**
  * Where the mouth goes, in order, as a fraction of the mark's own box.
  *
- * Around the edge first and the middle last, because that is the order a
- * person eats something held in their hand — taking the centre first would
- * leave a ring, which reads as a doughnut rather than as something bitten.
- * The fifth reaches inward on purpose: with all six around the rim the dark
- * fork and knife sat there untouched to the last frame, looking immune while
- * the orange around them disappeared.
- *
- * Radii are percentages so they scale with the disc on a narrower handset —
- * but they resolve against the gradient's ray (farthest-corner, ~130px here),
- * not the mark's width, which is why they look small: 26% ate half the pin in
- * one go.
+ * **On the stroke, not through the middle.** The pin is an outline, so a bite
+ * aimed at its centre passes through empty space and takes almost nothing with
+ * it — an early pass ate four mouthfuls out of the hollow and left the whole
+ * orange ring standing. These walk around the ring itself: top-right (widening
+ * the bite the artwork already has), the right flank, the point at the bottom,
+ * the left flank. The fifth is the big one that finishes it, and it is centred
+ * because by then the ring is what is left of the ring.
  */
 const BITES = [
-  { x: 80, y: 22, r: 17 }, // widens the bite the artwork already has
-  { x: 78, y: 56, r: 17 },
-  { x: 52, y: 87, r: 18 }, // the pin's point
-  { x: 20, y: 52, r: 17 },
-  { x: 46, y: 34, r: 21 }, // inward, so the cutlery gets chewed too
-  { x: 52, y: 58, r: 34 }, // the last mouthful takes what is left
+  scoops(73, 18, 16, 1),
+  scoops(82, 46, 16, 2),
+  scoops(50, 85, 18, 3),
+  scoops(20, 44, 16, 4),
+  scoops(50, 40, 42, 5, 10),
 ];
+
+const layer = (c: Scoop) =>
+  `radial-gradient(ellipse ${c.r.toFixed(2)}% ${(c.r * ASPECT).toFixed(2)}% at ${c.cx.toFixed(2)}% ${c.cy.toFixed(2)}%, transparent 0 99%, #000 100%)`;
+
+/**
+ * Every bite composited into one mask string, precomputed per step.
+ *
+ * Built once at module load rather than per render: the geometry never changes,
+ * and `MASKS[n - 1]` is the mark with n bites out of it. `intersect` is what
+ * makes the holes accumulate — the default `add` would union the opaque parts
+ * instead and fill each previous bite back in.
+ */
+const MASKS = BITES.map((_, i) =>
+  BITES.slice(0, i + 1)
+    .flat()
+    .map(layer)
+    .join(", "),
+);
+
+/*
+ * The store derives the flash's floor from `EAT.bites` while the timers below
+ * walk `BITES`, so the two must agree. If they drift the screen comes down
+ * mid-chew — the exact failure the derived floor exists to prevent — and it
+ * would only show up as a half-eaten logo on a fast connection.
+ */
+if (process.env.NODE_ENV !== "production" && BITES.length !== EAT.bites) {
+  throw new Error(
+    `postCelebration EAT.bites (${EAT.bites}) must match PostFlash BITES.length (${BITES.length}).`,
+  );
+}
 
 /** One step past the last bite is the crumbs going. */
 const GONE = BITES.length + 1;
@@ -103,13 +170,7 @@ export function PostFlash() {
     return () => timers.forEach(clearTimeout);
   }, [open]);
 
-  /* Every bite so far, composited into one mask. `intersect` is what makes the
-     holes accumulate — the default `add` would union the opaque parts instead
-     and fill each previous bite back in. */
-  const taken = BITES.slice(0, Math.min(step, BITES.length));
-  const mask = taken
-    .map((b) => `radial-gradient(circle at ${b.x}% ${b.y}%, transparent 0 ${b.r}%, #000 ${b.r + 1}%)`)
-    .join(", ");
+  const mask = step > 0 ? MASKS[Math.min(step, MASKS.length) - 1] : "";
 
   return (
     <div className={`post-flash ${open ? "post-flash-on" : ""}`} aria-hidden={!open}>
