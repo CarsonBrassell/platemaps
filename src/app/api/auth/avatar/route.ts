@@ -32,5 +32,8 @@ export async function POST(req: Request) {
     sharePhotosPublicly: freshUser.sharePhotosPublicly,
     favoriteCuisine: freshUser.favoriteCuisine,
     favoriteRestaurantId: freshUser.favoriteRestaurantId,
+    hideFromLeaderboard: freshUser.hideFromLeaderboard,
+    discoverableByUsername: freshUser.discoverableByUsername,
+    friendRequestsOpen: freshUser.friendRequestsOpen,
   });
 }

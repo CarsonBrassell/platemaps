@@ -4,6 +4,7 @@ import {
   getUserById,
   updateFavorites,
   updatePhotoSharing,
+  updatePrivacySettings,
 } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { cuisines } from "@/data/restaurants";
@@ -29,6 +30,29 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid value." }, { status: 400 });
     }
     await updatePhotoSharing(user.id, body.sharePhotosPublicly);
+  }
+
+  // The three privacy switches ride this endpoint rather than getting one each:
+  // they are booleans with no validation beyond their type, and the panel that
+  // owns them already round-trips through here. Anything that needs a password
+  // check or a uniqueness check got its own route instead.
+  const privacy: {
+    hideFromLeaderboard?: boolean;
+    discoverableByUsername?: boolean;
+    friendRequestsOpen?: boolean;
+  } = {};
+
+  for (const key of ["hideFromLeaderboard", "discoverableByUsername", "friendRequestsOpen"] as const) {
+    if (body[key] !== undefined) {
+      if (typeof body[key] !== "boolean") {
+        return NextResponse.json({ error: "Invalid value." }, { status: 400 });
+      }
+      privacy[key] = body[key];
+    }
+  }
+
+  if (Object.keys(privacy).length > 0) {
+    await updatePrivacySettings(user.id, privacy);
   }
 
   const favorites: { cuisine?: string | null; restaurantId?: string | null } = {};
@@ -74,5 +98,8 @@ export async function POST(req: Request) {
     sharePhotosPublicly: fresh.sharePhotosPublicly,
     favoriteCuisine: fresh.favoriteCuisine,
     favoriteRestaurantId: fresh.favoriteRestaurantId,
+    hideFromLeaderboard: fresh.hideFromLeaderboard,
+    discoverableByUsername: fresh.discoverableByUsername,
+    friendRequestsOpen: fresh.friendRequestsOpen,
   });
 }

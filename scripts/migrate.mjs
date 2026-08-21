@@ -589,6 +589,22 @@ const statements = [
   // photo has been asked about and come back empty; leave it alone.
   `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS yelp_checked_at TIMESTAMPTZ`,
   `CREATE INDEX IF NOT EXISTS idx_restaurants_yelp_checked ON restaurants(yelp_checked_at NULLS FIRST)`,
+
+  // --- Account privacy switches --------------------------------------------
+  //
+  // Three separate columns rather than one "private account" flag, because
+  // they answer three different questions and people want different answers to
+  // them: being off the leaderboard is not the same as being unfindable, and
+  // neither is the same as refusing friend requests.
+  //
+  // Note the defaults differ, and each matches what the app already does
+  // today, so running this migration changes nothing for anyone until they go
+  // and change it. Hiding from the leaderboard is opt-in (false); being
+  // findable and accepting requests are opt-out (true), since an account that
+  // silently couldn't be found or friended would read as broken.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS hide_from_leaderboard BOOLEAN NOT NULL DEFAULT false`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS discoverable_by_username BOOLEAN NOT NULL DEFAULT true`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS friend_requests_open BOOLEAN NOT NULL DEFAULT true`,
 ];
 
 for (const statement of statements) {
