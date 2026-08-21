@@ -184,6 +184,19 @@ html.pm-lock-scroll body {
     visibility 0s;
 }
 
+/*
+ * What flinches on a chomp.
+ *
+ * A wrapper *outside* the plate rather than the mark itself: the fourth bite
+ * clears the last of the ink, so a shake on the mark had nothing left to move
+ * and the final chomp looked like it had been missed. It is also outside the
+ * disc because the disc already carries the punch — two animations on one
+ * element means the more specific rule silently wins and the other never runs.
+ */
+.pm-phone-shell .post-flash-shaker {
+  display: inline-flex;
+}
+
 .pm-phone-shell .post-flash-disc {
   display: flex;
   align-items: center;
@@ -324,27 +337,71 @@ html.pm-lock-scroll body {
 @keyframes post-spit {
   0% {
     opacity: 0;
-    transform: translateY(255px) scale(0.14) rotate(-15deg);
+    transform: translateY(300px) scaleX(0.1) scaleY(0.1) rotate(-18deg);
   }
-  20% {
+  16% {
     opacity: 1;
   }
-  52% {
-    transform: translateY(0) scale(1.16) rotate(3.5deg);
+  /* Stretched along the direction of travel — the classic squash-and-stretch
+     pair. Without the stretch on the way in, the squash on landing reads as a
+     glitch rather than as the thing having had momentum. */
+  34% {
+    transform: translateY(115px) scaleX(0.82) scaleY(1.3) rotate(-8deg);
   }
-  70% {
-    transform: translateY(0) scale(0.92) rotate(-1.5deg);
+  /* Overshoots well past full size before it is allowed to settle. */
+  50% {
+    transform: translateY(0) scaleX(1.2) scaleY(1.2) rotate(4deg);
   }
-  85% {
-    transform: translateY(0) scale(1.05) rotate(0deg);
+  /* Impact: flattened hard and wide. */
+  63% {
+    transform: translateY(0) scaleX(1.18) scaleY(0.8) rotate(0deg);
+  }
+  76% {
+    transform: translateY(0) scaleX(0.93) scaleY(1.1) rotate(0deg);
+  }
+  88% {
+    transform: translateY(0) scaleX(1.04) scaleY(0.97) rotate(0deg);
   }
   100% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scaleX(1) scaleY(1) rotate(0deg);
   }
 }
 
+/* Every keyframe lists the same functions in the same order. Mixing `scale()`
+   and `scaleX()/scaleY()` between frames drops the interpolation to matrices,
+   which takes the rotation with it and makes the tumble wobble. */
 .pm-phone-shell .post-spit {
-  animation: post-spit 0.8s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+  animation: post-spit 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+}
+
+/*
+ * The feed taking the hit.
+ *
+ * The whole column jolts once, delayed to 0.45s — the 50% mark of the spit,
+ * which is the frame the card actually lands on. The card is inside this, so
+ * it jolts too, which is what sells the landing as an impact on the page
+ * rather than an animation playing on top of it.
+ */
+@keyframes post-impact {
+  0% {
+    transform: translateY(0);
+  }
+  28% {
+    transform: translateY(6px);
+  }
+  55% {
+    transform: translateY(-3px);
+  }
+  78% {
+    transform: translateY(1.5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.pm-phone-shell .post-impact {
+  animation: post-impact 0.34s ease-out 0.45s backwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -357,7 +414,8 @@ html.pm-lock-scroll body {
   }
 
   .pm-phone-shell .post-flash-on .post-flash-disc,
-  .pm-phone-shell .post-spit {
+  .pm-phone-shell .post-spit,
+  .pm-phone-shell .post-impact {
     animation: none;
   }
 

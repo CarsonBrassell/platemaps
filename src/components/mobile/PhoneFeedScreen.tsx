@@ -499,7 +499,9 @@ export function PhoneFeedScreen() {
           />
         ) : (
           <>
-            <div className="flex flex-col gap-3">
+            {/* The column takes the hit when the spat plate lands — see
+                post-impact in phone.css for why the jolt is delayed. */}
+            <div className={`flex flex-col gap-3 ${slamId ? "post-impact" : ""}`}>
               {(visiblePosts ?? []).map((post, index) => {
                 /* Split at the call site rather than passed as a string: the
                    card's props are a union on `surface`, so the vote handler

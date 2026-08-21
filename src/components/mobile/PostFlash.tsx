@@ -64,15 +64,20 @@ const ASPECT = 660 / 865;
  * enormous one that simply wiped whatever was left, which is a deletion rather
  * than a bite.
  *
- * The scallops are what make it a bite rather than a hole punch: eight bumps
- * of a third the radius, straddling the rim, so the edge left behind is a run
- * of round scoops. Fixed count, fixed size, evenly spaced — the bite is
- * congruent every time, only rotated, so no two bites differ in size.
+ * The scallops are what make it a bite rather than a hole punch: bumps
+ * straddling the rim, so the edge left behind is a run of round scoops.
+ * **Six large ones rather than eight small ones** — the smaller set rippled
+ * the edge without ever quite saying "bite", and reading it as tooth marks
+ * needs a few obvious scoops far more than it needs many subtle ones. Fixed
+ * count, fixed size, evenly spaced: the bite is congruent every time, only
+ * rotated, so no two bites differ in size.
+ *
+ * Measured against the real ink these leave 51%, 18%, 10%, then nothing.
  */
 const BITE_R = 43;
-const SCALLOPS = 8;
-const SCALLOP_R = 0.32;
-const SCALLOP_D = 1.02;
+const SCALLOPS = 6;
+const SCALLOP_R = 0.44;
+const SCALLOP_D = 1.08;
 
 type Scoop = { cx: number; cy: number; r: number };
 
@@ -96,9 +101,7 @@ function bite(cx: number, cy: number, spin: number): Scoop[] {
  * the artwork's own bite already is, so the first mouthful widens it rather
  * than opening a second mouth somewhere else.
  *
- * Measured against the real artwork, this leaves 55%, 24%, 13% and then 0% of
- * the mark's ink. It genuinely ends empty; nothing is faded away to hide a
- * remainder.
+ * It genuinely ends empty; nothing is faded away to hide a remainder.
  */
 const BITES = [
   bite(75, 25, 0),
@@ -182,29 +185,37 @@ export function PostFlash() {
    * class on every bite would play the shake once and then sit still for the
    * remaining three. Alternating is what re-triggers it without remounting the
    * <img>, which would drop the decoded image and flicker.
+   *
+   * **It shakes the plate, not the mark.** On the mark it looked like it was
+   * missing the final bite: the fourth mouthful clears the last of the ink, so
+   * the shake was playing correctly on an element that no longer had anything
+   * in it to move. The plate is still there at that point, so the fourth chomp
+   * now registers as the whole thing jolting.
    */
   const chomping = step >= 1 && step <= BITES.length;
   const shake = chomping ? (step % 2 ? "post-flash-chomp-a" : "post-flash-chomp-b") : "";
 
   return (
     <div className={`post-flash ${open ? "post-flash-on" : ""}`} aria-hidden={!open}>
-      <span className="post-flash-disc">
-        <span
-          className={`post-flash-bitten ${shake} ${step >= GONE ? "post-flash-gone" : ""}`}
-          style={
-            mask
-              ? {
-                  maskImage: mask,
-                  WebkitMaskImage: mask,
-                  maskComposite: "intersect",
-                  WebkitMaskComposite: "source-in",
-                }
-              : undefined
-          }
-        >
-          {/* The bob is `globals.css`'s, already used on the mark elsewhere —
-              a little life in it while it is being eaten. */}
-          <BrandMark className="logo-bob h-full w-auto" />
+      <span className={`post-flash-shaker ${shake}`}>
+        <span className="post-flash-disc">
+          <span
+            className={`post-flash-bitten ${step >= GONE ? "post-flash-gone" : ""}`}
+            style={
+              mask
+                ? {
+                    maskImage: mask,
+                    WebkitMaskImage: mask,
+                    maskComposite: "intersect",
+                    WebkitMaskComposite: "source-in",
+                  }
+                : undefined
+            }
+          >
+            {/* The bob is `globals.css`'s, already used on the mark elsewhere —
+                a little life in it while it is being eaten. */}
+            <BrandMark className="logo-bob h-full w-auto" />
+          </span>
         </span>
       </span>
 
