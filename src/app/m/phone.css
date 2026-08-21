@@ -142,3 +142,134 @@ html.pm-lock-scroll body {
   /* No nav repositioning rule any more: with the shell as containing block,
      the variants' own `inset-x-0 bottom-0` already means "this frame". */
 }
+
+/*
+ * --- Publishing: the flash, and the landing -----------------------------
+ *
+ * Two halves of one moment that spans a navigation. `PostFlash` (raised by the
+ * composer, lowered by the feed) covers the gap; `.post-slam` is what the feed
+ * runs on the card once the curtain is coming down. Both live here rather than
+ * in globals.css because neither exists outside /m — the web composer still
+ * ends with the banner-and-highlight it always had.
+ */
+
+.pm-phone-shell .post-flash {
+  position: fixed;
+  inset: 0;
+  /* Over PhoneNav's z-40, which is the highest thing in the tree. */
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  opacity: 0;
+  /* `visibility` rather than `display` so the transition has something to
+     animate, and so the idle layer is out of the accessibility tree and off
+     the hit-testing path rather than merely transparent on top of the feed. */
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.26s ease-out,
+    visibility 0s linear 0.26s;
+}
+
+.pm-phone-shell .post-flash-on {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  /* Asymmetric on purpose: out is a fade, in is very nearly a cut. A flash
+     that ramps up is not a flash, it is a dissolve. */
+  transition:
+    opacity 0.05s linear,
+    visibility 0s;
+}
+
+.pm-phone-shell .post-flash-disc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Big — most of the width of the phone screen. A percentage of the flash
+     rather than a `vw`, because the flash is already sized to the frame: on a
+     handset that is the viewport, and inside the 390px desktop column it is
+     the column, where a `vw` would have measured the whole monitor. Capped so
+     it stays a medallion rather than a billboard. */
+  width: 64%;
+  max-width: 250px;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  /* The mark's artwork is opaque cream, not a keyed-out silhouette, so this
+     is what turns that background into a deliberate shape instead of a
+     rectangle on white — the treatment PhoneFriendsHero already uses.
+     #F6F0EB rather than the design cream #F7F4EC: the artwork's own
+     background is (246,240,235) and at this size a three-level mismatch is a
+     visible rectangle inside the disc. This is sampled from the border ring
+     of logo-mark.png so the seam disappears. Re-sample it if the mark is ever
+     replaced (`npm run logo:build`). */
+  background: #f6f0eb;
+}
+
+@keyframes post-flash-punch {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  62% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Scoped under the -on class rather than applied to the disc directly: that is
+   what makes the punch re-run on every raise instead of once per page load. */
+.pm-phone-shell .post-flash-on .post-flash-disc {
+  animation: post-flash-punch 0.44s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+/*
+ * The plate landing on the feed.
+ *
+ * Drops from above, overshoots into a squash, settles — the weight is in the
+ * squash, not in the distance. `backwards` rather than `both` so the card is
+ * hidden before the first frame but keeps NO transform afterwards: a lingering
+ * `scale(1)` would leave the wrapper a containing block for anything fixed
+ * inside the card.
+ */
+@keyframes post-slam {
+  0% {
+    opacity: 0;
+    transform: translateY(-42px) scale(1.06);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(0) scale(0.965);
+  }
+  78% {
+    transform: translateY(0) scale(1.012);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.pm-phone-shell .post-slam {
+  animation: post-slam 0.52s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The flash still covers — it is the transition between two screens, not
+     decoration — but it arrives and leaves without motion, and the plate is
+     simply there rather than thrown at the screen. */
+  .pm-phone-shell .post-flash,
+  .pm-phone-shell .post-flash-on {
+    transition: none;
+  }
+
+  .pm-phone-shell .post-flash-on .post-flash-disc,
+  .pm-phone-shell .post-slam {
+    animation: none;
+  }
+}

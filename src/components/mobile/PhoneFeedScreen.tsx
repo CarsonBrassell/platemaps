@@ -11,6 +11,7 @@ import { UtensilsIcon, CompassIcon, WifiOffIcon, PlusIcon } from "@/components/i
 import type { FeedTab, Post } from "@/components/feed/types";
 import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
+import { closePostFlash, takeLanding } from "@/lib/postCelebration";
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
 import { PhoneFeedTabs } from "./PhoneFeedTabs";
@@ -56,10 +57,26 @@ export function PhoneFeedScreen() {
      downstream already handles every tab; the only thing this line changes is
      which one you land on. */
   const [tab, setTab] = useState<FeedTab>("discover");
+
+  /*
+   * The plate this screen was just navigated to celebrate, if it was.
+   *
+   * Claimed once on mount the same way the composer claims handed-off photos,
+   * and for the same lifetime — a reload is an ordinary visit to the feed, not
+   * a second victory lap. Null on every normal arrival.
+   */
+  const [landing] = useState(takeLanding);
+
   /* Discover's ordering — its own state for the same reason `mapSource` below
      has its own: leaving the feed for another tab and coming back must not
-     silently reset how you had it sorted. */
-  const [sort, setSort] = useState<FeedSort>(FEED_SORT_DEFAULT);
+     silently reset how you had it sorted.
+
+     Arriving from the composer forces New for one reason: Trending ranks on
+     engagement over a time decay, and a plate posted four seconds ago has no
+     engagement, so it lands high but not reliably first. New is
+     `created_at DESC`, which makes "your post is the top card" a fact rather
+     than a hope — and the top card is the one that renders full width. */
+  const [sort, setSort] = useState<FeedSort>(landing ? "new" : FEED_SORT_DEFAULT);
   const [reloadKey, setReloadKey] = useState(0);
   const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
   /* Set by the search FAB on the card tabs — see PhoneFeedSearch's onSearch.
@@ -141,6 +158,42 @@ export function PhoneFeedScreen() {
       (p) => p.restaurant?.toLowerCase().includes(q) || p.dishName?.toLowerCase().includes(q),
     );
   }, [posts, restaurantFilter]);
+
+  /*
+   * Which card to throw at the screen — derived, never stored.
+   *
+   * State would need an effect to set it and a timer to clear it; this needs
+   * neither. The class appears on the render where the post first shows up,
+   * the animation runs once (re-rendering with the same class does not restart
+   * it), and `backwards` fill means it leaves no transform behind afterwards.
+   */
+  const slamId =
+    landing && posts?.some((p) => p.id === landing.postId) ? landing.postId : null;
+
+  /*
+   * Drop the curtain once the feed has an answer — any answer.
+   *
+   * Not "once the post is found": if it never comes back (a filter, a block, a
+   * failed load) the flash still has to come down, and dropping someone on a
+   * feed that is merely missing their post beats holding them behind a white
+   * screen. `closePostFlash` enforces its own minimum on-screen time, so this
+   * firing immediately on a warm cache does not cut the celebration short, and
+   * the store's ceiling covers a load that never finishes at all.
+   */
+  useEffect(() => {
+    if (!landing || posts === null) return;
+    closePostFlash();
+  }, [landing, posts]);
+
+  /* The points confirmation, which the phone flow has never actually shown —
+     the composer wrote `earned` into a URL `/m/feed` does not read. Fired once
+     per landing; the banner is the feed's own, same as the web's. */
+  const bannerShown = useRef(false);
+  useEffect(() => {
+    if (!landing || !slamId || bannerShown.current) return;
+    bannerShown.current = true;
+    if (landing.earned > 0) setBanner(`+${landing.earned} PM Points earned`);
+  }, [landing, slamId, setBanner]);
 
   /**
    * A map bubble asking to open its post.
@@ -403,11 +456,9 @@ export function PhoneFeedScreen() {
                     ref={(el) => {
                       postRefs.current[post.id] = el;
                     }}
-                    className={
-                      post.id === highlighted
-                        ? "rounded-2xl ring-2 ring-pm-orange transition-shadow motion-reduce:transition-none"
-                        : "rounded-2xl transition-shadow motion-reduce:transition-none"
-                    }
+                    className={`rounded-2xl transition-shadow motion-reduce:transition-none ${
+                      post.id === highlighted ? "ring-2 ring-pm-orange" : ""
+                    } ${post.id === slamId ? "post-slam" : ""}`}
                   >
                     {tab === "friends" ? (
                       <PhoneFeedPostCard {...shared} surface="friends" onReact={handleHeart} />

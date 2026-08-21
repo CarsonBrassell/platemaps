@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { takePhotos } from "@/lib/photoHandoff";
+import { openPostFlash, closePostFlash, stashLanding } from "@/lib/postCelebration";
 import { MAX_PHOTOS, resizePhotos, type PhotoDraft } from "@/lib/photos";
 import { POINT_RULES } from "@/lib/points";
 import { BEST_AT } from "@/data/reviewScales";
@@ -278,6 +279,11 @@ export default function PhonePost() {
   async function publish() {
     setError(null);
     setSubmitting(true);
+    /* Raised on the tap, not on the response — the white screen is both the
+       confirmation and the cover over this request, the navigation after it
+       and the feed's own first fetch. It comes down from the feed, once the
+       plate is actually on screen. See lib/postCelebration. */
+    openPostFlash();
     try {
       const res = await fetch("/api/posts", {
         method: "POST",
@@ -286,14 +292,27 @@ export default function PhonePost() {
       });
       const data = await res.json();
       if (!res.ok) {
+        closePostFlash();
         setError(data.error ?? "Couldn't publish that. Try again.");
         setSubmitting(false);
         return;
       }
       await refresh();
+      /*
+       * The plate travels in memory rather than in the URL.
+       *
+       * This used to push `?post=&earned=`, which the web feed reads — but
+       * `/m/feed` deliberately takes no searchParams (see its page.tsx), so
+       * both were being written to an address nothing was ever going to read:
+       * no highlight, and no points confirmation, on the phone. The handoff
+       * carries them to a screen that does, and the URL goes back to naming
+       * the screen instead of the last thing that happened.
+       */
+      stashLanding({ postId: data.post.id, earned: Number(data.pointsEarned) || 0 });
       // Where the web flow ends, pointed at the phone tree's feed.
-      router.push(to(`/m/feed?post=${data.post.id}&earned=${data.pointsEarned}`));
+      router.push(to("/m/feed"));
     } catch {
+      closePostFlash();
       setError("Couldn't reach PlateMaps. Check your connection and try again.");
       setSubmitting(false);
     }
