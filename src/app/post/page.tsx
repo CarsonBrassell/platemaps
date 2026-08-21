@@ -41,7 +41,7 @@ import { MAX_POST_TEXT } from "@/lib/postLimits";
  * let you down" are answerable on the same screen as the caption. That is what
  * keeps the per-category scores alive without a second door to walk through.
  */
-type Step = "photo" | "kind" | "where" | "dish" | "rate" | "detail";
+type Step = "photo" | "kind" | "rate" | "where" | "dish" | "detail";
 
 const shell = "mx-auto w-full max-w-7xl pb-12";
 const noteField =
@@ -120,7 +120,19 @@ export default function PostPage() {
   const steps = useMemo<Step[]>(() => {
     if (!kind) return ["photo", "kind"];
     if (kind === "comment") return ["photo", "kind", "where", "detail"];
-    return ["photo", "kind", "where", "dish", "rate", "detail"];
+    /* The rating comes before the place and the dish, which is the reverse of how
+       this read for most of its life. The old order walked the poster through
+       naming the restaurant and the dish first and asked for the verdict last, so
+       the two screens with the most typing on them stood between someone and the
+       one thing they opened the composer to say. Rating first also means the
+       meter's screen is the one screen that never has to wait on a fetch.
+
+       It cannot move any earlier than this. `kind` has to be answered before it,
+       because a comment post has no rating step at all, and the camera is the
+       composer's front door by design (see this file's header). `dish` still
+       follows `where` — DishPicker browses the chosen restaurant's menu, so it
+       has nothing to show until there is a place. */
+    return ["photo", "kind", "rate", "where", "dish", "detail"];
   }, [kind]);
 
   const step = steps[Math.min(index, steps.length - 1)];

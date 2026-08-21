@@ -29,7 +29,7 @@ export function KindChooser({ onChoose }: { onChoose: (kind: PostKind) => void }
             Rate a plate
           </span>
           <span className="mt-1 block text-sm text-zinc-500">
-            Pick it off the menu, then give it your number.
+            Give it your number, then say where and what you ate.
           </span>
         </span>
         <span className="w-20 shrink-0" aria-hidden="true">
