@@ -1755,6 +1755,7 @@ export async function getAllRestaurantAspectTallies(
       FROM restaurants r
       LEFT JOIN posts p
         ON p.restaurant_id = r.id AND p.rating IS NOT NULL
+      WHERE r.listed
       GROUP BY r.id, r.rating
     `,
   ]);
@@ -2083,9 +2084,15 @@ export async function getRestaurantFacets(): Promise<{
   cuisines: string[];
   neighborhoods: string[];
 }> {
+  // Gated like getRestaurants, and it matters more here than the row count
+  // suggests: these two lists are Discover's filter menus. Ungated, every
+  // cuisine and neighbourhood appearing anywhere in the staged rows becomes a
+  // filter you can pick, and picking one returns an empty grid, because the
+  // grid it filters is gated. An option that cannot match anything is worse
+  // than an option that isn't offered.
   const [cuisineRows, neighborhoodRows] = await Promise.all([
-    sql`SELECT DISTINCT cuisine FROM restaurants ORDER BY cuisine`,
-    sql`SELECT DISTINCT neighborhood FROM restaurants ORDER BY neighborhood`,
+    sql`SELECT DISTINCT cuisine FROM restaurants WHERE listed ORDER BY cuisine`,
+    sql`SELECT DISTINCT neighborhood FROM restaurants WHERE listed ORDER BY neighborhood`,
   ]);
   return {
     cuisines: cuisineRows.map((r) => r.cuisine as string),
