@@ -315,3 +315,55 @@ html.pm-lock-scroll body {
     transition: none;
   }
 }
+
+/* --- Opening splash ------------------------------------------------------
+   The mark, held over the app for a beat on a cold open. See PhoneSplash for
+   why this is an animation rather than a timer, and for what it covers that
+   the native iOS launch screen does not.
+
+   The hold is 1.4s and the fade 0.4s. `forwards` is what makes it stay gone —
+   without it the overlay snaps back to opacity 1 when the animation ends.
+   `visibility` is animated alongside opacity so the finished overlay leaves
+   the accessibility tree; opacity 0 alone would leave a transparent sheet
+   sitting on top of the app forever. */
+.phone-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  /* Cream, not white, and that is forced by the artwork rather than chosen:
+     `logo-mark.png` is fully opaque with its own cream ground baked in (there
+     is no transparent variant, and CLAUDE.md forbids hand-keying one), so on
+     white the mark sits in a visible pale rectangle. Cream also matches the
+     native iOS launch screen, whose splash image is the same mark on the same
+     ground — white here would flash cream → white → cream on every cold open.
+     Switch this to #fff the day a transparent mark comes out of logo:build. */
+  background: var(--background);
+  /* Never eats the first tap, even during the hold. */
+  pointer-events: none;
+  animation: phone-splash-out 1.8s ease-in forwards;
+}
+
+@keyframes phone-splash-out {
+  0%,
+  78% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Reduced motion still gets the beat, just without the cross-fade — the
+   overlay holds and then cuts. Removing it outright would take the brand
+   moment away rather than the movement, which is not what the preference
+   asks for. */
+@media (prefers-reduced-motion: reduce) {
+  .phone-splash {
+    animation-duration: 1.5s;
+    animation-timing-function: steps(1, end);
+  }
+}
