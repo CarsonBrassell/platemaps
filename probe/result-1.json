@@ -1,0 +1,97 @@
+[
+  {
+    "id": "830",
+    "name": "Lemon Grove Thai Food",
+    "outcome": "own_site_priced",
+    "menu_url": "https://www.lemongrovethaitogo.com/",
+    "item_count": 85,
+    "has_prices": true,
+    "notes": "Own ordering site is the menu - single-page HTML online-ordering menu with full prices and descriptions across 10 sections"
+  },
+  {
+    "id": "769",
+    "name": "El Paisa Fresh Mexican Grill",
+    "outcome": "own_site_priced",
+    "menu_url": "https://themenustar2.com/webspace/menus.php?code=orderelpaisafreshmexicangrill.com",
+    "item_count": 180,
+    "has_prices": true,
+    "notes": "Own ordering site orderelpaisafreshmexicangrill.com links to a MenuStar-hosted menu page with full prices. 26 accordion sections; Burritos alone had 15 priced items so ~180 is an estimate. Also on Toast/DoorDash/UberEats/Postmates."
+  },
+  {
+    "id": "924",
+    "name": "Machela",
+    "outcome": "closed_permanently",
+    "menu_url": null,
+    "item_count": null,
+    "has_prices": false,
+    "notes": "Only Machela in San Diego is 'Machela Antojitos & Fruteria', 6217 Imperial Ave (Trolley Stop Plaza, Encanto). Google Maps shows Permanently closed, 5.0 (8 reviews). No Yelp, no delivery listing, no menu anywhere. OSM coords sit ~0.6mi from this address but no other candidate exists."
+  },
+  {
+    "id": "810",
+    "name": "Tocumbo",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.doordash.com/business/tocumbo-135818/menu",
+    "item_count": 20,
+    "has_prices": true,
+    "notes": "This is Tocumbo Ice Cream, 1900 Main St Barrio Logan (paleteria/neveria, small local chain). Official site tocumboicecream.com/html_pages/menu.html lists ~50 items across 8 sections but NO prices at all, and its 'PDF DOWNLOAD' link is a dead href='#'. DoorDash brand menu page has 20 priced items (prices flagged as location-estimated)."
+  },
+  {
+    "id": "793",
+    "name": "Dine with Orcas",
+    "outcome": "own_site_no_prices",
+    "menu_url": "https://seaworld.com/san-diego/-/media/commercial/seaworld-san-diego/images/dining/dine-with-orcas/menu-dine-with-orcas_seaworld-san-diego_2025.pdf",
+    "item_count": 24,
+    "has_prices": false,
+    "notes": "Not a normal restaurant - a prix-fixe buffet experience inside SeaWorld San Diego. Official page links a 2-page PDF menu (Salads/Entrees/Sides/Kids/Desserts) with NO per-item prices; the only price anywhere is the experience itself, 'Prices starting at $46.99'. Nothing on delivery apps by definition."
+  }
+,
+  {
+    "id": "955",
+    "name": "Greek Corner Cafe",
+    "outcome": "own_site_priced",
+    "menu_url": "https://www.greekcornersd.com/uploads/b/17da5520-55ad-11ea-a4ec-57a5b6e1e922/0beea820-6b49-11f0-8bac-a1b784f9e583.pdf",
+    "item_count": 103,
+    "has_prices": true,
+    "notes": "greekcornersd.com/menu embeds a 6-page image-style PDF menu with prices (verified visually: 'Avgolemono Soup Bowl: 14 / Cup: 7', 'Pita Basket 6'). PDF is images, not selectable text, so it needs OCR/vision to extract. Item count 103 per a Menuweb index of the same menu. Also has its own /order storefront and a Yelp menu tab."
+  }
+,
+  {
+    "id": "814",
+    "name": "El Pollo Loco",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.ubereats.com/store/el-pollo-loco-2795-main-st/4UbUgu6XTCeOtLxpOjd4jg",
+    "item_count": 80,
+    "has_prices": true,
+    "notes": "National chain, store #3927 at 2795 Main St (Main & 28th), Barrio Logan. Own ordering site order.elpolloloco.com/location/main-st-28th-st/menu does give the real per-store menu but every item is labelled 'Price Varies | Cal ...' with no price on the browse pages - prices only appear inside the add-to-cart configurator. Uber Eats store page shows real prices (verified: Classic Tostada $15.29). ~14 categories."
+  }
+,
+  {
+    "id": "764",
+    "name": "Pizzeria Luigi",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.yelp.com/menu/pizzeria-luigi-san-diego",
+    "item_count": 52,
+    "has_prices": true,
+    "notes": "Golden Hill location, 1137 25th St. Official site pizzerialuigi.com/food-menu has the full menu with descriptions but NO item prices - only topping upcharges (+$2.50 meat etc). Yelp menu tab has the full priced menu (52 items, e.g. Mona Lisa $20, Crime Scene $18, cheese slice $2.50), flagged 'menu may not be up to date'. Uber Eats for this location has been closed since May 2023; DoorDash only lists the 2121 El Cajon Blvd (North Park) store."
+  }
+,
+  {
+    "id": "915",
+    "name": "Caribbean Taste",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.ubereats.com/store/authentic-caribbean-taste/FyFuUi14VK6ttAj2xD58-g",
+    "item_count": 22,
+    "has_prices": true,
+    "notes": "Jamaican spot at 6171 Imperial Ave (South Encanto; OSM coords put it ~0.6mi north in Oak Park). No own website at all - only Yelp (4.3, 336 reviews), Tripadvisor and delivery listings. Yelp has no menu tab, just photo-derived popular dishes with no prices. Uber Eats/Postmates store page has a priced menu (Oxtail $22.05, Jerk Chicken $17.50) across 3 sections: Mains, Side Orders, Combination Plate. Store shows 'Not accepting orders' and newest review is 2023, so prices may be stale. postmates.com hit an Uber bot challenge; the ubereats.com host for the same store id loaded fine."
+  }
+,
+  {
+    "id": "923",
+    "name": "Topo's Tacos",
+    "outcome": "own_site_priced",
+    "menu_url": "https://topostacosca.com/topos-tacos/menu/6555-Imperial-Ave",
+    "item_count": 68,
+    "has_prices": true,
+    "notes": "6555 Imperial Ave. Own site topostacosca.com is a thin brochure page; the real menu is behind Order Online at /topos-tacos/menu/6555-Imperial-Ave - plain HTML with full prices. Category counts published on the page: Breakfast 9, Quesadillas 8, Crispy Tacos 1, Rolled Tacos 3, Burritos 11, Daily Special 5, Combinations 10, Tortas 6, Taco Special 7, Pint 4, Extra 4 = 68 items."
+  }
+]

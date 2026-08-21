@@ -242,9 +242,13 @@ the exact hazard `fetch-restaurants.mjs` documents at the top of the file.
 
 ## Other things worth knowing
 
-- **The 45-dish cap** is convention, not schema — inherited from batches 01–13 and
-  enforced in agent briefs plus a warning in `merge-wip.mjs`. 45% of restaurants hit it,
-  so those are representative spreads rather than full menus. Mean is 36.5, median 42.
+- **The dish cap is 100** as of 20 Aug 2026, raised from 45 — convention, not schema,
+  enforced in agent briefs plus a warning in `merge-wip.mjs`. The probe over 50
+  tail restaurants (`probe/FINDINGS.md`) measured menus at median 60 / max 240 items,
+  so the old cap of 45 captured only 54% of all items and truncated 73% of menus;
+  100 captures 86%, inside the product's 80–90% coverage target. The 318 menus loaded
+  at exactly 45 under the old cap are truncated and queued for re-extraction; new
+  extraction takes the whole menu up to 100, and the display can page beyond 45.
 - **Several restaurants add a 3–4% surcharge** to all checks. Stored prices are
   pre-surcharge, noted per file.
 - **The corpus itself is a filtered sample**, not all of San Diego: `fetch-restaurants.mjs`

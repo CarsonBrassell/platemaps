@@ -42,9 +42,14 @@ for (const file of files) {
     problems.push(`${file}: dishes is not an array`);
     continue;
   }
-  // The cap the batches have held to since batch-02. Over it is not an error
-  // worth dropping the menu for, but it should be visible before loading.
-  if (entry.dishes.length > 45) problems.push(`${file}: ${entry.dishes.length} dishes, over the 45 cap`);
+  // The cap was 45 through batches 01-13, then raised to 100 (20 Aug 2026)
+  // after a 50-restaurant probe measured what 45 was costing: menus in the
+  // tail run to a median of 60 items and a max of 240, so the old cap captured
+  // 54% of all items and truncated 73% of menus. 100 captures 86% - inside the
+  // product's 80-90% target - while keeping 240-item sushi lists from swamping
+  // a page. Over it is not an error worth dropping the menu for, but it should
+  // be visible before loading.
+  if (entry.dishes.length > 100) problems.push(`${file}: ${entry.dishes.length} dishes, over the 100 cap`);
   for (const [i, dish] of entry.dishes.entries()) {
     if (!dish.name) problems.push(`${file}: dish ${i + 1} has no name`);
   }

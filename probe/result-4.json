@@ -1,0 +1,92 @@
+[
+  {
+    "id": "735",
+    "name": "Cocina 35",
+    "outcome": "third_party_priced",
+    "menu_url": "https://order.toasttab.com/online/cocina-35-downtown",
+    "item_count": 97,
+    "has_prices": true,
+    "notes": "Official site cocina35.com/cocina-menu/ has a full dish list with descriptions but NO prices at all. Toast online ordering page (linked from the site's Order Online button) has the full priced menu, ~97 items across 8 sections. Uber Eats also lists it."
+  },
+  {
+    "id": "967",
+    "name": "Jersey Mike's Subs",
+    "outcome": "own_site_priced",
+    "menu_url": "https://www.jerseymikes.com/menu?storeId=20313",
+    "item_count": 55,
+    "has_prices": true,
+    "notes": "National chain page. Store is #20313, 6030 Village Way (The Village at Pacific Highlands Ranch). Prices ARE shown but baked into the product IMAGES (e.g. 'Regular $8.95') - get_page_text returns zero prices, only a screenshot reveals them. Uber Eats store page (ubereats.com/store/jersey-mikes-subs-6030-village-way/ZP4iuY25SjaaznLEHGoDEA) has the same menu with prices as real text."
+  },
+  {
+    "id": "902",
+    "name": "Carmelita's",
+    "outcome": "third_party_priced",
+    "menu_url": "https://restaurantguru.com/Carmelitas-Mexican-Grill-Borrego-Springs/menu",
+    "item_count": 79,
+    "has_prices": true,
+    "notes": "Neighborhood label 'Julian' is wrong - lat/lng 33.2555,-116.3808 is 575 Palm Canyon Dr, Borrego Springs (Carmelita's Mexican Grill and Cantina), ~18 mi from Julian. No official website exists. RestaurantGuru carries a full owner-uploaded menu with prices, ~79 items. zmenu.com also has one but is behind a Cloudflare bot check."
+  },
+  {
+    "id": "778",
+    "name": "Casa de Freds",
+    "outcome": "third_party_priced",
+    "menu_url": "https://restaurantguru.com/Freds-Hostess-Hut-San-Diego/menu",
+    "item_count": 110,
+    "has_prices": true,
+    "notes": "WARNING - HIJACKED DOMAIN: the location site www.fredsmexicancafeoldtown.com (linked from the legit parent fredsmexicancafe.com) now 302s to da3q0p0hubcc73842t90.datasyncpit.co.in, a 'Click Allow to confirm you are not a robot' push-notification scam. Left without clicking. Parent site fredsmexicancafe.com is clean but is just a 3-location splash page with no menu. Toast (order.toasttab.com/online/freds-mexican-cafe) exists but returned 'online ordering unavailable' / 'menu items unavailable' on both toasttab and toast.app. RestaurantGuru has a full owner-uploaded menu with prices (~110 items incl. food, cocktails, happy hour, dog menu)."
+  },
+  {
+    "id": "701",
+    "name": "Humphreys SoCal Dining & Music",
+    "outcome": "own_site_priced",
+    "menu_url": "https://halfmooninn.com/dining/humphreys-socal-dining-music/menu/",
+    "item_count": 190,
+    "has_prices": true,
+    "notes": "Menu lives on the parent hotel's site (Humphreys Half Moon Inn). Plain HTML, tabbed by menu (Breakfast, Dinner, Young Ladies & Gentlemen, Oasis Pool Bar), every item priced including a large wine/beer/cocktail list. Very large: ~190 line items, roughly half of them drinks. humphreysrestaurant.com also resolves and links here."
+  },
+  {
+    "id": "723",
+    "name": "Habaneros",
+    "outcome": "third_party_priced",
+    "menu_url": "https://order.toasttab.com/online/habaneros-mexican-grill-6785-miramesa-blvd-145",
+    "item_count": 200,
+    "has_prices": true,
+    "notes": "Reverse-geocoded to 6785 Mira Mesa Blvd #145, San Diego 92121 (Habanero's Mexican Grill) - 'Sorrento Valley' label is approximate. No standalone website; their Toast-hosted site habanerosmexicangrill.toast.site is broken (404, 'a shortUrl is missing for this page'). The Toast ordering page works and carries a very large fully priced menu (~200 line items incl. food, drinks, catering, mariscos)."
+  },
+  {
+    "id": "833",
+    "name": "Buka - Taste of Nigeria",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.beyondmenu.com/62728/san-diego/buka-restaurant-and-lounge-san-diego-92105.aspx",
+    "item_count": 52,
+    "has_prices": true,
+    "notes": "No official website exists (searched several ways; Yelp's \"see this menu on Buka's site\" link is dead). 3727 University Ave, aka Buka Nigerian Restaurant and Lounge. BeyondMenu has a fully priced ~52-item menu though the store is flagged \"not accepting online orders\". Yelp also has a priced menu at yelp.com/menu/buka-restaurant-taste-of-nigeria-san-diego but it is labelled \"archived\"."
+  },
+  {
+    "id": "893",
+    "name": "Las Olas",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.allmenus.com/ca/cardiff-by-the-sea/30447-las-olas/menu/",
+    "item_count": 75,
+    "has_prices": true,
+    "notes": "Official domain lasolasmex.com resolves but the Wix site is UNPUBLISHED - it serves only \"Private Site / This site is currently private\". Allmenus (Grubhub) has a full priced ~75-item menu, but the prices are clearly stale (breakfast burrito $8.50, carne asada platter $18.50) and the page footer is (c)2023. A staleness caveat matters more than availability here."
+  },
+  {
+    "id": "763",
+    "name": "Humberto's Taco Shop",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.doordash.com/store/humberto%E2%80%99s-taco-shop-san-diego-96367/831110/",
+    "item_count": 85,
+    "has_prices": true,
+    "notes": "1015 25th St (Broadway/Sherman Heights edge of Golden Hill). No real official website - humbertos-taco-shop.website looks official in search results but is an AI-generated SEO scraper page with zero prices. DoorDash has the store with prices (featured items visible without an address); RestaurantGuru mirrors a full owner-uploaded ~85-item priced menu updated a month ago (restaurantguru.com/Humbertos-San-Diego/menu) and is the easier one to parse."
+  },
+  {
+    "id": "786",
+    "name": "Medina",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.allmenus.com/ca/san-diego/631461-medina-moroccan-baja-kitchen/menu/",
+    "item_count": 16,
+    "has_prices": true,
+    "notes": "Full name Medina Moroccan-Baja Kitchen, 2850 El Cajon Blvd #4 (nominatim says North Park, not Normal Heights). No official website of any kind - no domain found. Allmenus/Grubhub has a fully priced menu but it is TINY: 16 items total (3 bowls, 3 tacos, 4 sides, 1 dessert, 5 drinks). RestaurantGuru has a newer owner-uploaded menu (5 months old) but only as photographs, not text. Good tail data point for how small these menus get."
+  }
+]

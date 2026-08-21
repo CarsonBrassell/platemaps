@@ -1,0 +1,92 @@
+[
+  {
+    "id": "819",
+    "name": "Tajima",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.yelp.com/menu/tajima-ramen-college-heights-san-diego",
+    "item_count": 57,
+    "has_prices": true,
+    "notes": "Official site tajimasandiego.com is image-only; hamburger nav does not open and /menu 404s. Yelp menu tab for the College Heights (Rolando) location has the full priced menu: 21 draft beers/ciders, 5 sakes, 11 appetizers, 12 ramen, 7 rice dishes. Ramen $17-19."
+  },
+  {
+    "id": "973",
+    "name": "Inland Tavern",
+    "outcome": "own_site_priced",
+    "menu_url": "https://www.inlandtavern.com/menu",
+    "item_count": 35,
+    "has_prices": true,
+    "notes": "Rebranded - inlandtavern.com now serves 'Shores Bar+Kitchen' (post-Bar Rescue) at the same San Marcos address. OSM neighborhood label 'Rancho Santa Fe' looks wrong; coords are San Marcos. Menu is an IMAGE on /menu: get_page_text returns only a blurb, prices verified by screenshot (Wings 15, Dirty Fries 18, Ahi Poke 17, Scrimshaw Fish & Chips 23). Item count estimated - the image does not scroll fully in-page."
+  },
+  {
+    "id": "864",
+    "name": "Tokyo Grill",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.ubereats.com/store/tokyo-grill/oFgIT4f5Qwm-LHvuLnKvKA",
+    "item_count": 54,
+    "has_prices": true,
+    "notes": "No website of its own - it is a food-court counter at Otay Ranch Town Center (2015 Birch Rd 501, Chula Vista), listed only in the mall directory. Uber Eats has the full priced menu: 54 priced items across 12 sections (Appetizer, Salad, Shrimp and Chicken, Ramen, Sushi Roll Special, Tempura, Katsu, Bowl, Spam Musubi, Side Order, Combo Special, Udon Combo). Same menu mirrored on Postmates."
+  },
+  {
+    "id": "812",
+    "name": "IHOP Express",
+    "outcome": "closed_permanently",
+    "menu_url": null,
+    "item_count": null,
+    "has_prices": false,
+    "notes": "Not really Barrio Logan - it was an 850 sq ft IHOP Express counter in the Navy Exchange food court at Naval Base San Diego (2260 Callagan Hwy, Bldg 3187A, 92136), opened Dec 2010. Yelp banner reads 'Yelpers report this location has closed' and the listing title is 'IHOP EXPRESS - CLOSED'. No IHOP Express appears in Google local results for San Diego; only regular IHOPs. On-base location would also be access-restricted."
+  },
+  {
+    "id": "920",
+    "name": "664 TJ Birrieria",
+    "outcome": "third_party_priced",
+    "menu_url": "https://postmates.com/store/664-tj-birrieria-imperial-ave/9sz4k-i9Vwee7O2j69yRXA",
+    "item_count": 34,
+    "has_prices": true,
+    "notes": "Small local chain (7+ SD locations); no official website found, only an Instagram (@664tjbirrieria). Postmates/Uber Eats listing for the matching branch at 6201 Imperial Ave has the full priced menu - about 34 unique items across Birria, Menudo, Combo, Bebidas, Postre and Extras. Taco de Birria $5.00, Orden Grande $15.50, Combo plate $12.95."
+  },
+  {
+    "id": "901",
+    "name": "Blue Jay Lodge",
+    "outcome": "closed_permanently",
+    "menu_url": null,
+    "item_count": null,
+    "has_prices": false,
+    "notes": "OSM data is stale on two counts: it is Mount Laguna (10600 Sunrise Hwy), not Julian, and the Blue Jay Lodge no longer exists. Yelp listing reads 'BLUE JAY LODGE - CLOSED'. Mt. Laguna Outfitters' own site says Derek purchased the old Blue Jay Lodge & Restaurant in 2022; it now trades as 'The Outpost by Valley Farm'. That successor is itself currently closed for repairs (its site theoutpostvfm.com/menu shows a closure notice instead of a menu; Yelp marks it TEMP. CLOSED, reopen scheduled Dec 2026). No priced menu for the Blue Jay Lodge name anywhere."
+  },
+  {
+    "id": "699",
+    "name": "Pomodoro",
+    "outcome": "own_site_priced",
+    "menu_url": "https://pomodorosd.com/menu",
+    "item_count": 55,
+    "has_prices": true,
+    "notes": "Pomodoro Ristorante Italiano, 2833 Avenida De Portugal. Official site pomodorosd.com has a plain-HTML /menu page, fully priced and trivially scrapeable: 55 priced items across Antipasti, Insalate, Pasta, Secondi, Gnocchi. Prices are bare numbers (e.g. 'LA BRUSCA 13.00'), a few without decimals ('CARPACCIO DI CARNE 17'). Also on Toast, Postmates and OpenTable if a second source is wanted."
+  },
+  {
+    "id": "897",
+    "name": "Rongbranch",
+    "outcome": "third_party_priced",
+    "menu_url": "https://www.allmenus.com/ca/julian/333204-rong-branch-restaurant/menu/",
+    "item_count": 49,
+    "has_prices": true,
+    "notes": "Rongbranch Cafe / Rong Branch Restaurant, 2722 Washington St, Julian. Own domain rongbranch.com exists but is a bare 'Coming Soon' placeholder and /menu 404s. Allmenus has 49 priced items (Burgers and Sandwiches, plus other sections). CAUTION: prices look stale - a 1/3 lb burger at $9.00 and a buffalo burger at $14.00 read like pre-2020 pricing. Zmenu and Sluurpy also carry it. Yelp is 2.3 stars over 578 reviews."
+  },
+  {
+    "id": "732",
+    "name": "Timestead by Modern Times",
+    "outcome": "own_site_priced",
+    "menu_url": "https://timesteadpub.com/food/",
+    "item_count": 35,
+    "has_prices": true,
+    "notes": "1065 Fourth Ave. Own site timesteadpub.com has a /food page whose menu is a single large IMAGE (wp-content/uploads/2026/08/OUTLINED.png) - get_page_text returns zero text, prices verified by screenshot. 35 food items with prices: Starters & Small Plates 12, Handhelds 7, Tacos 4, Flatbreads 3, Plates & Bowls 5, Salads/Soup 4, plus a Happy Hour block. Drinks are a separate /drinks page and Happy Hour is another standalone PNG. Also fully priced on Toast (toasttab.com/local/order/timestead) and Grubhub if a machine-readable source is needed."
+  },
+  {
+    "id": "817",
+    "name": "Kinchana",
+    "outcome": "third_party_priced",
+    "menu_url": "https://kinchana.square.site/",
+    "item_count": 31,
+    "has_prices": true,
+    "notes": "5712 El Cajon Blvd, Rolando/College Area. Official site kinchana.com is a brand/vision page with NO prices and no menu page - its only food link is 'CLICK HERE TO ORDER' pointing at the operator's own Square storefront kinchana.square.site, which is fully priced (Burgers $12, Jackfruit Hoagies $12, Wings $8, Side of Fries $5). Borderline call: Square is the operator's own channel, not a marketplace, so a lenient reading would be own_site_priced. Square lazy-renders about 26 rows at a time; sections seen are Most Popular, Burgers, Jackfruit Hoagies, Wings, Fries & Sides, Kid's Menu, Seasonal Specials, Vegan Burgers - roughly 31 unique items. Cookie banner declined."
+  }
+]
