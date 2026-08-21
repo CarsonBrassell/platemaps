@@ -483,3 +483,104 @@ html.pm-lock-scroll body {
     animation-timing-function: steps(1, end);
   }
 }
+
+/*
+ * --- The points award flying home ---------------------------------------
+ *
+ * The token that leaves the plate you just posted and lands in the header's
+ * points chip. `PhonePointsFly` owns the geometry — it measures this layer and
+ * writes the trip into --fly-dx/--fly-dy — so everything here is the motion.
+ */
+.pm-phone-shell .points-fly-layer {
+  position: fixed;
+  inset: 0;
+  /* Under the flash's 50 (it must never draw over the white screen) and over
+     the nav's 40. It is also the element PhonePointsFly measures to convert
+     viewport rects into this coordinate system, which is why it is a real
+     full-cover box rather than a zero-size anchor. */
+  z-index: 45;
+  pointer-events: none;
+}
+
+.pm-phone-shell .points-fly {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+  border-radius: 9999px;
+  background: var(--pm-orange);
+  padding: 0.3rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #f7f4ec;
+  animation: points-fly 0.9s cubic-bezier(0.3, 0, 0.2, 1) forwards;
+}
+
+/*
+ * The centring is repeated in every keyframe on purpose: `transform` is one
+ * property, so an animation that sets it replaces the base `translate(-50%,-50%)`
+ * outright and the token would jump a half-width sideways on its first frame.
+ *
+ * The 55% stop is what bends the path — it is well short of the destination but
+ * lifted 30px above the straight line, so the token arcs up out of the card and
+ * drops into the chip instead of sliding there.
+ */
+@keyframes points-fly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  14% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+  26% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  55% {
+    transform: translate(
+        calc(-50% + var(--fly-dx) * 0.45),
+        calc(-50% + var(--fly-dy) * 0.3 - 30px)
+      )
+      scale(0.92);
+  }
+  100% {
+    opacity: 0.9;
+    transform: translate(calc(-50% + var(--fly-dx)), calc(-50% + var(--fly-dy))) scale(0.45);
+  }
+}
+
+/* The chip taking the hit, as the number starts to climb. */
+@keyframes points-chip-pop {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.28);
+  }
+  65% {
+    transform: scale(0.96);
+  }
+}
+
+.pm-phone-shell .points-chip-hit {
+  animation: points-chip-pop 0.45s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No flight and no pop. The award still lands and the chip still counts —
+     the number changing is information, not decoration — it simply is not
+     thrown across the screen to get there. */
+  .pm-phone-shell .points-fly {
+    animation: none;
+    opacity: 0;
+  }
+
+  .pm-phone-shell .points-chip-hit {
+    animation: none;
+  }
+}

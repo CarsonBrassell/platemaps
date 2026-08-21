@@ -164,6 +164,74 @@ export function usePostFlash() {
 }
 
 /*
+ * --- The points award, and its flight -----------------------------------
+ *
+ * A second little store beside the flash, for the same reason: the token flies
+ * from the card on the feed to the chip in the header, and those are two
+ * components with no relationship to each other. The feed announces the award
+ * when the plate lands, `PhonePointsFly` flies it, and `PhoneFeedHeader` holds
+ * the old total until it arrives and then counts up. Nobody passes a prop.
+ *
+ * `arrived` is the whole point of the shape. Without it the header would read
+ * the new total straight out of `useAuth` — the composer refreshes the account
+ * before it navigates, so by the time the feed mounts the points are *already*
+ * banked — and the number would simply be higher when you got there, with
+ * nothing to watch. Holding the pre-award figure until the token lands is what
+ * makes the increase something the animation causes rather than something it
+ * arrives too late to show.
+ */
+export type PointsAward = { earned: number; arrived: boolean };
+
+let award: PointsAward | null = null;
+const awardListeners = new Set<() => void>();
+
+function emitAward() {
+  for (const listener of awardListeners) listener();
+}
+
+/** The plate landed and it paid. Called by the feed. */
+export function announceAward(earned: number) {
+  if (earned <= 0) return;
+  award = { earned, arrived: false };
+  emitAward();
+}
+
+/** The token reached the chip. Called by PhonePointsFly at the end of the flight. */
+export function landAward() {
+  if (!award || award.arrived) return;
+  /* A new object, not a mutation: useSyncExternalStore compares snapshots by
+     reference, so mutating in place would change nothing on screen. */
+  award = { ...award, arrived: true };
+  emitAward();
+}
+
+/** Called by the header once it has finished counting. */
+export function clearAward() {
+  if (!award) return;
+  award = null;
+  emitAward();
+}
+
+function subscribeAward(callback: () => void) {
+  awardListeners.add(callback);
+  return () => {
+    awardListeners.delete(callback);
+  };
+}
+
+function getAward() {
+  return award;
+}
+
+function getServerAward(): PointsAward | null {
+  return null;
+}
+
+export function usePointsAward() {
+  return useSyncExternalStore(subscribeAward, getAward, getServerAward);
+}
+
+/*
  * The plate itself, handed across the navigation.
  *
  * Same mechanism and the same lifetime as `photoHandoff` — a module variable

@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { PhoneNav, parseNavVariant } from "@/components/mobile/PhoneNav";
 import { PostFlash } from "@/components/mobile/PostFlash";
+import { PhonePointsFly } from "@/components/mobile/PhonePointsFly";
 
 /**
  * The frame every /m screen sits in: the nav, the space reserved for it, and
@@ -35,6 +36,7 @@ export function PhoneShell({ children }: { children: React.ReactNode }) {
       <div className="pm-phone-content">{children}</div>
       <PhoneNav variant={variant} />
       <PostFlash />
+      <PhonePointsFly />
     </div>
   );
 }

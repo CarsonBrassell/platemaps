@@ -1,8 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
+import { formatPoints } from "@/lib/points";
+import { PlateStarIcon } from "@/components/icons";
+import { clearAward, usePointsAward, type PointsAward } from "@/lib/postCelebration";
 
 /**
  * The Food Feed screen's header.
@@ -45,6 +49,78 @@ import { initials } from "@/lib/format";
  * of usable width the title plus a usable field do not both fit — a 190px input
  * is a field you cannot read your own query back out of.
  */
+/** One tick per point. Ten of them is a little over half a second. */
+const COUNT_STEP_MS = 55;
+
+/**
+ * What the chip should read right now.
+ *
+ * The total from `useAuth` is already the post-award figure by the time this
+ * screen exists — the composer refreshes the account before it navigates — so
+ * showing it directly would mean the number was simply bigger when you
+ * arrived. Instead the pre-award figure is held while the token is in the air,
+ * and the climb starts when it lands.
+ *
+ * Every update is inside a timer rather than in the effect body, which is the
+ * state-in-effect rule this codebase has been caught by before.
+ */
+function usePointsClimb(total: number, award: PointsAward | null) {
+  const [climbed, setClimbed] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!award?.arrived) return;
+    const from = total - award.earned;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    for (let i = 1; i <= award.earned; i++) {
+      timers.push(setTimeout(() => setClimbed(from + i), i * COUNT_STEP_MS));
+    }
+    /* Hand the store back once the number has caught up, so the chip drops to
+       reading the plain total and the next post starts clean. */
+    timers.push(
+      setTimeout(() => {
+        setClimbed(null);
+        clearAward();
+      }, award.earned * COUNT_STEP_MS + 500),
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [award, total]);
+
+  if (climbed !== null) return climbed;
+  if (award && !award.arrived) return total - award.earned;
+  return total;
+}
+
+/**
+ * Points, beside the face.
+ *
+ * The header had no points on it at all, which made the reward for posting
+ * invisible on the one screen you land on straight after earning it — and left
+ * the flying token with nothing to fly into. Deliberately the quiet `chip`
+ * treatment from `PointsBadge` rather than the orange one: this sits next to a
+ * screen title, not on a leaderboard, and DESIGN.md's single accent is not for
+ * decorating a header.
+ *
+ * `data-pm-points` is what `PhonePointsFly` measures to aim at. It is a
+ * targeting hook, not a style hook — don't select on it in CSS.
+ */
+function PointsChip({ points }: { points: number }) {
+  const award = usePointsAward();
+  const shown = usePointsClimb(points, award);
+
+  return (
+    <span
+      data-pm-points
+      className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-pm-grey-tint px-2 py-0.5 font-mono text-[11px] font-medium tabular-nums text-pm-grey-text ${
+        award?.arrived ? "points-chip-hit" : ""
+      }`}
+    >
+      <PlateStarIcon className="h-3 w-4" />
+      {formatPoints(shown)}
+      <span className="sr-only"> PM Points</span>
+    </span>
+  );
+}
+
 export function PhoneFeedHeader({ subtitle }: { subtitle?: React.ReactNode }) {
   const { account, isSignedIn, loading } = useAuth();
 
@@ -91,24 +167,27 @@ export function PhoneFeedHeader({ subtitle }: { subtitle?: React.ReactNode }) {
               className="h-9 w-9 shrink-0 rounded-full bg-pm-grey-tint"
             />
           ) : isSignedIn && account ? (
-            <Link
-              href="/m/account"
-              aria-label={`Your account, ${account.name}`}
-              className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-            >
-              {account.avatarUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={account.avatarUrl}
-                  alt=""
-                  className="h-9 w-9 shrink-0 rounded-full object-cover"
-                />
-              ) : (
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xs font-medium text-pm-grey-text">
-                  {initials(account.name)}
-                </span>
-              )}
-            </Link>
+            <>
+              <PointsChip points={account.points} />
+              <Link
+                href="/m/account"
+                aria-label={`Your account, ${account.name}`}
+                className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              >
+                {account.avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={account.avatarUrl}
+                    alt=""
+                    className="h-9 w-9 shrink-0 rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xs font-medium text-pm-grey-text">
+                    {initials(account.name)}
+                  </span>
+                )}
+              </Link>
+            </>
           ) : (
             <Link
               href="/m/account"

@@ -11,7 +11,7 @@ import { UtensilsIcon, CompassIcon, WifiOffIcon, PlusIcon } from "@/components/i
 import type { FeedTab, Post } from "@/components/feed/types";
 import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
-import { closePostFlash, takeLanding } from "@/lib/postCelebration";
+import { announceAward, closePostFlash, takeLanding } from "@/lib/postCelebration";
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
 import { PhoneFeedTabs } from "./PhoneFeedTabs";
@@ -190,14 +190,17 @@ export function PhoneFeedScreen() {
   }, [landing, posts]);
 
   /* The points confirmation, which the phone flow has never actually shown —
-     the composer wrote `earned` into a URL `/m/feed` does not read. Fired once
-     per landing; the banner is the feed's own, same as the web's. */
-  const bannerShown = useRef(false);
+     the composer wrote `earned` into a URL `/m/feed` does not read.
+     Announcing rather than bannering: `PhonePointsFly` flies the award into
+     the header's chip and the chip counts up, which says the same thing in the
+     place the number actually lives. A banner as well would be the same
+     sentence twice. Fired once per landing. */
+  const awardShown = useRef(false);
   useEffect(() => {
-    if (!landing || !slamId || bannerShown.current) return;
-    bannerShown.current = true;
-    if (landing.earned > 0) setBanner(`+${landing.earned} PM Points earned`);
-  }, [landing, slamId, setBanner]);
+    if (!landing || !slamId || awardShown.current) return;
+    awardShown.current = true;
+    announceAward(landing.earned);
+  }, [landing, slamId]);
 
   /**
    * A map bubble asking to open its post.
@@ -533,6 +536,8 @@ export function PhoneFeedScreen() {
                     ref={(el) => {
                       postRefs.current[post.id] = el;
                     }}
+                    /* What PhonePointsFly aims the token away from. */
+                    data-pm-landed={post.id === slamId ? "" : undefined}
                     className={`rounded-2xl transition-shadow motion-reduce:transition-none ${
                       post.id === highlighted ? "ring-2 ring-pm-orange" : ""
                     } ${post.id === slamId ? "post-spit" : ""}`}
