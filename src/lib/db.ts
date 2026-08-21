@@ -1885,10 +1885,30 @@ export async function getRestaurants(): Promise<RestaurantView[]> {
   // Seed-file order, not id order — `id` is TEXT, so ordering by it would
   // put "10" ahead of "2" and reshuffle the grid. See the sort_order note in
   // scripts/migrate.mjs.
+  /*
+   * `WHERE listed` is the readiness gate, and this is the only place it is
+   * enforced — every discovery surface (grid, search, map, filters, the
+   * restaurants API) reads through here, so one predicate covers all of them.
+   *
+   * It is not a nicety. A restaurant imported from OpenStreetMap has a name
+   * and coordinates and nothing else, and `RestaurantView.rating` is typed
+   * `number`. Seven components call `.toFixed(1)` on it, so a single unrated
+   * row in the result set threw `Cannot read properties of null` out of
+   * `RestaurantSearch` and took down the whole page for any query that
+   * happened to match its name — a failure with a far wider blast radius than
+   * the one broken listing that caused it.
+   *
+   * Holding those rows back rather than teaching the UI to render an absence
+   * is deliberate: a card with no photo, no rating and no menu is not a
+   * degraded listing, it is an empty one, and shipping it would make the grid
+   * worse in exchange for a bigger number on the page. `listed` is recomputed
+   * from the row's own completeness by scripts/publish-check.mjs, so it says
+   * what is true rather than what somebody set once.
+   */
   const restaurantRows = await sql`
     SELECT id, name, cuisine, neighborhood, distance, hours,
            lat, lng, rating, review_count, trending, photo, photo_alt, price_band
-    FROM restaurants ORDER BY sort_order, id
+    FROM restaurants WHERE listed ORDER BY sort_order, id
   `;
 
   return restaurantRows.map((row) => ({
@@ -1910,8 +1930,17 @@ export async function getRestaurants(): Promise<RestaurantView[]> {
   }));
 }
 
+/**
+ * One restaurant, or null if it is not ready to be shown.
+ *
+ * `AND listed` matters as much here as in the grid: without it an unlisted row
+ * is unreachable by browsing but still reachable by URL, and the page it
+ * renders is a crash rather than a 404. Returning null hands the caller a
+ * missing restaurant, which `restaurant/[id]/page.tsx` already knows how to
+ * turn into notFound().
+ */
 export async function getRestaurantById(id: string): Promise<Restaurant | null> {
-  const rows = await sql`SELECT * FROM restaurants WHERE id = ${id}`;
+  const rows = await sql`SELECT * FROM restaurants WHERE id = ${id} AND listed`;
   return rows[0] ? rowToRestaurant(rows[0]) : null;
 }
 

@@ -529,6 +529,66 @@ const statements = [
   // obvious throwaway test signup at "cal@email") and was renamed by hand
   // first so this index can actually build.
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_users_name_unique ON users (lower(name))`,
+  // --- Where a restaurant came from, and whether it is ready to show --------
+  //
+  // The corpus stopped being one pipeline. Yelp search returns a ranked sample
+  // of well-reviewed places and then stops — it will not enumerate a city, so
+  // it cannot reach every restaurant in San Diego however many calls it is
+  // given. OpenStreetMap will, but an OSM row arrives as a name, a cuisine and
+  // a pair of coordinates: no rating, no photo, no hours, no menu.
+  //
+  // `source_key` records which one a row came from (`yelp:<alias>` /
+  // `osm:node/<id>`) and is the identity a re-import matches on, so the same
+  // restaurant found twice updates instead of duplicating.
+  //
+  // `listed` is the readiness gate, and it exists because the app has no
+  // concept of a half-finished restaurant: `rating` is typed non-null and
+  // called with `.toFixed(1)` in seven components, so one row with a null
+  // rating took down the search results for every query that matched it, not
+  // just its own page. Rather than teach every component to render an absence
+  // it has no design for, incomplete rows are held out of the query entirely —
+  // see `getRestaurants` in src/lib/db.ts, the only place the gate is enforced.
+  //
+  // Set by scripts/publish-check.mjs, which recomputes it from the row rather
+  // than trusting a flag somebody flipped by hand. Defaulting to FALSE is the
+  // load-bearing half: an importer that forgets to think about readiness
+  // stages its rows instead of publishing them broken.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS source_key TEXT`,
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS listed BOOLEAN NOT NULL DEFAULT FALSE`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_restaurants_source_key ON restaurants(source_key) WHERE source_key IS NOT NULL`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_listed ON restaurants(listed) WHERE listed`,
+
+  // A restaurant kept off the site on purpose, and why.
+  //
+  // `listed` alone cannot hold this, because publish-check.mjs recomputes
+  // `listed` from the row and would happily re-publish anything complete. Four
+  // of the six rows unlisted by hand turned out to be in Tijuana, filed under
+  // the San Ysidro neighbourhood — complete in every mechanical sense, and
+  // still not restaurants in San Diego. A judgement that survives one run and
+  // not the next is not a judgement, so it gets a column.
+  //
+  // Set means held, whatever else is true of the row. The text is for whoever
+  // reads it in six months, not for the code.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS hold_reason TEXT`,
+
+  // The restaurant's own site, which is where a menu comes from.
+  //
+  // Worth its own column rather than being looked up each time because
+  // finding it is the expensive half: OpenStreetMap tags a website on 47% of
+  // San Diego venues, and the other 53% need a paid search to discover one.
+  // Once found it does not change, so it is written down.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS website TEXT`,
+
+  // When Yelp was last ASKED about this restaurant, as opposed to what it
+  // said. The distinction is the same one menu_lookups draws, and it exists
+  // for the same reason: a restaurant Yelp has never heard of looks exactly
+  // like one nobody has got to yet, and at 300 calls a day, re-asking about
+  // the former forever is how a seventeen-day job becomes an endless one.
+  //
+  // Set whether the lookup matched or not. A row with a timestamp and no
+  // photo has been asked about and come back empty; leave it alone.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS yelp_checked_at TIMESTAMPTZ`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_yelp_checked ON restaurants(yelp_checked_at NULLS FIRST)`,
 ];
 
 for (const statement of statements) {
