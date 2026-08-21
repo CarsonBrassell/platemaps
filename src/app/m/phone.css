@@ -194,7 +194,22 @@ html.pm-lock-scroll body {
  * element means the more specific rule silently wins and the other never runs.
  */
 .pm-phone-shell .post-flash-shaker {
-  display: inline-flex;
+  /*
+   * A full-size centred layer, NOT a shrink-wrapped box.
+   *
+   * This matters more than it looks. The disc is sized `width: 64%`, and as an
+   * `inline-flex` wrapper this element had no definite width of its own — so
+   * that percentage resolved against a parent whose width depended on the
+   * child, which is circular. Chrome settled it at 160px and pushed the plate
+   * off-centre; an engine that resolves it to zero renders no plate and no
+   * bites at all. Filling the flash restores the exact box the disc used to
+   * measure against when it was a direct child of it.
+   */
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pm-phone-shell .post-flash-disc {
@@ -253,6 +268,19 @@ html.pm-lock-scroll body {
 .pm-phone-shell .post-flash-bitten {
   display: inline-flex;
   height: 56%;
+  /*
+   * A definite width, from the mark's own ratio (660x865) rather than from the
+   * <img> inside it.
+   *
+   * The bite masks are percentages *of this box*, so the box has to have a real
+   * width in every engine. Left to the image's `w-auto`, Safari resolves an
+   * auto width inside a percentage-height flex container to zero — Chrome
+   * reports 103px for the same markup — and a zero-width box makes every mask
+   * ellipse degenerate. It happened to still paint, which is worse than
+   * failing: it means the geometry the bites were measured against was only
+   * true in one browser.
+   */
+  aspect-ratio: 660 / 865;
   /* Only the crumbs fade. The bites themselves are deliberately NOT
      transitioned — a bite is instant, and easing one in makes it read as the
      logo dissolving rather than as something taking a chunk out of it. */
