@@ -328,20 +328,73 @@ export function usePostFeed({
     }
   }
 
+  /**
+   * Copy, by whichever route this browser actually allows.
+   *
+   * `navigator.clipboard.writeText` is the modern one and it is not always
+   * available even on a secure origin: it is gated behind a permission that
+   * several WebViews — including the one the iOS app runs in — deny outright,
+   * and it rejects with `NotAllowedError` rather than being absent, so a
+   * feature check does not catch it. `execCommand` is deprecated and still the
+   * only thing that works there, so it stays as the second attempt.
+   *
+   * Returns whether the text actually landed on the clipboard. The caller
+   * needs that answer: silently reporting "Link copied" for a copy that never
+   * happened is worse than the button doing nothing, because it stops the
+   * person from trying again.
+   */
+  async function copyText(text: string): Promise<boolean> {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      /* Fall through to the legacy path below. */
+    }
+    try {
+      const field = document.createElement("textarea");
+      field.value = text;
+      field.setAttribute("readonly", "");
+      // Off-screen but still focusable: `display: none` cannot be selected,
+      // and a visible field would scroll the page on focus.
+      field.style.position = "fixed";
+      field.style.top = "0";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.select();
+      const copied = document.execCommand("copy");
+      field.remove();
+      return copied;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Share a plate, or copy its link when there is no share sheet.
+   *
+   * Every failure used to land in one `catch` that returned null, on the
+   * reasoning that a cancelled native share throws and should stay quiet. It
+   * does — but so does a clipboard write the browser refuses, and swallowing
+   * both is why this button did nothing at all anywhere `navigator.share` is
+   * missing and the clipboard permission is denied. Only `AbortError` is a
+   * decision; everything else is a failure and the caller gets a note to show.
+   */
   async function share(post: Post): Promise<string | null> {
     const url = `${globalThis.location?.origin ?? ""}/feed?post=${post.id}`;
     const title = post.dishName ?? post.restaurant ?? "A plate on PlateMaps";
-    try {
-      if (navigator.share) {
+
+    if (navigator.share) {
+      try {
         await navigator.share({ title, text: post.text, url });
         return null;
+      } catch (err) {
+        // Dismissing the sheet is a choice, not a problem to report.
+        if (err instanceof DOMException && err.name === "AbortError") return null;
+        // Anything else means the sheet never delivered — fall back to copying.
       }
-      await navigator.clipboard.writeText(url);
-      return "Link copied";
-    } catch {
-      // A cancelled native share throws too — staying silent is correct there.
-      return null;
     }
+
+    return (await copyText(url)) ? "Link copied" : "Couldn't copy the link";
   }
 
   return {
