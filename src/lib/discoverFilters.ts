@@ -291,7 +291,20 @@ export function matchesFilters(
   }
   if (f.quick.includes("trending") && !r.trending) return false;
   if (f.quick.includes("open-now") && ctx.now) {
-    if (openStateFor(r.hours, ctx.now).kind === "closed") return false;
+    /*
+     * Only a restaurant known to be open passes. This tested `kind === "closed"`
+     * and so let "unknown" through — every restaurant whose hours had not been
+     * fetched counted as open, and at 5,699 rows that was thousands of them:
+     * "Open now" quietly meant "everything we cannot rule out", and its count
+     * said 905 of 991.
+     *
+     * Asking to see what is open is a question about restaurants, not about the
+     * completeness of our data, and the honest answer for one we know nothing
+     * about is to leave it out. This is also now the only place in the product
+     * that judges open or closed — the cards print hours and make no claim.
+     */
+    const kind = openStateFor(r.hours, ctx.now).kind;
+    if (kind !== "open" && kind !== "soon") return false;
   }
   return true;
 }
