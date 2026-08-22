@@ -141,6 +141,36 @@ function cuisineFor(tags) {
     .join(" ");
 }
 
+/** "3960 W Point Loma Blvd" — house number and street, or nothing. */
+function addressFor(tags) {
+  const number = tags["addr:housenumber"];
+  const street = tags["addr:street"];
+  if (!number || !street) return null;
+  const unit = tags["addr:unit"] ? ` #${tags["addr:unit"]}` : "";
+  return `${number} ${street}${unit}`;
+}
+
+/**
+ * The neighbourhood label, preferring the source's own city over geometry.
+ *
+ * `neighbourhoodFor` picks the nearest entry in regions.ts, which is right
+ * inside San Diego proper — "Little Italy" is more useful than "San Diego" —
+ * and wrong everywhere regions.ts has no entry. It has none for Escondido, San
+ * Marcos, Vista, Fallbrook or Borrego Springs, so restaurants there get filed
+ * under whatever happens to be closest: Carmelita's is 18 miles from the
+ * "Julian" it was labelled, and 15% of the corpus sits more than 5km from its
+ * claimed neighbourhood.
+ *
+ * So: use OSM's own city when it is a distinct incorporated one, and fall back
+ * to nearest-sub-area inside San Diego itself. That keeps the good half of the
+ * geometric rule and replaces the half that was guessing.
+ */
+function neighborhoodFor(tags, lat, lng) {
+  const city = tags["addr:city"]?.trim();
+  if (city && !/^san diego$/i.test(city)) return city;
+  return neighbourhoodFor(lat, lng);
+}
+
 function websiteFor(tags) {
   const url = tags.website || tags["contact:website"] || null;
   if (!url) return null;
@@ -240,9 +270,16 @@ const venues = elements
       lat,
       lng,
       cuisine: cuisineFor(e.tags),
-      neighborhood: neighbourhoodFor(lat, lng),
+      neighborhood: neighborhoodFor(e.tags, lat, lng),
       website: websiteFor(e.tags),
       hours: parseOpeningHours(e.tags.opening_hours),
+      address: addressFor(e.tags),
+      city: e.tags["addr:city"]?.trim() || null,
+      // Whether `neighborhood` above came from OSM's city rather than from
+      // nearest-sub-area geometry — the refresh only overwrites in that case.
+      usesCityName: Boolean(
+        e.tags["addr:city"]?.trim() && !/^san diego$/i.test(e.tags["addr:city"].trim()),
+      ),
     };
   })
   .filter(Boolean);
@@ -339,11 +376,13 @@ for (const [i, v] of inserts.entries()) {
   await sql`
     INSERT INTO restaurants
       (id, name, cuisine, neighborhood, lat, lng, source_key, website, hours,
+       address, city,
        sort_order, listed, distance, walk_time, closing_time, status, status_label)
     VALUES
       (${v.id}, ${v.name}, ${v.cuisine}, ${v.neighborhood}, ${v.lat}, ${v.lng},
        ${v.sourceKey}, ${v.website},
        ${v.hours ? JSON.stringify(v.hours) : null}::jsonb,
+       ${v.address}, ${v.city},
        ${v.sortOrder}, FALSE, '', '', '', 'calm', '')
     ON CONFLICT (id) DO NOTHING`;
   if (i % 50 === 0) process.stdout.write(`\r  inserting ${i}/${inserts.length}`);
@@ -355,7 +394,21 @@ for (const v of refreshes) {
   await sql`
     UPDATE restaurants SET
       website = COALESCE(website, ${v.website}),
-      hours   = COALESCE(hours, ${v.hours ? JSON.stringify(v.hours) : null}::jsonb)
+      hours   = COALESCE(hours, ${v.hours ? JSON.stringify(v.hours) : null}::jsonb),
+      address = COALESCE(address, ${v.address}),
+      city    = COALESCE(city, ${v.city}),
+      /*
+       * Neighbourhood is replaced rather than filled, but only when OSM names
+       * a distinct city — the expression is null otherwise, so COALESCE keeps
+       * what is already there.
+       *
+       * The existing value came from nearest-sub-area, which is a guess
+       * wherever regions.ts has no entry: Carmelita's was filed under Julian,
+       * eighteen miles from the Borrego Springs it is actually in. A real city
+       * name beats a near miss. Inside San Diego proper the geometric label
+       * stays, because "Little Italy" beats "San Diego".
+       */
+      neighborhood = COALESCE(${v.usesCityName ? v.neighborhood : null}, neighborhood)
     WHERE id = ${v.id}`;
 }
 

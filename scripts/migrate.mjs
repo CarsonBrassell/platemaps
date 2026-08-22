@@ -674,6 +674,24 @@ const statements = [
     expires_at TIMESTAMPTZ NOT NULL
   )`,
   `CREATE INDEX IF NOT EXISTS idx_password_resets_user ON password_resets(user_id, created_at DESC)`,
+
+  // --- Street address ------------------------------------------------------
+  //
+  // Both sources already carry it and both were throwing it away. Yelp's search
+  // response includes `location` in the same call that fetches the photo and
+  // the rating, and OpenStreetMap tags addr:housenumber / addr:street on 65% of
+  // San Diego venues. Neither costs an extra request, so an address is free
+  // for any restaurant either source knows.
+  //
+  // `city` is stored separately from the formatted line because it answers a
+  // question `neighborhood` gets wrong. Neighborhood is derived from the
+  // nearest entry in regions.ts, which has no sub-area for Escondido, San
+  // Marcos, Vista or Borrego Springs — so restaurants in those cities are
+  // filed under whatever is closest, and 15% of the corpus sits more than 5km
+  // from the neighbourhood it claims. A real city name from the source fixes
+  // that where the source has one.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS address TEXT`,
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS city TEXT`,
 ];
 
 for (const statement of statements) {
