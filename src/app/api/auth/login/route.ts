@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { accountJson } from "@/lib/account";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "node:crypto";
 import { getUserByEmail, createSession } from "@/lib/db";
@@ -25,17 +26,5 @@ export async function POST(req: NextRequest) {
 
   await setSessionCookie(token);
 
-  return NextResponse.json({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    points: user.points,
-    avatarUrl: user.avatarUrl,
-    sharePhotosPublicly: user.sharePhotosPublicly,
-    favoriteCuisine: user.favoriteCuisine,
-    favoriteRestaurantId: user.favoriteRestaurantId,
-    hideFromLeaderboard: user.hideFromLeaderboard,
-    discoverableByUsername: user.discoverableByUsername,
-    friendRequestsOpen: user.friendRequestsOpen,
-  });
+  return NextResponse.json(accountJson(user));
 }

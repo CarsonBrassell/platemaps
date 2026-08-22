@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { accountJson } from "@/lib/account";
 import { getUserByName, getUserById, updateUserName } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
@@ -58,17 +59,5 @@ export async function POST(req: Request) {
   const fresh = await getUserById(user.id);
   if (!fresh) return NextResponse.json({ error: "Account not found." }, { status: 404 });
 
-  return NextResponse.json({
-    id: fresh.id,
-    name: fresh.name,
-    email: fresh.email,
-    points: fresh.points,
-    avatarUrl: fresh.avatarUrl,
-    sharePhotosPublicly: fresh.sharePhotosPublicly,
-    favoriteCuisine: fresh.favoriteCuisine,
-    favoriteRestaurantId: fresh.favoriteRestaurantId,
-    hideFromLeaderboard: fresh.hideFromLeaderboard,
-    discoverableByUsername: fresh.discoverableByUsername,
-    friendRequestsOpen: fresh.friendRequestsOpen,
-  });
+  return NextResponse.json(accountJson(fresh));
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { accountJson } from "@/lib/account";
 import { cookies } from "next/headers";
 import { getSessionUserId, getUserById } from "@/lib/db";
 import { SESSION_COOKIE, setSessionCookie } from "@/lib/session";
@@ -32,19 +33,5 @@ export async function GET() {
 
   await setSessionCookie(token);
 
-  return NextResponse.json({
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      points: user.points,
-      avatarUrl: user.avatarUrl,
-      sharePhotosPublicly: user.sharePhotosPublicly,
-      favoriteCuisine: user.favoriteCuisine,
-      favoriteRestaurantId: user.favoriteRestaurantId,
-      hideFromLeaderboard: user.hideFromLeaderboard,
-      discoverableByUsername: user.discoverableByUsername,
-      friendRequestsOpen: user.friendRequestsOpen,
-    },
-  });
+  return NextResponse.json({ user: accountJson(user) });
 }

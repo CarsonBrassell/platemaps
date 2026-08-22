@@ -4,16 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { PointsBadge } from "@/components/feed/PointsBadge";
-import { CameraIcon, PlateStarIcon } from "@/components/icons";
+import { CameraIcon, PlateStarIcon, SettingsIcon } from "@/components/icons";
 import { PhoneProfileActivity } from "@/components/mobile/PhoneProfileActivity";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
-import { PhoneDeleteAccountPanel } from "@/components/mobile/PhoneDeleteAccountPanel";
-import { PhoneSecurityPanel } from "@/components/mobile/PhoneSecurityPanel";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { resizeImageToDataUrl } from "@/lib/image";
 import { POINT_RULES } from "@/lib/points";
-import { cuisines } from "@/data/restaurants";
 
 /**
  * Profile, phone version.
@@ -51,9 +48,6 @@ type Post = {
 
 const FOCUS =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
-
-const inputClass =
-  "mb-4 min-h-11 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-base transition-colors focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
 
 /**
  * Marks the Profile nav dot read, the same way `lib/navAlerts.ts` does when the
@@ -245,6 +239,20 @@ function ProfileOverview() {
               </p>
               <PointsBadge points={account.points} size="md" className="mt-1.5" />
             </div>
+
+            {/* The doorway to /m/account/settings, beside the name it belongs
+                to. Icon only, unlike the web page's labelled pill, and that is
+                the width arguing rather than a different opinion about clarity:
+                the card is 326px inside its padding, the avatar and its gap
+                take 88, and a gear + "Settings" would leave the name ~118px and
+                truncate it on most accounts. A 44px disc leaves it 178. */}
+            <Link
+              href={to("/m/account/settings")}
+              aria-label="Settings"
+              className={`mb-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint text-pm-grey-text transition-transform active:scale-95 ${FOCUS}`}
+            >
+              <SettingsIcon className="h-5 w-5" />
+            </Link>
           </div>
 
           {uploading && (
@@ -297,15 +305,12 @@ function ProfileOverview() {
             — see who you know and answer any requests waiting on you.
           </p>
 
-          {/* Above the settings panel on purpose: this is the part of the screen
-              you come back to check, and configuration is the part you set once. */}
+          {/* This is the part of the screen you come back to check. The two
+              ledgers and the delete panel used to follow it, which put six
+              things you configure once between your activity and your own
+              plates on a screen with ~640 usable points to spend; they live on
+              /m/account/settings now, behind the gear on the name row. */}
           <PhoneProfileActivity />
-
-          <ProfileSettingsPanel />
-
-          {/* Same order as the web account page: what the app shows about you,
-              then what you do to the account. */}
-          <PhoneSecurityPanel />
 
           {myPosts.length > 0 && (
             <>
@@ -354,238 +359,8 @@ function ProfileOverview() {
           >
             Log out
           </button>
-
-          {/* Below Log out, same order as the web account page: logging out is
-              what most people scrolling this far are reaching for. */}
-          <PhoneDeleteAccountPanel />
         </div>
       </div>
-    </div>
-  );
-}
-
-/**
- * The one global privacy decision in the whole app: whether photos default
- * public. Off by default, per the spec — posting itself asks nothing about
- * privacy; this is the only place that toggle lives. Also holds the two profile
- * favorites, stored as structured references (a real cuisine off the same list
- * Discover's filters use, a real restaurant id) rather than free text, since
- * the point of storing them this way is to use them for taste matching later.
- *
- * `cuisines` is imported rather than derived from the restaurant list because
- * `/api/account/settings` validates the submitted value against exactly that
- * array — offering anything else would build a select whose options the server
- * rejects. Same import the web panel makes.
- */
-/**
- * One switch row, phone dressing: a rank-3 local switch, so it wears the
- * segmented tan track with a white selected segment rather than the web
- * panel's iOS-style toggle. Two named options also say what the states are,
- * which a bare track leaves you to infer.
- *
- * Four of these on the panel now — hand-rolling the track each time is how the
- * third one ends up a different width and nobody notices for a month.
- */
-function PhoneSettingSwitch({
-  label,
-  description,
-  on,
-  disabled,
-  onPick,
-}: {
-  label: string;
-  description: string;
-  on: boolean;
-  disabled: boolean;
-  onPick: () => void;
-}) {
-  return (
-    <div className="mb-4">
-      <p className="text-sm font-medium text-zinc-800">{label}</p>
-      <p className="mt-0.5 text-xs leading-snug text-zinc-500">{description}</p>
-
-      <div
-        role="group"
-        aria-label={label}
-        className="mt-2.5 flex gap-1 rounded-full bg-pm-grey-tint p-1"
-      >
-        {[
-          { value: false, label: "Off" },
-          { value: true, label: "On" },
-        ].map((option) => (
-          <button
-            key={option.label}
-            type="button"
-            aria-pressed={on === option.value}
-            onClick={() => {
-              if (on !== option.value) onPick();
-            }}
-            disabled={disabled}
-            className={`mono-label min-h-11 flex-1 rounded-full transition-colors disabled:opacity-50 ${FOCUS} ${
-              on === option.value ? "bg-white text-zinc-900" : "text-pm-grey-text"
-            }`}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ProfileSettingsPanel() {
-  const { account, updateSettings } = useAuth();
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-  // Only the favourite-restaurant <select> needs these, and only to name the
-  // options — the id the server validates against is its own row now.
-  const [restaurants, setRestaurants] = useState<{ id: string; name: string }[]>([]);
-
-  // Above the `!account` guard, because hooks cannot run conditionally.
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      try {
-        const res = await fetch("/api/restaurants");
-        if (!res.ok) return;
-        const data: { restaurants: { id: string; name: string }[] } = await res.json();
-        if (!cancelled) setRestaurants(data.restaurants);
-      } catch {
-        // The select falls back to "Not set" only, which is still a valid
-        // state — better than blocking the rest of the settings panel.
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (!account) return null;
-
-  async function handleToggle() {
-    setSaving(true);
-    setError("");
-    const result = await updateSettings({ sharePhotosPublicly: !account!.sharePhotosPublicly });
-    if (result) setError(result);
-    setSaving(false);
-  }
-
-  /** The three privacy switches. Same round trip as every other field here. */
-  async function handlePrivacy(
-    key: "hideFromLeaderboard" | "discoverableByUsername" | "friendRequestsOpen",
-    value: boolean
-  ) {
-    setSaving(true);
-    setError("");
-    const result = await updateSettings({ [key]: value });
-    if (result) setError(result);
-    setSaving(false);
-  }
-
-  async function handleCuisine(value: string) {
-    setSaving(true);
-    setError("");
-    const result = await updateSettings({ favoriteCuisine: value || null });
-    if (result) setError(result);
-    setSaving(false);
-  }
-
-  async function handleRestaurant(value: string) {
-    setSaving(true);
-    setError("");
-    const result = await updateSettings({ favoriteRestaurantId: value || null });
-    if (result) setError(result);
-    setSaving(false);
-  }
-
-  return (
-    <div className="mb-6 rounded-xl bg-pm-grey-tint/40 p-3.5">
-      <p className="mono-label mb-3 text-zinc-500">Profile settings</p>
-
-      <PhoneSettingSwitch
-        label="Share my photos publicly"
-        /* Framed as forward-only on purpose — this is the one fact about the
-           toggle that isn't visually obvious from the switch itself, and
-           getting it wrong reads as a broken promise, not a UI bug. */
-        description="Off by default. New posts only — turning this on won't make photos you've already shared public."
-        on={account.sharePhotosPublicly}
-        disabled={saving}
-        onPick={handleToggle}
-      />
-
-      <PhoneSettingSwitch
-        label="Hide me from the leaderboard"
-        description="You keep earning points and can still see your own. Friends just won't see you ranked."
-        on={account.hideFromLeaderboard}
-        disabled={saving}
-        onPick={() => void handlePrivacy("hideFromLeaderboard", !account.hideFromLeaderboard)}
-      />
-
-      <PhoneSettingSwitch
-        label="Let people find me by username"
-        description="On by default. Turning it off keeps you out of username search — people you're already friends with still see you."
-        on={account.discoverableByUsername}
-        disabled={saving}
-        onPick={() =>
-          void handlePrivacy("discoverableByUsername", !account.discoverableByUsername)
-        }
-      />
-
-      <PhoneSettingSwitch
-        label="Accept friend requests"
-        description="Turning this off stops new requests. It doesn't remove the friends you already have."
-        on={account.friendRequestsOpen}
-        disabled={saving}
-        onPick={() => void handlePrivacy("friendRequestsOpen", !account.friendRequestsOpen)}
-      />
-
-      <label
-        htmlFor="phone-favorite-cuisine"
-        className="mb-1 block text-sm font-medium text-zinc-700"
-      >
-        Favorite cuisine
-      </label>
-      <select
-        id="phone-favorite-cuisine"
-        value={account.favoriteCuisine ?? ""}
-        onChange={(e) => handleCuisine(e.target.value)}
-        disabled={saving}
-        className={inputClass}
-      >
-        <option value="">Not set</option>
-        {cuisines.map((c) => (
-          <option key={c} value={c}>
-            {c}
-          </option>
-        ))}
-      </select>
-
-      <label
-        htmlFor="phone-favorite-restaurant"
-        className="mb-1 block text-sm font-medium text-zinc-700"
-      >
-        Favorite restaurant
-      </label>
-      <select
-        id="phone-favorite-restaurant"
-        value={account.favoriteRestaurantId ?? ""}
-        onChange={(e) => handleRestaurant(e.target.value)}
-        disabled={saving}
-        className={inputClass}
-      >
-        <option value="">Not set</option>
-        {restaurants.map((r) => (
-          <option key={r.id} value={r.id}>
-            {r.name}
-          </option>
-        ))}
-      </select>
-
-      {error && (
-        <p role="alert" className="text-sm text-red-700">
-          {error}
-        </p>
-      )}
     </div>
   );
 }

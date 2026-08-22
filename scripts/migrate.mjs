@@ -621,6 +621,59 @@ const statements = [
   // Re-running against already-nullable columns is a no-op.
   `ALTER TABLE restaurants ALTER COLUMN rating DROP NOT NULL`,
   `ALTER TABLE restaurants ALTER COLUMN review_count DROP NOT NULL`,
+// --- An email address nobody has proved they own -------------------------
+  //
+  // `users.email` is written once at signup, is the unique key a login is
+  // looked up by, and is the only address a recovery could ever be sent to —
+  // and nothing has ever checked that the person typing it can read it. A typo
+  // at signup produces an account that works perfectly until the day its owner
+  // needs it back, at which point there is no route home at all.
+  //
+  // Three pieces, and the split between them is the whole safety property:
+  //
+  // - `email_verified_at` is NULL for every account that already exists. That
+  //   is the truth and must not be backfilled — nobody proved anything. The
+  //   ledger says "Unverified" and offers to send a link.
+  // - `pending_email` is the address someone has asked to move to. It is for
+  //   display only ("Check your inbox"), never for authentication.
+  // - `email_verifications` is the authority. The new address is snapshotted on
+  //   the token row, and `users.email` is not touched until that token comes
+  //   back. This is what stops a mistyped address from taking over an account:
+  //   an address you cannot read is an address whose link you never click.
+  //
+  // The primary key is a SHA-256 of the token, not the token — the raw value
+  // exists only in the sent mail, so a leaked table hands over nothing usable.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified_at TIMESTAMPTZ`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS pending_email TEXT`,
+  `CREATE TABLE IF NOT EXISTS email_verifications (
+    token_hash TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    email TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    expires_at TIMESTAMPTZ NOT NULL
+  )`,
+  // Every read is "the live tokens for this user" — redeeming one clears the
+  // rest, and the resend throttle counts the newest.
+  `CREATE INDEX IF NOT EXISTS idx_email_verifications_user ON email_verifications(user_id, created_at DESC)`,
+// --- Forgotten passwords -------------------------------------------------
+  //
+  // Same shape and same rules as `email_verifications` above: the hash is
+  // stored, never the token, and the row is the authority for one single use.
+  // Two tables rather than one with a `kind` column, because they are spent
+  // under different rules — a verification proves an address and a reset
+  // rewrites a credential and ends every session — and a shared table makes it
+  // one typo away from a link minted for one purpose being redeemable for the
+  // other.
+  //
+  // No `email` column, unlike the verification table. A reset never chooses an
+  // address; it acts on the account the token was minted for.
+  `CREATE TABLE IF NOT EXISTS password_resets (
+    token_hash TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    expires_at TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_password_resets_user ON password_resets(user_id, created_at DESC)`,
 ];
 
 for (const statement of statements) {

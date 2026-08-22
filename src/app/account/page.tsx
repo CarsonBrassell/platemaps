@@ -1,17 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
+import { PASSWORD_HINT, checkPassword } from "@/lib/password";
 import { initials } from "@/lib/format";
 import { resizeImageToDataUrl } from "@/lib/image";
-import { PlateStarIcon } from "@/components/icons";
+import { PlateStarIcon, SettingsIcon } from "@/components/icons";
 import { ProfileActivity } from "@/components/ProfileActivity";
-import { DeleteAccountPanel } from "@/components/account/DeleteAccountPanel";
-import { SecurityPanel } from "@/components/account/SecurityPanel";
 import { POINT_RULES } from "@/lib/points";
-import { cuisines } from "@/data/restaurants";
 
 const inputClass =
   "mb-4 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-sm transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
@@ -111,6 +109,11 @@ function AuthForm() {
   const [submitting, setSubmitting] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
+  /* Shown as a hint rather than an error: it appears while the field is still
+     half-typed, when "Use at least 8 characters" is information, not a
+     complaint. The submit path reports the same string as an error. */
+  const weakPassword = mode === "signup" && password ? checkPassword(password, { name, email }) : null;
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
@@ -125,6 +128,13 @@ function AuthForm() {
     if (mode === "login" && (!email || !password)) {
       setError("Enter your email and password.");
       return;
+    }
+    if (mode === "signup") {
+      const weak = checkPassword(password, { name, email });
+      if (weak) {
+        setError(weak);
+        return;
+      }
     }
     setSubmitting(true);
     const result =
@@ -216,8 +226,27 @@ function AuthForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder={mode === "signup" ? "Create a password" : "Your password"}
+          autoComplete={mode === "signup" ? "new-password" : "current-password"}
           className={inputClass}
         />
+
+        {/* The rule while you type, and the reason it isn't a list of symbol
+            requirements — see lib/password.ts. The server checks again on
+            submit; this only saves a round trip. */}
+        {mode === "signup" && (
+          <p className="-mt-2 mb-4 text-xs text-zinc-500">{weakPassword ?? PASSWORD_HINT}</p>
+        )}
+
+        {mode === "login" && (
+          <p className="-mt-2 mb-4 text-xs">
+            <Link
+              href="/forgot-password"
+              className="text-zinc-500 underline underline-offset-2 hover:text-zinc-700"
+            >
+              Forgot your password?
+            </Link>
+          </p>
+        )}
 
         {mode === "signup" && (
           <label className="mb-4 flex cursor-pointer items-start gap-2.5 text-xs text-zinc-500">
@@ -345,12 +374,29 @@ function AccountOverview() {
             onChange={handleAvatarChange}
             className="hidden"
           />
-          <div className="pb-1">
+          <div className="min-w-0 pb-1">
             <h1 className="font-display text-xl font-semibold text-zinc-900">{account.name}</h1>
             <p className="text-sm text-zinc-500">{account.email}</p>
             {uploading && <p className="mt-1 text-xs text-zinc-500">Uploading...</p>}
             {avatarError && <p className="mt-1 text-xs text-red-600">{avatarError}</p>}
           </div>
+
+          {/* The doorway to /account/settings, on the row that names whose
+              account this is — which is the row a gear belongs beside. Tan
+              pill, the unselected chip treatment, because this goes somewhere
+              ordinary; the orange is spent on posting and nothing else.
+
+              Labelled rather than a bare glyph. A lone gear is a guess, and
+              "Settings" costs 54px on a row with room for it. `ml-auto` rather
+              than a spacer so the row still collapses cleanly when the name is
+              long. */}
+          <Link
+            href="/account/settings"
+            className="ml-auto mb-1 inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-pm-grey-tint px-4 text-sm font-medium text-pm-grey-text transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+          >
+            <SettingsIcon className="h-4 w-4 shrink-0" />
+            Settings
+          </Link>
         </div>
 
       <div className="mb-6 grid grid-cols-3 gap-3">
@@ -393,19 +439,12 @@ function AccountOverview() {
         — see who you know and answer any requests waiting on you.
       </p>
 
-      {/* Sits above the settings panel on purpose: this is the part of the
-          page you come back to check, and configuration is the part you set
-          once. */}
+      {/* This is the part of the page you come back to check. The two settings
+          ledgers and the delete panel used to sit directly under it, which put
+          six things you configure once between your activity and your own
+          plates; they live on /account/settings now, behind the gear beside
+          your name. */}
       <ProfileActivity />
-
-      <ProfileSettingsPanel />
-
-      {/* Below the settings that change what the app shows, above the block
-          list and the delete panel — reversible things first, in rough order
-          of how often anyone touches them. */}
-      <SecurityPanel />
-
-      <BlockedUsersPanel />
 
       {myPosts.length > 0 && (
         <>
@@ -452,296 +491,7 @@ function AccountOverview() {
         >
           Log out
         </button>
-
-        {/* Dead last, below logging out, because logging out is what most
-            people reaching this end of the page actually want. */}
-        <div className="mt-8">
-          <DeleteAccountPanel />
-        </div>
       </div>
-    </div>
-  );
-}
-/**
- * The one global privacy decision in the whole app: whether photos default
- * public. Off by default, per the spec — posting itself asks nothing about
- * privacy; this is the only place that toggle lives. Also holds the two
- * profile favorites, stored as structured references (a real cuisine off the
- * same list Discover's filters use, a real restaurant id) rather than free
- * text, since the point of storing them this way is to use them for taste
- * matching later.
- */
-/**
- * One switch row. Four of them on this panel now, and hand-rolling the track
- * and knob each time is how they drift apart — the third one ends up a
- * different width and nobody notices for a month.
- */
-function SettingSwitch({
-  label,
-  description,
-  checked,
-  disabled,
-  onChange,
-}: {
-  label: string;
-  description: ReactNode;
-  checked: boolean;
-  disabled: boolean;
-  onChange: () => void;
-}) {
-  return (
-    <div className="mb-4 flex items-start justify-between gap-3">
-      <div className="min-w-0">
-        <p className="text-sm font-medium text-zinc-800">{label}</p>
-        <p className="mt-0.5 text-xs text-zinc-500">{description}</p>
-      </div>
-      {/* The button is 44px tall for the tap target; the track it draws stays
-          28px and centred inside it. They used to be the same element, which
-          made every switch on this page a 28px target — under the floor
-          AGENTS.md sets, and the kind of miss that spreads by copy-paste. */}
-      <button
-        type="button"
-        role="switch"
-        aria-checked={checked}
-        aria-label={label}
-        onClick={onChange}
-        disabled={disabled}
-        className="relative h-11 w-12 shrink-0 rounded-full disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-      >
-        <span
-          className={`absolute inset-x-0 top-2 h-7 rounded-full transition-colors ${
-            checked ? "bg-pm-orange" : "bg-zinc-300"
-          }`}
-        />
-        {/* `left-1` is load-bearing. Without it the knob is an absolutely
-            positioned box with no inset, so it falls at its static position —
-            which a button centres — and the translate then pushes it off the
-            end of the track entirely. It rendered ~20px outside the pill. */}
-        <span
-          className={`absolute left-1 top-3 h-5 w-5 rounded-full bg-white transition-transform ${
-            checked ? "translate-x-5" : "translate-x-0"
-          }`}
-        />
-      </button>
-    </div>
-  );
-}
-
-function ProfileSettingsPanel() {
-  const { account, updateSettings } = useAuth();
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-  // Only the favourite-restaurant <select> needs these, and only to name the
-  // options — the id the server validates against is its own row now.
-  const [restaurants, setRestaurants] = useState<{ id: string; name: string }[]>([]);
-
-  // Above the `!account` guard, because hooks cannot run conditionally. The
-  // request is cheap and the panel is only mounted on the account screen.
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      try {
-        const res = await fetch("/api/restaurants");
-        if (!res.ok) return;
-        const data: { restaurants: { id: string; name: string }[] } = await res.json();
-        if (!cancelled) setRestaurants(data.restaurants);
-      } catch {
-        // The select falls back to "Not set" only, which is still a valid
-        // state — better than blocking the rest of the settings panel.
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (!account) return null;
-
-  async function handleToggle() {
-    setSaving(true);
-    setError("");
-    const result = await updateSettings({ sharePhotosPublicly: !account!.sharePhotosPublicly });
-    if (result) setError(result);
-    setSaving(false);
-  }
-
-  /** The three privacy switches. Same round trip as every other field here. */
-  async function handlePrivacy(
-    key: "hideFromLeaderboard" | "discoverableByUsername" | "friendRequestsOpen",
-    value: boolean
-  ) {
-    setSaving(true);
-    setError("");
-    const result = await updateSettings({ [key]: value });
-    if (result) setError(result);
-    setSaving(false);
-  }
-
-  async function handleCuisine(value: string) {
-    setSaving(true);
-    setError("");
-    const result = await updateSettings({ favoriteCuisine: value || null });
-    if (result) setError(result);
-    setSaving(false);
-  }
-
-  async function handleRestaurant(value: string) {
-    setSaving(true);
-    setError("");
-    const result = await updateSettings({ favoriteRestaurantId: value || null });
-    if (result) setError(result);
-    setSaving(false);
-  }
-
-  return (
-    <div className="mb-6 rounded-xl bg-pm-grey-tint/40 p-4">
-      <p className="mono-label mb-3 text-zinc-500">Profile settings</p>
-
-      <SettingSwitch
-        label="Share my photos publicly"
-        /* Framed as forward-only on purpose — this is the one fact about the
-           toggle that isn't visually obvious from the switch itself, and
-           getting it wrong reads as a broken promise, not a UI bug. */
-        description="Off by default. New posts only — turning this on won't make photos you've already shared public."
-        checked={account.sharePhotosPublicly}
-        disabled={saving}
-        onChange={handleToggle}
-      />
-
-      <SettingSwitch
-        label="Hide me from the leaderboard"
-        description="You keep earning points and can still see your own. Friends just won't see you ranked."
-        checked={account.hideFromLeaderboard}
-        disabled={saving}
-        onChange={() => void handlePrivacy("hideFromLeaderboard", !account.hideFromLeaderboard)}
-      />
-
-      <SettingSwitch
-        label="Let people find me by username"
-        description="On by default. Turning it off keeps you out of username search — people you're already friends with still see you."
-        checked={account.discoverableByUsername}
-        disabled={saving}
-        onChange={() =>
-          void handlePrivacy("discoverableByUsername", !account.discoverableByUsername)
-        }
-      />
-
-      <SettingSwitch
-        label="Accept friend requests"
-        description="Turning this off stops new requests. It doesn't remove the friends you already have."
-        checked={account.friendRequestsOpen}
-        disabled={saving}
-        onChange={() => void handlePrivacy("friendRequestsOpen", !account.friendRequestsOpen)}
-      />
-
-      <label className="mb-1 block text-sm font-medium text-zinc-700">Favorite cuisine</label>
-      <select
-        value={account.favoriteCuisine ?? ""}
-        onChange={(e) => handleCuisine(e.target.value)}
-        disabled={saving}
-        className={inputClass}
-      >
-        <option value="">Not set</option>
-        {cuisines.map((c) => (
-          <option key={c} value={c}>
-            {c}
-          </option>
-        ))}
-      </select>
-
-      <label className="mb-1 block text-sm font-medium text-zinc-700">Favorite restaurant</label>
-      <select
-        value={account.favoriteRestaurantId ?? ""}
-        onChange={(e) => handleRestaurant(e.target.value)}
-        disabled={saving}
-        className={inputClass}
-      >
-        <option value="">Not set</option>
-        {restaurants.map((r) => (
-          <option key={r.id} value={r.id}>
-            {r.name}
-          </option>
-        ))}
-      </select>
-
-      {error && <p className="text-sm text-red-600">{error}</p>}
-    </div>
-  );
-}
-
-/**
- * The one place a block is reversible. Post cards and profile pages can
- * create a block, but this is the only surface that lists them and lets you
- * undo one — mirrors ProfileSettingsPanel's shell (mono-label + tinted card)
- * rather than the friends list's white-card style, since this reads as a
- * setting, not a social list.
- */
-function BlockedUsersPanel() {
-  const { account } = useAuth();
-  const [blocked, setBlocked] = useState<{ id: string; name: string; avatarUrl?: string }[]>([]);
-  const [loaded, setLoaded] = useState(false);
-  const [pendingId, setPendingId] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!account) return;
-    fetch("/api/blocks")
-      .then((res) => res.json())
-      .then((data: { blocked: { id: string; name: string; avatarUrl?: string }[] }) => {
-        setBlocked(data.blocked);
-        setLoaded(true);
-      })
-      .catch(() => setLoaded(true));
-  }, [account]);
-
-  async function handleUnblock(userId: string) {
-    setPendingId(userId);
-    const previous = blocked;
-    setBlocked((b) => b.filter((u) => u.id !== userId));
-    try {
-      const res = await fetch("/api/blocks", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId }),
-      });
-      if (!res.ok) throw new Error("failed");
-    } catch {
-      setBlocked(previous);
-    }
-    setPendingId(null);
-  }
-
-  // Nothing blocked and we know it — no reason to show an empty settings
-  // card most people will never need.
-  if (!account || (loaded && blocked.length === 0)) return null;
-
-  return (
-    <div className="mb-6 rounded-xl bg-pm-grey-tint/40 p-4">
-      <p className="mono-label mb-3 text-zinc-500">Blocked</p>
-      <ul className="space-y-2">
-        {blocked.map((u) => (
-          <li key={u.id} className="flex items-center justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-2.5">
-              {u.avatarUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={u.avatarUrl} alt="" className="h-8 w-8 rounded-full object-cover" />
-              ) : (
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xs font-medium text-pm-grey-text">
-                  {initials(u.name)}
-                </span>
-              )}
-              <span className="truncate text-sm font-medium text-zinc-800">{u.name}</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => handleUnblock(u.id)}
-              disabled={pendingId === u.id}
-              className="min-h-9 shrink-0 rounded-full bg-white px-3 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:opacity-50"
-            >
-              Unblock
-            </button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }

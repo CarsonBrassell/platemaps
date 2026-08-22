@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { accountJson } from "@/lib/account";
 import { updateUserAvatar } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
@@ -23,17 +24,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Account not found." }, { status: 404 });
   }
 
-  return NextResponse.json({
-    id: freshUser.id,
-    name: freshUser.name,
-    email: freshUser.email,
-    points: freshUser.points,
-    avatarUrl: freshUser.avatarUrl,
-    sharePhotosPublicly: freshUser.sharePhotosPublicly,
-    favoriteCuisine: freshUser.favoriteCuisine,
-    favoriteRestaurantId: freshUser.favoriteRestaurantId,
-    hideFromLeaderboard: freshUser.hideFromLeaderboard,
-    discoverableByUsername: freshUser.discoverableByUsername,
-    friendRequestsOpen: freshUser.friendRequestsOpen,
-  });
+  return NextResponse.json(accountJson(freshUser));
 }

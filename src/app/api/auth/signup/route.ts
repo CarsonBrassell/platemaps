@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { accountJson } from "@/lib/account";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "node:crypto";
 import { getUserByEmail, getUserByName, createUser, createSession } from "@/lib/db";
 import { setSessionCookie } from "@/lib/session";
+import { checkPassword } from "@/lib/password";
 
 /** Same charset a handle already renders in — no space could survive
     FoodPostCard's handleFor() anyway, so a signup that let one through would
@@ -24,6 +26,14 @@ export async function POST(req: NextRequest) {
       },
       { status: 400 }
     );
+  }
+
+  // Checked against the username and address being created, so a password
+  // can't be the very thing it is protecting. See lib/password.ts for why
+  // there are no digit/symbol requirements.
+  const weak = checkPassword(String(password), { name: String(name), email: String(email) });
+  if (weak) {
+    return NextResponse.json({ error: weak }, { status: 400 });
   }
 
   if (agreedToTerms !== true) {
@@ -60,17 +70,5 @@ export async function POST(req: NextRequest) {
 
   await setSessionCookie(token);
 
-  return NextResponse.json({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    points: user.points,
-    avatarUrl: user.avatarUrl,
-    sharePhotosPublicly: user.sharePhotosPublicly,
-    favoriteCuisine: user.favoriteCuisine,
-    favoriteRestaurantId: user.favoriteRestaurantId,
-    hideFromLeaderboard: user.hideFromLeaderboard,
-    discoverableByUsername: user.discoverableByUsername,
-    friendRequestsOpen: user.friendRequestsOpen,
-  });
+  return NextResponse.json(accountJson(user));
 }
