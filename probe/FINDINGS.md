@@ -188,6 +188,8 @@ outbound links is exposed. Earlier passes found the same pattern at roughly 3%
 Agents are instructed to leave without clicking and record `hijacked_domain`.
 
 Known bad, still sitting in the `website` column of the rows they belong to:
+`navajolive.com` (now serves an Australian online-casino guide),
+`thelandingelcajon.com` (a "Redirecting…" shell with obfuscated click-through JS),
 `fredsmexicancafeoldtown.com` (redirects to a push-notification scam),
 `sdsushihana.com` (302s to `ww9.` — the classic parked-domain pattern),
 `antojitoscolombianos.com` (expired, now GoDaddy SEO filler),
