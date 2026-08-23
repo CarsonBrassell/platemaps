@@ -12,6 +12,7 @@ import { RestaurantComments } from "@/components/RestaurantComments";
 import { PhoneDetailHero } from "@/components/mobile/PhoneDetailHero";
 import { PhoneDetailHits } from "@/components/mobile/PhoneDetailHits";
 import type { RestaurantAspectTally } from "@/lib/db";
+import { PhoneFirstPlate } from "@/components/mobile/PhoneFirstPlate";
 import type { PlateScore } from "@/lib/plateScore";
 import { mapCommentsByRestaurant, withDishIds } from "@/data/mapComments";
 
@@ -73,6 +74,11 @@ export function PhoneDetailScreen({
      both disappear when the variant switcher does. */
   const nav = searchParams.get("nav");
   const backHref = nav ? `/m?nav=${nav}` : "/m";
+
+  /* The composer, opened holding this restaurant — the whole point of the
+     empty state is that the reader is standing in the place, so the "where"
+     step is already answered. `nav` rides along like every other /m link. */
+  const postHref = `/m/post?restaurant=${encodeURIComponent(restaurant.id)}${nav ? `&nav=${nav}` : ""}`;
 
   // Deep link from a map comment bubble ("view this dish in the menu").
   useEffect(() => {
@@ -164,6 +170,10 @@ export function PhoneDetailScreen({
           `--phone-nav-space` already reserves the arc nav's room. */}
       <div className="flex flex-col gap-5 px-4 pt-5">
         <PhoneDetailHits dishes={topPicks} ratedBy={ratedBy} onSelect={setSelectedDishId} />
+        {/* Renders only while the plate score's floor is unmet — the invitation
+            and the hits list never share a screen. It sits where the hits
+            would, because it is the hits' absence being stated. */}
+        <PhoneFirstPlate restaurant={restaurant} score={plateScore} href={postHref} />
         <RestaurantAspects tally={aspectTally} />
         <FullMenu sections={sections} onSelect={setSelectedDishId} />
         {/* The booking prototype, in the position the web page puts it in when
