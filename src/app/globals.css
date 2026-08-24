@@ -342,6 +342,27 @@ h3 {
   color: var(--pm-orange-text);
 }
 
+/* Your own vote fills solid, the same as the feed card's arrow does
+   (`filled={active}` in PostActions' VotePair). Colour alone was carrying the
+   state, which on a bubble the size of a business card meant telling
+   #776B5B from the orange at 11px — legible only by comparison with a
+   neighbour that hadn't been voted.
+
+   Filling costs no geometry: VOTE_ARROW_PATH is one closed figure, so it
+   takes a fill without the outline moving a pixel — the property that let the
+   mark be an arrow again instead of a thumb. See icons.tsx.
+
+   The `fill="none"` in RestaurantMap's `arrowGlyph` is a presentation
+   attribute, which any rule outranks, so this needs no `!important`.
+
+   Hover deliberately stays hollow. Hovering is asking, pressed is having
+   voted; filling both would leave the two indistinguishable at exactly the
+   moment the cursor is over the one you're deciding about. */
+.map-upvote-chip[aria-pressed="true"] svg,
+.map-downvote-chip[aria-pressed="true"] svg {
+  fill: currentColor;
+}
+
 /* Built as raw DOM inside the map, so the app's focus-visible convention has
    to be restated here rather than arriving via Tailwind classes. */
 .map-upvote-chip:focus-visible,

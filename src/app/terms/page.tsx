@@ -18,7 +18,7 @@ const SECTIONS = [
   { id: "conduct", title: "5. Prohibited Conduct" },
   { id: "ratings", title: "6. Ratings, Reviews, and Content Disclaimer" },
   { id: "promoted", title: "7. Promoted Listings, Advertising, and Paid Placement" },
-  { id: "points", title: "8. PM Points" },
+  { id: "points", title: "8. Plate Points" },
   { id: "health", title: "9. Food, Allergen, and Health and Safety Disclaimer" },
   { id: "third-party", title: "10. Third-Party Content and Services" },
   { id: "ip", title: "11. Intellectual Property and DMCA Policy" },
@@ -106,7 +106,7 @@ export default function TermsPage() {
           <Section id="service" title="3. Description of the Service">
             <p>
               PlateMaps helps people discover restaurants and dishes in San Diego, share
-              their own food posts and ratings, follow other users, and earn PM Points for
+              their own food posts and ratings, follow other users, and earn Plate Points for
               participating on the Service. We may add, change, or remove features at any
               time, and we do not guarantee that any restaurant, menu item, price,
               operating hours, or other listed information is current, complete, or
@@ -273,11 +273,11 @@ export default function TermsPage() {
             </p>
           </Section>
 
-          <Section id="points" title="8. PM Points">
+          <Section id="points" title="8. Plate Points">
             <p>
-              PM Points are a feature of the Service that reward participation, such as
+              Plate Points are a feature of the Service that reward participation, such as
               posting, commenting, and liking content, and that may be used to rank users
-              on leaderboards within the Service. PM Points:
+              on leaderboards within the Service. Plate Points:
             </p>
             <List>
               <li>Have no cash value and cannot be sold, transferred, or exchanged for money;</li>
@@ -294,7 +294,7 @@ export default function TermsPage() {
             </List>
             <p>
               You are solely responsible for any tax obligations, if any, that may arise
-              from your participation in the PM Points program.
+              from your participation in the Plate Points program.
             </p>
           </Section>
 

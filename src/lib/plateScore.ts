@@ -32,6 +32,38 @@
  * shape `aspectScores` already uses, so there is one idea about small samples in
  * this codebase rather than two.
  *
+ * ## The other weight: whose rating it is
+ *
+ * The formula above is not the whole model any more, and this file only holds
+ * half of it. `average_i` arrives already weighted: inside a single plate's
+ * ratings, each one pulls by the rank its author has earned — 0.8 for a
+ * Newcomer through 1.2 for an Institution, off the ladder in `lib/ranks.ts`,
+ * with Regular at exactly 1.0 as the neutral point everything is read against.
+ * The three aggregates in `lib/db.ts` do it, because it has to happen while the
+ * rows are still individual ratings with an author attached; by the time a
+ * `RatedDish` reaches this function the raters have been folded away.
+ *
+ * So a rating's total pull is two weights multiplied:
+ *
+ *   pull  =  (how much this dish's average can be trusted)
+ *            ×  (how much this person's rating is trusted)
+ *
+ * They compose rather than compete because they are answers to different
+ * questions, and neither one can answer the other's. Confidence asks *how
+ * well-attested is this plate* — a number about the sample. Rank asks *who is
+ * saying it* — a number about a person. A plate with forty Newcomer ratings is
+ * extremely well attested; a single Critic rating is one opinion no matter
+ * whose it is, and the confidence damping still quiets it to a quarter of a
+ * vote. Nothing about knowing the rater makes a sample of one larger.
+ *
+ * That composition is also what keeps the rank weight honest. Its range is a
+ * factor of 1.5 end to end and it is applied *within* a plate, so it can tilt a
+ * disagreement and it cannot manufacture a score: raising a plate materially
+ * still means getting more people to agree, which is the behaviour worth
+ * rewarding. `ratings` in `RatedDish` is a raw headcount for exactly this
+ * reason — it is a count of people, never of accumulated weight, and the
+ * thresholds below mean what they say.
+ *
  * ## Why there is a floor at all
  *
  * A derived number is only worth printing once it describes the restaurant
@@ -61,9 +93,12 @@ export const MIN_TOTAL_RATINGS = 8;
  * the fields it doesn't read.
  */
 export type RatedDish = {
-  /** Mean of this dish's ratings, 0–100. */
+  /** Rank-weighted mean of this dish's ratings, 0–100. */
   average: number;
-  /** How many ratings that mean is drawn from. Zero-rating dishes are ignored. */
+  /**
+   * How many people that mean is drawn from — a headcount, deliberately not the
+   * weight behind it. Zero-rating dishes are ignored.
+   */
   ratings: number;
 };
 

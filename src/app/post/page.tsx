@@ -297,7 +297,7 @@ export default function PostPage() {
           <span>
             Step {index + 1} of {steps.length}
           </span>
-          <span>{POINT_RULES.createPost} PM Points when you post</span>
+          <span>{POINT_RULES.createPost} Plate Points when you post</span>
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-pm-grey-tint">
           <div
@@ -553,7 +553,7 @@ export default function PostPage() {
             </h1>
             <p className="mx-auto mt-2 max-w-sm text-sm text-zinc-600">
               Reviews and comments carry your name, and posting earns you{" "}
-              {POINT_RULES.createPost} PM Points.
+              {POINT_RULES.createPost} Plate Points.
             </p>
             <Link
               href="/account"

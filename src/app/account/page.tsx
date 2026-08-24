@@ -189,8 +189,8 @@ function AuthForm() {
         </h1>
         <p className="mb-6 text-sm text-zinc-500">
           {mode === "signup"
-            ? "Save your favorite San Diego spots and earn PM Points."
-            : "Sign in to see your saved spots and PM Points."}
+            ? "Save your favorite San Diego spots and earn Plate Points."
+            : "Sign in to see your saved spots and Plate Points."}
         </p>
 
         {mode === "signup" && (
@@ -404,7 +404,7 @@ function AccountOverview() {
           <p className="font-mono text-lg font-semibold leading-none tabular-nums text-zinc-900">
             {account.points}
           </p>
-          <p className="mono-label text-zinc-500">PM Points</p>
+          <p className="mono-label text-zinc-500">Plate Points</p>
         </div>
         <div className="col-span-2 grid grid-cols-2 gap-3">
           <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-3 text-center">
@@ -421,7 +421,7 @@ function AccountOverview() {
       <div className="mb-6 flex items-center gap-3 rounded-xl bg-pm-grey-tint/50 px-4 py-3">
         <PlateStarIcon className="h-5 w-7 shrink-0 text-zinc-500" />
         <p className="text-sm text-zinc-600">
-          Earn PM Points by posting (+{POINT_RULES.createPost}), getting upvoted (+
+          Earn Plate Points by posting (+{POINT_RULES.createPost}), getting upvoted (+
           {POINT_RULES.receiveUpvote}), getting commented on (+{POINT_RULES.receiveComment}), and
           having your comments upvoted (+{POINT_RULES.receiveCommentUpvote}) on Discover.
         </p>

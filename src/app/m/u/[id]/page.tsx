@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PlateStarIcon } from "@/components/icons";
+import { RankInsignia } from "@/components/RankInsignia";
 import { PhoneProfileFriendButton } from "@/components/mobile/PhoneProfileFriendButton";
 import { ProfileBlockButton } from "@/components/ProfileBlockButton";
 import { getPublicProfile, getRestaurantById } from "@/lib/db";
 import { initials } from "@/lib/format";
+import { rankFor } from "@/lib/ranks";
 
 /**
  * The public profile, phone version — what anyone, friend or stranger, sees
@@ -16,8 +18,8 @@ import { initials } from "@/lib/format";
  * Every one of those links lands here.
  *
  * Deliberately thin, and thin in exactly the same way as `/u/[id]`: name,
- * avatar, points, two favorites. **No posts, no saved list, no hearts, and no
- * friend or follower count.** `getPublicProfile` in lib/db.ts does not even
+ * avatar, rank, points, two favorites. **No posts, no saved list, no hearts,
+ * and no friend or follower count.** `getPublicProfile` in lib/db.ts does not even
  * join the posts table, so there is no history to accidentally leak here later
  * by adding a "recent activity" section without re-reading why this page looks
  * the way it does. Hearts are author-only and live behind the session on
@@ -48,6 +50,8 @@ export default async function PhonePublicProfilePage({
     ? await getRestaurantById(profile.favoriteRestaurantId)
     : null;
 
+  const rank = rankFor(profile.points);
+
   return (
     <div className="min-h-dvh">
       <header className="px-4 pb-3 pt-4">
@@ -77,12 +81,25 @@ export default async function PhonePublicProfilePage({
           {profile.name}
         </h1>
 
+        {/* Same block as `/u/[id]`, drawn smaller — the crest is 64px here
+            against 76 on the web, which is the whole difference. The rank is
+            shown on this screen and on its web twin and nowhere else in either
+            tree: not the feed, not the leaderboard, not a comment byline. You
+            find out where somebody stands by going and looking at them.
+            Thresholds, and the leaderboard's unrelated other "rank": lib/ranks.ts. */}
+        <div className="mt-4 flex flex-col items-center">
+          <RankInsignia rank={rank.key} size={64} />
+          <p className="font-display mt-2 text-[17px] font-semibold leading-tight text-zinc-900">
+            {rank.title}
+          </p>
+        </div>
+
         {/* Points are the one number a profile prints. There is deliberately no
             friend or follower total beside it. */}
         <span className="mt-3 inline-flex items-center gap-2 rounded-full bg-pm-grey-tint px-4 py-1.5">
           <PlateStarIcon className="h-4 w-5 text-zinc-500" />
           <span className="font-mono text-sm font-medium tabular-nums text-pm-grey-text">
-            {profile.points.toLocaleString()} PM Points
+            {profile.points.toLocaleString()} Plate Points
           </span>
         </span>
 

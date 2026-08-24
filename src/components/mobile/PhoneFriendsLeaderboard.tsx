@@ -5,7 +5,7 @@ import { STATIONS } from "@/lib/stations";
 type Entry = { id: string; name: string; avatarUrl?: string; points: number };
 
 /**
- * PM Points, ranked against your friends and only your friends — never the
+ * Plate Points, ranked against your friends and only your friends — never the
  * whole site. The site-wide leaderboard (`getLeaderboard` in lib/db.ts,
  * `/api/leaderboard`) still exists but has no importer anywhere in the
  * product (see PhoneFeedScreen's header comment); this is a different,
@@ -125,7 +125,7 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
           <span aria-hidden="true" className={`${DOTS} mb-[5px] min-w-4`} />
           <span className="shrink-0 whitespace-nowrap font-mono text-sm font-semibold leading-none tabular-nums text-zinc-900">
             {formatPoints(entry.points)}
-            <span className="sr-only"> PM Points</span>
+            <span className="sr-only"> Plate Points</span>
           </span>
         </span>
         <span className="mt-1 block truncate font-mono text-[11px] leading-tight tabular-nums text-zinc-500">
@@ -164,7 +164,7 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
             Friends&rsquo; Table
           </h2>
           <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
-            Ranked by PM Points
+            Ranked by Plate Points
           </p>
         </div>
         <div className="mt-3 flex" aria-hidden="true">
@@ -190,7 +190,7 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
         )}
 
         <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
-          Prices in PM Points · no substitutions
+          Prices in Plate Points · no substitutions
         </p>
       </div>
     </section>

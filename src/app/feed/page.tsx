@@ -1,13 +1,18 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import type { MapRestaurant } from "@/components/RestaurantMap";
-import { mapCommentsByRestaurant, withDishIds, type MapComment } from "@/data/mapComments";
 import type { Dish } from "@/data/dishes";
+import {
+  buildMapComments,
+  fetchMenus,
+  indexPostsByRestaurantName,
+  menuRestaurantIdsKey,
+} from "@/lib/mapBubbles";
 
 import { FeedHeader } from "@/components/feed/FeedHeader";
 import { FeedTabs } from "@/components/feed/FeedTabs";
@@ -24,6 +29,9 @@ import {
 import type { FeedTab, NavKey, Post } from "@/components/feed/types";
 import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
+import { FeedSearchField } from "@/components/feed/FeedSearchField";
+import { searchFeed } from "@/lib/feedFilters";
+import { QUERY_PARAM } from "@/lib/discoverFilters";
 
 const RestaurantMap = dynamic(
   () => import("@/components/RestaurantMap").then((mod) => mod.RestaurantMap),
@@ -42,67 +50,6 @@ const RestaurantMap = dynamic(
     ),
   },
 );
-
-/* The map bubbles predate structured post fields, so seeded comments still
-   encode rating and dish in the caption ("@Name 4 stars;"). Structured
-   columns win when a post has them; these parsers cover the rest. */
-function bubbleTextFromPost(text: string) {
-  const match = text.match(/^@[^;]+;\s*/);
-  return match ? text.slice(match[0].length) : text;
-}
-
-function ratingFromPost(text: string): string | null {
-  const stars = text.match(/^@.*?\s(\d)\sstars?;/);
-  return stars ? `${stars[1]}★` : null;
-}
-
-function dishNameFromPost(text: string): string | null {
-  const match = text.match(/^@.+? - (.+?)\s\d{1,3}%;/);
-  return match ? match[1] : null;
-}
-
-function dishPrefixFromPost(text: string): string | null {
-  const match = text.match(/^@.+? - (.+?)\s(\d{1,3})%;/);
-  return match ? `${match[1]} ${match[2]}%` : null;
-}
-
-function findDishId(
-  menus: Record<string, Dish[]>,
-  restaurantId: string,
-  dishName: string,
-): string | undefined {
-  return menus[restaurantId]?.find(
-    (d) => d.name.toLowerCase() === dishName.toLowerCase(),
-  )?.id;
-}
-
-/**
- * A post's rating as a bubble's meta row shows it, always carrying the scale
- * it was measured on. Every rating written now is a percent, so that is what
- * this produces; the `restaurant` branch is the read path for rows written
- * before the star review was retired, and prints "4/5" with its denominator
- * because those are still 1-5. No 0-10 fallback exists, since that's what let
- * an impossible "9.2 stars" render.
- *
- * A percent lives in the dish prefix instead, so this returns null there —
- * unless the post has no dish name to hang it on, in which case the meta row is
- * the only place left for it to go.
- */
-function bubbleRating(post: Post): string | null {
-  if (post.rating === undefined) return ratingFromPost(post.text);
-  if (post.ratingKind === "restaurant") return `${post.rating}/5`;
-  if (post.ratingKind === "dish") return post.dishName ? null : `${post.rating}%`;
-  return null;
-}
-
-/** The orange "Marlin taco 85%" prefix, in the dish review's own percent. */
-function bubbleDishPrefix(post: Post): string | null {
-  if (!post.dishName || post.rating === undefined) return dishPrefixFromPost(post.text);
-  if (post.ratingKind === "dish") return `${post.dishName} ${post.rating}%`;
-  // A restaurant review's stars belong to the place, not to a dish, so they
-  // never get appended to a dish name.
-  return post.dishName;
-}
 
 export default function FeedPage() {
   return (
@@ -179,6 +126,7 @@ function FeedPageInner() {
 
   const {
     posts,
+    places,
     loadError,
     offline,
     banner,
@@ -197,6 +145,36 @@ function FeedPageInner() {
     reloadKey,
     onPointsAwarded: () => setRanksVersion((v) => v + 1),
   });
+
+  /*
+   * The feed grouped by the restaurant name each post claims — the index both
+   * the map bubbles and the menu fetch read, computed once per feed change
+   * rather than re-derived by each of them. See lib/mapBubbles.ts for why this
+   * replaced a per-restaurant `posts.filter(...)`.
+   */
+  const postsByRestaurant = useMemo(() => indexPostsByRestaurantName(posts), [posts]);
+
+  /** Which restaurants need a menu, as a value-comparable effect dependency. */
+  const menuIdsKey = useMemo(
+    () => menuRestaurantIdsKey(postsByRestaurant, restaurants),
+    [postsByRestaurant, restaurants],
+  );
+
+  /* Every restaurant id whose menu has been asked for, successfully or not.
+     A ref, not state: it exists to keep the fetch below from asking twice, and
+     making it state would feed the effect's own writes back into its inputs. */
+  const requestedMenuIds = useRef<Set<string>>(new Set());
+
+  /* Whether this component is still mounted. The menus effect needs a guard
+     scoped to the component rather than to one run of the effect — see the
+     long note there for why a per-run `cancelled` flag actively loses data. */
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     // No reset-to-empty branch here: every place that reads these three
@@ -220,31 +198,24 @@ function FeedPageInner() {
   }, [isSignedIn]);
 
   /*
-   * The map's backdrop: every restaurant, and every menu, so a bubble that
-   * names a dish can link to it.
+   * The map's backdrop: every restaurant. Static import once, one fetch now.
    *
-   * Both used to be static imports. Fetched together in one effect because the
-   * map needs both or neither — half of this data draws pins with dead dish
-   * links. The whole dish table is the unbounded call flagged in the route's
-   * own comment; the map already knows which restaurants it draws, so passing
-   * `?ids=` is where that gets fixed when the table is big enough to matter.
+   * Menus used to ride along in the same `Promise.all`, on the reasoning that
+   * the map needs both or neither. They no longer can: which menus are needed
+   * depends on which restaurants got a bubble, which depends on `posts`, which
+   * arrives later and changes when the Discover/Friends tab does. So the menus
+   * moved to their own effect below, and this one keeps the part that has no
+   * such dependency.
    */
   useEffect(() => {
     let cancelled = false;
     void (async () => {
       try {
-        const [restaurantRes, dishRes] = await Promise.all([
-          fetch("/api/restaurants"),
-          fetch("/api/restaurants/dishes"),
-        ]);
-        if (!restaurantRes.ok || !dishRes.ok) return;
-        const [{ restaurants: rows }, { dishes }] = await Promise.all([
-          restaurantRes.json() as Promise<{ restaurants: MapRestaurant[] }>,
-          dishRes.json() as Promise<{ dishes: Record<string, Dish[]> }>,
-        ]);
+        const res = await fetch("/api/restaurants");
+        if (!res.ok) return;
+        const { restaurants: rows } = (await res.json()) as { restaurants: MapRestaurant[] };
         if (cancelled) return;
         setRestaurants(rows);
-        setMenus(dishes);
       } catch {
         // The feed itself doesn't depend on these — the list renders, and the
         // map tab comes up empty rather than the page failing.
@@ -254,6 +225,89 @@ function FeedPageInner() {
       cancelled = true;
     };
   }, []);
+
+  /*
+   * Menus, for the restaurants that actually have a bubble.
+   *
+   * This used to be `/api/restaurants/dishes` with no query — every dish for
+   * every restaurant, 10.5MB and six seconds, to resolve dish names for the few
+   * dozen restaurants anyone had posted about. `menuRestaurantIdsKey` names
+   * exactly the set that needs one, and `fetchMenus` fetches only that.
+   *
+   * ## Why it asks in batches
+   *
+   * The route caps a request at 500 ids and answers 400 above it. The id set
+   * is not bounded by the number of posts, though — it fans out by restaurant
+   * NAME, so one post about Starbucks names all 200 Starbucks in the corpus
+   * and four chain posts clear the cap. One oversized request would 400, this
+   * effect would throw, and every dish link on the map would die at once on
+   * both surfaces. `fetchMenus` splits the ask instead, which is what the
+   * route's own comment prescribes. Both map surfaces call the same helper —
+   * see `src/lib/mapBubbles.ts`.
+   *
+   * ## Why this cannot loop
+   *
+   * The effect writes `menus` and depends on `menuIdsKey`, and that key is
+   * a pure function of `posts` and `restaurants` — `menus` is not an input to
+   * it. So setting `menus` cannot re-arm this effect; only a genuine change in
+   * *which* restaurants have bubbles can. Casting a vote is the case that
+   * matters: it rewrites a post's counts, not which restaurants have posts, so
+   * the key is byte-identical afterwards and nothing refetches.
+   *
+   * `requestedMenuIds` then makes the set monotonic. Ids are marked before the
+   * request goes out, so a key change that only *adds* ids fetches the addition
+   * and never the ids already held — including the ids of restaurants that came
+   * back with no dishes at all, which never appear as keys in `menus` and would
+   * otherwise look permanently missing and refetch forever. Ids are un-marked
+   * only when the request actually failed — and since the ask is split into
+   * batches, only the ids of the batch that failed, so one bad request can be
+   * retried the next time the key moves without re-buying the menus its
+   * siblings already delivered.
+   *
+   * ## Why the guard is `mounted` and not a per-run `cancelled`
+   *
+   * Every other fetch on this page cancels per run, because a superseded
+   * response there is *wrong* — it would overwrite current state with an older
+   * answer. This one is the opposite: the response is a set of menus keyed by
+   * restaurant id, it is merged rather than assigned, and a menu is the same
+   * menu whenever it arrives. A superseded response is not stale, just late.
+   *
+   * Discarding it would actively lose data, on the ordinary load path rather
+   * than an exotic one: restaurants land first, the key becomes the ~19 seeded
+   * restaurants and their fetch goes out, then the feed lands and the key
+   * grows. A per-run flag would cancel that first response — while its ids stay
+   * marked as requested, since the second run computed its own `missing`
+   * synchronously before the first could un-mark — and the seeded bubbles would
+   * silently lose their dish links on nearly every visit. So the only thing
+   * worth refusing here is a write after unmount.
+   */
+  useEffect(() => {
+    const missing = menuIdsKey.split(",").filter((id) => id && !requestedMenuIds.current.has(id));
+    if (missing.length === 0) return;
+    for (const id of missing) requestedMenuIds.current.add(id);
+    void (async () => {
+      const { menus: fetched, failedIds } = await fetchMenus(missing);
+      /* Bubbles are already on screen — a menu that never lands costs their
+         headlines a dish link and nothing else. Let the ids of the batch that
+         failed go so a later key change can try again, and ONLY those: the
+         batches that succeeded are in hand and re-asking for them would spend
+         a second request on menus this page already holds. Released before the
+         mount check, the way the old single-request catch was, so unmounting
+         mid-flight can't leave an id marked as bought. */
+      for (const id of failedIds) requestedMenuIds.current.delete(id);
+      if (!mounted.current) return;
+      /* An empty result is a no-op merge, and merging it anyway would hand
+         `menus` a new identity and rebuild every bubble for nothing. It is the
+         shape a total failure takes, and also the shape of a set of
+         restaurants that genuinely have no dishes. */
+      if (Object.keys(fetched).length === 0) return;
+      // Merged, never replaced: a later fetch carries only the ids it asked
+      // for, and the menus already held are still the menus for their
+      // restaurants. Ids never collide across requests, so the spread order
+      // is not load-bearing.
+      setMenus((prev) => ({ ...prev, ...fetched }));
+    })();
+  }, [menuIdsKey]);
 
   // Deep link from a map bubble or a shared /feed?post= link. Discover is
   // ranked and capped rather than "every post" now, so a link to a post
@@ -280,7 +334,7 @@ function FeedPageInner() {
   useEffect(() => {
     const points = Number(earned);
     if (!Number.isFinite(points) || points <= 0) return;
-    setBanner(`+${points} PM Points earned`);
+    setBanner(`+${points} Plate Points earned`);
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setRanksVersion((v) => v + 1);
   }, [earned, setBanner]);
@@ -331,15 +385,51 @@ function FeedPageInner() {
     }
   }
 
-  const visiblePosts = useMemo(() => {
+  /*
+   * The list before the filters, already ordered and audience-scoped by
+   * whichever endpoint the fetch above chose — no client-side sort left to do.
+   * Saved is the one surface that narrows first, because "saved" is not a
+   * filter you can turn off from the rail.
+   */
+  const scopedPosts = useMemo(() => {
     if (!posts) return [];
     if (navKey === "saved") {
       return account ? posts.filter((p) => p.savedBy.includes(account.id)) : [];
     }
-    // Already correctly ordered and audience-scoped by whichever endpoint
-    // the fetch effect above chose — no client-side sort left to do.
     return posts;
   }, [posts, navKey, account]);
+
+  /*
+   * The search term, and it lives in the URL.
+   *
+   * `/feed?q=carbonara` is a link you can send, and — the reason it had to be
+   * the URL rather than component state — it is how the header's search field
+   * writes a term into a page it does not own. Answering it costs no request:
+   * the feed is a bounded window that is already loaded, and the restaurant
+   * each post is about arrived beside the posts. See lib/feedFilters.ts for
+   * what a term is matched against, which is deliberately more than Discover's
+   * search covers.
+   */
+  const query = searchParams.get(QUERY_PARAM)?.trim() ?? "";
+
+  const search = useCallback(
+    (next: string) => {
+      const params = new URLSearchParams(window.location.search);
+      const q = next.trim();
+      if (q) params.set(QUERY_PARAM, q);
+      else params.delete(QUERY_PARAM);
+      const rest = params.toString();
+      router.replace(rest ? `/feed?${rest}` : "/feed", { scroll: false });
+    },
+    [router],
+  );
+
+  const visiblePosts = useMemo(
+    () => searchFeed(scopedPosts, places, query),
+    [scopedPosts, places, query],
+  );
+  /** A term is on and it is hiding plates — what the "2 of 30" line reports. */
+  const searched = query.length > 0 && posts !== null;
 
   /* The flame is a Discover-only signal. Friends is explicitly not an
      engagement-ranked feed ("no ranking, no sorting by engagement, nothing
@@ -359,44 +449,10 @@ function FeedPageInner() {
     );
   }, [posts, navKey, tab]);
 
-  const mapComments = useMemo(() => {
-    const out: Record<string, MapComment[]> = {};
-    for (const restaurant of restaurants) {
-      const menu = menus[restaurant.id] ?? [];
-      const real: MapComment[] = (posts ?? [])
-        .filter((p) => p.restaurant === restaurant.name)
-        .map((p) => {
-          const parsedDish = dishNameFromPost(p.text);
-          const dish = p.dishName ?? parsedDish ?? undefined;
-          return {
-            id: p.id,
-            restaurantId: restaurant.id,
-            text: bubbleTextFromPost(p.text),
-            // Net, so the bubble and the card never disagree about a plate.
-            score: p.upvoteCount - p.downvoteCount,
-            upvotes: p.upvoteCount - p.downvoteCount,
-            upvotedByMe: p.upvotedByMe,
-            downvotedByMe: p.downvotedByMe,
-            heartedByMe: p.heartedByMe,
-            commentCount: p.comments.length,
-            createdAt: p.createdAt,
-            // Same "Maya Ellis" -> "mayaellis" reading the feed card uses.
-            author: p.authorName.trim().toLowerCase().replace(/\s+/g, ""),
-            rating: bubbleRating(p),
-            dishPrefix: bubbleDishPrefix(p),
-            postId: p.id,
-            dishId: dish ? findDishId(menus, restaurant.id, dish) : undefined,
-          };
-        })
-        .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
-      // The seeded bubbles name their dish rather than carrying its id, since
-      // menus are database rows now — resolved here against the menu this
-      // restaurant actually has. See withDishIds.
-      const seeded = withDishIds(mapCommentsByRestaurant[restaurant.id] ?? [], menu);
-      out[restaurant.id] = [...real, ...seeded];
-    }
-    return out;
-  }, [posts, restaurants, menus]);
+  const mapComments = useMemo(
+    () => buildMapComments(postsByRestaurant, restaurants, menus),
+    [postsByRestaurant, restaurants, menus],
+  );
 
   const activePost = commentsPostId
     ? (posts?.find((p) => p.id === commentsPostId) ?? null)
@@ -442,6 +498,45 @@ function FeedPageInner() {
         >
           {banner}
         </p>
+      )}
+
+      {/* Search. Absent on the map tab, which is not a list you scroll and
+          whose own comment in RestaurantMap is explicit that it draws every
+          restaurant and every bubble unfiltered. */}
+      {!showMap && (
+        <div className="mb-4 flex flex-col gap-2.5">
+          {/* Below `sm` only — above it the header's field is this one. See
+              FeedSearchField. */}
+          <div className="sm:hidden">
+            <FeedSearchField value={query} onSubmit={search} />
+          </div>
+
+          {/* What the feed is narrowed to, and the way out of it. A term typed
+              into the header field is otherwise invisible from down here, which
+              is how a feed ends up showing two plates and no reason why. */}
+          {searched && (
+            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+              <p className="min-w-0 truncate text-[13px] text-zinc-600">
+                Plates matching{" "}
+                <span className="font-medium text-zinc-900">&ldquo;{query}&rdquo;</span>
+              </p>
+              <div className="flex shrink-0 items-baseline gap-3">
+                <p role="status" className="mono-label tabular-nums text-zinc-500">
+                  {visiblePosts.length} of {scopedPosts.length}
+                </p>
+                {/* Quiet underlined text, the rank this app gives the way out of
+                    a choice — not something competing with the plates. */}
+                <button
+                  type="button"
+                  onClick={() => search("")}
+                  className="rounded-full px-1 text-xs text-zinc-600 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       )}
 
       {showMap ? (
@@ -508,12 +603,15 @@ function FeedPageInner() {
               labels, the selected one carrying a short orange underline — which
               is a rank up from where DESIGN.md files this control. That is
               deliberate: what it switches (which audience the whole map is
-              drawn from) is closer to a tab than to a filter, and the map has
-              one other control, a field with no container either (MapSearch).
+              drawn from) is closer to a tab than to a filter. It also keeps
+              this row from reading as a toolbar: MapSearch, at the other end,
+              is a filled night pill, so the two ends are one contained control
+              and one bare one rather than two slabs bolted over the city.
 
-              What replaces the fill is the halo, the same one MapSearch's field
-              carries: without it, cream type is only as legible as the tile
-              that happens to be under it. The bar itself is lit rather than
+              What replaces the fill is the halo — without it, cream type is
+              only as legible as the tile that happens to be under it, which is
+              the same trade MapSearch made before it took a fill. The bar
+              itself is lit rather than
               painted in `--pm-orange` — it is the only mark left on the map, so
               it burns in the map's voice; see `.map-source-bar`. */}
           <div className="absolute left-5 top-5 z-10">
@@ -556,7 +654,27 @@ function FeedPageInner() {
           ) : loadError && posts.length === 0 ? (
             <FeedErrorState onRetry={() => setReloadKey((k) => k + 1)} />
           ) : visiblePosts.length === 0 ? (
-            navKey === "saved" ? (
+            /* Three different empties, and telling them apart is the point: a
+               feed with nothing in it needs an invitation to post, a feed
+               searched down to nothing needs the way back out. */
+            searched ? (
+              <div className="rounded-2xl bg-white px-6 py-12 text-center">
+                <p className="font-display text-base font-semibold text-zinc-900">
+                  No plates match &ldquo;{query}&rdquo;
+                </p>
+                <p className="mx-auto mt-1 max-w-xs text-sm text-zinc-500">
+                  Search covers captions, dishes, restaurants, cuisines and the comments
+                  on a plate. A shorter term will reach more of them.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => search("")}
+                  className="mt-4 min-h-11 rounded-full bg-pm-orange px-5 text-[13px] font-medium text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                >
+                  Clear search
+                </button>
+              </div>
+            ) : navKey === "saved" ? (
               <div className="rounded-2xl bg-white px-6 py-12 text-center">
                 <p className="font-display text-base font-semibold text-zinc-900">
                   Nothing saved yet

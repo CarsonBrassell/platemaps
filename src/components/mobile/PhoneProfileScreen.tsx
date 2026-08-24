@@ -286,7 +286,7 @@ function ProfileOverview() {
           <div className="mb-5 flex items-start gap-3 rounded-xl bg-pm-grey-tint/50 px-3.5 py-3">
             <PlateStarIcon className="mt-0.5 h-5 w-7 shrink-0 text-zinc-500" />
             <p className="text-[13px] leading-snug text-zinc-600">
-              Earn PM Points by posting (+{POINT_RULES.createPost}), getting upvoted (+
+              Earn Plate Points by posting (+{POINT_RULES.createPost}), getting upvoted (+
               {POINT_RULES.receiveUpvote}), getting commented on (+{POINT_RULES.receiveComment}),
               and having your comments upvoted (+{POINT_RULES.receiveCommentUpvote}) on Discover.
             </p>

@@ -101,6 +101,20 @@ export type Restaurant = {
    * and rendered as a credit link.
    */
   yelpUrl?: string;
+  /**
+   * Street address, e.g. "3750 Sports Arena Blvd, San Diego, CA 92110".
+   *
+   * Written by whichever source found the restaurant first — Yelp's search
+   * response carries it, Google's carries it, and OpenStreetMap tags it on 65%
+   * of San Diego venues — so it costs no extra request anywhere.
+   *
+   * Not on `RestaurantView`. The grid shows a neighbourhood, which is what
+   * someone deciding between restaurants wants; a street address only matters
+   * once they have decided, and by then they are on the detail page. Putting it
+   * on the view would send ~40 bytes per restaurant to every visitor for a line
+   * the grid does not draw.
+   */
+  address?: string;
 };
 
 /**

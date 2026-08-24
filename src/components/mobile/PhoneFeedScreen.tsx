@@ -505,19 +505,16 @@ export function PhoneFeedScreen() {
             {/* The column takes the hit when the spat plate lands — see
                 post-impact in phone.css for why the jolt is delayed. */}
             <div className={`flex flex-col gap-3 ${slamId ? "post-impact" : ""}`}>
-              {(visiblePosts ?? []).map((post, index) => {
+              {/* Every card runs its photo full width — the card used to take a
+                  `featured` flag and this list set it on index 0 only. See
+                  PhoneFeedPostCard's header for why the dense treatment went. */}
+              {(visiblePosts ?? []).map((post) => {
                 /* Split at the call site rather than passed as a string: the
                    card's props are a union on `surface`, so the vote handler
                    and the heart handler cannot both reach one card — the
                    guarantee the two feeds depend on. */
                 const shared = {
                   post,
-                  /* Only the top of the list runs its photo full width. Below
-                     the fold a 16:9 photo per card means a screenful holds one
-                     and a half plates; the thumbnail treatment holds four or
-                     five. Index rather than a flag on the post: this is a
-                     position in a list, not a property of the plate. */
-                  featured: index === 0,
                   currentUserId: account?.id ?? null,
                   onSave: handleSave,
                   onShare: handleShare,

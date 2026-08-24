@@ -5,12 +5,14 @@ import { getPublicProfile } from "@/lib/db";
 import { restaurants } from "@/data/restaurants";
 import { initials } from "@/lib/format";
 import { PlateStarIcon } from "@/components/icons";
+import { RankInsignia } from "@/components/RankInsignia";
+import { rankFor } from "@/lib/ranks";
 import { ProfileFriendButton } from "@/components/ProfileFriendButton";
 import { ProfileBlockButton } from "@/components/ProfileBlockButton";
 
 /**
  * The public profile — what anyone, friend or stranger, sees when they look
- * this person up. Deliberately thin: name, avatar, favorites, points. No
+ * this person up. Deliberately thin: name, avatar, rank, favorites, points. No
  * posts, no saved list, no follower/friend count. getPublicProfile in
  * lib/db.ts doesn't even join the posts table, so there's no post history to
  * accidentally leak here later by someone adding a "recent activity" section
@@ -28,6 +30,8 @@ export default async function PublicProfilePage({
   const favoriteRestaurant = profile.favoriteRestaurantId
     ? restaurants.find((r) => r.id === profile.favoriteRestaurantId)
     : undefined;
+
+  const rank = rankFor(profile.points);
 
   return (
     <>
@@ -52,10 +56,22 @@ export default async function PublicProfilePage({
 
         <h1 className="mt-4 font-display text-2xl font-semibold text-zinc-900">{profile.name}</h1>
 
+        {/* The rank is what someone's lifetime points *mean*, and this is the
+            only screen in either tree that shows it — not the feed, not the
+            leaderboard, not a comment byline. You find out where somebody
+            stands by going and looking at them. The crest carries it and the
+            title names it, because a wreath alone is a puzzle; the raw total
+            follows underneath for anyone who wants the number.
+            Thresholds and the leaderboard's unrelated other "rank": lib/ranks.ts. */}
+        <div className="mt-5 flex flex-col items-center">
+          <RankInsignia rank={rank.key} size={76} />
+          <p className="mt-2 font-display text-lg font-semibold text-zinc-900">{rank.title}</p>
+        </div>
+
         <div className="mx-auto mt-3 inline-flex items-center gap-2 rounded-full bg-pm-grey-tint px-4 py-1.5">
           <PlateStarIcon className="h-4 w-5 text-zinc-500" />
           <span className="font-mono text-sm font-medium tabular-nums text-pm-grey-text">
-            {profile.points.toLocaleString()} PM Points
+            {profile.points.toLocaleString()} Plate Points
           </span>
         </div>
 

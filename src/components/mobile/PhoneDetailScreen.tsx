@@ -14,6 +14,8 @@ import { PhoneDetailHits } from "@/components/mobile/PhoneDetailHits";
 import type { RestaurantAspectTally } from "@/lib/db";
 import { PhoneFirstPlate } from "@/components/mobile/PhoneFirstPlate";
 import type { PlateScore } from "@/lib/plateScore";
+import type { RatedDish } from "@/lib/plateScore";
+import { dishRatingKey } from "@/lib/dishRatingKey";
 import { mapCommentsByRestaurant, withDishIds } from "@/data/mapComments";
 
 /**
@@ -55,6 +57,7 @@ export function PhoneDetailScreen({
   dishes,
   aspectTally,
   plateScore,
+  dishRatings,
 }: {
   restaurant: Restaurant;
   /** The menu, already read from Postgres by the page. */
@@ -63,6 +66,8 @@ export function PhoneDetailScreen({
   aspectTally: RestaurantAspectTally;
   /** What this restaurant's plates add up to. Also read server-side. */
   plateScore: PlateScore;
+  /** Per-plate rating averages, keyed by `dishRatingKey`. Also server-side. */
+  dishRatings: Record<string, RatedDish>;
 }) {
   const searchParams = useSearchParams();
   const [myVotes, setMyVotes] = useState<Record<string, "yes" | "no" | undefined>>({});
@@ -90,16 +95,34 @@ export function PhoneDetailScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
+  /**
+   * Each plate's percent, and how many people it came from — the web page's
+   * rule, which this screen was missing.
+   *
+   * A plate someone has actually rated shows **its rating average**, the same
+   * numbers the header's percent is the average of, so the page adds up.
+   * Without this the two halves read different sources: the header counted
+   * `posts.rating` while every row below it counted the older yes/no tally, so
+   * Landini's could say "38 ratings across 10 plates" and then show no rated
+   * plates at all, because no dish there has ever been thumbed.
+   *
+   * A plate nobody has rated still falls back to that yes/no tally, which is
+   * the only signal those rows have. Transitional and not to build on — see the
+   * fuller note in RestaurantDetail, which owns this rule.
+   */
   const dishesWithStats = useMemo(
     () =>
       dishes.map((dish) => {
+        const rated = dishRatings[dishRatingKey(dish.name)];
+        if (rated) return { ...dish, total: rated.ratings, pct: Math.round(rated.average) };
+
         const myVote = myVotes[dish.id];
         const yesVotes = dish.yesVotes + (myVote === "yes" ? 1 : 0);
         const noVotes = dish.noVotes + (myVote === "no" ? 1 : 0);
         const { total, pct } = dishStats(yesVotes, noVotes);
         return { ...dish, total, pct };
       }),
-    [dishes, myVotes],
+    [dishes, myVotes, dishRatings],
   );
 
   const topPicks = useMemo(

@@ -59,6 +59,18 @@ export function RestaurantHeader({
         <p className="mt-1 text-sm text-zinc-500">
           {restaurant.cuisine} · {restaurant.neighborhood}
         </p>
+        {/* The street address sits under the neighbourhood rather than beside
+            it: the two answer the same question at different resolutions, and
+            a reader wants the coarse one first. Omitted entirely when unknown —
+            an empty slot or a placeholder would both claim more than we have.
+
+            Not mono, despite being a machine value in the loose sense. The rule
+            in AGENTS.md covers numbers and machine identifiers, and an address
+            is read as prose; setting it in Spline Sans Mono would make a
+            secondary line shout louder than the cuisine above it. */}
+        {restaurant.address && (
+          <p className="mt-0.5 text-sm text-zinc-500">{restaurant.address}</p>
+        )}
 
         {/* Both numbers, stacked so neither can be read as the other.
 

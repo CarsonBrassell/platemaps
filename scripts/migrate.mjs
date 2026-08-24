@@ -692,6 +692,23 @@ const statements = [
   // that where the source has one.
   `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS address TEXT`,
   `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS city TEXT`,
+
+  // --- Google Places -------------------------------------------------------
+  //
+  // `google_checked_at` is the same "record the ask, not just the answer"
+  // pattern as yelp_checked_at, and here it does a second job: it IS the call
+  // counter. Google bills per request and the account is on a 90-day trial
+  // credit, so the script has to know how many calls it has made this billing
+  // month before it makes another. Counting rows stamped within the month
+  // answers that without a separate ledger that could drift from reality.
+  //
+  // `google_place_id` is Google's stable id for the business. Kept because it
+  // is the only way to re-fetch a photo later without paying for the search
+  // again, and because it is what the duplicate guard matches on - one place
+  // id describes one restaurant, so a second row claiming it is a mismatch.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS google_checked_at TIMESTAMPTZ`,
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS google_place_id TEXT`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_google_checked ON restaurants(google_checked_at NULLS FIRST)`,
 ];
 
 for (const statement of statements) {

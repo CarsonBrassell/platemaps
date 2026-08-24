@@ -63,7 +63,11 @@ export function MobileNav({ alerts }: { alerts: NavAlerts }) {
 
   const slot = ({ href, label, Icon, ...rest }: Slot) => {
     const dot = "dot" in rest ? rest.dot : undefined;
-    const current = pathname === href;
+    /* Prefix match so a slot stays lit on its own sub-screens — /account/settings
+       is Profile. "/" is excluded from the prefix arm: it is the root, and a
+       bare startsWith would light Discover everywhere. Same rule the header row
+       and PhoneNav follow. */
+    const current = pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
     return (
       <Link
         key={href}

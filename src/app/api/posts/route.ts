@@ -6,14 +6,23 @@ import { POINT_RULES } from "@/lib/points";
 import { FOOD_TAGS } from "@/data/foodTags";
 import { AMENITY_LABELS, ROOM_LABELS, BEST_AT_LABELS } from "@/data/reviewScales";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
+import { resolvePostRefs } from "@/lib/discover";
 
 const MAX_MEDIA = 4;
 const MAX_MEDIA_LENGTH = 4_000_000;
 
+/**
+ * Every post, newest first. Backs the Saved view, which needs posts regardless
+ * of which feed surfaced them.
+ *
+ * `places` is the same per-restaurant map the two feed routes send, so the
+ * filter rail works on Saved too — see `resolvePostRefs` in lib/discover.ts.
+ */
 export async function GET() {
   const user = await getCurrentUser();
-  const posts = await getPosts(user?.id ?? null);
-  return NextResponse.json({ posts: posts.slice().reverse() });
+  const rows = await getPosts(user?.id ?? null);
+  const { posts, places } = await resolvePostRefs(rows.slice().reverse());
+  return NextResponse.json({ posts, places });
 }
 
 /** Keeps a client from writing arbitrary shapes into the media jsonb column. */

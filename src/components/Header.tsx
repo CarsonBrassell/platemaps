@@ -2,9 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@/lib/auth";
 import { useNavAlerts } from "@/lib/navAlerts";
-import { initials } from "@/lib/format";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { RestaurantSearch } from "@/components/RestaurantSearch";
 import { MobileNav } from "@/components/MobileNav";
@@ -36,7 +34,6 @@ const DOTS: Record<string, { slot: "friends" | "profile"; label: string }> = {
 
 export function Header() {
   const pathname = usePathname();
-  const { account, isSignedIn } = useAuth();
 
   /* The unread dots on Friends and Profile. This is the only place in the app
      that surfaces either outside its own page — the request badge used to live
@@ -59,7 +56,12 @@ export function Header() {
      unlayered in globals.css, so it outranks Tailwind's layered `font-*`
      utilities and any weight set here would be silently dropped. */
   const navItem = (link: { href: string; label: string }) => {
-    const current = pathname === link.href;
+    /* Prefix match so a slot stays lit on its own sub-screens — /account/settings
+       is Profile. "/" is excluded from the prefix arm: it is the root, and a
+       bare startsWith would light Discover on every page. Same rule MobileNav
+       and PhoneNav follow. */
+    const current =
+      pathname === link.href || (link.href !== "/" && pathname.startsWith(`${link.href}/`));
     const dot = DOTS[link.href];
     return (
       <Link
@@ -95,9 +97,13 @@ export function Header() {
         side group would silently make the columns unequal and pull the nav off
         centre again.
 
-        The two side groups are then deliberately massed to match — brand+city
-        ≈ search+avatar — which is what makes the gaps either side of the nav
-        equal. Moving weight between them breaks the symmetry, not the centring.
+        The two side groups were then deliberately massed to match — brand+city
+        ≈ search+avatar — which is what made the gaps either side of the nav
+        equal. The avatar has since gone (see the right column below), so the
+        right group is the lighter of the two by about 52px. That shifts the
+        symmetry, not the centring: the columns are still equal and the nav is
+        still on the page's centre line (measured at 1400px), so what changed
+        is how much cream trails the search, not where the menu sits.
 
         The grid starts at xl, not lg. Equal columns need 2×(brand+city) + the
         nav + gutters, and the nav row is 553px now that it carries a named
@@ -186,39 +192,24 @@ export function Header() {
         </Link>
         {NAV_RIGHT.map(navItem)}
       </nav>
-      {/* Massed to match the left group so the nav stays between equal gaps —
-          the search is the bulk of it, which is why its width is pinned rather
-          than elastic. justify-end keeps the avatar on the right edge. */}
-      <div className="flex min-w-0 items-center justify-end gap-4">
+      {/* The right column, and the search is now all of it.
+
+          An avatar disc used to sit on the right edge here, a second route to
+          /account alongside the nav's own Profile slot. Two controls going to
+          one screen is one control and a decoration, and the nav is the half
+          that carries a label, an accessible name and the activity dot — so
+          the disc is the half that went. Signed out it was a `?` in a circle,
+          which was never a doorway anybody read as "sign in" anyway.
+
+          That leaves the right column ~52px lighter than the brand+city group
+          it is massed against. Measured at 1400px the nav is still exactly on
+          the page centre line — the equal `minmax(0,1fr)` columns see to that,
+          which is the whole reason they are not `justify-between` — so what
+          changed is only how much cream trails the search, not where the menu
+          sits. If it ever reads unbalanced, give the search back the width;
+          don't put an ornament in the corner to weigh the scales. */}
+      <div className="flex min-w-0 items-center justify-end">
         <RestaurantSearch />
-        {/* Duplicates the nav's Profile pill as a route to /account, but keeps a
-            full-size target and an accessible name rather than being a 36px
-            decoration that happens to be clickable. */}
-        <Link
-          href="/account"
-          aria-label={isSignedIn && account ? `Your account, ${account.name}` : "Sign in"}
-          aria-current={pathname === "/account" ? "page" : undefined}
-          className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-        >
-          {isSignedIn && account?.avatarUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={account.avatarUrl}
-              alt=""
-              className={`h-9 w-9 shrink-0 rounded-full object-cover transition-transform hover:scale-105 ${
-                pathname === "/account" ? "ring-2 ring-pm-orange ring-offset-2" : ""
-              }`}
-            />
-          ) : (
-            <div
-              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint font-mono text-xs font-medium text-pm-grey-text transition-transform hover:scale-105 ${
-                pathname === "/account" ? "ring-2 ring-pm-orange ring-offset-2" : ""
-              }`}
-            >
-              {isSignedIn && account ? initials(account.name) : "?"}
-            </div>
-          )}
-        </Link>
       </div>
     </header>
     {/* Rendered here rather than in each page: Header is already on all of

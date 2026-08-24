@@ -398,7 +398,7 @@ export default function PhonePost() {
           <span>
             Step {index + 1} of {steps.length}
           </span>
-          <span>{POINT_RULES.createPost} PM Points when you post</span>
+          <span>{POINT_RULES.createPost} Plate Points when you post</span>
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-pm-grey-tint">
           <div
@@ -645,7 +645,7 @@ export default function PhonePost() {
           </h1>
           <p className="mx-auto mt-2 max-w-xs text-sm text-pm-grey-text">
             Reviews and comments carry your name, and posting earns you{" "}
-            <span className="font-mono tabular-nums">{POINT_RULES.createPost}</span> PM Points.
+            <span className="font-mono tabular-nums">{POINT_RULES.createPost}</span> Plate Points.
           </p>
           <Link
             href={to("/m/account")}

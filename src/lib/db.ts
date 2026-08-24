@@ -7,6 +7,7 @@ import type { Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
 import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
+import { RANKS, rankByKey } from "@/lib/ranks";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -1934,6 +1935,18 @@ export type PublicProfile = {
 };
 
 // --- Plate scores ----------------------------------------------------------
+//
+// Every plate average below is weighted twice over, and the two weights answer
+// different questions. `plateScore.ts` weights a *dish* by how many ratings
+// stand behind it — how well attested it is. The three queries here weight each
+// individual *rating* by the rank its author has earned, off the ladder in
+// `lib/ranks.ts`. A person who has been rating plates in this city for a year
+// leans on a disagreement harder than an account opened this morning, and that
+// happens inside the group average, before the confidence damping ever sees it.
+//
+// Both are narrow on purpose and neither can run away with a score. See the
+// docstring at the top of `plateScore.ts`, which is where the whole model is
+// written down.
 
 /**
  * One row per distinct plate someone has rated at a restaurant.
@@ -1950,15 +1963,85 @@ export type PublicProfile = {
 const PLATE_GROUP = `lower(trim(coalesce(dish_name, '')))`;
 
 /**
+ * The rank ladder from `lib/ranks.ts`, compiled down to a SQL `CASE` over the
+ * rating author's lifetime points.
+ *
+ * It is generated rather than written out because the alternative is a second
+ * copy of 4000/1200/400/100/10 living in a string, and two copies of a
+ * threshold table drift the first time somebody decides Critic starts at 1,500.
+ * The badge on a profile and the pull that person's rating carries have to come
+ * from the same row or the product is quietly lying in one of the two places.
+ * `RANKS` stays the only place those numbers exist.
+ *
+ * Every value spliced in is a number off our own constant table — nothing here
+ * has ever touched a request — but it is coerced with `Number()` on the way
+ * into the string anyway, so that even a future `RANKS` populated from
+ * somewhere less trustworthy cannot turn this into an injection site. The arms
+ * are emitted descending because a `CASE` returns on its first match, which is
+ * what makes "at least this many points" work without an upper bound on each
+ * arm; the lowest rung is the `ELSE` for the same reason.
+ *
+ * A missing author — the LEFT JOIN found nothing — is Regular's neutral 1.0,
+ * never a drop. See the note on the joins below for why that matters.
+ */
+const RATER_WEIGHT = (() => {
+  const neutral = rankByKey("regular").weight;
+  const descending = [...RANKS].sort((a, b) => b.minPoints - a.minPoints);
+  const floor = descending[descending.length - 1];
+  const arms = descending
+    .slice(0, -1)
+    .map((rank) => `WHEN users.points >= ${Number(rank.minPoints)} THEN ${Number(rank.weight)}`)
+    .join(" ");
+  return `CASE WHEN users.points IS NULL THEN ${Number(neutral)} ${arms} ELSE ${Number(floor.weight)} END`;
+})();
+
+/**
+ * One plate's average, with each rating pulling as hard as its author's rank.
+ *
+ * `NULLIF` guards a zero denominator that today's ladder cannot produce — every
+ * weight in `RANKS` is positive, so any group with a row in it sums above zero.
+ * It is here because it costs nothing and a division-by-zero raised inside a
+ * page render is a 500 with a stack trace where a restaurant should be. It is
+ * a guard, not a feature: a rung weighted 0 would still need handling in
+ * `plateScore`, which has no null branch and would carry the NaN through.
+ * Adding a zero weight to `RANKS` means going there first.
+ *
+ * The outer parentheses are load-bearing. Every call site casts this with
+ * `::float`, and `::` binds tighter than `/` — unparenthesised, the cast lands
+ * on the divisor alone and turns an exact `numeric` division into a float8 one.
+ * `rating` is `numeric(5,1)`, so that was visible: a plate averaging exactly 58
+ * came back as 57.99999999999999. Everything downstream rounds, so it never
+ * reached a reader, but a score that is off in the sixteenth digit for no
+ * reason is the kind of thing someone eventually spends an afternoon on.
+ */
+const PLATE_AVERAGE = `(SUM(rating * (${RATER_WEIGHT})) / NULLIF(SUM(${RATER_WEIGHT}), 0))`;
+
+/**
  * What this restaurant's plates add up to — the only restaurant-level rating in
  * the product. See src/lib/plateScore.ts for the weighting and for why a
  * thinly-rated restaurant gets a null percent rather than a confident-looking
  * number off two ratings.
+ *
+ * The join is LEFT and not INNER, and the difference is a silent one. A rated
+ * post whose author row has gone missing is still somebody's rating of
+ * something they ate; an INNER join would drop it out of the sample entirely,
+ * changing the count as well as the average, and nothing would ever say so.
+ * It counts, at Regular's neutral 1.0 — the same reasoning as the empty-key
+ * bucket in `PLATE_GROUP` above.
+ *
+ * `ratings` stays `count(*)`, the raw headcount, and that is not an oversight.
+ * It is the number `plateScore` damps with `CONFIDENCE_K` and tests against
+ * `MIN_RATED_DISHES` / `MIN_TOTAL_RATINGS`, and every one of those means "how
+ * many people actually rated this", never "how much weight accumulated". Let
+ * the weighted sum become the count and three Newcomers stop clearing a floor
+ * of three — the restaurant goes back to "No plates rated yet" because of who
+ * rated it, which is a different and much worse product than this one.
  */
 export async function getRestaurantPlateScore(restaurantId: string): Promise<PlateScore> {
   const rows = await sql`
-    SELECT AVG(rating)::float AS average, count(*)::int AS ratings
+    SELECT ${sql.unsafe(PLATE_AVERAGE)}::float AS average, count(*)::int AS ratings
     FROM posts
+    LEFT JOIN users ON users.id = posts.user_id
     WHERE restaurant_id = ${restaurantId}
       AND rating_kind = 'dish'
       AND rating IS NOT NULL
@@ -1981,9 +2064,10 @@ export async function getRestaurantPlateScore(restaurantId: string): Promise<Pla
 export async function getAllRestaurantPlateScores(): Promise<Record<string, PlateScore>> {
   const rows = await sql`
     SELECT restaurant_id,
-           AVG(rating)::float AS average,
+           ${sql.unsafe(PLATE_AVERAGE)}::float AS average,
            count(*)::int AS ratings
     FROM posts
+    LEFT JOIN users ON users.id = posts.user_id
     WHERE rating_kind = 'dish'
       AND rating IS NOT NULL
       AND restaurant_id IS NOT NULL
@@ -2025,9 +2109,10 @@ export async function getDishRatingsForRestaurant(
 ): Promise<Record<string, RatedDish>> {
   const rows = await sql`
     SELECT ${sql.unsafe(PLATE_GROUP)} AS dish_key,
-           AVG(rating)::float AS average,
+           ${sql.unsafe(PLATE_AVERAGE)}::float AS average,
            count(*)::int AS ratings
     FROM posts
+    LEFT JOIN users ON users.id = posts.user_id
     WHERE restaurant_id = ${restaurantId}
       AND rating_kind = 'dish'
       AND rating IS NOT NULL
@@ -2250,6 +2335,10 @@ function rowToRestaurant(row: any): Restaurant {
     photo: row.photo ?? undefined,
     photoAlt: row.photo_alt ?? undefined,
     yelpUrl: row.yelp_url ?? undefined,
+    // Detail page only. Deliberately absent from `RestaurantView`, which is
+    // downloaded once per restaurant by every visitor to the grid — a street
+    // address is ~40 bytes nobody reads until they have chosen a restaurant.
+    address: row.address ?? undefined,
   };
 }
 

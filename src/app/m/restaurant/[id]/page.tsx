@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { PhoneDetailScreen } from "@/components/mobile/PhoneDetailScreen";
 import {
+  getDishRatingsForRestaurant,
   getDishesForRestaurant,
   getRestaurantAspectTally,
   getRestaurantById,
@@ -28,15 +29,16 @@ export default async function PhoneRestaurantPage({
 }) {
   const { id } = await params;
 
-  // All four read the database, which PhoneDetailScreen cannot do itself — it
+  // All five read the database, which PhoneDetailScreen cannot do itself — it
   // is a client component. Issued together rather than in sequence: they don't
   // depend on each other, and awaiting them one at a time would make the page
-  // four round trips deep.
-  const [restaurant, dishes, aspectTally, plateScore] = await Promise.all([
+  // five round trips deep.
+  const [restaurant, dishes, aspectTally, plateScore, dishRatings] = await Promise.all([
     getRestaurantById(id),
     getDishesForRestaurant(id),
     getRestaurantAspectTally(id),
     getRestaurantPlateScore(id),
+    getDishRatingsForRestaurant(id),
   ]);
   if (!restaurant) notFound();
 
@@ -46,6 +48,7 @@ export default async function PhoneRestaurantPage({
       dishes={dishes}
       aspectTally={aspectTally}
       plateScore={plateScore}
+      dishRatings={dishRatings}
     />
   );
 }

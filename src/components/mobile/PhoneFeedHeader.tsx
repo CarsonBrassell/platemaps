@@ -9,11 +9,13 @@ import { PlateStarIcon } from "@/components/icons";
 import { clearAward, usePointsAward, type PointsAward } from "@/lib/postCelebration";
 
 /**
- * The Food Feed screen's header.
+ * The feed screen's header: an optional count on the left, who you are on the
+ * right. It carried a "Food Feed" title until that came off — see the note at
+ * the title's old position.
  *
  * Same voice as the discover screen's (`src/app/m/page.tsx`): it sits directly
- * on the cream ground rather than on a card, the screen title is Fraunces, the
- * line under it is mono because it is a count, and the whole thing scrolls away
+ * on the cream ground rather than on a card, the count line is mono because it
+ * is a count, and the whole thing scrolls away
  * rather than sticking — a 390px screen has roughly 640 usable points of height
  * and the nav already owns the bottom ~96 of them.
  *
@@ -116,13 +118,25 @@ function PointsChip({ points }: { points: number }) {
     >
       <PlateStarIcon className="h-3 w-4" />
       {formatPoints(shown)}
-      <span className="sr-only"> PM Points</span>
+      <span className="sr-only"> Plate Points</span>
     </span>
   );
 }
 
 export function PhoneFeedHeader({ subtitle }: { subtitle?: React.ReactNode }) {
   const { account, isSignedIn, loading } = useAuth();
+
+  /* Nothing to say, so nothing drawn — not an empty bar with padding in it.
+     Once the title and the "Sign in" doorway both came off, a signed-out
+     visitor was left with a header whose entire content was 12 points of
+     whitespace above the tabs. Signing in is already the nav's Profile tab and
+     every empty state on this screen; a header does not need to ask again.
+
+     Rendered as nothing while the session is still resolving too. The blank
+     disc that used to hold this row's height existed to stop the header
+     flashing "Sign in" at somebody who was signed in — with that link gone,
+     the only thing it holds is the gap this is removing. */
+  if (!subtitle && !(isSignedIn && account) && !loading) return null;
 
   return (
     /* Tight on purpose. This header sits above a map that wants the whole
@@ -133,17 +147,18 @@ export function PhoneFeedHeader({ subtitle }: { subtitle?: React.ReactNode }) {
        and added a row's worth of air on their own. */
     <header className="px-4 pb-1 pt-2">
       <div className="flex items-center justify-between gap-3">
+        {/* No title. It read "Food Feed" over a feed you are already looking
+            at, on the one screen the nav's Feed tab has already named — a
+            label for a place nobody could be lost in. The subtitle stays
+            because it carries a count, which the title never did.
+
+            The caller owns those words; styled here so every subtitle this
+            header is given lands in the same voice: a count is a machine
+            value, and it sits on the cream ground, so --pm-grey-text rather
+            than zinc-500 (4.28:1 there, and it fails). */}
         <div className="min-w-0">
-          <h1 className="font-display text-[22px] font-semibold leading-tight tracking-tight text-zinc-900">
-            Food Feed
-          </h1>
-          {/* The caller owns the words — the screen passes a mono count string.
-              Styled here so every subtitle this header is given lands in the
-              same voice: a count is a machine value, and it sits on the cream
-              ground, so --pm-grey-text rather than zinc-500 (which is 4.28:1
-              there and fails). */}
           {subtitle && (
-            <p className="mt-1 font-mono text-xs tabular-nums text-pm-grey-text">{subtitle}</p>
+            <p className="font-mono text-xs tabular-nums text-pm-grey-text">{subtitle}</p>
           )}
         </div>
 
@@ -161,12 +176,7 @@ export function PhoneFeedHeader({ subtitle }: { subtitle?: React.ReactNode }) {
               this tree points at (see PhoneFeedScreen's empty states). While the
               session is still resolving the slot holds its size with a blank tan
               disc, so the header does not flash "Sign in" at someone who is. */}
-          {loading ? (
-            <span
-              aria-hidden
-              className="h-9 w-9 shrink-0 rounded-full bg-pm-grey-tint"
-            />
-          ) : isSignedIn && account ? (
+          {loading ? null : isSignedIn && account ? (
             <>
               <PointsChip points={account.points} />
               <Link
@@ -188,14 +198,7 @@ export function PhoneFeedHeader({ subtitle }: { subtitle?: React.ReactNode }) {
                 )}
               </Link>
             </>
-          ) : (
-            <Link
-              href="/m/account"
-              className="flex min-h-11 shrink-0 items-center rounded-full bg-pm-grey-tint px-3.5 text-[13px] font-medium text-pm-grey-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-            >
-              Sign in
-            </Link>
-          )}
+          ) : null}
         </div>
       </div>
 

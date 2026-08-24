@@ -53,11 +53,13 @@ import {
   type FilterContext,
   type StrongAspect,
 } from "@/lib/discoverFilters";
+import type { FeedPlace } from "@/lib/feedFilters";
 import type { Coords } from "@/lib/geo";
 import type { RestaurantView } from "@/data/restaurants";
 import {
   getAllRestaurantAspectTallies,
   getAllRestaurantPlateScores,
+  getDishesByRestaurant,
   getRestaurants,
 } from "@/lib/db";
 import { EMPTY_PLATE_SCORE, type PlateScore } from "@/lib/plateScore";
@@ -213,6 +215,113 @@ export async function getDiscoverPage(
       .slice(0, 2)
       .map((r) => ({ ...r, plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE })),
   };
+}
+
+/* --- The feed's share of the corpus ------------------------------------ */
+
+/**
+ * Resolves what each post *refers to* — its restaurant, and the dish on that
+ * restaurant's menu — so the feed can search by cuisine and link its subject
+ * line at the two records behind it.
+ *
+ * A post row carries a restaurant name, a soft restaurant id, and a dish name
+ * typed as free text. None of those is a link and none says what cuisine the
+ * place serves. This turns them into ids, against the same corpus Discover
+ * scans and off the same 60s cache.
+ *
+ * It lives here rather than in lib/db.ts because that is where the corpus cache
+ * is, and because db.ts must not import this module — this one imports db.ts.
+ *
+ * ## Two ways a post finds its restaurant, in order
+ *
+ * 1. `restaurant_id`, which is what every post written through the composer
+ *    carries.
+ * 2. The restaurant's name, case-insensitively. `posts.restaurant_id` is a soft
+ *    reference by design (see CLAUDE.md — an FK would turn a data refresh into a
+ *    cascade through everyone's reviews), so a post written before an id space
+ *    was rewritten still names the place correctly while pointing at nothing.
+ *
+ * The resolved id goes onto the post as `placeId` rather than overwriting
+ * `restaurantId`, so the card can decide for itself which claim it is willing
+ * to hang a link on.
+ *
+ * ## The dish
+ *
+ * `posts.dish_name` is free text — there is no `dish_id` column, and the
+ * composer has never written one. So the dish is matched by name against that
+ * restaurant's menu, which is exactly what `findDishId` already does for the
+ * map's bubbles; this is the same rule moved to the server so the card doesn't
+ * need the dish table in the browser to draw a link.
+ *
+ * One extra query, scoped to the restaurants this page of the feed actually
+ * touches — a few dozen menus, not the ~24,800-row table — and skipped
+ * entirely when no post on the page names a dish. An unmatched name resolves to
+ * nothing and the card falls back to linking the restaurant, which is the
+ * honest answer: the dish was typed, not chosen.
+ */
+export type PostPlaces = Record<string, FeedPlace>;
+
+/** Keys the dish index. ` ` cannot occur in a name, so it cannot collide. */
+function dishKey(restaurantId: string, name: string): string {
+  return `${restaurantId} ${name.trim().toLowerCase()}`;
+}
+
+export async function resolvePostRefs<
+  T extends { restaurantId?: string; restaurant?: string; dishName?: string },
+>(
+  posts: readonly T[],
+): Promise<{ posts: (T & { placeId?: string; dishId?: string })[]; places: PostPlaces }> {
+  if (posts.length === 0) return { posts: [], places: {} };
+
+  const { restaurants } = await loadCorpus();
+  const byId = new Map(restaurants.map((r) => [r.id, r]));
+  const byName = new Map(restaurants.map((r) => [r.name.toLowerCase(), r]));
+
+  const placeFor = (post: T) =>
+    (post.restaurantId ? byId.get(post.restaurantId) : undefined) ??
+    (post.restaurant ? byName.get(post.restaurant.toLowerCase()) : undefined);
+
+  // Only the restaurants whose menus a post on this page actually asks about.
+  const menusWanted = new Set<string>();
+  for (const post of posts) {
+    if (!post.dishName?.trim()) continue;
+    const place = placeFor(post);
+    if (place) menusWanted.add(place.id);
+  }
+
+  const dishIds = new Map<string, string>();
+  if (menusWanted.size > 0) {
+    const menus = await getDishesByRestaurant([...menusWanted]);
+    for (const [restaurantId, dishes] of Object.entries(menus)) {
+      for (const dish of dishes) {
+        // First writer wins, so a menu listing the same name twice resolves to
+        // the earlier one in menu order rather than to whichever came back last.
+        const key = dishKey(restaurantId, dish.name);
+        if (!dishIds.has(key)) dishIds.set(key, dish.id);
+      }
+    }
+  }
+
+  const places: PostPlaces = {};
+  const resolved = posts.map((post) => {
+    const place = placeFor(post);
+    if (!place) return post;
+
+    places[place.id] ??= {
+      id: place.id,
+      name: place.name,
+      cuisine: place.cuisine,
+      neighborhood: place.neighborhood,
+    };
+
+    const dishId = post.dishName?.trim()
+      ? dishIds.get(dishKey(place.id, post.dishName))
+      : undefined;
+
+    return dishId ? { ...post, placeId: place.id, dishId } : { ...post, placeId: place.id };
+  });
+
+  return { posts: resolved, places };
 }
 
 /** Clamps `?shown=` off a URL to something this module will honour. */

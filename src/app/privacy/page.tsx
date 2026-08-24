@@ -147,7 +147,7 @@ export default function PrivacyPage() {
           <Section id="use" title="4. How We Use Your Information">
             <p>We use the information described above to:</p>
             <List>
-              <li>Provide, operate, and maintain the Service, including your Feed, Discover results, and PM Points;</li>
+              <li>Provide, operate, and maintain the Service, including your Feed, Discover results, and Plate Points;</li>
               <li>Create and secure your account, and authenticate you when you sign in;</li>
               <li>Personalize what you see, such as favorite cuisines or nearby results;</li>
               <li>Communicate with you about your account or the Service;</li>

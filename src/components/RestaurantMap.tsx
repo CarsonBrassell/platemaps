@@ -783,24 +783,32 @@ function bubbleElement(
      behind it, so its arrows render as plain glyphs at the muted step rather
      than as buttons that would look live and do nothing when clicked. */
   const staticArrowStyle = `display: inline-flex; align-items: center; line-height: 1; color: ${BUBBLE_MUTED};`;
-  /* One path, rotated for the downvote, at the meta row's 10px scale — the
-     same construction ThumbsDownIcon uses so the two cannot drift apart. */
-  const thumbGlyph = (down: boolean) =>
-    `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${
+  /* One path, rotated for the downvote, at the meta row's 11px scale — the
+     same closed outline `VoteArrowUpIcon` draws, hand-inlined because a bubble
+     is an HTML string and cannot host a React component. The `d` here and the
+     `VOTE_ARROW_PATH` constant in components/icons.tsx are one shape and have
+     to be changed together; there is no import that can enforce it. */
+  const arrowGlyph = (down: boolean) =>
+    `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${
       down ? ' transform="rotate(180)"' : ""
-    }><path d="M7 10.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.5a1 1 0 0 1 1-1h3z"/><path d="M7 10.5l4.2-7.1a1 1 0 0 1 1.4-.3l.5.3a2.5 2.5 0 0 1 1 2.7L13.4 9h5.2a2 2 0 0 1 2 2.4l-1.4 7A2 2 0 0 1 17.2 20H7"/></svg>`;
+    }><path d="M12 3.4 21 12.4h-4.6V20.6H7.6V12.4H3z"/></svg>`;
   const votePair = (interactive: boolean) =>
     `<span style="display: inline-flex; align-items: center; gap: 4px;">
         ${
           interactive
-            ? `<button type="button" class="map-upvote-chip" aria-pressed="${comment.upvotedByMe ? "true" : "false"}" aria-label="Upvote this plate" style="${voteButtonStyle}">${thumbGlyph(false)}</button>`
-            : `<span style="${staticArrowStyle}" aria-hidden="true">${thumbGlyph(false)}</span>`
+            ? `<button type="button" class="map-upvote-chip" aria-pressed="${comment.upvotedByMe ? "true" : "false"}" aria-label="Upvote this plate" style="${voteButtonStyle}">${arrowGlyph(false)}</button>`
+            : `<span style="${staticArrowStyle}" aria-hidden="true">${arrowGlyph(false)}</span>`
         }
-        <span style="font-weight: 700; color: ${BUBBLE_POP};">${count}</span>
+        <!-- .map-vote-count carries no styling of its own — it is the handle
+             patchBubbleReaction() below finds this text node by when a vote
+             lands. The count is the ONLY thing a vote is allowed to move on a
+             drawn bubble, so it needs a name; everything the class could have
+             said about weight and colour stays inline where it always was. -->
+        <span class="map-vote-count" style="font-weight: 700; color: ${BUBBLE_POP};">${count}</span>
         ${
           interactive
-            ? `<button type="button" class="map-downvote-chip" aria-pressed="${comment.downvotedByMe ? "true" : "false"}" aria-label="Downvote this plate" style="${voteButtonStyle}">${thumbGlyph(true)}</button>`
-            : `<span style="${staticArrowStyle}" aria-hidden="true">${thumbGlyph(true)}</span>`
+            ? `<button type="button" class="map-downvote-chip" aria-pressed="${comment.downvotedByMe ? "true" : "false"}" aria-label="Downvote this plate" style="${voteButtonStyle}">${arrowGlyph(true)}</button>`
+            : `<span style="${staticArrowStyle}" aria-hidden="true">${arrowGlyph(true)}</span>`
         }
       </span>`;
   const reactionHtml =
@@ -1015,6 +1023,142 @@ function bubbleElement(
   return el;
 }
 
+/* ---------------------------------------------------------------------------
+ * Voting changes what a bubble SAYS, never which bubbles exist.
+ *
+ * The bug this machinery exists to prevent: `commentsByRestaurant` was in the
+ * drawing effect's dependency list, so a vote re-ran the whole pass — and the
+ * pass ranks restaurants by their best bubble's SCORE and then takes a coverage
+ * slice off the top. Rewriting one score reorders `ranked`, the slice selects a
+ * different SET of restaurants, and every marker on the map is torn down and
+ * rebuilt from that different set. Measured live: the first bubble was DIRTY
+ * BIRDS before an upvote landed on it and VIN DE SYRAH immediately after. The
+ * request had succeeded; the bubble had simply jumped out from under the
+ * cursor, which is the entire reason upvoting from the map felt broken.
+ *
+ * So the pass reads the comments through a ref and is armed by
+ * `bubbleSetFingerprint` instead — a key over everything a vote CANNOT change.
+ * Same key as the pass on screen means nothing but votes moved, and the counts
+ * are written straight into the live DOM by patchBubbleReaction. A different
+ * key means the feed itself changed and the pass re-runs exactly as it always
+ * did.
+ * ------------------------------------------------------------------------- */
+
+/* What the keys below join on, and the reason they can be trusted.
+   A key is only sound if no field can forge a boundary — `"ab" + ""` and
+   `"a" + "b"` must not produce the same string, or a genuine feed change would
+   read as a vote and the bubbles would stop updating. NUL is the one character
+   Postgres refuses to store in a `text` column, so no post's words, handle or
+   dish name can contain one, and nothing in `src/data/` hand-authors one
+   either. SOH separates whole records for the same reason. */
+const FIELD_SEP = "\u0000";
+const RECORD_SEP = "\u0001";
+
+/**
+ * A drawn bubble's identity: the restaurant AND the comment.
+ *
+ * Not the comment id alone. `buildMapComments` joins posts to restaurants by
+ * NAME, so one post legitimately appears under two same-named listings (the
+ * module says so explicitly), and keying on the comment id would let one of the
+ * pair overwrite the other — leaving a live bubble with no element to patch and
+ * a fingerprint that could miss a change to the shadowed copy.
+ */
+function bubbleKey(restaurantId: string, commentId: string) {
+  return `${restaurantId}${FIELD_SEP}${commentId}`;
+}
+
+/**
+ * Everything about a bubble that a vote cannot change, joined into one string.
+ *
+ * The exclusions are the whole point, and they are exactly the five fields
+ * patchBubbleReaction writes: `score`, `upvotes`, `upvotedByMe`,
+ * `downvotedByMe`, `heartedByMe`. Everything else a bubble renders is in here,
+ * including the fields that only affect its BOX rather than its words —
+ * `author`, `createdAt` and `commentCount` set the meta row's estimated width,
+ * `postId` decides whether the chips are buttons at all, and `upvotes` being
+ * *defined* (as opposed to its value) is what gives the bubble a meta row and
+ * therefore its height. `dishId` is here because it is baked into the click
+ * handler's href, so a menu landing after the bubbles have to redraw them.
+ *
+ * `dishName` is deliberately absent: nothing in this file reads it — it is the
+ * input `findDishId`/`withDishIds` resolve into `dishId`, which is here.
+ */
+function bubbleIdentity(comment: MapComment) {
+  return [
+    comment.postId ?? "",
+    comment.text,
+    comment.dishPrefix ?? "",
+    comment.rating ?? "",
+    comment.dishId ?? "",
+    comment.author ?? "",
+    comment.createdAt ?? "",
+    comment.commentCount ?? "",
+    comment.upvotes === undefined ? "" : "meta",
+  ].join(FIELD_SEP);
+}
+
+/**
+ * The key that arms the drawing effect: every bubble's identity, sorted.
+ *
+ * **The sort is load-bearing, not tidiness.** `buildMapComments` sorts each
+ * restaurant's real comments by score, so a vote that moves one plate past
+ * another reorders the arrays — and a fingerprint built in array order would
+ * differ, classify a plain vote as a feed change, and re-run exactly the pass
+ * this is here to avoid. Sorted, the key is a property of the SET, which is
+ * what "different bubbles" actually means.
+ */
+function bubbleSetFingerprint(comments: Record<string, MapComment[]>) {
+  const entries: string[] = [];
+  for (const [restaurantId, list] of Object.entries(comments)) {
+    for (const comment of list) {
+      entries.push(`${bubbleKey(restaurantId, comment.id)}${FIELD_SEP}${bubbleIdentity(comment)}`);
+    }
+  }
+  return entries.sort().join(RECORD_SEP);
+}
+
+/**
+ * Write a vote into a bubble that is already on the map.
+ *
+ * Only the count text and the pressed state move. `aria-pressed` is doing two
+ * jobs at once here: it is the accessible state, and it is what globals.css
+ * hangs `.map-upvote-chip[aria-pressed="true"] svg { fill: currentColor }` off,
+ * so getting the attribute right is also what makes your own vote read as a
+ * solid arrow instead of an outline.
+ *
+ * ## Why no relayout, and what that costs
+ *
+ * Nothing here can change a bubble's height: `bubbleHeight` reads only whether
+ * `upvotes` is defined, never its value. Width is nearly as safe —
+ * `estimateMetaWidth`'s one count-dependent term is
+ * `34 + compactCount(upvotes).length * 6`, driven by the count's CHARACTER
+ * length. So geometry only shifts when that length changes: 9→10, 99→100,
+ * 0→-1, 999→1.0k. The rendered box shrink-wraps its content under a max-width
+ * and grows on its own; what goes stale is the collision rect the layout pass
+ * is holding, by about 6px, until the next pan re-runs renderBubbles.
+ *
+ * That is the deliberate trade. Do NOT reserve extra width for it and do NOT
+ * trigger a relayout on a length change — a relayout re-ranks, and re-ranking
+ * on a vote is the bug at the top of this section.
+ */
+function patchBubbleReaction(el: HTMLElement, comment: MapComment) {
+  const count = el.querySelector<HTMLElement>(".map-vote-count");
+  if (count) count.textContent = compactCount(comment.upvotes ?? 0);
+  const upvote = el.querySelector<HTMLElement>(".map-upvote-chip");
+  if (upvote) upvote.setAttribute("aria-pressed", comment.upvotedByMe ? "true" : "false");
+  const downvote = el.querySelector<HTMLElement>(".map-downvote-chip");
+  if (downvote) downvote.setAttribute("aria-pressed", comment.downvotedByMe ? "true" : "false");
+  const heart = el.querySelector<HTMLElement>(".map-heart-chip");
+  if (heart) {
+    heart.setAttribute("aria-pressed", comment.heartedByMe ? "true" : "false");
+    /* The heart carries its state as an inline colour rather than through an
+       aria-pressed rule the way the arrows do (bubbleElement writes it, and
+       globals.css only gives .map-heart-chip its hit area and focus ring), so
+       the patch has to write the colour as well as the attribute. */
+    heart.style.color = comment.heartedByMe ? BUBBLE_POP : BUBBLE_MUTED;
+  }
+}
+
 export function RestaurantMap({
   restaurants,
   commentsByRestaurant,
@@ -1072,15 +1216,26 @@ export function RestaurantMap({
      than state because the hover handler is bound once, at layer-creation
      time, and has to see whatever the latest bubble pass produced. */
   const signsByRestaurantRef = useRef<Map<string, HTMLElement>>(new Map());
+  /* bubbleKey() -> the element already drawn for that bubble. The parallel to
+     bubbleMarkersRef above: markers are what the map has to remove, elements
+     are what a vote has to reach into. Populated where a marker is pushed and
+     cleared where the markers are, so the two can never disagree about what is
+     on screen — a patch written to an element this map still held after the
+     markers were torn down would land on a detached node and be invisible. */
+  const bubbleElementsRef = useRef<Map<string, HTMLElement>>(new Map());
   /** False until the first fitBounds has played the opening dive. */
   const hasFitRef = useRef(false);
   /* Which set of restaurants the camera was last fitted to. The effect below
-     re-runs on every vote — commentsByRestaurant is rebuilt from `posts`, so
-     its identity changes the moment a count does — and it used to refit the
-     camera each time, snapping a reader who had zoomed into a block all the
-     way back out to the county frame. Fitting is about *which places are on
-     the map*, not about their vote counts, so it now happens only when that
-     set actually changes. */
+     used to re-run on every vote — commentsByRestaurant is rebuilt from
+     `posts`, so its identity changed the moment a count did — and it refitted
+     the camera each time, snapping a reader who had zoomed into a block all
+     the way back out to the county frame. Fitting is about *which places are
+     on the map*, not about their vote counts, so it happens only when that set
+     actually changes. A vote no longer re-runs the effect at all (see the
+     patch effect below), but the guard is not thereby redundant: every other
+     dependency still re-runs it with the same restaurants — a new page of
+     posts, the Discover/Friends switch, signing in — and none of those is a
+     reason to throw away the block someone had zoomed into. */
   const fittedToRef = useRef<string | null>(null);
   /* Held in refs so a new callback identity each render doesn't re-run the
      marker effect — the handler is read at click time, not at bind time.
@@ -1099,6 +1254,61 @@ export function RestaurantMap({
   useEffect(() => {
     onHeartRef.current = onHeart;
   }, [onHeart]);
+
+  /* The bubbles themselves, held in a ref for exactly the reason the three
+     callbacks above are: the drawing effect must be able to READ the latest
+     data without being RE-ARMED by it. A vote rewrites `commentsByRestaurant`
+     wholesale (buildMapComments rebuilds it from `posts`), and while that prop
+     sat in the effect's dependency list every vote tore the map down and laid
+     it out again from a re-ranked, re-sliced set — see the long note above
+     bubbleKey. */
+  const commentsByRestaurantRef = useRef(commentsByRestaurant);
+
+  /* The key that decides which of the two things just happened: same bubbles
+     with different numbers, or different bubbles. It covers everything a vote
+     cannot change, so equality means "nothing but votes moved". */
+  const bubbleSetKey = useMemo(
+    () => bubbleSetFingerprint(commentsByRestaurant),
+    [commentsByRestaurant],
+  );
+  /* The key of the pass that is actually on the map right now — written by the
+     drawing effect after it has drawn, and only then. Compared against rather
+     than the previous render's key because what the patch needs to know is not
+     "did anything change since last time" but "are the elements I am about to
+     write into the ones this data describes". Null until a pass has drawn (the
+     effect returns early until the map exists), which correctly reads as
+     "nothing to patch". */
+  const drawnBubbleSetRef = useRef<string | null>(null);
+
+  /**
+   * A vote landed: rewrite what the drawn bubbles SAY, and nothing else.
+   *
+   * Declared ahead of the drawing effect so that in a commit where both are
+   * live the ref is refreshed before the pass reads it. In a commit where only
+   * this one fires — the vote case — there is no pass to run: the count text
+   * and the pressed states go straight into the DOM and every bubble stays
+   * exactly where the reader last saw it, which is the entire point.
+   *
+   * When the keys differ the feed genuinely changed, and this does nothing:
+   * `bubbleSetKey` is in the drawing effect's dependency list, so that effect
+   * is already re-running in this same commit and will rebuild every marker.
+   * Patching first would only write into elements about to be discarded.
+   */
+  useEffect(() => {
+    commentsByRestaurantRef.current = commentsByRestaurant;
+    if (bubbleSetKey !== drawnBubbleSetRef.current) return;
+    for (const [restaurantId, list] of Object.entries(commentsByRestaurant)) {
+      for (const comment of list) {
+        /* Seeded map chatter has no post behind it, so its counts are static
+           and its chips are plain glyphs rather than buttons. There is nothing
+           for a vote to have changed and nothing in it a patch may touch. */
+        if (!comment.postId) continue;
+        const el = bubbleElementsRef.current.get(bubbleKey(restaurantId, comment.id));
+        if (el) patchBubbleReaction(el, comment);
+      }
+    }
+  }, [commentsByRestaurant, bubbleSetKey]);
+
   const canUpvote = !!onUpvote;
   const canHeart = !!onHeart;
   const router = useRouter();
@@ -1129,6 +1339,12 @@ export function RestaurantMap({
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
+
+    /* Read once here rather than out of the ref in the cleanup below: the ref
+       object is never reassigned (only emptied), so this is the same Map, and
+       the lint rule that flags a `.current` read at teardown time is asking for
+       exactly this. */
+    const bubbleElements = bubbleElementsRef.current;
 
     // Opens on the whole county so the first fitBounds below plays as a
     // cinematic dive into the urban core rather than a static appearance.
@@ -1196,6 +1412,11 @@ export function RestaurantMap({
       map.remove();
       mapRef.current = null;
       bubbleMarkersRef.current = [];
+      /* Same breath as the markers, for the same reason renderBubbles clears
+         it: an element map outliving the map it describes is a set of handles
+         to detached nodes. */
+      bubbleElements.clear();
+      drawnBubbleSetRef.current = null;
     };
   }, []);
 
@@ -1209,58 +1430,68 @@ export function RestaurantMap({
     const map = mapRef.current;
     if (!map) return;
 
-    // Pin size and glow follow each restaurant's best comment score, so the
-    // hottest spots read as the brightest lights on the map; closed places
-    // cool to grey embers.
-    //
-    // This one keeps its zero floor, unlike the bubble ranking above. Brightness
-    // is a magnitude, not an order: an ember can be unlit but not less than
-    // unlit, and a negative here would feed a negative radius into the pin
-    // scale. A downvoted restaurant reads as cold, which is the darkest thing
-    // the map can say about it.
-    const bestScore = (id: string) =>
-      Math.max(0, ...(commentsByRestaurant[id] ?? []).map((c) => c.score ?? 0));
-    const hottest = Math.max(1, ...restaurants.map((r) => bestScore(r.id)));
     const now = new Date();
 
     /* Rebuilt rather than held, because `dim` changes with the search and the
        rest changes with the votes — one builder keeps the two from needing
-       separate update paths into the same source. Everything in here is already
-       recomputed on every vote, so a settled search costs what a vote costs. */
-    const buildPinData = (matched: Set<string> | null): GeoJSON.FeatureCollection => ({
-      type: "FeatureCollection",
-      features: restaurants.map((restaurant, i) => ({
-        type: "Feature",
-        geometry: { type: "Point", coordinates: [restaurant.lng, restaurant.lat] },
-        properties: {
-          id: restaurant.id,
-          name: restaurant.name,
-          /* Not what the search matched — what it DIDN'T. While a search is
-             running these places keep their ember and lose everything else:
-             the glow, the inner light and the ring all go, so the map still
-             shows the whole city but only the matches are lit enough to carry
-             a name. Without it a searched map is a field of identical lights
-             with labels floating over some of them, and there is no way to
-             read which light a label belongs to. False for everyone when
-             nothing is being searched, which is the map's normal state. */
-          dim: matched ? !matched.has(restaurant.id) : false,
-          /* Both of the place's numbers, carried so hover can answer "how good
-             is this?" without a round trip. `plateScore` is ours, the same 0-100
-             percent the dish bubbles show, where -1 stands for "not enough rated
-             plates" — a GeoJSON property cannot be null and 0 is a real score.
-             `blend` is the Yelp/Google star mean, which is what a restaurant with
-             no rated plates has instead. */
-          plateScore: restaurant.plateScore?.percent ?? -1,
-          blend: restaurant.rating,
-          intensity: bestScore(restaurant.id) / hottest,
-          /* Read only by the aura, and only far out: how much company this
-             restaurant keeps within a few blocks. Same index as `restaurants`
-             because districtDensity is built from that same array. */
-          density: districtDensity[i],
-          closed: openStateFor(restaurant.hours, now).kind === "closed",
-        },
-      })),
-    });
+       separate update paths into the same source.
+
+       `bestScore` and `hottest` moved INSIDE it when votes stopped re-running
+       this effect. They read vote scores, so computing them once at effect
+       time would have frozen every ember at whatever the counts were when the
+       feed last changed; computed per call, a repaint picks up whatever the
+       ref holds. The cost is one O(n) pass per repaint, and repaints happen
+       when the search settles or when settleComments below decides a pan is
+       due one — not on every vote, which is what they used to cost. */
+    const buildPinData = (matched: Set<string> | null): GeoJSON.FeatureCollection => {
+      const comments = commentsByRestaurantRef.current;
+      // Pin size and glow follow each restaurant's best comment score, so the
+      // hottest spots read as the brightest lights on the map; closed places
+      // cool to grey embers.
+      //
+      // This one keeps its zero floor, unlike the bubble ranking below. Brightness
+      // is a magnitude, not an order: an ember can be unlit but not less than
+      // unlit, and a negative here would feed a negative radius into the pin
+      // scale. A downvoted restaurant reads as cold, which is the darkest thing
+      // the map can say about it.
+      const bestScore = (id: string) =>
+        Math.max(0, ...(comments[id] ?? []).map((c) => c.score ?? 0));
+      const hottest = Math.max(1, ...restaurants.map((r) => bestScore(r.id)));
+      return {
+        type: "FeatureCollection",
+        features: restaurants.map((restaurant, i) => ({
+          type: "Feature",
+          geometry: { type: "Point", coordinates: [restaurant.lng, restaurant.lat] },
+          properties: {
+            id: restaurant.id,
+            name: restaurant.name,
+            /* Not what the search matched — what it DIDN'T. While a search is
+               running these places keep their ember and lose everything else:
+               the glow, the inner light and the ring all go, so the map still
+               shows the whole city but only the matches are lit enough to carry
+               a name. Without it a searched map is a field of identical lights
+               with labels floating over some of them, and there is no way to
+               read which light a label belongs to. False for everyone when
+               nothing is being searched, which is the map's normal state. */
+            dim: matched ? !matched.has(restaurant.id) : false,
+            /* Both of the place's numbers, carried so hover can answer "how good
+               is this?" without a round trip. `plateScore` is ours, the same 0-100
+               percent the dish bubbles show, where -1 stands for "not enough rated
+               plates" — a GeoJSON property cannot be null and 0 is a real score.
+               `blend` is the Yelp/Google star mean, which is what a restaurant with
+               no rated plates has instead. */
+            plateScore: restaurant.plateScore?.percent ?? -1,
+            blend: restaurant.rating,
+            intensity: bestScore(restaurant.id) / hottest,
+            /* Read only by the aura, and only far out: how much company this
+               restaurant keeps within a few blocks. Same index as `restaurants`
+               because districtDensity is built from that same array. */
+            density: districtDensity[i],
+            closed: openStateFor(restaurant.hours, now).kind === "closed",
+          },
+        })),
+      };
+    };
 
     /* Source and layers are created once, then only re-fed — recreating them
        per vote would flash every pin. Event handlers bind at creation time and
@@ -1871,25 +2102,56 @@ export function RestaurantMap({
        bubble was invented chatter scored 21. `null` when there is nothing to
        say, which sorts last — those restaurants take a coverage slot and then
        draw nothing. */
-    const bestBubble = (id: string): MapComment | null => {
-      const list = commentsByRestaurant[id] ?? [];
+    const bestBubble = (comments: Record<string, MapComment[]>, id: string): MapComment | null => {
+      const list = comments[id] ?? [];
       if (list.length === 0) return null;
       return list.reduce((best, c) => (compareBubbles(c, best, heatAt) < 0 ? c : best));
     };
 
     // Rank restaurants by their best bubble, breaking ties with a deterministic
     // spread so an unscored subset doesn't cluster onto one side.
-    const ranked = [...restaurants].sort((a, b) => {
-      const bubbleA = bestBubble(a.id);
-      const bubbleB = bestBubble(b.id);
-      if (!bubbleA || !bubbleB) {
-        if (bubbleA === bubbleB) return spreadHash(a.id) - spreadHash(b.id);
-        return bubbleA ? -1 : 1;
-      }
-      const byBubble = compareBubbles(bubbleA, bubbleB, heatAt);
-      if (byBubble !== 0) return byBubble;
-      return spreadHash(a.id) - spreadHash(b.id);
-    });
+    const rank = (comments: Record<string, MapComment[]>) =>
+      [...restaurants].sort((a, b) => {
+        const bubbleA = bestBubble(comments, a.id);
+        const bubbleB = bestBubble(comments, b.id);
+        if (!bubbleA || !bubbleB) {
+          if (bubbleA === bubbleB) return spreadHash(a.id) - spreadHash(b.id);
+          return bubbleA ? -1 : 1;
+        }
+        const byBubble = compareBubbles(bubbleA, bubbleB, heatAt);
+        if (byBubble !== 0) return byBubble;
+        return spreadHash(a.id) - spreadHash(b.id);
+      });
+
+    /* The ranking, and the comments snapshot it was built from.
+       `let`, because votes are allowed to change what this SHOULD be without
+       being allowed to redraw the map — see settleComments below. */
+    let rankedFrom = commentsByRestaurantRef.current;
+    let ranked = rank(rankedFrom);
+
+    /**
+     * Catch the ranking up to whatever the votes have done since the last pass.
+     *
+     * Ranking by score is what makes a vote able to change which restaurants
+     * get a bubble at all, so it may not be re-run when a vote lands — that is
+     * the bubble-jumps-out-from-under-the-cursor bug. It is re-run on the next
+     * PAN instead, where the whole map is being laid out again anyway and a
+     * different selection reads as the map answering a new frame rather than
+     * as the thing you clicked running away.
+     *
+     * Identity-gated on the comments object, so a pan with no votes behind it
+     * costs one reference comparison and nothing else. Returns whether it moved,
+     * because the embers have to settle on exactly the same pan: `bestScore`
+     * reads the same vote scores, and a pin brightening while its bubble holds
+     * still is a half-update that reads as a glitch.
+     */
+    const settleComments = () => {
+      const latest = commentsByRestaurantRef.current;
+      if (latest === rankedFrom) return false;
+      rankedFrom = latest;
+      ranked = rank(latest);
+      return true;
+    };
 
     // Greedily place bubbles in priority order (best-rated restaurants and
     // comments first), skipping any candidate whose screen-space box would
@@ -1907,8 +2169,18 @@ export function RestaurantMap({
         ? ranked.filter((r) => matched.ids.has(r.id))
         : ranked.slice(0, Math.ceil(ranked.length * bubbleCoverageForZoom(zoom)));
       const limit = matched ? SEARCH_BUBBLE_LIMIT : bubbleLimitForZoom(zoom);
+      /* The CARDS are laid out from the latest counts, not from the snapshot
+         `ranked` was built against. The two are the same object on every path
+         that settles first, and where they aren't this is the safe side of the
+         difference: a marginally stale ORDER is invisible, whereas rebuilding a
+         bubble from stale counts would print the number the reader's own vote
+         just replaced and read as the vote coming undone. */
+      const comments = commentsByRestaurantRef.current;
       for (const marker of bubbleMarkersRef.current) marker.remove();
       bubbleMarkersRef.current = [];
+      /* Cleared with the markers, in the same synchronous breath, so the patch
+         effect can never find an element that has already left the map. */
+      bubbleElementsRef.current.clear();
       signsByRestaurantRef.current.clear();
 
       /* Rects carry their owner so a card can be tested against every OTHER
@@ -1947,7 +2219,7 @@ export function RestaurantMap({
       const stacks: Stack[] = drawing.map((restaurant) => ({
         restaurant,
         point: map!.project([restaurant.lng, restaurant.lat]),
-        comments: [...(commentsByRestaurant[restaurant.id] ?? [])].sort((a, b) =>
+        comments: [...(comments[restaurant.id] ?? [])].sort((a, b) =>
           compareBubbles(a, b, heatAt),
         ),
         next: 0,
@@ -2095,6 +2367,11 @@ export function RestaurantMap({
             .setLngLat([restaurant.lng, restaurant.lat])
             .addTo(map!);
           bubbleMarkersRef.current.push(marker);
+          /* Registered here, beside the marker, because these two are the same
+             fact seen from two sides: the marker is how the map takes the
+             bubble away, this is how a vote reaches into the one that is still
+             there. Keyed by restaurant AND comment — see bubbleKey. */
+          bubbleElementsRef.current.set(bubbleKey(restaurant.id, comment.id), el);
 
           /* Only the nearest-the-pin bubble grows a leader, and it hangs
              *below* that box, toward the pin — never up into the gap — so
@@ -2181,8 +2458,25 @@ export function RestaurantMap({
       }
     }
 
+    /* Which bubble set is on the map, published only now that one actually is.
+       The patch effect reads it to decide whether the elements it is holding
+       are the ones its data describes; leaving it null while nothing has been
+       drawn is what makes "no pass yet" and "a different pass" the same, safe
+       answer there. */
+    drawnBubbleSetRef.current = bubbleSetKey;
+
     renderBubbles();
-    map.on("moveend", renderBubbles);
+    /* A pan is where the votes cast since the last pass are allowed to change
+       the map: the ranking catches up, and the embers catch up with it in the
+       same frame — brightening a pin while its bubble held still would be a
+       half-update, and a bubble jumping on a pan reads as the map answering a
+       new frame rather than as the thing you just clicked running away. With
+       no votes behind it this costs one reference comparison. */
+    const handleMoveEnd = () => {
+      if (settleComments()) applyPinData();
+      renderBubbles();
+    };
+    map.on("moveend", handleMoveEnd);
     /* Published for the search field's sake — see matchesRef above. Reassigned
        on every run of this effect so the handle is never a closure over a
        torn-down pass.
@@ -2190,19 +2484,29 @@ export function RestaurantMap({
        Both halves, in this order: the embers say WHICH restaurants the answer
        is about and the bubbles say what is being said about them, so a redraw
        that did one without the other would leave labels over dark dots or lit
-       dots with nothing to read. `moveend` keeps only `renderBubbles`, since
-       panning re-projects the boxes but cannot change what matched. */
+       dots with nothing to read. The pins are repainted unconditionally here
+       (the search changes every feature's `dim`), so settleComments only has
+       to bring the ranking along. */
     redrawForSearchRef.current = () => {
+      settleComments();
       applyPinData();
       renderBubbles();
     };
 
     return () => {
       map.off("load", applyPinData);
-      map.off("moveend", renderBubbles);
+      map.off("moveend", handleMoveEnd);
       redrawForSearchRef.current = null;
     };
-  }, [restaurants, districtDensity, commentsByRestaurant, router, mode, canUpvote, canHeart]);
+    /* `bubbleSetKey`, NOT `commentsByRestaurant`. The prop is a fresh object on
+       every vote and it used to sit here, which is what made a vote tear the
+       map down and lay it out from a re-ranked, re-sliced set of restaurants —
+       the bubble jumping out from under the cursor. The key changes only when
+       something a vote cannot change does, so a genuine feed change (a new page
+       of posts, a reply landing, a menu resolving a dish link) still rebuilds
+       everything exactly as before. The data itself is read through
+       commentsByRestaurantRef. */
+  }, [restaurants, districtDensity, bubbleSetKey, router, mode, canUpvote, canHeart]);
 
   /* The wrapper is only a positioning context for the search field, which has
      to sit over the map without being inside the map's own container — MapLibre

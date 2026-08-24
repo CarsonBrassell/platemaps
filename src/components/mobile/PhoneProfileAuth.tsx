@@ -107,8 +107,8 @@ export function PhoneProfileAuth() {
         </h1>
         <p className="mb-5 text-sm text-zinc-500">
           {mode === "signup"
-            ? "Save your favorite San Diego spots and earn PM Points."
-            : "Sign in to see your saved spots and PM Points."}
+            ? "Save your favorite San Diego spots and earn Plate Points."
+            : "Sign in to see your saved spots and Plate Points."}
         </p>
 
         {mode === "signup" && (

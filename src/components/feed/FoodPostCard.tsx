@@ -214,6 +214,39 @@ export function FoodPostCard(props: FoodPostCardProps) {
     ? post.dishName
     : (post.restaurant ?? post.dishName ?? "A plate worth sharing");
 
+  /*
+   * Where the two names point.
+   *
+   * The restaurant goes to its page; the dish opens that page with its sheet
+   * already up, which is the `?dish=` deep link `RestaurantDetail` has read
+   * since the map's bubbles started using it.
+   *
+   * `restaurantId` is preferred over `placeId` and the difference matters. The
+   * first is what the composer wrote — the author's own claim about which place
+   * this was. The second is `resolvePostRefs` matching a typed name against the
+   * corpus, which is good enough to search on and good enough to fall back to,
+   * but is a guess. A link is an assertion, so the author's answer wins.
+   *
+   * Either can be absent: `posts.restaurant_id` is a soft reference by design
+   * (a data refresh rewrites the id space), so a post can name a place this app
+   * can no longer resolve. That case prints the name and links nowhere rather
+   * than offering a tap that lands on a 404 — the same rule the phone card's
+   * RestaurantRef already follows.
+   *
+   * `dishId` is absent more often still: `posts.dish_name` is free text with no
+   * id column behind it, so a dish only resolves when what someone typed
+   * matches a line on that restaurant's menu. Unresolved, the dish links to the
+   * restaurant page anyway — landing on the place with no sheet open is a
+   * weaker answer than the sheet, and a much better one than a dead word.
+   */
+  const placeId = post.restaurantId ?? post.placeId;
+  const restaurantHref = placeId ? `/restaurant/${placeId}` : null;
+  const dishHref = placeId
+    ? post.dishId
+      ? `/restaurant/${placeId}?dish=${post.dishId}`
+      : restaurantHref
+    : null;
+
   /* The poster's own words are the headline, and the name is the small line
      above them.
 
@@ -232,19 +265,35 @@ export function FoodPostCard(props: FoodPostCardProps) {
      would have made that an empty headline. */
   const words = post.text?.trim() ? post.text : null;
   const headline = words ?? title;
-  const kicker = words ? title : null;
   const titleId = `post-${post.id}-title`;
   const kickerId = `post-${post.id}-kicker`;
 
-  /* Where it was and when, printed at the foot of the card under the comment
-     rather than up with the name — it is the footnote to the plate, and the
-     top of the card is for the plate and the person.
+  /*
+   * The subject line under the words: the dish in the accent, then the
+   * restaurant beside it — "Cheese board @ Vin de Syrah".
    *
-     Only what the headline didn't already say: a restaurant review carries no
-     neighbourhood and no "restaurant review" label, the stars say it. Price
-     rides here only when there's no photo to wear its chip. */
+   * Both names used to be somewhere else and neither was near the other: the
+   * dish was a small orange kicker *above* the headline and the restaurant was
+   * six rows down in the mono foot byline. What a plate is and where it was
+   * are one fact, and they now read as one.
+   *
+   * Whichever name the headline already took is dropped here rather than
+   * printed twice — that only happens on a post with no words, where the
+   * headline falls back to the name. There is no third case: a post with words
+   * shows both, a post without shows the other one.
+   */
+  const lineDish = headline === post.dishName ? null : post.dishName;
+  const lineRestaurant = headline === post.restaurant ? null : post.restaurant;
+
+  /* When it was, printed at the foot of the card — the footnote to the plate,
+     where the top of the card is for the plate and the person.
+   *
+     The dish and the restaurant used to lead this line and no longer do: they
+     are up on the subject line under the words, where they can be tapped.
+     Printing them twice on one card was the cost of the old arrangement, not a
+     feature of it. Price rides here only when there's no photo to wear its
+     chip. */
   const bylineParts = [
-    titleIsDish ? post.restaurant : post.dishName,
     relativeTime(post.createdAt),
     post.media.length === 0 ? post.price : null,
   ].filter(Boolean);
@@ -298,10 +347,12 @@ export function FoodPostCard(props: FoodPostCardProps) {
 
   return (
     <article
-      // Both lines, in reading order, so the card announces itself as "Hot
-      // honey pepperoni pizza, crispy crust and spicy honey…" rather than as a
-      // quote from nowhere.
-      aria-labelledby={kicker ? `${kickerId} ${titleId}` : titleId}
+      /* Both lines, in reading order: the words first and the subject line
+         after, so the card announces itself as "Crispy crust, spicy honey…,
+         hot honey pepperoni pizza at Landini's Pizzeria" rather than as a quote
+         from nowhere. The reverse of the pair this used to name, because what
+         the person said now leads the card. */
+      aria-labelledby={lineDish || lineRestaurant ? `${titleId} ${kickerId}` : titleId}
       className={`overflow-hidden rounded-2xl bg-white ${
         highlighted ? "ring-2 ring-pm-orange" : ""
       }`}
@@ -358,19 +409,6 @@ export function FoodPostCard(props: FoodPostCardProps) {
       )}
 
       <header className={hasPhoto ? "px-4 pt-3" : "px-4 pt-4"}>
-        {/* The dish or the restaurant, small and in the accent — a caption
-            under its picture rather than a heading over a section. Fraunces
-            because it is a proper name, --pm-orange-text because small orange
-            type needs the darker of the two accent tokens to clear 4.5:1. */}
-        {kicker && (
-          <p
-            id={kickerId}
-            className="mb-1 truncate font-display text-[13px] font-semibold leading-tight text-pm-orange-text"
-          >
-            {kicker}
-          </p>
-        )}
-
         {/* The words and their verdict share the opening line: dish posts get
             the percent in the composer meter's own heat, restaurant posts get
             their stars. Exactly two branches, same as everywhere else — no
@@ -422,6 +460,69 @@ export function FoodPostCard(props: FoodPostCardProps) {
             </span>
           )}
         </div>
+
+        {/* The subject line: what was eaten, and where.
+         *
+         * The two names wear different clothes on purpose, and the split is the
+         * one DESIGN.md already draws — a name used as a *title* sets in
+         * Fraunces, a name used as a *compact reference to a record* sets in
+         * mono. The dish is this post's title; the restaurant is a record it
+         * points at. So the dish keeps the display face and the accent, and the
+         * restaurant drops to mono at the muted step, with a hairline @ between
+         * them. Two proper names two inches apart otherwise read as one name.
+         *
+         * --pm-orange-text, not --pm-orange: at 15px this is body-sized type and
+         * only the darker accent token clears 4.5:1.
+         *
+         * `min-w-0 truncate` on each name rather than on the row, so two long
+         * ones share the width instead of the restaurant being clipped off the
+         * end entirely. */}
+        {(lineDish || lineRestaurant) && (
+          <p id={kickerId} className="mt-1.5 flex min-w-0 items-baseline gap-x-2">
+            {lineDish &&
+              (dishHref ? (
+                <Link
+                  href={dishHref}
+                  className="min-w-0 truncate rounded-sm font-display text-[15px] font-semibold leading-tight text-pm-orange-text transition-colors hover:text-pm-orange hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                >
+                  {lineDish}
+                </Link>
+              ) : (
+                <span className="min-w-0 truncate font-display text-[15px] font-semibold leading-tight text-pm-orange-text">
+                  {lineDish}
+                </span>
+              ))}
+
+            {/* The word, not an `@`.
+             *
+                An `@` reads as a handle in this app and nowhere else — it is
+                how every byline, every comment author and every profile link
+                names a *person*. Putting one between a dish and a restaurant
+                would be the second meaning of a mark that already has exactly
+                one, on a card that prints the real kind three rows down.
+             *
+                Sans, because it is the one word on this line a person would
+                say rather than a name or a machine value — DESIGN.md's split by
+                authorship, applied to a two-letter word. */}
+            {lineDish && lineRestaurant && (
+              <span className="shrink-0 text-[13px] text-zinc-500">at</span>
+            )}
+
+            {lineRestaurant &&
+              (restaurantHref ? (
+                <Link
+                  href={restaurantHref}
+                  className="min-w-0 truncate rounded-sm font-mono text-[12px] font-medium text-zinc-500 transition-colors hover:text-zinc-900 hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                >
+                  {lineRestaurant}
+                </Link>
+              ) : (
+                <span className="min-w-0 truncate font-mono text-[12px] font-medium text-zinc-500">
+                  {lineRestaurant}
+                </span>
+              ))}
+          </p>
+        )}
 
         {/* Sits with the text it expands, which is now up here. 140 characters
             is roughly where three lines end at this size. */}

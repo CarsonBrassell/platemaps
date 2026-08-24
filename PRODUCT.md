@@ -24,7 +24,7 @@ Three confirmed differentiators:
 - **Map-first social discovery.** You see what people around you are actually eating, placed on a map, rather than querying a directory.
 - **Recency over aggregate.** Recency-weighted "hot" ranking surfaces what is good now, in preference to averages accumulated over years.
 
-Explicitly *not* positioning: PM Points and the leaderboard are a supply-side mechanism that keeps fresh local posts coming. They are a capability, not the reason the product wins, and should never be presented as the differentiator.
+Explicitly *not* positioning: Plate Points and the leaderboard are a supply-side mechanism that keeps fresh local posts coming. They are a capability, not the reason the product wins, and should never be presented as the differentiator.
 
 ## Operating Context
 
@@ -40,11 +40,11 @@ Confirmed functionality:
 - **Discover** (`/`): filter by neighborhood, cuisine, open now, top rated and trending; curated "Our Picks" strip; restaurant detail pages carrying dishes. "Top rated" means ≥4.5 stars on the Yelp/Google blend while the blend is still displayed, and flips to a plate score ≥85% when the stars are retired — one flag, `SHOW_BLEND_STARS`, decides both the filter and the display so they can never disagree.
 - **Feed** (`/feed`): composer — up to 4 client-resized photos, restaurant, dish off its real menu, price, distance label, a 0–100% rating on the plate, best-at and let-you-down chips, food tags, amenities, caption. One rated path, plus a comment-only door. Tabs are For You (recency-weighted hot score), Following, and Map.
 - **Social**: like, comment, like a comment, save, follow, share, delete own post, and a "would you eat this?" yes/no verdict.
-- **PM Points**: +10 to publish, +1 per like received, +2 per comment received, +1 to the voter for a first verdict on a post; one-time bonuses at 25/100/500 likes. Leaderboard windows are Today/Week/Month/All time.
+- **Plate Points**: +10 to publish, +1 per like received, +2 per comment received, +1 to the voter for a first verdict on a post; one-time bonuses at 25/100/500 likes. Leaderboard windows are Today/Week/Month/All time.
 - **Map**: a custom MapLibre GL vector style over OpenFreeMap/OpenStreetMap data. Pins scale and glow by the restaurant's best post score and dim when it is closed; comment bubbles are placed with screen-space collision avoidance and thinned by zoom.
 - **Auth**: email signup/login/logout with bcrypt hashing, plus avatar upload.
 
-Terminology: a post is a **plate**; the currency is **PM Points**; the verdict prompt is **"would you eat this?"**.
+Terminology: a post is a **plate**; the currency is **Plate Points**; the verdict prompt is **"would you eat this?"**.
 
 Technical constraints:
 

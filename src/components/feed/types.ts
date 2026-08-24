@@ -33,6 +33,26 @@ export type Post = {
   restaurantId?: string;
   restaurantLat?: number;
   restaurantLng?: number;
+  /**
+   * The listed restaurant this post resolved to, as a key into the `places` map
+   * the feed routes send beside the posts. Set by `placesForPosts` in
+   * lib/discover.ts, absent when nothing in the corpus matched.
+   *
+   * Deliberately not the same field as `restaurantId`: that one is what the
+   * card links to, and this one can come from a name match. See the note on
+   * `placesForPosts`.
+   */
+  placeId?: string;
+  /**
+   * The dish on that restaurant's menu, when `dishName` matched a line on it.
+   * Also set by `resolvePostRefs`; what the card's dish link points at through
+   * `/restaurant/<id>?dish=<dishId>`.
+   *
+   * Often absent, and that is not a fault: `posts.dish_name` is free text with
+   * no id column behind it, so a dish only resolves when what someone typed
+   * matches the menu. The card falls back to linking the restaurant.
+   */
+  dishId?: string;
   dishName?: string;
   price?: string;
   /** Native scale: 1-5 stars with ratingKind "restaurant", 0-100% with
