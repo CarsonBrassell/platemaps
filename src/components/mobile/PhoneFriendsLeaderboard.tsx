@@ -6,7 +6,7 @@ import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
 type Entry = { id: string; name: string; avatarUrl?: string; points: number };
 
 /**
- * PM Points, ranked against your friends and only your friends — never the
+ * Plate Points, ranked against your friends and only your friends — never the
  * whole site. The site-wide leaderboard (`getLeaderboard` in lib/db.ts,
  * `/api/leaderboard`) still exists but has no importer anywhere in the
  * product (see PhoneFeedScreen's header comment); this is a different,
@@ -16,39 +16,26 @@ type Entry = { id: string; name: string; avatarUrl?: string; points: number };
  * since `points` on both is the same live column every post/like/comment
  * award writes to.
  *
- * **It is a printed menu**, and that is the whole of its visual design.
+ * **It is laid out as a printed menu**, which is the whole of its visual
+ * design and the reason for every choice below:
  *
- * The first pass took the metaphor entirely into typography — dotted leaders,
- * mono rubrics, everything in ink on white — and the result read as a
- * spreadsheet with nice fonts. A menu is a *printed object*: it has a cover,
- * its courses are announced, and its prices sit in a column you can scan. So
- * the card now has:
- *
- * - **A charcoal header band**, the menu's cover. `--pm-charcoal` and
- *   `--pm-orange-tint` are both palette tokens, and cream on charcoal is the
- *   highest-contrast pairing the app owns, which is what lets the title carry
- *   at 21px without the accent being spent on it.
- * - **Courses announced in the accent** — orange label between rules drawn in
- *   `--pm-orange-border`, with a diamond centred on the rule the way a menu
- *   sets off a section. The rules were `zinc-300`; warm beats neutral here
- *   because everything either side of them is warm.
- * - **Station chips on the podium.** The three kitchen titles used to be
- *   buried in the standing line, which is where the longest text on the row
- *   already lives. As chips they read at a glance and they carry the podium's
- *   colour: `№1` an orange fill, `№2`/`№3` the tan chip. Tan rather than the
- *   orange tint on purpose — the tint already means "this row is you", and two
- *   meanings on one colour is how a legend stops working.
- * - **Prices with their unit.** `1,563 PM` rather than a bare number, because
- *   a price on a menu carries its currency and because "PM Points" only
- *   appears in the rubric otherwise.
- *
- * Points are still set like prices — name hard left, number hard right, dotted
- * leader between — which is the device `LeaderboardRow` uses on the web. That
- * replaced a `PointsBadge tone="orange"` on every row: a column of orange
- * pills spent the accent DESIGN.md rations to about three per screen, and a
- * price on a menu is ink, not a highlight. The colour added above is spent on
- * structure (cover, courses, podium) rather than on repeating per-row chrome,
- * which is what keeps that judgement intact.
+ * - **Courses, not one flat list.** The top three sit under `CHEF'S TABLE`,
+ *   everyone else under `THE LINE`, each heading centred between dotted rules.
+ *   Two `<ol>`s rather than one, with `start={4}` on the second so the split
+ *   is presentational and the ordinal semantics survive it.
+ * - **Points are set like prices**: name hard left, mono number hard right,
+ *   dotted leader running between them — the same device `LeaderboardRow`
+ *   uses on the web. It replaced a `PointsBadge tone="orange"` on every row;
+ *   a column of orange pills spent the accent DESIGN.md rations to about
+ *   three per screen, and a price on a menu is ink, not a highlight.
+ * - **The `№` rank prefix** is the same "machine-issued record number" idiom
+ *   PhoneDetailHero uses for "Spot №001", and `№1` is the one thing that
+ *   still takes orange. Station titles (`STATIONS`) carry the podium instead
+ *   of medals or a crown, per PRODUCT.md's note that points are "a
+ *   capability, not the reason the product wins".
+ * - **The dotted rules are typography, not grouping.** DESIGN.md's no-borders
+ *   rule is about how cards group — this is one white card, and the leaders
+ *   inside it are how a menu sets a price. All of them are `aria-hidden`.
  *
  * **No count of people appears anywhere**, and none may be added — not "5 at
  * the table", not a rank denominator like `№2 of 6`. Friend counts never
@@ -68,8 +55,8 @@ export type Seat = { entry: Entry; rank: number; gap: number; isYou: boolean };
 
 /**
  * The one ranking, exported so the friends list above can badge each row with
- * the same `№` this card gives them. Two sorts of the same array is how the
- * list and the leaderboard end up disagreeing about who is second.
+ * the same `№` this card gives them. Two sorts of the same array is how a list
+ * and the leaderboard under it end up disagreeing about who is second.
  */
 export function rankSeats(friends: Entry[], you: Entry): Seat[] {
   const ranked = [...friends, you].sort((a, b) => b.points - a.points);
@@ -82,10 +69,9 @@ export function rankSeats(friends: Entry[], you: Entry): Seat[] {
 }
 
 /**
- * A course heading: label in the accent, centred between two rules, with a
- * diamond sitting on each rule. `.mono-label` is unlayered in globals.css and
- * outranks Tailwind's font utilities, so this sets colour only — a weight
- * alongside it would be silently discarded.
+ * A course heading, centred between two rules. `.mono-label` is unlayered in
+ * globals.css and outranks Tailwind's font utilities, so this sets colour
+ * only — a weight alongside it would be silently discarded.
  */
 function Course({ label }: { label: string }) {
   return (
@@ -104,8 +90,27 @@ function Course({ label }: { label: string }) {
 }
 
 /**
+ * Rank 1 has nothing above it to close the gap on, and a tie prints its own
+ * line rather than "0 to catch" reading like a bug. Top three prepend their
+ * station, so the line reads as a menu item's tags do.
+ */
+function standingFor(rank: number, gap: number) {
+  const standing =
+    rank === 1
+      ? "In the lead"
+      : gap > 0
+        ? `${formatPoints(gap)} to catch №${rank - 1}`
+        : `Tied for №${rank - 1}`;
+  return standing;
+}
+
+/**
  * The podium's kitchen title, as a chip. Only the top three have one; everyone
- * below is just a number, per STATIONS.
+ * below is just a number, per STATIONS. It used to ride the standing line,
+ * which is where the longest text on the row already lives — as a chip it
+ * reads at a glance and can carry the podium's colour. Tan for №2/№3 rather
+ * than the orange tint, because that tint already means "this row is you" and
+ * two meanings on one colour is how a legend stops working.
  */
 function StationChip({ rank }: { rank: number }) {
   const station = STATIONS[rank];
@@ -121,21 +126,10 @@ function StationChip({ rank }: { rank: number }) {
   );
 }
 
-/**
- * Rank 1 has nothing above it to close the gap on, and a tie prints its own
- * line rather than "0 to catch" reading like a bug. The station no longer
- * rides this line — it is a chip beside the name now, which is what freed the
- * line up to say only the one thing it is for.
- */
-function standingFor(rank: number, gap: number) {
-  if (rank === 1) return "In the lead";
-  return gap > 0 ? `${formatPoints(gap)} to catch №${rank - 1}` : `Tied for №${rank - 1}`;
-}
-
 function Seat({ entry, rank, gap, isYou }: Seat) {
   return (
     <li
-      className={`flex items-center gap-2.5 rounded-xl px-2 py-2 ${
+      className={`flex items-center gap-3 rounded-xl px-1.5 py-2 ${
         isYou ? "bg-pm-orange-tint" : ""
       }`}
     >
@@ -149,7 +143,11 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
 
       {entry.avatarUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={entry.avatarUrl} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" />
+        <img
+          src={entry.avatarUrl}
+          alt=""
+          className="h-9 w-9 shrink-0 rounded-full object-cover"
+        />
       ) : (
         <span
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-xs font-medium text-white ${avatarPalette(entry.name).avatarBg}`}
@@ -168,12 +166,12 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
           <span className="font-display truncate text-[15px] font-semibold leading-tight text-zinc-900">
             {isYou ? "You" : entry.name}
           </span>
-          <span aria-hidden="true" className={`${DOTS} mb-[5px] min-w-3`} />
+          <span aria-hidden="true" className={`${DOTS} mb-[5px] min-w-4`} />
           <span className="shrink-0 whitespace-nowrap font-mono text-sm font-semibold leading-none tabular-nums text-zinc-900">
             {formatPoints(entry.points)}
-            {/* The unit, the way a price carries its currency. */}
-            <span className="ml-0.5 text-[10px] font-medium text-pm-grey-text">PM</span>
-            <span className="sr-only"> Points</span>
+            {/* The unit, the way a price on a menu carries its currency. */}
+            <span className="ml-0.5 text-[10px] font-medium text-pm-grey-text">PP</span>
+            <span className="sr-only"> Plate Points</span>
           </span>
         </span>
         <span className="mt-1 flex items-center gap-1.5">
@@ -191,6 +189,7 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
   if (friends.length === 0) return null;
 
   const seats = rankSeats(friends, you);
+
   const chefsTable = seats.slice(0, 3);
   const theLine = seats.slice(3);
 
@@ -203,7 +202,9 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
       <div className="overflow-hidden rounded-2xl bg-white">
         {/* The cover. Charcoal rather than white because a menu's head is
             printed on the board, and because it gives the card a top edge
-            without drawing a border to get one. */}
+            without drawing a border to get one. Cream on charcoal is the
+            highest-contrast pairing the app owns, which is what lets the
+            title carry without spending the accent on it. */}
         <div className="bg-pm-charcoal px-4 py-4 text-center">
           <p className="mono-label text-pm-orange-tint">Tonight&rsquo;s service</p>
           <h2
@@ -213,34 +214,35 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
             Friends&rsquo; Table
           </h2>
           <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-[#bdb3a4]">
-            Ranked by PM Points
+            Ranked by Plate Points
           </p>
         </div>
 
         <div className="px-3 pb-3">
-          <Course label="Chef's table" />
-          <ol className="flex flex-col gap-0.5">
-            {chefsTable.map((seat) => (
-              <Seat key={seat.entry.id} {...seat} />
-            ))}
-          </ol>
 
-          {theLine.length > 0 && (
-            <>
-              <Course label="The line" />
-              <ol start={4} className="flex flex-col gap-0.5">
-                {theLine.map((seat) => (
-                  <Seat key={seat.entry.id} {...seat} />
-                ))}
-              </ol>
-            </>
-          )}
+        <Course label="Chef's table" />
+        <ol className="flex flex-col gap-0.5">
+          {chefsTable.map((seat) => (
+            <Seat key={seat.entry.id} {...seat} />
+          ))}
+        </ol>
 
-          <div className="mt-4 flex items-center gap-2" aria-hidden="true">
+        {theLine.length > 0 && (
+          <>
+            <Course label="The line" />
+            <ol start={4} className="flex flex-col gap-0.5">
+              {theLine.map((seat) => (
+                <Seat key={seat.entry.id} {...seat} />
+              ))}
+            </ol>
+          </>
+        )}
+
+          <div className="mt-4 flex" aria-hidden="true">
             <span className={DOTS} />
           </div>
           <p className="mt-2.5 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-pm-grey-text">
-            Prices in PM Points · no substitutions
+            Prices in Plate Points · no substitutions
           </p>
         </div>
       </div>

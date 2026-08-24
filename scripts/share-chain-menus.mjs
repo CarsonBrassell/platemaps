@@ -118,6 +118,7 @@ if (DRY_RUN) {
 
 let copied = 0;
 let dishes = 0;
+let skippedPriceless = 0;
 
 for (const p of plans) {
   const source = await sql`
@@ -125,6 +126,27 @@ for (const p of plans) {
     FROM dishes WHERE restaurant_id = ${p.source.id} ORDER BY sort_order
   `;
   if (source.length === 0) continue;
+
+  /*
+   * A menu with no prices is not propagated.
+   *
+   * Starbucks publishes 383 products through its own API with no price field
+   * on any of them, and McDonald's offers only app-only pickup or a delivery
+   * menu that says outright its prices are higher than in the restaurant. Both
+   * were extracted honestly as dish names with empty prices - but copying them
+   * across every branch would hand ~200 Starbucks and ~104 McDonald's a menu
+   * that never answers what a coffee costs.
+   *
+   * That would move the coverage number by three hundred restaurants and the
+   * product forward by nothing, which is the wrong trade for a site whose
+   * whole promise is the price. One branch carrying a dish list is honest;
+   * three hundred of them is a statistic.
+   */
+  const priced = source.filter((d) => d.price && d.price !== "" && d.price !== "—").length;
+  if (priced === 0) {
+    skippedPriceless += 1;
+    continue;
+  }
 
   // Re-checked here rather than trusted from the snapshot above: an earlier
   // iteration of this same run may have filled this branch in.
@@ -171,6 +193,9 @@ const [after] = await sql`
 
 console.log(
   `\n\n${copied} branches given a menu, ${dishes} dishes copied.\n` +
+    (skippedPriceless > 0
+      ? `${skippedPriceless} branches skipped: their chain's menu carries no prices.\n`
+      : "") +
     `${after.with_menu}/${after.total} restaurants now carry a menu.\n` +
     `All of it is marked confidence = 'chain-shared' and points at the source branch.`,
 );

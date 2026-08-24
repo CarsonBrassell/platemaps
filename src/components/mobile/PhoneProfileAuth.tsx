@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { useAuth } from "@/lib/auth";
+import { PASSWORD_HINT, checkPassword } from "@/lib/password";
 
 /**
  * Signed-out profile: create an account or log in.
@@ -37,6 +38,9 @@ export function PhoneProfileAuth() {
   const [agreed, setAgreed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
+  /* Same hint the web form shows, same reason — see lib/password.ts. */
+  const weakPassword = mode === "signup" && password ? checkPassword(password, { name, email }) : null;
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
@@ -54,6 +58,13 @@ export function PhoneProfileAuth() {
     if (mode === "signup" && !agreed) {
       setError("Please agree to the Terms and Privacy Policy to continue.");
       return;
+    }
+    if (mode === "signup") {
+      const weak = checkPassword(password, { name, email });
+      if (weak) {
+        setError(weak);
+        return;
+      }
     }
     setSubmitting(true);
     const result =
@@ -96,8 +107,8 @@ export function PhoneProfileAuth() {
         </h1>
         <p className="mb-5 text-sm text-zinc-500">
           {mode === "signup"
-            ? "Save your favorite San Diego spots and earn PM Points."
-            : "Sign in to see your saved spots and PM Points."}
+            ? "Save your favorite San Diego spots and earn Plate Points."
+            : "Sign in to see your saved spots and Plate Points."}
         </p>
 
         {mode === "signup" && (
@@ -150,6 +161,23 @@ export function PhoneProfileAuth() {
           autoComplete={mode === "signup" ? "new-password" : "current-password"}
           className={inputClass}
         />
+
+        {mode === "signup" && (
+          <p className="-mt-2 mb-4 text-xs leading-snug text-zinc-500">
+            {weakPassword ?? PASSWORD_HINT}
+          </p>
+        )}
+
+        {mode === "login" && (
+          <p className="-mt-2 mb-4">
+            <Link
+              href="/forgot-password"
+              className="inline-flex min-h-11 items-center text-xs text-zinc-500 underline underline-offset-2"
+            >
+              Forgot your password?
+            </Link>
+          </p>
+        )}
 
         {/* The consent gate the web /account page added alongside the Terms
             and Privacy pages. Same requirement, phone-sized: a 44px row rather

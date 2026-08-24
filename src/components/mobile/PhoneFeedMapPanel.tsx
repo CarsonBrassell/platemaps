@@ -1,18 +1,22 @@
 "use client";
 
-import { Component, useEffect, useMemo, useState, type ReactNode } from "react";
+import { Component, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import {
   AppRouterContext,
   type AppRouterInstance,
 } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import type { Map as MapLibreMap } from "maplibre-gl";
-import { MapSearch } from "@/components/MapSearch";
 import type { MapRestaurant } from "@/components/RestaurantMap";
-import { mapCommentsByRestaurant, withDishIds, type MapComment } from "@/data/mapComments";
+import { PhoneMapSearch } from "./PhoneMapSearch";
 import type { Dish } from "@/data/dishes";
 import type { Post } from "@/components/feed/types";
+import {
+  buildMapComments,
+  fetchMenus,
+  indexPostsByRestaurantName,
+  menuRestaurantIdsKey,
+} from "@/lib/mapBubbles";
 
 /**
  * The map feed, phone version — the third tab on /m/feed.
@@ -103,116 +107,6 @@ const RestaurantMap = dynamic(
   },
 );
 
-/* ---------------------------------------------------------------------------
- * Bubble text parsing.
- *
- * Verbatim from `src/app/feed/page.tsx`, which declares these at module scope
- * without exporting them. They are the read path for seeded bubbles, which
- * predate structured post fields and still encode rating and dish in the
- * caption ("@Name 4 stars;"). Copied rather than imported because a page module
- * cannot be imported from, and rewriting that file to export them is out of
- * scope here — they belong in `src/lib/` and should move there in one commit
- * that updates both callers.
- * ------------------------------------------------------------------------- */
-
-function bubbleTextFromPost(text: string) {
-  const match = text.match(/^@[^;]+;\s*/);
-  return match ? text.slice(match[0].length) : text;
-}
-
-function ratingFromPost(text: string): string | null {
-  const stars = text.match(/^@.*?\s(\d)\sstars?;/);
-  return stars ? `${stars[1]}★` : null;
-}
-
-function dishNameFromPost(text: string): string | null {
-  const match = text.match(/^@.+? - (.+?)\s\d{1,3}%;/);
-  return match ? match[1] : null;
-}
-
-function dishPrefixFromPost(text: string): string | null {
-  const match = text.match(/^@.+? - (.+?)\s(\d{1,3})%;/);
-  return match ? `${match[1]} ${match[2]}%` : null;
-}
-
-function findDishId(
-  menus: Record<string, Dish[]>,
-  restaurantId: string,
-  dishName: string,
-): string | undefined {
-  return menus[restaurantId]?.find((d) => d.name.toLowerCase() === dishName.toLowerCase())?.id;
-}
-
-/**
- * A post's rating as a bubble's meta row shows it, always carrying the scale it
- * was measured on. Every rating written now is a percent; the `restaurant`
- * branch is the read path for rows written before the star review was retired
- * and prints "4/5" with its denominator. Never convert between the two — see
- * CLAUDE.md's rating-scale invariant.
- */
-function bubbleRating(post: Post): string | null {
-  if (post.rating === undefined) return ratingFromPost(post.text);
-  if (post.ratingKind === "restaurant") return `${post.rating}/5`;
-  if (post.ratingKind === "dish") return post.dishName ? null : `${post.rating}%`;
-  return null;
-}
-
-/** The orange "Marlin taco 85%" prefix, in the dish review's own percent. */
-function bubbleDishPrefix(post: Post): string | null {
-  if (!post.dishName || post.rating === undefined) return dishPrefixFromPost(post.text);
-  if (post.ratingKind === "dish") return `${post.dishName} ${post.rating}%`;
-  // A restaurant review's stars belong to the place, not to a dish.
-  return post.dishName;
-}
-
-/**
- * The shipped `MapSearch`, pinned where a 390px map needs it at every viewport
- * width.
- *
- * Not a fork — the field itself is the real component, handed to `RestaurantMap`
- * through the `searchField` prop it exposes for exactly this kind of swap. What
- * is overridden is four position utilities on its root, from a `display:
- * contents` wrapper that generates no box of its own, so the field still
- * positions against the map's own wrapper exactly as it did.
- *
- * The reason is the one PhoneFeedPostCard already documents: Tailwind's `sm:`
- * reads the *viewport*, and the /m tree is a 390px column inside a desktop
- * window in the preview. MapSearch's own note (MapSearch.tsx:240) says the
- * `sm:` branch is for a map wide enough to hold the field and the source switch
- * on one row, and that below it the field wraps to the row underneath. A 390px
- * frame is never that wide — but in the preview the `sm:` branch fires anyway
- * and drops a 256px field straight on top of the switch. Forcing the narrow
- * placement is what makes the preview show what the handset will.
- *
- * This pairs with the `pt-28` on the zoom stack below: MapSearch's comment and
- * `/feed`'s are explicit that the two numbers are one layout and move together.
- */
-// Kept, though nothing renders it: this is the one-prop path back to an on-map
-// search field. See NoMapSearch below for why it is switched off.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function PhoneMapSearch({ mapRef }: { mapRef: React.RefObject<MapLibreMap | null> }) {
-  return (
-    <div className="contents [&>div]:left-2.5 [&>div]:right-2.5 [&>div]:top-16 [&>div]:w-auto">
-      <MapSearch mapRef={mapRef} />
-    </div>
-  );
-}
-
-/**
- * No search field on the phone map.
- *
- * `RestaurantMap`'s `searchField` prop *defaults* to `MapSearch`, so leaving it
- * off does not remove the field — it restores it. This is how you opt out.
- *
- * Search moved to the screen header (PhoneFeedHeader), and two search fields on
- * one 390px screen is one too many. The cost is real and worth naming: the
- * header's search navigates to discover (`/m?q=`), while `MapSearch` flew the
- * *camera* to a spot without leaving the map. That is a different job and the
- * phone map currently has no replacement for it — restoring it is one prop:
- * pass `PhoneMapSearch` again, which is kept above for exactly that reason.
- */
-const NoMapSearch = () => null;
-
 /**
  * Where a href the map pushes should land in the phone tree.
  *
@@ -265,9 +159,43 @@ export function PhoneFeedMapPanel({
 }) {
   const router = useRouter();
 
-  // The map's backdrop: every restaurant, so every ember has a pin — AGENTS.md
-  // rules out clustering, so this one really does need the whole corpus.
+  // The map's backdrop. Restaurants and menus used to arrive in one
+  // `Promise.all` here, but the menus now depend on `posts` — only a
+  // restaurant that gets a bubble needs one — so they have split into two
+  // effects. See the web host, which carries the same pair for the same reason.
   const [restaurants, setRestaurants] = useState<MapRestaurant[]>([]);
+  const [menus, setMenus] = useState<Record<string, Dish[]>>({});
+
+  /*
+   * The feed grouped by the restaurant name each post claims — the index both
+   * the bubbles and the menu fetch read. See lib/mapBubbles.ts for why this
+   * replaced a per-restaurant `posts.filter(...)`: that scan was 5,701
+   * restaurants × every post and re-ran on every vote, which is what kept a
+   * bubble's count from repainting after it was cast.
+   */
+  const postsByRestaurant = useMemo(() => indexPostsByRestaurantName(posts), [posts]);
+
+  /** Which restaurants need a menu, as a value-comparable effect dependency. */
+  const menuIdsKey = useMemo(
+    () => menuRestaurantIdsKey(postsByRestaurant, restaurants),
+    [postsByRestaurant, restaurants],
+  );
+
+  /* Every restaurant id whose menu has been asked for, successfully or not.
+     A ref, not state: it exists to keep the fetch below from asking twice, and
+     making it state would feed the effect's own writes back into its inputs. */
+  const requestedMenuIds = useRef<Set<string>>(new Set());
+
+  /* Whether this component is still mounted. The menus effect needs a guard
+     scoped to the component rather than to one run of the effect — see the
+     long note there for why a per-run `cancelled` flag actively loses data. */
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -287,97 +215,93 @@ export function PhoneFeedMapPanel({
     };
   }, []);
 
-  /**
-   * Menus, bounded to the restaurants that can actually put a dish name on a
-   * bubble: the ones with a real post on screen, and the ones with a seeded
-   * comment in `mapCommentsByRestaurant`. This used to be the whole dish
-   * table, unconditionally — `/api/restaurants/dishes` with no `?ids=`,
-   * exactly the unbounded call that route's own comment flags. Measured
-   * against the corpus this shipped with: 18.3 MB, on every mount, on a phone.
-   * The real need is a couple dozen restaurants; the other ~5,600 were dead
-   * weight this screen paid for without ever reading.
+  /*
+   * Menus, for the restaurants that actually have a bubble.
    *
-   * `neededIds` recomputes as `posts` streams in — a friends/discover switch
-   * or a fresh page of results can name a restaurant this hasn't fetched a
-   * menu for yet. `known` is what stops that from being a fetch-everything
-   * loop: the effect below only asks for the ids it does not already hold,
-   * and merges the answer into `menus` rather than replacing it, so an
-   * earlier restaurant's menu is never dropped because a later post arrived.
+   * This used to be `/api/restaurants/dishes` with no query — every dish for
+   * every restaurant, 10.5MB and six seconds, to resolve dish names for the few
+   * dozen restaurants anyone had posted about. `menuRestaurantIdsKey` names
+   * exactly the set that needs one, and `fetchMenus` fetches only that.
+   *
+   * ## Why it asks in batches
+   *
+   * The route caps a request at 500 ids and answers 400 above it. The id set
+   * is not bounded by the number of posts, though — it fans out by restaurant
+   * NAME, so one post about Starbucks names all 200 Starbucks in the corpus
+   * and four chain posts clear the cap. One oversized request would 400, this
+   * effect would throw, and every dish link on the map would die at once on
+   * both surfaces. `fetchMenus` splits the ask instead, which is what the
+   * route's own comment prescribes. Both map surfaces call the same helper —
+   * see `src/lib/mapBubbles.ts`.
+   *
+   * ## Why this cannot loop
+   *
+   * The effect writes `menus` and depends on `menuIdsKey`, and that key is a
+   * pure function of `posts` and `restaurants` — `menus` is not an input to it.
+   * So setting `menus` cannot re-arm this effect; only a genuine change in
+   * *which* restaurants have bubbles can. Casting a vote is the case that
+   * matters: it rewrites a post's counts, not which restaurants have posts, so
+   * the key is byte-identical afterwards and nothing refetches.
+   *
+   * `requestedMenuIds` then makes the set monotonic. Ids are marked before the
+   * request goes out, so a key change that only *adds* ids fetches the addition
+   * and never the ids already held — including the ids of restaurants that came
+   * back with no dishes at all, which never appear as keys in `menus` and would
+   * otherwise look permanently missing and refetch forever. Ids are un-marked
+   * only when the request actually failed — and since the ask is split into
+   * batches, only the ids of the batch that failed, so one bad request can be
+   * retried the next time the key moves without re-buying the menus its
+   * siblings already delivered.
+   *
+   * ## Why the guard is `mounted` and not a per-run `cancelled`
+   *
+   * The restaurants fetch above cancels per run, because a superseded response
+   * there is *wrong* — it would overwrite current state with an older answer.
+   * This one is the opposite: the response is a set of menus keyed by
+   * restaurant id, it is merged rather than assigned, and a menu is the same
+   * menu whenever it arrives. A superseded response is not stale, just late.
+   *
+   * Discarding it would actively lose data, on the ordinary load path rather
+   * than an exotic one: restaurants land first, the key becomes the ~19 seeded
+   * restaurants and their fetch goes out, then the feed lands and the key
+   * grows. A per-run flag would cancel that first response — while its ids stay
+   * marked as requested, since the second run computed its own `missing`
+   * synchronously before the first could un-mark — and the seeded bubbles would
+   * silently lose their dish links on nearly every visit. So the only thing
+   * worth refusing here is a write after unmount.
    */
-  const neededIds = useMemo(() => {
-    const ids = new Set(Object.keys(mapCommentsByRestaurant));
-    for (const p of posts ?? []) if (p.restaurantId) ids.add(p.restaurantId);
-    return ids;
-  }, [posts]);
-
-  const [menus, setMenus] = useState<Record<string, Dish[]>>({});
-
   useEffect(() => {
-    const known = new Set(Object.keys(menus));
-    const missing = [...neededIds].filter((id) => !known.has(id));
+    const missing = menuIdsKey.split(",").filter((id) => id && !requestedMenuIds.current.has(id));
     if (missing.length === 0) return;
-
-    let cancelled = false;
+    for (const id of missing) requestedMenuIds.current.add(id);
     void (async () => {
-      try {
-        const res = await fetch(`/api/restaurants/dishes?ids=${missing.join(",")}`);
-        if (!res.ok || cancelled) return;
-        const { dishes } = (await res.json()) as { dishes: Record<string, Dish[]> };
-        if (cancelled) return;
-        // Merge, not replace — see the comment above `neededIds`.
-        setMenus((prev) => ({ ...prev, ...dishes }));
-      } catch {
-        // A missing menu just means those bubbles skip the dish link.
-      }
+      const { menus: fetched, failedIds } = await fetchMenus(missing);
+      /* Bubbles are already on screen — a menu that never lands costs their
+         headlines a dish link and nothing else. Let the ids of the batch that
+         failed go so a later key change can try again, and ONLY those: the
+         batches that succeeded are in hand and re-asking for them would spend
+         a second request on menus this page already holds. Released before the
+         mount check, the way the old single-request catch was, so unmounting
+         mid-flight can't leave an id marked as bought. */
+      for (const id of failedIds) requestedMenuIds.current.delete(id);
+      if (!mounted.current) return;
+      /* An empty result is a no-op merge, and merging it anyway would hand
+         `menus` a new identity and rebuild every bubble for nothing. It is the
+         shape a total failure takes, and also the shape of a set of
+         restaurants that genuinely have no dishes. */
+      if (Object.keys(fetched).length === 0) return;
+      // Merged, never replaced: a later fetch carries only the ids it asked
+      // for, and the menus already held are still the menus for their
+      // restaurants. Ids never collide across requests, so the spread order
+      // is not load-bearing.
+      setMenus((prev) => ({ ...prev, ...fetched }));
     })();
-    return () => {
-      cancelled = true;
-    };
-    // menus is read to compute `missing`, not to decide whether to run — this
-    // effect must fire again once `neededIds` changes even though its own
-    // last run is what changed `menus`. Depending on it too would refetch the
-    // same ids in a loop.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [neededIds]);
+  }, [menuIdsKey]);
 
-  const mapComments = useMemo(() => {
-    const out: Record<string, MapComment[]> = {};
-    for (const restaurant of restaurants) {
-      const menu = menus[restaurant.id] ?? [];
-      const real: MapComment[] = (posts ?? [])
-        .filter((p) => p.restaurant === restaurant.name)
-        .map((p) => {
-          const parsedDish = dishNameFromPost(p.text);
-          const dish = p.dishName ?? parsedDish ?? undefined;
-          return {
-            id: p.id,
-            restaurantId: restaurant.id,
-            text: bubbleTextFromPost(p.text),
-            // Net, so the bubble and the card never disagree about a plate.
-            score: p.upvoteCount - p.downvoteCount,
-            upvotes: p.upvoteCount - p.downvoteCount,
-            upvotedByMe: p.upvotedByMe,
-            downvotedByMe: p.downvotedByMe,
-            heartedByMe: p.heartedByMe,
-            commentCount: p.comments.length,
-            createdAt: p.createdAt,
-            // Same "Maya Ellis" -> "mayaellis" reading the feed card uses.
-            author: p.authorName.trim().toLowerCase().replace(/\s+/g, ""),
-            rating: bubbleRating(p),
-            dishPrefix: bubbleDishPrefix(p),
-            postId: p.id,
-            dishId: dish ? findDishId(menus, restaurant.id, dish) : undefined,
-          };
-        })
-        .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
-      // The seeded bubbles name their dish rather than carrying its id, since
-      // menus are database rows now — resolved here against the menu this
-      // restaurant actually has. See withDishIds.
-      const seeded = withDishIds(mapCommentsByRestaurant[restaurant.id] ?? [], menu);
-      out[restaurant.id] = [...real, ...seeded];
-    }
-    return out;
-  }, [posts, restaurants, menus]);
+  const mapComments = useMemo(
+    () => buildMapComments(postsByRestaurant, restaurants, menus),
+    [postsByRestaurant, restaurants, menus],
+  );
 
   /**
    * The router the map subtree sees.
@@ -474,7 +398,13 @@ export function PhoneFeedMapPanel({
                 isSignedIn && source === "discover" ? (postId) => onVote(postId, "down") : undefined
               }
               onHeart={isSignedIn && source === "friends" ? onHeart : undefined}
-              searchField={NoMapSearch}
+              /* The phone's own field, in the bottom-right corner opposite the
+                 source switch. It drives the map rather than leaving it: the
+                 term lights every match, signs their names, drops everything
+                 else to a bare ember and silences comments from anywhere the
+                 reader didn't ask about. Same `useMapSearch` the web field
+                 wears — see PhoneMapSearch. */
+              searchField={PhoneMapSearch}
             />
           </AppRouterContext.Provider>
           </MapErrorBoundary>

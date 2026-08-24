@@ -102,7 +102,7 @@ export function LeaderboardRow({
       <div className="flex shrink-0 flex-col items-end gap-0.5">
         <span className="whitespace-nowrap font-mono text-sm font-semibold tabular-nums text-zinc-900">
           {formatPoints(entry.points)}
-          <span className="sr-only"> PM Points</span>
+          <span className="sr-only"> Plate Points</span>
         </span>
         <RankDelta change={entry.rankChange} />
       </div>

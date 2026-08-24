@@ -6,7 +6,7 @@ import { POINT_RULE_COPY } from "@/lib/points";
 
 export function PointsInfoModal({ onClose }: { onClose: () => void }) {
   return (
-    <Dialog title="How PM Points work" onClose={onClose} variant="sheet">
+    <Dialog title="How Plate Points work" onClose={onClose} variant="sheet">
       <div className="px-5 py-4">
         <p className="mb-4 text-sm leading-relaxed text-zinc-600">
           Points go to the person whose plate earned them. Post what you eat, and every like

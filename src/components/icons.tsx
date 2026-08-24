@@ -171,6 +171,29 @@ export function UsersIcon({ className = "" }: IconProps) {
   );
 }
 
+/**
+ * The gear, for the settings screen's doorway off the profile.
+ *
+ * Three parts, and the middle one is the whole trick: a **body ring**, a bore,
+ * and eight short teeth that straddle the ring rather than radiating from the
+ * centre. The first draft had no ring and ran the strokes from near the hub
+ * out — at the 16-20px this ships at that is a sunburst, and it read as a
+ * brightness control, not a gear. Teeth need something to be teeth *on*.
+ *
+ * Same 2px stroke as every icon here, so it sits beside UserIcon without
+ * looking heavier.
+ */
+export function SettingsIcon({ className = "" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">
+      <circle cx="12" cy="12" r="7.4" />
+      <circle cx="12" cy="12" r="2.6" />
+      <path d="M12 4.6V2.4M12 19.4v2.2M19.4 12h2.2M4.6 12H2.4" />
+      <path d="m17.23 6.77 1.56-1.56M6.77 17.23l-1.56 1.56M17.23 17.23l1.56 1.56M6.77 6.77 5.21 5.21" />
+    </svg>
+  );
+}
+
 export function PlusIcon({ className = "" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" {...stroke} className={className} aria-hidden="true">
@@ -289,15 +312,75 @@ export function ArrowDownIcon({ className = "" }: IconProps) {
 }
 
 /**
- * The vote pair. `filled` paints the palm solid for the direction this viewer
- * has actually pressed — the outline and the fill are the same path at the
- * same size, so a thumb never changes dimensions on click. That was the
- * failure of the old hollow-△/solid-▲ text glyphs these replaced: the two
- * characters render at different sizes, often from different fallback fonts,
- * so the arrow appeared to grow when you voted.
+ * The vote pair, as arrows.
  *
- * ThumbsDownIcon is ThumbsUpIcon rotated 180°, not a redrawn path, so the two
- * cannot drift apart in weight or optical size.
+ * ## One closed path, drawn twice
+ *
+ * `VOTE_ARROW_PATH` is a single closed outline — head and stem in one figure —
+ * which is the whole reason this can be an arrow at all. The app used to vote
+ * with `▲`/`△` text glyphs and they were retired for a real, visible bug: the
+ * two characters come out of different fallback fonts at different optical
+ * sizes, so the arrow grew when you clicked it. A closed path can be
+ * `fill: none` at rest and `fill: currentColor` when pressed without its
+ * geometry changing by a pixel, so the state is carried by colour and weight
+ * and never by size.
+ *
+ * `VoteArrowDownIcon` is the up path rotated 180°, not a second drawing, so the
+ * pair cannot drift apart in weight or optical size either.
+ *
+ * The thumbs below are kept for the surfaces that are not a vote gesture — the
+ * dish sheet's yes-count, the activity badge — and for nothing else.
+ */
+const VOTE_ARROW_PATH = "M12 3.4 21 12.4h-4.6V20.6H7.6V12.4H3z";
+
+export function VoteArrowUpIcon({
+  filled = false,
+  className = "",
+}: IconProps & { filled?: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      {...stroke}
+      /* 1.75 rather than the shared 2: this outline has two tight interior
+         corners where the head meets the stem, and at 2 they close up into a
+         blob at 18px. */
+      strokeWidth={1.75}
+      fill={filled ? "currentColor" : "none"}
+      className={className}
+      aria-hidden="true"
+    >
+      <path d={VOTE_ARROW_PATH} />
+    </svg>
+  );
+}
+
+export function VoteArrowDownIcon({
+  filled = false,
+  className = "",
+}: IconProps & { filled?: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      {...stroke}
+      strokeWidth={1.75}
+      fill={filled ? "currentColor" : "none"}
+      className={className}
+      aria-hidden="true"
+    >
+      <g transform="rotate(180 12 12)">
+        <path d={VOTE_ARROW_PATH} />
+      </g>
+    </svg>
+  );
+}
+
+/**
+ * The thumbs. No longer the vote mark — see `VoteArrowUpIcon` — but still the
+ * right glyph for a *count of approvals* that is not a control you press: the
+ * dish sheet's yes-votes and the "someone upvoted you" activity badge.
+ *
+ * `filled` and the 180° rotation work the same way they do on the arrows, and
+ * for the same reasons.
  */
 export function ThumbsUpIcon({ filled = false, className = "" }: IconProps & { filled?: boolean }) {
   return (

@@ -621,6 +621,94 @@ const statements = [
   // Re-running against already-nullable columns is a no-op.
   `ALTER TABLE restaurants ALTER COLUMN rating DROP NOT NULL`,
   `ALTER TABLE restaurants ALTER COLUMN review_count DROP NOT NULL`,
+// --- An email address nobody has proved they own -------------------------
+  //
+  // `users.email` is written once at signup, is the unique key a login is
+  // looked up by, and is the only address a recovery could ever be sent to —
+  // and nothing has ever checked that the person typing it can read it. A typo
+  // at signup produces an account that works perfectly until the day its owner
+  // needs it back, at which point there is no route home at all.
+  //
+  // Three pieces, and the split between them is the whole safety property:
+  //
+  // - `email_verified_at` is NULL for every account that already exists. That
+  //   is the truth and must not be backfilled — nobody proved anything. The
+  //   ledger says "Unverified" and offers to send a link.
+  // - `pending_email` is the address someone has asked to move to. It is for
+  //   display only ("Check your inbox"), never for authentication.
+  // - `email_verifications` is the authority. The new address is snapshotted on
+  //   the token row, and `users.email` is not touched until that token comes
+  //   back. This is what stops a mistyped address from taking over an account:
+  //   an address you cannot read is an address whose link you never click.
+  //
+  // The primary key is a SHA-256 of the token, not the token — the raw value
+  // exists only in the sent mail, so a leaked table hands over nothing usable.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified_at TIMESTAMPTZ`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS pending_email TEXT`,
+  `CREATE TABLE IF NOT EXISTS email_verifications (
+    token_hash TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    email TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    expires_at TIMESTAMPTZ NOT NULL
+  )`,
+  // Every read is "the live tokens for this user" — redeeming one clears the
+  // rest, and the resend throttle counts the newest.
+  `CREATE INDEX IF NOT EXISTS idx_email_verifications_user ON email_verifications(user_id, created_at DESC)`,
+// --- Forgotten passwords -------------------------------------------------
+  //
+  // Same shape and same rules as `email_verifications` above: the hash is
+  // stored, never the token, and the row is the authority for one single use.
+  // Two tables rather than one with a `kind` column, because they are spent
+  // under different rules — a verification proves an address and a reset
+  // rewrites a credential and ends every session — and a shared table makes it
+  // one typo away from a link minted for one purpose being redeemable for the
+  // other.
+  //
+  // No `email` column, unlike the verification table. A reset never chooses an
+  // address; it acts on the account the token was minted for.
+  `CREATE TABLE IF NOT EXISTS password_resets (
+    token_hash TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    expires_at TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_password_resets_user ON password_resets(user_id, created_at DESC)`,
+
+  // --- Street address ------------------------------------------------------
+  //
+  // Both sources already carry it and both were throwing it away. Yelp's search
+  // response includes `location` in the same call that fetches the photo and
+  // the rating, and OpenStreetMap tags addr:housenumber / addr:street on 65% of
+  // San Diego venues. Neither costs an extra request, so an address is free
+  // for any restaurant either source knows.
+  //
+  // `city` is stored separately from the formatted line because it answers a
+  // question `neighborhood` gets wrong. Neighborhood is derived from the
+  // nearest entry in regions.ts, which has no sub-area for Escondido, San
+  // Marcos, Vista or Borrego Springs — so restaurants in those cities are
+  // filed under whatever is closest, and 15% of the corpus sits more than 5km
+  // from the neighbourhood it claims. A real city name from the source fixes
+  // that where the source has one.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS address TEXT`,
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS city TEXT`,
+
+  // --- Google Places -------------------------------------------------------
+  //
+  // `google_checked_at` is the same "record the ask, not just the answer"
+  // pattern as yelp_checked_at, and here it does a second job: it IS the call
+  // counter. Google bills per request and the account is on a 90-day trial
+  // credit, so the script has to know how many calls it has made this billing
+  // month before it makes another. Counting rows stamped within the month
+  // answers that without a separate ledger that could drift from reality.
+  //
+  // `google_place_id` is Google's stable id for the business. Kept because it
+  // is the only way to re-fetch a photo later without paying for the search
+  // again, and because it is what the duplicate guard matches on - one place
+  // id describes one restaurant, so a second row claiming it is a mismatch.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS google_checked_at TIMESTAMPTZ`,
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS google_place_id TEXT`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_google_checked ON restaurants(google_checked_at NULLS FIRST)`,
 ];
 
 for (const statement of statements) {

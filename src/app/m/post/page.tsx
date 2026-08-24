@@ -96,7 +96,19 @@ export default function PhonePost() {
         const res = await fetch("/api/restaurants");
         if (!res.ok) return;
         const data: { restaurants: Restaurant[] } = await res.json();
-        if (!cancelled) setRestaurants(data.restaurants);
+        if (cancelled) return;
+        setRestaurants(data.restaurants);
+
+        /* Arrived from a restaurant page's "post the first plate": the where
+           step is already answered, so answer it. Applied here rather than in
+           its own effect because `place` is the full Restaurant row, not an
+           id, and this callback is the moment the row exists. A param naming
+           no real restaurant sets nothing. Never *overwrites* a choice — once
+           the visitor picks a place by hand, a stale URL param loses. */
+        const preselected = data.restaurants.find((r) => r.id === params.get("restaurant"));
+        if (preselected) setPlace((current) => current ?? preselected);
+        // `params` is deliberately not a dependency: this runs once for the
+        // URL the composer opened with, same as the fetch it rides on.
       } catch {
         // The picker shows its own "no match" state; nothing to add here.
       }
@@ -104,6 +116,7 @@ export default function PhonePost() {
     return () => {
       cancelled = true;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /*
@@ -390,7 +403,7 @@ export default function PhonePost() {
           <span>
             Step {index + 1} of {steps.length}
           </span>
-          <span>{POINT_RULES.createPost} PM Points when you post</span>
+          <span>{POINT_RULES.createPost} Plate Points when you post</span>
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-pm-grey-tint">
           <div
@@ -637,7 +650,7 @@ export default function PhonePost() {
           </h1>
           <p className="mx-auto mt-2 max-w-xs text-sm text-pm-grey-text">
             Reviews and comments carry your name, and posting earns you{" "}
-            <span className="font-mono tabular-nums">{POINT_RULES.createPost}</span> PM Points.
+            <span className="font-mono tabular-nums">{POINT_RULES.createPost}</span> Plate Points.
           </p>
           <Link
             href={to("/m/account")}

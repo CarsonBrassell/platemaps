@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import type { VoteDirection } from "./PostActions";
 import type { Comment, Post } from "./types";
+import type { FeedPlaces } from "@/lib/feedFilters";
 
 /**
  * One list of posts and everything you can do to a card in it.
@@ -34,6 +35,17 @@ export function usePostFeed({
   const { account, refresh } = useAuth();
 
   const [posts, setPosts] = useState<Post[] | null>(null);
+  /**
+   * The restaurants the loaded posts are about, keyed by id — what the feed's
+   * filters read.
+   *
+   * Sent beside the posts by every feed route (`placesForPosts` in
+   * lib/discover.ts) rather than fetched separately, so narrowing the feed costs
+   * no request of its own. Empty is the honest degraded state: no post resolves
+   * to a place, the search field still works over captions and comments, and
+   * the restaurant dimensions simply offer nothing to pick.
+   */
+  const [places, setPlaces] = useState<FeedPlaces>({});
   const [loadError, setLoadError] = useState(false);
   const [offline, setOffline] = useState(false);
   const [banner, setBanner] = useState<string | null>(null);
@@ -49,6 +61,7 @@ export function usePostFeed({
       .then((data) => {
         if (cancelled) return;
         setPosts(data.posts as Post[]);
+        setPlaces((data.places as FeedPlaces | undefined) ?? {});
         setLoadError(false);
       })
       .catch(() => {
@@ -399,6 +412,7 @@ export function usePostFeed({
 
   return {
     posts,
+    places,
     setPosts,
     patchPost,
     loadError,

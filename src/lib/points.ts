@@ -1,5 +1,5 @@
 /**
- * Every PM Point rule lives here. Changing a number in this file changes the
+ * Every Plate Point rule lives here. Changing a number in this file changes the
  * economy everywhere — the award logic in the API routes, the "How points
  * work" modal, and the copy shown on the composer all read from it.
  *

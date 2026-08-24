@@ -85,7 +85,7 @@ export function Leaderboard({
         >
           Top Eaters
         </h2>
-        <p className="mt-0.5 text-xs text-zinc-500">Served daily, ranked by PM Points</p>
+        <p className="mt-0.5 text-xs text-zinc-500">Served daily, ranked by Plate Points</p>
       </header>
 
       {/* A segmented filter on a tan track — same rank as the map's source
@@ -209,7 +209,7 @@ export function Leaderboard({
         <button
           type="button"
           onClick={() => setInfoOpen(true)}
-          aria-label="How PM Points work"
+          aria-label="How Plate Points work"
           className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-pm-grey-tint hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
         >
           <InfoIcon className="h-3.5 w-3.5" />

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { avatarPalette, initials } from "@/lib/format";
+import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
 
 type SearchResult = { id: string; name: string; avatarUrl?: string };
 
@@ -86,7 +87,7 @@ export function PhoneFindFriends({
 
   return (
     <div className="px-4">
-      <p className="mono-label mb-2 text-pm-grey-text">Find friends</p>
+      <PhoneSectionLabel>Find friends</PhoneSectionLabel>
       {/* Warm tone instead of plain white — a small echo of the hero and
           leaderboard cards above and below it, rather than a bare pill
           floating on cream. */}

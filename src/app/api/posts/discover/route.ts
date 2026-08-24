@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getDiscoverFeed } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { parseFeedSort } from "@/lib/feedSort";
+import { resolvePostRefs } from "@/lib/discover";
 
 /**
  * The public feed — everyone, unfiltered by friendship. `?sort=trending`
@@ -13,10 +14,14 @@ import { parseFeedSort } from "@/lib/feedSort";
  * An unrecognised sort falls back to trending rather than 400-ing —
  * `parseFeedSort` is what narrows it, and it is the only thing allowed to
  * turn a query string into an ordering.
+ *
+ * `places` rides along so the screen can filter what it was sent — see
+ * `resolvePostRefs`. It is one entry per restaurant, not per post.
  */
 export async function GET(req: NextRequest) {
   const user = await getCurrentUser();
   const sort = parseFeedSort(req.nextUrl.searchParams.get("sort"));
-  const posts = await getDiscoverFeed(user?.id ?? null, undefined, sort);
-  return NextResponse.json({ posts });
+  const feed = await getDiscoverFeed(user?.id ?? null, undefined, sort);
+  const { posts, places } = await resolvePostRefs(feed);
+  return NextResponse.json({ posts, places });
 }

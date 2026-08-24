@@ -6,24 +6,30 @@ import { POINT_RULES } from "@/lib/points";
 import { FOOD_TAGS } from "@/data/foodTags";
 import { AMENITY_LABELS, ROOM_LABELS, BEST_AT_LABELS } from "@/data/reviewScales";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
-/* Read rather than restated. photos.ts says the capture settings are "still
-   the answer to what will the post API accept, and the day another way in
-   exists it should read them rather than pick its own" — this route was that
-   other way in, and it had picked its own: a duplicate `MAX_MEDIA = 4` and a
-   ceiling four million characters wide. Both live in one place now. */
-import { MAX_PHOTOS, MAX_MEDIA_LENGTH } from "@/lib/photos";
+import { resolvePostRefs } from "@/lib/discover";
 
+const MAX_MEDIA = 4;
+const MAX_MEDIA_LENGTH = 4_000_000;
+
+/**
+ * Every post, newest first. Backs the Saved view, which needs posts regardless
+ * of which feed surfaced them.
+ *
+ * `places` is the same per-restaurant map the two feed routes send, so the
+ * filter rail works on Saved too — see `resolvePostRefs` in lib/discover.ts.
+ */
 export async function GET() {
   const user = await getCurrentUser();
-  const posts = await getPosts(user?.id ?? null);
-  return NextResponse.json({ posts: posts.slice().reverse() });
+  const rows = await getPosts(user?.id ?? null);
+  const { posts, places } = await resolvePostRefs(rows.slice().reverse());
+  return NextResponse.json({ posts, places });
 }
 
 /** Keeps a client from writing arbitrary shapes into the media jsonb column. */
 function parseMedia(raw: unknown): PostMedia[] | { error: string } {
   if (raw === undefined || raw === null) return [];
   if (!Array.isArray(raw)) return { error: "Media must be a list." };
-  if (raw.length > MAX_PHOTOS) return { error: `Up to ${MAX_PHOTOS} photos per post.` };
+  if (raw.length > MAX_MEDIA) return { error: `Up to ${MAX_MEDIA} photos per post.` };
 
   const media: PostMedia[] = [];
   for (const item of raw) {

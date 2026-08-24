@@ -6,8 +6,8 @@ import {
   ChatIcon,
   ShareIcon,
   BookmarkIcon,
-  ThumbsUpIcon,
-  ThumbsDownIcon,
+  VoteArrowUpIcon,
+  VoteArrowDownIcon,
 } from "@/components/icons";
 
 /**
@@ -226,7 +226,7 @@ function VotePair({
   const arrow = (direction: VoteDirection) => {
     const active = myVote === direction;
     const up = direction === "up";
-    const Thumb = up ? ThumbsUpIcon : ThumbsDownIcon;
+    const Arrow = up ? VoteArrowUpIcon : VoteArrowDownIcon;
     return (
       <button
         type="button"
@@ -247,12 +247,12 @@ function VotePair({
             : "text-zinc-400 hover:text-pm-orange-text"
         }`}
       >
-        {/* Same path, same box, outline or filled — so pressing it changes
-            colour and weight but never size. That was the bug in the ▲/△ text
-            glyphs this replaced: the two characters come out of different
-            fallback fonts at different optical sizes, so the arrow appeared to
-            jump on click. */}
-        <Thumb filled={active} className="h-[18px] w-[18px]" />
+        {/* One closed path, same box, outline or filled — so pressing it
+            changes colour and weight but never size. That is the property the
+            old ▲/△ text glyphs could not hold (two characters, two fallback
+            fonts, two optical sizes, so the arrow jumped on click) and it is
+            what lets the mark be an arrow again rather than a thumb. */}
+        <Arrow filled={active} className="h-[18px] w-[18px]" />
       </button>
     );
   };

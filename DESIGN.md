@@ -29,17 +29,28 @@ Three voices, split by **who produced the text**. Never mix them up.
   meta, a dish or restaurant name is a compact *reference* to a record, and
   sets in **mono**, not Fraunces. As a *title* (dish sheet, the feed card's
   headline, hits grid would-be headings) the name behaves normally.
-- Votes are **thumbs** (`ThumbsUpIcon` / `ThumbsDownIcon` in
+- Votes are **arrows** (`VoteArrowUpIcon` / `VoteArrowDownIcon` in
   `src/components/icons.tsx`), outline at rest and filled for the direction
-  this viewer pressed, in one size that never changes. They replaced the text
-  glyphs `▲`/`△`, which were mandated here for a long time and had to go: the
-  two characters come out of different fallback fonts at different optical
-  sizes, so the arrow visibly grew on click. Down is the up path rotated 180°,
-  never a second drawing. The same mark serves plate votes, comment votes, the
-  map bubble's pair (hand-inlined as SVG there, since the bubble is an HTML
-  string) and the "someone upvoted you" activity badge — one gesture, one mark.
-  The leaderboard's rank-change arrows are **not** votes and keep their `▲`/`▽`
-  glyphs.
+  this viewer pressed, in one size that never changes. Down is the up path
+  rotated 180°, never a second drawing. The same mark serves plate votes,
+  comment votes and the map bubble's pair (hand-inlined as SVG there, since the
+  bubble is an HTML string, so `VOTE_ARROW_PATH` and that string's `d` change
+  together) — one gesture, one mark.
+
+  **The invariant is one closed path, not the shape.** This slot held `▲`/`△`
+  text glyphs for a long time and they had to go, because two characters come
+  out of different fallback fonts at different optical sizes and the arrow
+  visibly grew on click. Thumbs were the answer for a while and held the size
+  invariant honestly; arrows hold it just as well now that the mark is a single
+  closed outline that can be `fill: none` or `fill: currentColor` without its
+  geometry moving. Never reintroduce a vote mark that is two glyphs, two paths,
+  or two sizes.
+
+  `ThumbsUpIcon` survives, but only where a count of approvals is being
+  *reported* rather than cast: the dish sheet's yes-count and the "someone
+  upvoted you" activity badge. It is not a control there and must not become
+  one. The leaderboard's rank-change arrows are **not** votes and keep their
+  `▲`/`▽` glyphs.
 
 ## Color
 

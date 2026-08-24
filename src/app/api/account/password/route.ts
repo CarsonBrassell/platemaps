@@ -3,11 +3,7 @@ import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { updatePasswordHash, deleteOtherSessions } from "@/lib/db";
 import { getCurrentUser, SESSION_COOKIE } from "@/lib/session";
-
-/** Signup's only rule about passwords is that there is one. Match it here
-    rather than inventing a stricter one that locks people out of changing a
-    password they were allowed to create. */
-const MIN_PASSWORD = 1;
+import { checkPassword } from "@/lib/password";
 
 /**
  * Change the password, current password required.
@@ -44,8 +40,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Enter your current password." }, { status: 400 });
   }
 
-  if (typeof newPassword !== "string" || newPassword.length < MIN_PASSWORD) {
+  if (typeof newPassword !== "string" || newPassword.length === 0) {
     return NextResponse.json({ error: "Enter a new password." }, { status: 400 });
+  }
+
+  /* This route used to accept any non-empty string, matching a signup whose
+     only rule was that a password existed — refusing to change a password the
+     app had itself allowed would have locked people out of fixing it. Signup
+     now applies the real rule, so this can too, and the direction is safe:
+     accounts created under the old rule keep signing in with what they have,
+     and the check only ever runs on a password being *set*. */
+  const weak = checkPassword(newPassword, { name: user.name, email: user.email });
+  if (weak) {
+    return NextResponse.json({ error: weak }, { status: 400 });
   }
 
   if (!(await bcrypt.compare(currentPassword, user.passwordHash))) {

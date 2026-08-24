@@ -8,6 +8,7 @@ import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
 import { PHOTO_RETENTION_DAYS } from "@/lib/photoRetention";
 import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
+import { RANKS, rankByKey } from "@/lib/ranks";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -35,6 +36,17 @@ export type User = {
   hideFromLeaderboard: boolean;
   discoverableByUsername: boolean;
   friendRequestsOpen: boolean;
+  /**
+   * When this address was proved reachable, or undefined if it never was.
+   *
+   * Undefined for every account made before verification existed, and that is
+   * not a gap to be tidied away: nobody clicked anything, so nobody proved
+   * anything. Anything that would let an address stand in for identity — a
+   * password reset, mainly — has to read this and not `email`.
+   */
+  emailVerifiedAt?: string;
+  /** An address asked for but not yet proved. Display only, never an identity. */
+  pendingEmail?: string;
 };
 
 function currentMonthKey(): string {
@@ -66,6 +78,8 @@ function rowToUser(row: any): User {
     hideFromLeaderboard: row.hide_from_leaderboard ?? false,
     discoverableByUsername: row.discoverable_by_username ?? true,
     friendRequestsOpen: row.friend_requests_open ?? true,
+    emailVerifiedAt: row.email_verified_at ?? undefined,
+    pendingEmail: row.pending_email ?? undefined,
   };
 }
 
@@ -363,6 +377,19 @@ export async function createSession(token: string, userId: string): Promise<void
 
 export async function deleteSession(token: string): Promise<void> {
   await sql`DELETE FROM sessions WHERE token = ${token}`;
+}
+
+/**
+ * End every session this account has, including the caller's.
+ *
+ * The counterpart to `deleteOtherSessions`, and the difference is the whole
+ * reason both exist. Changing a password from inside the account keeps the
+ * device you did it on. A password **reset** cannot: the reason someone is
+ * resetting is usually that they lost control of the account, so the one
+ * session that must not survive is whoever is already signed in on it.
+ */
+export async function deleteAllSessions(userId: string): Promise<void> {
+  await sql`DELETE FROM sessions WHERE user_id = ${userId}`;
 }
 
 /**
@@ -1746,6 +1773,154 @@ export async function updatePasswordHash(userId: string, passwordHash: string): 
   await sql`UPDATE users SET password_hash = ${passwordHash} WHERE id = ${userId}`;
 }
 
+/* --- Email verification ----------------------------------------------------
+ *
+ * The rule these functions exist to hold: **`users.email` changes in exactly
+ * one place**, `confirmEmail`, and only with a token in hand. Everything else
+ * here either parks an address in `pending_email` (which authenticates
+ * nothing) or reads a token. A second writer would quietly undo the guarantee.
+ */
+
+/** Parks an address as "asked for, not proved". Pass null to withdraw it. */
+export async function setPendingEmail(userId: string, email: string | null): Promise<void> {
+  await sql`UPDATE users SET pending_email = ${email} WHERE id = ${userId}`;
+}
+
+export async function createEmailVerification(data: {
+  tokenHash: string;
+  userId: string;
+  email: string;
+  expiresAt: Date;
+}): Promise<void> {
+  await sql`
+    INSERT INTO email_verifications (token_hash, user_id, email, expires_at)
+    VALUES (${data.tokenHash}, ${data.userId}, ${data.email}, ${data.expiresAt.toISOString()})
+  `;
+}
+
+export type EmailVerification = {
+  userId: string;
+  /** The address this token proves — snapshotted, so a later edit can't retarget it. */
+  email: string;
+  expiresAt: string;
+};
+
+export async function getEmailVerification(tokenHash: string): Promise<EmailVerification | null> {
+  const rows = await sql`
+    SELECT user_id, email, expires_at FROM email_verifications WHERE token_hash = ${tokenHash}
+  `;
+  const row = rows[0];
+  if (!row) return null;
+  return { userId: row.user_id, email: row.email, expiresAt: row.expires_at };
+}
+
+/** Spend or discard one token. Redeeming clears the rest — see `confirmEmail`. */
+export async function deleteEmailVerification(tokenHash: string): Promise<void> {
+  await sql`DELETE FROM email_verifications WHERE token_hash = ${tokenHash}`;
+}
+
+/** Withdraw every outstanding link for this user — what "cancel" has to mean. */
+export async function deleteEmailVerificationsForUser(userId: string): Promise<void> {
+  await sql`DELETE FROM email_verifications WHERE user_id = ${userId}`;
+}
+
+/**
+ * Stamp the current address as proved, without changing it.
+ *
+ * `confirmEmail` is the only writer of `users.email`; this is the one place
+ * that can raise the verified flag on its own, and it exists for the password
+ * reset — reading a link sent to an address is the same proof a verification
+ * link asks for, so demanding a second one afterwards would be theatre.
+ */
+export async function markEmailVerified(userId: string): Promise<void> {
+  await sql`UPDATE users SET email_verified_at = now() WHERE id = ${userId} AND email_verified_at IS NULL`;
+}
+
+/* --- Password resets -------------------------------------------------------
+ *
+ * Deliberately thin, and deliberately separate from the verification helpers
+ * above: a reset token names an account and nothing else. It cannot carry an
+ * address, so it can never move one.
+ */
+
+export async function createPasswordReset(data: {
+  tokenHash: string;
+  userId: string;
+  expiresAt: Date;
+}): Promise<void> {
+  await sql`
+    INSERT INTO password_resets (token_hash, user_id, expires_at)
+    VALUES (${data.tokenHash}, ${data.userId}, ${data.expiresAt.toISOString()})
+  `;
+}
+
+export async function getPasswordReset(
+  tokenHash: string
+): Promise<{ userId: string; expiresAt: string } | null> {
+  const rows = await sql`
+    SELECT user_id, expires_at FROM password_resets WHERE token_hash = ${tokenHash}
+  `;
+  const row = rows[0];
+  return row ? { userId: row.user_id, expiresAt: row.expires_at } : null;
+}
+
+export async function deletePasswordReset(tokenHash: string): Promise<void> {
+  await sql`DELETE FROM password_resets WHERE token_hash = ${tokenHash}`;
+}
+
+/** Every outstanding reset for this account — spent on success, so a second
+    link sitting in the inbox can't rewrite the password again later. */
+export async function deletePasswordResetsForUser(userId: string): Promise<void> {
+  await sql`DELETE FROM password_resets WHERE user_id = ${userId}`;
+}
+
+export async function getLastPasswordResetSentAt(userId: string): Promise<string | null> {
+  const rows = await sql`
+    SELECT created_at FROM password_resets
+    WHERE user_id = ${userId}
+    ORDER BY created_at DESC
+    LIMIT 1
+  `;
+  return rows[0]?.created_at ?? null;
+}
+
+/** When this user last asked for a link, for the resend throttle. */
+export async function getLastEmailVerificationSentAt(userId: string): Promise<string | null> {
+  const rows = await sql`
+    SELECT created_at FROM email_verifications
+    WHERE user_id = ${userId}
+    ORDER BY created_at DESC
+    LIMIT 1
+  `;
+  return rows[0]?.created_at ?? null;
+}
+
+/**
+ * Redeem: the address on the token becomes the account's, proved, and every
+ * outstanding token for this user dies with it.
+ *
+ * The `WHERE NOT EXISTS` is the race guard. Two people can both start a change
+ * to the same address, and both links are valid until one is clicked — so the
+ * claim has to be re-checked at the moment of the write, not at the moment the
+ * mail was sent. The UPDATE touching no rows is how the caller learns it lost.
+ *
+ * Deleting the user's other tokens is deliberate: after a successful change,
+ * a link sitting in the old inbox must not still be able to move the account.
+ */
+export async function confirmEmail(userId: string, email: string): Promise<boolean> {
+  const rows = await sql`
+    UPDATE users SET email = ${email}, email_verified_at = now(), pending_email = NULL
+    WHERE id = ${userId}
+      AND NOT EXISTS (
+        SELECT 1 FROM users other WHERE lower(other.email) = lower(${email}) AND other.id <> ${userId}
+      )
+    RETURNING id
+  `;
+  if (!rows[0]) return false;
+  await sql`DELETE FROM email_verifications WHERE user_id = ${userId}`;
+  return true;
+}
+
 /**
  * Ends every session except the one making the request, which is what "log out
  * everywhere else" has to mean — logging *this* device out too would answer a
@@ -1826,6 +2001,18 @@ export type PublicProfile = {
 };
 
 // --- Plate scores ----------------------------------------------------------
+//
+// Every plate average below is weighted twice over, and the two weights answer
+// different questions. `plateScore.ts` weights a *dish* by how many ratings
+// stand behind it — how well attested it is. The three queries here weight each
+// individual *rating* by the rank its author has earned, off the ladder in
+// `lib/ranks.ts`. A person who has been rating plates in this city for a year
+// leans on a disagreement harder than an account opened this morning, and that
+// happens inside the group average, before the confidence damping ever sees it.
+//
+// Both are narrow on purpose and neither can run away with a score. See the
+// docstring at the top of `plateScore.ts`, which is where the whole model is
+// written down.
 
 /**
  * One row per distinct plate someone has rated at a restaurant.
@@ -1842,15 +2029,85 @@ export type PublicProfile = {
 const PLATE_GROUP = `lower(trim(coalesce(dish_name, '')))`;
 
 /**
+ * The rank ladder from `lib/ranks.ts`, compiled down to a SQL `CASE` over the
+ * rating author's lifetime points.
+ *
+ * It is generated rather than written out because the alternative is a second
+ * copy of 4000/1200/400/100/10 living in a string, and two copies of a
+ * threshold table drift the first time somebody decides Critic starts at 1,500.
+ * The badge on a profile and the pull that person's rating carries have to come
+ * from the same row or the product is quietly lying in one of the two places.
+ * `RANKS` stays the only place those numbers exist.
+ *
+ * Every value spliced in is a number off our own constant table — nothing here
+ * has ever touched a request — but it is coerced with `Number()` on the way
+ * into the string anyway, so that even a future `RANKS` populated from
+ * somewhere less trustworthy cannot turn this into an injection site. The arms
+ * are emitted descending because a `CASE` returns on its first match, which is
+ * what makes "at least this many points" work without an upper bound on each
+ * arm; the lowest rung is the `ELSE` for the same reason.
+ *
+ * A missing author — the LEFT JOIN found nothing — is Regular's neutral 1.0,
+ * never a drop. See the note on the joins below for why that matters.
+ */
+const RATER_WEIGHT = (() => {
+  const neutral = rankByKey("regular").weight;
+  const descending = [...RANKS].sort((a, b) => b.minPoints - a.minPoints);
+  const floor = descending[descending.length - 1];
+  const arms = descending
+    .slice(0, -1)
+    .map((rank) => `WHEN users.points >= ${Number(rank.minPoints)} THEN ${Number(rank.weight)}`)
+    .join(" ");
+  return `CASE WHEN users.points IS NULL THEN ${Number(neutral)} ${arms} ELSE ${Number(floor.weight)} END`;
+})();
+
+/**
+ * One plate's average, with each rating pulling as hard as its author's rank.
+ *
+ * `NULLIF` guards a zero denominator that today's ladder cannot produce — every
+ * weight in `RANKS` is positive, so any group with a row in it sums above zero.
+ * It is here because it costs nothing and a division-by-zero raised inside a
+ * page render is a 500 with a stack trace where a restaurant should be. It is
+ * a guard, not a feature: a rung weighted 0 would still need handling in
+ * `plateScore`, which has no null branch and would carry the NaN through.
+ * Adding a zero weight to `RANKS` means going there first.
+ *
+ * The outer parentheses are load-bearing. Every call site casts this with
+ * `::float`, and `::` binds tighter than `/` — unparenthesised, the cast lands
+ * on the divisor alone and turns an exact `numeric` division into a float8 one.
+ * `rating` is `numeric(5,1)`, so that was visible: a plate averaging exactly 58
+ * came back as 57.99999999999999. Everything downstream rounds, so it never
+ * reached a reader, but a score that is off in the sixteenth digit for no
+ * reason is the kind of thing someone eventually spends an afternoon on.
+ */
+const PLATE_AVERAGE = `(SUM(rating * (${RATER_WEIGHT})) / NULLIF(SUM(${RATER_WEIGHT}), 0))`;
+
+/**
  * What this restaurant's plates add up to — the only restaurant-level rating in
  * the product. See src/lib/plateScore.ts for the weighting and for why a
  * thinly-rated restaurant gets a null percent rather than a confident-looking
  * number off two ratings.
+ *
+ * The join is LEFT and not INNER, and the difference is a silent one. A rated
+ * post whose author row has gone missing is still somebody's rating of
+ * something they ate; an INNER join would drop it out of the sample entirely,
+ * changing the count as well as the average, and nothing would ever say so.
+ * It counts, at Regular's neutral 1.0 — the same reasoning as the empty-key
+ * bucket in `PLATE_GROUP` above.
+ *
+ * `ratings` stays `count(*)`, the raw headcount, and that is not an oversight.
+ * It is the number `plateScore` damps with `CONFIDENCE_K` and tests against
+ * `MIN_RATED_DISHES` / `MIN_TOTAL_RATINGS`, and every one of those means "how
+ * many people actually rated this", never "how much weight accumulated". Let
+ * the weighted sum become the count and three Newcomers stop clearing a floor
+ * of three — the restaurant goes back to "No plates rated yet" because of who
+ * rated it, which is a different and much worse product than this one.
  */
 export async function getRestaurantPlateScore(restaurantId: string): Promise<PlateScore> {
   const rows = await sql`
-    SELECT AVG(rating)::float AS average, count(*)::int AS ratings
+    SELECT ${sql.unsafe(PLATE_AVERAGE)}::float AS average, count(*)::int AS ratings
     FROM posts
+    LEFT JOIN users ON users.id = posts.user_id
     WHERE restaurant_id = ${restaurantId}
       AND rating_kind = 'dish'
       AND rating IS NOT NULL
@@ -1873,9 +2130,10 @@ export async function getRestaurantPlateScore(restaurantId: string): Promise<Pla
 export async function getAllRestaurantPlateScores(): Promise<Record<string, PlateScore>> {
   const rows = await sql`
     SELECT restaurant_id,
-           AVG(rating)::float AS average,
+           ${sql.unsafe(PLATE_AVERAGE)}::float AS average,
            count(*)::int AS ratings
     FROM posts
+    LEFT JOIN users ON users.id = posts.user_id
     WHERE rating_kind = 'dish'
       AND rating IS NOT NULL
       AND restaurant_id IS NOT NULL
@@ -1917,9 +2175,10 @@ export async function getDishRatingsForRestaurant(
 ): Promise<Record<string, RatedDish>> {
   const rows = await sql`
     SELECT ${sql.unsafe(PLATE_GROUP)} AS dish_key,
-           AVG(rating)::float AS average,
+           ${sql.unsafe(PLATE_AVERAGE)}::float AS average,
            count(*)::int AS ratings
     FROM posts
+    LEFT JOIN users ON users.id = posts.user_id
     WHERE restaurant_id = ${restaurantId}
       AND rating_kind = 'dish'
       AND rating IS NOT NULL
@@ -2142,6 +2401,10 @@ function rowToRestaurant(row: any): Restaurant {
     photo: row.photo ?? undefined,
     photoAlt: row.photo_alt ?? undefined,
     yelpUrl: row.yelp_url ?? undefined,
+    // Detail page only. Deliberately absent from `RestaurantView`, which is
+    // downloaded once per restaurant by every visitor to the grid — a street
+    // address is ~40 bytes nobody reads until they have chosen a restaurant.
+    address: row.address ?? undefined,
   };
 }
 

@@ -34,7 +34,7 @@ import { useSyncExternalStore } from "react";
 /** What the feed needs to know about the plate that was just published. */
 export type PostLanding = {
   postId: string;
-  /** PM Points the API says this post earned, for the feed's banner. */
+  /** Plate Points the API says this post earned, for the feed's banner. */
   earned: number;
 };
 

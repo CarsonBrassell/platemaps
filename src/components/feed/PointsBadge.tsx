@@ -46,7 +46,7 @@ export function PointsBadge({
     >
       <PlateStarIcon className={sm ? "h-3 w-4" : tone === "orange" ? "h-4 w-5" : "h-3.5 w-[18px]"} />
       {formatPoints(points)}
-      <span className="sr-only"> PM Points</span>
+      <span className="sr-only"> Plate Points</span>
     </span>
   );
 }

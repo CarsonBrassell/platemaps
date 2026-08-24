@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { Restaurant } from "@/data/restaurants";
 import { QUERY_PARAM } from "@/lib/discoverFilters";
 import { rank } from "@/lib/restaurantRank";
@@ -37,6 +37,21 @@ type SearchRow = Restaurant & { plateScore?: PlateScore };
  * So arrowing into the list is what commits to a single restaurant. Enter with
  * nothing highlighted — which is every Enter typed straight after a word — is
  * the search.
+ *
+ * ## On /feed the broad answer is the feed
+ *
+ * This is one field standing over the whole product, and the "show me
+ * everything like this" it commits to has to mean the screen the reader is
+ * looking at. Typing "mexican" here while reading the feed used to leave the
+ * feed entirely for a grid of restaurants — a reasonable answer to a question
+ * nobody asked, and it made the field look broken on the one screen where the
+ * search was most obviously about the plates. On /feed it writes `?q=` onto
+ * /feed instead, where it matches captions, dishes, restaurants and the
+ * comments on a plate (lib/feedFilters.ts). Everywhere else it still goes to
+ * Discover.
+ *
+ * The dropdown is unchanged on both: a shortcut to one restaurant is the same
+ * shortcut wherever you are standing.
  */
 
 /** No row highlighted — the state every fresh keystroke returns to. */
@@ -44,6 +59,9 @@ const NONE = -1;
 
 export function RestaurantSearch() {
   const router = useRouter();
+  const pathname = usePathname();
+  /** Which screen the broad answer belongs to — see the header comment. */
+  const destination = pathname === "/feed" ? "/feed" : "/";
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(NONE);
@@ -108,7 +126,7 @@ export function RestaurantSearch() {
    * the first.
    *
    * Only `q` goes on the URL: a search from the header is a fresh question, not
-   * a narrowing of whatever the last visit to Discover had left switched on.
+   * a narrowing of whatever the last visit had left switched on.
    */
   function submit() {
     const q = query.trim();
@@ -116,7 +134,7 @@ export function RestaurantSearch() {
     setOpen(false);
     setActive(NONE);
     inputRef.current?.blur();
-    router.push(`/?${QUERY_PARAM}=${encodeURIComponent(q)}`);
+    router.push(`${destination}?${QUERY_PARAM}=${encodeURIComponent(q)}`);
   }
 
   function onKeyDown(e: React.KeyboardEvent) {
@@ -284,7 +302,7 @@ export function RestaurantSearch() {
               className="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-zinc-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-pm-orange"
             >
               <span className="min-w-0 flex-1 truncate text-sm text-zinc-700">
-                Search Discover for{" "}
+                {destination === "/feed" ? "Search the feed for" : "Search Discover for"}{" "}
                 <span className="font-medium text-zinc-900">
                   &ldquo;{query.trim()}&rdquo;
                 </span>

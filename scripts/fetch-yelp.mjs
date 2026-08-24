@@ -255,6 +255,37 @@ for (const [i, r] of targets.entries()) {
   try {
     const hit = await findOnYelp(r);
 
+    /*
+     * A Yelp business already claimed by a different restaurant is not a match.
+     *
+     * The bigram score is generous about shared words, which is what lets it
+     * pair "Prep Kitchen" with "Prepkitchen Little Italy" — and also what let
+     * it give "Benny's Mexican Food" and "Chiquita's Mexican Food" the same
+     * listing, and "Mother's Saloon" the same one as "Coaster Saloon". Both
+     * pairs are genuinely different businesses two blocks apart, and the second
+     * one to be processed silently took the first one's rating, review count
+     * and photograph.
+     *
+     * One listing describes one restaurant, so the first claim stands and a
+     * later collision is recorded as a miss rather than as somebody else's
+     * data. It costs a real match occasionally — two branches of a chain that
+     * genuinely share one Yelp page — and that is the right way round: a
+     * missing photo is a gap, a wrong photo is a lie.
+     */
+    if (hit && !hit.is_closed) {
+      const [claimed] = await sql`
+        SELECT id, name FROM restaurants WHERE yelp_url = ${hit.url} AND id <> ${r.id} LIMIT 1
+      `;
+      if (claimed) {
+        await sql`UPDATE restaurants SET yelp_checked_at = now() WHERE id = ${r.id}`;
+        console.log(`\n  ~ ${r.name}: Yelp listing already held by ${claimed.name}`);
+        missed += 1;
+        process.stdout.write(`\r  ${i + 1}/${targets.length}  (${calls} calls)`);
+        await sleep(150);
+        continue;
+      }
+    }
+
     if (!hit) {
       // Recorded as checked with nothing found, so tomorrow's run skips it.
       await sql`UPDATE restaurants SET yelp_checked_at = now() WHERE id = ${r.id}`;
@@ -275,6 +306,15 @@ for (const [i, r] of targets.entries()) {
        * for no reason. COALESCE on photo so a hand-picked image is never
        * overwritten by a re-run.
        */
+      /*
+       * The address rides along free. `location.display_address` is the
+       * formatted line Yelp shows on the business page, already split for
+       * display; joining it is closer to right than reassembling address1 +
+       * city + state + zip, which drops unit numbers.
+       */
+      const address = hit.location?.display_address?.join(", ") || null;
+      const city = hit.location?.city || null;
+
       await sql`
         UPDATE restaurants SET
           yelp_checked_at   = now(),
@@ -283,7 +323,9 @@ for (const [i, r] of targets.entries()) {
           rating            = COALESCE(rating, ${hit.rating}),
           review_count      = COALESCE(review_count, ${hit.review_count}),
           photo             = COALESCE(photo, ${hit.image_url || null}),
-          yelp_url          = COALESCE(yelp_url, ${hit.url})
+          yelp_url          = COALESCE(yelp_url, ${hit.url}),
+          address           = COALESCE(address, ${address}),
+          city              = COALESCE(city, ${city})
         WHERE id = ${r.id}`;
       matched += 1;
       if (hit.image_url) photos += 1;

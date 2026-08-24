@@ -12,7 +12,10 @@ import { RestaurantComments } from "@/components/RestaurantComments";
 import { PhoneDetailHero } from "@/components/mobile/PhoneDetailHero";
 import { PhoneDetailHits } from "@/components/mobile/PhoneDetailHits";
 import type { RestaurantAspectTally } from "@/lib/db";
+import { PhoneFirstPlate } from "@/components/mobile/PhoneFirstPlate";
 import type { PlateScore } from "@/lib/plateScore";
+import type { RatedDish } from "@/lib/plateScore";
+import { dishRatingKey } from "@/lib/dishRatingKey";
 import { mapCommentsByRestaurant, withDishIds } from "@/data/mapComments";
 
 /**
@@ -54,6 +57,7 @@ export function PhoneDetailScreen({
   dishes,
   aspectTally,
   plateScore,
+  dishRatings,
 }: {
   restaurant: Restaurant;
   /** The menu, already read from Postgres by the page. */
@@ -62,6 +66,8 @@ export function PhoneDetailScreen({
   aspectTally: RestaurantAspectTally;
   /** What this restaurant's plates add up to. Also read server-side. */
   plateScore: PlateScore;
+  /** Per-plate rating averages, keyed by `dishRatingKey`. Also server-side. */
+  dishRatings: Record<string, RatedDish>;
 }) {
   const searchParams = useSearchParams();
   const [myVotes, setMyVotes] = useState<Record<string, "yes" | "no" | undefined>>({});
@@ -74,6 +80,11 @@ export function PhoneDetailScreen({
   const nav = searchParams.get("nav");
   const backHref = nav ? `/m?nav=${nav}` : "/m";
 
+  /* The composer, opened holding this restaurant — the whole point of the
+     empty state is that the reader is standing in the place, so the "where"
+     step is already answered. `nav` rides along like every other /m link. */
+  const postHref = `/m/post?restaurant=${encodeURIComponent(restaurant.id)}${nav ? `&nav=${nav}` : ""}`;
+
   // Deep link from a map comment bubble ("view this dish in the menu").
   useEffect(() => {
     const dishId = searchParams.get("dish");
@@ -84,16 +95,34 @@ export function PhoneDetailScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
+  /**
+   * Each plate's percent, and how many people it came from — the web page's
+   * rule, which this screen was missing.
+   *
+   * A plate someone has actually rated shows **its rating average**, the same
+   * numbers the header's percent is the average of, so the page adds up.
+   * Without this the two halves read different sources: the header counted
+   * `posts.rating` while every row below it counted the older yes/no tally, so
+   * Landini's could say "38 ratings across 10 plates" and then show no rated
+   * plates at all, because no dish there has ever been thumbed.
+   *
+   * A plate nobody has rated still falls back to that yes/no tally, which is
+   * the only signal those rows have. Transitional and not to build on — see the
+   * fuller note in RestaurantDetail, which owns this rule.
+   */
   const dishesWithStats = useMemo(
     () =>
       dishes.map((dish) => {
+        const rated = dishRatings[dishRatingKey(dish.name)];
+        if (rated) return { ...dish, total: rated.ratings, pct: Math.round(rated.average) };
+
         const myVote = myVotes[dish.id];
         const yesVotes = dish.yesVotes + (myVote === "yes" ? 1 : 0);
         const noVotes = dish.noVotes + (myVote === "no" ? 1 : 0);
         const { total, pct } = dishStats(yesVotes, noVotes);
         return { ...dish, total, pct };
       }),
-    [dishes, myVotes],
+    [dishes, myVotes, dishRatings],
   );
 
   const topPicks = useMemo(
@@ -164,6 +193,10 @@ export function PhoneDetailScreen({
           `--phone-nav-space` already reserves the arc nav's room. */}
       <div className="flex flex-col gap-5 px-4 pt-5">
         <PhoneDetailHits dishes={topPicks} ratedBy={ratedBy} onSelect={setSelectedDishId} />
+        {/* Renders only while the plate score's floor is unmet — the invitation
+            and the hits list never share a screen. It sits where the hits
+            would, because it is the hits' absence being stated. */}
+        <PhoneFirstPlate restaurant={restaurant} score={plateScore} href={postHref} />
         <RestaurantAspects tally={aspectTally} />
         <FullMenu sections={sections} onSelect={setSelectedDishId} />
         {/* The booking prototype, in the position the web page puts it in when

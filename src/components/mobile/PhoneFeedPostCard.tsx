@@ -12,40 +12,53 @@ import { relativeTime } from "@/lib/format";
 import { tagAccent } from "@/data/foodTags";
 import { amenityEmoji, vibeChip } from "@/data/reviewScales";
 import type { Post } from "@/components/feed/types";
-import { PhoneFeedCardThumb } from "./PhoneFeedCardThumb";
 
 /**
  * The feed's post card, phone version.
  *
- * A fork of `FoodPostCard` for routing (every link in the web card leaves the
- * /m tree, and its friend control is `sm:flex`, so it would render in the 390px
- * desktop preview and never on a real handset) — and now for hierarchy too.
+ * A fork of `FoodPostCard` for routing only: every link in the web card leaves
+ * the /m tree, and its friend control is `sm:flex`, so it would render in the
+ * 390px desktop preview and never on a real handset.
  *
- * ## The card leads with the restaurant
+ * ## The card leads with what the person said
  *
- * The web card leads with the poster's own words and captions them with the
- * subject; this one is a list of places, read top-down:
+ * Both cards read the same way now, top-down:
  *
  * ```
- * Kettner Exchange            88%      ← Fraunces name · mono rust score
- * Hamachi crudo                        ← the dish, rust
- * Crispy edges, the sauce is the       ← the review, sans, clamped to 3
- * whole point, would order twice…
+ * Crispy edges, the sauce is the       ← the review, sans semibold, clamped to 3
+ * whole point, would order twice…  88%   · mono rust score, hard right
+ * Hamachi crudo at Kettner Exchange    ← the dish in Fraunces rust, the place in
+ *                                        mono muted — both links
  * @mayaellis · 2h ago · Little Italy   ← mono, muted, machine values only
  * ```
  *
- * Which makes the restaurant the thing you scan for, and the reason the handle
- * came off the photo: the author used to be the first thing on the card, in the
- * top-left of the picture, which put the person above the place on a screen
- * whose whole job is to answer "where should I eat".
+ * This card used to lead with the restaurant instead, on the argument that a
+ * feed of plates is a list of places and the name is the thing you scan for.
+ * What that arrangement cost was the sentence: the review sat two rows down in
+ * grey regular, which is where a card puts what nobody is expected to read. A
+ * feed of plates is a feed of opinions — "crispy edges, the sauce is the whole
+ * point" is why you stop scrolling — and the plate it is about is the caption
+ * to that, not the other way round.
  *
- * ## Two photo treatments, and the screen picks
+ * The two names then become one line rather than two stacked ones, because what
+ * a plate *is* and where it was are one fact. See the note on that line for why
+ * they wear different faces and why the joint is the word "at" and never an
+ * `@`.
  *
- * `featured` runs the photo full width above the text, which is what the first
- * card in the list gets — the top of a feed is the one place a 16:9 photo pays
- * for the height it costs. Everything below it takes a 76px left thumbnail so
- * a screenful holds four or five plates instead of one and a half. The default
- * is the thumbnail, so a caller that says nothing gets the dense treatment.
+ * The scan-for-a-name argument is not wrong, it is just answered somewhere
+ * else: /m is the discover screen, and its cards are the list of places.
+ *
+ * ## The photo runs full width, on every card
+ *
+ * A post with a photo leads with it at 16:9 above the text — the web card's
+ * shape, and now this one's too. There used to be two treatments: the first
+ * card in the list ran its photo full width and every card below it took a 96px
+ * left thumbnail, so a screenful held four or five plates instead of one and a
+ * half. Density is not what this feed is for. The photo *is* the plate, and at
+ * 96px in a column beside the text it stopped being the thing you scroll for —
+ * a feed of food that shows the food the size of a favicon is a list, not a
+ * feed. A post with no photo is the same block with nothing above it, so
+ * nothing here branches on a flag any more.
  *
  * Everything under the layout — `PostActions`, `PostMediaCarousel`,
  * `StarRating` — is the shared component, not a copy. Votes, hearts, saves,
@@ -93,18 +106,71 @@ function Tombstone({ title, body, onUndo }: { title: string; body: string; onUnd
  * rewrites the id space), so a post can name a restaurant this app can no
  * longer resolve. That case prints the name and links nowhere rather than
  * offering a tap that lands on a 404.
+ *
+ * ## The underline is on hover, not at rest
+ *
+ * Both refs on this card were underlined at rest and are not any more: a
+ * screenful of cards each carrying two ruled names read as a page of links
+ * rather than as a feed. Colour and voice carry the affordance instead — the
+ * dish is the only rust-coloured thing in the block, the restaurant the only
+ * mono one — and the rule appears under the cursor.
+ *
+ * The cost is stated plainly because it is real and it is the argument the rest
+ * underline was put here for: **a handset has no hover state**, so on the device
+ * this component is named for, nothing marks either name as tappable until it is
+ * tapped. That is a deliberate call, not an oversight. If it turns out to cost
+ * taps, the fix is a rest-state mark that is quieter than a full rule — the
+ * dotted `decoration-dotted` variant, or a colour shift — rather than putting
+ * the solid underline back on every card.
  */
 function RestaurantRef({ post, className = "" }: { post: Post; className?: string }) {
   const name = post.restaurant;
   if (!name) return null;
-  if (!post.restaurantId) return <span className={className}>{name}</span>;
+  const id = restaurantIdFor(post);
+  if (!id) return <span className={className}>{name}</span>;
   return (
-    /* Underlined at rest, not on hover. The map bubble's dish reference gets
-       away with a hover underline because it has a pointer over it; a phone has
-       no hover state at all, so an unmarked link is an invisible one. */
     <Link
-      href={`/m/restaurant/${post.restaurantId}`}
-      className={`rounded-sm underline underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
+      href={`/m/restaurant/${id}`}
+      className={`rounded-sm transition-colors hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
+    >
+      {name}
+    </Link>
+  );
+}
+
+/**
+ * Which restaurant this post is allowed to link at.
+ *
+ * `restaurantId` is what the composer wrote — the author's own claim about
+ * which place this was. `placeId` is `resolvePostRefs` matching a typed name
+ * against the corpus: good enough to fall back to, but a guess, so the author's
+ * answer wins. Null when neither resolves, which is the case `RestaurantRef`
+ * turns into plain text rather than a tap that lands on a 404.
+ */
+function restaurantIdFor(post: Post): string | undefined {
+  return post.restaurantId ?? post.placeId;
+}
+
+/**
+ * The dish, as a link that opens it on the restaurant's screen — the `?dish=`
+ * deep link `PhoneDetailScreen` already reads, and the same one the map's
+ * bubbles use.
+ *
+ * Two ways this degrades, both deliberate. With no `dishId` — `posts.dish_name`
+ * is free text and only resolves when it matches a line on the menu — it still
+ * links to the restaurant, since landing on the place with no sheet open beats
+ * a dead word. With no restaurant at all it is plain text, for the same reason
+ * the name above it is.
+ */
+function DishRef({ post, className = "" }: { post: Post; className?: string }) {
+  const name = post.dishName;
+  if (!name) return null;
+  const id = restaurantIdFor(post);
+  if (!id) return <span className={className}>{name}</span>;
+  return (
+    <Link
+      href={post.dishId ? `/m/restaurant/${id}?dish=${post.dishId}` : `/m/restaurant/${id}`}
+      className={`rounded-sm transition-colors hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
     >
       {name}
     </Link>
@@ -114,12 +180,6 @@ function RestaurantRef({ post, className = "" }: { post: Post; className?: strin
 type SharedCardProps = {
   post: Post;
   currentUserId: string | null;
-  /**
-   * Run the photo full width above the text instead of as a left thumbnail.
-   * The screen sets it on the first card of the list; every other card is dense
-   * by default. A post with no media renders identically either way.
-   */
-  featured?: boolean;
   /**
    * How far the plate is from the viewer, already formatted (`"0.4 mi"`).
    *
@@ -164,7 +224,6 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
   const {
     post,
     currentUserId,
-    featured = false,
     distance,
     onSave,
     onShare,
@@ -187,7 +246,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
   );
   const [blocking, setBlocking] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const reviewRef = useRef<HTMLParagraphElement>(null);
+  const reviewRef = useRef<HTMLHeadingElement>(null);
   const [clamped, setClamped] = useState(false);
 
   /* Blocking, ported from the web card rather than reinvented: same POST to
@@ -239,12 +298,14 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
   /**
    * Whether the three-line clamp is actually cutting the review off.
    *
-   * Measured, not guessed from a character count. The count was tried and it
-   * cannot be right at both widths: the featured card's text runs the full
-   * 358px and a thumbnail card's runs ~254px, and the same threshold that stops
-   * a long review being silently truncated on the narrow card prints an inert
-   * "Show more" under a three-line review on the wide one. `scrollHeight`
-   * against `clientHeight` asks the question the button is actually about.
+   * Measured, not guessed from a character count. The count was tried while
+   * the card had two widths to serve — 358px full width, ~254px beside a
+   * thumbnail — and no single threshold was right for both: the one that
+   * stopped a long review being silently truncated on the narrow card printed
+   * an inert "Show more" under a three-line review on the wide one. The
+   * thumbnail is gone and the text is always 358px now, but the measurement
+   * stays: `scrollHeight` against `clientHeight` asks the question the button
+   * is actually about, and a character count never does at any width.
    *
    * Held still while expanded — with the clamp off the two heights are equal,
    * so re-measuring there would decide the text isn't clamped and take away the
@@ -295,21 +356,23 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
     );
   }
 
-  /* The place is the headline, always — including on a pre-retirement
-     restaurant review, where it already was. A post with no restaurant on it
-     leads with its dish rather than printing an empty slot, and then there is
-     no second line to print underneath. */
-  const hasRestaurant = !!post.restaurant;
-  const heading = post.restaurant ?? post.dishName ?? "A plate worth sharing";
-  const subheading = hasRestaurant ? (post.dishName ?? null) : null;
+  /* What the person said is the headline, and the subject line underneath names
+     the plate and the place. Same restack the web card carries — see the header
+     comment for what this replaced and why both cards now do it.
+
+     The fallback is the only case where a name leads: a post with no words has
+     no headline, so the dish (or failing that the restaurant) is promoted into
+     the slot. Whichever name goes up is then dropped from the line below rather
+     than printed twice. */
+  const headline = words ?? post.dishName ?? post.restaurant ?? "A plate worth sharing";
+  const lineDish = headline === post.dishName ? null : post.dishName;
+  const lineRestaurant = headline === post.restaurant ? null : post.restaurant;
 
   const titleId = `post-${post.id}-title`;
   const subId = `post-${post.id}-dish`;
 
-  const hasPhoto = post.media.length > 0;
-  /** The photo runs full width only when the screen asked for it. */
-  const showsHero = hasPhoto && featured;
-  const showsThumb = hasPhoto && !featured;
+  /** Every photo runs full width — see the header note. */
+  const showsHero = post.media.length > 0;
 
   // Reads either vocabulary the `vibe` column has held — "Lively", or "Food"
   // written back out as "Best at food".
@@ -320,11 +383,13 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
      `locationLabel` stands in for a distance nobody has measured — see the
      `distance` prop.
    *
-   * Three parts is not a stylistic limit, it is the width. A thumbnail card
-   * leaves this row about 254px, and "@samwhitaker · 5d ago · 6.2 miles away"
-   * already measures ~250px at 11px mono. A fourth segment, or a chip parked at
-   * the end of the row, truncates the distance off every card in the feed —
-   * which is how the price and the points badge lost their place here. */
+   * Three parts is not a stylistic limit, it is the width.
+   * "@samwhitaker · 5d ago · 6.2 miles away" already measures ~250px at 11px
+   * mono, against 358px of card. A fourth segment, or a chip parked at the end
+   * of the row, truncates the distance off every card in the feed — which is
+   * how the price and the points badge lost their place here. The row was
+   * ~254px back when a thumbnail took the left of it, so it has more room now,
+   * not a reason to refill it. */
   const bylineTail = [
     relativeTime(post.createdAt),
     distance ?? post.locationLabel ?? null,
@@ -335,7 +400,10 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
 
   return (
     <article
-      aria-labelledby={subheading ? `${titleId} ${subId}` : titleId}
+      /* Headline first, then the subject line — the order they are read in, and
+         the reverse of the pair this used to name, since what the person said
+         now leads the card. */
+      aria-labelledby={lineDish || lineRestaurant ? `${titleId} ${subId}` : titleId}
       className="overflow-hidden rounded-2xl bg-white"
     >
       {/*
@@ -363,72 +431,127 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
         </div>
       )}
 
-      {/* The thumbnail and the text are one row, so a card without a photo is
-          the same block with the left column absent rather than a second
-          layout. */}
-      <div className={`flex gap-3 px-4 ${showsHero ? "pt-3" : "pt-4"}`}>
-        {showsThumb && (
-          <PhoneFeedCardThumb
-            item={post.media[0]}
-            /* `||`, not `??`: `join` on an empty list returns "" rather than
-               null, so a post naming neither a dish nor a restaurant would
-               otherwise ship an unlabelled photo. */
-            alt={
-              post.media[0].alt ||
-              [post.dishName, post.restaurant && `at ${post.restaurant}`]
-                .filter(Boolean)
-                .join(" ") ||
-              "Food photo"
-            }
-          />
-        )}
+      {/*
+        The text block, under the photo when there is one and alone when there
+        isn't. It is one column at full card width — the thumbnail that used to
+        take the left of this row is gone (header note) and nothing replaced it.
+       *
+        Where the *number* sits inside that column is worth writing down,
+        because two other arrangements were tried and both failed for reasons
+        that are easy to re-derive wrongly.
+       *
+        This used to be a three-column row — thumb, text, number — with the
+        number pinned to the top right. That was correct while the top of the
+        text column held a restaurant's *name*: a name is short, and the number
+        beside it made a column a screenful could be read straight down. It
+        stopped being correct the moment that slot held a sentence. Measured on
+        a 390px handset: a card with no thumbnail gave its text 229px, a
+        thumbnailed one gave the same text 123px — about eleven characters a
+        line, so the three-line preview showed twenty-odd characters of someone's
+        review before "Show more".
+       *
+        Floating the number so the text wraps around it does not work, and the
+        reason is worth stating so it is not tried a third time: the headline
+        has to be clamped, every way of clamping a box sets `overflow` or
+        `display: -webkit-box`, and both make the box a formatting-context root
+        — which is precisely a box that *avoids* floats instead of flowing
+        around them. The clamped headline was still 123px wide with the floats
+        in place.
+       *
+        So the number moved down one row instead, onto the subject line, and the
+        headline gets the whole column. The cost is that the number's distance
+        from the top of the card now varies with how long the review is, which
+        is a real loss against the old straight-down read — paid because a feed
+        of opinions has to make the opinion legible first, and because a 38px
+        orange numeral is not hard to find.
+      */}
+      <div className={`px-4 ${showsHero ? "pt-3" : "pt-4"}`}>
+        <div className="min-w-0">
+          {/* What the person said, and it is the headline now, across the whole
+              column — see the note on the row above for why the number is no
+              longer beside it.
+           *
+              Sans, not Fraunces: this slot held the restaurant's name and a
+              name is a proper noun, but a review is prose, and DESIGN.md splits
+              the voices by who wrote the text rather than by which slot it
+              lands in. It is the one thing on this card that is not a name or a
+              number.
+           *
+              16px semibold, not the web card's 22: at 22px a three-line clamp
+              spends ~130px of card height before the plate is named, on a card
+              that has already spent a 16:9 photo getting here. The weight is
+              what makes this the headline at this size, not the scale. */}
+          <h3
+            id={titleId}
+            ref={words ? reviewRef : undefined}
+            className={`text-[16px] font-semibold leading-snug text-zinc-900 ${
+              expanded ? "" : "line-clamp-3"
+            }`}
+          >
+            {headline}
+          </h3>
 
-        <div className="min-w-0 flex-1">
-          {/* Name left, verdict hard right, top-aligned — the same column read
-              the map bubble's verdict row establishes, so a screenful of cards
-              can be read straight down the right edge as a column of numbers. */}
-          <div className="flex items-start justify-between gap-2.5">
-            <div className="min-w-0">
-              {/* Wraps to two lines rather than truncating. The verdict beside
-                  it is 38px now, which leaves ~95px of a thumbnailed card for
-                  the name — enough to turn "Landini's Pizzeria" into
-                  "Landini's P…". The score is the thing this card is for, so
-                  the name takes the second line instead of the number taking a
-                  smaller size; the right column is ~70px tall anyway, so those
-                  two lines cost the card no height at all. */}
-              <h3
-                id={titleId}
-                className="line-clamp-2 font-display text-[15px] font-semibold leading-tight tracking-tight text-zinc-900"
-              >
-                {hasRestaurant ? (
-                  <RestaurantRef post={post} className="decoration-1 decoration-zinc-300" />
-                ) : (
-                  heading
-                )}
-              </h3>
-              {/* The dish, in the accent's small-text voice. Fraunces because a
-                  dish name is a proper name; --pm-orange-text because small
-                  orange type needs the darker token to clear 4.5:1. */}
-              {subheading && (
-                <p
-                  id={subId}
-                  className="mt-0.5 truncate font-display text-[13px] font-semibold leading-tight text-pm-orange-text"
-                >
-                  {subheading}
+          {words && (clamped || expanded) && (
+            <button
+              type="button"
+              onClick={() => setExpanded((e) => !e)}
+              className="min-h-11 text-xs font-medium text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              {expanded ? "Show less" : "Show more"}
+            </button>
+          )}
+
+          {/* The plate and the number, on one row: what it was, where it was,
+              and what it scored. The subject line takes whatever the verdict
+              leaves — `min-w-0` so a long restaurant name wraps inside it
+              instead of pushing the number off the card. */}
+          <div className={`flex items-start justify-between gap-2.5 ${words ? "mt-1" : "mt-0.5"}`}>
+            <div className="min-w-0 flex-1">
+              {/* The subject line: the dish in the accent, then the restaurant.
+               *
+                  Both are links — the dish opens its sheet on the restaurant's
+                  screen, the place opens the screen itself — and they wear
+                  different clothes on purpose. The split is DESIGN.md's own: a
+                  name used as a *title* sets in Fraunces, a name used as a
+                  *compact reference to a record* sets in mono. The dish is this
+                  post's title; the restaurant is a record it points at.
+               *
+                  The word "at", never an `@`. In this app an `@` means a person
+                  and nothing else — it is how the byline one row down names one.
+               *
+                  Inline rather than flex, and wrapping rather than truncating:
+                  at this width a dish and a restaurant often do not share a
+                  line, and clipping both to force them onto one would lose the
+                  halves that identify them. */}
+              {(lineDish || lineRestaurant) && (
+                <p id={subId} className="leading-snug">
+                  {lineDish && (
+                    <DishRef
+                      post={post}
+                      className="font-display text-[13px] font-semibold text-pm-orange-text"
+                    />
+                  )}
+                  {lineDish && lineRestaurant && (
+                    <span className="text-[12px] text-zinc-500"> at </span>
+                  )}
+                  {lineRestaurant && (
+                    <RestaurantRef
+                      post={post}
+                      className="font-mono text-[12px] font-medium text-zinc-500"
+                    />
+                  )}
                 </p>
               )}
             </div>
 
-            {/* Trending rides with the name rather than at the end of the
+            <div className="flex shrink-0 items-start gap-1.5">
+            {/* Trending rides with the verdict rather than at the end of the
                 byline: parked there it cost ~66px of a 254px row and truncated
-                the distance off the three hottest plates in the feed. It is a
-                badge on the place, so it sits with the place.
+                the distance off the three hottest plates in the feed.
              *
-             * Glyph only, no "HOT". The word cost another 46px of a column
-             * that has ~136px left for the name after the score, which is how
-             * "Breakfast Republic" came to render as "Breakfast Repu…" — the
-             * headline losing letters to a decoration is the wrong trade. The
-             * label is still announced, it just isn't drawn. */}
+             * Glyph only, no "HOT" — the word cost another 46px of a column
+             * that has little to spare. The label is still announced, it just
+             * isn't drawn. */}
             {trending && (
               <span
                 className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-pm-grey-tint text-pm-orange-text"
@@ -496,37 +619,15 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
               )}
             </div>
           </div>
+        </div>
 
-          {/* The review — prose a person wrote, so system sans, and the one
-              thing on this card that is not a name or a number. */}
-          {words && (
-            <p
-              ref={reviewRef}
-              className={`mt-1.5 text-[16px] leading-relaxed text-zinc-700 ${
-                expanded ? "" : "line-clamp-3"
-              }`}
-            >
-              {words}
-            </p>
-          )}
-
-          {words && (clamped || expanded) && (
-            <button
-              type="button"
-              onClick={() => setExpanded((e) => !e)}
-              className="min-h-11 text-xs font-medium text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-            >
-              {expanded ? "Show less" : "Show more"}
-            </button>
-          )}
-
-          {/* The byline owns its whole row. Nothing is allowed to sit beside it
-              — see `bylineTail`. */}
-          <p
-            className={`truncate font-mono text-[11px] tabular-nums text-zinc-500 ${
-              words ? "mt-1" : "mt-2"
-            }`}
-          >
+          {/* The byline owns its whole row, below the subject line rather than
+              beside it. Nothing is allowed to sit next to it — see `bylineTail`,
+              which has three machine values to spend ~220px on and needs all of
+              it. Sharing the subject line's column left it ~138px and truncated
+              the distance off every card, which is the exact failure that
+              comment was written about. */}
+          <p className="mt-1 truncate font-mono text-[11px] tabular-nums text-zinc-500">
             <Link
               href={authorHref}
               aria-label={authorLabel}
@@ -541,9 +642,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
 
       {/* The verdict on the left, everything you can do about it on the right.
           PostActions owns that split; the options menu is added on the end of
-          it rather than kept on a line of its own. Full card width rather than
-          indented behind the thumbnail — these act on the post, not on the
-          block of text beside them. */}
+          it rather than kept on a line of its own. */}
       <div className="flex items-center gap-1 px-4 pb-0.5 pt-1">
         <div className="min-w-0 flex-1">
           {props.surface === "discover" ? (

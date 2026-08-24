@@ -14,6 +14,10 @@ type Account = {
   hideFromLeaderboard: boolean;
   discoverableByUsername: boolean;
   friendRequestsOpen: boolean;
+  /** Whether `email` has been proved reachable. False on every pre-verification account. */
+  emailVerified: boolean;
+  /** An address asked for but not yet confirmed, if a change is in flight. */
+  pendingEmail?: string;
 };
 
 type AuthContextValue = {
@@ -48,6 +52,21 @@ type AuthContextValue = {
   ) => Promise<string | null>;
   /** Rename. Resolves to an error string, or null with the context renamed. */
   changeUsername: (name: string) => Promise<string | null>;
+  /**
+   * Ask to move the account to `email`. Takes the password because the server
+   * re-authenticates — see /api/account/email.
+   *
+   * Success does **not** mean the address changed: it means a link is on its
+   * way to it, and `pendingEmail` now says so. Nothing about the account moves
+   * until that link is opened. `notice` carries the development-only note
+   * about where the link went when no mailer is configured.
+   */
+  changeEmail: (
+    email: string,
+    password: string
+  ) => Promise<{ error: string | null; notice?: string }>;
+  /** Re-send the link to whichever address is waiting on one. */
+  resendVerification: () => Promise<{ error: string | null; notice?: string }>;
   /**
    * Both passwords, because the server re-authenticates before writing. On
    * success every other session is ended too, so the resolved value carries how
@@ -227,6 +246,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: null, endedElsewhere: (data.endedElsewhere as number) ?? 0 };
   }
 
+  async function changeEmail(email: string, password: string) {
+    const res = await fetch("/api/account/email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) return { error: await parseError(res) };
+
+    // The response carries the account because `pendingEmail` changed on it,
+    // which is the only visible result of a successful call.
+    const data = await res.json();
+    setAccount(data.account);
+    return { error: null, notice: data.notice as string | undefined };
+  }
+
+  async function resendVerification() {
+    const res = await fetch("/api/account/email/send", { method: "POST" });
+    if (!res.ok) return { error: await parseError(res) };
+    const data = await res.json();
+    return { error: null, notice: data.notice as string | undefined };
+  }
+
   async function updateSettings(
     settings: Partial<{
       sharePhotosPublicly: boolean;
@@ -261,6 +302,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         updateAvatar,
         updateSettings,
         changeUsername,
+        changeEmail,
+        resendVerification,
         changePassword,
         signOutOtherDevices,
       }}

@@ -3,7 +3,7 @@
 import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Dialog } from "./Dialog";
-import { ChatIcon, ThumbsUpIcon, ThumbsDownIcon } from "@/components/icons";
+import { ChatIcon, VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import type { VoteDirection } from "./PostActions";
 import type { Comment, Post } from "./types";
@@ -472,7 +472,7 @@ function CommentVotes({
   const arrow = (direction: VoteDirection) => {
     const active = comment.myVote === direction;
     const up = direction === "up";
-    const Thumb = up ? ThumbsUpIcon : ThumbsDownIcon;
+    const Arrow = up ? VoteArrowUpIcon : VoteArrowDownIcon;
     return (
       <button
         type="button"
@@ -492,7 +492,7 @@ function CommentVotes({
           active ? "text-pm-orange" : "text-zinc-400 hover:text-pm-orange-text"
         }`}
       >
-        <Thumb filled={active} className="h-3.5 w-3.5" />
+        <Arrow filled={active} className="h-3.5 w-3.5" />
       </button>
     );
   };

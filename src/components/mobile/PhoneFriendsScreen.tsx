@@ -7,8 +7,7 @@ import { BrandMark } from "@/components/BrandMark";
 import { PointsBadge } from "@/components/feed/PointsBadge";
 import { PhoneFindFriends } from "@/components/mobile/PhoneFindFriends";
 import { PhoneFriendsHero } from "@/components/mobile/PhoneFriendsHero";
-import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
-import { PhoneFriendsLeaderboard, rankSeats } from "@/components/mobile/PhoneFriendsLeaderboard";
+import { PhoneFriendsLeaderboard } from "@/components/mobile/PhoneFriendsLeaderboard";
 import { useAuth } from "@/lib/auth";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
 
@@ -61,7 +60,6 @@ type FriendRequest = {
 
 const FOCUS =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
-
 
 /**
  * Marks the Friends nav dot read, the same way `lib/navAlerts.ts` does when the
@@ -215,17 +213,6 @@ export function PhoneFriendsScreen() {
 
   const hasRequests = incoming.length > 0 || outgoing.length > 0;
 
-  /* Each friend's standing, from the same `rankSeats` the leaderboard below
-     runs — not a second sort. Two sorts of one array is exactly how a list and
-     the leaderboard under it end up disagreeing about who is second. Keyed by
-     id so a row is a lookup rather than a scan. */
-  const rankById = useMemo(() => {
-    if (!friends || !account) return null;
-    const map = new Map<string, number>();
-    for (const seat of rankSeats(friends, account)) map.set(seat.entry.id, seat.rank);
-    return map;
-  }, [friends, account]);
-
   /* Filters the list you already have rather than searching for people to
      add — there's no user-search endpoint, and every name here is one the
      server already sent. Substring, not prefix: "alv" should reach Diego
@@ -294,7 +281,7 @@ export function PhoneFriendsScreen() {
           />
 
           <div className="mb-7 px-4">
-            <PhoneSectionLabel>Your friends</PhoneSectionLabel>
+            <p className="mono-label mb-2 text-pm-grey-text">Your friends</p>
 
             {/* Only once there's a list worth filtering. A search box over two
                 names is a control that costs more than it saves. */}
@@ -395,19 +382,8 @@ export function PhoneFriendsScreen() {
                         {friend.name}
                       </span>
                       {/* Points are a sanctioned number — friend counts are not,
-                          and there is deliberately none on this screen. A rank
-                          is not a count either: `№2` says where one person sits,
-                          and the leaderboard already prints it. It is here so
-                          the list answers "how are they doing" without making
-                          you scroll down to the card that knows. */}
-                      <span className="mt-1 flex items-center gap-1.5">
-                        <PointsBadge points={friend.points} />
-                        {rankById?.get(friend.id) && (
-                          <span className="shrink-0 font-mono text-[11px] font-medium tabular-nums text-pm-orange-text">
-                            №{rankById.get(friend.id)}
-                          </span>
-                        )}
-                      </span>
+                          and there is deliberately none on this screen. */}
+                      <PointsBadge points={friend.points} className="mt-1" />
                     </Link>
                     <button
                       type="button"
@@ -451,7 +427,9 @@ export function PhoneFriendsScreen() {
 
           {hasRequests && (
             <section aria-labelledby="phone-requests-heading" className="mb-7 px-4">
-              <PhoneSectionLabel id="phone-requests-heading">Requests</PhoneSectionLabel>
+              <p id="phone-requests-heading" className="mono-label mb-2 text-pm-grey-text">
+                Requests
+              </p>
               <div className="flex flex-col gap-2">
                 {/* Incoming sits on the accent tint rather than white: it is the
                     one thing on this screen waiting on an answer, and the tint

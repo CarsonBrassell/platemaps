@@ -27,9 +27,16 @@
  *                           that takes the whole search page with it
  *   lat + lng               the map places every restaurant it is given
  *   photo                   a card with no image is an empty rectangle
- *   hours                   "Hours vary" passes the Open-now filter, so rows
- *                           without hours quietly inflate every count on the
- *                           discover page
+ *
+ * Hours were on that list and came off it (21 Aug 2026). They were there
+ * because "Hours vary" passed the Open-now filter, so rows without hours
+ * inflated its count — but that was a bug in the filter, and holding thousands
+ * of restaurants off the site was an expensive way to work around it. The
+ * filter now excludes unknown hours, and the card prints hours instead of
+ * judging open or closed, so a restaurant with no hours yet renders honestly:
+ * it shows none. Hours are a second Yelp call against the same 300-a-day quota
+ * as photos, so requiring them meant every restaurant waited roughly two extra
+ * weeks to appear for a field the card no longer needs.
  *
  * A menu is deliberately NOT in that list, even though menus are the reason
  * this site exists. The gate's job is narrow — keep pages from rendering
@@ -62,7 +69,6 @@ const READY = sql`
   AND review_count IS NOT NULL
   AND lat IS NOT NULL AND lng IS NOT NULL
   AND photo IS NOT NULL AND photo <> ''
-  AND hours IS NOT NULL AND hours <> '[]'::jsonb
 `;
 
 const before = await sql`SELECT count(*) FILTER (WHERE listed)::int AS n, count(*)::int AS total FROM restaurants`;

@@ -86,7 +86,12 @@ export function PhoneNav({ variant = DEFAULT_VARIANT }: { variant?: NavVariant }
   const nav = params.get("nav");
   const to = (href: string) => (nav ? `${href}?nav=${nav}` : href);
 
-  const isCurrent = (href: string) => pathname === href;
+  /* Prefix match, not equality, so a slot stays lit on its own sub-screens —
+     /m/account/settings is Profile. `/m` is excluded from the prefix arm
+     because it is the root of this whole tree: every other route starts with
+     "/m/", and a bare startsWith would light Discover on all of them. */
+  const isCurrent = (href: string) =>
+    pathname === href || (href !== "/m" && pathname.startsWith(`${href}/`));
 
   const dotFor = (slot: Slot) =>
     slot.dot && alerts[slot.dot.slot] ? (

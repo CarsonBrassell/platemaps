@@ -18,7 +18,14 @@ import { useAuth } from "@/lib/auth";
  * other one out.
  */
 export function useAccountSecurity() {
-  const { account, changeUsername, changePassword, signOutOtherDevices } = useAuth();
+  const {
+    account,
+    changeUsername,
+    changeEmail,
+    resendVerification,
+    changePassword,
+    signOutOtherDevices,
+  } = useAuth();
 
   // --- Username ------------------------------------------------------------
   const [username, setUsername] = useState(account?.name ?? "");
@@ -34,6 +41,65 @@ export function useAccountSecurity() {
     if (message) setUsernameError(message);
     else setUsernameSaved(true);
     setUsernameBusy(false);
+  }
+
+  // --- Email ---------------------------------------------------------------
+  //
+  // Two fields and two ways out. `save` asks to move to a new address and needs
+  // the password; `resend` re-mails the link for an address already on file and
+  // does not. Both end in the same place — a sentence saying where to go look —
+  // so they share `emailSent` rather than reporting separately.
+  /* Starts empty, unlike the username field above it. Pre-filled with the
+     current address it read as a display of the address rather than a request
+     for a new one — and the row already states the current one, in the machine
+     voice, directly above this input. */
+  const [email, setEmail] = useState("");
+  const [emailPassword, setEmailPassword] = useState("");
+  const [emailBusy, setEmailBusy] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [emailSent, setEmailSent] = useState("");
+  const [emailNotice, setEmailNotice] = useState("");
+
+  function disarmEmail() {
+    setEmail("");
+    // Same reasoning as the password form: not left in state for a re-open.
+    setEmailPassword("");
+    setEmailError("");
+    setEmailSent("");
+    setEmailNotice("");
+  }
+
+  async function saveEmail() {
+    setEmailBusy(true);
+    setEmailError("");
+    setEmailSent("");
+    const target = email.trim();
+    const { error, notice } = await changeEmail(target, emailPassword);
+    if (error) {
+      setEmailError(error);
+      // The address survives a failure; the password doesn't. Retyping an
+      // address because a password was mistyped is somebody else's mistake.
+      setEmailPassword("");
+      setEmailBusy(false);
+      return;
+    }
+    setEmailPassword("");
+    setEmailSent(target);
+    setEmailNotice(notice ?? "");
+    setEmailBusy(false);
+  }
+
+  async function resendEmail() {
+    setEmailBusy(true);
+    setEmailError("");
+    setEmailSent("");
+    const { error, notice } = await resendVerification();
+    if (error) setEmailError(error);
+    else {
+      setEmailSent(account?.pendingEmail ?? account?.email ?? "");
+      setEmailNotice(notice ?? "");
+    }
+    setEmailBusy(false);
   }
 
   // --- Password ------------------------------------------------------------
@@ -101,6 +167,33 @@ export function useAccountSecurity() {
       // the button offering an action the server would only reject.
       dirty: username.trim().length > 0 && username.trim() !== account?.name,
       save: saveUsername,
+    },
+    email: {
+      value: email,
+      set: (v: string) => {
+        setEmail(v);
+        setEmailError("");
+        setEmailSent("");
+      },
+      password: emailPassword,
+      setPassword: setEmailPassword,
+      busy: emailBusy,
+      error: emailError,
+      /** The address a link just went to, or "" if none has this session. */
+      sent: emailSent,
+      /** Development-only note about a missing mailer. See lib/mail.ts. */
+      notice: emailNotice,
+      /**
+       * Enabled for a real change, and also for re-typing the current address
+       * while one is pending — that is how a change is called off, so the
+       * button has to be live for the value the plain reading calls unchanged.
+       */
+      dirty:
+        email.trim().length > 0 &&
+        (email.trim() !== account?.email || account?.pendingEmail !== undefined),
+      save: saveEmail,
+      resend: resendEmail,
+      disarm: disarmEmail,
     },
     password: {
       armed,

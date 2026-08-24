@@ -116,7 +116,7 @@ export function PhonePointsFly() {
 
       {/* The award said out loud, for anyone who is not watching it fly. */}
       <p role="status" className="sr-only">
-        {award ? `Earned ${award.earned} PM Points` : ""}
+        {award ? `Earned ${award.earned} Plate Points` : ""}
       </p>
     </div>
   );
