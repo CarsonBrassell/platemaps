@@ -220,33 +220,21 @@ function FeedPageInner() {
   }, [isSignedIn]);
 
   /*
-   * The map's backdrop: every restaurant, and every menu, so a bubble that
-   * names a dish can link to it.
-   *
-   * Both used to be static imports. Fetched together in one effect because the
-   * map needs both or neither — half of this data draws pins with dead dish
-   * links. The whole dish table is the unbounded call flagged in the route's
-   * own comment; the map already knows which restaurants it draws, so passing
-   * `?ids=` is where that gets fixed when the table is big enough to matter.
+   * The map's backdrop: every restaurant, so every ember has a pin —
+   * AGENTS.md rules out clustering, so this one really does need the whole
+   * corpus.
    */
   useEffect(() => {
     let cancelled = false;
     void (async () => {
       try {
-        const [restaurantRes, dishRes] = await Promise.all([
-          fetch("/api/restaurants"),
-          fetch("/api/restaurants/dishes"),
-        ]);
-        if (!restaurantRes.ok || !dishRes.ok) return;
-        const [{ restaurants: rows }, { dishes }] = await Promise.all([
-          restaurantRes.json() as Promise<{ restaurants: MapRestaurant[] }>,
-          dishRes.json() as Promise<{ dishes: Record<string, Dish[]> }>,
-        ]);
+        const res = await fetch("/api/restaurants");
+        if (!res.ok) return;
+        const { restaurants: rows } = (await res.json()) as { restaurants: MapRestaurant[] };
         if (cancelled) return;
         setRestaurants(rows);
-        setMenus(dishes);
       } catch {
-        // The feed itself doesn't depend on these — the list renders, and the
+        // The feed itself doesn't depend on this — the list renders, and the
         // map tab comes up empty rather than the page failing.
       }
     })();
@@ -254,6 +242,48 @@ function FeedPageInner() {
       cancelled = true;
     };
   }, []);
+
+  /**
+   * Menus, bounded to the restaurants that can actually put a dish name on a
+   * bubble: the ones with a real post loaded, and the ones with a seeded
+   * comment in `mapCommentsByRestaurant`. This used to be the whole dish
+   * table, unconditionally, on every load of `/feed` — measured at 18.3 MB
+   * against the corpus this shipped with, fetched whether or not the Map tab
+   * was ever opened. The real need is a couple dozen restaurants.
+   *
+   * See the identical comment in `PhoneFeedMapPanel` for why `neededIds` is
+   * recomputed as `posts` streams in and why the fetch below merges into
+   * `menus` instead of replacing it — the mobile file is where this pattern
+   * was first written; keep the two in step if either changes.
+   */
+  const neededIds = useMemo(() => {
+    const ids = new Set(Object.keys(mapCommentsByRestaurant));
+    for (const p of posts ?? []) if (p.restaurantId) ids.add(p.restaurantId);
+    return ids;
+  }, [posts]);
+
+  useEffect(() => {
+    const known = new Set(Object.keys(menus));
+    const missing = [...neededIds].filter((id) => !known.has(id));
+    if (missing.length === 0) return;
+
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch(`/api/restaurants/dishes?ids=${missing.join(",")}`);
+        if (!res.ok || cancelled) return;
+        const { dishes } = (await res.json()) as { dishes: Record<string, Dish[]> };
+        if (cancelled) return;
+        setMenus((prev) => ({ ...prev, ...dishes }));
+      } catch {
+        // A missing menu just means those bubbles skip the dish link.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [neededIds]);
 
   // Deep link from a map bubble or a shared /feed?post= link. Discover is
   // ranked and capped rather than "every post" now, so a link to a post

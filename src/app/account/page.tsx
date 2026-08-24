@@ -310,9 +310,13 @@ function AccountOverview() {
 
   return (
     <div className="mx-4 overflow-hidden rounded-2xl bg-white sm:mx-6">
-      {/* A flat band of warm tone where a cover photo would go — deliberate,
-          not a gradient. */}
-      <div className="m-2.5 h-24 rounded-xl bg-[var(--pm-tone-1)]" aria-hidden="true" />
+      {/* The cover slot, still flat and still not a gradient — but the accent
+          rather than a warm tone. `--pm-tone-*` is the vocabulary for *a photo
+          that is missing*, which is what this used to say: the page opened on
+          the same tan block a card with no image gets. Filled with the accent
+          it stops apologising for an absent cover and just is the brand, and
+          it gives the avatar's white ring something to sit against. */}
+      <div className="m-2.5 h-24 rounded-xl bg-pm-orange" aria-hidden="true" />
       <div className="px-5 pb-8">
         <div className="mb-6 flex items-end gap-5">
           <button
@@ -353,12 +357,23 @@ function AccountOverview() {
           </div>
         </div>
 
+      {/* Three tiles, but not three equals. Points is the one number here you
+          earn rather than accumulate by existing, so it is the one that takes
+          the accent — and ProfileActivity's KindBadge already assumes exactly
+          this, declining to colour its heart/upvote markers on the grounds
+          that "this screen spends its orange on the points number". It didn't,
+          until now; the badges were being quiet next to nothing.
+
+          `--pm-orange-text` rather than `--pm-orange` on the tint: the accent
+          proper is 3.3:1 on `--pm-orange-tint`, which is large-text-only and
+          too thin a margin for the page's headline figure. This voice is
+          4.55:1 there and reads a hair deeper, not different. */}
       <div className="mb-6 grid grid-cols-3 gap-3">
-        <div className="flex flex-col items-center justify-center gap-1 rounded-xl bg-pm-grey-tint/60 px-3 py-3">
-          <p className="font-mono text-lg font-semibold leading-none tabular-nums text-zinc-900">
+        <div className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-pm-orange-tint px-3 py-3">
+          <p className="font-mono text-2xl font-semibold leading-none tabular-nums text-pm-orange-text">
             {account.points}
           </p>
-          <p className="mono-label text-zinc-500">PM Points</p>
+          <p className="mono-label text-pm-orange-text">PM Points</p>
         </div>
         <div className="col-span-2 grid grid-cols-2 gap-3">
           <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-3 text-center">
@@ -373,7 +388,9 @@ function AccountOverview() {
       </div>
 
       <div className="mb-6 flex items-center gap-3 rounded-xl bg-pm-grey-tint/50 px-4 py-3">
-        <PlateStarIcon className="h-5 w-7 shrink-0 text-zinc-500" />
+        {/* Same accent as the numeral it explains, so the tile and the rule
+            that fills it read as one thought rather than two grey boxes. */}
+        <PlateStarIcon className="h-5 w-7 shrink-0 text-pm-orange" />
         <p className="text-sm text-zinc-600">
           Earn PM Points by posting (+{POINT_RULES.createPost}), getting upvoted (+
           {POINT_RULES.receiveUpvote}), getting commented on (+{POINT_RULES.receiveComment}), and

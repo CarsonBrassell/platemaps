@@ -65,6 +65,37 @@ html.pm-lock-scroll body {
  */
 .pm-phone-shell {
   --phone-nav-space: calc(96px + env(safe-area-inset-bottom));
+
+  /*
+   * The app is a frame, and the *content* scrolls inside it — the document
+   * itself never does.
+   *
+   * This used to apply only at >=480px, for the desktop preview, and letting
+   * the document scroll on a phone is what made the bottom nav drift. A
+   * `position: fixed` bar is pinned to the **viewport**, and on a phone the
+   * viewport is not a fixed thing: mobile Safari grows and shrinks it as its
+   * toolbar collapses on scroll, and every change slides anything anchored to
+   * `bottom: 0` with it. Nothing is wrong with the nav's own CSS — it is being
+   * measured against a moving ruler.
+   *
+   * With no document scroll there is no toolbar animation to chase, so the
+   * viewport holds still and so does the nav. It also removes the other half
+   * of the problem for free: a WKWebView rubber-banding past the end of the
+   * document detaches fixed children the same way, and there is now nothing
+   * to rubber-band.
+   */
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/*
+ * The frame's scroller. `overscroll-behavior: contain` keeps a fast flick at
+ * either end from chaining out into the page behind it.
+ */
+.pm-phone-content {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 /* Floating capsule: 44px slot + 12px internal padding, floating 12px up. */
@@ -114,8 +145,8 @@ html.pm-lock-scroll body {
        is deliberately 100dvh and not a hardcoded device height, so every
        dvh-sized thing in the app — the dialog screen variant's h-dvh, the
        sheets' max-h-[92dvh] — measures the same box the frame clips to. */
-    height: 100dvh;
-    overflow: hidden;
+    /* `height: 100dvh` and `overflow: hidden` now come from the base rule —
+       the phone needs the same frame, for the reasons written there. */
     /* The whole trick. A transformed element becomes the containing block
        for position:fixed descendants, so the nav, the bottom sheets, the
        comments screen and the composer's action bar all pin to THIS frame
@@ -129,14 +160,6 @@ html.pm-lock-scroll body {
        Deliberately breaking DESIGN.md's no-borders rule — this is chrome around
        the design, not part of it, and it does not render on a phone. */
     border-inline: 1px solid var(--pm-grey-tint);
-  }
-
-  /* The frame's own scroller. `overscroll-behavior: contain` stops a fast
-     wheel from spilling into the (now unscrollable) page behind it. */
-  .pm-phone-content {
-    height: 100%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
   }
 
   /* No nav repositioning rule any more: with the shell as containing block,

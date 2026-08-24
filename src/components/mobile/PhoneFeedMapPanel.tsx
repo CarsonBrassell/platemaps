@@ -265,30 +265,19 @@ export function PhoneFeedMapPanel({
 }) {
   const router = useRouter();
 
-  // The map's backdrop: every restaurant, and every menu, so a bubble that
-  // names a dish can link to it. Fetched together because the map needs both or
-  // neither — half of this draws pins with dead dish links. The whole dish
-  // table is the unbounded call the route's own comment flags; the map knows
-  // which restaurants it draws, so `?ids=` is where that gets fixed.
+  // The map's backdrop: every restaurant, so every ember has a pin — AGENTS.md
+  // rules out clustering, so this one really does need the whole corpus.
   const [restaurants, setRestaurants] = useState<MapRestaurant[]>([]);
-  const [menus, setMenus] = useState<Record<string, Dish[]>>({});
 
   useEffect(() => {
     let cancelled = false;
     void (async () => {
       try {
-        const [restaurantRes, dishRes] = await Promise.all([
-          fetch("/api/restaurants"),
-          fetch("/api/restaurants/dishes"),
-        ]);
-        if (!restaurantRes.ok || !dishRes.ok) return;
-        const [{ restaurants: rows }, { dishes }] = await Promise.all([
-          restaurantRes.json() as Promise<{ restaurants: MapRestaurant[] }>,
-          dishRes.json() as Promise<{ dishes: Record<string, Dish[]> }>,
-        ]);
+        const res = await fetch("/api/restaurants");
+        if (!res.ok) return;
+        const { restaurants: rows } = (await res.json()) as { restaurants: MapRestaurant[] };
         if (cancelled) return;
         setRestaurants(rows);
-        setMenus(dishes);
       } catch {
         // The tab comes up as an empty map rather than the screen failing.
       }
@@ -297,6 +286,59 @@ export function PhoneFeedMapPanel({
       cancelled = true;
     };
   }, []);
+
+  /**
+   * Menus, bounded to the restaurants that can actually put a dish name on a
+   * bubble: the ones with a real post on screen, and the ones with a seeded
+   * comment in `mapCommentsByRestaurant`. This used to be the whole dish
+   * table, unconditionally — `/api/restaurants/dishes` with no `?ids=`,
+   * exactly the unbounded call that route's own comment flags. Measured
+   * against the corpus this shipped with: 18.3 MB, on every mount, on a phone.
+   * The real need is a couple dozen restaurants; the other ~5,600 were dead
+   * weight this screen paid for without ever reading.
+   *
+   * `neededIds` recomputes as `posts` streams in — a friends/discover switch
+   * or a fresh page of results can name a restaurant this hasn't fetched a
+   * menu for yet. `known` is what stops that from being a fetch-everything
+   * loop: the effect below only asks for the ids it does not already hold,
+   * and merges the answer into `menus` rather than replacing it, so an
+   * earlier restaurant's menu is never dropped because a later post arrived.
+   */
+  const neededIds = useMemo(() => {
+    const ids = new Set(Object.keys(mapCommentsByRestaurant));
+    for (const p of posts ?? []) if (p.restaurantId) ids.add(p.restaurantId);
+    return ids;
+  }, [posts]);
+
+  const [menus, setMenus] = useState<Record<string, Dish[]>>({});
+
+  useEffect(() => {
+    const known = new Set(Object.keys(menus));
+    const missing = [...neededIds].filter((id) => !known.has(id));
+    if (missing.length === 0) return;
+
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch(`/api/restaurants/dishes?ids=${missing.join(",")}`);
+        if (!res.ok || cancelled) return;
+        const { dishes } = (await res.json()) as { dishes: Record<string, Dish[]> };
+        if (cancelled) return;
+        // Merge, not replace — see the comment above `neededIds`.
+        setMenus((prev) => ({ ...prev, ...dishes }));
+      } catch {
+        // A missing menu just means those bubbles skip the dish link.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // menus is read to compute `missing`, not to decide whether to run — this
+    // effect must fire again once `neededIds` changes even though its own
+    // last run is what changed `menus`. Depending on it too would refetch the
+    // same ids in a loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [neededIds]);
 
   const mapComments = useMemo(() => {
     const out: Record<string, MapComment[]> = {};

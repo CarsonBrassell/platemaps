@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { NavAlerts } from "@/lib/navAlerts";
@@ -60,19 +61,33 @@ type Slot = (typeof LEFT)[number] | (typeof RIGHT)[number];
 
 export function MobileNav({ alerts }: { alerts: NavAlerts }) {
   const pathname = usePathname();
+  /* Which slot was last tapped, and how many taps ago in this session. The
+     counter is what makes the kick repeatable: the icon is keyed on it, so a
+     tap remounts the span and the animation runs from the top even when the
+     class was already there. That is this codebase's existing way of
+     re-firing a CSS animation — see PercentMeter's `pct-kick`.
+
+     Driven by the tap rather than by `current` flipping, which matters in two
+     places. Tapping the tab you are already on still animates, where a
+     route-change trigger would sit there doing nothing and read as a dead
+     control. And nothing kicks on first paint, where a route-change trigger
+     would pop whichever tab the page happened to load on. */
+  const [tap, setTap] = useState({ href: "", n: 0 });
 
   const slot = ({ href, label, Icon, ...rest }: Slot) => {
     const dot = "dot" in rest ? rest.dot : undefined;
     const current = pathname === href;
+    const kicking = tap.href === href && tap.n > 0;
     return (
       <Link
         key={href}
         href={href}
+        onClick={() => setTap((prev) => ({ href, n: prev.n + 1 }))}
         aria-current={current ? "page" : undefined}
         /* Small text, so the accent uses its darker voice (DESIGN.md). */
         className={`${SLOT} ${current ? "text-pm-orange-text" : "text-zinc-500"}`}
       >
-        <span className="relative">
+        <span key={kicking ? tap.n : "rest"} className={`relative ${kicking ? "nav-kick" : ""}`}>
           <Icon className="h-6 w-6" />
           {dot && alerts[dot.slot] && (
             <NavDot label={dot.label} className="absolute -right-1 -top-0.5" />

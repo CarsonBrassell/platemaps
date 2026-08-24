@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { NavDot } from "@/components/NavDot";
@@ -252,18 +253,29 @@ function StripNav({ to, isCurrent, dotFor }: VariantProps) {
  * `--phone-nav-space` in phone.css pays for.
  * ------------------------------------------------------------------------ */
 function ArcNav({ to, isCurrent, dotFor }: VariantProps) {
+  /* Same tap kick MobileNav's slots wear, and deliberately the same one: a
+     person moving between the two versions of the site should not have to
+     relearn what a tap feels like any more than they have to relearn where
+     Friends lives. State is local to this variant rather than lifted into
+     PhoneNav because `pill` and `strip` are runners-up awaiting deletion —
+     nothing new should be built on top of them. See `nav-kick` in globals.css
+     for why the keyframe starts below 1 and why only the icon carries it. */
+  const [tap, setTap] = useState({ href: "", n: 0 });
+
   const slot = (item: Slot) => {
     const current = isCurrent(item.href);
+    const kicking = tap.href === item.href && tap.n > 0;
     return (
       <Link
         key={item.href}
         href={to(item.href)}
+        onClick={() => setTap((prev) => ({ href: item.href, n: prev.n + 1 }))}
         aria-current={current ? "page" : undefined}
         className={`flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors ${FOCUS} ${
           current ? "text-pm-orange-text" : "text-pm-grey-text"
         }`}
       >
-        <span className="relative">
+        <span key={kicking ? tap.n : "rest"} className={`relative ${kicking ? "nav-kick" : ""}`}>
           <item.Icon className="h-[22px] w-[22px]" />
           {dotFor(item)}
         </span>

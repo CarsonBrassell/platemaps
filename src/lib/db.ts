@@ -6,6 +6,7 @@ import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
+import { PHOTO_RETENTION_DAYS } from "@/lib/photoRetention";
 import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 
 const sql = neon(process.env.DATABASE_URL!);
@@ -953,6 +954,71 @@ export async function createPost(data: {
 
 export async function deletePost(id: string): Promise<void> {
   await sql`DELETE FROM posts WHERE id = ${id}`;
+}
+
+/**
+ * Empties `media` on every post past `PHOTO_RETENTION_DAYS`. Permanent — the
+ * base64 in that column is the only copy of the photo that exists.
+ *
+ * `dryRun` counts what would go without touching anything, and is what both
+ * callers do by default: the script needs `--apply`, and the cron route logs
+ * the dry count alongside the applied one so a run that suddenly wants to
+ * clear ten thousand posts is visible in the log rather than just done.
+ *
+ * `limit` bounds a single run. A daily cron only ever sees one day of posts,
+ * but the *first* run sees the whole backlog, and an unbounded UPDATE on the
+ * media column rewrites every TOAST chunk it touches. `remaining` tells the
+ * caller whether to come back rather than looping in here holding a
+ * connection.
+ *
+ * The `jsonb_array_length(media) > 0` predicate is what makes this idempotent:
+ * a second run over the same rows matches nothing, so a retry after a timeout
+ * is free rather than another full table rewrite.
+ */
+export async function purgeExpiredPhotos({
+  dryRun = true,
+  limit = 5000,
+}: { dryRun?: boolean; limit?: number } = {}): Promise<{
+  matched: number;
+  cleared: number;
+  bytesFreed: number;
+  remaining: number;
+}> {
+  const cutoff = sql`now() - make_interval(days => ${PHOTO_RETENTION_DAYS})`;
+
+  const [{ matched, bytes }] = (await sql`
+    SELECT count(*)::int AS matched,
+           COALESCE(sum(pg_column_size(media)), 0)::int AS bytes
+      FROM posts
+     WHERE jsonb_array_length(media) > 0
+       AND created_at < ${cutoff}
+  `) as { matched: number; bytes: number }[];
+
+  if (dryRun || matched === 0) {
+    return { matched, cleared: 0, bytesFreed: 0, remaining: matched };
+  }
+
+  const rows = (await sql`
+    UPDATE posts SET media = '[]'::jsonb
+     WHERE id IN (
+       SELECT id FROM posts
+        WHERE jsonb_array_length(media) > 0
+          AND created_at < ${cutoff}
+        ORDER BY created_at
+        LIMIT ${limit}
+     )
+    RETURNING id
+  `) as { id: string }[];
+
+  const cleared = rows.length;
+  return {
+    matched,
+    cleared,
+    // Proportional rather than measured: the bytes are gone by the time we
+    // could ask, and re-reading sizes before the UPDATE would double the scan.
+    bytesFreed: matched > 0 ? Math.round((bytes * cleared) / matched) : 0,
+    remaining: matched - cleared,
+  };
 }
 
 export async function addComment(

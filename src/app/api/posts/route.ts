@@ -6,9 +6,12 @@ import { POINT_RULES } from "@/lib/points";
 import { FOOD_TAGS } from "@/data/foodTags";
 import { AMENITY_LABELS, ROOM_LABELS, BEST_AT_LABELS } from "@/data/reviewScales";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
-
-const MAX_MEDIA = 4;
-const MAX_MEDIA_LENGTH = 4_000_000;
+/* Read rather than restated. photos.ts says the capture settings are "still
+   the answer to what will the post API accept, and the day another way in
+   exists it should read them rather than pick its own" — this route was that
+   other way in, and it had picked its own: a duplicate `MAX_MEDIA = 4` and a
+   ceiling four million characters wide. Both live in one place now. */
+import { MAX_PHOTOS, MAX_MEDIA_LENGTH } from "@/lib/photos";
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -20,7 +23,7 @@ export async function GET() {
 function parseMedia(raw: unknown): PostMedia[] | { error: string } {
   if (raw === undefined || raw === null) return [];
   if (!Array.isArray(raw)) return { error: "Media must be a list." };
-  if (raw.length > MAX_MEDIA) return { error: `Up to ${MAX_MEDIA} photos per post.` };
+  if (raw.length > MAX_PHOTOS) return { error: `Up to ${MAX_PHOTOS} photos per post.` };
 
   const media: PostMedia[] = [];
   for (const item of raw) {

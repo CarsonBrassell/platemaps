@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PostMediaCarousel } from "./PostMediaCarousel";
 import { PostActions, type VoteDirection } from "./PostActions";
-import { heatFor, heatRamp } from "@/components/post/PercentMeter";
+import { chillRamp, heatFor, heatRamp, isPerfect } from "@/components/post/PercentMeter";
 import { PointsBadge } from "./PointsBadge";
 import { StarRating } from "@/components/StarRating";
 import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/components/icons";
@@ -404,9 +404,19 @@ export function FoodPostCard(props: FoodPostCardProps) {
               <span
                 data-heat={heatFor(post.rating)}
                 /* The tier picks the pair of stops; --heat spreads them as the
-                   number climbs past 85. See heatRamp. */
-                style={{ "--heat": heatRamp(post.rating) } as CSSProperties}
-                className="pct-heat font-mono text-[42px] font-bold leading-none tabular-nums"
+                   number climbs past 85, and --chill drains them toward the
+                   warm grey as it falls from 60 to 40. See heatRamp/chillRamp
+                   — the two ranges do not overlap, so the middle of the scale
+                   is painted by the tier alone, exactly as before. */
+                style={
+                  {
+                    "--heat": heatRamp(post.rating),
+                    "--chill": chillRamp(post.rating),
+                  } as CSSProperties
+                }
+                className={`pct-heat font-mono text-[42px] font-bold leading-none tabular-nums ${
+                  isPerfect(post.rating) ? "pct-shine" : ""
+                }`}
               >
                 {post.rating}%
               </span>

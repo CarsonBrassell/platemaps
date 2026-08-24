@@ -899,6 +899,20 @@ h3 {
    wears the same tiers; the meter's motion stays scoped to .pct-meter below
    so a card numeral can never start breathing. */
 
+/* Where the low end lands. Deliberately the same pair the `cool` tier below
+   already used, so a rating at or under 40 paints exactly what it always did —
+   what changes is that ratings between 40 and 60 now walk here instead of
+   holding full orange and flipping on the boundary. `--chill-text` is
+   zinc-500, the colour the composer's numeral already snapped to at 40. */
+[data-heat] {
+  --chill-a: #b6a494;
+  --chill-b: #8a7a6d;
+}
+
+:root {
+  --chill-text: #7e7261;
+}
+
 /* Cool: a plate you'd warn someone off. Desaturated, no motion. */
 [data-heat="cool"] {
   --hot-a: #b6a494;
@@ -924,6 +938,10 @@ h3 {
 }
 
 .pct-meter[data-heat] {
+  --chill-mix: calc(var(--chill, 0) * 100%);
+  /* Plain stops first as the floor, mixed stops second — same reason spelled
+     out on .pct-heat below. Here a dropped declaration costs the track its
+     fill rather than making type vanish, but the fallback is one line. */
   background: linear-gradient(
     to right,
     var(--hot-a, var(--pm-orange)) 0%,
@@ -931,6 +949,23 @@ h3 {
     var(--pm-grey-tint) var(--fill, 50%),
     var(--pm-grey-tint) 100%
   );
+  background: linear-gradient(
+    to right,
+    color-mix(in oklab, var(--hot-a, var(--pm-orange)), var(--chill-a) var(--chill-mix)) 0%,
+    color-mix(in oklab, var(--hot-b, var(--pm-orange)), var(--chill-b) var(--chill-mix))
+      var(--fill, 50%),
+    var(--pm-grey-tint) var(--fill, 50%),
+    var(--pm-grey-tint) 100%
+  );
+}
+
+/* Type that fades to grey with the rating, for numerals that are read rather
+   than filled. Both ends clear 4.5:1 on white, so every point between them
+   does too — which is why the numeral gets this and not the gradient. */
+.pct-chill-text {
+  --chill-mix: calc(var(--chill, 0) * 100%);
+  color: var(--pm-orange-text);
+  color: color-mix(in oklab, var(--pm-orange-text), var(--chill-text) var(--chill-mix));
 }
 
 /* Hot and blazing breathe — the meter only, never a .pct-heat numeral. */
@@ -957,6 +992,10 @@ h3 {
    ramp in sRGB greys out through the middle. */
 .pct-heat {
   --heat-mix: calc(var(--heat, 0) * 100%);
+  /* Nested inside the heat mix rather than beside it. The two never overlap —
+     chill is spent by 60, heat does not start until 85 — so at any rating one
+     of the two is 0 and the nesting collapses to whichever is live. */
+  --chill-mix: calc(var(--chill, 0) * 100%);
   /* Plain two-stop first, color-mix second. This pair is load-bearing, not
      belt-and-braces: `color: transparent` below means the glyphs are painted
      *only* by this background, so a browser that does not understand
@@ -968,14 +1007,69 @@ h3 {
     var(--hot-a, var(--pm-orange)),
     var(--hot-b, var(--pm-orange))
   );
-  background-image: linear-gradient(
+  /* Hoisted into a custom property so .pct-shine can layer a streak over the
+     exact same gradient instead of restating this expression. Substituting an
+     unsupported `color-mix` invalidates only the declaration that uses it, so
+     the plain two-stop above still stands as the floor either way. */
+  --heat-gradient: linear-gradient(
     100deg,
-    color-mix(in oklab, var(--hot-a, var(--pm-orange)), #ffb066 var(--heat-mix)),
-    color-mix(in oklab, var(--hot-b, var(--pm-orange)), #a8200a var(--heat-mix))
+    color-mix(
+      in oklab,
+      color-mix(in oklab, var(--hot-a, var(--pm-orange)), #ffb066 var(--heat-mix)),
+      var(--chill-a) var(--chill-mix)
+    ),
+    color-mix(
+      in oklab,
+      color-mix(in oklab, var(--hot-b, var(--pm-orange)), #a8200a var(--heat-mix)),
+      var(--chill-b) var(--chill-mix)
+    )
   );
+  background-image: var(--heat-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* A perfect score only (see isPerfect in PercentMeter.tsx).
+ *
+ * A narrow white band rides *over* the heat gradient rather than replacing it,
+ * so the colour still shows through everywhere the streak isn't — the streak
+ * reads as light crossing the glyphs, not as the number turning white. Both
+ * layers are clipped to the text by the rule above.
+ *
+ * Only the streak layer moves: its background-size is wider than the element
+ * so there is somewhere to travel, while the gradient underneath stays pinned
+ * at 100% and doesn't slide with it.
+ */
+.pct-shine {
+  background-image:
+    linear-gradient(
+      100deg,
+      transparent 38%,
+      rgba(255, 255, 255, 0.35) 46%,
+      rgba(255, 255, 255, 0.95) 50%,
+      rgba(255, 255, 255, 0.35) 54%,
+      transparent 62%
+    ),
+    var(--heat-gradient);
+  background-size: 280% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  animation: pct-shine 2.4s linear infinite;
+}
+
+@keyframes pct-shine {
+  from { background-position: 150% 0, 0 0; }
+  to   { background-position: -80% 0, 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Holding the streak mid-glyph would leave a permanent white smear across
+     the number, so reduced motion drops it and keeps the gradient alone. */
+  .pct-shine {
+    background-image: var(--heat-gradient);
+    background-size: 100% 100%;
+    animation: none;
+  }
 }
 
 @keyframes meter-breathe {
@@ -1030,6 +1124,32 @@ h3 {
     animation: none;
   }
   .meter-shell[data-heat]::after { display: none; }
+}
+
+/* Tap feedback for the bottom nav's four destination slots.
+ *
+ * Compress-then-overshoot in one keyframe rather than an `active:scale-*`
+ * press plus a separate release animation: both would drive `transform` on the
+ * same element, and whichever ran second would win mid-gesture. Starting the
+ * timeline below 1 buys the press read without the fight.
+ *
+ * Only the icon wears this. Scaling the 11px label with it blurs the type
+ * through the middle of the run for no gain, and a tab bar where the whole
+ * slot inflates reads as a button rather than a place.
+ *
+ * Shares `pct-kick`'s easing on purpose — the two are the same gesture at
+ * different sizes, and the app should only have one idea of what a kick is.
+ */
+@keyframes nav-kick {
+  0%   { transform: scale(0.82); }
+  40%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.nav-kick { animation: nav-kick 0.28s cubic-bezier(0.2, 0.8, 0.3, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-kick { animation: none; }
 }
 
 /* Idle breathe on the mark. Scale only — the design rules rule out a glow,

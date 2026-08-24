@@ -154,8 +154,16 @@ export function RestaurantSearch() {
   // centred nav oval sits between two equal gaps — 134px and 143px at 1280.
   // Widening it here pulls the header out of symmetry, it does not decentre the
   // nav; the grid in Header.tsx owns the centring.
+  //
+  // 224px is now the width at every size the field is shown at. It used to step
+  // up from `w-40` at `lg`, which left 102px of room for a placeholder that
+  // measures 134px — so from 640px to 1023px the field read "Search restaura",
+  // cut mid-word with no ellipsis. Nothing was gained by the narrower step:
+  // below `xl` the nav row is hidden (see Header.tsx), so the header is a
+  // two-end flex with the whole middle empty and the extra 64px costs nothing.
+  // The pinned width above still describes `xl`, where it does matter.
   return (
-    <div ref={wrapRef} className="relative hidden w-40 min-w-0 sm:block lg:w-56">
+    <div ref={wrapRef} className="relative hidden w-56 min-w-0 sm:block">
       <div className="flex items-center gap-2.5 rounded-full bg-white px-4 py-2 transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-pm-orange">
         <svg
           width="16"
@@ -181,7 +189,7 @@ export function RestaurantSearch() {
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          placeholder="Search restaurants..."
+          placeholder="Search restaurants…"
           aria-label="Search restaurants"
           aria-expanded={showing}
           aria-controls="search-results"

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Section, List, LegalTOC } from "@/components/legal/LegalSection";
+import { photoRetentionLabel } from "@/lib/photoRetention";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — PlateMaps",
@@ -204,12 +205,23 @@ export default function PrivacyPage() {
 
           <Section id="retention" title="7. Data Retention and Deletion">
             <p>
-              We keep your account information and content for as long as your account is
-              active, so the Service can function as intended (for example, so your past posts
-              and ratings continue to display correctly). If you delete your account, we delete
-              or anonymize your personal information within a reasonable period, except where we
-              are permitted or required to retain it — for example, to resolve disputes, enforce
-              our Terms, or comply with a legal obligation.
+              We keep your account information and most of your content for as long as your
+              account is active, so the Service can function as intended (for example, so your
+              past posts and ratings continue to display correctly). If you delete your account,
+              we delete or anonymize your personal information within a reasonable period, except
+              where we are permitted or required to retain it — for example, to resolve disputes,
+              enforce our Terms, or comply with a legal obligation.
+            </p>
+            <p>
+              <span className="font-medium text-zinc-900">
+                Photos are an exception and are deleted automatically.
+              </span>{" "}
+              {photoRetentionLabel()} after you post, the photos attached to that post are
+              permanently removed from our systems. The rest of the post — your text, your
+              rating, the dish and the restaurant — stays, and the post continues to appear
+              wherever it appeared before, without the pictures. This deletion is not
+              reversible, and we do not keep a copy, so please keep your own copy of any photo
+              you want to hold on to.
             </p>
           </Section>
 

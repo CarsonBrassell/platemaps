@@ -21,7 +21,8 @@
     "menus:todo": "node --env-file=.env.local scripts/menus-todo.mjs",
     "menus:firecrawl": "node --env-file=.env.local scripts/fetch-menus-firecrawl.mjs",
     "menus:fresh": "node --env-file=.env.local scripts/check-menu-freshness.mjs",
-    "logo:build": "node scripts/build-logo-assets.mjs"
+    "logo:build": "node scripts/build-logo-assets.mjs",
+    "photos:purge": "node --env-file=.env.local scripts/purge-photos.mjs"
   },
   "dependencies": {
     "@capacitor/cli": "^7.6.8",
