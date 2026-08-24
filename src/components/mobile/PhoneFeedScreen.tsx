@@ -347,10 +347,11 @@ export function PhoneFeedScreen() {
             )}
           </div>
 
-          {/* Bottom-right, opposite the source switch and in the same glass.
-              No `onSearch`: there is no list on this tab to narrow, so a submit
-              keeps its default of sending the term to Discover. */}
-          <PhoneFeedSearch placement="map" />
+          {/* No search field here. The map tab's own is PhoneMapSearch, which
+              PhoneFeedMapPanel renders as its `searchField` — that one can
+              drive the map, which is the point of a search over tiles. This
+              used to render PhoneFeedSearch with a `placement="map"` prop that
+              no longer exists on it, left behind when the map got its own. */}
         </div>
 
         {/* Reachable from here in principle — a bubble that opens a post leaves

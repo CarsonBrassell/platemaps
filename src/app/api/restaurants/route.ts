@@ -27,7 +27,20 @@ import { EMPTY_PLATE_SCORE } from "@/lib/plateScore";
  * picker — pay a few bytes each for the ones that don't.
  *
  * Public: restaurants are public data and nothing here is viewer-dependent.
+ * That is also what makes it safe to cache at Vercel's edge — no caller-
+ * specific data ever goes into this response.
  */
+
+/**
+ * 60s to match `CORPUS_TTL_MS` in `discover.ts` — the plate scores embedded
+ * in every row come from live votes, so this can't be cached indefinitely,
+ * but it can be cached as long as Discover already tolerates the same numbers
+ * being a minute stale. `stale-while-revalidate` means a cache miss after
+ * expiry still serves the old response immediately and refreshes in the
+ * background, rather than making that one request pay for a cold fetch.
+ */
+const CACHE_CONTROL = "public, s-maxage=60, stale-while-revalidate=300";
+
 export async function GET(req: Request) {
   const q = new URL(req.url).searchParams.get("q")?.trim().toLowerCase();
   const [rows, plates] = await Promise.all([
@@ -40,14 +53,19 @@ export async function GET(req: Request) {
     plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE,
   }));
 
-  if (!q) return NextResponse.json({ restaurants });
+  const headers = { "Cache-Control": CACHE_CONTROL };
 
-  return NextResponse.json({
-    restaurants: restaurants.filter(
-      (r) =>
-        r.name.toLowerCase().includes(q) ||
-        r.cuisine.toLowerCase().includes(q) ||
-        r.neighborhood.toLowerCase().includes(q),
-    ),
-  });
+  if (!q) return NextResponse.json({ restaurants }, { headers });
+
+  return NextResponse.json(
+    {
+      restaurants: restaurants.filter(
+        (r) =>
+          r.name.toLowerCase().includes(q) ||
+          r.cuisine.toLowerCase().includes(q) ||
+          r.neighborhood.toLowerCase().includes(q),
+      ),
+    },
+    { headers },
+  );
 }
