@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { PointsBadge } from "@/components/feed/PointsBadge";
-import { CameraIcon, PlateStarIcon, SettingsIcon } from "@/components/icons";
+import { CameraIcon, SettingsIcon } from "@/components/icons";
 import { PhoneProfileActivity } from "@/components/mobile/PhoneProfileActivity";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { resizeImageToJpeg } from "@/lib/image";
 import { uploadPhoto } from "@/lib/photos";
-import { POINT_RULES } from "@/lib/points";
+import { PlatePointsPanel } from "@/components/PlatePointsPanel";
 
 /**
  * Profile, phone version.
@@ -286,14 +286,12 @@ function ProfileOverview() {
             </div>
           </div>
 
-          <div className="mb-5 flex items-start gap-3 rounded-xl bg-pm-grey-tint/50 px-3.5 py-3">
-            <PlateStarIcon className="mt-0.5 h-5 w-7 shrink-0 text-zinc-500" />
-            <p className="text-[13px] leading-snug text-zinc-600">
-              Earn Plate Points by posting (+{POINT_RULES.createPost}), getting upvoted (+
-              {POINT_RULES.receiveUpvote}), getting commented on (+{POINT_RULES.receiveComment}),
-              and having your comments upvoted (+{POINT_RULES.receiveCommentUpvote}) on Discover.
-            </p>
-          </div>
+          {/* Replaces a grey card that spelled the same rules out in prose.
+              The total was a muted chip up beside the name and the rules were
+              down here in zinc — so the number the screen is actually about
+              was the quietest thing on it. Both now live in one orange panel;
+              the full rules, milestones included, are behind its info button. */}
+          <PlatePointsPanel points={account.points} className="mb-5" />
 
           {/* Friend requests are answered on /m/friends, where the people they
               are about already live — this screen is about you. No total here,
