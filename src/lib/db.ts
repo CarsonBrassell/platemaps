@@ -827,7 +827,24 @@ export async function getDiscoverFeed(
   const rows = await sql`
     SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
            p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
-           p.dish_name, p.price, p.rating, p.rating_kind, p.location_label, p.tags, p.media,
+           p.dish_name, p.price, p.rating, p.rating_kind, p.location_label, p.tags,
+           /*
+            * Private media is dropped **in the database**, not after it arrives.
+            *
+            * This used to select p.media whole and then throw it away in JS
+            * (media: photosPublic ? media : []). While photos are base64
+            * in this column that means every private photo was read out of
+            * Postgres in full — ~150KB each, up to four a post — carried across
+            * the network, and dropped on the floor. On a metered database that
+            * is a bill for bytes nobody was ever going to see, and it is what
+            * exhausted Neon's transfer quota.
+            *
+            * It is also the stronger form of the privacy rule. The invariant was
+            * "a private photo's URL never reaches the response"; enforcing it
+            * here means the bytes never leave the database at all, so no later
+            * caller can forget to re-apply the filter.
+            */
+           CASE WHEN p.photos_public THEN p.media ELSE '[]'::jsonb END AS media,
            p.amenities, p.vibe, p.photos_public,
            u.name AS author_name, u.avatar_url AS author_avatar_url,
            u.points AS author_points
@@ -851,10 +868,9 @@ export async function getDiscoverFeed(
   // `net` is selected so ORDER BY can name it once instead of repeating the
   // expression three times; hydratePosts recounts both directions itself and
   // ignores the column.
-  return posts.map((p) => ({
-    ...p,
-    media: p.photosPublic ? p.media : [],
-  }));
+  /* No media filter here any more — the SELECT above already returned '[]' for
+     any post whose photos are private, so there is nothing left to strip. */
+  return posts;
 }
 
 /**
