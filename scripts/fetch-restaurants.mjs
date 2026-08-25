@@ -355,6 +355,16 @@ async function searchArea(area, offset) {
  *
  * The bound is 32.534, a hair south of the border at San Ysidro, so a genuine
  * business on the US side of the crossing still passes.
+ *
+ * All seven have since been deleted from the table. Adding this guard stopped
+ * new ones arriving and did nothing about the rows already there — three of
+ * which were still `listed`, showing Tijuana restaurants with full menus as San
+ * Ysidro listings. A filter on the way in is not a fix for what is already
+ * inside. Nothing referenced them (no posts), so they were removed outright.
+ *
+ * The nearest surviving restaurant sits at 32.5428, six tenths of a mile north
+ * of this line, so there is comfortable clearance and no legitimate business
+ * was at risk.
  */
 const COUNTY = { minLat: 32.534, maxLat: 33.505, minLng: -117.61, maxLng: -116.08 };
 

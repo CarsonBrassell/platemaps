@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useRef, type RefObject } from "react";
+import type { DraftSeed } from "@/components/drafts/DraftMapStage";
 import type { Map as MapLibreMap } from "maplibre-gl";
-import type { RestaurantView } from "@/data/restaurants";
 import { StarIcon } from "@/components/icons";
 import { DraftSearchStyles } from "@/components/drafts/draftSearchStyles";
 import {
@@ -56,7 +56,7 @@ export function MarqueeSearch({
   seeds,
 }: {
   mapRef: RefObject<MapLibreMap | null>;
-  seeds: RestaurantView[];
+  seeds: DraftSeed[];
 }) {
   /* The safe variant answers the "offer something before they type" rule the
      safe way — with history. `search-accessible` asks for recent or suggested

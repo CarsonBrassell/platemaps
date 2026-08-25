@@ -52,7 +52,14 @@ const rows = await sql`
          count(d.id)::int AS existing_dishes
   FROM restaurants r
   LEFT JOIN dishes d ON d.restaurant_id = r.id
-  WHERE NOT EXISTS (SELECT 1 FROM menu_lookups m WHERE m.restaurant_id = r.id)
+  -- hold_reason IS NULL keeps closed and mislocated restaurants out of the
+  -- work. Without it 391 held rows sat in a 3,742-row queue - one in ten - and
+  -- agents spent real budget hunting menus for businesses that no longer trade.
+  -- One extraction ran a full search on Marco Italian before concluding it was
+  -- permanently closed, which the Google pass had already recorded weeks
+  -- earlier. A held row is a decision already made; the queue should honour it.
+  WHERE r.hold_reason IS NULL
+    AND NOT EXISTS (SELECT 1 FROM menu_lookups m WHERE m.restaurant_id = r.id)
   GROUP BY r.id, r.name, r.cuisine, r.neighborhood, r.review_count
   -- Seed menus first regardless of review count: going from 4 dishes to 45 is a
   -- bigger gain than going from 0 to 45, because those pages are already live

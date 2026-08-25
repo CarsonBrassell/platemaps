@@ -1,10 +1,33 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { Restaurant } from "@/data/restaurants";
+
+/**
+ * What this picker needs of a restaurant, and nothing else.
+ *
+ * A local mirror of `RestaurantIndexRow` in `lib/db.ts` — that module imports
+ * the Neon client at module scope, so a client component importing it would
+ * pull the driver into the browser bundle (see the note in db.ts). Keep the two
+ * in step.
+ *
+ * It used to be the full `Restaurant`, which meant the composer fetched all
+ * fourteen columns of every listed restaurant — 2.8 MB, including a JSONB
+ * `hours` blob and two photo URLs — so that this list could print a name, a
+ * cuisine and a neighbourhood. Narrowing the type is what let the fetch narrow;
+ * the wide one gave callers no reason to ask for less.
+ */
+export type PickableRestaurant = {
+  id: string;
+  name: string;
+  cuisine: string;
+  neighborhood: string;
+  distance: string;
+  lat: number;
+  lng: number;
+};
 
 /** "1.0 mi" → 1.0. Anything unparseable sorts to the end rather than to zero. */
-function miles(r: Restaurant) {
+function miles(r: PickableRestaurant) {
   const n = Number.parseFloat(r.distance);
   return Number.isNaN(n) ? Number.POSITIVE_INFINITY : n;
 }
@@ -26,9 +49,9 @@ export function RestaurantPicker({
   onSelect,
   onSkip,
 }: {
-  restaurants: readonly Restaurant[];
+  restaurants: readonly PickableRestaurant[];
   selectedId: string | null;
-  onSelect: (restaurant: Restaurant) => void;
+  onSelect: (restaurant: PickableRestaurant) => void;
   /** Offered on the comment path, where a place is optional. */
   onSkip?: () => void;
 }) {

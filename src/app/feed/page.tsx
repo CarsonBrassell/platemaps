@@ -211,7 +211,9 @@ function FeedPageInner() {
     let cancelled = false;
     void (async () => {
       try {
-        const res = await fetch("/api/restaurants");
+        // `fields=map` — the six columns the circle layer and its tip read,
+        // plus the plate score. See getRestaurantMapRows in lib/db.ts.
+        const res = await fetch("/api/restaurants?fields=map");
         if (!res.ok) return;
         const { restaurants: rows } = (await res.json()) as { restaurants: MapRestaurant[] };
         if (cancelled) return;

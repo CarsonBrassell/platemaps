@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
-import { getAllRestaurantPlateScores, getRestaurants, searchRestaurants } from "@/lib/db";
+import {
+  getAllRestaurantPlateScores,
+  getRestaurantIndex,
+  getRestaurantMapRows,
+  getRestaurants,
+  searchRestaurants,
+} from "@/lib/db";
 import { EMPTY_PLATE_SCORE } from "@/lib/plateScore";
 
 /**
@@ -51,7 +57,47 @@ import { EMPTY_PLATE_SCORE } from "@/lib/plateScore";
 const CACHE_CONTROL = "public, s-maxage=60, stale-while-revalidate=300";
 
 export async function GET(req: Request) {
-  const q = new URL(req.url).searchParams.get("q")?.trim();
+  const params = new URL(req.url).searchParams;
+  const q = params.get("q")?.trim();
+
+  /*
+   * `?fields=index` returns the five fields a picker reads and skips the plate
+   * scores entirely — see `getRestaurantIndex`. The three surfaces that use it
+   * (both composers' restaurant pickers and the account favourite picker) were
+   * pulling 2.8 MB and a full aggregate over `posts` to render a list of names.
+   *
+   * A parameter rather than a second route because the shape is a projection of
+   * the same resource, and because the caching header above applies unchanged:
+   * neither variant is viewer-dependent.
+   */
+  if (params.get("fields") === "index") {
+    return NextResponse.json(
+      { restaurants: await getRestaurantIndex() },
+      { headers: { "Cache-Control": CACHE_CONTROL } },
+    );
+  }
+
+  /*
+   * `?fields=map` is the same idea for the two map surfaces, which do keep
+   * their plate scores — the bubble prints one — but drop both photos, the
+   * cuisine, the neighbourhood, the distance, the price band, the review count
+   * and the trending flag. See `getRestaurantMapRows`.
+   */
+  if (params.get("fields") === "map") {
+    const [rows, plates] = await Promise.all([
+      getRestaurantMapRows(),
+      getAllRestaurantPlateScores(),
+    ]);
+    return NextResponse.json(
+      {
+        restaurants: rows.map((r) => ({
+          ...r,
+          plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE,
+        })),
+      },
+      { headers: { "Cache-Control": CACHE_CONTROL } },
+    );
+  }
 
   const [rows, plates] = await Promise.all([
     q ? searchRestaurants(q) : getRestaurants(),

@@ -108,9 +108,28 @@ $3.69 — is a decent sign you are looking at the real till prices.
 
 ## Source ranking, by what actually worked
 
-1. **Yelp menu tab** (`yelp.com/menu/<alias>`) — consistent plain HTML across
-   every restaurant, easiest to parse, hit repeatedly across groups. The alias
-   comes free from the Yelp enrichment call, which is why that pass runs first.
+> **This ranking is superseded. Read the trust ladder further down instead.**
+>
+> It is kept because its reasoning is still instructive and because it caused a
+> real failure worth remembering. It ranked Yelp's menu tab first — on the
+> grounds that it parses easily and is available for nearly every restaurant,
+> both true — while a later section of this same file bars Yelp outright. Agents
+> read both. In one wave, one agent refused Yelp for Aunt Emma's and another
+> took 170 items off it for Swami's, and an audit then found **66 already-loaded
+> menus sourced from it**.
+>
+> The agent that used it was not disobeying the playbook. It was obeying the
+> half of the playbook that said Yelp was the best source available.
+>
+> Ease of parsing ranked a source that is undated and crowd-edited above sources
+> that are merely harder to read. Rank by whether the price is *right*, and
+> treat "easy to extract" as a tiebreak and nothing more.
+
+1. ~~**Yelp menu tab**~~ — **BARRED.** Undated, crowd-submitted, wrong in both
+   directions (see the table above). `screen-menus.mjs` now rejects `yelp.com`
+   mechanically, because a rule that lives only in prose holds only as long as
+   every agent chooses to follow it. The one exception that is not this source:
+   a *dated photograph* of an in-store menu, where the date can be established.
 2. **Toast** — the single most productive source in group 4. Real restaurant
    pricing.
 3. **DoorDash** `/business/<slug>/menu` — renders full priced text. Its
@@ -196,3 +215,283 @@ Known bad, still sitting in the `website` column of the rows they belong to:
 plus `bronxpizza.com`, `breakfastrepublic.com` and `figtreeeatery.com` from
 earlier passes. A `302` to a `ww<N>.` subdomain of the same name is the
 signature worth matching on.
+
+## Aggregators: a trust ladder, not a yes/no
+
+The Aug 23 wave surfaced a failure mode that the earlier "prefer the
+restaurant's own site" rule does not cover on its own. When a chain's own site
+is JS-rendered and unfetchable, agents fall back to whatever ranks — and what
+ranks for `<brand> menu prices` is almost entirely SEO content farms.
+
+Observed in one wave of 24 restaurants:
+
+- `daveshotchicken.us` — the official site is `daveshotchicken.com`. **A ccTLD
+  or alternate-TLD twin of a brand name is squatting, not a source.** Treat any
+  `<brandname>.us` / `.org` / `.net` variant as untrusted on sight.
+- `menupedia.us` — same shape, generic aggregator wearing a `.us`.
+- `mojosalesandbranding.com/post/costco-food-court-menu-2026-complete-guide-prices-items`
+  — a sales-and-branding agency's blog publishing a "complete guide" to a
+  restaurant menu. The long keyword-stuffed slug is the tell. (Its Costco prices
+  happened to check out against known public figures, which is exactly why this
+  is dangerous: content farms mix real and invented values.)
+- Olive Garden was correctly refused by one agent on precisely this basis —
+  "dozens of near-identical SEO clone domains" — and recorded not-found. That
+  was the right call and is the standard.
+
+**The ladder, best to worst:**
+
+1. The restaurant's own site (HTML, or a PDF pulled with `pdftotext -layout`).
+2. The restaurant's own ordering platform — Toast, ChowNow, `order.yourmenu.com`,
+   Popmenu. Still run the markup check.
+3. A white-label delivery storefront (`order.online`) that **passes** the markup
+   check. Confidence `medium` at best.
+4. SinglePlatform and similar restaurant-submitted directory data. `medium`.
+5. Everything else — allmenus, menupedia, brand-twin domains, agency blog posts.
+   **`low` confidence, and only when two independent sources agree on the
+   price.** One agent did exactly this for Costco and it is the correct
+   procedure.
+
+A `not_found` is worth more than a plausible-looking invented price. A wrong
+price on a plate is the single most visible failure this product can have.
+
+## Parallel agents contend for one Chrome
+
+Running six extraction agents at once, they share a single Chrome instance and
+navigate each other's tabs away mid-task — one agent reported watching unrelated
+restaurants (Jack in the Box, Denny's, Smashburger) appear and vanish in its own
+tabs. Work through `WebFetch` / `WebSearch` wherever possible and reserve Chrome
+for the JS-SPA cases that genuinely need it. Do not assume a tab you opened is
+still yours on the next call.
+
+## OSM neighbourhood mislocations are frequent, not occasional
+
+Four of 24 in one wave: Stone Brewing "Rancho Bernardo" (nearest real location
+is Escondido), Mi Guadalajara "Rancho Bernardo" (actually downtown Escondido),
+Casa de Bandini "Encinitas" (only location is Carlsbad), Mike's Red Tacos
+"Liberty Station" (Point Loma / Clairemont Mesa / Mira Mesa). ~17% in this
+sample, consistent with the ~594 rows sitting >5km from their claimed
+neighbourhood. Extract the menu anyway — it is the same restaurant — but the
+neighbourhood column needs its own repair pass.
+
+## Chain SPAs hide real prices behind an internal API
+
+Olive Garden and P.F. Chang's both render ordering sites where the visible page
+never shows a price - and both were solved in the same wave that another agent
+recorded Olive Garden as not-found. The difference was refusing to accept the
+rendered page as the whole story.
+
+- **Olive Garden**: pick a location, then read the network request the page
+  makes to its own `/api/menu?restaurantNum=<id>` JSON endpoint. San Diego
+  stores include Carmel Mountain / Rancho Bernardo at `restaurantNum=1369`.
+  Yielded 103 priced items where search had yielded only clone farms.
+- **P.F. Chang's**: `order.pfchangs.com/menu/<storeId>` renders server-side once
+  a location is selected - no API dive needed, just the right URL.
+
+The general move: on a chain SPA, select the San Diego location first, then look
+at what the page fetches. Location-specific endpoints return real local prices
+rather than the national averages the aggregators reprint.
+
+## An expired certificate is not a hijacked domain
+
+McP's Pub's own site failed to fetch on a cert error, which reads at a glance
+like the parked-domain signature. It was simply an expired certificate on the
+genuine site: `curl -k` reached it, and the menu turned out to be JPGs that had
+to be read visually. Check what the domain actually serves before recording
+`hijacked_domain` - the two failures look alike from the outside and one of them
+costs a real menu.
+
+Menus published as images are common enough to be routine, not an obstacle:
+download the JPGs and read them.
+
+## Wave 2 (Aug 24): what the location-selection rule was worth
+
+Wave 1 quarantined 21% of extractions. Wave 2, with the trust ladder and the
+chain-SPA technique written into the brief, quarantined 8% - and one group of
+twelve came back with nothing withheld at all.
+
+The single highest-value instruction was **select a San Diego location first**.
+Chains that wave 1 recorded as not-found or captured as six-item fragments
+returned full priced menus once a specific store was chosen:
+
+| | wave 1 | wave 2 | how |
+|---|---|---|---|
+| Sonic | 10 (hub.biz) | 175 | own ordering platform, store #6390 |
+| La Bella | 56 (allmenus) | 156 | `order.labellapizza.com` |
+| Pappalecco | 12 (menuweb mirror) | 108 | Clover, on their own domain |
+| Applebee's | - | 104-106 | own site, Chula Vista selected |
+| Claim Jumper | 18 (truncated) | 77 | official site (Popmenu) |
+| Raising Cane's | 6 | 24 | own ordering site, Mira Mesa |
+| Mike's Red Tacos | 16 (low) | 35 | Toast |
+
+Add to the platform list already in this file: **Clover**, **Appfront**, and
+**Slice** all host restaurants' own ordering, and all publish real prices.
+`res-menu.net` and `kwickmenu.com` are hosted menu microsites - tier 2, fine.
+
+Chains confirmed solvable this way: Applebee's, Arby's, Buca di Beppo, Chili's,
+Del Taco, Dunkin', Habit Burger, Krispy Kreme, Olive Garden, Panda Express,
+P.F. Chang's, Raising Cane's, Sonic. Do not record any of them not-found without
+selecting a store first.
+
+**Still genuinely unfindable:** McDonald's - no web prices at all, and the
+ordering flow gates behind accepting updated terms, which agents must not click.
+Buffets often have no per-item pricing by nature; Pan Asia Buffet's per-person
+figures disagreed across sources and recording nothing was right.
+
+IHOP was on this list for about an hour. One agent recorded it not-found in the
+same wave that another pulled 80 priced items off `ihop.com/en/menu`. Two agents
+disagreeing is the normal case, not a contradiction to resolve by picking a
+side: treat "not-found" as one agent's result, never as a property of the
+restaurant, and let the queue try again. The caveat that stands is narrower -
+that capture is the *national* menu, because the store-scoped
+`?StoreNumber=` URL 403s and Chrome redirects back to the generic page, so it
+may not carry San Diego pricing.
+
+### A new content-farm tell
+
+`menuweb.menu`'s page for Vintana carried menu text belonging to an unrelated
+restaurant ("Wa Jeal") mixed into it. Templated aggregators stitch pages from
+whatever they scraped, and cross-contamination between restaurants is the
+clearest possible signal that nothing on the page can be trusted. If a menu
+contains an item that plainly belongs somewhere else, discard the whole source
+rather than the item.
+
+### Copying a menu between branches is propagation's job, not extraction's
+
+One agent read a Jack in the Box branch in full, then wrote a subset of that
+same menu under two sibling branch ids, reasoning that prices are standard
+within a metro. The reasoning is likely correct; the mechanism is not. It
+arrives indistinguishable from three independent reads. `share-chain-menus.mjs`
+does this honestly - it stamps `chain-shared` and records the source branch - so
+extract one branch properly and let propagation do the rest.
+
+## Staleness is a separate axis from invention, and the ladder only measured one
+
+Three findings from wave 3 that all turn out to be the same finding.
+
+**Yelp's menu tab was never enforced in code.** It was a hard reject in every
+brief from wave 1 onward, and an audit found **66 already-loaded menus sourced
+from it** - Hash House A Go Go, Din Tai Fung, The Crack Shack, Snooze, Puesto,
+Tacos El Gordo, Las Cuatro Milpas among them. In the same wave, one agent read
+Swami's Cafe off Yelp and defended it by showing the prices sat *below*
+Postmates' by the usual delivery multiple; another agent, same brief, refused
+Yelp for Aunt Emma's and routed through a merchant-priced storefront instead.
+
+The defence is aimed at the wrong target. Yelp's menu tab is barred for being
+**stale** - crowd-submitted, undated - not for being marked up. Being cheaper
+than a delivery app says nothing about *when* it was written.
+`screen-menus.mjs` now bars `yelp.com` mechanically. A rule that lives only in a
+prompt holds exactly as long as every agent chooses to obey it.
+
+**SinglePlatform is stale too, and it sits at tier 4.** Rainbow Oaks' entry
+listed two eggs at $6.49 - roughly half current - and was internally consistent
+throughout. "Restaurant-submitted" means submitted once, not maintained.
+
+**A cross-check is worth only what its freshest source is worth.** The Yellow
+Deli's allmenus prices matched a 2020 San Diego Reader article exactly. That
+match is evidence the aggregator is repeating 2020, not that the prices are
+current. The ladder's "two independent sources agree" was written to catch
+*invention*; agreement does nothing about *age*.
+
+So when using tier 4 or 5, date the source or discard it. Prefer a menu that
+carries a date - a daily PDF, a dated photograph of an in-store menu - over one
+that merely agrees with another undated page.
+
+### Verify a suspicious domain instead of trusting the heuristic
+
+`kingsmenu.site` matches the brand-twin pattern exactly - a chain's name under
+`.site` - and is genuinely King's Fish House's own menu host, linked from
+`kingsfishhouse.com`, serving a per-location PDF regenerated daily. It was
+withheld until checked.
+
+The check is one fetch: **does the restaurant's real homepage link to it?** A
+squatter is never linked to by the business it imitates. Run that before
+discarding a domain the pattern flags, and before trusting one it doesn't.
+
+## A tier-2 page can carry marked-up prices inside itself
+
+Mavericks Beach Club's own Toast ordering page served two menus: the real one,
+and a duplicate section labelled "(GH)" whose every price ran 1.15-1.25x higher.
+Ahi Nachos read $21.00 in one section and $25.62 in the other, on the same page,
+under the restaurant's own storefront.
+
+The ladder's premise up to now was that the markup risk lives in the *source* -
+check the delivery marketplace, trust the restaurant's own platform. That is not
+sufficient. A restaurant that also sells through GrubHub can have that channel's
+inflated prices mirrored back into its Toast page as a parallel section.
+
+**Run the division test on every source, including tier 1 and 2.** And when a
+page shows two prices for the same dish, the lower one is the restaurant's and
+the higher one belongs to whoever is taking the commission. Look for a channel
+name in the section heading - "(GH)", "Delivery", "Third Party" - and drop that
+whole section rather than the individual items.
+
+The same wave caught the ordinary version of this at Mission Valley Breakfast
+Company: its `order.online` prices divided by exactly 1.15 onto round dollars
+($19.55 → $17.00, $18.40 → $16.00), and a sister location's Toast listing priced
+the same burrito at $18.00 against that storefront's $21.28. Recorded not-found
+rather than borrow the sibling's menu, which was the right call twice over.
+
+### The in-page markup section is systemic, and it has more than one label
+
+Two restaurants in one wave, found independently:
+
+- **Mavericks Beach Club** — own Toast page, duplicate section labelled "(GH)",
+  every price 1.15-1.25x the primary. Ahi Nachos $21.00 and $25.62 on one page.
+- **Mike Hess Brewing IB** — own Toast page, duplicate section labelled
+  "Food (3PO)" ("third-party ordering"), roughly 15% higher.
+
+So the labels to watch are at least "(GH)", "(3PO)", "Delivery" and "Third
+Party", and there will be others. The rule is structural rather than a list:
+**when one page prices the same dish twice, the lower figure is the
+restaurant's and the higher one belongs to whoever takes the commission.** Drop
+the whole marked section, not the individual items.
+
+A clean confirmation of the same arithmetic from the other direction: Amardeen
+Cafe's Pistachio Chicken Salad was $19.49 on Toast and $22.27 on DoorDash - a
+1.14x multiple - which is what makes Toast the right read rather than a
+preference.
+
+### Another hijacked domain, and an agent that stopped when it should
+
+`superchinabuffet.com` now redirects to a fake "I'm a human" software-download
+page. Same parked-domain scam pattern as the rest of the list below; the agent
+left without clicking, which is the instruction.
+
+Separately, Popeyes' site began returning AWS WAF 403s after about ten rapid
+scripted calls to its GraphQL API, and the agent **stopped rather than working
+around the block**. That is correct and worth stating plainly: a menu is not
+worth evading a rate limit for. The capture is partial (13 items, missing wings,
+seafood, sides and drinks) and is recorded as partial rather than dressed up.
+
+### A matching name is not a matching restaurant
+
+`goldenchopsticks382.com` looks exactly like the official site for Golden
+Chopsticks, and serves a real, priced, well-formed PDF menu. It belongs to an
+unrelated restaurant of the same name at 382 Route 25A, Rocky Point, **New
+York** - the number in the domain is its street address. An agent nearly loaded
+a New York menu onto a San Diego listing, and nothing in the page would have
+looked wrong afterwards.
+
+None of the existing guards catch this. It is not a brand twin, not an
+aggregator, not stale, not marked up: it is a correct menu for the wrong
+business. **Confirm the address before trusting a domain**, especially when a
+restaurant's name is generic enough to be shared. The same wave saw Tacos El
+Gordo's DoorDash listing priced at $5+ a taco against the ~$2.60-$3.43 the real
+brand charges - the price gap was the only tell that it was a different
+business.
+
+### Evidence recorded here held up months later
+
+Breakfast Republic's `order.online` storefront was flagged in this file at
+exactly 1.15x with the figures $22.43, $21.28 and $16.96. An agent re-checking
+it independently found those same three numbers unchanged. Worth knowing that
+markup on a given storefront is stable, so a recorded multiplier stays useful
+rather than needing re-derivation each time.
+
+### `res-menu.net` is currently unreachable
+
+It sits on the platform allowlist as a legitimate hosted-menu microsite, and it
+is - but it rendered blank through both Chrome and WebFetch (which 403'd) across
+multiple restaurants in one wave. Restaurants whose only source is a
+`res-menu.net` page should be recorded not-found and retried later rather than
+chased; the host, not the restaurant, is the problem.

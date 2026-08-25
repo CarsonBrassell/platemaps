@@ -41,7 +41,9 @@ export function SettingsLedger({ variant = "web" }: { variant?: LedgerVariant })
     let cancelled = false;
     void (async () => {
       try {
-        const res = await fetch("/api/restaurants");
+        // Only id and name are read below, so ask for the index projection
+        // rather than the full corpus. See getRestaurantIndex in lib/db.ts.
+        const res = await fetch("/api/restaurants?fields=index");
         if (!res.ok) return;
         const data: { restaurants: { id: string; name: string }[] } = await res.json();
         if (!cancelled) setRestaurants(data.restaurants);

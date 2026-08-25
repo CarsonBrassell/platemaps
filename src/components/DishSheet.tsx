@@ -1,5 +1,4 @@
-import { ThumbsUpIcon } from "@/components/icons";
-import { relativeTime } from "@/lib/format";
+import { DishPosts } from "@/components/DishPosts";
 import type { MapComment } from "@/data/mapComments";
 
 type SheetDish = {
@@ -11,25 +10,21 @@ type SheetDish = {
   total: number;
 };
 
-/** Enough to give a sense of the room without turning the sheet into a feed. */
-const VISIBLE_COMMENTS = 3;
-
 export function DishSheet({
   dish,
+  restaurantId,
   restaurantName,
-  myVote,
   comments,
-  onVote,
   onClose,
   onSeeAll,
 }: {
   dish: SheetDish;
+  /** Which restaurant's plate this is — the other half of the posts lookup. */
+  restaurantId: string;
   /** For the mono byline under the dish name — "$3.25 · TACOS EL GORDO". */
   restaurantName: string;
-  myVote: "yes" | "no" | undefined;
-  /** Comments about this specific dish, newest first. */
+  /** Seed map bubbles about this specific dish, newest first. */
   comments: MapComment[];
-  onVote: (vote: "yes" | "no") => void;
   onClose: () => void;
   onSeeAll: () => void;
 }) {
@@ -83,72 +78,37 @@ export function DishSheet({
                 </span>
               </>
             ) : (
-              <span className="font-mono text-xs text-zinc-500">
-                No votes yet — be the first
-              </span>
+              /* States the gap and stops there. It used to read "be the first",
+                 which was an invitation to press the verdict buttons directly
+                 below it — those are gone, and the card has nothing to press.
+                 The invitation now lives once, in the posts card underneath,
+                 where there is something to do about it. */
+              <span className="font-mono text-xs text-zinc-500">No ratings yet</span>
             )}
           </div>
 
-          <p className="mono-label mb-2 mt-5 text-zinc-500">Your verdict</p>
-          <div className="flex flex-col gap-2">
-            <button
-              onClick={() => onVote("yes")}
-              aria-pressed={myVote === "yes"}
-              className={
-                myVote === "yes"
-                  ? "min-h-11 w-full rounded-full bg-pm-orange py-3 text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-                  : "min-h-11 w-full rounded-full bg-pm-grey-tint py-3 text-sm font-semibold text-pm-grey-text transition-transform hover:text-zinc-900 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-              }
-            >
-              Good — I&apos;d get it again
-            </button>
-            <button
-              onClick={() => onVote("no")}
-              aria-pressed={myVote === "no"}
-              className={
-                myVote === "no"
-                  ? "min-h-11 w-full rounded-full bg-pm-orange py-3 text-sm font-semibold text-[#F7F4EC] transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-                  : "min-h-11 w-full rounded-full bg-pm-grey-tint py-3 text-sm font-semibold text-pm-grey-text transition-transform hover:text-zinc-900 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-              }
-            >
-              Not for me
-            </button>
-          </div>
+          {/* There is no "your verdict" here any more. The two buttons that
+              stood between the score card and the posts cast the older yes/no
+              tally — "would you order this again" — which is a different
+              question from the 0-100 rating everything on this page is built
+              from, and it was the only place in the product still asking it.
+              The tally itself is untouched: `dishStats` still reads the stored
+              yes/no counts as the fallback percent for a plate nobody has
+              rated. Nothing writes to it from the UI now. */}
 
-          {/* What people said about this dish, in the sheet itself. These
-              comments already existed, but only at the very bottom of the page
+          {/* What people said about this dish, in the sheet itself. Those
+              opinions already existed, but only at the very bottom of the page
               mixed in with every other comment about the restaurant — so the
-              opinions most relevant to the dish you just tapped were the ones
-              you had to scroll furthest to find. */}
-          {comments.length > 0 && (
-            <div className="mt-4 rounded-2xl bg-white px-5 py-4">
-              <p className="mono-label mb-3 text-zinc-500">What people said</p>
-              <ul className="flex flex-col gap-3">
-                {comments.slice(0, VISIBLE_COMMENTS).map((comment) => (
-                  <li key={comment.id} className="flex flex-col gap-1">
-                    <p className="text-sm leading-snug text-zinc-700">{comment.text}</p>
-                    <div className="flex items-center gap-2.5 font-mono text-xs text-zinc-500">
-                      {comment.upvotes !== undefined && (
-                        <span className="inline-flex items-center gap-1">
-                          <ThumbsUpIcon className="h-3 w-3" />
-                          {comment.upvotes}
-                        </span>
-                      )}
-                      {comment.createdAt && <span>{relativeTime(comment.createdAt)}</span>}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={onSeeAll}
-                className="mt-3 font-mono text-xs font-medium text-zinc-700 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-              >
-                {comments.length > VISIBLE_COMMENTS
-                  ? `See all ${comments.length} comments`
-                  : "See all comments"}
-              </button>
-            </div>
-          )}
+              ones most relevant to the dish you just tapped were the ones you
+              had to scroll furthest to find. The card renders unconditionally
+              now: it fetches its own posts, so "nobody has posted about this
+              plate yet" is an answer it has to be present to give. */}
+          <DishPosts
+            restaurantId={restaurantId}
+            dishName={dish.name}
+            seedComments={comments}
+            onSeeAll={onSeeAll}
+          />
         </div>
       </div>
     </div>

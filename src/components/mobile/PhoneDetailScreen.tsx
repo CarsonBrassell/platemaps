@@ -6,7 +6,6 @@ import type { Restaurant } from "@/data/restaurants";
 import { dishStats, type Dish } from "@/data/dishes";
 import { DishSheet } from "@/components/DishSheet";
 import { FullMenu } from "@/components/FullMenu";
-import { ReservationPanel } from "@/components/ReservationPanel";
 import { RestaurantAspects } from "@/components/RestaurantAspects";
 import { RestaurantComments } from "@/components/RestaurantComments";
 import { PhoneDetailHero } from "@/components/mobile/PhoneDetailHero";
@@ -70,7 +69,6 @@ export function PhoneDetailScreen({
   dishRatings: Record<string, RatedDish>;
 }) {
   const searchParams = useSearchParams();
-  const [myVotes, setMyVotes] = useState<Record<string, "yes" | "no" | undefined>>({});
   const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
 
   /* Back always lands inside `/m`, and carries `?nav=` with it — the nav
@@ -107,7 +105,8 @@ export function PhoneDetailScreen({
    * plates at all, because no dish there has ever been thumbed.
    *
    * A plate nobody has rated still falls back to that yes/no tally, which is
-   * the only signal those rows have. Transitional and not to build on — see the
+   * the only signal those rows have — read-only now that the dish sheet's
+   * verdict buttons are gone. Transitional and not to build on — see the
    * fuller note in RestaurantDetail, which owns this rule.
    */
   const dishesWithStats = useMemo(
@@ -116,13 +115,10 @@ export function PhoneDetailScreen({
         const rated = dishRatings[dishRatingKey(dish.name)];
         if (rated) return { ...dish, total: rated.ratings, pct: Math.round(rated.average) };
 
-        const myVote = myVotes[dish.id];
-        const yesVotes = dish.yesVotes + (myVote === "yes" ? 1 : 0);
-        const noVotes = dish.noVotes + (myVote === "no" ? 1 : 0);
-        const { total, pct } = dishStats(yesVotes, noVotes);
+        const { total, pct } = dishStats(dish.yesVotes, dish.noVotes);
         return { ...dish, total, pct };
       }),
-    [dishes, myVotes, dishRatings],
+    [dishes, dishRatings],
   );
 
   const topPicks = useMemo(
@@ -171,14 +167,6 @@ export function PhoneDetailScreen({
     });
   }
 
-  function handleVote(vote: "yes" | "no") {
-    if (!selectedDishId) return;
-    setMyVotes((prev) => ({
-      ...prev,
-      [selectedDishId]: prev[selectedDishId] === vote ? undefined : vote,
-    }));
-  }
-
   // Everyone who has weighed in on a dish here — the denominator behind the
   // hits list's footer line.
   const ratedBy = dishesWithStats.reduce((sum, dish) => sum + dish.total, 0);
@@ -199,25 +187,20 @@ export function PhoneDetailScreen({
         <PhoneFirstPlate restaurant={restaurant} score={plateScore} href={postHref} />
         <RestaurantAspects tally={aspectTally} />
         <FullMenu sections={sections} onSelect={setSelectedDishId} />
-        {/* The booking prototype, in the position the web page puts it in when
-            its rail collapses: after the menu, before the thread. Its numbers
-            are mocked and the card says so on its face — that disclaimer is the
-            condition PRODUCT.md sanctions it under, and it travels with it. */}
-        <ReservationPanel restaurantId={restaurant.id} hours={restaurant.hours ?? null} />
         {/* The anchor is on the thread itself — "see all comments" from the dish
-            sheet must land on the comments, not on the card above them. */}
+            sheet must land on the comments. The booking prototype used to sit
+            between these two and is deleted; see PRODUCT.md. */}
         <div id={COMMENTS_ANCHOR} className="scroll-mt-4">
-          <RestaurantComments restaurant={restaurant} dishes={dishes} />
+          <RestaurantComments restaurant={restaurant} postHref={postHref} />
         </div>
       </div>
 
       {selectedDish && (
         <DishSheet
           dish={selectedDish}
+          restaurantId={restaurant.id}
           restaurantName={restaurant.name}
-          myVote={myVotes[selectedDish.id]}
           comments={selectedDishComments}
-          onVote={handleVote}
           onClose={() => setSelectedDishId(null)}
           onSeeAll={handleSeeAllComments}
         />

@@ -44,13 +44,26 @@ const RestaurantMap = dynamic(
 /** What every draft field takes: the map (to fly, and for variant C to paint a
  *  highlight layer off the live source) and the corpus the map is already
  *  drawing (for the resting offer and the empty state's suggestions). */
+/**
+ * What a draft field gets per restaurant: the index projection, which is what
+ * `?fields=index` returns and what these fields actually read — a name to show
+ * and a cuisine and neighbourhood to match on.
+ *
+ * Mirrors `RestaurantIndexRow` in lib/db.ts. It was `RestaurantView`, and
+ * asking for the wide type is what kept this stage fetching the wide payload.
+ */
+export type DraftSeed = Pick<
+  RestaurantView,
+  "id" | "name" | "cuisine" | "neighborhood" | "distance" | "lat" | "lng" | "rating"
+>;
+
 export type DraftSearchField = ComponentType<{
   mapRef: RefObject<MapLibreMap | null>;
-  seeds: RestaurantView[];
+  seeds: DraftSeed[];
 }>;
 
 export function DraftMapStage({ field: Field }: { field: DraftSearchField }) {
-  const [restaurants, setRestaurants] = useState<RestaurantView[]>([]);
+  const [restaurants, setRestaurants] = useState<DraftSeed[]>([]);
   const [menus, setMenus] = useState<Record<string, Dish[]>>({});
 
   /* The same pair `/feed` fetches, for the same reason: half of this data draws
@@ -59,13 +72,31 @@ export function DraftMapStage({ field: Field }: { field: DraftSearchField }) {
     let cancelled = false;
     void (async () => {
       try {
+        /*
+         * Both requests are narrowed, and the dish one was the expensive
+         * mistake: `/api/restaurants/dishes` with no query returns every dish
+         * in the database — 18.3 MB measured, against 3.4 MB for the whole
+         * restaurant corpus — and this stage joined all of it to
+         * `mapCommentsByRestaurant`, a hand-authored seed naming a few dozen
+         * restaurants. Every other dish was fetched, parsed and discarded.
+         *
+         * A draft route costs nothing until someone opens it, which is exactly
+         * why this survived: three prototypes at 21.7 MB a load are invisible
+         * until an afternoon of design iteration puts a few hundred megabytes
+         * through a metered database.
+         *
+         * `?ids=` is the same seam the shipped map already uses (see
+         * mapBubbles.ts, which batches because the route caps a request at 500
+         * ids). The seed is well under that, so one request does it.
+         */
+        const commentedIds = Object.keys(mapCommentsByRestaurant);
         const [restaurantRes, dishRes] = await Promise.all([
-          fetch("/api/restaurants"),
-          fetch("/api/restaurants/dishes"),
+          fetch("/api/restaurants?fields=index"),
+          fetch(`/api/restaurants/dishes?ids=${encodeURIComponent(commentedIds.join(","))}`),
         ]);
         if (!restaurantRes.ok || !dishRes.ok) return;
         const [{ restaurants: rows }, { dishes }] = await Promise.all([
-          restaurantRes.json() as Promise<{ restaurants: RestaurantView[] }>,
+          restaurantRes.json() as Promise<{ restaurants: DraftSeed[] }>,
           dishRes.json() as Promise<{ dishes: Record<string, Dish[]> }>,
         ]);
         if (cancelled) return;
@@ -79,6 +110,14 @@ export function DraftMapStage({ field: Field }: { field: DraftSearchField }) {
       cancelled = true;
     };
   }, []);
+
+  /* `hours: null` rather than fetching the column. The map reads it for one
+     thing — dimming a dot that is closed right now — and these routes exist to
+     judge a search field against a moving backdrop, not to be right about
+     trading hours. `openStateFor` answers "unknown" for a null, which draws the
+     dot undimmed. Fetching a seven-day array per restaurant to grey out some
+     pins on a prototype is the kind of cost that got us here. */
+  const pins = useMemo(() => restaurants.map((r) => ({ ...r, hours: null })), [restaurants]);
 
   const comments = useMemo(() => {
     const out: Record<string, MapComment[]> = {};
@@ -113,7 +152,7 @@ export function DraftMapStage({ field: Field }: { field: DraftSearchField }) {
           control drawn. */}
       <div className="relative p-2.5 [&_.maplibregl-ctrl-top-left]:pt-10">
         <RestaurantMap
-          restaurants={restaurants}
+          restaurants={pins}
           commentsByRestaurant={comments}
           mode="discover"
           searchField={BoundField}

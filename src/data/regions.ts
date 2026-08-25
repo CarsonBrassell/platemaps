@@ -123,6 +123,24 @@ export const regions: Region[] = [
       // restaurants along S Coast Hwy, all genuinely in Oceanside.
       { name: "South Oceanside", lat: 33.178, lng: -117.369 },
       { name: "Cardiff", lat: 33.0161, lng: -117.2795 },
+      // Camp Pendleton is a separate place, eleven miles up the coast from
+      // Oceanside's point and on a base you cannot drive onto casually.
+      { name: "Camp Pendleton", lat: 33.3073, lng: -117.4064 },
+      /*
+       * La Costa and San Luis Rey were added here and taken straight back out.
+       *
+       * Each was the label of exactly ONE restaurant in the corpus, so each
+       * point came from a single coordinate — and being a real place inside a
+       * bigger city, each then captured everything around it. La Costa pulled
+       * 116 restaurants out of Carlsbad and Encinitas; San Luis Rey took 36 out
+       * of Oceanside.
+       *
+       * That is a downgrade even though the labels are accurate. Someone
+       * looking for dinner searches Carlsbad, not La Costa, and this file feeds
+       * the label people read and search on. **Add a point only for a place
+       * restaurants are already commonly labelled with** — a sub-neighbourhood
+       * with one claimant is evidence of an OSM quirk, not of a gap.
+       */
     ],
   },
   {
@@ -146,6 +164,36 @@ export const regions: Region[] = [
       { name: "Carmel Mountain Ranch", lat: 32.9835, lng: -117.079 },
     ],
   },
+  /*
+   * Inland North County — the largest gap this file had.
+   *
+   * "North Inland" above is really the northern edge of the City of San Diego:
+   * Mira Mesa, Poway, Rancho Bernardo. Escondido, San Marcos and Vista are
+   * separate cities ten to twenty miles further out, and until now none of them
+   * had a point. Every restaurant in them fell to Rancho Bernardo, the nearest
+   * thing defined — 94 in Escondido, 84 in San Marcos, 56 in Vista.
+   *
+   * That is also why `fix-neighborhoods.mjs` wanted to relabel 109 Escondido
+   * restaurants AS Rancho Bernardo, each one six to nine miles from the point
+   * it was being assigned. The script was faithfully reporting the nearest
+   * defined point; the defined points were the problem. Adding these makes that
+   * script correct rather than destructive — run it again after this.
+   */
+  {
+    name: "North County Inland",
+    subAreas: [
+      { name: "Escondido", lat: 33.1206, lng: -117.0838 },
+      { name: "San Marcos", lat: 33.1348, lng: -117.1785 },
+      { name: "Vista", lat: 33.1882, lng: -117.2377 },
+      { name: "Bonsall", lat: 33.2938, lng: -117.2238 },
+      { name: "Fallbrook", lat: 33.3723, lng: -117.2465 },
+      { name: "Valley Center", lat: 33.236, lng: -117.048 },
+      { name: "Pala", lat: 33.3656, lng: -117.08 },
+      { name: "Pauma Valley", lat: 33.303, lng: -116.9772 },
+      { name: "Palomar Mountain", lat: 33.3144, lng: -116.8656 },
+      { name: "Borrego Springs", lat: 33.2321, lng: -116.3291 },
+    ],
+  },
   {
     name: "Far East County",
     subAreas: [
@@ -155,6 +203,11 @@ export const regions: Region[] = [
       { name: "Julian", lat: 33.0781, lng: -116.6017 },
       { name: "Jamul", lat: 32.7156, lng: -116.8703 },
       { name: "Campo", lat: 32.5978, lng: -116.4692 },
+      // Also from the county-wide import. Sparse, but a restaurant in Descanso
+      // measured against Alpine is 15 miles out and reads as simply wrong.
+      { name: "Descanso", lat: 32.8472, lng: -116.6145 },
+      { name: "Mount Laguna", lat: 32.862, lng: -116.42 },
+      { name: "Dulzura", lat: 32.6439, lng: -116.7809 },
     ],
   },
 ];

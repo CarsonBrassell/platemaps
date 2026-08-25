@@ -16,7 +16,7 @@ Three voices, split by **who produced the text**. Never mix them up.
 | **Human** | System sans (`font-sans`, no webfont) | Body copy, captions, buttons, post text — anything a person wrote in prose |
 
 - Section labels use the shared `.mono-label` class (11px, uppercase,
-  `tracking-[0.18em]`, weight 500) — `THE HITS`, `FULL MENU`, `YOUR VERDICT`,
+  `tracking-[0.18em]`, weight 500) — `THE HITS`, `FULL MENU`, `WHAT PEOPLE SAID`,
   and the global nav's destinations (`FEED`, `DISCOVER`). The nav is the one
   place the class dresses something a person navigates rather than a heading:
   it is chrome, not a machine value, and it wears the label voice because the
@@ -189,6 +189,15 @@ neighbors don't repeat.
   to a faint smudge is as wrong as the uniform wash. It is a fade, not a
   `minzoom` cutoff, and it must arrive at full strength by exactly z13: the
   near view is signed off and the low-zoom end is the only part in play.
+  **Pulled back, districts must differ in brightness from each other** — a
+  county view where every lit block glows the same amount is the same failure
+  as the wash, and is usually the same cause: the corpus sitting past the top
+  of the colour ramp, where nothing can be brighter than anything else. Two
+  things keep it apart out there, and the layer's comment carries the numbers:
+  each low-zoom `heatmap-intensity` stop is set by its ceiling (only the
+  densest few blocks may reach the top of the ramp), and `heatmap-weight`
+  squares each restaurant's local density, so a thin street keeps a fraction
+  of the weight a packed one does instead of most of it.
 - Comment bubbles are warm near-white cards with a hairline edge, floating
   under the restaurant's own neon sign (`.map-neon-sign`) and tethered to
   their pin by a straight leader line — the sign names the place, so the card
@@ -322,4 +331,8 @@ neighbors don't repeat.
   mono in the action row.
 - **Dish sheet** — cream sheet: tone-block photo, Fraunces name,
   `$9.00 · RESTAURANT` mono byline, white score card with 48px orange mono %,
-  `YOUR VERDICT` label, full-width verdict pills.
+  then the `WHAT PEOPLE SAID` card — the posts about that one plate, each with
+  its own percent, its photos and an inline reply. The sheet used to carry a
+  `YOUR VERDICT` label over two full-width pills casting the old yes/no tally;
+  both are gone. That tally asked a different question from the 0-100 rating
+  the rest of the page is built on, and it was the last place still asking it.

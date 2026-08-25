@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
+import type { DraftSeed } from "@/components/drafts/DraftMapStage";
 import type { Map as MapLibreMap } from "maplibre-gl";
-import type { RestaurantView } from "@/data/restaurants";
 import { StarIcon } from "@/components/icons";
 import { DraftSearchStyles } from "@/components/drafts/draftSearchStyles";
 import {
@@ -82,7 +82,7 @@ export function LanternSearch({
   seeds,
 }: {
   mapRef: RefObject<MapLibreMap | null>;
-  seeds: RestaurantView[];
+  seeds: DraftSeed[];
 }) {
   /* Quiet by nature, so the resting offer is the quietest useful one: the
      city's best-rated, no state kept and nothing to explain. Variants B and C

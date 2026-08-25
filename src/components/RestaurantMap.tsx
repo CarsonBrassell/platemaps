@@ -33,11 +33,26 @@ import type { PlateScore } from "@/lib/plateScore";
 import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 
 /**
- * A restaurant as the map needs it: the projection plus the plate score, which
- * /api/restaurants attaches and hover prints. Optional so a caller that hasn't
- * got the aggregate still renders a map — the tip just says the name.
+ * A restaurant as the map needs it, and no wider.
+ *
+ * This was the whole `RestaurantView` plus a plate score. The map draws an
+ * unclustered circle layer, so it really does hold every listed restaurant at
+ * once — which made every unread column a per-row cost paid 4,650 times. It
+ * reads six: id, name, lat, lng, rating, hours. Both photo URLs, the cuisine,
+ * the neighbourhood, the walk distance, the price band, the review count and
+ * the trending flag were all along for the ride.
+ *
+ * Mirrors `RestaurantMapRow` in lib/db.ts, which is what `?fields=map` returns;
+ * keep the two in step. Widening this type is how the drift starts, so add a
+ * field only when the map actually renders it.
+ *
+ * `plateScore` stays optional so a caller without the aggregate still renders a
+ * map — the tip just says the name.
  */
-export type MapRestaurant = RestaurantView & { plateScore?: PlateScore };
+export type MapRestaurant = Pick<
+  RestaurantView,
+  "id" | "name" | "lat" | "lng" | "rating" | "hours"
+> & { plateScore?: PlateScore };
 import type { MapComment } from "@/data/mapComments";
 
 // Roughly San Diego County's real extent — keeps users from panning off into
@@ -547,7 +562,10 @@ const MI_PER_DEG_LAT = 69.05;
  * smoothly as the corpus grows — a hard cutoff makes a restaurant's aura jump
  * the moment a neighbour is added a hair inside the radius.
  */
-function districtDensities(list: RestaurantView[]): number[] {
+/* Takes coordinates rather than restaurants: it reads `lat` and `lng` and
+   nothing else, and asking for a whole `RestaurantView` was what made narrowing
+   `MapRestaurant` look like a breaking change when it is not. */
+function districtDensities(list: readonly { lat: number; lng: number }[]): number[] {
   const out = new Array<number>(list.length).fill(0);
   for (let i = 0; i < list.length; i++) {
     const a = list[i];
@@ -1595,15 +1613,24 @@ export function RestaurantMap({
            under the 0.2 band, while five stacked clear 0.6 and sit in the
            ramp's middle. Past ~0.9 a single highly-rated restaurant starts
            lighting its own block, which is the other failure mode.
-           The two low stops are the exception and are deliberately tiny.
+           The three low stops are the exception and are deliberately tiny.
            At county scale every urban area is "dense" next to the desert,
            so the honest reading there is RELATIVE — but the suppression is
            now the weight ramp's job, per district, rather than this one
-           number's. 0.16 at z9 is the value that lands downtown at the top
-           of the colour ramp once the weight floor has taken the thin areas
-           out; it reads as a big number next to the 0.07 it replaced only
-           because most of the corpus is contributing a fraction of its
-           former weight there.
+           number's.
+
+           **Out here the stop is set by its CEILING, not its floor**, and
+           0.16 at z9 was set the other way. The floor rule only says where
+           the aura starts; it says nothing about where it stops, and past the
+           top of the colour ramp every district is the same colour. Measured
+           on screen at z9, the corpus ran so far over that top that halving
+           0.16 changed nothing visible at all — the coastal corridor stayed
+           one even smear either way. It only breaks into separate pools
+           around 0.05, which with the squared weight above lands the densest
+           blocks at the ramp's top and leaves the rest under the dead band.
+           If one of these stops is nudged up because the aura "should be
+           easier to see", the first thing lost is the contrast BETWEEN
+           districts, which is the only thing the layer exists to show.
          - `heatmap-opacity` then sets how strong whatever survived reads.
            These are two different jobs and must not be confused: intensity
            and weight pick the districts, opacity sets their brightness. It
@@ -1624,12 +1651,27 @@ export function RestaurantMap({
              weight, unchanged: 0.4 for a place with no posts up to 1.0 for a
              top-scoring one.
 
-             The z9 stop multiplies that by 0.15..1 across `density`, so a
-             restaurant standing alone keeps a sixth of its weight at county
-             scale while one in a full district keeps all of it. 0.15 rather
-             than 0 because a small isolated cluster should thin out, not
-             blink off — below about 0.1 the outlying beach towns disappear
-             between one zoom step and the next. */
+             The z9 stop multiplies that by 0.06..1 across `density`, so a
+             restaurant standing alone keeps a sixteenth of its weight at
+             county scale while one in a full district keeps all of it. Not 0,
+             because a small isolated cluster should thin out, not blink off —
+             the outlying beach towns disappear between one zoom step and the
+             next if this bottoms out.
+
+             **`density` is SQUARED, and that is what separates one district
+             from another.** It was linear (0.15..1), which is far too gentle
+             for the spread this corpus actually has: the median restaurant
+             sits near density 0.3 and downtown at 1.0, so linearly the median
+             kept 0.4 of its weight against downtown's 1.0. Everything urban
+             then cleared the top of the colour ramp, and past the top every
+             district is the same colour — which is why the county view was one
+             even orange smear rather than bright cores over dark ground.
+             Squared, that same median keeps 0.14 against downtown's 1.0: the
+             ratio goes from 2.5:1 to 7:1, the thin two-thirds of the corpus
+             drops under the ramp's dead band, and what is left is the handful
+             of genuinely dense districts, each as bright as it has earned.
+             The exponent is the contrast knob out here — raise it and only
+             downtown survives, drop it back to 1 and the smear returns. */
           "heatmap-weight": [
             "interpolate",
             ["linear"],
@@ -1638,7 +1680,7 @@ export function RestaurantMap({
             [
               "*",
               ["+", 0.4, ["*", 0.6, ["get", "intensity"]]],
-              ["+", 0.15, ["*", 0.85, ["get", "density"]]],
+              ["+", 0.06, ["*", 0.94, ["^", ["get", "density"], 2]]],
             ],
             13,
             ["+", 0.4, ["*", 0.6, ["get", "intensity"]]],
@@ -1648,9 +1690,19 @@ export function RestaurantMap({
             ["linear"],
             ["zoom"],
             9,
-            0.16,
+            0.05,
             11,
-            0.22,
+            0.12,
+            /* z12 is a stop rather than a straight run from z11 to z13, and it
+               is doing real work: without it the interpolation reaches ~0.36
+               here, which is over the ceiling for a whole-city frame, and the
+               view that should show Hillcrest, North Park and downtown as
+               three separate pools goes back to one field of orange. 0.2 is
+               where they separate. The jump from here to the z13 stop is
+               steep on purpose — z13 in is the signed-off near view and is
+               left exactly as it was. */
+            12,
+            0.2,
             13,
             0.6,
             15,

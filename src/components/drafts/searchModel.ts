@@ -6,6 +6,21 @@ import type { RestaurantView } from "@/data/restaurants";
 import { rank } from "@/lib/restaurantRank";
 
 /**
+ * What every function in this file reads of a restaurant: id, name, cuisine,
+ * neighborhood, lat, lng, rating. Seven fields.
+ *
+ * These signatures all said `RestaurantView` — fourteen fields including a
+ * seven-day `hours` array and two photo URLs — which is how the draft
+ * map-search routes ended up fetching the whole corpus to rank names against a
+ * query. A function that asks for more than it reads gives its callers no
+ * reason to fetch less.
+ */
+export type SearchableRestaurant = Pick<
+  RestaurantView,
+  "id" | "name" | "cuisine" | "neighborhood" | "lat" | "lng" | "rating"
+>;
+
+/**
  * DRAFT SURFACE — shared behaviour behind the three `/drafts/map-search`
  * variants. Nothing under `src/components/drafts/` is rendered by `/feed`; the
  * shipped field is `src/components/MapSearch.tsx` and stays untouched until a
@@ -54,7 +69,7 @@ export type SuggestedTerm = { label: string; kind: "cuisine" | "neighbourhood" }
 
 export type SearchSuggestion = {
   /** The closest real names to what was typed — "did you mean". */
-  nearMiss: RestaurantView[];
+  nearMiss: SearchableRestaurant[];
   /** Cuisines and neighbourhoods that DO exist, closest to the term. */
   terms: SuggestedTerm[];
 };
@@ -101,7 +116,7 @@ const SIMILAR_ENOUGH = 0.34;
  */
 export function suggestFor(
   query: string,
-  seeds: readonly RestaurantView[],
+  seeds: readonly SearchableRestaurant[],
 ): SearchSuggestion {
   const q = query.trim();
   if (!q || seeds.length === 0) return { nearMiss: [], terms: [] };
@@ -140,7 +155,7 @@ export function suggestFor(
 }
 
 /** The city's best, for the variants whose resting offer is a standing list. */
-export function topRated(seeds: readonly RestaurantView[], count = 5) {
+export function topRated(seeds: readonly SearchableRestaurant[], count = 5) {
   return [...seeds].sort((a, b) => b.rating - a.rating).slice(0, count);
 }
 
@@ -152,7 +167,7 @@ export type MapSearchModel = {
   query: string;
   setQuery: (value: string) => void;
   /** Rows the listbox is showing — the ranked matches, or the resting offer. */
-  results: RestaurantView[];
+  results: SearchableRestaurant[];
   /** True while the typed term matched nothing; the empty state's cue. */
   emptyResult: boolean;
   suggestion: SearchSuggestion;
@@ -164,7 +179,7 @@ export type MapSearchModel = {
   closing: boolean;
   open: () => void;
   close: () => void;
-  goTo: (restaurant: RestaurantView) => void;
+  goTo: (restaurant: SearchableRestaurant) => void;
   onKeyDown: (event: React.KeyboardEvent) => void;
 };
 
@@ -187,11 +202,11 @@ export function useMapSearch({
   /** The list the map is already drawing. Used only for suggestions and for the
    *  resting offer — never to answer a typed query, which still goes to
    *  `/api/restaurants?q=` so the field keeps working without the corpus. */
-  seeds: readonly RestaurantView[];
+  seeds: readonly SearchableRestaurant[];
   /** What this variant shows before anything is typed. Each one differs here on
    *  purpose; that axis is part of what is being compared. */
-  offer: readonly RestaurantView[];
-  onPick?: (restaurant: RestaurantView) => void;
+  offer: readonly SearchableRestaurant[];
+  onPick?: (restaurant: SearchableRestaurant) => void;
   /** Fired once the camera is on its way — where a variant blurs its input, to
    *  hand the arrow keys back to the map. */
   onCommit?: () => void;
@@ -199,7 +214,7 @@ export function useMapSearch({
   const [query, setQueryState] = useState("");
   const [phase, setPhase] = useState<"closed" | "open" | "closing">("closed");
   const [active, setActive] = useState(NONE);
-  const [candidates, setCandidates] = useState<RestaurantView[]>([]);
+  const [candidates, setCandidates] = useState<SearchableRestaurant[]>([]);
   const exitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /* One request per settled query rather than per keystroke, and the cleanup
@@ -215,7 +230,7 @@ export function useMapSearch({
       try {
         const res = await fetch(`/api/restaurants?q=${encodeURIComponent(q)}`);
         if (!res.ok) return;
-        const data: { restaurants: RestaurantView[] } = await res.json();
+        const data: { restaurants: SearchableRestaurant[] } = await res.json();
         if (!stale) setCandidates(data.restaurants);
       } catch {
         // A dropped request leaves the previous matches up, which beats
@@ -271,7 +286,7 @@ export function useMapSearch({
   );
 
   const goTo = useCallback(
-    (restaurant: RestaurantView) => {
+    (restaurant: SearchableRestaurant) => {
       const map = mapRef.current;
       if (!map) return;
       close();
@@ -371,9 +386,9 @@ export function useCloseOnOutsideClick(
  */
 export function useInView(
   mapRef: RefObject<MapLibreMap | null>,
-  seeds: readonly RestaurantView[],
+  seeds: readonly SearchableRestaurant[],
 ) {
-  const [inView, setInView] = useState<RestaurantView[]>([]);
+  const [inView, setInView] = useState<SearchableRestaurant[]>([]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -432,14 +447,14 @@ function readRecentIds(): string[] {
   }
 }
 
-export function useRecent(seeds: readonly RestaurantView[]) {
+export function useRecent(seeds: readonly SearchableRestaurant[]) {
   /* Read in the lazy initialiser, not an effect: the field only ever renders
      inside the map, which is loaded with `ssr: false`, so there is no server
      pass to mismatch against — and an effect that seeds state is the cascading
      render `react-hooks/set-state-in-effect` is about. */
   const [ids, setIds] = useState<string[]>(readRecentIds);
 
-  const remember = useCallback((restaurant: RestaurantView) => {
+  const remember = useCallback((restaurant: SearchableRestaurant) => {
     setIds((prev) => {
       const next = [restaurant.id, ...prev.filter((id) => id !== restaurant.id)].slice(
         0,
@@ -456,7 +471,7 @@ export function useRecent(seeds: readonly RestaurantView[]) {
 
   const recent = useMemo(() => {
     const byId = new Map(seeds.map((r) => [r.id, r]));
-    return ids.map((id) => byId.get(id)).filter((r): r is RestaurantView => Boolean(r));
+    return ids.map((id) => byId.get(id)).filter((r): r is SearchableRestaurant => Boolean(r));
   }, [ids, seeds]);
 
   return { recent, remember };

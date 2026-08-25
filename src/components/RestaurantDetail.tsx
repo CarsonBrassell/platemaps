@@ -10,7 +10,6 @@ import { FullMenu } from "@/components/FullMenu";
 import { DishSheet } from "@/components/DishSheet";
 import { RestaurantComments } from "@/components/RestaurantComments";
 import { RestaurantAspects } from "@/components/RestaurantAspects";
-import { ReservationPanel } from "@/components/ReservationPanel";
 import type { RestaurantAspectTally } from "@/lib/db";
 import type { PlateScore, RatedDish } from "@/lib/plateScore";
 import { dishRatingKey } from "@/lib/dishRatingKey";
@@ -44,8 +43,12 @@ export function RestaurantDetail({
   dishRatings: Record<string, RatedDish>;
 }) {
   const searchParams = useSearchParams();
-  const [myVotes, setMyVotes] = useState<Record<string, "yes" | "no" | undefined>>({});
   const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
+
+  /* The composer, opened holding this restaurant — the comment field's
+     destination. The "where were you?" step is already answered because the
+     reader is standing in the place. `/m` has its own copy of this. */
+  const postHref = `/post?restaurant=${encodeURIComponent(restaurant.id)}`;
 
   // Deep link from a map comment bubble ("view this dish in the menu").
   useEffect(() => {
@@ -69,8 +72,11 @@ export function RestaurantDetail({
    * different questions ("how good was this, 0-100" against "what share would
    * order it again") wearing the same percent sign, and only the first is on the
    * product's rating scale. It exists so restaurants whose plates aren't rated
-   * yet keep a populated menu instead of going blank overnight. It goes when the
-   * yes/no mechanism does.
+   * yet keep a populated menu instead of going blank overnight.
+   *
+   * **It is now read-only.** The dish sheet's yes/no buttons were the only way
+   * to cast one and they are gone, so these counts are whatever the import left
+   * and can no longer move. The stored tally still renders; nothing adds to it.
    */
   const dishesWithStats = useMemo(
     () =>
@@ -79,13 +85,10 @@ export function RestaurantDetail({
         if (rated) {
           return { ...dish, total: rated.ratings, pct: Math.round(rated.average) };
         }
-        const myVote = myVotes[dish.id];
-        const yesVotes = dish.yesVotes + (myVote === "yes" ? 1 : 0);
-        const noVotes = dish.noVotes + (myVote === "no" ? 1 : 0);
-        const { total, pct } = dishStats(yesVotes, noVotes);
+        const { total, pct } = dishStats(dish.yesVotes, dish.noVotes);
         return { ...dish, total, pct };
       }),
-    [dishes, myVotes, dishRatings],
+    [dishes, dishRatings],
   );
 
   const topPicks = useMemo(
@@ -137,14 +140,6 @@ export function RestaurantDetail({
     });
   }
 
-  function handleVote(vote: "yes" | "no") {
-    if (!selectedDishId) return;
-    setMyVotes((prev) => ({
-      ...prev,
-      [selectedDishId]: prev[selectedDishId] === vote ? undefined : vote,
-    }));
-  }
-
   // Everyone who has weighed in on a dish here — the denominator behind the
   // hits grid's footer line.
   const ratedBy = dishesWithStats.reduce((sum, dish) => sum + dish.total, 0);
@@ -160,34 +155,27 @@ export function RestaurantDetail({
           stay in view however far down the menu the reader gets. */}
       <div className="lg:flex lg:items-start lg:gap-4">
         <div className="flex min-w-0 flex-col gap-4 lg:flex-1">
-          {/* The dishes lead. Booking a table is a side errand next to what to
-              order, so it sits in the rail rather than above the picks. */}
           <TopPicks dishes={topPicks} ratedBy={ratedBy} onSelect={setSelectedDishId} />
           <RestaurantAspects tally={aspectTally} />
           <FullMenu sections={sections} onSelect={setSelectedDishId} />
         </div>
-        {/* The rail is a column of its own: the booking card is pinned at the
-            top of it and the comments take whatever height is left and scroll,
-            so neither pushes the other out of view. */}
+        {/* The rail is the comment thread and nothing else now — the booking
+            prototype that used to be pinned above it is deleted (PRODUCT.md).
+            The thread takes the full height and scrolls on its own. */}
         {/* `self-stretch` against the row's `items-start` is what makes the
             sticky box below actually stick: a sticky element can only travel
             inside its containing block, and without this the wrapper is exactly
             as tall as the box it holds — zero travel, so the rail scrolled away
             with the page however long the menu got. */}
         <div className="mt-4 lg:mt-0 lg:w-[400px] lg:shrink-0 lg:self-stretch">
-          <div className="lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-2rem)] lg:flex-col lg:gap-4">
-            <ReservationPanel
-              restaurantId={restaurant.id}
-              hours={restaurant.hours ?? null}
-            />
-            {/* The anchor stays on the comments themselves — "see all comments"
-                from the dish sheet must land on the thread, not on the booking
-                card above it. */}
+          <div className="lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-2rem)] lg:flex-col">
+            {/* The anchor is on the thread itself — "see all comments" from the
+                dish sheet has to land on the comments. */}
             <div
               id={COMMENTS_ANCHOR}
-              className="mt-4 scroll-mt-4 lg:mt-0 lg:min-h-0 lg:flex-1 lg:overflow-y-auto"
+              className="scroll-mt-4 lg:min-h-0 lg:flex-1 lg:overflow-y-auto"
             >
-              <RestaurantComments restaurant={restaurant} dishes={dishes} />
+              <RestaurantComments restaurant={restaurant} postHref={postHref} />
             </div>
           </div>
         </div>
@@ -195,10 +183,9 @@ export function RestaurantDetail({
       {selectedDish && (
         <DishSheet
           dish={selectedDish}
+          restaurantId={restaurant.id}
           restaurantName={restaurant.name}
-          myVote={myVotes[selectedDish.id]}
           comments={selectedDishComments}
-          onVote={handleVote}
           onClose={() => setSelectedDishId(null)}
           onSeeAll={handleSeeAllComments}
         />

@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Dialog } from "./Dialog";
+import { Composer } from "./Composer";
 import { ChatIcon, VoteArrowUpIcon, VoteArrowDownIcon } from "@/components/icons";
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import type { VoteDirection } from "./PostActions";
@@ -508,85 +509,6 @@ function CommentVotes({
       </span>
       {arrow("down")}
     </div>
-  );
-}
-
-/**
- * One text field and a send button, used both by the screen's own composer and
- * by every inline reply. Each instance owns its own draft, so typing a reply
- * in one thread and then opening another doesn't carry the text across.
- */
-function Composer({
-  placeholder,
-  submitLabel,
-  onSubmit,
-  onCancel,
-  autoFocus = false,
-}: {
-  placeholder: string;
-  submitLabel: string;
-  onSubmit: (text: string) => Promise<string | null>;
-  onCancel?: () => void;
-  autoFocus?: boolean;
-}) {
-  const [text, setText] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!text.trim() || submitting) return;
-    setSubmitting(true);
-    setError(null);
-    const failure = await onSubmit(text.trim());
-    setSubmitting(false);
-    if (failure) {
-      setError(failure);
-      return;
-    }
-    setText("");
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      {error && (
-        <p role="alert" className="mb-2 text-sm text-red-700">
-          {error}
-        </p>
-      )}
-      <div className="flex items-end gap-2">
-        <label className="sr-only" htmlFor={`composer-${submitLabel}-${placeholder}`}>
-          {placeholder}
-        </label>
-        <input
-          id={`composer-${submitLabel}-${placeholder}`}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder={placeholder}
-          maxLength={1000}
-          // Only ever true on an inline reply box, which exists because the
-          // reader just asked for it — the focus goes where they were headed.
-          autoFocus={autoFocus}
-          className="min-h-11 flex-1 rounded-full bg-pm-grey-tint/60 px-4 text-sm transition-colors placeholder:text-pm-grey-text focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
-        />
-        {onCancel && (
-          <button
-            type="button"
-            onClick={onCancel}
-            className="min-h-11 shrink-0 rounded-full px-3 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-          >
-            Cancel
-          </button>
-        )}
-        <button
-          type="submit"
-          disabled={submitting || !text.trim()}
-          className="min-h-11 shrink-0 rounded-full bg-pm-orange px-4 text-sm font-medium text-[#F7F4EC] transition-transform hover:brightness-105 active:scale-[0.97] disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-        >
-          {submitting ? "Posting…" : submitLabel}
-        </button>
-      </div>
-    </form>
   );
 }
 
