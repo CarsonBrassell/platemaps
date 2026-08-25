@@ -5,7 +5,12 @@ import type { Dish } from "@/data/dishes";
 import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
 import { plateScore, type PlateScore, type RatedDish } from "@/lib/plateScore";
-import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
+import {
+  FEED_SORT_DEFAULT,
+  TRENDING_COMMENT_WEIGHT,
+  TRENDING_GRAVITY,
+  type FeedSort,
+} from "@/lib/feedSort";
 import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 import { RANKS, rankByKey } from "@/lib/ranks";
 
@@ -771,30 +776,38 @@ export async function getPostById(id: string, viewerId: string | null = null): P
  * anywhere near the query. Do not extend this to interpolate a caller's
  * string.
  *
- * "trending" ranks engagement over a steep time decay:
- * `(netVotes + comments + 1) / (ageHours + 2)^1.5`.
+ * "trending" is *recent plates with the most upvotes*:
+ * `(netVotes + COMMENT_WEIGHT*comments + 1) / (ageHours + 2)^GRAVITY`.
  *
- * The numerator used to be votes alone. Comments are in it now because they
- * are the other public thing a plate can collect and the harder one to
- * earn — writing a sentence costs more than tapping a thumb — so a plate
- * people are arguing about outranks one that quietly collected the same
- * number of votes. They are weighted equally rather than by a tuned
- * multiplier; if a comment should count for more, that coefficient is the
- * one knob to turn, and it belongs here where both live.
+ * Both constants live in `lib/feedSort` rather than here, because that module
+ * is the pure one — the UI can read them without pulling the Neon driver into
+ * the browser bundle, and the reasoning for each number is written out beside
+ * it.
  *
- * The vote half is still floored at zero so a heavily downvoted plate sinks
- * to "as if nobody voted" rather than sorting *below* older neutral posts by
- * going negative and inverting the age decay. Comments are added outside that
- * floor: a post can be worth reading because of its thread even when the
- * plate itself got voted down.
+ * `TRENDING_COMMENT_WEIGHT` is 0 today, and the ternary below omits the term
+ * rather than writing `0 * cm.count`, so the ranking is the expression it
+ * looks like rather than one with a dead multiply in it. **The `cm` join in
+ * the query itself stays either way**, and it is free while the weight is 0:
+ * checked on 2026-08-24, `EXPLAIN` of this ordering drops the `cm` node from
+ * the plan entirely (`uv` and `dv` both survive as Hash Left Joins, `cm` does
+ * not appear). Keeping it in the text means turning the knob back on is a
+ * one-line change in `feedSort` and nothing here.
+ *
+ * The vote total is floored at zero so a heavily downvoted plate sinks to "as
+ * if nobody voted" rather than sorting *below* older neutral posts by going
+ * negative and inverting the age decay. That floor is also the whole of what
+ * happens to a downvoted plate: there is **no Yik Yak-style `-5` removal**
+ * here, and there should not be — see the note in `lib/feedSort`.
  *
  * The decay stays. Without it "Trending" is an all-time leaderboard that
  * never changes and a plate posted this evening can never reach — which is
  * "Top", not "Trending", and there is already a "New" for chronology.
  */
 const DISCOVER_ORDER: Record<FeedSort, string> = {
-  trending: `(GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0) + COALESCE(cm.count, 0) + 1)
-        / POWER(EXTRACT(EPOCH FROM (now() - p.created_at)) / 3600 + 2, 1.5) DESC`,
+  trending: `(GREATEST(COALESCE(uv.count, 0) - COALESCE(dv.count, 0), 0)${
+    TRENDING_COMMENT_WEIGHT > 0 ? ` + ${TRENDING_COMMENT_WEIGHT} * COALESCE(cm.count, 0)` : ""
+  } + 1)
+        / POWER(EXTRACT(EPOCH FROM (now() - p.created_at)) / 3600 + 2, ${TRENDING_GRAVITY}) DESC`,
   new: `p.created_at DESC`,
 };
 

@@ -347,10 +347,17 @@ export function PhoneFeedScreen() {
             )}
           </div>
 
-          {/* Bottom-right, opposite the source switch and in the same glass.
-              No `onSearch`: there is no list on this tab to narrow, so a submit
-              keeps its default of sending the term to Discover. */}
-          <PhoneFeedSearch placement="map" />
+          {/* No search control here. The map's field is `PhoneMapSearch`, which
+              PhoneFeedMapPanel hands to RestaurantMap as its `searchField` — it
+              lights matching tiles and flies the camera, which needs the map's
+              own ref.
+
+              There used to be a `<PhoneFeedSearch placement="map" />` on this
+              line, left behind when that move happened. It was invisible rather
+              than wrong-looking: sitting in normal flow, it painted *under* the
+              absolutely-positioned map, so nobody ever saw the button it drew in
+              the top-right corner — but it was still in the tree, still
+              focusable, and still the only thing `tsc` complained about. */}
         </div>
 
         {/* Reachable from here in principle — a bubble that opens a post leaves
