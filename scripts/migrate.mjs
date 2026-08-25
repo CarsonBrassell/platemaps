@@ -709,6 +709,27 @@ const statements = [
   `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS google_checked_at TIMESTAMPTZ`,
   `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS google_place_id TEXT`,
   `CREATE INDEX IF NOT EXISTS idx_restaurants_google_checked ON restaurants(google_checked_at NULLS FIRST)`,
+
+  // Trigram search over the three fields every search surface ranks on.
+  //
+  // `/api/restaurants?q=` used to read all 4,053 listed rows and filter them in
+  // JavaScript - 2.8 MB and ~1.8s per keystroke-triggered request, measured, on
+  // localhost with no network in the way. The route's own comment named this
+  // index as the intended fix and it finally matters: at 991 restaurants the
+  // scan was invisible, at 4,053 it is the slowest thing the app does.
+  //
+  // GIN over `gin_trgm_ops` rather than a plain btree because the queries are
+  // all `ILIKE '%term%'`, and a leading wildcard makes a btree useless. Trigram
+  // indexes serve exactly that shape.
+  //
+  // One index across the three columns via a concatenation, not three indexes:
+  // the search treats them as one haystack ("thai" should find the cuisine,
+  // "hillcrest" the neighbourhood, from the same box), and the expression has to
+  // match the predicate in db.ts for the planner to use it. If you change either
+  // side, change both.
+  `CREATE EXTENSION IF NOT EXISTS pg_trgm`,
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_search ON restaurants
+     USING gin ((name || ' ' || cuisine || ' ' || neighborhood) gin_trgm_ops)`,
 ];
 
 for (const statement of statements) {
