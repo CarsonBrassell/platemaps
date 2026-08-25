@@ -324,7 +324,8 @@ export default function TermsPage() {
             <p>
               Certain restaurant information, photographs, map tiles, and geolocation data
               displayed on the Service are provided by or sourced from third parties,
-              including Yelp Inc. and our map and mapping-data providers, under their
+              including Yelp Inc., OpenStreetMap contributors (map and place data, licensed
+              under the Open Database License), and OpenFreeMap (map tiles), under their
               respective terms of use, and remain the property of their respective owners.
               We attribute this content where required (for
               example, photo credit lines) but do not independently verify it and are not
@@ -333,6 +334,17 @@ export default function TermsPage() {
               third-party sites that we do not control and are not responsible for. Your
               use of any third-party site or service is governed by that party&rsquo;s own
               terms and privacy policy.
+            </p>
+            <p className="mt-4">
+              <strong className="font-semibold text-zinc-900">Menu information.</strong>{" "}
+              Dish names, descriptions, and prices shown on the Service are compiled from
+              publicly available sources, including restaurants&rsquo; own published menus,
+              and are processed by automated tools. Menus change often and we do not verify
+              them; treat everything shown as a starting point rather than an offer, and
+              confirm with the restaurant before relying on a price, an ingredient, or the
+              availability of a dish. If you are a restaurant owner or rights holder and
+              want your menu information corrected or removed, contact us using the details
+              in Section 21 and we will act on reasonable requests promptly.
             </p>
           </Section>
 

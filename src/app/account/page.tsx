@@ -123,7 +123,7 @@ function AuthForm() {
       return;
     }
     if (mode === "signup" && !agreed) {
-      setError("You must agree to the Terms of Service and Privacy Policy to create an account.");
+      setError("You must confirm you are 13 or older and agree to the Terms of Service and Privacy Policy to create an account.");
       return;
     }
     if (mode === "login" && (!email || !password)) {
@@ -261,7 +261,7 @@ function AuthForm() {
               className="mt-0.5 h-4 w-4 shrink-0 accent-pm-orange"
             />
             <span>
-              I agree to the{" "}
+              I am 13 or older and I agree to the{" "}
               <Link
                 href="/terms"
                 target="_blank"
