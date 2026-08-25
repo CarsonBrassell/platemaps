@@ -47,9 +47,8 @@
  * menus:audit; it is not a rendering precondition.
  */
 
-import { neon } from "@neondatabase/serverless";
+import { sql } from "./sql-client.mjs";
 
-const sql = neon(process.env.DATABASE_URL);
 const DRY_RUN = process.argv.includes("--dry");
 
 if (!process.env.DATABASE_URL) {

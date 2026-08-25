@@ -29,6 +29,14 @@ export const NEO_NOIR_STYLE: StyleSpecification = {
     ofm: {
       type: "vector",
       url: "https://tiles.openfreemap.org/planet",
+      /* Stated explicitly rather than left to whatever the TileJSON happens to
+         carry. OpenFreeMap serves OpenStreetMap data, which is ODbL — the
+         licence requires attributing "OpenStreetMap contributors" wherever the
+         data is shown, and a licence breach is not a styling question. The
+         attribution control is enabled in RestaurantMap; this is what it
+         prints. */
+      attribution:
+        '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors · <a href="https://openfreemap.org">OpenFreeMap</a>',
     },
   },
   layers: [

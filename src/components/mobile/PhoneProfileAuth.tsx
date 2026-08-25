@@ -56,7 +56,7 @@ export function PhoneProfileAuth() {
        which refuses a signup without it. The button is disabled too, so this
        only fires for a submit that got past the disabled state. */
     if (mode === "signup" && !agreed) {
-      setError("Please agree to the Terms and Privacy Policy to continue.");
+      setError("Please confirm you are 13 or older and agree to the Terms and Privacy Policy.");
       return;
     }
     if (mode === "signup") {
@@ -195,7 +195,7 @@ export function PhoneProfileAuth() {
               className="mt-0.5 h-5 w-5 shrink-0 accent-pm-orange"
             />
             <span className="leading-relaxed">
-              I agree to the{" "}
+              I am 13 or older and I agree to the{" "}
               <Link href="/terms" target="_blank" className="underline underline-offset-2">
                 Terms of Service
               </Link>{" "}

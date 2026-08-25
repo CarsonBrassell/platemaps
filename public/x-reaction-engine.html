@@ -1,0 +1,1406 @@
+<title>The Reaction Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ============================================================
+   Working prototype of the profile's reward system:
+   the Live Wall (every plate, badged where something happened)
+   + per-plate milestone meters + the arrival sequence.
+
+   Two worlds again: the dark studio wall (st-) holds the demo;
+   the phone (pm-) is PlateMaps Warm Editorial, tokens verbatim.
+   Single-theme on purpose — the mock IS a light-mode product.
+   ============================================================ */
+
+:root {
+  --st-ground: #1B1815;
+  --st-raised: #24211C;
+  --st-sunk: #131110;
+  --st-ink: #EFE8DC;
+  --st-muted: #9C9184;
+  --st-faint: #6A6157;
+  --st-rule: #322D27;
+  --st-accent: #E8875A;
+
+  --pm-cream: #F7F4EC;
+  --pm-white: #FFFFFF;
+  --pm-ink: #232019;
+  --pm-zinc-400: #A79E8D;
+  --pm-zinc-500: #7E7261;
+  --pm-zinc-600: #6B6153;
+  --pm-grey-text: #665C4E;
+  --pm-orange: #C9591F;
+  --pm-orange-text: #A8481A;
+  --pm-grey-tint: #EDE8DC;
+  --pm-tone-1: #EEE5D2;
+  --pm-tone-2: #E6DCC6;
+  --pm-tone-3: #EFE8DA;
+
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --mono: "Spline Sans Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* The system's two tempos. Fast is for acknowledgement,
+     slow is for ceremony. Nothing in between. */
+  --snap: 160ms;
+  --ceremony: 620ms;
+}
+
+* { box-sizing: border-box; }
+
+/* A class's `display:flex` silently beats the UA's `[hidden]` rule —
+   which is exactly how the live-section header leaked into every
+   layout. Belt and braces, once, here. */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--st-ground);
+  color: var(--st-ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1150px; margin: 0 auto; padding: 52px 24px 90px; }
+
+.eyebrow {
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--st-accent); margin: 0 0 16px;
+}
+
+h1 {
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(32px, 5vw, 50px); line-height: 1.08;
+  letter-spacing: -0.015em; text-wrap: balance;
+  margin: 0 0 18px; max-width: 18ch;
+}
+
+.deck { font-size: 17px; color: var(--st-muted); max-width: 62ch; margin: 0 0 14px; }
+.deck strong { color: var(--st-ink); font-weight: 600; }
+
+/* ---------- research strip ---------- */
+
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 34px 0 50px; }
+.rule { background: var(--st-raised); border-radius: 13px; padding: 16px 18px; }
+.rule .n {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.14em; color: var(--st-accent);
+  display: block; margin-bottom: 7px; text-transform: uppercase;
+}
+.rule .h { font-family: var(--display); font-size: 16.5px; font-weight: 600; color: var(--st-ink); display: block; margin-bottom: 6px; line-height: 1.3; }
+.rule .b { font-size: 13px; color: var(--st-muted); line-height: 1.55; display: block; }
+.rule .src { font-size: 11.5px; color: var(--st-faint); display: block; margin-top: 8px; font-family: var(--mono); }
+
+/* ---------- demo stage ---------- */
+
+.stage {
+  display: grid;
+  grid-template-columns: 410px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+@media (max-width: 920px) { .stage { grid-template-columns: 1fr; } }
+
+/* controls */
+.controls { position: sticky; top: 20px; display: grid; gap: 22px; }
+.ctrl-group .lbl {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--st-faint);
+  display: block; margin-bottom: 9px;
+}
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+button.demo {
+  font-family: var(--mono); font-size: 12.5px; font-weight: 500;
+  background: var(--st-raised); color: var(--st-ink);
+  border: none; border-radius: 999px; padding: 10px 17px;
+  cursor: pointer; min-height: 44px;
+  transition: transform var(--snap) ease, background var(--snap) ease;
+}
+button.demo:hover { background: #2C2822; }
+button.demo:active { transform: scale(0.96); }
+button.demo:focus-visible { outline: 2px solid var(--st-accent); outline-offset: 2px; }
+button.demo.primary { background: var(--st-accent); color: var(--st-ground); font-weight: 600; }
+button.demo:disabled { opacity: 0.45; cursor: default; transform: none; }
+
+.beat-log {
+  background: var(--st-sunk); border-radius: 12px;
+  padding: 14px 16px; min-height: 132px;
+  font-family: var(--mono); font-size: 11.5px; line-height: 1.9;
+  color: var(--st-muted);
+}
+.beat-log .now { color: var(--st-accent); }
+.beat-log .lbl2 { color: var(--st-faint); letter-spacing: .14em; font-size: 10px; text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+.annot { display: grid; gap: 10px; }
+.annot .a {
+  font-size: 13.5px; color: var(--st-muted); line-height: 1.55;
+  padding-left: 14px; position: relative;
+}
+.annot .a::before {
+  content: ""; position: absolute; left: 0; top: 8px;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--st-accent);
+}
+.annot .a b { color: var(--st-ink); font-weight: 600; }
+
+/* ============================================================
+   THE PHONE
+   ============================================================ */
+
+.phone {
+  width: 410px;
+  max-width: 100%;
+  background: var(--pm-cream);
+  border-radius: 28px;
+  padding: 16px 13px 20px;
+  color: var(--pm-ink);
+  position: relative;
+  overflow: hidden;
+  justify-self: start;
+}
+
+@media (max-width: 920px) { .phone { justify-self: center; } }
+
+.card { background: var(--pm-white); border-radius: 16px; padding: 16px; position: relative; }
+
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+.mlabel {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--pm-zinc-500);
+}
+
+/* header */
+.id-row { display: flex; align-items: center; gap: 13px; }
+.avatar {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--pm-grey-tint);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 15px; font-weight: 500; color: var(--pm-grey-text);
+  flex: 0 0 auto;
+}
+.who { flex: 1; min-width: 0; }
+.who .nm { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.15; }
+.who .hd { font-family: var(--mono); font-size: 11px; color: var(--pm-zinc-500); margin-top: 3px; letter-spacing: .05em; }
+
+.total-row { display: flex; align-items: baseline; gap: 10px; margin-top: 15px; }
+#total {
+  font-family: var(--mono); font-size: 40px; font-weight: 600;
+  color: var(--pm-orange); line-height: 0.9; font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+#delta {
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  color: var(--pm-orange-text); font-variant-numeric: tabular-nums;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 300ms ease, transform 300ms cubic-bezier(.2,1.4,.4,1);
+}
+#delta.show { opacity: 1; transform: none; }
+
+.track { height: 7px; border-radius: 999px; background: var(--pm-grey-tint); margin-top: 13px; overflow: hidden; }
+#trackFill {
+  display: block; height: 100%; border-radius: 999px; background: var(--pm-orange);
+  width: 0%;
+  transition: width var(--ceremony) cubic-bezier(.3,.9,.35,1);
+}
+.track-meta {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
+  color: var(--pm-zinc-500); margin-top: 7px; font-variant-numeric: tabular-nums;
+}
+#toNext { transition: color 240ms ease; }
+
+/* the new chip */
+#newChip {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+  background: var(--pm-orange); color: var(--pm-cream);
+  border-radius: 999px; padding: 3px 9px;
+  font-variant-numeric: tabular-nums;
+  transform: scale(0);
+}
+#newChip.in { animation: chip-arrive 420ms cubic-bezier(.3,1.6,.4,1) forwards; }
+@keyframes chip-arrive {
+  0% { transform: scale(0); }
+  62% { transform: scale(1.14, 0.9); }
+  82% { transform: scale(0.95, 1.06); }
+  100% { transform: scale(1); }
+}
+#newChip.bump { animation: chip-bump 340ms cubic-bezier(.3,1.5,.4,1); }
+@keyframes chip-bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.22, 0.86); }
+  100% { transform: scale(1); }
+}
+
+/* wall */
+.wall-head { display: flex; align-items: baseline; justify-content: space-between; padding: 16px 5px 8px; }
+.wall { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.tile {
+  aspect-ratio: 1; border-radius: 11px; position: relative;
+  cursor: pointer; border: none; padding: 0;
+  transition: transform var(--snap) ease;
+}
+.tile:active { transform: scale(0.96); }
+.tile:focus-visible { outline: 2px solid var(--pm-orange); outline-offset: 2px; }
+.tile .ph { position: absolute; inset: 0; border-radius: 11px; }
+
+.badge {
+  position: absolute; top: 6px; right: 6px; z-index: 2;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+  background: var(--pm-orange); color: var(--pm-cream);
+  border-radius: 999px; min-width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 6px; font-variant-numeric: tabular-nums;
+  transform: scale(0);
+}
+.badge.in { animation: chip-arrive 420ms cubic-bezier(.3,1.6,.4,1) forwards; }
+.badge.bump { animation: chip-bump 340ms cubic-bezier(.3,1.5,.4,1); transform: scale(1); }
+.badge.out { animation: badge-out 260ms ease forwards; }
+@keyframes badge-out { to { transform: scale(0); opacity: 0; } }
+
+.mile {
+  position: absolute; left: 6px; bottom: 6px; z-index: 2;
+  font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+  background: var(--pm-white); color: var(--pm-orange-text);
+  border-radius: 999px; padding: 2px 7px;
+  font-variant-numeric: tabular-nums;
+}
+.mile.stamp { animation: mile-stamp 560ms cubic-bezier(.3,1.5,.4,1); }
+@keyframes mile-stamp {
+  0% { transform: scale(2.6); opacity: 0; }
+  55% { transform: scale(0.92); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* the tile-level flash when a reaction lands on it */
+.tile .glowring {
+  position: absolute; inset: -2px; border-radius: 13px; z-index: 1;
+  box-shadow: 0 0 0 0 rgba(201,89,31,0);
+  pointer-events: none;
+}
+.hit .glowring { animation: tile-hit 700ms ease-out; }
+/* the spotlight choreography's lift, translated per world */
+.ndot.lift .core { box-shadow: 0 0 30px 12px rgba(255, 176, 122, 0.7); }
+.tline.lift, .mitem.lift { transform: scale(1.03); }
+.scard.lift { transform: scale(1.05); z-index: 3; }
+@keyframes tile-hit {
+  0% { box-shadow: 0 0 0 0 rgba(201,89,31,0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(201,89,31,0); }
+}
+
+/* live plate cards with meters */
+.live { margin-top: 15px; display: grid; gap: 8px; }
+.plate-card { background: var(--pm-white); border-radius: 16px; padding: 13px 14px; }
+.plate-row { display: flex; gap: 12px; }
+.thumb { width: 58px; height: 58px; border-radius: 10px; flex: 0 0 auto; }
+.plate-body { flex: 1; min-width: 0; }
+.plate-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.plate-name { font-family: var(--display); font-weight: 600; font-size: 15px; line-height: 1.2; }
+.plate-at { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; color: var(--pm-zinc-500); margin-top: 3px; }
+.tally { display: flex; gap: 12px; align-items: baseline; font-family: var(--mono); font-size: 12px; color: var(--pm-zinc-600); font-variant-numeric: tabular-nums; margin-top: 7px; }
+.tally b { color: var(--pm-ink); font-weight: 600; }
+.tally .up { color: var(--pm-orange-text); }
+
+.meter { height: 5px; border-radius: 999px; background: var(--pm-grey-tint); margin-top: 9px; overflow: hidden; }
+.meter i {
+  display: block; height: 100%; border-radius: 999px; background: var(--pm-orange);
+  width: 0%;
+  transition: width 480ms cubic-bezier(.3,.9,.35,1);
+}
+.meter-lbl {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .06em;
+  color: var(--pm-zinc-500); margin-top: 5px; font-variant-numeric: tabular-nums;
+}
+
+/* floating +1 */
+.float {
+  position: absolute; z-index: 30; pointer-events: none;
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  color: var(--pm-orange-text);
+  animation: float-up 1100ms cubic-bezier(.2,.7,.3,1) forwards;
+}
+@keyframes float-up {
+  0% { opacity: 0; transform: translateY(6px) scale(.8); }
+  18% { opacity: 1; transform: translateY(0) scale(1.05); }
+  30% { transform: translateY(-4px) scale(1); }
+  100% { opacity: 0; transform: translateY(-46px) scale(1); }
+}
+
+/* milestone ceremony overlay */
+#ceremony {
+  position: absolute; inset: 0; z-index: 40;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(247,244,236,0.88);
+  border-radius: 28px;
+}
+#ceremony.on { display: flex; animation: cer-fade 260ms ease; }
+@keyframes cer-fade { from { opacity: 0; } to { opacity: 1; } }
+.cer-card { text-align: center; padding: 30px; position: relative; }
+.cer-kicker { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--pm-zinc-500); }
+.cer-num {
+  font-family: var(--mono); font-size: 64px; font-weight: 600;
+  color: var(--pm-orange); line-height: 1; font-variant-numeric: tabular-nums;
+  margin: 10px 0 4px;
+  animation: cer-num-in 700ms cubic-bezier(.25,1.4,.4,1);
+}
+@keyframes cer-num-in {
+  0% { transform: scale(.4); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.cer-name { font-family: var(--display); font-weight: 600; font-size: 20px; color: var(--pm-ink); }
+.cer-sub { font-family: var(--mono); font-size: 11px; color: var(--pm-zinc-500); margin-top: 6px; letter-spacing: .08em; }
+.cer-award {
+  display: inline-block; margin-top: 14px;
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  color: var(--pm-cream); background: var(--pm-orange);
+  border-radius: 999px; padding: 7px 16px;
+  animation: chip-arrive 480ms 500ms cubic-bezier(.3,1.6,.4,1) backwards;
+}
+
+#embers { position: absolute; inset: 0; z-index: 41; pointer-events: none; }
+
+/* ============================================================
+   LAYOUTS — five WORLDS, not five orderings. Each renders the
+   plates in a different visual language; the engine's hooks
+   ([data-plate], [data-badge], [data-live]) work in all of them,
+   so every choreography, reaction and ceremony carries over.
+   ============================================================ */
+
+#bodyWrap { display: flex; flex-direction: column; }
+
+/* ---- 1 · NIGHT LIGHTS — your plates as embers on the night city.
+   The map's sanctioned dark world, used on a profile for the first
+   time: a window of night framed by the cream page, exactly like
+   the map card. Glow is the idiom here, not a violation. ---- */
+.night-panel {
+  position: relative;
+  height: 420px;
+  border-radius: 16px;
+  background: #191c22;
+  margin-top: 15px;
+  overflow: hidden;
+}
+.night-lbl {
+  position: absolute; top: 12px; left: 14px;
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase; color: #7e8697;
+}
+.night-lbl b { color: #e8875a; font-weight: 600; }
+.ndot {
+  position: absolute; transform: translate(-50%, -50%);
+  background: none; border: none; padding: 0; cursor: pointer;
+}
+.ndot:focus-visible { outline: 2px solid #e8875a; outline-offset: 4px; border-radius: 50%; }
+.ndot .core {
+  display: block; border-radius: 50%;
+  background: #d98a5f;
+  box-shadow: 0 0 14px 4px rgba(232, 135, 90, 0.45);
+}
+.ndot.hot .core { background: #ffb07a; box-shadow: 0 0 22px 8px rgba(255, 176, 122, 0.55); }
+.ndot .nname {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  margin-top: 7px; white-space: nowrap;
+  font-family: var(--mono); font-size: 8.5px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase; color: #e8875a;
+  text-shadow: 0 0 8px rgba(232, 135, 90, 0.7);
+}
+.ndot .badge { top: -14px; right: auto; left: 60%; }
+.ndot .mile {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  bottom: auto; top: -30px;
+  background: transparent; color: #ffb07a; padding: 0;
+  text-shadow: 0 0 8px rgba(255, 176, 122, 0.7);
+}
+.ndot .glowring { inset: -8px; border-radius: 50%; }
+
+/* ---- 2 · THE RECEIPT — the visit printed as a diner tape.
+   All machine voice, zigzag tear, badges as the qty column. ---- */
+.tape {
+  background: var(--pm-white);
+  margin: 15px 26px 0;
+  padding: 20px 18px 26px;
+  font-family: var(--mono); font-size: 11.5px; line-height: 1.7;
+  color: var(--pm-ink); font-variant-numeric: tabular-nums;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px),
+    95% 100%, 90% calc(100% - 8px), 85% 100%, 80% calc(100% - 8px),
+    75% 100%, 70% calc(100% - 8px), 65% 100%, 60% calc(100% - 8px),
+    55% 100%, 50% calc(100% - 8px), 45% 100%, 40% calc(100% - 8px),
+    35% 100%, 30% calc(100% - 8px), 25% 100%, 20% calc(100% - 8px),
+    15% 100%, 10% calc(100% - 8px), 5% 100%, 0 calc(100% - 8px));
+}
+.tape .center { text-align: center; }
+.tape .tearline { color: var(--pm-zinc-400); overflow: hidden; white-space: nowrap; }
+.tape .tline {
+  display: grid; grid-template-columns: 22px 1fr auto;
+  gap: 8px; align-items: baseline;
+  border: none; background: none; padding: 2px 0; margin: 0;
+  font: inherit; color: inherit; text-align: left; width: 100%;
+  cursor: pointer; position: relative;
+}
+.tape .tline:focus-visible { outline: 2px solid var(--pm-orange); outline-offset: 1px; }
+.tape .tline .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.04em; }
+.tape .tline .val { color: var(--pm-zinc-600); }
+.tape .tline .val.hotv { color: var(--pm-orange-text); font-weight: 600; }
+.tape .tline .badge {
+  position: static; display: inline-flex; min-width: 0; height: auto;
+  background: none; color: var(--pm-orange-text); font-weight: 600;
+  padding: 0; transform: none;
+}
+.tape .tline .badge.in, .tape .tline .badge.bump { animation: chip-bump 340ms cubic-bezier(.3,1.5,.4,1); }
+.tape .meter { margin: 3px 0 0; grid-column: 1 / -1; }
+.tape .meter-lbl { grid-column: 1 / -1; margin: 4px 0 6px; }
+.tape .mile { position: static; display: inline; padding: 0; background: none; }
+.tape .totals { margin-top: 8px; }
+.tape .totals .tline { cursor: default; }
+
+/* ---- 3 · THE MENU — the profile set like the thing the app
+   is about: a dinner menu. Fraunces names, dotted leaders,
+   scores where the prices go. ---- */
+.menu-page { background: var(--pm-white); border-radius: 16px; margin-top: 15px; padding: 26px 22px 24px; }
+.menu-head { text-align: center; margin-bottom: 6px; }
+.menu-head .est { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pm-zinc-500); }
+.menu-sec { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pm-orange-text); text-align: center; margin: 18px 0 8px; }
+.mitem {
+  display: flex; align-items: baseline; gap: 6px; width: 100%;
+  background: none; border: none; padding: 5px 0; margin: 0;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+  position: relative;
+}
+.mitem:focus-visible { outline: 2px solid var(--pm-orange); outline-offset: 2px; }
+.mitem .mnm { font-family: var(--display); font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mitem .lead { flex: 1; border-bottom: 2px dotted var(--pm-grey-tint); transform: translateY(-3px); min-width: 18px; }
+.mitem .msc { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--pm-orange); font-variant-numeric: tabular-nums; }
+.mitem .badge { position: static; transform: scale(0); margin-left: 2px; }
+.mitem .badge.in { animation: chip-arrive 420ms cubic-bezier(.3,1.6,.4,1) forwards; }
+.mitem .mile { position: static; padding: 0 0 0 4px; background: none; }
+.msub { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.08em; color: var(--pm-zinc-500); margin: -3px 0 2px; text-transform: uppercase; }
+.menu-page .meter { margin: 2px 0 8px; }
+
+/* ---- 4 · THE MARQUEE — scoreboard band up top in the night
+   chrome, plates as a film strip you thumb through sideways. ---- */
+.layout-marquee #headerCard { background: #191c22; }
+.layout-marquee .who .nm { color: #f7f4ec; }
+.layout-marquee .who .hd { color: #7e8697; }
+.layout-marquee #total { color: #ffb07a; text-shadow: 0 0 18px rgba(255,176,122,0.45); }
+.layout-marquee #delta { color: #e8875a; }
+.layout-marquee .track { background: #262b34; }
+.layout-marquee .track-meta { color: #7e8697; }
+.layout-marquee .avatar { background: #262b34; color: #b9aa96; }
+.strip {
+  display: flex; gap: 8px; overflow-x: auto; margin-top: 15px;
+  padding-bottom: 6px; scroll-snap-type: x mandatory;
+}
+.strip::-webkit-scrollbar { height: 4px; }
+.strip::-webkit-scrollbar-thumb { background: var(--pm-grey-tint); border-radius: 2px; }
+.scard {
+  flex: 0 0 152px; scroll-snap-align: start;
+  background: var(--pm-white); border-radius: 14px; padding: 8px;
+  border: none; font: inherit; text-align: left; cursor: pointer;
+  position: relative;
+}
+.scard:focus-visible { outline: 2px solid var(--pm-orange); outline-offset: 2px; }
+.scard .ph { height: 128px; border-radius: 9px; }
+.scard .snm { font-family: var(--display); font-weight: 600; font-size: 13px; line-height: 1.2; margin-top: 8px; min-height: 31px; }
+.scard .smeta { font-family: var(--mono); font-size: 10px; color: var(--pm-zinc-500); margin-top: 3px; font-variant-numeric: tabular-nums; }
+.scard .badge { width: 24px; height: 24px; font-size: 12px; top: 14px; right: 14px; }
+.scard .mile { left: 14px; bottom: auto; top: 116px; }
+.scard .meter { margin-top: 7px; }
+
+/* ---- 5 · THE SHOEBOX — polaroids loose on the table. Rotation
+   breaks the grid; the badge is a sticker slapped on a corner. ---- */
+.shoebox { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 10px; padding: 18px 10px 6px; }
+.polaroid {
+  background: var(--pm-white); border-radius: 4px;
+  padding: 8px 8px 10px; border: none; font: inherit;
+  text-align: left; cursor: pointer; position: relative;
+}
+.polaroid:focus-visible { outline: 2px solid var(--pm-orange); outline-offset: 2px; }
+.polaroid .ph { height: 118px; border-radius: 2px; }
+.polaroid .cap { font-size: 11.5px; color: var(--pm-zinc-600); margin-top: 7px; line-height: 1.3; font-style: italic; }
+.polaroid .cap b { font-style: normal; font-weight: 600; color: var(--pm-ink); }
+.polaroid:nth-child(5n+1) { transform: rotate(-2.4deg); }
+.polaroid:nth-child(5n+2) { transform: rotate(1.8deg) translateY(9px); }
+.polaroid:nth-child(5n+3) { transform: rotate(2.2deg); }
+.polaroid:nth-child(5n+4) { transform: rotate(-1.6deg) translateY(7px); }
+.polaroid:nth-child(5n+5) { transform: rotate(0.8deg); }
+.polaroid .badge { top: -7px; right: -6px; width: 26px; height: 26px; font-size: 12px; }
+.polaroid .mile { left: -5px; bottom: 14px; transform: rotate(-6deg); outline: 1px dashed var(--pm-orange-text); }
+.polaroid .meter { margin-top: 6px; }
+.polaroid.lift { transform: rotate(0deg) scale(1.06) !important; z-index: 3; }
+.shoebox-note {
+  grid-column: 1 / -1; font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--pm-zinc-500);
+  text-align: center; padding: 12px 0 2px;
+}
+
+/* ---------- per-choreography extras ---------- */
+
+/* Spotlight: one tile lifted while its badge lands */
+.tile { z-index: 0; }
+.tile.lift { transform: scale(1.07); z-index: 3; transition: transform 260ms cubic-bezier(.3,1.4,.4,1); }
+
+/* Heartbeat: the total snapping in one squashed beat */
+#total.snap { animation: total-snap 420ms cubic-bezier(.3,1.5,.4,1); }
+@keyframes total-snap {
+  0% { transform: scale(1); }
+  38% { transform: scale(1.14, 0.88); }
+  100% { transform: scale(1); }
+}
+/* Heartbeat: one full-surface pulse of warmth, the shared beat */
+#phone::after {
+  content: ""; position: absolute; inset: 0; z-index: 25; pointer-events: none;
+  background: var(--pm-orange); opacity: 0; border-radius: 28px;
+}
+#phone.pulse::after { animation: phone-pulse 460ms ease-out; }
+@keyframes phone-pulse { 0% { opacity: 0.13; } 100% { opacity: 0; } }
+
+/* Pour: the delta label riding the track's fill edge */
+#pourRider {
+  position: absolute; top: -22px; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  color: var(--pm-orange-text); font-variant-numeric: tabular-nums;
+  white-space: nowrap; opacity: 0;
+}
+.track { position: relative; overflow: visible; }
+.track > i { overflow: hidden; }
+
+/* choreography picker */
+.variant-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+button.vp {
+  font-family: var(--mono); font-size: 11.5px; font-weight: 500;
+  background: var(--st-sunk); color: var(--st-muted);
+  border: none; border-radius: 999px; padding: 8px 14px;
+  cursor: pointer; min-height: 38px;
+  transition: transform var(--snap) ease, background var(--snap) ease, color var(--snap) ease;
+}
+button.vp:hover { color: var(--st-ink); }
+button.vp:active { transform: scale(0.96); }
+button.vp:focus-visible { outline: 2px solid var(--st-accent); outline-offset: 2px; }
+button.vp[aria-pressed="true"] { background: var(--st-accent); color: var(--st-ground); font-weight: 600; }
+.vp-desc { font-size: 13px; color: var(--st-muted); line-height: 1.55; margin-top: 10px; min-height: 62px; }
+.vp-desc b { color: var(--st-ink); }
+
+/* reduced motion: everything lands in its final state, instantly */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  #newChip, .badge { transform: scale(1); }
+  #delta { opacity: 1; transform: none; }
+}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">PlateMaps · working prototype · the Live Wall</p>
+  <h1>The Reaction Engine</h1>
+  <p class="deck">
+    Every plate you've posted, badged where something happened, against a rank that visibly moves.
+    This one runs — and it's now a grid of choices: <strong>five layouts × five arrival
+    choreographies</strong>, every combination live. Pick a shape, pick a tempo, then fire
+    upvotes, land comments, and push a plate across its milestone.
+  </p>
+  <p class="deck" style="margin-bottom:0">
+    The motion follows five rules pulled from the apps that do this best — and one from a failure.
+  </p>
+
+  <div class="rules">
+    <div class="rule">
+      <span class="n">Rule 1 · Duolingo</span>
+      <span class="h">Rare is what makes it powerful</span>
+      <span class="b">Duolingo gates its big animations to milestone days only — redesigning one such moment moved day-7 retention +1.7%. So here, an ordinary upvote gets a small pop; the full-screen ceremony fires <em>only</em> when a plate crosses 25 / 100 / 500.</span>
+      <span class="src">duolingo.deconstructoroffun.com</span>
+    </div>
+    <div class="rule">
+      <span class="n">Rule 2 · Neuroscience</span>
+      <span class="h">Anticipation beats receipt</span>
+      <span class="b">Dopamine peaks <em>before</em> the reward, on the prediction gap. The count-up holds a 350ms beat on your old total before it rolls — the pause is the point, not a loading delay.</span>
+      <span class="src">neurolaunch.com · diygenius.com</span>
+    </div>
+    <div class="rule">
+      <span class="n">Rule 3 · Game feel</span>
+      <span class="h">Squash, stretch, never linear</span>
+      <span class="b">Badges arrive with overshoot-and-settle (scale 0 → 114% wide → settle), floats ease out, meters fill on a decelerating curve. Linear motion reads as dead; every curve here has a body.</span>
+      <span class="src">gamedeveloper.com · valdemird.com</span>
+    </div>
+    <div class="rule">
+      <span class="n">Rule 4 · Apple's mistake</span>
+      <span class="h">One celebration at a time</span>
+      <span class="b">Fitness users report their favorite ring animation almost never plays — it collides with simultaneous badges and gets skipped. Everything here runs through a queue: events landing together play in sequence, never on top of each other.</span>
+      <span class="src">discussions.apple.com</span>
+    </div>
+    <div class="rule">
+      <span class="n">Rule 5 · Peak–end</span>
+      <span class="h">End on the best thing</span>
+      <span class="b">The load sequence is ordered so the last beat is the rank track filling — what all of it <em>means</em> — not a trailing badge. The sequence has an ending, not a fade-out.</span>
+      <span class="src">appcues.com</span>
+    </div>
+    <div class="rule">
+      <span class="n">Rule 6 · House rule</span>
+      <span class="h">Honest numbers only</span>
+      <span class="b">Everything animated here is a real event the database recorded — awardPoints' own <em>awarded</em> flag gates every +N, so a re-vote Postgres refused never floats a phantom point. No fake pings, ever. The dopamine loop research also documents the dark side; this system takes the craft and leaves the manipulation.</span>
+      <span class="src">unpluggedpsych.com · PRODUCT.md</span>
+    </div>
+  </div>
+
+  <div class="stage">
+    <!-- ==================== PHONE ==================== -->
+    <div class="phone" id="phone">
+      <div class="card" id="headerCard">
+        <div class="id-row">
+          <div class="avatar">CB</div>
+          <div class="who">
+            <div class="nm">Carson Brassell</div>
+            <div class="hd">@CARSONBRASSELL · <span id="rankName">REGULAR</span></div>
+          </div>
+          <span id="newChip">7 NEW</span>
+        </div>
+        <div class="total-row">
+          <span id="total">262</span>
+          <span id="delta">+7</span>
+        </div>
+        <div class="track"><i id="trackFill"></i><span id="pourRider">+7</span></div>
+        <div class="track-meta">
+          <span>REGULAR · 100</span>
+          <span id="toNext">131 TO LOCAL · 400</span>
+        </div>
+      </div>
+
+      <!-- Each layout renders its whole world in here. The engine only
+           needs the hooks: [data-plate] roots carrying a [data-badge],
+           and optional [data-live] roots carrying meter/tally cells. -->
+      <div id="bodyWrap"></div>
+
+      <!-- milestone ceremony -->
+      <div id="ceremony" role="status">
+        <canvas id="embers"></canvas>
+        <div class="cer-card">
+          <div class="cer-kicker">Milestone</div>
+          <div class="cer-num" id="cerNum">25 ▲</div>
+          <div class="cer-name" id="cerName">Hot honey pepperoni</div>
+          <div class="cer-sub" id="cerSub">TWENTY-FIVE LOCALS SAY ORDER IT</div>
+          <div class="cer-award" id="cerAward">+15 PLATE POINTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== CONTROLS ==================== -->
+    <div class="controls">
+      <div class="ctrl-group">
+        <span class="lbl">Layout — five shapes for the same page</span>
+        <div class="variant-pills" id="lpills"></div>
+        <div class="vp-desc" id="ldesc"></div>
+      </div>
+
+      <div class="ctrl-group">
+        <span class="lbl">Choreography — five ways the same arrival can play</span>
+        <div class="variant-pills" id="vpills"></div>
+        <div class="vp-desc" id="vdesc"></div>
+      </div>
+
+      <div class="ctrl-group">
+        <span class="lbl">Fire events</span>
+        <div class="btn-row">
+          <button class="demo primary" id="btnLoad">↻ Replay arrival sequence</button>
+        </div>
+        <div class="btn-row" style="margin-top:8px">
+          <button class="demo" id="btnUp">▲ An upvote lands</button>
+          <button class="demo" id="btnCmt">💬 A comment lands</button>
+        </div>
+        <div class="btn-row" style="margin-top:8px">
+          <button class="demo" id="btnMile">Cross the 25 ▲ milestone</button>
+          <button class="demo" id="btnBurst">5 at once (the queue test)</button>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <span class="lbl">What just played</span>
+        <div class="beat-log" id="log"><span class="lbl2">Beat log</span>Waiting…</div>
+      </div>
+
+      <div class="ctrl-group">
+        <span class="lbl">Why each beat is the way it is</span>
+        <div class="annot">
+          <div class="a"><b>The badge sits on the plate, not in a list.</b> Which plate people are reacting to is the actual question; a chronological feed never answers it at a glance.</div>
+          <div class="a"><b>Two tempos only.</b> Acknowledgement is 160ms, ceremony is 620ms+. When everything animates at a middle speed, nothing feels important.</div>
+          <div class="a"><b>The meter is the hook that's honest.</b> Rank rungs are hundreds of points apart, but some plate is always 4 upvotes from a milestone — near-term pull without inventing anything.</div>
+          <div class="a"><b>Tapping a badged tile clears its badge.</b> Resolution is part of the loop — a signal you can't dismiss is nagging, not rewarding. Try it.</div>
+          <div class="a"><b>Reduced motion strips every animation</b> and prints final states. The page must be fully legible with zero motion, so motion is never load-bearing.</div>
+          <div class="a"><b>On the real phone body,</b> the milestone ceremony gets one short haptic; nothing else does. Same rarity rule, different sense.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   The engine. Three parts:
+   1. state — plates, points, thresholds (mirrors points.ts values)
+   2. queue — one celebration at a time (Rule 4)
+   3. beats — small composable animations the queue plays
+   ============================================================ */
+
+/* Thresholds and bonuses mirror UPVOTE_MILESTONES in src/lib/points.ts. */
+const MILESTONES = [25, 100, 500];
+const MILESTONE_BONUS = { 25: 15, 100: 50, 500: 200 };
+const RANKS = [
+  { name: "REGULAR", min: 100 }, { name: "LOCAL", min: 400 },
+  { name: "CRITIC", min: 1200 },
+];
+
+const state = {
+  points: 262,          // where you left it
+  pendingDelta: 7,       // what arrived while you were away
+  newTotal: 0,
+  plates: [
+    { id: 0, name: "Al pastor taco", at: "TACOS EL GORDO · 96%", tone: 2, up: 82, cmt: 7, fresh: 4, live: true },
+    { id: 1, name: "Hot honey pepperoni", at: "LANDINI'S · 92%", tone: 1, up: 21, cmt: 2, fresh: 2, live: true },
+    { id: 2, name: "Double bacon cheeseburger", at: "HODAD'S · 93%", tone: 3, up: 32, cmt: 6, fresh: 0, live: false, mile: 25 },
+    { id: 3, name: "Cabeza", at: "TACOS EL GORDO · 90%", tone: 1, up: 104, cmt: 9, fresh: 1, live: false, mile: 100 },
+    { id: 4, name: "Carnitas fries", at: "LOLITA'S", tone: 3, up: 6, cmt: 1, fresh: 0, live: false },
+    { id: 5, name: "Cortado + morning bun", at: "BREAKFAST REPUBLIC", tone: 2, up: 11, cmt: 0, fresh: 0, live: false },
+    { id: 6, name: "Syrah cheese board", at: "VIN DE SYRAH", tone: 3, up: 14, cmt: 3, fresh: 0, live: false },
+    { id: 7, name: "Chilaquiles", at: "BREAKFAST REPUBLIC", tone: 2, up: 3, cmt: 0, fresh: 0, live: false },
+    { id: 8, name: "Fish taco especial", at: "OSCARS", tone: 1, up: 27, cmt: 4, fresh: 0, live: false, mile: 25 },
+  ],
+};
+state.newTotal = state.points + state.pendingDelta;
+
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = (id) => document.getElementById(id);
+const wait = (ms) => new Promise((r) => setTimeout(r, REDUCED ? 0 : ms));
+const fmt = (n) => n.toLocaleString("en-US");
+
+/* ---------- build the wall + live cards ---------- */
+
+function nextMilestone(up) { return MILESTONES.find((m) => up < m) ?? null; }
+function prevMilestone(up) { const p = MILESTONES.filter((m) => up >= m); return p.length ? p[p.length - 1] : 0; }
+
+/* ---------- shared fragments every world composes from ---------- */
+
+const badgeHTML = (p) => `<span class="badge" data-badge hidden>${p.fresh}</span>`;
+const mileHTML = (p) => (p.mile ? `<span class="mile" data-mile>${p.mile} ▲</span>` : "");
+function meterHTML(p) {
+  const next = nextMilestone(p.up), base = prevMilestone(p.up);
+  const pct = next ? Math.round(((p.up - base) / (next - base)) * 100) : 100;
+  return `<div class="meter"><i data-meter style="width:${pct}%"></i></div>
+    <div class="meter-lbl"><span data-meter-now>▲ <span data-up>${p.up}</span></span>
+    <span data-meter-goal>${next ? next + " ▲ MILESTONE" : "ALL MILESTONES HIT"}</span></div>`;
+}
+
+function renderLayout() {
+  const wrap = $("bodyWrap");
+  wrap.innerHTML = "";
+  LAYOUTS[currentLayout].render(wrap);
+  wrap.querySelectorAll("[data-plate]").forEach((el) => {
+    el.addEventListener("click", () => clearBadge(+el.dataset.plate));
+  });
+}
+
+/* ---------- the queue (Rule 4: one at a time) ---------- */
+
+let chain = Promise.resolve();
+/* Bumped by every arrival replay. A beat carries the generation it was
+   queued under and skips itself if a replay has superseded it — otherwise
+   switching layout mid-arrival stacks a second arrival behind the first
+   and the viewer sits through stale beats animating a reset scene. */
+let runId = 0;
+function enqueue(name, fn) {
+  const gen = runId;
+  chain = chain.then(async () => {
+    if (gen !== runId) return; /* superseded by a replay — skip silently */
+    logBeat(name);
+    await fn();
+    await wait(140); /* breath between beats — never back-to-back */
+  });
+  return chain;
+}
+
+const logEl = $("log");
+const beats = [];
+function logBeat(name) {
+  beats.push(name);
+  const last = beats.slice(-6);
+  logEl.innerHTML = `<span class="lbl2">Beat log</span>` + last
+    .map((b, i) => (i === last.length - 1 ? `<span class="now">▸ ${b}</span>` : `&nbsp;&nbsp;${b}`))
+    .join("<br>");
+}
+
+/* ---------- beats ---------- */
+
+function countTo(el, from, to, ms) {
+  if (REDUCED) { el.textContent = fmt(to); return Promise.resolve(); }
+  return new Promise((res) => {
+    /* rAF pauses entirely in occluded tabs. Without this timeout floor the
+       promise never resolves there, and since the queue is one chained
+       promise, ONE backgrounded count-up would hang every beat after it,
+       forever. The guard snaps to the final value and resolves regardless. */
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      el.textContent = fmt(to);
+      res();
+    };
+    const guard = setTimeout(finish, ms + 250);
+    const t0 = performance.now();
+    (function tick(now) {
+      if (done) return;
+      const k = Math.min(1, (now - t0) / ms);
+      const e = 1 - Math.pow(1 - k, 3); /* ease-out cubic */
+      el.textContent = fmt(Math.round(from + (to - from) * e));
+      if (k < 1) requestAnimationFrame(tick);
+      else { clearTimeout(guard); finish(); }
+    })(t0);
+  });
+}
+
+function setTrack(points) {
+  const lo = 100, hi = 400; /* Regular → Local */
+  const pct = Math.max(0, Math.min(100, ((points - lo) / (hi - lo)) * 100));
+  $("trackFill").style.width = pct + "%";
+  const left = Math.max(0, hi - points);
+  $("toNext").textContent = left > 0 ? `${left} TO LOCAL · 400` : "LOCAL · REACHED";
+}
+
+function floatPlus(anchor, text) {
+  const phone = $("phone");
+  const a = anchor.getBoundingClientRect(), ph = phone.getBoundingClientRect();
+  const f = document.createElement("span");
+  f.className = "float";
+  f.textContent = text;
+  f.style.left = a.left - ph.left + a.width / 2 - 10 + "px";
+  f.style.top = a.top - ph.top - 4 + "px";
+  phone.appendChild(f);
+  setTimeout(() => f.remove(), 1200);
+}
+
+function tileOf(id) { return document.querySelector(`[data-plate="${id}"]`); }
+function liveOf(id) { return document.querySelector(`[data-live="${id}"]`); }
+
+function bumpBadge(id, countOverride) {
+  const tile = tileOf(id);
+  const b = tile.querySelector("[data-badge]");
+  const p = state.plates[id];
+  b.hidden = false;
+  b.textContent = countOverride ?? p.fresh;
+  tile.classList.remove("hit"); void tile.offsetWidth; tile.classList.add("hit");
+  if (b.classList.contains("in") || REDUCED) {
+    b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump");
+  } else {
+    b.classList.add("in");
+  }
+}
+
+function refreshChip() {
+  const totalFresh = state.plates.reduce((s, p) => s + p.fresh, 0);
+  const chip = $("newChip");
+  chip.textContent = totalFresh + " NEW";
+  if (totalFresh === 0) { chip.style.visibility = "hidden"; return; }
+  chip.style.visibility = "visible";
+  chip.classList.remove("bump"); void chip.offsetWidth;
+  chip.classList.add("in", "bump");
+}
+
+/* Refresh whatever live hooks THIS world chose to render. Worlds
+   without a hook (Night has no meters at all) just skip — the state
+   is still right, and re-rendering would wipe animations mid-flight. */
+function updateLiveCard(id) {
+  const el = liveOf(id); if (!el) return;
+  const p = state.plates[id];
+  el.querySelectorAll("[data-up]").forEach((n) => { n.textContent = p.up; });
+  el.querySelectorAll("[data-cmt]").forEach((n) => { n.textContent = p.cmt; });
+  const m = el.querySelector("[data-meter]");
+  if (m) {
+    const next = nextMilestone(p.up), base = prevMilestone(p.up);
+    m.style.width = (next ? ((p.up - base) / (next - base)) * 100 : 100) + "%";
+    const goal = el.querySelector("[data-meter-goal]");
+    if (goal) goal.textContent = next ? next + " ▲ MILESTONE" : "ALL MILESTONES HIT";
+  }
+}
+
+function clearBadge(id) {
+  const p = state.plates[id];
+  if (!p.fresh) return;
+  p.fresh = 0;
+  const b = tileOf(id).querySelector("[data-badge]");
+  b.classList.remove("in", "bump");
+  b.classList.add("out");
+  setTimeout(() => { b.hidden = true; b.classList.remove("out"); }, 280);
+  refreshChip();
+  logBeat(`badge cleared · ${p.name}`);
+}
+
+/* ---------- ember burst (canvas, ceremony only) ---------- */
+
+function emberBurst() {
+  if (REDUCED) return Promise.resolve();
+  const cv = $("embers"), phone = $("phone");
+  cv.width = phone.clientWidth; cv.height = phone.clientHeight;
+  const ctx = cv.getContext("2d");
+  const cx = cv.width / 2, cy = cv.height / 2 - 30;
+  const parts = Array.from({ length: 42 }, () => {
+    const a = Math.random() * Math.PI * 2, v = 2 + Math.random() * 4.4;
+    return { x: cx, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2.1,
+             r: 1.6 + Math.random() * 2.6, life: 1, decay: 0.012 + Math.random() * 0.014 };
+  });
+  return new Promise((res) => {
+    (function frame() {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      let alive = false;
+      for (const p of parts) {
+        if (p.life <= 0) continue;
+        alive = true;
+        p.x += p.vx; p.y += p.vy; p.vy += 0.11; p.life -= p.decay;
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.life > 0.5 ? "#C9591F" : "#E8875A";
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2); ctx.fill();
+      }
+      alive ? requestAnimationFrame(frame) : (ctx.clearRect(0, 0, cv.width, cv.height), res());
+    })();
+  });
+}
+
+/* ---------- composite sequences ---------- */
+
+/* ============================================================
+   THE ARRIVAL — five choreographies for the same seven events.
+   Same data, same ending; what differs is where the anticipation
+   is spent and who the protagonist is.
+   ============================================================ */
+
+function resetArrival() {
+  state.points = 262; state.pendingDelta = 7;
+  state.newTotal = state.points + state.pendingDelta;
+  state.plates[0].fresh = 4; state.plates[1].fresh = 2; state.plates[3].fresh = 1;
+  for (const p of state.plates) p.planned = p.up;
+  $("total").textContent = fmt(state.points);
+  $("total").classList.remove("snap");
+  $("delta").classList.remove("show");
+  $("trackFill").style.transition = "none";
+  setTrack(state.points);
+  document.querySelectorAll("[data-badge]").forEach((b) => { b.hidden = true; b.classList.remove("in", "bump"); });
+  $("newChip").style.visibility = "hidden"; $("newChip").classList.remove("in", "bump");
+  renderLayout();
+}
+
+function beatTrackEnding(label = "rank track fills — the ending (peak–end)") {
+  enqueue(label, async () => {
+    $("trackFill").style.transition = "";
+    setTrack(state.points);
+    await wait(650);
+  });
+}
+
+const VARIANTS = {
+  rollcall: {
+    label: "Roll-call",
+    blurb: "<b>The default.</b> Badges answer first, one by one, then the chip sums them, then the total explains what they paid. Acknowledgement before arithmetic.",
+    play() {
+      enqueue("hold · your old total (anticipation)", () => wait(350));
+      enqueue("badges land, staggered", async () => {
+        for (const p of state.plates.filter((x) => x.fresh)) { bumpBadge(p.id); await wait(90); }
+      });
+      enqueue("chip sums them", async () => { refreshChip(); await wait(120); });
+      enqueue("total rolls up", async () => {
+        $("delta").textContent = "+" + state.pendingDelta;
+        $("delta").classList.add("show");
+        await countTo($("total"), state.points, state.newTotal, 640);
+        state.points = state.newTotal;
+      });
+      beatTrackEnding();
+    },
+  },
+
+  cashier: {
+    label: "Cashier",
+    blurb: "<b>Every reaction rings up individually</b> — badge, float, tick, next. Slowest and greediest of the five; maximum anticipation, borderline indulgent. The like-counter feel.",
+    play() {
+      enqueue("hold", () => wait(350));
+      /* the seven pending events, replayed one at a time */
+      const events = state.plates.filter((x) => x.fresh)
+        .flatMap((p) => Array.from({ length: p.fresh }, () => p.id));
+      const shown = {};
+      enqueue("seven reactions, rung up one by one", async () => {
+        for (const id of events) {
+          shown[id] = (shown[id] ?? 0) + 1;
+          bumpBadge(id, shown[id]);
+          floatPlus(tileOf(id), "+1");
+          const from = parseInt($("total").textContent.replace(/,/g, ""), 10);
+          await countTo($("total"), from, from + 1, 190);
+          await wait(210);
+        }
+        state.points = state.newTotal;
+        $("delta").textContent = "+" + state.pendingDelta;
+        $("delta").classList.add("show");
+      });
+      enqueue("chip confirms the take", async () => { refreshChip(); await wait(120); });
+      beatTrackEnding();
+    },
+  },
+
+  spotlight: {
+    label: "Spotlight",
+    blurb: "<b>Each plate with news takes the stage in turn</b> — lifted, lit, badged — then the numbers follow. The plate is the protagonist; the arithmetic is commentary. Most editorial.",
+    play() {
+      enqueue("hold", () => wait(300));
+      enqueue("each plate takes the spotlight", async () => {
+        for (const p of state.plates.filter((x) => x.fresh)) {
+          const tile = tileOf(p.id);
+          tile.classList.add("lift");
+          bumpBadge(p.id);
+          await wait(430);
+          tile.classList.remove("lift");
+          await wait(140);
+        }
+      });
+      enqueue("chip, then the total", async () => {
+        refreshChip();
+        await wait(140);
+        $("delta").textContent = "+" + state.pendingDelta;
+        $("delta").classList.add("show");
+        await countTo($("total"), state.points, state.newTotal, 520);
+        state.points = state.newTotal;
+      });
+      beatTrackEnding();
+    },
+  },
+
+  pour: {
+    label: "Pour",
+    blurb: "<b>Progress first.</b> The rank track fills with your delta riding the leading edge, the total rolls to match, and only then do the badges say where it came from. For people who care where they're going.",
+    play() {
+      enqueue("hold", () => wait(350));
+      enqueue("the track pours — delta riding the edge", async () => {
+        const rider = $("pourRider");
+        const lo = 100, hi = 400;
+        rider.textContent = "+" + state.pendingDelta;
+        rider.style.opacity = "1";
+        rider.style.transition = "none";
+        rider.style.left = Math.min(100, ((state.points - lo) / (hi - lo)) * 100) + "%";
+        void rider.offsetWidth;
+        $("trackFill").style.transition = "";
+        rider.style.transition = "left var(--ceremony) cubic-bezier(.3,.9,.35,1)";
+        state.points = state.newTotal;
+        setTrack(state.points);
+        rider.style.left = Math.min(100, ((state.points - lo) / (hi - lo)) * 100) + "%";
+        await wait(700);
+        rider.style.opacity = "0";
+      });
+      enqueue("total catches up", async () => {
+        $("delta").textContent = "+" + state.pendingDelta;
+        $("delta").classList.add("show");
+        await countTo($("total"), state.points - state.pendingDelta, state.points, 480);
+      });
+      enqueue("badges say where it came from", async () => {
+        for (const p of state.plates.filter((x) => x.fresh)) { bumpBadge(p.id); await wait(80); }
+        refreshChip();
+      });
+    },
+  },
+
+  heartbeat: {
+    label: "Heartbeat",
+    blurb: "<b>Everything lands in one beat</b> — a single warm pulse, badges together, the total snaps. Fastest and quietest; zero ceremony. For the tenth open of the day.",
+    play() {
+      enqueue("hold — one breath", () => wait(380));
+      enqueue("the beat: everything at once", async () => {
+        const phone = $("phone");
+        phone.classList.remove("pulse"); void phone.offsetWidth; phone.classList.add("pulse");
+        for (const p of state.plates.filter((x) => x.fresh)) bumpBadge(p.id);
+        refreshChip();
+        state.points = state.newTotal;
+        const t = $("total");
+        t.textContent = fmt(state.points);
+        t.classList.remove("snap"); void t.offsetWidth; t.classList.add("snap");
+        $("delta").textContent = "+" + state.pendingDelta;
+        $("delta").classList.add("show");
+        $("trackFill").style.transition = "";
+        setTrack(state.points);
+        await wait(560);
+      });
+    },
+  },
+};
+
+let currentVariant = "rollcall";
+
+function playArrival() {
+  runId++; /* discard anything still queued — the scene is being reset */
+  resetArrival();
+  logBeat(`— arrival · ${VARIANTS[currentVariant].label.toUpperCase()} —`);
+  VARIANTS[currentVariant].play();
+}
+
+/* ============================================================
+   THE LAYOUTS — same sections, same animations, five shapes.
+   `apply` only touches labels; the geometry is all in the class.
+   ============================================================ */
+
+/* Split "TACOS EL GORDO · 96%" into venue + score for worlds that
+   place them separately. */
+function venueOf(p) { return p.at.split(" · ")[0]; }
+function scoreOf(p) { const s = p.at.split(" · ")[1]; return s || null; }
+
+const LAYOUTS = {
+  night: {
+    label: "Night lights",
+    cls: "layout-night",
+    blurb: "<b>Your plates as embers on the night city</b> — the map's own sanctioned dark world, worn by a profile for the first time. Size is upvotes, warmth is heat, a badge is a light with news. No numbers grid at all.",
+    render(wrap) {
+      const POS = [[16, 24], [64, 15], [42, 40], [80, 47], [26, 63], [57, 74], [14, 84], [85, 80], [47, 90]];
+      const dots = state.plates.map((p, i) => {
+        const [x, y] = POS[i];
+        const s = Math.round(12 + Math.min(24, p.up * 0.25));
+        const hot = p.up >= 60 ? "hot" : "";
+        const named = p.live || p.up >= 100;
+        return `<button class="ndot ${hot}" data-plate="${p.id}"
+            style="left:${x}%;top:${y}%"
+            aria-label="${p.name}${p.fresh ? `, ${p.fresh} new reactions` : ""}">
+          <span class="glowring"></span>
+          <span class="core" style="width:${s}px;height:${s}px"></span>
+          ${named ? `<span class="nname">${p.name}</span>` : ""}
+          ${mileHTML(p)}${badgeHTML(p)}
+        </button>`;
+      }).join("");
+      wrap.innerHTML = `<div class="night-panel">
+        <span class="night-lbl">YOUR PLATES ON THE CITY · <b>9 LIT</b></span>${dots}</div>`;
+    },
+  },
+
+  receipt: {
+    label: "The receipt",
+    cls: "layout-receipt",
+    blurb: "<b>The week printed as a diner tape.</b> Machine voice top to bottom, a zigzag tear, and the new reactions ARE the quantity column — the badges beat literally prints your order. Milestone meters ride inline.",
+    render(wrap) {
+      const line = (p) => `
+        <button class="tline" data-plate="${p.id}" ${p.live ? `data-live="${p.id}"` : ""}>
+          <span>${p.fresh ? badgeHTML(p) : "·"}</span>
+          <span class="nm">${p.name} ${p.mile ? `<span class="mile" data-mile>★${p.mile}</span>` : ""}</span>
+          <span class="val ${p.fresh ? "hotv" : ""}">${p.fresh ? "+" + p.fresh : scoreOf(p) ?? "▲" + p.up}</span>
+          ${p.live ? meterHTML(p) : ""}
+        </button>`;
+      const fresh = state.plates.filter((p) => p.fresh);
+      const rest = state.plates.filter((p) => !p.fresh);
+      wrap.innerHTML = `<div class="tape">
+        <div class="center">PLATEMAPS · SAN DIEGO, CA</div>
+        <div class="center" style="color:var(--pm-zinc-500)">CUSTOMER @CARSONBRASSELL · RANK REGULAR</div>
+        <div class="tearline">- - - - - - - - - - - - - - - - - - - - - - -</div>
+        ${fresh.map(line).join("")}
+        <div class="tearline">- - - - - - - - - - - - - - - - - - - - - - -</div>
+        ${rest.map(line).join("")}
+        <div class="tearline">- - - - - - - - - - - - - - - - - - - - - - -</div>
+        <div class="totals">
+          <div class="tline"><span></span><span class="nm">NEW REACTIONS</span><span class="val hotv">7</span></div>
+          <div class="tline"><span></span><span class="nm">NEXT RANK</span><span class="val">LOCAL IN 131</span></div>
+        </div>
+        <div class="center" style="margin-top:10px;color:var(--pm-zinc-500)">* THANK YOU FOR EATING *</div>
+      </div>`;
+    },
+  },
+
+  menu: {
+    label: "The menu",
+    cls: "layout-menu",
+    blurb: "<b>The profile set as a dinner menu</b> — Fraunces names, dotted leaders, your scores where the prices go. Tonight's section is whatever just got reactions; the collection is everything you've ever served.",
+    render(wrap) {
+      const item = (p) => `
+        <div>
+          <button class="mitem" data-plate="${p.id}">
+            <span class="mnm">${p.name}</span>${badgeHTML(p)}${p.mile ? `<span class="mile" data-mile>★ ${p.mile}</span>` : ""}
+            <span class="lead"></span>
+            <span class="msc">${scoreOf(p) ?? "▲" + p.up}</span>
+          </button>
+          <div class="msub">${venueOf(p)}</div>
+          ${p.live ? `<div data-live="${p.id}">${meterHTML(p)}</div>` : ""}
+        </div>`;
+      const fresh = state.plates.filter((p) => p.fresh);
+      const rest = state.plates.filter((p) => !p.fresh);
+      wrap.innerHTML = `<div class="menu-page">
+        <div class="menu-head">
+          <h3 style="margin:0;font-size:20px">Carson Brassell</h3>
+          <div class="est">EST. 2025 · SAN DIEGO · 269 POINTS</div>
+        </div>
+        <div class="menu-sec">— Tonight —</div>
+        ${fresh.map(item).join("")}
+        <div class="menu-sec">— The Collection —</div>
+        ${rest.map(item).join("")}
+      </div>`;
+    },
+  },
+
+  marquee: {
+    label: "Marquee",
+    cls: "layout-marquee",
+    blurb: "<b>The scoreboard goes night-chrome</b> — your total burning in the dark band up top — and the plates become a film strip you thumb through sideways. The only horizontal read in the set.",
+    render(wrap) {
+      const card = (p) => `
+        <button class="scard" data-plate="${p.id}" ${p.live ? `data-live="${p.id}"` : ""}>
+          <div class="ph" style="background:var(--pm-tone-${p.tone})"></div>
+          ${badgeHTML(p)}${mileHTML(p)}
+          <div class="snm">${p.name}</div>
+          <div class="smeta">▲ <span data-up>${p.up}</span> · 💬 <span data-cmt>${p.cmt}</span></div>
+          ${p.live ? meterHTML(p) : ""}
+        </button>`;
+      const order = [...state.plates].sort((a, b) => b.fresh - a.fresh);
+      wrap.innerHTML = `<div class="strip">${order.map(card).join("")}</div>`;
+    },
+  },
+
+  shoebox: {
+    label: "Shoebox",
+    cls: "layout-shoebox",
+    blurb: "<b>Polaroids loose on the table.</b> Rotation breaks the grid, the badge is a sticker slapped on a corner, a milestone is a stamp. The most human of the five — it looks kept, not computed.",
+    render(wrap) {
+      const pol = (p) => `
+        <button class="polaroid" data-plate="${p.id}" ${p.live ? `data-live="${p.id}"` : ""}>
+          <div class="ph" style="background:var(--pm-tone-${p.tone})"></div>
+          <span class="glowring"></span>
+          ${badgeHTML(p)}${mileHTML(p)}
+          <div class="cap"><b>${p.name}</b> · ${venueOf(p).toLowerCase()}</div>
+          ${p.live ? meterHTML(p) : ""}
+        </button>`;
+      const order = [...state.plates].sort((a, b) => b.fresh - a.fresh);
+      wrap.innerHTML = `<div class="shoebox">${order.map(pol).join("")}
+        <div class="shoebox-note">9 PLATES KEPT · TAP A STICKER TO CLEAR IT</div></div>`;
+    },
+  },
+};
+
+let currentLayout = "night";
+
+function setLayout(key) {
+  currentLayout = key;
+  const phone = $("phone");
+  phone.classList.remove(...Object.values(LAYOUTS).map((l) => l.cls).filter(Boolean));
+  if (LAYOUTS[key].cls) phone.classList.add(LAYOUTS[key].cls);
+  renderLayout();
+}
+
+/** One reaction landing live, on plate `id`. kind: 'up' | 'cmt' */
+function playReaction(id, kind) {
+  const p = state.plates[id];
+  const pts = kind === "up" ? 1 : 2;
+  /* The milestone check must see queued-but-unplayed votes: `p.up` only
+     increments when the beat RUNS, so checking it here reads a stale count
+     and a crossing vote never queues its ceremony. `planned` is the count
+     including everything already in the queue. */
+  const crossing = kind === "up" ? (p.planned = (p.planned ?? p.up) + 1) : null;
+  enqueue(`${kind === "up" ? "▲ upvote" : "💬 comment"} · ${p.name}`, async () => {
+    if (kind === "up") p.up += 1; else p.cmt += 1;
+    p.fresh += 1;
+    bumpBadge(id);
+    floatPlus(tileOf(id), "+" + pts);
+    refreshChip();
+    updateLiveCard(id);
+    await wait(240);
+    const from = state.points;
+    state.points += pts;
+    await countTo($("total"), from, state.points, 260);
+    setTrack(state.points);
+  });
+  /* milestone check rides the same queue, so it can never collide */
+  if (kind === "up" && MILESTONES.includes(crossing)) playMilestone(id, crossing);
+}
+
+/** The ceremony. Rare by rule; queued so it never stacks. */
+function playMilestone(id, m) {
+  const p = state.plates[id];
+  const bonus = MILESTONE_BONUS[m];
+  const WORDS = { 25: "TWENTY-FIVE", 100: "ONE HUNDRED", 500: "FIVE HUNDRED" };
+  enqueue(`★ MILESTONE · ${m} ▲ · ${p.name}`, async () => {
+    $("cerNum").textContent = m + " ▲";
+    $("cerName").textContent = p.name;
+    $("cerSub").textContent = WORDS[m] + " LOCALS SAY ORDER IT";
+    $("cerAward").textContent = "+" + bonus + " PLATE POINTS";
+    const cer = $("ceremony");
+    cer.classList.add("on");
+    emberBurst();
+    await wait(REDUCED ? 0 : 2100);
+    cer.classList.remove("on");
+    /* the permanent mark stamps onto the tile as the overlay leaves */
+    p.mile = m;
+    const tile = tileOf(id);
+    let tag = tile.querySelector("[data-mile]");
+    if (!tag) {
+      tag = document.createElement("span");
+      tag.className = "mile"; tag.dataset.mile = "";
+      tile.appendChild(tag);
+    }
+    tag.textContent = m + " ▲";
+    tag.classList.add("stamp");
+    const from = state.points;
+    state.points += bonus; /* the real bonus from points.ts, not the threshold */
+    floatPlus(tile, "+" + bonus);
+    await countTo($("total"), from, state.points, 520);
+    setTrack(state.points);
+    updateLiveCard(id);
+  });
+}
+
+/* ---------- wire up ---------- */
+
+setLayout(currentLayout);
+refreshChip();
+
+/* layout picker */
+const lpills = $("lpills");
+for (const [key, l] of Object.entries(LAYOUTS)) {
+  const b = document.createElement("button");
+  b.className = "vp";
+  b.textContent = l.label;
+  b.setAttribute("aria-pressed", String(key === currentLayout));
+  b.addEventListener("click", () => {
+    setLayout(key);
+    lpills.querySelectorAll(".vp").forEach((x) => x.setAttribute("aria-pressed", "false"));
+    b.setAttribute("aria-pressed", "true");
+    $("ldesc").innerHTML = l.blurb;
+    playArrival();
+  });
+  lpills.appendChild(b);
+}
+$("ldesc").innerHTML = LAYOUTS[currentLayout].blurb;
+
+/* choreography picker */
+const vpills = $("vpills");
+for (const [key, v] of Object.entries(VARIANTS)) {
+  const b = document.createElement("button");
+  b.className = "vp";
+  b.textContent = v.label;
+  b.setAttribute("aria-pressed", String(key === currentVariant));
+  b.addEventListener("click", () => {
+    currentVariant = key;
+    vpills.querySelectorAll(".vp").forEach((x) => x.setAttribute("aria-pressed", "false"));
+    b.setAttribute("aria-pressed", "true");
+    $("vdesc").innerHTML = v.blurb;
+    playArrival();
+  });
+  vpills.appendChild(b);
+}
+$("vdesc").innerHTML = VARIANTS[currentVariant].blurb;
+
+$("btnLoad").addEventListener("click", playArrival);
+$("btnUp").addEventListener("click", () => playReaction(0, "up"));
+$("btnCmt").addEventListener("click", () => playReaction(1, "cmt"));
+$("btnMile").addEventListener("click", () => {
+  const p = state.plates[1];
+  const target = nextMilestone(p.up);
+  /* walk it to one-under, then fire the crossing vote */
+  p.up = target - 1;
+  p.planned = p.up; /* direct assignment invalidates the queued shadow */
+  updateLiveCard(1);
+  setTimeout(() => playReaction(1, "up"), REDUCED ? 0 : 300);
+});
+$("btnBurst").addEventListener("click", () => {
+  playReaction(0, "up"); playReaction(1, "cmt"); playReaction(0, "up");
+  playReaction(2, "up"); playReaction(1, "up");
+});
+
+/* first paint: play the arrival once */
+playArrival();
+</script>

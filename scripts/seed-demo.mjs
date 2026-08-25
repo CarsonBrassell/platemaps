@@ -7,13 +7,13 @@
  *
  * Demo users get a random password hash, so nobody can sign in as them.
  */
-import { neon } from "@neondatabase/serverless";
+import { sql, usingLocalPostgres } from "./sql-client.mjs";
 import { randomUUID, randomBytes } from "node:crypto";
 import { restaurants } from "../src/data/restaurants.ts";
 import { dishesByRestaurant } from "../src/data/dishes.ts";
 import { BEST_AT_LABELS } from "../src/data/reviewScales.ts";
 
-const sql = neon(process.env.DATABASE_URL);
+if (usingLocalPostgres) console.log("→ local Postgres");
 
 /** POSTS below reference restaurants by name; this resolves id/lat/lng for
     the restaurant_id/restaurant_lat/restaurant_lng columns. */

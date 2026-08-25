@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
 
   if (agreedToTerms !== true) {
     return NextResponse.json(
-      { error: "You must agree to the Terms of Service and Privacy Policy to create an account." },
+      { error: "You must confirm you are 13 or older and agree to the Terms of Service and Privacy Policy to create an account." },
       { status: 400 }
     );
   }

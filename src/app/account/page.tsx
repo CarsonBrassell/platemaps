@@ -8,9 +8,9 @@ import { PASSWORD_HINT, checkPassword } from "@/lib/password";
 import { initials } from "@/lib/format";
 import { resizeImageToJpeg } from "@/lib/image";
 import { uploadAvatar } from "@/lib/photos";
-import { PlateStarIcon, SettingsIcon } from "@/components/icons";
+import { SettingsIcon } from "@/components/icons";
 import { ProfileActivity } from "@/components/ProfileActivity";
-import { POINT_RULES } from "@/lib/points";
+import { PlatePointsPanel } from "@/components/PlatePointsPanel";
 
 const inputClass =
   "mb-4 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-sm transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
@@ -123,7 +123,7 @@ function AuthForm() {
       return;
     }
     if (mode === "signup" && !agreed) {
-      setError("You must agree to the Terms of Service and Privacy Policy to create an account.");
+      setError("You must confirm you are 13 or older and agree to the Terms of Service and Privacy Policy to create an account.");
       return;
     }
     if (mode === "login" && (!email || !password)) {
@@ -261,7 +261,7 @@ function AuthForm() {
               className="mt-0.5 h-4 w-4 shrink-0 accent-pm-orange"
             />
             <span>
-              I agree to the{" "}
+              I am 13 or older and I agree to the{" "}
               <Link
                 href="/terms"
                 target="_blank"
@@ -402,32 +402,21 @@ function AccountOverview() {
           </Link>
         </div>
 
-      <div className="mb-6 grid grid-cols-3 gap-3">
-        <div className="flex flex-col items-center justify-center gap-1 rounded-xl bg-pm-grey-tint/60 px-3 py-3">
-          <p className="font-mono text-lg font-semibold leading-none tabular-nums text-zinc-900">
-            {account.points}
-          </p>
-          <p className="mono-label text-zinc-500">Plate Points</p>
-        </div>
-        <div className="col-span-2 grid grid-cols-2 gap-3">
-          <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-3 text-center">
-            <p className="font-mono text-lg font-medium tabular-nums text-zinc-900">{myPosts.length}</p>
-            <p className="mono-label text-zinc-500">Posts</p>
-          </div>
-          <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-3 text-center">
-            <p className="font-mono text-lg font-medium tabular-nums text-zinc-900">{commentCount}</p>
-            <p className="mono-label text-zinc-500">Comments</p>
-          </div>
-        </div>
-      </div>
+      {/* Points lead, and they are the only orange thing here. Posts and
+          Comments stay grey tiles on purpose: they are counts *about* the
+          account, where the points total is the thing the account is scored
+          on, and giving all three the accent would flatten that back out. */}
+      <PlatePointsPanel points={account.points} className="mb-3" />
 
-      <div className="mb-6 flex items-center gap-3 rounded-xl bg-pm-grey-tint/50 px-4 py-3">
-        <PlateStarIcon className="h-5 w-7 shrink-0 text-zinc-500" />
-        <p className="text-sm text-zinc-600">
-          Earn Plate Points by posting (+{POINT_RULES.createPost}), getting upvoted (+
-          {POINT_RULES.receiveUpvote}), getting commented on (+{POINT_RULES.receiveComment}), and
-          having your comments upvoted (+{POINT_RULES.receiveCommentUpvote}) on Discover.
-        </p>
+      <div className="mb-6 grid grid-cols-2 gap-3">
+        <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-3 text-center">
+          <p className="font-mono text-lg font-medium tabular-nums text-zinc-900">{myPosts.length}</p>
+          <p className="mono-label text-zinc-500">Posts</p>
+        </div>
+        <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-3 text-center">
+          <p className="font-mono text-lg font-medium tabular-nums text-zinc-900">{commentCount}</p>
+          <p className="mono-label text-zinc-500">Comments</p>
+        </div>
       </div>
 
       {/* Friend requests used to sit here. They moved to /friends, where the
