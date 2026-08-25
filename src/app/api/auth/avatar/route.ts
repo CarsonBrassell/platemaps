@@ -2,8 +2,12 @@ import { NextResponse } from "next/server";
 import { accountJson } from "@/lib/account";
 import { updateUserAvatar } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { isStoredPhotoUrl } from "@/lib/photos";
 
-const MAX_AVATAR_LENGTH = 2_000_000;
+/* An address, not a picture. Avatars used to arrive as base64 data URLs
+   capped at two million characters and were stored that way, so every query
+   that read a user read their whole photo with them. */
+const MAX_AVATAR_URL_LENGTH = 512;
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
@@ -15,8 +19,11 @@ export async function POST(req: Request) {
   if (!avatarUrl || typeof avatarUrl !== "string") {
     return NextResponse.json({ error: "No image provided." }, { status: 400 });
   }
-  if (avatarUrl.length > MAX_AVATAR_LENGTH) {
-    return NextResponse.json({ error: "That image is too large." }, { status: 413 });
+  if (avatarUrl.length > MAX_AVATAR_URL_LENGTH || !isStoredPhotoUrl(avatarUrl)) {
+    return NextResponse.json(
+      { error: "Photos have to be uploaded before they're saved." },
+      { status: 400 },
+    );
   }
 
   const freshUser = await updateUserAvatar(user.id, avatarUrl);

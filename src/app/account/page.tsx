@@ -6,7 +6,8 @@ import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import { PASSWORD_HINT, checkPassword } from "@/lib/password";
 import { initials } from "@/lib/format";
-import { resizeImageToDataUrl } from "@/lib/image";
+import { resizeImageToJpeg } from "@/lib/image";
+import { uploadPhoto } from "@/lib/photos";
 import { PlateStarIcon, SettingsIcon } from "@/components/icons";
 import { ProfileActivity } from "@/components/ProfileActivity";
 import { POINT_RULES } from "@/lib/points";
@@ -328,8 +329,10 @@ function AccountOverview() {
     setAvatarError("");
     setUploading(true);
     try {
-      const dataUrl = await resizeImageToDataUrl(file);
-      const error = await updateAvatar(dataUrl);
+      // Up to the blob store first, then the row takes its address — same
+      // path a post photo travels, and the same reason.
+      const url = await uploadPhoto(await resizeImageToJpeg(file), "avatar");
+      const error = await updateAvatar(url);
       if (error) setAvatarError(error);
     } catch {
       setAvatarError("Couldn't read that image, try another.");

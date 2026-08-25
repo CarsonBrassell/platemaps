@@ -6,10 +6,15 @@ import { POINT_RULES } from "@/lib/points";
 import { FOOD_TAGS } from "@/data/foodTags";
 import { AMENITY_LABELS, ROOM_LABELS, BEST_AT_LABELS } from "@/data/reviewScales";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
+import { isStoredPhotoUrl } from "@/lib/photos";
 import { resolvePostRefs } from "@/lib/discover";
 
 const MAX_MEDIA = 4;
-const MAX_MEDIA_LENGTH = 4_000_000;
+/* A blob URL and nothing like a payload. Media used to arrive as base64 data
+   URLs capped at four million characters each, which let one post carry ~16MB
+   of body — over the request limit, and every byte of it landing in a Postgres
+   column the feed then had to read back on every query. */
+const MAX_MEDIA_URL_LENGTH = 512;
 
 /**
  * Every post, newest first. Backs the Saved view, which needs posts regardless
@@ -36,7 +41,9 @@ function parseMedia(raw: unknown): PostMedia[] | { error: string } {
     if (!item || typeof item !== "object") return { error: "Invalid media item." };
     const { url, type, alt } = item as Record<string, unknown>;
     if (typeof url !== "string" || !url) return { error: "Invalid media item." };
-    if (url.length > MAX_MEDIA_LENGTH) return { error: "That image is too large." };
+    if (url.length > MAX_MEDIA_URL_LENGTH || !isStoredPhotoUrl(url)) {
+      return { error: "Photos have to be uploaded before the post is published." };
+    }
     if (type !== "image" && type !== "video") return { error: "Invalid media type." };
     media.push({ url, type, alt: typeof alt === "string" ? alt.slice(0, 300) : undefined });
   }

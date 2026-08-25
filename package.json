@@ -12,6 +12,7 @@
     "aspects:preview": "node scripts/preview-aspect-scores.mjs",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "db:seed": "node --env-file=.env.local scripts/seed-demo.mjs",
+    "sim:activity": "node --env-file=.env.local scripts/simulate-activity.mjs",
     "restaurants:import": "node --env-file=.env.local scripts/import-restaurants.mjs",
     "osm:import": "node --env-file=.env.local scripts/import-osm.mjs",
     "hours:fetch": "node --env-file=.env.local scripts/fetch-hours.mjs",
@@ -21,6 +22,7 @@
     "menus:todo": "node --env-file=.env.local scripts/menus-todo.mjs",
     "menus:firecrawl": "node --env-file=.env.local scripts/fetch-menus-firecrawl.mjs",
     "menus:fresh": "node --env-file=.env.local scripts/check-menu-freshness.mjs",
+    "media:backfill": "node --env-file=.env.local scripts/backfill-media-to-blob.mjs",
     "logo:build": "node scripts/build-logo-assets.mjs"
   },
   "dependencies": {
@@ -28,6 +30,7 @@
     "@capacitor/core": "^8.5.0",
     "@capacitor/ios": "^8.5.0",
     "@neondatabase/serverless": "^1.1.0",
+    "@vercel/blob": "^2.8.0",
     "bcryptjs": "^3.0.3",
     "maplibre-gl": "^6.2.0",
     "next": "16.2.12",

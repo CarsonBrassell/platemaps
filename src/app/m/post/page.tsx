@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { openPostFlash, closePostFlash, stashLanding } from "@/lib/postCelebration";
-import { type PhotoDraft } from "@/lib/photos";
+import { allPhotosReady, type PhotoDraft } from "@/lib/photos";
 import { POINT_RULES } from "@/lib/points";
 import { BEST_AT } from "@/data/reviewScales";
 import type { Restaurant } from "@/data/restaurants";
@@ -256,7 +256,13 @@ export default function PhonePost() {
   }
 
   function payload() {
-    const media = photos.map<PostMedia>((p) => ({ url: p.url, type: "image", alt: altFor() }));
+    // Only the blob store's URL travels; the object URL behind the thumbnail
+    // is a browser handle and means nothing to anyone else. `publish` has
+    // already refused to get here with an upload outstanding, so the filter
+    // is a type narrowing rather than a second policy.
+    const media = photos
+      .filter((p): p is PhotoDraft & { url: string } => Boolean(p.url))
+      .map<PostMedia>((p) => ({ url: p.url, type: "image", alt: altFor() }));
     // Same wire shape as the web composer, deliberately: restaurantId/lat/lng
     // ride along so the post can be geo-filtered later, and `photosPublic` is
     // never sent — the API route reads it server-side off the signed-in user's
@@ -290,6 +296,19 @@ export default function PhonePost() {
 
   async function publish() {
     setError(null);
+    /* Before the flash, deliberately. Photos start uploading the moment
+       they're taken and have normally landed long before anyone reaches this
+       button, but a slow connection or a failed upload must stop here — once
+       the white screen is up it is the confirmation, and there is no honest
+       way to take that back and say the plate didn't make it. */
+    if (!allPhotosReady(photos)) {
+      setError(
+        photos.some((p) => p.status === "failed")
+          ? "A photo didn't save. Go back and retry it, or take it off the post."
+          : "Still saving your photos — one moment.",
+      );
+      return;
+    }
     setSubmitting(true);
     /* Raised on the tap, not on the response — the white screen is both the
        confirmation and the cover over this request, the navigation after it

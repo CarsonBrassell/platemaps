@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
-import { type PhotoDraft } from "@/lib/photos";
+import { allPhotosReady, type PhotoDraft } from "@/lib/photos";
 import { POINT_RULES } from "@/lib/points";
 import { BEST_AT } from "@/data/reviewScales";
 import type { Restaurant } from "@/data/restaurants";
@@ -192,7 +192,13 @@ export default function PostPage() {
   }
 
   function payload() {
-    const media = photos.map<PostMedia>((p) => ({ url: p.url, type: "image", alt: altFor() }));
+    // Only the blob store's URL travels; the object URL behind the thumbnail
+    // is a browser handle and means nothing to anyone else. `publish` has
+    // already refused to get here with an upload outstanding, so the filter
+    // is a type narrowing rather than a second policy.
+    const media = photos
+      .filter((p): p is PhotoDraft & { url: string } => Boolean(p.url))
+      .map<PostMedia>((p) => ({ url: p.url, type: "image", alt: altFor() }));
     // restaurantId/lat/lng ride along so the post can be geo-filtered later
     // with no further migration — see the restaurantId columns in lib/db.ts.
     // photosPublic itself isn't sent: the API route reads it server-side from
@@ -236,6 +242,19 @@ export default function PostPage() {
 
   async function publish() {
     setError(null);
+    /* Photos start uploading the moment they're taken, so by the time anyone
+       has filled in the rest of this form they have normally long since
+       landed. This catches the two cases where they haven't — a slow
+       connection and an upload that failed — because neither should end in a
+       post that quietly went out without its plate. */
+    if (!allPhotosReady(photos)) {
+      setError(
+        photos.some((p) => p.status === "failed")
+          ? "A photo didn't save. Go back and retry it, or take it off the post."
+          : "Still saving your photos — one moment.",
+      );
+      return;
+    }
     setSubmitting(true);
     try {
       const res = await fetch("/api/posts", {

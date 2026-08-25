@@ -6,7 +6,9 @@ import {
   MAX_PHOTOS,
   PHOTO_QUALITY,
   PHOTO_SIZE,
-  photoFromDataUrl,
+  canvasToJpeg,
+  nextPhotoId,
+  uploadPhoto,
   type PhotoDraft,
 } from "@/lib/photos";
 
@@ -253,14 +255,57 @@ export function CameraCapture({
     if (!ctx) return null;
     ctx.drawImage(top, 0, 0);
     ctx.drawImage(bottom, 0, SPLIT_HALF);
-    return canvas.toDataURL("image/jpeg", PHOTO_QUALITY);
+    return canvas;
   }
 
-  function add(url: string) {
-    onChange((prev) => [...prev, photoFromDataUrl(url)].slice(0, MAX_PHOTOS));
+  /**
+   * A finished picture joins the post and sets off for the store in the same
+   * moment.
+   *
+   * The preview is an object URL over the JPEG already in hand, so the
+   * thumbnail is there on the shutter press with no network in the way, and
+   * the upload runs underneath while the rest of the post is being filled in
+   * — by the time anyone reaches Post it has usually long since landed. The
+   * draft is added before its URL exists, which is what `status` is for: the
+   * composer publishes on that, not on the presence of a photo.
+   *
+   * A failed upload marks the draft rather than dropping it. The picture is
+   * still on screen and still removable, so the recovery is taking another
+   * one, not discovering later that the post went out short.
+   */
+  async function add(blob: Blob) {
+    if (photos.length >= MAX_PHOTOS) return;
+    const id = nextPhotoId();
+    onChange((prev) => [
+      ...prev,
+      { id, previewUrl: URL.createObjectURL(blob), status: "uploading" as const, blob },
+    ]);
+    await send(id, blob);
   }
 
-  function captureSplit() {
+  /** The upload itself, shared by the first attempt and every retry after it. */
+  async function send(id: string, blob: Blob) {
+    try {
+      const url = await uploadPhoto(blob);
+      onChange((prev) => prev.map((p) => (p.id === id ? { ...p, url, status: "ready" } : p)));
+    } catch {
+      onChange((prev) => prev.map((p) => (p.id === id ? { ...p, status: "failed" } : p)));
+    }
+  }
+
+  function retry(photo: PhotoDraft) {
+    if (!photo.blob) return;
+    onChange((prev) => prev.map((p) => (p.id === photo.id ? { ...p, status: "uploading" } : p)));
+    void send(photo.id, photo.blob);
+  }
+
+  /** Dropping a draft drops the object URL with it. */
+  function remove(photo: PhotoDraft) {
+    URL.revokeObjectURL(photo.previewUrl);
+    onChange((prev) => prev.filter((p) => p.id !== photo.id));
+  }
+
+  async function captureSplit() {
     const video = videoRef.current;
     if (!video?.videoWidth) return;
 
@@ -272,7 +317,8 @@ export function CameraCapture({
       const bottom = halfFrom(order[1] === live ? video : other, order[1] === "user");
       if (!top || !bottom) return;
       const joined = join(top, bottom);
-      if (joined) add(joined);
+      const blob = joined && (await canvasToJpeg(joined));
+      if (blob) void add(blob);
       flashOnce();
       return;
     }
@@ -294,14 +340,15 @@ export function CameraCapture({
     const joined = join(pendingRef.current, shot);
     pendingRef.current = null;
     setPendingUrl(null);
-    if (joined) add(joined);
+    const blob = joined && (await canvasToJpeg(joined));
+    if (blob) void add(blob);
     flashOnce();
   }
 
-  function capture() {
+  async function capture() {
     if (full) return;
     if (mode === "split") {
-      captureSplit();
+      void captureSplit();
       return;
     }
 
@@ -322,7 +369,8 @@ export function CameraCapture({
     }
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    add(canvas.toDataURL("image/jpeg", PHOTO_QUALITY));
+    const blob = await canvasToJpeg(canvas);
+    if (blob) void add(blob);
     flashOnce();
   }
 
@@ -546,10 +594,44 @@ export function CameraCapture({
           }`}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photo.url} alt={`Photo ${i + 1}`} className="h-full w-full object-cover" />
+          <img
+            src={photo.previewUrl}
+            alt={`Photo ${i + 1}`}
+            className={`h-full w-full object-cover transition-opacity ${
+              photo.status === "ready" ? "opacity-100" : "opacity-55"
+            }`}
+          />
+
+          {/* The upload, said quietly. The picture is already on the post and
+              nothing here needs answering — it is progress, not a question,
+              and it only ever matters if Post is reached before it finishes. */}
+          {photo.status === "uploading" && (
+            <span
+              role="status"
+              aria-label={`Saving photo ${i + 1}`}
+              className="absolute inset-0 flex items-center justify-center bg-pm-charcoal/35"
+            >
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/35 border-t-white" />
+            </span>
+          )}
+
+          {/* A failure keeps the picture and offers the one move worth having.
+              The whole tile is the button: at 64px anything smaller than the
+              tile is smaller than a fingertip. */}
+          {photo.status === "failed" && (
+            <button
+              type="button"
+              onClick={() => retry(photo)}
+              aria-label={`Photo ${i + 1} didn't save — try again`}
+              className="absolute inset-0 flex items-center justify-center bg-pm-charcoal/70 text-[11px] font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              Retry
+            </button>
+          )}
+
           <button
             type="button"
-            onClick={() => onChange((prev) => prev.filter((_, j) => j !== i))}
+            onClick={() => remove(photo)}
             aria-label={`Remove photo ${i + 1}`}
             className="absolute right-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-pm-charcoal/75 text-white transition-transform hover:scale-110"
           >
