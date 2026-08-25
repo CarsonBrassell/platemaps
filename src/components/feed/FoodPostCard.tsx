@@ -417,6 +417,28 @@ export function FoodPostCard(props: FoodPostCardProps) {
          * `items-baseline` still, so the number sits on the first line of the
          * headline however many lines it runs to. */}
         <div className="flex items-baseline justify-between gap-3">
+          {/* Who posted it, above the words — the author leads the card. On a
+              photo post the same pair is already up there, over the image
+              (see the overlay above), so this is the photoless card catching
+              up rather than a second treatment. It used to sit *below* the
+              review, which put the person last on a card that is entirely
+              their opinion. */}
+          {!hasPhoto && (
+            <div className="mb-2 flex items-center gap-2">
+              <Link
+                href={isOwner ? "/account" : `/u/${post.userId}`}
+                aria-label={`View ${post.authorName}'s profile`}
+                className="flex min-w-0 items-center gap-2 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              >
+                <Avatar name={post.authorName} url={post.authorAvatarUrl} bg={palette.avatarBg} />
+                <span className="truncate font-mono text-xs font-medium text-zinc-900">
+                  {handleFor(post.authorName)}
+                </span>
+              </Link>
+              <PointsBadge points={post.authorPoints} className="shrink-0" />
+            </div>
+          )}
+
           <h3
             id={titleId}
             className={`min-w-0 text-[22px] font-semibold tracking-tight text-zinc-900 ${
@@ -477,12 +499,15 @@ export function FoodPostCard(props: FoodPostCardProps) {
          * one DESIGN.md already draws — a name used as a *title* sets in
          * Fraunces, a name used as a *compact reference to a record* sets in
          * mono. The dish is this post's title; the restaurant is a record it
-         * points at. So the dish keeps the display face and the accent, and the
-         * restaurant drops to mono at the muted step, with a hairline @ between
-         * them. Two proper names two inches apart otherwise read as one name.
+         * points at. So the dish keeps the display face and the restaurant
+         * stays mono — but the **accent is on the restaurant now**, not the
+         * dish. The face already separates the two; spending the colour on the
+         * same name spent it twice, and what a reader scanning a feed wants
+         * from this line is where to go. Exactly one of the pair is coloured
+         * either way, so the card's accent budget is unchanged.
          *
-         * --pm-orange-text, not --pm-orange: at 15px this is body-sized type and
-         * only the darker accent token clears 4.5:1.
+         * --pm-orange-text, not --pm-orange: at 12-15px this is body-sized type
+         * and only the darker accent token clears 4.5:1.
          *
          * `min-w-0 truncate` on each name rather than on the row, so two long
          * ones share the width instead of the restaurant being clipped off the
@@ -493,12 +518,12 @@ export function FoodPostCard(props: FoodPostCardProps) {
               (dishHref ? (
                 <Link
                   href={dishHref}
-                  className="min-w-0 truncate rounded-sm font-display text-[15px] font-semibold leading-tight text-pm-orange-text transition-colors hover:text-pm-orange hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                  className="min-w-0 truncate rounded-sm font-display text-[15px] font-semibold leading-tight text-zinc-900 transition-colors hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
                 >
                   {lineDish}
                 </Link>
               ) : (
-                <span className="min-w-0 truncate font-display text-[15px] font-semibold leading-tight text-pm-orange-text">
+                <span className="min-w-0 truncate font-display text-[15px] font-semibold leading-tight text-zinc-900">
                   {lineDish}
                 </span>
               ))}
@@ -522,12 +547,12 @@ export function FoodPostCard(props: FoodPostCardProps) {
               (restaurantHref ? (
                 <Link
                   href={restaurantHref}
-                  className="min-w-0 truncate rounded-sm font-mono text-[12px] font-medium text-zinc-500 transition-colors hover:text-zinc-900 hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+                  className="min-w-0 truncate rounded-sm font-mono text-[12px] font-medium text-pm-orange-text transition-colors hover:text-pm-orange hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
                 >
                   {lineRestaurant}
                 </Link>
               ) : (
-                <span className="min-w-0 truncate font-mono text-[12px] font-medium text-zinc-500">
+                <span className="min-w-0 truncate font-mono text-[12px] font-medium text-pm-orange-text">
                   {lineRestaurant}
                 </span>
               ))}
@@ -552,25 +577,8 @@ export function FoodPostCard(props: FoodPostCardProps) {
             that isn't trending has nothing left for this line — and an empty
             24px row under the words is exactly the gap that made the card read
             as half air. */}
-        {(!hasPhoto || trending || friendControl) && (
+        {(trending || friendControl) && (
           <div className="mt-1.5 flex items-center gap-2">
-            {/* Name and points only when they aren't already on the photo. */}
-            {!hasPhoto && (
-              <>
-                <Link
-                  href={isOwner ? "/account" : `/u/${post.userId}`}
-                  aria-label={`View ${post.authorName}'s profile`}
-                  className="flex min-w-0 items-center gap-2 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-                >
-                  <Avatar name={post.authorName} url={post.authorAvatarUrl} bg={palette.avatarBg} />
-                  <span className="truncate font-mono text-xs font-medium text-zinc-900">
-                    {handleFor(post.authorName)}
-                  </span>
-                </Link>
-                <PointsBadge points={post.authorPoints} className="shrink-0" />
-              </>
-            )}
-
             {trending && (
               <span
                 className="flex shrink-0 items-center gap-1 rounded-full bg-pm-grey-tint py-0.5 pl-1.5 pr-2 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-pm-grey-text"
