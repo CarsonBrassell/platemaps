@@ -204,12 +204,12 @@ export default function PrivacyPage() {
 
           <Section id="retention" title="7. Data Retention and Deletion">
             <p>
-              We keep your account information and content for as long as your account is
-              active, so the Service can function as intended (for example, so your past posts
-              and ratings continue to display correctly). If you delete your account, we delete
-              or anonymize your personal information within a reasonable period, except where we
-              are permitted or required to retain it — for example, to resolve disputes, enforce
-              our Terms, or comply with a legal obligation.
+              We keep your account information and most of your content for as long as your
+              account is active, so the Service can function as intended (for example, so your
+              past posts and ratings continue to display correctly). If you delete your account,
+              we delete or anonymize your personal information within a reasonable period, except
+              where we are permitted or required to retain it — for example, to resolve disputes,
+              enforce our Terms, or comply with a legal obligation.
             </p>
           </Section>
 

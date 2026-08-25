@@ -1,12 +1,40 @@
 export const MAX_PHOTOS = 4;
-export const PHOTO_SIZE = 1080;
+
+/**
+ * Longest edge of a captured photo, in pixels.
+ *
+ * 900 rather than 1080, which is worth about 29% of every photo's bytes —
+ * measured by re-encoding three real posted photos through the same canvas
+ * path this uses, not estimated. Quality is deliberately untouched: dropping
+ * the dimension is the cheaper half of the saving and it cannot introduce
+ * compression artefacts into food photography, which is the product.
+ *
+ * What the number has to cover: the feed hero is `aspect-[16/9] w-full` inside
+ * a card about 358 CSS px wide, so it asks for 716 device px at 2x and 1074 at
+ * 3x. 1080 was sized for the 3x case at full bleed. 900 clears 2x outright and
+ * falls a little short of 3x — inside a 16:9 crop, on a feed you scroll.
+ * The 96px card thumbnail wants 288 at 3x and is nowhere near the constraint.
+ *
+ * Raise it back toward 1080 if photos ever get a full-bleed, full-height
+ * viewer where the whole frame is examined rather than glanced at.
+ */
+export const PHOTO_SIZE = 900;
+
 export const PHOTO_QUALITY = 0.72;
 
 /**
- * The upload route's ceiling. A 1080px capture at PHOTO_QUALITY lands around
- * 150KB, so this is roughly ten times the real thing: big enough that no
- * genuine photo ever trips it, small enough to bound what a forged request
- * can push into the store.
+ * The upload route's ceiling. A capture at PHOTO_SIZE and PHOTO_QUALITY lands
+ * around 50–135KB, so this is roughly ten times the real thing: big enough
+ * that no genuine photo ever trips it, small enough to bound what a forged
+ * request can push into the store.
+ *
+ * It is not the only guard, and deliberately not the important one. Canvas
+ * encoding falls back *silently* when it does not know a MIME type — asking
+ * iOS's WKWebView for `image/webp` hands back a PNG, and the same photo goes
+ * from 378KB to 2.5MB. `canvasToJpeg` asks for `image/jpeg`, which every
+ * engine supports, and `/api/blob/upload` rejects anything whose type is not
+ * `image/jpeg` outright. A silent fallback fails loudly at the door rather
+ * than arriving as a very large photo that happens to fit under this number.
  */
 export const MAX_UPLOAD_BYTES = 2_000_000;
 

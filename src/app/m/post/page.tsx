@@ -131,6 +131,11 @@ export default function PhonePost() {
    * on every tap is motion `prefers-reduced-motion` would have to argue with.
    */
   useEffect(() => {
+    /* The frame scrolls, not the document (see .pm-phone-content in phone.css),
+       so this has to move the scroller. `window.scrollTo` stays as the fallback
+       for any context where the page itself is what scrolls — one of the two is
+       always a no-op, and guessing wrong means a step opens half way down. */
+    document.querySelector(".pm-phone-content")?.scrollTo(0, 0);
     window.scrollTo(0, 0);
   }, [index]);
 

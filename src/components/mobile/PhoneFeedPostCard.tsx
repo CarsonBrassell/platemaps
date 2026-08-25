@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
-import { heatFor, heatRamp, HEAT_RAMP_FLOOR } from "@/components/post/PercentMeter";
+import { heatFor, heatRamp, HEAT_RAMP_FLOOR, isPerfect } from "@/components/post/PercentMeter";
 import Link from "next/link";
 import { PostMediaCarousel } from "@/components/feed/PostMediaCarousel";
 import { PostActions, type VoteDirection } from "@/components/feed/PostActions";
@@ -591,7 +591,9 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                     data-heat={heatFor(post.rating)}
                     style={{ "--heat": heatRamp(post.rating) } as CSSProperties}
                     className={`font-mono text-[38px] font-bold leading-none tabular-nums ${
-                      post.rating > HEAT_RAMP_FLOOR ? "pct-heat" : "text-pm-orange"
+                      post.rating > HEAT_RAMP_FLOOR
+                        ? `pct-heat ${isPerfect(post.rating) ? "pct-shine" : ""}`
+                        : "text-pm-orange"
                     }`}
                   >
                     {post.rating}%

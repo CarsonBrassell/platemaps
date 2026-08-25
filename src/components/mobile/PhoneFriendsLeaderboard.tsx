@@ -1,6 +1,7 @@
 import { formatPoints } from "@/lib/points";
 import { avatarPalette, initials } from "@/lib/format";
 import { STATIONS } from "@/lib/stations";
+import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
 
 type Entry = { id: string; name: string; avatarUrl?: string; points: number };
 
@@ -48,9 +49,24 @@ type Entry = { id: string; name: string; avatarUrl?: string; points: number };
  */
 
 /** Dotted leader/rule. Decorative everywhere it is used. */
-const DOTS = "h-px flex-1 border-b border-dotted border-zinc-300";
+const DOTS = "h-px flex-1 border-b border-dotted border-pm-orange-border";
 
-type Seat = { entry: Entry; rank: number; gap: number; isYou: boolean };
+export type Seat = { entry: Entry; rank: number; gap: number; isYou: boolean };
+
+/**
+ * The one ranking, exported so the friends list above can badge each row with
+ * the same `№` this card gives them. Two sorts of the same array is how a list
+ * and the leaderboard under it end up disagreeing about who is second.
+ */
+export function rankSeats(friends: Entry[], you: Entry): Seat[] {
+  const ranked = [...friends, you].sort((a, b) => b.points - a.points);
+  return ranked.map((entry, index) => ({
+    entry,
+    rank: index + 1,
+    gap: index > 0 ? ranked[index - 1].points - entry.points : 0,
+    isYou: entry.id === you.id,
+  }));
+}
 
 /**
  * A course heading, centred between two rules. `.mono-label` is unlayered in
@@ -59,9 +75,15 @@ type Seat = { entry: Entry; rank: number; gap: number; isYou: boolean };
  */
 function Course({ label }: { label: string }) {
   return (
-    <div className="flex items-center gap-2.5 pb-1.5 pt-3.5">
+    <div className="flex items-center gap-2 pb-2 pt-4">
       <span aria-hidden="true" className={DOTS} />
-      <span className="mono-label text-zinc-500">{label}</span>
+      <span aria-hidden="true" className="text-[7px] leading-none text-pm-orange-border">
+        ◆
+      </span>
+      <span className="mono-label text-pm-orange-text">{label}</span>
+      <span aria-hidden="true" className="text-[7px] leading-none text-pm-orange-border">
+        ◆
+      </span>
       <span aria-hidden="true" className={DOTS} />
     </div>
   );
@@ -79,7 +101,29 @@ function standingFor(rank: number, gap: number) {
       : gap > 0
         ? `${formatPoints(gap)} to catch №${rank - 1}`
         : `Tied for №${rank - 1}`;
-  return STATIONS[rank] ? `${STATIONS[rank]} · ${standing}` : standing;
+  return standing;
+}
+
+/**
+ * The podium's kitchen title, as a chip. Only the top three have one; everyone
+ * below is just a number, per STATIONS. It used to ride the standing line,
+ * which is where the longest text on the row already lives — as a chip it
+ * reads at a glance and can carry the podium's colour. Tan for №2/№3 rather
+ * than the orange tint, because that tint already means "this row is you" and
+ * two meanings on one colour is how a legend stops working.
+ */
+function StationChip({ rank }: { rank: number }) {
+  const station = STATIONS[rank];
+  if (!station) return null;
+  return (
+    <span
+      className={`shrink-0 rounded-full px-2 py-px font-mono text-[10px] font-medium uppercase tracking-[0.1em] ${
+        rank === 1 ? "bg-pm-orange text-[#F7F4EC]" : "bg-pm-grey-tint text-pm-grey-text"
+      }`}
+    >
+      {station}
+    </span>
+  );
 }
 
 function Seat({ entry, rank, gap, isYou }: Seat) {
@@ -91,7 +135,7 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
     >
       <span
         className={`w-7 shrink-0 font-mono text-[11px] font-medium tabular-nums ${
-          rank === 1 ? "text-pm-orange-text" : "text-zinc-500"
+          rank <= 3 ? "text-pm-orange-text" : "text-zinc-500"
         }`}
       >
         №{rank}
@@ -125,11 +169,16 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
           <span aria-hidden="true" className={`${DOTS} mb-[5px] min-w-4`} />
           <span className="shrink-0 whitespace-nowrap font-mono text-sm font-semibold leading-none tabular-nums text-zinc-900">
             {formatPoints(entry.points)}
+            {/* The unit, the way a price on a menu carries its currency. */}
+            <span className="ml-0.5 text-[10px] font-medium text-pm-grey-text">PP</span>
             <span className="sr-only"> Plate Points</span>
           </span>
         </span>
-        <span className="mt-1 block truncate font-mono text-[11px] leading-tight tabular-nums text-zinc-500">
-          {standingFor(rank, gap)}
+        <span className="mt-1 flex items-center gap-1.5">
+          <StationChip rank={rank} />
+          <span className="truncate font-mono text-[11px] leading-tight tabular-nums text-zinc-500">
+            {standingFor(rank, gap)}
+          </span>
         </span>
       </span>
     </li>
@@ -139,37 +188,37 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
 export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; you: Entry }) {
   if (friends.length === 0) return null;
 
-  const ranked = [...friends, you].sort((a, b) => b.points - a.points);
-  const seats: Seat[] = ranked.map((entry, index) => ({
-    entry,
-    rank: index + 1,
-    gap: index > 0 ? ranked[index - 1].points - entry.points : 0,
-    isYou: entry.id === you.id,
-  }));
+  const seats = rankSeats(friends, you);
 
   const chefsTable = seats.slice(0, 3);
   const theLine = seats.slice(3);
 
   return (
     <section aria-labelledby="phone-leaderboard-heading" className="mb-7 px-4">
-      <p className="mono-label mb-2 text-pm-grey-text">Leaderboard</p>
+      <PhoneSectionLabel>Leaderboard</PhoneSectionLabel>
 
-      <div className="rounded-2xl bg-white px-3 pb-3 pt-4">
-        {/* The menu's own head: title centred over its rubric, then a rule. */}
-        <div className="px-1 text-center">
+      {/* `overflow-hidden` so the header band takes the card's own corner
+          radius instead of squaring off inside it. */}
+      <div className="overflow-hidden rounded-2xl bg-white">
+        {/* The cover. Charcoal rather than white because a menu's head is
+            printed on the board, and because it gives the card a top edge
+            without drawing a border to get one. Cream on charcoal is the
+            highest-contrast pairing the app owns, which is what lets the
+            title carry without spending the accent on it. */}
+        <div className="bg-pm-charcoal px-4 py-4 text-center">
+          <p className="mono-label text-pm-orange-tint">Tonight&rsquo;s service</p>
           <h2
             id="phone-leaderboard-heading"
-            className="font-display text-[19px] font-semibold leading-tight text-zinc-900"
+            className="font-display mt-1.5 text-[21px] font-semibold leading-tight text-[#F7F4EC]"
           >
             Friends&rsquo; Table
           </h2>
-          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
+          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-[#bdb3a4]">
             Ranked by Plate Points
           </p>
         </div>
-        <div className="mt-3 flex" aria-hidden="true">
-          <span className={DOTS} />
-        </div>
+
+        <div className="px-3 pb-3">
 
         <Course label="Chef's table" />
         <ol className="flex flex-col gap-0.5">
@@ -189,9 +238,13 @@ export function PhoneFriendsLeaderboard({ friends, you }: { friends: Entry[]; yo
           </>
         )}
 
-        <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-zinc-500">
-          Prices in Plate Points · no substitutions
-        </p>
+          <div className="mt-4 flex" aria-hidden="true">
+            <span className={DOTS} />
+          </div>
+          <p className="mt-2.5 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-pm-grey-text">
+            Prices in Plate Points · no substitutions
+          </p>
+        </div>
       </div>
     </section>
   );
