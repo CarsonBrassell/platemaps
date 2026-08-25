@@ -40,7 +40,7 @@
  * by id and orphaning those is not something a data refresh should do quietly.
  */
 
-import { neon } from "@neondatabase/serverless";
+import { sql } from "./sql-client.mjs";
 import { restaurants } from "../src/data/restaurants.ts";
 import { dishesByRestaurant } from "../src/data/dishes.ts";
 import { regionForCoordinate, regionNames } from "../src/data/regions.ts";
@@ -58,7 +58,6 @@ if (!process.env.DATABASE_URL) {
   process.exit(1);
 }
 
-const sql = neon(process.env.DATABASE_URL);
 
 /* --- Validation --------------------------------------------------------- */
 

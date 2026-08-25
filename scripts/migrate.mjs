@@ -1,6 +1,6 @@
-import { neon } from "@neondatabase/serverless";
+import { sql, usingLocalPostgres } from "./sql-client.mjs";
 
-const sql = neon(process.env.DATABASE_URL);
+if (usingLocalPostgres) console.log("→ local Postgres");
 
 const statements = [
   `CREATE TABLE IF NOT EXISTS users (

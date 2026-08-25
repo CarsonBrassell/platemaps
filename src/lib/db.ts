@@ -1,4 +1,3 @@
-import { neon } from "@neondatabase/serverless";
 import { randomUUID } from "node:crypto";
 import type { Restaurant, RestaurantView } from "@/data/restaurants";
 import type { Dish } from "@/data/dishes";
@@ -14,7 +13,8 @@ import {
 import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 import { RANKS, rankByKey } from "@/lib/ranks";
 
-const sql = neon(process.env.DATABASE_URL!);
+/* Which driver this is depends on DATABASE_URL — see lib/sqlClient. */
+import { sql } from "@/lib/sqlClient";
 
 export type User = {
   id: string;
