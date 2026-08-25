@@ -5,14 +5,13 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { openPostFlash, closePostFlash, stashLanding } from "@/lib/postCelebration";
-import { allPhotosReady, type PhotoDraft } from "@/lib/photos";
+import { discardPhoto, uploadPhotos, type PhotoDraft } from "@/lib/photos";
 import { POINT_RULES } from "@/lib/points";
 import { BEST_AT } from "@/data/reviewScales";
-import type { Restaurant } from "@/data/restaurants";
 import { CloseIcon, ChevronIcon } from "@/components/icons";
 import { CameraCapture } from "@/components/post/CameraCapture";
 import { KindChooser, type PostKind } from "@/components/post/KindChooser";
-import { RestaurantPicker } from "@/components/post/RestaurantPicker";
+import { RestaurantPicker, type PickableRestaurant } from "@/components/post/RestaurantPicker";
 import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
 import type { PostMedia } from "@/components/feed/types";
@@ -71,10 +70,10 @@ export default function PhonePost() {
   const [index, setIndex] = useState(0);
   const [back, setBack] = useState(false);
 
-  const [place, setPlace] = useState<Restaurant | null>(null);
+  const [place, setPlace] = useState<PickableRestaurant | null>(null);
   const [dish, setDish] = useState<PickedDish | null>(null);
   /** The list the "where" step browses — fetched once, shared by both pickers. */
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [restaurants, setRestaurants] = useState<PickableRestaurant[]>([]);
   const [pct, setPct] = useState(80);
 
   const [photos, setPhotos] = useState<PhotoDraft[]>([]);
@@ -93,18 +92,19 @@ export default function PhonePost() {
     let cancelled = false;
     void (async () => {
       try {
-        const res = await fetch("/api/restaurants");
+        // `fields=index` — see getRestaurantIndex in lib/db.ts.
+        const res = await fetch("/api/restaurants?fields=index");
         if (!res.ok) return;
-        const data: { restaurants: Restaurant[] } = await res.json();
+        const data: { restaurants: PickableRestaurant[] } = await res.json();
         if (cancelled) return;
         setRestaurants(data.restaurants);
 
         /* Arrived from a restaurant page's "post the first plate": the where
            step is already answered, so answer it. Applied here rather than in
-           its own effect because `place` is the full Restaurant row, not an
-           id, and this callback is the moment the row exists. A param naming
-           no real restaurant sets nothing. Never *overwrites* a choice — once
-           the visitor picks a place by hand, a stale URL param loses. */
+           its own effect because `place` is a row rather than an id, and this
+           callback is the moment the rows exist. A param naming no real
+           restaurant sets nothing. Never *overwrites* a choice — once the
+           visitor picks a place by hand, a stale URL param loses. */
         const preselected = data.restaurants.find((r) => r.id === params.get("restaurant"));
         if (preselected) setPlace((current) => current ?? preselected);
         // `params` is deliberately not a dependency: this runs once for the
@@ -260,14 +260,9 @@ export default function PhonePost() {
     return "";
   }
 
-  function payload() {
-    // Only the blob store's URL travels; the object URL behind the thumbnail
-    // is a browser handle and means nothing to anyone else. `publish` has
-    // already refused to get here with an upload outstanding, so the filter
-    // is a type narrowing rather than a second policy.
-    const media = photos
-      .filter((p): p is PhotoDraft & { url: string } => Boolean(p.url))
-      .map<PostMedia>((p) => ({ url: p.url, type: "image", alt: altFor() }));
+  /** `mediaUrls` are the blob store's, handed over by `publish` once they exist. */
+  function payload(mediaUrls: string[]) {
+    const media = mediaUrls.map<PostMedia>((url) => ({ url, type: "image", alt: altFor() }));
     // Same wire shape as the web composer, deliberately: restaurantId/lat/lng
     // ride along so the post can be geo-filtered later, and `photosPublic` is
     // never sent — the API route reads it server-side off the signed-in user's
@@ -301,20 +296,27 @@ export default function PhonePost() {
 
   async function publish() {
     setError(null);
-    /* Before the flash, deliberately. Photos start uploading the moment
-       they're taken and have normally landed long before anyone reaches this
-       button, but a slow connection or a failed upload must stop here — once
-       the white screen is up it is the confirmation, and there is no honest
-       way to take that back and say the plate didn't make it. */
-    if (!allPhotosReady(photos)) {
-      setError(
-        photos.some((p) => p.status === "failed")
-          ? "A photo didn't save. Go back and retry it, or take it off the post."
-          : "Still saving your photos — one moment.",
-      );
+    setSubmitting(true);
+
+    /* The photos go up here and nowhere earlier. Everything before this press
+       lived in the browser, so a composer that gets abandoned — backed out of,
+       or killed with the app — leaves nothing in the store to sweep up later.
+       `uploadPhotos` is all-or-nothing and cleans up after itself if part of
+       the batch fails.
+
+       Ahead of the flash, deliberately. This is the step that can fail on a
+       restaurant's signal, and once the white screen is up it *is* the
+       confirmation — there is no honest way to raise it and then say the
+       plate didn't make it. */
+    let urls: string[];
+    try {
+      urls = await uploadPhotos(photos);
+    } catch {
+      setError("Your photos didn't upload. Check your connection and try again.");
+      setSubmitting(false);
       return;
     }
-    setSubmitting(true);
+
     /* Raised on the tap, not on the response — the white screen is both the
        confirmation and the cover over this request, the navigation after it
        and the feed's own first fetch. It comes down from the feed, once the
@@ -324,11 +326,15 @@ export default function PhonePost() {
       const res = await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload()),
+        body: JSON.stringify(payload(urls)),
       });
       const data = await res.json();
       if (!res.ok) {
         closePostFlash();
+        /* The photos landed but the post was refused, so they belong to
+           nothing. Taking them back out is the whole reason the upload waits
+           until this press. */
+        await Promise.allSettled(urls.map(discardPhoto));
         setError(data.error ?? "Couldn't publish that. Try again.");
         setSubmitting(false);
         return;
@@ -349,6 +355,7 @@ export default function PhonePost() {
       router.push(to("/m/feed"));
     } catch {
       closePostFlash();
+      await Promise.allSettled(urls.map(discardPhoto));
       setError("Couldn't reach PlateMaps. Check your connection and try again.");
       setSubmitting(false);
     }

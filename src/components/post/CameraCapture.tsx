@@ -8,7 +8,6 @@ import {
   PHOTO_SIZE,
   canvasToJpeg,
   nextPhotoId,
-  uploadPhoto,
   type PhotoDraft,
 } from "@/lib/photos";
 
@@ -259,44 +258,21 @@ export function CameraCapture({
   }
 
   /**
-   * A finished picture joins the post and sets off for the store in the same
-   * moment.
+   * A finished picture joins the post.
    *
    * The preview is an object URL over the JPEG already in hand, so the
-   * thumbnail is there on the shutter press with no network in the way, and
-   * the upload runs underneath while the rest of the post is being filled in
-   * — by the time anyone reaches Post it has usually long since landed. The
-   * draft is added before its URL exists, which is what `status` is for: the
-   * composer publishes on that, not on the presence of a photo.
-   *
-   * A failed upload marks the draft rather than dropping it. The picture is
-   * still on screen and still removable, so the recovery is taking another
-   * one, not discovering later that the post went out short.
-   */
-  async function add(blob: Blob) {
+   * thumbnail is on screen the moment the shutter fires with no network in
+   * the way. **Nothing is uploaded here.** A draft lives in this browser
+   * until Post is pressed, which is what makes leaving the composer free:
+   * back out, close the tab, kill the app, and there is nothing in the store
+   * to find afterwards. `uploadPhotos` in lib/photos is where they go, once,
+   * at the end. */
+  function add(blob: Blob) {
     if (photos.length >= MAX_PHOTOS) return;
-    const id = nextPhotoId();
     onChange((prev) => [
       ...prev,
-      { id, previewUrl: URL.createObjectURL(blob), status: "uploading" as const, blob },
+      { id: nextPhotoId(), previewUrl: URL.createObjectURL(blob), blob },
     ]);
-    await send(id, blob);
-  }
-
-  /** The upload itself, shared by the first attempt and every retry after it. */
-  async function send(id: string, blob: Blob) {
-    try {
-      const url = await uploadPhoto(blob);
-      onChange((prev) => prev.map((p) => (p.id === id ? { ...p, url, status: "ready" } : p)));
-    } catch {
-      onChange((prev) => prev.map((p) => (p.id === id ? { ...p, status: "failed" } : p)));
-    }
-  }
-
-  function retry(photo: PhotoDraft) {
-    if (!photo.blob) return;
-    onChange((prev) => prev.map((p) => (p.id === photo.id ? { ...p, status: "uploading" } : p)));
-    void send(photo.id, photo.blob);
   }
 
   /** Dropping a draft drops the object URL with it. */
@@ -318,7 +294,7 @@ export function CameraCapture({
       if (!top || !bottom) return;
       const joined = join(top, bottom);
       const blob = joined && (await canvasToJpeg(joined));
-      if (blob) void add(blob);
+      if (blob) add(blob);
       flashOnce();
       return;
     }
@@ -341,7 +317,7 @@ export function CameraCapture({
     pendingRef.current = null;
     setPendingUrl(null);
     const blob = joined && (await canvasToJpeg(joined));
-    if (blob) void add(blob);
+    if (blob) add(blob);
     flashOnce();
   }
 
@@ -370,7 +346,7 @@ export function CameraCapture({
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     const blob = await canvasToJpeg(canvas);
-    if (blob) void add(blob);
+    if (blob) add(blob);
     flashOnce();
   }
 
@@ -597,37 +573,8 @@ export function CameraCapture({
           <img
             src={photo.previewUrl}
             alt={`Photo ${i + 1}`}
-            className={`h-full w-full object-cover transition-opacity ${
-              photo.status === "ready" ? "opacity-100" : "opacity-55"
-            }`}
+            className="h-full w-full object-cover"
           />
-
-          {/* The upload, said quietly. The picture is already on the post and
-              nothing here needs answering — it is progress, not a question,
-              and it only ever matters if Post is reached before it finishes. */}
-          {photo.status === "uploading" && (
-            <span
-              role="status"
-              aria-label={`Saving photo ${i + 1}`}
-              className="absolute inset-0 flex items-center justify-center bg-pm-charcoal/35"
-            >
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/35 border-t-white" />
-            </span>
-          )}
-
-          {/* A failure keeps the picture and offers the one move worth having.
-              The whole tile is the button: at 64px anything smaller than the
-              tile is smaller than a fingertip. */}
-          {photo.status === "failed" && (
-            <button
-              type="button"
-              onClick={() => retry(photo)}
-              aria-label={`Photo ${i + 1} didn't save — try again`}
-              className="absolute inset-0 flex items-center justify-center bg-pm-charcoal/70 text-[11px] font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              Retry
-            </button>
-          )}
 
           <button
             type="button"

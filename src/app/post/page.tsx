@@ -1,18 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { Suspense, useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
-import { allPhotosReady, type PhotoDraft } from "@/lib/photos";
+import { discardPhoto, uploadPhotos, type PhotoDraft } from "@/lib/photos";
 import { POINT_RULES } from "@/lib/points";
 import { BEST_AT } from "@/data/reviewScales";
-import type { Restaurant } from "@/data/restaurants";
 import { CloseIcon, ChevronIcon } from "@/components/icons";
 import { CameraCapture } from "@/components/post/CameraCapture";
 import { KindChooser, type PostKind } from "@/components/post/KindChooser";
-import { RestaurantPicker } from "@/components/post/RestaurantPicker";
+import { RestaurantPicker, type PickableRestaurant } from "@/components/post/RestaurantPicker";
 import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
 import type { PostMedia } from "@/components/feed/types";
@@ -49,8 +48,9 @@ const legend = "mono-label mb-1.5 block text-zinc-500";
 const chip =
   "min-h-9 rounded-full px-3 text-xs font-medium transition-all hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
-export default function PostPage() {
+function PostComposer() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { isSignedIn, loading, refresh } = useAuth();
 
   const [kind, setKind] = useState<PostKind | null>(null);
@@ -59,7 +59,7 @@ export default function PostPage() {
   const [index, setIndex] = useState(0);
   const [back, setBack] = useState(false);
 
-  const [place, setPlace] = useState<Restaurant | null>(null);
+  const [place, setPlace] = useState<PickableRestaurant | null>(null);
   const [dish, setDish] = useState<PickedDish | null>(null);
   /**
    * The list the "where" step browses.
@@ -69,7 +69,7 @@ export default function PostPage() {
    * empty is safe: the picker renders its own empty state, and the step it
    * belongs to is never the first one someone sees.
    */
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [restaurants, setRestaurants] = useState<PickableRestaurant[]>([]);
   const [pct, setPct] = useState(80);
 
   const [photos, setPhotos] = useState<PhotoDraft[]>([]);
@@ -87,10 +87,26 @@ export default function PostPage() {
     let cancelled = false;
     void (async () => {
       try {
-        const res = await fetch("/api/restaurants");
+        // `fields=index` — the five-ish columns the picker reads, not all
+        // fourteen. See the route and `getRestaurantIndex` in lib/db.ts.
+        const res = await fetch("/api/restaurants?fields=index");
         if (!res.ok) return;
-        const data: { restaurants: Restaurant[] } = await res.json();
-        if (!cancelled) setRestaurants(data.restaurants);
+        const data: { restaurants: PickableRestaurant[] } = await res.json();
+        if (cancelled) return;
+        setRestaurants(data.restaurants);
+
+        /* Arrived from a restaurant page's comment field: the where step is
+           already answered, so answer it. Applied here rather than in its own
+           effect because `place` is a row rather than an id, and this callback
+           is the moment the rows exist. A param naming no real restaurant sets
+           nothing, and a hand-picked place always beats a stale URL. The phone
+           composer does exactly this — see the note there. */
+        const preselected = data.restaurants.find(
+          (r) => r.id === searchParams.get("restaurant"),
+        );
+        if (preselected) setPlace((current) => current ?? preselected);
+        // `searchParams` is deliberately not a dependency: this runs once for
+        // the URL the composer opened with, same as the fetch it rides on.
       } catch {
         // The picker shows its own "no match" state; nothing to add here.
       }
@@ -98,6 +114,7 @@ export default function PostPage() {
     return () => {
       cancelled = true;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const steps = useMemo<Step[]>(() => {
@@ -191,14 +208,9 @@ export default function PostPage() {
     return "";
   }
 
-  function payload() {
-    // Only the blob store's URL travels; the object URL behind the thumbnail
-    // is a browser handle and means nothing to anyone else. `publish` has
-    // already refused to get here with an upload outstanding, so the filter
-    // is a type narrowing rather than a second policy.
-    const media = photos
-      .filter((p): p is PhotoDraft & { url: string } => Boolean(p.url))
-      .map<PostMedia>((p) => ({ url: p.url, type: "image", alt: altFor() }));
+  /** `mediaUrls` are the blob store's, handed over by `publish` once they exist. */
+  function payload(mediaUrls: string[]) {
+    const media = mediaUrls.map<PostMedia>((url) => ({ url, type: "image", alt: altFor() }));
     // restaurantId/lat/lng ride along so the post can be geo-filtered later
     // with no further migration — see the restaurantId columns in lib/db.ts.
     // photosPublic itself isn't sent: the API route reads it server-side from
@@ -242,28 +254,33 @@ export default function PostPage() {
 
   async function publish() {
     setError(null);
-    /* Photos start uploading the moment they're taken, so by the time anyone
-       has filled in the rest of this form they have normally long since
-       landed. This catches the two cases where they haven't — a slow
-       connection and an upload that failed — because neither should end in a
-       post that quietly went out without its plate. */
-    if (!allPhotosReady(photos)) {
-      setError(
-        photos.some((p) => p.status === "failed")
-          ? "A photo didn't save. Go back and retry it, or take it off the post."
-          : "Still saving your photos — one moment.",
-      );
+    setSubmitting(true);
+
+    /* The photos go up here and nowhere earlier. Everything before this press
+       lived in the browser, so a composer that gets abandoned leaves nothing
+       in the store to sweep up later. `uploadPhotos` is all-or-nothing and
+       cleans up after itself if part of the batch fails. */
+    let urls: string[];
+    try {
+      urls = await uploadPhotos(photos);
+    } catch {
+      setError("Your photos didn't upload. Check your connection and try again.");
+      setSubmitting(false);
       return;
     }
-    setSubmitting(true);
+
     try {
       const res = await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload()),
+        body: JSON.stringify(payload(urls)),
       });
       const data = await res.json();
       if (!res.ok) {
+        /* The photos landed but the post was refused, so they belong to
+           nothing. Taking them back out is the whole reason the upload waits
+           until this press. */
+        await Promise.allSettled(urls.map(discardPhoto));
         setError(data.error ?? "Couldn't publish that. Try again.");
         setSubmitting(false);
         return;
@@ -271,6 +288,7 @@ export default function PostPage() {
       await refresh();
       router.push(`/feed?post=${data.post.id}&earned=${data.pointsEarned}`);
     } catch {
+      await Promise.allSettled(urls.map(discardPhoto));
       setError("Couldn't reach PlateMaps. Check your connection and try again.");
       setSubmitting(false);
     }
@@ -626,3 +644,21 @@ export default function PostPage() {
   );
 }
 
+
+/**
+ * `useSearchParams` opts the tree into client-side rendering, and Next refuses
+ * to prerender a page that reaches for it with no boundary to fall back to.
+ * The composer reads `?restaurant=` to answer its own "where" step, so the
+ * hook stays and the boundary goes here.
+ *
+ * `null` rather than a skeleton: what is behind this is a camera that opens on
+ * mount, and a placeholder of the same shape would be on screen for the one
+ * frame before the real viewfinder replaced it.
+ */
+export default function PostPage() {
+  return (
+    <Suspense fallback={null}>
+      <PostComposer />
+    </Suspense>
+  );
+}

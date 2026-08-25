@@ -10,7 +10,7 @@ import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { resizeImageToJpeg } from "@/lib/image";
-import { uploadPhoto } from "@/lib/photos";
+import { uploadAvatar } from "@/lib/photos";
 import { POINT_RULES } from "@/lib/points";
 
 /**
@@ -183,7 +183,7 @@ function ProfileOverview() {
     try {
       // Up to the blob store first, then the row takes its address — same
       // path a post photo travels, and the same reason.
-      const url = await uploadPhoto(await resizeImageToJpeg(file), "avatar");
+      const url = await uploadAvatar(await resizeImageToJpeg(file));
       const error = await updateAvatar(url);
       if (error) setAvatarError(error);
     } catch {

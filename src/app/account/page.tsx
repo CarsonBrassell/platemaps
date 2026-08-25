@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/auth";
 import { PASSWORD_HINT, checkPassword } from "@/lib/password";
 import { initials } from "@/lib/format";
 import { resizeImageToJpeg } from "@/lib/image";
-import { uploadPhoto } from "@/lib/photos";
+import { uploadAvatar } from "@/lib/photos";
 import { PlateStarIcon, SettingsIcon } from "@/components/icons";
 import { ProfileActivity } from "@/components/ProfileActivity";
 import { POINT_RULES } from "@/lib/points";
@@ -331,7 +331,7 @@ function AccountOverview() {
     try {
       // Up to the blob store first, then the row takes its address — same
       // path a post photo travels, and the same reason.
-      const url = await uploadPhoto(await resizeImageToJpeg(file), "avatar");
+      const url = await uploadAvatar(await resizeImageToJpeg(file));
       const error = await updateAvatar(url);
       if (error) setAvatarError(error);
     } catch {

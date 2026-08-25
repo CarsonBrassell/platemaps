@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { put } from "@vercel/blob";
+import { put, del } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
 import { getCurrentUser } from "@/lib/session";
-import { MAX_UPLOAD_BYTES } from "@/lib/photos";
+import { MAX_UPLOAD_BYTES, isStoredPhotoUrl } from "@/lib/photos";
 
 /**
  * The one door photos go through on their way to the blob store.
@@ -50,9 +50,44 @@ export async function POST(req: Request) {
     });
     return NextResponse.json({ url });
   } catch {
-    /* The composer holds the photo either way — a failed upload marks the
-       draft rather than losing it, so the retry is taking it again, not
-       starting the post over. */
+    /* The composer still holds the JPEG either way — a draft is the blob in
+       memory, not a thing in the store — so a failure here costs the press of
+       Post, not the post. */
     return NextResponse.json({ error: "Couldn't save that photo. Try again." }, { status: 502 });
+  }
+}
+
+/**
+ * Takes a photo back out of the store.
+ *
+ * `uploadPhotos` calls this to roll back a partly-uploaded post: if the third
+ * of four photos fails, the two that landed belong to a post that will never
+ * exist, and they have to go before the error reaches anyone.
+ *
+ * The ownership check is the pathname, not a database read. Every upload is
+ * written to `<folder>/<userId>/<uuid>.jpg` by the POST above, so a URL whose
+ * path does not carry the caller's own id is not theirs to delete — and
+ * nothing else can put a file in that shape. Without it this is an endpoint
+ * for deleting any photo on the app whose URL you happen to know.
+ */
+export async function DELETE(req: Request) {
+  const user = await getCurrentUser();
+  if (!user) {
+    return NextResponse.json({ error: "Sign in first." }, { status: 401 });
+  }
+
+  const { url } = (await req.json().catch(() => ({}))) as { url?: unknown };
+  if (typeof url !== "string" || !isStoredPhotoUrl(url)) {
+    return NextResponse.json({ error: "Not a stored photo." }, { status: 400 });
+  }
+  if (!new URL(url).pathname.includes(`/${user.id}/`)) {
+    return NextResponse.json({ error: "That isn't your photo." }, { status: 403 });
+  }
+
+  try {
+    await del(url);
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: "Couldn't remove that photo." }, { status: 502 });
   }
 }

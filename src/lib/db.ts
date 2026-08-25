@@ -1,4 +1,5 @@
 import { neon } from "@neondatabase/serverless";
+import { del } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
 import type { Restaurant, RestaurantView } from "@/data/restaurants";
 import type { Dish } from "@/data/dishes";
@@ -13,6 +14,8 @@ import {
 } from "@/lib/feedSort";
 import { FEED_WINDOW_DAYS } from "@/lib/feedWindow";
 import { RANKS, rankByKey } from "@/lib/ranks";
+import { dishRatingKey } from "@/lib/dishRatingKey";
+import { isStoredPhotoUrl } from "@/lib/photos";
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -991,8 +994,38 @@ export async function createPost(data: {
   };
 }
 
+/**
+ * Deletes a post and the photos on it.
+ *
+ * The photos are files in the blob store now and the row only holds their
+ * addresses, so dropping the row alone would strand them: unreferenced,
+ * still public at their URL, still billed, and no longer reachable from
+ * anything that could tell you they existed. They have to be read before the
+ * DELETE, because afterwards there is nothing left to read them from.
+ *
+ * A failed `del` does not fail the delete. What was asked for is the post
+ * going away, and it has; a file that outlives it is a housekeeping problem,
+ * not a reason to tell someone their post is still there.
+ */
 export async function deletePost(id: string): Promise<void> {
+  const rows = (await sql`
+    SELECT jsonb_array_elements(media)->>'url' AS url
+      FROM posts
+     WHERE id = ${id} AND jsonb_array_length(media) > 0
+  `) as { url: string | null }[];
+
   await sql`DELETE FROM posts WHERE id = ${id}`;
+
+  const urls = rows
+    .map((r) => r.url)
+    .filter((u): u is string => typeof u === "string" && isStoredPhotoUrl(u));
+  if (urls.length === 0) return;
+
+  try {
+    await del(urls);
+  } catch (err) {
+    console.error(`[deletePost] ${id}: row deleted, ${urls.length} photo(s) left behind`, err);
+  }
 }
 
 export async function addComment(
@@ -1972,8 +2005,18 @@ export type PublicProfile = {
  * A rated post with no dish name falls into a single empty-key bucket rather
  * than being dropped: it is still somebody's rating of something they ate
  * there, and dropping it would quietly shrink the sample.
+ *
+ * Takes the table alias because the same expression has to be written two
+ * ways: the aggregates below select `FROM posts` directly, while `POST_SELECT`
+ * aliases it `p`. One function rather than a second string literal — this
+ * normalisation already has a twin in `lib/dishRatingKey.ts` that must match
+ * it, and a third copy is one more thing to drift.
  */
-const PLATE_GROUP = `lower(trim(coalesce(dish_name, '')))`;
+function plateGroupOn(alias: string): string {
+  return `lower(trim(coalesce(${alias}.dish_name, '')))`;
+}
+
+const PLATE_GROUP = plateGroupOn("posts");
 
 /**
  * The rank ladder from `lib/ranks.ts`, compiled down to a SQL `CASE` over the
@@ -2136,6 +2179,61 @@ export async function getDishRatingsForRestaurant(
   const byDish: Record<string, RatedDish> = {};
   for (const row of rows) byDish[row.dish_key as string] = toRatedDish(row);
   return byDish;
+}
+
+/**
+ * Enough to read the room about one plate. A dish is a much narrower subject
+ * than a restaurant, so this is a ceiling that is rarely reached rather than a
+ * page size — the sheet has no "load more" because there is nothing to load.
+ */
+const DISH_POSTS_LIMIT = 40;
+
+/**
+ * Every post about one plate at one restaurant, newest first.
+ *
+ * The same normalised name the ratings are grouped under (`plateGroupOn`), so
+ * the list underneath a dish's percent is exactly the posts that percent was
+ * computed from — two spellings of "Al Pastor" are one plate here for the same
+ * reason they are one plate there. `dishRatingKey` normalises the parameter
+ * side; the two must agree or a dish with ratings shows an empty list.
+ *
+ * Unrated posts that name the dish are included. `rating IS NOT NULL` belongs
+ * on the aggregates — a number nobody entered cannot be averaged — but this is
+ * a *reading* surface, and "I got the al pastor, skip the salsa verde" is
+ * exactly what someone tapping a dish came for.
+ *
+ * **Not windowed.** Like `getPosts`, and for the reason in the note on
+ * `FEED_WINDOW_DAYS`: freshness is a question the feeds ask, and a plate's
+ * write-up is worth reading long after it would have scrolled off Discover.
+ *
+ * Photo privacy is enforced here rather than left to the client, the same way
+ * `getDiscoverFeed` does it — a restaurant page is public, so a post whose
+ * author never opted into public photos has its media stripped before the row
+ * becomes a response.
+ */
+export async function getDishPosts(
+  restaurantId: string,
+  dishName: string,
+  viewerId: string | null = null,
+  limit = DISH_POSTS_LIMIT,
+): Promise<Post[]> {
+  // The empty key is a real bucket in the aggregates — every rated post that
+  // named no dish. It is not a dish, so it can never be what was tapped.
+  const key = dishRatingKey(dishName);
+  if (!key) return [];
+
+  const blockedIds = viewerId ? await getBlockedEitherWayIds(viewerId) : [];
+  const rows = await sql`
+    ${sql.unsafe(POST_SELECT)}
+    WHERE p.restaurant_id = ${restaurantId}
+      AND p.dish_name IS NOT NULL
+      AND ${sql.unsafe(plateGroupOn("p"))} = ${key}
+      AND p.user_id != ALL(${blockedIds})
+    ORDER BY p.created_at DESC
+    LIMIT ${limit}
+  `;
+  const posts = await hydratePosts(rows, viewerId);
+  return posts.map((post) => ({ ...post, media: post.photosPublic ? post.media : [] }));
 }
 
 // --- Per-aspect verdicts ---------------------------------------------------
@@ -2439,6 +2537,130 @@ function rowToRestaurantView(row: Record<string, unknown>): RestaurantView {
     // Null is meaningful: no menu means no band, and no price filter matches.
     priceBand: (row.price_band as PriceBand | null) ?? null,
   };
+}
+
+/**
+ * Every listed restaurant, as the five fields a picker actually reads.
+ *
+ * `RestaurantPicker` uses `id`, `name`, `cuisine`, `neighborhood` and
+ * `distance`; `restaurantRank.rank()` ranks on the middle three; the account
+ * favourite picker uses `id` and `name` alone. None of them touches a photo, a
+ * rating, coordinates, or `hours` - and `hours` is a JSONB blob that is on its
+ * own about a third of the full projection's weight.
+ *
+ * Those three surfaces were fetching the whole corpus: 4,053 rows at 2.8 MB,
+ * plus a full aggregate over `posts` for plate scores none of them render.
+ * This exists because that is roughly a tenth of the transfer for exactly the
+ * same behaviour.
+ *
+ * It is not a search - it deliberately returns everything, because a picker
+ * filters as you type and a request per keystroke would be worse than one
+ * request that is small. `searchRestaurants` below is the one that narrows.
+ */
+export type RestaurantIndexRow = Pick<
+  RestaurantView,
+  "id" | "name" | "cuisine" | "neighborhood" | "distance" | "lat" | "lng" | "rating"
+>;
+
+export async function getRestaurantIndex(): Promise<RestaurantIndexRow[]> {
+  // `lat`/`lng` are here for the composer alone: picking a place stamps its
+  // coordinates onto the post. Two floats against a JSONB `hours` blob and two
+  // photo URLs is not the weight worth arguing about, and fetching them
+  // separately on select would trade a tenth of a megabyte for a round trip in
+  // the middle of someone's flow.
+  // `rating` is a single number and the draft map-search fields print it, so it
+  // rides along rather than justifying a third projection. The composer pickers
+  // simply don't declare it.
+  const rows = await sql`
+    SELECT id, name, cuisine, neighborhood, distance, lat, lng, rating
+    FROM restaurants WHERE listed ORDER BY sort_order, id
+  `;
+  return rows.map((row) => ({
+    id: row.id as string,
+    name: row.name as string,
+    cuisine: row.cuisine as string,
+    neighborhood: row.neighborhood as string,
+    distance: row.distance as string,
+    lat: row.lat as number,
+    lng: row.lng as number,
+    rating: row.rating as number,
+  }));
+}
+
+/**
+ * Every listed restaurant as the map reads it.
+ *
+ * `RestaurantMap` touches seven fields — `id`, `lat`, `lng`, `name`, `rating`,
+ * `hours` and the plate score — and was being handed all fourteen plus two
+ * photo URLs. It renders an unclustered WebGL circle layer, so it genuinely
+ * does need every restaurant at every zoom (see AGENTS.md: the dots crowding
+ * into bright districts is the intended effect, and clustering is explicitly
+ * ruled out). What it does not need is the cuisine, the neighbourhood, the
+ * walking distance, the price band, the review count, the trending flag, or
+ * either photo.
+ *
+ * `hours` stays, and it is the heaviest thing left here — a seven-day array,
+ * carried so one boolean can be recomputed on every clock tick (`closed`, which
+ * dims a dot). Server-computing that boolean would halve this payload and
+ * freeze the dimming until the next fetch, and sending only today's slot breaks
+ * on the after-midnight wraparound `openStateFor` handles. Both are worth
+ * doing and neither is worth guessing at: measure the real column first.
+ */
+export type RestaurantMapRow = Pick<
+  RestaurantView,
+  "id" | "name" | "lat" | "lng" | "rating" | "hours"
+>;
+
+export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
+  /*
+   * `hours` is trimmed to the two days that can affect the answer.
+   *
+   * Measured: the column is 1.37 MB across the listed rows, 324 bytes each, and
+   * it was 67% of this endpoint's payload — seven near-identical slot objects
+   * per restaurant, carried so the map could recompute one boolean. But
+   * `windowsAround` in lib/openState.ts reads exactly two of them, today and
+   * yesterday, the second only because a close after midnight belongs to the
+   * previous day's window.
+   *
+   * Filtered in SQL rather than in JS after the query, and that distinction is
+   * the whole point: Neon meters what leaves the database, so trimming after
+   * the rows arrive would shrink the response to the browser and change the
+   * bill not at all.
+   *
+   * The field keeps its name and shape - a `DaySlot[]`, just shorter - so
+   * `openStateFor` needs no change. It already selects by `day`, and slots it
+   * would have skipped are simply not there.
+   *
+   * "Today" is Los Angeles' today, computed here, which is the same clock
+   * `openState.ts` uses; there is no timezone for the two to disagree about.
+   * The route caches for 60s, so within a minute of midnight a cached response
+   * can carry the previous pair. One dot's dimming, for under a minute, once a
+   * day.
+   */
+  const laDay = new Date().toLocaleDateString("en-US", {
+    timeZone: "America/Los_Angeles",
+    weekday: "short",
+  });
+  const today = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(laDay);
+  const yesterday = (today + 6) % 7;
+
+  const rows = await sql`
+    SELECT id, name, lat, lng, rating,
+           (
+             SELECT jsonb_agg(slot)
+             FROM jsonb_array_elements(hours) AS slot
+             WHERE (slot->>'day')::int IN (${today}, ${yesterday})
+           ) AS hours
+    FROM restaurants WHERE listed ORDER BY sort_order, id
+  `;
+  return rows.map((row) => ({
+    id: row.id as string,
+    name: row.name as string,
+    lat: row.lat as number,
+    lng: row.lng as number,
+    rating: row.rating as number,
+    hours: (row.hours as Hours) ?? null,
+  }));
 }
 
 /**

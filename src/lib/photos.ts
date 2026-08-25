@@ -38,36 +38,25 @@ export const PHOTO_QUALITY = 0.72;
  */
 export const MAX_UPLOAD_BYTES = 2_000_000;
 
-/** Where a draft sits between the shutter and the blob store. */
-export type PhotoStatus = "uploading" | "ready" | "failed";
-
 /**
- * A photo taken but not yet posted.
+ * A photo taken but not yet posted. It exists only in this browser.
  *
- * Two URLs, and the difference is the whole point. `previewUrl` is an object
- * URL over the JPEG still in memory — it renders the instant the shutter
- * fires and never leaves the browser. `url` belongs to the blob store and is
- * the only one a post may carry; it does not exist until the upload lands,
- * which is why it's optional and why `status` has to be consulted before
- * publishing rather than assumed.
+ * `blob` is the encoded JPEG and `previewUrl` an object URL over it, so the
+ * thumbnail renders on the shutter press with no network in the way. Neither
+ * is an address anyone else could reach, and that is the point: **a draft is
+ * not uploaded.** Nothing reaches the blob store until Post is pressed, so
+ * backing out of the composer, closing the tab or killing the app leaves
+ * nothing behind to find later.
  *
- * Photos used to be posted as base64 data URLs straight into the `media`
- * jsonb column. They are files in a bucket now and the row holds an address,
- * so a feed query no longer drags every picture on the page through Postgres.
+ * This used to upload at the shutter, which made Post instant on a good
+ * connection and left an unreferenced file in the store every single time
+ * somebody changed their mind. Storage you have to sweep up afterwards is
+ * worse than a second of waiting.
  */
 export type PhotoDraft = {
   id: string;
   previewUrl: string;
-  url?: string;
-  status: PhotoStatus;
-  /**
-   * The encoded JPEG, kept so a failed upload can be retried without making
-   * anyone take the picture again — which on a split photo would mean two
-   * more presses, and the usual reason an upload fails is a restaurant's
-   * signal, not the photo. Browser-side only: it is never part of a payload,
-   * and `payload()` in either composer reads `url`.
-   */
-  blob?: Blob;
+  blob: Blob;
 };
 
 let nextId = 0;
@@ -85,7 +74,7 @@ export function canvasToJpeg(canvas: HTMLCanvasElement): Promise<Blob | null> {
 }
 
 /** Puts one JPEG in the blob store and returns the URL a post can carry. */
-export async function uploadPhoto(blob: Blob, kind: "post" | "avatar" = "post"): Promise<string> {
+async function uploadOne(blob: Blob, kind: "post" | "avatar"): Promise<string> {
   const body = new FormData();
   body.append("file", blob, "photo.jpg");
   body.append("kind", kind);
@@ -96,14 +85,56 @@ export async function uploadPhoto(blob: Blob, kind: "post" | "avatar" = "post"):
   return data.url;
 }
 
+/** One avatar, which has no batch to be part of. */
+export function uploadAvatar(blob: Blob): Promise<string> {
+  return uploadOne(blob, "avatar");
+}
+
+/** Takes a photo back out of the store. Best effort — see `uploadPhotos`. */
+export async function discardPhoto(url: string): Promise<void> {
+  await fetch("/api/blob/upload", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url }),
+  });
+}
+
+/**
+ * Every draft on a post, uploaded together, in the order they were taken.
+ *
+ * All or nothing. If the third of four fails, the two that landed are deleted
+ * again before this throws — a post that was never written must not leave
+ * half its photos in the store. That rollback is best effort by nature (the
+ * delete can fail too, or the tab can close mid-flight), which is the reason
+ * the upload happens here at all rather than at the shutter: the window where
+ * a file can be orphaned is a few seconds inside one button press, instead of
+ * the whole time the composer is open.
+ */
+export async function uploadPhotos(photos: PhotoDraft[]): Promise<string[]> {
+  if (photos.length === 0) return [];
+
+  const results = await Promise.allSettled(photos.map((p) => uploadOne(p.blob, "post")));
+  const landed = results.flatMap((r) => (r.status === "fulfilled" ? [r.value] : []));
+
+  if (landed.length !== photos.length) {
+    await Promise.allSettled(landed.map(discardPhoto));
+    const failure = results.find((r) => r.status === "rejected");
+    throw failure && failure.status === "rejected"
+      ? failure.reason
+      : new Error("Your photos didn't upload.");
+  }
+
+  return landed;
+}
+
 /**
  * Is this an address in our own blob store?
  *
- * The gate on both write paths. Every stored photo URL now arrives from a
- * client that could have written anything into the field, so the post and
- * avatar routes check the host rather than trusting the string — otherwise
- * the column becomes a place to park arbitrary URLs, and every feed render
- * turns into a request to somebody else's server.
+ * The gate on both write paths. A stored photo URL arrives from a client that
+ * could have written anything into the field, so the post and avatar routes
+ * check the host rather than trusting the string — otherwise the column
+ * becomes a place to park arbitrary URLs, and every feed render turns into a
+ * request to somebody else's server.
  */
 export function isStoredPhotoUrl(url: string): boolean {
   try {
@@ -115,11 +146,6 @@ export function isStoredPhotoUrl(url: string): boolean {
   } catch {
     return false;
   }
-}
-
-/** Every draft carries a blob URL — the gate on publishing. */
-export function allPhotosReady(photos: PhotoDraft[]): boolean {
-  return photos.every((p) => p.status === "ready" && p.url);
 }
 
 /*
