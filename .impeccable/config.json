@@ -1,0 +1,29 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(0.3, 1.6, 0.4, 1)",
+        "createdAt": "2026-08-26T07:06:05.512Z",
+        "reason": "Squash-and-stretch on badge arrival; Calvin confirmed intentional"
+      },
+      {
+        "rule": "overused-font",
+        "value": "fraunces",
+        "createdAt": "2026-08-26T07:31:28.462Z",
+        "reason": "Project display face per AGENTS.md"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/app/globals.css"
+        ],
+        "createdAt": "2026-08-26T07:31:43.995Z",
+        "reason": "pct-heat encodes the plate score as gradient spread; semantic, not decorative"
+      }
+    ]
+  }
+}

@@ -68,8 +68,11 @@
  *   warm tone blocks the design already specifies.
  * - `'restaurant'` rating rows — there is one rating scale. Every post here is
  *   `rating_kind = 'dish'` with a 0-100 percent.
- * - `vibe` values from `BEST_AT_LABELS`, for the same reason as aspect votes;
- *   only the room vocabulary (Chill/Cozy/Casual/Lively/Buzzing) is used.
+ * - `tags` and `vibe` at all. The occasion tags and the room vocabulary this
+ *   script used to write were the only source of either in the whole app —
+ *   no composer ever offered them — and both are now deleted. The literals
+ *   below keep their `tags`/`vibe` keys so the scenarios stay readable as
+ *   prose; nothing reads them.
  */
 import { neon } from "@neondatabase/serverless";
 import { randomUUID, randomBytes } from "node:crypto";
@@ -528,8 +531,6 @@ function buildPlan(actorIds) {
       dishName: dish.name,
       price: dish.price,
       rating: plate.rating,
-      tags: plate.tags,
-      vibe: plate.vibe,
       createdAt,
       fixture: plate.fixture ?? null,
       up: plate.up,
@@ -896,12 +897,12 @@ async function main() {
       await sql`
         INSERT INTO posts (id, user_id, text, restaurant, restaurant_id, restaurant_lat,
                            restaurant_lng, dish_name, price, rating, rating_kind,
-                           tags, vibe, photos_public, created_at)
+                           photos_public, created_at)
         VALUES (${p.id}, ${actorIds[p.userKey]}, ${p.text}, ${p.restaurantName},
                 ${p.restaurantId}, ${p.lat}, ${p.lng}, ${p.dishName}, ${p.price},
                 -- One rating scale: a 0-100 percent about one plate. Never
                 -- 'restaurant', never a 1-5 star value.
-                ${p.rating}, 'dish', ${p.tags}, ${p.vibe},
+                ${p.rating}, 'dish',
                 -- No media is written, so this decides nothing; false is the
                 -- column default and the honest value for an account that
                 -- never made a privacy choice.
@@ -998,11 +999,11 @@ async function main() {
           await sql`
             INSERT INTO posts (id, user_id, text, restaurant, restaurant_id, restaurant_lat,
                                restaurant_lng, dish_name, price, rating, rating_kind,
-                               tags, vibe, photos_public, created_at)
+                               photos_public, created_at)
             VALUES (${`${OWNER_POST_PREFIX}${randomUUID()}`}, ${owner.id}, ${plate.text},
                     ${plate.rest}, ${restaurant.id}, ${restaurant.lat}, ${restaurant.lng},
                     ${dish.name}, ${dish.price}, ${plate.rating}, 'dish',
-                    ${plate.tags}, ${plate.vibe}, false, ${hoursAgo(plate.at).toISOString()})
+                    false, ${hoursAgo(plate.at).toISOString()})
           `;
         }),
       );

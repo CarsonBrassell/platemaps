@@ -5,20 +5,20 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { PointsBadge } from "@/components/feed/PointsBadge";
 import { CameraIcon, SettingsIcon } from "@/components/icons";
-import { PhoneProfileActivity } from "@/components/mobile/PhoneProfileActivity";
 import { PhoneProfileAuth } from "@/components/mobile/PhoneProfileAuth";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
 import { resizeImageToJpeg } from "@/lib/image";
 import { uploadAvatar } from "@/lib/photos";
 import { PlatePointsPanel } from "@/components/PlatePointsPanel";
+import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves";
 
 /**
  * Profile, phone version.
  *
  * Every read and write is the web `/account` page's, unchanged: `/api/auth/me`
  * through `useAuth`, `/api/posts` for your own and your saved plates,
- * `/api/account/activity` (inside PhoneProfileActivity), `/api/auth/avatar` and
+ * `/api/account/activity` (inside ProfileShelves), `/api/auth/avatar` and
  * `/api/account/settings`. The order is the web page's too — who you are, then
  * what happened to your plates, then the settings you configure once.
  *
@@ -39,6 +39,11 @@ type Post = {
   authorName: string;
   text: string;
   restaurant?: string;
+  dishName?: string;
+  /** Dish percent or restaurant stars — ratingKind says which (lib/db.ts). */
+  rating?: number;
+  ratingKind?: "restaurant" | "dish";
+  upvoteCount: number;
   savedBy: string[];
   comments: { id: string }[];
   /** Mirrors PostMedia in lib/db.ts — that module is server-only. */
@@ -142,21 +147,29 @@ function ProfileOverview() {
 
   const [myPosts, setMyPosts] = useState<Post[]>([]);
   const [savedPosts, setSavedPosts] = useState<Post[]>([]);
+  const [postsReady, setPostsReady] = useState(false);
   const [avatarError, setAvatarError] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useMarkProfileSeen(account?.id);
 
+  /* The roll-call — same hook, same beats, same storage keys as the web
+     page, so opening the profile in either body consumes the same "since
+     you last looked" window. The panel below prints its displayPoints. */
+  const arrival = useRollCallArrival(account, myPosts, postsReady);
+
   useEffect(() => {
     if (!account) return;
     let cancelled = false;
-    fetch("/api/posts")
+    /* ?mine=1 — see the note at the same fetch in app/account/page.tsx. */
+    fetch("/api/posts?mine=1")
       .then((res) => res.json())
       .then((data: { posts: Post[] }) => {
         if (cancelled) return;
         setMyPosts(data.posts.filter((p) => p.userId === account.id));
         setSavedPosts(data.posts.filter((p) => p.savedBy.includes(account.id)));
+        setPostsReady(true);
       })
       .catch(() => {
         /* The grids fall back to their empty states, which are valid. */
@@ -194,7 +207,11 @@ function ProfileOverview() {
 
   return (
     <div className="min-h-dvh">
-      <div className="mx-4 overflow-hidden rounded-2xl bg-white">
+      {/* No card ground of its own. The profile sits directly on the app's
+          cream page background, the same way /m/friends does, so that every
+          white thing on it — the plate frames above all — reads as a card
+          instead of dissolving into a white sheet. */}
+      <div className="mx-4">
         {/* A flat band of warm tone where a cover photo would go — deliberate,
             not a gradient. */}
         <div className="m-2.5 h-20 rounded-xl bg-[var(--pm-tone-1)]" aria-hidden="true" />
@@ -269,6 +286,18 @@ function ProfileOverview() {
             </p>
           )}
 
+          {/* Replaces a grey card that spelled the same rules out in prose.
+              The total was a muted chip up beside the name and the rules were
+              down here in zinc — so the number the screen is actually about
+              was the quietest thing on it. Both now live in one orange panel;
+              the full rules, milestones included, are behind its info button. */}
+          <PlatePointsPanel points={arrival.displayPoints} showRank className="mb-5" />
+
+          {/* The approved order from the prototype: the total, then the
+              plates that earned it — badged and ring-pulsed by the roll-call
+              — before any secondary counts or lists. */}
+          <ProfileShelves posts={myPosts} arrival={arrival} />
+
           {/* Posts and comments are your own output and print freely. The count
               that must never appear on any surface is a friend/follower total. */}
           <div className="mb-5 grid grid-cols-2 gap-2.5">
@@ -286,13 +315,6 @@ function ProfileOverview() {
             </div>
           </div>
 
-          {/* Replaces a grey card that spelled the same rules out in prose.
-              The total was a muted chip up beside the name and the rules were
-              down here in zinc — so the number the screen is actually about
-              was the quietest thing on it. Both now live in one orange panel;
-              the full rules, milestones included, are behind its info button. */}
-          <PlatePointsPanel points={account.points} className="mb-5" />
-
           {/* Friend requests are answered on /m/friends, where the people they
               are about already live — this screen is about you. No total here,
               deliberately: friend counts never display in this product. */}
@@ -306,23 +328,10 @@ function ProfileOverview() {
             — see who you know and answer any requests waiting on you.
           </p>
 
-          {/* This is the part of the screen you come back to check. The two
-              ledgers and the delete panel used to follow it, which put six
-              things you configure once between your activity and your own
-              plates on a screen with ~640 usable points to spend; they live on
-              /m/account/settings now, behind the gear on the name row. */}
-          <PhoneProfileActivity />
-
-          {myPosts.length > 0 && (
-            <>
-              <p className="mono-label mb-2 text-zinc-500">Your posts</p>
-              <div className="mb-6 grid grid-cols-3 gap-1.5">
-                {myPosts.map((post, i) => (
-                  <PostTile key={post.id} post={post} tone={(i % 3) + 1} viewerId={account.id} />
-                ))}
-              </div>
-            </>
-          )}
+          {/* The "Activity on your plates" list stood here — removed for the
+              reason given at the same spot in app/account/page.tsx: the
+              shelves above say which plates drew reactions, and a screen
+              this size cannot afford to say it twice. */}
 
           <p className="mono-label mb-2 text-zinc-500">Saved</p>
           {savedPosts.length > 0 ? (

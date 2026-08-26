@@ -22,10 +22,50 @@ export type AspectHighlight = {
   praised: number;
 };
 
+/**
+ * Which of this card's facts are the reason it is in the results.
+ *
+ * The aspect pill did this alone for a long time, and the argument for it
+ * applies just as well to the rest of the rail: **the filter is a question, and
+ * the card should answer it without being opened.** Filtering to Gaslamp and
+ * getting a grid where the neighbourhood is the same muted grey as the cuisine
+ * beside it makes the reader re-read every card to confirm the filter did
+ * anything.
+ *
+ * Everything marked here wears the one orange tint, so the tint means exactly
+ * one thing on a card: *this is what you asked for*. `OpenStatePill` stays tan
+ * for that reason — it is a fact about the restaurant either way, not an answer
+ * to a filter.
+ */
+export type MatchMarks = {
+  /** The grid is filtered to this restaurant's cuisine. */
+  cuisine: boolean;
+  /** …or to its neighbourhood. Never both dimensions in one filter. */
+  neighborhood: boolean;
+  /**
+   * The band the grid is filtered to, or null. Shown only while filtering:
+   * price is otherwise absent from the card, so there is no muted version of
+   * this to light up — the chip appears because it was asked for.
+   */
+  price: string | null;
+  /** The "rated well for" category and what this place scored in it. */
+  aspect: AspectHighlight | null;
+};
+
+export const NO_MATCHES: MatchMarks = {
+  cuisine: false,
+  neighborhood: false,
+  price: null,
+  aspect: null,
+};
+
+/** The one treatment every matched fact wears — see `MatchMarks`. */
+const MARK = "rounded-full bg-pm-orange-tint px-1.5 py-0.5 font-medium text-pm-orange-text";
+
 export function RestaurantCard({
   restaurant,
   score = EMPTY_PLATE_SCORE,
-  highlight = null,
+  match = NO_MATCHES,
 }: {
   restaurant: RestaurantView;
   /**
@@ -34,8 +74,9 @@ export function RestaurantCard({
    * lib/discover.ts attaches the real one to every grid result.
    */
   score?: PlateScore;
-  highlight?: AspectHighlight | null;
+  match?: MatchMarks;
 }) {
+  const highlight = match.aspect;
   return (
     <Link
       href={`/restaurant/${restaurant.id}`}
@@ -112,8 +153,16 @@ export function RestaurantCard({
             {restaurant.distance}
           </span>
         </div>
+        {/* The same line either way — the matched half just lights up in place.
+            Marking it here rather than adding a chip row keeps the answer where
+            the reader is already looking, and keeps an unfiltered card exactly
+            as it was. */}
         <p className="mb-2.5 mt-0.5 truncate text-xs text-zinc-500">
-          {restaurant.cuisine} &middot; {restaurant.neighborhood}
+          <span className={match.cuisine ? MARK : undefined}>{restaurant.cuisine}</span>
+          {" · "}
+          <span className={match.neighborhood ? MARK : undefined}>
+            {restaurant.neighborhood}
+          </span>
         </p>
         {/* The filtered category rides beside the open/closed pill rather than
             on the photo: the photo already carries the overall score, and two
@@ -129,6 +178,13 @@ export function RestaurantCard({
           {score.percent === null && (
             <span className="font-mono text-[11px] text-zinc-400">
               {plateScoreLabel(score)}
+            </span>
+          )}
+          {/* Price only exists on the card while it is the question. The band
+              is a machine value, so it sets in the mono like every other one. */}
+          {match.price && (
+            <span className="inline-flex items-center rounded-full bg-pm-orange-tint px-3 py-1.5 font-mono text-xs font-semibold text-pm-orange-text">
+              {match.price}
             </span>
           )}
           {highlight && (

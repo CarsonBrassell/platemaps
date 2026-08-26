@@ -317,6 +317,42 @@ export function applyFilters(
   return restaurants.filter((r) => matchesFilters(r, f, ctx));
 }
 
+/**
+ * Which of a card's own facts are the reason it survived the filter — what the
+ * grid marks so the reader can see the answer without opening anything.
+ *
+ * It lives beside `matchesFilters` deliberately, because it is the *same
+ * question asked for display*, and the two drifting apart is the failure mode:
+ * a card lit up for a neighbourhood the predicate never tested would be a lie
+ * with a highlight on it. Every branch here mirrors one there.
+ *
+ * The free-text leftover (`q`) marks whichever facet it matched. It is a
+ * substring test against the same fields `matchesFilters` uses, so a search for
+ * "gasl" that lands on Gaslamp lights Gaslamp. It cannot mark the name — that
+ * is the third field `searchable` covers, and a card whose *name* matched needs
+ * no explanation for why it is there.
+ *
+ * Returns plain booleans and labels, not JSX: the two card designs (web and
+ * phone) mark them differently, and only the decision is shared.
+ */
+export function matchMarksFor(
+  r: RestaurantView,
+  f: DiscoverFilters,
+): { cuisine: boolean; neighborhood: boolean; price: string | null } {
+  const q = f.q?.trim().toLowerCase() ?? null;
+  return {
+    cuisine:
+      (f.cuisine !== null && r.cuisine === f.cuisine) ||
+      (q !== null && r.cuisine.toLowerCase().includes(q)),
+    neighborhood:
+      (f.neighborhood !== null && r.neighborhood === f.neighborhood) ||
+      (q !== null && r.neighborhood.toLowerCase().includes(q)),
+    // Mirrors the predicate's own note: a restaurant with no menu has no band,
+    // so it never matches a price filter and never gets the chip.
+    price: f.price !== null && r.priceBand === f.price ? f.price : null,
+  };
+}
+
 /* --- Options ---------------------------------------------------------- */
 
 export type FacetOption = {

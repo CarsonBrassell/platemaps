@@ -495,3 +495,133 @@ is - but it rendered blank through both Chrome and WebFetch (which 403'd) across
 multiple restaurants in one wave. Restaurants whose only source is a
 `res-menu.net` page should be recorded not-found and retried later rather than
 chased; the host, not the restaurant, is the problem.
+
+## Chain-first is worth roughly ten normal waves
+
+The work queue sorts by review count, which is right for independents and badly
+wrong for chains. A single Rubio's is unremarkable on review count and sits deep
+in the queue; the *chain* is 31 restaurants that all inherit from one
+extraction. Sorting by prominence hides that completely.
+
+Measured on 2026-08-25: **1,030 of 3,308 queued restaurants - 31% - were
+branches of a chain already in the corpus.** Ranking the queue by
+branches-unlocked instead of review count produced a 48-restaurant wave worth
+**442 branches**. A review-count wave of the same size is worth about 35.
+
+So: periodically re-rank the queue by how many menu-less siblings share each
+restaurant's name, and spend a wave on the heads of the biggest chains. The
+query is in `scripts/mark-unpriced-chains.mjs`'s neighbourhood - group the
+queue by name, exclude names that already have a priced menu somewhere, order
+by branch count.
+
+### Propagate BEFORE cutting the queue, not after
+
+The wave used to run `share-chain-menus.mjs` last. That meant every branch
+propagation could have covered for free was still in the queue when the queue
+was cut, and an agent spent ten minutes on it. The wave skill now propagates
+first and again at the end - both runs matter, because newly loaded menus create
+new branches to inherit from.
+
+### A dish list without prices is not a menu
+
+Starbucks' own API publishes 383 products with **no price field on any of
+them**. McDonald's offers app-only pickup or a delivery menu that states
+outright its prices are higher than in the restaurant. Both were extracted
+honestly as dish names with `-` for every price, and the result is 200 rows that
+look like a menu, count as a menu, and answer nothing.
+
+It is also self-defeating: `share-chain-menus.mjs` refuses to propagate a
+priceless menu, so those two extractions unlocked zero of their 271 branches.
+The coverage number would have moved by 271 and the product by nothing.
+
+**Never record a dish without a price.** A chain that publishes no prices is a
+not-found - say so in the report and move on. The 271 Starbucks and McDonald's
+branches are now retired with `menu_lookups.confidence = 'unpriced-chain'`,
+reversible in one statement if either ever starts publishing.
+
+## A consistent price ratio is not automatically markup
+
+The markup test says prices that divide cleanly by 1.1/1.15/1.2/1.25 are a
+delivery platform's inflation and must not be recorded. Giant Pizza King broke
+that rule's assumption: its own site and its Slice listing disagreed by a
+consistent ~11%, but in the *other* direction - Slice was **cheaper**, because
+the restaurant runs a standing online-ordering discount.
+
+So the ratio tells you the two lists are related, not which way. Check the
+direction before concluding anything: if the third party is HIGHER, that is
+markup and the third party is disqualified. If the third party is LOWER, it is
+a promotion and the restaurant's own site is still the right source - which is
+what was recorded here.
+
+## Sibling agents contending for one Chrome damages extractions
+
+Three separate agents in one wave reported the same failure mode, and each one
+cost real menu data:
+
+  - Everbowl's category tabs "stopped responding to clicks partway through",
+    losing four whole categories. It had to be quarantined and re-queued.
+  - bb.q Chicken's Side category would not expand - "script-injection timeouts
+    from sibling agents sharing the browser".
+  - Broken Yolk's price modals could not be reliably reopened, so its pancakes,
+    waffles and French toast were omitted.
+
+None of these are the site's fault and none would have happened to a lone agent.
+Four extraction agents plus anything else the session is running is past what
+one Chrome handles. Two effects worth separating: an agent that gets a timeout
+usually *knows* and says so, which is recoverable - but an agent whose click
+silently does nothing records a short menu and reports success, which is not.
+
+Prefer WebFetch wherever the page will yield to it, and treat "the tab stopped
+responding" in an agent report as a reason to re-queue rather than a quirk.
+
+## Corporate siblings cannot corroborate each other
+
+The ladder allows a tier-5 aggregator "only when two independent sources agree".
+Two agents in one wave satisfied that honestly and proved nothing:
+
+  - Los Primos was read off **allmenus** and cross-checked against **Seamless**.
+    Both are Grubhub.
+  - Zappy Pizza's **order.online** storefront matched a **DoorDash** listing
+    "exactly", which the agent reported as a good sign. `order.online` IS
+    DoorDash's white-label product.
+
+One company's data agrees with itself perfectly, every time - so a corporate
+sibling does not just fail to corroborate, it produces the *strongest-looking*
+possible agreement while carrying no information at all. Neither second source
+was on the untrusted list, so the screen passed both until `SAME_OWNER` was
+added to `scripts/screen-menus.mjs`.
+
+Current groupings: Grubhub (grubhub, seamless, allmenus, menupages), DoorDash
+(doordash, order.online, caviar), Uber (ubereats, postmates). Add to it when a
+new white-label or acquisition turns up - the tell is prices that match to the
+cent across two "different" sites.
+
+## Section shape beats dish count, every time
+
+Einstein Bros. Bagels came back with ten dishes, all of them from "Hot Coffee &
+Tea" - a bagel chain with no bagels. Ten is comfortably over the thin-capture
+threshold, and the menu is still absurd.
+
+The same wave produced El Pollo Loco with twenty-six dishes spread across nine
+sections, which looks healthy until you notice "Chicken Meals" has two entries
+in it. And Parfait Paris, a patisserie, with no macarons and no cakes.
+
+**Ask whether the SECTIONS make sense for that kind of restaurant.** A taqueria
+with no burritos, a pizzeria with no pizzas, a bagel shop with no bagels - all
+of these can clear a dish-count threshold comfortably. Extractions should report
+which categories they reached and which they did not, and every agent in this
+wave that did so made the screening decision obvious.
+
+## Hijacked domain: primofoodsinc.com
+
+Primo Foods (in the corpus as "Los Primos", 5282, an OSM mislabel of "Primo
+Foods" / "Primo Food Mart"). Its own domain now redirects to what appears to be
+a foreign gambling/login page. Leave without clicking.
+
+## `Rubio's` and `Rubio's Baja Grill` are one brand under two names
+
+Confirmed by an agent that extracted both: same national chain, same menu.
+Because `share-chain-menus.mjs` groups by normalised name, the two never share
+menus with each other, and every extraction of one leaves the other's branches
+untouched. Worth a look at how many other brands are split this way - the cost
+is silent and it is paid on every wave.

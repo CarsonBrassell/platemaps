@@ -25,6 +25,8 @@ import "maplibre-gl/dist/maplibre-gl.css";
 // them in step when upgrading maplibre-gl) and served as plain static files.
 setWorkerUrl("/maplibre-gl-worker.mjs");
 import { MapSearch, type MapMatches } from "@/components/MapSearch";
+import { MyLocation } from "@/components/MyLocation";
+import { openingCameraClaimed } from "@/lib/mapCamera";
 import { NEO_NOIR_STYLE } from "@/lib/mapStyle";
 import { openStateFor } from "@/lib/openState";
 import { relativeTime } from "@/lib/format";
@@ -2128,7 +2130,14 @@ export function RestaurantMap({
         padding: 24,
         ...(firstFit && !reduceMotion ? { duration: 2400 } : { animate: false }),
       };
-      if (restaurants.length > 0) {
+      /* Unless the reader's own marker already took the camera there. The dive
+         and the fly to a location both fire on data that arrives when it
+         arrives, so whichever landed last used to win — and for anyone outside
+         the downtown core that meant watching their own marker get thrown off
+         screen a second after it appeared. See lib/mapCamera.ts. */
+      if (firstFit && openingCameraClaimed(map)) {
+        // Deliberately nothing: the camera is already where it was asked to be.
+      } else if (restaurants.length > 0) {
         const lngs = restaurants.map((r) => r.lng);
         const lats = restaurants.map((r) => r.lat);
         const bounds: [number, number, number, number] = [
@@ -2574,6 +2583,12 @@ export function RestaurantMap({
     <div className="relative">
       <div ref={containerRef} className="map-fun-tiles h-[540px] w-full overflow-hidden rounded-xl" />
       <SearchField mapRef={mapRef} onMatchesChange={handleMatchesChange} />
+      {/* Renders nothing here — it owns a MapLibre marker and a MapLibre
+          control, both of which live inside the map's own container. It sits
+          in the tree rather than in this component's effects so that a heading
+          arriving thirty times a minute re-renders one small component instead
+          of this one. */}
+      <MyLocation mapRef={mapRef} />
     </div>
   );
 }

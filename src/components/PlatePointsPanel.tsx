@@ -4,6 +4,7 @@ import { useState } from "react";
 import { PlateStarIcon, InfoIcon } from "@/components/icons";
 import { PointsInfoModal } from "@/components/feed/PointsInfoModal";
 import { POINT_RULES, formatPoints } from "@/lib/points";
+import { RANKS, rankFor } from "@/lib/ranks";
 
 /**
  * Your Plate Points, on your own profile — and the one place in the app where
@@ -38,15 +39,42 @@ import { POINT_RULES, formatPoints } from "@/lib/points";
  */
 export function PlatePointsPanel({
   points,
+  showRank = false,
   className = "",
 }: {
   points: number;
+  /**
+   * Renders the rank ladder's progress under the rules row: your title, a
+   * thin track toward the next rung, and how far is left. Own-profile
+   * surfaces only — the public profile has its own insignia treatment, and
+   * every other caller stays a bare total. This is the surface Calvin asked
+   * for when he asked why his rank wasn't on his profile (2026-08); the
+   * "public profile only" rule in lib/ranks.ts is amended to match.
+   */
+  showRank?: boolean;
   className?: string;
 }) {
   const [infoOpen, setInfoOpen] = useState(false);
 
+  /* Rank reads lifetime points, and `points` here is exactly that — nothing
+     in the app ever subtracts from users.points (see lib/ranks.ts). */
+  const rank = rankFor(points);
+  const next = RANKS[RANKS.findIndex((r) => r.key === rank.key) + 1] ?? null;
+  const trackPct = next
+    ? Math.max(
+        0,
+        Math.min(
+          100,
+          ((points - rank.minPoints) / (next.minPoints - rank.minPoints)) * 100
+        )
+      )
+    : 100;
+
+  /* No "post" row — publishing pays 0 now, and a "+0 post" chip in a row of
+     rewards reads as a penalty rather than as "points come from what a post
+     earns". The two that remain are both other-people-acted rules, which is
+     the whole shape of the economy. See lib/points.ts. */
   const rules = [
-    { label: "post", value: POINT_RULES.createPost },
     { label: "upvote", value: POINT_RULES.receiveUpvote },
     { label: "comment", value: POINT_RULES.receiveComment },
   ];
@@ -102,6 +130,30 @@ export function PlatePointsPanel({
             </span>
           ))}
         </p>
+
+        {/* The ladder: what the total has earned and how far the next title
+            is. The track fill is the accent as a FILL, which the color rules
+            allow; both small strings are --pm-orange-text (4.55:1 on this
+            tint). At the top rung the right label states the fact instead of
+            counting to a rung that doesn't exist. */}
+        {showRank && (
+          <div className="mt-3">
+            <div className="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.12em] text-pm-orange-text">
+              <span>{rank.title}</span>
+              <span className="tabular-nums">
+                {next
+                  ? `${formatPoints(next.minPoints - points)} to ${next.title}`
+                  : "Top of the ladder"}
+              </span>
+            </div>
+            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/60">
+              <div
+                className="h-full rounded-full bg-pm-orange transition-[width] duration-700 ease-out"
+                style={{ width: `${trackPct}%` }}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {infoOpen && <PointsInfoModal onClose={() => setInfoOpen(false)} />}

@@ -6,16 +6,9 @@ import type { FeedTab } from "@/components/feed/types";
  * The feed's screen tabs, phone version.
  *
  * Rank 2 in DESIGN.md's control hierarchy: plain text, the active tab marked by
- * weight, the accent and an orange underline. **Never pills** — the phone nav at
- * the bottom is rank 1 and the comment sort inside CommentsScreen is rank 3, so
- * if this wore a pill the three would read as one menu in three places.
- *
- * It is deliberately loud for rank 2: 17px rather than 14, the active label in
- * `--pm-orange-text` rather than ink, and an underline that runs the full width
- * of the word rather than a 20px stub beside it. That is as far as this control
- * can be pushed without becoming a different rank — the colour is legal because
- * DESIGN.md gives the accent to selected states, and the size is free. What it
- * must not grow is a track or a fill; that is rank 3's and rank 1's clothing.
+ * weight and a short orange underline. **Never pills** — the phone nav at the
+ * bottom is rank 1 and the comment sort inside CommentsScreen is rank 3, so if
+ * this wore a pill the three would read as one menu in three places.
  *
  * **The feed leads, and it is the screen's launch view** (PhoneFeedScreen's
  * initial tab). The order is the web's, in the same sequence, which is the
@@ -67,7 +60,7 @@ export function PhoneFeedTabs({
   onDark?: boolean;
 }) {
   return (
-    <div role="tablist" aria-label="Feed filter" className="flex items-center gap-5 text-[17px]">
+    <div role="tablist" aria-label="Feed filter" className="flex items-center gap-5 text-sm">
       {TABS.map((tab) => {
         const on = tab.value === active;
         return (
@@ -97,13 +90,7 @@ export function PhoneFeedTabs({
                   ? "font-semibold text-[#F7F4EC]"
                   : "text-[#d3dae1]"
                 : on
-                  ? /* The accent, not ink. DESIGN.md gives orange to
-                       "percentages, selected states and the primary action" —
-                       a selected tab is the second of those, so this is the
-                       sanctioned use rather than an exception to it. The text
-                       token (#A8481A) rather than --pm-orange: this is a
-                       label, and the fill colour is for numerals and blocks. */
-                    "font-semibold text-pm-orange-text"
+                  ? "font-semibold text-zinc-900"
                   : /* On the cream ground, so --pm-grey-text rather than
                        zinc-500, which is only 4.28:1 here. */
                     "text-pm-grey-text"
@@ -112,12 +99,7 @@ export function PhoneFeedTabs({
             {tab.label}
             {on && (
               <span
-                /* Full label width and 3px, where this was a 2px 20px stub.
-                   The stub read as a tick beside the word rather than as the
-                   word being underlined, which is most of why the row looked
-                   inert — at three tabs the marker is the only thing carrying
-                   which feed you are on. */
-                className="absolute bottom-1 left-0 right-0 h-[3px] rounded-full bg-pm-orange"
+                className="absolute bottom-1 left-0 h-[2px] w-5 rounded-full bg-pm-orange"
                 aria-hidden="true"
               />
             )}

@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { openPostFlash, closePostFlash, stashLanding } from "@/lib/postCelebration";
 import { discardPhoto, uploadPhotos, type PhotoDraft } from "@/lib/photos";
-import { POINT_RULES } from "@/lib/points";
 import { BEST_AT } from "@/data/reviewScales";
 import { CloseIcon, ChevronIcon } from "@/components/icons";
 import { CameraCapture } from "@/components/post/CameraCapture";
@@ -153,22 +152,14 @@ export default function PhonePost() {
     if (error) errorRef.current?.scrollIntoView({ block: "center" });
   }, [error]);
 
+  /* Photo, where, dish, then the fork — the web composer's order, and it has
+     to stay the web composer's order. See the long note there for why it
+     follows the meal rather than the form, and why `where` must precede
+     `dish`. Two versions of the site, one flow. */
   const steps = useMemo<Step[]>(() => {
-    if (!kind) return ["photo", "kind"];
-    if (kind === "comment") return ["photo", "kind", "where", "detail"];
-    /* The rating comes before the place and the dish, which is the reverse of how
-       this read for most of its life. The old order walked the poster through
-       naming the restaurant and the dish first and asked for the verdict last, so
-       the two screens with the most typing on them stood between someone and the
-       one thing they opened the composer to say. Rating first also means the
-       meter's screen is the one screen that never has to wait on a fetch.
-
-       It cannot move any earlier than this. `kind` has to be answered before it,
-       because a comment post has no rating step at all, and the camera is the
-       composer's front door by design (see this file's header). `dish` still
-       follows `where` — DishPicker browses the chosen restaurant's menu, so it
-       has nothing to show until there is a place. */
-    return ["photo", "kind", "rate", "where", "dish", "detail"];
+    if (!kind) return ["photo", "where", "dish", "kind"];
+    if (kind === "comment") return ["photo", "where", "dish", "kind", "detail"];
+    return ["photo", "where", "dish", "kind", "rate", "detail"];
   }, [kind]);
 
   const step = steps[Math.min(index, steps.length - 1)];
@@ -206,7 +197,8 @@ export default function PhonePost() {
       setWorstAt(null);
     }
     setKind(next);
-    go(2);
+    // `kind` is index 3 now — see the web composer's note on this number.
+    go(4);
   }
 
   function title() {
@@ -228,17 +220,19 @@ export default function PhonePost() {
 
   /** What sits under the heading, when it adds something the heading doesn't. */
   function subtitle(): string | null {
-    if (step === "photo" || step === "kind") return null;
+    // `kind` sits after the place and the dish now, so it gets the line too.
+    if (step === "photo") return null;
     return [dish?.name, place?.name].filter(Boolean).join(" · ") || null;
   }
 
   /** Returns an error to show, or null when the step is complete. */
   function problemWith(current: Step): string | null {
     if (current === "photo" && photos.length === 0) {
-      return "Take a photo, or use “just leave a comment” below to post without one.";
+      return "Take a photo, or use “post without a photo” below.";
     }
-    if (current === "where" && kind !== "comment" && !place) {
-      return "Pick the restaurant so the plate lands in the right place on the map.";
+    // The fork is downstream of this step now — no branch here to exempt.
+    if (current === "where" && !place) {
+      return "Pick the restaurant so the post lands in the right place on the map.";
     }
     if (current === "dish" && !dish) {
       return "Choose a dish off the menu, or type what you ordered.";
@@ -429,12 +423,14 @@ export default function PhonePost() {
           <span>
             Step {index + 1} of {steps.length}
           </span>
-          <span>{POINT_RULES.createPost} Plate Points when you post</span>
+          <span>Upvotes &amp; replies earn points</span>
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-pm-grey-tint">
           <div
-            className="step-progress h-full rounded-full bg-pm-orange"
-            style={{ width: `${((index + 1) / steps.length) * 100}%` }}
+            className="step-progress h-full w-full rounded-full bg-pm-orange"
+            style={{
+              transform: `translateX(${((index + 1) / steps.length - 1) * 100}%)`,
+            }}
             role="progressbar"
             aria-valuenow={index + 1}
             aria-valuemin={1}
@@ -675,8 +671,8 @@ export default function PhonePost() {
             Sign in to post a plate
           </h1>
           <p className="mx-auto mt-2 max-w-xs text-sm text-pm-grey-text">
-            Reviews and comments carry your name, and posting earns you{" "}
-            <span className="font-mono tabular-nums">{POINT_RULES.createPost}</span> Plate Points.
+            Reviews and comments carry your name, and Plate Points come from the
+            upvotes and replies your posts earn.
           </p>
           <Link
             href={to("/m/account")}

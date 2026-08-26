@@ -18,10 +18,20 @@ export function PhoneRestaurantCardGrid({
   restaurant,
   score = EMPTY_PLATE_SCORE,
   priority = false,
+  matchedCuisine = false,
 }: {
   restaurant: RestaurantView;
   score?: PlateScore;
   priority?: boolean;
+  /**
+   * The grid is filtered to this restaurant's cuisine, so the line below says
+   * why the card is here rather than repeating a fact in muted grey.
+   *
+   * Only the cuisine, where the web card marks four things — this card is
+   * ~120px wide and the cuisine is the only one of them it prints at all. Same
+   * decision (`matchMarksFor`), less room to show it.
+   */
+  matchedCuisine?: boolean;
 }) {
   return (
     <Link
@@ -50,7 +60,17 @@ export function PhoneRestaurantCardGrid({
         <p className="line-clamp-2 font-display text-[12px] font-semibold leading-snug tracking-tight text-zinc-900">
           {restaurant.name}
         </p>
-        <p className="mt-0.5 truncate text-[10px] text-zinc-500">{restaurant.cuisine}</p>
+        <p className="mt-0.5 truncate text-[10px] text-zinc-500">
+          <span
+            className={
+              matchedCuisine
+                ? "rounded-full bg-pm-orange-tint px-1.5 py-0.5 font-medium text-pm-orange-text"
+                : undefined
+            }
+          >
+            {restaurant.cuisine}
+          </span>
+        </p>
       </div>
     </Link>
   );

@@ -420,6 +420,91 @@ h3 {
   filter: invert(0.7);
 }
 
+/* The locate button. It rides in MapLibre's own top-left stack under the zoom
+   buttons and inherits the group treatment above, so all this adds is the
+   glyph's colour — which is also how it reports state, since a control that
+   grows a spinner or a badge stops matching the two buttons it sits under.
+   Warm ember at rest so it belongs to the map's one light source; the cold
+   blue of the marker only once the marker is actually out there. */
+.map-fun-tiles .map-locate-btn {
+  display: grid;
+  place-items: center;
+  color: #d3a98d;
+  border: 0;
+  cursor: pointer;
+}
+
+.map-fun-tiles .map-locate-btn[data-state="locating"] {
+  color: #ffb07a;
+}
+
+.map-fun-tiles .map-locate-btn[data-state="ready"] {
+  color: #96d6ff;
+}
+
+.map-fun-tiles .map-locate-btn:disabled {
+  color: #5c646e;
+  cursor: default;
+}
+
+/* "You are here": the one cold light on a map where every other light is warm.
+   Nothing here may drift toward #e8875a — the whole reason this reads as the
+   reader rather than as a restaurant is that it is the wrong temperature for
+   an ember. See MyLocation.tsx for why it is a DOM marker and why it lies flat
+   on the street rather than facing the glass.
+
+   The element is zero-sized and its parts are centred on that point, so
+   MapLibre's own marker transform positions the dot itself rather than a
+   corner of a box around it. */
+.map-me {
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+.map-me > * {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Sized in JS from the browser's accuracy figure — see haloPixels().
+
+   Deliberately faint. On a coarse fix the halo is 200px across and the cone
+   lives *inside* it, so anything stronger than this swallows the cone whole —
+   they are the same hue, and on the lit tiles at street zoom the wedge simply
+   vanished. The halo is ground, the cone and the dot are figure. */
+.map-me-halo {
+  width: var(--map-me-halo, 0px);
+  height: var(--map-me-halo, 0px);
+  border-radius: 50%;
+  background: rgba(126, 214, 255, 0.05);
+  border: 1px solid rgba(126, 214, 255, 0.16);
+}
+
+/* No compass reading, no cone. A direction the map is only guessing at is
+   worse than no direction, so the dot stands alone rather than pointing
+   somewhere plausible. */
+.map-me-cone {
+  display: none;
+}
+
+.map-me[data-heading="on"] .map-me-cone {
+  display: block;
+}
+
+.map-me-core {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #eaf8ff;
+  border: 2px solid rgba(11, 16, 22, 0.65);
+  box-shadow:
+    0 0 10px rgba(126, 214, 255, 0.9),
+    0 0 24px rgba(126, 214, 255, 0.45);
+}
+
 /* Neon signage: how the night map says a restaurant's name. One voice, two
    uses — .map-name-tip is the single floating element the GPU pin layer
    places over a hovered ember (pins are paint now, so there is no per-pin
@@ -606,6 +691,46 @@ h3 {
   to   { background-color: transparent; }
 }
 
+/* --- Profile roll-call (ProfileShelves) -------------------------------
+
+   The two marks a landing reaction makes on a plate card, and the rules
+   they follow (researched against Duolingo's milestone gating, game-feel
+   squash-and-stretch, and Apple Fitness's collision failure — see the
+   header comment in ProfileShelves.tsx):
+
+   - `badge-arrive` is squash-and-stretch: overshoot wide, settle. It runs
+     once per badge, staggered by the roll-call, never in parallel bursts.
+   - `ring-pulse` snaps a 2px orange ring onto the ENTIRE perimeter of the
+     card and blooms it outward. It lives on a dedicated overlay span with
+     `border-radius: inherit`, so it hugs whatever card shape it is inside —
+     scoping it to one tile class is how it once shrank to an unstyled
+     speck. The ring is the acknowledgment; the badge is the record. */
+
+@keyframes badge-arrive {
+  0%   { transform: scale(0); }
+  62%  { transform: scale(1.14, 0.9); }
+  82%  { transform: scale(0.95, 1.06); }
+  100% { transform: scale(1); }
+}
+
+@keyframes ring-pulse {
+  0% {
+    box-shadow: 0 0 0 2px rgba(201, 89, 31, 0.95),
+                0 0 0 0 rgba(201, 89, 31, 0.4);
+  }
+  60% {
+    box-shadow: 0 0 0 2px rgba(201, 89, 31, 0.45),
+                0 0 0 10px rgba(201, 89, 31, 0.12);
+  }
+  100% {
+    box-shadow: 0 0 0 2px rgba(201, 89, 31, 0),
+                0 0 0 16px rgba(201, 89, 31, 0);
+  }
+}
+
+.badge-arrive { animation: badge-arrive 0.42s cubic-bezier(0.3, 1.6, 0.4, 1) both; }
+.ring-pulse   { animation: ring-pulse 0.75s ease-out; }
+
 .animate-fade-in   { animation: fade-in 0.18s ease-out; }
 .animate-dialog-in { animation: dialog-in 0.2s cubic-bezier(0.2, 0.8, 0.3, 1); }
 .animate-sheet-in  { animation: sheet-in 0.26s cubic-bezier(0.2, 0.8, 0.3, 1); }
@@ -653,12 +778,18 @@ h3 {
   .animate-sheet-in,
   .animate-rank-rise,
   .points-float,
+  .badge-arrive,
+  .ring-pulse,
   .skeleton {
     animation: none;
   }
 
   .points-float { opacity: 1; }
   .snap-track { scroll-behavior: auto; }
+  /* With the arrival animation off, a badge simply is there: its base
+     transform is none, so removing the keyframes shows the final state.
+     The roll-call hook also checks this media query and skips its
+     stagger/count-up entirely — motion is never load-bearing. */
 }
 
 /* --- Review composer -------------------------------------------------- */
@@ -740,9 +871,22 @@ h3 {
   outline-offset: 4px;
 }
 
-/* Fills left-to-right as the composer advances. */
+/* Fills left-to-right as the composer advances.
+ *
+ * Transform, not width. `width` cannot be composited, so a width transition
+ * runs layout and paint on the main thread for every frame it draws — and it
+ * animates at precisely the moment React is swapping the whole step subtree,
+ * so the fill and the re-render compete for one thread and the bar stutters
+ * on anything slow. A transform runs on the compositor and does not care how
+ * busy the main thread is.
+ *
+ * `translateX` rather than `scaleX` because the fill is a 6px pill: scaling
+ * one axis squashes its right cap from a circle into an ellipse, which reads
+ * as a pointed end. Translating a full-width bar leaves that radius untouched
+ * and lets the track's own `overflow-hidden` clip the overhang on the left.
+ * The element is always 100% wide; only its offset changes. */
 .step-progress {
-  transition: width 0.32s cubic-bezier(0.2, 0.8, 0.3, 1);
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
 /* The dish recommendation meter. A range input underneath — drag, click-to-jump,

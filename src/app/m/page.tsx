@@ -11,6 +11,7 @@ import { getDiscoverPage, parseShown, PAGE_SIZE } from "@/lib/discover";
 import {
   QUICK_FILTERS,
   activeFilterCount,
+  matchMarksFor,
   type FacetOption,
 } from "@/lib/discoverFilters";
 
@@ -352,6 +353,7 @@ export default async function PhoneDiscover({
               restaurant={restaurant}
               score={restaurant.plateScore}
               priority={index < 3}
+              matchedCuisine={matchMarksFor(restaurant, filters).cuisine}
             />
           ))}
         </div>

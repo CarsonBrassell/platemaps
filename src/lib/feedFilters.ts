@@ -78,8 +78,6 @@ export function haystackFor(post: Post, place: FeedPlace | undefined): string {
       post.authorName,
       post.locationLabel,
       post.vibe,
-      ...post.tags,
-      ...post.amenities,
       place?.name,
       place?.cuisine,
       place?.neighborhood,

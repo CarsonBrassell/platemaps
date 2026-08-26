@@ -10,6 +10,7 @@ import { useNearby } from "@/lib/nearby";
 import {
   NO_FILTERS,
   activeFilterCount,
+  matchMarksFor,
   searchFromFilters,
   type DiscoverFilters,
   type QuickFilter,
@@ -347,15 +348,17 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                       key={restaurant.id}
                       restaurant={restaurant}
                       score={restaurant.plateScore}
-                      highlight={
-                        filters.aspect && restaurant.aspectScore !== undefined
-                          ? {
-                              aspect: filters.aspect,
-                              score: restaurant.aspectScore.score,
-                              praised: restaurant.aspectScore.praised,
-                            }
-                          : null
-                      }
+                      match={{
+                        ...matchMarksFor(restaurant, filters),
+                        aspect:
+                          filters.aspect && restaurant.aspectScore !== undefined
+                            ? {
+                                aspect: filters.aspect,
+                                score: restaurant.aspectScore.score,
+                                praised: restaurant.aspectScore.praised,
+                              }
+                            : null,
+                      }}
                     />
                   ))}
                 </div>

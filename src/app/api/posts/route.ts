@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { getPosts, createPost, awardPoints, type PostMedia } from "@/lib/db";
+import {
+  getPosts,
+  getProfilePosts,
+  createPost,
+  awardPoints,
+  type PostMedia,
+} from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
-import { FOOD_TAGS } from "@/data/foodTags";
-import { AMENITY_LABELS, ROOM_LABELS, BEST_AT_LABELS } from "@/data/reviewScales";
+import { BEST_AT_LABELS } from "@/data/reviewScales";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
 import { isStoredPhotoUrl } from "@/lib/photos";
 import { resolvePostRefs } from "@/lib/discover";
@@ -23,9 +28,23 @@ const MAX_MEDIA_URL_LENGTH = 512;
  * `places` is the same per-restaurant map the two feed routes send, so the
  * filter rail works on Saved too — see `resolvePostRefs` in lib/discover.ts.
  */
-export async function GET() {
+/**
+ * `?mine=1` narrows the response to the signed-in person's own plates plus
+ * the ones they saved — what a profile screen renders, and nothing else.
+ *
+ * It is a flag rather than `?userId=`, deliberately: the id comes off the
+ * session, so there is no parameter anyone can point at somebody else to read
+ * their saved list. An unauthenticated `?mine=1` falls through to the normal
+ * response instead of erroring, because the feed is public and a logged-out
+ * profile has nothing to narrow to.
+ */
+export async function GET(request: NextRequest) {
   const user = await getCurrentUser();
-  const rows = await getPosts(user?.id ?? null);
+  const mine = request.nextUrl.searchParams.get("mine") === "1";
+  const rows =
+    mine && user
+      ? await getProfilePosts(user.id, user.id)
+      : await getPosts(user?.id ?? null);
   const { posts, places } = await resolvePostRefs(rows.slice().reverse());
   return NextResponse.json({ posts, places });
 }
@@ -89,20 +108,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: media.error }, { status: 400 });
   }
 
-  // Unknown values are dropped rather than rejected — the client picks from a
-  // fixed list, so anything else is noise, not a user-correctable mistake.
-  const pickFrom = (raw: unknown, allowed: readonly string[]) =>
-    Array.isArray(raw)
-      ? (raw as unknown[])
-          .filter((t): t is string => typeof t === "string")
-          .filter((t) => allowed.includes(t))
-          .slice(0, allowed.length)
-      : [];
+  /* `tags` and `amenities` are no longer read off the body at all.
 
-  const tags = pickFrom(body.tags, FOOD_TAGS as readonly string[]);
-  const amenities = pickFrom(body.amenities, AMENITY_LABELS);
+     Neither was ever written by a composer — no tag picker and no amenity
+     picker has ever existed — so accepting them meant this route validating a
+     vocabulary only a script could send. Refusing them here is what makes "a
+     chip on a card is something a person chose" true at the write, instead of
+     something the render has to keep filtering for.
+
+     `vibe` narrows to BEST_AT_LABELS for the same reason: it used to accept
+     ROOM_LABELS, which folded the deleted atmosphere words in beside the
+     best-at pick. See data/reviewScales.ts. */
   const vibe =
-    typeof body.vibe === "string" && ROOM_LABELS.includes(body.vibe) ? body.vibe : undefined;
+    typeof body.vibe === "string" && BEST_AT_LABELS.includes(body.vibe)
+      ? body.vibe
+      : undefined;
 
   /* There is one rating scale: a 0-100 percent about one plate. `ratingKind` is
      still written so the column stays self-describing — rows from before the
@@ -135,7 +155,7 @@ export async function POST(req: NextRequest) {
   }
 
   /* Aspect verdicts. Unknown labels are dropped rather than rejected — the
-     client picks from a fixed chip list, same as tags and amenities above.
+     client picks from a fixed chip list.
      The same aspect can't be both the best and the worst thing; if a client
      sends that, the fault is what gets dropped, since the praise came from
      the required chip and the letdown from the optional one. */
@@ -151,7 +171,9 @@ export async function POST(req: NextRequest) {
     userId: user.id,
     authorName: user.name,
     authorAvatarUrl: user.avatarUrl,
-    authorPoints: user.points + POINT_RULES.createPost,
+    // Publishing pays nothing (POINT_RULES.createPost is 0), so the author's
+    // total is unchanged by the act of posting — see the note in lib/points.ts.
+    authorPoints: user.points,
     text: String(text).trim(),
     restaurant: restaurant ? String(restaurant).trim() : undefined,
     restaurantId: restaurantId ? String(restaurantId).trim() : undefined,
@@ -162,8 +184,6 @@ export async function POST(req: NextRequest) {
     rating: parsedRating,
     ratingKind: parsedRatingKind,
     locationLabel: locationLabel ? String(locationLabel).trim().slice(0, 120) : undefined,
-    tags,
-    amenities,
     vibe,
     media,
     // Snapshot of the author's CURRENT toggle, frozen onto the row — not read
@@ -173,8 +193,13 @@ export async function POST(req: NextRequest) {
     worstAspect,
   });
 
-  // "post:<id>" is unique by construction — a post is only created once — so
-  // this one always pays and has no `awarded` to consult.
+  /* The call stays, and it is not dead code. `POINT_RULES.createPost` is 0
+     today, and `awardPoints` returns early on a zero amount — no ledger row, no
+     total moved — so publishing pays nothing on purpose (lib/points.ts). Left
+     wired rather than deleted because "post:<id>" is unique by construction and
+     this is the only place that could ever pay it: putting the number back to a
+     non-zero value is then a one-line change in points.ts, which is what that
+     file promises. */
   const { user: freshUser } = await awardPoints(
     user.id,
     POINT_RULES.createPost,
@@ -183,7 +208,7 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({
     post,
-    points: freshUser?.points ?? user.points + POINT_RULES.createPost,
+    points: freshUser?.points ?? user.points,
     pointsEarned: POINT_RULES.createPost,
   });
 }

@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/lib/auth";
 import { discardPhoto, uploadPhotos, type PhotoDraft } from "@/lib/photos";
-import { POINT_RULES } from "@/lib/points";
 import { BEST_AT } from "@/data/reviewScales";
 import { CloseIcon, ChevronIcon } from "@/components/icons";
 import { CameraCapture } from "@/components/post/CameraCapture";
@@ -23,8 +22,12 @@ import { MAX_POST_TEXT } from "@/lib/postLimits";
  *
  * The camera opens first and everything else is decided after it: a photo is
  * what a plate review is made of, so it is the opening move rather than a field
- * further down a form. The one door past it — "just leave a comment" — skips the
- * photo, not the choice.
+ * further down a form. The one door past it — "post without a photo" — skips
+ * the camera, not the flow.
+ *
+ * What follows it is the meal, not the form: where you are, what you ordered,
+ * and only then whether you are scoring it or just talking about it. See the
+ * note on `steps` for why the fork moved to fourth.
  *
  * ## One instrument
  *
@@ -117,22 +120,29 @@ function PostComposer() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /**
+   * The order is: photo, where, dish, what-kind-of-post, then the rest.
+   *
+   * It follows the meal rather than the form. You photograph the plate, say
+   * where you are, say what it is — three questions you can answer without
+   * deciding anything — and only then choose whether you are scoring it or just
+   * talking about it. The fork used to come second, so the composer asked
+   * "rate a plate or leave a comment?" before it knew what the plate *was*.
+   *
+   * `where` before `dish` is load-bearing and not a preference: `DishPicker`
+   * browses the chosen restaurant's menu, so it has nothing to show until there
+   * is a place. Everything after `kind` is the branch — a comment has no rating
+   * step, a plate does.
+   *
+   * Because `dish` now sits ahead of the fork, a comment carries a dish too.
+   * That is the intended trade: it costs a comment one extra tap and it puts
+   * every comment in that dish's sheet, which is where someone deciding what to
+   * order is actually looking.
+   */
   const steps = useMemo<Step[]>(() => {
-    if (!kind) return ["photo", "kind"];
-    if (kind === "comment") return ["photo", "kind", "where", "detail"];
-    /* The rating comes before the place and the dish, which is the reverse of how
-       this read for most of its life. The old order walked the poster through
-       naming the restaurant and the dish first and asked for the verdict last, so
-       the two screens with the most typing on them stood between someone and the
-       one thing they opened the composer to say. Rating first also means the
-       meter's screen is the one screen that never has to wait on a fetch.
-
-       It cannot move any earlier than this. `kind` has to be answered before it,
-       because a comment post has no rating step at all, and the camera is the
-       composer's front door by design (see this file's header). `dish` still
-       follows `where` — DishPicker browses the chosen restaurant's menu, so it
-       has nothing to show until there is a place. */
-    return ["photo", "kind", "rate", "where", "dish", "detail"];
+    if (!kind) return ["photo", "where", "dish", "kind"];
+    if (kind === "comment") return ["photo", "where", "dish", "kind", "detail"];
+    return ["photo", "where", "dish", "kind", "rate", "detail"];
   }, [kind]);
 
   const step = steps[Math.min(index, steps.length - 1)];
@@ -154,7 +164,9 @@ function PostComposer() {
       setWorstAt(null);
     }
     setKind(next);
-    go(2);
+    // `kind` is index 3 now, so the step after it is 4 — the meter for a plate,
+    // the caption for a comment. Moving the fork means moving this number.
+    go(4);
   }
 
   function title() {
@@ -176,17 +188,22 @@ function PostComposer() {
 
   /** What sits under the heading, when it adds something the heading doesn't. */
   function subtitle(): string | null {
-    if (step === "photo" || step === "kind") return null;
+    // Only the camera has nothing to sit under it. From `where` on, whatever
+    // has been answered so far rides along — including on `kind`, which now
+    // comes after the place and the dish rather than before them.
+    if (step === "photo") return null;
     return [dish?.name, place?.name].filter(Boolean).join(" · ") || null;
   }
 
   /** Returns an error to show, or null when the step is complete. */
   function problemWith(current: Step): string | null {
     if (current === "photo" && photos.length === 0) {
-      return "Take a photo, or use “just leave a comment” below to post without one.";
+      return "Take a photo, or use “post without a photo” below.";
     }
-    if (current === "where" && kind !== "comment" && !place) {
-      return "Pick the restaurant so the plate lands in the right place on the map.";
+    // No `kind` check any more: the fork is downstream of this step now, so
+    // there is no branch here to exempt. Every post names its restaurant.
+    if (current === "where" && !place) {
+      return "Pick the restaurant so the post lands in the right place on the map.";
     }
     if (current === "dish" && !dish) {
       return "Choose a dish off the menu, or type what you ordered.";
@@ -334,12 +351,14 @@ function PostComposer() {
           <span>
             Step {index + 1} of {steps.length}
           </span>
-          <span>{POINT_RULES.createPost} Plate Points when you post</span>
+          <span>Upvotes &amp; replies earn points</span>
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-pm-grey-tint">
           <div
-            className="step-progress h-full rounded-full bg-pm-orange"
-            style={{ width: `${((index + 1) / steps.length) * 100}%` }}
+            className="step-progress h-full w-full rounded-full bg-pm-orange"
+            style={{
+              transform: `translateX(${((index + 1) / steps.length - 1) * 100}%)`,
+            }}
             role="progressbar"
             aria-valuenow={index + 1}
             aria-valuemin={1}
@@ -589,8 +608,8 @@ function PostComposer() {
               Sign in to post a plate
             </h1>
             <p className="mx-auto mt-2 max-w-sm text-sm text-zinc-600">
-              Reviews and comments carry your name, and posting earns you{" "}
-              {POINT_RULES.createPost} Plate Points.
+              Reviews and comments carry your name, and Plate Points come from
+              the upvotes and replies your posts earn.
             </p>
             <Link
               href="/account"

@@ -62,8 +62,6 @@ export type Post = {
   rating?: number;
   ratingKind?: "restaurant" | "dish";
   locationLabel?: string;
-  tags: string[];
-  amenities: string[];
   vibe?: string;
   media: PostMedia[];
   /** Snapshot of the author's share-photos setting at post time — see lib/db.ts. */

@@ -7,8 +7,25 @@
  * the point when someone else likes or comments, not the person clicking.
  */
 export const POINT_RULES = {
-  /** Awarded to the author when they publish a post. */
-  createPost: 10,
+  /**
+   * Publishing pays nothing, and that is the anti-spam design.
+   *
+   * It used to be +10 — the largest single award in the table, and the only one
+   * you could collect by yourself. That is exactly backwards: it made the
+   * cheapest possible act the most reliably profitable one, so the way to farm
+   * points was to post as much as possible and never mind whether any of it was
+   * worth reading.
+   *
+   * Every remaining rule requires *somebody else to act* — an upvote, a
+   * comment, a comment upvote, a milestone. None of them can be self-dealt, so
+   * a post nobody values earns nothing no matter how many of them there are,
+   * while a post that lands earns far more than the flat 10 ever did. The
+   * encouragement is the upside, not the participation trophy.
+   *
+   * `awardPoints` returns early on a zero amount, so nothing is written to the
+   * ledger and no `point_events` row is created for publishing.
+   */
+  createPost: 0,
   /**
    * Awarded to the author each time a different user upvotes their post.
    * Discover-only, matching upvotes themselves — hearts earn nothing, since
@@ -39,7 +56,10 @@ export const UPVOTE_MILESTONES: ReadonlyArray<{ upvotes: number; bonus: number }
 
 /** Human-readable rules, rendered by PointsInfoModal. */
 export const POINT_RULE_COPY: ReadonlyArray<{ label: string; value: string }> = [
-  { label: "Post a plate", value: `+${POINT_RULES.createPost}` },
+  /* No "Post a plate" row. It would read "+0", which is worse than silent —
+     a zero in a table of rewards looks like a bug or a punishment, when the
+     actual message is that points come from what a post earns, not from
+     making one. The rows below say that on their own. */
   { label: "Someone upvotes your post", value: `+${POINT_RULES.receiveUpvote}` },
   { label: "Someone comments on your post", value: `+${POINT_RULES.receiveComment}` },
   { label: "Someone upvotes your comment", value: `+${POINT_RULES.receiveCommentUpvote}` },

@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlateMaps — My location, five treatments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #F7F4EC; color: #232019;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 840px; margin: 0 auto; padding: 26px 16px 50px; }
+  h1 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 29px; margin: 0; letter-spacing: -0.01em; }
+  .sub { margin: 6px 0 0; font-size: 13px; color: #665C4E; }
+  .card { background: #fff; border-radius: 16px; padding: 10px; margin-top: 20px; }
+  .mapbox { position: relative; height: 320px; border-radius: 12px; overflow: hidden; background: #191c22; }
+  .mapbox svg.city { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .overlay { position: absolute; inset: 0; display: grid; place-items: center; }
+  .cap { padding: 12px 8px 4px; }
+  .cap .row { display: flex; align-items: baseline; gap: 9px; }
+  .letter { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: #A8481A; }
+  .cap h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 18px; margin: 0; }
+  .cap p { margin: 5px 0 0; font-size: 13px; line-height: 1.45; color: #7E7261; max-width: 70ch; }
+
+  /* neon street names, same voice as the map's restaurant signs */
+  .street { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: 0.16em; fill: #7f8794; text-transform: uppercase; }
+
+  /* ---- markers ---- */
+  .loc { position: relative; display: grid; place-items: center; }
+  .loc > * { grid-area: 1 / 1; }
+
+  /* A — cool beacon */
+  .a-halo { width: 96px; height: 96px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(126,214,255,0.30) 0%, rgba(126,214,255,0.11) 45%, rgba(126,214,255,0) 72%); }
+  .a-ring { width: 86px; height: 86px; border-radius: 50%; border: 1px solid rgba(126,214,255,0.32); }
+  .a-core { width: 15px; height: 15px; border-radius: 50%; background: #e8f7ff;
+    box-shadow: 0 0 0 2.5px rgba(9,14,20,0.6), 0 0 9px rgba(126,214,255,0.95), 0 0 22px rgba(126,214,255,0.5); }
+
+  /* B — cream ember, mid-pulse */
+  .b-glow { width: 74px; height: 74px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,214,170,0.32) 0%, rgba(232,135,90,0.13) 48%, rgba(232,135,90,0) 74%); }
+  .b-ring1 { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid rgba(255,214,170,0.55); }
+  .b-ring2 { width: 84px; height: 84px; border-radius: 50%; border: 1px solid rgba(255,176,122,0.2); }
+  .b-core { width: 13px; height: 13px; border-radius: 50%; background: #FFF4E4;
+    box-shadow: 0 0 8px rgba(255,190,140,0.95), 0 0 20px rgba(232,135,90,0.6); }
+
+  /* C — neon sign */
+  .c-sign { position: absolute; bottom: calc(50% + 16px); white-space: nowrap;
+    font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: #f2f6ff;
+    text-shadow: 0 0 6px rgba(214,232,255,0.9), 0 0 16px rgba(150,200,255,0.5); }
+  .c-stem { width: 1px; height: 15px; margin-bottom: 15px;
+    background: linear-gradient(to bottom, rgba(226,238,255,0.75), rgba(226,238,255,0)); }
+  .c-core { width: 11px; height: 11px; border-radius: 50%; background: #f2f6ff;
+    box-shadow: 0 0 7px rgba(214,232,255,0.9), 0 0 18px rgba(150,200,255,0.5); }
+
+  /* D — reticle */
+  .d-acc { width: 136px; height: 136px; border-radius: 50%; border: 1px dashed rgba(244,239,230,0.16); }
+  .d-ring { width: 54px; height: 54px; border-radius: 50%; border: 1px solid rgba(244,239,230,0.5); }
+  .d-tick { position: relative; width: 70px; height: 70px; }
+  .d-tick i { position: absolute; background: rgba(244,239,230,0.6); }
+  .d-core { width: 6px; height: 6px; border-radius: 50%; background: #f4efe6;
+    box-shadow: 0 0 6px rgba(244,239,230,0.85); }
+
+  /* E — heading cone */
+  .e-cone { width: 116px; height: 116px; border-radius: 50%;
+    background: conic-gradient(from -42deg at 50% 50%,
+      rgba(150,214,255,0.36) 0deg, rgba(150,214,255,0.16) 46deg, rgba(150,214,255,0) 84deg);
+    -webkit-mask: radial-gradient(circle, #000 0%, #000 26%, transparent 70%);
+    mask: radial-gradient(circle, #000 0%, #000 26%, transparent 70%); }
+  .e-acc { width: 76px; height: 76px; border-radius: 50%;
+    background: rgba(126,214,255,0.08); border: 1px solid rgba(126,214,255,0.2); }
+  .e-core { width: 16px; height: 16px; border-radius: 50%; background: #eaf8ff;
+    border: 2px solid rgba(11,16,22,0.65);
+    box-shadow: 0 0 10px rgba(126,214,255,0.9), 0 0 24px rgba(126,214,255,0.45); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="emberBlur" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <filter id="roadGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <radialGradient id="aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e8875a" stop-opacity="0.30"/>
+      <stop offset="55%" stop-color="#e8875a" stop-opacity="0.11"/>
+      <stop offset="100%" stop-color="#e8875a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- One block of downtown, reused behind every marker so the five are
+         judged against identical surroundings. -->
+    <g id="city">
+      <rect width="800" height="320" fill="#191c22"/>
+      <!-- harbour -->
+      <path d="M0 0 L108 0 L84 118 L120 214 L96 320 L0 320 Z" fill="#10161f"/>
+      <!-- district auras -->
+      <ellipse cx="470" cy="150" rx="210" ry="130" fill="url(#aura)"/>
+      <ellipse cx="250" cy="250" rx="140" ry="95" fill="url(#aura)"/>
+      <!-- park -->
+      <path d="M596 26 L760 44 L744 150 L586 132 Z" fill="#1b2420"/>
+
+      <!-- arterials: warm glow pooled under the bright line -->
+      <g filter="url(#roadGlow)" opacity="0.5">
+        <path d="M-20 196 L820 168" stroke="#c9622c" stroke-width="9" fill="none"/>
+        <path d="M352 -20 L392 340" stroke="#c9622c" stroke-width="8" fill="none"/>
+      </g>
+      <path d="M-20 196 L820 168" stroke="#7d5a41" stroke-width="2.6" fill="none"/>
+      <path d="M352 -20 L392 340" stroke="#7d5a41" stroke-width="2.4" fill="none"/>
+
+      <!-- street grid -->
+      <g stroke="#2b323d" stroke-width="1.5" fill="none">
+        <path d="M-20 60 L820 40"/><path d="M-20 118 L820 96"/>
+        <path d="M-20 254 L820 232"/><path d="M-20 308 L820 288"/>
+        <path d="M170 -20 L206 340"/><path d="M262 -20 L300 340"/>
+        <path d="M448 -20 L484 340"/><path d="M540 -20 L574 340"/>
+        <path d="M632 -20 L664 340"/><path d="M724 -20 L752 340"/>
+      </g>
+      <g stroke="#232a34" stroke-width="1" fill="none">
+        <path d="M-20 88 L820 68"/><path d="M-20 150 L820 128"/>
+        <path d="M-20 226 L820 204"/><path d="M-20 282 L820 260"/>
+        <path d="M216 -20 L252 340"/><path d="M310 -20 L346 340"/>
+        <path d="M496 -20 L530 340"/><path d="M586 -20 L618 340"/>
+        <path d="M678 -20 L708 340"/>
+      </g>
+
+      <!-- restaurant embers: halo, inner light, core -->
+      <g>
+        <g filter="url(#emberBlur)" opacity="0.55" fill="#e8875a">
+          <circle cx="206" cy="112" r="7"/><circle cx="268" cy="176" r="9"/>
+          <circle cx="330" cy="86" r="6"/><circle cx="300" cy="248" r="8"/>
+          <circle cx="424" cy="140" r="10"/><circle cx="470" cy="212" r="7"/>
+          <circle cx="516" cy="94" r="6"/><circle cx="560" cy="176" r="9"/>
+          <circle cx="612" cy="252" r="6"/><circle cx="676" cy="118" r="8"/>
+          <circle cx="722" cy="196" r="6"/><circle cx="156" cy="222" r="6"/>
+          <circle cx="380" cy="292" r="7"/><circle cx="248" cy="60" r="5"/>
+          <circle cx="596" cy="46" r="5"/><circle cx="694" cy="298" r="5"/>
+          <circle cx="130" cy="150" r="5"/><circle cx="486" cy="290" r="6"/>
+        </g>
+        <g fill="#ffb07a">
+          <circle cx="206" cy="112" r="2.2"/><circle cx="268" cy="176" r="2.8"/>
+          <circle cx="330" cy="86" r="2"/><circle cx="300" cy="248" r="2.5"/>
+          <circle cx="424" cy="140" r="3.1"/><circle cx="470" cy="212" r="2.2"/>
+          <circle cx="516" cy="94" r="2"/><circle cx="560" cy="176" r="2.8"/>
+          <circle cx="612" cy="252" r="2"/><circle cx="676" cy="118" r="2.5"/>
+          <circle cx="722" cy="196" r="1.9"/><circle cx="156" cy="222" r="1.9"/>
+          <circle cx="380" cy="292" r="2.2"/><circle cx="248" cy="60" r="1.7"/>
+          <circle cx="596" cy="46" r="1.7"/><circle cx="694" cy="298" r="1.7"/>
+          <circle cx="130" cy="150" r="1.7"/><circle cx="486" cy="290" r="2"/>
+        </g>
+      </g>
+
+      <text class="street" x="30" y="186" transform="rotate(-1.9 30 186)">BROADWAY</text>
+      <text class="street" x="618" y="160" transform="rotate(-1.9 618 160)">MARKET ST</text>
+      <text class="street" x="404" y="316" transform="rotate(84 404 316)">5TH AVE</text>
+      <text class="street" x="150" y="46" transform="rotate(-1.9 150 46)">ASH ST</text>
+    </g>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <h1>My location — five treatments</h1>
+  <p class="sub">Same block of the Gaslamp behind each one, so the marker is judged against the embers it has to live among.</p>
+
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay"><div class="loc">
+        <div class="a-halo"></div><div class="a-ring"></div><div class="a-core"></div>
+      </div></div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">A</span><h2>Cool beacon</h2></div>
+      <p>The familiar blue dot, made deliberately cold: the map has exactly one warm light source, so a cyan-white core can never be misread as a restaurant. The outer ring is the accuracy radius.</p></div>
+  </div>
+
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay"><div class="loc">
+        <div class="b-glow"></div><div class="b-ring2"></div><div class="b-ring1"></div><div class="b-core"></div>
+      </div></div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">B</span><h2>Cream ember</h2></div>
+      <p>Speaks the map's own language — an ember like the restaurants, but cream-white and ringed rather than orange. The rings read as a slow pulse; caught here mid-breath.</p></div>
+  </div>
+
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay"><div class="loc">
+        <div class="c-sign">YOU ARE HERE</div><div class="c-stem"></div><div class="c-core"></div>
+      </div></div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">C</span><h2>Neon sign</h2></div>
+      <p>Restaurants sign themselves above their bubble; you sign yourself the same way. Same mono neon voice, lit cold white instead of orange so it stays the one thing lit up that isn't a place to eat.</p></div>
+  </div>
+
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay"><div class="loc">
+        <div class="d-acc"></div>
+        <div class="d-tick">
+          <i style="left:50%;top:0;width:1px;height:7px;margin-left:-0.5px"></i>
+          <i style="left:50%;bottom:0;width:1px;height:7px;margin-left:-0.5px"></i>
+          <i style="top:50%;left:0;height:1px;width:7px;margin-top:-0.5px"></i>
+          <i style="top:50%;right:0;height:1px;width:7px;margin-top:-0.5px"></i>
+        </div>
+        <div class="d-ring"></div><div class="d-core"></div>
+      </div></div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">D</span><h2>Reticle</h2></div>
+      <p>An instrument mark rather than a place: hairline circle, four ticks, a small solid centre, dashed accuracy ring. Nothing glows, so it never competes with the city for attention.</p></div>
+  </div>
+
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay"><div class="loc">
+        <div class="e-cone"></div><div class="e-acc"></div><div class="e-core"></div>
+      </div></div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">E</span><h2>Heading cone</h2></div>
+      <p>The beacon plus which way you are facing — the cone fans out along the compass heading. Costs a device-orientation permission, and only earns it if walking directions ever land.</p></div>
+  </div>
+</div>
+</body>
+</html>

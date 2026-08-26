@@ -55,7 +55,7 @@ export function CameraCapture({
 }: {
   photos: PhotoDraft[];
   onChange: React.Dispatch<React.SetStateAction<PhotoDraft[]>>;
-  /** The "just leave a comment" door — no photo, straight on to the choice. */
+  /** The "post without a photo" door — skips the camera, keeps the flow. */
   onSkip: () => void;
   /** Render as the whole screen rather than as a card in a page. */
   fullscreen?: boolean;
@@ -449,7 +449,7 @@ export function CameraCapture({
           {status !== "starting" && (
             <p className="max-w-xs text-xs leading-relaxed text-white/55">
               {status === "blocked"
-                ? "PlateMaps takes the photo itself, so this screen needs camera permission. Allow it in your browser and come back — or leave a comment instead."
+                ? "PlateMaps takes the photo itself, so this screen needs camera permission. Allow it in your browser and come back — or post without one."
                 : "This browser doesn't offer a camera, and PlateMaps only posts photos it takes. You can still leave a comment."}
             </p>
           )}
@@ -555,7 +555,7 @@ export function CameraCapture({
       className="flex min-h-11 w-full items-center gap-2 rounded-2xl bg-white/15 px-4 text-left text-sm font-medium text-white ring-1 ring-inset ring-white/25 backdrop-blur-md transition-colors hover:bg-white/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
     >
       <ChatIcon className="h-4 w-4 shrink-0" />
-      <span className="flex-1">Just leave a comment</span>
+      <span className="flex-1">Post without a photo</span>
       <ChevronIcon className="h-4 w-4 shrink-0 text-white/60" />
     </button>
   );

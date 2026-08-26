@@ -9,8 +9,7 @@ import { PostActions, type VoteDirection } from "@/components/feed/PostActions";
 import { StarRating } from "@/components/StarRating";
 import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/components/icons";
 import { relativeTime } from "@/lib/format";
-import { tagAccent } from "@/data/foodTags";
-import { amenityEmoji, vibeChip } from "@/data/reviewScales";
+import { vibeChip } from "@/data/reviewScales";
 import type { Post } from "@/components/feed/types";
 
 /**
@@ -406,35 +405,13 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
       aria-labelledby={lineDish || lineRestaurant ? `${titleId} ${subId}` : titleId}
       className="overflow-hidden rounded-2xl bg-white"
     >
-      {/* Who posted it, at the top of the card — the first thing read, above
-          the photo, the way a feed card names its author everywhere else.
-       *
-          It sat under the subject line until now, which put the person last on
-          a card that is entirely their opinion. Moving it up costs nothing it
-          was relying on: the row still owns its full width with nothing beside
-          it, which is what `bylineTail` needs — three machine values measuring
-          ~250px against 358px of card, and a fourth segment or a chip parked on
-          the end truncates the distance off every card in the feed. That is how
-          the price and the points badge lost their place here; the extra room
-          up top is not a reason to refill it. */}
-      <p className="truncate px-4 pb-2 pt-3 font-mono text-[11px] tabular-nums text-zinc-500">
-        <Link
-          href={authorHref}
-          aria-label={authorLabel}
-          className="rounded-sm font-medium text-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-        >
-          @{handleFor(post.authorName)}
-        </Link>
-        {bylineTail.length > 0 && ` · ${bylineTail.join(" · ")}`}
-      </p>
       {/*
         The hero runs flush to the card edge rather than inset the 10px
         DESIGN.md asks for, matching `PhoneRestaurantCard` and for the reason
         stated there: at 358px of card width the inset reads as a mount around a
-        picture. Nothing is overlaid on it but the price. The handle is not on
-        the photo either — it sits in the byline above this, which is a row of
-        its own rather than an overlay, so it needs no halo to stay legible and
-        does not depend on the card having a photo at all.
+        picture. Nothing is overlaid on it but the price — the handle that used
+        to sit in the top-left has moved down into the byline, where the new
+        hierarchy puts the author.
       */}
       {showsHero && (
         <div className="relative">
@@ -487,7 +464,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
         of opinions has to make the opinion legible first, and because a 38px
         orange numeral is not hard to find.
       */}
-      <div className={`px-4 ${showsHero ? "pt-3" : "pt-1"}`}>
+      <div className={`px-4 ${showsHero ? "pt-3" : "pt-4"}`}>
         <div className="min-w-0">
           {/* What the person said, and it is the headline now, across the whole
               column — see the note on the row above for why the number is no
@@ -529,15 +506,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
               instead of pushing the number off the card. */}
           <div className={`flex items-start justify-between gap-2.5 ${words ? "mt-1" : "mt-0.5"}`}>
             <div className="min-w-0 flex-1">
-              {/* The subject line: the dish, then the restaurant in the accent.
-               *
-                  **The accent is on the place, not the plate.** It was the
-                  other way round, on the argument that the dish is the post's
-                  title. It is — but the title is already the Fraunces face on
-                  this line, and what a reader is scanning a feed for is where
-                  to go. The colour and the display face now do two jobs instead
-                  of doubling up on one. Exactly one name here is coloured
-                  either way, so the card's accent budget is unchanged.
+              {/* The subject line: the dish in the accent, then the restaurant.
                *
                   Both are links — the dish opens its sheet on the restaurant's
                   screen, the place opens the screen itself — and they wear
@@ -558,7 +527,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                   {lineDish && (
                     <DishRef
                       post={post}
-                      className="font-display text-[13px] font-semibold text-zinc-900"
+                      className="font-display text-[13px] font-semibold text-pm-orange-text"
                     />
                   )}
                   {lineDish && lineRestaurant && (
@@ -567,7 +536,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                   {lineRestaurant && (
                     <RestaurantRef
                       post={post}
-                      className="font-mono text-[12px] font-medium text-pm-orange-text"
+                      className="font-mono text-[12px] font-medium text-zinc-500"
                     />
                   )}
                 </p>
@@ -651,6 +620,22 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
           </div>
         </div>
 
+          {/* The byline owns its whole row, below the subject line rather than
+              beside it. Nothing is allowed to sit next to it — see `bylineTail`,
+              which has three machine values to spend ~220px on and needs all of
+              it. Sharing the subject line's column left it ~138px and truncated
+              the distance off every card, which is the exact failure that
+              comment was written about. */}
+          <p className="mt-1 truncate font-mono text-[11px] tabular-nums text-zinc-500">
+            <Link
+              href={authorHref}
+              aria-label={authorLabel}
+              className="rounded-sm text-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+            >
+              @{handleFor(post.authorName)}
+            </Link>
+            {bylineTail.length > 0 && ` · ${bylineTail.join(" · ")}`}
+          </p>
         </div>
       </div>
 
@@ -768,44 +753,23 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
         </div>
       </div>
 
-      {(post.tags.length > 0 || post.amenities.length > 0 || post.vibe) && (
+      {/* The best-at chip, and nothing else — the web card's rule, same
+          reason. See the note there and in data/reviewScales.ts. */}
+      {roomChip && (
         <div className="px-4 pb-4">
-          {(post.tags.length > 0 || post.amenities.length > 0 || post.vibe) && (
-            <ul className="mt-1.5 flex flex-wrap gap-1.5">
-              {roomChip && (
-                <li className="flex items-center gap-1 rounded-full bg-pm-grey-tint px-2.5 py-1 text-[11px] font-medium text-pm-grey-text">
-                  {roomChip.emoji && <span aria-hidden="true">{roomChip.emoji}</span>}
-                  {roomChip.text}
-                </li>
-              )}
-              {post.tags.map((tag) => (
-                <li
-                  key={tag}
-                  className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${tagAccent(tag)}`}
-                >
-                  {tag}
-                </li>
-              ))}
-              {post.amenities.map((a) => (
-                <li
-                  key={a}
-                  className="flex items-center gap-1 rounded-full bg-pm-grey-tint px-2.5 py-1 text-[11px] font-medium text-pm-grey-text"
-                >
-                  <span aria-hidden="true">{amenityEmoji(a)}</span>
-                  {a}
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul className="mt-1.5 flex flex-wrap gap-1.5">
+            <li className="flex items-center gap-1 rounded-full bg-pm-grey-tint px-2.5 py-1 text-[11px] font-medium text-pm-grey-text">
+              {roomChip.emoji && <span aria-hidden="true">{roomChip.emoji}</span>}
+              {roomChip.text}
+            </li>
+          </ul>
         </div>
       )}
 
       {/* Nothing below the action row on a bare post, so the card closes there
-          — the tags block owns its own bottom padding and this only replaces
+          — the chip block owns its own bottom padding and this only replaces
           it when that block isn't rendered. */}
-      {!(post.tags.length > 0 || post.amenities.length > 0 || post.vibe) && (
-        <div className="pb-3" />
-      )}
+      {!roomChip && <div className="pb-3" />}
     </article>
   );
 }

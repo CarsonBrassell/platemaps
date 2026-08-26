@@ -64,7 +64,14 @@ export function Composer({
           // Only ever true on an inline reply box, which exists because the
           // reader just asked for it — the focus goes where they were headed.
           autoFocus={autoFocus}
-          className="min-h-11 flex-1 rounded-full bg-pm-grey-tint/60 px-4 text-sm transition-colors placeholder:text-pm-grey-text focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
+          /* `min-w-0` is load-bearing, not tidying. A flex item defaults to
+             `min-width: auto`, and an <input>'s intrinsic width is its `size`
+             attribute — about 170px — so `flex-1` could grow this field but
+             never shrink it below that. In the dish sheet, where the row sits
+             behind an avatar and an indent inside a 390px sheet, the field
+             held its floor and pushed "Reply" off the edge, giving the phone
+             frame a horizontal scrollbar. */
+          className="min-h-11 w-0 min-w-0 flex-1 rounded-full bg-pm-grey-tint/60 px-4 text-sm transition-colors placeholder:text-pm-grey-text focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange"
         />
         {onCancel && (
           <button

@@ -9,8 +9,8 @@ import { initials } from "@/lib/format";
 import { resizeImageToJpeg } from "@/lib/image";
 import { uploadAvatar } from "@/lib/photos";
 import { SettingsIcon } from "@/components/icons";
-import { ProfileActivity } from "@/components/ProfileActivity";
 import { PlatePointsPanel } from "@/components/PlatePointsPanel";
+import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves";
 
 const inputClass =
   "mb-4 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-sm transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
@@ -21,6 +21,11 @@ type Post = {
   authorName: string;
   text: string;
   restaurant?: string;
+  dishName?: string;
+  /** Dish percent or restaurant stars — ratingKind says which (lib/db.ts). */
+  rating?: number;
+  ratingKind?: "restaurant" | "dish";
+  upvoteCount: number;
   savedBy: string[];
   comments: { id: string }[];
   /** Mirrors PostMedia in lib/db.ts — that module is server-only. */
@@ -300,17 +305,28 @@ function AccountOverview() {
   const { account, signOut, updateAvatar } = useAuth();
   const [myPosts, setMyPosts] = useState<Post[]>([]);
   const [savedPosts, setSavedPosts] = useState<Post[]>([]);
+  const [postsReady, setPostsReady] = useState(false);
   const [avatarError, setAvatarError] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  /* The roll-call: what plays when reactions have landed since the last
+     visit. Called before the account guard because hooks must be — it
+     handles null itself. The panel below prints its displayPoints so the
+     total can roll up from where you left it. */
+  const arrival = useRollCallArrival(account, myPosts, postsReady);
+
   useEffect(() => {
     if (!account) return;
-    fetch("/api/posts")
+    /* ?mine=1 — this screen shows your plates and your saves; without it the
+       request returns the whole corpus so the two filters below can discard
+       ~99% of it. See getProfilePosts in lib/db.ts. */
+    fetch("/api/posts?mine=1")
       .then((res) => res.json())
       .then((data: { posts: Post[] }) => {
         setMyPosts(data.posts.filter((p) => p.userId === account.id));
         setSavedPosts(data.posts.filter((p) => p.savedBy.includes(account.id)));
+        setPostsReady(true);
       });
   }, [account]);
 
@@ -341,7 +357,9 @@ function AccountOverview() {
   }
 
   return (
-    <div className="mx-4 overflow-hidden rounded-2xl bg-white sm:mx-6">
+    /* No card ground of its own — see the note in PhoneProfileScreen. The
+       profile sits on the cream page background so its white cards read. */
+    <div className="mx-4 sm:mx-6">
       {/* A flat band of warm tone where a cover photo would go — deliberate,
           not a gradient. */}
       <div className="m-2.5 h-24 rounded-xl bg-[var(--pm-tone-1)]" aria-hidden="true" />
@@ -405,8 +423,17 @@ function AccountOverview() {
       {/* Points lead, and they are the only orange thing here. Posts and
           Comments stay grey tiles on purpose: they are counts *about* the
           account, where the points total is the thing the account is scored
-          on, and giving all three the accent would flatten that back out. */}
-      <PlatePointsPanel points={account.points} className="mb-3" />
+          on, and giving all three the accent would flatten that back out.
+          The number printed is the roll-call's — on an arrival it starts at
+          the last-seen total and rolls up once the badges have landed. */}
+      <PlatePointsPanel points={arrival.displayPoints} showRank className="mb-3" />
+
+      {/* The shelves sit DIRECTLY under the total they explain — the approved
+          order from the prototype: identity, then what you've earned, then
+          the plates that earned it, badged where something just happened.
+          They used to sit below the activity list, which buried the page's
+          centrepiece under six rows of detail about the same events. */}
+      <ProfileShelves posts={myPosts} arrival={arrival} />
 
       <div className="mb-6 grid grid-cols-2 gap-3">
         <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-3 text-center">
@@ -431,23 +458,15 @@ function AccountOverview() {
         — see who you know and answer any requests waiting on you.
       </p>
 
-      {/* This is the part of the page you come back to check. The two settings
-          ledgers and the delete panel used to sit directly under it, which put
-          six things you configure once between your activity and your own
-          plates; they live on /account/settings now, behind the gear beside
-          your name. */}
-      <ProfileActivity />
-
-      {myPosts.length > 0 && (
-        <>
-          <p className="mono-label mb-2 text-zinc-500">Your posts</p>
-          <div className="mb-6 grid grid-cols-3 gap-1.5">
-            {myPosts.map((post, i) => (
-              <PostTile key={post.id} post={post} tone={(i % 3) + 1} viewerId={account.id} />
-            ))}
-          </div>
-        </>
-      )}
+      {/* The "Activity on your plates" list stood here. It was a reverse
+          chronological feed of every reaction — and the shelves above now
+          answer the question it was really being read for, "which of my
+          plates are people reacting to?", which a list ordered by time
+          never answered at a glance. Keeping both meant printing the same
+          forty events twice on one screen, once as counts on the plates
+          and once as rows. The plates won. /api/account/activity is still
+          live and still read, by ProfileShelves for the badges and by
+          navAlerts for the nav dot. */}
 
       <p className="mono-label mb-2 text-zinc-500">Saved</p>
       {savedPosts.length > 0 ? (

@@ -85,7 +85,30 @@ html.pm-lock-scroll body {
    * to rubber-band.
    */
   height: 100dvh;
+  /*
+   * `clip`, not `hidden`, and the difference is the whole of a real bug.
+   *
+   * `overflow: hidden` still makes this a **scroll container** — it only means
+   * "the user cannot scroll it", never "it cannot be scrolled". The browser
+   * scrolls it anyway when something inside takes focus: opening the comments
+   * screen moves focus to its header button, the browser scrolls the nearest
+   * scrollable ancestor to reveal it, and that ancestor was this frame. Measured
+   * on /m/feed: `scrollTop` went to 478 the instant the dialog opened.
+   *
+   * Because this element is also the containing block for every
+   * `position: fixed` descendant (the `translateZ(0)` trick below), scrolling it
+   * dragged *everything* up by those 478px at once — the comments overlay, the
+   * nav, `.post-flash`, `.points-fly-layer` — and `hidden` then clipped the part
+   * that had moved above the frame. What you saw was a comments screen showing
+   * only its bottom third with half a screen of bare cream under it, and no nav.
+   *
+   * `overflow: clip` removes the scroll box entirely, so there is nothing to
+   * scroll and focus has nowhere to move the frame to. `hidden` stays first as
+   * the fallback for an engine that doesn't know `clip` — it keeps exactly
+   * today's behaviour there rather than losing the clipping altogether.
+   */
   overflow: hidden;
+  overflow: clip;
 }
 
 /*

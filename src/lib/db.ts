@@ -486,8 +486,6 @@ export type Post = {
   rating?: number;
   ratingKind?: "restaurant" | "dish";
   locationLabel?: string;
-  tags: string[];
-  amenities: string[];
   vibe?: string;
   media: PostMedia[];
   /**
@@ -665,8 +663,6 @@ async function hydratePosts(
       rating: row.rating === null || row.rating === undefined ? undefined : Number(row.rating),
       ratingKind: row.rating_kind ?? undefined,
       locationLabel: row.location_label ?? undefined,
-      tags: (row.tags as string[] | null) ?? [],
-      amenities: (row.amenities as string[] | null) ?? [],
       vibe: row.vibe ?? undefined,
       media: (row.media as PostMedia[] | null) ?? [],
       photosPublic: row.photos_public ?? false,
@@ -702,8 +698,8 @@ async function hydratePosts(
 const POST_SELECT = `
   SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
          p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
-         p.dish_name, p.price, p.rating, p.rating_kind, p.location_label, p.tags, p.media,
-         p.amenities, p.vibe, p.photos_public,
+         p.dish_name, p.price, p.rating, p.rating_kind, p.location_label, p.media,
+         p.vibe, p.photos_public,
          u.name AS author_name, u.avatar_url AS author_avatar_url,
          u.points AS author_points
   FROM posts p
@@ -712,6 +708,42 @@ const POST_SELECT = `
 
 export async function getPosts(viewerId: string | null = null): Promise<Post[]> {
   const rows = await sql.query(`${POST_SELECT} ORDER BY p.created_at ASC`);
+  return hydratePosts(rows, viewerId);
+}
+
+/**
+ * Everything one profile screen needs: the posts you wrote, plus the posts
+ * you saved, in one round trip.
+ *
+ * **This exists because the profile was downloading the entire corpus to
+ * render six plates.** It called `getPosts()` — every row in the table — and
+ * filtered client-side for `userId === account.id`, which meant 531 posts and
+ * 328KB over the wire so that 1.1% of it could be shown, and `hydratePosts`
+ * running its vote/comment/save fan-out across all 531 on every profile view.
+ * That cost does not stay still either: it grows with the size of the app,
+ * on a screen whose content does not.
+ *
+ * The `OR` is what keeps it one query rather than two: the saved grid and the
+ * plate shelves are both on this screen, and fetching them separately would
+ * trade one oversized request for two round trips plus a second hydration.
+ * Both sets pass through the same `savedBy`/`userId` fields the callers
+ * already filter on, so the client code splitting them apart is unchanged.
+ *
+ * Takes the id from the session at the call site, never from a query
+ * parameter — a caller-supplied id here would hand anyone another person's
+ * saved-post list, which is not public.
+ */
+export async function getProfilePosts(
+  userId: string,
+  viewerId: string | null = null
+): Promise<Post[]> {
+  const rows = await sql.query(
+    `${POST_SELECT}
+     WHERE p.user_id = $1
+        OR p.id IN (SELECT post_id FROM post_saves WHERE user_id = $1)
+     ORDER BY p.created_at ASC`,
+    [userId]
+  );
   return hydratePosts(rows, viewerId);
 }
 
@@ -830,7 +862,7 @@ export async function getDiscoverFeed(
   const rows = await sql`
     SELECT p.id, p.user_id, p.text, p.restaurant, p.created_at,
            p.restaurant_id, p.restaurant_lat, p.restaurant_lng,
-           p.dish_name, p.price, p.rating, p.rating_kind, p.location_label, p.tags,
+           p.dish_name, p.price, p.rating, p.rating_kind, p.location_label,
            /*
             * Private media is dropped **in the database**, not after it arrives.
             *
@@ -848,7 +880,7 @@ export async function getDiscoverFeed(
             * caller can forget to re-apply the filter.
             */
            CASE WHEN p.photos_public THEN p.media ELSE '[]'::jsonb END AS media,
-           p.amenities, p.vibe, p.photos_public,
+           p.vibe, p.photos_public,
            u.name AS author_name, u.avatar_url AS author_avatar_url,
            u.points AS author_points
     FROM posts p
@@ -925,8 +957,6 @@ export async function createPost(data: {
   rating?: number;
   ratingKind?: "restaurant" | "dish";
   locationLabel?: string;
-  tags?: string[];
-  amenities?: string[];
   vibe?: string;
   media?: PostMedia[];
   /**
@@ -941,21 +971,19 @@ export async function createPost(data: {
   /** The aspect that let them down, if they named one. */
   worstAspect?: string;
 }): Promise<Post> {
-  const tags = data.tags ?? [];
-  const amenities = data.amenities ?? [];
   const media = data.media ?? [];
   const rows = await sql`
     INSERT INTO posts (
       id, user_id, text, restaurant, restaurant_id, restaurant_lat, restaurant_lng,
-      dish_name, price, rating, rating_kind, location_label, tags, media, amenities, vibe,
+      dish_name, price, rating, rating_kind, location_label, media, vibe,
       photos_public
     )
     VALUES (
       ${data.id}, ${data.userId}, ${data.text}, ${data.restaurant ?? null},
       ${data.restaurantId ?? null}, ${data.restaurantLat ?? null}, ${data.restaurantLng ?? null},
       ${data.dishName ?? null}, ${data.price ?? null}, ${data.rating ?? null}, ${data.ratingKind ?? null},
-      ${data.locationLabel ?? null}, ${tags}, ${JSON.stringify(media)}::jsonb,
-      ${amenities}, ${data.vibe ?? null}, ${data.photosPublic}
+      ${data.locationLabel ?? null}, ${JSON.stringify(media)}::jsonb,
+      ${data.vibe ?? null}, ${data.photosPublic}
     )
     RETURNING created_at
   `;
@@ -994,8 +1022,6 @@ export async function createPost(data: {
     rating: data.rating,
     ratingKind: data.ratingKind,
     locationLabel: data.locationLabel,
-    tags,
-    amenities,
     vibe: data.vibe,
     media,
     photosPublic: data.photosPublic,

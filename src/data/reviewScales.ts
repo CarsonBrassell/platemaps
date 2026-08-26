@@ -1,5 +1,5 @@
 /**
- * The emoji scales and amenity chips behind the review composer.
+ * The emoji scales behind the review composer.
  *
  * Ratings are stored as the existing 0–10 number; the face is presentation
  * only. Vibe is stored as its label ("Lively"), so adding a stop here doesn't
@@ -26,34 +26,32 @@ export function faceForRating(rating: number) {
   return RATING_FACES[i];
 }
 
-export const VIBES: ReadonlyArray<{ emoji: string; label: string; blurb: string }> = [
-  { emoji: "🧘", label: "Chill", blurb: "Quiet enough to hear yourself think" },
-  { emoji: "🕯️", label: "Cozy", blurb: "Low light, lingering kind of place" },
-  { emoji: "🍽️", label: "Casual", blurb: "Easy, everyday, no fuss" },
-  { emoji: "🎶", label: "Lively", blurb: "Music up, tables full" },
-  { emoji: "🔥", label: "Buzzing", blurb: "Loud, packed, a whole scene" },
-];
-
-export const AMENITIES: ReadonlyArray<{ emoji: string; label: string }> = [
-  { emoji: "🌤️", label: "Outdoor seating" },
-  { emoji: "🍸", label: "Great cocktails" },
-  { emoji: "🐕", label: "Dog friendly" },
-  { emoji: "📅", label: "Takes reservations" },
-  { emoji: "🌙", label: "Open late" },
-  { emoji: "👥", label: "Good for groups" },
-  { emoji: "⚡", label: "Quick service" },
-  { emoji: "🌱", label: "Vegan options" },
-  { emoji: "🅿️", label: "Easy parking" },
-  { emoji: "🎵", label: "Good music" },
-];
+/*
+ * The room scale (Chill / Cozy / Casual / Lively / Buzzing) and the amenity
+ * list (Outdoor seating, Dog friendly, Takes reservations, …) used to live
+ * here. Both are deleted, and the reason is the same one that removed the
+ * invented wait-time copy: **no composer ever offered them, so nothing a real
+ * person did could produce one.**
+ *
+ * Every room word on the feed came from `scripts/simulate-activity.mjs`, which
+ * says in its own header that it writes only that vocabulary. Amenities were
+ * worse — a vocabulary, a validator and an emoji renderer with **zero rows** in
+ * the table, ever. They read as somebody's opinion of a restaurant while being
+ * demo furniture, sitting on the same card and in the same chip shape as the
+ * one label a poster does choose.
+ *
+ * `BEST_AT` below is that label, and it is what survives. If an atmosphere
+ * vocabulary is ever wanted again, it needs a control in the composer first —
+ * the vocabulary is the easy half.
+ */
 
 /**
  * The one thing a restaurant does better than anything else it does.
  *
  * Superlative on purpose — a place that is "good at food" is every place, and a
  * list where everything can be ticked tells a reader nothing. It shares the
- * `vibe` column with the room scale above rather than opening a second one, so
- * posts written under either vocabulary keep rendering.
+ * It owns the `vibe` column outright now that the room scale is deleted — see
+ * `vibeChip` for how the rows still holding a room word are filtered out.
  *
  * **Everything here is something the plates cannot say.** Food is deliberately
  * absent: the restaurant's plate score already *is* its food rating — the
@@ -74,7 +72,7 @@ export const BEST_AT: ReadonlyArray<{ emoji: string; label: string }> = [
  *
  * Kept solely so a post written while they existed still reads as a sentence
  * on its feed card — see `vibeChip`. Deliberately NOT part of
- * `BEST_AT_LABELS` or `ROOM_LABELS`: a retired chip must stay unpickable in
+ * `BEST_AT_LABELS`: a retired chip must stay unpickable in
  * the composer, unwritable through /api/posts, and absent from both the
  * restaurant page's category scores and Discover's "Rated well for" facet.
  * Votes already in `post_aspect_votes` for these simply stop being counted.
@@ -90,30 +88,24 @@ const RETIRED_BEST_AT: ReadonlyArray<{ emoji: string; label: string }> = [
   { emoji: "🍳", label: "Food" },
 ];
 
-export const AMENITY_LABELS: readonly string[] = AMENITIES.map((a) => a.label);
-export const VIBE_LABELS: readonly string[] = VIBES.map((v) => v.label);
 export const BEST_AT_LABELS: readonly string[] = BEST_AT.map((b) => b.label);
 
-/** Everything the `vibe` column is allowed to hold, old vocabulary and new. */
-export const ROOM_LABELS: readonly string[] = [...VIBE_LABELS, ...BEST_AT_LABELS];
-
-/** Emoji for an amenity label, for rendering it back on a post card. */
-export function amenityEmoji(label: string) {
-  return AMENITIES.find((a) => a.label === label)?.emoji;
-}
-
-export function vibeEmoji(label: string) {
-  return VIBES.find((v) => v.label === label)?.emoji;
-}
-
 /**
- * How a `vibe` value reads on a post card. "Lively" says what it means on its
- * own; "Food" does not, so the newer vocabulary gets its sentence back.
+ * How a `vibe` value reads on a post card, or **null when it should not read at
+ * all.**
+ *
+ * The null branch is the whole point. `posts.vibe` holds two unrelated
+ * vocabularies: the best-at label a poster actually picked, and — on the ~49
+ * rows `simulate-activity.mjs` wrote — a room word from the deleted atmosphere
+ * scale. Those rows are still in the table and are not worth a migration, so
+ * the filter happens on the read: a label that is not a best-at chip, current
+ * or retired, renders as nothing.
+ *
+ * Retired chips still resolve, so an old "Speed" post keeps saying "Best at
+ * speed" rather than degrading to a bare "Speed".
  */
-export function vibeChip(label: string): { emoji?: string; text: string } {
-  // Retired chips are read here but nowhere else, so an old "Speed" post keeps
-  // saying "Best at speed" instead of degrading to a bare "Speed".
+export function vibeChip(label: string): { emoji?: string; text: string } | null {
   const best = [...BEST_AT, ...RETIRED_BEST_AT].find((b) => b.label === label);
-  if (best) return { emoji: best.emoji, text: `Best at ${label.toLowerCase()}` };
-  return { emoji: vibeEmoji(label), text: label };
+  if (!best) return null;
+  return { emoji: best.emoji, text: `Best at ${label.toLowerCase()}` };
 }

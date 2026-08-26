@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlateMaps — My location, arrow treatments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #F7F4EC; color: #232019;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 840px; margin: 0 auto; padding: 26px 16px 50px; }
+  h1 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 29px; margin: 0; letter-spacing: -0.01em; }
+  .sub { margin: 6px 0 0; font-size: 13px; color: #665C4E; }
+  .card { background: #fff; border-radius: 16px; padding: 10px; margin-top: 20px; }
+  .mapbox { position: relative; height: 320px; border-radius: 12px; overflow: hidden; background: #191c22; }
+  .mapbox svg.city { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .overlay { position: absolute; inset: 0; display: grid; place-items: center; }
+  .marker { width: 200px; height: 200px; display: block; overflow: visible; }
+  .cap { padding: 12px 8px 4px; }
+  .cap .row { display: flex; align-items: baseline; gap: 9px; }
+  .letter { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: #A8481A; }
+  .cap h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 18px; margin: 0; }
+  .cap p { margin: 5px 0 0; font-size: 13px; line-height: 1.45; color: #7E7261; max-width: 70ch; }
+  .cost { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #A8481A; margin-top: 7px; display: block; }
+
+  .street { font-family: "Spline Sans Mono", ui-monospace, monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: 0.16em; fill: #7f8794; text-transform: uppercase; }
+
+  /* the cone from treatment E, reused under two of these */
+  .cone { position: absolute; width: 116px; height: 116px; border-radius: 50%;
+    background: conic-gradient(from -42deg at 50% 50%,
+      rgba(150,214,255,0.36) 0deg, rgba(150,214,255,0.16) 46deg, rgba(150,214,255,0) 84deg);
+    -webkit-mask: radial-gradient(circle, #000 0%, #000 26%, transparent 70%);
+    mask: radial-gradient(circle, #000 0%, #000 26%, transparent 70%);
+    transform: rotate(38deg); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="emberBlur" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <filter id="roadGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <filter id="coldGlow" x="-200%" y="-200%" width="500%" height="500%">
+      <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#96d6ff" flood-opacity="0.85"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#96d6ff" flood-opacity="0.45"/>
+    </filter>
+    <radialGradient id="coneGrad" cx="50%" cy="100%" r="100%">
+      <stop offset="0%" stop-color="#96d6ff" stop-opacity="0.4"/>
+      <stop offset="45%" stop-color="#96d6ff" stop-opacity="0.17"/>
+      <stop offset="100%" stop-color="#96d6ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e8875a" stop-opacity="0.30"/>
+      <stop offset="55%" stop-color="#e8875a" stop-opacity="0.11"/>
+      <stop offset="100%" stop-color="#e8875a" stop-opacity="0"/>
+    </radialGradient>
+
+    <g id="city">
+      <rect width="800" height="320" fill="#191c22"/>
+      <path d="M0 0 L108 0 L84 118 L120 214 L96 320 L0 320 Z" fill="#10161f"/>
+      <ellipse cx="470" cy="150" rx="210" ry="130" fill="url(#aura)"/>
+      <ellipse cx="250" cy="250" rx="140" ry="95" fill="url(#aura)"/>
+      <path d="M596 26 L760 44 L744 150 L586 132 Z" fill="#1b2420"/>
+      <g filter="url(#roadGlow)" opacity="0.5">
+        <path d="M-20 196 L820 168" stroke="#c9622c" stroke-width="9" fill="none"/>
+        <path d="M352 -20 L392 340" stroke="#c9622c" stroke-width="8" fill="none"/>
+      </g>
+      <path d="M-20 196 L820 168" stroke="#7d5a41" stroke-width="2.6" fill="none"/>
+      <path d="M352 -20 L392 340" stroke="#7d5a41" stroke-width="2.4" fill="none"/>
+      <g stroke="#2b323d" stroke-width="1.5" fill="none">
+        <path d="M-20 60 L820 40"/><path d="M-20 118 L820 96"/>
+        <path d="M-20 254 L820 232"/><path d="M-20 308 L820 288"/>
+        <path d="M170 -20 L206 340"/><path d="M262 -20 L300 340"/>
+        <path d="M448 -20 L484 340"/><path d="M540 -20 L574 340"/>
+        <path d="M632 -20 L664 340"/><path d="M724 -20 L752 340"/>
+      </g>
+      <g stroke="#232a34" stroke-width="1" fill="none">
+        <path d="M-20 88 L820 68"/><path d="M-20 150 L820 128"/>
+        <path d="M-20 226 L820 204"/><path d="M-20 282 L820 260"/>
+        <path d="M216 -20 L252 340"/><path d="M310 -20 L346 340"/>
+        <path d="M496 -20 L530 340"/><path d="M586 -20 L618 340"/>
+        <path d="M678 -20 L708 340"/>
+      </g>
+      <g>
+        <g filter="url(#emberBlur)" opacity="0.55" fill="#e8875a">
+          <circle cx="206" cy="112" r="7"/><circle cx="268" cy="176" r="9"/>
+          <circle cx="330" cy="86" r="6"/><circle cx="300" cy="248" r="8"/>
+          <circle cx="424" cy="140" r="10"/><circle cx="470" cy="212" r="7"/>
+          <circle cx="516" cy="94" r="6"/><circle cx="560" cy="176" r="9"/>
+          <circle cx="612" cy="252" r="6"/><circle cx="676" cy="118" r="8"/>
+          <circle cx="722" cy="196" r="6"/><circle cx="156" cy="222" r="6"/>
+          <circle cx="380" cy="292" r="7"/><circle cx="248" cy="60" r="5"/>
+          <circle cx="596" cy="46" r="5"/><circle cx="694" cy="298" r="5"/>
+          <circle cx="130" cy="150" r="5"/><circle cx="486" cy="290" r="6"/>
+        </g>
+        <g fill="#ffb07a">
+          <circle cx="206" cy="112" r="2.2"/><circle cx="268" cy="176" r="2.8"/>
+          <circle cx="330" cy="86" r="2"/><circle cx="300" cy="248" r="2.5"/>
+          <circle cx="424" cy="140" r="3.1"/><circle cx="470" cy="212" r="2.2"/>
+          <circle cx="516" cy="94" r="2"/><circle cx="560" cy="176" r="2.8"/>
+          <circle cx="612" cy="252" r="2"/><circle cx="676" cy="118" r="2.5"/>
+          <circle cx="722" cy="196" r="1.9"/><circle cx="156" cy="222" r="1.9"/>
+          <circle cx="380" cy="292" r="2.2"/><circle cx="248" cy="60" r="1.7"/>
+          <circle cx="596" cy="46" r="1.7"/><circle cx="694" cy="298" r="1.7"/>
+          <circle cx="130" cy="150" r="1.7"/><circle cx="486" cy="290" r="2"/>
+        </g>
+      </g>
+      <text class="street" x="30" y="186" transform="rotate(-1.9 30 186)">BROADWAY</text>
+      <text class="street" x="618" y="160" transform="rotate(-1.9 618 160)">MARKET ST</text>
+      <text class="street" x="404" y="316" transform="rotate(84 404 316)">5TH AVE</text>
+      <text class="street" x="150" y="46" transform="rotate(-1.9 150 46)">ASH ST</text>
+    </g>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <h1>My location — the arrow family</h1>
+  <p class="sub">Six more, all pointing the same way (38°, north-east) so the shapes can be compared rather than the angles. Same block as the first five.</p>
+
+  <!-- F -->
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay">
+        <svg class="marker" viewBox="-100 -100 200 200">
+          <circle r="40" fill="rgba(126,214,255,0.07)" stroke="rgba(126,214,255,0.22)" stroke-width="1"/>
+          <g transform="rotate(38)">
+            <path d="M0,-34 L12,-10 L0,-16 L-12,-10 Z" fill="#eaf8ff"
+                  stroke="rgba(11,16,22,0.65)" stroke-width="1.6" stroke-linejoin="round"/>
+          </g>
+          <circle r="8" fill="#eaf8ff" stroke="rgba(11,16,22,0.65)" stroke-width="2.2"/>
+        </svg>
+      </div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">F</span><h2>Navigation puck</h2></div>
+      <p>The dot with a swept arrowhead riding just off its edge — the shape every phone already reads as "facing". Arrow and dot are separate marks, so the dot alone is the honest fallback when no heading is available.</p>
+      <span class="cost">Needs compass</span></div>
+  </div>
+
+  <!-- G -->
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay">
+        <svg class="marker" viewBox="-100 -100 200 200">
+          <circle r="42" fill="none" stroke="rgba(244,239,230,0.14)" stroke-width="1" stroke-dasharray="3 4"/>
+          <g transform="rotate(38)">
+            <g transform="translate(-19.2 -60) scale(1.6)">
+              <path d="M12 3.4 21 12.4h-4.6V20.6H7.6V12.4H3z" fill="none"
+                    stroke="#f4efe6" stroke-width="1.4" stroke-linejoin="round"
+                    vector-effect="non-scaling-stroke"/>
+            </g>
+          </g>
+          <circle r="6" fill="#f4efe6"/>
+        </svg>
+      </div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">G</span><h2>The app's own arrow</h2></div>
+      <p>Literally <code>VOTE_ARROW_PATH</code> from <code>icons.tsx</code>, outline, rotated to the heading. Reads as PlateMaps instantly — but that mark currently means "vote", and DESIGN.md is explicit that it is one gesture with one mark. Borrowing it here spends that.</p>
+      <span class="cost">Needs compass · costs the vote mark</span></div>
+  </div>
+
+  <!-- H -->
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay">
+        <svg class="marker" viewBox="-100 -100 200 200">
+          <g transform="rotate(38)">
+            <path d="M0 0 L-38.8 -43.1 A 58 58 0 0 1 38.8 -43.1 Z" fill="url(#coneGrad)"/>
+            <path d="M0,-62 L8,-47 L0,-51 L-8,-47 Z" fill="#cdeaff" opacity="0.9"/>
+          </g>
+          <circle r="8" fill="#eaf8ff" stroke="rgba(11,16,22,0.65)" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">H</span><h2>Cone with a tip</h2></div>
+      <p>Treatment E plus a small chevron at the cone's outer edge. The cone says roughly where you are pointed, the tip says exactly — which matters when the compass is noisy and the cone alone looks like it is swimming.</p>
+      <span class="cost">Needs compass</span></div>
+  </div>
+
+  <!-- I -->
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay">
+        <svg class="marker" viewBox="-100 -100 200 200">
+          <g transform="rotate(38)" filter="url(#coldGlow)">
+            <path d="M0,-46 L14,-24 M0,-46 L-14,-24 M0,-46 L0,-8" fill="none"
+                  stroke="#f2f6ff" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <circle r="5.5" fill="#f2f6ff" filter="url(#coldGlow)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">I</span><h2>Neon arrow</h2></div>
+      <p>The same tube-lit voice as the restaurant signs, bent into an arrow instead of a word. No fill anywhere — it is drawn light, like everything else on these tiles, and it is the only one of the six that would look at home next to a neon name.</p>
+      <span class="cost">Needs compass</span></div>
+  </div>
+
+  <!-- J -->
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay">
+        <svg class="marker" viewBox="-100 -100 200 200">
+          <circle r="30" fill="none" stroke="rgba(126,214,255,0.18)" stroke-width="1"/>
+          <g transform="rotate(38)">
+            <path d="M0,34 L7,0 L0,-6 L-7,0 Z" fill="#39434f"/>
+            <path d="M0,-36 L7,0 L0,6 L-7,0 Z" fill="#eaf8ff"/>
+          </g>
+          <circle r="3.4" fill="#0f1319" stroke="rgba(234,248,255,0.8)" stroke-width="1.2"/>
+        </svg>
+      </div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">J</span><h2>Compass needle</h2></div>
+      <p>A two-tone needle through the dot: lit half forward, dark half behind. Smallest footprint of the six and the least likely to cover a restaurant, and it says "instrument" rather than "you are a spaceship".</p>
+      <span class="cost">Needs compass</span></div>
+  </div>
+
+  <!-- K -->
+  <div class="card">
+    <div class="mapbox">
+      <svg class="city" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice"><use href="#city"/></svg>
+      <div class="overlay">
+        <svg class="marker" viewBox="-100 -100 200 200">
+          <g transform="rotate(38)">
+            <circle cx="0" cy="46" r="2" fill="#9fd8f5" opacity="0.25"/>
+            <circle cx="0" cy="32" r="2.6" fill="#9fd8f5" opacity="0.4"/>
+            <circle cx="0" cy="18" r="3.2" fill="#9fd8f5" opacity="0.6"/>
+            <path d="M0,-30 L10,-12 L0,-17 L-10,-12 Z" fill="#eaf8ff"
+                  stroke="rgba(11,16,22,0.6)" stroke-width="1.4" stroke-linejoin="round"/>
+          </g>
+          <circle r="7.5" fill="#eaf8ff" stroke="rgba(11,16,22,0.65)" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+    <div class="cap"><div class="row"><span class="letter">K</span><h2>Course trail</h2></div>
+      <p>The arrow points along the way you are <em>moving</em>, with a short breadcrumb tail behind it. The direction comes from the GPS fix itself, so this is the one arrow on the page that needs no compass and no second permission — but it only exists while you are walking.</p>
+      <span class="cost">No extra permission · only while moving</span></div>
+  </div>
+</div>
+</body>
+</html>
