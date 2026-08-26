@@ -730,6 +730,23 @@ const statements = [
   `CREATE EXTENSION IF NOT EXISTS pg_trgm`,
   `CREATE INDEX IF NOT EXISTS idx_restaurants_search ON restaurants
      USING gin ((name || ' ' || cuisine || ' ' || neighborhood) gin_trgm_ops)`,
+
+  // Failed sign-in attempts, for the login throttle in lib/loginThrottle.ts.
+  // Postgres rather than memory on purpose: every serverless instance gets its
+  // own heap and instances scale to zero, so an in-process counter would reset
+  // constantly and silently fail to limit anything in production.
+  `CREATE TABLE IF NOT EXISTS login_attempts (
+    id BIGSERIAL PRIMARY KEY,
+    email TEXT NOT NULL,
+    ip TEXT NOT NULL,
+    attempted_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+  // The throttle counts recent rows for one key, so both lookups are
+  // (key, time) and both want their own index.
+  `CREATE INDEX IF NOT EXISTS idx_login_attempts_email
+     ON login_attempts (email, attempted_at DESC)`,
+  `CREATE INDEX IF NOT EXISTS idx_login_attempts_ip
+     ON login_attempts (ip, attempted_at DESC)`,
 ];
 
 for (const statement of statements) {
