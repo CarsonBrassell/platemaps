@@ -780,6 +780,7 @@ h3 {
   .points-float,
   .badge-arrive,
   .ring-pulse,
+  .tap-flash,
   .skeleton {
     animation: none;
   }
@@ -793,6 +794,51 @@ h3 {
 }
 
 /* --- Review composer -------------------------------------------------- */
+
+/* The composer's tap acknowledgment: two orange beats and a ring that blooms
+   off the edge.
+
+   Every *chip* in the composer already answered a tap (`chip-pop`, plus the
+   orange fill its selected state carries). The **rows** answered nothing —
+   picking a restaurant or a dish looked identical to missing it, on the two
+   steps that involve the most reading. This is the same acknowledgment
+   vocabulary as `ring-pulse` on the profile, sped up: a row is a small target
+   tapped in a list, not a card being decorated.
+
+   It paints with `box-shadow` — an inset spread for the wash, an outset one
+   for the ring — and never touches `background-color`. That is deliberate:
+   these rows change their own background when they become selected, and a
+   keyframe animating background-color would flash to transparent and then snap
+   back to the selected tint the moment it released. Inset shadow is an overlay
+   the element's own background shows through, so the two never fight.
+
+   `border-radius: inherit` is not needed — box-shadow follows the element's
+   own radius already, which is what lets one class sit on a row, a chip and a
+   full-width button without knowing any of their shapes. */
+@keyframes tap-flash {
+  0% {
+    box-shadow: inset 0 0 0 999px rgba(201, 89, 31, 0.24),
+                0 0 0 2px rgba(201, 89, 31, 0.9);
+  }
+  38% {
+    box-shadow: inset 0 0 0 999px rgba(201, 89, 31, 0.05),
+                0 0 0 2px rgba(201, 89, 31, 0.45);
+  }
+  60% {
+    box-shadow: inset 0 0 0 999px rgba(201, 89, 31, 0.20),
+                0 0 0 2px rgba(201, 89, 31, 0.75);
+  }
+  100% {
+    box-shadow: inset 0 0 0 999px rgba(201, 89, 31, 0),
+                0 0 0 9px rgba(201, 89, 31, 0);
+  }
+}
+
+/* 0.3s is DESIGN.md's motion ceiling, and the whole budget is spent here
+   because the delay before the composer advances is keyed to it — see
+   TAP_FLASH_MS in lib/tapFlash.ts. Slower and the composer feels laggy. */
+.tap-flash { animation: tap-flash 0.3s ease-out; }
+
 
 @keyframes emoji-pop {
   0%   { transform: scale(1) rotate(0deg); }

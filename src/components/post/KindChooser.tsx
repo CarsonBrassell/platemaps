@@ -1,6 +1,7 @@
 "use client";
 
 import { ChatIcon, ChevronIcon } from "@/components/icons";
+import { tapFlash } from "@/lib/tapFlash";
 
 export type PostKind = "dish" | "comment";
 
@@ -23,7 +24,11 @@ const row =
 export function KindChooser({ onChoose }: { onChoose: (kind: PostKind) => void }) {
   return (
     <div className="space-y-3">
-      <button type="button" onClick={() => onChoose("dish")} className={row}>
+      <button
+        type="button"
+        onClick={(e) => tapFlash(e.currentTarget, () => onChoose("dish"))}
+        className={row}
+      >
         <span className="min-w-0 flex-1">
           <span className="font-display block text-lg font-semibold leading-tight text-zinc-900">
             Rate a plate
@@ -47,7 +52,7 @@ export function KindChooser({ onChoose }: { onChoose: (kind: PostKind) => void }
           no instrument to preview, and dressing it as one would oversell it. */}
       <button
         type="button"
-        onClick={() => onChoose("comment")}
+        onClick={(e) => tapFlash(e.currentTarget, () => onChoose("comment"))}
         className="flex min-h-11 w-full items-center gap-2.5 rounded-full bg-pm-grey-tint/60 px-4 py-3 text-left text-sm text-pm-grey-text transition-colors hover:bg-pm-grey-tint hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
       >
         <ChatIcon className="h-4 w-4 shrink-0" />

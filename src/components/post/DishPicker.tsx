@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { dishStats, type Dish } from "@/data/dishes";
+import { tapFlash } from "@/lib/tapFlash";
 
 /** What the meter step needs — a menu row, or a dish someone typed themselves. */
 export type PickedDish = { id: string; name: string; price?: string };
@@ -144,7 +145,11 @@ export function DishPicker({
                         <li key={dish.id}>
                           <button
                             type="button"
-                            onClick={() => onSelect({ id: dish.id, name: dish.name, price: dish.price })}
+                            onClick={(e) =>
+                              tapFlash(e.currentTarget, () =>
+                                onSelect({ id: dish.id, name: dish.name, price: dish.price }),
+                              )
+                            }
                             aria-pressed={on}
                             className={`flex min-h-14 w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-pm-orange ${
                               on ? "bg-pm-orange-tint/60" : "hover:bg-pm-grey-tint/60"
@@ -200,7 +205,11 @@ export function DishPicker({
               <button
                 type="button"
                 disabled={!customName}
-                onClick={() => onSelect({ id: `custom:${customName.toLowerCase()}`, name: customName })}
+                onClick={(e) =>
+                  tapFlash(e.currentTarget, () =>
+                    onSelect({ id: `custom:${customName.toLowerCase()}`, name: customName }),
+                  )
+                }
                 className="min-h-11 shrink-0 rounded-full bg-pm-charcoal px-4 text-sm font-semibold text-white transition-transform hover:brightness-110 active:scale-[0.97] disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
               >
                 Use this
@@ -210,7 +219,12 @@ export function DishPicker({
         ) : (
           <button
             type="button"
-            onClick={() => setTyping(true)}
+            onClick={(e) => {
+              /* No hold: this one swaps the panel in place rather than
+                 advancing a step, so there is nothing to wait for. */
+              tapFlash(e.currentTarget);
+              setTyping(true);
+            }}
             className="min-h-11 text-sm font-medium text-pm-orange-text transition-colors hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
           >
             Not on the menu? Type it instead

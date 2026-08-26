@@ -16,6 +16,7 @@ import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
 import type { PostMedia } from "@/components/feed/types";
 import { CharCount } from "@/components/post/CharCount";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
+import { tapFlash } from "@/lib/tapFlash";
 
 /**
  * Posting a plate, as a page rather than a modal.
@@ -491,7 +492,12 @@ function PostComposer() {
                           aria-pressed={on}
                           // Tapping the chosen one again clears it — "best at"
                           // is a claim, and there has to be a way to unmake it.
-                          onClick={() => setBestAt(on ? null : b.label)}
+                          onClick={(e) => {
+                            /* Flash only, no hold: a chip toggles in place, so
+                               there is no step change to wait for. */
+                            tapFlash(e.currentTarget);
+                            setBestAt(on ? null : b.label);
+                          }}
                           className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
                             on
                               ? "bg-pm-charcoal text-white"
@@ -532,7 +538,12 @@ function PostComposer() {
                           type="button"
                           aria-pressed={on}
                           disabled={isBest}
-                          onClick={() => setWorstAt(on ? null : b.label)}
+                          onClick={(e) => {
+                            /* Flash only, no hold: a chip toggles in place, so
+                               there is no step change to wait for. */
+                            tapFlash(e.currentTarget);
+                            setWorstAt(on ? null : b.label);
+                          }}
                           className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
                             isBest
                               ? "cursor-not-allowed bg-pm-grey-tint/40 text-zinc-400"
