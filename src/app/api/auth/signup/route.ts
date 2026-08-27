@@ -6,6 +6,7 @@ import { getUserByEmail, getUserByName, createUser, createSession } from "@/lib/
 import { setSessionCookie } from "@/lib/session";
 import { checkPassword } from "@/lib/password";
 import { checkEmail, normalizeEmail } from "@/lib/emailAddress";
+import { BLOCKED_MESSAGE, moderateUsername } from "@/lib/moderation";
 
 /** Same charset a handle already renders in — no space could survive
     FoodPostCard's handleFor() anyway, so a signup that let one through would
@@ -38,6 +39,12 @@ export async function POST(req: NextRequest) {
       },
       { status: 400 }
     );
+  }
+
+  /* Same stricter tier as a rename — a handle chosen at signup is the one
+     everybody sees. See moderateUsername. */
+  if (moderateUsername(String(name)).action === "block") {
+    return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });
   }
 
   // Checked against the username and address being created, so a password

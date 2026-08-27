@@ -13,6 +13,7 @@ import { BEST_AT_LABELS } from "@/data/reviewScales";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
 import { isStoredPhotoUrl } from "@/lib/photos";
 import { resolvePostRefs } from "@/lib/discover";
+import { BLOCKED_MESSAGE, moderateText } from "@/lib/moderation";
 
 const MAX_MEDIA = 4;
 /* A blob URL and nothing like a payload. Media used to arrive as base64 data
@@ -101,6 +102,17 @@ export async function POST(req: NextRequest) {
       { error: `Keep it under ${MAX_POST_TEXT} characters.` },
       { status: 400 },
     );
+  }
+
+  /* Slurs are refused; ordinary profanity is allowed through and reported as
+     flagged. The check covers the caption *and* the dish name, because a
+     custom dish is free text the composer lets someone type — filtering only
+     the caption would leave the obvious hole open. See lib/moderation.ts. */
+  const moderated = moderateText(
+    [String(text), dishName ? String(dishName) : ""].join(" "),
+  );
+  if (moderated.action === "block") {
+    return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });
   }
 
   const media = parseMedia(body.media);

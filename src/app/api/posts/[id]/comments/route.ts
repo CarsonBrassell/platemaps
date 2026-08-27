@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { getPostById, addComment, awardPoints, getCommentContext, getBlockStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { POINT_RULES } from "@/lib/points";
+import { BLOCKED_MESSAGE, moderateText } from "@/lib/moderation";
 
 export async function POST(
   req: Request,
@@ -16,6 +17,12 @@ export async function POST(
   const { text, parentId } = await req.json();
   if (!text || !String(text).trim()) {
     return NextResponse.json({ error: "Write a comment first." }, { status: 400 });
+  }
+
+  /* Same filter as a post, and checked before anything is looked up: a
+     blocked comment should cost no queries. See lib/moderation.ts. */
+  if (moderateText(String(text)).action === "block") {
+    return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });
   }
 
   const { id } = await params;

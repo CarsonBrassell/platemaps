@@ -23,7 +23,8 @@
     "menus:firecrawl": "node --env-file=.env.local scripts/fetch-menus-firecrawl.mjs",
     "menus:fresh": "node --env-file=.env.local scripts/check-menu-freshness.mjs",
     "media:backfill": "node --env-file=.env.local scripts/backfill-media-to-blob.mjs",
-    "logo:build": "node scripts/build-logo-assets.mjs"
+    "logo:build": "node scripts/build-logo-assets.mjs",
+    "moderation:check": "tsx scripts/check-moderation.mjs"
   },
   "dependencies": {
     "@capacitor/cli": "^7.6.8",
@@ -48,6 +49,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "tailwindcss": "^4",
+    "tsx": "^4.23.12",
     "typescript": "^5",
     "zod": "^4.4.3"
   }
