@@ -396,9 +396,11 @@ export function PhoneFeedScreen() {
       <PhoneFeedHeader />
 
       {/* Tabs get the row to themselves; the sort and search share the next
-          one. All three on one row is what this was, and it did not fit — the
-          tabs measure 182px and the sort switch 153px inside 343px of usable
-          width, so they were already 3px over before search asked for 36 more.
+          one. All three on one row is what this was, and it did not fit — and
+          it fits less now that the tabs are 16px: measured at 390px they take
+          202px (worst case, "Friends feed" active and so bold) and the sort
+          switch 153px, inside 358px of usable width. That is 355px before
+          search asks for its 36, so the row is over on the sort switch alone.
           Both rows below the tabs are modifiers on the feed the tabs pick,
           which is also why they wear rank 3 and the tabs wear rank 2. */}
       <div className="px-4">
