@@ -765,6 +765,30 @@ h3 {
 
 .snap-item { scroll-snap-align: center; scroll-snap-stop: always; }
 
+/* Photos do not come away in your hand.
+   -------------------------------------------------------------------------
+   A touch-drag that starts on an `<img>` opens a *system drag session* on iOS
+   and an HTML5 drag ghost on desktop: the picture lifts, follows the finger,
+   and the page underneath does not scroll. In a feed that is mostly
+   photographs, that means a thumb landing on a plate — the likeliest place
+   for it to land — scrolls nothing and drags the photo instead.
+
+   It is not the carousel. That uses native scroll-snap and behaves; this
+   fires on single-photo posts, avatars and thumbnails alike, which is why the
+   fix belongs here rather than in one component.
+
+   `-webkit-user-drag` is the non-standard property that governs the iOS lift,
+   and there is no standard equivalent — `user-select` does not cover it.
+
+   Deliberately NOT setting `-webkit-touch-callout: none`: that would also kill
+   long-press, and saving a photo of your dinner is a thing someone should
+   still be able to do. Only the drag goes. */
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  user-drag: none;
+}
+
 /* Keyboard focus stays visible on every interactive surface in the feed. */
 .focus-ring:focus-visible {
   outline: 2px solid var(--pm-orange);
