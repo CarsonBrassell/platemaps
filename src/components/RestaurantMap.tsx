@@ -26,7 +26,8 @@ import "maplibre-gl/dist/maplibre-gl.css";
 setWorkerUrl("/maplibre-gl-worker.mjs");
 import { MapSearch, type MapMatches } from "@/components/MapSearch";
 import { MyLocation } from "@/components/MyLocation";
-import { openingCameraClaimed } from "@/lib/mapCamera";
+import { claimOpeningCamera, openingCameraClaimed, MY_LOCATION_ZOOM } from "@/lib/mapCamera";
+import { readLastFix } from "@/lib/myLocation";
 import { NEO_NOIR_STYLE } from "@/lib/mapStyle";
 import { openStateFor } from "@/lib/openState";
 import { relativeTime } from "@/lib/format";
@@ -593,11 +594,19 @@ function districtDensities(list: readonly { lat: number; lng: number }[]): numbe
    plate score that tip prints, because a name lit on the map and the same name
    under the cursor must not disagree about what the place scores.
 
-   A null percent prints nothing. Below plateScore.ts's floor there is no
-   number, and the Yelp/Google blend is never borrowed into the slot a
-   PlateMaps number goes in — see the rating invariant in CLAUDE.md. The blend
-   stars the hover tip can show stay off the sign: they need their `/5` to not
-   be misread as a percent, and a sign is not a place to explain a scale.
+   A null percent still prints nothing in the PERCENT slot: below plateScore.ts's
+   floor there is no PlateMaps number, and the Yelp/Google blend is never
+   borrowed into the slot ours goes in — see the rating invariant in CLAUDE.md.
+
+   The blend now follows behind it, which it did not use to. The objection was
+   that stars on a sign need their `/5` to not be misread as a percent and that
+   a sign is no place to explain a scale — but `blendLabel` carries the
+   denominator and the ★ says what it is, which is the same pair the hover tip
+   has always printed a few pixels away. What the old rule cost was the whole
+   map: every listed restaurant has a sourced rating and almost none have
+   cleared the plate-score floor yet, so a sign-only map was several hundred
+   names with no number on any of them. CLAUDE.md's rule for exactly this case
+   is that when the plate score is null the stars carry the surface alone.
 
    A "lantern" heat bar along the card's base edge was tried here and removed —
    at real bubble sizes it read as a stray orange underline, not a designed
@@ -607,10 +616,22 @@ function signPercent(restaurant: MapRestaurant) {
   return typeof percent === "number" ? `${percent}%` : null;
 }
 
+/* Guarded on a positive number rather than trusted: `MapRestaurant.rating` is
+   typed required, but these rows also arrive re-assembled off GeoJSON feature
+   properties, and a 0 there would mean "not sourced", never "rated zero". */
+function signBlend(restaurant: MapRestaurant) {
+  const blend = restaurant.rating;
+  return SHOW_BLEND_STARS && typeof blend === "number" && blend > 0
+    ? `★ ${blendLabel(blend)}`
+    : null;
+}
+
 function signHtml(restaurant: MapRestaurant) {
   const percent = signPercent(restaurant);
+  const blend = signBlend(restaurant);
   const rating = percent ? `<span class="map-sign-rating">${percent}</span>` : "";
-  return `<div class="map-neon-sign">${escapeHtml(restaurant.name)}${rating}</div>`;
+  const stars = blend ? `<span class="map-sign-blend">${blend}</span>` : "";
+  return `<div class="map-neon-sign">${escapeHtml(restaurant.name)}${rating}${stars}</div>`;
 }
 
 /* Same trade as estimateMetaWidth: the sign has to be measured before it is in
@@ -621,16 +642,21 @@ function signHtml(restaurant: MapRestaurant) {
    clearance rather than a wrong-looking sign. */
 const SIGN_NAME_CHAR_WIDTH = 7.8;
 const SIGN_RATING_CHAR_WIDTH = 6.2;
+/* The blend sets at .92em of the same face (.map-sign-blend), so its glyphs run
+   proportionally narrower than the percent's. */
+const SIGN_BLEND_CHAR_WIDTH = 5.7;
 /* Matches .map-neon-sign's `gap` and `left` in globals.css. */
 const SIGN_GAP = 6;
 const SIGN_LEFT = 4;
 
 function estimateSignWidth(restaurant: MapRestaurant) {
   const percent = signPercent(restaurant);
+  const blend = signBlend(restaurant);
   return (
     SIGN_LEFT +
     restaurant.name.length * SIGN_NAME_CHAR_WIDTH +
-    (percent ? SIGN_GAP + percent.length * SIGN_RATING_CHAR_WIDTH : 0)
+    (percent ? SIGN_GAP + percent.length * SIGN_RATING_CHAR_WIDTH : 0) +
+    (blend ? SIGN_GAP + blend.length * SIGN_BLEND_CHAR_WIDTH : 0)
   );
 }
 
@@ -1366,13 +1392,27 @@ export function RestaurantMap({
        exactly this. */
     const bubbleElements = bubbleElementsRef.current;
 
-    // Opens on the whole county so the first fitBounds below plays as a
-    // cinematic dive into the urban core rather than a static appearance.
-    // Starts dead flat; syncPitch below owns the tilt from here on.
+    /* Where the map opens, and there are two answers.
+
+       If this device has been located before, it opens standing on that
+       position — not on the county, and not with a flight afterwards. A fix
+       takes anywhere from tens of milliseconds to seconds, so waiting for one
+       would mean staring at an empty frame, and flying once it lands means
+       every visit starts a second away from where the reader is. The remembered
+       position is the same block in every case that matters, and the live fix
+       quietly corrects it (see MyLocation).
+
+       Otherwise it opens on the whole county, so the first fitBounds below
+       plays as a cinematic dive into the urban core rather than a static
+       appearance. Starts dead flat either way; syncPitch below owns the tilt
+       from here on. */
+    const openingFix = readLastFix();
     const map = new MapLibreMap({
       container: containerRef.current,
       style: NEO_NOIR_STYLE,
-      bounds: SD_COUNTY_BOUNDS,
+      ...(openingFix
+        ? { center: [openingFix.lng, openingFix.lat] as [number, number], zoom: MY_LOCATION_ZOOM }
+        : { bounds: SD_COUNTY_BOUNDS }),
       maxBounds: SD_COUNTY_BOUNDS,
       minZoom: 9,
       maxZoom: 19,
@@ -1393,6 +1433,12 @@ export function RestaurantMap({
          applies the whole camera each frame, overwriting the write. */
       transformCameraUpdate: ({ zoom }) => ({ pitch: pitchForZoom(zoom) }),
     });
+    /* A map that opened on the reader has already spent its opening camera,
+       so the dive to the corpus bounds below must not fire and take it away
+       again. Claimed here rather than when the live fix lands, because the
+       dive races the feed and would otherwise win. */
+    if (openingFix) claimOpeningCamera(map);
+
     // Every user route to pitch/bearing is closed off, so the tilt is ours
     // alone to set — there's no 3D camera for anyone to wrangle.
     map.touchZoomRotate.disableRotation();
@@ -2130,12 +2176,21 @@ export function RestaurantMap({
         padding: 24,
         ...(firstFit && !reduceMotion ? { duration: 2400 } : { animate: false }),
       };
-      /* Unless the reader's own marker already took the camera there. The dive
-         and the fly to a location both fire on data that arrives when it
-         arrives, so whichever landed last used to win — and for anyone outside
-         the downtown core that meant watching their own marker get thrown off
-         screen a second after it appeared. See lib/mapCamera.ts. */
-      if (firstFit && openingCameraClaimed(map)) {
+      /* Unless the reader's own position took the camera. The dive and the fly
+         to a location both fire on data that arrives when it arrives, so
+         whichever landed last used to win — and for anyone outside the
+         downtown core that meant watching their own marker get thrown off
+         screen a second after it appeared. See lib/mapCamera.ts.
+
+         This deliberately does NOT test `firstFit`, and that was a bug worth
+         the sentence: the feed arrives in two passes, an empty one and then
+         the real list, so the first fit is spent on the empty array and the
+         *second* pass — the one that actually flies to the corpus — no longer
+         looked like the opening. The reader ended up downtown anyway. A
+         claimed camera outranks every automatic fit, not just the first one.
+         An explicit fit still works: the search field's `showAll` flies the
+         camera through its own call, not through this. */
+      if (openingCameraClaimed(map)) {
         // Deliberately nothing: the camera is already where it was asked to be.
       } else if (restaurants.length > 0) {
         const lngs = restaurants.map((r) => r.lng);

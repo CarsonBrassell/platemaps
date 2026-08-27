@@ -47,9 +47,73 @@ export type MyLocationState =
 export type MyLocation = {
   state: MyLocationState;
   fix: Fix | null;
+  /**
+   * True while `fix` is the position remembered from a previous visit rather
+   * than something the browser just measured. The marker is drawn either way —
+   * a map that opens on your block and shows nothing standing there reads as
+   * broken — but a remembered dot must not claim to be a live one.
+   */
+  stale: boolean;
   /** Raises the prompt and starts the watch. A no-op once the watch runs. */
   request: () => void;
 };
+
+/**
+ * The last place a fix put you, remembered on this device.
+ *
+ * A fix takes anywhere from tens of milliseconds to several seconds, and the
+ * map cannot wait for it — so without this it opens on the county frame and
+ * then flies, and every visit begins with a second of being somewhere you are
+ * not. Remembering where you were last lets the map *open* on you and correct
+ * itself quietly when the live fix lands.
+ *
+ * It stays on the device and is never sent anywhere: the same reasoning that
+ * keeps coordinates out of the URL in lib/discover.ts, which is about where a
+ * position can be read from, not about whether it may be kept.
+ *
+ * Stale entries are dropped rather than trusted. Opening on the block you
+ * stood on this morning is the whole point; opening on a city you visited last
+ * month is a bug that looks like a broken map.
+ */
+const LAST_FIX_KEY = "platemaps:last-fix";
+const LAST_FIX_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;
+
+type StoredFix = Fix & { at: number };
+
+export function readLastFix(): Fix | null {
+  if (typeof localStorage === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(LAST_FIX_KEY);
+    if (!raw) return null;
+    const stored = JSON.parse(raw) as Partial<StoredFix>;
+    if (
+      typeof stored.lat !== "number" ||
+      typeof stored.lng !== "number" ||
+      typeof stored.at !== "number" ||
+      Date.now() - stored.at > LAST_FIX_MAX_AGE_MS
+    ) {
+      return null;
+    }
+    return {
+      lat: stored.lat,
+      lng: stored.lng,
+      accuracy: typeof stored.accuracy === "number" ? stored.accuracy : 0,
+    };
+  } catch {
+    // Unparseable, or storage is unavailable (Safari private mode throws on
+    // read). Either way there is simply no remembered position.
+    return null;
+  }
+}
+
+function writeLastFix(fix: Fix) {
+  if (typeof localStorage === "undefined") return;
+  try {
+    localStorage.setItem(LAST_FIX_KEY, JSON.stringify({ ...fix, at: Date.now() }));
+  } catch {
+    // Quota or a blocked store. Remembering is an optimisation, not a feature.
+  }
+}
 
 /* Same shape and same reasoning as nearby.ts: support cannot change while the
    page is open, so there is nothing to subscribe to, and the server snapshot
@@ -61,7 +125,11 @@ const geolocationSupportedOnServer = () => true;
 
 export function useMyLocation(): MyLocation {
   const [state, setState] = useState<Exclude<MyLocationState, "unsupported">>("idle");
-  const [fix, setFix] = useState<Fix | null>(null);
+  /* Seeded from the remembered position so the marker is on the map in the
+     first frame, standing where the map just opened, instead of appearing
+     seconds later — or never, when the browser cannot get a fix at all. */
+  const [fix, setFix] = useState<Fix | null>(readLastFix);
+  const [stale, setStale] = useState(() => readLastFix() !== null);
   const watchRef = useRef<number | null>(null);
 
   const supported = useSyncExternalStore(
@@ -84,39 +152,55 @@ export function useMyLocation(): MyLocation {
     if (watchRef.current !== null) return;
 
     setState("locating");
-    watchRef.current = navigator.geolocation.watchPosition(
-      (position) => {
-        setFix({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-          accuracy: position.coords.accuracy,
-        });
-        setState("ready");
-      },
-      (error) => {
-        /* A denial is final for this origin, so stop asking — leaving the watch
-           running would have the browser re-attempt a fix it can never get. A
-           timeout or an unavailable position is not final, so that watch stays
-           up and may still deliver. */
-        if (error.code === error.PERMISSION_DENIED) {
-          stop();
-          setState("denied");
-          return;
-        }
-        setState((current) => (current === "ready" ? current : "failed"));
-      },
-      {
-        // The opposite of nearby.ts's three, and see this file's header for
-        // why: a marker on a street is exactly the case that needs the GPS
-        // path and a fix from seconds rather than minutes ago.
-        enableHighAccuracy: true,
-        timeout: 15_000,
-        maximumAge: 5_000,
-      },
-    );
+
+    const accept = (position: GeolocationPosition) => {
+      const next: Fix = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+        accuracy: position.coords.accuracy,
+      };
+      setFix(next);
+      setStale(false);
+      writeLastFix(next);
+      setState("ready");
+    };
+
+    /* Stage one: whatever the browser can answer *fastest*, cached readings
+       included. High accuracy is the expensive path — it wants a GPS or wifi
+       scan, takes seconds, and on a desktop it frequently just times out — so
+       asking for it first means the map sits there doing nothing in exactly
+       the case where a coarse answer was available immediately. Its failures
+       are ignored on purpose: stage two is the one that reports. */
+    navigator.geolocation.getCurrentPosition(accept, () => {}, {
+      enableHighAccuracy: false,
+      timeout: 10_000,
+      maximumAge: 300_000,
+    });
+
+    /* Stage two: the precise reading, and the one that keeps arriving as you
+       move. See this file's header for why a marker on a street wants this
+       where Discover's radius filter does not. */
+    watchRef.current = navigator.geolocation.watchPosition(accept, (error) => {
+      /* A denial is final for this origin, so stop asking. Anything else is
+         worth another go — but the watch has to be torn down for that to be
+         possible, because `request()` above refuses to start a second one
+         while the first is live. Leaving it up made the retry the button
+         offers do nothing at all. */
+      stop();
+      setState((current) => {
+        if (error.code === error.PERMISSION_DENIED) return "denied";
+        // A stage-one fix may already have landed; a late watch timeout must
+        // not overwrite a position that is on screen and correct.
+        return current === "ready" ? current : "failed";
+      });
+    }, {
+      enableHighAccuracy: true,
+      timeout: 15_000,
+      maximumAge: 5_000,
+    });
   }, [stop]);
 
   useEffect(() => stop, [stop]);
 
-  return { state: supported ? state : "unsupported", fix, request };
+  return { state: supported ? state : "unsupported", fix, stale, request };
 }

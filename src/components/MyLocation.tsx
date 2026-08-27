@@ -31,11 +31,17 @@
 import { useCallback, useEffect, useId, useRef, useState, type RefObject } from "react";
 import { Marker, type IControl, type Map as MapLibreMap } from "maplibre-gl";
 import { headingNeedsPermission, useHeading } from "@/lib/heading";
-import { claimOpeningCamera } from "@/lib/mapCamera";
-import { useMyLocation, type Fix, type MyLocationState } from "@/lib/myLocation";
+import { claimOpeningCamera, MY_LOCATION_ZOOM } from "@/lib/mapCamera";
+import { milesBetween } from "@/lib/geo";
+import { readLastFix, useMyLocation, type Fix, type MyLocationState } from "@/lib/myLocation";
 
-/** Where the camera lands when someone asks to be shown. */
-const RECENTER_ZOOM = 16;
+/**
+ * How far the live fix may sit from the position the map opened on before it
+ * is worth moving the camera. Under this the remembered spot and the real one
+ * are the same block, and easing between them would only look like the map
+ * twitching for no reason. Miles, to match `milesBetween`.
+ */
+const OPENING_DRIFT_MI = 0.15;
 /** Halo radius bounds, in screen pixels. See the header. */
 const MIN_HALO_PX = 13;
 const MAX_HALO_PX = 200;
@@ -161,7 +167,7 @@ function haloPixels(map: MapLibreMap, fix: Fix) {
 }
 
 export function MyLocation({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }) {
-  const { state, fix, request: requestFix } = useMyLocation();
+  const { state, fix, stale, request: requestFix } = useMyLocation();
   const { heading, request: requestHeading } = useHeading();
   const markerRef = useRef<Marker | null>(null);
   const elementRef = useRef<HTMLDivElement | null>(null);
@@ -169,6 +175,10 @@ export function MyLocation({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }
   const pressRef = useRef<() => void>(() => {});
   /** False until the first fix has flown the camera to it. */
   const hasFlownRef = useRef(false);
+  /* The remembered position the map opened on, if it opened on one — read once
+     at mount, because the live fix overwrites the stored value the moment it
+     lands and this needs the value from *before* that. */
+  const openedFromRef = useRef<Fix | null>(readLastFix());
   /* The cone's gradient needs an id, and `url(#…)` will not resolve one
      containing punctuation — React 19's useId returns `«r0»`, guillemets and
      all, which fails silently: the path renders with no fill and the cone
@@ -206,16 +216,16 @@ export function MyLocation({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }
        reads as broken. Heading is asked for on every press and not only the
        first: iOS can hand back a denial that a later tap is allowed to retry,
        and re-subscribing when already live costs nothing. */
-    if (state === "ready" && fix && map) {
+    if (fix && map) {
       map.easeTo({
         center: [fix.lng, fix.lat],
-        zoom: Math.max(map.getZoom(), RECENTER_ZOOM),
+        zoom: Math.max(map.getZoom(), MY_LOCATION_ZOOM),
         duration: 900,
       });
     }
     requestFix();
     requestHeading();
-  }, [fix, map, requestFix, requestHeading, state]);
+  }, [fix, map, requestFix, requestHeading]);
 
   useEffect(() => {
     pressRef.current = press;
@@ -303,15 +313,27 @@ export function MyLocation({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }
          tells it to stand down rather than fly the reader away from their own
          marker a second later. See lib/mapCamera.ts. */
       claimOpeningCamera(map);
-      /* `maxBounds` is San Diego County, so a visitor outside it keeps the
-         camera at the edge and the marker stays off-frame. That is the honest
-         outcome for a county-scoped map — the alternative is flying to a place
-         this map has nothing to say about. */
-      map.easeTo({
-        center: [fix.lng, fix.lat],
-        zoom: Math.max(map.getZoom(), RECENTER_ZOOM),
-        duration: 1200,
-      });
+
+      /* If the map already opened on a remembered position, the camera is
+         where it should be and the live fix is a correction, not a
+         destination. Moving anyway would mean every visit begins with a
+         pointless little glide — so it only flies when the remembered spot
+         turns out to be somewhere else entirely, which is what happens after
+         you travel.
+
+         `maxBounds` is San Diego County, so a visitor outside it keeps the
+         camera at the edge and the marker stays off-frame either way. That is
+         the honest outcome for a county-scoped map — the alternative is flying
+         to a place this map has nothing to say about. */
+      const openedFrom = openedFromRef.current;
+      const drifted = !openedFrom || milesBetween(openedFrom, fix) > OPENING_DRIFT_MI;
+      if (drifted) {
+        map.easeTo({
+          center: [fix.lng, fix.lat],
+          zoom: Math.max(map.getZoom(), MY_LOCATION_ZOOM),
+          duration: openedFrom ? 700 : 1200,
+        });
+      }
     }
   }, [coneGradientId, fix, map]);
 
@@ -324,13 +346,30 @@ export function MyLocation({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }
     [],
   );
 
+  /* Both effects below dress the marker element, and both list `map` even
+     though neither reads it. The element is created by the effect above, which
+     cannot run until the map exists — so on the pass where `stale` and
+     `heading` first have their values there is nothing to write to yet, and
+     without `map` in the list they would never run again. This has already
+     shipped the wrong behaviour twice, here and on the button's state. */
+
   // The cone: shown only while a real compass heading is arriving.
   useEffect(() => {
     const element = elementRef.current;
     if (!element) return;
     element.dataset.heading = heading === null ? "off" : "on";
     markerRef.current?.setRotation(heading ?? 0);
-  }, [heading, fix]);
+  }, [heading, fix, map]);
+
+  /* A remembered dot is drawn, but dimmed, and never wears a cone. It is where
+     you were last, which is nearly always where you are — but it is not a
+     reading, and a marker that looks identical either way would be the map
+     asserting something it does not know. */
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return;
+    element.dataset.stale = stale ? "on" : "off";
+  }, [stale, fix, map]);
 
   // The halo, in metres, kept honest as the camera moves.
   useEffect(() => {
