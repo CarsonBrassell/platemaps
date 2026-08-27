@@ -15,7 +15,7 @@ const SECTIONS = [
   { id: "eligibility", title: "2. Eligibility and Accounts" },
   { id: "service", title: "3. Description of the Service" },
   { id: "content", title: "4. Your Content" },
-  { id: "conduct", title: "5. Prohibited Conduct" },
+  { id: "conduct", title: "5. Prohibited Conduct, Reporting, and Moderation" },
   { id: "ratings", title: "6. Ratings, Reviews, and Content Disclaimer" },
   { id: "promoted", title: "7. Promoted Listings, Advertising, and Paid Placement" },
   { id: "points", title: "8. Plate Points" },
@@ -157,7 +157,7 @@ export default function TermsPage() {
             </p>
           </Section>
 
-          <Section id="conduct" title="5. Prohibited Conduct">
+          <Section id="conduct" title="5. Prohibited Conduct, Reporting, and Moderation">
             <p>You agree not to, and not to help or permit anyone else to:</p>
             <List>
               <li>
@@ -205,10 +205,30 @@ export default function TermsPage() {
               </li>
             </List>
             <p>
-              If you believe content on the Service violates these Terms, please report it
-              using the in-product reporting option where available, or contact us using
-              the information in Section 21. Reports of copyright infringement specifically
-              should follow the DMCA process in Section 11.
+              <strong>No tolerance for objectionable content or abusive users.</strong> We
+              do not permit content that is unlawful, hateful, harassing, threatening,
+              sexually explicit, or otherwise objectionable, and we do not permit abusive
+              behaviour toward other users. Content that violates these Terms may be
+              removed, and the account responsible may be suspended or terminated, with or
+              without notice.
+            </p>
+            <p>
+              <strong>Reporting.</strong> Every post carries an in-product
+              &ldquo;Report&rdquo; option, available from the menu on the post itself. You
+              may also contact us using the information in Section 21. Reports of copyright
+              infringement specifically should follow the DMCA process in Section 11.
+            </p>
+            <p>
+              <strong>What happens next.</strong> We review reports of objectionable content
+              and abusive behaviour and act on them within 24 hours of receiving the report —
+              removing the content, ejecting the user who provided it, or both, where we
+              determine these Terms have been violated.
+            </p>
+            <p>
+              <strong>Blocking.</strong> You can block another user at any time from the menu
+              on any of their posts. Blocking is mutual in effect: their posts, comments and
+              profile stop appearing to you, and yours stop appearing to them. You can
+              review and undo your blocks from your account settings.
             </p>
           </Section>
 
