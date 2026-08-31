@@ -7,6 +7,7 @@ import { setSessionCookie } from "@/lib/session";
 import { checkPassword } from "@/lib/password";
 import { checkEmail, normalizeEmail } from "@/lib/emailAddress";
 import { BLOCKED_MESSAGE, moderateUsername } from "@/lib/moderation";
+import { userConflictMessage } from "@/lib/uniqueViolation";
 
 /** Same charset a handle already renders in — no space could survive
     FoodPostCard's handleFor() anyway, so a signup that let one through would
@@ -77,12 +78,27 @@ export async function POST(req: NextRequest) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const user = await createUser({
-    id: randomUUID(),
-    name,
-    email: address,
-    passwordHash,
-  });
+
+  /* The checks above answer the common case; this answers the race. Two people
+     can pass the same `getUserByName` before either writes, and the unique
+     index — not the check — is what actually keeps the name single. Measured:
+     four concurrent signups on one new username produced three 500s and one
+     success before this existed. See lib/uniqueViolation.ts. */
+  let user;
+  try {
+    user = await createUser({
+      id: randomUUID(),
+      name,
+      email: address,
+      passwordHash,
+    });
+  } catch (error) {
+    const conflict = userConflictMessage(error);
+    // Not a constraint we know how to explain — let it be a 500 rather than
+    // dressing an unknown failure up as "already taken".
+    if (!conflict) throw error;
+    return NextResponse.json({ error: conflict }, { status: 409 });
+  }
 
   const token = randomUUID();
   await createSession(token, user.id);
