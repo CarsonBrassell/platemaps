@@ -8,6 +8,7 @@ import {
   type AppRouterInstance,
 } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import type { MapRestaurant } from "@/components/RestaurantMap";
+import { EMPTY_PLATE_SCORE } from "@/lib/plateScore";
 import { PhoneMapSearch } from "./PhoneMapSearch";
 import type { Dish } from "@/data/dishes";
 import type { Post } from "@/components/feed/types";
@@ -207,7 +208,12 @@ export function PhoneFeedMapPanel({
         if (!res.ok) return;
         const { restaurants: rows } = (await res.json()) as { restaurants: MapRestaurant[] };
         if (cancelled) return;
-        setRestaurants(rows);
+        /* Rows with no rated plates arrive without a `plateScore` — see the
+           map branch in /api/restaurants for why, and EMPTY_PLATE_SCORE's own
+           note for why substituting it here is the intended reading. */
+        setRestaurants(
+          rows.map((r) => (r.plateScore ? r : { ...r, plateScore: EMPTY_PLATE_SCORE })),
+        );
       } catch {
         // The tab comes up as an empty map rather than the screen failing.
       }

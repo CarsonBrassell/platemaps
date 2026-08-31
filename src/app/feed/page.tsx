@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "rea
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
+import { EMPTY_PLATE_SCORE } from "@/lib/plateScore";
 import { useAuth } from "@/lib/auth";
 import type { MapRestaurant } from "@/components/RestaurantMap";
 import type { Dish } from "@/data/dishes";
@@ -217,7 +218,12 @@ function FeedPageInner() {
         if (!res.ok) return;
         const { restaurants: rows } = (await res.json()) as { restaurants: MapRestaurant[] };
         if (cancelled) return;
-        setRestaurants(rows);
+        /* Rows with no rated plates arrive without a `plateScore` — see the
+           map branch in /api/restaurants for why, and EMPTY_PLATE_SCORE's own
+           note for why substituting it here is the intended reading. */
+        setRestaurants(
+          rows.map((r) => (r.plateScore ? r : { ...r, plateScore: EMPTY_PLATE_SCORE })),
+        );
       } catch {
         // The feed itself doesn't depend on these — the list renders, and the
         // map tab comes up empty rather than the page failing.
