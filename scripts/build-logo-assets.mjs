@@ -87,9 +87,11 @@ async function mark(width, out) {
  * so the pin isn't flush to a rounded mask, favicons get 6% because at 16px
  * every pixel of padding is a pixel of pin you don't have.
  *
- * The canvas is the artwork's own background colour, which also satisfies the
- * iOS catalogue — App Store validation rejects an alpha channel in the app
- * icon, and this is opaque everywhere.
+ * The canvas is the artwork's own background colour, and the alpha channel is
+ * then dropped outright — App Store validation rejects an app icon that
+ * *carries* an alpha channel, not merely one that is transparent. Compositing
+ * onto opaque cream left every pixel at alpha 255 and the channel still there,
+ * which reads as opaque to a human and as a rejected upload to Apple.
  */
 async function square(size, out, { padding = 0.1 } = {}) {
   const pad = Math.max(1, Math.round(size * padding));
@@ -98,6 +100,7 @@ async function square(size, out, { padding = 0.1 } = {}) {
     create: { width: size, height: size, channels: 4, background: SOURCE_CREAM },
   })
     .composite([{ input: await pin(Math.round(inner * ASPECT), inner), gravity: "center" }])
+    .removeAlpha()
     .png()
     .toBuffer();
   if (out) writeFileSync(out, composited);
