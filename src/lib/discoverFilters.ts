@@ -252,7 +252,11 @@ const SEARCHABLE_TEXT = new WeakMap<RestaurantView, string>();
 function searchable(r: RestaurantView): string {
   let text = SEARCHABLE_TEXT.get(r);
   if (text === undefined) {
-    text = `${r.name} ${r.cuisine} ${r.neighborhood}`.toLowerCase();
+    /* `?? ""` rather than interpolating straight in: 557 restaurants have no
+       cuisine (the OpenStreetMap import does not always carry one), and a
+       template literal renders that null as the four characters "null" — which
+       made `?q=null` match every one of them. */
+    text = `${r.name} ${r.cuisine ?? ""} ${r.neighborhood ?? ""}`.toLowerCase();
     SEARCHABLE_TEXT.set(r, text);
   }
   return text;
@@ -341,12 +345,17 @@ export function matchMarksFor(
 ): { cuisine: boolean; neighborhood: boolean; price: string | null } {
   const q = f.q?.trim().toLowerCase() ?? null;
   return {
+    /* Optional-chained because a restaurant can genuinely have neither field —
+       557 rows arrived from OpenStreetMap with a null cuisine. Calling
+       `.toLowerCase()` on that threw a TypeError *during the server render*,
+       which took the whole Discover page down with an error boundary rather
+       than simply not matching. Any `?q=` at all hit it. */
     cuisine:
       (f.cuisine !== null && r.cuisine === f.cuisine) ||
-      (q !== null && r.cuisine.toLowerCase().includes(q)),
+      (q !== null && (r.cuisine?.toLowerCase().includes(q) ?? false)),
     neighborhood:
       (f.neighborhood !== null && r.neighborhood === f.neighborhood) ||
-      (q !== null && r.neighborhood.toLowerCase().includes(q)),
+      (q !== null && (r.neighborhood?.toLowerCase().includes(q) ?? false)),
     // Mirrors the predicate's own note: a restaurant with no menu has no band,
     // so it never matches a price filter and never gets the chip.
     price: f.price !== null && r.priceBand === f.price ? f.price : null,
@@ -575,7 +584,7 @@ function promote(
 ): DiscoverFilters {
   const q = raw.toLowerCase();
   const has = (key: "cuisine" | "neighborhood") =>
-    restaurants.find((r) => r[key].toLowerCase() === q)?.[key] ?? null;
+    restaurants.find((r) => r[key]?.toLowerCase() === q)?.[key] ?? null;
 
   const cuisine = has("cuisine");
   if (cuisine && !base.cuisine) return { ...base, cuisine };

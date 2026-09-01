@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandMark, WordMark } from "@/components/BrandMark";
+import { PhoneDiscoverSearch } from "@/components/mobile/PhoneDiscoverSearch";
 import { PhoneFilterBar } from "@/components/mobile/PhoneFilterBar";
 import type {
   PhoneFilterChip,
@@ -309,7 +310,12 @@ export default async function PhoneDiscover({
         </p>
       </header>
 
-      <div className="px-4 pb-4">
+      {/* Search above the filters, because a name is the question most people
+          arrive with and Discover is the screen they arrive at. The page could
+          already be narrowed by `?q=` — the heading and the summary chip both
+          read it — but nothing here could produce one. */}
+      <div className="flex flex-col gap-2.5 px-4 pb-4">
+        <PhoneDiscoverSearch value={filters.q ?? ""} />
         <PhoneFilterBar model={model} />
       </div>
 
