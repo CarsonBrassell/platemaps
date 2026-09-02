@@ -335,11 +335,11 @@ export default function PrivacyPage() {
               sent to:
             </p>
             <p className="font-mono text-sm text-zinc-900">
-              [PlateMaps legal entity name]
+              Carson Brassell (sole proprietor, d/b/a PlateMaps)
               <br />
               [mailing address]
               <br />
-              [privacy contact email]
+              helloplatemaps@gmail.com
             </p>
           </Section>
 
