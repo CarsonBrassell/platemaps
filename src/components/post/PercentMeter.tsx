@@ -124,7 +124,12 @@ export function PercentMeter({
         <label htmlFor={id} className="text-sm font-semibold text-zinc-800">
           {label}
         </label>
-        <p className="text-right">
+        {/* Width is held at the widest value this can show. Without it the
+            block is only as wide as its digits, so every crossing of 9→10 and
+            99→100 shifted the number sideways mid-drag — the count appeared to
+            wander while you were reading it. Reserved and right-aligned, the
+            "%" stays put and only the digits fill in behind it. */}
+        <p className="min-w-[4ch] text-right">
           {/* Keyed on the value so each step re-fires the kick; only at the
               top end, where the extra emphasis is the point. */}
           {/* The numeral takes the chill as a flat colour rather than the
@@ -164,16 +169,22 @@ export function PercentMeter({
         />
       </div>
 
-      <div className="mt-2 flex items-baseline justify-between text-xs">
+      {/* A grid, not justify-between: the band label changes width as it
+          changes text ("Skip it" to "Depends on the day"), and under
+          justify-between a middle item is positioned by the space the ends
+          leave, so it slid on every band change. Three equal columns centre it
+          on the row instead. nowrap so the longest label can't wrap and take
+          the row's height with it. */}
+      <div className="mt-2 grid grid-cols-3 items-baseline text-xs">
         <span className="text-zinc-400">0%</span>
         <span
-          className={`font-semibold transition-colors ${
+          className={`whitespace-nowrap text-center font-semibold transition-colors ${
             heat === "blazing" ? "text-pm-orange-text" : "text-zinc-900"
           }`}
         >
           {bandForPercent(value)}
         </span>
-        <span className="text-zinc-400">100%</span>
+        <span className="text-right text-zinc-400">100%</span>
       </div>
     </div>
   );

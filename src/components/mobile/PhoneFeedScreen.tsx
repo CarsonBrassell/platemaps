@@ -11,7 +11,7 @@ import { UtensilsIcon, CompassIcon, WifiOffIcon, PlusIcon } from "@/components/i
 import type { FeedTab, Post } from "@/components/feed/types";
 import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
-import { announceAward, closePostFlash, takeLanding } from "@/lib/postCelebration";
+import { announceAward, closePostFlash, takeLanding, usePostFlash } from "@/lib/postCelebration";
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
 import { PhoneFeedTabs } from "./PhoneFeedTabs";
@@ -174,6 +174,24 @@ export function PhoneFeedScreen() {
    */
   const slamId =
     landing && posts?.some((p) => p.id === landing.postId) ? landing.postId : null;
+
+  /*
+   * The slam has to wait for the curtain, not for the data.
+   *
+   * `slamId` goes non-null the moment the fetch comes back — often ~500ms in —
+   * but the flash holds a floor of EAT_TOTAL_MS + 90 (3.59s) so the meal can
+   * finish. Applying the classes on the data meant post-spit (0.9s) and
+   * post-impact (0.34s at a 0.45s delay) both ran to completion under the white
+   * screen and were long over by the time it lifted: the bite played, then the
+   * plate was simply *there*. Gating on the flash being down is what makes the
+   * landing something you actually watch.
+   *
+   * Kept separate from `slamId` rather than folded into it because the award
+   * announcement below keys off the data arriving, and should not be delayed
+   * by a curtain PhonePointsFly already waits on itself.
+   */
+  const flashOpen = usePostFlash();
+  const slammingId = slamId && !flashOpen ? slamId : null;
 
   /*
    * Drop the curtain once the feed has an answer — any answer.
@@ -514,7 +532,7 @@ export function PhoneFeedScreen() {
           <>
             {/* The column takes the hit when the spat plate lands — see
                 post-impact in phone.css for why the jolt is delayed. */}
-            <div className={`flex flex-col gap-3 ${slamId ? "post-impact" : ""}`}>
+            <div className={`flex flex-col gap-3 ${slammingId ? "post-impact" : ""}`}>
               {/* Every card runs its photo full width — the card used to take a
                   `featured` flag and this list set it on index 0 only. See
                   PhoneFeedPostCard's header for why the dense treatment went. */}
@@ -544,10 +562,10 @@ export function PhoneFeedScreen() {
                       postRefs.current[post.id] = el;
                     }}
                     /* What PhonePointsFly aims the token away from. */
-                    data-pm-landed={post.id === slamId ? "" : undefined}
+                    data-pm-landed={post.id === slammingId ? "" : undefined}
                     className={`rounded-2xl transition-shadow motion-reduce:transition-none ${
                       post.id === highlighted ? "ring-2 ring-pm-orange" : ""
-                    } ${post.id === slamId ? "post-spit" : ""}`}
+                    } ${post.id === slammingId ? "post-spit" : ""}`}
                   >
                     {tab === "friends" ? (
                       <PhoneFeedPostCard {...shared} surface="friends" onReact={handleHeart} />
