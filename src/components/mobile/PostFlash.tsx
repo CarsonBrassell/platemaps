@@ -54,78 +54,73 @@ import { EAT, usePostFlash } from "@/lib/postCelebration";
 const ASPECT = 660 / 865;
 
 /**
- * One bite, and every bite is this bite.
+ * One bite is one quarter, and the quarters are exact.
  *
- * **43% of the mark's width, because four of them have to finish it.** Four
- * equal circles cover a rectangle when they sit on its quarter-points with a
- * radius of the quadrant's half-diagonal — 41.2% of the width here. 43 is that
- * with a margin. Anything smaller cannot clear the mark in four, and the
- * previous version papered over exactly that by making its last bite an
- * enormous one that simply wiped whatever was left, which is a deletion rather
- * than a bite.
+ * The previous version placed four overlapping circles on the mark's
+ * quarter-points. Circles cannot tile a square, so each bite ate into the last
+ * one's crater: measured against the real ink they removed 49%, 33%, 8% and
+ * 10%. Two big mouthfuls, then two that barely showed — which is why the meal
+ * read as arbitrary rather than as a pattern.
  *
- * The scallops are what make it a bite rather than a hole punch: bumps
- * straddling the rim, so the edge left behind is a run of round scoops.
- * **Six large ones rather than eight small ones** — the smaller set rippled
- * the edge without ever quite saying "bite", and reading it as tooth marks
- * needs a few obvious scoops far more than it needs many subtle ones. Fixed
- * count, fixed size, evenly spaced: the bite is congruent every time, only
- * rotated, so no two bites differ in size.
+ * A quarter is now a genuine quarter: a 90 degree conic wedge from the centre,
+ * taken clockwise from the top right, where the artwork's own bite already is.
+ * Four wedges are 25% each by construction, not by tuning, and the mark empties
+ * evenly.
  *
- * Measured against the real ink these leave 51%, 18%, 10%, then nothing.
+ * The scallops survive that change because they are what makes it a bite rather
+ * than a slice. They straddle the wedge's two straight edges, so every cut the
+ * mouth leaves behind is a run of round scoops instead of a razor line.
  */
-const BITE_R = 43;
-const SCALLOPS = 6;
-const SCALLOP_R = 0.44;
-const SCALLOP_D = 1.08;
+const SCALLOPS_PER_EDGE = 4;
+/** Scoop size and how far out along each edge they run, as % of the width. */
+const SCALLOP_R = 5.5;
+const EDGE_REACH = 62;
 
 type Scoop = { cx: number; cy: number; r: number };
 
-function bite(cx: number, cy: number, spin: number): Scoop[] {
-  const out: Scoop[] = [{ cx, cy, r: BITE_R }];
-  for (let i = 0; i < SCALLOPS; i++) {
-    const a = (i / SCALLOPS) * Math.PI * 2 + spin;
+/** A hole shaped like one ellipse — the primitive every scallop is drawn with. */
+const scoop = (c: Scoop) =>
+  `radial-gradient(ellipse ${c.r.toFixed(2)}% ${(c.r * ASPECT).toFixed(2)}% at ${c.cx.toFixed(2)}% ${c.cy.toFixed(2)}%, transparent 0 99%, #000 100%)`;
+
+/** A hole shaped like a 90 degree wedge, opening clockwise from `fromDeg`. */
+const wedge = (fromDeg: number) =>
+  `conic-gradient(from ${fromDeg}deg at 50% 50%, transparent 0 90deg, #000 90deg 360deg)`;
+
+/**
+ * Conic angles run clockwise from twelve o'clock, which is not how sin and cos
+ * are laid out — hence sin on x and -cos on y. The y offset is scaled by the
+ * aspect for the same reason the radii are: so the ring of scoops is round in
+ * pixels rather than round in percentages.
+ */
+function edgeScoops(edgeDeg: number): Scoop[] {
+  const a = (edgeDeg * Math.PI) / 180;
+  const out: Scoop[] = [];
+  for (let k = 1; k <= SCALLOPS_PER_EDGE; k++) {
+    const dist = (k / (SCALLOPS_PER_EDGE + 1)) * EDGE_REACH;
     out.push({
-      cx: cx + SCALLOP_D * BITE_R * Math.cos(a),
-      /* sin is scaled by the aspect so the offset is circular in pixels, the
-         same correction `layer` makes to the radii. */
-      cy: cy + SCALLOP_D * BITE_R * Math.sin(a) * ASPECT,
-      r: SCALLOP_R * BITE_R,
+      cx: 50 + dist * Math.sin(a),
+      cy: 50 - dist * Math.cos(a) * ASPECT,
+      r: SCALLOP_R,
     });
   }
   return out;
 }
 
-/**
- * The four quarter-points, taken clockwise from the top right — which is where
- * the artwork's own bite already is, so the first mouthful widens it rather
- * than opening a second mouth somewhere else.
- *
- * It genuinely ends empty; nothing is faded away to hide a remainder.
- */
-const BITES = [
-  bite(75, 25, 0),
-  bite(75, 75, 0.3),
-  bite(25, 75, 0.6),
-  bite(25, 25, 0.9),
-];
+/** The wedge plus the scoops along both of its straight edges, as mask layers. */
+function bite(quarter: number): string[] {
+  const from = quarter * 90;
+  return [
+    wedge(from),
+    ...edgeScoops(from).map(scoop),
+    ...edgeScoops(from + 90).map(scoop),
+  ];
+}
 
-const layer = (c: Scoop) =>
-  `radial-gradient(ellipse ${c.r.toFixed(2)}% ${(c.r * ASPECT).toFixed(2)}% at ${c.cx.toFixed(2)}% ${c.cy.toFixed(2)}%, transparent 0 99%, #000 100%)`;
+/** Clockwise from the top right, one quarter each. */
+const BITES = [bite(0), bite(1), bite(2), bite(3)];
 
-/**
- * Every bite composited into one mask string, precomputed per step.
- *
- * Built once at module load rather than per render: the geometry never changes,
- * and `MASKS[n - 1]` is the mark with n bites out of it. `intersect` is what
- * makes the holes accumulate — the default `add` would union the opaque parts
- * instead and fill each previous bite back in.
- */
 const MASKS = BITES.map((_, i) =>
-  BITES.slice(0, i + 1)
-    .flat()
-    .map(layer)
-    .join(", "),
+  BITES.slice(0, i + 1).flat().join(", "),
 );
 
 /*

@@ -424,10 +424,17 @@ html.pm-lock-scroll body {
  * but keeps NO transform afterwards: a lingering `scale(1)` would leave the
  * wrapper a containing block for anything fixed inside the card.
  */
+/* No rotation anywhere in here, deliberately.
+ *
+ * The card used to tumble in from -18deg and unwind through -8 and +4 before
+ * settling, which meant it arrived leaning and corrected itself on the way
+ * down — it read as sideways rather than as dropped. Straight up the vertical
+ * axis, the squash and stretch alone carry the weight, and the card is
+ * symmetrical about its own centre at every frame. */
 @keyframes post-spit {
   0% {
     opacity: 0;
-    transform: translateY(300px) scaleX(0.1) scaleY(0.1) rotate(-18deg);
+    transform: translateY(300px) scaleX(0.1) scaleY(0.1);
   }
   16% {
     opacity: 1;
@@ -436,30 +443,30 @@ html.pm-lock-scroll body {
      pair. Without the stretch on the way in, the squash on landing reads as a
      glitch rather than as the thing having had momentum. */
   34% {
-    transform: translateY(115px) scaleX(0.82) scaleY(1.3) rotate(-8deg);
+    transform: translateY(115px) scaleX(0.82) scaleY(1.3);
   }
   /* Overshoots well past full size before it is allowed to settle. */
   50% {
-    transform: translateY(0) scaleX(1.2) scaleY(1.2) rotate(4deg);
+    transform: translateY(0) scaleX(1.2) scaleY(1.2);
   }
   /* Impact: flattened hard and wide. */
   63% {
-    transform: translateY(0) scaleX(1.18) scaleY(0.8) rotate(0deg);
+    transform: translateY(0) scaleX(1.18) scaleY(0.8);
   }
   76% {
-    transform: translateY(0) scaleX(0.93) scaleY(1.1) rotate(0deg);
+    transform: translateY(0) scaleX(0.93) scaleY(1.1);
   }
   88% {
-    transform: translateY(0) scaleX(1.04) scaleY(0.97) rotate(0deg);
+    transform: translateY(0) scaleX(1.04) scaleY(0.97);
   }
   100% {
-    transform: translateY(0) scaleX(1) scaleY(1) rotate(0deg);
+    transform: translateY(0) scaleX(1) scaleY(1);
   }
 }
 
 /* Every keyframe lists the same functions in the same order. Mixing `scale()`
    and `scaleX()/scaleY()` between frames drops the interpolation to matrices,
-   which takes the rotation with it and makes the tumble wobble. */
+   which would make the squash jump between frames. */
 .pm-phone-shell .post-spit {
   animation: post-spit 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
 }
