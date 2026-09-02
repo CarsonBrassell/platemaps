@@ -3,6 +3,8 @@ import { accountJson } from "@/lib/account";
 import {
   getRestaurantById,
   getUserById,
+  markPhotoNoticeSeen,
+  markTourSeen,
   updateFavorites,
   updatePhotoSharing,
   updatePrivacySettings,
@@ -31,6 +33,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid value." }, { status: 400 });
     }
     await updatePhotoSharing(user.id, body.sharePhotosPublicly);
+  }
+
+  // The composer answering its first-post photo notice. `true` is the only
+  // value that means anything — see markPhotoNoticeSeen on why this is a latch
+  // and not a setting — so anything else is ignored rather than rejected: the
+  // notice rides along on the same request that flips the toggle, and a bad
+  // field here must not take the toggle down with it.
+  if (body.photoNoticeSeen === true) {
+    await markPhotoNoticeSeen(user.id);
+  }
+
+  // The coach tour finishing or being skipped. Same latch, same reasoning.
+  if (body.tourSeen === true) {
+    await markTourSeen(user.id);
   }
 
   // The three privacy switches ride this endpoint rather than getting one each:

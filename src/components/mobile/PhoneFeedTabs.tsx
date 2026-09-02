@@ -69,6 +69,8 @@ export function PhoneFeedTabs({
             type="button"
             role="tab"
             aria-selected={on}
+            /* First-run walkthrough anchor — the web tabs carry the same one. */
+            data-coach={tab.value === "map" ? "map" : undefined}
             onClick={() => onChange(tab.value)}
             /* min-h-11 rather than the web's padding-free text hit area: the
                tab is a thumb target here, and the underline is positioned off

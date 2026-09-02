@@ -642,9 +642,12 @@ function signHtml(restaurant: MapRestaurant) {
    clearance rather than a wrong-looking sign. */
 const SIGN_NAME_CHAR_WIDTH = 7.8;
 const SIGN_RATING_CHAR_WIDTH = 6.2;
-/* The blend sets at .92em of the same face (.map-sign-blend), so its glyphs run
-   proportionally narrower than the percent's. */
-const SIGN_BLEND_CHAR_WIDTH = 5.7;
+/* The blend sets at the percent's own size when it stands alone, and only
+   shrinks to .92em when a percent is printed beside it (.map-sign-blend in
+   globals.css). Estimated at the larger of the two: the same trade the file
+   header describes, taken in the safe direction — over-estimating a sign costs
+   a few px of clearance, under-estimating lets two signs overlap. */
+const SIGN_BLEND_CHAR_WIDTH = 6.2;
 /* Matches .map-neon-sign's `gap` and `left` in globals.css. */
 const SIGN_GAP = 6;
 const SIGN_LEFT = 4;

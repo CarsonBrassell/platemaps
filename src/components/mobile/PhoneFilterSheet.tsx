@@ -305,7 +305,18 @@ function Facet({ group }: { group: PhoneFilterGroup }) {
   const [query, setQuery] = useState("");
   const [expanded, setExpanded] = useState(false);
 
-  const searchable = group.searchNoun !== undefined && group.options.length >= SEARCHABLE_FROM;
+  // An option that would return nothing is dropped rather than greyed — the
+  // same call the web rail makes, for the same reason, and it lands harder
+  // here: a sheet is scrolled with a thumb, and a facet of mostly-dead rows
+  // costs the visitor the whole list to find the handful that work. The
+  // selected option is kept whatever its count, so there is always something
+  // on screen to switch off.
+  //
+  // Before `searchable`, so the search field and the fold both size the list
+  // by rows that are actually there.
+  const live = group.options.filter((o) => o.count > 0 || o.selected);
+
+  const searchable = group.searchNoun !== undefined && live.length >= SEARCHABLE_FROM;
   const q = searchable ? query.trim().toLowerCase() : "";
 
   // While searching the list is the matches and nothing else — the fold and the
@@ -314,18 +325,18 @@ function Facet({ group }: { group: PhoneFilterGroup }) {
   // stays visible, so the sheet never shows a filter as on without showing
   // which one.
   const visible = q
-    ? group.options.filter((o) => o.value.toLowerCase().includes(q))
-    : expanded || group.options.length <= COLLAPSED_ROWS
-      ? group.options
-      : group.options
+    ? live.filter((o) => o.value.toLowerCase().includes(q))
+    : expanded || live.length <= COLLAPSED_ROWS
+      ? live
+      : live
           .slice(0, COLLAPSED_ROWS)
-          .concat(group.options.slice(COLLAPSED_ROWS).filter((o) => o.selected));
+          .concat(live.slice(COLLAPSED_ROWS).filter((o) => o.selected));
 
-  const hidden = group.options.length - visible.length;
+  const hidden = live.length - visible.length;
   // Gated on the list being long enough to collapse rather than on anything
   // currently being hidden: once expanded, `hidden` is 0 and that is exactly
   // when the control has to stay put to offer the way back.
-  const collapsible = !q && group.options.length > COLLAPSED_ROWS;
+  const collapsible = !q && live.length > COLLAPSED_ROWS;
 
   return (
     <section>

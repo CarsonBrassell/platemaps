@@ -3,6 +3,7 @@ import type { RestaurantView } from "@/data/restaurants";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
+import { placeLine } from "@/lib/placeLine";
 
 /**
  * The phone version's discover card.
@@ -90,9 +91,25 @@ export function PhoneRestaurantCard({
           </span>
         </div>
         <p className="mb-3 mt-1 truncate text-[13px] text-zinc-500">
-          {restaurant.cuisine} &middot; {restaurant.neighborhood}
+          {placeLine(restaurant.cuisine, restaurant.neighborhood)}
         </p>
-        <OpenStatePill hours={restaurant.hours} />
+        {/* The pill gains a neighbour only while a dish search put this card
+            here — see the note on the web card. It matters more on a phone,
+            not less: the screen shows two or three results at a time, so a
+            wall of identical subtitles costs more scrolling to see through. */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          <OpenStatePill hours={restaurant.hours} />
+          {restaurant.matchedDish && (
+            <span className="inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full bg-pm-orange-tint px-3 py-1.5 text-[12px] font-medium text-pm-orange-text">
+              <span className="truncate">{restaurant.matchedDish.name}</span>
+              {restaurant.matchedDish.price && (
+                <span className="shrink-0 font-mono font-semibold tabular-nums">
+                  {restaurant.matchedDish.price}
+                </span>
+              )}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );

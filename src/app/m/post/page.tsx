@@ -13,6 +13,7 @@ import { KindChooser, type PostKind } from "@/components/post/KindChooser";
 import { RestaurantPicker, type PickableRestaurant } from "@/components/post/RestaurantPicker";
 import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
+import { PhotoPrivacyNotice } from "@/components/post/PhotoPrivacyNotice";
 import type { PostMedia } from "@/components/feed/types";
 import { CharCount } from "@/components/post/CharCount";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
@@ -52,7 +53,7 @@ const chip =
 export default function PhonePost() {
   const router = useRouter();
   const params = useSearchParams();
-  const { isSignedIn, loading, refresh } = useAuth();
+  const { account, isSignedIn, loading, refresh } = useAuth();
 
   /* The nav variant travels in the URL and has to survive the composer, or
      posting throws you back to the default nav and the comparison is over.
@@ -83,6 +84,17 @@ export default function PhonePost() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const errorRef = useRef<HTMLParagraphElement>(null);
+  /** The first-post photo notice. Same trigger and same reasons as the web composer. */
+  const [photoNotice, setPhotoNotice] = useState(false);
+  const noticeOffered = useRef(false);
+  useEffect(() => {
+    // `?photo-notice=1`, development only — see the web composer's note.
+    const forced =
+      process.env.NODE_ENV !== "production" && params.get("photo-notice") === "1";
+    if (noticeOffered.current || !account || (account.photoNoticeSeen && !forced)) return;
+    noticeOffered.current = true;
+    setPhotoNotice(true);
+  }, [account, params]);
 
   // On mount rather than when the "where" step opens: the composer is reached
   // by someone who has already decided to post, so the list is wanted within a
@@ -690,6 +702,9 @@ export default function PhonePost() {
           </p>
         </div>
       ) : cameraStep ? (
+        /* The viewfinder runs under the first-post notice rather than waiting
+           on it — same as the web composer. The notice is a layer on top of
+           this screen, not a gate in front of it. */
         camera
       ) : (
         body
@@ -748,6 +763,14 @@ export default function PhonePost() {
             )}
           </div>
         </div>
+      )}
+
+      {photoNotice && (
+        <PhotoPrivacyNotice
+          variant="phone"
+          onDismiss={() => setPhotoNotice(false)}
+          onAnswer={() => setPhotoNotice(false)}
+        />
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import { OpenStatePill } from "@/components/OpenStatePill";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 import { photoCreditFor } from "@/lib/photoCredit";
+import { photoRatio } from "@/lib/photoShape";
 
 /**
  * The category the grid is currently filtered to, and what this place scored in
@@ -66,6 +67,7 @@ export function RestaurantCard({
   restaurant,
   score = EMPTY_PLATE_SCORE,
   match = NO_MATCHES,
+  shape = "crop",
 }: {
   restaurant: RestaurantView;
   /**
@@ -75,20 +77,52 @@ export function RestaurantCard({
    */
   score?: PlateScore;
   match?: MatchMarks;
+  /**
+   * `"crop"` puts the photo in the same 128px band on every card; `"natural"`
+   * gives it the photo's own proportions, which is what makes the Discover
+   * grid stack unevenly.
+   *
+   * Defaulting to `"crop"` is deliberate. Every other caller — search results,
+   * a saved list — wants uniform rows, and a card whose height depends on its
+   * photo would make those surfaces ragged for no reason. Only a grid built to
+   * pack uneven columns should ask for `"natural"`.
+   */
+  shape?: "crop" | "natural";
 }) {
   const highlight = match.aspect;
+  const natural = shape === "natural";
   return (
     <Link
       href={`/restaurant/${restaurant.id}`}
       className="card-lift group block overflow-hidden rounded-2xl bg-white active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
     >
       {/* Photo inset from the card edge; a warm tone block holds the slot
-          when no photo exists yet. */}
-      <div className="relative m-2 h-32 overflow-hidden rounded-[10px] bg-[var(--pm-tone-1)]">
+          when no photo exists yet.
+
+          `aspect-ratio` rather than a height, so the box is the right size from
+          the first paint instead of collapsing to nothing and snapping when the
+          image arrives. That is the whole reason `photo_w`/`photo_h` are
+          measured and stored — see lib/photoShape.ts. */}
+      <div
+        className={
+          "relative m-2 overflow-hidden rounded-[10px] bg-[var(--pm-tone-1)]" +
+          (natural ? "" : " h-32")
+        }
+        style={natural ? { aspectRatio: photoRatio(restaurant) } : undefined}
+      >
         <RestaurantPhoto
           photo={restaurant.photo}
           photoAlt={restaurant.photoAlt}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 220px"
+          /* Two columns at every width above the phone, so a card is never far
+             off half the viewport — and capped, because the grid itself stops
+             growing at its container. A `sizes` that still described the old
+             220px slot would have the optimizer serving images too small for
+             the box they now fill. */
+          sizes={
+            natural
+              ? "(max-width: 640px) 100vw, (max-width: 1180px) 50vw, 560px"
+              : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 220px"
+          }
           className="transition-transform duration-500 ease-out group-hover:scale-[1.07]"
           fallback={null}
         />
@@ -158,8 +192,18 @@ export function RestaurantCard({
             the reader is already looking, and keeps an unfiltered card exactly
             as it was. */}
         <p className="mb-2.5 mt-0.5 truncate text-xs text-zinc-500">
-          <span className={match.cuisine ? MARK : undefined}>{restaurant.cuisine}</span>
-          {" · "}
+          {/* Both halves are conditional because cuisine is nullable — the ~400
+              restaurants that never carried one would otherwise open this line
+              with a stray separator. Same rule as `placeLine`, spelled out here
+              because each half needs its own span to light up. */}
+          {restaurant.cuisine && (
+            <>
+              <span className={match.cuisine ? MARK : undefined}>
+                {restaurant.cuisine}
+              </span>
+              {" · "}
+            </>
+          )}
           <span className={match.neighborhood ? MARK : undefined}>
             {restaurant.neighborhood}
           </span>
@@ -178,6 +222,30 @@ export function RestaurantCard({
           {score.percent === null && (
             <span className="font-mono text-[11px] text-zinc-400">
               {plateScoreLabel(score)}
+            </span>
+          )}
+          {/* The dish that put this card in the results, shown before the click
+              rather than after it. A search for "california burrito" returns 184
+              restaurants whose every other line is identical — "Mexican · Barrio
+              Logan" over and over — so without the dish and its price the list is
+              a wall you have to open one by one to read.
+
+              First of the answer chips, ahead of price and category: those
+              narrow a list, this one is the reason the row exists at all. Orange
+              tint for the same reason they wear it — it answers the question
+              that was asked. Truncated because a menu will happily supply
+              "Carne Asada Fries Supreme w/ Guacamole and Sour Cream". */}
+          {restaurant.matchedDish && (
+            <span className="inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full bg-pm-orange-tint px-3 py-1.5 text-xs font-medium text-pm-orange-text">
+              <span className="truncate">{restaurant.matchedDish.name}</span>
+              {/* A price is a machine value and sets in the mono, like every
+                  other one. Absent on plenty of menus, so it is its own
+                  condition rather than part of the string above. */}
+              {restaurant.matchedDish.price && (
+                <span className="shrink-0 font-mono font-semibold tabular-nums">
+                  {restaurant.matchedDish.price}
+                </span>
+              )}
             </span>
           )}
           {/* Price only exists on the card while it is the question. The band

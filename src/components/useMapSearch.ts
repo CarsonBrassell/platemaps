@@ -146,7 +146,7 @@ export function useMapSearch({
    *
    * `candidates` is the last *settled* query's response, so between a keystroke
    * and the debounce firing it is one or two letters behind. Re-applying the
-   * predicate here (the same three fields `/api/restaurants?q=` narrows on)
+   * predicate here (the same fields `/api/restaurants?q=` narrows on)
    * keeps that stale set from being framed as if it answered the term on
    * screen: the in-flight response only ever widens this list back out, it
    * never contradicts it. It is also what makes the guard honest — a term with
@@ -159,7 +159,8 @@ export function useMapSearch({
     return candidates.filter(
       (r) =>
         r.name.toLowerCase().includes(q) ||
-        r.cuisine.toLowerCase().includes(q) ||
+        (r.cuisine ?? "").toLowerCase().includes(q) ||
+        (r.cuisineTags ?? "").toLowerCase().includes(q) ||
         r.neighborhood.toLowerCase().includes(q),
     );
   }, [query, candidates]);

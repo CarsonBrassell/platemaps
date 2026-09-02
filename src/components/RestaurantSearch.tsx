@@ -3,19 +3,20 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import type { Restaurant } from "@/data/restaurants";
+import type { MatchedDish, Restaurant } from "@/data/restaurants";
 import { QUERY_PARAM } from "@/lib/discoverFilters";
 import { rank } from "@/lib/restaurantRank";
 import { StarIcon } from "@/components/icons";
 import type { PlateScore } from "@/lib/plateScore";
 import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
+import { placeLine } from "@/lib/placeLine";
 
 /**
  * A row as /api/restaurants sends it: the full restaurant plus the plate score
  * that route attaches. Mirrored locally rather than imported from lib/db.ts,
  * which is server-only.
  */
-type SearchRow = Restaurant & { plateScore?: PlateScore };
+type SearchRow = Restaurant & { plateScore?: PlateScore; matchedDish?: MatchedDish };
 
 /**
  * Header search over the restaurant list.
@@ -260,8 +261,34 @@ export function RestaurantSearch() {
                     <span className="block truncate text-sm font-medium text-zinc-900">
                       {r.name}
                     </span>
+                    {/* The dish leads the second line when a dish is why this
+                        row is here — it is the answer, and "Mexican · North
+                        Park" repeated six times is not.
+
+                        The cuisine drops out of the line in that case, and
+                        that is the point rather than a saving: three things do
+                        not fit in a dropdown row, and the first version
+                        truncated the *neighbourhood* away — "California
+                        Burrito $12.99 · Mexican · Rol…" — losing the one part
+                        a reader needs to tell six taco shops apart. Anyone
+                        reading "California Burrito" already knows the cuisine.
+                        Without a dish match the line is unchanged. */}
                     <span className="block truncate text-xs text-zinc-500">
-                      {r.cuisine} · {r.neighborhood}
+                      {r.matchedDish && (
+                        <span className="font-medium text-pm-orange-text">
+                          {r.matchedDish.name}
+                          {r.matchedDish.price && (
+                            <span className="font-mono font-semibold tabular-nums">
+                              {" "}
+                              {r.matchedDish.price}
+                            </span>
+                          )}
+                          {" · "}
+                        </span>
+                      )}
+                      {r.matchedDish
+                        ? r.neighborhood
+                        : placeLine(r.cuisine, r.neighborhood)}
                     </span>
                   </span>
                   {/* Both numbers where there are both, in the same order as

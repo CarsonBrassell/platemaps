@@ -10,7 +10,7 @@
 
 import { BEST_AT_LABELS } from "@/data/reviewScales";
 import { PRICE_BANDS, type PriceBand } from "@/data/priceBands";
-import type { RestaurantView } from "@/data/restaurants";
+import type { MatchedDish, RestaurantView } from "@/data/restaurants";
 import { aspectScores } from "@/lib/aspectScores";
 import type { PlateScore } from "@/lib/plateScore";
 import { SHOW_BLEND_STARS } from "@/lib/ratingDisplay";
@@ -228,6 +228,16 @@ export type FilterContext = {
    * the other two.
    */
   plates: Record<string, PlateScore> | null;
+  /**
+   * Which restaurants serve a dish matching the current `q`, and which dish.
+   * Null when the query has no free text, or while the lookup is in flight —
+   * and null follows the same match-everything rule as the fields above, so a
+   * pending lookup never hides a row the text already matched.
+   *
+   * Fetched per request by lib/discover.ts rather than carried on the corpus:
+   * see dishMatchesFor in lib/db.ts for why the dish names are not in it.
+   */
+  dishes: Map<string, MatchedDish> | null;
 };
 
 export const NO_CONTEXT: FilterContext = {
@@ -235,6 +245,7 @@ export const NO_CONTEXT: FilterContext = {
   here: null,
   aspects: null,
   plates: null,
+  dishes: null,
 };
 
 /**
@@ -252,7 +263,7 @@ const SEARCHABLE_TEXT = new WeakMap<RestaurantView, string>();
 function searchable(r: RestaurantView): string {
   let text = SEARCHABLE_TEXT.get(r);
   if (text === undefined) {
-    text = `${r.name} ${r.cuisine} ${r.neighborhood}`.toLowerCase();
+    text = `${r.name} ${r.cuisine ?? ""} ${r.cuisineTags} ${r.neighborhood}`.toLowerCase();
     SEARCHABLE_TEXT.set(r, text);
   }
   return text;
@@ -268,11 +279,24 @@ export function matchesFilters(
     if (milesBetween(ctx.here, { lat: r.lat, lng: r.lng }) > NEARBY_RADIUS_MI) return false;
   }
   if (f.cuisine && r.cuisine !== f.cuisine) return false;
-  // Name, cuisine, neighbourhood — the same three fields the header search
-  // ranks on and /api/restaurants?q= narrows on, so a term that found a place
-  // in the dropdown still finds it here. Substring rather than ranked: this is
-  // a filter, and a filter either includes a row or doesn't.
-  if (f.q && !searchable(r).includes(f.q.toLowerCase())) return false;
+  // Name, cuisine, cuisine tags, neighbourhood — the same fields the header
+  // search ranks on and /api/restaurants?q= narrows on, so a term that found a
+  // place in the dropdown still finds it here. Substring rather than ranked:
+  // this is a filter, and a filter either includes a row or doesn't.
+  //
+  // The tags are what make the blunt filter vocabulary affordable. "Tacos"
+  // is no longer a cuisine — it folds into Mexican — so it arrives here as
+  // free text, and the tag on a shop that was tagged `taco` is what answers
+  // it. See data/cuisines.ts.
+  //
+  // A dish match is the other half of the answer, and it is an OR rather than
+  // a second test: "carne asada fries" matches no restaurant text anywhere in
+  // the corpus, and 129 restaurants serve it. `ctx.dishes` is null when the
+  // lookup has not run, which matches everything the text already matched
+  // rather than hiding rows behind a pending request.
+  if (f.q && !searchable(r).includes(f.q.toLowerCase()) && !ctx.dishes?.has(r.id)) {
+    return false;
+  }
   // A restaurant with no menu has no band and so matches no price — see the
   // note in data/priceBands.ts about why it isn't given a guessed one.
   if (f.price && r.priceBand !== f.price) return false;
@@ -343,7 +367,7 @@ export function matchMarksFor(
   return {
     cuisine:
       (f.cuisine !== null && r.cuisine === f.cuisine) ||
-      (q !== null && r.cuisine.toLowerCase().includes(q)),
+      (q !== null && (r.cuisine ?? "").toLowerCase().includes(q)),
     neighborhood:
       (f.neighborhood !== null && r.neighborhood === f.neighborhood) ||
       (q !== null && r.neighborhood.toLowerCase().includes(q)),
@@ -382,7 +406,10 @@ function optionsFor(
   key: "neighborhood" | "cuisine",
 ): FacetOption[] {
   const totals = new Map<string, number>();
-  for (const r of restaurants) totals.set(r[key], (totals.get(r[key]) ?? 0) + 1);
+  for (const r of restaurants) {
+    const value = r[key];
+    if (value) totals.set(value, (totals.get(value) ?? 0) + 1);
+  }
 
   return [...totals]
     .map(([value, total]) => ({ value, total }))
@@ -496,7 +523,11 @@ export function countFacets(
     }
     if (matchesFilters(r, exceptCuisine, ctx)) {
       anyCuisine += 1;
-      cuisine.set(r.cuisine, (cuisine.get(r.cuisine) ?? 0) + 1);
+      // A row with no cuisine still counts toward "Any cuisine" — it is a
+      // real result — but contributes to no option. It has nothing to say
+      // about which bucket it belongs in, and inventing one is what the
+      // vocabulary in data/cuisines.ts exists to stop.
+      if (r.cuisine) cuisine.set(r.cuisine, (cuisine.get(r.cuisine) ?? 0) + 1);
     }
     if (matchesFilters(r, exceptPrice, ctx)) {
       anyPrice += 1;
@@ -574,8 +605,13 @@ function promote(
   restaurants: readonly RestaurantView[],
 ): DiscoverFilters {
   const q = raw.toLowerCase();
+  // Null-safe on cuisine, which a restaurant may not have. A term only
+  // promotes if some restaurant actually carries it, so the vocabulary in
+  // data/cuisines.ts decides this for free: "tacos" names no cuisine any
+  // more, so it stays free text and matches on the search tags instead —
+  // which is the whole point of keeping the tags.
   const has = (key: "cuisine" | "neighborhood") =>
-    restaurants.find((r) => r[key].toLowerCase() === q)?.[key] ?? null;
+    restaurants.find((r) => r[key]?.toLowerCase() === q)?.[key] ?? null;
 
   const cuisine = has("cuisine");
   if (cuisine && !base.cuisine) return { ...base, cuisine };

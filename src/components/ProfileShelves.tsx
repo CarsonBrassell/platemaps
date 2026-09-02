@@ -2,6 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { UPVOTE_MILESTONES } from "@/lib/points";
+import { ChatIcon } from "@/components/icons";
+import { postedDate } from "@/lib/format";
+import { PlateDetailSheet, type DetailComment } from "@/components/PlateDetailSheet";
 
 /**
  * The profile's plates, shelved by what they mean right now — plus the
@@ -10,24 +13,29 @@ import { UPVOTE_MILESTONES } from "@/lib/points";
  *
  * ## The shelves
  *
- * Three sections, by status rather than by geometry:
+ * Two sections, by status rather than by geometry:
  *
  * - **New reactions** — plates that earned an upvote, comment or heart since
- *   your last visit, each wearing a badge with the count. The badge sits ON
- *   the plate because "which plate are people reacting to?" is the actual
- *   question, and a chronological activity list never answers it at a glance.
- * - **Recent reactions** — plates people have reacted to, most recent first,
- *   for the reactions you have already seen. It excludes anything badged
- *   above, so the two shelves never show the same plate twice: one is "since
- *   you last looked", this one is "lately". It replaced a milestone shelf,
- *   which could only hold plates past 25/100/500 upvotes, said the same thing
- *   on every visit, and was empty for most accounts. The milestone mark still
- *   rides on the card that earned it (`UPVOTE_MILESTONES`) — it just no
- *   longer decides which shelf a plate lands on.
+ *   your last visit, each wearing a badge. The badge sits ON the plate because
+ *   "which plate are people reacting to?" is the actual question, and a
+ *   chronological activity list never answers it at a glance. **What the badge
+ *   counts is the plate's whole reaction total** — upvotes + comments + hearts,
+ *   lifetime — not the delta that put the plate on this shelf; see `Badge`.
  * - **All posts** — a mini-grid of every plate, with its count and, for dish
- *   ratings, its percent. Genuinely all of them, overlapping the shelves
- *   above on purpose: the shelves are what is happening now, this is the
- *   archive, and a label reading "All posts" has to be true.
+ *   ratings, its percent. Genuinely all of them, overlapping the shelf above
+ *   on purpose: the shelf is what is happening now, this is the archive, and
+ *   a label reading "All posts" has to be true.
+ *
+ * There used to be a third, "Recent reactions": the plates you had *already*
+ * seen reactions on, wearing a quieter tinted count. It is gone. Once the
+ * badge started printing a lifetime total, that shelf and this one were
+ * showing the same plates with the same numbers on them, separated only by a
+ * fill colour and a heading — and the archive below already lists every plate
+ * there is. Two shelves that differ only in shade are not two answers.
+ * (It in turn replaced a milestone shelf, which could only hold plates past
+ * 25/100/500 upvotes and was empty for most accounts. The milestone mark
+ * still rides on the card that earned it via `UPVOTE_MILESTONES`; it has not
+ * filed a shelf for two rounds now.)
  *
  * ## The roll-call (see the animation rules in globals.css)
  *
@@ -60,13 +68,38 @@ import { UPVOTE_MILESTONES } from "@/lib/points";
 /** The fields this surface reads off /api/posts — a subset of db.ts's Post. */
 export type ShelfPost = {
   id: string;
+  /** Whose plate it is — the detail sheet marks this person's comments OP. */
+  userId?: string;
   text: string;
   restaurant?: string;
   dishName?: string;
   rating?: number;
   ratingKind?: "restaurant" | "dish";
   upvoteCount: number;
+  /**
+   * When it was posted. Printed on the tiles, so the archive reads as a dated
+   * record rather than an undated pile — the two questions a plate could not
+   * answer without being opened were "did anybody say anything" and "when was
+   * this", and both are cheap to print here.
+   */
+  createdAt: string;
   media?: { url: string; type: "image" | "video"; alt?: string }[];
+  /**
+   * The full comments, not a count. They already ride along in the
+   * /api/posts?mine=1 payload — the profile just used to type them as
+   * `{ id }[]` because counting was all it did with them — so the detail
+   * sheet costs no extra request to open.
+   */
+  comments?: DetailComment[];
+  /**
+   * How many hearts this plate has — the third of the three numbers the badge
+   * sums. Author-only by construction: `/api/posts?mine=1` returns your own
+   * plates alongside the ones you saved, and only your own carry this (see
+   * `getProfilePosts` in lib/db.ts, where the SQL nulls it for anyone else's
+   * row). Absent means "not yours to know", which is why the badge reads it as
+   * `?? 0` rather than treating a missing count as a reason to hide.
+   */
+  heartCount?: number | null;
 };
 
 /** Mirrors the fields read off lib/db.ts's ActivityEvent — server-only module. */
@@ -181,7 +214,13 @@ function animateCount(
 export type RollCallArrival = {
   /** What the Plate Points panel should print right now (animated). */
   displayPoints: number;
-  /** Per-post fresh-reaction counts, as revealed so far by the stagger. */
+  /**
+   * Which plates the stagger has reached, keyed by id — the fresh count is
+   * still the value, but nothing prints it any more: presence is what a card
+   * reads, because the numeral it shows is now its own lifetime total. Kept as
+   * counts rather than booleans because `clearBadge` re-derives the chip sum
+   * from what is left here, and a set of `true`s cannot be added up.
+   */
   shownBadges: Record<string, number>;
   /** Membership: the full fresh counts, fixed at arrival. */
   badgeTotals: Record<string, number>;
@@ -191,26 +230,13 @@ export type RollCallArrival = {
   chip: number | null;
   /** Exact points earned since last visit, shown once known; null if none. */
   delta: number | null;
-  /**
-   * Post ids that have ever drawn a reaction, most-recently-reacted first.
-   *
-   * Falls out of the activity read the roll-call already performs, so the
-   * "Recent reactions" shelf costs no extra request. Unlike `badgeTotals`
-   * this ignores the seen-marker entirely — it is "what has been happening
-   * on your plates", which is true on every visit, where the badges are
-   * "what happened since you last looked", which is usually nothing.
-   */
-  recentIds: string[];
-  /**
-   * Lifetime reaction count per post, from the same read.
-   *
-   * What the quiet pill on a Recent-reactions card prints. It is deliberately
-   * NOT the same number as `badgeTotals`: that one is unseen-since-last-visit
-   * and wears solid orange, this one is "how much this plate has drawn, ever"
-   * and wears the tint. Keeping the solid accent exclusive to genuinely new
-   * things is what stops the shelf from looking permanently unread.
-   */
-  reactionCounts: Record<string, number>;
+  /* The activity read used to also publish `recentIds` (every plate that had
+     ever drawn a reaction, newest first) and `reactionCounts` (a lifetime
+     total per plate) for the retired "Recent reactions" shelf. Both are gone
+     with it: ordering by last reaction has no shelf to order, and the totals
+     the badge now prints come off the posts themselves — upvoteCount,
+     comments and heartCount are already in the /api/posts payload, so the
+     number on a card no longer depends on the activity request resolving. */
   /** Tap a badged plate: acknowledge it, drop it from the chip sum. */
   clearBadge: (postId: string) => void;
 };
@@ -231,9 +257,33 @@ export function useRollCallArrival(
   const [pulsing, setPulsing] = useState<Record<string, boolean>>({});
   const [chip, setChip] = useState<number | null>(null);
   const [delta, setDelta] = useState<number | null>(null);
-  const [recentIds, setRecentIds] = useState<string[]>([]);
-  const [reactionCounts, setReactionCounts] = useState<Record<string, number>>({});
   const ran = useRef(false);
+  /**
+   * The activity read, started as early as there is somebody to read it for.
+   *
+   * **This used to be the second of two round trips in a row.** The roll-call
+   * effect is gated on `postsReady`, and the fetch lived inside it, so the
+   * sequence was: load the page, wait for /api/posts, *then* start
+   * /api/account/activity, then hold 350ms, then finally play. Two latencies
+   * stacked end to end before the first badge could land — which is why the
+   * arrival looked like it had stopped working: it was still running, several
+   * seconds after the plates it decorates had finished drawing, by which
+   * point nobody is still watching.
+   *
+   * Holding the promise rather than the result is what makes it safe to
+   * start early: the roll-call still runs exactly once, still runs only after
+   * the posts are in (it needs them to know which events are yours), and
+   * simply finds this already resolved instead of beginning it. The request
+   * now overlaps the posts request rather than following it.
+   */
+  const activityRef = useRef<Promise<{ activity?: ActivityEvent[] }> | null>(null);
+  useEffect(() => {
+    if (!account || activityRef.current) return;
+    activityRef.current = fetch("/api/account/activity")
+      .then((res) => res.json())
+      .catch(() => ({}) as { activity?: ActivityEvent[] });
+  }, [account]);
+
   /** Newest activity time per post, for acking a plate forward on tap. */
   const latestRef = useRef<Record<string, number>>({});
   const postsRef = useRef(posts);
@@ -271,29 +321,27 @@ export function useRollCallArrival(
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    fetch("/api/account/activity")
-      .then((res) => res.json())
+    /* Already in flight since the account resolved — see activityRef. The
+       fallback covers the case where this effect somehow runs first. */
+    (activityRef.current ??
+      fetch("/api/account/activity")
+        .then((res) => res.json())
+        .catch(() => ({}) as { activity?: ActivityEvent[] }))
       .then((data: { activity?: ActivityEvent[] }) => {
         if (cancelled) return;
         const acked = readAck(userId);
         const storedPoints = Number(readStore(pointsKey(userId))) || 0;
         const mine = new Set(postsRef.current.map((p) => p.id));
 
-        /* Set before any of the branches below return: every path through
-           the roll-call — reduced motion, nothing fresh, full theater —
-           still owes the shelves their ordering. */
+        /* Built before any of the branches below return: every path through
+           the roll-call — reduced motion, nothing fresh, full theater — still
+           owes `clearBadge` somewhere to ack a plate forward to. */
         const latest = new Map<string, number>();
-        const counts: Record<string, number> = {};
         for (const event of data.activity ?? []) {
           if (!mine.has(event.postId)) continue;
           const at = new Date(event.createdAt).getTime();
           if (at > (latest.get(event.postId) ?? 0)) latest.set(event.postId, at);
-          counts[event.postId] = (counts[event.postId] ?? 0) + 1;
         }
-        setRecentIds(
-          [...latest.entries()].sort((a, b) => b[1] - a[1]).map(([id]) => id)
-        );
-        setReactionCounts(counts);
 
         /* Everything not yet acknowledged on that plate, however old it is.
            The first-visit suppression that used to live here is gone on
@@ -422,8 +470,6 @@ export function useRollCallArrival(
     pulsing,
     chip,
     delta,
-    recentIds,
-    reactionCounts,
     clearBadge,
   };
 }
@@ -431,11 +477,6 @@ export function useRollCallArrival(
 /* ---------------------------------------------------------------------- */
 
 /** A plate's display name: the dish if named, else the spot, else its words. */
-/* How many plates the "Recent reactions" shelf will hold. It is a highlight
-   reel sitting above a grid of everything, so it scrolls a little and then
-   stops rather than becoming a second archive. */
-const RECENT_SHELF_MAX = 8;
-
 function nameOf(post: ShelfPost) {
   return post.dishName ?? post.restaurant ?? post.text;
 }
@@ -469,12 +510,96 @@ function CardPhoto({
 
 /** `▲ 12 · 96%` — the percent only for dish rows; a starred restaurant row's
     4/5 must never print where a percent goes (rating invariant, CLAUDE.md). */
+/**
+ * The percent, and only for dish rows — a starred restaurant row's 4/5 must
+ * never print where a percent goes (rating invariant, CLAUDE.md). Returns
+ * null when there is nothing to say, so the caller drops the line rather than
+ * printing an empty one.
+ *
+ * **The upvote count used to lead this line and no longer does.** Once the
+ * disc became a lifetime total, a card carried two true numbers that meant
+ * different things — a 46 on the photo and a "▲ 27" under it — and nothing
+ * on the card said which was which. The disc is the louder mark and the one
+ * this shelf is about, so the quieter duplicate went. The archive tiles keep
+ * their count: they have no disc, so there it is the only thing a plate says
+ * about itself rather than a second opinion.
+ */
+function cardPercent(post: ShelfPost) {
+  return post.ratingKind === "dish" && post.rating != null
+    ? `${Math.round(post.rating)}%`
+    : null;
+}
+
+/** The archive tile's line, which still leads with the count. */
 function cardMeta(post: ShelfPost) {
-  const pct =
-    post.ratingKind === "dish" && post.rating != null
-      ? ` · ${Math.round(post.rating)}%`
-      : "";
-  return `▲ ${post.upvoteCount}${pct}`;
+  const pct = cardPercent(post);
+  return `▲ ${post.upvoteCount}${pct ? ` · ${pct}` : ""}`;
+}
+
+/**
+ * The second line on a card: how much conversation the plate drew, and the day
+ * it was written.
+ *
+ * Both are things the grid could not say before — a tile reported its score
+ * and then made you open it to find out whether anyone had replied, or when
+ * you had posted it, which is exactly the pair of questions a profile is
+ * scrolled to answer. They ride one line because they are the same kind of
+ * fact about the plate: what happened to it, and when.
+ *
+ * It is a rank below the line above it, and the split is the palette's rather
+ * than a preference. Orange is scoped to percentages, vote counts, selected
+ * states and the primary action (AGENTS.md) — the score line is the first two
+ * and this one is neither, so it takes `zinc-500`. `zinc-500` and not
+ * `--pm-grey-text` because these tiles are white cards; the grey token is for
+ * labels standing on the cream ground outside them.
+ *
+ * The count drops out entirely at zero rather than printing `0`. A bare zero
+ * beside a speech bubble reads as a conversation that went nowhere, which is a
+ * louder claim than the truth — nobody has said anything yet — and the date
+ * still carries the line on its own.
+ */
+/**
+ * What `CardActivity` says, in words, for the tile's `aria-label`.
+ *
+ * Both tiles label their whole button, and an `aria-label` replaces everything
+ * inside the element it sits on — so the `sr-only` "comments" in the line
+ * below never reaches a screen reader on its own. This is where that line gets
+ * spoken, and the two have to say the same thing.
+ */
+function spokenMeta(post: ShelfPost) {
+  const comments = post.comments?.length ?? 0;
+  const said = comments > 0 ? `${comments} ${comments === 1 ? "comment" : "comments"}, ` : "";
+  return `${said}posted ${postedDate(post.createdAt)}`;
+}
+
+function CardActivity({ post }: { post: ShelfPost }) {
+  const comments = post.comments?.length ?? 0;
+  return (
+    /* Wraps rather than truncates. Everything on this line is short enough to
+       sit on one at 76px — until a plate is old enough for `postedDate` to
+       append its year, and carries comments, at which point the two together
+       overrun the tile. Losing the second half of a date to an ellipsis is
+       worse than the row standing 11px taller for the handful of plates that
+       old, and it is the date that would be cut: the count is first. */
+    <span className="mt-0.5 flex flex-wrap items-center gap-x-[3px] font-mono text-[9px] tabular-nums text-zinc-500">
+      {comments > 0 && (
+        <>
+          <ChatIcon className="h-2.5 w-2.5 shrink-0" />
+          {/* `mr-1` rather than a middot between the two. The tile is 76px at
+              its narrowest and its inner column is 64 — a separator plus its
+              two gaps costs 9 of those, which is the difference between
+              "3 · Aug 25" fitting and the date truncating to "Aug …". The
+              bubble already separates them: it reads as a label on the number
+              beside it, so nothing is running together. */}
+          <span className="mr-1 shrink-0">
+            {comments}
+            <span className="sr-only"> {comments === 1 ? "comment" : "comments"}</span>
+          </span>
+        </>
+      )}
+      <span>{postedDate(post.createdAt)}</span>
+    </span>
+  );
 }
 
 function MilestoneTag({ upvotes, className }: { upvotes: number; className: string }) {
@@ -488,14 +613,36 @@ function MilestoneTag({ upvotes, className }: { upvotes: number; className: stri
 }
 
 /**
- * The count that landed on a plate — the solid orange disc from the approved
- * prototype. Cream numeral on the orange fill sits under the 14px-medium
- * line the color table draws for that pairing; Calvin approved this exact
- * badge on screen repeatedly, so it ships as a documented exception: it is
- * a one-to-three-digit count in a bold mono, not a line of copy, and the
- * white ring keeps it separable on any photo. If it ever has to carry more
- * than a number, it loses the orange. `badge-arrive` is the squash-stretch
- * pop.
+ * Everything one plate has drawn: upvotes + comments + hearts.
+ *
+ * The three are summed rather than listed because the badge is a glance, not
+ * a breakdown — the detail sheet behind the card is where the kinds separate.
+ * Hearts are the one term that can be missing: they are author-only (see
+ * `heartCount`), so on a payload that doesn't carry them this quietly counts
+ * the two public halves rather than refusing to render, which is the right
+ * failure for a number whose job is "roughly how much attention is this".
+ */
+function reactionTotal(post: ShelfPost) {
+  return post.upvoteCount + (post.comments?.length ?? 0) + (post.heartCount ?? 0);
+}
+
+/**
+ * The count on a plate — the solid orange disc from the approved prototype.
+ * Cream numeral on the orange fill sits under the 14px-medium line the color
+ * table draws for that pairing; Calvin approved this exact badge on screen
+ * repeatedly, so it ships as a documented exception: it is a one-to-three-digit
+ * count in a bold mono, not a line of copy, and the white ring keeps it
+ * separable on any photo. If it ever has to carry more than a number, it loses
+ * the orange. `badge-arrive` is the squash-stretch pop.
+ *
+ * **The number is the plate's lifetime reaction total, not the delta that put
+ * it on the shelf.** A disc reading "2" told you how much news there was and
+ * nothing about the plate under it, so the two plates on the shelf were
+ * indistinguishable whether one had thirty reactions and the other three. The
+ * shelf still *files* on the delta — being here means something happened since
+ * you last looked — but what the disc reports is where the plate stands. That
+ * split is also why the retired tinted variant had to go: with a lifetime
+ * total on the solid disc there was no second number left for it to print.
  */
 function Badge({ count }: { count: number }) {
   return (
@@ -505,41 +652,24 @@ function Badge({ count }: { count: number }) {
   );
 }
 
-/**
- * The count on a plate whose reactions you have already seen.
- *
- * Same corner and same shape as `Badge` so the card keeps its silhouette
- * whichever shelf it is on, but the tint instead of the solid fill and no
- * arrival animation — nothing just happened, so nothing should pop. That
- * separation is the whole point: solid orange means "new", tint means
- * "this plate has been getting reactions".
- */
-function QuietCount({ count }: { count: number }) {
-  return (
-    <span
-      aria-hidden="true"
-      className="absolute right-2.5 top-2.5 z-10 flex h-5 min-w-5 items-center justify-center rounded-full bg-pm-orange px-1 font-mono text-[10px] font-bold tabular-nums text-[#F7F4EC]"
-    >
-      {count}
-    </span>
-  );
-}
-
 function ShelfCard({
   post,
   tone,
-  badge,
-  quietCount = 0,
+  revealed,
   pulsing,
-  onClear,
+  onOpen,
 }: {
   post: ShelfPost;
   tone: number;
-  badge: number;
-  /** Lifetime reactions, shown only when there is no fresh badge to show. */
-  quietCount?: number;
+  /**
+   * Whether the roll-call has reached this plate yet. The badge is a total
+   * now, so it is not the arithmetic that is being staggered — it is the
+   * acknowledgement, one plate at a time, which is what the sequence was
+   * always for. See the reveal note in `ProfileShelves`.
+   */
+  revealed: boolean;
   pulsing: boolean;
-  onClear?: () => void;
+  onOpen: () => void;
 }) {
   /**
    * A white card with the plate inset inside it — the frame from the
@@ -553,6 +683,14 @@ function ShelfCard({
    * badge and milestone tag inside the frame rather than hanging off it.
    */
   const milestone = highestMilestone(post.upvoteCount);
+  /* No zero disc. A plate reaches this shelf by having unacknowledged
+     activity, so the total is normally at least 1 — but if the sum ever comes
+     back 0 (a heart un-hearted between the two requests, a payload without
+     heartCount on a plate whose only reaction was a heart), an orange "0" is a
+     worse answer than no badge: it claims attention and then denies it in the
+     same mark. Silence is the honest state for nothing-to-report. */
+  const reactions = reactionTotal(post);
+  const showBadge = revealed && reactions > 0;
   const body = (
     <>
       {/* The ring pulse, hugging the whole card — every edge, one beat. */}
@@ -566,17 +704,20 @@ function ShelfCard({
           <MilestoneTag upvotes={milestone.upvotes} className="absolute bottom-1.5 left-1.5" />
         )}
       </span>
-      {badge > 0 ? (
-        <Badge count={badge} />
-      ) : (
-        quietCount > 0 && <QuietCount count={quietCount} />
-      )}
+      {showBadge && <Badge count={reactions} />}
       <span className="mt-1.5 line-clamp-2 block min-h-[27px] font-display text-[11.5px] font-semibold leading-tight text-zinc-900">
         {nameOf(post)}
       </span>
-      <span className="mt-0.5 block font-mono text-[9.5px] tabular-nums text-zinc-500">
-        {cardMeta(post)}
-      </span>
+      {/* Dropped entirely rather than rendered empty: a restaurant-rated
+          plate has no percent, and an empty line still costs its leading,
+          which would leave those cards standing a few pixels taller than
+          their neighbours in the same grid row for nothing. */}
+      {cardPercent(post) && (
+        <span className="mt-0.5 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
+          {cardPercent(post)}
+        </span>
+      )}
+      <CardActivity post={post} />
     </>
   );
 
@@ -589,67 +730,83 @@ function ShelfCard({
      scrolling. */
   const shell = "relative rounded-xl bg-white p-1.5 pb-2";
 
-  if (onClear && badge > 0) {
-    return (
-      <button
-        type="button"
-        onClick={onClear}
-        aria-label={`${nameOf(post)}, ${badge} new ${badge === 1 ? "reaction" : "reactions"} — tap to clear`}
-        className={`${shell} text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
-      >
-        {body}
-      </button>
-    );
-  }
-  return <div className={shell}>{body}</div>;
+  /* Every card opens; a badged one also spends its badge on the way in.
+     Opening the plate IS reading the news about it, so there is no separate
+     dismiss gesture to learn and no way to end up with a badge you have
+     already looked behind.
+
+     The label has to carry both halves of what the card is saying, because
+     the disc alone no longer distinguishes them: the plate is here because
+     something is new, and the number on it is the running total. A reader who
+     hears only "14 reactions" learns nothing about why this plate is on a
+     shelf called New reactions. */
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      aria-label={
+        showBadge
+          ? `${nameOf(post)}, ${spokenMeta(post)}, new activity, ${reactions} ${reactions === 1 ? "reaction" : "reactions"} in total — open`
+          : `${nameOf(post)}, ${spokenMeta(post)} — open`
+      }
+      className={`${shell} w-full text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange`}
+    >
+      {body}
+    </button>
+  );
 }
 
 export function ProfileShelves({
   posts,
   arrival,
+  onCommentAdded,
 }: {
   posts: ShelfPost[];
   arrival: RollCallArrival;
+  /**
+   * A comment written from the detail sheet, handed up to whoever owns
+   * `posts` — this component does not own that array and cannot patch it.
+   * Both callers (the web profile and the phone one) append it to their own
+   * copy, which is what puts the reply in the thread and takes the tile's
+   * comment count up by one at the same time.
+   */
+  onCommentAdded?: (postId: string, comment: DetailComment) => void;
 }) {
-  const {
-    badgeTotals,
-    shownBadges,
-    pulsing,
-    chip,
-    delta,
-    recentIds,
-    reactionCounts,
-    clearBadge,
-  } = arrival;
+  const { badgeTotals, shownBadges, pulsing, chip, delta, clearBadge } = arrival;
 
   /* Membership is frozen against the arrival's totals, not the live badge
      state — clearing a badge must not teleport the card to another shelf
      while you're looking at it. */
   /**
-   * Two shelves and an archive.
+   * One shelf and an archive.
    *
-   * **Recency replaced milestones here.** A milestone shelf can only ever
-   * hold the handful of plates that crossed 25 upvotes, it says the same
-   * thing on every visit, and for most accounts it is empty — so the middle
-   * of the profile was either missing or frozen. "Recent reactions" answers
-   * the question the page is actually opened to ask, and it changes as
-   * people react. The milestone mark itself still rides on the card that
-   * earned it; it just no longer files the shelf.
+   * The shelf files on the delta and nothing else: a plate is here because
+   * something landed on it since you last looked, which is the one question a
+   * profile is opened to ask and the one thing the archive below cannot say.
+   * Everything else it might have shown — how much a plate has drawn, how
+   * recently — the cards themselves now carry, on their badge and in their
+   * meta line, so a second shelf would only be the same plates in a different
+   * order under a heading that promised more than it delivered.
    *
-   * "All posts" is genuinely all of them, deliberately overlapping the
-   * shelves above. The shelves are a highlight reel of what is happening
-   * now; the grid is the complete archive, and a label reading "All posts"
-   * has to be true or it is worse than no label.
+   * "All posts" is genuinely all of them, deliberately overlapping the shelf
+   * above. The shelf is a highlight reel of what is happening now; the grid is
+   * the complete archive, and a label reading "All posts" has to be true or it
+   * is worse than no label.
    */
-  const { fresh, recent, all } = useMemo(() => {
-    const byId = new Map(posts.map((post) => [post.id, post]));
-    const fresh = posts.filter((post) => badgeTotals[post.id]);
-    const recent = recentIds
-      .filter((id) => byId.has(id) && !badgeTotals[id])
-      .map((id) => byId.get(id)!)
-      .slice(0, RECENT_SHELF_MAX);
-    return { fresh, recent, all: posts };
-  }, [posts, badgeTotals, recentIds]);
+  const { fresh, all } = useMemo(
+    () => ({ fresh: posts.filter((post) => badgeTotals[post.id]), all: posts }),
+    [posts, badgeTotals]
+  );
+
+  /* Which plate is open, by id rather than by object, so the card the sheet
+     is showing stays the one in `posts` as that array refreshes. */
+  const [openId, setOpenId] = useState<string | null>(null);
+  const openPost = openId ? posts.find((p) => p.id === openId) ?? null : null;
+
+  const open = (post: ShelfPost) => {
+    setOpenId(post.id);
+    if (badgeTotals[post.id]) clearBadge(post.id);
+  };
 
   if (posts.length === 0) return null;
 
@@ -673,9 +830,20 @@ export function ProfileShelves({
         <>
           {/* Wraps as a unit at phone width — `justify-between` alone broke
               "+12 SINCE LAST VISIT" across two lines mid-phrase at 390px. */}
-          <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
-            <p className="mono-label text-pm-grey-text">
+          <div className="mb-2.5 flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
+            {/* Ink, matching the archive label below — see the note there for
+                why the separation is carried by colour and space rather than
+                by a rule or a heavier weight. */}
+            <p className="mono-label text-zinc-900">
               New reactions
+              {/* This chip stays the count of what is NEW — it is not the sum
+                  of the discs below, and it should not become one. It is the
+                  number attached to the words "New reactions", the number the
+                  ack keys track, and the number that goes down as you clear
+                  plates; the discs answer a different question about a
+                  different scope. The two live at different sizes precisely so
+                  they don't read as a subtotal and its parts: a small pill on
+                  a label line, versus a disc on a photo. */}
               {chip !== null && (
                 <span className="badge-arrive ml-2 inline-flex items-center rounded-full bg-pm-orange px-2 py-px font-mono text-[10px] font-semibold tabular-nums text-[#F7F4EC]">
                   {chip}
@@ -688,33 +856,24 @@ export function ProfileShelves({
               </p>
             )}
           </div>
-          <div className="mb-4 grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-1.5">
+          {/* `shownBadges` is now a reveal schedule rather than a set of
+              numbers to print, and the stagger survives the change on purpose.
+              A count-up would not have: watching a lifetime 47 tick over is
+              a celebration of history, and the roll-call is deliberately not
+              that (see the Duolingo note in the header — ordinary events get
+              a small pop, nothing more). What the sequence performs is which
+              plates got attention, one at a time, and that is still news even
+              when the numeral on each is a standing total. Its membership is
+              still the delta; only the digits inside changed. */}
+          <div className="mb-7 grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-1.5">
             {fresh.map((post, i) => (
               <ShelfCard
                 key={post.id}
                 post={post}
                 tone={(i % 3) + 1}
-                badge={shownBadges[post.id] ?? 0}
+                revealed={shownBadges[post.id] !== undefined}
                 pulsing={!!pulsing[post.id]}
-                onClear={() => clearBadge(post.id)}
-              />
-            ))}
-          </div>
-        </>
-      )}
-
-      {recent.length > 0 && (
-        <>
-          <p className="mono-label mb-2 text-pm-grey-text">Recent reactions</p>
-          <div className="mb-4 grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-1.5">
-            {recent.map((post, i) => (
-              <ShelfCard
-                key={post.id}
-                post={post}
-                tone={((i + 1) % 3) + 1}
-                badge={0}
-                quietCount={reactionCounts[post.id] ?? 0}
-                pulsing={false}
+                onOpen={() => open(post)}
               />
             ))}
           </div>
@@ -723,7 +882,18 @@ export function ProfileShelves({
 
       {all.length > 0 && (
         <>
-          <p className="mono-label mb-2 text-pm-grey-text">
+          {/* Section labels carry the separation, since the shape rules give
+              them nothing else to work with: grouping here is white-on-cream
+              and never an outline, so a rule under this label is not
+              available (DESIGN.md, "Shape"). Ink rather than `--pm-grey-text`,
+              and more air above than below, so the label reads as the start of
+              something rather than as a caption floating between two grids.
+
+              No weight utility alongside `mono-label` — the class is unlayered
+              in globals.css and hard-sets `font-weight: 500`, so a
+              `font-semibold` here would be silently dropped (AGENTS.md). The
+              step up is colour and spacing, which is all that is on offer. */}
+          <p className="mono-label mb-2.5 text-zinc-900">
             {`All posts · ${all.length}`}
           </p>
           {/* The archive. Quieter than a shelf card — no name, no badge, no
@@ -734,19 +904,50 @@ export function ProfileShelves({
               stays dish-only here exactly as it is up there. */}
           <div className="grid grid-cols-[repeat(auto-fill,minmax(76px,1fr))] gap-1.5">
             {all.map((post, i) => (
-              <div key={post.id} className="rounded-xl bg-white p-1.5 pb-1.5">
+              <button
+                type="button"
+                key={post.id}
+                onClick={() => open(post)}
+                aria-label={`${nameOf(post)}, ${post.upvoteCount} ${
+                  post.upvoteCount === 1 ? "upvote" : "upvotes"
+                }, ${spokenMeta(post)} — open`}
+                className="rounded-xl bg-white p-1.5 pb-1.5 text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
+              >
                 <CardPhoto
                   post={post}
                   tone={((i + 2) % 3) + 1}
                   className="block aspect-square w-full rounded-lg"
                 />
-                <span className="mt-1 block font-mono text-[9.5px] tabular-nums text-zinc-500">
+                {/* Orange, not zinc-500. Both halves of this line are things
+                    the accent is explicitly for — AGENTS.md scopes it to
+                    "percentages/vote counts, selected states, and the primary
+                    action", and this line is the first two. It also lands the
+                    tile on the same colour as the percent in PlateDetailSheet,
+                    which is the sheet the tile opens into.
+
+                    `--pm-orange-text` rather than `--pm-orange`: this is 9.5px
+                    type, and the palette splits the accent by size for exactly
+                    that reason — the fill orange is for large numerals only.
+
+                    The `▲` here is a *report*, not a control, so orange does
+                    not claim you pressed it — the filled vote arrow is what
+                    means that, and it lives on the feed cards. */}
+                <span className="mt-1 block font-mono text-[9.5px] tabular-nums text-pm-orange-text">
                   {cardMeta(post)}
                 </span>
-              </div>
+                <CardActivity post={post} />
+              </button>
             ))}
           </div>
         </>
+      )}
+
+      {openPost && (
+        <PlateDetailSheet
+          post={openPost}
+          onClose={() => setOpenId(null)}
+          onCommentAdded={(comment) => onCommentAdded?.(openPost.id, comment)}
+        />
       )}
     </section>
   );

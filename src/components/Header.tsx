@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useNavAlerts } from "@/lib/navAlerts";
 import { BrandMark, WordMark } from "@/components/BrandMark";
 import { RestaurantSearch } from "@/components/RestaurantSearch";
-import { MobileNav } from "@/components/MobileNav";
+import { MobileNav, COACH_KEYS } from "@/components/MobileNav";
 import { NavDot } from "@/components/NavDot";
 import { PlusIcon } from "@/components/icons";
 
@@ -68,6 +68,10 @@ export function Header() {
         key={link.href}
         href={link.href}
         aria-current={current ? "page" : undefined}
+        /* First-run walkthrough anchors — see CoachTour.tsx. The mobile bar
+           carries the same marks; whichever row is on screen is the one the
+           tour finds. */
+        data-coach={COACH_KEYS[link.href]}
         className={`mono-label inline-flex min-h-11 items-center gap-2 whitespace-nowrap rounded-full px-2.5 transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
           current ? "text-pm-orange-text" : "text-pm-grey-text hover:bg-pm-grey-tint hover:text-zinc-900"
         }`}
@@ -185,6 +189,7 @@ export function Header() {
             would not be visible. */}
         <Link
           href="/post"
+          data-coach="post"
           className="mx-2.5 flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-pm-orange px-4 text-sm font-medium text-[#F7F4EC] transition-[scale,filter] duration-200 ease-out hover:brightness-105 active:scale-95 motion-safe:hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
         >
           <PlusIcon className="h-4 w-4 shrink-0" />

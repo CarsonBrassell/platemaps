@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState, type FormEvent } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
@@ -13,6 +13,7 @@ import { KindChooser, type PostKind } from "@/components/post/KindChooser";
 import { RestaurantPicker, type PickableRestaurant } from "@/components/post/RestaurantPicker";
 import { DishPicker, type PickedDish } from "@/components/post/DishPicker";
 import { PercentMeter, bandForPercent } from "@/components/post/PercentMeter";
+import { PhotoPrivacyNotice } from "@/components/post/PhotoPrivacyNotice";
 import type { PostMedia } from "@/components/feed/types";
 import { CharCount } from "@/components/post/CharCount";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
@@ -54,7 +55,7 @@ const chip =
 function PostComposer() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isSignedIn, loading, refresh } = useAuth();
+  const { account, isSignedIn, loading, refresh } = useAuth();
 
   const [kind, setKind] = useState<PostKind | null>(null);
   // Always the camera: there is no longer a way to arrive holding photos, so
@@ -82,6 +83,37 @@ function PostComposer() {
 
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  /** The first-post photo notice, up over the composer's own first screen. */
+  const [photoNotice, setPhotoNotice] = useState(false);
+
+  /**
+   * Opened on arrival, not on the Post press.
+   *
+   * Whichever door was used — the header pill, the plus button, a restaurant's
+   * comment field — it lands here, so this one effect covers every entry into
+   * the composer without any of them having to know about the notice.
+   *
+   * Once per visit to the composer, and the ref is what guarantees it. The
+   * account object is replaced on every `updateSettings` and every `refresh`,
+   * including the one `publish` does — without the latch, someone who dismissed
+   * the notice unread would have it thrown back up in their face at the moment
+   * they posted.
+   */
+  const noticeOffered = useRef(false);
+  useEffect(() => {
+    /* `?photo-notice=1` forces it open regardless of the flag, so the screen can
+       be looked at without emptying the one showing the account gets — it is a
+       once-per-account question, which makes it the one screen in the app you
+       cannot simply reload. Development only: `NODE_ENV` is inlined at build
+       time, so this branch is not in the production bundle at all. To rehearse
+       the real first run, latch and all, reset the flag with
+       `npm run notice:reset` instead. */
+    const forced =
+      process.env.NODE_ENV !== "production" && searchParams.get("photo-notice") === "1";
+    if (noticeOffered.current || !account || (account.photoNoticeSeen && !forced)) return;
+    noticeOffered.current = true;
+    setPhotoNotice(true);
+  }, [account, searchParams]);
 
   // On mount rather than when the "where" step opens: the composer is reached
   // by someone who has already decided to post, so the list is wanted within a
@@ -370,6 +402,11 @@ function PostComposer() {
 
       <form id="post-form" onSubmit={handleSubmit}>
         <div key={step} className={back ? "step-in-back" : "step-in"}>
+          {/* The viewfinder opens underneath the first-post notice rather than
+              waiting for it. The notice is a layer over the composer, not a
+              gate in front of it: what is behind it is the screen you asked
+              for, already live, so dismissing it puts you straight into the
+              shot instead of starting the camera from cold. */}
           {step === "photo" && (
             <CameraCapture
               photos={photos}
@@ -658,6 +695,13 @@ function PostComposer() {
             )}
           </div>
         </div>
+      )}
+
+      {photoNotice && (
+        <PhotoPrivacyNotice
+          onDismiss={() => setPhotoNotice(false)}
+          onAnswer={() => setPhotoNotice(false)}
+        />
       )}
     </div>
   );

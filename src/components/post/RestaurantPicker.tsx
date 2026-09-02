@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { placeLine } from "@/lib/placeLine";
 
 /**
  * What this picker needs of a restaurant, and nothing else.
@@ -19,7 +20,15 @@ import { useMemo, useState } from "react";
 export type PickableRestaurant = {
   id: string;
   name: string;
-  cuisine: string;
+  /**
+   * Null for the ~400 restaurants that never carried one — see
+   * `RestaurantView` in data/restaurants.ts.
+   *
+   * Deliberately without the search tags the other surfaces carry. This list
+   * is picked from by name, and the note above about narrowing the payload
+   * applies to a column added as much as to one kept.
+   */
+  cuisine: string | null;
   neighborhood: string;
   distance: string;
   lat: number;
@@ -66,7 +75,7 @@ export function RestaurantPicker({
     const q = query.trim().toLowerCase();
     if (!q) return byDistance;
     return byDistance.filter((r) =>
-      `${r.name} ${r.cuisine} ${r.neighborhood}`.toLowerCase().includes(q),
+      `${r.name} ${r.cuisine ?? ""} ${r.neighborhood}`.toLowerCase().includes(q),
     );
   }, [query, byDistance]);
 
@@ -121,7 +130,7 @@ export function RestaurantPicker({
                       {r.name}
                     </span>
                     <span className="mt-0.5 block truncate text-xs text-zinc-500">
-                      {r.cuisine} · {r.neighborhood}
+                      {placeLine(r.cuisine, r.neighborhood)}
                     </span>
                   </span>
                   <span className="shrink-0 text-xs font-medium text-zinc-400">{r.distance}</span>

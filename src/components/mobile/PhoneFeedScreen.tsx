@@ -62,6 +62,7 @@ export function PhoneFeedScreen() {
      which one you land on. */
   const [tab, setTab] = useState<FeedTab>("discover");
 
+
   /*
    * The plate this screen was just navigated to celebrate, if it was.
    *
@@ -581,6 +582,7 @@ export function PhoneFeedScreen() {
           reactPoints={commentReactPoints}
         />
       )}
+
     </div>
   );
 }

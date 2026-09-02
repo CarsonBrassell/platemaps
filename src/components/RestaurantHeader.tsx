@@ -10,6 +10,7 @@ import {
   SHOW_BLEND_STARS,
   blendLabel,
 } from "@/lib/ratingDisplay";
+import { placeLine } from "@/lib/placeLine";
 
 /**
  * The detail page's hero, and the one surface with room to show both numbers in
@@ -57,7 +58,7 @@ export function RestaurantHeader({
           {restaurant.name}
         </h1>
         <p className="mt-1 text-sm text-zinc-500">
-          {restaurant.cuisine} · {restaurant.neighborhood}
+          {placeLine(restaurant.cuisine, restaurant.neighborhood)}
         </p>
         {/* The street address sits under the neighbourhood rather than beside
             it: the two answer the same question at different resolutions, and

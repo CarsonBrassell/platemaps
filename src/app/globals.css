@@ -20,8 +20,17 @@
      and read as decoration among all the other orange — "something is waiting"
      has to be legible in a glance from across the header. Kept warm (a red
      with the palette's own yellow in it) and far enough off #c9591f in hue to
-     be told apart at 6px. Not for type, borders or fills: if it starts
-     appearing anywhere but a notification dot it has stopped meaning this. */
+     be told apart at 6px.
+
+     **It has a second job now, and only one: the like heart on a plate.** A
+     heart is not the accent — orange means percentages, vote counts and the
+     primary action, so a heart wearing it was quietly claiming to be one of
+     those. The alternative was a second red, and two reds a few degrees apart
+     is precisely the palette rot this file exists to prevent, so the existing
+     one widened instead. The two never share a screen (a dot lives in the nav,
+     the heart on a photo) and both are shapes a reader already reads as red.
+     Still not for type, borders or fills: outside a notification dot and a
+     heart, this colour has stopped meaning anything. */
   --pm-red: #c62a1e;
   /* Warm neutral tone blocks standing where dish photos don't exist yet —
      deliberate blocks of warm tone, never gray boxes or icon placeholders. */
@@ -494,6 +503,19 @@ h3 {
   display: block;
 }
 
+/* Where you were when the map last had a reading, drawn while it waits for a
+   new one — or indefinitely, when the browser cannot get one at all. Dimmer
+   than a live dot and never carrying a cone, because it is a memory rather
+   than a measurement. See MyLocation.tsx. */
+.map-me[data-stale="on"] .map-me-core {
+  background: #b9d6e6;
+  box-shadow: 0 0 6px rgba(126, 214, 255, 0.4);
+}
+
+.map-me[data-stale="on"] .map-me-cone {
+  display: none;
+}
+
 .map-me-core {
   width: 16px;
   height: 16px;
@@ -604,14 +626,36 @@ h3 {
   opacity: 0.85;
 }
 
-/* The Yelp/Google blend is the third and quietest voice, and it has to lose to
-   the plate score beside it: the two are different scales, and equal weight
-   would invite reading them as one. Dimmer than .map-tip-rating rather than a
-   different hue — the map has one accent, and a second colour here would read as
-   a third kind of thing. Still ~5.5:1 on the night ground. Retired with the
-   stars themselves (SHOW_BLEND_STARS in lib/ratingDisplay.ts). */
-.map-tip-blend {
+/* The Yelp/Google blend, on both surfaces that carry it — the hover tip's row
+   and the neon sign over a stack. One setting, so a name lit on the map and the
+   same name under the cursor cannot disagree about how loud its rating is.
+
+   Standing alone it sits at .map-tip-rating's own step: one notch behind the
+   name, which is where the only number on a line belongs. It is dimmed BELOW
+   that step only when a plate score is actually printed beside it — the rule
+   below — because that is the case the dimming was for. The two are different
+   scales and at equal weight a reader merges them into one number, so the
+   borrowed one has to visibly lose to ours.
+
+   It used to take the quieter setting unconditionally, and that was wrong the
+   moment it went on the sign: almost nothing has cleared plateScore.ts's floor,
+   so in practice every sign was dimming its rating to lose a contest that had
+   no other entrant. Adjacent-sibling rather than a flag from JS — signHtml and
+   the tip both emit the percent immediately before the blend, so the DOM
+   already knows.
+
+   Dimmer rather than a different hue: the map has one accent, and a second
+   colour here would read as a third kind of thing. Both steps clear 4.5:1 on
+   the night ground. Retired with the stars themselves (SHOW_BLEND_STARS in
+   lib/ratingDisplay.ts). */
+.map-tip-blend,
+.map-sign-blend {
   letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
+.map-tip-rating + .map-tip-blend,
+.map-sign-rating + .map-sign-blend {
   opacity: 0.6;
   font-size: 0.92em;
 }

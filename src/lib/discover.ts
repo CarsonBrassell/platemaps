@@ -57,6 +57,7 @@ import type { FeedPlace } from "@/lib/feedFilters";
 import type { Coords } from "@/lib/geo";
 import type { RestaurantView } from "@/data/restaurants";
 import {
+  dishMatchesFor,
   getAllRestaurantAspectTallies,
   getAllRestaurantPlateScores,
   getDishesByRestaurant,
@@ -187,7 +188,13 @@ export async function getDiscoverPage(
   // could only supply a time it had already been told, and "open now" in a San
   // Diego product is a question about San Diego — openStateFor does the zone
   // conversion either way.
-  const ctx: FilterContext = { now: new Date(), here, aspects, plates };
+  // The dish half of a free-text query, fetched once per request and only when
+  // there is text to fetch it for. Browsing the grid, this is a skipped round
+  // trip rather than a cheap one — see dishMatchesFor in lib/db.ts for why the
+  // dish names are not simply held on the corpus alongside everything else.
+  const dishes = filters.q ? await dishMatchesFor(filters.q) : null;
+
+  const ctx: FilterContext = { now: new Date(), here, aspects, plates, dishes };
 
   const matched = applyFilters(restaurants, filters, ctx);
   const limit = Math.min(Math.max(shown, PAGE_SIZE), MAX_SHOWN);
@@ -197,9 +204,13 @@ export async function getDiscoverPage(
     results: matched.slice(0, limit).map((r) => {
       const score = filters.aspect ? aspects.get(r.id)?.get(filters.aspect) : undefined;
       const plate = plates[r.id] ?? EMPTY_PLATE_SCORE;
+      // Attached to the page slice, not to the corpus rows: the matched dish
+      // is a fact about *this query*, and the corpus outlives it by a minute.
+      const dish = dishes?.get(r.id);
+      const base = dish ? { ...r, matchedDish: dish } : r;
       return score === undefined
-        ? { ...r, plateScore: plate }
-        : { ...r, plateScore: plate, aspectScore: score };
+        ? { ...base, plateScore: plate }
+        : { ...base, plateScore: plate, aspectScore: score };
     }),
     total: matched.length,
     shown: Math.min(limit, matched.length),
@@ -311,6 +322,10 @@ export async function resolvePostRefs<
       id: place.id,
       name: place.name,
       cuisine: place.cuisine,
+      // So the feed answers "tacos" for the same places Discover does — the
+      // filter vocabulary is deliberately blunt and the tags are where the
+      // detail went. See data/cuisines.ts.
+      cuisineTags: place.cuisineTags,
       neighborhood: place.neighborhood,
     };
 

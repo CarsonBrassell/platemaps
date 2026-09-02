@@ -4,10 +4,11 @@
  * ## What a term is matched against
  *
  * Everything on the plate, not just its restaurant. Discover's `q` matches a
- * restaurant's name, cuisine and neighbourhood, which is the right reading for
- * a grid of restaurants and the wrong one for a feed: what is on screen here is
- * what people *wrote*. So a term is matched against the caption, the dish, the
- * author, the tags, the restaurant *and every comment on the post*.
+ * restaurant's name, cuisine, cuisine tags and neighbourhood, which is the
+ * right reading for a grid of restaurants and the wrong one for a feed: what
+ * is on screen here is what people *wrote*. So a term is matched against the
+ * caption, the dish, the author, the tags, the restaurant *and every comment
+ * on the post*.
  *
  * "mexican" therefore finds three different things at once — the plate at a
  * Mexican restaurant, the plate captioned "best mexican in town", and the plate
@@ -37,7 +38,7 @@ import type { Post } from "@/components/feed/types";
 /**
  * What a post's restaurant contributes to a search, as the feed routes send it.
  *
- * Four fields, not a `RestaurantView`: this is per-restaurant payload on every
+ * Five fields, not a `RestaurantView`: this is per-restaurant payload on every
  * feed response, and the reader is a substring match. The rest of the row —
  * hours, ratings, photos, the price band — answers questions the feed does not
  * ask.
@@ -45,7 +46,9 @@ import type { Post } from "@/components/feed/types";
 export type FeedPlace = {
   id: string;
   name: string;
-  cuisine: string;
+  cuisine: string | null;
+  /** The specific labels behind the canonical cuisine — see data/cuisines.ts. */
+  cuisineTags?: string;
   neighborhood: string;
 };
 
@@ -80,6 +83,10 @@ export function haystackFor(post: Post, place: FeedPlace | undefined): string {
       post.vibe,
       place?.name,
       place?.cuisine,
+      // So the feed answers "tacos" for the same places Discover does. The
+      // filter vocabulary is deliberately blunt; the tags are where the
+      // detail went.
+      place?.cuisineTags,
       place?.neighborhood,
       // The comment threads, which is the half of a plate no search in the app
       // reached before — "someone in here said the al pastor is the move" is a

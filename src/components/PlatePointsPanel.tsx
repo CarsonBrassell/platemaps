@@ -4,6 +4,7 @@ import { useState } from "react";
 import { PlateStarIcon, InfoIcon } from "@/components/icons";
 import { PointsInfoModal } from "@/components/feed/PointsInfoModal";
 import { POINT_RULES, formatPoints } from "@/lib/points";
+import { RankInsignia } from "@/components/RankInsignia";
 import { RANKS, rankFor } from "@/lib/ranks";
 
 /**
@@ -44,9 +45,19 @@ export function PlatePointsPanel({
 }: {
   points: number;
   /**
-   * Renders the rank ladder's progress under the rules row: your title, a
-   * thin track toward the next rung, and how far is left. Own-profile
-   * surfaces only — the public profile has its own insignia treatment, and
+   * Renders the rung you are on under the rules row: your crest, your title,
+   * a track toward the next rung and how far is left, with the rung you are
+   * climbing toward dimmed at the end.
+   *
+   * Deliberately the *step*, not the ladder. The whole six-rung ladder was
+   * the other candidate and it loses here — the panel's job is the total and
+   * what it is worth next, and a full ladder turns a four-line panel into the
+   * tallest thing on the profile to answer a question nobody asked at their
+   * own total. The rules row above already says how to climb.
+   *
+   * Own-profile surfaces only — the public profile has its own insignia
+   * treatment (bigger, beside the avatar, no track, because a stranger is
+   * sizing you up rather than reading their own progress), and
    * every other caller stays a bare total. This is the surface Calvin asked
    * for when he asked why his rank wasn't on his profile (2026-08); the
    * "public profile only" rule in lib/ranks.ts is amended to match.
@@ -137,21 +148,48 @@ export function PlatePointsPanel({
             tint). At the top rung the right label states the fact instead of
             counting to a rung that doesn't exist. */}
         {showRank && (
-          <div className="mt-3">
-            <div className="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.12em] text-pm-orange-text">
-              <span>{rank.title}</span>
-              <span className="tabular-nums">
-                {next
-                  ? `${formatPoints(next.minPoints - points)} to ${next.title}`
-                  : "Top of the ladder"}
+          <div className="mt-3 flex items-center gap-3">
+            {/* Both crests are decorative here and hidden from assistive tech:
+                the component labels itself "<title> rank", and the title is
+                already written beside it — announcing both reads "Local rank,
+                Local".
+
+                `showCard` is on because this panel is the case the plaque was
+                built for. Without it the crest is cutlery in --pm-grey-text
+                over a --pm-grey-tint plate ring, and both of those sit within
+                a couple of points of --pm-orange-tint — measured on screen,
+                the mark all but vanished. The white plaque is the component's
+                own answer to a non-white ground, not a box drawn for
+                grouping. */}
+            <span aria-hidden="true" className="shrink-0">
+              <RankInsignia rank={rank.key} size={46} showCard />
+            </span>
+
+            <div className="min-w-0 flex-1">
+              <div className="flex items-baseline justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-pm-orange-text">
+                <span>{rank.title}</span>
+                <span className="tabular-nums">
+                  {next
+                    ? `${formatPoints(next.minPoints - points)} to ${next.title}`
+                    : "Top of the ladder"}
+                </span>
+              </div>
+              <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/60">
+                <div
+                  className="h-full rounded-full bg-pm-orange transition-[width] duration-700 ease-out"
+                  style={{ width: `${trackPct}%` }}
+                />
+              </div>
+            </div>
+
+            {/* The rung being climbed toward, dimmed because it is not yours
+                yet. Absent at the top of the ladder rather than shown as an
+                empty slot — there is nothing above Institution to aim at. */}
+            {next && (
+              <span aria-hidden="true" className="shrink-0">
+                <RankInsignia rank={next.key} size={32} showCard className="opacity-45" />
               </span>
-            </div>
-            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/60">
-              <div
-                className="h-full rounded-full bg-pm-orange transition-[width] duration-700 ease-out"
-                style={{ width: `${trackPct}%` }}
-              />
-            </div>
+            )}
           </div>
         )}
       </div>

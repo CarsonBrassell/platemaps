@@ -35,6 +35,14 @@ export type AccountJson = {
   emailVerified: boolean;
   /** An address awaiting its link, if one is outstanding. */
   pendingEmail?: string;
+  /**
+   * Whether the first-post photo notice still has to be shown. The composer is
+   * the only reader — it decides on this before it publishes, so it has to come
+   * down with the account rather than be asked for separately at post time.
+   */
+  photoNoticeSeen: boolean;
+  /** Whether the first-run coach tour has run. The feeds are the only readers. */
+  tourSeen: boolean;
 };
 
 export function accountJson(user: User): AccountJson {
@@ -52,5 +60,7 @@ export function accountJson(user: User): AccountJson {
     friendRequestsOpen: user.friendRequestsOpen,
     emailVerified: user.emailVerifiedAt !== undefined,
     pendingEmail: user.pendingEmail,
+    photoNoticeSeen: user.photoNoticeSeen,
+    tourSeen: user.tourSeen,
   };
 }

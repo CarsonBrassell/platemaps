@@ -58,6 +58,24 @@ const RIGHT = [
 
 type Slot = (typeof LEFT)[number] | (typeof RIGHT)[number];
 
+/**
+ * Destination → first-run walkthrough anchor. See CoachTour.tsx.
+ *
+ * Keyed by href rather than by label so the three navs that render these
+ * destinations — this bar, the header row and `PhoneNav` — can be marked from
+ * their own route tables without agreeing on anything but the URL.
+ */
+export const COACH_KEYS: Record<string, string | undefined> = {
+  "/feed": "feed",
+  "/": "discover",
+  "/friends": "friends",
+  "/account": "profile",
+  "/m/feed": "feed",
+  "/m": "discover",
+  "/m/friends": "friends",
+  "/m/account": "profile",
+};
+
 export function MobileNav({ alerts }: { alerts: NavAlerts }) {
   const pathname = usePathname();
 
@@ -73,6 +91,11 @@ export function MobileNav({ alerts }: { alerts: NavAlerts }) {
         key={href}
         href={href}
         aria-current={current ? "page" : undefined}
+        /* Anchors for the first-run walkthrough. Marked here rather than in
+           the tour, which finds its targets in the live DOM — see
+           CoachTour.tsx. Keyed off the destination so the header row, this bar
+           and the phone nav can all carry the same marks. */
+        data-coach={COACH_KEYS[href]}
         /* Small text, so the accent uses its darker voice (DESIGN.md). */
         className={`${SLOT} ${current ? "text-pm-orange-text" : "text-zinc-500"}`}
       >
@@ -99,6 +122,7 @@ export function MobileNav({ alerts }: { alerts: NavAlerts }) {
         <Link
           href="/post"
           aria-label="Create post"
+          data-coach="post"
           className="flex min-h-14 flex-1 items-center justify-center rounded-lg focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-pm-orange"
         >
           <span className="flex h-14 w-14 items-center justify-center rounded-full bg-pm-orange text-[#F7F4EC] transition-transform active:scale-95">

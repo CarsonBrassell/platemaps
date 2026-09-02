@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Spline_Sans_Mono } from "next/font/google";
 import { AuthProvider } from "@/lib/auth";
+import { CoachTourMount } from "@/components/tour/CoachTourMount";
 import "./globals.css";
 
 /* The machine voice: every number and machine-generated value — prices,
@@ -75,7 +76,12 @@ export default function RootLayout({
           FINISH: unreviewed and undocumented is unfinished; this build ends
           with the finish review, the verdict, and DESIGN.md.
         */}
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          {/* The first-run walkthrough. Here rather than on a page because
+              every step of it ends in a navigation — see CoachTourMount. */}
+          <CoachTourMount />
+        </AuthProvider>
       </body>
     </html>
   );

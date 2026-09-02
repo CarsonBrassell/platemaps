@@ -18,6 +18,10 @@ type Account = {
   emailVerified: boolean;
   /** An address asked for but not yet confirmed, if a change is in flight. */
   pendingEmail?: string;
+  /** Whether the first-post photo notice has been shown. Mirrors AccountJson. */
+  photoNoticeSeen: boolean;
+  /** Whether the first-run coach tour has run. Mirrors AccountJson. */
+  tourSeen: boolean;
 };
 
 type AuthContextValue = {
@@ -48,6 +52,9 @@ type AuthContextValue = {
       hideFromLeaderboard: boolean;
       discoverableByUsername: boolean;
       friendRequestsOpen: boolean;
+      /** Only ever `true` — the server treats it as a latch, not a switch. */
+      photoNoticeSeen: true;
+      tourSeen: true;
     }>
   ) => Promise<string | null>;
   /** Rename. Resolves to an error string, or null with the context renamed. */
@@ -276,6 +283,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       hideFromLeaderboard: boolean;
       discoverableByUsername: boolean;
       friendRequestsOpen: boolean;
+      photoNoticeSeen: true;
+      tourSeen: true;
     }>
   ) {
     const res = await fetch("/api/account/settings", {

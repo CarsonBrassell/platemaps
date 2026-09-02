@@ -33,7 +33,17 @@ export type Restaurant = {
    */
   sourceKey?: string;
   name: string;
-  cuisine: string;
+  /** Canonical, or null when none was ever given — see `RestaurantView`. */
+  cuisine: string | null;
+  /** The specific labels, joined, for search — see `RestaurantView`. */
+  cuisineTags?: string;
+  /**
+   * What this row arrived with, verbatim, before the vocabulary in
+   * data/cuisines.ts collapsed it. Kept so the collapse stays reversible: the
+   * backfill re-reads this rather than the already-canonical value, so
+   * revising the vocabulary is an edit and a re-run, not a re-import.
+   */
+  cuisineRaw?: string;
   neighborhood: string;
   distance: string;
   walkTime: string;
@@ -136,10 +146,59 @@ export type Restaurant = {
  * dishes table each time the row is assembled (see `getRestaurants`), because
  * it summarises menu prices rather than describing the business.
  */
+/**
+ * One dish off a restaurant's menu, as a search result carries it.
+ *
+ * Deliberately two fields. The card prints a name and a price and nothing
+ * else, and this type travels on every row of a dish-shaped search response —
+ * a description or a section would be bytes per restaurant that nothing
+ * renders.
+ */
+export type MatchedDish = {
+  name: string;
+  /** Null when the menu listed no price, which is common. */
+  price: string | null;
+};
+
 export type RestaurantView = {
   id: string;
   name: string;
-  cuisine: string;
+  /**
+   * One of the canonical cuisines in data/cuisines.ts, or null.
+   *
+   * **Null is normal.** Roughly 400 listed restaurants arrived from
+   * OpenStreetMap with no `cuisine=` tag at all, and null is how that absence
+   * is now recorded — it used to be the literal string "Restaurant", which
+   * made a missing answer look like a category and put a 382-row "Restaurant"
+   * option in the Discover facet. Every renderer needs a story for the
+   * absence; `placeLine` in lib/placeLine.ts is that story.
+   */
+  cuisine: string | null;
+  /**
+   * The specific labels this row arrived with, joined into one string — a
+   * search haystack, never a list to render.
+   *
+   * It exists because the filter vocabulary is deliberately blunt and search
+   * must not be. A shop tagged `taco` now files under Mexican, and this is
+   * what still lets someone typing "tacos" find it. Joined text rather than
+   * `text[]` for the trigram index's sake; see scripts/migrate.mjs.
+   */
+  cuisineTags: string;
+  /**
+   * The dish that made this restaurant a search result, when one did.
+   *
+   * **Set only by a search**, and undefined everywhere else — browsing the
+   * grid unfiltered, there is no such thing as "the matched dish". It is on
+   * the row rather than fetched by the card because a query like "california
+   * burrito" returns 184 restaurants, and without the dish and its price on
+   * each card the result is an indistinguishable wall of "Mexican · Barrio
+   * Logan". The dish is the reason the row is there, so it has to be visible
+   * before the click, not after it.
+   *
+   * `price` is null for a dish whose menu listed none — common enough that a
+   * renderer must handle it rather than print an empty pair of characters.
+   */
+  matchedDish?: MatchedDish;
   neighborhood: string;
   distance: string;
   /**
@@ -156,6 +215,22 @@ export type RestaurantView = {
   trending?: boolean;
   photo?: string;
   photoAlt?: string;
+  /**
+   * The photo's pixel size, so a card can reserve its box before the image
+   * lands. Measured by `npm run photos:size`, never sourced — see the columns'
+   * comment in scripts/migrate.mjs.
+   *
+   * Both undefined together or neither: a partial pair is not a ratio. Cheap
+   * enough to carry into a client component at roughly ten bytes a row, against
+   * the ~250 `hours` already costs.
+   *
+   * **Undefined is normal, not exceptional.** Twelve photos in the corpus never
+   * resolved, and every newly imported restaurant is in this state until the
+   * backfill next runs, so a caller that needs a height must have an answer for
+   * the absence — `photoRatio` in lib/photoShape.ts is that answer.
+   */
+  photoW?: number;
+  photoH?: number;
   priceBand: PriceBand | null;
 };
 

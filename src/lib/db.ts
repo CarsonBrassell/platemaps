@@ -1,6 +1,6 @@
 import { del } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
-import type { Restaurant, RestaurantView } from "@/data/restaurants";
+import type { MatchedDish, Restaurant, RestaurantView } from "@/data/restaurants";
 import type { Dish } from "@/data/dishes";
 import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";
@@ -54,6 +54,14 @@ export type User = {
   emailVerifiedAt?: string;
   /** An address asked for but not yet proved. Display only, never an identity. */
   pendingEmail?: string;
+  /**
+   * Whether the first-post photo notice has been shown — see its migration.
+   * One-way: it is set when the notice is answered and never cleared, so
+   * nobody is told the same thing twice.
+   */
+  photoNoticeSeen: boolean;
+  /** Whether the first-run coach tour has run. One-way, like the flag above. */
+  tourSeen: boolean;
 };
 
 function currentMonthKey(): string {
@@ -87,6 +95,8 @@ function rowToUser(row: any): User {
     friendRequestsOpen: row.friend_requests_open ?? true,
     emailVerifiedAt: row.email_verified_at ?? undefined,
     pendingEmail: row.pending_email ?? undefined,
+    photoNoticeSeen: row.photo_notice_seen ?? false,
+    tourSeen: row.tour_seen ?? false,
   };
 }
 
@@ -518,6 +528,23 @@ export type Post = {
    * the shape every viewer of a post receives.
    */
   heartedByMe: boolean;
+  /**
+   * How many people hearted this post — **only ever populated for the post's
+   * own author**, and null or absent for everybody else.
+   *
+   * A count is a weaker disclosure than the list `getHeartsForAuthor` guards,
+   * but it is the same disclosure in kind: hearts are private in this app, so
+   * "nine people hearted your plate" is the author's number and nobody else's.
+   * The rule is therefore enforced the same way — inside the query, by a CASE
+   * on `p.user_id`, so a row the requester did not write cannot carry a count
+   * even in memory. It is deliberately NOT filtered out in JS afterwards,
+   * where a later refactor of the mapping could quietly restore the leak.
+   *
+   * Only `getProfilePosts` selects it, because only the author's own profile
+   * has a use for it; every other query leaves it undefined. Absent means "not
+   * yours to see", never "zero" — a plate with no hearts reports 0.
+   */
+  heartCount?: number | null;
   savedBy: string[];
   comments: Comment[];
 };
@@ -672,6 +699,12 @@ async function hydratePosts(
       upvotedByMe: myUpvotes.has(postId),
       downvotedByMe: myDownvotes.has(postId),
       heartedByMe: myHearts.has(postId),
+      // Carried straight through from whatever the SELECT decided, never
+      // computed here: hydratePosts serves every viewer of every post, so it
+      // is the last place that should be deciding who may know a heart count.
+      // Only getProfilePosts asks for the column, and its CASE has already
+      // nulled it for anything the requester did not write.
+      heartCount: row.heart_count ?? null,
       savedBy: saveRows.filter((s) => s.post_id === postId).map((s) => s.user_id as string),
       comments: commentRows
         .filter((c) => c.post_id === postId)
@@ -732,16 +765,33 @@ export async function getPosts(viewerId: string | null = null): Promise<Post[]> 
  * Takes the id from the session at the call site, never from a query
  * parameter — a caller-supplied id here would hand anyone another person's
  * saved-post list, which is not public.
+ *
+ * **It is also the only query that selects a heart count, and the reason it
+ * can is the CASE below.** The profile's plate badge counts every reaction a
+ * plate has drawn — upvotes, comments and hearts together — which means the
+ * author's own screen needs the third number the rest of the app is forbidden
+ * to know. But this result set is mixed: the `OR` deliberately returns other
+ * people's posts (the ones you saved), and a heart count on one of those would
+ * be a straight leak of somebody else's private number. So the count is
+ * decided by the same row that decides whether you may have it, in SQL, and
+ * `heart_count` comes back NULL for every saved post. Doing it in JS after the
+ * fact would put one refactor between here and the leak; doing it here means
+ * the leak would have to be written on purpose.
  */
 export async function getProfilePosts(
   userId: string,
   viewerId: string | null = null
 ): Promise<Post[]> {
   const rows = await sql.query(
-    `${POST_SELECT}
-     WHERE p.user_id = $1
-        OR p.id IN (SELECT post_id FROM post_saves WHERE user_id = $1)
-     ORDER BY p.created_at ASC`,
+    `SELECT p.*,
+            CASE WHEN p.user_id = $1
+                 THEN (SELECT count(*)::int FROM post_hearts h WHERE h.post_id = p.id)
+                 ELSE NULL
+            END AS heart_count
+       FROM (${POST_SELECT}
+             WHERE p.user_id = $1
+                OR p.id IN (SELECT post_id FROM post_saves WHERE user_id = $1)) p
+      ORDER BY p.created_at ASC`,
     [userId]
   );
   return hydratePosts(rows, viewerId);
@@ -1752,6 +1802,27 @@ export async function updatePhotoSharing(userId: string, enabled: boolean): Prom
 }
 
 /**
+ * Records that the first-post photo notice has been shown.
+ *
+ * One-way on purpose, and one-way *here* rather than at the route: there is no
+ * caller that wants to un-tell somebody something, and a settable boolean would
+ * let a replayed request put the notice back in front of a user who has already
+ * answered it. The route passes no value.
+ */
+export async function markPhotoNoticeSeen(userId: string): Promise<void> {
+  await sql`UPDATE users SET photo_notice_seen = true WHERE id = ${userId}`;
+}
+
+/**
+ * Records that the first-run coach tour has run. Same one-way latch, and for
+ * the same reason: nothing wants to put a tour back in front of somebody who
+ * has already been walked through the app.
+ */
+export async function markTourSeen(userId: string): Promise<void> {
+  await sql`UPDATE users SET tour_seen = true WHERE id = ${userId}`;
+}
+
+/**
  * The three privacy switches, written one column at a time so a caller can
  * send one without having to know or resend the other two — the same shape
  * `updateFavorites` uses, and the reason both take partials.
@@ -2468,7 +2539,9 @@ function rowToRestaurant(row: any): Restaurant {
     id: row.id,
     sourceKey: row.source_key ?? undefined,
     name: row.name,
-    cuisine: row.cuisine,
+    cuisine: row.cuisine ?? null,
+    cuisineTags: row.cuisine_tags ?? undefined,
+    cuisineRaw: row.cuisine_raw ?? undefined,
     neighborhood: row.neighborhood,
     distance: row.distance,
     walkTime: row.walk_time,
@@ -2546,8 +2619,9 @@ export async function getRestaurants(): Promise<RestaurantView[]> {
    * listing, it is an empty one. Never drop this predicate to "show more".
    */
   const restaurantRows = await sql`
-    SELECT id, name, cuisine, neighborhood, distance, hours,
-           lat, lng, rating, review_count, trending, photo, photo_alt, price_band
+    SELECT id, name, cuisine, cuisine_tags, neighborhood, distance, hours,
+           lat, lng, rating, review_count, trending, photo, photo_alt,
+           photo_w, photo_h, price_band
     FROM restaurants WHERE listed ORDER BY sort_order, id
   `;
 
@@ -2565,7 +2639,18 @@ function rowToRestaurantView(row: Record<string, unknown>): RestaurantView {
   return {
     id: row.id as string,
     name: row.name as string,
-    cuisine: row.cuisine as string,
+    cuisine: (row.cuisine as string | null) ?? null,
+    cuisineTags: (row.cuisine_tags as string | null) ?? "",
+    // Present only on a search that joined the dish table; the grid's own
+    // projection never selects these, so the field stays off browsing rows.
+    ...(row.matched_dish
+      ? {
+          matchedDish: {
+            name: row.matched_dish as string,
+            price: (row.matched_dish_price as string) || null,
+          },
+        }
+      : {}),
     neighborhood: row.neighborhood as string,
     distance: row.distance as string,
     hours: (row.hours as Hours) ?? null,
@@ -2576,6 +2661,10 @@ function rowToRestaurantView(row: Record<string, unknown>): RestaurantView {
     trending: (row.trending as boolean) ?? false,
     photo: (row.photo as string | null) ?? undefined,
     photoAlt: (row.photo_alt as string | null) ?? undefined,
+    // Both or neither: half a pair is not a ratio, and a caller that got one
+    // would have to re-check the other anyway.
+    photoW: (row.photo_w as number | null) ?? undefined,
+    photoH: (row.photo_h as number | null) ?? undefined,
     // Null is meaningful: no menu means no band, and no price filter matches.
     priceBand: (row.price_band as PriceBand | null) ?? null,
   };
@@ -2620,7 +2709,7 @@ export async function getRestaurantIndex(): Promise<RestaurantIndexRow[]> {
   return rows.map((row) => ({
     id: row.id as string,
     name: row.name as string,
-    cuisine: row.cuisine as string,
+    cuisine: (row.cuisine as string | null) ?? null,
     neighborhood: row.neighborhood as string,
     distance: row.distance as string,
     lat: row.lat as number,
@@ -2714,12 +2803,35 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
  * for a typeahead that shows at most a dozen results. The route's own comment
  * had named this the seam to move into SQL, and this is that move.
  *
- * The predicate is deliberately the same three fields, matched the same
- * case-insensitive substring way, that the JavaScript version used - so
- * `restaurantRank.ts` ranks the same candidates it always did and no caller
- * sees a behaviour change. The concatenation mirrors the trigram index in
- * scripts/migrate.mjs; if you change one, change the other or the planner will
- * quietly fall back to a sequential scan.
+ * Four fields now, not three, matched the same case-insensitive substring way.
+ * `cuisine_tags` joined when cuisine became a controlled vocabulary: the
+ * filter collapsed 162 labels into 29, and this column is what keeps the
+ * detail searchable — a shop tagged `taco` files under Mexican but still
+ * answers "tacos". Without it the collapse would have quietly deleted a
+ * hundred and thirty working search terms.
+ *
+ * Every part is coalesced because `cuisine` is nullable, and `a || b` is NULL
+ * when either side is: an uncoalesced concatenation would make the ~400
+ * restaurants with no cuisine unfindable by *name*. The concatenation mirrors
+ * the trigram index in scripts/migrate.mjs; if you change one, change the
+ * other or the planner will quietly fall back to a sequential scan.
+ *
+ * Dishes join the search as a fifth field, and they are the reason the query
+ * grew a CTE. 171,662 dishes sat in that table unreachable by any search box:
+ * "carne asada fries" returned nothing while 129 listed restaurants served it.
+ * A restaurant now matches if its own text matches *or* one of its dishes
+ * does.
+ *
+ * `DISTINCT ON (restaurant_id) ... ORDER BY length(name)` picks one dish per
+ * restaurant, the shortest matching name. That is the "which one did I mean"
+ * heuristic: for "carne asada fries", the plain `Carne Asada Fries` is a
+ * better answer than `Carne Asada Fries Supreme w/ Extra Guacamole`, and one
+ * dish per row is what the card has room to print.
+ *
+ * The matched dish rides back on the row rather than being looked up again,
+ * because the card shows it *before* you click through — a query like
+ * "california burrito" returns 184 restaurants that would otherwise be
+ * indistinguishable walls of "Mexican · Barrio Logan".
  *
  * `LIMIT` exists because no search surface can show more than a handful of
  * rows. It is generous rather than tight - ranking happens after this, in the
@@ -2729,15 +2841,68 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
 export async function searchRestaurants(term: string, limit = 60): Promise<RestaurantView[]> {
   const needle = `%${term}%`;
   const rows = await sql`
-    SELECT id, name, cuisine, neighborhood, distance, hours,
-           lat, lng, rating, review_count, trending, photo, photo_alt, price_band
-    FROM restaurants
-    WHERE listed
-      AND (name || ' ' || cuisine || ' ' || neighborhood) ILIKE ${needle}
-    ORDER BY sort_order, id
+    WITH dish_match AS (
+      SELECT DISTINCT ON (d.restaurant_id)
+             d.restaurant_id, d.name, d.price
+      FROM dishes d
+      WHERE d.name ILIKE ${needle}
+      ORDER BY d.restaurant_id, length(d.name), d.sort_order
+    )
+    SELECT r.id, r.name, r.cuisine, r.cuisine_tags, r.neighborhood, r.distance,
+           r.hours, r.lat, r.lng, r.rating, r.review_count, r.trending,
+           r.photo, r.photo_alt, r.photo_w, r.photo_h, r.price_band,
+           dm.name AS matched_dish, dm.price AS matched_dish_price
+    FROM restaurants r
+    LEFT JOIN dish_match dm ON dm.restaurant_id = r.id
+    WHERE r.listed
+      AND (
+        dm.restaurant_id IS NOT NULL
+        OR (
+          r.name || ' ' || coalesce(r.cuisine, '') || ' ' ||
+          coalesce(r.cuisine_tags, '') || ' ' || r.neighborhood
+        ) ILIKE ${needle}
+      )
+    ORDER BY r.sort_order, r.id
     LIMIT ${limit}
   `;
   return rows.map(rowToRestaurantView);
+}
+
+/**
+ * Which restaurants serve a dish matching this term, and which dish it is.
+ *
+ * Discover needs the same answer `searchRestaurants` computes, but it cannot
+ * use that function: the grid runs `matchesFilters` over the in-memory corpus
+ * so the facet counts and the results come from one predicate, and that corpus
+ * has no dishes in it. Putting them there was the alternative and it is the
+ * wrong trade — 171,662 dish names is megabytes of text held per server
+ * instance to answer a question almost no request asks.
+ *
+ * So the dish half of a query is fetched once per request that has a `q`, as a
+ * map the predicate can consult by id. Unfiltered by `listed` on purpose: the
+ * caller intersects with its own corpus, which is already gated, and a
+ * predicate that has to agree with a second gate is a second place to drift.
+ *
+ * Returns an empty map for a blank term rather than every dish in the city.
+ */
+export async function dishMatchesFor(term: string): Promise<Map<string, MatchedDish>> {
+  const trimmed = term.trim();
+  if (!trimmed) return new Map();
+
+  const rows = await sql`
+    SELECT DISTINCT ON (d.restaurant_id)
+           d.restaurant_id, d.name, d.price
+    FROM dishes d
+    WHERE d.name ILIKE ${`%${trimmed}%`}
+    ORDER BY d.restaurant_id, length(d.name), d.sort_order
+  `;
+
+  return new Map(
+    rows.map((row) => [
+      row.restaurant_id as string,
+      { name: row.name as string, price: (row.price as string) || null },
+    ]),
+  );
 }
 
 /**
@@ -2900,7 +3065,8 @@ export async function getRestaurantFacets(): Promise<{
   // grid it filters is gated. An option that cannot match anything is worse
   // than an option that isn't offered.
   const [cuisineRows, neighborhoodRows] = await Promise.all([
-    sql`SELECT DISTINCT cuisine FROM restaurants WHERE listed ORDER BY cuisine`,
+    sql`SELECT DISTINCT cuisine FROM restaurants
+           WHERE listed AND cuisine IS NOT NULL ORDER BY cuisine`,
     sql`SELECT DISTINCT neighborhood FROM restaurants WHERE listed ORDER BY neighborhood`,
   ]);
   return {

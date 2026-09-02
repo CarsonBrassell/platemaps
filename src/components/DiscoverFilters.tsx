@@ -303,7 +303,23 @@ function Facet({
   const [expanded, setExpanded] = useState(false);
   const [query, setQuery] = useState("");
 
-  const searchable = searchNoun !== undefined && options.length >= SEARCHABLE_FROM;
+  // An option returning nothing is dropped rather than greyed. It used to be
+  // rendered disabled, which reads as "there are Ethiopian places, just not
+  // here" — but under a neighbourhood filter that is most of the list, and a
+  // facet whose rows are mostly dead is a list to scroll past rather than
+  // choose from. The count already says how many; a row saying zero adds a
+  // line and no information.
+  //
+  // The one exception is the option currently on. Hiding that would strand
+  // the visitor in a combination with nothing on screen to undo — the same
+  // reason `disabled` spared it before.
+  //
+  // Computed before `searchable` on purpose: the fold and the search field
+  // both size the list for the visitor, and both should count rows that are
+  // actually there.
+  const live = options.filter((o) => (counts.get(o.value) ?? 0) > 0 || o.value === value);
+
+  const searchable = searchNoun !== undefined && live.length >= SEARCHABLE_FROM;
   const q = searchable ? query.trim().toLowerCase() : "";
 
   // While searching, the list is the matches and nothing else: the fold, the
@@ -315,19 +331,17 @@ function Facet({
   // A selected option stays visible even when it sits past the fold, so the
   // rail never shows a filter as on without showing which one.
   const visible = q
-    ? options.filter((o) => o.value.toLowerCase().includes(q))
-    : expanded || options.length <= collapseAfter
-      ? options
-      : options
+    ? live.filter((o) => o.value.toLowerCase().includes(q))
+    : expanded || live.length <= collapseAfter
+      ? live
+      : live
           .slice(0, collapseAfter)
-          .concat(
-            options.slice(collapseAfter).filter((o) => o.value === value),
-          );
-  const hidden = options.length - visible.length;
+          .concat(live.slice(collapseAfter).filter((o) => o.value === value));
+  const hidden = live.length - visible.length;
   // Gated on the list being long enough to collapse, not on anything currently
   // being hidden — `hidden` is 0 once expanded, which is exactly when the
   // control has to stay put to offer the way back.
-  const collapsible = !q && options.length > collapseAfter;
+  const collapsible = !q && live.length > collapseAfter;
   const showChild = !q || (childLabel?.toLowerCase().includes(q) ?? false);
 
   return (

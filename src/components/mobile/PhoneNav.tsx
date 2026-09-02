@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { NavDot } from "@/components/NavDot";
+import { COACH_KEYS } from "@/components/MobileNav";
 import { useNavAlerts } from "@/lib/navAlerts";
 import { HomeIcon, CompassIcon, UsersIcon, UserIcon, PlusIcon } from "@/components/icons";
 
@@ -276,6 +277,10 @@ function ArcNav({ to, isCurrent, dotFor }: VariantProps) {
         href={to(item.href)}
         onClick={() => setTap((prev) => ({ href: item.href, n: prev.n + 1 }))}
         aria-current={current ? "page" : undefined}
+        /* First-run walkthrough anchors — see CoachTour.tsx. Marked on `arc`
+           only: `pill` and `strip` are the runners-up awaiting deletion, and
+           the note above this component says not to build on them. */
+        data-coach={COACH_KEYS[item.href]}
         className={`flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors ${FOCUS} ${
           current ? "text-pm-orange-text" : "text-pm-grey-text"
         }`}
@@ -300,6 +305,7 @@ function ArcNav({ to, isCurrent, dotFor }: VariantProps) {
         <Link
           href={to(CREATE.href)}
           aria-label={CREATE.label}
+          data-coach="post"
           className={`absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full ${FOCUS}`}
         >
           <span className="flex h-14 w-14 items-center justify-center rounded-full border-4 border-[#F7F4EC] bg-pm-orange text-[#F7F4EC] transition-transform active:scale-95">

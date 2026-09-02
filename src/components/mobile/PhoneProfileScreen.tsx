@@ -23,9 +23,10 @@ import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves"
  * what happened to your plates, then the settings you configure once.
  *
  * What is different is proportion, not content. The three-across stat grid
- * becomes points-as-a-badge plus two narrow tiles, the settings selects grow to
- * 44px, and the post grids stay three-up because a square thumbnail at 390px is
- * still 118px, which is a legible tile.
+ * becomes points-as-a-badge, the settings selects grow to 44px, and the post
+ * grids stay three-up because a square thumbnail at 390px is still 118px,
+ * which is a legible tile. The Posts and Comments tiles were removed from both
+ * bodies together — see the twin note in app/account/page.tsx.
  *
  * **No friend or follower count appears here**, and none may be added — see
  * `getFriends` in lib/db.ts. The Friends row below links to the graph without
@@ -44,12 +45,34 @@ type Post = {
   rating?: number;
   ratingKind?: "restaurant" | "dish";
   upvoteCount: number;
+  /** When it was posted — the profile tiles print the day. */
+  createdAt: string;
   savedBy: string[];
-  comments: { id: string }[];
+  /**
+   * Full comments — the sheet reads them, and replies written from it are
+   * appended here; the tiles print the length. `parentId` is what makes the
+   * sheet's thread nest, so it has to survive this mirror.
+   */
+  comments: {
+    id: string;
+    parentId?: string | null;
+    userId?: string;
+    authorName: string;
+    authorAvatarUrl?: string;
+    text: string;
+    createdAt: string;
+  }[];
   /** Mirrors PostMedia in lib/db.ts — that module is server-only. */
   media?: { url: string; type: "image" | "video"; alt?: string }[];
   /** The author's share-photos snapshot, frozen at write time. */
   photosPublic?: boolean;
+  /**
+   * Hearts on this plate, for the shelf badge's reaction total. Same rule as
+   * the twin type in app/account/page.tsx: present only on plates you wrote,
+   * because `getProfilePosts` nulls it in SQL for the saved posts riding along
+   * in the same response. Hearts are private; a count is still a disclosure.
+   */
+  heartCount?: number | null;
 };
 
 const FOCUS =
@@ -181,7 +204,6 @@ function ProfileOverview() {
 
   if (!account) return null;
 
-  const commentCount = myPosts.reduce((sum, p) => sum + p.comments.length, 0);
 
   async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -296,24 +318,21 @@ function ProfileOverview() {
           {/* The approved order from the prototype: the total, then the
               plates that earned it — badged and ring-pulsed by the roll-call
               — before any secondary counts or lists. */}
-          <ProfileShelves posts={myPosts} arrival={arrival} />
-
-          {/* Posts and comments are your own output and print freely. The count
-              that must never appear on any surface is a friend/follower total. */}
-          <div className="mb-5 grid grid-cols-2 gap-2.5">
-            <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-2.5 text-center">
-              <p className="font-mono text-lg font-medium leading-none tabular-nums text-zinc-900">
-                {myPosts.length}
-              </p>
-              <p className="mono-label mt-1.5 text-zinc-500">Posts</p>
-            </div>
-            <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-2.5 text-center">
-              <p className="font-mono text-lg font-medium leading-none tabular-nums text-zinc-900">
-                {commentCount}
-              </p>
-              <p className="mono-label mt-1.5 text-zinc-500">Comments</p>
-            </div>
-          </div>
+          {/* The detail sheet's replies come back here to be appended — the
+              twin of the wiring in app/account/page.tsx, and for the same
+              reason: this screen owns the array the thread and the tile counts
+              both read. */}
+          <ProfileShelves
+            posts={myPosts}
+            arrival={arrival}
+            onCommentAdded={(postId, comment) =>
+              setMyPosts((prev) =>
+                prev.map((p) =>
+                  p.id === postId ? { ...p, comments: [...p.comments, comment] } : p
+                )
+              )
+            }
+          />
 
           {/* Friend requests are answered on /m/friends, where the people they
               are about already live — this screen is about you. No total here,
@@ -333,7 +352,7 @@ function ProfileOverview() {
               shelves above say which plates drew reactions, and a screen
               this size cannot afford to say it twice. */}
 
-          <p className="mono-label mb-2 text-zinc-500">Saved</p>
+          <p className="mono-label mb-2.5 mt-8 text-zinc-900">Saved</p>
           {savedPosts.length > 0 ? (
             <div className="grid grid-cols-3 gap-1.5">
               {savedPosts.map((post, i) => (

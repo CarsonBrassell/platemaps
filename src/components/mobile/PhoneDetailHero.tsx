@@ -10,6 +10,7 @@ import {
   SHOW_BLEND_STARS,
   blendLabel,
 } from "@/lib/ratingDisplay";
+import { placeLine } from "@/lib/placeLine";
 
 /**
  * The phone detail screen's hero — `RestaurantHeader` re-proportioned, not
@@ -108,7 +109,7 @@ export function PhoneDetailHero({
           {restaurant.name}
         </h1>
         <p className="mt-1 text-[13px] text-pm-grey-text">
-          {restaurant.cuisine} · {restaurant.neighborhood} · {restaurant.distance}
+          {placeLine(restaurant.cuisine, restaurant.neighborhood, restaurant.distance)}
         </p>
 
         <div className="mt-3">

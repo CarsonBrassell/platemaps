@@ -8,6 +8,7 @@ import type {
 } from "@/components/mobile/PhoneFilterSheet";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
 import { getDiscoverPage, parseShown, PAGE_SIZE } from "@/lib/discover";
+import { packColumns } from "@/lib/photoShape";
 import {
   QUICK_FILTERS,
   activeFilterCount,
@@ -66,7 +67,7 @@ export default async function PhoneDiscover({
 
   /* `cols` is still swallowed here rather than parsed. The row used to be
      switchable — 1, 3 or 5 across, behind a toggle in the header — and the
-     screen is 3 across now, full stop. Old links carrying `?cols=1` still
+     screen is two across now, full stop. Old links carrying `?cols=1` still
      exist in histories and shared URLs; dropping the param on the way in means
      they land on the grid instead of putting a stale value in every link the
      page builds. */
@@ -344,17 +345,45 @@ export default async function PhoneDiscover({
           </Link>
         </div>
       ) : (
-        /* One layout, three across. The row used to be switchable and isn't:
-           see the note on `cols` above. */
-        <div className="grid grid-cols-3 gap-2 px-4">
-          {page.results.map((restaurant, index) => (
-            <PhoneRestaurantCardGrid
-              key={restaurant.id}
-              restaurant={restaurant}
-              score={restaurant.plateScore}
-              priority={index < 3}
-              matchedCuisine={matchMarksFor(restaurant, filters).cuisine}
-            />
+        /* Two across, and uneven — each photo keeps its own proportions and the
+           columns are packed shortest-first (lib/photoShape.ts).
+
+           This was three across with every photo squared off. Three fit more on
+           screen and made all of them small and identical, which on a screen
+           that is mostly photograph is the wrong thing to optimise: at two the
+           food is legible and the ragged column edges give the eye somewhere to
+           land. Packed on the server, because unlike the web grid this column
+           count is fixed rather than a media query, so there is nothing for the
+           browser to work out. */
+        <div className="grid grid-cols-2 items-start gap-2 px-4">
+          {packColumns(page.results, 2).map((column, i) => (
+            // A column is a position, not a thing — see the same note in
+            // DiscoverBrowser. Index is its identity.
+            <div key={i} className="grid auto-rows-min content-start gap-2">
+              {column.map((restaurant, index) => (
+                <PhoneRestaurantCardGrid
+                  key={restaurant.id}
+                  restaurant={restaurant}
+                  score={restaurant.plateScore}
+                  priority={index < 2}
+                  matchedCuisine={matchMarksFor(restaurant, filters).cuisine}
+                  /* Only while a category filter is on, and only for a
+                     restaurant that actually scored in it — `getDiscoverPage`
+                     attaches `aspectScore` under exactly those conditions, so
+                     the two halves of this check are the same condition read
+                     twice rather than two guesses. */
+                  aspect={
+                    filters.aspect && restaurant.aspectScore !== undefined
+                      ? {
+                          aspect: filters.aspect,
+                          score: restaurant.aspectScore.score,
+                          praised: restaurant.aspectScore.praised,
+                        }
+                      : null
+                  }
+                />
+              ))}
+            </div>
           ))}
         </div>
       )}

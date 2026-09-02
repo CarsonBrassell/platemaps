@@ -16,10 +16,43 @@ import {
   type QuickFilter,
 } from "@/lib/discoverFilters";
 import type { DiscoverPage } from "@/lib/discover";
+import { packColumns } from "@/lib/photoShape";
 import type { PriceBand } from "@/data/priceBands";
 
 /** Kept in step with PAGE_SIZE in lib/discover.ts, which owns the real value. */
 const PAGE_SIZE = 24;
+
+/**
+ * How many columns the grid is packed into, following the `sm:grid-cols-2` on
+ * the grid itself.
+ *
+ * The packing has to happen in JavaScript because it depends on the column
+ * count, and CSS is what decides the column count. Two details keep that from
+ * being a problem:
+ *
+ * **It starts at 2, matching what the server rendered.** Returning the real
+ * answer on the first client render would make the markup disagree with the
+ * server's and cost a hydration error; the media query is read in an effect
+ * instead, so a phone re-packs into one column a beat after paint rather than
+ * flashing the wrong thing before it.
+ *
+ * **The listener is on the query, not on resize.** `matchMedia` fires only when
+ * the answer actually changes, so dragging a window edge across 640px re-packs
+ * once instead of on every frame.
+ */
+function useColumnCount() {
+  const [columns, setColumns] = useState(2);
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 640px)");
+    const sync = () => setColumns(query.matches ? 2 : 1);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
+  return columns;
+}
 
 /**
  * Discover's controls and grid.
@@ -35,6 +68,7 @@ const PAGE_SIZE = 24;
 export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
   const router = useRouter();
   const [sheetOpen, setSheetOpen] = useState(false);
+  const columns = useColumnCount();
 
   /*
    * The cost of moving filtering to the server is a round trip per click, and
@@ -338,15 +372,22 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                     under a pending one is the whole reason a filter click still
                     feels immediate now that it costs a request. */}
                 <div
-                  className={`grid auto-rows-min grid-cols-1 gap-4 transition-opacity duration-200 sm:grid-cols-2 xl:grid-cols-3 ${
+                  className={`grid auto-rows-min grid-cols-1 gap-4 transition-opacity duration-200 sm:grid-cols-2 ${
                     isPending ? "opacity-60" : "opacity-100"
                   }`}
                   aria-busy={isPending}
                 >
-                  {results.map((restaurant) => (
+                  {packColumns(results, columns).map((column, i) => (
+                    // Index keys, and correctly: a column is a position in the
+                    // layout, not a thing. Its identity *is* "the first
+                    // column", and it holds a different set of restaurants on
+                    // every render by design.
+                    <div key={i} className="grid auto-rows-min content-start gap-4">
+                      {column.map((restaurant) => (
                     <RestaurantCard
                       key={restaurant.id}
                       restaurant={restaurant}
+                      shape="natural"
                       score={restaurant.plateScore}
                       match={{
                         ...matchMarksFor(restaurant, filters),
@@ -360,6 +401,8 @@ export function DiscoverBrowser({ page }: { page: DiscoverPage }) {
                             : null,
                       }}
                     />
+                      ))}
+                    </div>
                   ))}
                 </div>
 

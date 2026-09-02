@@ -26,12 +26,35 @@ type Post = {
   rating?: number;
   ratingKind?: "restaurant" | "dish";
   upvoteCount: number;
+  /** When it was posted — the profile tiles print the day. */
+  createdAt: string;
   savedBy: string[];
-  comments: { id: string }[];
+  /**
+   * Full comments — the sheet reads them, and replies from it are appended
+   * here; the tiles print the length. `parentId` is what makes the sheet's
+   * thread nest, so it has to survive this mirror.
+   */
+  comments: {
+    id: string;
+    parentId?: string | null;
+    userId?: string;
+    authorName: string;
+    authorAvatarUrl?: string;
+    text: string;
+    createdAt: string;
+  }[];
   /** Mirrors PostMedia in lib/db.ts — that module is server-only. */
   media?: { url: string; type: "image" | "video"; alt?: string }[];
   /** The author's share-photos snapshot, frozen at write time. */
   photosPublic?: boolean;
+  /**
+   * Hearts on this plate, for the shelf badge's reaction total. Present only
+   * on plates you wrote: hearts are private, and `getProfilePosts` nulls the
+   * count in SQL for the saved posts this same response carries. The Saved
+   * grid below therefore never has one to render, which is the intent — don't
+   * put a heart count on a tile.
+   */
+  heartCount?: number | null;
 };
 
 /**
@@ -332,7 +355,6 @@ function AccountOverview() {
 
   if (!account) return null;
 
-  const commentCount = myPosts.reduce((sum, p) => sum + p.comments.length, 0);
 
   async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -420,12 +442,13 @@ function AccountOverview() {
           </Link>
         </div>
 
-      {/* Points lead, and they are the only orange thing here. Posts and
-          Comments stay grey tiles on purpose: they are counts *about* the
-          account, where the points total is the thing the account is scored
-          on, and giving all three the accent would flatten that back out.
-          The number printed is the roll-call's — on an arrival it starts at
-          the last-seen total and rolls up once the badges have landed. */}
+      {/* Points lead, and they are now the only count on the page. The Posts
+          and Comments tiles that used to sit under the shelves are gone: both
+          numbers were already legible from the shelves themselves — the grid
+          *is* your posts — so they restated what was directly above them in a
+          quieter voice. The number printed is the roll-call's; on an arrival
+          it starts at the last-seen total and rolls up once the badges have
+          landed. */}
       <PlatePointsPanel points={arrival.displayPoints} showRank className="mb-3" />
 
       {/* The shelves sit DIRECTLY under the total they explain — the approved
@@ -433,18 +456,22 @@ function AccountOverview() {
           the plates that earned it, badged where something just happened.
           They used to sit below the activity list, which buried the page's
           centrepiece under six rows of detail about the same events. */}
-      <ProfileShelves posts={myPosts} arrival={arrival} />
-
-      <div className="mb-6 grid grid-cols-2 gap-3">
-        <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-3 text-center">
-          <p className="font-mono text-lg font-medium tabular-nums text-zinc-900">{myPosts.length}</p>
-          <p className="mono-label text-zinc-500">Posts</p>
-        </div>
-        <div className="rounded-xl bg-pm-grey-tint/60 px-3 py-3 text-center">
-          <p className="font-mono text-lg font-medium tabular-nums text-zinc-900">{commentCount}</p>
-          <p className="mono-label text-zinc-500">Comments</p>
-        </div>
-      </div>
+      {/* The sheet writes comments through /api/posts/[id]/comments and hands
+          the row back here, because this is where the plates live: appending
+          it puts the reply in the open thread and takes the tile's comment
+          count up by one in the same render. Same wiring on the phone screen —
+          see the twin call in PhoneProfileScreen. */}
+      <ProfileShelves
+        posts={myPosts}
+        arrival={arrival}
+        onCommentAdded={(postId, comment) =>
+          setMyPosts((prev) =>
+            prev.map((p) =>
+              p.id === postId ? { ...p, comments: [...p.comments, comment] } : p
+            )
+          )
+        }
+      />
 
       {/* Friend requests used to sit here. They moved to /friends, where the
           people they're about already live — this page is about you. */}
@@ -468,7 +495,7 @@ function AccountOverview() {
           live and still read, by ProfileShelves for the badges and by
           navAlerts for the nav dot. */}
 
-      <p className="mono-label mb-2 text-zinc-500">Saved</p>
+      <p className="mono-label mb-2.5 mt-8 text-zinc-900">Saved</p>
       {savedPosts.length > 0 ? (
         <div className="mb-2 grid grid-cols-3 gap-1.5">
           {savedPosts.map((post, i) => (

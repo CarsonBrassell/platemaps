@@ -5,6 +5,7 @@ import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 import { photoCreditFor } from "@/lib/photoCredit";
+import { placeLine } from "@/lib/placeLine";
 
 /** A pick's plate score, or the unrated one when the caller didn't attach it. */
 const score = (r: { plateScore?: PlateScore }) => r.plateScore ?? EMPTY_PLATE_SCORE;
@@ -96,7 +97,7 @@ export function OurPicks({
                 )}
               </div>
               <p className="text-xs text-zinc-500">
-                {r.cuisine} &middot; {r.neighborhood}
+                {placeLine(r.cuisine, r.neighborhood)}
               </p>
             </div>
           </Link>

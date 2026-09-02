@@ -1,12 +1,13 @@
 /**
  * Ranked matching over the restaurant list.
  *
- * Matches name, cuisine and neighbourhood so "thai", "little italy" and
- * "landini" all land somewhere. Ranked so a name match beats a cuisine match
- * — typing "pizza" should reach Bronx Pizza before every pizzeria in the city.
+ * Matches name, cuisine, cuisine tags and neighbourhood so "thai", "tacos",
+ * "little italy" and "landini" all land somewhere. Ranked so a name match
+ * beats a cuisine match — typing "pizza" should reach Bronx Pizza before every
+ * pizzeria in the city.
  *
  * Callers rank whatever the server sent for *this* query rather than the whole
- * city. `/api/restaurants?q=` narrows on the same three fields, so the ordering
+ * city. `/api/restaurants?q=` narrows on the same fields, so the ordering
  * below is unchanged — it just never needs the corpus in the browser to
  * produce it.
  *
@@ -26,7 +27,22 @@
  */
 export type Rankable = {
   name: string;
-  cuisine: string;
+  cuisine: string | null;
+  /**
+   * The specific labels behind the canonical cuisine, joined — see
+   * data/cuisines.ts. Ranked below the cuisine itself but above the
+   * neighbourhood: someone typing "tacos" wants taco shops before they want
+   * a neighbourhood that happens to contain the letters.
+   *
+   * Optional because one caller ranks a projection that predates the column.
+   */
+  cuisineTags?: string;
+  /**
+   * Set when a dish on this restaurant's menu matched the term — see
+   * searchRestaurants in lib/db.ts. Its presence *is* the match, so the
+   * ranking never re-tests the string.
+   */
+  matchedDish?: { name: string } | null;
   neighborhood: string;
   /** Optional: an unrated restaurant still matches, it just cannot win a tie. */
   rating?: number;
@@ -44,7 +60,8 @@ export function rank<T extends Rankable>(query: string, candidates: readonly T[]
   return candidates
     .map((r) => {
       const name = r.name.toLowerCase();
-      const cuisine = r.cuisine.toLowerCase();
+      const cuisine = (r.cuisine ?? "").toLowerCase();
+      const tags = (r.cuisineTags ?? "").toLowerCase();
       const hood = r.neighborhood.toLowerCase();
 
       let score = 0;
@@ -52,6 +69,12 @@ export function rank<T extends Rankable>(query: string, candidates: readonly T[]
       else if (name.includes(q)) score = 80;
       else if (cuisine.startsWith(q)) score = 60;
       else if (cuisine.includes(q)) score = 50;
+      // Below cuisine, above the tags and the neighbourhood. Typing a dish is
+      // a specific question and deserves to beat a neighbourhood that happens
+      // to share the letters — but "pizza" should still reach pizzerias
+      // before it reaches every menu in the city with a pizza on it.
+      else if (r.matchedDish) score = 48;
+      else if (tags.includes(q)) score = 45;
       else if (hood.startsWith(q)) score = 40;
       else if (hood.includes(q)) score = 30;
 

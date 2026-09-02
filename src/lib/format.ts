@@ -36,3 +36,33 @@ export function relativeTime(iso: string) {
   const diffDay = Math.round(diffHour / 24);
   return `${diffDay}d ago`;
 }
+
+const MONTHS = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+/**
+ * The day something was written — `Aug 12`, or `Aug 12 '24` once the year
+ * stops being this one.
+ *
+ * `relativeTime` above answers a different question, and answers it badly past
+ * a couple of weeks: "324d ago" is a number the reader has to do arithmetic on
+ * before it means a date. A feed wants the relative form because everything on
+ * it is recent by construction; a profile is an archive, so its plates carry
+ * the day they were posted.
+ *
+ * Assembled from the month table rather than `toLocaleDateString` so the
+ * string is identical wherever it is built. The locale formatter is not — it
+ * follows the runtime's locale, which is the server's on a prerender and the
+ * reader's in the browser, and the two disagreeing is a hydration mismatch
+ * that only shows up for readers outside en-US.
+ */
+export function postedDate(iso: string) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const day = `${MONTHS[d.getMonth()]} ${d.getDate()}`;
+  return d.getFullYear() === new Date().getFullYear()
+    ? day
+    : `${day} '${String(d.getFullYear()).slice(2)}`;
+}
