@@ -11,6 +11,7 @@ import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/componen
 import { relativeTime } from "@/lib/format";
 import { vibeChip } from "@/data/reviewScales";
 import type { Post } from "@/components/feed/types";
+import { ReportSheet } from "@/components/feed/ReportSheet";
 
 /**
  * The feed's post card, phone version.
@@ -239,6 +240,9 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
   const trending = props.surface === "discover" && props.trending;
 
   const [menuOpen, setMenuOpen] = useState(false);
+  /* The reason sheet. Separate from `status` because opening it is not the
+     same as having reported — only a 200 from /api/reports sets that. */
+  const [reporting, setReporting] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [status, setStatus] = useState<"live" | "hidden" | "reported" | "deleted" | "blocked">(
     "live",
@@ -727,7 +731,10 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
                     role="menuitem"
                     onClick={() => {
                       setMenuOpen(false);
-                      setStatus("reported");
+                      /* Opens the reason sheet. This used to set "reported"
+                         straight away, which showed the thank-you tombstone
+                         without filing anything anywhere. */
+                      setReporting(true);
                     }}
                     className="flex min-h-11 w-full items-center gap-2 rounded-lg px-3 text-left text-sm text-red-700"
                   >
@@ -770,6 +777,21 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
           — the chip block owns its own bottom padding and this only replaces
           it when that block isn't rendered. */}
       {!roomChip && <div className="pb-3" />}
+
+      {/* The reason sheet. Only a 200 from the route flips the card to its
+          "reported" tombstone — a failed send leaves the card alone and the
+          sheet shows the error, so the app never claims a report it did not
+          file. */}
+      {reporting && (
+        <ReportSheet
+          postId={post.id}
+          onClose={() => setReporting(false)}
+          onReported={() => {
+            setReporting(false);
+            setStatus("reported");
+          }}
+        />
+      )}
     </article>
   );
 }

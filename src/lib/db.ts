@@ -1686,6 +1686,75 @@ export async function getBlockStatus(viewerId: string, otherId: string): Promise
  * either direction first — being blocked shouldn't leave a friendship or an
  * unanswered request behind it.
  */
+/**
+ * The reasons a plate can be reported.
+ *
+ * A closed set rather than free text as the primary signal: it is what makes a
+ * queue triageable, and it is what App Review looks for when it checks that
+ * reporting actually does something. `note` carries the free text alongside.
+ */
+export const REPORT_REASONS = [
+  "spam",
+  "harassment",
+  "hate",
+  "sexual",
+  "violence",
+  "wrong-info",
+  "other",
+] as const;
+
+export type ReportReason = (typeof REPORT_REASONS)[number];
+
+export type ContentReport = {
+  id: string;
+  postId: string;
+  reporterId: string | null;
+  reason: ReportReason;
+  note: string | null;
+  status: string;
+  createdAt: string;
+};
+
+/**
+ * Files a report, or returns `false` if this person already reported this post.
+ *
+ * The duplicate is swallowed rather than surfaced as an error: from the
+ * reporter's side "I reported this" is already true, and telling them off for
+ * tapping twice serves nobody. The unique index is what enforces it — a second
+ * tap must not be able to inflate a plate's report count.
+ */
+export async function createReport(input: {
+  id: string;
+  postId: string;
+  reporterId: string;
+  reason: ReportReason;
+  note?: string | null;
+}): Promise<boolean> {
+  const rows = await sql`
+    INSERT INTO content_reports (id, post_id, reporter_id, reason, note)
+    VALUES (${input.id}, ${input.postId}, ${input.reporterId}, ${input.reason},
+            ${input.note ?? null})
+    ON CONFLICT (post_id, reporter_id) DO NOTHING
+    RETURNING id
+  `;
+  return rows.length > 0;
+}
+
+/**
+ * How many open reports stand against one post.
+ *
+ * Read by the report route so the notification can say "this is the third
+ * person to flag this plate", which is the difference between one annoyed
+ * diner and something that needs looking at tonight.
+ */
+export async function openReportCount(postId: string): Promise<number> {
+  const rows = await sql`
+    SELECT count(*)::int AS c FROM content_reports
+    WHERE post_id = ${postId} AND status = 'open'
+  `;
+  return Number(rows[0]?.c ?? 0);
+}
+
 export async function blockUser(blockerId: string, blockedId: string): Promise<void> {
   if (blockerId === blockedId) return;
   await unfriend(blockerId, blockedId);

@@ -764,6 +764,32 @@ const statements = [
   // Dropped rather than left: an unusable GIN index still costs every write.
   `DROP INDEX IF EXISTS idx_restaurants_search_ws`,
 
+  // Content reports. App Store Guideline 1.2 requires a working way to report
+  // user content, and the button in the feed cards used to only set local
+  // state — nothing was written and nobody was told.
+  //
+  // `post_id` is a soft reference like `posts.restaurant_id`, not a foreign
+  // key: a report must survive the post it is about being deleted, or the
+  // record of *why* something was removed disappears with the evidence. The
+  // reporter cascades, because a deleted account's reports are not
+  // actionable and keeping them would retain a user's data after deletion.
+  `CREATE TABLE IF NOT EXISTS content_reports (
+    id TEXT PRIMARY KEY,
+    post_id TEXT NOT NULL,
+    reporter_id TEXT REFERENCES users(id) ON DELETE CASCADE,
+    reason TEXT NOT NULL,
+    note TEXT,
+    status TEXT NOT NULL DEFAULT 'open',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+  // One report per person per post. A second tap is not more signal, and
+  // without this a single user could file thousands against one plate.
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_content_reports_once
+     ON content_reports (post_id, reporter_id)`,
+  // The triage read: open reports, newest first.
+  `CREATE INDEX IF NOT EXISTS idx_content_reports_open
+     ON content_reports (status, created_at DESC)`,
+
   // Failed sign-in attempts, for the login throttle in lib/loginThrottle.ts.
   // Postgres rather than memory on purpose: every serverless instance gets its
   // own heap and instances scale to zero, so an in-process counter would reset

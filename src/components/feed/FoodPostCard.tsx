@@ -11,6 +11,7 @@ import { StarRating } from "@/components/StarRating";
 import { MoreIcon, FlagIcon, EyeOffIcon, FlameIcon, CloseIcon } from "@/components/icons";
 import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { vibeChip } from "@/data/reviewScales";
+import { ReportSheet } from "@/components/feed/ReportSheet";
 import type { Post } from "./types";
 
 /** Handle shown next to the avatar — "Maya Ellis" reads as "mayaellis". */
@@ -134,6 +135,9 @@ export function FoodPostCard(props: FoodPostCardProps) {
   const trending = props.surface === "discover" && props.trending;
 
   const [menuOpen, setMenuOpen] = useState(false);
+  /* The reason sheet. Separate from `status` because opening it is not the
+     same as having reported — only a 200 from /api/reports sets that. */
+  const [reporting, setReporting] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [status, setStatus] = useState<"live" | "hidden" | "reported" | "deleted" | "blocked">(
     "live",
@@ -674,7 +678,10 @@ export function FoodPostCard(props: FoodPostCardProps) {
                     role="menuitem"
                     onClick={() => {
                       setMenuOpen(false);
-                      setStatus("reported");
+                      /* Opens the reason sheet. This used to set "reported"
+                         straight away, which showed the thank-you tombstone
+                         without filing anything anywhere. */
+                      setReporting(true);
                     }}
                     className="flex w-full min-h-11 items-center gap-2 rounded-lg px-3 text-left text-sm text-red-700 transition-colors hover:bg-red-50"
                   >
@@ -727,6 +734,21 @@ export function FoodPostCard(props: FoodPostCardProps) {
           </p>
         )}
       </div>
+
+      {/* The reason sheet. Only a 200 from the route flips the card to its
+          "reported" tombstone — a failed send leaves the card alone and the
+          sheet shows the error, so the app never claims a report it did not
+          file. */}
+      {reporting && (
+        <ReportSheet
+          postId={post.id}
+          onClose={() => setReporting(false)}
+          onReported={() => {
+            setReporting(false);
+            setStatus("reported");
+          }}
+        />
+      )}
     </article>
   );
 }
