@@ -1,0 +1,1240 @@
+[
+  {
+    "restaurantId": "4751",
+    "name": "Don Rios",
+    "sourceUrl": "https://www.doordash.com/store/don-rios-san-diego-278643/",
+    "confidence": "low",
+    "blocked": "Restaurant's own order page (donriosca.com/order) is a HungerRush/Menufy client-side widget (custom elements menufy-cart etc, fetched from api.menufy.com) with no server-rendered prices — needs a browser. DoorDash marketplace listing (schema.org Menu JSON-LD, address verified matching work list) has 91 priced items across 9 sections (Most Ordered, Tortas, Tacos, Breakfast Plates, Breakfast Burritos, Tostadas, Burritos, Caldos, Seafood) but is missing Enchiladas and Quesadillas entirely, both of which the restaurant's own homepage text references as menu items — a core-section gap, not an adjunct. Grubhub page is a pure JS shell with no data server-side.",
+    "notes": "Do not use the 91-item DoorDash capture as the menu; it is a partial (missing at least Enchiladas and Quesadillas). A browser-equipped pass on donriosca.com/order (Menufy widget) or a full render of the DoorDash/Grubhub pages should get the rest.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2130",
+    "name": "Vinaka Cafe",
+    "sourceUrl": "http://places.singleplatform.com/vinaka-cafe/menu",
+    "confidence": "low",
+    "blocked": "vinakacafe.net now 302s straight to https://www.instagram.com/vinakacafe/ (their apparent current channel) which needs a browser to read. The only priced source found, a SinglePlatform capture (address verified: 300 Carlsbad Village Dr Ste 211, Carlsbad CA 92008, matches work list), lists 31 priced items (Ice Cream, Sundae, Sandwiches, Vinaka Specialties, Coffee & Espresso Drinks) but at a price level that reads stale for 2026 San Diego County (coffee $1.25, espresso $1.50, sandwiches $6.00) with no update date on the page. Yelp (403 to curl) and Menupix (403 to curl) could not be reached for a second opinion; restaurantguru.com loaded but carries no prices at all.",
+    "notes": "Per playbook rule 6, implausible price level overrides other signals even from an otherwise clean, address-matched source. Needs either a browser read of the restaurant's Instagram for current menu photos, or a Yelp/Google Maps menu-photo pull, to confirm whether $1.25 coffee is real or a years-stale SinglePlatform snapshot.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3977",
+    "name": "Imperial Mandarin",
+    "sourceUrl": "https://menupages.com/imperial-mandarin/3904-convoy-st-ste-102-san-diego",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.doordash.com/en-US/store/imperial-mandarin-restaurant-san-diego-63783/",
+    "blocked": "The restaurant's own site (imperial-mandarin.com) shows only a Dim Sum list (44 items) at implausibly low, clearly stale prices (e.g. Siu Mai $2.80) — DoorDash's live storefront prices the same item at $5.00, a 1.79x gap that is staleness not markup. DoorDash's own JSON-LD is itself only a 13-item Dim Sum sample plus 2 unrelated items (Soup, Dessert), not the restaurant's full current Dim Sum offering. Dim Sum is the restaurant's Yelp-listed primary category (\"served all day\") so it is a core section, and no complete, current-priced capture of it was found without a browser.",
+    "notes": "The 118 dishes below (Beverages, Appetizers, Soups, Fried Rice, Noodles, Foo Young, Moo Shi, Vegetables, Chicken, Beef, Pork, Seafood, Duck, Imperial Mandarin Special, Family Dinners, Lunch Menu) are from MenuPages structured data (address-verified: 3904 Convoy St Ste 102, San Diego, CA 92111, matches work list) and are cross-checked: Wor Wonton Soup is $10.99 on MenuPages vs $11.95 on DoorDash, a 1.087x ratio consistent with a normal delivery markup, not staleness. This is the full lunch/dinner/appetizer/entree menu and is trustworthy, but the restaurant's Dim Sum section (a core, not adjunct, category) is missing from it entirely — a browser pass on DoorDash or Yelp is needed to get the complete current Dim Sum list before this restaurant is complete.",
+    "dishes": [
+      {
+        "name": "Can Soda",
+        "description": "",
+        "price": "$1.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "Water",
+        "description": "16 oz.",
+        "price": "$1.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "Pu Pu Platter for 2",
+        "description": "Egg roll, fried shrimp, gotlet chicken, paper beef and barbecue pork.",
+        "price": "$12.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Twelve Pieces Fried Wontons",
+        "description": "",
+        "price": "$8.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Twelve Pieces Fried Cream Cheese and Crab Meat Wontons",
+        "description": "",
+        "price": "$8.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Four Pieces Spring Rolls",
+        "description": "",
+        "price": "$5.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Barbecue Pork",
+        "description": "",
+        "price": "$10.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Six Pieces Pan Fried Dumplings",
+        "description": "",
+        "price": "$7.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Four Pieces Fried Shrimp",
+        "description": "",
+        "price": "$10.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chinese Chicken Salad",
+        "description": "",
+        "price": "$10.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Six Pieces Gotlet Chicken",
+        "description": "",
+        "price": "$8.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Sizzling Rice Soup",
+        "description": "",
+        "price": "$10.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Small Hot and Sour Soup",
+        "description": "",
+        "price": "$2.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Large Hot and Sour Soup",
+        "description": "",
+        "price": "$8.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Wor Wonton Soup",
+        "description": "",
+        "price": "$10.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Small Egg Flower Soup",
+        "description": "",
+        "price": "$2.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Large Egg Drop Soup",
+        "description": "",
+        "price": "$8.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Seaweed Soup",
+        "description": "",
+        "price": "$10.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Imperial Soup",
+        "description": "",
+        "price": "$12.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Mandarin Fried Rice",
+        "description": "",
+        "price": "$11.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Shrimp Fried Rice",
+        "description": "",
+        "price": "$11.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Chicken Fried Rice",
+        "description": "",
+        "price": "$11.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Beef Fried Rice",
+        "description": "",
+        "price": "$11.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Pork Fried Rice",
+        "description": "",
+        "price": "$11.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Small Steamed Rice",
+        "description": "",
+        "price": "$1.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Small Fried Rice",
+        "description": "",
+        "price": "$1.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Imperial Pan Fried Noodles",
+        "description": "",
+        "price": "$12.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Chicken Chow Mein",
+        "description": "",
+        "price": "$12.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Pork Chow Mein",
+        "description": "",
+        "price": "$12.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Beef Chow Mein",
+        "description": "",
+        "price": "$12.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Shrimp Lo Mein",
+        "description": "",
+        "price": "$14.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Hong Kong Style Chow Mein Pan Fried with Beef",
+        "description": "",
+        "price": "$12.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Hong Kong Style Chow Mein Pan Fried with Chicken",
+        "description": "",
+        "price": "$12.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Hong Kong Style Chow Mein Pan Fried with Pork",
+        "description": "",
+        "price": "$12.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Hong Kong Style Chow Mein Pan Fried with Shrimp",
+        "description": "",
+        "price": "$15.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Pork Egg Foo Young",
+        "description": "",
+        "price": "$12.99",
+        "section": "Foo Young"
+      },
+      {
+        "name": "Beef Egg Foo Young",
+        "description": "",
+        "price": "$12.99",
+        "section": "Foo Young"
+      },
+      {
+        "name": "Chicken Egg Foo Young",
+        "description": "",
+        "price": "$12.99",
+        "section": "Foo Young"
+      },
+      {
+        "name": "Shrimp Egg Foo Young",
+        "description": "",
+        "price": "$12.99",
+        "section": "Foo Young"
+      },
+      {
+        "name": "Moo Shi Pork",
+        "description": "Traditionally prepared with shredded pork, eggs, wood ear and vegetables.",
+        "price": "$12.99",
+        "section": "Moo Shi"
+      },
+      {
+        "name": "Moo Shi Beef",
+        "description": "Traditionally prepared with shredded beef, eggs, wood ear and vegetables.",
+        "price": "$12.99",
+        "section": "Moo Shi"
+      },
+      {
+        "name": "Moo Shi Chicken",
+        "description": "Traditionally prepared with shredded chicken, eggs, wood ear and vegetables.",
+        "price": "$12.99",
+        "section": "Moo Shi"
+      },
+      {
+        "name": "Moo Shi Shrimp",
+        "description": "Traditionally prepared with shrimp, eggs, wood ear and vegetables.",
+        "price": "$13.99",
+        "section": "Moo Shi"
+      },
+      {
+        "name": "Vegetarian Buddha's Delight",
+        "description": "",
+        "price": "$11.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Black Mushroom with Chinese Vegetables",
+        "description": "",
+        "price": "$14.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Braised Bean Curd in Brown Sauce",
+        "description": "",
+        "price": "$12.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Homemade Style Bean Curd",
+        "description": "",
+        "price": "$12.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Black Mushroom and Bamboo Shoots Sauteed",
+        "description": "",
+        "price": "$12.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Kung Pao Chicken",
+        "description": "",
+        "price": "$13.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "Cashew Chicken",
+        "description": "",
+        "price": "$13.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "Chicken with Pea Pods",
+        "description": "",
+        "price": "$13.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "Chicken with Broccoli",
+        "description": "",
+        "price": "$13.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "Almond Chicken",
+        "description": "",
+        "price": "$12.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "Sweet and Sour Chicken",
+        "description": "",
+        "price": "$12.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "Curry Chicken",
+        "description": "",
+        "price": "$12.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "Yu Shiang Chicken",
+        "description": "",
+        "price": "$13.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "Salt and Pepper Chicken Wings",
+        "description": "",
+        "price": "$13.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "Orange Chicken",
+        "description": "",
+        "price": "$13.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "Kung Pao Beef",
+        "description": "",
+        "price": "$15.99",
+        "section": "Beef"
+      },
+      {
+        "name": "Beef with Chinese Peas",
+        "description": "Black mushroom and bamboo.",
+        "price": "$14.99",
+        "section": "Beef"
+      },
+      {
+        "name": "Beef with Snow Pea and Water Chestnut",
+        "description": "",
+        "price": "$15.99",
+        "section": "Beef"
+      },
+      {
+        "name": "Mongolian Beef",
+        "description": "",
+        "price": "$14.99",
+        "section": "Beef"
+      },
+      {
+        "name": "Beef Szechuan",
+        "description": "",
+        "price": "$14.99",
+        "section": "Beef"
+      },
+      {
+        "name": "Beef with Green Pepper",
+        "description": "",
+        "price": "$14.99",
+        "section": "Beef"
+      },
+      {
+        "name": "Beef with Broccoli",
+        "description": "",
+        "price": "$14.99",
+        "section": "Beef"
+      },
+      {
+        "name": "Imperial Mandarin Spareribs",
+        "description": "",
+        "price": "$12.99",
+        "section": "Pork"
+      },
+      {
+        "name": "Kung Pao Pork",
+        "description": "",
+        "price": "$14.99",
+        "section": "Pork"
+      },
+      {
+        "name": "Twice Cooked Pork",
+        "description": "",
+        "price": "$12.99",
+        "section": "Pork"
+      },
+      {
+        "name": "Sweet and Sour Pork",
+        "description": "",
+        "price": "$12.99",
+        "section": "Pork"
+      },
+      {
+        "name": "Ma Po Tofu with Minced Pork",
+        "description": "",
+        "price": "$12.99",
+        "section": "Pork"
+      },
+      {
+        "name": "Imperial Shrimp",
+        "description": "Prawns coated in water chestnut flour and eggs dipped in chef's special sauce and then deep fried spicy hot.",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Rainbow Shrimp",
+        "description": "Prawns sauteed with baby corn, mushrooms, bamboo and snow peas.",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Kan Shao Shrimp",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp Szechwan",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Kung Pao Shrimp",
+        "description": "",
+        "price": "$19.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Curry Shrimp",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Sweet and Sour Shrimp",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Cashew Shrimp",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp with Lobster Sauce",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Walnut Shrimp",
+        "description": "",
+        "price": "$25.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Salt and Pepper Shrimp",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Black Pepper with Scallops",
+        "description": "",
+        "price": "$27.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Kan Shao Scallops",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Scallop with Oyster Sauce",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Clam in Black Bean Sauce",
+        "description": "",
+        "price": "$15.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Half Peking Duck",
+        "description": "",
+        "price": "$19.99",
+        "section": "Duck"
+      },
+      {
+        "name": "Half Imperial Duck",
+        "description": "",
+        "price": "$18.99",
+        "section": "Duck"
+      },
+      {
+        "name": "Whole Peking Duck",
+        "description": "",
+        "price": "$33.99",
+        "section": "Duck"
+      },
+      {
+        "name": "Whole Imperial Duck",
+        "description": "",
+        "price": "$30.99",
+        "section": "Duck"
+      },
+      {
+        "name": "Mandarin Special",
+        "description": "Chicken, beef, shrimp and vegetables with special sauce.",
+        "price": "$15.99",
+        "section": "Imperial Mandarin Special"
+      },
+      {
+        "name": "Oyster with Garlic",
+        "description": "",
+        "price": "$17.99",
+        "section": "Imperial Mandarin Special"
+      },
+      {
+        "name": "The Odd Couple",
+        "description": "Shrimp and scallops with mushrooms, pea pods and water chestnuts in a delicate sauce.",
+        "price": "$17.99",
+        "section": "Imperial Mandarin Special"
+      },
+      {
+        "name": "Family Dinner a for 2",
+        "description": "Meal includes: egg roll, fried wonton and choice of soup. Entrees for 2: kung pao chicken, sweet and sour pork. Served with choice of  rice.",
+        "price": "$32.99",
+        "section": "Family Dinners"
+      },
+      {
+        "name": "Family Dinner a for 3",
+        "description": "Meal includes: egg roll fried wonton and choice of soup. Entrees for 3: kung pao chicken, sweet and sour pork, Buddha's delight. Served with  choice of rice.",
+        "price": "$48.99",
+        "section": "Family Dinners"
+      },
+      {
+        "name": "Family Dinner a for 4",
+        "description": "Meal includes: egg roll fried wonton and choice of soup. Entrees for 4: kung pao chicken, sweet and sour pork, Buddha's delight, shrimp with lobster sauce. Served with lobster sauce. Served with choice of rice.",
+        "price": "$64.99",
+        "section": "Family Dinners"
+      },
+      {
+        "name": "Family Dinner a for 5",
+        "description": "Meal includes: egg roll fried wonton and choice of soup. Entrees for 5: kung pao chicken, sweet and sour pork, Buddha's delight, shrimp with lobster sauce, Mandarin special and BBQ pork with snow peas. Served with choice of rice.",
+        "price": "$80.99",
+        "section": "Family Dinners"
+      },
+      {
+        "name": "Family Dinner a for 6",
+        "description": "Meal includes: egg roll fried wonton and choice of soup. Entrees for 6: kung pao chicken, sweet and sour pork, Buddha's delight, shrimp with lobster sauce, Mandarin special and BBQ pork with snow peas. Served with choice of rice.",
+        "price": "$96.99",
+        "section": "Family Dinners"
+      },
+      {
+        "name": "Family Dinner B for 2",
+        "description": "Meal includes: wonton soup, fried shrimp, egg roll and gotlet chicken. Entrees for 2: Mongolian beef and cashew chicken. Served with choice of rice.",
+        "price": "$34.99",
+        "section": "Family Dinners"
+      },
+      {
+        "name": "Family Dinner B for 3",
+        "description": "Meal includes: wonton soup, fried shrimp, egg roll and gotlet chicken. Entrees for 3: Mongolian beef, cashew chicken and imperial Mandarin sparerib. Served with choice of rice.",
+        "price": "$52.99",
+        "section": "Family Dinners"
+      },
+      {
+        "name": "Family Dinner B for 4",
+        "description": "Meal includes: wonton soup, fried shrimp, egg roll and gotlet chicken. Entrees for 4: Mongolian beef, cashew chicken, imperial Mandarin sparerib and shrimp a la Sezchwan. Served with choice of rice.",
+        "price": "$69.99",
+        "section": "Family Dinners"
+      },
+      {
+        "name": "Family Dinner B for 5",
+        "description": "Meal includes: wonton soup, fried shrimp, egg roll and gotlet chicken. Entrees for 5: Mongolian beef, cashew chicken, imperial Mandarin sparerib, shrimp ala Sezchwan, beef with snow pea and black mushroom. Served with choice of rice.",
+        "price": "$87.99",
+        "section": "Family Dinners"
+      },
+      {
+        "name": "Family Dinner B for 6",
+        "description": "Meal includes: wonton soup, fried shrimp, egg roll and gotlet chicken. Entrees for 6: Mongolian beef, cashew chicken, imperial Mandarin sparerib, shrimp ala Sezchwan, beef with snow pea and black mushroom and Mandarin special. Served with choice of rice.",
+        "price": "$104.99",
+        "section": "Family Dinners"
+      },
+      {
+        "name": "Kan Shao Shrimp Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Sweet and Sour Shrimp Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Shrimp with Lobster Sauce Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Kung Pao Shrimp Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Broccoli Chicken Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Orange Chicken Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Mongolian Beef Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Stir Fried Mixed Vegetables Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Broccoli Beef Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Sweet and Sour Chicken Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Almond Chicken Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Szechwan Chicken Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Cashew Chicken Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Kung Pao Chicken Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Barbecue Pork with Chinese Vegetables Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      },
+      {
+        "name": "Imperial Mandarin Spareribs Lunch",
+        "description": "Includes soup, fried wonton and spring roll.",
+        "price": "$9.99",
+        "section": "Lunch Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3122",
+    "name": "Meet Fresh",
+    "sourceUrl": "https://www.doordash.com/store/meet-fresh-%E9%B2%9C%E8%8A%8B%E4%BB%99-san-diego-723687/",
+    "confidence": "medium",
+    "notes": "Chain (Taiwanese dessert). Selected the San Diego / Mira Mesa branch specifically (address verified: 9420 Mira Mesa Boulevard, matches work list) rather than a chain-wide page. 79 priced items across 16 sections (Cold Icy Taro Ball, Cold Icy Grass Jelly, Purple Rice Soup, Hot Red Bean Soup, Hot Grass Jelly Soup, Tofu Pudding, Small Bites, Traditional Milk Teas, Winter Melon Teas, Purple Rice Drink, Herbal Teas, Fresh Milk Drinks, Fruit Teas, Teas, Egg Waffles, Fruit Slush/Smoothies) from DoorDash schema.org Menu JSON-LD; a 12-item \"Most Ordered\" sampler section was dropped as duplicates of items already counted in their real sections. A SinglePlatform capture (places.singleplatform.com/meet-fresh-7/menu) was also found but is stale — its Traditional Milk Tea ($4.00) and Icy Grass Jelly Signature ($7.80) are 1.4x-1.7x below the DoorDash prices ($6.75 / $11.25), well beyond normal delivery markup, so it was not used. order.online storefront is a virtualized grid with no prices in the raw HTML (needs a browser); Grubhub is a pure JS shell.",
+    "dishes": [
+      {
+        "name": "Taro Ball Signature",
+        "description": "Taro balls, taro paste, potaro balls (sweet potato taro balls), boba & shaved ice",
+        "price": "$9.75",
+        "section": "Cold Icy Taro Ball"
+      },
+      {
+        "name": "Create Your Own Icy Taro Balls",
+        "description": "Taro balls with shaved ice and your favorite toppings",
+        "price": "$7.75",
+        "section": "Cold Icy Taro Ball"
+      },
+      {
+        "name": "Icy Grass Jelly Signature",
+        "description": "Herbal Ice topped with Grass Jelly and fresh Taro Balls. Creamer provided on the side.",
+        "price": "$11.25",
+        "section": "Cold Icy Grass Jelly"
+      },
+      {
+        "name": "Create Your Own Icy Grass Jelly",
+        "description": "Herbal Shaved Ice topped with Grass Jelly and your favorite toppings. Creamer provided on the side",
+        "price": "$9.00",
+        "section": "Cold Icy Grass Jelly"
+      },
+      {
+        "name": "Grass Jelly & Grass Jelly Shaved Ice (A/B/C)",
+        "description": "Herbal Ice and Grass Jelly with your choice of combo toppings. Creamer provided on the side",
+        "price": "$11.25",
+        "section": "Cold Icy Grass Jelly"
+      },
+      {
+        "name": "Hot Purple Rice Soup Signature",
+        "description": "Taro, Potaro Balls (sweet potato taro balls), Rice Balls, and purple rice soup.",
+        "price": "$11.25",
+        "section": "Purple Rice Soup"
+      },
+      {
+        "name": "Create Your Own Purple Rice Soup",
+        "description": "Purple rice soup and your favorite toppings.",
+        "price": "$9.00",
+        "section": "Purple Rice Soup"
+      },
+      {
+        "name": "Icy Purple Rice Soup Signature",
+        "description": "Taro paste, Potaro Balls (sweet potato taro balls), Rice Balls, and icy purple rice soup.",
+        "price": "$11.25",
+        "section": "Purple Rice Soup"
+      },
+      {
+        "name": "Purple Rice Soup (A/B/C)",
+        "description": "Purple Rice Soup with your choice of combo toppings",
+        "price": "$11.25",
+        "section": "Purple Rice Soup"
+      },
+      {
+        "name": "Red Bean Soup Signature",
+        "description": "Taro balls, Sesame Rice Balls, Taro, Red Beans, and Boba.",
+        "price": "$11.25",
+        "section": "Hot Red Bean Soup"
+      },
+      {
+        "name": "Red Bean Soup (A/B/C)",
+        "description": "Red Bean Soup, Red Beans, and Taro Balls with your choice of combo toppings",
+        "price": "$11.25",
+        "section": "Hot Red Bean Soup"
+      },
+      {
+        "name": "Create Your Own Red Bean Soup",
+        "description": "Red bean soup, Red Beans, and Taro Balls, with your favorite toppings",
+        "price": "$9.00",
+        "section": "Hot Red Bean Soup"
+      },
+      {
+        "name": "Hot Grass Jelly Soup Signature",
+        "description": "Mini Q (mini taro balls), Red Beans, Boba & hot grass jelly soup.",
+        "price": "$11.25",
+        "section": "Hot Grass Jelly Soup"
+      },
+      {
+        "name": "Hot Grass Jelly Soup with Mini Taro Balls (A/B/C)",
+        "description": "Hot grass jelly soup and Mini Q (mini taro balls) with your choice of combo toppings.",
+        "price": "$11.25",
+        "section": "Hot Grass Jelly Soup"
+      },
+      {
+        "name": "Create Your Own Hot Grass Jelly Soup",
+        "description": "Hot grass jelly soup and your favorite toppings",
+        "price": "$9.00",
+        "section": "Hot Grass Jelly Soup"
+      },
+      {
+        "name": "Taro Tofu Pudding",
+        "description": "Cold/Hot.",
+        "price": "$10.25",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Boba Tofu Pudding",
+        "description": "Cold/Hot.",
+        "price": "$10.00",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Milk Tea Tofu Pudding",
+        "description": "Creamy tofu pudding infused with milk tea, served cold.",
+        "price": "$9.75",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Rice Ball Tofu Pudding",
+        "description": "Cold/Hot.",
+        "price": "$10.00",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Potaro Balls (Sweet Potato Taro Ball) Tofu Pudding",
+        "description": "Cold/Hot.",
+        "price": "$10.25",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Taro Ball Tofu Pudding",
+        "description": "Cold/Hot.",
+        "price": "$10.25",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Tofu Pudding Signature (Peanuts, Taro, Taro Balls, Tofu Pudding)",
+        "description": "Silky tofu pudding with peanuts, taro, and taro balls. Served cold.",
+        "price": "$11.00",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Thai Tea Tofu Pudding",
+        "description": "Silky tofu pudding infused with rich Thai tea, served cold.",
+        "price": "$9.75",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Mini Taro Ball Tofu Pudding",
+        "description": "Cold/Hot.",
+        "price": "$10.25",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Red Bean Tofu Pudding",
+        "description": "Cold/Hot.",
+        "price": "$10.00",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Create your own Tofu Pudding",
+        "description": "Custom tofu pudding served cold. Choose your desired toppings.",
+        "price": "$9.00",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Peanut Tofu Pudding",
+        "description": "Contains Peanuts. Top Seller. Cold/Hot.",
+        "price": "$10.00",
+        "section": "Tofu Pudding"
+      },
+      {
+        "name": "Mung Bean Cakes",
+        "description": "Vegetarian.",
+        "price": "$7.75",
+        "section": "Small Bites"
+      },
+      {
+        "name": "Crystal Mochi & Mung Bean Cake Set",
+        "description": "Vegetarian.",
+        "price": "$7.75",
+        "section": "Small Bites"
+      },
+      {
+        "name": "Q Mochi &  Almond Pudding Combo",
+        "description": "Smooth almond pudding topped with red beans, accompanied by tender q mochi rolls drizzled with a light syrup and sprinkled with crunchy nuts.",
+        "price": "$6.75",
+        "section": "Small Bites"
+      },
+      {
+        "name": "Crystal Mochi Set",
+        "description": "Vegetarian.",
+        "price": "$7.75",
+        "section": "Small Bites"
+      },
+      {
+        "name": "Q Mochi &  Caramel Pudding Combo",
+        "description": "Top Seller.",
+        "price": "$6.75",
+        "section": "Small Bites"
+      },
+      {
+        "name": "Caramel Pudding with Boba",
+        "description": "Top Seller.",
+        "price": "$3.75",
+        "section": "Small Bites"
+      },
+      {
+        "name": "Almond Pudding with Red Beans",
+        "description": "Gluten free, vegetarian.",
+        "price": "$3.75",
+        "section": "Small Bites"
+      },
+      {
+        "name": "Crystal & Q Mochi Set",
+        "description": "Contains nut allergen. 245 cal. crystal mochi, caramel sauce, coconut flakes, and q mochi.",
+        "price": "$7.75",
+        "section": "Small Bites"
+      },
+      {
+        "name": "Q Mochi",
+        "description": "Top Seller.",
+        "price": "$7.25",
+        "section": "Small Bites"
+      },
+      {
+        "name": "Traditional Milk Tea",
+        "description": "",
+        "price": "$6.75",
+        "section": "Traditional Milk Teas"
+      },
+      {
+        "name": "Mini Q (mini taro balls) Milk Tea",
+        "description": "Mini taro balls milk tea with choice of black, green, oolong, or Jin Xuan oolong. Options for half or full sugar sweetness. Available cold with varying ice levels.",
+        "price": "$8.00",
+        "section": "Traditional Milk Teas"
+      },
+      {
+        "name": "Red Bean Milk Tea",
+        "description": "Cold milk tea paired with sweet red beans. Choose from black, green, oolong, or Jin Xuan oolong tea base. Options for 1/2 or full sugar and ice level.",
+        "price": "$7.75",
+        "section": "Traditional Milk Teas"
+      },
+      {
+        "name": "Caramel Pudding Milk Tea",
+        "description": "497 cal.",
+        "price": "$8.00",
+        "section": "Traditional Milk Teas"
+      },
+      {
+        "name": "Boba Milk Tea",
+        "description": "Gluten free, nut free, vegetarian.",
+        "price": "$7.75",
+        "section": "Traditional Milk Teas"
+      },
+      {
+        "name": "Win Win (boba and lychee jelly) Milk Tea",
+        "description": "Top Seller.",
+        "price": "$8.25",
+        "section": "Traditional Milk Teas"
+      },
+      {
+        "name": "Grass Jelly Milk Tea",
+        "description": "Gluten free, nut free, vegetarian. (cold drink only) / ().",
+        "price": "$7.75",
+        "section": "Traditional Milk Teas"
+      },
+      {
+        "name": "Fluffy Mini Q (mini taro balls) Winter Melon Tea",
+        "description": "Mini Q (mini taro balls) winter melon tea with sea salt whipped cream",
+        "price": "$9.25",
+        "section": "Winter Melon Teas (Cold Only)"
+      },
+      {
+        "name": "QQ Winter Melon Tea",
+        "description": "QQ Mini (mini taro balls) and Winter Melon Jelly",
+        "price": "$8.00",
+        "section": "Winter Melon Teas (Cold Only)"
+      },
+      {
+        "name": "Fresh Milk Winter Melon Tea",
+        "description": "Gluten free, nut free, vegetarian.",
+        "price": "$8.00",
+        "section": "Winter Melon Teas (Cold Only)"
+      },
+      {
+        "name": "Fluffy Winter Melon Tea",
+        "description": "Winter Melon tea with sea salt whipped cream",
+        "price": "$8.00",
+        "section": "Winter Melon Teas (Cold Only)"
+      },
+      {
+        "name": "Lemon Winter Melon Tea",
+        "description": "Top Seller.",
+        "price": "$7.50",
+        "section": "Winter Melon Teas (Cold Only)"
+      },
+      {
+        "name": "Winter Melon Tea (Cold)",
+        "description": "Winter Melon Tea, cold. Sweetness options: 1/2 sugar, full sugar. Ice options: less, none, regular.",
+        "price": "$6.75",
+        "section": "Winter Melon Teas (Cold Only)"
+      },
+      {
+        "name": "Milk Tea Purple Rice Drink",
+        "description": "Cold milk tea blended with purple rice.",
+        "price": "$7.50",
+        "section": "Purple Rice Drink"
+      },
+      {
+        "name": "Fresh Milk Purple Rice Drink with Boba",
+        "description": "Purple rice drink mixed with fresh milk and boba. Served cold.",
+        "price": "$9.00",
+        "section": "Purple Rice Drink"
+      },
+      {
+        "name": "Fresh Milk Purple Rice Drink",
+        "description": "Top Seller.",
+        "price": "$8.00",
+        "section": "Purple Rice Drink"
+      },
+      {
+        "name": "Fresh Milk Purple Rice Drink with Mini Q (mini taro balls)",
+        "description": "Top Seller.",
+        "price": "$9.25",
+        "section": "Purple Rice Drink"
+      },
+      {
+        "name": "Fresh Milk & Grass Jelly Herbal Tea",
+        "description": "Top Seller.",
+        "price": "$9.00",
+        "section": "Herbal Teas"
+      },
+      {
+        "name": "Lemon Herbal Tea (cold only)",
+        "description": "Lemon herbal tea. Choose sweetness: half or full sugar. Ice level options: regular, less, or none.",
+        "price": "$7.50",
+        "section": "Herbal Teas"
+      },
+      {
+        "name": "Miss You Drink (Hot Drink)",
+        "description": "Hot Grass Jelly soup and Red Bean Soup mixed together. Comes Hot only.",
+        "price": "$8.75",
+        "section": "Herbal Teas"
+      },
+      {
+        "name": "Fresh Milk Herbal Tea",
+        "description": "Top Seller.",
+        "price": "$8.00",
+        "section": "Herbal Teas"
+      },
+      {
+        "name": "Herbal Tea",
+        "description": "Hot or cold.",
+        "price": "$6.75",
+        "section": "Herbal Teas"
+      },
+      {
+        "name": "Fluffy Herbal Tea",
+        "description": "Cold herbal tea with fluffy whipped cream.",
+        "price": "$8.00",
+        "section": "Herbal Teas"
+      },
+      {
+        "name": "Black Sugar Boba Fresh Milk (Cold Only)",
+        "description": "Fresh milk with boba mixed in brown sugar. Hints of chocolate.",
+        "price": "$8.50",
+        "section": "Fresh Milk Drinks"
+      },
+      {
+        "name": "Taro Paste Fresh Milk Tea (Cold Only)",
+        "description": "Taro paste blended with fresh milk, served cold. Choice of black, green, oolong, or Jin Xuan tea. Customize sweetness and ice level as preferred.",
+        "price": "$8.50",
+        "section": "Fresh Milk Drinks"
+      },
+      {
+        "name": "Fresh Milk Tea",
+        "description": "Fresh milk blended with choice of black, green, oolong, or Jin Xuan oolong tea. Options for cold, customizable sweetness, and ice levels.",
+        "price": "$7.25",
+        "section": "Fresh Milk Drinks"
+      },
+      {
+        "name": "Boba Fresh Milk Tea",
+        "description": "805 cal.",
+        "price": "$8.25",
+        "section": "Fresh Milk Drinks"
+      },
+      {
+        "name": "Passion Fruit Tea",
+        "description": "Passion fruit tea with choice of black, green, oolong, or Jin Xuan Oolong tea base. Options for less, no, or regular ice level.",
+        "price": "$6.75",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Iced Lemon Tea",
+        "description": "Choice of black, green, oolong, or jin xuan oolong tea base. Options for less, no, or regular ice. Lemon infused.",
+        "price": "$6.75",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Mango & Passion Fruit Tea",
+        "description": "Mango and passion fruit fusion, choice of black, green, oolong, or Jin Xuan oolong tea base. Ice levels: less, none, or regular.",
+        "price": "$7.50",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Mango Tea",
+        "description": "Mango tea with choice of black, green, oolong, or jin xuan oolong base. Options for ice level: less, none, or regular.",
+        "price": "$6.75",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Mango & Orange Tea",
+        "description": "Mingling fresh mango & orange flavors with your choice of black, green, oolong, or Jin Xuan oolong teas. Select preferred ice level.",
+        "price": "$7.50",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Orange & Passion Fruit Tea",
+        "description": "Refreshing blend of citrusy orange and tangy passion fruit with choice of black, green, oolong, or Jin Xuan oolong tea base. Available ice levels: less, none, regular.",
+        "price": "$7.50",
+        "section": "Fruit Teas"
+      },
+      {
+        "name": "Fluffy Teas (Cold Only)",
+        "description": "Cold fluffy teas, choose from black, green, oolong, or Jin Xuan oolong. Customize sweetness: full, half, or unsweetened. Ice options: less, none, or regular.",
+        "price": "$7.25",
+        "section": "Teas"
+      },
+      {
+        "name": "Teas",
+        "description": "Cold teas available in black, green, oolong, or Jin Xuan oolong. Choose your sweetness: full, half, or unsweetened. Ice levels: less, none, or regular.",
+        "price": "$6.00",
+        "section": "Teas"
+      },
+      {
+        "name": "Chocolate Egg Waffle",
+        "description": "Vegetarian. (made to order. waiting time may be slightly longer. /  ,).",
+        "price": "$7.75",
+        "section": "Egg Waffles"
+      },
+      {
+        "name": "Original Egg Waffle",
+        "description": "Vegetarian. (made to order. waiting time may be slightly longer. /  ,).",
+        "price": "$7.75",
+        "section": "Egg Waffles"
+      },
+      {
+        "name": "Matcha Egg Waffle",
+        "description": "Vegetarian. (made to order. waiting time may be slightly longer./ ,).",
+        "price": "$7.75",
+        "section": "Egg Waffles"
+      },
+      {
+        "name": "Chocolate Chips",
+        "description": "Soft, airy egg waffle with pockets of melted chocolate chips.",
+        "price": "$8.75",
+        "section": "Egg Waffles"
+      },
+      {
+        "name": "Matcha Red Bean",
+        "description": "",
+        "price": "$8.75",
+        "section": "Egg Waffles"
+      },
+      {
+        "name": "Mango Green Tea Slush",
+        "description": "Dairy free, gluten free, nut free, vegan, vegetarian. (cold drink only) / (). regular ice.",
+        "price": "$8.50",
+        "section": "Fruit Slush/Smoothies"
+      },
+      {
+        "name": "Strawberry Smoothie",
+        "description": "Gluten free, vegetarian, cold drink only.",
+        "price": "$8.50",
+        "section": "Fruit Slush/Smoothies"
+      },
+      {
+        "name": "Fluffy Grass Jelly Slush",
+        "description": "Smooth grass jelly combined with a light, airy slush for a refreshing and unique texture.",
+        "price": "$9.00",
+        "section": "Fruit Slush/Smoothies"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2849",
+    "name": "Kelly's Pub",
+    "sourceUrl": "https://www.allmenus.com/ca/san-diego/516537-kellys-pub/menu/",
+    "confidence": "low",
+    "blocked": "kellyspublichouse.com (work list URL) 404s with an invalid TLS cert — the site is dead or reconfigured; Facebook (facebook.com/kellyspubsd/, their apparent current channel) returns 400 to curl and needs a browser. The only priced source found, allmenus.com (Grubhub family, tier 5), lists just 19 items across 6 sections (Appetizers, House Salads, All Sandwiches, USDA Choice Burgers, House Favorites, Desserts), address-verified (15817 Bernardo Center Dr Ste 113, San Diego CA 92127, matches work list) but with NO pizza section at all, even though multiple current sources (Yelp category info, a WebSearch summary) describe the pub as \"under new management\" now serving \"breakfast\" and \"pizzas till close\" as recent additions. Pizza and breakfast are core, current menu sections missing from this capture, and no second priced source (DoorDash, Uber Eats) could be located to cross-check or supplement — allmenus is tier 5 and needs an independent second source under playbook rule 5, which was not available.",
+    "notes": "Under playbook rule 5, a lone tier-5 source with no independent cross-check is blocked, not filed. This is also stale by rule 6/7: the site itself signals a recent ownership/menu change (new pizza and breakfast programs) that the only available priced source predates. A browser pass on the Facebook page or a search for a DoorDash/Uber Eats storefront should resolve this.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "921",
+    "name": "Bánh Cuốn Phương Nga",
+    "sourceUrl": "https://www.checkle.com/biz/banh-cuon-phuong-nga-san-diego/menu",
+    "confidence": "low",
+    "blocked": "No website is on file and none was found (name search turns up only directory/aggregator pages). Yelp (the likely richest source, including menu photos) 403s every curl attempt including via r.jina.ai and WebFetch. Of the aggregator pages found, banh-cuon-phuong-nga.menu-buzz.com is a confirmed farm site (\"Claim This Listing\" tell) whose page contains none of the prices a websearch summary attributed to it — those were fabricated by the summarizer, not real. zmenu.com 403s, mymenuweb.com and restaurantji.com load but carry no prices at all. The only real priced source is checkle.com (address-verified: 4016 54th St, San Diego CA 92105, matches work list exactly), a Next.js directory site with schema.org Menu JSON-LD listing 7 items (Special Combination Steamed Rolls .99, Special Combination Wet Cake .99, Steamed Rolls .99, Wet Cake With Meat Loaf .99, Steamed Rolls With Fried Pork Paste .99, Wet Cake With Fried Pork Paste .99, Crab Paste Vermicelli Soup .49) — plausibly the restaurant's whole menu given the business is literally named for its specialty (banh cuon), but this is a single, unconfirmed tier-5-equivalent source with no second independent priced source reachable to corroborate it.",
+    "notes": "Per playbook rule 5, a single reachable tier-5-equivalent source with no independent corroboration is a real finding, marked blocked rather than filed. A browser pass on Yelp (menu photos, not the barred menu tab) would be the fastest way to confirm or expand this 7-item list.",
+    "dishes": []
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "restaurantId": "3977",
+    "name": "Imperial Mandarin",
+    "sourceUrl": "http://www.imperial-mandarin.com/#menu",
+    "confidence": "low",
+    "blocked": "needs-browser: own site's embedded dim sum menu prices ($2.60-$9.95 per item) are implausibly low for 2026 (2010s-era dim sum pricing) despite a 2026 copyright footer, so it is stale and unusable per the price-level rule. Could not check Yelp for a dated menu photo — yelp.com is bot-walled to plain curl (returns a JS/ad-blocker challenge page), needs a browser.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2849",
+    "name": "Kelly’s Pub",
+    "sourceUrl": "https://www.allmenus.com/ca/san-diego/516537-kellys-pub/menu/",
+    "confidence": "low",
+    "blocked": "needs-browser: own domain (kellyspublichouse.com) now returns a 404/parked error page (client-side JS reload wall) to curl, not a working menu. Only one tier-5 source, allmenus.com, is reachable and readable (priced JSON-LD: Nachos Supreme $7.99, Cheese Quesadilla $6.99, Spicy Cajun Mushrooms $7.99, etc.) but per the playbook aggregators need a second independent priced source to clear the screen, and none was found by search. A Facebook page (facebook.com/kellyspubsd/) may hold a dine-in menu photo but facebook.com needs a browser to check.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "921",
+    "name": "Bánh Cuốn Phương Nga",
+    "sourceUrl": "https://www.allmenus.com/ca/san-diego/723255-phuong-nga-banh-cuon/menu/",
+    "confidence": "low",
+    "blocked": "needs-browser: no website on record. Two allmenus.com listings exist (723255, 464684, same aggregator owner) both giving the address as 4141 University Avenue, San Diego, not the 4016 54th St in this record; search results otherwise confirm 4016 54th St as the real address (between Parc and University Ave), so the allmenus address looks like a farm data error rather than a second branch, and the item list cannot be trusted as this address's menu. No DoorDash/Grubhub URL for this specific location was found by search. Yelp (bot-walled to curl) may carry a dated menu-board photo among its 458+ photos but needs a browser to locate.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3416",
+    "name": "Santorini",
+    "sourceUrl": "https://santoriniislandgrill1.netwaiter.com/san-diego/menu/GetMenu",
+    "confidence": "low",
+    "blocked": "needs-browser: no website on record, but found the chain's own site (santoriniislandgrill.net, a blog-style WordPress site whose /scripps-ranch/ 'menu' page is a marketing article with only one real price, a $7 baklava add-on) and its NetWaiter storefront (santoriniislandgrill1.netwaiter.com), confirmed to be this Scripps Poway Pkwy location. The NetWaiter GetMenu payload returns 26 priced items across Plates&Combos/Veggie/Seafood/Lunch Specials/Kids Meals/Drinks&Desserts/Family Packs with no markup pattern, BUT every item in Starters, Sides&Extras, Salads and Pita Sandwiches (Gyros Pita, Chicken Pita, My Big Fat Greek Burger) plus several core Plates (Gyros Plate, Souvlaki Plate, Half Chicken Plate, Zorba's Platter, Santorini Platter) comes back with PriceText null, MinPrice 0, HasPortions false, Portions null, CanOrderItem false — 42 of 68 total items, including the most iconic core dishes. This is a core-section gap, not an adjunct, so the 26 priced items are not a complete menu. Also tried santorini-island-grill.res-menu.com/menu (found via search) as an alternate full source — it returns HTTP 200 but a genuinely empty body behind Cloudflare, likely JS-rendered. A Chrome-equipped pass on either the NetWaiter site (to see whether the null-priced items resolve after picking an order type) or res-menu.com would likely complete this.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "909",
+    "name": "Flame Bar and Grill",
+    "sourceUrl": "https://flame-bar-grill.goto-place.com/",
+    "confidence": "low",
+    "blocked": "needs-browser: no working own website found (no dedicated domain, only a Facebook page facebook.com/3flames). The UberEats storefront link from search now 404s to plain curl; Postmates is the same owner as UberEats so would not count as independent anyway. menupix.com is behind a Cloudflare JS challenge. goto-place.com/Localoria is a directory-farm page (generic AI-style prose, no itemized prices — only a vague '$50-100 price range' and an incidental '$40 buffet' mention in narrative text) and was discarded per the farm rule. No usable priced source found without a browser; Facebook and UberEats/Postmates both need one.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4028",
+    "name": "Chito's Taco Shop",
+    "sourceUrl": "https://www.allmenus.com/ca/escondido/716632-chitos-taco-shop/menu/",
+    "confidence": "low",
+    "blocked": "needs-browser: no own website (only farm sites goto-where.com/goto-restaurants.com/weeblyte.com, all barred). allmenus.com's address matches (3440 Del Lago Boulevard) and has 109 priced items, but reads stale/cash-shop-era (Beef Tacos $3.15, Breakfast Burrito $4.75, Carne Asada Burrito $6.15) versus restaurantguru search snippets showing the same or similar items at roughly 2x (Breakfast Burrito $14.00, Carne Asada Burrito $15.00) — a 2x+ gap that per the playbook means the cheaper page (allmenus) is stale, not a fee. restaurantguru is itself a barred aggregator and cannot be filed from either without independent cross-check, and no such independent source was found. UberEats has two listings for this restaurant but is a JS SPA that returns nothing to curl; needs a browser to confirm current pricing.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2135",
+    "name": "La Costa Coffee Roasting",
+    "sourceUrl": "https://lacostacoffee.myshopify.com/products.json",
+    "confidence": "low",
+    "blocked": "needs-browser: own site (lacostacoffee.com) is a React SPA whose only backing store is a headless Shopify (lacostacoffee.myshopify.com, found in the JS bundle) selling 30 retail coffee-bean products $15.94-$36.50/bag — this is what the site SELLS ONLINE, not the in-cafe drink/pastry menu (site's own sitemap has only Home/Shop/Cart/FAQ, no menu page). Confirmed address match (6965 El Camino Real Ste 208, Carlsbad). Searched for the actual cafe menu (lattes, espresso, pastries): joe.coffee's location page is a directory listing with business info only, no item prices; Foursquare's /menu URL is bot-walled to curl; Yelp's menu tab is barred by rule and yelp.com itself needs a browser. Search snippets (Foursquare/restaurantguru summaries) mention '$1 espresso shot, $4 big coffee' but these are vague AI-summarized fragments, not a readable itemized source, so nothing was filed from them.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2301",
+    "name": "Cortez Mexican Food",
+    "sourceUrl": "https://www.allmenus.com/ca/bonsall/1021327-cortez-mexican-food/menu/",
+    "confidence": "low",
+    "blocked": "needs-browser: no own website found. allmenus.com's address matches exactly (5517 Mission Road, Bonsall) with 82 plausibly-priced items (plates $8.59-$9.59, burritos $4.29-$7.59, tacos $3.19-$3.49, tortas $5.89, breakfast $5.99-$6.79, drinks/extras) and no markup pattern — reads like a genuine current POS export, and one line item is an obvious data-entry error ('Sour Cream 89.00', clearly meant to be $0.89 next to 'Cheese 0.89' — excluded rather than guessed at). Still only one tier-5 aggregator source: UberEats returns 'Not Found' to plain curl (needs a browser/JS), no DoorDash/Grubhub listing was found by search, zmenu/restaurantguru/sirved are barred farm/aggregator sites. Per the playbook, one reachable tier-5 source is not enough to file — blocking rather than filing an uncorroborated aggregator capture.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3869",
+    "name": "Mr. Shwarma",
+    "sourceUrl": "https://mrshawarmapb.smartonlineorder.com/wp-json/moo-clover/v1/categories",
+    "confidence": "low",
+    "blocked": "markup: no website on record, but found the chain's site (mrshawarmausa.com) linking to this location's own ordering storefront, mrshawarmapb.smartonlineorder.com (a WordPress + Clover integration; address on the location page confirms 1050 Garnet Ave). Two independently-reachable priced sources both fail the markup test against each other's implied base: the DoorDash marketplace listing (address-matched, 1050 Garnet Avenue) has ~90 items where dividing by 1.30 lands on round or half-dollar values with essentially no exceptions (e.g. Chicken Shawarma $15.60 -> $12.00, Beef&Lamb $16.90 -> $13.00, Baklava $3.90 -> $3.00) — a clean 30% delivery markup. The restaurant's OWN SmartOnlineOrder/Clover storefront (wp-json/moo-clover/v1/categories + /items, prices in integer cents) is lower but still not the wall price: dividing by 1.04 lands on round dollars across nearly every item (Chicken Shawarma $12.48 -> $12.00, Chipotle Chicken $13.52 -> $13.00, Mr. Shawarma Rice $18.72 -> $18.00, Lamb Mandi $27.04 -> $26.00, Pita Bread $1.04 -> $1.00, all $6.24 sides -> $6.00) — the same 4% online-ordering surcharge pattern the playbook already documents for other Clover-family storefronts. Per the never-construct-a-price rule this could not be filed at the divided-out $X.00 figure even though it is recoverable arithmetically. All 19 Catering tray items on the Clover storefront also carry price 0 (modifier/quote-priced, dropped). No unmarked-up source (own menu board photo, PDF) was found without a browser.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2220",
+    "name": "Carmen's Mexican Food",
+    "sourceUrl": "https://www.allmenus.com/ca/san-diego/721061-carmens-authentic-mexican-food/menu/",
+    "confidence": "low",
+    "blocked": "needs-browser: own site (carmensmexican.com) is the same single-page WordPress template as Imperial Mandarin's, but its #menu section is empty of real content (only ad placeholders, no priced items, no menu photo beyond one generic hero image). allmenus.com's address matches exactly (4937 Diane Avenue) with 107 priced items, but several directly comparable dishes read lower than a restaurantguru-sourced search summary of the same restaurant: allmenus Carne Asada Taco $3.50 vs $4.75; combo plates 'Beef Tacos (2)' $7.95 vs $9.95, 'Cheese Enchiladas (2)' $7.95 vs $9.95, 'Beef Enchiladas (2)' $8.25 vs $9.95, 'Steak Ranchero w/Tortillas' $9.95 vs $11.50 — a consistent ~$1.25-2.00 gap across unrelated items, reading as allmenus being the stale (older) page rather than a fee. restaurantguru is itself a barred aggregator that cannot be filed from without an independent priced cross-check, and none was found (no delivery-platform storefront, no own-site menu, no dine-in photo reachable without a browser).",
+    "dishes": []
+  }
+]

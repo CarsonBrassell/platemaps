@@ -31,7 +31,7 @@ import { readLastFix } from "@/lib/myLocation";
 import { NEO_NOIR_STYLE } from "@/lib/mapStyle";
 import { openStateFor } from "@/lib/openState";
 import { relativeTime } from "@/lib/format";
-import type { RestaurantView } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurantTypes";
 import type { PlateScore } from "@/lib/plateScore";
 import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 

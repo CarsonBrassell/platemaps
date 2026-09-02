@@ -1,6 +1,6 @@
 import { del } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
-import type { MatchedDish, Restaurant, RestaurantView } from "@/data/restaurants";
+import type { MatchedDish, Restaurant, RestaurantView } from "@/data/restaurantTypes";
 import type { Dish } from "@/data/dishes";
 import type { PriceBand } from "@/data/priceBands";
 import type { Hours } from "@/lib/openState";

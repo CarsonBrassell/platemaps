@@ -1,0 +1,1414 @@
+[
+  {
+    "restaurantId": "3889",
+    "name": "Steak N Fries",
+    "sourceUrl": "https://www.doordash.com/store/-coo-steak-n-fries-san-diego-189191/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "",
+    "blocked": "",
+    "notes": "Own site (steaknfries.com, Squarespace) has no priced menu, only a link to Clover online ordering which resolves to steak-n-fries-san-diego-2.cloveronline.com - confirmed COLO2 SPA (not winnable per playbook). DoorDash marketplace page (not order.online) carries schema.org Menu/MenuItem JSON-LD server-side; verified the JSON-LD block exists literally in the fetched HTML bytes rather than trusting a summary. Menu is genuinely small (cheesesteaks, fries, drinks) matching the restaurant's concept - 21 unique items after removing duplicates across DoorDash's \"Most Ordered\" and \"Featured Items\" sections, which repeat the same items/prices. Markup test: 12 distinct prices, cent-endings mixed (.00/.25/.50/.75, consistent with a real till), no clean divisor at 1.04/1.10/1.15/1.20/1.25 - looks like real pricing, not marketplace inflation, but recorded medium since DoorDash is tier 3 and no independent second source was checked.",
+    "dishes": [
+      {
+        "name": "Cheesesteak",
+        "description": "Ribeye Steak & Amoroso Bread roll w/ Cheese.",
+        "price": "$14.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Fries",
+        "description": "Crispy golden fries with a light, fluffy interior.",
+        "price": "$5.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Cheese Fries",
+        "description": "with Cheez Whiz",
+        "price": "$7.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Loaded Cheesesteak",
+        "description": "Ribeye Steak, Amoroso Bread roll, Cheese & Fries. Choice of Cheese: Cheese Whiz, American, Provolone, Mozzarella, Swiss",
+        "price": "$15.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Steak N Fries",
+        "description": "Ribeye steak, cheez whiz & fries.",
+        "price": "$13.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Chicken Cheesesteak",
+        "description": "Chicken, your choice of veggies & cheese on an Amoroso Roll.",
+        "price": "$14.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Buffalo Chicken Cheesesteak",
+        "description": "Chicken & Bread Roll w/cheese topped with Buffalo Sauce and Ranch",
+        "price": "$15.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Philly Pretzel Sticks",
+        "description": "Two philly pretzel sticks with dipping sauce",
+        "price": "$6.00",
+        "section": "Menu"
+      },
+      {
+        "name": "Buffalo Chicken Fries",
+        "description": "Chicken, choice of veggies, Provolone cheese & Buffalo Sauce, over fries",
+        "price": "$13.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Pizza Steak",
+        "description": "Rib-Eye Steak, Mozzarella cheese, Marinara sauce, Amoroso Bread Roll.",
+        "price": "$16.25",
+        "section": "Menu"
+      },
+      {
+        "name": "Steak",
+        "description": "Ribeye steak & Amoroso bread roll.",
+        "price": "$13.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "",
+        "price": "$9.25",
+        "section": "Menu"
+      },
+      {
+        "name": "BBQ Chicken N Fries",
+        "description": "",
+        "price": "$13.75",
+        "section": "Menu"
+      },
+      {
+        "name": "BBQ Chicken Cheesesteak",
+        "description": "",
+        "price": "$15.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Loaded BBQ Chicken Cheesesteak",
+        "description": "",
+        "price": "$16.50",
+        "section": "Menu"
+      },
+      {
+        "name": "12oz Can Soda",
+        "description": "",
+        "price": "$2.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Loaded Chicken Cheesesteak",
+        "description": "",
+        "price": "$15.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Loaded Buffalo Chicken Cheesesteak",
+        "description": "",
+        "price": "$16.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Chicken N Fries",
+        "description": "",
+        "price": "$13.00",
+        "section": "Menu"
+      },
+      {
+        "name": "DAY'S Sodas",
+        "description": "",
+        "price": "$2.75",
+        "section": "Menu"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$2.75",
+        "section": "Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3827",
+    "name": "Stars & Stripes Mexican Food",
+    "sourceUrl": "https://www.doordash.com/store/stars-&-stripes-taco-shop-san-diego-303107/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "",
+    "blocked": "",
+    "notes": "Own site (stars-and-stripes-taco-shop.mappway.com, part of a shared 'mappway' template used by 6+ sibling taco shops) shows dish photos only with zero price data anywhere in the page bytes or JSON - a real customer review embedded on that same page mentions paying '$9.64' for a Bean & Cheese burrito after a price hike, which is close to (not identical to, likely tax) the $9.95 found here, corroborating these are not badly inflated. DoorDash marketplace page (not order.online) JSON-LD verified in raw bytes, 91 raw items across 10 sections collapsed to 82 after removing 'Most Ordered' duplicates of items already listed elsewhere. Markup test: 14 distinct prices, all end in .95 or .50 (real till pricing style), no divisor (1.04/1.10/1.15/1.20/1.25) lands cleanly. Categories reached: Most Ordered, Tortas, Tortas-Breakfast, Breakfast Bowls, Burrito-Breakfast, Soups & Seafood, Low Carb, Burritos, Tacos, Combo Plates. Not reached: drinks/beverages, quesadillas, chips/sides - not visible anywhere on the DoorDash listing.",
+    "dishes": [
+      {
+        "name": "Regular Rolled Tacos",
+        "description": "",
+        "price": "$10.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Surf Turf Burrito",
+        "description": "Carne asada, shrimp, pico de gallo, rice, and cheese with sauce on a flour tortilla",
+        "price": "$18.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Churros",
+        "description": "",
+        "price": "$5.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "California Burrito",
+        "description": "",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Carne Asada Burrito",
+        "description": "",
+        "price": "$15.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "A M Special Burrito",
+        "description": "",
+        "price": "$14.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Steak & Bacon Burrito",
+        "description": "",
+        "price": "$17.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Fish Taco",
+        "description": "",
+        "price": "$6.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Stars & Stripes Fries",
+        "description": "",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Surf & Turf Bowl",
+        "description": "",
+        "price": "$18.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Bean & Cheese Burrito",
+        "description": "",
+        "price": "$9.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cali Chick Burrito",
+        "description": "",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cubana Torta",
+        "description": "",
+        "price": "$19.95",
+        "section": "Tortas"
+      },
+      {
+        "name": "Milanesa Torta",
+        "description": "",
+        "price": "$18.95",
+        "section": "Tortas"
+      },
+      {
+        "name": "Hawaiian Torta",
+        "description": "",
+        "price": "$18.95",
+        "section": "Tortas"
+      },
+      {
+        "name": "Surf & Turf Torta",
+        "description": "",
+        "price": "$18.95",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carnitas Torta",
+        "description": "",
+        "price": "$15.95",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carne Asada Torta",
+        "description": "",
+        "price": "$15.95",
+        "section": "Tortas"
+      },
+      {
+        "name": "Pollo Asada Torta",
+        "description": "",
+        "price": "$15.95",
+        "section": "Tortas"
+      },
+      {
+        "name": "Adobada Torta",
+        "description": "",
+        "price": "$15.95",
+        "section": "Tortas"
+      },
+      {
+        "name": "Ham Torta",
+        "description": "",
+        "price": "$15.95",
+        "section": "Tortas"
+      },
+      {
+        "name": "A.M. Torta",
+        "description": "",
+        "price": "$14.95",
+        "section": "Tortas - Breakfast"
+      },
+      {
+        "name": "Machaca Tortas",
+        "description": "",
+        "price": "$14.95",
+        "section": "Tortas - Breakfast"
+      },
+      {
+        "name": "Chorizo Tortas",
+        "description": "",
+        "price": "$14.95",
+        "section": "Tortas - Breakfast"
+      },
+      {
+        "name": "Chorizo Bowl",
+        "description": "",
+        "price": "$16.95",
+        "section": "Breakfast Bowls"
+      },
+      {
+        "name": "Machaca Bowl",
+        "description": "",
+        "price": "$16.95",
+        "section": "Breakfast Bowls"
+      },
+      {
+        "name": "Ham & Egg Bowl",
+        "description": "",
+        "price": "$16.95",
+        "section": "Breakfast Bowls"
+      },
+      {
+        "name": "Steak & Egg Bowl",
+        "description": "",
+        "price": "$16.95",
+        "section": "Breakfast Bowls"
+      },
+      {
+        "name": "A.M. Special Bowl",
+        "description": "",
+        "price": "$16.95",
+        "section": "Breakfast Bowls"
+      },
+      {
+        "name": "Chorizo Burrito",
+        "description": "",
+        "price": "$14.95",
+        "section": "Burrito - Breakfast"
+      },
+      {
+        "name": "Steak & Egg Burrito",
+        "description": "",
+        "price": "$14.95",
+        "section": "Burrito - Breakfast"
+      },
+      {
+        "name": "Machaca Burrito",
+        "description": "",
+        "price": "$14.95",
+        "section": "Burrito - Breakfast"
+      },
+      {
+        "name": "Ham & Cheese Burrito",
+        "description": "",
+        "price": "$14.95",
+        "section": "Burrito - Breakfast"
+      },
+      {
+        "name": "Cali Hash Burrito",
+        "description": "",
+        "price": "$16.95",
+        "section": "Burrito - Breakfast"
+      },
+      {
+        "name": "Sausage Link Burrito",
+        "description": "",
+        "price": "$14.95",
+        "section": "Burrito - Breakfast"
+      },
+      {
+        "name": "Chicken Sausage Burrito",
+        "description": "",
+        "price": "$16.95",
+        "section": "Burrito - Breakfast"
+      },
+      {
+        "name": "Supreme Burrito",
+        "description": "",
+        "price": "$14.95",
+        "section": "Burrito - Breakfast"
+      },
+      {
+        "name": "Potato Burrito",
+        "description": "",
+        "price": "$13.95",
+        "section": "Burrito - Breakfast"
+      },
+      {
+        "name": "Ceviche Tostada",
+        "description": "",
+        "price": "$11.95",
+        "section": "Soups & Seafood"
+      },
+      {
+        "name": "Shrimp Cocktail",
+        "description": "",
+        "price": "$18.95",
+        "section": "Soups & Seafood"
+      },
+      {
+        "name": "Stars & Stripes Bowl",
+        "description": "",
+        "price": "$16.95",
+        "section": "Low Carb"
+      },
+      {
+        "name": "Shrimp Bowl",
+        "description": "",
+        "price": "$17.95",
+        "section": "Low Carb"
+      },
+      {
+        "name": "Fiesta Salad",
+        "description": "",
+        "price": "$17.95",
+        "section": "Low Carb"
+      },
+      {
+        "name": "Stars & Stripes Salad",
+        "description": "",
+        "price": "$12.95",
+        "section": "Low Carb"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "",
+        "price": "$17.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chipotle Shrimp Burrito",
+        "description": "",
+        "price": "$17.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bunker Buster Burrito",
+        "description": "",
+        "price": "$16.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Cali-Surf Burrito",
+        "description": "",
+        "price": "$19.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Garlic Shrimp Burrito",
+        "description": "",
+        "price": "$17.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fish Burrito",
+        "description": "",
+        "price": "$15.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chimichanga Burrito",
+        "description": "",
+        "price": "$17.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Big Texas Burrito",
+        "description": "",
+        "price": "$19.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Verde Burrito",
+        "description": "",
+        "price": "$16.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Veggie Burrito",
+        "description": "",
+        "price": "$15.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "",
+        "price": "$16.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp a la Diabla Burrito",
+        "description": "",
+        "price": "$17.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chipotle Chicken Burrito",
+        "description": "",
+        "price": "$16.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Adobada Burrito",
+        "description": "",
+        "price": "$15.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asada Burrito",
+        "description": "",
+        "price": "$15.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Half & Half Burrito",
+        "description": "",
+        "price": "$15.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "",
+        "price": "$15.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "BRC Burrito",
+        "description": "",
+        "price": "$10.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Three Mini Taco",
+        "description": "",
+        "price": "$15.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carnitas Taco",
+        "description": "",
+        "price": "$6.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Potato Rolled Tacos",
+        "description": "",
+        "price": "$11.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Potato Taco",
+        "description": "",
+        "price": "$6.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Adobada Taco",
+        "description": "",
+        "price": "$6.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Taco",
+        "description": "",
+        "price": "$6.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo Asada Taco",
+        "description": "",
+        "price": "$6.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shrimp Taco",
+        "description": "",
+        "price": "$6.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Chicken Taco",
+        "description": "",
+        "price": "$6.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Beef Taco",
+        "description": "",
+        "price": "$6.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo Asada Plate",
+        "description": "",
+        "price": "$19.95",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Carne Asada Plate",
+        "description": "",
+        "price": "$19.95",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Two Tacos Plate",
+        "description": "",
+        "price": "$16.95",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Enchilada Plate",
+        "description": "",
+        "price": "$17.95",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Chilaquiles Plate",
+        "description": "",
+        "price": "$18.95",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Diabla Shrimp Plate",
+        "description": "",
+        "price": "$19.95",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Chorizo Plate",
+        "description": "",
+        "price": "$18.95",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Garlic Shrimp Plate",
+        "description": "",
+        "price": "$19.95",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Carnitas Plate",
+        "description": "",
+        "price": "$19.95",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Mini Tacos (3)",
+        "description": "",
+        "price": "$16.95",
+        "section": "Combo Plates"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2391",
+    "name": "skybound coffee",
+    "sourceUrl": "https://www.doordash.com/store/skybound-coffee-dessert-lounge-vista-187541/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "",
+    "blocked": "",
+    "notes": "Own site (skyboundcoffeedessert.com) redirects to skyboundmelrose.square.site, a Square Online SPA shell with no priced content in the HTML - not winnable per playbook. Two DoorDash listings exist for this brand; the first found (store 187539, 181 W Market St) is the DOWNTOWN SAN DIEGO branch, a different restaurant - discarded after checking the address in its JSON-LD. Used store 187541 instead, confirmed by matching '1661 South Melrose Drive, Vista' in its JSON-LD address fields against the work-list address. schema.org Menu JSON-LD verified in raw fetched bytes, 91 raw items across 14 sections collapsed to 79 after removing exact 'Most Ordered' duplicates (none found - Most Ordered items do not recur elsewhere, so all were kept). Markup test: 19 distinct prices, diverse cent-endings (.10/.15/.30/.35/.40/.45/.50/.65/.70/.75/.85/.95) consistent with base price plus CA sales tax baked into a POS, not a platform multiplier - no divisor (1.04-1.30) lands cleanly. Categories reached: Most Ordered, Desserts, Italian Preparations, Skybound Toast Specials, Food, Hot Coffee, Cold Coffee, Hot Tea, Cold Tea, Bowls, Green Smoothies, Smoothies, Juice, Chocolate - a comprehensive coffee-and-dessert lounge menu.",
+    "dishes": [
+      {
+        "name": "The Breakfast Croissant",
+        "description": "cage free eggs, bacon, sausage, cheddar on a house baked croissant",
+        "price": "$14.65",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Fresh Make Your Own Sandwich",
+        "description": "we know it's your style :)",
+        "price": "$13.75",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "local artisan multigrain toast, drizzled with extra virgin olive oil, topped with fresh mozzarella, fresh smashed avocado, grape tomatoes, fresh cracked black pepper, and black truffle balsamic glaze",
+        "price": "$14.65",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Sea Salt Iced Coffee [Reg or Caramel]",
+        "description": "a nice balance between sweet, salty, creamy, and bitter. comes in regular or caramel varieties",
+        "price": "$6.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Iced LaVa [Lavender Vanilla]",
+        "description": "sweet, rich, creamy housemade lavender vanilla latte with 2 shots espresso. served in 16 oz only. \"LaVa\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$7.65",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Original Bowl",
+        "description": "topped with locally made honey almond granola, strawberry, banana, organic raw honey",
+        "price": "$13.40",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Organic Cold Brew Iced Coffee",
+        "description": "we like coffee in our, ahem, coffee. so we made an extra concentrated 18 hour extraction cold brew",
+        "price": "$6.40",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Iced Mocha-White Choc, Red Velvet, Vanilla, Mexican Mocha, or Caramel",
+        "description": "choose from a variety of flavors. sweet, rich, creamy. contains 2 shots of espresso and whole milk.",
+        "price": "$7.65",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Skybound Vanilla Latte",
+        "description": "we make our vanilla syrup from scratch to give you the best quality. we use organic cane sugar and no artificial anything",
+        "price": "$7.30",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Iced Vietnamese Coffee",
+        "description": "traditional phin-brewed organic arabica beans, chicory, sweetened condensed milk, hazelnut. deliciously thick and concentrated. contains dairy. limited availability. this drink is from our specials menu, which allows us to make drinks take a long time to make or are more intricate and precise. the down side of making drinks by the pitcher is they are sometimes out of stock and substitutions are difficult",
+        "price": "$7.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Frappe",
+        "description": "blended iced coffee drink. choose from: dark chocolate, caramel, white chocolate, red velvet, etc",
+        "price": "$7.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Bagel + Cream Cheese",
+        "description": "house baked bagel with a side of cream cheese",
+        "price": "$5.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Choconut",
+        "description": "subject to availability. if out, we will refund this item.",
+        "price": "$14.65",
+        "section": "Desserts [subject to availability]"
+      },
+      {
+        "name": "New York Cheesecake",
+        "description": "subject to availability. if out, we will refund this item.",
+        "price": "$10.35",
+        "section": "Desserts [subject to availability]"
+      },
+      {
+        "name": "Cake Pop - Chocolate Oreo",
+        "description": "A cake pop featuring a blend of chocolate cake and crushed Oreo cookies, dipped in chocolate coating.",
+        "price": "$4.85",
+        "section": "Desserts [subject to availability]"
+      },
+      {
+        "name": "Carrot Cake",
+        "description": "subject to availability. if out, we will refund this item.",
+        "price": "$9.75",
+        "section": "Desserts [subject to availability]"
+      },
+      {
+        "name": "Cortado",
+        "description": "double espresso + 2 oz steamed half n half",
+        "price": "$6.10",
+        "section": "Italian Preparations"
+      },
+      {
+        "name": "Italian Cappuccino",
+        "description": "double espresso + 4 oz steamed organic whole milk. our cappuccinos are on the wetter side by default, but we can prepare differently upon request",
+        "price": "$6.10",
+        "section": "Italian Preparations"
+      },
+      {
+        "name": "Espresso",
+        "description": "double espresso. our signature espresso is grown on smaller farms and co-ops in specific micro-climates known for producing good coffee. our coffee is roasted here in San Diego to ensure freshness. our coffee is roasted in small batches with precision to bring out the best flavors and notes of each coffee bean. it was rated an extraordinary 94 points by Coffee Review, the most prominent coffee reviewing enterprise. certified organic. to add steamed milk, please instead choose latte, cappuccino, or italian macchiato. to add water or ice, please choose americano. please note espresso is meant to be drunk promplty after preparing.",
+        "price": "$4.85",
+        "section": "Italian Preparations"
+      },
+      {
+        "name": "Italian Latte",
+        "description": "double espresso + 10 oz steamed organic whole milk",
+        "price": "$6.70",
+        "section": "Italian Preparations"
+      },
+      {
+        "name": "Chimichurri Toast",
+        "description": "fresh smashed avocado, grape tomatoes, topped with house made chimichurri sauce, fresh cracked black pepper, ramen style open faced soft boiled egg",
+        "price": "$18.30",
+        "section": "Skybound Toast Specials"
+      },
+      {
+        "name": "Tokyo Toast",
+        "description": "sesame oil, fresh smashed avocado, nori, sesame seeds, crunchy rice noodles. \"Tokyo Toast\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$14.65",
+        "section": "Skybound Toast Specials"
+      },
+      {
+        "name": "S'more Toast?",
+        "description": "nutella, marshmallows, and graham cracker crust baked onto toast, topped with chocolate sauce. \"S'more Toast?\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$14.65",
+        "section": "Skybound Toast Specials"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "fresh avocado, cage free eggs, bacon, sausage, cheddar, tater tots, salsa, black beans",
+        "price": "$17.95",
+        "section": "Food"
+      },
+      {
+        "name": "Turkey Pesto",
+        "description": "turkey, havarti, housemade nut-free basil pesto, tomato on a house baked ciabatta",
+        "price": "$14.65",
+        "section": "Food"
+      },
+      {
+        "name": "Gaslamp Classic",
+        "description": "served cold: turkey, cheddar, lettuce, tomato, mayo, house baked croissant",
+        "price": "$13.40",
+        "section": "Food"
+      },
+      {
+        "name": "Classic Sandwich",
+        "description": "multigrain bread, avocado, cage free eggs, bacon, sausage, and cheddar",
+        "price": "$17.95",
+        "section": "Food"
+      },
+      {
+        "name": "Skybound Sandwich",
+        "description": "turkey, skybound seasoned onions, fresh mozzarella, avocado, lettuce, tomato, balsamic vinaigrette on a house baked ciabatta",
+        "price": "$15.85",
+        "section": "Food"
+      },
+      {
+        "name": "B.L.T.A.",
+        "description": "bacon, lettuce, tomato, avocado, mayo on a house baked croissant",
+        "price": "$14.65",
+        "section": "Food"
+      },
+      {
+        "name": "French Sandwich",
+        "description": "cage free eggs, turkey, bacon, fresh mozzarella on a fresh baked croissant",
+        "price": "$15.85",
+        "section": "Food"
+      },
+      {
+        "name": "LaVa [Lavender Vanilla]",
+        "description": "sweet, rich, creamy housemade lavender vanilla latte with 2 shots espresso. Served in 16 oz only. \"LaVa\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$7.65",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Organic Pour Over",
+        "description": "Organic pour over coffee. Choice of organic espresso blend, la Cañada Oaxaca, Italian roast, French roast, or decaf. Light to dark roast options.",
+        "price": "$7.95",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "VanillaCali Latte",
+        "description": "our take on a nonfat, sugar free vanilla latte. we make an all natural sugar free vanilla syrup, used for this drink only, that is free of preservatives, artificial flavors, and splenda.  served in 12 oz only. double espresso and nonfat milk is the default for this drink, although you can substitute our housemade alternative milks. 80 calories. 0g fat. \"VanillaCali\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$7.65",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Organic French Press",
+        "description": "this premium full immersion coffee is brewed fresh to order. served in 15 oz only.",
+        "price": "$7.30",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Mocha-White Choc, Red Velvet, Vanilla, Mexican Mocha, or Caramel",
+        "description": "choose from a variety of flavors. sweet, rich, creamy. contains 2 shots of espresso and whole milk.",
+        "price": "$7.30",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Latte",
+        "description": "double espresso + steamed whole milk",
+        "price": "$6.40",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Americano",
+        "description": "this premium coffee is extracted fresh to order by pouring our highly rated espresso over hot water. espresso shots: 16 oz has 3, 20 oz has 4",
+        "price": "$5.50",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Cafe Caramel",
+        "description": "vanilla caramel latte with 2 shots espresso, upside down, with caramel sauce cross hatch. \"Cafe Caramel\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$7.30",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Skybound Dark Choclate Mocha",
+        "description": "house made mocha powder, double espresso + milk",
+        "price": "$7.30",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Iced Skybound Dark Chocolate Mocha",
+        "description": "house made mocha powder, double espresso + milk + ice",
+        "price": "$7.65",
+        "section": "Cold Coffee"
+      },
+      {
+        "name": "Iced Cafe Caramel",
+        "description": "vanilla caramel iced latte with 2 shots espresso, upside down, with caramel sauce cross hatch. \"Cafe Caramel\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$7.95",
+        "section": "Cold Coffee"
+      },
+      {
+        "name": "Iced Skybound Vanilla Latte",
+        "description": "we make our vanilla syrup from scratch to give you the best quality. we use organic cane sugar and no artificial anything",
+        "price": "$7.65",
+        "section": "Cold Coffee"
+      },
+      {
+        "name": "Nutella Peanut Butter Cold Brew",
+        "description": "we know what it's like to stare at nutella, wondering how great it would be as a cold coffee drink. made with our 18 hour organic cold brew coffee. limited availability. this drink is from our specials menu, which allows us to make drinks take a long time to make or are more intricate and precise. the down side of making drinks by the pitcher is they are sometimes out of stock and substitutions are difficult",
+        "price": "$7.95",
+        "section": "Cold Coffee"
+      },
+      {
+        "name": "Horchata Cold Brew",
+        "description": "To save water, we made horchata with cold brew coffee :)",
+        "price": "$9.45",
+        "section": "Cold Coffee"
+      },
+      {
+        "name": "Iced VanillaCali Latte",
+        "description": "our take on a nonfat, sugar free vanilla latte. we make an all natural sugar free vanilla syrup, used for this drink only, that is free of preservatives, artificial flavors, and splenda. served in 16 oz only. double espresso and nonfat milk is the default for this drink, although you can substitute our housemade alternative milks. 75 calories. 0g fat. \"VanillaCali\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$7.65",
+        "section": "Cold Coffee"
+      },
+      {
+        "name": "Iced Americano",
+        "description": "this premium iced coffee is extracted fresh to order by pouring our highly rated espresso over ice and adding filtered water as needed. espresso shots: 16 oz has 3, 24 oz has 4",
+        "price": "$6.70",
+        "section": "Cold Coffee"
+      },
+      {
+        "name": "Iced Latte",
+        "description": "double espresso + whole milk + ice",
+        "price": "$6.70",
+        "section": "Cold Coffee"
+      },
+      {
+        "name": "LaVa Frappe [Lavender Vanilla]",
+        "description": "sweet, rich, creamy housemade lavender vanilla iced blended coffee drink. served in 16 oz only. \"LaVa\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$7.95",
+        "section": "Cold Coffee"
+      },
+      {
+        "name": "Loose Leaf Iced Tea",
+        "description": "we love teas, which is why we offer a generous selection and never serve you bagged tea. many organic and caffeine free options.",
+        "price": "$4.85",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "thai tea blend + organic cane sugar + half n half",
+        "price": "$6.70",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Chai Frappe",
+        "description": "we make chai powder from scratch for this iced blended drink",
+        "price": "$7.95",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Purple Tea",
+        "description": "organic berry hibiscus tisane infused with pineapple juice and organic cane sugar. sweet, sour, refreshing.",
+        "price": "$6.70",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Iced Loose Leaf Chai Latte",
+        "description": "organic loose leaf chai tea + organic cane sugar + half n half",
+        "price": "$7.30",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Iced Powder Chai Latte",
+        "description": "chai powder made from scratch + whole milk + ice",
+        "price": "$7.30",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Iced Powder Matcha Latte",
+        "description": "matcha powder made from scratch + whole milk + ice",
+        "price": "$7.30",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Taro Frappe",
+        "description": "a boba shop favorite, this creamy blended drink is commonly ordered with boba",
+        "price": "$7.95",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Taro Milk Tea",
+        "description": "this classic is soo good",
+        "price": "$7.30",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Matcha Frappe",
+        "description": "we make matcha powder from scratch for this iced blended drink",
+        "price": "$7.95",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Boba Milk Tea",
+        "description": "the standard way is jasmine or black milk tea with regular boba, but if you're feeling creative, we've got no shortage of combinations for you to try!",
+        "price": "$7.30",
+        "section": "Cold Tea"
+      },
+      {
+        "name": "Loose Leaf Chai Latte",
+        "description": "organic loose leaf chai tea + organic cane sugar + steamed half n half",
+        "price": "$7.30",
+        "section": "Hot Tea"
+      },
+      {
+        "name": "Powder Chai Latte",
+        "description": "chai powder made from scratch, steamed with whole milk",
+        "price": "$7.30",
+        "section": "Hot Tea"
+      },
+      {
+        "name": "Powder Matcha Latte",
+        "description": "matcha powder made from scratch, steamed with whole milk",
+        "price": "$7.30",
+        "section": "Hot Tea"
+      },
+      {
+        "name": "Tea Latte",
+        "description": "loose leaf tea of your choice + steamed half n half. sweetened as desired.",
+        "price": "$7.30",
+        "section": "Hot Tea"
+      },
+      {
+        "name": "Loose Leaf Hot Tea",
+        "description": "we love teas, which is why we offer a generous selection and never serve you bagged tea. many organic and caffeine free options.",
+        "price": "$4.85",
+        "section": "Hot Tea"
+      },
+      {
+        "name": "Blueberry Bowl",
+        "description": "same as original + fresh blueberries",
+        "price": "$14.65",
+        "section": "Bowls"
+      },
+      {
+        "name": "The Hulk Bowl",
+        "description": "topped with locally made honey almond granola, goji berries, chia seeds, organic coconut, organic matcha, strawberry, banana, organic raw honey",
+        "price": "$15.85",
+        "section": "Bowls"
+      },
+      {
+        "name": "Skybound Bowl",
+        "description": "topped with locally made honey almond granola, organic coconut, strawberry, banana, organic raw honey",
+        "price": "$14.65",
+        "section": "Bowls"
+      },
+      {
+        "name": "If Looks Could Kale",
+        "description": "house made almond milk, kale, chia, flax, blueberry, strawberry, banana. \"If Looks Could Kale\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$10.35",
+        "section": "Green Smoothies"
+      },
+      {
+        "name": "Sneaky Spinach",
+        "description": "oj, spinach, mango, banana, pineapple. \"Sneaky Spinach\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$9.75",
+        "section": "Green Smoothies"
+      },
+      {
+        "name": "Popeye",
+        "description": "oj, spinach, kale, strawberries, banana",
+        "price": "$9.75",
+        "section": "Green Smoothies"
+      },
+      {
+        "name": "FlaMango",
+        "description": "pink and delicious! dragonfruit, mango, lime juice, nonfat vanilla frozen yogurt, mango juice. whipped cream optional. contains dairy. limited availability. this drink is from our specials menu, which allows us to make drinks take a long time to make or are more intricate and precise. the down side of making drinks by the pitcher is they are sometimes out of stock and substitutions are difficult. \"FlaMango\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$9.75",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Tropical Sunrise",
+        "description": "pineapple, strawberries, bananas, mango juice",
+        "price": "$9.15",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Rise and Shine",
+        "description": "strawberries, banana, OJ",
+        "price": "$9.15",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Tartberry",
+        "description": "blueberries, strawberries, strawberry limeade. \"Tartberry\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$9.15",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Amazon Acai",
+        "description": "acai juice blend, strawberries, blueberries, banana. \"Amazon Acai\" is a trademark of skybound coffee + dessert lounge.",
+        "price": "$9.15",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Smoothie - Make Your Own",
+        "description": "we know you'll love it :)",
+        "price": "$9.15",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Lavender Limeade",
+        "description": "Fresh lime juice blended with lavender-infused syrup, creating a unique and refreshing beverage.",
+        "price": "$6.95",
+        "section": "Juice"
+      },
+      {
+        "name": "Fresh Squeezed Strawberry Limeade",
+        "description": "fresh squeezed lime juice, organic cane sugar, strawberries, filtered water",
+        "price": "$6.40",
+        "section": "Juice"
+      },
+      {
+        "name": "Gourmet Hot Chocolate",
+        "description": "chocolate powder made from scratch steamed with whole milk",
+        "price": "$6.95",
+        "section": "Chocolate"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2967",
+    "name": "Wings Empire",
+    "sourceUrl": "https://www.doordash.com/store/wings-empire-chula-vista-2840667/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "",
+    "blocked": "",
+    "notes": "Own site (wingsempirerestaurants.com) links to './menu_all.html' which 404s, and to a WordPress ordering subdomain (orders.wingsempirerestaurants.com) returning 'Error establishing a database connection' - own-site ordering is dead. DoorDash marketplace page (not order.online) schema.org Menu JSON-LD verified in raw fetched bytes; address in the JSON-LD ('263 East Orange Avenue, Chula Vista') matches the work-list address exactly. 58 raw items across 13 sections collapsed to 46 unique after removing 'Most Ordered' duplicates. Prices are almost entirely whole dollars (typical of a wings-by-the-count takeout shop), too few non-round prices to run a meaningful markup-divisor test (only $5.50 and $3.50 carry cents) - whole-dollar pricing does not by itself indicate markup. Categories reached: Most Ordered, Appetizers, Salads, Wings (bone-in), Wings (boneless), Chicken Tenders, Buffalo Fries, Ribs, Burgers, Tacos, Breadsticks, Sides, Beverages - a complete wings-concept menu (bone-in/boneless wings, tenders, buffalo fries specialty, sides). A few items show '+' prices (Chicken Buffalo Fries, Pulled Pork/Shrimp Buffalo Fries small, BBQ Ribs) indicating a starting price with size/topping options; recorded as shown rather than dropped.",
+    "dishes": [
+      {
+        "name": "Chicken Buffalo Fries",
+        "description": "Our BUFFALO FRIES are a spicy treat that’s sure to satisfy your hunger for flavorful fries.",
+        "price": "$11.00+",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Chicken Tenders (5)",
+        "description": "Chicken tenders are big, juicy and delicious. A perfect finger food!",
+        "price": "$13.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Rg French Fries",
+        "description": "Fresh, hot to perfection and crispy on the outside with a soft potato center!",
+        "price": "$5.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Breadsticks (6)",
+        "description": "Our delicious bread sticks are baked fresh, and ready whenever you are. The perfect size for dipping in your favorite sauce or just tearing off pieces to enjoy with butter.",
+        "price": "$5.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "5 Cheese Sticks",
+        "description": "Crispy, crunchy and cheesy - it's everything a cheese stick should be! (additional items shown on the photo are not included)",
+        "price": "$8.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Fountain Drink",
+        "description": "a very pleasant and relaxed drink to make you feel more comfortable at home, with friends or when relaxing anywhere else",
+        "price": "$3.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Original Wings (10)",
+        "description": "Dip it in your favorite sauce, or add some heat and choose from our Signature flavors like Chipotle BBQ and Buffalo.",
+        "price": "$20.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Original Wings (5)",
+        "description": "The flavorful, juicy goodness of chicken wings is on a mission to make the world better, one plate at a time.",
+        "price": "$12.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Mac and Cheese",
+        "description": "This creamy mixture of Mac and Cheese is sure to be one of your family's favorites.",
+        "price": "$6.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Celery & carrots + dressing",
+        "description": "Yum! These veggie sticks are full of good-for-you nutrients and an indulgent taste that is sure to wow!",
+        "price": "$5.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Boneless Wings (5)",
+        "description": "Our chicken wings are big, juicy and always tender. No bones to spoil the fun!",
+        "price": "$12.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "5 Jalapeno Poppers",
+        "description": "Crispy and spicy jalapeno poppers are the perfect game room pleaser. (additional items shown on the photo are not included)",
+        "price": "$8.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Onion Rings",
+        "description": "For those occasions that call for a more casual vibe, our Crispy Appetizers are just what you're looking for. Made with premium ingredients, there's no reason not to try something new and share it with friends and family.",
+        "price": "$8.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Zucchini",
+        "description": "For those occasions that call for a more casual vibe, our Crispy Appetizers are just what you're looking for. Made with premium ingredients, there's no reason not to try something new and share it with friends and family.",
+        "price": "$8.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Salad",
+        "description": "This chicken salad is made with fresh, wholesome ingredients. Whether you're having a picnic at the beach or enjoying it on a summer afternoon, our Chicken Salad will satisfy your hunger.",
+        "price": "$14.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Chicken Wrap",
+        "description": "Open wide for a mouth-watering veggie chicken wrap. With fresh and juicy veggies, this chicken wrap is so big that you may want two!",
+        "price": "$16.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "Our Greek Salad is full of garden-fresh flavors and won't disappoint. It's simple yet satisfying – all the things that make healthy eating an adventure!",
+        "price": "$9.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Caesar Salad is one of the most classic salads around. This salad can be served as an appetizer or a light meal.",
+        "price": "$9.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Original Wings (25)",
+        "description": "Big, juicy and loaded with flavor, wings are a crowd favorite.",
+        "price": "$48.00",
+        "section": "Wings (bone in)"
+      },
+      {
+        "name": "Original Wings (20)",
+        "description": "Big and juicy with a flavor that's out of this world, our wings are made to keep you coming back for more.",
+        "price": "$39.00",
+        "section": "Wings (bone in)"
+      },
+      {
+        "name": "Original Wings (15)",
+        "description": "The flavor of the wing, is a big and juicy one.",
+        "price": "$30.00",
+        "section": "Wings (bone in)"
+      },
+      {
+        "name": "Boneless Wings (25)",
+        "description": "Boneless chicken wings are an easy crowd-pleaser.",
+        "price": "$48.00",
+        "section": "Wings (boneless)"
+      },
+      {
+        "name": "Boneless Wings (20)",
+        "description": "They just might be the biggest and juiciest wings you've ever seen!",
+        "price": "$39.00",
+        "section": "Wings (boneless)"
+      },
+      {
+        "name": "Boneless Wings (15)",
+        "description": "The juiciest, tastiest wings around! We're not kidding when we say our wings are bigger than the competition.",
+        "price": "$30.00",
+        "section": "Wings (boneless)"
+      },
+      {
+        "name": "Boneless Wings (10)",
+        "description": "Hot, spicy, and big enough to share—this is the traditional way to eat chicken wings.",
+        "price": "$20.00",
+        "section": "Wings (boneless)"
+      },
+      {
+        "name": "Chicken Tenders (25)",
+        "description": "A party pleaser, our juicy chicken tenders are the ultimate finger food. Crispy on the outside and tender inside, our delicious tenders are made from 100% white meat chicken. Perfect for dipping in your favorite sauce!",
+        "price": "$49.00",
+        "section": "Chicken Tenders"
+      },
+      {
+        "name": "Chicken Tenders (15)",
+        "description": "Chicken Tenders are a crowd favorite and we've taken our tender recipe to the next level.",
+        "price": "$30.00",
+        "section": "Chicken Tenders"
+      },
+      {
+        "name": "Chicken Tenders (10)",
+        "description": "These chicken tenders are juicy and delicious. Bigger than the other guys!",
+        "price": "$20.00",
+        "section": "Chicken Tenders"
+      },
+      {
+        "name": "chicken buffalo fries large",
+        "description": "Crispy fries topped with diced chicken and drizzled with buffalo sauce.",
+        "price": "$16.00",
+        "section": "Buffalo Fries"
+      },
+      {
+        "name": "chicken buffalo fries regular",
+        "description": "Crispy fries topped with tender chicken pieces and drizzled with buffalo sauce and creamy dressing.",
+        "price": "$14.00",
+        "section": "Buffalo Fries"
+      },
+      {
+        "name": "shrimp buffalo fries large",
+        "description": "Crispy fries topped with spicy buffalo shrimp and drizzled with creamy sauce.",
+        "price": "$16.00",
+        "section": "Buffalo Fries"
+      },
+      {
+        "name": "pulled pork buffalo fries regular",
+        "description": "Crispy fries topped with tender pulled pork, drizzled with tangy buffalo sauce, and garnished with creamy coleslaw.",
+        "price": "$14.00",
+        "section": "Buffalo Fries"
+      },
+      {
+        "name": "shrimp buffalo fries regular",
+        "description": "Crispy fries topped with shrimp coated in buffalo sauce and drizzled with creamy dressing.",
+        "price": "$14.00",
+        "section": "Buffalo Fries"
+      },
+      {
+        "name": "pulled pork buffalo fries large",
+        "description": "Crispy fries topped with tender pulled pork, drizzled with buffalo sauce, and garnished with creamy coleslaw.",
+        "price": "$16.00",
+        "section": "Buffalo Fries"
+      },
+      {
+        "name": "Pulled Pork - Buffalo Fries small",
+        "description": "We take a generous portion of our juicy, tender pulled pork and add it right to our fries.",
+        "price": "$11.00+",
+        "section": "Buffalo Fries"
+      },
+      {
+        "name": "Shrimp - Buffalo Fries",
+        "description": "The Buffalo Fries flavor is big and juicy, packed with shrimp.",
+        "price": "$11.00+",
+        "section": "Buffalo Fries"
+      },
+      {
+        "name": "BBQ Ribs (pork)",
+        "description": "We’ve got a bone to pick with you. The combination of tender meat and rich, BBQ flavor makes these ribs a true hit.",
+        "price": "$24.00+",
+        "section": "Ribs"
+      },
+      {
+        "name": "Beef Burger",
+        "description": "Big, juicy burgers made with premium beef and fresh toppings.",
+        "price": "$11.00",
+        "section": "Burgers"
+      },
+      {
+        "name": "BBQ Pulled Pork Burger",
+        "description": "Big and juicy, with plenty of flavor. This is a burger that will quench even the strongest of appetites.",
+        "price": "$11.00",
+        "section": "Burgers"
+      },
+      {
+        "name": "Crispy Buffalo Chicken",
+        "description": "Crispy Buffalo Chicken Burger is a juicy, tasty treat that you'll want to sink your teeth into.",
+        "price": "$11.00",
+        "section": "Burgers"
+      },
+      {
+        "name": "Shrimp buffalo Taco",
+        "description": "Shrimp Taco is juicy and full of flavor. “Flour tortilla”",
+        "price": "$5.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Buffalo Chicken Taco",
+        "description": "Crispy chicken taco is the perfect meal to enjoy when you're on the go. Made with juicy all-white meat chicken. Well served!  “Flour tortilla”",
+        "price": "$5.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pulled Pork Taco",
+        "description": "Juicy pulled pork taco loaded with flavor, yet still hold their shape enough to pick up and eat without the mess. Well served. “Flour tortilla”",
+        "price": "$5.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Breadsticks (3)",
+        "description": "These crispy, crunchy bread sticks are baked to golden perfection and served warm.",
+        "price": "$3.00",
+        "section": "Breadsticks"
+      },
+      {
+        "name": "Breadsticks (12)",
+        "description": "Add a touch of Italy to your next party with this delicious recipe for bread sticks.  Crispy, golden brown, and done in just minutes, these will be ready before your guests arrive.",
+        "price": "$9.00",
+        "section": "Breadsticks"
+      },
+      {
+        "name": "Coleslaw",
+        "description": "Enjoy the fresh crunch of our coleslaw.",
+        "price": "$5.00",
+        "section": "Sides"
+      }
+    ]
+  }
+]

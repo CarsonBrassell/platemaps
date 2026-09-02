@@ -1,0 +1,2666 @@
+[
+  {
+    "restaurantId": "3598",
+    "name": "Farmhouse 78",
+    "sourceUrl": "https://www.toasttab.com/farmhouse-78/v3",
+    "confidence": "low",
+    "blocked": "Toast catalog reachable and priced, but only exposes a 'LUNCH TO-GO' ordering menu (appetizers, burgers, sandwiches, sides, desserts, drinks) plus a separate 'HOT DRINKS' menu that is empty. The restaurant's own site (farmhouse78.com/menus/, BentoBox CMS) lists many more core sections not present in the Toast catalog at all: breakfast (The Hen House, Brunch Sammies, Hot-Off-The-Griddle), dinner (Beef & Pork, Fish & Chicken, Pasta), and a full bar list (Beer on Tap, Bottled Beer, Wine, Hard Seltzer, Hard Ciders). The restaurant's own site has the correct full section structure but every menu-item__details--price field in the HTML is empty (structure not prices, 143/143 blank). Missing pieces for a Chrome-equipped follow-up: check toasttab.com/farmhouse-78/v2/online-order for a dine-in/full catalog distinct from v3's to-go subset, or find a printed/PDF breakfast+dinner menu.",
+    "notes": "Do not treat the Toast LUNCH TO-GO catalog as the whole menu; it is missing two of the restaurant's core dayparts (breakfast, dinner) and the full bar list.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3188",
+    "name": "Steady State Coffee Roasters",
+    "sourceUrl": "https://www.steadystateroasting.com/",
+    "confidence": "low",
+    "blocked": "Restaurant's own site (Shopify) has no cafe/drink menu page and no ordering link with prices; /products.json is only retail coffee bags/merch, not the in-cafe drink menu (Coke etc. not relevant here). Found the cafe is on joe.coffee ordering (https://joe.coffee/locations/ca/carlsbad/steady-state-roasting-carlsbad/) but it is a client-rendered app with no prices in the served HTML/JSON — needs a browser to read the actual item prices. checkle.com menu listing 429'd; restaurantji.com listing has no prices.",
+    "notes": "Needs a Chrome-equipped agent to load joe.coffee's ordering page and read drink prices client-side, or find a Toast/Square page not discovered by curl.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3517",
+    "name": "Portal Coffee",
+    "sourceUrl": "https://www.portalcoffeesd.com/",
+    "confidence": "low",
+    "blocked": "Site runs on Square Online (formerly Weebly/editmysite.com, APP_ORIGIN=square.online) with a Vue client-side storefront. sitemap.xml lists a full priced catalog structure (individual /product/<slug>/<id> pages plus /shop/<category>/<id> category pages, ~90 items across Traditional Espresso Drinks, Flavored Latte Drinks, Brewed, Pastries, Tea Latte, Hot/Iced Tea, Bottled Drinks, Coffee Beans, Kids Drinks, Sandwiches, Breakfast) but every page returns only a bare HTML shell with the item name in <title> and no price anywhere in server HTML, no JSON-LD, and no embedded state blob (checked window.* globals and script[type=application/json]). Needs a browser to load the Vue app and read rendered prices.",
+    "notes": "Full section list is known from the sitemap (see blocked reason) so a Chrome-equipped follow-up can judge completeness directly against it.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2467",
+    "name": "Dark Horse Coffee Roasters",
+    "sourceUrl": "https://www.darkhorsecoffeeroasters.com/locations-3",
+    "confidence": "low",
+    "blocked": "This is a multi-location chain (San Diego x7, La Mesa, Truckee, Koloa HI); the work-list address (811 25th St, San Diego, CA 92102) confirmed as the Golden Hill branch on the locations page. The only priced menu found anywhere on the domain is an image at /kauaimenu (KauaiMenu_12.01.25_webmenu.jpg) for the Koloa, Kauai HI location, which is a different branch with different (likely HI-priced) items and must not be used for Golden Hill. The homepage/shop pages are only retail coffee beans (Squarespace commerce), not the cafe drink menu. Found an UberEats storefront specific to this branch (ubereats.com/store/dark-horse-coffee-roasters-golden-hill/VvIxT9eiS--9UEDD9Xl3NQ) and a Yelp business page, but both 403/blocked curl and WebFetch equally (bot-gated). Needs a browser to open either.",
+    "notes": "Do not substitute the Kauai HI menu image for this San Diego branch. Missing piece: a Chrome-equipped agent should open the UberEats Golden Hill storefront (or Yelp's dated menu photos, filtering img alt for /menu/i) for this branch's actual drink/food prices.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2315",
+    "name": "Bottlecraft Little Italy",
+    "sourceUrl": "https://www.taphunter.com/widgets/location/v3/34854538/wm/6104147130187776.js",
+    "confidence": "high",
+    "notes": "Bottlecraft is a craft beer bottle shop and bar; this capture is the full 24-tap draft list (TapHunter widget embedded on the restaurant's own bottlecraft.com/locations/little-italy-beer-shop/ page), each beer listed with its priced pour sizes (4oz/8oz/16oz as offered). Confirmed complete: the widget's own heading says 'Draft List (24)' and all 24 rows were captured. Data was current as of the page's own 'Updated August 29' timestamp. Did not capture the separate hundreds-strong retail bottle/can inventory (take-home beer, wine, cider, kombucha) since that is a large retail product catalog rather than a drink menu, and is not exposed as a distinct priced list on the site the way the tap menu is.",
+    "dishes": [
+      {
+        "name": "Human People Pat (4 oz)",
+        "description": "Pale Ale | 5.6% ABV | Human People Beer, Seattle, WA",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Human People Pat (8 oz)",
+        "description": "Pale Ale | 5.6% ABV | Human People Beer, Seattle, WA",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Human People Pat (16 oz)",
+        "description": "Pale Ale | 5.6% ABV | Human People Beer, Seattle, WA",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "pFriem x HPBC WCIPA (4 oz)",
+        "description": "West Coast IPA | 6.8% ABV | Pfriem, Hood River, OR",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "pFriem x HPBC WCIPA (8 oz)",
+        "description": "West Coast IPA | 6.8% ABV | Pfriem, Hood River, OR",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "pFriem x HPBC WCIPA (16 oz)",
+        "description": "West Coast IPA | 6.8% ABV | Pfriem, Hood River, OR",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Beachwood Elemental Existence (4 oz)",
+        "description": "West Coast IPA | 7.0% ABV | Beachwood Brewing, Long Beach, CA",
+        "price": "$3.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Beachwood Elemental Existence (8 oz)",
+        "description": "West Coast IPA | 7.0% ABV | Beachwood Brewing, Long Beach, CA",
+        "price": "$5.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Beachwood Elemental Existence (16 oz)",
+        "description": "West Coast IPA | 7.0% ABV | Beachwood Brewing, Long Beach, CA",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Russian River Pliny The Elder (4 oz)",
+        "description": "Double IPA | 8.0% ABV | Russian River Brewing Company, Santa Rosa, CA",
+        "price": "$3.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Russian River Pliny The Elder (8 oz)",
+        "description": "Double IPA | 8.0% ABV | Russian River Brewing Company, Santa Rosa, CA",
+        "price": "$5.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Russian River Pliny The Elder (16 oz)",
+        "description": "Double IPA | 8.0% ABV | Russian River Brewing Company, Santa Rosa, CA",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Meanwhile Tender Robot (4 oz)",
+        "description": "Hazy IPA | 6.8% ABV | Meanwhile Brewing Co., Austin, TX",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Meanwhile Tender Robot (8 oz)",
+        "description": "Hazy IPA | 6.8% ABV | Meanwhile Brewing Co., Austin, TX",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Meanwhile Tender Robot (16 oz)",
+        "description": "Hazy IPA | 6.8% ABV | Meanwhile Brewing Co., Austin, TX",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Everywhere Half Remembered (4 oz)",
+        "description": "DDH Hazy Double IPA | 8.4% ABV | Everywhere Beer, Orange, CA",
+        "price": "$3.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Everywhere Half Remembered (8 oz)",
+        "description": "DDH Hazy Double IPA | 8.4% ABV | Everywhere Beer, Orange, CA",
+        "price": "$5.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Everywhere Half Remembered (16 oz)",
+        "description": "DDH Hazy Double IPA | 8.4% ABV | Everywhere Beer, Orange, CA",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Enegren 15th Anniversary (4 oz)",
+        "description": "Helles Bock | 6.8% ABV | Enegren Brewing Company, Moorpark, CA",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Enegren 15th Anniversary (8 oz)",
+        "description": "Helles Bock | 6.8% ABV | Enegren Brewing Company, Moorpark, CA",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Enegren 15th Anniversary (16 oz)",
+        "description": "Helles Bock | 6.8% ABV | Enegren Brewing Company, Moorpark, CA",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "There Does Not Exist Golden Light From The Hands Of A Cosmic Sky (4 oz)",
+        "description": "Golden Lager | 5.7% ABV | There Does Not Exist Brewing, San Luis Obispo, CA",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "There Does Not Exist Golden Light From The Hands Of A Cosmic Sky (8 oz)",
+        "description": "Golden Lager | 5.7% ABV | There Does Not Exist Brewing, San Luis Obispo, CA",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "There Does Not Exist Golden Light From The Hands Of A Cosmic Sky (16 oz)",
+        "description": "Golden Lager | 5.7% ABV | There Does Not Exist Brewing, San Luis Obispo, CA",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Velvet Glow (4 oz)",
+        "description": "Helles Lager | 4.75% ABV | Russian River Brewing Company, Santa Rosa, CA",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Velvet Glow (8 oz)",
+        "description": "Helles Lager | 4.75% ABV | Russian River Brewing Company, Santa Rosa, CA",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Velvet Glow (16 oz)",
+        "description": "Helles Lager | 4.75% ABV | Russian River Brewing Company, Santa Rosa, CA",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "* LUKR Pour* Premium Pils (16 oz)",
+        "description": "German Pils | 4.7% ABV | Sierra Nevada Brewing Company, Chico, CA",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Sante Adairius Parallel Thoughts (4 oz)",
+        "description": "Barrel-Aged Saison | 6.2% ABV | Sante Adairius Rustic Ales, Capitola, CA",
+        "price": "$6.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Sante Adairius Parallel Thoughts (8 oz)",
+        "description": "Barrel-Aged Saison | 6.2% ABV | Sante Adairius Rustic Ales, Capitola, CA",
+        "price": "$11.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Sante Adairius Queen of the Season (4 oz)",
+        "description": "French Oak-aged Saison | 6.4% ABV | Sante Adairius Rustic Ales, Capitola, CA",
+        "price": "$6.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Sante Adairius Queen of the Season (8 oz)",
+        "description": "French Oak-aged Saison | 6.4% ABV | Sante Adairius Rustic Ales, Capitola, CA",
+        "price": "$10.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Sante Adairius Love’s Armor (4 oz)",
+        "description": "Dark Sour Porter | 8.1% ABV | Sante Adairius Rustic Ales, Capitola, CA",
+        "price": "$6.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Sante Adairius Love’s Armor (8 oz)",
+        "description": "Dark Sour Porter | 8.1% ABV | Sante Adairius Rustic Ales, Capitola, CA",
+        "price": "$11.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "There Does Not Exist The Last Crossing (4 oz)",
+        "description": "Saison | 5.8% ABV | There Does Not Exist Brewing, San Luis Obispo, CA",
+        "price": "$3.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "There Does Not Exist The Last Crossing (8 oz)",
+        "description": "Saison | 5.8% ABV | There Does Not Exist Brewing, San Luis Obispo, CA",
+        "price": "$5.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "There Does Not Exist The Last Crossing (16 oz)",
+        "description": "Saison | 5.8% ABV | There Does Not Exist Brewing, San Luis Obispo, CA",
+        "price": "$9.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Blaugies La Vermontoise (4 oz)",
+        "description": "Saison | 6.0% ABV | Brasserie De Blaugies, Belgium",
+        "price": "$4.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Blaugies La Vermontoise (8 oz)",
+        "description": "Saison | 6.0% ABV | Brasserie De Blaugies, Belgium",
+        "price": "$8.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Kasteel Donker (4 oz)",
+        "description": "Abt/Quadrupel | 11.0% ABV | Brewery Van Honsebrouck, Emelgem, Belgium",
+        "price": "$4.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Kasteel Donker (8 oz)",
+        "description": "Abt/Quadrupel | 11.0% ABV | Brewery Van Honsebrouck, Emelgem, Belgium",
+        "price": "$8.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Russian River Little White Lie (4 oz)",
+        "description": "Witbier | 5.28% ABV | Russian River Brewing Company, Santa Rosa, CA",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Russian River Little White Lie (8 oz)",
+        "description": "Witbier | 5.28% ABV | Russian River Brewing Company, Santa Rosa, CA",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Russian River Little White Lie (16 oz)",
+        "description": "Witbier | 5.28% ABV | Russian River Brewing Company, Santa Rosa, CA",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Pure Project Red Rock Ridge (4 oz)",
+        "description": "American Amber Ale | 5.5% ABV | Pure Project, San Diego, CA",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Pure Project Red Rock Ridge (8 oz)",
+        "description": "American Amber Ale | 5.5% ABV | Pure Project, San Diego, CA",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Pure Project Red Rock Ridge (16 oz)",
+        "description": "American Amber Ale | 5.5% ABV | Pure Project, San Diego, CA",
+        "price": "$8.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Braurausch Eichhorn & Wagner Kellerbier (4 oz)",
+        "description": "Rauchbier | 5.2% ABV | Wagner-Bräu, Kemmern, Germany",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Braurausch Eichhorn & Wagner Kellerbier (8 oz)",
+        "description": "Rauchbier | 5.2% ABV | Wagner-Bräu, Kemmern, Germany",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "East Brother Oatmeal Stout (4 oz)",
+        "description": "Oatmeal Stout | 5.4% ABV | East Brother Beer Company, Richmond, CA",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "East Brother Oatmeal Stout (8 oz)",
+        "description": "Oatmeal Stout | 5.4% ABV | East Brother Beer Company, Richmond, CA",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "East Brother Oatmeal Stout (16 oz)",
+        "description": "Oatmeal Stout | 5.4% ABV | East Brother Beer Company, Richmond, CA",
+        "price": "$8.50",
+        "section": "Draft List"
+      },
+      {
+        "name": "Jester King Black Metal (4 oz)",
+        "description": "Russian Imperial Stout | 12.0% ABV | Jester King Craft Brewery, Austin, TX",
+        "price": "$4.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Jester King Black Metal (8 oz)",
+        "description": "Russian Imperial Stout | 12.0% ABV | Jester King Craft Brewery, Austin, TX",
+        "price": "$6.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Jester King Black Metal (16 oz)",
+        "description": "Russian Imperial Stout | 12.0% ABV | Jester King Craft Brewery, Austin, TX",
+        "price": "$11.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Hamm Berger (16 oz)",
+        "description": "American Lager | 4.7% ABV | Hamm's Brewing Co., United States",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Boochcraft Pineapple Passion (4 oz)",
+        "description": "Kombucha with Alcohol | 7.0% ABV | Boochcraft, Chula Vista, CA",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Boochcraft Pineapple Passion (8 oz)",
+        "description": "Kombucha with Alcohol | 7.0% ABV | Boochcraft, Chula Vista, CA",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Boochcraft Pineapple Passion (16 oz)",
+        "description": "Kombucha with Alcohol | 7.0% ABV | Boochcraft, Chula Vista, CA",
+        "price": "$9.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Aval Gold (4 oz)",
+        "description": "French Cider | 6.0% ABV | Aval, Bretagne, France",
+        "price": "$3.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Aval Gold (8 oz)",
+        "description": "French Cider | 6.0% ABV | Aval, Bretagne, France",
+        "price": "$5.00",
+        "section": "Draft List"
+      },
+      {
+        "name": "Aval Gold (16 oz)",
+        "description": "French Cider | 6.0% ABV | Aval, Bretagne, France",
+        "price": "$9.00",
+        "section": "Draft List"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3132",
+    "name": "Bonchon Chicken",
+    "sourceUrl": "https://www.doordash.com/store/bonchon-san-diego-725240",
+    "confidence": "medium",
+    "notes": "Chain location; work-list address is 4690 Convoy Street #102, San Diego. DoorDash's own address FAQ for this store listing says '4690 Convoy St #120, San Diego, CA 92111, USA' (Bonchon's own restaurants.bonchon.com location page also uses 'suite-102' in its URL slug) -- same street address/building, minor suite-number discrepancy between sources, treated as the same location rather than a different branch. This restaurant's own Olo storefront (order.bonchon.com, serve-next.olo.com) is a fully static-exported Next.js app with zero server-rendered data -- all menu data is fetched client-side after JS runs, so it could not be read without a browser. DoorDash's server-rendered schema.org Menu JSON-LD was used instead (tier 3, medium at best). No second priced source was reachable to cross-check (bonchon.com/menu is a marketing page with no prices). Several items (chicken by cut: Drums/Strips/Wings/Mixed/Boneless, Dipping Sauce, Fried Rice, Potstickers) show a '+' base price because they are modifier-driven (pick a count/size); the price recorded is DoorDash's own listed starting price for the cheapest required option, noted as 'from' in the description. Dropped the 'Most Ordered' carousel entirely -- all 12 of its items are exact-name duplicates of items already captured in their real categories. Categories reached: NEW ITEMS, KOREAN FRIED CHICKEN, APPETIZERS, KOREAN DISHES, SIDES, DESSERTS, K-MEALS, DRINKS (8 real sections, 57 items after dedup). Did not see a Combos/Family-Meal section if one exists on this location's actual in-app menu -- DoorDash may not expose every category the restaurant has.",
+    "dishes": [
+      {
+        "name": "K-Chicken Sandwich",
+        "description": "Fried chicken breast brushed with a choice of signature flavor, topped with Korean Cucumber Salad*, Kewpie mayo on a brioche bun. Served with choice of side. (*Contains sesame seeds and/or sesame seed oil.)",
+        "price": "$17.99",
+        "section": "NEW ITEMS"
+      },
+      {
+        "name": "Bonchon Gold Dust Fried Zucchini",
+        "description": "Breaded zucchini, lightly salted and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$11.99",
+        "section": "NEW ITEMS"
+      },
+      {
+        "name": "Korean Cucumber Salad",
+        "description": "Sliced cucumbers, onions, scallions, and Korean red chili powder.",
+        "price": "$5.99",
+        "section": "NEW ITEMS"
+      },
+      {
+        "name": "Bonchon Gold Dust Onion Rings",
+        "description": "Thick slices of onions in a crunch batter served golden brown and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$11.99",
+        "section": "NEW ITEMS"
+      },
+      {
+        "name": "Bonchon Gold Dust Sweet Potato Waffle Fries",
+        "description": "Crispy waffle-cut sweet potato fries and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$11.99",
+        "section": "NEW ITEMS"
+      },
+      {
+        "name": "Bonchon Gold Dust French Fries",
+        "description": "Medium cut potatoes deep-fried and lightly salted and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$8.39",
+        "section": "NEW ITEMS"
+      },
+      {
+        "name": "Drums",
+        "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$22.19",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Strips",
+        "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$22.19",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Wings",
+        "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$22.19",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Mixed",
+        "description": "Wings & Drumsticks, double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw. \r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$22.19",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Boneless",
+        "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$22.19",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Dipping Sauce",
+        "description": "Asian honey mustard, spicy mayo, kimchi mayo, ranch, spicy ketcup (contains sesame seeds or sesame seed oil) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$1.19",
+        "section": "KOREAN FRIED CHICKEN"
+      },
+      {
+        "name": "Bulgogi Fries",
+        "description": "Bulgogi piled on our seasoned fries and topped with mozzarella, scallions and a drizzle of spicy mayo.  (*Contains sesame seeds or sesame seed oil.)",
+        "price": "$17.99",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "MoPo Corndog",
+        "description": "The Korean way to Corn Dog! Mozzarella cheese center in crispy breading with golden crunchy potato cubes with choice Soy Garlic brushed or sugar-cinnamon rolled. Choice of dipping sauce.",
+        "price": "$8.39",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Shrimp Shumai",
+        "description": "Steamed or fried shrimp dumplings drizzled with spicy mayo & Soy Garlic sauce.",
+        "price": "$11.39",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Sotteok Sotteok",
+        "description": "Popular Korean street food skewer of crispy, chewy rice cake and sausage, coated in sweet, spicy Yangnyeom sauce.",
+        "price": "$4.79",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Takoyaki",
+        "description": "Fried octopus dumplings drizzled with Kewpie Mayo, katsu sauce and sprinkled with scallions.",
+        "price": "$11.39",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Bao Buns",
+        "description": "Three steamed buns with cucumbers, coleslaw, spicy mayo and katsu sauce.  Your choice of Pork Belly, Fried Chicken, or Bulgogi. (*Contains sesame seeds or sesame seed oil.)  (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$17.99",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Korean Tacos",
+        "description": "Three soft flour tortilla tacos topped with lettuce, coleslaw, spicy mayo, buttermilk ranch and scallions. (*Contains sesame seeds or sesame seed oil.) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$17.99",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Potstickers",
+        "description": "Eight fried dumplings, brushed with Bonchon signature sauce. Choice of pork or vegetable. (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$15.59",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Bulgogi",
+        "description": "Thinly sliced marinated USDA select beef, sauteed with mushrooms, scallions, sesame seeds and onions. Served with steamed rice. (*Contains sesame seeds or sesame seed oil.)",
+        "price": "$25.19",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Japchae",
+        "description": "Glass noodles, red bell pepper, carrots, onions, spinach, mushrooms and bulgogi stir-fried with Soy Garlic sauce and topped with sesame seeds. (*Contains sesame seeds or sesame seed oil.)",
+        "price": "$21.59",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Tteokbokki",
+        "description": "Rice cakes simmered in a spicy sauce with fish cakes, scallions, and onions, topped with mozzarella cheese and vegetable potstickers. Contains sesame seeds or sesame seed oil.",
+        "price": "$19.79",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Chicken Katsu",
+        "description": "Breaded chicken breast served drizzled with katsu sauce and spicy mayo topped with scallions. On steamed rice with a side of coleslaw. (*Contains sesame seeds or sesame seed oil.)",
+        "price": "$20.39",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Buldak",
+        "description": "Spicy chicken stir-fried with rice cakes, onions, and hot pepper sauce. Topped with scallions, sesame seeds, and mozzarella cheese. Served with steamed rice. (Contains sesame seeds or sesame seed oil.)",
+        "price": "$23.99",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "K-Chicken Sandwich",
+        "description": "Fried chicken breast brushed with a choice of signature flavor, topped with Korean Cucumber Salad*, Kewpie mayo on a brioche bun. Served with choice of side. (*Contains sesame seeds and/or sesame seed oil.)",
+        "price": "$17.99",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Fried Rice",
+        "description": "Fried rice, eggs, red bell pepper, onions, scallions, cooked with Soy Garlic sauce, topped with sesame seeds and fresh cucumber garnish. (Contains sesame seeds or sesame seed oil.) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$17.39",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Bibimbap",
+        "description": "Rice with scrambled egg, lettuce, carrots, sauteed onions, spinach and mushrooms. (Contains sesame seeds or sesame seed oil.) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$17.39",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Sesame Salad ",
+        "description": "Romaine tossed with stir-fried kimchi, carrots, cabbage, red bell pepper, scallions and mozzarella cheese with toasted sesame dressing. (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$13.19",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Udon Noodle Soup",
+        "description": "Wheat noodles in a broth with mushrooms and topped with scallions. (*Bulgogi protein option contains sesame seeds or sesame seed oil.) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$15.59",
+        "section": "KOREAN DISHES"
+      },
+      {
+        "name": "Seasoned French Fries",
+        "description": "French fries topped with a garlic seasoning, parmesan cheese, and parsley flakes.",
+        "price": "$10.79",
+        "section": "SIDES"
+      },
+      {
+        "name": "Bonchon Gold Dust Sweet Potato Waffle Fries",
+        "description": "Crispy waffle-cut sweet potato fries and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$11.99",
+        "section": "SIDES"
+      },
+      {
+        "name": "Korean Street Corn",
+        "description": "Grilled corn with Kewpie Mayo, mozzarella, Korean red chili flakes and topped with scallions.",
+        "price": "$8.39",
+        "section": "SIDES"
+      },
+      {
+        "name": "Bonchon Gold Dust Fried Zucchini",
+        "description": "Breaded zucchini, lightly salted and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$11.99",
+        "section": "SIDES"
+      },
+      {
+        "name": "French Fries",
+        "description": "Medium cut potatoes deep-fried and lightly salted.",
+        "price": "$7.19",
+        "section": "SIDES"
+      },
+      {
+        "name": "Seasoned Fried Zucchini",
+        "description": "Breaded zucchini topped with garlic seasoning, parmesan cheese, and parsley flakes.",
+        "price": "$11.99",
+        "section": "SIDES"
+      },
+      {
+        "name": "Korean Cucumber Salad",
+        "description": "Sliced cucumbers, onions, scallions, and Korean red chili powder.",
+        "price": "$5.99",
+        "section": "SIDES"
+      },
+      {
+        "name": "Onion Rings",
+        "description": "Thick slices of onions in a crunchy batter served golden brown.",
+        "price": "$10.79",
+        "section": "SIDES"
+      },
+      {
+        "name": "Kimchi",
+        "description": "National Korean dish consisting of fermented chili peppers mixed with cabbage.",
+        "price": "$5.39",
+        "section": "SIDES"
+      },
+      {
+        "name": "Bonchon Gold Dust French Fries",
+        "description": "Medium cut potatoes deep-fried and lightly salted and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$8.39",
+        "section": "SIDES"
+      },
+      {
+        "name": "Edamame",
+        "description": "Steamed soybeans sprinkled with salt.",
+        "price": "$7.79",
+        "section": "SIDES"
+      },
+      {
+        "name": "Sweet Potato Waffle Fries",
+        "description": "Crispy waffle-cut sweet potato fries.",
+        "price": "$10.79",
+        "section": "SIDES"
+      },
+      {
+        "name": "Steamed Rice",
+        "description": "Fluffy, cooked white rice.",
+        "price": "$3.59",
+        "section": "SIDES"
+      },
+      {
+        "name": "Fried Zucchini",
+        "description": "Breaded zucchini, lightly salted.",
+        "price": "$10.79",
+        "section": "SIDES"
+      },
+      {
+        "name": "Pickled Radish",
+        "description": "Juicy, crispy radish steeped in the perfect blend of slightly sweet and tangy flavors.",
+        "price": "$3.59",
+        "section": "SIDES"
+      },
+      {
+        "name": "Coleslaw",
+        "description": "Shredded cabbage and carrots fused with a sweet and creamy mayo-based sauce.",
+        "price": "$3.59",
+        "section": "SIDES"
+      },
+      {
+        "name": "Bonchon Gold Dust Onion Rings",
+        "description": "Thick slices of onions in a crunch batter served golden brown and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+        "price": "$11.99",
+        "section": "SIDES"
+      },
+      {
+        "name": "Dipping Sauce",
+        "description": "Asian honey mustard, spicy mayo, kimchi mayo, ranch, spicy ketcup (contains sesame seeds or sesame seed oil) (price shown is the \"from\" price for the cheapest required option)",
+        "price": "$1.19",
+        "section": "SIDES"
+      },
+      {
+        "name": "2pc Korean Donuts & Sauce",
+        "description": "Two traditional soft and fluffy Korean donuts coated with cinnamon and sugar on the outside, served with a sweet cream dipping sauce.",
+        "price": "$7.19",
+        "section": "DESSERTS"
+      },
+      {
+        "name": "1pc Korean Donut & Sauce",
+        "description": "One traditional soft and fluffy Korean donut coated with cinnamon and sugar on the outside, served with a sweet cream dipping sauce.",
+        "price": "$4.19",
+        "section": "DESSERTS"
+      },
+      {
+        "name": "K-Meal To-Go for 4-6",
+        "description": "12 wings or boneless with 6 drumsticks and two sides.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$55.19",
+        "section": "K-MEALS"
+      },
+      {
+        "name": "K-Meal To-Go for 6-8",
+        "description": "30 wings or boneless with 10 drumsticks and three sides.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$91.19",
+        "section": "K-MEALS"
+      },
+      {
+        "name": "K-Meal To-Go for 8-10",
+        "description": "45 wings or boneless with 14 drumsticks and four sides. \r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$128.39",
+        "section": "K-MEALS"
+      },
+      {
+        "name": "K-Box To-Go",
+        "description": "For the game or anytime!  50 wings or 50 boneless, fries and 5 dipping sauces.  For 6-8 people\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+        "price": "$113.99",
+        "section": "K-MEALS"
+      },
+      {
+        "name": "Pepsi Can",
+        "description": "20oz bottle",
+        "price": "$3.59",
+        "section": "DRINKS"
+      },
+      {
+        "name": "Diet Pepsi Can",
+        "description": "20oz bottle",
+        "price": "$3.59",
+        "section": "DRINKS"
+      },
+      {
+        "name": "Water Bottle",
+        "description": "16.9 fl oz bottle",
+        "price": "$3.59",
+        "section": "DRINKS"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1328",
+    "name": "The Coffee Bean & Tea Leaf",
+    "sourceUrl": "https://www.doordash.com/store/the-coffee-bean-&-tea-leaf-poway-329297/",
+    "confidence": "medium",
+    "notes": "Chain location; work-list address 12314 Poway Road matches this DoorDash store's own FAQ address ('12314 Poway Rd, Poway, CA 92064') exactly. This restaurant's own Olo storefront (playbook: 'Coffee Bean & Tea Leaf's Olo storefront has defeated five attempts') was not retried; DoorDash was used instead as a different route. The page's schema.org JSON-LD Menu block only exposed 91 of the store's items across 7 sections (a curated subset -- Teas, Ice Blended drinks, Cold Brew, Cocoas, Retail were all missing from it) even though the page's own escaped Next.js RSC flight payload (self.__next_f.push, MenuBookCategory / MenuPageItemList / MenuPageItem objects) held the complete 24-category, 260-item catalog matching the category metadata's own numItems counts exactly. Used the RSC payload instead of the JSON-LD. Dropped the 'Most Ordered' carousel entirely (all 12 items were exact-name duplicates of items already present in their real categories). Dropped 3 items with no resolvable price ('Brewed Coffee' x2, 'Red Eye') per the never-write-a-dish-without-a-real-price rule -- these are build-your-own drinks whose modifier price could not be resolved from this payload (isEligible:false on the quick-add price with a $0 base). Items whose grid price is a 'from' price (build-your-own with required size/flavor choice) are noted as such in their description; the number recorded is the storefront's own displayed 'starting at' figure, not invented. Markup check: divided all 257 non-'from' prices by 1.04/1.10/1.15/1.20/1.25 -- none landed cleanly on round or .95 values (max 15% at 1.10, within the ~17-23% organic-noise band), so no delivery markup detected; treated as base restaurant pricing. Dropped the two 'Retail' categories (Coffee/Tea/Powders take-home bags, Merchandise) as adjunct retail rather than a drink/food menu. Categories captured: Seasonal Offerings, Food (Baked Goods, Breakfast, Lunch, Snacks & Treats), Coffee (The Perfect Americano, Iced Espresso, Espresso, Iced Coffee, Brewed Coffee), Cold Brew (Coffee, Tea), Ice Blended drink (Coffee Based, Kid Friendly, Tea Based), Tea (Hot Tea, Iced Tea, Hot Tea Latte, Iced Tea Latte), Cocoas, Bottled Beverages, Catering (Java To Go).",
+    "dishes": [
+      {
+        "name": "Pumpkin Dry Iced Americano™ drink",
+        "description": "Our viral drink is getting a Fall twist! A dry, iced Americano flavored with vanilla & pumpkin and topped with half & half cream and caramel drizzle around the cup. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Pumpkin Latte",
+        "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon.  A sprinkle of cinnamon brings out the flavors of Fall. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Iced Pumpkin Latte",
+        "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Iced Pumpkin Cream Latte",
+        "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon served over ice and topped with a delicious cream cap.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Pumpkin Cold Brew Oat Latte",
+        "description": "Our signature smooth Cold Brew infused with rich pumpkin flavor, topped with creamy Oatly® Oatmilk. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Pumpkin Ice Blended® drink",
+        "description": "A nostalgic flavor reminiscent of the classic Pumpkin pie dessert.   Fresh espresso, creamy pumpkin, nutmeg and cinnamon blended together and topped with fluffy whip cream and a sprinkle of cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Extreme Pumpkin Ice Blended® drink",
+        "description": "Our classic Pumpkin Ice Blended® but make it extra! With double the caffeine and no milk added, our Extreme Pumpkin Ice Blended® coffee-forward drink is perfect for Guests who want something indulgent that will wake them up! (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Pure Pumpkin Ice Blended® drink",
+        "description": "A nostalgic flavor reminiscent of the classic Pumpkin pie dessert.  Creamy pumpkin, nutmeg and cinnamon blended together and topped with fluffy whip cream and a sprinkle of cinnamon for a caffeine-free treat. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Hojicha Ice Blended® drink",
+        "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This creamy, Ice Blended drink  offers a taste that’s both soothing and refreshingly new.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Pumpkin Chai Latte",
+        "description": "The perfect blend of our signature spicy chai and creamy pumpkin flavor topped with a dusting of cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Iced Pumpkin Chai Latte",
+        "description": "The perfect blend of our signature spicy chai and creamy pumpkin flavor served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Hojicha Latte",
+        "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This velvety latte offers a taste that’s both soothing and refreshingly new.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Iced Hojicha Latte",
+        "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This velvety latte offers a taste that’s both soothing and refreshingly new served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Pumpkin Hojicha Latte",
+        "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This warming, creamy latte pairs this toasty flavor with spicy pumpkin.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Iced Pumpkin Hojicha Latte",
+        "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This warming, creamy latte pairs this toasty flavor with spicy pumpkin poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Seasonal Offerings"
+      },
+      {
+        "name": "Strawberry Cake Pop",
+        "description": "A delicious strawberry flavored cake pop dipped in pink chocolate coating and rainbow sprinkles. 150 Calories",
+        "price": "$4.60",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Blueberry Muffin",
+        "description": "A flavorful muffin that is moist and full of delicious blueberries, topped with a crunchy streusel. This has not been Kosher certified. 360 Calories",
+        "price": "$4.85",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Double Chocolate Muffin",
+        "description": "A rich, chocolately muffin with chocolate chips. This has not been Kosher certified. 440 Calories",
+        "price": "$4.85",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Butter Croissant",
+        "description": "A classic butter croissant with the perfect flaky top and soft, moist layers inside. This has not been Kosher certified. 290 Calories",
+        "price": "$4.85",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Cinnamon Roll",
+        "description": "A buttery croissant roll filled with cinnamon and sugar. This has not been Kosher certified. 420 Calories",
+        "price": "$4.85",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Chocolate Croissant",
+        "description": "Layers of flaky, buttery croissant dough filled with rich chocolate. This has not been Kosher certified. 350 Calories",
+        "price": "$5.45",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Blueberry Scone",
+        "description": "A classic scone filled with flavorful blueberries that's topped with sugar crystals. This has not been Kosher certified. 600 Calories",
+        "price": "$4.85",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Pumpkin Cream Cheese Muffin",
+        "description": "A pumpkin spiced muffin that's filled with a cream cheese filling. 400 Calories",
+        "price": "$5.20",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Chocolate Chip Cookie",
+        "description": "Delicious, chewy and filled with chocolate chips. This has not been Kosher certified. 330 Calories",
+        "price": "$4.30",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Vegan Banana Walnut Loaf",
+        "description": "A delicious vegan banana bread that's made with real bananas puree and full of chopped walnuts pieces. 290 Calories",
+        "price": "$4.85",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Almond Croissant",
+        "description": "A sweet butter croissant filled with a moist almond filling and topped with sliced almonds. This has not been Kosher certified. 430 Calories",
+        "price": "$5.45",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Coffee Crumble Cake",
+        "description": "A classic coffee cake with swirled cinnamon sugar and topped with a crunchy streusel topping. This has not been Kosher certified. 350 Calories",
+        "price": "$4.85",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Chocolate Cake Pop",
+        "description": "A delicious chocolate cake pop dipped in milk chocolate coating with rainbow sprinkles. 150 Calories",
+        "price": "$4.60",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Cheese Danish",
+        "description": "Rich tasting cream cheese is surrounded by a flaky Danish crust with a touch of sweetness. This has not been Kosher certified. 390 Calories",
+        "price": "$4.85",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Plain Bagel",
+        "description": "A classic New York-style bagel that can be enjoyed as you like it. Ask for it toasted and/or with cream cheese. This has not been Kosher certified. 200 Calories",
+        "price": "$3.60",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Cheese Jalapeño Bagel",
+        "description": "A classic New York-style bagel with a delicious combination of cheese and jalapeño. Ask for it toasted and/or with cream cheese. This has not been Kosher certified. 290 Calories",
+        "price": "$4.10",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Lemon Loaf",
+        "description": "A citrusy, lemon pound cake, topped in lemon icing for a refreshing treat.",
+        "price": "$4.85",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Everything Bagel",
+        "description": "A classic New York-style everything bagel that can be enjoyed as you like it. Ask for it toasted and/or with cream cheese. 240 Calories",
+        "price": "$4.10",
+        "section": "Food - Baked Goods"
+      },
+      {
+        "name": "Avocado Egg Toast",
+        "description": "Artisanal rustic bread, chunky avocado, lemon juice, flaky sea salt, sliced hardboiled egg and everything bagel seasoning. 280 Calories",
+        "price": "$8.50",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Dairy-Free Chia Pudding",
+        "description": "A creamy chia seed pudding made with coconut yogurt that's topped with fresh mixed berries & sweetened coconut shreds. (Gluten-Free & Vegan) 330 Calories",
+        "price": "$7.95",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Chorizo Breakfast Burrito",
+        "description": "Fluffy scrambled eggs with Mexican-spiced Chorizo, potatoes, melted pepper jack cheese, and fire roasted tomato salsa in a crisp flour tortilla. 530 Calories",
+        "price": "$8.50",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Overnight Oats",
+        "description": "Great breakfast option! Oats packed with yogurt, chia seeds, honey, strawberries, blueberries, and pecans. This has not been Kosher certified. 330 Calories",
+        "price": "$7.95",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Ham Egg and Cheese Brioche",
+        "description": "A buttery brioche bun filled with fluffy eggs, black forest ham and cheddar cheese. 400 Calories",
+        "price": "$7.95",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "Creamy avocado toast, Hint of sea salt and spice, Perfect start to your day. 200 Calories",
+        "price": "$7.30",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Spinach & Red Pepper Egg White Bites",
+        "description": "New and improved egg bite is fluffier and made with spinach & red pepper pesto. 120 Calories.",
+        "price": "$6.75",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Veggie & Feta Egg White Wrap",
+        "description": "An egg white burrito made with a whole wheat tortilla that's filled with fluffy egg whites, rosemary potatoes, sun dried tomatoes, monterey jack cheese, spinach and a garlic pesto aioli. 290 Calories.",
+        "price": "$8.50",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Bacon Cheddar Egg Bites",
+        "description": "Scrambled eggs with Cheddar Cheese, Potato, & Bacon. 250 Calories",
+        "price": "$6.75",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Sausage, Egg and Potato Burrito",
+        "description": "New! Oven roasted Italian style pork sausage, scrambled eggs, cheddar cheese, and potatoes all wrapped in a flour tortilla. 450 Calories",
+        "price": "$8.50",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Mixed Berries & Granola Parfait",
+        "description": "Plain Greek yogurt, mixed berries (strawberries, blueberries, and/or blackberries) and delicious crunchy granola. This has not been Kosher certified. 200 Calories",
+        "price": "$6.65",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Bacon Egg Cheese English Muffin",
+        "description": "Crispy bacon and fried egg topped with melted cheddar cheese on a toasted English Muffin. 400 Calories",
+        "price": "$7.30",
+        "section": "Food - Breakfast"
+      },
+      {
+        "name": "Homestyle Grilled Cheese Sandwich",
+        "description": "A classic grilled cheese made with mild cheddar and Monterey Jack cheese. Oven toasted to perfection.",
+        "price": "$5.50",
+        "section": "Food - Lunch"
+      },
+      {
+        "name": "Protein Picnic Box",
+        "description": "We've created a protein box that includes a Justin's peanut butter packet, mini cinnamon pita bread, hard boiled egg, sharp cheddar cheese, grapes, & apples. 340 Calories",
+        "price": "$8.50",
+        "section": "Food - Lunch"
+      },
+      {
+        "name": "Caprese Sandwich",
+        "description": "Sun blushed tomatoes, mozzarella, spinach and pesto dressing on an artisan roll. This has not been Kosher certified. 560 Calories",
+        "price": "$8.50",
+        "section": "Food - Lunch"
+      },
+      {
+        "name": "Pumpkin Dry Iced Americano™ drink",
+        "description": "Our viral drink is getting a Fall twist! A dry, iced Americano flavored with vanilla & pumpkin and topped with half & half cream and caramel drizzle around the cup. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Vanilla Dry Iced Americano™ drink",
+        "description": "Our viral Tik Tok drink! A Dry Iced Americano™ drink flavored with vanilla powder that's topped with half and half and a caramel waterfall around the cup. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Mocha Dry Iced Americano™ drink",
+        "description": "A twist on our viral Tik Tok drink! A Dry Iced Americano™ drink flavored with chocolate powder and that's topped with half and half and a dark chocolate waterfall around the cup. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Hazelnut Dry Iced Americano™ drink",
+        "description": "A twist on our viral Tik Tok drink! A Dry Iced Americano™ drink flavored with hazelnut powder and that's topped with half and half and a caramel waterfall around the cup. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Iced Vanilla Americano",
+        "description": "Freshly pulled shots of espresso combined with water and our French Deluxe™ vanilla powder poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Vanilla Americano",
+        "description": "Freshly pulled shots of espresso combined with hot water and our French Deluxe™ vanilla powder. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Iced Mocha Americano",
+        "description": "Freshly pulled shots of espresso combined with water and our Special Dutch™ chocolate powder poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Mocha Americano",
+        "description": "Freshly pulled shots of espresso combined with hot water and our Special Dutch™ chocolate powder. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Iced Hazelnut Americano",
+        "description": "Freshly pulled shots of espresso combined with water and our hazelnut powder poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Hazelnut Americano",
+        "description": "Freshly pulled shots of espresso combined with hot water and our hazelnut powder. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Iced Dark Chocolate Americano",
+        "description": "Freshly pulled shots of espresso combined with water and our dark chocolate powder poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Dark Chocolate Americano",
+        "description": "Freshly pulled shots of espresso combined with hot water and our dark chocolate powder. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Iced Caramel Americano",
+        "description": "Freshly pulled shots of espresso combined with water, our French Deluxe™ vanilla powder, and our caramel sauce poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Caramel Americano",
+        "description": "Freshly pulled shots of espresso combined with hot water, French Deluxe™ vanilla powder, and our caramel sauce. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Iced Cookie Butter Americano",
+        "description": "Freshly pulled shots of espresso combined with our cookie butter powder poured over ice and water.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Cookie Butter Americano",
+        "description": "Freshly pulled shots of espresso combined with hot water and our cookie butter powder. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Iced White Chocolate Americano",
+        "description": "Freshly pulled shots of espresso combined with water and our White Chocolate powder poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "White Chocolate Americano",
+        "description": "Freshly pulled shots of espresso combined with hot water and our White Chocolate powder. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Iced Americano",
+        "description": "Freshly pulled shots of espresso combined with water and poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$4.85",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Americano",
+        "description": "Freshly pulled shots of espresso combined with hot water. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$4.85",
+        "section": "Coffee - The Perfect Americano"
+      },
+      {
+        "name": "Iced Pumpkin Latte",
+        "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Pumpkin Cream Latte",
+        "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon served over ice and topped with a delicious cream cap.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Mexican Chocolate Latte",
+        "description": "Cozy up to winter with our new Warmth of Mexico line of drinks. These beverages combine rich dark chocolate with notes of warm cinnamon for a sweet new take on the traditional cultural favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Latte",
+        "description": "Freshly pulled shots of espresso and whole milk served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Protein Vanilla Latte",
+        "description": "Our new Protein Lattes are made of rich espresso, nonfat milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Vanilla Latte",
+        "description": "Freshly pulled shots of espresso with our French Deluxe™ vanilla powder and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Protein Hazelnut Latte",
+        "description": "Our new Protein Lattes are made of rich espresso, nonfat milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Hazelnut Latte",
+        "description": "Freshly pulled shots of espresso with our hazelnut powder and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Protein Caramel Latte",
+        "description": "Our new Protein Lattes are made of rich espresso, nonfat milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Caramel Latte",
+        "description": "Freshly pulled shots of espresso with our French Deluxe™ vanilla powder, caramel sauce and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Cookie Butter Latte",
+        "description": "Our premium espresso with spice and brown sugar cookie notes for a sweet and spicy treat. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced White Chocolate Latte",
+        "description": "Freshly pulled shots of espresso with our White Chocolate Dream® powder and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Mocha Latte",
+        "description": "Freshly pulled shots of espresso with Special Dutch™ chocolate powder and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Dark Chocolate Latte",
+        "description": "Freshly pulled shots of espresso with our dark chocolate powder and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Spanish Latte",
+        "description": "Our Iced Spanish Latte pairs our bold espresso with rich, velvety, condensed milk for a delicious sweet drink. The drink is then topped with a sprinkle of cinnamon.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Cappuccino",
+        "description": "Freshly pulled shots of espresso with whole milk and foam served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Iced Caramel Cappuccino",
+        "description": "Freshly pulled shots of espresso combined with whole milk, foam, and our caramel sauce poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Iced Espresso"
+      },
+      {
+        "name": "Classic Flat White",
+        "description": "A double shot of espresso (for a 12oz. drink!) with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Caramel Flat White",
+        "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$9.00",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Cookie Butter Flat White",
+        "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders and finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$9.00",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Dark Chocolate Flat White",
+        "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$9.00",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Hazelnut Flat White",
+        "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$9.00",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Mocha Flat White",
+        "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$9.00",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Vanilla Flat White",
+        "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$9.00",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "White Chocolate Flat White",
+        "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$9.00",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Pumpkin Latte",
+        "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon.  A sprinkle of cinnamon brings out the flavors of Fall. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Mexican Chocolate Latte",
+        "description": "Cozy up to winter with our new Warmth of Mexico line of drinks. These beverages combine rich dark chocolate with notes of warm cinnamon for a sweet new take on the traditional cultural favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Café Latte",
+        "description": "Freshly pulled shots of espresso with steamed milk and topped with thick foam.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Protein Caramel Latte",
+        "description": "Our new Protein Lattes are made of rich espresso, steamed milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Caramel Latte",
+        "description": "Freshly pulled shot of espresso with our French Deluxe™ vanilla powder, caramel sauce, steamed non-fat milk, topped with thick foam, and a drizzle of caramel sauce. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Cookie Butter Latte",
+        "description": "Our premium espresso with spice and brown sugar cookie notes, garnished with Speculoos Cookie Crumbs for a sweet and spicy treat. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Dark Chocolate Latte",
+        "description": "Freshly pulled shots of espresso with our rich dark chocolate powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Protein Hazelnut Latte",
+        "description": "Our new Protein Lattes are made of rich espresso, steamed milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Hazelnut Latte",
+        "description": "Freshly pulled shots of espresso with our hazelnut powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Protein Vanilla Latte",
+        "description": "Our new Protein Lattes are made of rich espresso, steamed milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Mocha Latte",
+        "description": "Freshly pulled shots of espresso with our Special Dutch™ chocolate powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Vanilla Latte",
+        "description": "Freshly pulled shots of espresso with our French Deluxe™ vanilla powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "White Chocolate Latte",
+        "description": "Freshly pulled shot of espresso with our White Chocolate Dream® powder, steamed non-fat milk, and topped with thick foam and a drizzle of chocolate sauce. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Spanish Latte",
+        "description": "Our Spanish Latte pairs our bold espresso with rich, velvety, condensed milk for a delicious sweet drink. The drink is then topped with a sprinkle of cinnamon.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "A freshly pulled shot of espresso layered with steamed whole milk and thick rich foam to offer a luxurious velvety texture and complex aroma. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.65",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Caramel Cappuccino",
+        "description": "Freshly pulled shots of espresso with our caramel sauce, layered with steamed whole milk, thick rich foam, and topped with caramel drizzle to offer a sweet twist to a classic favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.90",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Espresso",
+        "description": "Perfectly balanced with a golden crema, this intense espresso has a caramel like aroma, velvety body, earthy flavor and a bittersweet finish. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$4.60",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Macchiato",
+        "description": "All of the aroma and flavor of our signature espresso with a splash of steamed whole milk and a dollop of foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$4.60",
+        "section": "Coffee - Espresso"
+      },
+      {
+        "name": "Iced Coffee",
+        "description": "Our specially brewed coffee served over ice for a refreshing and bold coffee taste. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$5.20",
+        "section": "Coffee - Iced Coffee"
+      },
+      {
+        "name": "Iced Caramel Coffee",
+        "description": "Our premium espresso shots blended with caramel sauce, French Deluxe™ vanilla powder, and served over ice for a refreshing and delicious caramel coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.45",
+        "section": "Coffee - Iced Coffee"
+      },
+      {
+        "name": "Iced Cookie Butter Coffee",
+        "description": "Our premium espresso shots blended with our sweet and spicy cookie butter powder and served over ice for a refreshing and delicious cookie butter coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.45",
+        "section": "Coffee - Iced Coffee"
+      },
+      {
+        "name": "Iced Dark Chocolate Coffee",
+        "description": "Our premium espresso shots blended with our dark chocolate powder and served over ice for a refreshing and delicious chocolate and coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.45",
+        "section": "Coffee - Iced Coffee"
+      },
+      {
+        "name": "Iced Hazelnut Coffee",
+        "description": "Our premium espresso shots blended with our specially developed hazelnut powder and served over ice for a refreshing and delicious hazelnut coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.45",
+        "section": "Coffee - Iced Coffee"
+      },
+      {
+        "name": "Iced Mocha Coffee",
+        "description": "Our premium espresso shots blended with our Special Dutch™ chocolate powder and served over ice for a refreshing and delicious chocolate coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.45",
+        "section": "Coffee - Iced Coffee"
+      },
+      {
+        "name": "Iced Vanilla Coffee",
+        "description": "Our premium espresso shots blended with our French Deluxe™ vanilla powder and served over ice for a refreshing and delicious vanilla coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.45",
+        "section": "Coffee - Iced Coffee"
+      },
+      {
+        "name": "Iced White Chocolate Coffee",
+        "description": "Our premium espresso shots blended with our White Chocolate powder and served over ice for a refreshing and delicious chocolate and coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.45",
+        "section": "Coffee - Iced Coffee"
+      },
+      {
+        "name": "Café Au Lait",
+        "description": "Our light roast coffee with steamed whole milk and topped with thick velvety foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$5.35",
+        "section": "Coffee - Brewed Coffee"
+      },
+      {
+        "name": "Café Caramel",
+        "description": "Our light roast coffee with our French Deluxe™ vanilla powder, caramel sauce, steamed non-fat milk, topped with thick foam, and a drizzle of caramel sauce.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Coffee - Brewed Coffee"
+      },
+      {
+        "name": "Café Cookie Butter",
+        "description": "Our light roast coffee with our sweet and spicy cookie butter powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Coffee - Brewed Coffee"
+      },
+      {
+        "name": "Café Dark Chocolate",
+        "description": "Our light roast coffee with our dark chocolate powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Coffee - Brewed Coffee"
+      },
+      {
+        "name": "Café Hazelnut",
+        "description": "Our light roast coffee with our hazelnut powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Coffee - Brewed Coffee"
+      },
+      {
+        "name": "Café Mocha",
+        "description": "This signature drink combines our light roast coffee with our Special Dutch™ chocolate powder, steamed non-fat milk and topped with thick foam.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Coffee - Brewed Coffee"
+      },
+      {
+        "name": "Café Vanilla",
+        "description": "Our light roast brewed coffee with our French Deluxe™ vanilla powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Coffee - Brewed Coffee"
+      },
+      {
+        "name": "Café White Chocolate",
+        "description": "Our light roast coffee with our White Chocolate powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Coffee - Brewed Coffee"
+      },
+      {
+        "name": "Pumpkin Cold Brew Oat Latte",
+        "description": "Our signature smooth Cold Brew infused with rich pumpkin flavor, topped with creamy Oatly® Oatmilk. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Cold Brew - Cold Brew Coffee"
+      },
+      {
+        "name": "Cold Brew Coffee",
+        "description": "Our cold brew is a blend of our premium Bali Blue Moon and Ethiopia Yirgacheffe coffees with chicory that is delicately roasted and steeped cold for 20 hours. We use time instead of heat to extract as much flavor as possible and deliver a truly rich and delicious coffee experience. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Cold Brew - Cold Brew Coffee"
+      },
+      {
+        "name": "Midnight Mocha Latte Cold Brew Latte",
+        "description": "Dark Chocolate meets Cold Brew. Our NEW! Dark Chocolate Syrup combined with our surprisingly bold Cold Brew to create something drafted dark and delicious. Rich, creamy, decadent and velvety, this beverage will please coffee lovers and chocolate lovers alike. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Cold Brew - Cold Brew Coffee"
+      },
+      {
+        "name": "Cold Brew Ice Blended® drink",
+        "description": "Another classic version blends our delicious cold brew coffee, Our French Deluxe™ vanilla powder, non-fat milk, and our signature pebble ice. A must try for our coffee lovers looking for that extra kick. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Cold Brew - Cold Brew Coffee"
+      },
+      {
+        "name": "Vanilla Bean Cold Brew Latte",
+        "description": "Our handcrafted Cold Brew is brewed cold onsite for 20 hours, using time not heat, to create a rich bold flavor. Then we combine it with milk, vanilla bean sauce and pour it over ice to create a deliciously smooth and sweet latte. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Cold Brew - Cold Brew Coffee"
+      },
+      {
+        "name": "Vietnamese Cold Brew",
+        "description": "Combines sweetened condensed milk with our dark-roasted Cold Brew Coffee to create our spin on a wildly popular Vietnamese café staple. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Cold Brew - Cold Brew Coffee"
+      },
+      {
+        "name": "Mixed Berry Energy Tea",
+        "description": "A fruity fusion of strawberry, blueberry and raspberry harmonizes with cold brew Celyon tea and real berry pieces. \\r\\nEnergy source: Green coffee extract and green tea infused with Vitamin B12. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Cold Brew - Cold Brew Tea"
+      },
+      {
+        "name": "Mango Passionfruit Energy Tea",
+        "description": "Tropical and bold, mango and passion fruit are combined with a cold brew tea and real fruit pieces.\\r\\n\\r\\nEnergy source: Green coffee extract and green tea infused with Vitamin B12. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Cold Brew - Cold Brew Tea"
+      },
+      {
+        "name": "Pineapple Yuzu Energy Tea",
+        "description": "Sweet pineapple and exotic yuzu are blended with cold brew Ceylon tea to deliver a refreshing splash of the tropics.\\r\\nEnergy source: Green coffee extract and green tea infused with Vitamin B12. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Cold Brew - Cold Brew Tea"
+      },
+      {
+        "name": "Mango Cold Brew Tea",
+        "description": "We add mango syrup to our Scottish Breakfast tea for a tropical and refreshing treat in our Mango Cold Brew Tea. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Cold Brew - Cold Brew Tea"
+      },
+      {
+        "name": "Lemonade Cold Brew Tea",
+        "description": "We have re-imagined our ever-popular Iced Tea Lemonade to be brisker and more satisfying. Scottish Breakfast Cold Brew Tea combines with our sweet Lemonade Syrup for the perfect summertime treat! Arnold Palmer meets Cold Brew with this classic comeback beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.05",
+        "section": "Cold Brew - Cold Brew Tea"
+      },
+      {
+        "name": "Pumpkin Ice Blended® drink",
+        "description": "A nostalgic flavor reminiscent of the classic Pumpkin pie dessert.   Fresh espresso, creamy pumpkin, nutmeg and cinnamon blended together and topped with fluffy whip cream and a sprinkle of cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Extreme Pumpkin Ice Blended® drink",
+        "description": "Our classic Pumpkin Ice Blended® but make it extra! With double the caffeine and no milk added, our Extreme Pumpkin Ice Blended® coffee-forward drink is perfect for Guests who want something indulgent that will wake them up! (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Mexican Chocolate Ice Blended® drink",
+        "description": "Cozy up to winter with our new Warmth of Mexico line of drinks. These beverages combine rich dark chocolate with notes of warm cinnamon for a sweet new take on the traditional cultural favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Caramel Ice Blended® drink",
+        "description": "A sweet treat blends our delicious coffee extract, French Deluxe™ vanilla powder, non-fat milk, caramel sauce, and our signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Cookie Butter Ice Blended® drink",
+        "description": "Fresh espresso blended with spice and brown sugar cookie, topped with fluffy whip cream and Speculoos Cookie Crumbs. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Cookies and Cream Ice Blended® drink",
+        "description": "The combination of sweet, creamy vanilla, coffee, and chocolate cookie pieces creates a cookie-licious treat that will satisfy any sweet tooth. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Dark Chocolate Ice Blended® drink",
+        "description": "A sophisticated dark chocolate treat blends our dark chocolate powder, coffee extract, non-fat milk, and signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Mocha Ice Blended® drink",
+        "description": "The frozen sensation that started it all blends our delicious coffee extract, our Special Dutch™ chocolate powder, non-fat milk, and our signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Hazelnut Ice Blended® drink",
+        "description": "A nutty twist on the Ice Blended® Drink blends our delicious coffee extract, hazelnut powder, non-fat milk blended, and signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Vanilla Ice Blended® drink",
+        "description": "Another classic version blends our delicious coffee extract, our French Deluxe™ vanilla powder, non-fat milk, and our signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Vanilla Affogato Ice Blended® drink",
+        "description": "Non-fat milk blended with French Deluxe™ vanilla powder and ice then topped with whipped cream. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "White Chocolate Ice Blended® drink",
+        "description": "A dream in a cup blends our White Chocolate powder, coffee extract, non-fat milk, and our signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Coffee Based"
+      },
+      {
+        "name": "Pure Pumpkin Ice Blended® drink",
+        "description": "A nostalgic flavor reminiscent of the classic Pumpkin pie dessert.  Creamy pumpkin, nutmeg and cinnamon blended together and topped with fluffy whip cream and a sprinkle of cinnamon for a caffeine-free treat. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Pure Mexican Chocolate Ice Blended® drink",
+        "description": "Cozy up to winter with our new Warmth of Mexico line of drinks. These beverages combine rich dark chocolate with notes of warm cinnamon for a sweet new take on the traditional cultural favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Pure Caramel Ice Blended® drink",
+        "description": "A decadent treat blended with French Deluxe™ vanilla powder, non-fat milk, caramel sauce, and our signature pebble ice and topped with whipped cream and caramel drizzle. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Pure Vanilla Ice Blended® drink",
+        "description": "Non-fat milk blended with French Deluxe™ vanilla powder and ice then topped with whipped cream. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Pure Chocolate Ice Blended® drink",
+        "description": "Non-fat milk blended with Special Dutch™ chocolate powder and ice then topped with whipped cream. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Pure Cookies and Cream Ice Blended® drink",
+        "description": "The combination of sweet, creamy vanilla and chocolate cookie pieces creates a cookie-licious treat that will satisfy any sweet tooth. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Pure Cookie Butter Ice Blended® drink",
+        "description": "Spice and brown sugar cookie notes shine in this caffeine free blended drink, topped with fluffy whip cream and Speculoos Cookie Crumbs. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Pure Dark Chocolate Ice Blended® drink",
+        "description": "Non-fat milk blended with Dark Chocolate powder and ice and then topped with whipped cream. A delicious non-caffeinated treat. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Pure Hazelnut Ice Blended® drink",
+        "description": "Non-fat milk blended with Hazelnut powder and ice and then topped with whipped cream. A delicious non-caffeinated treat. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Mango Ice Blended® drink",
+        "description": "A delicious Ice Blended with a sweet, creamy and refreshing tropical mango flavor. This beverage is also a kid-friendly treat! (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Strawberry Ice Blended® drink",
+        "description": "Another classic version of our signature Ice Blended® drink. Made with strawberry syrup, milk, French Deluxe™ vanilla powder, and blended with ice then topped with whipped cream. A delicious summer treat! (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Kid Friendly"
+      },
+      {
+        "name": "Hojicha Ice Blended® drink",
+        "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This creamy, Ice Blended drink  offers a taste that’s both soothing and refreshingly new.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Tea Based"
+      },
+      {
+        "name": "Matcha Cookies & Cream Ice Blended® drink",
+        "description": "This Ice Blended drink combines our creamy Matcha powder with decadent cookie pieces for a delicious treat! \\r\\n\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.75",
+        "section": "Ice Blended® drink - Tea Based"
+      },
+      {
+        "name": "Matcha Green Tea Ice Blended® drink",
+        "description": "Our Matcha Tea Latte beverages are a creamy, lightly sweetened blend of matcha with our classic vanilla powder and milk. It's a great way to kick off your day or enjoy as a refreshing afternoon pick-me-up. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Ice Blended® drink - Tea Based"
+      },
+      {
+        "name": "Wellness Blend Tea",
+        "description": "Soothing mix of lemon and ginseng with hints of mint.",
+        "price": "$5.20",
+        "section": "Tea - Hot Tea"
+      },
+      {
+        "name": "Earl Grey",
+        "description": "Earl Grey derives its distinctive taste from oil of bergamot, a Mediterranean citrus fruit. Our handcrafted teas are blended locally and brewed to create an aromatic, comforting cup full of flavor.",
+        "price": "$5.20",
+        "section": "Tea - Hot Tea"
+      },
+      {
+        "name": "Ginseng Peppermint",
+        "description": "Blended with ginseng, eleuthero root, peppermint and other herbs. Our handcrafted Herbal Infusions are blended locally and brewed to create an aromatic, comforting cup full of flavor.",
+        "price": "$5.20",
+        "section": "Tea - Hot Tea"
+      },
+      {
+        "name": "Chai",
+        "description": "Our special Chai recipe is blended by hand using only the finest Darjeeling black tea from India, cinnamon cloves, cardamom, and other spices. The tea has an exotic aroma and a spicy taste. Our handcrafted teas are blended locally and brewed to create an aromatic, comforting cup full of flavor.",
+        "price": "$5.20",
+        "section": "Tea - Hot Tea"
+      },
+      {
+        "name": "English Breakfast",
+        "description": "Sri Lankan Black Ceylon tea, Taiwanese Black tea and Chinese Keemun Black tea are blended together to create a dark orange liqueur with a sweet and slightly smoky aroma. Our handcrafted teas are blended locally and brewed to create an aromatic, comforting cup full of flavor.",
+        "price": "$5.20",
+        "section": "Tea - Hot Tea"
+      },
+      {
+        "name": "Lemon Chamomile",
+        "description": "With an addition of orange peel, this honey colored infusion of lemon and chamomile is light and soothing with a delicate citrus flavor. Our handcrafted Herbal Infusions are blended locally and brewed to create an aromatic, comforting cup full of flavor.",
+        "price": "$5.20",
+        "section": "Tea - Hot Tea"
+      },
+      {
+        "name": "Hibiscus Berry Sunrise",
+        "description": "Our iced Swedish Berries and lemonade syrup combine to create a refreshingly delightful drink with a vibrant, beautiful ruby red color from hibiscus flowers.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$5.80",
+        "section": "Tea - Iced Tea"
+      },
+      {
+        "name": "English Breakfast Iced Tea",
+        "description": "Our full flavored teas chilled over ice for a refreshing addition to your day.\\r\\nSri Lankan Black Ceylon tea, Taiwanese Black tea and Chinese Keemun Black tea are blended together to create a dark orange liqueur with a sweet and slightly smoky aroma. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$4.85",
+        "section": "Tea - Iced Tea"
+      },
+      {
+        "name": "Pacific Coast Iced Tea",
+        "description": "Our full flavored teas chilled over ice for a refreshing addition to your day.\\r\\nPrepared specifically for iced preparation, this refreshing black tea has a rich golden color, woodsy aroma and a sweet, crisp flavor. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$4.85",
+        "section": "Tea - Iced Tea"
+      },
+      {
+        "name": "Orchard Peach Iced Tea",
+        "description": "Our full flavored teas chilled over ice for a refreshing addition to your day.\\r\\nThe sweet, succulent flavor of orchard fresh peaches perfectly complements the green tea grown in China. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$4.85",
+        "section": "Tea - Iced Tea"
+      },
+      {
+        "name": "Tropical Passion Iced Tea",
+        "description": "Our full flavored teas chilled over ice for a refreshing addition to your day.\\r\\nThis combination of Sri Lankan Ceylon black tea and passion and guava fruit flavoring, blended with malva and marigold flowers make for a perfectly balanced fruity cup of tea. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$4.85",
+        "section": "Tea - Iced Tea"
+      },
+      {
+        "name": "Swedish Berries Iced Tea",
+        "description": "Our full flavored teas chilled over ice for a refreshing addition to your day.\\r\\nA blend of hibiscus, raisins, and mixed berries, this infusion is well-balanced with natural fruit flavor and a sweet, fragrant aroma. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$4.85",
+        "section": "Tea - Iced Tea"
+      },
+      {
+        "name": "Hojicha Latte",
+        "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This velvety latte offers a taste that’s both soothing and refreshingly new.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Tea - Hot Tea Latte"
+      },
+      {
+        "name": "Pumpkin Hojicha Latte",
+        "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This warming, creamy latte pairs this toasty flavor with spicy pumpkin.  (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Tea - Hot Tea Latte"
+      },
+      {
+        "name": "Pumpkin Chai Latte",
+        "description": "The perfect blend of our signature spicy chai and creamy pumpkin flavor topped with a dusting of cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Tea - Hot Tea Latte"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "A delicious blend of freshly brewed Chai Tea, steamed non-fat milk and our French Deluxe™ vanilla powder. Our special Chai recipe is blended by hand using only the finest Darjeeling black tea from India, cinnamon cloves, cardamom, and other spices. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Tea - Hot Tea Latte"
+      },
+      {
+        "name": "Dirty Chai Tea Latte",
+        "description": "A delicious blend of freshly brewed Chai Tea, steamed non-fat milk and our French Deluxe Vanilla Powder with an added shot of espresso. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.90",
+        "section": "Tea - Hot Tea Latte"
+      },
+      {
+        "name": "English Breakfast Tea Latte",
+        "description": "A delicious blend of freshly brewed English Breakfast Tea, steamed non-fat milk and our French Deluxe™ vanilla powder. Sri Lankan Black Ceylon tea, Taiwanese Black tea and Chinese Keemun black tea are blended together to create a dark orange liqueur with a sweet and slightly smoky aroma. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Tea - Hot Tea Latte"
+      },
+      {
+        "name": "Matcha Green Tea Latte",
+        "description": "Our new and improved Matcha Tea Latte beverages are a creamy, lightly sweetened blend of matcha with our classic vanilla powder and milk. With enhanced, brighter matcha flavor than ever before, it's a great way to kick off your day or enjoy as a refreshing afternoon pick-me-up. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Tea - Hot Tea Latte"
+      },
+      {
+        "name": "Iced Hojicha Latte",
+        "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This velvety latte offers a taste that’s both soothing and refreshingly new served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Tea - Iced Tea Latte"
+      },
+      {
+        "name": "Iced Pumpkin Hojicha Latte",
+        "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This warming, creamy latte pairs this toasty flavor with spicy pumpkin poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$7.30",
+        "section": "Tea - Iced Tea Latte"
+      },
+      {
+        "name": "Iced Pumpkin Chai Latte",
+        "description": "The perfect blend of our signature spicy chai and creamy pumpkin flavor served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Tea - Iced Tea Latte"
+      },
+      {
+        "name": "Iced Chai Tea Latte",
+        "description": "A delicious blend of Chai tea combined with our French Deluxe™ vanilla powder over ice. With bold tea flavor and a sweet vanilla finish, this refreshing beverage is the perfect way to keep your day cool. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Tea - Iced Tea Latte"
+      },
+      {
+        "name": "Iced English Breakfast Tea Latte",
+        "description": "A delicious blend of English Breakfast tea combined with our French Deluxe™ vanilla powder over ice. With bold tea flavor and a sweet vanilla finish, this refreshing beverage is the perfect way to keep your day cool. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Tea - Iced Tea Latte"
+      },
+      {
+        "name": "Iced Matcha Cream Strawberry Latte",
+        "description": "If you're a Matcha fan, you'll adore this harmonious blend of strawberries, fresh milk, and creamy Japanese matcha foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Tea - Iced Tea Latte"
+      },
+      {
+        "name": "Iced Matcha Cream Mango Latte",
+        "description": "If you're a Matcha fan, you'll adore this harmonious blend of mango, fresh milk, and creamy Japanese matcha foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$8.15",
+        "section": "Tea - Iced Tea Latte"
+      },
+      {
+        "name": "Iced Matcha Tea Latte",
+        "description": "Our new and improved Matcha Tea Latte beverages are a creamy, lightly sweetened blend of matcha with our classic vanilla powder and milk. With enhanced, brighter matcha flavor than ever before, it's a great way to kick off your day or enjoy as a refreshing afternoon pick-me-up. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.90",
+        "section": "Tea - Iced Tea Latte"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "Our proprietary Special Dutch™ chocolate powder is combined with perfectly steamed non-fat milk and topped with thick foam or whipped cream. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$5.45",
+        "section": "Cocoas - Cocoas"
+      },
+      {
+        "name": "Hot Dark Chocolate",
+        "description": "Our dark chocolate powder is combined with perfectly steamed non-fat milk and topped with thick foam or whipped cream. A delicious non-caffeinated treat. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$5.45",
+        "section": "Cocoas - Cocoas"
+      },
+      {
+        "name": "Hot Vanilla",
+        "description": "Our French Deluxe™ vanilla powder with perfectly steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$5.45",
+        "section": "Cocoas - Cocoas"
+      },
+      {
+        "name": "Mexican Hot Chocolate",
+        "description": "Cozy up to winter with our new Warmth of Mexico line of drinks. These beverages combine rich dark chocolate with notes of warm cinnamon for a sweet new take on the traditional cultural favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+        "price": "$6.55",
+        "section": "Cocoas - Cocoas"
+      },
+      {
+        "name": "Milk Chocolate Sea Salt Almonds",
+        "description": "Fresh roasted California almonds covered in layers of chocolate and a hint of sea salt. 350 Calories",
+        "price": "$3.60",
+        "section": "Food - Snacks & Treats"
+      },
+      {
+        "name": "Marshmallow Bar",
+        "description": "A chewy rice treat made with gluten-free rice puffs, brown butter, mini marshmallows, and sea salt. 230 Calories",
+        "price": "$3.60",
+        "section": "Food - Snacks & Treats"
+      },
+      {
+        "name": "Siete Potato Chips Chipotle Barbeque",
+        "description": "Crispy, chipotle BBQ potato chips kettle cooked in avocado oil. Gluten-free, no GMOs, vegan, and soy-free. 200 Calories",
+        "price": "$3.60",
+        "section": "Food - Snacks & Treats"
+      },
+      {
+        "name": "Kind Dark Choc Nuts & Sea Salt Bar",
+        "description": "A sweet and salty blend of almonds, peanuts, and walnuts drizzled in chocolate with a touch of sea salt. 6g of protein and 7g of fiber. Non-GMO and Gluten-Free. 200 Calories",
+        "price": "$3.60",
+        "section": "Food - Snacks & Treats"
+      },
+      {
+        "name": "Vive Organic Wellness Shot",
+        "description": "Power-packed blend of roots, fruits and flowers for an ultimate immune system boost. 30 Calories",
+        "price": "$5.65",
+        "section": "Bottled Beverages - Bottled Beverages"
+      },
+      {
+        "name": "Natalie's - Orange Juice",
+        "description": "With only one ingredient, Natalie's fresh orange juice has no preservatives and no added sugar. No GMOs. 110 Calories",
+        "price": "$3.60",
+        "section": "Bottled Beverages - Bottled Beverages"
+      },
+      {
+        "name": "Smartwater (20oz)",
+        "description": "Vapor distilled water with added minerals for a pure, crisp taste.",
+        "price": "$3.50",
+        "section": "Bottled Beverages - Bottled Beverages"
+      },
+      {
+        "name": "Martinelli's Apple Juice",
+        "description": "Cold-pressed from the finest variety of U.S. grown fresh apples, our 100% apple juice is a sweet way to savor any moment. 130 Calories",
+        "price": "$3.25",
+        "section": "Bottled Beverages - Bottled Beverages"
+      },
+      {
+        "name": "Perrier",
+        "description": "Originating in France, its effervescent spirit is known worldwide. Elegant, sparkling and refreshing, with its unique blend of distinctive bubbles and balanced mineral content for over 150 years.",
+        "price": "$3.50",
+        "section": "Bottled Beverages - Bottled Beverages"
+      },
+      {
+        "name": "Spindrift Raspberry Lime",
+        "description": "Carbonated water flavored with real raspberry puree and lime juice. Gluten-free, no added sugar, and no GMOs. 5 Calories",
+        "price": "$3.50",
+        "section": "Bottled Beverages - Bottled Beverages"
+      },
+      {
+        "name": "Spindrift Lemon",
+        "description": "Carbonated water flavored with real raspberry puree and lime juice. Gluten-free, no added sugar, and no GMOs. 5 Calories",
+        "price": "$3.50",
+        "section": "Bottled Beverages - Bottled Beverages"
+      },
+      {
+        "name": "Organic Valley Chocolate Lowfat Milk",
+        "description": "Absolutely NO antibiotics, synthetic hormones, toxic pesticides or GMO anything. 130 Calories",
+        "price": "$3.25",
+        "section": "Bottled Beverages - Bottled Beverages"
+      },
+      {
+        "name": "Java To Go - Tea",
+        "description": "Perfect for your parties, office conference & meeting! Brewed Tea (8-12 Servings) available in takeaway container which keeps the beverage warm for approximately 1.5 hours. Cups, sugar and milk will be provided.",
+        "price": "$26.80",
+        "section": "Catering - Java To Go"
+      },
+      {
+        "name": "Java To Go - Hot Chocolate",
+        "description": "Perfect for your parties, office conference & meeting! Hot Chocolate (8-12 Servings) available in takeaway container which keeps the beverage warm for approximately 1.5 hours. Cups will be provided.",
+        "price": "$26.80",
+        "section": "Catering - Java To Go"
+      },
+      {
+        "name": "Cold Brew Growler",
+        "description": "A 32 fl oz glass growler of our delicious cold brew coffee. A perfect way to transport your drink home or to a meeting/event. Just add water and pour over ice. \\r\\n15 calories per serving",
+        "price": "$24.35",
+        "section": "Catering - Java To Go"
+      },
+      {
+        "name": "Java To Go - Coffee",
+        "description": "Perfect for your parties, office conference & meeting! Brewed Coffee (8-12 Servings) Available in takeaway container which keeps the beverage warm for approximately 1.5 hours. Cups, sugar and milk will be provided. Please note it may take up to 30 minutes to complete orders of 3 or more Java To Go boxes.",
+        "price": "$26.80",
+        "section": "Catering - Java To Go"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3592",
+    "name": "3N1 Sports Bar & Grill",
+    "sourceUrl": "https://3n1sportsbarandgrill.com/chula-vista-eastlake-3n1-sports-bar-and-grill-food-menu",
+    "confidence": "low",
+    "blocked": "Restaurant's own site (SpotHopper/spotapps.co, spot_id 69263) server-renders a full food menu with real section/dish names and descriptions on its own domain (2330 Proctor Valley Rd, Chula Vista -- matches work list) but genuinely no prices anywhere in that HTML (checked -- zero $ occurrences). The site's SpotHopper online-ordering widget (tmt.spotapps.co/ordering-menu/?spot_id=69263) evaluates cleanly via its window.__NUXT__ IIFE and returns a genuinely empty menus:[] -- the restaurant has not populated online ordering, this is not a gate. Tried DoorDash (doordash.com/en-US/store/3n1-sports-bar-grill-chula-vista-706361/1375868): page loaded but, unlike other DoorDash stores checked in this batch, contained no JSON-LD Menu block and no MenuPageItem/RSC catalog data at all (zero __typename occurrences) -- likely needs a browser/different fetch approach to trigger the real payload. Grubhub, sirved.com, and baggednbrought.com listings all returned pages with zero prices via curl. Yelp 403'd. Web search snippets suggest Yelp-derived prices exist (3N1 Burger $21.00, Marinated Steak Salad $17.00, Pork Belly Cubes $16.50, Calamari $18.00) but these were not verified on an actual page and should not be trusted secondhand.",
+    "notes": "Missing piece for a Chrome-equipped follow-up: load the DoorDash or UberEats storefront for this exact address and read prices directly, or open Yelp's photo gallery for a dated menu photo (filter img alt for /menu/i). Do not use the unverified search-snippet prices without confirming them on an actual page.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5398",
+    "name": "Rosendo's Taco Shop",
+    "sourceUrl": "https://www.allmenus.com/ca/el-cajon/796776-rosendos-taco-shop/menu/",
+    "confidence": "low",
+    "blocked": "No website in the work list. Found a full priced menu (60+ items: nachos, enchiladas, rolled tacos, burritos, tortas, tostadas, quesadillas) on allmenus.com, sourced from Grubhub, address matching exactly (1408 East Main Street, El Cajon, CA 92021), but the page footer is copyright-dated '2023 GrubHub, Inc.' -- a tier-5 source that the playbook requires a second independent priced source to corroborate before using, and this one also carries an explicit staleness flag. Could not find a second independent priced source: the restaurant's own NetWaiter ordering platform (rosendostacoshop.netwaiter.com) redirects every path (including /el-cajon/menu/) back to its /about page via curl, evidently needing a browser session/store selection to reach the actual menu; two other 'menu-res.com'/'res-menu.net' template domains for this restaurant both returned literally empty (0-byte) bodies; wheree.com, menupix.com, zmenu.com, and tastyfind.com were all blocked (403/404) or Cloudflare-challenged; restaurantguru.com confirmed the address but has no per-item prices, only price-per-person ranges. No DoorDash/UberEats listing exists (web search indicates this restaurant does not use third-party delivery).",
+    "notes": "Missing piece: a Chrome-equipped agent should load rosendostacoshop.netwaiter.com and click through to the actual menu (likely needs a location/store picker), which would give a first-party, current source and let the allmenus/Grubhub 2023 numbers be checked for staleness rather than used directly.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2539",
+    "name": "Isshido Ramen",
+    "sourceUrl": "https://order.online/store/isshido-ramen-san-diego-570760/",
+    "confidence": "medium",
+    "notes": "No website in the work list; address confirmed exact match (8250 Mira Mesa Blvd Ste A, San Diego, CA 92126) against order.online's own page. Tried the restaurant's own Toast storefronts first (order.toasttab.com/online/isshido-ramen-8250-a-mira-mesa-boulevard and the toast.app redirect of toasttab.com/local/order/...): both parse cleanly via window.__OO_STATE__ with a real Chrome UA but hasOnlineOrderingModule is false and only restaurant metadata is present, no menu/items -- Toast is not usable here. Used order.online's escaped Next.js RSC flight payload instead (MenuBookCategory/MenuPageItemList/MenuPageItem objects), which held the complete 10-category, 115-item catalog (Starters, Ramen, Noodle Choice, Yakisoba, Rice Bento, Rice Bowl, Family Package, Beverage, Kids Menu, Condiments & Utensil) plus a 'Most Ordered' carousel whose 10 items all duplicated items already in real categories (dropped). Dropped 6 items with no price: 2 'NOT FOR SALE' noodle-choice modifier options, and 4 free condiments (No Utensils, Disposable Utensils, Soy Sauce, Chili Oil). MARKUP DETECTED: dividing every remaining price by 1.15 landed 107 of 109 items within a cent of a clean nickel-rounded base value (mostly X.95, e.g. Chicken Paitan $17.19 / 1.15 = $14.9478 -> reconstructing $14.95 x 1.15 = $17.1925 rounds to exactly $17.19) -- a uniform 15% online-ordering surcharge, well above the ~17-23% organic-noise band. Recorded the reconstructed base price (the number that, times 1.15 and rounded to the cent, reproduces order.online's displayed price) for those 107 items rather than the inflated number, since this is a single-channel source and the divisor pattern is unambiguous. Kept order.online's own displayed price as-is (did not reconstruct) for 2 items that did not fit the pattern cleanly: Shishito Peppers ($10.95, /1.15=$9.52, not a clean nickel) and Scallop Sashimi ($18.95, /1.15=$16.48, not a clean nickel) -- these may already be un-marked-up or use different rounding; flagged rather than guessed.",
+    "dishes": [
+      {
+        "name": "Tofu Steak",
+        "description": "Grilled tofu slices topped with a savory sauce and garnished with chopped green onions and crispy bits.",
+        "price": "$8.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Pan-Fried Gyoza (8 Pcs)",
+        "description": "Eight pan-fried dumplings. Choose between savory fillings: chicken or pork.",
+        "price": "$9.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Deep-Fried Gyoza (8 Pcs)",
+        "description": "Crispy dumplings, choice of chicken or pork filling. 8 pieces.",
+        "price": "$8.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Vegan Spring Roll",
+        "description": "4 Pcs Deep Fried Vegan Spring Roll",
+        "price": "$8.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Karaage (6 Pcs)",
+        "description": "Japanese-style fried chicken bites. Served with choice of dipping sauce: mayonnaise, spicy options, sweet chili, or no sauce. Six pieces per order.",
+        "price": "$9.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Squid Karaage",
+        "description": "Crispy fried squid served with a wedge of lemon and a side of creamy dipping sauce.",
+        "price": "$9.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Black Garlic Karaage",
+        "description": "Crispy Japanese-style fried chicken bites. Choose from a variety of sauces like mayo, sriracha mayo, spicy mayo, or sweet chili.",
+        "price": "$10.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Takoyaki (8 Pcs)",
+        "description": "Octopus-filled balls drizzled with savory sauce and topped with seaweed and mayonnaise. Eight pieces.",
+        "price": "$10.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Fried Chicken Wings (6 Pcs)",
+        "description": "Crispy, golden-fried chicken wings with a crunchy coating.",
+        "price": "$13.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Fried Chicken Wings (12 Pcs)",
+        "description": "Crispy fried chicken wings, golden brown, with a hint of seasoning. Twelve pieces per serving.",
+        "price": "$26.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Okonomiyaki",
+        "description": "Savory Japanese pancake topped with bonito flakes, seaweed strips, and drizzled with mayonnaise and sauce.",
+        "price": "$9.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Edamame",
+        "description": "Steamed young soybeans. Choice of garlic, spicy, or plain flavor.",
+        "price": "$6.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Kimchi (Starter)",
+        "description": "Fermented cabbage with spicy red pepper, garlic, and ginger, offering a tangy and savory taste.",
+        "price": "$5.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Wakame Seaweed Salad",
+        "description": "Thinly sliced wakame seaweed with a subtle sesame flavor and a hint of vinegar.",
+        "price": "$5.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Cucumber Salad",
+        "description": "Crisp cucumber slices and cherry tomatoes tossed with a light dressing, garnished with sesame seeds.",
+        "price": "$6.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Sweet Potato Fries",
+        "description": "Crispy sweet potato fries with a hint of seasoning.",
+        "price": "$6.95",
+        "section": "Starters"
+      },
+      {
+        "name": "French Fries",
+        "description": "Crispy potato sticks. Choice of size and flavor: classic, garlic, cheese, truffle, or salty.",
+        "price": "$6.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Agedashi Tofu",
+        "description": "Crispy tofu in savory broth, garnished with green onions, seaweed, and bonito flakes.",
+        "price": "$9.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Kimchi Agedashi Tofu",
+        "description": "Agedashi Tofu in Tsuyu Sauce, with Kimchi, Green Onion and Seaweed",
+        "price": "$10.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Shishito Peppers",
+        "description": "Shishito peppers garnished with sesame seeds, served alongside shredded cabbage and a lemon wedge.",
+        "price": "$10.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Tuna Tataki",
+        "description": "recommend to eat in store",
+        "price": "$15.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Steamed Asari Clams",
+        "description": "Tender asari clams in a light broth, garnished with fresh scallions.",
+        "price": "$12.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Aburi Salmon",
+        "description": "Lightly seared salmon topped with drizzled sauce, garnished with herbs and sesame seeds, served with a lemon wedge and wasabi.",
+        "price": "$15.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Short Ribs Steak (Appetizer)",
+        "description": "Tender beef ribs served with choice of beef sauce or simple salt.",
+        "price": "$11.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Grilled Beef Tongue",
+        "description": "Beef tongue slices. Choice of sauce or salt.",
+        "price": "$14.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Braised Short Ribs",
+        "description": "Tender short ribs braised in rich sauce, garnished with a lime wedge and green herb sprig.",
+        "price": "$12.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Grilled Squid",
+        "description": "Tender grilled squid with charred edges, served alongside a wedge of lemon and roasted green peppers.",
+        "price": "$11.95",
+        "section": "Starters"
+      },
+      {
+        "name": "White Rice",
+        "description": "",
+        "price": "$1.50",
+        "section": "Starters"
+      },
+      {
+        "name": "Miso soup",
+        "description": "",
+        "price": "$2.00",
+        "section": "Starters"
+      },
+      {
+        "name": "scallop sashimi",
+        "description": "Thinly sliced scallops paired with lemon slices, topped with a touch of roe, accompanied by wasabi.",
+        "price": "$18.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Isshido Signature Paitan",
+        "description": "Tonkotsu soup seasoned with original Shoyu tare, Topped with pork Chashu, corn, chopped scallions and one whole soft-boiled egg.",
+        "price": "$14.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Black Mayu Tonkotsu",
+        "description": "Rich roasted homemade black garlic oil flavored tonkotsu soup. Topped with pork chashu,chopped scallions, corn and half soft-boiled egg.",
+        "price": "$15.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Isshido Miso",
+        "description": "(#1 most liked) Tonkotsu sop seasoned with our original blend of miso. Topped with pork chashu, chopped scallions, steamed cabbage and half soft-boiled egg.",
+        "price": "$15.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Ultimate Chashu Ramen",
+        "description": "Tonkotsu soup seasoned with original Shoyu tare, Topped with 8 pieces pork Chashu, corn and chopped scallions.",
+        "price": "$19.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Chicken Paitan",
+        "description": "Creamy chicken soup designed for chicken lovers. Topped with slow-cooked chicken breast chashu, scallions, corn and half soft-boiled egg.",
+        "price": "$14.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Tonkotsu Special",
+        "description": "Tonkotsu soup seasoned with original Shoyu tare, Topped with one piece pork Chashu, corn, chopped scallions.",
+        "price": "$13.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Spicy Tan-Tan Ramen",
+        "description": "spicy miso sesame tare added to our tonkotsu soup, topped with seasoned minced pork, homemade chili oil, scallions and half soft-boiled egg.",
+        "price": "$14.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Vegan Spicy Tan-Tan Ramen",
+        "description": "Vegan spicy miso sesame flavor soup. Topped with spicy tofu, corn, homemade chili oil and scallions.",
+        "price": "$14.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Spicy Miso Ramen(Kazann)",
+        "description": "Flavorful spicy miso Broth with chef special noodle(extra thick).Topped with stripes-fried veggies,baby corn,half egg, 5 pieces pork chashu and half soft boiled egg.",
+        "price": "$17.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Sapporo Vegetarian Ramen",
+        "description": "Vegetarian flavor soup, topped with teriyaki fried tofu, corn,kale,grape tomato and half soft boiled egg.",
+        "price": "$15.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Vegetarian Truffle Shio",
+        "description": "Vegetarian flavor soup, topped with teriyaki fried tofu, garlic mushroom truffle oil, truffle paste. and half soft boiled egg.",
+        "price": "$16.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Isshido Truffle",
+        "description": "Homemade fresh truffle tare added to our signature Tonkotsu soup. Topped with pork chashu, scallions, truffle paste, garlic mushroom and half soft-boiled egg.",
+        "price": "$16.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Short-Rib Steak Ramen",
+        "description": "Creamy Tonkotsu Soup. Topped with grilled boneless short ribs, corn,scallions and half soft boiled egg.",
+        "price": "$18.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Spicy Chicken Tan Tan",
+        "description": "Spicy chicken tan tan with choice of noodles, including options like thick, thin, gluten-free, vegan, udon, or no noodles.",
+        "price": "$17.95",
+        "section": "Ramen"
+      },
+      {
+        "name": "Tan- Tan Ramen",
+        "description": "Savory ramen with choice of noodle types, including thin, thick, special thick, gluten-free, vegan, or udon. Option to omit noodles.",
+        "price": "$16.00",
+        "section": "Ramen"
+      },
+      {
+        "name": "Chelf Special Noodle",
+        "description": "",
+        "price": "$1.00",
+        "section": "Noodle Choice"
+      },
+      {
+        "name": "Gluten Free Noodle",
+        "description": "",
+        "price": "$1.00",
+        "section": "Noodle Choice"
+      },
+      {
+        "name": "Extra Tonkotsu Noodle",
+        "description": "Rich tonkotsu broth with extra noodles, topped with tender pork slices, sweet corn, and fresh green onions.",
+        "price": "$1.50",
+        "section": "Noodle Choice"
+      },
+      {
+        "name": "Extra Wavy Noodle",
+        "description": "",
+        "price": "$1.50",
+        "section": "Noodle Choice"
+      },
+      {
+        "name": "Extra Chelf Special Noodle",
+        "description": "",
+        "price": "$1.50",
+        "section": "Noodle Choice"
+      },
+      {
+        "name": "Yakisoba (Short-Rib Steak)",
+        "description": "Sautéed noodles with tender short-rib steak, garnished with sesame seeds and diced red peppers.",
+        "price": "$18.95",
+        "section": "Yakisoba"
+      },
+      {
+        "name": "Yakisoba (Chashu)",
+        "description": "Stir-fried noodles with sliced pork, topped with green onions and diced tomatoes.",
+        "price": "$17.95",
+        "section": "Yakisoba"
+      },
+      {
+        "name": "Curry Bento + select your toppings",
+        "description": "Japanese-style curry with a choice of toppings such as crispy chicken, sausage, or tofu. Includes steamed rice and side components.",
+        "price": "$13.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Gyudon Bento",
+        "description": "Thinly sliced beef simmered with onions and topped with green onions and pickled ginger, served with rice, potato salad, miso soup, and assorted pickles.",
+        "price": "$17.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Kakuni Bento",
+        "description": "",
+        "price": "$16.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Karaage Bento",
+        "description": "Crispy fried chicken on a bed of shredded cabbage, served with steamed rice topped with sesame seeds, accompanied by pickled cucumber, seaweed salad, and a potato salad.",
+        "price": "$16.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Tofu Steak Bento",
+        "description": "Crispy tofu pieces served with steamed white rice, garnished with chopped green onions and sesame seeds.",
+        "price": "$16.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Chicken Katsu Bento",
+        "description": "Crispy breaded chicken cutlet served with steamed rice, garnished with shredded cabbage, alongside miso soup, pickled vegetables, and orange slices.",
+        "price": "$17.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Teriyaki Chicken Bento",
+        "description": "Juicy chicken glazed in teriyaki sauce, served with steamed rice, miso soup, pickled vegetables, and creamy potato salad.",
+        "price": "$17.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Short Ribs Steak Bento",
+        "description": "Tender short ribs steak atop steamed rice, garnished with sliced green onions.",
+        "price": "$18.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Gyutan/Beef Tongue Bento",
+        "description": "Tender beef tongue topped with sesame seeds, accompanied by a shishito pepper, lemon wedge, and creamy green sauce.",
+        "price": "$22.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Unagi Bento",
+        "description": "Grilled eel glazed with a savory sauce, served with rice, pickled cucumbers, pickled radish, seaweed salad, and tamagoyaki. Accompanied by miso soup and a mixed green salad.",
+        "price": "$22.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Braised Short ribs Bento",
+        "description": "Tender braised short ribs in savory sauce, served with steamed rice, creamy coleslaw, and pickled vegetables. Accompanied by a bowl of miso soup.",
+        "price": "$17.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Spicy Tofu Bento",
+        "description": "Grilled tofu with spicy sauce, accompanied by steamed rice topped with sesame seeds, fresh mixed greens, tomato slices, and a scoop of creamy potato salad.",
+        "price": "$16.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Squid Karaage Curry Bento",
+        "description": "Crispy fried squid paired with savory curry sauce, accompanied by a side of miso soup, pickled vegetables, and a fresh salad.",
+        "price": "$18.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Tereyaki Salmon Bento",
+        "description": "Grilled salmon glazed with teriyaki sauce, served over rice. Accompanied by seaweed salad, pickled ginger, kimchi, and orange slices.",
+        "price": "$17.95",
+        "section": "Rice Bento"
+      },
+      {
+        "name": "Spicy Tofu Bowl",
+        "description": "",
+        "price": "$13.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Gyudon Bowl",
+        "description": "Thinly sliced beef simmered with onions, topped with green onions and pickled radish slices, served over rice.",
+        "price": "$15.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Chashu Bowl",
+        "description": "Tender slices of braised pork belly with green onions, drizzled with mayonnaise, and garnished with a soft-boiled egg over rice.",
+        "price": "$12.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Tofu Steak Bowl",
+        "description": "Crispy tofu steak served over rice, topped with sliced green onions and shredded seaweed.",
+        "price": "$12.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Chicken Katsu Bowl",
+        "description": "",
+        "price": "$15.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Beef Curry Bowl",
+        "description": "Tender beef chunks in rich curry sauce with white rice and a garnish of pickled vegetables.",
+        "price": "$12.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Salmon Ochazuke",
+        "description": "Flaky salmon over rice, garnished with green onions, drizzled with soy sauce, and accompanied by a lemon wedge.",
+        "price": "$16.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Teriyaki Chicken Bowl",
+        "description": "Grilled chicken glazed with teriyaki sauce, served over rice with sliced boiled egg, shredded cabbage, green onions, and red bell peppers.",
+        "price": "$15.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Aburi Salmon Bowl",
+        "description": "Seared salmon slices topped with green onions and a drizzle of sauce, accompanied by a lemon wedge.",
+        "price": "$16.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Teriyaki Salmon Bowl",
+        "description": "Grilled salmon glazed with teriyaki sauce, served with steamed rice, shredded cabbage, and a lemon wedge.",
+        "price": "$15.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "White Rice",
+        "description": "",
+        "price": "$1.50",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Miso Soup",
+        "description": "",
+        "price": "$2.00",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "White Rice (Copy)",
+        "description": "",
+        "price": "$1.50",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "8 OZ Kimchi",
+        "description": "Fermented cabbage and vegetables seasoned with chili, garlic, and spices.",
+        "price": "$4.95",
+        "section": "Family Package"
+      },
+      {
+        "name": "16 OZ Kimchi",
+        "description": "Fermented napa cabbage with spicy chili paste, garlic, and ginger.",
+        "price": "$7.95",
+        "section": "Family Package"
+      },
+      {
+        "name": "8 OZ Chili Oil",
+        "description": "",
+        "price": "$3.95",
+        "section": "Family Package"
+      },
+      {
+        "name": "16 OZ Chili Oil",
+        "description": "",
+        "price": "$5.95",
+        "section": "Family Package"
+      },
+      {
+        "name": "8 OZ Black Oil",
+        "description": "",
+        "price": "$5.95",
+        "section": "Family Package"
+      },
+      {
+        "name": "16 OZ Black Oil",
+        "description": "",
+        "price": "$9.95",
+        "section": "Family Package"
+      },
+      {
+        "name": "Coca-Cola, Can",
+        "description": "Coca-Cola Original Taste — the crisp, refreshing taste you know and love",
+        "price": "$2.95",
+        "section": "Beverage"
+      },
+      {
+        "name": "Diet Coke, Can",
+        "description": "Take a Diet Coke break with this refreshing, no-calorie soft drink",
+        "price": "$2.95",
+        "section": "Beverage"
+      },
+      {
+        "name": "Sprite, Can",
+        "description": "Classic, cool, crisp lemon-lime flavored taste that's caffeine free",
+        "price": "$2.95",
+        "section": "Beverage"
+      },
+      {
+        "name": "ITOEN Green Tea Can",
+        "description": "A can of Ito En green tea offering a refreshing taste with natural green tea flavors.",
+        "price": "$2.95",
+        "section": "Beverage"
+      },
+      {
+        "name": "ITOEN Oolong Tea Can",
+        "description": "Smooth oolong tea in a convenient can, offering a rich and aromatic experience.",
+        "price": "$2.95",
+        "section": "Beverage"
+      },
+      {
+        "name": "Calpico Original",
+        "description": "Tangy and sweet non-carbonated drink with a milky appearance, featuring a unique blend of citrus and yogurt flavors.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Original R",
+        "description": "A carbonated soft drink with a sweet, mild taste, featuring real sugar for a classic refreshment experience.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Grape R",
+        "description": "Japanese carbonated soft drink with grape flavor, offering a refreshing and fruity taste experience.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Melon R",
+        "description": "A carbonated soft drink with melon flavor, featuring a unique bottle design and a refreshing taste.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Lychee R",
+        "description": "Sparkling lychee-flavored soda with a hint of sweetness, offering a refreshing taste from the iconic Ramune bottle.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Peach R",
+        "description": "Japanese carbonated soft drink with peach flavor, known for its unique bottle design and refreshing taste.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Strawberry R",
+        "description": "A carbonated soft drink featuring strawberry flavor, presented in a traditional glass bottle with a marble seal.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Braised Short Ribs Kids Meal",
+        "description": "Tender braised short ribs paired with steamed white rice.",
+        "price": "$11.95",
+        "section": "Kids Menu"
+      }
+    ]
+  }
+]

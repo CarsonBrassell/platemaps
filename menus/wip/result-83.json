@@ -1,0 +1,431 @@
+[
+  {
+    "restaurantId": "3833",
+    "name": "Gelati & Peccati",
+    "sourceUrl": "https://gelatiandpeccati.com/san-diego-gelati-and-peccati-drink-menu",
+    "confidence": "medium",
+    "notes": "Combined-menu shop (gelateria + pizza-by-the-slice + coffee bar). Own site (Bentobox/SpotOn, spot_id 71305) has two menu pages: drink-menu (Caffetteria/Specialties/Drinks, all priced, used as source here) and food-menu, which lists ONLY gelato flavor names across two sections ('Gelati & Peccati' and 'Others') plus a 'Pizza - Our Philosophy' text blurb -- none of these carry any per-item price, checked in the raw HTML (no $ at all on that page). This matches the ordinary practice of gelaterias pricing by cup/cone SIZE chosen at the register rather than by flavor; no size-based price list was found anywhere (own site, DoorDash, or Grubhub search snippets), so per rule 12 no gelato flavor is recorded. Pizza-by-the-slice and by-the-tray items (not itemized on the restaurant's own site at all) were pulled from DoorDash's server-side schema.org Menu JSON-LD (doordash.com/store/gelati-peccati-san-diego-33079707/), address-verified as 3066 University Ave, San Diego -- matches the work-list address. DoorDash also listed a 'Beverages' (canned soda) section; excluded because it duplicates the own-site Drinks section at differing prices for the San Pellegrino cans ($3.50 own site vs $3.75 DoorDash) -- treated as marketplace markup vs first-party price and the first-party number was kept instead. Grubhub's page for this restaurant returned a JS shell with no usable price data (13KB, no items), so no tier-3 cross-check was obtainable; DoorDash pizza prices are clean round dollar amounts ($6/slice, $26-$30 half tray, $54-$60 full tray) with no markup-ratio pattern, which supports them being real menu prices rather than fee-inflated. Categories reached: own-site drink menu (full), own-site food menu (full, unpriced), DoorDash full item list (full). Categories not reached: none identified as missing beyond the unpriced gelato flavors.",
+    "dishes": [
+      {
+        "name": "Espresso (Single)",
+        "description": "",
+        "price": "$2.50",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Espresso (Double)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Cappuccino (Small)",
+        "description": "",
+        "price": "$3.25",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Cappuccino (Medium)",
+        "description": "",
+        "price": "$3.75",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Latte (Small)",
+        "description": "",
+        "price": "$3.25",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Latte (Medium)",
+        "description": "",
+        "price": "$3.75",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Americano (Small)",
+        "description": "",
+        "price": "$3.25",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Americano (Medium)",
+        "description": "",
+        "price": "$3.75",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Hot Chocolate (Small)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Shakerato",
+        "description": "",
+        "price": "$4.00",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Mocha (Small)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Mocha (Medium)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$2.50",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "",
+        "price": "$3.75",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Espresso con Panna",
+        "description": "",
+        "price": "$3.50",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Regular Coffee (Small)",
+        "description": "",
+        "price": "$2.25",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Regular Coffee (Large)",
+        "description": "",
+        "price": "$2.75",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Iced Latte",
+        "description": "",
+        "price": "$3.75",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Iced Coffee",
+        "description": "",
+        "price": "$2.75",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Iced Americano",
+        "description": "",
+        "price": "$3.75",
+        "section": "Caffetteria"
+      },
+      {
+        "name": "Viennese Latte",
+        "description": "Honey, cinnamon, espresso, milk.",
+        "price": "$4.00",
+        "section": "Specialties"
+      },
+      {
+        "name": "Dirty Chai Latte",
+        "description": "Chai, espresso, milk",
+        "price": "$4.75",
+        "section": "Specialties"
+      },
+      {
+        "name": "G&P Latte (Small)",
+        "description": "Nutmeg, cinnamon, white chocolate, agave, espresso, milk.",
+        "price": "$4.25",
+        "section": "Specialties"
+      },
+      {
+        "name": "G&P Latte (Large)",
+        "description": "Nutmeg, cinnamon, white chocolate, agave, espresso, milk.",
+        "price": "$4.75",
+        "section": "Specialties"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Sprite",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coke",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Galvanina Organic",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Pellegrino Water",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Aranciata San Pellegrino",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Limonate San Pellegrino",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Half Tray Pepperoni",
+        "description": "7 slices of pizza, san marzano tomato sauce, mozzarella cheese, pepperoni.",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray of Lasagna Pizza",
+        "description": "7 slices - feeds up to 3. San Marzano tomato sauce, meat sauce, ricotta cheese, parmesan cheese and basil",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Rabbia",
+        "description": "San Marzano tomato sauce, shredded mozzarella, mushroom, pepperoni, fresh mozzarella and spicy honey",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Pepperoni",
+        "description": "san marzano tomato sauce, mozzarella cheese, pepperoni.",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Sausage & Mushroom",
+        "description": "San Marzano tomato sauce, mozzarella, Italian sausage and mushrooms.",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Margherita",
+        "description": "San Marzano tomato sauce, oregano, garlic, cherry tomatoes, and basil.",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Lasagna Pizza",
+        "description": "San Marzano tomato sauce, meat sauce, ricotta cheese, parmesan cheese and basil",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray Margherita",
+        "description": "7 slices of pizza, san marzano tomato sauce, oregano, garlic, cherry tomatoes, and basil. Feeds up to 3 people",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray Ira",
+        "description": "7 slices of pizza, san marzano tomato sauce, mozzarella cheese, sausage, spicy salami, pepperoni.",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray Slice of Sausage & Mushroom",
+        "description": "7 slices - feeds up to 3 people. San marzano tomato sauce, mozzarella, Italian sausage and mushrooms.",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray of Rabbia",
+        "description": "7 slices - feeds up to 3 people. San Marzano tomato sauce, shredded mozzarella, mushroom, pepperoni, fresh mozzarella and spicy honey",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray Cheese",
+        "description": "7 slices feeds up to 3 people.  San Marzano tomato sauce and shredded mozzarella",
+        "price": "$26.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Cacio Pepe",
+        "description": "Ricotta cheese, parmesan cheese, shredded mozzarella, pecorino cheese and black peppers",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Ira",
+        "description": "San marzano tomato sauce, mozzarella cheese, sausage, spicy salami, pepperoni.",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Lussuria",
+        "description": "Shredded mozzarella, potato, prosciutto and black peppers",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Artichoke Pizza",
+        "description": "San Marzano tomato sauce, prosciutto, fresh mozzarella cheese, artichoke heart and balsamic reduction",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice Of Cheese",
+        "description": "San Marzano tomato sauce and shredded mozzarella",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Bell Peppers Pizza",
+        "description": "Yellow and red bell peppers, San Marzano tomato sauce, garlic and fresh mozzarella cheese and parsley",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray Pepperoni",
+        "description": "14 slices feeds up to 6. San marzano tomato sauce, mozzarella cheese, pepperoni.",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray Margherita",
+        "description": "14 slices of pizza, san marzano tomato sauce, oregano, garlic, cherry tomatoes, and basil. Feeds up to 6",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray Marinara Pizza",
+        "description": "7 slices - feeds up to 3   San Marzano tomato sauce, oregano, cherry tomato, garlic and basil",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray of Cacio Pepe",
+        "description": "7 slices - feeds up to 3 Ricotta cheese, parmesan cheese, shredded mozzarella, pecorino cheese and black peppers",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray of Cacio Pepe",
+        "description": "14 slices - feeds up to 6 people. Ricotta cheese, parmesan cheese, shredded mozzarella, pecorino cheese and black peppers",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray of Lasagna Pizza",
+        "description": "14 slices - feeds up to 6 people.  San Marzano tomato sauce,  meat sauce,  ricotta cheese,  parmesan cheese and basil",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray of Lussuria",
+        "description": "7 slices - feeds up to 3 Shredded mozzarella, potato, prosciutto and black peppers",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray of Lussuria",
+        "description": "14 slices - feeds up to 6 people. Shredded mozzarella, potato, prosciutto and black peppers",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray of Bell Peppers Pizza",
+        "description": "7 slices - feeds up to 3. Yellow and red bell peppers, San Marzano tomato sauce, garlic and fresh mozzarella cheese and parsley",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray of Artichoke Pizza",
+        "description": "7 slices - feeds up to 3 people. San Marzano tomato sauce, prosciutto, fresh mozzarella cheese, artichoke heart and balsamic reduction",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray of Rabbia",
+        "description": "14 slices - feeds up to 6 people.  San Marzano tomato sauce,  shredded mozzarella,  mushroom, pepperoni,  fresh mozzarella and spicy honey",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Marinara Pizza",
+        "description": "San Marzano tomato sauce, oregano, cherry tomato, garlic and basil",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray Arrabbiata",
+        "description": "14 slices of pizza, san marzano tomato sauce, red chili flakes, cherry tomatoes, garlic, parsley.  Feeds up to 6 people",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray Cheese",
+        "description": "14 slices Feeds up to 6 people.  San Marzano tomato sauce and shredded mozzarella",
+        "price": "$54.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray Ira",
+        "description": "14 slices of pizza, san marzano tomato sauce, mozzarella cheese, sausage, spicy salami, pepperoni.",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray Slice of Sausage & Mushroom",
+        "description": "14 slices - feeds up to 6 people. San marzano tomato sauce, mozzarella, Italian sausage and mushrooms.",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray Marinara Pizza",
+        "description": "14 slices - feeds up to 6 people.  San Marzano tomato sauce,  oregano, cherry tomato,  garlic and basil",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray of Bell Peppers Pizza",
+        "description": "14 slices - feeds up to 6 people.  Yellow and red bell peppers,  San Marzano tomato sauce,  garlic and fresh mozzarella cheese and parsley",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Full Tray of Artichoke Pizza",
+        "description": "14 slices - feeds up to 6 people. San Marzano tomato sauce, prosciutto, fresh mozzarella cheese, artichoke heart and balsamic reduction",
+        "price": "$60.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Slice of Arrabbiata",
+        "description": "San Marzano tomato sauce, red chili flakes, cherry tomatoes, garlic, parsley.",
+        "price": "$6.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Half Tray Arrabbiata",
+        "description": "7 slices of pizza, san marzano tomato sauce, red chili flakes, cherry tomatoes, garlic, parsley. Feeds up to 3 people",
+        "price": "$30.00",
+        "section": "Pizza"
+      }
+    ]
+  }
+]

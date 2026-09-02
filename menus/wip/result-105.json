@@ -1,0 +1,716 @@
+[
+  {
+    "restaurantId": "1094",
+    "name": "Silver Spigot",
+    "sourceUrl": "https://restaurantguru.com/Silver-Spigot-San-Diego",
+    "confidence": "low",
+    "blocked": null,
+    "notes": "not_found: Silver Spigot Cocktail Lounge is a dive bar (dartboards, pool tables, jukebox) at 2221 Morena Blvd. Its own domain silverspigot.com 301s to quinnslighthouse.com/press2.html, which actually serves cloaked/hijacked content (a Shopee e-commerce JS bundle, unrelated to any restaurant) -- a hijacked domain per playbook rule, barred outright. No ordering platform presence found (DoorDash/Grubhub/UberEats search turned up nothing). restaurantguru.com gives only a per-person price range ($10-$20), no per-item prices. menupix.com and Yelp both 403'd a curl fetch; weeblyte.com (a barred farm domain) also surfaced in search and was not used. Reviews describe it as serving snacks/small food under $15 but no source anywhere lists actual priced food items. Treating as a bar with no publishable per-item menu.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5515",
+    "name": "Saddle Bar",
+    "sourceUrl": "https://thesaddlebar.com/about-us/",
+    "confidence": "high",
+    "blocked": null,
+    "notes": "not_found: Saddle Bar (Solana Beach) is a dive bar. Its own About page and a quoted customer review state explicitly: \"They don't serve food but don't care if you bring in your own. You can even order from the Pillbox two doors up and their servers will bring the grub in the bar to you.\" No menu link anywhere on the site (checked homepage nav, wp-json pages). This is a drink-only bar with no per-item food prices to record.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "962",
+    "name": "The Clubhouse Grill",
+    "sourceUrl": "https://www.granddelmar.com/content/uploads/2022/01/GDM-2420-Clubhouse-Grill-Menu-8.12.24.pdf",
+    "confidence": "high",
+    "crossCheckedAgainst": null,
+    "blocked": null,
+    "notes": "First-party PDF menu from the resort's own site (Fairmont Grand Del Mar / granddelmar.com), filename dated 8.12.24, read with pdftotext -layout. The live URL 404s directly but the identical file (same content hash) is archived by the Wayback Machine across Apr 2025, Aug 2025 and Feb 2026 crawls, so it is treated as current, not stale; fetched via https://web.archive.org/web/20260216134318/<url>. The live site also links a menumodo.com embedded viewer (outlet 12128, menu 247521) for the same restaurant but that widget is fully client-rendered JS with no server-side data -- not usable without a browser, so this PDF was used instead. A stale SinglePlatform listing (Baja Fish Tacos $12) was checked and rejected: it undercuts this PDF's prices by roughly 2x with no clean fee ratio, which per the staleness rule means the SinglePlatform copy is simply an old page, not evidence of a markup. Categories reached: Starters, Mains, Salads, Dessert, weekly Daily Specials, Cocktails, Wine (red/white/sparkling/rose), Beer & Seltzer, Draft -- this is the restaurant's single combined lunch/dinner/bar menu (open 7:30am-6pm daily; the resort site separately mentions breakfast items served on guest patios/rooms, which is not covered by this PDF and not found priced elsewhere). Two-tier drink prices on the PDF (e.g. Longball John Daly $12/$20) recorded at the lower/base price with a note.",
+    "dishes": [
+      {
+        "name": "Guacamole",
+        "description": "fire roasted salsa, lime, tostadas",
+        "price": "$18.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Tomato Soup",
+        "description": "basil, heirloom tomato, parmesan",
+        "price": "$14.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Garden Fresh Crudite",
+        "description": "market vegetables, white bean + red pepper hummus",
+        "price": "$13.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Kennebec Fries",
+        "description": "chipotle aioli",
+        "price": "$15.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Mango Fresno Agua Chile",
+        "description": "citrus shrimp, pico de gallo, avocado, ruby radish",
+        "price": "$23.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Chicken Wings",
+        "description": "lemon pepper, grand rescue honey, ranch",
+        "price": "$22.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Squash Blossom Quesadilla",
+        "description": "pasilla peppers, salsa verde, oaxaca cheese",
+        "price": "$20.00",
+        "section": "Starters"
+      },
+      {
+        "name": "California Burger",
+        "description": "cheddar, avocado, iceberg, tomato, bacon-onion marmalade, kosher pickles, sesame brioche bun",
+        "price": "$28.00",
+        "section": "Mains"
+      },
+      {
+        "name": "Hot Dog",
+        "description": "bacon, cheddar, chipotle aioli",
+        "price": "$22.00",
+        "section": "Mains"
+      },
+      {
+        "name": "Club Sandwich",
+        "description": "turkey, lettuce, tomato, smoked bacon",
+        "price": "$23.00",
+        "section": "Mains"
+      },
+      {
+        "name": "Tuna Melt",
+        "description": "tuna salad, cheddar, tomato, sourdough",
+        "price": "$25.00",
+        "section": "Mains"
+      },
+      {
+        "name": "Steak Sandwich",
+        "description": "arugula, dijon, tobacco onion, baguette",
+        "price": "$39.00",
+        "section": "Mains"
+      },
+      {
+        "name": "Fried Chicken Sandwich",
+        "description": "cabbage slaw, dill pickle, brioche bun",
+        "price": "$25.00",
+        "section": "Mains"
+      },
+      {
+        "name": "Shrimp Tacos",
+        "description": "blue corn tortillas, cotija, cilantro lime slaw",
+        "price": "$28.00",
+        "section": "Mains"
+      },
+      {
+        "name": "Poke Bowl",
+        "description": "mango, cucumber, wakame, scallions, edamame, avocado, radish, rice, choice of tuna or tofu",
+        "price": "$29.00",
+        "section": "Mains"
+      },
+      {
+        "name": "Caesar",
+        "description": "gem lettuce, torn croutons, traditional dressing",
+        "price": "$18.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Heirloom Tomato",
+        "description": "burrata, basil, balsamic, olive oil",
+        "price": "$19.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Chicken Wedge Cobb",
+        "description": "cherry tomato, smoked bacon, red onion, avocado, egg, blue cheese, buttermilk ranch",
+        "price": "$25.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Feta & Beet",
+        "description": "marinated feta, garden herbs, pickled beets, frisee, pepitas, champagne vinaigrette",
+        "price": "$19.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Strawberry Shortcake",
+        "description": "vanilla chiffon, macerated berries, chantilly cream",
+        "price": "$13.00",
+        "section": "Dessert"
+      },
+      {
+        "name": "Warm Chocolate Cookie",
+        "description": "vanilla gelato",
+        "price": "$13.00",
+        "section": "Dessert"
+      },
+      {
+        "name": "Mini Burger Monday",
+        "description": "three sliders and one select beer",
+        "price": "$20.00",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Taco Tuesday - Shrimp Tacos",
+        "description": "three shrimp tacos",
+        "price": "$20.00",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Taco Tuesday - Margaritas",
+        "description": "",
+        "price": "$10.00",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Wing Wednesday - Wings",
+        "description": "five wings",
+        "price": "$10.00",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Wing Wednesday - Sparkling and Rose",
+        "description": "glasses of sparkling and rose",
+        "price": "$10.00",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Nacho Thursday - Nacho Plate",
+        "description": "",
+        "price": "$10.00",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Nacho Thursday - Tequila",
+        "description": "sips of tequila",
+        "price": "$10.00",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Fish Fry Friday - Fish & Chips",
+        "description": "",
+        "price": "$20.00",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Fish Fry Friday - Select Beer",
+        "description": "",
+        "price": "$5.00",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Material Girl",
+        "description": "the botanist gin, st. germain, lemon, apple",
+        "price": "$21.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Nacional Royal",
+        "description": "mount gay black barrel rum, st germain, veuve clicquot, pineapple",
+        "price": "$29.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Soul Reviver",
+        "description": "the botanist gin, casamigos blanco tequila, cointreau, lillet blanc, blackberry, lemon",
+        "price": "$32.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Derby Bird",
+        "description": "woodford reserve, campari, orange, lemon",
+        "price": "$25.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Madame Fleur",
+        "description": "bombay sapphire gin, hennessy vs cognac, veuve clicquot, chamomile, lemon",
+        "price": "$29.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Chai Tai",
+        "description": "mount gay black barrel rum, the botanist gin, chai, pineapple, lime, angostura bitters",
+        "price": "$24.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Old Fashioned, Amigos",
+        "description": "casamigos reposado tequila, glenlivet 12 yr scotch, angostura bitters",
+        "price": "$28.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Birds and the Bees",
+        "description": "grey goose vodka, lemon juice, honey, club soda, pernod spritz",
+        "price": "$22.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Carte Blanche",
+        "description": "grey goose vodka, bombay sapphire gin, chardonnay",
+        "price": "$24.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Pinot Noir",
+        "description": "cooper hill, willamette valley, oregon",
+        "price": "$20.00",
+        "section": "Red Wine"
+      },
+      {
+        "name": "Italian Blend Quadriga",
+        "description": "brutocao estate, mendocino",
+        "price": "$20.00",
+        "section": "Red Wine"
+      },
+      {
+        "name": "Merlot",
+        "description": "keenan estate, spring mountain",
+        "price": "$24.00",
+        "section": "Red Wine"
+      },
+      {
+        "name": "Cabernet Sauvignon",
+        "description": "saddleback, oakville",
+        "price": "$31.00",
+        "section": "Red Wine"
+      },
+      {
+        "name": "Chardonnay",
+        "description": "trefethen, napa",
+        "price": "$25.00",
+        "section": "White Wine"
+      },
+      {
+        "name": "Pinot Grigio",
+        "description": "terlato, friuli, italy",
+        "price": "$23.00",
+        "section": "White Wine"
+      },
+      {
+        "name": "Sauvignon Blanc",
+        "description": "massey dacta, marlborough, new zealand",
+        "price": "$20.00",
+        "section": "White Wine"
+      },
+      {
+        "name": "Prosecco",
+        "description": "mionetto, veneto, italy",
+        "price": "$21.00",
+        "section": "Sparkling Wine"
+      },
+      {
+        "name": "Champagne",
+        "description": "veuve cliquot yellow label, reims, france",
+        "price": "$43.00",
+        "section": "Sparkling Wine"
+      },
+      {
+        "name": "Still Rose",
+        "description": "ultimate rose, provence, france",
+        "price": "$23.00",
+        "section": "Rose"
+      },
+      {
+        "name": "Sparkling Rose",
+        "description": "lucien albrecht, alsace, france",
+        "price": "$21.00",
+        "section": "Rose"
+      },
+      {
+        "name": "IPA Grand Del Mar Edition",
+        "description": "harland, san diego, 6%",
+        "price": "$13.00",
+        "section": "Beer & Seltzer"
+      },
+      {
+        "name": "Hazy IPA",
+        "description": "harland, san diego, 6.5%",
+        "price": "$13.00",
+        "section": "Beer & Seltzer"
+      },
+      {
+        "name": "Japanese Lager (Bottle)",
+        "description": "harland, san diego, 5%",
+        "price": "$13.00",
+        "section": "Beer & Seltzer"
+      },
+      {
+        "name": "Blonde Ale",
+        "description": "firestone 805, paso robles, 4.7%",
+        "price": "$13.00",
+        "section": "Beer & Seltzer"
+      },
+      {
+        "name": "Pale Ale",
+        "description": "alesmith .394, san diego, 6%",
+        "price": "$13.00",
+        "section": "Beer & Seltzer"
+      },
+      {
+        "name": "Mexican Lager (Bottle)",
+        "description": "stone buenaveza, san diego, 4.7%",
+        "price": "$13.00",
+        "section": "Beer & Seltzer"
+      },
+      {
+        "name": "Viva Hard Seltzer",
+        "description": "",
+        "price": "$12.00",
+        "section": "Beer & Seltzer"
+      },
+      {
+        "name": "Longball John Daly",
+        "description": "single; $20 for double, from price",
+        "price": "$12.00",
+        "section": "Beer & Seltzer"
+      },
+      {
+        "name": "Coors Light",
+        "description": "",
+        "price": "$11.00",
+        "section": "Beer & Seltzer"
+      },
+      {
+        "name": "Corona",
+        "description": "",
+        "price": "$11.00",
+        "section": "Beer & Seltzer"
+      },
+      {
+        "name": "Japanese Lager (Draft)",
+        "description": "harland, san diego, 5%",
+        "price": "$13.00",
+        "section": "Draft"
+      },
+      {
+        "name": "Mexican Lager (Draft)",
+        "description": "modelo, mexico, 4.4%",
+        "price": "$13.00",
+        "section": "Draft"
+      },
+      {
+        "name": "Rotating Selection",
+        "description": "",
+        "price": "$13.00",
+        "section": "Draft"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4745",
+    "name": "Contodo Fresh Mexican Eats",
+    "sourceUrl": "https://www.doordash.com/en/store/contodo-fresh-mexican-eats-san-diego-32086241",
+    "confidence": "medium",
+    "crossCheckedAgainst": null,
+    "blocked": null,
+    "notes": "Restaurant's own site (tacorestaurantsandiego.com, address confirmed 111 S Meadowbrook Dr matches work list -- domain name mismatch is just marketing branding, not a different business) prices nothing itself; it only teases Tacos/Burritos/Carne Asada Fries with 'read more' links and points to Grubhub, Zmenu and Seamless for ordering. Grubhub, Seamless and Zmenu were all unreadable without a browser (JS wall / 403). Found DoorDash's marketplace listing instead, which server-renders a full schema.org Menu JSON-LD (tier 3, medium at best per source ladder). Ran the markup divisor test (1.04/1.10/1.15/1.17/1.20/1.25/1.30) across all 46 priced items excluding the duplicate 'Most Ordered' showcase section -- no divisor lands more than 4/46 items on a round or .95 value, so this is ordinary odd-cent psychological pricing (dominated by .95 endings), not a delivery markup. No first-party dine-in artefact (PDF/photo/board) was found to cross-check against, so confidence stays medium rather than high. Categories reached: Tacos, Specialty Tacos, Burritos, Breakfast, Extras, Drinks, Sides -- this covers everything the restaurant's own site names as its specialties (tacos, burritos, carne asada fries -- fries/chips items appear under Extras). The 'Most Ordered' section was dropped as a duplicate of items already listed under their real sections.",
+    "dishes": [
+      {
+        "name": "Fish (battered)",
+        "description": "cabbage, pico, chipotle.",
+        "price": "$4.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Adobada",
+        "description": "Onions cilantro, pina, creamy guac.",
+        "price": "$5.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo",
+        "description": "Onions, cilantro, guac.",
+        "price": "$5.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shrimp (Grilled)",
+        "description": "Cabbage, pico, chipotle.",
+        "price": "$5.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "cabeza",
+        "description": "cilantro and onions",
+        "price": "$5.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "Steak, guac, onions and cilantro.",
+        "price": "$5.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carnitas",
+        "description": "onions, cilantro, guac.",
+        "price": "$5.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Quesabirria",
+        "description": "Cilantro, onions and cheese",
+        "price": "$8.25",
+        "section": "Specialty Tacos"
+      },
+      {
+        "name": "Birria taco",
+        "description": "cilantro and onions",
+        "price": "$7.45",
+        "section": "Specialty Tacos"
+      },
+      {
+        "name": "Poblano",
+        "description": "Vegetarian. Peppers corn, onions, cheese, and crema.",
+        "price": "$5.95",
+        "section": "Specialty Tacos"
+      },
+      {
+        "name": "Mar Y Tierra",
+        "description": "Shrimp • steak, chipotle, cheese, cabbage.",
+        "price": "$6.75",
+        "section": "Specialty Tacos"
+      },
+      {
+        "name": "Spicy Shrimp",
+        "description": "Spicy. Chili oil, cheese, cabbage, pico.",
+        "price": "$6.75",
+        "section": "Specialty Tacos"
+      },
+      {
+        "name": "Skyline",
+        "description": "steak, Monterrey cheese, shrimp, fries, chipotle and guac.",
+        "price": "$18.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Mary Tierra",
+        "description": "Steak, shrimp, guac, chipotle, cheese, pico.",
+        "price": "$18.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Contodo",
+        "description": "Carnitas, rice, beans, corn, guac, pico.",
+        "price": "$18.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Spicy shrimp burrito",
+        "description": "cheese, cabbage, chipotle, spicy oil, pico",
+        "price": "$18.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "shrimp burrito",
+        "description": "shrimp, rice, cabbage, pico and chipotle.",
+        "price": "$18.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "Adobada",
+        "description": "Pork, pico, guac.",
+        "price": "$17.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo",
+        "description": "Chicken, pico, guac.",
+        "price": "$17.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Veggie burrito",
+        "description": "Beans, lettuce, guac, pico, cheese, crema.",
+        "price": "$14.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fish burrito",
+        "description": "Battered fish, rice, cabbage ,pico and chipotle.",
+        "price": "$16.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas",
+        "description": "Pork, pico, guac.",
+        "price": "$17.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "chile relleno",
+        "description": "Poblano pepper filled with monterrey cheese, rice, beans, crema and lettuce.",
+        "price": "$17.95",
+        "section": "Burritos"
+      },
+      {
+        "name": "conga",
+        "description": "rice, beans, asada",
+        "price": "$17.65",
+        "section": "Burritos"
+      },
+      {
+        "name": "California",
+        "description": "Steak, fries, cheese, guac, pico, sour cream",
+        "price": "$18.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "Asada",
+        "description": "Steak, pico, guac.",
+        "price": "$18.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "Classic",
+        "description": "(Bacon, chorizo, or ham) eggs, cheese, and potatoes.",
+        "price": "$16.75",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Chilaquiles plate",
+        "description": "chips soaked in salsa verde, 2 eggs, crema, cheese, rice and beans.",
+        "price": "$18.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Steak and Eggs",
+        "description": "Potatoes, cheese.",
+        "price": "$17.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Killerr",
+        "description": "Eggs, ham. Bacon, potatoes, cheese, beans.",
+        "price": "$17.75",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Rolled Tacos (5 Pieces)",
+        "description": "(Potato, chicken or beef) lettuce, cheese, guac, crema and cotija cheese.",
+        "price": "$13.95",
+        "section": "Extras"
+      },
+      {
+        "name": "Rolled Tacos (3 Pieces)",
+        "description": "(Potato, chicken or beef) lettuce, cheese, crema, guac and cotija cheese",
+        "price": "$10.95",
+        "section": "Extras"
+      },
+      {
+        "name": "Surf & Turf Fries or Chips",
+        "description": "Cheese, pico, chipotle, guac, shrimp and steak.",
+        "price": "$24.25",
+        "section": "Extras"
+      },
+      {
+        "name": "Fries/Chips",
+        "description": "(Asada, chicken, or adobada) cheese, crema, pico, guac.",
+        "price": "$22.95",
+        "section": "Extras"
+      },
+      {
+        "name": "Quesadillas",
+        "description": "(Asada, chicken, or adobada) guac and pico.",
+        "price": "$18.35",
+        "section": "Extras"
+      },
+      {
+        "name": "Bottled  Soda",
+        "description": "Crisp, Chilled Can of Refreshing Soda - Perfect Thirst Quencher",
+        "price": "$4.75",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can soda",
+        "description": "Crisp, Chilled Can of Refreshing Soda - Perfect Thirst Quencher",
+        "price": "$3.35",
+        "section": "Drinks"
+      },
+      {
+        "name": "Aguas Frescas",
+        "description": "",
+        "price": "$6.95",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "Pure and refreshing bottled water.",
+        "price": "$2.95",
+        "section": "Drinks"
+      },
+      {
+        "name": "Plain Quesadilla",
+        "description": "Flour tortilla filled with melted cheese.",
+        "price": "$10.45",
+        "section": "Sides"
+      },
+      {
+        "name": "Bean and Cheese Burrito",
+        "description": "Savory beans paired with melted cheese, encased in a soft, warm tortilla.",
+        "price": "$10.95",
+        "section": "Sides"
+      },
+      {
+        "name": "Beans",
+        "description": "Freshly simmered, seasoned beans, perfectly tender and flavorful.",
+        "price": "$6.25",
+        "section": "Sides"
+      },
+      {
+        "name": "Rice",
+        "description": "Flavorful rice dish prepared to perfection, showcasing an ideal complement for any meal.",
+        "price": "$6.25",
+        "section": "Sides"
+      },
+      {
+        "name": "Fries",
+        "description": "Crispy golden potato strips, perfectly seasoned and fried to a mouthwatering perfection.",
+        "price": "$6.15",
+        "section": "Sides"
+      },
+      {
+        "name": "Chips",
+        "description": "Freshly fried corn tortilla chips.",
+        "price": "$5.95",
+        "section": "Sides"
+      },
+      {
+        "name": "Guac",
+        "description": "Mashed avocados mixed with tomatoes, onions, cilantro, and lime juice.",
+        "price": "$6.95",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4396",
+    "name": "Lucca's Pizzeria and Market",
+    "sourceUrl": "https://www.luccaspizzeriamarket.com/",
+    "confidence": "low",
+    "crossCheckedAgainst": null,
+    "blocked": "no reliable price source: the restaurant's own Slice storefront (luccaspizzeriamarket.com) carries a mathematically perfect, uniform 20% markup, and the DoorDash listing that could have corrected it disagrees with Slice by an inconsistent amount item-to-item with no clean ratio -- need either a dine-in artefact (printed menu/PDF/board photo) or a browser to read Yelp's photo gallery (403s to curl and WebFetch) or the Clover COLO2 storefront (clover.com/online-ordering/luccas-pizza--market-san-diego-2, a client-rendered React SPA with no server-side data)",
+    "notes": "The restaurant's own domain runs a Slice ordering widget that server-renders its full menu (73 priced items across Pizza, Antipasti, Wings & Appetizers, Fries, Insalate/Salads, Calzones, Sandwiches, Pasta, Just For Kids, Desserts -- looks like a complete pizzeria menu by section shape). Ran the standard markup divisor test: dividing every one of the 73 Slice prices by exactly 1.2 lands on a whole dollar 73/73 times (100%), which is the textbook clean-markup signature from the playbook (the Pacific Pizza case) -- this is a 20% online-ordering uplift baked into the restaurant's own storefront, not the wall price. Went looking for a second source to recover the true price: DoorDash's marketplace listing (schema.org Menu JSON-LD) has the same restaurant's menu in whole-dollar prices, but comparing matching items by name shows NO consistent ratio to Slice -- e.g. The Boarder Pizza, Amante Della Carne, BBQ/Buffalo Chicken Pizza and Lasagna are all exactly Slice/1.1; Create Your Own Pizza and Italian Sandwich are exactly Slice/1.2; Meatball Calzone and Ham & Cheese Calzone are Slice/1.14; Gyro Salad, 4 Cheese Pizza, Fettuccine Alfredo and Spaghetti are actually HIGHER on DoorDash than on Slice. Running the same divisor test on DoorDash's own 56 items in isolation finds no clean signature either (best was 1.2 at 26.8%, which the playbook calls noise, not a markup). So neither source's prices can be trusted as-is, and they can't be reconciled against each other -- textbook 'disagreement with no clean ratio is unresolved, not resolvable.' No PDF or dine-in photo was found through search; Yelp (which sometimes carries a dated menu photo) returned 403 to both curl and WebFetch, and the only other ordering surface (Clover, via clover.com/online-ordering/luccas-pizza--market-san-diego-2) redirects into Clover's COLO2 React SPA with no server-rendered data reachable by curl. Recording nothing rather than picking a side or dividing out the markup.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4495",
+    "name": "Slice House",
+    "sourceUrl": "https://www.doordash.com/store/slice-house-san-diego-33778031/",
+    "confidence": "low",
+    "crossCheckedAgainst": null,
+    "blocked": "no reliable price source: DoorDash carries a mathematically perfect, uniform 15% markup on this store, and every first-party alternative is a client-rendered app unreadable without a browser -- need either a browser to read the restaurant's actual ordering widget (a Paytronix Nuxt.js SPA at slicehouse.orderexperience.net, embedded on slicehouse.com) or to get past a 403 on api.slicehouse.com/menu (exists, but rejects a plain curl request -- likely needs auth/session headers a browser would supply)",
+    "notes": "This is Slice House by Tony Gemignani, a small pizza chain; this location (2100 Kettner Blvd Ste 1400, San Diego) opened May 2025 and its address on DoorDash matches the work list exactly. The restaurant's own site (slicehouse.com) is a JS SPA with zero server-rendered content; tracing its JS bundle found the real ordering backend is Paytronix at slicehouse.orderexperience.net, itself a Nuxt.js app that only prints 'Loading...' server-side -- no menu data reachable by curl. Fell back to DoorDash's marketplace listing (schema.org Menu JSON-LD), which has 8 sections / 79 priced items (Specials, Antipasti, Italian Specialties, Medium 12in/XL 20in New York Style, Grandma 12x12, Detroit 9x12, plus a duplicate 'Most Ordered' showcase excluded from the count) -- but running the standard markup divisor test found every single one of the 79 items (100%) divides cleanly by exactly 1.15, the textbook clean-markup signature. Checked whether Grubhub's listing (a different company from DoorDash) might carry the untouched price, but Grubhub's page is entirely client-rendered with no data in the initial HTML, same as it was for a different restaurant earlier in this batch. api.slicehouse.com/menu exists (returns 403, not 404) but rejects a bare curl request. No PDF or dine-in photo found through search for this brand-new location. Recording nothing rather than reporting DoorDash's marked-up numbers or a divided-out guess.",
+    "dishes": []
+  }
+]

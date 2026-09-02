@@ -1,0 +1,9 @@
+{
+  "restaurantId": "3592",
+  "name": "3N1 Sports Bar & Grill",
+  "sourceUrl": "https://3n1sportsbarandgrill.com/chula-vista-eastlake-3n1-sports-bar-and-grill-food-menu",
+  "confidence": "low",
+  "blocked": "Restaurant's own site (SpotHopper/spotapps.co, spot_id 69263) server-renders a full food menu with real section/dish names and descriptions on its own domain (2330 Proctor Valley Rd, Chula Vista -- matches work list) but genuinely no prices anywhere in that HTML (checked -- zero $ occurrences). The site's SpotHopper online-ordering widget (tmt.spotapps.co/ordering-menu/?spot_id=69263) evaluates cleanly via its window.__NUXT__ IIFE and returns a genuinely empty menus:[] -- the restaurant has not populated online ordering, this is not a gate. Tried DoorDash (doordash.com/en-US/store/3n1-sports-bar-grill-chula-vista-706361/1375868): page loaded but, unlike other DoorDash stores checked in this batch, contained no JSON-LD Menu block and no MenuPageItem/RSC catalog data at all (zero __typename occurrences) -- likely needs a browser/different fetch approach to trigger the real payload. Grubhub, sirved.com, and baggednbrought.com listings all returned pages with zero prices via curl. Yelp 403'd. Web search snippets suggest Yelp-derived prices exist (3N1 Burger $21.00, Marinated Steak Salad $17.00, Pork Belly Cubes $16.50, Calamari $18.00) but these were not verified on an actual page and should not be trusted secondhand.",
+  "notes": "Missing piece for a Chrome-equipped follow-up: load the DoorDash or UberEats storefront for this exact address and read prices directly, or open Yelp's photo gallery for a dated menu photo (filter img alt for /menu/i). Do not use the unverified search-snippet prices without confirming them on an actual page.",
+  "dishes": []
+}

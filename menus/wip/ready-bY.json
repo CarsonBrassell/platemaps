@@ -1,0 +1,789 @@
+[
+  {
+    "restaurantId": "2515",
+    "name": "Ikiru Sushi",
+    "sourceUrl": "http://libertystation.com/tenant/ikiru-sushi/",
+    "dishes": [],
+    "notes": "Own domain ikirusushisd.com is now hijacked -- redirects to curiouspatch.com, a generic SEO content-farm article about San Diego sushi in general (not this restaurant), with an obfuscated tracking token in the URL. Left without clicking further. DoorDash listing for 'Ikiru Japanese' confirmed not active/orderable. Grubhub link returned no content. allmenus.com has a full, well-structured ~150-item menu (nigiri, rolls, ramen, katsu, donburi, curry, udon, yakisoba, combos) but carries no date and prices read low for 2026 (cut rolls $4-6, seared/baked rolls $9-12) -- consistent with staleness. restaurantguru's menu page shows 'added by users 26 days ago' but is image-only with no readable prices in text, so it could not serve as the required independent cross-check. Per the Curbside Cafe precedent (hijacked domain + no independent corroboration), recording the allmenus dishes uncorroborated would risk publishing a stale/wrong menu, so this is a genuine not-found rather than blocked -- no better source exists."
+  },
+  {
+    "restaurantId": "2512",
+    "name": "Pho Kitchen",
+    "address": "5375 Napa St #104b, San Diego, CA 92110",
+    "sourceUrl": "https://napa.phokitchenusa.com/wp-json/moo-clover/v1/categories",
+    "confidence": "high",
+    "dishes": [
+      {
+        "name": "Bottled Water",
+        "price": "$2.00",
+        "section": "Drink"
+      },
+      {
+        "name": "Bottled Juice",
+        "price": "$4.00",
+        "section": "Drink"
+      },
+      {
+        "name": "Coffe Boba",
+        "price": "$5.50",
+        "section": "Drink"
+      },
+      {
+        "name": "Tea Boba",
+        "price": "$5.50",
+        "section": "Drink"
+      },
+      {
+        "name": "Passion Fruit",
+        "price": "$5.50",
+        "section": "Drink"
+      },
+      {
+        "name": "Matcha",
+        "price": "$5.50",
+        "section": "Drink"
+      },
+      {
+        "name": "Taro",
+        "price": "$5.50",
+        "section": "Drink"
+      },
+      {
+        "name": "Green Tea",
+        "price": "$2.00",
+        "section": "Drink"
+      },
+      {
+        "name": "Soda",
+        "price": "$2.00",
+        "section": "Drink"
+      },
+      {
+        "name": "Coffee, Lemonade, ...",
+        "price": "$5.50",
+        "section": "Drink"
+      },
+      {
+        "name": "Perrier",
+        "price": "$3.00",
+        "section": "Drink"
+      },
+      {
+        "name": "D1 Dessert Of The Day (Che Dau)",
+        "price": "$5.00",
+        "section": "Drink"
+      },
+      {
+        "name": "D10 Dua Tuoi (Coconut)",
+        "price": "$6.00",
+        "section": "Drink"
+      },
+      {
+        "name": "Hot/Ice Tea (Tra Nong/Da)",
+        "price": "$1.00",
+        "section": "Drink"
+      },
+      {
+        "name": "Family Size Lemonade",
+        "price": "$7.50",
+        "section": "Drink"
+      },
+      {
+        "name": "1/2 BBQ Pork Springroll (Goi Cuon BBQ Thit)",
+        "price": "$5.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "BBQ Pork Springroll (Goi Cuon BBQ Thit)",
+        "price": "$8.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "1/2 BBQ Chicken Springroll (1/2 Goi Cuon Ga)",
+        "price": "$5.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "BBQ Chicken Springroll (Goi Cuon Ga)",
+        "price": "$8.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A32 1/2 Pork Shredded Rolls (1/2 Bi Cuon)",
+        "price": "$4.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A31 Pork Shredded Rolls (Bi Cuon)",
+        "price": "$7.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A22 1/2 Spring Roll (1/2 Goi Cuon)",
+        "price": "$4.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A2 Spring Rolls (Goi Cuon)",
+        "price": "$7.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A12 1/2 Eggroll (1/2 Cha Gio)",
+        "price": "$5.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "A1 Egg Rolls (Cha Gio)",
+        "price": "$10.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "P7 Pho O Thit (Meatless Pho)",
+        "price": "$9.00",
+        "section": "Pho"
+      },
+      {
+        "name": "P6 Pho Bo Kho (Beef Stew Pho)",
+        "price": "$12.00",
+        "section": "Pho"
+      },
+      {
+        "name": "P5 Pho Ga (Chicken Pho)",
+        "price": "$11.50",
+        "section": "Pho"
+      },
+      {
+        "name": "P4 Pho Tom (Shrimp Pho)",
+        "price": "$13.50",
+        "section": "Pho"
+      },
+      {
+        "name": "P3 Custom Pho (Pho Custom)",
+        "price": "$11.50",
+        "section": "Pho"
+      },
+      {
+        "name": "P2 Pho Dac Biet (Pho Special)",
+        "price": "$12.50",
+        "section": "Pho"
+      },
+      {
+        "name": "P1 Pho Filet - House Special",
+        "price": "$13.50",
+        "section": "Pho"
+      },
+      {
+        "name": "RS Com Special (Com Dac Biet)",
+        "price": "$15.50",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "Tuna Daily Special (Ca Thu Dat Biet)",
+        "price": "$18.00",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "R3 Com 3 (Rice 3)",
+        "price": "$14.00",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "R2 Com 2 (Rice 2)",
+        "price": "$13.00",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "R6 Com Filet (Filet Rice)",
+        "price": "$14.00",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "Slice of Salmon (Mien Ca Hoi)",
+        "price": "$8.00",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "R9 Com Bo Kho (Rice Beef Stew)",
+        "price": "$13.00",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "R7 Com Cari (Rice Curry)",
+        "price": "$13.00",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "R5 Com Tom (Shrimp Rice)",
+        "price": "$14.00",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "R1 Com 1 (Rice 1)",
+        "price": "$12.00",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "R4 Com Ca Salmon (Salmon Rice)",
+        "price": "$16.00",
+        "section": "Com/Bun (Rice)"
+      },
+      {
+        "name": "RS Bun Special (Bun Dac Biet)",
+        "price": "$15.50",
+        "section": "Com/Bun (Vermicelli)"
+      },
+      {
+        "name": "R3 Bun 3 (Ver 3)",
+        "price": "$14.00",
+        "section": "Com/Bun (Vermicelli)"
+      },
+      {
+        "name": "R2 Bun 2 (Ver 2)",
+        "price": "$13.00",
+        "section": "Com/Bun (Vermicelli)"
+      },
+      {
+        "name": "R5 Bun Tom (Vermicelli Shrimp)",
+        "price": "$14.00",
+        "section": "Com/Bun (Vermicelli)"
+      },
+      {
+        "name": "R8 Bun Bo Hue (Spicy Vermicelli)",
+        "price": "$13.00",
+        "section": "Com/Bun (Vermicelli)"
+      },
+      {
+        "name": "R7 Bun Cari (Vermicelli Curry)",
+        "price": "$13.00",
+        "section": "Com/Bun (Vermicelli)"
+      },
+      {
+        "name": "R6 Bun Filet (Vermicelli Filet)",
+        "price": "$14.00",
+        "section": "Com/Bun (Vermicelli)"
+      },
+      {
+        "name": "R1 Bun 1 (Ver 1)",
+        "price": "$12.00",
+        "section": "Com/Bun (Vermicelli)"
+      },
+      {
+        "name": "Mi Bo Kho (Beef Stew Egg Noodles)",
+        "price": "$12.50",
+        "section": "Egg Noodles (Mi)"
+      },
+      {
+        "name": "Mi Ga (Chicken Egg Noodles)",
+        "price": "$12.00",
+        "section": "Egg Noodles (Mi)"
+      },
+      {
+        "name": "Mi Tom (Shrimp Egg Noodles)",
+        "price": "$13.00",
+        "section": "Egg Noodles (Mi)"
+      },
+      {
+        "name": "V4 1/2 Vegi Eggroll (1/2 Cha Gio Chay 3)",
+        "price": "$5.50",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V4 Vegi Eggroll (Cha Gio Chay 6 Cuon)",
+        "price": "$10.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V3 1/2 Goi Cuon Chay (1/2 Veg Springroll, 1 Roll)",
+        "price": "$4.50",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V3 Vegi Spring Roll (Goi Cuon Chay 2 Cuon)",
+        "price": "$7.50",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V2 Vegi Vermiceli (Bun Chay)",
+        "price": "$12.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V1 Vegi Pho (Pho Chay Dau Hu)",
+        "price": "$12.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "M4 Banh Mi Filet (Filet Baguette)",
+        "price": "$10.00",
+        "section": "Bread (Banh Mi)"
+      },
+      {
+        "name": "M3 Banh Mi BBQ Thit (BBQ Pork Baguette)",
+        "price": "$8.00",
+        "section": "Bread (Banh Mi)"
+      },
+      {
+        "name": "R7 Banh Mi Cari (Curry Bread)",
+        "price": "$13.00",
+        "section": "Bread (Banh Mi)"
+      },
+      {
+        "name": "R9 Banh Mi Bo Kho (Beef Stew Bread)",
+        "price": "$13.00",
+        "section": "Bread (Banh Mi)"
+      },
+      {
+        "name": "K3 Com Ga Kid (BBQ Chicken Rice Kid Meal)",
+        "price": "$8.00",
+        "section": "Kid Meals"
+      },
+      {
+        "name": "K2 Com Thit Kid (BBQ Pork Rice Kid Meal)",
+        "price": "$8.00",
+        "section": "Kid Meals"
+      },
+      {
+        "name": "K1 Pho 9 Kid Meal (Pho Well Done Kid Meal)",
+        "price": "$8.00",
+        "section": "Kid Meals"
+      },
+      {
+        "name": "Baguette (Banh Mi)",
+        "price": "$2.00",
+        "section": "Misc (Linh Tinh)"
+      },
+      {
+        "name": "2 Fried Eggs (2 Trung Chien)",
+        "price": "$3.00",
+        "section": "Misc (Linh Tinh)"
+      },
+      {
+        "name": "1 Fried Egg (1 Trung Chien)",
+        "price": "$2.00",
+        "section": "Misc (Linh Tinh)"
+      }
+    ],
+    "notes": "Restaurant's own site (phokitchenusa.com) lists only its Mira Mesa location; the Napa St address in the worklist is a SEPARATE store with its own subdomain, napa.phokitchenusa.com (avoided the wrong-branch trap -- the Mira Mesa order.online storefront was checked first and correctly discarded once the address mismatch was noticed). The Napa St site's own ordering UI shows 'Online Ordering Currently Closed' and is powered by 'Smart Online Order' (Clover). Reading /wp-json/moo-clover/v1/categories then /categories/{uuid}/items directly (Clover REST API) returned the full priced menu regardless of the closed-ordering-window UI gate. All 10 real categories reached: Drink, Appetizers, Pho, Com/Bun (Rice), Com/Bun (Vermicelli), Egg Noodles, Vegetarian, Bread, Kid Meals, Misc. 'Gift Cards' and 'Best Sellers' categories skipped (not real menu sections). Prices cross-check exactly against the Mira Mesa order.online listing for shared items (e.g. P1 Pho Filet $13.50 at both), so no markup detected."
+  },
+  {
+    "restaurantId": "4699",
+    "name": "Robertacos",
+    "address": "492 West San Ysidro Boulevard",
+    "sourceUrl": "https://www.allmenus.com/ca/san-diego/720531-robertacos-mexican-food/menu/",
+    "dishes": [],
+    "notes": "WRONG-BUSINESS TRAP CHECKED AND AVOIDED: the worklist website (runinos.com) pointed at a Roberto's Taco Shop location in Chula Vista, a different address from this restaurant's 492 W San Ysidro Blvd. Checked BOTH San Diego Roberto's Taco Shop chain sites (robertostacoshopsd.com/locations and robertostacoshop.com/locations) in full -- neither lists a San Ysidro / 492 W San Ysidro Blvd location, confirming 'Robertacos' (492 W San Ysidro Blvd, San Ysidro, CA 92173) is an independent, unaffiliated business sharing a similar name, not a branch of either chain. Did not borrow either chain's menu. The restaurant itself has no findable website or ordering platform (SinglePlatform's menu is explicitly disabled/removed; DoorDash does not list delivery for this address). allmenus.com carries a full, well-structured menu, but every price is implausibly low for 2026 (tacos $2.50, sodas $1.48, breakfast burritos $4.50-4.99) -- consistent with a menu captured many years ago and never refreshed, not a current price list. No dated photo or second source was found to confirm or date it. Recorded not-found: the restaurant plainly still trades (recent 2026 Yelp activity), but no current priced source exists."
+  },
+  {
+    "restaurantId": "1183",
+    "name": "Star Club",
+    "address": "423 E St, San Diego, CA 92101",
+    "sourceUrl": "https://starbarsd.com/",
+    "dishes": [],
+    "notes": "Confirmed this is Star Bar at 423 E St, Gaslamp (address matches worklist exactly; 'Star Club' appears to be an OSM name variant of the same bar). A dive bar with no kitchen -- its own site says food is delivered from neighboring Coastal Cantina or Tony's Pizza rather than served in-house. No itemized drink menu exists anywhere checked: the site's Specials/Events page, a Toast business listing (present but with no online-ordering menu configured -- just a directory entry with 'Closed' hours shown, i.e. never opened for online orders), and search results only surface vague prose ranges ('beer $3-7', 'wells $4', '$3 Busch pints') rather than a priced list of named drinks. This is a genuine case of a venue that does not publish an itemized menu, not a source that is temporarily unreachable."
+  },
+  {
+    "restaurantId": "1940",
+    "name": "Jennings House Cafe",
+    "address": "1018 Rosecrans Street",
+    "sourceUrl": "https://order.toasttab.com/online/jennings-house-cafe",
+    "confidence": "high",
+    "dishes": [
+      {
+        "name": "Breakfast Burrito",
+        "description": "Eggs, bacon, cheddar cheese, and black beans wrapped in a warm flour tortilla. Served w/ side of salsa and fresh fruit.",
+        "price": "$16.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Overnight Oats",
+        "description": "Traditional oats, oat milk, and chia seeds. Served hot or cold.",
+        "price": "$8.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bagel",
+        "price": "$2.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "House Sandwich",
+        "description": "Eggs, bacon, and cheddar cheese on your choice of bagel. Served w/ side of fresh fruit.",
+        "price": "$14.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Minwich",
+        "description": "1 egg, bacon, & cheese on an english muffin. Served w/ fresh fruit.",
+        "price": "$12.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Veggie Bagel",
+        "description": "Lettuce, tomato, cucumber, red onion, and capers on your choice of bagel. Served w/ side of fresh fruit.",
+        "price": "$14.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "1 Egg",
+        "price": "$3.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "2 Eggs",
+        "price": "$6.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Banana",
+        "price": "$1.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Side Bacon",
+        "price": "$5.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Side Fruit",
+        "price": "$5.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Side Sausage",
+        "price": "$5.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Side Toast w/ Butter",
+        "price": "$5.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Side Turkey",
+        "price": "$5.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Side Turkey Sausage",
+        "price": "$5.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Side Chicken",
+        "price": "$5.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "Your choice of toast topped with creamy avocado, fresh greens, and house-made savory granola. Served w/ side of fresh fruit.",
+        "price": "$14.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Cali Scramble",
+        "description": "3 eggs scrambled with tomato, bacon, and cheddar cheese, topped with sliced avocado and fresh ground black pepper. Served w/ a side of fresh fruit, toast & butter.",
+        "price": "$17.45",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Harvest Scramble",
+        "description": "3 eggs scrambled with red onion, tomatoes, spinach, and feta. Served w/ a side of fresh fruit, toast & butter.",
+        "price": "$17.45",
+        "section": "Breakfast"
+      },
+      {
+        "name": "JH Breakfast",
+        "description": "2 scrambled or poached eggs, bacon or sausage, fruit, and toast.",
+        "price": "$16.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Chicken & Grapes Salad",
+        "description": "Bed of mixed greens topped with house made chicken salad (chicken breast, mayo, Greek yogurt, grapes, pecans, and seasonings).",
+        "price": "$15.95",
+        "section": "Lunch"
+      },
+      {
+        "name": "Side Salad",
+        "description": "Mixed greens, tomato, cucumber, red onion, served w/ choice of dressing.",
+        "price": "$8.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "BLT",
+        "description": "Bacon, lettuce, tomato, and mayo on your choice of toast. Served w/ chips & pickle.",
+        "price": "$13.95",
+        "section": "Lunch"
+      },
+      {
+        "name": "Chicken & Grapes",
+        "description": "House made chicken salad with chicken breast and a blend of Greek yogurt, mayo, grapes, pecans, and seasonings w/ lettuce on your choice of toast. Served w/ chips and pickle.",
+        "price": "$15.95",
+        "section": "Lunch"
+      },
+      {
+        "name": "Club Sandwich",
+        "description": "Turkey, bacon, cheese, lettuce, tomato, avocado, mayo, and mustard on your choice of toast. Served w/ chips & pickle.",
+        "price": "$15.95",
+        "section": "Lunch"
+      },
+      {
+        "name": "HALT",
+        "description": "Hummus, avocado, lettuce, and tomato on your choice of toast. Served w/ chips & pickle.",
+        "price": "$13.95",
+        "section": "Lunch"
+      },
+      {
+        "name": "Jammin Turkey",
+        "description": "Turkey, pepper jack cheese, bacon pepper jam, avocado, and red onion wrapped in a flour tortilla and warmed to perfection. Served w/ chips & pickle.",
+        "price": "$15.95",
+        "section": "Lunch"
+      },
+      {
+        "name": "Chips",
+        "price": "$2.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Cup Soup Black Bean or Lentil",
+        "price": "$7.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Cinnamon Roll",
+        "price": "$6.50",
+        "section": "Pastries and Desserts"
+      },
+      {
+        "name": "Croissant - Plain",
+        "price": "$4.00",
+        "section": "Pastries and Desserts"
+      },
+      {
+        "name": "Scone",
+        "description": "Scones baked daily.",
+        "price": "$5.75",
+        "section": "Pastries and Desserts"
+      },
+      {
+        "name": "Sticky Buns (With Pecans)",
+        "price": "$6.50",
+        "section": "Pastries and Desserts"
+      },
+      {
+        "name": "Biscuit",
+        "price": "$3.25",
+        "section": "Pastries and Desserts"
+      },
+      {
+        "name": "Chocolate Croissant",
+        "price": "$6.50",
+        "section": "Pastries and Desserts"
+      },
+      {
+        "name": "Americano",
+        "description": "Espresso and hot water.",
+        "price": "$3.50",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Cafe Au Lait",
+        "description": "Half house coffee and half steamed milk or milk alternative of choice.",
+        "price": "$4.00",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "Espresso with equal parts steamed milk or milk alternative of choice and dense foam.",
+        "price": "$5.00",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Coffee Beans",
+        "description": "Fresh roasted Jennings House Blend, whole beans.",
+        "price": "$18.00",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "Small batch cold brew. Sweet, chocolatey, and smooth.",
+        "price": "$4.00",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Cortado",
+        "description": "Equal parts espresso and steamed milk or milk alternative of choice.",
+        "price": "$4.25",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Espresso",
+        "description": "Served as a single, double, or triple shot.",
+        "price": "$2.15",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Flat White",
+        "description": "A double or triple shot of house espresso with steamed whole milk.",
+        "price": "$4.75",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "Dark chocolate sauce with steamed milk or milk alternative of choice.",
+        "price": "$4.50",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Iced Vietnamese",
+        "description": "4 shots of house espresso, sweetened condensed milk and half and half.",
+        "price": "$6.25",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Java Jug",
+        "description": "96 oz. of house coffee, served w/ cups, lids, sugar, cream, & stir sticks.",
+        "price": "$21.95",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Latte",
+        "description": "Espresso with steamed milk or milk alternative of choice, topped with a smooth layer of light foam.",
+        "price": "$5.00",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Mocha",
+        "description": "Espresso, dark chocolate sauce, and steamed milk or milk alternative of choice, topped with chocolate shavings.",
+        "price": "$6.00",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Steamer",
+        "price": "$4.00",
+        "section": "Coffee & Espresso"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "House brewed chai tea steamed with milk or milk alternative of choice, lightly sweetened with maple syrup and vanilla, dusted with cinnamon.",
+        "price": "$5.25",
+        "section": "Teas"
+      },
+      {
+        "name": "Dirty Chai",
+        "description": "A shot of espresso in house brewed chai tea steamed with milk, lightly sweetened with maple syrup and vanilla, dusted with cinnamon.",
+        "price": "$6.25",
+        "section": "Teas"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "A wide selection of loose leaf teas.",
+        "price": "$3.75",
+        "section": "Teas"
+      },
+      {
+        "name": "Iced Tea",
+        "price": "$3.75",
+        "section": "Teas"
+      },
+      {
+        "name": "London Fog",
+        "price": "$5.75",
+        "section": "Teas"
+      },
+      {
+        "name": "Matcha Latte",
+        "price": "$5.25",
+        "section": "Teas"
+      },
+      {
+        "name": "Tea au Lait",
+        "description": "Half tea and half steamed milk or milk alternative of choice.",
+        "price": "$4.75",
+        "section": "Teas"
+      },
+      {
+        "name": "Loose Lb Tea",
+        "price": "$15.00",
+        "section": "Teas"
+      },
+      {
+        "name": "Apple Juice",
+        "price": "$2.75",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "price": "$2.50",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Chocolate Milk",
+        "price": "$3.75",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Coke",
+        "price": "$2.50",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Coke Zero",
+        "price": "$2.50",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Milk",
+        "price": "$2.75",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Orange Juice",
+        "price": "$2.75",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Perrier",
+        "price": "$3.25",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Sprite",
+        "price": "$2.50",
+        "section": "Cold Drinks"
+      },
+      {
+        "name": "Acai Bowl",
+        "description": "Organic acai topped with organic granola, bananas, strawberries, blueberries, and coconut.",
+        "price": "$12.95",
+        "section": "Bowls & Smoothies"
+      },
+      {
+        "name": "Acai Smoothie",
+        "price": "$8.50",
+        "section": "Bowls & Smoothies"
+      },
+      {
+        "name": "Fruit Smoothie",
+        "price": "$7.50",
+        "section": "Bowls & Smoothies"
+      },
+      {
+        "name": "Granola Bowl",
+        "description": "Granola w/ Greek yogurt or choice of milk. Blueberries and strawberries.",
+        "price": "$10.50",
+        "section": "Bowls & Smoothies"
+      }
+    ],
+    "notes": "Address confirmed matches worklist (1018 Rosecrans St, San Diego). Own Toast ordering platform, comprehensive: Breakfast, Lunch, Pastries and Desserts, Coffee & Espresso, Teas, Cold Drinks, and Bowls & Smoothies all reached in full. Several items were out of stock at capture time (Arnold Palmer, Lavender Lemonade, Lemonade, Side Biscuit & Gravy, Cup of Chili/Bowl of Chili, GF scone, Vegan Scones, Sour Cream Doughnuts, Almond Croissant, Mini Scones, Banana Choc Chip Bread) and were dropped per the no-placeholder-price rule rather than recorded without a real price. THE HOMEPAGE'S 'ADULT BEVERAGES' SECTION WAS NOT FOUND on the Toast ordering site -- likely an in-person-only offering not sold through online ordering, so it is a known gap rather than a missed category."
+  },
+  {
+    "restaurantId": "4273",
+    "name": "Rooftop Bar",
+    "address": "201 North Myers Street",
+    "sourceUrl": "https://www.rooftopbaroceanside.com/cocktails-bites/",
+    "dishes": [],
+    "notes": "This is The Rooftop Bar at the Mission Pacific Hotel (JdV by Hyatt), Oceanside -- matches the worklist address in substance (Mission Pacific Hotel, Oceanside) though the site itself never prints a bare street address; corroborated via search as 201 N Myers St. The restaurant's OWN site has an extensive, fully itemized menu (cocktails, espresso martinis, non-alcoholic cocktails, canned/draught beer, snacks, chilled seafood, small plates, spreads, grill/plancha entrees, desserts, a late-night menu) across every section a diner would expect -- but NOT ONE dish or drink carries a price anywhere on the site. Checked Tripadvisor and general search for a priced version (menu photos, a third-party listing) and found none; OpenTable is reservations-only. This is a deliberate fine-dining/hotel-bar choice not to publish prices (the Marisi pattern), so it is recorded not-found rather than blocked."
+  }
+]

@@ -1,0 +1,714 @@
+[
+  {
+    "restaurantId": "3997",
+    "name": "Toasted",
+    "sourceUrl": "https://toastedgastrobrunch.com/Menu",
+    "confidence": "low",
+    "blocked": "Own site (toastedgastrobrunch.com, address-confirmed match for 12925 El Camino Real San Diego 92130 Del Mar location) lists full menu text with NO base prices for any food item, only modifier upcharges (+2, +1.50 etc). DoorDash listing (doordash.com/store/toasted-gastrobrunch-san-diego-22556) has prices but they divide EXACTLY by 1.10 to round dollar values on every sampled item (Stuffed French Toast 20.90/1.1=19.00, French Toast Combo 22.00/1.1=20.00, Plain Jane 22.00/1.1=20.00, ABC Hash 24.20/1.1=22.00, Shrimp and Grits 25.30/1.1=23.00, Denver-ish Scramble 23.10/1.1=21.00) confirming a uniform 10% delivery markup, so unusable as-is. Yelp biz page 403'd on curl. Needs a browser to check Yelp menu photos or another priced source for real dine-in prices.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2220",
+    "name": "Carmen's Mexican Food",
+    "sourceUrl": "http://www.carmensmexican.com/media/2560/1.jpg",
+    "confidence": "low",
+    "blocked": "Restaurant own site (carmensmexican.com) menu section is a single scanned/photocopied paper menu image with full prices, but price level is stale: WebSearch snippet cites current pricing (2 Beef Tacos $8.50, 2 Beef Enchiladas $8.95) roughly 20-25% higher than the same combo items on the scanned menu (No.1 Beef Taco(2) $6.95, No.5 Beef Enchiladas(2) $6.95), confirming the site photo predates current prices. Two farm-network mirror sites (menucollectors.com and roostcafeandbistro.com) show a higher, matching full price list, but they are identical down to shared typos (\"Carna Asada\") and a third mirror of the same data lives at carmens-mexican-food.weeblyte.com -- weeblyte.com is an explicitly barred farm domain per PLAYBOOK section 10, so this is one copied dataset, not an independent source. No DoorDash/Grubhub/Uber Eats listing found (Uber Eats search result 404d on curl, WebSearch says unavailable). Needs a browser to check Yelp dated menu photos or Uber Eats directly for a trustworthy current price source.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2333",
+    "name": "Dairy Queen",
+    "sourceUrl": "https://www.dairyqueen.com/en-us/locations/ca/san-diego/5950-santo-rd-ste-p/11862/",
+    "confidence": "low",
+    "blocked": "This is the DQ Treat-only location (5950 Santo Rd Ste P, storeId 1856). DQ national site (dairyqueen.com) publishes no prices at all -- location page JSON explicitly shows isCurrentlyOpen:false right now. Per PLAYBOOK/FINDINGS, DQ online ordering runs on an Olo storefront that gates ALL item pricing while the store is closed (documented precedent: the Chula Vista DQ Treat location hit the exact same closed-store price gate). DoorDash listing (doordash.com/store/dairy-queen-san-diego-916521) exists with categories (Blizzard Treats, Combos, Hot Dogs, Snacks, DQ Cakes) but the page 403d on curl and on WebFetch (bot protection). This is a closed-store price gate, not an absent menu -- re-queue for a daytime wave or a browser-equipped agent.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3715",
+    "name": "Pho Royal",
+    "sourceUrl": "https://www.phoroyalca.com/egdv6kti/pho-royal-lemon-grove-91945/order-online",
+    "confidence": "low",
+    "blocked": "Batch website orderphoroyal.com now redirects to a Menufy 404 (dead). Real current site is phoroyalca.com, a Square Online Next.js storefront -- confirmed same restaurant (6937 Federal Blvd / Lemon Grove address in the order-online slug). Extracted 20 items from its first menu tab via data-testid=menu-item-price nodes (React hydration splits the $ sign into a comment, e.g. \"$<!-- -->10.30\" -- stripped in extraction). ALL 9 distinct non-zero prices sampled (6.18, 12.36, 10.30, 3.09, 2.58, 1.03, 7.73, 5.15, 2.06) divide EXACTLY by 1.03 to round or half-dollar values (10.00, 6.00, 12.00, 3.00, 2.50, 1.00, 7.50, 5.00, 2.00) -- a uniform 3% surcharge baked into every displayed price, so unusable per PLAYBOOK rule 6/4 (do not divide the markup out). One item (Vietnamese Crispy Egg Rolls) showed $0.00, also unusable. Per FINDINGS.md, the PDF menu at this restaurant is pure image (2 bytes of extractable text, real dish names not in text layer) -- confirmed dead end, do not re-attempt. Only 1 of presumably several menu tabs was read (appetizers/build-your-own broth section); the rest were not checked since the whole storefront is markup-tainted. Needs a browser or a truly first-party unmarked source (in-store photo, dated Yelp menu photo) to get real prices.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3409",
+    "name": "The Coffee Bean & Tea Leaf",
+    "sourceUrl": "https://www.coffeebean.com/store/ca/san-diego/12070-caramel-mountain-rd",
+    "confidence": "low",
+    "blocked": "Per PLAYBOOK section 9, Coffee Bean & Tea Leaf runs on an Olo storefront that has defeated five prior extraction attempts (also documented in FINDINGS: every San Diego location gates all item pricing behind a closed-store check, and the chain opens 5-6am so overnight/late attempts hit the gate). Blocking immediately per standing guidance rather than re-attempting curl. Needs a browser during store-open hours, or a different chain-wide source.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1890",
+    "name": "Mariscos Mazatlan Mexican Grill",
+    "sourceUrl": "https://mariscos-mazatlan-hhh-escondido.cloveronline.com",
+    "confidence": "low",
+    "blocked": "Own site (mariscosmazatlanhhh.com, WordPress via SmarterSwipe builder) has no menu page at all -- only an Order Now link to Clover. That link (clover.com/online-ordering/mariscos-mazatlan-hhh-escondido) is the COLO2 SPA shell, confirmed via its client-side redirect API (olov2service/v2/merchants/redirect) to point at mariscos-mazatlan-hhh-escondido.cloveronline.com. Per PLAYBOOK section 9 this is Clover own-hosted COLO2, a React SPA with no server-rendered prices and no equivalent REST endpoint found -- documented dead end for curl, needs a browser. No wp-json/moo-clover endpoint present on the WordPress site (404). No PDF or menu image found on the own site.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2363",
+    "name": "Sammy's Woodfried Pizza",
+    "sourceUrl": "https://slicelife.com/restaurants/ca/san-marcos/92078/sammy-s-restaurant-bar-san-marcos/menu",
+    "confidence": "medium",
+    "notes": "Own site (sammyspizza.com) and DoorDash both 403'd on curl/WebFetch (bot protection). sammyspizza.com's own Olo storefront (sammyswoodfiredpizza.olo.com/menu/sammys-san-marcos-2, serve-next.olo.com) is a fully client-fetched Next.js app with no server-embedded price state -- needs a browser. Used Sammy's own Slice storefront instead (listed there as \"Sammy's Restaurant & Bar\", address-confirmed exact match: 121 S Las Posas Rd, San Marcos, CA 92078), extracted 75 priced dishes from __SLICE_REDUX_STATE__ JSON across 9 sections (Woodfired Pizzas, Shareables, Soups, Salads, Tacos & Burgers, Pastas, Entrees, Kids Menu, Desserts). Ran the markup division test against 1.03/1.04/1.05/1.08/1.10/1.15/1.20/1.25/1.30 -- no divisor cleared more than 14/76 items to round or half-dollar values, i.e. no uniform markup signature; prices carry restaurant-native odd cents (e.g. 23.10, 22.52, 24.83), consistent with a first-party POS price list rather than a delivery surcharge. Excluded a 1-item \"Non Display Products\" category and any zero-price rows.",
+    "dishes": [
+      {
+        "name": "Organic Arugula & Pear Pizza",
+        "description": "Prosciutto, gorgonzola, organic arugula salad tossed in balsamic basil dressing.",
+        "price": "$23.10",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Brie Cheese & Truffle Oil Pizza",
+        "description": "",
+        "price": "$23.68",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Four Cheese Pizza",
+        "description": "(Vegetarian). Smoked gouda, Romano, mozzarella, gorgonzola.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Garlic Shrimp Pizza",
+        "description": "Mushrooms, bell peppers, red onion, roasted garlic sauce.",
+        "price": "$24.83",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Goat Cheese Pizza",
+        "description": "(Vegetarian). Mushrooms, garlic, spinach, red onion, pine nuts, roasted tomato.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Royal Hawaiian Pizza",
+        "description": "Fresh golden pineapple, Canadian bacon, tomato sauce.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "LaDou’s BBQ Chicken Pizza",
+        "description": "Smoked Gouda, BBQ sauce, red onion, cilantro.",
+        "price": "$23.10",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Margherita Pizza",
+        "description": "(Vegetarian). Tomatoes, roasted garlic sauce, fresh basil.",
+        "price": "$21.37",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Mozzarella Cheese Pizza",
+        "description": "(Vegetarian). Fresh organic basil, house-made tomato sauce.",
+        "price": "$20.79",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "New York Style Pizza",
+        "description": "Sauteed mushrooms, all-natural pepperoni, salami, Italian sausage, and house-made tomato sauce.",
+        "price": "$24.26",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "All-Natural Pepperoni Pizza",
+        "description": "Fresh organic oregano, house-made tomato sauce.",
+        "price": "$23.68",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Sicilian Pizza",
+        "description": "All natural pepperoni, Italian sausage, bell peppers, house-made tomato sauce, and red onion.",
+        "price": "$23.68",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Spicy Italian Sausage Pizza",
+        "description": "Fresh organic oregano, house-made tomato sauce.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Sundried Tomato Pizza",
+        "description": "Artisan thin crust, goat cheese, pine nuts, sun-dried tomatoes, basil.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Thai Chicken Pizza",
+        "description": "(Gluten-free option not available). Julienned vegetables, peanuts, lime juice, cilantro, scallions, fresh mint, spicy Thai peanut sauce.",
+        "price": "$23.10",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Tuscan Pizza",
+        "description": "Vegetarian. roma tomatoes, mushrooms, garlic, gorgonzola, red onion, fresh oregano.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Baba Ganoush",
+        "description": "",
+        "price": "$18.48",
+        "section": "Shareables"
+      },
+      {
+        "name": "Roasted Eggplant Hummus",
+        "description": "With grilled herb flatbread.",
+        "price": "$18.48",
+        "section": "Shareables"
+      },
+      {
+        "name": "Brussels Sprouts",
+        "description": "Romano, walnuts, balsamic glaze.",
+        "price": "$19.06",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chicken Tenders",
+        "description": "Basil ranch.",
+        "price": "$19.06",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chicken Lettuce Cups",
+        "description": "Wok aromatics, water chestnuts, scallions, sesame seeds, black bean hoisin sauce.",
+        "price": "$20.79",
+        "section": "Shareables"
+      },
+      {
+        "name": "Crispy Spring Rolls",
+        "description": "Seasoned beef mix with sweet chili sauce..",
+        "price": "$16.75",
+        "section": "Shareables"
+      },
+      {
+        "name": "Garlic Cheese Bread",
+        "description": "",
+        "price": "$17.90",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chickpea Hummus",
+        "description": "With grilled herb flatbread.",
+        "price": "$19.06",
+        "section": "Shareables"
+      },
+      {
+        "name": "Lebni/Kefir",
+        "description": "",
+        "price": "$18.48",
+        "section": "Shareables"
+      },
+      {
+        "name": "Meatballs & Marinara",
+        "description": "",
+        "price": "$17.33",
+        "section": "Shareables"
+      },
+      {
+        "name": "Mediterranean Dip Sampler",
+        "description": "Chickpea hummus, lebni, and roasted eggplant hummus, EVOO with grilled herb flatbread",
+        "price": "$21.95",
+        "section": "Shareables"
+      },
+      {
+        "name": "Mini Duck Tacos",
+        "description": "French feta, tomatoes, napa cabbage, lebni, cilantro ranch.",
+        "price": "$21.37",
+        "section": "Shareables"
+      },
+      {
+        "name": "Pork Dumplings",
+        "description": "",
+        "price": "$16.75",
+        "section": "Shareables"
+      },
+      {
+        "name": "Sweet Chili Wings",
+        "description": "Sweet chili glaze, sesame seeds, scallion.",
+        "price": "$20.21",
+        "section": "Shareables"
+      },
+      {
+        "name": "Truffle Fries",
+        "description": "Romano cheese.",
+        "price": "$16.17",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chips & Guac",
+        "description": "",
+        "price": "$20.79",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chicken Taquitos",
+        "description": "Fresh hand-rolled, guacamole, cilantro lime crema, tomatoes, queso fresco, cilantro.",
+        "price": "$17.33",
+        "section": "Shareables"
+      },
+      {
+        "name": "Lobster Bisque Soup",
+        "description": "Fresh herbs, cream, and sherry in a rich stock.",
+        "price": "$16.75",
+        "section": "Soups"
+      },
+      {
+        "name": "Fresh Tomato Basil Soup",
+        "description": "Shaved Romano, drizzled herb oil.",
+        "price": "$13.86",
+        "section": "Soups"
+      },
+      {
+        "name": "Kobe Beef Chili",
+        "description": "(Gluten Free). Mozzarella, scallions.",
+        "price": "$15.02",
+        "section": "Soups"
+      },
+      {
+        "name": "Balsamic Grilled Chicken",
+        "description": "Mixed greens, Gorgonzola, walnuts, basil, balsamic vinaigrette.",
+        "price": "$21.37",
+        "section": "Salads"
+      },
+      {
+        "name": "Bob's Cobb Salad",
+        "description": "Romaine, egg, tomatoes, Gorgonzola, avocado, smoked turkey, scallions, crispy prosciutto, basil ranch.",
+        "price": "$20.21",
+        "section": "Salads"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "",
+        "price": "$17.90",
+        "section": "Salads"
+      },
+      {
+        "name": "Chinese Chicken Salad",
+        "description": "Napa cabbage, bok choy, carrots, bell peppers, sesame seeds, cilantro, scallions, crispy noodles, Mandarin oranges, soy Asian dressing.",
+        "price": "$20.21",
+        "section": "Salads"
+      },
+      {
+        "name": "Chopped Chicken Salad",
+        "description": "Lettuce, tomatoes, basil, mozzarella, vinaigrette, choice of sun-dried tomatoes or Kalamata olives.",
+        "price": "$21.37",
+        "section": "Salads"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "Romaine, spinach, bibb lettuce, red onions, Kalamata olives, tomatoes, cucumbers, pepperoncinis, French feta, vinaigrette.",
+        "price": "$17.90",
+        "section": "Salads"
+      },
+      {
+        "name": "Grilled Shrimp Salad",
+        "description": "Mixed greens, scallions, bell peppers, spinach, tomatoes, French feta, cilantro, sunflower seeds, balsamic vinaigrette.",
+        "price": "$22.52",
+        "section": "Salads"
+      },
+      {
+        "name": "Spicy Thai Grilled Chicken Salad",
+        "description": "Romaine, egg, tomatoes, Gorgonzola, avocado, smoked turkey,scallions, crispy prosciutto, basil ranch.",
+        "price": "$20.21",
+        "section": "Salads"
+      },
+      {
+        "name": "Mini Burgers",
+        "description": "",
+        "price": "$23.68",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Wagyu Cheeseburger",
+        "description": "Chipotle aioli, served with French fries.",
+        "price": "$24.83",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Chicken Tacos",
+        "description": "Chipotle crema, red onions, tomatoes, red salsa, and cilantro. 2 tacos, served with chips and salsa. Choice of flour or corn tortilla.",
+        "price": "$20.21",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Carne Asada Tacos",
+        "description": "Mashed avocado, green avocado sauce, white onions, cilantro. 2 tacos, served with chips and salsa. Choice of flour or corn tortilla.",
+        "price": "$20.79",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Grilled Fish Tacos",
+        "description": "Sea bass, chipotle crema, avocado crema, white onions, cilantro. 2 tacos, served with chips and salsa. Choice of flour or corn tortilla.",
+        "price": "$21.95",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Grilled Shrimp Tacos",
+        "description": "Mashed avocado, avocado crema, pineapple pico de gallo, cotija, cilantro. 2 tacos, served with chips and salsa. Choice of flour or corn tortilla.",
+        "price": "$21.95",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Chicken Fettuccine Alfredo",
+        "description": "Garlic, romano, alfredo sauce, fettuccine, tomatoes.",
+        "price": "$31.76",
+        "section": "Pastas"
+      },
+      {
+        "name": "Chicken Tequila Fettuccine",
+        "description": "Spinach fettuccine, bell peppers, red onions, jalapeños, cilantro, tequila-lime cream sauce.",
+        "price": "$32.34",
+        "section": "Pastas"
+      },
+      {
+        "name": "Shrimp Angel Hair",
+        "description": "Shiitake and cremini mushrooms, artichokes, carrots, zucchini, light cream sauce.",
+        "price": "$34.65",
+        "section": "Pastas"
+      },
+      {
+        "name": "Spaghetti Bolognese",
+        "description": "",
+        "price": "$31.19",
+        "section": "Pastas"
+      },
+      {
+        "name": "Tomato Angel Hair",
+        "description": "Tomatoes, garlic, chicken broth, evoo, basil.",
+        "price": "$24.83",
+        "section": "Pastas"
+      },
+      {
+        "name": "Bone-In Short Ribs",
+        "description": "Tri-color potatoes, baby carrots, demi glacé.",
+        "price": "$36.96",
+        "section": "Entrees"
+      },
+      {
+        "name": "Oak Roasted Sea Bass",
+        "description": "",
+        "price": "$39.27",
+        "section": "Entrees"
+      },
+      {
+        "name": "Lamb Chops",
+        "description": "Grilled with crisp Brussels sprouts, tri-color potatoes, balsamic glaze.",
+        "price": "$38.12",
+        "section": "Entrees"
+      },
+      {
+        "name": "Oak Roasted Salmon Filet",
+        "description": "Asian salad, edamame, cucumbers, ponzu sauce.",
+        "price": "$34.65",
+        "section": "Entrees"
+      },
+      {
+        "name": "Shrimp Orzitto",
+        "description": "Shiitake and cremini mushrooms, garlic, white wine, mascarpone, Romano, truffle oil.",
+        "price": "$34.65",
+        "section": "Entrees"
+      },
+      {
+        "name": "Roasted Chicken Breast",
+        "description": "",
+        "price": "$33.50",
+        "section": "Entrees"
+      },
+      {
+        "name": "Steak Frites",
+        "description": "",
+        "price": "$39.85",
+        "section": "Entrees"
+      },
+      {
+        "name": "Kid's Cheese Pizza",
+        "description": "6-inch perfectly sized and freshly baked.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Pepperoni Pizza",
+        "description": "6-inch perfectly sized and freshly baked.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Hawaiian Pizza",
+        "description": "6-inch perfectly sized and freshly baked.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's BBQ Chicken Pizza",
+        "description": "6-inch perfectly sized and freshly baked.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Fried Chicken Fingers",
+        "description": "",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Pasta",
+        "description": "Make your own pasta; choose any combo.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Cheese Sliders",
+        "description": "With cheddar cheese and a choice of French fries or carrot sticks.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Quesadilla",
+        "description": "Filled with cheddar and mozzarella with a side of carrot sticks and ranch dressing.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Little Dippers",
+        "description": "(Choose any combo) Cucumbers or carrot sticks | Dips: ranch or hummus.",
+        "price": "$4.62",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Mug of Ice Cream",
+        "description": "",
+        "price": "$5.78",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Messy Sundae",
+        "description": "Vanilla bean ice cream, chocolate & caramel sauce, walnuts, whipped cream.",
+        "price": "$16.75",
+        "section": "Desserts"
+      },
+      {
+        "name": "Apple Pie Sweet Pizza",
+        "description": "Topped with vanilla ice cream, caramel drizzle.",
+        "price": "$20.79",
+        "section": "Desserts"
+      },
+      {
+        "name": "S'mores Sweet Pizza",
+        "description": "Artisan thin crust, dark chocolate, marshmallows, graham cracker crumble.",
+        "price": "$20.79",
+        "section": "Desserts"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1127",
+    "name": "Tilted Stick",
+    "sourceUrl": "https://www.foodbooking.com/ordering/?ref=d2fb025c-9d3e-4d6b-ba06-5c1ef1b59591",
+    "confidence": "low",
+    "blocked": "Own site (tiltedstick.online, WordPress/Divi, address-confirmed 4970 Voltaire St San Diego 92107) has no static menu -- ordering runs entirely through a GloriaFood/Foodbooking widget (foodbooking.com/ordering/?ref=<cuid>), a client-side Angular SPA (main bundle 2.6MB minified) with no server-embedded menu data and no discoverable public menu API endpoint -- needs a browser. allmenus.com listing (Grubhub-owned, same company per PLAYBOOK section 5 independence rule) has a full priced menu but is dated: footer copyright 2023, and its Burger price ($7.25) is roughly 40% below a WebSearch-sourced current figure ($12.00), so treated as stale per the price-level rule and not used. Grubhub restaurant page itself is a client-rendered shell with 0 prices in static HTML. No other independent priced source found.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4228",
+    "name": "Coco Bomb",
+    "sourceUrl": "https://custom.order.online/store/coco-bomb-san-diego-25915253",
+    "confidence": "medium",
+    "notes": "This is the Linda Vista / 2379 Ulric St location (address-confirmed, distinct from the Convoy St location that cocobombusa.com defaults its Wix menu widget to -- the Wix site has no menu page for this location at all). Yelp shows this location as \"TEMP. CLOSED\" and the order.online payload confirms it (pickup status CLOSED, \"Opens Sep 4\" -- today is 2026-08-30), and a second own-brand subdomain (coco-bomb.eggscellent.site) 522'd (host down). Despite the closed-store gate, the DoorDash white-label order.online storefront still ships the full catalog in its escaped Next.js RSC flight payload (MenuBookCategory / MenuPageItem objects), per PLAYBOOK section 9 -- extracted 30 priced items this way (displayPrice appeared doubled, e.g. \"$$14.00\", corrected to single $). 5 category names were recoverable (Hot Coffee, Special Drinks, Thai Special Desserts, Ice Cream, Iced Coffee) but the item-to-category edges did not parse cleanly, so section per dish here is inferred from item name/description (e.g. \"Hot X\" -> Hot Coffee, \"Iced X\" -> Iced Coffee, sticky-rice/pudding/jelly items -> Thai Special Desserts, scoop counts -> Ice Cream) rather than read directly off a category->item list -- flagging this judgment call. All 30 prices land on clean $.00/.25/.50/.75 values with no odd-cent markup signature (contrast Pho Royal's .18/.30/.83 cents from a confirmed 3% surcharge in this same batch), consistent with native pricing rather than delivery markup. This is a small dessert/coffee cafe -- 30 items across 5 sections plausibly is the whole menu.",
+    "dishes": [
+      {
+        "name": "Mango with Sticky Rice",
+        "description": "Non dairy, vegan, gluten free popular dessert. Fresh mango and house-made sweet sticky rice topped with special coconut milk and sesame seed.",
+        "price": "$14.00",
+        "section": "Thai Special Desserts"
+      },
+      {
+        "name": "Coconut Sundae",
+        "description": "Three scoops of ice cream with one free topping and coconut meat.",
+        "price": "$14.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Coconut Milk Smoothie",
+        "description": "Fresh coconut water blened with condensed milk, evaporated milk, fresh coconut meat.",
+        "price": "$10.00",
+        "section": "Special Drinks"
+      },
+      {
+        "name": "Coconut Water",
+        "description": "Fresh coconut water 100% from coconuts (No sugar added!!)",
+        "price": "$9.00",
+        "section": "Special Drinks"
+      },
+      {
+        "name": "Ruam Mit",
+        "description": "Non dairy, vegan and gluten free dessert. House-made rice flour jelly with coconut, corn, jackfruit, palm seed, and chestnut mixed in sweet coconut milk.",
+        "price": "$11.00",
+        "section": "Thai Special Desserts"
+      },
+      {
+        "name": "Thai Coconut Jelly",
+        "description": "Non dairy, vegan and gluten free Thai coconut jelly with coconut meat inside.",
+        "price": "$9.00",
+        "section": "Thai Special Desserts"
+      },
+      {
+        "name": "Thai Iced Tea",
+        "description": "House-made Thai tea with half and half milk.",
+        "price": "$8.00",
+        "section": "Special Drinks"
+      },
+      {
+        "name": "Pandan Coconut Cream Pudding",
+        "description": "Non dairy, vegan and gluten free dessert. Pandan pudding topped with Coconut cream, coconut meat, and sesame seed.",
+        "price": "$8.00",
+        "section": "Thai Special Desserts"
+      },
+      {
+        "name": "2 Scoops",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Iced Pink Drink",
+        "description": "Thai fruit syrup with a choice of milk, condensed milk and evaporated milk.",
+        "price": "$8.00",
+        "section": "Special Drinks"
+      },
+      {
+        "name": "Iced Americano",
+        "description": "1 or 2 shots of Espresso with water",
+        "price": "$7.25",
+        "section": "Iced Coffee"
+      },
+      {
+        "name": "Iced Latte",
+        "description": "1 or 2 shots of Espresso with Milk",
+        "price": "$7.75",
+        "section": "Iced Coffee"
+      },
+      {
+        "name": "Iced Mocha",
+        "description": "1 or 2 shots of Espresso with Chocolate",
+        "price": "$8.00",
+        "section": "Iced Coffee"
+      },
+      {
+        "name": "Iced Caramel Macchiato",
+        "description": "1 or 2 shots of Espresso with Milk and Caramel Syrup",
+        "price": "$7.75",
+        "section": "Iced Coffee"
+      },
+      {
+        "name": "Coconut Coffee",
+        "description": "Fresh coconut water (100% from coconuts. No sugar added!!) with 1 or 2 shots of Espresso topped with fresh coconut meat.",
+        "price": "$10.50",
+        "section": "Iced Coffee"
+      },
+      {
+        "name": "Hot Americano",
+        "description": "1 or 2 shots of Espresso with hot water",
+        "price": "$6.75",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Hot Latte",
+        "description": "1 or 2 shots of Espresso with hot milk.",
+        "price": "$7.25",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Hot Mocha",
+        "description": "1 or 2 shots of Espresso with hot chocolate.",
+        "price": "$7.50",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Hot Caramel Macchiato",
+        "description": "1 or 2 shots of Espresso with hot milk and caramel syrup.",
+        "price": "$7.25",
+        "section": "Hot Coffee"
+      },
+      {
+        "name": "Iced Matcha Latte",
+        "description": "Organic UJI Matcha  with a choice of milk and house pandan syrup.",
+        "price": "$9.00",
+        "section": "Iced Coffee"
+      },
+      {
+        "name": "Iced Cocoa",
+        "description": "100% cocoa with a choice of milk, condensed milk and evaporated milk.",
+        "price": "$8.75",
+        "section": "Iced Coffee"
+      },
+      {
+        "name": "Iced Matcha Coconut Water",
+        "description": "Vibrant green matcha blended with refreshing coconut water, offering a unique fusion of flavors.",
+        "price": "$10.50",
+        "section": "Iced Coffee"
+      },
+      {
+        "name": "Lot Chong",
+        "description": "Non dairy, vegan and gluten free dessert. House-made rice flour jelly and jackfruit mixed in sweet coconut milk.",
+        "price": "$11.00",
+        "section": "Thai Special Desserts"
+      },
+      {
+        "name": "Steam Sticky Rice with Banana and Beans",
+        "description": "Sticky rice wrapped in banana leaves, filled with bananas and beans.",
+        "price": "$8.50",
+        "section": "Thai Special Desserts"
+      },
+      {
+        "name": "BBQ Sticky Rice with Banana",
+        "description": "Grilled sticky rice wrapped in banana leaves, infused with sweet banana essence.",
+        "price": "$6.50",
+        "section": "Thai Special Desserts"
+      },
+      {
+        "name": "Coconut Pudding",
+        "description": "Smooth and creamy coconut pudding with a rich, tropical flavor, typical of Thai desserts.",
+        "price": "$8.00",
+        "section": "Thai Special Desserts"
+      },
+      {
+        "name": "Thai Tea Pudding",
+        "description": "Smooth and creamy dessert with a rich Thai tea flavor, offering a delicate blend of sweet and aromatic notes.",
+        "price": "$8.00",
+        "section": "Thai Special Desserts"
+      },
+      {
+        "name": "1 Scoop",
+        "description": "",
+        "price": "$6.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "3 Scoops",
+        "description": "",
+        "price": "$12.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Bread Bomb",
+        "description": "A scoop of ice cream with one free topping and hawaiian bread.",
+        "price": "$9.00",
+        "section": "Ice Cream"
+      }
+    ]
+  },
+  {
+    "restaurantId": "952",
+    "name": "Pacific Pizza",
+    "sourceUrl": "https://www.pacificpizza.net/menu",
+    "confidence": "low",
+    "blocked": "Per FINDINGS.md, Pacific Pizza's own Slice storefront (slicelife.com/restaurants/ca/poway/92064/pacific-pizza-poway/menu) carries a confirmed uniform 1.2x (20%) markup that also matches DoorDash to the cent -- re-verified today: Slice currently still shows 14\" Medium Pizza $22.80, 16\" Large $25.20, 18\" XL $27.60, 10\" GF $20.40, Calzone $21.60, all landing on whole dollars when divided by 1.2 (19/21/23/17/18), same pattern as FINDINGS recorded. Separately, the restaurant's own site (pacificpizza.net/menu, now on Popmenu, generated fresh today 2026-08-30) exposes real first-party JSON-LD with its own prices for the same size-based \"Build Your Own Hand-Tossed Pizza\" section: 14\" Medium $14.00, 16\" Large $16.00, 18\" XLarge $18.00, GF 10\" $16.00, GF 14\" $18.00, plus Slice $4.00 and 2 Slices & Drink combo $7.00. These do not reconcile with EITHER the raw Slice price ($22.80) OR the markup-implied real price ($19.00) -- Slice/own-site ratio is 1.63x, not a clean fee -- so per PLAYBOOK rule 6 (\"disagreement is information... blocked, not a partial\") this is being blocked rather than filed with either number. Most of the own-site JSON-LD (Specialty Pizzas x12, Calzones & Stromboli, Pasta, Salads, Sub Sandwiches, Wings/Sides/Dessert, Beverages) also has no price populated -- Popmenu is client-fetched per PLAYBOOK section 9, the GraphQL endpoint at pacificpizza.net/graphql requires an authenticated session (curl gets \"unauthorized\"), so only the ~7 base-size items came through the static JSON-LD sample. Needs a browser to resolve the size-pricing conflict and pull the full Popmenu catalog.",
+    "dishes": []
+  }
+]

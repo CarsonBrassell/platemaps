@@ -43,7 +43,7 @@ export function FeedTabs({
             /* First-run walkthrough anchor — see CoachTour.tsx. The map step
                is the one that is not a nav destination, which is why it sits
                immediately after the step that lands you on this screen. */
-            data-coach={tab.value === "map" ? "map" : undefined}
+            data-coach={tab.value === "map" ? "map" : tab.value === "discover" ? "feedtab" : undefined}
             onClick={() => onChange(tab.value)}
             className={`relative inline-flex min-h-11 items-center whitespace-nowrap rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pm-orange ${
               on

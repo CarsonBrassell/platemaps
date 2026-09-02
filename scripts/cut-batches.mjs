@@ -96,6 +96,15 @@ async function spokenFor() {
      * and skipping the check would be another special case to get wrong.
      */
     if (f === "queue.json") continue;
+    /*
+     * The router's notes file names every restaurant the router LOOKED AT,
+     * filed or not - 663 rows on its first run. Those are not in flight: the
+     * router is synchronous and its menus are loaded before anyone cuts. The
+     * first cut after that run treated all 605 with-website rows as spoken
+     * for and handed agents nothing but website-less rows, which inverts the
+     * priority THROUGHPUT.md asks for.
+     */
+    if (/^router-.*\.notes\.json$/.test(f)) continue;
     let parsed;
     try {
       const info = await stat(`${WIP}/${f}`);
@@ -125,10 +134,73 @@ const rows = await sql`
     AND NOT EXISTS (SELECT 1 FROM menu_lookups m WHERE m.restaurant_id = r.id)
   ORDER BY r.review_count DESC NULLS LAST`;
 
-const fresh = rows.filter((r) => !excluded.has(String(r.id)));
+/*
+ * Join the router's notes (`menus/wip/router-*.notes.json`, newest file wins
+ * per restaurant) so every work item says which ordering platform
+ * `route-menus.mjs` already found and why it did not file. THROUGHPUT.md §4:
+ * an agent that starts from the router's note skips the discovery half of
+ * the job, which is where most of its context used to go.
+ *
+ * Two outcomes are not agent work and are skipped by default: `gated` (a
+ * closed-store price gate - the noon router run picks it up for free) and
+ * `needs-browser` (owned by `browser-menus.mjs`; an agent on the shared pane
+ * is the most expensive way to read a store-pick storefront). Override with
+ * `--skip-outcomes ""` or a different comma list.
+ */
+const SKIP_OUTCOMES = new Set(
+  (args.includes("--skip-outcomes")
+    ? args[args.indexOf("--skip-outcomes") + 1]
+    : "gated,needs-browser"
+  )
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
+);
+
+async function routerNotes() {
+  const byId = new Map();
+  let files = [];
+  try {
+    files = (await readdir(WIP)).filter((f) => /^router-.*\.notes\.json$/.test(f)).sort();
+  } catch {
+    return byId;
+  }
+  for (const f of files) {
+    let parsed;
+    try {
+      parsed = JSON.parse(await readFile(`${WIP}/${f}`, "utf8"));
+    } catch {
+      continue;
+    }
+    for (const n of Array.isArray(parsed) ? parsed : []) {
+      if (n?.restaurantId == null) continue;
+      byId.set(String(n.restaurantId), {
+        platform: n.platform ?? null,
+        outcome: n.outcome ?? null,
+        detail: n.detail ?? null,
+      });
+    }
+  }
+  return byId;
+}
+
+const notes = await routerNotes();
+
+const fresh = rows.filter((r) => {
+  if (excluded.has(String(r.id))) return false;
+  const note = notes.get(String(r.id));
+  return !(note && SKIP_OUTCOMES.has(note.outcome));
+});
+
+const skippedByOutcome = rows.filter((r) => {
+  const note = notes.get(String(r.id));
+  return !excluded.has(String(r.id)) && note && SKIP_OUTCOMES.has(note.outcome);
+}).length;
 
 console.log(
-  `queue ${rows.length}, already spoken for ${rows.length - fresh.length}, cutting from ${fresh.length}`,
+  `queue ${rows.length}, already spoken for ${rows.length - fresh.length - skippedByOutcome}, ` +
+    `skipped by router outcome (${[...SKIP_OUTCOMES].join(",")}) ${skippedByOutcome}, ` +
+    `router notes for ${rows.filter((r) => notes.has(String(r.id))).length}, cutting from ${fresh.length}`,
 );
 
 let n = 0;
@@ -139,13 +211,19 @@ for (let i = 0; i < fresh.length && n < COUNT; i += SIZE) {
   await writeFile(
     `${WIP}/${PREFIX}-${String(n).padStart(2, "0")}.json`,
     JSON.stringify(
-      slice.map((r) => ({
-        restaurantId: String(r.id),
-        name: r.name,
-        address: r.address,
-        website: r.website,
-        reviewCount: r.review_count,
-      })),
+      slice.map((r) => {
+        const note = notes.get(String(r.id));
+        return {
+          restaurantId: String(r.id),
+          name: r.name,
+          address: r.address,
+          website: r.website,
+          reviewCount: r.review_count,
+          // What the deterministic router already tried. `null` means the
+          // router never saw this restaurant (usually: no website on record).
+          router: note ?? null,
+        };
+      }),
       null,
       2,
     ),

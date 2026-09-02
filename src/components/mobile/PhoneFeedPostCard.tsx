@@ -169,6 +169,8 @@ function DishRef({ post, className = "" }: { post: Post; className?: string }) {
   return (
     <Link
       href={post.dishId ? `/m/restaurant/${id}?dish=${post.dishId}` : `/m/restaurant/${id}`}
+      /* First-run walkthrough anchor — the web card carries the same one. */
+      data-coach="restaurant"
       className={`rounded-sm transition-colors hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${className}`}
     >
       {name}

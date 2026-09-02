@@ -1,0 +1,2123 @@
+[
+  {
+    "restaurantId": "2071",
+    "name": "Moment Sushi",
+    "sourceUrl": "https://www.momentsushi.com/s/order",
+    "confidence": "high",
+    "notes": "First-party Square/Weebly online-ordering site (momentsushi.com, not the potentially different momentsushi.com listed -- same domain). Confirmed branch address on page: 9254 Scranton Rd Ste 101, matches work list exactly. Read via rendered DOM after toggling the 'All items'/'Available items' filter (no additional items appeared). Captured 5 populated sections: Non-Alcoholic Beverages, Lunch Set, Dinner Set, Starters, Rolls. Checked the other 7 nav categories (Hand Rolls Combination Set, Hand Rolls (1pc), Special Hand Rolls (1pc), Sushi, Udon And Fried Rice, Dessert, Sides) directly in the DOM: each category container's item-list slot renders an empty Vue comment node (<!---->) with zero item elements, in both 'Available items' and 'All items' modes -- confirmed genuinely empty/unpopulated, not merely unread or time-gated. Prices are plain first-party dollar figures, mostly round or .50, no markup pattern detected. Mandu shown as a $7.00-$15.00 range (size/variant); recorded the $7.00 minimum as a 'from' price per modifier-modal guidance rather than guessing a mid value.",
+    "dishes": [
+      {
+        "name": "Sprite",
+        "price": "$5.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Coke",
+        "price": "$5.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Sparkling water",
+        "price": "$8.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Diet Coke",
+        "price": "$5.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Sushi Set",
+        "price": "$24.00",
+        "section": "Lunch Set",
+        "description": "served with miso soup, organic green salad, white rice and seasonal side plate: albacore, eel, salmon, tuna, yellowtail, crispy rice, futomaki 2pcs"
+      },
+      {
+        "name": "Sashimi Set",
+        "price": "$25.00",
+        "section": "Lunch Set",
+        "description": "served with miso soup, organic green salad, white rice and seasonal side plate: albacore, eel, octopus, salmon, shrimp, tuna 2pcs, yellowtail"
+      },
+      {
+        "name": "Korean Beef BBQ Set",
+        "price": "$27.00",
+        "section": "Lunch Set",
+        "description": "served with miso soup, organic green salad, white rice and seasonal side plate"
+      },
+      {
+        "name": "Korean Chicken BBQ Set",
+        "price": "$20.00",
+        "section": "Lunch Set",
+        "description": "served with miso soup, organic green salad, white rice and seasonal side plate"
+      },
+      {
+        "name": "Salmon Teriyaki Set",
+        "price": "$27.00",
+        "section": "Lunch Set",
+        "description": "served with miso soup, organic green salad, white rice and seasonal side plate"
+      },
+      {
+        "name": "Hamachi Kama Set",
+        "price": "$27.00",
+        "section": "Lunch Set",
+        "description": "served with miso soup, organic green salad, white rice and seasonal side plate"
+      },
+      {
+        "name": "Dinner Salmon Teriyaki Set",
+        "price": "$32.00",
+        "section": "Dinner Set"
+      },
+      {
+        "name": "Dinner Korean Beef BBQ Set",
+        "price": "$32.00",
+        "section": "Dinner Set"
+      },
+      {
+        "name": "Dinner Korean Chicken BBQ Set",
+        "price": "$27.00",
+        "section": "Dinner Set"
+      },
+      {
+        "name": "Dinner Hamachi Kama Set",
+        "price": "$32.00",
+        "section": "Dinner Set"
+      },
+      {
+        "name": "Shrimp Shumai (5pcs)",
+        "price": "$15.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Korean Halibut Wasabi Ponzu",
+        "price": "$23.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Tofu Steak",
+        "price": "$17.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Red Snapper Yuzu Seasalt",
+        "price": "$25.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Crispy Eggplant with Snowcrab Mango Cheviche",
+        "price": "$21.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Salmon With Yuzu Ponzu",
+        "price": "$26.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Organic Green Salad",
+        "price": "$12.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Cucumber with Seaweed Salad",
+        "price": "$10.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Miso Soup",
+        "price": "$6.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Spicy Tuna Crispy Rice (4pcs)",
+        "price": "$17.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Fried panko shrimp (4pcs)",
+        "price": "$21.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Yellowtail with Jalapeño (5pcs)",
+        "price": "$25.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Amberjack with Truffles (5pcs)",
+        "price": "$26.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Bluefin Tuna with Yuzu Wasabi (6pcs)",
+        "price": "$24.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Mandu",
+        "price": "$7.00",
+        "section": "Starters",
+        "description": "from; page shows a $7.00-$15.00 range for variant/quantity choices, cheapest option recorded"
+      },
+      {
+        "name": "Crispy Chicken Karaage",
+        "price": "$12.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Crispy Calamari",
+        "price": "$17.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Salmon Oshi (7pcs)",
+        "price": "$22.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Organic Vegetable Tempura",
+        "price": "$17.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Hamachi Kama Appetizer",
+        "price": "$21.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Japanese Albacore with Crispy Onion",
+        "price": "$25.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Belly Sampler",
+        "price": "$50.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Kurobuta Sausage",
+        "price": "$12.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Alaska King Crab Tempura",
+        "price": "$35.00",
+        "section": "Starters",
+        "description": "served with miso soup, organic green salad, white rice and seasonal side plate: albacore, eel, salmon, tuna, yellowtail, crispy rice, futomaki 2pcs"
+      },
+      {
+        "name": "Rainbow Roll",
+        "price": "$26.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Shrimp Tempura Roll",
+        "price": "$20.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Spicy Tuna Roll",
+        "price": "$19.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Moment Vegetable Roll",
+        "price": "$26.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Crunch Salmon Roll",
+        "price": "$26.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Unagi Tempura Roll",
+        "price": "$26.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Moment Roll",
+        "price": "$31.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Cucumber Roll",
+        "price": "$10.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Avocado Roll",
+        "price": "$11.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Salmon Avocado Roll",
+        "price": "$19.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Snowcrab California Roll",
+        "price": "$17.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Ume Shiso Cucumber Roll",
+        "price": "$13.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Imitation Crab Cali Roll",
+        "price": "$16.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Fire Seared Salmon Roll",
+        "price": "$26.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "TTT Roll (Triple-T)",
+        "price": "$35.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Papacito Roll",
+        "price": "$27.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Samantha Roll",
+        "price": "$30.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Dragon Roll",
+        "price": "$35.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Caterpillar Roll",
+        "price": "$25.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Nicole Roll",
+        "price": "$35.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Neda Special Roll",
+        "price": "$35.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "JZ Roll",
+        "price": "$35.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Kala Roll",
+        "price": "$35.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Fredel Roll",
+        "price": "$25.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Salmon Maki",
+        "price": "$16.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Tuna Maki",
+        "price": "$17.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Negihama Maki",
+        "price": "$17.50",
+        "section": "Rolls"
+      },
+      {
+        "name": "Negitoro Maki",
+        "price": "$22.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Jan Roll 1",
+        "price": "$26.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Jan Roll 2",
+        "price": "$35.00",
+        "section": "Rolls"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4495",
+    "name": "Slice House",
+    "sourceUrl": "https://slicehouse.orderexperience.net/san-diego/menu",
+    "confidence": "high",
+    "notes": "Restaurant's own domain (slicehouse.com) links to a Paytronix ordering portal (slicehouse.orderexperience.net); selected the 'Slice House - San Diego, 2100 Kettner Blvd, San Diego, CA 92101' location, which matches the work list address exactly, out of 29 chain locations. Read the full rendered menu text after selecting the store. Captured Sunday Specials, Monday Specials, Antipasti, Italian Specialties, 2oz Side Sauces, 8oz Side Sauces, Medium 12\" New York Style, XL 20\" New York Style, Detroit 9x12, Grandma 12x12, Sicilian 11x17, Pastas, Salads, Desserts, Beverages -- 186 dishes total. Excluded the 4 'Catering >' sections (Pizza Packages, A La Carte, Desserts, Beverages) as adjuncts (bulk/party catering, not the regular menu). Ran the markup test including the ÷0.96 (~4%) form specifically: 183 of 186 prices (98%) are already clean on .00/.25/.50/.75/.95/.99 with NO divisor applied, and none of 1.04, 1/0.96, 1.1, 1.15, 1.2 or 1.25 improve on that -- this is genuine first-party wall pricing, not a markup. Meatballs and Fresh Baked Chocolate Chip Cookies each show a price range on the page (by quantity); recorded the minimum as a 'from' price per the modifier-modal rule rather than guessing. Sunday and Monday Specials have identical item lineups on the source page; recorded both since the source presents them as two separate menu-day sections.",
+    "dishes": [
+      {
+        "name": "Pickup Special",
+        "price": "$39.00",
+        "section": "Sunday Specials",
+        "description": "One XL 20 inch Cheese or Pepperoni with 3 Signature Meatballs & 2 Housemade Chocolate Chip Cookies (Takeout Only)"
+      },
+      {
+        "name": "Playoff Platter",
+        "price": "$149.00",
+        "section": "Sunday Specials",
+        "description": "3 20in NY XL pizzas (cheese or pepperoni), order of wings (BBQ or buffalo), 6 meatballs, catering size Caesar salad"
+      },
+      {
+        "name": "Back-to-School Special",
+        "price": "$59.00",
+        "section": "Sunday Specials",
+        "description": "20 inch pizza, 3 meatballs, 8 wings, Caesar salad"
+      },
+      {
+        "name": "Pickup Special",
+        "price": "$39.00",
+        "section": "Monday Specials",
+        "description": "One XL 20 inch Cheese or Pepperoni with 3 Signature Meatballs & 2 Housemade Chocolate Chip Cookies (Takeout Only)"
+      },
+      {
+        "name": "Playoff Platter",
+        "price": "$149.00",
+        "section": "Monday Specials",
+        "description": "3 20in NY XL pizzas (cheese or pepperoni), order of wings (BBQ or buffalo), 6 meatballs, catering size Caesar salad"
+      },
+      {
+        "name": "Back-to-School Special",
+        "price": "$59.00",
+        "section": "Monday Specials",
+        "description": "20 inch pizza, 3 meatballs, 8 wings, Caesar salad"
+      },
+      {
+        "name": "Meatballs",
+        "price": "$7.00",
+        "section": "Antipasti",
+        "description": "Tony's Signature Meatballs Smothered in Marinara Sauce; from -- page shows a $7.00-$11.00 range by quantity, cheapest option recorded"
+      },
+      {
+        "name": "Sweet & Spicy Italian Sausage And Honey",
+        "price": "$9.00",
+        "section": "Antipasti",
+        "description": "Sweet & Spicy Italian Sausage Sauteed & Tossed in House Made Local Hot Honey"
+      },
+      {
+        "name": "Wings",
+        "price": "$17.00",
+        "section": "Antipasti",
+        "description": "Eight Jumbo Wings with Choice of Sauce"
+      },
+      {
+        "name": "Cheesy Garlic Bread",
+        "price": "$9.00",
+        "section": "Antipasti",
+        "description": "Vegetarian - Turano Roll Topped with Cheese and Garlic Butter, Oregano & Romano"
+      },
+      {
+        "name": "Garlic Bread",
+        "price": "$8.00",
+        "section": "Antipasti",
+        "description": "Vegetarian - Turano Roll Topped with Garlic Butter, Oregano & Romano"
+      },
+      {
+        "name": "Meatball Sub",
+        "price": "$13.00",
+        "section": "Italian Specialties",
+        "description": "Signature Meatballs on a Turano Roll with Mozzarella & Tomato Sauce, finished with romano and fresh parsley"
+      },
+      {
+        "name": "2oz Side Ranch",
+        "price": "$1.00",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side Blue Cheese",
+        "price": "$1.00",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side Caesar Dressing",
+        "price": "$1.00",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side House Made Local Hot Honey",
+        "price": "$1.90",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side Italian San Marzano Sauce",
+        "price": "$0.95",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side Marinara",
+        "price": "$0.75",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side Sweet Grandma Sauce",
+        "price": "$0.95",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side Vodka Sauce",
+        "price": "$1.20",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side Alfredo Sauce",
+        "price": "$1.90",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side Pesto",
+        "price": "$2.50",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side Buffalo Sauce",
+        "price": "$0.75",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "2oz Side BBQ Sauce",
+        "price": "$0.75",
+        "section": "2oz Side Sauces"
+      },
+      {
+        "name": "8oz Side Ranch",
+        "price": "$3.50",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side Blue Cheese",
+        "price": "$3.00",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side Caesar Dressing",
+        "price": "$3.00",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side House Made Local Hot Honey",
+        "price": "$6.50",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side Italian San Marzano Sauce",
+        "price": "$2.75",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side Marinara",
+        "price": "$2.50",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side Sweet Grandma Sauce",
+        "price": "$2.75",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side Vodka Sauce",
+        "price": "$3.75",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side Alfredo Sauce",
+        "price": "$6.00",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side Pesto",
+        "price": "$8.00",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side Buffalo Sauce",
+        "price": "$2.50",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "8oz Side BBQ Sauce",
+        "price": "$2.50",
+        "section": "8oz Side Sauces"
+      },
+      {
+        "name": "Medium 12 inch America's Finest Slice",
+        "price": "$31.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Vodka Sauce, Mozzarella, Pepperoni, Pizzutello Tomatoes, Ricotta, Basil, Romano on a Sesame Seed Crust"
+      },
+      {
+        "name": "Medium 12 inch (Vegetarian) America's Finest Slice W/ Burrata",
+        "price": "$31.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Vodka Sauce, Mozzarella, Pizzutello Tomatoes, Burrata, Basil, Romano on a Sesame Seed Crust"
+      },
+      {
+        "name": "Medium 12 inch BBQ Chicken",
+        "price": "$28.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Mozzarella, Fresh Pineapple, Red Onion, Marinated BBQ Chicken, Applewood Smoked Bacon, BBQ Sauce & Cilantro (No Tomato Sauce)"
+      },
+      {
+        "name": "Medium 12 inch Burrata Queen",
+        "price": "$31.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Ricotta, Sliced Mozzarella, Pesto, Burrata Cheese, Agave Garlic, Maldon Salt & Tony's Hot Pepper Oil (No Tomato Sauce)"
+      },
+      {
+        "name": "Medium 12 inch Cal Italia",
+        "price": "$31.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Asiago, Imported Gorgonzola, Mozzarella, Sweet Fig Preserve, Prosciutto di Parma, Parmigiano-Reggiano, Balsamic Reduction (No Tomato Sauce)"
+      },
+      {
+        "name": "Medium 12 inch Cheese",
+        "price": "$23.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella"
+      },
+      {
+        "name": "Medium 12 inch Chicken Bacon Ranch",
+        "price": "$28.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Chicken, Applewood Smoked Bacon, Ranch Dressing, Cherry Tomatoes, Mozzarella & Green Onions (No Tomato Sauce)"
+      },
+      {
+        "name": "Medium 12 inch Combo Americano",
+        "price": "$31.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Salami, Applewood Smoked Bacon, Pepperoni, Italian Sausage, Linguica, Mushroom, Bell Pepper, Onions, Black Olives, Cherry Tomato & Green Onions"
+      },
+      {
+        "name": "Medium 12 inch Drunken Italian",
+        "price": "$28.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Sliced Mozzarella, Vodka Cream Sauce, Applewood Smoked Bacon, Italian Parsley, Salt & Pepper"
+      },
+      {
+        "name": "Medium 12 inch Hawaiian Hit Man",
+        "price": "$28.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Smoked Ham, Fresh Pineapple Rings, Applewood Smoked Bacon & Honey"
+      },
+      {
+        "name": "Medium 12 inch Hot Honey",
+        "price": "$29.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Thin & Thick Pepperoni, Italian Sausage & House Made Hot Local Honey"
+      },
+      {
+        "name": "Medium 12 inch Little Italy",
+        "price": "$29.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Mushrooms, Red Onions, Pepperoni & Italian Sausage, Roasted Red Bell Peppers"
+      },
+      {
+        "name": "Medium 12 inch Motorhead",
+        "price": "$31.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Salami, Mushrooms, Pepperoni, Applewood Smoked Bacon, Italian Sausage, Ricotta & Basil"
+      },
+      {
+        "name": "Medium 12 inch Paesano",
+        "price": "$26.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Pepperoni, Salami, Italian Sausage & Mushroom"
+      },
+      {
+        "name": "Medium 12 inch Pepperoni",
+        "price": "$26.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Thin Cut Pepperoni"
+      },
+      {
+        "name": "Medium 12 inch Picante",
+        "price": "$27.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Pepperoni, Linguica, Chorizo, Ricotta, Banana Peppers, Serrano Chiles, Green Onions & Cholula Sauce"
+      },
+      {
+        "name": "Medium 12 inch Purple Potato",
+        "price": "$26.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Mozzarella, Sliced Purple Potatoes, Applewood Smoked Bacon, Rosemary, Feta & Pesto Swirl (No Tomato Sauce)"
+      },
+      {
+        "name": "Medium 12 inch Rosa",
+        "price": "$27.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Thick & Thin Cut Pepperoni, Basil"
+      },
+      {
+        "name": "Medium 12 inch Sweet Gino",
+        "price": "$27.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Sweet Tomato Sauce, Sliced & Ovoline Mozzarella, Basil & Sea Salt"
+      },
+      {
+        "name": "Medium 12 inch Tomato Pie",
+        "price": "$24.00",
+        "section": "Medium 12\" New York Style",
+        "description": "New Jersey Style With Tomato Sauce Over Sliced Mozzarella With Garlic & Basil"
+      },
+      {
+        "name": "Medium 12 inch Tony's Tandoori Masala",
+        "price": "$28.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Spicy tandoori Sauce, shredded mozzarella, smoked provola, red onion, minced garlic, tandoori cream, cilantro, serranos, peppadews, oregano, garlic olive oil"
+      },
+      {
+        "name": "Medium 12 inch Tony Jack",
+        "price": "$25.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Mozzarella, Ranch Dressing, Applewood Smoked Bacon, Green Onions, Peppadew Peppers, Honey (No Tomato Sauce)"
+      },
+      {
+        "name": "Medium 12 inch Traditional",
+        "price": "$27.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Thick & Thin Cut Pepperoni & Italian Sausage"
+      },
+      {
+        "name": "Medium 12 inch Veggie",
+        "price": "$26.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Onions, Bell Peppers, Mushrooms, Black Olives, Peppadews, Green Onion & Feta"
+      },
+      {
+        "name": "Medium 12 inch Wiseguy",
+        "price": "$29.00",
+        "section": "Medium 12\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Sweet & Spicy Italian Sausage, Pepperoni, Ricotta, Tony's Hot Pepper Oil & Green Onion"
+      },
+      {
+        "name": "XL 20 inch America's Finest Slice",
+        "price": "$42.00",
+        "section": "XL 20\" New York Style",
+        "description": "Vodka Sauce, Mozzarella, Pepperoni, Pizzutello Tomatoes, Ricotta, Basil, Romano on a Sesame Seed Crust"
+      },
+      {
+        "name": "XL 20 inch (Vegetarian) America's Finest Slice W/ Burrata",
+        "price": "$42.00",
+        "section": "XL 20\" New York Style",
+        "description": "Vodka Sauce, Mozzarella, Pizzutello Tomatoes, Burrata, Basil, Romano on a Sesame Seed Crust"
+      },
+      {
+        "name": "XL 20 inch BBQ Chicken",
+        "price": "$40.00",
+        "section": "XL 20\" New York Style",
+        "description": "Mozzarella, Fresh Pineapple, Red Onion, Marinated BBQ Chicken, Applewood Smoked Bacon, BBQ Sauce & Cilantro (No Tomato Sauce)"
+      },
+      {
+        "name": "XL 20 inch Burrata Queen",
+        "price": "$40.00",
+        "section": "XL 20\" New York Style",
+        "description": "Ricotta, Sliced Mozzarella, Pesto, Burrata Cheese, Agave Garlic, Maldon Salt & Tony's Hot Pepper Oil (No Tomato Sauce)"
+      },
+      {
+        "name": "XL 20 inch Cal Italia",
+        "price": "$41.00",
+        "section": "XL 20\" New York Style",
+        "description": "Asiago, Imported Gorgonzola, Mozzarella, Sweet Fig Preserve, Prosciutto di Parma, Parmigiano-Reggiano, Balsamic Reduction (No Tomato Sauce)"
+      },
+      {
+        "name": "XL 20 inch Cheese",
+        "price": "$35.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella"
+      },
+      {
+        "name": "XL 20 inch Chicken Bacon Ranch",
+        "price": "$40.00",
+        "section": "XL 20\" New York Style",
+        "description": "Chicken, Applewood Smoked Bacon, Ranch Dressing, Cherry Tomatoes, Mozzarella & Green Onions (No Tomato Sauce)"
+      },
+      {
+        "name": "XL 20 inch Combo Americano",
+        "price": "$42.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Salami, Applewood Smoked Bacon, Pepperoni, Italian Sausage, Linguica, Mushroom, Bell Pepper, Onions, Black Olives, Cherry Tomato & Green Onions"
+      },
+      {
+        "name": "XL 20 inch Drunken Italian",
+        "price": "$39.00",
+        "section": "XL 20\" New York Style",
+        "description": "Sliced Mozzarella, Vodka Cream Sauce, Applewood Smoked Bacon, Italian Parsley, Salt & Pepper"
+      },
+      {
+        "name": "XL 20 inch Hawaiian Hit Man",
+        "price": "$39.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Smoked Ham, Fresh Pineapple Rings, Applewood Smoked Bacon & Honey"
+      },
+      {
+        "name": "XL 20 inch Hot Honey",
+        "price": "$41.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Thin & Thick Pepperoni, Italian Sausage & House Made Hot Local Honey"
+      },
+      {
+        "name": "XL 20 inch Little Italy",
+        "price": "$41.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Mushrooms, Red Onions, Pepperoni & Italian Sausage, Roasted Red Bell Peppers"
+      },
+      {
+        "name": "XL 20 inch Motorhead",
+        "price": "$42.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Salami, Mushrooms, Pepperoni, Bacon, Italian Sausage & Ricotta"
+      },
+      {
+        "name": "XL 20 inch Paesano",
+        "price": "$38.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Pepperoni, Salami, Italian Sausage & Mushroom"
+      },
+      {
+        "name": "XL 20 inch Pepperoni",
+        "price": "$38.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Thin Cut Pepperoni"
+      },
+      {
+        "name": "XL 20 inch Picante",
+        "price": "$39.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Pepperoni, Linguica, Chorizo, Ricotta, Banana Peppers, Serrano Chiles, Green Onions & Cholula Sauce"
+      },
+      {
+        "name": "XL 20 inch Purple Potato",
+        "price": "$39.00",
+        "section": "XL 20\" New York Style",
+        "description": "Mozzarella, Sliced Purple Potatoes, Applewood Smoked Bacon, Rosemary, Feta & Pesto Swirl (No Tomato Sauce)"
+      },
+      {
+        "name": "XL 20 inch Rosa",
+        "price": "$38.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Thick & Thin Cut Pepperoni, Basil"
+      },
+      {
+        "name": "XL 20 inch Super Gold Margherita",
+        "price": "$41.00",
+        "section": "XL 20\" New York Style",
+        "description": "Sliced Mozzarella, San Marzano Sauce, Mini Red Tomato, Cherry Tomato, Fresh Mozzarella, Chiffonade Basil, Olive Oil Swirl, Garlic Olive Oil, Light Sea Salt, Romano, Oregano"
+      },
+      {
+        "name": "XL 20 inch Sweet Gino",
+        "price": "$38.00",
+        "section": "XL 20\" New York Style",
+        "description": "Sweet Tomato Sauce, Sliced & Ovoline Mozzarella, Basil & Sea Salt"
+      },
+      {
+        "name": "XL 20 inch Tomato Pie",
+        "price": "$35.00",
+        "section": "XL 20\" New York Style",
+        "description": "New Jersey Style with Tomato Sauce over Sliced Mozzarella, with Garlic & Basil"
+      },
+      {
+        "name": "XL 20 inch Tony's Tandoori Masala",
+        "price": "$40.00",
+        "section": "XL 20\" New York Style",
+        "description": "Spicy tandoori Sauce, shredded mozzarella, smoked provola, red onion, minced garlic, tandoori cream, cilantro, serranos, peppadews, oregano, garlic olive oil"
+      },
+      {
+        "name": "XL 20 inch Tony Jack",
+        "price": "$38.00",
+        "section": "XL 20\" New York Style",
+        "description": "Mozzarella, Ranch Dressing, Applewood Smoked Bacon, Green Onions, Peppadew Peppers, Honey (No Tomato Sauce)"
+      },
+      {
+        "name": "XL 20 inch Traditional",
+        "price": "$40.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Thick & Thin Cut Pepperoni & Italian Sausage"
+      },
+      {
+        "name": "XL 20 inch Veggie",
+        "price": "$39.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Onions, Bell Peppers, Mushrooms, Black Olives, Peppadews, Green Onion & Feta"
+      },
+      {
+        "name": "XL 20 inch Wiseguy",
+        "price": "$41.00",
+        "section": "XL 20\" New York Style",
+        "description": "Tomato Sauce, Mozzarella, Sweet & Spicy Italian Sausage, Pepperoni, Ricotta, Tony's Hot Pepper Oil & Green Onion"
+      },
+      {
+        "name": "DET BBQ Chicken",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Mozzarella, Fresh Pineapple, Red Onion, Marinated BBQ Chicken, Applewood Smoked Bacon, BBQ Sauce & Cilantro (No Tomato Sauce)"
+      },
+      {
+        "name": "DET Burrata Queen",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Ricotta, Sliced Mozzarella, Pesto, Burrata Cheese, Agave Garlic, Maldon Salt & Tony's Hot Pepper Oil (No Tomato Sauce)"
+      },
+      {
+        "name": "DET Cal Italia",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "White Cheddar, Brick Cheese, Asiago, Imported Gorgonzola, Mozzarella, Sweet Fig Preserve, Prosciutto di Parma, Parmigiano-Reggiano, Balsamic Reduction (No Tomato Sauce)"
+      },
+      {
+        "name": "DET Cheese",
+        "price": "$30.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella"
+      },
+      {
+        "name": "DET Chicken Bacon Ranch",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Chicken, Applewood Smoked Bacon, Ranch Dressing, Cherry Tomatoes, Mozzarella & Green Onions (No Tomato Sauce)"
+      },
+      {
+        "name": "DET Combo Americano",
+        "price": "$39.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Salami, Applewood Smoked Bacon, Pepperoni, Italian Sausage, Linguica, Mushroom, Bell Pepper, Onions, Black Olives, Cherry Tomato & Green Onions"
+      },
+      {
+        "name": "DET Drunken Italian",
+        "price": "$37.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Sliced Mozzarella, Vodka Cream Sauce, Applewood Smoked Bacon, Italian Parsley, Salt & Pepper"
+      },
+      {
+        "name": "DET Hawaiian Hit Man",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Smoked Ham, Fresh Pineapple Rings, Applewood Smoked Bacon & Honey"
+      },
+      {
+        "name": "DET Hot Honey",
+        "price": "$37.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Thin & Thick Pepperoni, Italian Sausage & House Made Hot Local Honey"
+      },
+      {
+        "name": "DET Little Italy",
+        "price": "$37.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Mushrooms, Red Onions, Pepperoni & Italian Sausage, Roasted Red Bell Peppers"
+      },
+      {
+        "name": "DET Motorhead",
+        "price": "$40.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Salami, Mushrooms, Pepperoni, Applewood Smoked Bacon, Italian Sausage, Ricotta & Basil"
+      },
+      {
+        "name": "DET Paesano",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Pepperoni, Salami, Italian Sausage & Mushroom"
+      },
+      {
+        "name": "DET Pepperoni",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Thin Cut Pepperoni"
+      },
+      {
+        "name": "DET Picante",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Pepperoni, Linguica, Chorizo, Ricotta, Banana Peppers, Serrano Chiles, Green Onions & Cholula Sauce"
+      },
+      {
+        "name": "DET Purple Potato",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Mozzarella, Sliced Purple Potatoes, Applewood Smoked Bacon, Rosemary, Feta & Pesto Swirl (No Tomato Sauce)"
+      },
+      {
+        "name": "DET Red Top",
+        "price": "$30.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "White Cheddar, Brick Cheese & Mozzarella with Two Racing Stripes of Tomato Sauce, Garlic, Romano & Oregano"
+      },
+      {
+        "name": "DET Rosa",
+        "price": "$37.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Thick & Thin Cut Pepperoni, Basil"
+      },
+      {
+        "name": "DET Sweet Gino",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Sweet Tomato Sauce, Sliced & Ovoline Mozzarella, Basil & Sea Salt"
+      },
+      {
+        "name": "DET Tomato Pie",
+        "price": "$32.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "White Cheddar, Brick Cheese & Mozzarella with Two Racing Stripes of Tomato Sauce, Garlic, Romano & Oregano"
+      },
+      {
+        "name": "DET Tony Jack",
+        "price": "$34.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Mozzarella, Ranch Dressing, Applewood Smoked Bacon, Green Onions, Peppadew Peppers, Honey (No Tomato Sauce)"
+      },
+      {
+        "name": "DET Traditional",
+        "price": "$36.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Thick & Thin Cut Pepperoni & Italian Sausage"
+      },
+      {
+        "name": "DET Veggie",
+        "price": "$35.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Onions, Bell Peppers, Mushrooms, Black Olives, Peppadews, Green Onion & Feta"
+      },
+      {
+        "name": "DET Wiseguy",
+        "price": "$37.00",
+        "section": "Detroit 9\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Sweet & Spicy Italian Sausage, Pepperoni, Ricotta, Tony's Hot Pepper Oil & Green Onion"
+      },
+      {
+        "name": "GMA BBQ Chicken",
+        "price": "$30.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Mozzarella, Fresh Pineapple, Red Onion, Marinated BBQ Chicken, Applewood Smoked Bacon, BBQ Sauce & Cilantro (No Tomato Sauce)"
+      },
+      {
+        "name": "GMA Burrata Queen",
+        "price": "$33.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Ricotta, Sliced Mozzarella, Pesto, Burrata Cheese, Agave Garlic, Maldon Salt & Tony's Hot Pepper Oil (No Tomato Sauce)"
+      },
+      {
+        "name": "GMA Cal Italia",
+        "price": "$33.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Asiago, Imported Gorgonzola, Sliced Mozzarella, Sweet Fig Preserve, Prosciutto di Parma, Parmigiano-Reggiano, Balsamic Reduction (No Tomato Sauce)"
+      },
+      {
+        "name": "GMA Cheese",
+        "price": "$28.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella"
+      },
+      {
+        "name": "GMA Chicken Bacon Ranch",
+        "price": "$30.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Chicken, Applewood Smoked Bacon, Ranch Dressing, Cherry Tomatoes, Mozzarella & Green Onions (No Tomato Sauce)"
+      },
+      {
+        "name": "GMA Combo Americano",
+        "price": "$32.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Salami, Applewood Smoked Bacon, Pepperoni, Italian Sausage, Linguica, Mushroom, Bell Pepper, Onions, Black Olives, Cherry Tomato & Green Onions"
+      },
+      {
+        "name": "GMA Drunken Italian",
+        "price": "$31.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Sliced Mozzarella, Vodka Cream Sauce, Applewood Smoked Bacon, Italian Parsley, Salt & Pepper"
+      },
+      {
+        "name": "GMA Hawaiian Hit Man",
+        "price": "$30.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Smoked Ham, Fresh Pineapple Rings, Applewood Smoked Bacon & Honey"
+      },
+      {
+        "name": "GMA Hot Honey",
+        "price": "$31.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Thin & Thick Pepperoni, Italian Sausage & House Made Hot Local Honey"
+      },
+      {
+        "name": "GMA Little Italy",
+        "price": "$31.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Mushrooms, Red Onions, Pepperoni & Italian Sausage, Roasted Red Bell Peppers"
+      },
+      {
+        "name": "GMA Motorhead",
+        "price": "$32.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Salami, Mushrooms, Pepperoni, Applewood Smoked Bacon, Italian Sausage, Ricotta & Basil"
+      },
+      {
+        "name": "GMA Paesano",
+        "price": "$30.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Pepperoni, Salami, Italian Sausage & Mushroom"
+      },
+      {
+        "name": "GMA Pepperoni",
+        "price": "$30.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Thin Cut Pepperoni"
+      },
+      {
+        "name": "GMA Picante",
+        "price": "$30.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Pepperoni, Linguica, Chorizo, Ricotta, Banana Peppers, Serrano Chiles, Green Onions & Cholula Sauce"
+      },
+      {
+        "name": "GMA Purple Potato",
+        "price": "$30.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Mozzarella, Sliced Purple Potatoes, Applewood Smoked Bacon, Rosemary, Feta & Pesto Swirl (No Tomato Sauce)"
+      },
+      {
+        "name": "GMA Rosa",
+        "price": "$30.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Thick & Thin Cut Pepperoni, Basil"
+      },
+      {
+        "name": "GMA Sweet Gino",
+        "price": "$29.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Sweet Tomato Sauce, Sliced & Ovoline Mozzarella, Basil & Sea Salt"
+      },
+      {
+        "name": "GMA Tomato Pie",
+        "price": "$28.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "New Jersey Style with Tomato Sauce over Sliced Mozzarella, with Garlic & Basil"
+      },
+      {
+        "name": "GMA Tony Jack",
+        "price": "$29.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Mozzarella, Ranch Dressing, Applewood Smoked Bacon, Green Onions, Peppadew Peppers, Honey (No Tomato Sauce)"
+      },
+      {
+        "name": "GMA Traditional",
+        "price": "$30.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Thick & Thin Cut Pepperoni & Italian Sausage"
+      },
+      {
+        "name": "GMA Veggie",
+        "price": "$30.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Onions, Bell Peppers, Mushrooms, Black Olives, Peppadews, Green Onion & Feta"
+      },
+      {
+        "name": "GMA Wiseguy",
+        "price": "$31.00",
+        "section": "Grandma 12\"x12\"",
+        "description": "Tomato Sauce, Mozzarella, Sweet & Spicy Italian Sausage, Pepperoni, Ricotta, Tony's Hot Pepper Oil & Green Onion"
+      },
+      {
+        "name": "SIC BBQ Chicken",
+        "price": "$40.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Mozzarella, Fresh Pineapple, Red Onion, Marinated BBQ Chicken, Applewood Smoked Bacon, BBQ Sauce & Cilantro (No Tomato Sauce)"
+      },
+      {
+        "name": "SIC Burrata Queen",
+        "price": "$40.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Ricotta, Sliced Mozzarella, Pesto, Burrata Cheese, Agave Garlic, Maldon Salt & Tony's Hot Pepper Oil (No Tomato Sauce)"
+      },
+      {
+        "name": "SIC Cal Italia",
+        "price": "$41.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "White Cheddar, Brick Cheese, Asiago, Imported Gorgonzola, Mozzarella, Sweet Fig Preserve, Prosciutto di Parma, Parmigiano-Reggiano, Balsamic Reduction (No Tomato Sauce)"
+      },
+      {
+        "name": "SIC Cheese",
+        "price": "$35.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella"
+      },
+      {
+        "name": "SIC Chicken Bacon Ranch",
+        "price": "$40.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Chicken, Applewood Smoked Bacon, Ranch Dressing, Cherry Tomatoes, Mozzarella & Green Onions (No Tomato Sauce)"
+      },
+      {
+        "name": "SIC Combo Americano",
+        "price": "$42.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Salami, Applewood Smoked Bacon, Pepperoni, Italian Sausage, Linguica, Mushroom, Bell Pepper, Onions, Black Olives, Cherry Tomato & Green Onions"
+      },
+      {
+        "name": "SIC Drunken Italian",
+        "price": "$39.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Sliced Mozzarella, Vodka Cream Sauce, Applewood Smoked Bacon, Italian Parsley, Salt & Pepper"
+      },
+      {
+        "name": "SIC Hawaiian Hit Man",
+        "price": "$39.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Smoked Ham, Fresh Pineapple Rings, Applewood Smoked Bacon & Honey"
+      },
+      {
+        "name": "SIC Hot Honey",
+        "price": "$41.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Thin & Thick Pepperoni, Italian Sausage & House Made Hot Local Honey"
+      },
+      {
+        "name": "SIC Little Italy",
+        "price": "$41.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Mushrooms, Red Onions, Pepperoni & Italian Sausage, Roasted Red Bell Peppers"
+      },
+      {
+        "name": "SIC Motorhead",
+        "price": "$42.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Salami, Mushrooms, Pepperoni, Applewood Smoked Bacon, Italian Sausage, Ricotta & Basil"
+      },
+      {
+        "name": "SIC Paesano",
+        "price": "$37.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Pepperoni, Salami, Italian Sausage, Mushroom"
+      },
+      {
+        "name": "SIC Pepperoni",
+        "price": "$38.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Thin Cut Pepperoni"
+      },
+      {
+        "name": "SIC Picante",
+        "price": "$38.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Pepperoni, Linguica, Chorizo, Ricotta, Banana Peppers, Serrano Chiles, Green Onions & Cholula Sauce"
+      },
+      {
+        "name": "SIC Purple Potato",
+        "price": "$39.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Mozzarella, Sliced Purple Potatoes, Applewood Smoked Bacon, Rosemary, Feta & Pesto Swirl (No Tomato Sauce)"
+      },
+      {
+        "name": "SIC Rosa",
+        "price": "$39.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Thick & Thin Cut Pepperoni, Basil"
+      },
+      {
+        "name": "SIC Sweet Gino",
+        "price": "$38.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Sweet Tomato Sauce, Sliced & Ovoline Mozzarella, Basil & Sea Salt"
+      },
+      {
+        "name": "SIC Tomato Pie",
+        "price": "$33.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "New Jersey Style with Tomato Sauce over Sliced Mozzarella, with Garlic & Basil"
+      },
+      {
+        "name": "SIC Tony's Tandoori Masala",
+        "price": "$39.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Spicy tandoori Sauce, shredded mozzarella, smoked provola, red onion, minced garlic, tandoori cream, cilantro, serranos, peppadews, oregano, garlic olive oil"
+      },
+      {
+        "name": "SIC Tony Jack",
+        "price": "$37.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Mozzarella, Ranch Dressing, Applewood Smoked Bacon, Green Onions, Peppadew Peppers, Honey (No Tomato Sauce)"
+      },
+      {
+        "name": "SIC Traditional",
+        "price": "$40.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Thick & Thin Cut Pepperoni & Italian Sausage"
+      },
+      {
+        "name": "SIC Veggie",
+        "price": "$38.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Onions, Bell Peppers, Mushrooms, Black Olives, Peppadews, Green Onion & Feta"
+      },
+      {
+        "name": "SIC Wiseguy",
+        "price": "$41.00",
+        "section": "Sicilian 11\"x17\"",
+        "description": "Tomato Sauce, Mozzarella, Sweet & Spicy Italian Sausage, Pepperoni, Ricotta, Tony's Hot Pepper Oil & Green Onion"
+      },
+      {
+        "name": "Gemelli With Vodka Cream",
+        "price": "$17.00",
+        "section": "Pastas",
+        "description": "Fresh Gemelli Pasta, Smoked Pancetta, Garlic, Vodka Tomato Cream Sauce with Romano"
+      },
+      {
+        "name": "Gemelli With Pesto Sauce",
+        "price": "$17.00",
+        "section": "Pastas",
+        "description": "Fresh Gemelli Pasta, Pesto, Garlic, Sun Bathed Tomatoes, Goat Cheese"
+      },
+      {
+        "name": "Bucatini With Meat Sauce",
+        "price": "$17.00",
+        "section": "Pastas",
+        "description": "Fresh Bucatini Pasta, Pancetta, Italian Sausage & Tomato Sauce. Spicy."
+      },
+      {
+        "name": "Gemelli Alfredo Pasta",
+        "price": "$14.00",
+        "section": "Pastas",
+        "description": "Fresh Gemelli Pasta, Alfredo Sauce"
+      },
+      {
+        "name": "Bucatini Alfredo Pasta",
+        "price": "$14.00",
+        "section": "Pastas",
+        "description": "Fresh Bucatini Pasta, Alfredo Sauce"
+      },
+      {
+        "name": "Plain Pasta",
+        "price": "$10.00",
+        "section": "Pastas"
+      },
+      {
+        "name": "Caesar Salad",
+        "price": "$13.00",
+        "section": "Salads",
+        "description": "Hearts of Romaine, Parmigiano-Reggiano, Homemade Caesar Dressing & Croutons (Contains Anchovies)"
+      },
+      {
+        "name": "Bacon Arugula Salad",
+        "price": "$14.00",
+        "section": "Salads",
+        "description": "Wild Arugula, Peppadews, Shaved Parmigiano, Fresh Mozzarella, Balsamic Reduction & Extra Virgin Olive Oil"
+      },
+      {
+        "name": "House Craft Salad",
+        "price": "$15.00",
+        "section": "Salads",
+        "description": "Mixed Greens, Castelvetrano Olives, Red Onions, Gorgonzola, Candied Walnuts, Peppadews, Balsamic Reduction & Extra Virgin Olive Oil"
+      },
+      {
+        "name": "Caprese Salad",
+        "price": "$15.00",
+        "section": "Salads",
+        "description": "Fresh Basil, Grande Fresh Mozzarella, Pizzutello Tomatoes, EVOO, Balsamic Glaze"
+      },
+      {
+        "name": "Side House Salad",
+        "price": "$7.00",
+        "section": "Salads",
+        "description": "Mixed Greens, Castelvetrano Olives, Red Onions, Peppadews, Balsamic Reduction & Extra Virgin Olive Oil"
+      },
+      {
+        "name": "Side Caesar Salad",
+        "price": "$6.00",
+        "section": "Salads",
+        "description": "Hearts of Romaine, Parmigiano-Reggiano, Homemade Caesar Dressing & Croutons (Contains Anchovies)"
+      },
+      {
+        "name": "Fresh Baked Chocolate Chip Cookies",
+        "price": "$3.00",
+        "section": "Desserts",
+        "description": "Fresh Baked Topped with Sea Salt; from -- page shows a $3.00-$8.00 range by quantity, cheapest option recorded"
+      },
+      {
+        "name": "Buddy V's Rainbow Cake",
+        "price": "$8.50",
+        "section": "Desserts",
+        "description": "Six layers of rainbow-colored vanilla cake filled high with a sweet vanilla icing and covered with rainbow sprinkles"
+      },
+      {
+        "name": "Spumoni",
+        "price": "$7.00",
+        "section": "Desserts",
+        "description": "Pistachio, Cherry, and Chocolate Ice Cream"
+      },
+      {
+        "name": "Cannoli (1pc)",
+        "price": "$7.00",
+        "section": "Desserts",
+        "description": "House made ricotta and Mascarpone filling. Choose from: Chocolate chips, Sprinkles or Pistachio"
+      },
+      {
+        "name": "Cannoli (3pc)",
+        "price": "$19.00",
+        "section": "Desserts",
+        "description": "House Made Ricotta and Mascarpone Filling. Choose from: Chocolate Chips, Sprinkles, or Pistachio"
+      },
+      {
+        "name": "Mexican Coca Cola",
+        "price": "$4.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "Jarritos",
+        "price": "$4.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Red Bull Energy Drink",
+        "price": "$5.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Red Bull Peach Edition (White Peach)",
+        "price": "$5.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Red Bull Blue Juneberry",
+        "price": "$5.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Red Bull Sugarfree",
+        "price": "$5.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Pure Leaf Sweet Tea",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "San Pellegrino",
+        "price": "$4.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Acqua Panna",
+        "price": "$4.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "2 Liter",
+        "price": "$5.99",
+        "section": "Beverages"
+      },
+      {
+        "name": "A' Siciliana - Aranciata (Blood Orange)",
+        "price": "$3.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "A' Siciliana - Limonata (Lemon)",
+        "price": "$3.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Gatorade",
+        "price": "$3.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Tejava Unsweet Black Tea",
+        "price": "$4.25",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3773",
+    "name": "Mary's Gourmet Salads",
+    "sourceUrl": "https://ordermarys.com/order/maryssalads",
+    "confidence": "high",
+    "notes": "Restaurant's own domain (ordermarys.com) links to its own Toast ordering page at /order/maryssalads, which the page confirms is the Pearl St, La Jolla location (a separate /order/marys-salads-ocean-beach-... link exists for the other branch and was not used). Extracted via the embedded Toast state JSON (name/description/prices fields) cross-referenced with the rendered DOM section headings (Featured Items, NEW: Wraps, Salads, Soups, Sweet Treats, Drinks, Mary's On The Go) for correct section assignment -- DOM regex alone missed 9 salads that have no single price span because they carry a base-choice modifier with two prices each. Dropped 'Featured Items' as a duplicate carousel (its 3 items -- Just Peachy Salad, Thai Crunch, East Coast -- all already appear under Salads). For the 9 salads with two prices (e.g. Thai Crunch $13.95/$15.95), the page did not make clear which of the two visible base choices (Romaine vs Purple Cabbage) maps to which price, so recorded the lower confirmed price as a 'from' figure per the modifier-modal rule rather than guessing the mapping. All prices are plain first-party Toast catalog prices with normal .00/.49/.75/.95/.99 endings -- no markup pattern.",
+    "dishes": [
+      {
+        "name": "New & Seasonal: \"Just Peachy\" Salad!",
+        "price": "$17.95",
+        "section": "Salads"
+      },
+      {
+        "name": "Thai Crunch",
+        "price": "$13.95",
+        "section": "Salads",
+        "description": "Romaine, Purple Cabbage - Mango, Red Bell Peppers, Carrots, Green Onions, Slivered Almonds, Wonton Strips, Black Sesame Seeds. Dressing: Housemade Thai Peanut. From -- page offers a base choice (Romaine or Purple Cabbage) priced $13.95/$15.95, cheapest recorded"
+      },
+      {
+        "name": "East Coast",
+        "price": "$16.95",
+        "section": "Salads",
+        "description": "From -- page offers a base choice priced $16.95/$19.95, cheapest recorded"
+      },
+      {
+        "name": "Santa Fe",
+        "price": "$13.95",
+        "section": "Salads",
+        "description": "From -- page offers a base choice priced $13.95/$15.95, cheapest recorded"
+      },
+      {
+        "name": "The Med",
+        "price": "$13.95",
+        "section": "Salads",
+        "description": "From -- page offers a base choice priced $13.95/$15.95, cheapest recorded"
+      },
+      {
+        "name": "Super Food",
+        "price": "$14.95",
+        "section": "Salads",
+        "description": "From -- page offers a base choice priced $14.95/$16.95, cheapest recorded"
+      },
+      {
+        "name": "Summer Breeze",
+        "price": "$16.95",
+        "section": "Salads",
+        "description": "From -- page offers a base choice priced $16.95/$19.95, cheapest recorded"
+      },
+      {
+        "name": "Harvest Cobb",
+        "price": "$15.95",
+        "section": "Salads",
+        "description": "From -- page offers a base choice priced $15.95/$17.95, cheapest recorded"
+      },
+      {
+        "name": "Kale Caesar",
+        "price": "$14.95",
+        "section": "Salads",
+        "description": "From -- page offers a base choice priced $14.95/$16.95, cheapest recorded"
+      },
+      {
+        "name": "Chinese Chop",
+        "price": "$13.95",
+        "section": "Salads",
+        "description": "From -- page offers a base choice priced $13.95/$15.95, cheapest recorded"
+      },
+      {
+        "name": "Build Your Own",
+        "price": "$11.95",
+        "section": "Salads"
+      },
+      {
+        "name": "Chicken Caesar Wrap",
+        "price": "$16.00",
+        "section": "NEW: Wraps"
+      },
+      {
+        "name": "Gold Coast Soup",
+        "price": "$9.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Mary's Chocolate Chip Cookie",
+        "price": "$3.75",
+        "section": "Sweet Treats"
+      },
+      {
+        "name": "Mary's Classic Lemonade",
+        "price": "$4.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Diet Coke",
+        "price": "$2.75",
+        "section": "Drinks"
+      },
+      {
+        "name": "Lacroix - Grapefruit",
+        "price": "$2.75",
+        "section": "Drinks"
+      },
+      {
+        "name": "Perrier",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coconut Water",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Pita Chips",
+        "price": "$2.49",
+        "section": "Mary's On The Go"
+      },
+      {
+        "name": "Hippeas - White Cheddar",
+        "price": "$2.79",
+        "section": "Mary's On The Go"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3119",
+    "name": "Robataya OTON",
+    "sourceUrl": "https://static-content.owner.com/document/8bb3b7fc-33b9-49cd-881d-b142aa210c84.pdf",
+    "confidence": "high",
+    "notes": "Restaurant's own domain (robatayaotonsd.com) is an Owner.com site. The live /menu ordering page exposes only ONE category ('Take Out', 8 items) via its JSON-LD/state -- not the full dine-in menu -- so used the linked 'Menu PDF' (found via /page/menu-pdf) instead, which is the complete dine-in menu. Paired names to prices with pdftotext -raw (cross-checked against -layout; both agreed on ordering for every section used) since -layout stretches item names into letter-spaced text (e.g. 'K A N P A C H I') that is still legible. Cross-checked 5 overlapping items (Unagi Don, Hokkai Don/Hokkaido Bowl, Bara Chirashi, Japanese Style Uni Noodle, Seafood Salad) against the live Take Out ordering page and all 5 prices matched exactly, confirming the PDF is current. Address on PDF/site: 5447 Kearny Villa Rd, San Diego, CA, matching the work list. Captured Omakase, Sushi, Sashimi, This Weeks Catch (seasonal nigiri), Grilled Kama Selection, Otsumami (Starters), Entrees, Hot Pot, two Sake sections (by-the-glass ladder and Kenji's bottle selection), Soft Drinks, Beer, Shochu, Chu-hi, and Dessert. Recorded the Sake by-the-glass items' full 4oz/10oz/24oz (or stated) ladders since each size was directly read off the PDF, not inferred from a pattern. Chu-hi shows a single $10 price header covering all four listed flavors. Omitted the WINE section entirely: its 3 items (Plum Wine, Yuzu Wine, Green Tea Plum) and the run of $8/glass, $10/glass, +$1, $15/glass, $50/bottle price tokens do not pair unambiguously under either -layout or -raw -- a genuine multi-column PDF scramble, not guessed. Also omitted a 'catering' nav item as an adjunct (not fetched).",
+    "dishes": [
+      {
+        "name": "Omakase Course",
+        "price": "$120.00",
+        "section": "Omakase",
+        "description": "6 Courses Chef's Choice: 3 Kinds of Appetizer, Grilled Fish, Deep Fried Dish, Sashimi, Sushi Dessert. PDF lists two prices, $120/$180, with no stated distinction between the tiers -- recorded the lower confirmed price; a $180 tier also exists per the source."
+      },
+      {
+        "name": "Sushi 6 piece",
+        "price": "$55.00",
+        "section": "Sushi",
+        "description": "Chefs Choice / Assorted"
+      },
+      {
+        "name": "Sushi 10 piece",
+        "price": "$85.00",
+        "section": "Sushi",
+        "description": "Chefs Choice / Assorted; varies based on season and availability"
+      },
+      {
+        "name": "Sashimi (3 types, 3 pieces of each)",
+        "price": "$60.00",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Sashimi (5 types, 3 pieces of each)",
+        "price": "$90.00",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Chef's Assorted Sashimi (7 types, 3 pieces of each)",
+        "price": "$110.00",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Kanpachi - Amberjack",
+        "price": "$7.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Shimaaji - Stripe Jack",
+        "price": "$7.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Saba - Japanese Mackerel",
+        "price": "$7.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Tai - Sea Bream",
+        "price": "$7.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Beni - Salmon",
+        "price": "$7.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Tuna - Bigeye",
+        "price": "$7.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Houbou - Searobin",
+        "price": "$8.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Hotate - Scallop",
+        "price": "$8.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Buri - Wild Yellowtail",
+        "price": "$9.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Kinmedai - Alfonsino",
+        "price": "$9.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Ikura - Salmon Roe",
+        "price": "$10.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Toro - Fatty Tuna",
+        "price": "$15.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Uni - Sea Urchin",
+        "price": "$15.00",
+        "section": "This Weeks Catch"
+      },
+      {
+        "name": "Grilled Collar: Buri - Yellowtail",
+        "price": "$45.00",
+        "section": "Grilled Kama Selection",
+        "description": "Grilled Collar - incredibly tender with rich flavor"
+      },
+      {
+        "name": "Grilled Collar: Beni Salmon",
+        "price": "$25.00",
+        "section": "Grilled Kama Selection",
+        "description": "Grilled Collar - incredibly tender with rich flavor"
+      },
+      {
+        "name": "Edamame",
+        "price": "$6.00",
+        "section": "Otsumami (Starters)"
+      },
+      {
+        "name": "Garlic Edamame",
+        "price": "$7.00",
+        "section": "Otsumami (Starters)"
+      },
+      {
+        "name": "Kyuri Shiokonbu",
+        "price": "$5.00",
+        "section": "Otsumami (Starters)",
+        "description": "Fresh Cucumber with Salted Kelp"
+      },
+      {
+        "name": "Takowasa",
+        "price": "$7.00",
+        "section": "Otsumami (Starters)",
+        "description": "Raw Octopus Mixed with Wasabi Sauce"
+      },
+      {
+        "name": "Tsukune Kushi",
+        "price": "$6.00",
+        "section": "Otsumami (Starters)",
+        "description": "Grilled homemade chicken meatball on skewer"
+      },
+      {
+        "name": "Whitefish Tempura",
+        "price": "$20.00",
+        "section": "Otsumami (Starters)",
+        "description": "Today's Local White Fish Tempura Fried"
+      },
+      {
+        "name": "Deep Fried Whole Whitefish",
+        "price": "$18.00",
+        "section": "Otsumami (Starters)",
+        "description": "Today's Local White Fish Deep Fried Whole"
+      },
+      {
+        "name": "Grilled Saikyo",
+        "price": "$17.00",
+        "section": "Otsumami (Starters)",
+        "description": "Homemade Miso Marinated Fish Grilled"
+      },
+      {
+        "name": "Beef Tongue Steak",
+        "price": "$20.00",
+        "section": "Otsumami (Starters)",
+        "description": "Grilled Thick Beef Tongue Steak"
+      },
+      {
+        "name": "Hamachi Carpaccio",
+        "price": "$22.00",
+        "section": "Otsumami (Starters)",
+        "description": "Thin Slices of Raw Yellow Tail"
+      },
+      {
+        "name": "Happy Spoon",
+        "price": "$11.00",
+        "section": "Otsumami (Starters)",
+        "description": "Sea Urchin, Salmon Roe and Tobiko served with a Creme Fresh Ponzu Sauce"
+      },
+      {
+        "name": "Karaage",
+        "price": "$14.00",
+        "section": "Otsumami (Starters)",
+        "description": "Deep Fried Chicken"
+      },
+      {
+        "name": "Soft Shell Crab",
+        "price": "$15.00",
+        "section": "Otsumami (Starters)",
+        "description": "Deep Fried Soft Shell Crab"
+      },
+      {
+        "name": "Shrimp Tempura",
+        "price": "$18.00",
+        "section": "Otsumami (Starters)",
+        "description": "Shrimp Tempura Fried"
+      },
+      {
+        "name": "Horumon",
+        "price": "$18.00",
+        "section": "Otsumami (Starters)",
+        "description": "Pan Fried Beef Intestines with Cabbage & Onion"
+      },
+      {
+        "name": "Maguro Yamakake",
+        "price": "$15.00",
+        "section": "Otsumami (Starters)",
+        "description": "Mountain Potato over Tuna"
+      },
+      {
+        "name": "Tuna Poke",
+        "price": "$15.00",
+        "section": "Otsumami (Starters)",
+        "description": "Hawaiian Style"
+      },
+      {
+        "name": "Ikura Oroshi",
+        "price": "$12.00",
+        "section": "Otsumami (Starters)",
+        "description": "Salmon Roe over Grated Daikon"
+      },
+      {
+        "name": "Uni Tempura",
+        "price": "$25.00",
+        "section": "Otsumami (Starters)",
+        "description": "Tempura Fried Uni"
+      },
+      {
+        "name": "Ankimo",
+        "price": "$9.00",
+        "section": "Otsumami (Starters)",
+        "description": "Monkfish Liver"
+      },
+      {
+        "name": "Seafood Salad",
+        "price": "$20.00",
+        "section": "Otsumami (Starters)"
+      },
+      {
+        "name": "Salmon Skin Salad",
+        "price": "$15.00",
+        "section": "Otsumami (Starters)"
+      },
+      {
+        "name": "Unagi Don",
+        "price": "$30.00",
+        "section": "Entrees",
+        "description": "Grilled Eel on top of Sushi Rice"
+      },
+      {
+        "name": "Chirashi",
+        "price": "$50.00",
+        "section": "Entrees",
+        "description": "Variety of Sashimi on top of Sushi Rice"
+      },
+      {
+        "name": "Bara Chirashi",
+        "price": "$55.00",
+        "section": "Entrees",
+        "description": "Cubed Sashimi served over Sushi Rice"
+      },
+      {
+        "name": "Hokkai Don",
+        "price": "$55.00",
+        "section": "Entrees",
+        "description": "Scallop, Salmon Eggs, and Uni on top of Sushi Rice"
+      },
+      {
+        "name": "Japanese Style Uni Noodle",
+        "price": "$35.00",
+        "section": "Entrees",
+        "description": "Udon Noodle with Creamy Umi Sauce Topped with Fresh Uni"
+      },
+      {
+        "name": "Sukiyaki",
+        "price": "$40.00",
+        "section": "Hot Pot",
+        "description": "Premium Beef, Vegetables, Mushrooms, and Tofu Simmered in a Sweet Soy Warshita, Served with or Without Raw Egg. $40 per person, 2 person minimum."
+      },
+      {
+        "name": "Shabu Shabu",
+        "price": "$40.00",
+        "section": "Hot Pot",
+        "description": "Premium Beef, Vegetables, Mushrooms, & Tofu Cooked Tableside in a Delicate Dashi Broth. $40 per person, 2 person minimum."
+      },
+      {
+        "name": "\"Red Label\" Tamagawa Yamahai Junmai Genshu (4oz)",
+        "price": "$13.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Red Label\" Tamagawa Yamahai Junmai Genshu (10oz)",
+        "price": "$25.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Red Label\" Tamagawa Yamahai Junmai Genshu (24oz)",
+        "price": "$57.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Special Select\" Seitoku Bessen (4oz)",
+        "price": "$9.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Special Select\" Seitoku Bessen (10oz)",
+        "price": "$17.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Cherry Bouquet\" Dewazakura Ginjo, Oka Yamagata (4oz)",
+        "price": "$14.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Cherry Bouquet\" Dewazakura Ginjo, Oka Yamagata (10oz)",
+        "price": "$26.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Cherry Bouquet\" Dewazakura Ginjo, Oka Yamagata (24oz)",
+        "price": "$60.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Unique\" Tedorigawa Yamahai Junmai, Ishikawa (4oz)",
+        "price": "$17.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Unique\" Tedorigawa Yamahai Junmai, Ishikawa (10oz)",
+        "price": "$31.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Unique\" Tedorigawa Yamahai Junmai, Ishikawa (24oz)",
+        "price": "$58.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"9 Headed Dragon\" Kuzuryu Junmai, Fukui (4oz)",
+        "price": "$13.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"9 Headed Dragon\" Kuzuryu Junmai, Fukui (10oz)",
+        "price": "$23.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"9 Headed Dragon\" Kuzuryu Junmai, Fukui (24oz)",
+        "price": "$51.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Summer Breeze\" Hoyo Sawayaka Junmai, Miyagi (4oz)",
+        "price": "$11.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Summer Breeze\" Hoyo Sawayaka Junmai, Miyagi (10oz)",
+        "price": "$19.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Summer Breeze\" Hoyo Sawayaka Junmai, Miyagi (24oz)",
+        "price": "$43.00",
+        "section": "Sake - By the Glass"
+      },
+      {
+        "name": "\"Summer Snow\" Kamoizumi Ginjo Nama Nigori (17oz)",
+        "price": "$40.00",
+        "section": "Sake - By the Glass",
+        "description": "Specialty, not your ordinary Nigori"
+      },
+      {
+        "name": "Doburoku Nigori (17oz)",
+        "price": "$45.00",
+        "section": "Sake - By the Glass",
+        "description": "Lower in alcohol at 6%"
+      },
+      {
+        "name": "\"Sleeping Beauty\" Masumi Hiyaoroshi Junmai Ginjo, Nagano",
+        "price": "$74.00",
+        "section": "Sake - Kenji's Special Bottle Selection",
+        "description": "Seasonal"
+      },
+      {
+        "name": "\"Silk Dragon\" Kuzuryu Daiginjo, Fukui",
+        "price": "$106.00",
+        "section": "Sake - Kenji's Special Bottle Selection",
+        "description": "Reserve"
+      },
+      {
+        "name": "\"Abbey Road\" Dewazakura Daiginjo, Kyoto",
+        "price": "$98.00",
+        "section": "Sake - Kenji's Special Bottle Selection",
+        "description": "Reserve"
+      },
+      {
+        "name": "\"Heart of the Sun\" Tamagawa Junmai Daiginjo, Kyoto",
+        "price": "$144.00",
+        "section": "Sake - Kenji's Special Bottle Selection",
+        "description": "Super Reserve"
+      },
+      {
+        "name": "\"Heaven of Tipsy Delight\" Akitabare Suirakuten Daiginjo, Akita",
+        "price": "$98.00",
+        "section": "Sake - Kenji's Special Bottle Selection",
+        "description": "Super Reserve"
+      },
+      {
+        "name": "Hot Roasted Green Tea",
+        "price": "$3.00",
+        "section": "Soft Drinks"
+      },
+      {
+        "name": "Iced Green Tea",
+        "price": "$4.00",
+        "section": "Soft Drinks"
+      },
+      {
+        "name": "Iced Oolong Tea",
+        "price": "$4.00",
+        "section": "Soft Drinks"
+      },
+      {
+        "name": "Coke",
+        "price": "$4.00",
+        "section": "Soft Drinks"
+      },
+      {
+        "name": "Coke Zero",
+        "price": "$4.00",
+        "section": "Soft Drinks"
+      },
+      {
+        "name": "Sprite",
+        "price": "$4.00",
+        "section": "Soft Drinks"
+      },
+      {
+        "name": "Calpico",
+        "price": "$4.00",
+        "section": "Soft Drinks"
+      },
+      {
+        "name": "Ramune",
+        "price": "$4.00",
+        "section": "Soft Drinks"
+      },
+      {
+        "name": "Sparkling Water",
+        "price": "$3.00",
+        "section": "Soft Drinks"
+      },
+      {
+        "name": "Asahi (draft)",
+        "price": "$9.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Sapporo (draft)",
+        "price": "$9.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Orion Beer (draft)",
+        "price": "$11.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Kyoto Matcha Beer (11.15 oz)",
+        "price": "$14.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Sapporo Black (22oz)",
+        "price": "$10.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Sapporo (non-alcoholic 12oz)",
+        "price": "$5.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Kakushigura (Barley) - Glass",
+        "price": "$10.00",
+        "section": "Shochu",
+        "description": "Japanese Soju"
+      },
+      {
+        "name": "Kakushigura (Barley) - Bottle 720ml",
+        "price": "$60.00",
+        "section": "Shochu",
+        "description": "Japanese Soju"
+      },
+      {
+        "name": "Kicchou Hozan (Sweet Potato) - Glass",
+        "price": "$10.00",
+        "section": "Shochu",
+        "description": "Japanese Soju"
+      },
+      {
+        "name": "Kicchou Hozan (Sweet Potato) - Bottle 720ml",
+        "price": "$60.00",
+        "section": "Shochu",
+        "description": "Japanese Soju"
+      },
+      {
+        "name": "Oolong Hi",
+        "price": "$10.00",
+        "section": "Chu-hi",
+        "description": "Soju Mixed with Oolong Tea"
+      },
+      {
+        "name": "Calpico Hi",
+        "price": "$10.00",
+        "section": "Chu-hi",
+        "description": "Soju Mixed with Calpico"
+      },
+      {
+        "name": "Fresh Lemon Hi",
+        "price": "$10.00",
+        "section": "Chu-hi",
+        "description": "Soju Mixed with Lemon"
+      },
+      {
+        "name": "Fresh Grapefruit Hi",
+        "price": "$10.00",
+        "section": "Chu-hi",
+        "description": "Soju Mixed with Grapefruit"
+      },
+      {
+        "name": "Purple Potato",
+        "price": "$10.00",
+        "section": "Dessert",
+        "description": "Purple Sweet Potato, fried and honey glazed, served with vanilla ice cream"
+      },
+      {
+        "name": "Matcha Cheesecake",
+        "price": "$7.00",
+        "section": "Dessert"
+      }
+    ]
+  }
+]

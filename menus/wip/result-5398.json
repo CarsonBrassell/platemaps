@@ -1,0 +1,9 @@
+{
+  "restaurantId": "5398",
+  "name": "Rosendo's Taco Shop",
+  "sourceUrl": "https://www.allmenus.com/ca/el-cajon/796776-rosendos-taco-shop/menu/",
+  "confidence": "low",
+  "blocked": "No website in the work list. Found a full priced menu (60+ items: nachos, enchiladas, rolled tacos, burritos, tortas, tostadas, quesadillas) on allmenus.com, sourced from Grubhub, address matching exactly (1408 East Main Street, El Cajon, CA 92021), but the page footer is copyright-dated '2023 GrubHub, Inc.' -- a tier-5 source that the playbook requires a second independent priced source to corroborate before using, and this one also carries an explicit staleness flag. Could not find a second independent priced source: the restaurant's own NetWaiter ordering platform (rosendostacoshop.netwaiter.com) redirects every path (including /el-cajon/menu/) back to its /about page via curl, evidently needing a browser session/store selection to reach the actual menu; two other 'menu-res.com'/'res-menu.net' template domains for this restaurant both returned literally empty (0-byte) bodies; wheree.com, menupix.com, zmenu.com, and tastyfind.com were all blocked (403/404) or Cloudflare-challenged; restaurantguru.com confirmed the address but has no per-item prices, only price-per-person ranges. No DoorDash/UberEats listing exists (web search indicates this restaurant does not use third-party delivery).",
+  "notes": "Missing piece: a Chrome-equipped agent should load rosendostacoshop.netwaiter.com and click through to the actual menu (likely needs a location/store picker), which would give a first-party, current source and let the allmenus/Grubhub 2023 numbers be checked for staleness rather than used directly.",
+  "dishes": []
+}

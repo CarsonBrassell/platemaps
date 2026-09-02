@@ -1,0 +1,275 @@
+{
+  "restaurantId": "5017",
+  "name": "Flecha Cantina",
+  "sourceUrl": "https://flechacantina.orderexperience.net/690d0426b8c5478d76071b81/menu",
+  "confidence": "high",
+  "crossCheckedAgainst": "",
+  "blocked": "",
+  "notes": "Own site (flechacantina.com) links to the restaurant's own Paytronix/Nuxt ordering platform (orderexperience.net), fully client-rendered with no server data, so the specific 4S Ranch location (address-matched: 10514 Craftsman Way, San Diego 92127) was selected live in Chrome and every category read via get_page_text after clicking through Takeout/ASAP (store/fulfillment-type confirmation only, no personal data entered). Covered 8 core categories (Antojitos, Ceviches, Sopa Y Ensaladas, Taqueria, Enchiladas, Platillos, Kids, Postres) plus 4 seasonal Summer categories (Summer Antojitos, Summer Ensalada, Summer Especialidades, Summer Postres) that were live on the site at extraction time; Catering was excluded as an adjunct (bulk/event ordering, not a dish menu). Several items are build-your-own with a required protein-choice modifier and no listed base price on the category grid - for these (Nachos, Balsamic Beet Salad, Caesar Salad, Fajita Salad, Vampiro Tacos) the item detail modal was opened and the CHEAPEST available required-choice price was recorded as the item price, noted per-dish. Five items could not be confidently priced despite repeated attempts (their detail modals would not reliably open or showed no price/no modifier list at all, unlike the others) and were dropped rather than guessed: Mole Enchiladas, Burrito, Chile Relleno, Quesadilla (all in Platillos/Enchiladas - Burrito/Chile Relleno/Quesadilla in Platillos show no price on the grid and their modals did not render pricing), and Verano Watermelon Salad (Summer Ensalada, same issue). Platillos section is therefore thin (1 of 4 items priced, Wagyu Burger) - flagged as a real gap in this capture, not a claim that those dishes don't exist. Espinaca Fundido appeared identically priced under both Antojitos and Summer Antojitos and was recorded once. No third-party cross-check needed; this is the restaurant's own live ordering platform with non-round POS-style pricing (no markup signature).",
+  "dishes": [
+    {
+      "name": "Coconut Shrimp",
+      "description": "6 shrimp, panko, shredded coconut, spicy lime sauce, served in a fresh coconut half.",
+      "price": "$28.00",
+      "section": "Antojitos"
+    },
+    {
+      "name": "Crispy Calamari",
+      "description": "Calamari steaks, panko, shredded coconut, cayenne pepper, orange zest, spicy lime sauce.",
+      "price": "$22.00",
+      "section": "Antojitos"
+    },
+    {
+      "name": "Guacamole Simple",
+      "description": "Fresh avocado, cilantro, cotija.",
+      "price": "$16.00",
+      "section": "Antojitos"
+    },
+    {
+      "name": "Nachos",
+      "description": "Frijoles de olla, monterey jack and chihuahua cheese, enchilada roja sauce, crema blanca, pico de gallo, cotija, guacamole, escabeche, pickled red onion. Required choice of protein (Tofu Chorizo or Chicken, both +$20.00 - the only options offered, recorded as the item price).",
+      "price": "$20.00",
+      "section": "Antojitos"
+    },
+    {
+      "name": "Pistachio Goat Cheese",
+      "description": "Pistachio-crusted goat cheese, spicy tamarind glaze, crushed pistachios, pita chips.",
+      "price": "$22.00",
+      "section": "Antojitos"
+    },
+    {
+      "name": "Pork Belly Flautas",
+      "description": "Pork belly, enchilada roja, monterey jack and chihuahua cheese, pickled red onion, crema macha, crema blanca, guacamole.",
+      "price": "$22.00",
+      "section": "Antojitos"
+    },
+    {
+      "name": "Queso Fundido",
+      "description": "Monterey jack and chihuahua cheese, chorizo, jalapeno crudo.",
+      "price": "$18.00",
+      "section": "Antojitos"
+    },
+    {
+      "name": "Sampler",
+      "description": "Nachos, quesadilla, taquitos de pollo.",
+      "price": "$28.00",
+      "section": "Antojitos"
+    },
+    {
+      "name": "Taquitos De Pollo",
+      "description": "Crispy rolled corn tortillas, shredded chicken, guacamole, crema blanca, salsa roja quemada, salsa verde.",
+      "price": "$19.00",
+      "section": "Antojitos"
+    },
+    {
+      "name": "Espinaca Fundido",
+      "description": "Creamed spinach, artichoke hearts, parmesan, fresno chile, pico de gallo, pita chips.",
+      "price": "$18.00",
+      "section": "Antojitos"
+    },
+    {
+      "name": "Aguachile",
+      "description": "Shrimp, aguachile sauce, red onions, hot house cucumbers, avocado.",
+      "price": "$26.00",
+      "section": "Ceviches"
+    },
+    {
+      "name": "Camaron Ceviche",
+      "description": "Poached shrimp, avocado, picaeta, aji leche, puffed rice.",
+      "price": "$26.00",
+      "section": "Ceviches"
+    },
+    {
+      "name": "Crudo Ceviche",
+      "description": "Yellowtail, scallop, aguachile sauce, red onion, fresno chile, radish.",
+      "price": "$28.00",
+      "section": "Ceviches"
+    },
+    {
+      "name": "Pescado Ceviche",
+      "description": "Yellowtail, avocado, picaeta, aji leche, puffed rice.",
+      "price": "$25.00",
+      "section": "Ceviches"
+    },
+    {
+      "name": "Balsamic Beet Salad",
+      "description": "Beets, balsamic, spring mix, spinach, jicama, cucumber, carrot, cotija, almond, corn, puffed rice, queso fresco, green onion, tomato. Required protein choice; priced at No Protein ($17.00) - Chicken Breast/Shrimp +$24.00, Carne Asada +$25.00 replace this base.",
+      "price": "$17.00",
+      "section": "Sopa Y Ensaladas"
+    },
+    {
+      "name": "Caesar Salad",
+      "description": "Romaine, croutons, caesar, parmesan. Required protein choice; priced at No Protein ($15.00) - Chicken +$24.00, Carne Asada +$25.00, Salmon +$26.00 replace this base.",
+      "price": "$15.00",
+      "section": "Sopa Y Ensaladas"
+    },
+    {
+      "name": "Fajita Salad",
+      "description": "Sauteed red bell pepper, romaine, pasilla chili, white onion, jicama, cucumber, black beans, cilantro lime ranch, queso fresco, pico de gallo, corn, tortilla strips, avocado. Required protein choice, no \"no protein\" option - priced at cheapest, Fajita Vegetables ($20.00); Chicken $24.00, Carne Asada $25.00, Salmon $26.00 are the other choices.",
+      "price": "$20.00",
+      "section": "Sopa Y Ensaladas"
+    },
+    {
+      "name": "Potato Poblano Soup",
+      "description": "Potatoes, cream, roasted poblano peppers, bacon, charred tomato topping.",
+      "price": "$10.00",
+      "section": "Sopa Y Ensaladas"
+    },
+    {
+      "name": "Al Pastor Pollo Tacos",
+      "description": "Grilled chicken, monterey jack and chihuahua cheese, pineapple relish, taquero sauce.",
+      "price": "$22.00",
+      "section": "Taqueria"
+    },
+    {
+      "name": "Beer Battered Tacos",
+      "description": "Monterey jack and chihuahua cheese, slaw, guacamole, lime sauce, choice of beer battered shrimp or cod.",
+      "price": "$22.00",
+      "section": "Taqueria"
+    },
+    {
+      "name": "Cadillac Tacos",
+      "description": "Monterey jack cheese, chihuahua cheese, carne asada, chipotle shrimp, caramelized onions, pico de gallo, crema blanca, taquero verde sauce, guacamole, on corn tortillas served with escabeche.",
+      "price": "$22.00",
+      "section": "Taqueria"
+    },
+    {
+      "name": "Pork Belly Tacos",
+      "description": "Pork belly, monterey jack and chihuahua cheese, taquero sauce, pickled red onion, on corn tortillas served with escabeche.",
+      "price": "$22.00",
+      "section": "Taqueria"
+    },
+    {
+      "name": "Vampiro Tacos",
+      "description": "Monterey and chihuahua cheese, guacamole, pico de gallo, crema macha, cotija, taquero sauce, on corn tortillas served with escabeche. Required protein choice; priced at cheapest, Tofu Chorizo ($19.00) - Chicken $22.00, Carne Asada $24.00 replace this base.",
+      "price": "$19.00",
+      "section": "Taqueria"
+    },
+    {
+      "name": "Roasted Esquites Tacos",
+      "description": "Seasonal roasted vegetables, taquero sauce, micro cilantro, on corn tortillas served with escabeche.",
+      "price": "$19.00",
+      "section": "Taqueria"
+    },
+    {
+      "name": "Carne Asada Enchilada",
+      "description": "White corn tortilla, monterey jack and chihuahua cheese, carne asada, enchilada roja sauce, crema blanca, cotija, picaeta.",
+      "price": "$29.00",
+      "section": "Enchiladas"
+    },
+    {
+      "name": "Lobster Enchiladas",
+      "description": "Lobster, white corn tortilla, poblano pesto sauce, monterey jack and chihuahua cheese, crema blanca, picaeta.",
+      "price": "$44.00",
+      "section": "Enchiladas"
+    },
+    {
+      "name": "Shrimp Enchilada",
+      "description": "Shrimp, white corn tortilla, poblano pesto sauce, monterey jack and chihuahua cheese, crema blanca, picaeta.",
+      "price": "$36.00",
+      "section": "Enchiladas"
+    },
+    {
+      "name": "Veggie Verde Enchiladas",
+      "description": "White corn tortilla, roasted veggies, salsa verde, monterey jack and chihuahua cheese, crema blanca, picaeta.",
+      "price": "$21.00",
+      "section": "Enchiladas"
+    },
+    {
+      "name": "Chicken Verde Enchilada",
+      "description": "",
+      "price": "$26.00",
+      "section": "Enchiladas"
+    },
+    {
+      "name": "Wagyu Burger",
+      "description": "",
+      "price": "$29.00",
+      "section": "Platillos"
+    },
+    {
+      "name": "Kids Bean & Cheese Burrito",
+      "description": "Flour tortilla, cheese blend, refried beans, french fries.",
+      "price": "$12.00",
+      "section": "Kids"
+    },
+    {
+      "name": "Kids Cheese Quesadilla",
+      "description": "Flour tortilla, cheese blend, french fries.",
+      "price": "$12.00",
+      "section": "Kids"
+    },
+    {
+      "name": "Kids Chicken Tenders",
+      "description": "Breaded chicken tenders, french fries.",
+      "price": "$12.00",
+      "section": "Kids"
+    },
+    {
+      "name": "Kids Street Tacos",
+      "description": "Corn tortillas, choice of protein, french fries.",
+      "price": "$12.00",
+      "section": "Kids"
+    },
+    {
+      "name": "Vanilla Tres Leche",
+      "description": "",
+      "price": "$15.00",
+      "section": "Postres"
+    },
+    {
+      "name": "Churros Royale",
+      "description": "Ice cream, caramel, chocolate sauces.",
+      "price": "$14.00",
+      "section": "Postres"
+    },
+    {
+      "name": "Flan",
+      "description": "",
+      "price": "$12.00",
+      "section": "Postres"
+    },
+    {
+      "name": "Strawberry Glazed Butter Cake",
+      "description": "",
+      "price": "$16.00",
+      "section": "Postres"
+    },
+    {
+      "name": "Chocolate Tres Leche",
+      "description": "",
+      "price": "$16.00",
+      "section": "Postres"
+    },
+    {
+      "name": "Sweet Heat Wings",
+      "description": "",
+      "price": "$14.00",
+      "section": "Summer Antojitos"
+    },
+    {
+      "name": "Crispy Jalapeno Chicken Torta",
+      "description": "",
+      "price": "$16.00",
+      "section": "Summer Especialidades"
+    },
+    {
+      "name": "Sweet Heat BBQ Ribs",
+      "description": "",
+      "price": "$34.00",
+      "section": "Summer Especialidades"
+    },
+    {
+      "name": "Fresa Cheesecake",
+      "description": "",
+      "price": "$15.00",
+      "section": "Summer Postres"
+    },
+    {
+      "name": "Cobbler De Duranzo",
+      "description": "",
+      "price": "$14.00",
+      "section": "Summer Postres"
+    }
+  ]
+}

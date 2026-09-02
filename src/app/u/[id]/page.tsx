@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
-import { getPublicProfile } from "@/lib/db";
-import { restaurants } from "@/data/restaurants";
+import { getPublicProfile, getRestaurantById } from "@/lib/db";
 import { initials } from "@/lib/format";
 import { PlateStarIcon } from "@/components/icons";
 import { RankInsignia } from "@/components/RankInsignia";
@@ -28,8 +27,8 @@ export default async function PublicProfilePage({
   if (!profile) notFound();
 
   const favoriteRestaurant = profile.favoriteRestaurantId
-    ? restaurants.find((r) => r.id === profile.favoriteRestaurantId)
-    : undefined;
+    ? await getRestaurantById(profile.favoriteRestaurantId)
+    : null;
 
   const rank = rankFor(profile.points);
 

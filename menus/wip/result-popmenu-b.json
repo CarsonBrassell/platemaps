@@ -1,0 +1,371 @@
+[
+  {
+    "restaurantId": "1161",
+    "name": "Good Bar",
+    "sourceUrl": "https://goodbarsd.com/menus/online-order-pickup?location=good-bar",
+    "confidence": "high",
+    "notes": "Popmenu, the restaurant's own site, read from the server-rendered JSON-LD on each menu page with probe/extract_popmenu_jsonld.js. This site publishes ordering menus rather than dayparts: the pickup and delivery menus are price-identical on all 49 items (compared row by row, so no delivery markup applies), and the smaller food-ordering and drinks-ordering menus repeat most of that catalog while carrying a few items pickup does not. All three were merged behind a name+price dedup, with the source menu kept in the section label. Storefront address 1872 Rosecrans St. matches the record. Captured by the coordinator session 2026-08-31.",
+    "dishes": [
+      {
+        "name": "SIDE OF BACON (2PCS)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Menu — Sides"
+      },
+      {
+        "name": "SIDE OF CARROTS 4",
+        "description": "",
+        "price": "$0.50",
+        "section": "Menu — Sides"
+      },
+      {
+        "name": "SIDE OF CELERY 4",
+        "description": "",
+        "price": "$0.50",
+        "section": "Menu — Sides"
+      },
+      {
+        "name": "SIDE OF CHIX BREAST",
+        "description": "",
+        "price": "$4.00",
+        "section": "Menu — Sides"
+      },
+      {
+        "name": "SIDE OF RANCH",
+        "description": "",
+        "price": "$0.50",
+        "section": "Menu — Sides"
+      },
+      {
+        "name": "Churros",
+        "description": "Taco Tuesday churros special.",
+        "price": "$4.00",
+        "section": "Menu — Sides"
+      },
+      {
+        "name": "1 Egg",
+        "description": "",
+        "price": "$1.50",
+        "section": "Menu — Sides"
+      },
+      {
+        "name": "Western",
+        "description": "Fresh Angus beef patty stacked with cheddar, bacon, Oakstek BBQ, crispy onion rings, and smoky ranch. Bold, smoky, and built for a good time.",
+        "price": "$16.00",
+        "section": "Menu — Burgers"
+      },
+      {
+        "name": "Goodburger",
+        "description": "Fresh Angus beef patty, American cheese, lettuce, pickles, Good Sauce, served with a side of seasoned fries.",
+        "price": "$15.00",
+        "section": "Menu — Burgers"
+      },
+      {
+        "name": "Mushroom",
+        "description": "",
+        "price": "$15.50",
+        "section": "Menu — Burgers"
+      },
+      {
+        "name": "Aristocrat Cheesesteak",
+        "description": "",
+        "price": "$16.50",
+        "section": "Menu — Cheesesteaks"
+      },
+      {
+        "name": "Buffalo Chicken Cheesesteak",
+        "description": "",
+        "price": "$16.50",
+        "section": "Menu — Cheesesteaks"
+      },
+      {
+        "name": "Classic Cheesesteak",
+        "description": "",
+        "price": "$16.00",
+        "section": "Menu — Cheesesteaks"
+      },
+      {
+        "name": "Cowboy Cheesesteak",
+        "description": "",
+        "price": "$17.00",
+        "section": "Menu — Cheesesteaks"
+      },
+      {
+        "name": "Strips",
+        "description": "Perfectly seasoned breaded chicken breast, served with seasoned fries and house-made ranch. Simple, crispy, always a win.",
+        "price": "$14.00",
+        "section": "Menu — Chicken"
+      },
+      {
+        "name": "Wings",
+        "description": "Crisped to perfection tossed in your choice of sauce. Served with homemade ranch or blue cheese, carrots, and celery.",
+        "price": "$13.00",
+        "section": "Menu — Chicken"
+      },
+      {
+        "name": "Good Chicken Sandwich",
+        "description": "",
+        "price": "$15.00",
+        "section": "Menu — Chicken"
+      },
+      {
+        "name": "Chicken Parmesan Sandwich",
+        "description": "",
+        "price": "$16.00",
+        "section": "Menu — Chicken"
+      },
+      {
+        "name": "Buffalo Chicken Sandwich",
+        "description": "",
+        "price": "$16.00",
+        "section": "Menu — Chicken"
+      },
+      {
+        "name": "Good Salad",
+        "description": "Crisp lettuce, tomatoes, shredded carrots, house-made croutons, bacon, cheese, house vinaigrette or bleu cheese dressing. Fresh, simple, done right.",
+        "price": "$13.00",
+        "section": "Menu — Salads"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "",
+        "price": "$11.00",
+        "section": "Menu — Salads"
+      },
+      {
+        "name": "Chicken Caesar",
+        "description": "House-marinated grilled chicken breast, romaine lettuce tossed in Caesar dressing, Parmesan cheese, and house-made croutons. A classic, the Goodbar way.",
+        "price": "$14.00",
+        "section": "Menu — Salads"
+      },
+      {
+        "name": "Chicken Caesar Wrap",
+        "description": "",
+        "price": "$16.00",
+        "section": "Menu — Salads"
+      },
+      {
+        "name": "Buffalo Chicken Caesar Wrap",
+        "description": "",
+        "price": "$14.00",
+        "section": "Menu — Salads"
+      },
+      {
+        "name": "Ultimate PB&J BLT",
+        "description": "Crispy bacon, lettuce, tomato, peanut butter, and jelly on toasted bread. Sweet, salty, and way better than it should be.",
+        "price": "$14.00",
+        "section": "Menu — Sandwiches"
+      },
+      {
+        "name": "Good BLT",
+        "description": "Crispy bacon, lettuce, tomato, and mayo on toasted bread. Simple, classic, always good.",
+        "price": "$14.00",
+        "section": "Menu — Sandwiches"
+      },
+      {
+        "name": "Good Bowl",
+        "description": "",
+        "price": "$12.00",
+        "section": "Menu — Bowls"
+      },
+      {
+        "name": "Good Bowl (Chicken)",
+        "description": "",
+        "price": "$15.00",
+        "section": "Menu — Bowls"
+      },
+      {
+        "name": "Good Bowl (Beef)",
+        "description": "",
+        "price": "$15.00",
+        "section": "Menu — Bowls"
+      },
+      {
+        "name": "Good Bowl (Shrimp)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Menu — Bowls"
+      },
+      {
+        "name": "Basket of Fries",
+        "description": "",
+        "price": "$6.00",
+        "section": "Menu — Baskets"
+      },
+      {
+        "name": "Basket of Onion Rings",
+        "description": "",
+        "price": "$7.00",
+        "section": "Menu — Baskets"
+      },
+      {
+        "name": "Cauliflower Bites Basket",
+        "description": "",
+        "price": "$10.00",
+        "section": "Menu — Baskets"
+      },
+      {
+        "name": "Mini Corn Dog",
+        "description": "",
+        "price": "$10.00",
+        "section": "Menu — Baskets"
+      },
+      {
+        "name": "Can Coke",
+        "description": "",
+        "price": "$2.50",
+        "section": "Menu — ToGo Drinks"
+      },
+      {
+        "name": "Can Diet Coke",
+        "description": "",
+        "price": "$2.50",
+        "section": "Menu — ToGo Drinks"
+      },
+      {
+        "name": "Can Sprite",
+        "description": "",
+        "price": "$2.50",
+        "section": "Menu — ToGo Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$3.00",
+        "section": "Menu — ToGo Drinks"
+      },
+      {
+        "name": "Good Fries",
+        "description": "Crispy fries topped with melted cheese, bacon, and sour cream. Stacked, savory, and seriously good.",
+        "price": "$13.00",
+        "section": "Menu — Fries, Tots, & Rings....."
+      },
+      {
+        "name": "Buffalo Fries",
+        "description": "Crispy French fries loaded with buffalo chicken, melted cheese, and a drizzle of ranch or bleu cheese. Messy, bold, and worth every bite.",
+        "price": "$15.00",
+        "section": "Menu — Fries, Tots, & Rings....."
+      },
+      {
+        "name": "Fries",
+        "description": "Classic and crispy.",
+        "price": "$6.00",
+        "section": "Menu — Fries, Tots, & Rings....."
+      },
+      {
+        "name": "Tater Tots",
+        "description": "Golden and snackable.",
+        "price": "$7.00",
+        "section": "Menu — Fries, Tots, & Rings....."
+      },
+      {
+        "name": "Onion Rings",
+        "description": "Crunchy and satisfying.",
+        "price": "$7.00",
+        "section": "Menu — Fries, Tots, & Rings....."
+      },
+      {
+        "name": "Frings",
+        "description": "",
+        "price": "$6.50",
+        "section": "Menu — Fries, Tots, & Rings....."
+      },
+      {
+        "name": "Mozzarella Sticks",
+        "description": "",
+        "price": "$9.00",
+        "section": "Menu — Bites"
+      },
+      {
+        "name": "Mini Churros",
+        "description": "",
+        "price": "$4.00",
+        "section": "Menu — Bites"
+      },
+      {
+        "name": "Carnival Ticket",
+        "description": "",
+        "price": "$10.00",
+        "section": "Menu — Carnival Ticket"
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "description": "",
+        "price": "$14.00",
+        "section": "Food — FOOD"
+      },
+      {
+        "name": "Chicken Sandwich",
+        "description": "house-marinated grilled chicken breast, thick cut bacon, American cheese, lettuce, tomato, That Good Sauce, served with a side of seasoned fries",
+        "price": "$15.00",
+        "section": "Food — FOOD"
+      },
+      {
+        "name": "Chicken Strips",
+        "description": "",
+        "price": "$14.00",
+        "section": "Food — FOOD"
+      },
+      {
+        "name": "GoodBurger",
+        "description": "fresh Angus beef patty, American cheese, lettuce, pickles, That Good Sauce, served with a side of seasoned fries",
+        "price": "$15.00",
+        "section": "Food — FOOD"
+      },
+      {
+        "name": "HOT SAUCE BOTTLE- OAKSTEAK",
+        "description": "",
+        "price": "$10.99",
+        "section": "Food — FOOD"
+      },
+      {
+        "name": "Mushroom Burger",
+        "description": "",
+        "price": "$15.50",
+        "section": "Food — FOOD"
+      },
+      {
+        "name": "The Cowboy Cheesesteak",
+        "description": "rib eye steak, grilled onions, house BBQ sauce, American cheese, served on an Amoroso roll",
+        "price": "$17.00",
+        "section": "Food — FOOD"
+      },
+      {
+        "name": "BOTTLED WATER",
+        "description": "",
+        "price": "$3.00",
+        "section": "Food — DRINKS"
+      },
+      {
+        "name": "Chardonnay Eos",
+        "description": "",
+        "price": "$8.00",
+        "section": "Drinks — Wine"
+      },
+      {
+        "name": "J. Roget Brut",
+        "description": "",
+        "price": "$10.00",
+        "section": "Drinks — Wine"
+      },
+      {
+        "name": "Kim Crawford Sauvignon Blanc",
+        "description": "When it comes to a crisp and refreshing sauvignon blanc, New Zealand knows what they're doing & Kim Crawford is one of the best. Marlborough, New Zealand. 12.5% ABV",
+        "price": "$10.00",
+        "section": "Drinks — Wine"
+      },
+      {
+        "name": "Rodney Strong Chardonnay",
+        "description": "An elegant fullness, creamy & crisp. Sonoma Valley, California. 12.5% ABV",
+        "price": "$10.00",
+        "section": "Drinks — Wine"
+      },
+      {
+        "name": "Sauvignon Blanc Eos",
+        "description": "",
+        "price": "$8.00",
+        "section": "Drinks — Wine"
+      }
+    ]
+  }
+]

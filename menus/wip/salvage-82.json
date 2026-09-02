@@ -1,0 +1,773 @@
+[
+  {
+    "restaurantId": "3222",
+    "name": "Sun Deck",
+    "sourceUrl": "https://places.singleplatform.com/sundeck/menu_widget",
+    "confidence": "low",
+    "blocked": "Restaurant's own listing (SinglePlatform widget embedded on hoteldel.com/dine/sun-deck/, data-location=\"sundeck\") renders the full item list (Main Menu, Cocktails/Wine/Beer, Kids Menu, ~50+ items) but with prices stripped server-side -- only one item (a Summer Special, Birria Nachos GF and Draft Beer, $34) carries a price in the HTML; grepping the whole widget response for \"price\" finds nothing else. The Hilton mirror (hilton.com/en/hotels/sanqqqq-hotel-del-coronado/dining/sun-deck/) 403s a browser-UA curl. The only other source found, a menuweb.menu-hosted PDF, is a directory-farm aggregation with garbled section names (\"Indian\", \"Mexican Dishes\", \"Ingredients Used\", \"Restaurant Category: BAR\") and prices visibly misaligned to the wrong dish names -- fails the pairing-confidence bar, not used. Needs a Chrome-equipped agent to check whether hoteldel.com renders per-item prices through interaction/JS the static SinglePlatform payload omits, or to load hilton.com past its bot gate.",
+    "notes": "Categories reached: Main Menu (For The Table, Salads & Bowls, Handhelds, Sides, Kids Bites, Seaside Sweets), Cocktails/Wine/Beer (Signature Cocktails, Wine, On Tap, Cans, Signature Mocktails). All read but unpriced except the one special noted above.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1011",
+    "name": "Petes Place",
+    "sourceUrl": "http://www.petesplacelamesa.com/",
+    "confidence": "low",
+    "blocked": "The listed domain petesplacelamesa.com is dead: the root redirects (via 302) to a Network Solutions parked-domain page (networksolutions.com/typepad?siteID=100...), and the /petes_place/ path redirects to /lander (a domain-parking landing page) over plain HTTP while HTTPS 403s behind Cloudflare. Directory alternatives found by search (zmenu.com, menupix.com) both 403 a curl request; restaurantji.com loads but contains no prices, only reviews; restaurantguru.com's only dollar figure is a $20-$30 per-person price-range badge, not per-item prices. Yelp (m.yelp.com/biz/petes-place-la-mesa) 403s -- its dated photos of the physical menu would be an allowed source per the playbook but require a browser to view. Needs a Chrome-equipped agent to check Yelp/Google Maps photos for a dated shot of the actual posted menu, and to verify via search whether the business has moved to a different live domain or Facebook page.",
+    "notes": "No section list established -- could not reach any source with the restaurant's real menu structure. WebSearch summary described a bar-food/breakfast menu (burgers, wings, nachos, Country Benedict, Sausage Gravy & Biscuits, tacos, 20 beers on tap) but this is unverified against raw bytes and not used for dishes per playbook rule 4.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5298",
+    "name": "La Bella Cafe & Games",
+    "sourceUrl": "https://www.labellas.com/menus/dine-in-take-out-delivery?location=la-bella-cafe-and-games",
+    "confidence": "high",
+    "notes": "Site branding calls this location \"La Bella Pizza\" (the restaurant group's shared name across its two Chula Vista locations), but the address 289 G Street, Chula Vista, CA 91910 matches the work list exactly, and the Popmenu location record's own name field is literally \"La Bella Cafe & Games\" (location id 5565, phone (619) 426-8830) -- distinct from the other location \"La Bella Pizza Garden\" at 373 Third Avenue (id 5560). Used the EXACT work-list name per house rules despite the page chrome saying \"La Bella Pizza\". Categories reached: Appetizers, Soups & Salads, Our Famous Pizza, Dinners, Pasta Dishes, Sandwiches, Family Meals & Pizza Party Combo, Dishes Served Family/Half Catering Trays, Desserts -- all 9 sections of the \"Dine In Take-Out Delivery\" menu (the complete core food menu). A separate \"Craft Brew & Fine Wines\" menu (beer taps + wine list, adjunct) rendered 0 items server-side for this location -- checked, not core, excluded. A \"Catering\" menu tab also exists and was not opened (adjunct to the dine-in menu, which already includes a family/catering-tray section). Prices for items with a single size came straight from the page's JSON-LD (schema.org Menu, 48 items). The other 34 items use Popmenu's per-size pricing (wings, pizzas by size, pasta plate/platter, catering trays) which is absent from the section JSON-LD (offers: null) and only appears in each item's own page under window.POPMENU_APOLLO_STATE (MenuItem.sizes -> MenuItemSize.price) -- fetched all 34 item pages individually and expanded each size into its own dish row, e.g. \"Original Buffalo Wings (Small)\" / \"(Large)\".",
+    "dishes": [
+      {
+        "name": "Golden Calamari",
+        "description": "",
+        "price": "$14.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Combination Platter",
+        "description": "Original Hot Wings, Chicken Tenders. Jalapeno Poppers, Battered Zucchini & Toasted Cheese Ravioli's",
+        "price": "$32.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Soup Of The Day & Minestrone",
+        "description": "",
+        "price": "$4.95",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Gluten Free Medium thin Crust w/Twist of Garlic",
+        "description": "Gluten Free Product is Marinara Sauce Has No Sugar Added",
+        "price": "$17.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "French Bread Pizza",
+        "description": "Toasty Split French Roll, Tomato Sauce add Toppings .75",
+        "price": "$10.75",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Baked Penne Rigate",
+        "description": "Penne Noodles w/ Tomato Sauce & Mozzarella, Baked Golden Brown",
+        "price": "$13.50",
+        "section": "Dinners"
+      },
+      {
+        "name": "Chicken Parmesan",
+        "description": "Italian Seasoned Breaded Chicken Breast Smothered In Tomato Sauce & Mozzarella",
+        "price": "$16.00",
+        "section": "Dinners"
+      },
+      {
+        "name": "Meatball Parmesan",
+        "description": "3 Meatballs Smothered In Mozzarella & Baked Golden Brown",
+        "price": "$15.50",
+        "section": "Dinners"
+      },
+      {
+        "name": "Italian Sausage Parmesan",
+        "description": "2 Tarantino's Hot Sausages Baked in Tomato Sauce & Mozzarella",
+        "price": "$15.50",
+        "section": "Dinners"
+      },
+      {
+        "name": "Mostaccioli",
+        "description": "Our Baked Penne with Meat Sauce & Ricotta Cheese",
+        "price": "$17.00",
+        "section": "Dinners"
+      },
+      {
+        "name": "Boston Lager Fish & Chips",
+        "description": "Cod Fillets Beer Battered, Served With Cole Slaw & Fries",
+        "price": "$17.00",
+        "section": "Dinners"
+      },
+      {
+        "name": "Kids Mac & Cheese",
+        "description": "Penne Rigate Cheddar Cheese Add Bacon $1",
+        "price": "$10.95",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Side 4 Homemade Meatballs & Garlic Bread",
+        "description": "Smothered in Spaghetti Sauce",
+        "price": "$10.50",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Side 3 Tarantinos Hot Italian Sausages & Garlic Bread",
+        "description": "3 Hot Italian Sausages Smothered in or Tomato Sauce & Garlic Bread",
+        "price": "$10.50",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Meatball Sandwich",
+        "description": "",
+        "price": "$10.75",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Hot Ham Sandwich",
+        "description": "",
+        "price": "$12.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Philadelphia Cheese Steak",
+        "description": "",
+        "price": "$14.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "\"Miss Kitty\" Western Bacon Cheese Burger",
+        "description": "Flavorful Bbq Sauce & Onion Ring Inside",
+        "price": "$12.50",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Tarantino's Italian Sausage Sandwich",
+        "description": "",
+        "price": "$11.50",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Hot Pastrami Sandwich Melted Cheese $1.75 More",
+        "description": "",
+        "price": "$14.75",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Pastrami Ruben on Rye",
+        "description": "",
+        "price": "$12.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "\"Tony Burger\" 8 Oz. Steak Burger",
+        "description": "",
+        "price": "$10.25",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Ham Or Genoa Salami or Turkey Torpedo",
+        "description": "Choose Meat With Provo Cheese, Lettuce, Onions & Italian Dressing",
+        "price": "$8.75",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Italian Combo Torpedo",
+        "description": "Genoa Salami & Ham With Provo Cheese, Lettuce, Onions & Italian Dressing",
+        "price": "$10.25",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Kitty's Family Meal",
+        "description": "Medium Pizza, Sm. Antipasto, Caesar Salad or Spring Mix Salad, Platter of Fettuccini Alfredo or Spaghetti or Penne Rigate, Garlic Bread, includes 2 Pitchers of Soda or Bottle House Wine or Fine Wine $8 or Pitcher Domestic Beer or Any Craft Brew for $5 More, Upsize Pizza to a Large $9,",
+        "price": "$55.00",
+        "section": "Family Meals & Pizza Party Combo"
+      },
+      {
+        "name": "Papa's Family Meal",
+        "description": "Medium Pizza, Sm. Appetizer\nSm. Antipasto, Caesar Salad or Spring Mix Salad, Garlic Bread\nPlatter Fettuccine Alfredo or Spaghetti or Penne Rigate\nIncludes 2 Pitchers of Soda or Bottle House Wine or Fine Wine $8 or Pitcher Domestic Beer or Any Craft Brew for $5 More, Upsize Size Pizza or Appetizer to a Large $9 More",
+        "price": "$65.00",
+        "section": "Family Meals & Pizza Party Combo"
+      },
+      {
+        "name": "Pizza Party Combo",
+        "description": "Large Pizza, Large Appetizer, Large Antipasto, Lg. Spring Mix or Caesar Salad & 2 Pitchers Soda or House Wine or Domestic Beer Pitcher or for $5 Upgrade to Craft Brew Pitcher for $9 Upgrade Appetizer to Combo Platter Appetizer or $8 Get Any Fine Bottled Wine!",
+        "price": "$70.00",
+        "section": "Family Meals & Pizza Party Combo"
+      },
+      {
+        "name": "Tray Lasagna",
+        "description": "6 Lasagna's La Bella's Classic for 64 Years",
+        "price": "$68.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Baked Penne Rigate",
+        "description": "Penne Noodles w/ Tomato Sauce & Mozzarella, Baked Golden Brown",
+        "price": "$47.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Chicken Parmesan",
+        "description": "Generous Cuts of Seasoned Breaded Veals or Seasoned White Chicken with Tomato Sauce & Mozzarella Cheese",
+        "price": "$58.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Manicotti",
+        "description": "12 Pasta Shells Stuffed with Ricotta, Tomato Sauce & Mozzarella",
+        "price": "$49.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Fettuccini Alfredo",
+        "description": "Add Grilled Chicken $9\nAdd Sauteed Shrimp $14",
+        "price": "$39.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Meat Balls",
+        "description": "15 Homemade, Perfectly Seasoned Meat Balls In Our Tomato Sauce",
+        "price": "$32.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Antipasto Salad",
+        "description": "With Provolone, Genoa Salami, Tomatoes, Pepperoncinis, & Olives",
+        "price": "$30.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Caesar Salad",
+        "description": "Crisp Greens Balsmic Ceasar Salad add Seasoned Grilled Chicken Breast $8,",
+        "price": "$26.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Spring Mix Salad",
+        "description": "Cranberries Raisins, Sesame Seeds Feta Red Bells, Mild Sesame Seed Dressing",
+        "price": "$28.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Original Chicken Wings (30)",
+        "description": "Choose Your Favorite Sauces, Ranch, Buffalo Or Garlic Buffalo",
+        "price": "$49.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Wet Wings Buffalo or Kickin' Bourbon Bbq or Garlic Buffalo",
+        "description": "Includes Dipping Sauce, Ranch",
+        "price": "$48.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Potato Skins 16 With Bacon & Cheddar",
+        "description": "Want Jalapeno's Just Ask!",
+        "price": "$38.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Garlic Bread",
+        "description": "12 Large 1\" Thick Slices of Sourdough Cut in half",
+        "price": "$15.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Linguini Clams Marinara",
+        "description": "",
+        "price": "$43.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Linguini w/Shrimp",
+        "description": "With Olive Oil & Garlic or Marinara",
+        "price": "$47.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "New York Cheese Cake",
+        "description": "",
+        "price": "$5.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Warm Cinnamon Dough Strips",
+        "description": "With Raspberry & Chocolate Dip",
+        "price": "$5.95",
+        "section": "Desserts"
+      },
+      {
+        "name": "Mama's Homemade Brownie",
+        "description": "",
+        "price": "$5.50",
+        "section": "Desserts"
+      },
+      {
+        "name": "Apple Pie Per Slice",
+        "description": "",
+        "price": "$4.50",
+        "section": "Desserts"
+      },
+      {
+        "name": "Gelato Or Sorbetto",
+        "description": "Buy 1 Get 2nd One $3 More! Available At Cafe",
+        "price": "$4.75",
+        "section": "Desserts"
+      },
+      {
+        "name": "3 Mama Kitty's Mini Cannolis",
+        "description": "",
+        "price": "$5.50",
+        "section": "Desserts"
+      },
+      {
+        "name": "Original Buffalo Wings (Small)",
+        "description": "",
+        "price": "$12.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Original Buffalo Wings (Large)",
+        "description": "",
+        "price": "$23.75",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Buffalo Garlic Wet Wings (7 Wings)",
+        "description": "",
+        "price": "$12.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Buffalo Garlic Wet Wings (14 Wings)",
+        "description": "",
+        "price": "$23.75",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mango Habanero Wet Wings (7 Wings)",
+        "description": "",
+        "price": "$12.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mango Habanero Wet Wings (14 Wings)",
+        "description": "",
+        "price": "$23.75",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Kickin' Bbq Wet Wings (7 Wings)",
+        "description": "",
+        "price": "$12.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Kickin' Bbq Wet Wings (14 Wings)",
+        "description": "",
+        "price": "$23.75",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Tender Strips (Small)",
+        "description": "4 Breaded Tenders Small, Large order is 8",
+        "price": "$9.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Tender Strips (Large)",
+        "description": "4 Breaded Tenders Small, Large order is 8",
+        "price": "$17.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garlic Bread Topped Mozzarella & Baked (Small 2)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garlic Bread Topped Mozzarella & Baked (Large 4)",
+        "description": "",
+        "price": "$9.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Sidewinder Mozzarella Cheese Fries (Small)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Sidewinder Mozzarella Cheese Fries (Large)",
+        "description": "",
+        "price": "$11.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Potato Skins (4)",
+        "description": "Bacon & Cheddar. Want Jalapeno Just Ask",
+        "price": "$10.75",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Potato Skins (8)",
+        "description": "Bacon & Cheddar. Want Jalapeno Just Ask",
+        "price": "$18.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Jalapeño Poppers (Small)",
+        "description": "",
+        "price": "$10.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Jalapeño Poppers (Large)",
+        "description": "",
+        "price": "$18.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Toasty Cheese Raviolis (Large)",
+        "description": "",
+        "price": "$18.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Toasty Cheese Raviolis (Small)",
+        "description": "",
+        "price": "$10.75",
+        "section": "Appetizers"
+      },
+      {
+        "name": "The Antipasto Salad (Small)",
+        "description": "A Large Portion Of Tossed Romaine & Iceberg Lettuce, Genoa Salami, Provolone, Tomatoes, Pepperoncinis & Black Olives",
+        "price": "$10.75",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "The Antipasto Salad (Large)",
+        "description": "A Large Portion Of Tossed Romaine & Iceberg Lettuce, Genoa Salami, Provolone, Tomatoes, Pepperoncinis & Black Olives",
+        "price": "$14.75",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Spring Mix Salad",
+        "description": "Tender Greens, Cranberries, Feta Cheese, Red Bell Peppers, Sunflower Seeds, Sesame Ginger Dressing",
+        "price": "$14.00",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Caesar Salad add Grilled Chicken $6 (Small)",
+        "description": "Tossed Green Lettuce, Croutons, Shredded Parmesan",
+        "price": "$9.00",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Caesar Salad add Grilled Chicken $6 (Large)",
+        "description": "Tossed Green Lettuce, Croutons, Shredded Parmesan",
+        "price": "$12.50",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Cheese Pizza (Mozzarella) (Sm. 8\")",
+        "description": "",
+        "price": "$8.50",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Cheese Pizza (Mozzarella) (Med. 12\")",
+        "description": "",
+        "price": "$14.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Cheese Pizza (Mozzarella) (Lg. 16\")",
+        "description": "",
+        "price": "$24.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Margherita Pizza (Lg.)",
+        "description": "Marinara, Fresh Basil, Garlic, Slice Tomato, Fresh Mozzarella & Mozzarella",
+        "price": "$30.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Margherita Pizza (Med.)",
+        "description": "Marinara, Fresh Basil, Garlic, Slice Tomato, Fresh Mozzarella & Mozzarella",
+        "price": "$18.75",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Margherita Pizza (Sm.)",
+        "description": "Marinara, Fresh Basil, Garlic, Slice Tomato, Fresh Mozzarella & Mozzarella",
+        "price": "$10.50",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza (Lg.)",
+        "description": "Canadian Bacon & Pineapple ~ Jalapeños $1 more .",
+        "price": "$28.50",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza (Med.)",
+        "description": "Canadian Bacon & Pineapple ~ Jalapeños $1 more .",
+        "price": "$18.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza (Sm.)",
+        "description": "Canadian Bacon & Pineapple ~ Jalapeños $1 more .",
+        "price": "$10.50",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Veggie Lover (Lg.)",
+        "description": "Mushroom, Red Bell, Red Onions, Spinach, Feta & Mozzarella",
+        "price": "$33.50",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Veggie Lover (Med.)",
+        "description": "Mushroom, Red Bell, Red Onions, Spinach, Feta & Mozzarella",
+        "price": "$21.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Veggie Lover (Sm.)",
+        "description": "Mushroom, Red Bell, Red Onions, Spinach, Feta & Mozzarella",
+        "price": "$12.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Kick'n BBQ Chicken Pizza (Lg.)",
+        "description": "BBQ Chicken, Alfredo, Red Onion, Cilantro, Cheddar Jack, Mozzarella",
+        "price": "$34.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Kick'n BBQ Chicken Pizza (Med.)",
+        "description": "BBQ Chicken, Alfredo, Red Onion, Cilantro, Cheddar Jack, Mozzarella",
+        "price": "$23.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Kick'n BBQ Chicken Pizza (Sm.)",
+        "description": "BBQ Chicken, Alfredo, Red Onion, Cilantro, Cheddar Jack, Mozzarella",
+        "price": "$12.50",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Papa's Favorite (Lg.)",
+        "description": "Pepperoni, Sausage & Mushroom",
+        "price": "$31.50",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Papa's Favorite (Med.)",
+        "description": "Pepperoni, Sausage & Mushroom",
+        "price": "$19.25",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Papa's Favorite (Sm.)",
+        "description": "Pepperoni, Sausage & Mushroom",
+        "price": "$10.75",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Mexican Style Pizza (Lg.)",
+        "description": "Chicken, Chorizo Refried Bean Sauce, Jalapeno, Cilantro, Onion, Cheddar Jack, Mozzarella",
+        "price": "$34.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Mexican Style Pizza (Med.)",
+        "description": "Chicken, Chorizo Refried Bean Sauce, Jalapeno, Cilantro, Onion, Cheddar Jack, Mozzarella",
+        "price": "$23.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Mexican Style Pizza (Sm.)",
+        "description": "Chicken, Chorizo Refried Bean Sauce, Jalapeno, Cilantro, Onion, Cheddar Jack, Mozzarella",
+        "price": "$12.50",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Italian Meat Lovers Pizza (Sm.)",
+        "description": "Pepperoni, Sausage, Genoa Salami & Meatballs",
+        "price": "$12.95",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Italian Meat Lovers Pizza (Med.)",
+        "description": "Pepperoni, Sausage, Genoa Salami & Meatballs",
+        "price": "$24.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Italian Meat Lovers Pizza (Lg.)",
+        "description": "Pepperoni, Sausage, Genoa Salami & Meatballs",
+        "price": "$35.50",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Works Pizza (Lg.)",
+        "description": "Pepperoni, Sausage, Mushroom, Olive, Onion, Green Bell Pepper",
+        "price": "$35.50",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Works Pizza (Med.)",
+        "description": "Pepperoni, Sausage, Mushroom, Olive, Onion, Green Bell Pepper",
+        "price": "$24.00",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Works Pizza (Sm.)",
+        "description": "Pepperoni, Sausage, Mushroom, Olive, Onion, Green Bell Pepper",
+        "price": "$12.95",
+        "section": "Our Famous Pizza"
+      },
+      {
+        "name": "Original Lasagna (Side)",
+        "description": "Original 1955 Recipe Prepared W/ Meatballs, Boiled Eggs, Mozzarella, Ricotta & Parmesan",
+        "price": "$16.00",
+        "section": "Dinners"
+      },
+      {
+        "name": "Original Lasagna (Full)",
+        "description": "Original 1955 Recipe Prepared W/ Meatballs, Boiled Eggs, Mozzarella, Ricotta & Parmesan",
+        "price": "$18.00",
+        "section": "Dinners"
+      },
+      {
+        "name": "Mamma's Manicotti (Side)",
+        "description": "Noodles Stuffed Ricotta Cheese Smothered In Tomato Sauce & Mozzarella",
+        "price": "$12.50",
+        "section": "Dinners"
+      },
+      {
+        "name": "Mamma's Manicotti (Full)",
+        "description": "Noodles Stuffed Ricotta Cheese Smothered In Tomato Sauce & Mozzarella",
+        "price": "$15.00",
+        "section": "Dinners"
+      },
+      {
+        "name": "Spaghetti Or Penne Rigate (Plate)",
+        "description": "W/ Our Original Tomato Sauce Or Garlic & Olive Oil Or Marinara Sauce Add Meatballs Or Meat Sauce",
+        "price": "$10.00",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Spaghetti Or Penne Rigate (Platter)",
+        "description": "W/ Our Original Tomato Sauce Or Garlic & Olive Oil Or Marinara Sauce Add Meatballs Or Meat Sauce",
+        "price": "$15.00",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Penne Rigate (Plate)",
+        "description": "Like Pesto Sauce $2.50 more",
+        "price": "$12.00",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Penne Rigate (Platter)",
+        "description": "Like Pesto Sauce $2.50 more",
+        "price": "$18.00",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Ravioli (Beef Or Cheese) (Plate)",
+        "description": "W/ Our Original Tomato Sauce Meat Sauce Or Meatball(S) Added Charge (Full Orders May Choose Half Spaghetti & Half Ravioli)",
+        "price": "$14.00",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Ravioli (Beef Or Cheese) (Platter)",
+        "description": "W/ Our Original Tomato Sauce Meat Sauce Or Meatball(S) Added Charge (Full Orders May Choose Half Spaghetti & Half Ravioli)",
+        "price": "$21.00",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Spaghetti Or Penne w/ 1 or 3 Tarantino Sausages (Side (1))",
+        "description": "W/Italian Sausages Smothered In Our Original Tomato Sauce",
+        "price": "$13.75",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Spaghetti Or Penne w/ 1 or 3 Tarantino Sausages (Full (3))",
+        "description": "W/Italian Sausages Smothered In Our Original Tomato Sauce",
+        "price": "$23.50",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Linguine w/Clams (Plate)",
+        "description": "Sauteed Clams, Garlic & Olive Oil, Red Clam Sauce Add Marinara",
+        "price": "$16.00",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Linguine w/Clams (Platter)",
+        "description": "Sauteed Clams, Garlic & Olive Oil, Red Clam Sauce Add Marinara",
+        "price": "$22.50",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Shrimp Scampi Linguini (Plate)",
+        "description": "Sauteed Shrimp, Garlic & Olive Oil Lemon Wine Sauce",
+        "price": "$17.50",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Shrimp Scampi Linguini (Platter)",
+        "description": "Sauteed Shrimp, Garlic & Olive Oil Lemon Wine Sauce",
+        "price": "$24.50",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Fettuccini Alfredo (Plate)",
+        "description": "Add Chicken Grilled Chicken $5 more",
+        "price": "$12.00",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Fettuccini Alfredo (Platter)",
+        "description": "Add Chicken Grilled Chicken $5 more",
+        "price": "$18.00",
+        "section": "Pasta Dishes"
+      },
+      {
+        "name": "Tray Spaghetti Or Penne (With Tomato Sauce)",
+        "description": "",
+        "price": "$30.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Spaghetti Or Penne (With Olive Oil & Garlic)",
+        "description": "",
+        "price": "$30.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Spaghetti Or Penne (With Pesto Sauce)",
+        "description": "",
+        "price": "$37.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Spaghetti Or Penne (With Meat Sauce)",
+        "description": "",
+        "price": "$42.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Chicken Tender Strips",
+        "description": "Chicken Breasts & Your Favorite Sauce Ranch, BBQ Or Buffalo Sauce",
+        "price": "$40.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      },
+      {
+        "name": "Tray Toasted Cheese Ravioli's W/ Marinera Dipping Sauce",
+        "description": "",
+        "price": "$38.00",
+        "section": "Dishes Served Family Half Catering Trays"
+      }
+    ]
+  }
+]

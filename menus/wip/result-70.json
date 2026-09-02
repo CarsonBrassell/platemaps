@@ -1,0 +1,11 @@
+[
+  {
+    "restaurantId": "4245",
+    "name": "Max's restaurant",
+    "sourceUrl": "https://www.maxsrestaurantna.com/san-diego",
+    "confidence": "low",
+    "blocked": "Popmenu site. The San Diego (Mira Mesa) location page only server-renders 3 'popular' MenuItems (Fried Chicken, Lumpia, and one more) inside its Apollo cache dump; the full menu (11 sections, ~54 items: Monthly Promos 1, New on the Menu 4, Max's Fried Chicken 1, Lighter Fare 6, Vegetables & Seafood 5, Ruby's Favorites 8, Grilled & Sizzlers 6, Soups 6, Rice & Noodles 8, Desserts 4, Beverages 5) is client-fetched via GraphQL after selecting the location at https://www.maxsrestaurantna.com/order#menu?location=san-diego. Needs a Chrome-equipped agent to open that URL, select San Diego/Mira Mesa, and read the rendered items with prices.",
+    "notes": "Confirmed correct location: page meta explicitly says 'near Mira Mesa, San Diego, CA' matching work-list address 8285 Mira Mesa Blvd. restaurantId in Popmenu's own system is 5466, menuId 164841.",
+    "dishes": []
+  }
+]

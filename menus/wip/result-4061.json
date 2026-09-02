@@ -1,0 +1,389 @@
+{
+  "restaurantId": "4061",
+  "name": "Chowking",
+  "sourceUrl": "https://order.chowkingusa.com/menu/mira-mesa",
+  "confidence": "high",
+  "crossCheckedAgainst": "",
+  "blocked": "",
+  "notes": "Chain location page (locations.chowkingusa.com) links to the restaurant's own Olo ordering platform (order.chowkingusa.com/menu/mira-mesa) for this specific San Diego store, address-matched (8955 Mira Mesa Blvd). The Olo Next.js app is fully client-rendered with no server-side JSON-LD and its public API endpoints return an anti-forgery 403 to a bare curl, so the menu was read live in Chrome (get_page_text) after selecting the Mira Mesa location - this follows the chain-SPA technique of reading what the page renders once a specific store is chosen. Covered 7 of 7 visible categories: Limited Time Promotions, Dimsum and Sides, Platters, Rice Meals, Noodles, Desserts, Beverages. Two Rice Meals items (Rice Bowl, Chao Fan) showed no base price in the flat list because they open a modifier dialog - Rice Bowl was opened and all 9 protein choices captured as separate priced rows (base /usr/bin/bash + protein add-on, which IS the total price for that bowl); the Rice Meals 'Chao Fan' card did not open on click and its description read as a duplicate cross-reference to the Chao Fan Small/Large Platter already captured under Platters, so it was not double-counted. No third-party source checked since this is the restaurant's own live ordering platform (tier 2) with internally consistent, non-round-number pricing typical of real POS pricing (no markup signature).",
+  "dishes": [
+    {
+      "name": "Frozen Meaty Asado Siopao (6pcs)",
+      "description": "",
+      "price": "$22.14",
+      "section": "Limited Time Promotions"
+    },
+    {
+      "name": "Frozen Bola-Bola Siopao (6pcs)",
+      "description": "",
+      "price": "$22.14",
+      "section": "Limited Time Promotions"
+    },
+    {
+      "name": "Meaty Asado Siopao (6 +1)",
+      "description": "6pcs steamed soft Chinese buns stuffed with seasoned pork filling.",
+      "price": "$22.14",
+      "section": "Dimsum and Sides"
+    },
+    {
+      "name": "Bola-Bola Siopao (6 +1)",
+      "description": "6pcs steamed soft Chinese buns stuffed with seasoned chicken, shredded cabbage.",
+      "price": "$22.14",
+      "section": "Dimsum and Sides"
+    },
+    {
+      "name": "3pcs Asado + 3pcs Bola-Bola Siopao",
+      "description": "3 Meaty Asado and 3 Bola-Bola steamed soft Chinese buns.",
+      "price": "$22.14",
+      "section": "Dimsum and Sides"
+    },
+    {
+      "name": "Meaty Asado Siopao (1pc)",
+      "description": "Steamed soft Chinese bun stuffed with seasoned pork filling.",
+      "price": "$3.69",
+      "section": "Dimsum and Sides"
+    },
+    {
+      "name": "Bola-Bola Siopao (1pc)",
+      "description": "Steamed soft Chinese bun stuffed with seasoned chicken, shredded cabbage.",
+      "price": "$3.69",
+      "section": "Dimsum and Sides"
+    },
+    {
+      "name": "Siomai (4pcs)",
+      "description": "Steamed open-faced dimsum made of savory pork filling in a special wrapper.",
+      "price": "$4.49",
+      "section": "Dimsum and Sides"
+    },
+    {
+      "name": "Lumpiang Shanghai (6pcs)",
+      "description": "Deep fried savory roll filled with pork and vegetable.",
+      "price": "$5.29",
+      "section": "Dimsum and Sides"
+    },
+    {
+      "name": "Frozen Meaty Asado Mini Siopao (12pcs)",
+      "description": "Frozen pack, 12pcs Chinese buns stuffed with seasoned pork filling.",
+      "price": "$22.14",
+      "section": "Dimsum and Sides"
+    },
+    {
+      "name": "Frozen Siomai (20pcs)",
+      "description": "Frozen pack, 20pcs open-faced dimsum made of savory pork filling.",
+      "price": "$21.99",
+      "section": "Dimsum and Sides"
+    },
+    {
+      "name": "Chao Fan Small Platter",
+      "description": "Chinese-inspired stir-fried rice with pork, egg, and veggies.",
+      "price": "$15.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Chao Fan Large Platter",
+      "description": "Chinese-inspired stir-fried rice with pork, egg, and veggies.",
+      "price": "$25.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Value Bundle 1",
+      "description": "8 pcs Chinese Style Fried Chicken served with 4 pcs Siopao.",
+      "price": "$35.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Value Bundle 2",
+      "description": "10 pcs Chinese Style Fried Chicken served with a small Pancit Canton platter.",
+      "price": "$40.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Value Bundle 3",
+      "description": "A small entree platter of your choice served with a small Pancit Canton platter.",
+      "price": "$45.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Beef Broccoli Small Platter",
+      "description": "Tender beef and broccoli tossed in a savory sauce.",
+      "price": "$30.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Beef Broccoli Large Platter",
+      "description": "Tender beef and broccoli tossed in a savory sauce.",
+      "price": "$45.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Salt and Pepper Pork Small Platter",
+      "description": "Crispy pork seasoned with savory salt and pepper blend.",
+      "price": "$25.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Salt and Pepper Pork Large Platter",
+      "description": "Crispy pork seasoned with savory salt and pepper blend.",
+      "price": "$40.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Honey Walnut Shrimp Small Platter",
+      "description": "Crispy shrimp tossed in a creamy sweet sauce and topped with candied walnuts.",
+      "price": "$25.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Honey Walnut Shrimp Large Platter",
+      "description": "Crispy shrimp tossed in a creamy sweet sauce and topped with candied walnuts.",
+      "price": "$40.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Popcorn Chicken Small Platter",
+      "description": "Crispy, bite-sized chicken seasoned with savory spices.",
+      "price": "$25.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Popcorn Chicken Large Platter",
+      "description": "Crispy, bite-sized chicken seasoned with savory spices.",
+      "price": "$40.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Spicy Popcorn Chicken Small Platter",
+      "description": "",
+      "price": "$25.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Spicy Popcorn Chicken Large Platter",
+      "description": "",
+      "price": "$40.00",
+      "section": "Platters"
+    },
+    {
+      "name": "8pcs Chinese-style Fried Chicken Small Platter",
+      "description": "8pcs of the crispy fried chicken with special Chinese flavors.",
+      "price": "$24.00",
+      "section": "Platters"
+    },
+    {
+      "name": "14pcs Chinese-style Fried Chicken Large Platter",
+      "description": "14pcs of the crispy fried chicken with special Chinese flavors.",
+      "price": "$36.00",
+      "section": "Platters"
+    },
+    {
+      "name": "25pcs Lumpiang Shanghai Platter",
+      "description": "25 pcs of the deep fried savory roll filled with pork and vegetable.",
+      "price": "$22.00",
+      "section": "Platters"
+    },
+    {
+      "name": "45pcs Lumpiang Shanghai Platter",
+      "description": "45 pcs of the deep fried savory roll filled with pork and vegetable.",
+      "price": "$40.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Pancit Canton Small Platter (serves 3-4)",
+      "description": "Stir fried noodles with a sweet-salty soy-based sauce.",
+      "price": "$21.00",
+      "section": "Platters"
+    },
+    {
+      "name": "Pancit Canton Large Platter (serves 6-8)",
+      "description": "Stir fried noodles with a sweet-salty soy-based sauce.",
+      "price": "$31.00",
+      "section": "Platters"
+    },
+    {
+      "name": "24pcs Siomai Platter",
+      "description": "24pcs steamed open-faced dimsum made of savory pork filling.",
+      "price": "$25.00",
+      "section": "Platters"
+    },
+    {
+      "name": "40pcs Siomai Platter",
+      "description": "40pcs steamed open-faced dimsum made of savory pork filling.",
+      "price": "$45.00",
+      "section": "Platters"
+    },
+    {
+      "name": "1 Entree Lauriat",
+      "description": "Favorite rice meal entree, served with steamed rice, half-serving of lumpia and a drink.",
+      "price": "$9.99",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "2 Entree Lauriat",
+      "description": "Choice of any 2 favorite rice meal entrees, served with steamed rice.",
+      "price": "$13.49",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "Rice Bowl - 2pcs Chinese-Style Fried Chicken",
+      "description": "Steamed white rice topped with choice of entree.",
+      "price": "$7.99",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "Rice Bowl - 2pcs Spicy Chinese-Style Fried Chicken",
+      "description": "Steamed white rice topped with choice of entree.",
+      "price": "$7.99",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "Rice Bowl - 1pc Spicy 1pc Original Chinese-Style Fried Chicken",
+      "description": "Steamed white rice topped with choice of entree.",
+      "price": "$7.99",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "Rice Bowl - 5pcs Lumpiang Shanghai",
+      "description": "Steamed white rice topped with choice of entree.",
+      "price": "$7.99",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "Rice Bowl - Beef Broccoli",
+      "description": "Steamed white rice topped with choice of entree.",
+      "price": "$8.99",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "Rice Bowl - Honey Walnut Shrimp",
+      "description": "Steamed white rice topped with choice of entree.",
+      "price": "$7.99",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "Rice Bowl - Popcorn Chicken",
+      "description": "Steamed white rice topped with choice of entree.",
+      "price": "$7.99",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "Rice Bowl - Spicy Popcorn Chicken",
+      "description": "Steamed white rice topped with choice of entree.",
+      "price": "$7.99",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "Rice Bowl - Salt and Pepper Pork",
+      "description": "Steamed white rice topped with choice of entree.",
+      "price": "$7.99",
+      "section": "Rice Meals"
+    },
+    {
+      "name": "Beef Wonton",
+      "description": "Beef soup with al dente noodles, tender beef chunks and wonton ball, garnished with greens.",
+      "price": "$11.99",
+      "section": "Noodles"
+    },
+    {
+      "name": "Chicken Mami",
+      "description": "Chicken with al dente noodles, tender chicken strips garnished with fried garlic.",
+      "price": "$10.49",
+      "section": "Noodles"
+    },
+    {
+      "name": "Wonton Noodle Soup",
+      "description": "Rich and flavorful soup with al dente noodles and wontons.",
+      "price": "$10.99",
+      "section": "Noodles"
+    },
+    {
+      "name": "Pancit Canton",
+      "description": "Stir fried noodles with a sweet-salty soy-based sauce.",
+      "price": "$7.39",
+      "section": "Noodles"
+    },
+    {
+      "name": "Mais Con Yelo",
+      "description": "Sweet corn and creamy milk over shaved ice, topped with a scoop of corn ice cream.",
+      "price": "$4.99",
+      "section": "Desserts"
+    },
+    {
+      "name": "Halo-Halo",
+      "description": "Sweet shaved ice dessert topped with a mixture of sweetened preserved fruits.",
+      "price": "$7.49",
+      "section": "Desserts"
+    },
+    {
+      "name": "Taho",
+      "description": "Layers of hot silken tofu curds with caramelized sweet dark sugar syrup.",
+      "price": "$6.49",
+      "section": "Desserts"
+    },
+    {
+      "name": "Ube Taho",
+      "description": "Silky tofu topped with sweet ube, chewy boba, and syrup.",
+      "price": "$6.49",
+      "section": "Desserts"
+    },
+    {
+      "name": "Buchi",
+      "description": "Golden brown gelatinous dough balls coated with sesame seeds.",
+      "price": "$3.99",
+      "section": "Desserts"
+    },
+    {
+      "name": "Orange Iced Tea",
+      "description": "Fresh orange juice with calamansi extract blended with jasmine green tea.",
+      "price": "$3.49",
+      "section": "Beverages"
+    },
+    {
+      "name": "Lychee Fruit Tea",
+      "description": "Chilled beverage with subtle sweetness of lychee infused with black tea.",
+      "price": "$3.49",
+      "section": "Beverages"
+    },
+    {
+      "name": "Thai Iced Tea (16oz)",
+      "description": "Tea with creamy mouthfeel, served chilled with ice cubes.",
+      "price": "$3.49",
+      "section": "Beverages"
+    },
+    {
+      "name": "Black Jelly (16oz)",
+      "description": "Chilled beverage with a sweet blend of banana and vanilla flavors.",
+      "price": "$3.49",
+      "section": "Beverages"
+    },
+    {
+      "name": "Pepsi (16oz)",
+      "description": "",
+      "price": "$2.89",
+      "section": "Beverages"
+    },
+    {
+      "name": "Starry (16oz)",
+      "description": "",
+      "price": "$2.89",
+      "section": "Beverages"
+    },
+    {
+      "name": "Raspberry Ice Tea (16oz)",
+      "description": "",
+      "price": "$2.89",
+      "section": "Beverages"
+    },
+    {
+      "name": "Diet Pepsi (16oz)",
+      "description": "",
+      "price": "$2.89",
+      "section": "Beverages"
+    },
+    {
+      "name": "Bottled Water (20oz)",
+      "description": "Aquafina bottled water.",
+      "price": "$2.29",
+      "section": "Beverages"
+    }
+  ]
+}

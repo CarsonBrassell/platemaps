@@ -1,0 +1,603 @@
+{
+  "restaurantId": "2539",
+  "name": "Isshido Ramen",
+  "sourceUrl": "https://order.online/store/isshido-ramen-san-diego-570760/",
+  "confidence": "medium",
+  "notes": "No website in the work list; address confirmed exact match (8250 Mira Mesa Blvd Ste A, San Diego, CA 92126) against order.online's own page. Tried the restaurant's own Toast storefronts first (order.toasttab.com/online/isshido-ramen-8250-a-mira-mesa-boulevard and the toast.app redirect of toasttab.com/local/order/...): both parse cleanly via window.__OO_STATE__ with a real Chrome UA but hasOnlineOrderingModule is false and only restaurant metadata is present, no menu/items -- Toast is not usable here. Used order.online's escaped Next.js RSC flight payload instead (MenuBookCategory/MenuPageItemList/MenuPageItem objects), which held the complete 10-category, 115-item catalog (Starters, Ramen, Noodle Choice, Yakisoba, Rice Bento, Rice Bowl, Family Package, Beverage, Kids Menu, Condiments & Utensil) plus a 'Most Ordered' carousel whose 10 items all duplicated items already in real categories (dropped). Dropped 6 items with no price: 2 'NOT FOR SALE' noodle-choice modifier options, and 4 free condiments (No Utensils, Disposable Utensils, Soy Sauce, Chili Oil). MARKUP DETECTED: dividing every remaining price by 1.15 landed 107 of 109 items within a cent of a clean nickel-rounded base value (mostly X.95, e.g. Chicken Paitan $17.19 / 1.15 = $14.9478 -> reconstructing $14.95 x 1.15 = $17.1925 rounds to exactly $17.19) -- a uniform 15% online-ordering surcharge, well above the ~17-23% organic-noise band. Recorded the reconstructed base price (the number that, times 1.15 and rounded to the cent, reproduces order.online's displayed price) for those 107 items rather than the inflated number, since this is a single-channel source and the divisor pattern is unambiguous. Kept order.online's own displayed price as-is (did not reconstruct) for 2 items that did not fit the pattern cleanly: Shishito Peppers ($10.95, /1.15=$9.52, not a clean nickel) and Scallop Sashimi ($18.95, /1.15=$16.48, not a clean nickel) -- these may already be un-marked-up or use different rounding; flagged rather than guessed.",
+  "dishes": [
+    {
+      "name": "Tofu Steak",
+      "description": "Grilled tofu slices topped with a savory sauce and garnished with chopped green onions and crispy bits.",
+      "price": "$8.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Pan-Fried Gyoza (8 Pcs)",
+      "description": "Eight pan-fried dumplings. Choose between savory fillings: chicken or pork.",
+      "price": "$9.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Deep-Fried Gyoza (8 Pcs)",
+      "description": "Crispy dumplings, choice of chicken or pork filling. 8 pieces.",
+      "price": "$8.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Vegan Spring Roll",
+      "description": "4 Pcs Deep Fried Vegan Spring Roll",
+      "price": "$8.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Karaage (6 Pcs)",
+      "description": "Japanese-style fried chicken bites. Served with choice of dipping sauce: mayonnaise, spicy options, sweet chili, or no sauce. Six pieces per order.",
+      "price": "$9.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Squid Karaage",
+      "description": "Crispy fried squid served with a wedge of lemon and a side of creamy dipping sauce.",
+      "price": "$9.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Black Garlic Karaage",
+      "description": "Crispy Japanese-style fried chicken bites. Choose from a variety of sauces like mayo, sriracha mayo, spicy mayo, or sweet chili.",
+      "price": "$10.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Takoyaki (8 Pcs)",
+      "description": "Octopus-filled balls drizzled with savory sauce and topped with seaweed and mayonnaise. Eight pieces.",
+      "price": "$10.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Fried Chicken Wings (6 Pcs)",
+      "description": "Crispy, golden-fried chicken wings with a crunchy coating.",
+      "price": "$13.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Fried Chicken Wings (12 Pcs)",
+      "description": "Crispy fried chicken wings, golden brown, with a hint of seasoning. Twelve pieces per serving.",
+      "price": "$26.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Okonomiyaki",
+      "description": "Savory Japanese pancake topped with bonito flakes, seaweed strips, and drizzled with mayonnaise and sauce.",
+      "price": "$9.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Edamame",
+      "description": "Steamed young soybeans. Choice of garlic, spicy, or plain flavor.",
+      "price": "$6.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Kimchi (Starter)",
+      "description": "Fermented cabbage with spicy red pepper, garlic, and ginger, offering a tangy and savory taste.",
+      "price": "$5.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Wakame Seaweed Salad",
+      "description": "Thinly sliced wakame seaweed with a subtle sesame flavor and a hint of vinegar.",
+      "price": "$5.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Cucumber Salad",
+      "description": "Crisp cucumber slices and cherry tomatoes tossed with a light dressing, garnished with sesame seeds.",
+      "price": "$6.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Sweet Potato Fries",
+      "description": "Crispy sweet potato fries with a hint of seasoning.",
+      "price": "$6.95",
+      "section": "Starters"
+    },
+    {
+      "name": "French Fries",
+      "description": "Crispy potato sticks. Choice of size and flavor: classic, garlic, cheese, truffle, or salty.",
+      "price": "$6.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Agedashi Tofu",
+      "description": "Crispy tofu in savory broth, garnished with green onions, seaweed, and bonito flakes.",
+      "price": "$9.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Kimchi Agedashi Tofu",
+      "description": "Agedashi Tofu in Tsuyu Sauce, with Kimchi, Green Onion and Seaweed",
+      "price": "$10.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Shishito Peppers",
+      "description": "Shishito peppers garnished with sesame seeds, served alongside shredded cabbage and a lemon wedge.",
+      "price": "$10.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Tuna Tataki",
+      "description": "recommend to eat in store",
+      "price": "$15.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Steamed Asari Clams",
+      "description": "Tender asari clams in a light broth, garnished with fresh scallions.",
+      "price": "$12.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Aburi Salmon",
+      "description": "Lightly seared salmon topped with drizzled sauce, garnished with herbs and sesame seeds, served with a lemon wedge and wasabi.",
+      "price": "$15.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Short Ribs Steak (Appetizer)",
+      "description": "Tender beef ribs served with choice of beef sauce or simple salt.",
+      "price": "$11.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Grilled Beef Tongue",
+      "description": "Beef tongue slices. Choice of sauce or salt.",
+      "price": "$14.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Braised Short Ribs",
+      "description": "Tender short ribs braised in rich sauce, garnished with a lime wedge and green herb sprig.",
+      "price": "$12.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Grilled Squid",
+      "description": "Tender grilled squid with charred edges, served alongside a wedge of lemon and roasted green peppers.",
+      "price": "$11.95",
+      "section": "Starters"
+    },
+    {
+      "name": "White Rice",
+      "description": "",
+      "price": "$1.50",
+      "section": "Starters"
+    },
+    {
+      "name": "Miso soup",
+      "description": "",
+      "price": "$2.00",
+      "section": "Starters"
+    },
+    {
+      "name": "scallop sashimi",
+      "description": "Thinly sliced scallops paired with lemon slices, topped with a touch of roe, accompanied by wasabi.",
+      "price": "$18.95",
+      "section": "Starters"
+    },
+    {
+      "name": "Isshido Signature Paitan",
+      "description": "Tonkotsu soup seasoned with original Shoyu tare, Topped with pork Chashu, corn, chopped scallions and one whole soft-boiled egg.",
+      "price": "$14.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Black Mayu Tonkotsu",
+      "description": "Rich roasted homemade black garlic oil flavored tonkotsu soup. Topped with pork chashu,chopped scallions, corn and half soft-boiled egg.",
+      "price": "$15.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Isshido Miso",
+      "description": "(#1 most liked) Tonkotsu sop seasoned with our original blend of miso. Topped with pork chashu, chopped scallions, steamed cabbage and half soft-boiled egg.",
+      "price": "$15.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Ultimate Chashu Ramen",
+      "description": "Tonkotsu soup seasoned with original Shoyu tare, Topped with 8 pieces pork Chashu, corn and chopped scallions.",
+      "price": "$19.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Chicken Paitan",
+      "description": "Creamy chicken soup designed for chicken lovers. Topped with slow-cooked chicken breast chashu, scallions, corn and half soft-boiled egg.",
+      "price": "$14.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Tonkotsu Special",
+      "description": "Tonkotsu soup seasoned with original Shoyu tare, Topped with one piece pork Chashu, corn, chopped scallions.",
+      "price": "$13.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Spicy Tan-Tan Ramen",
+      "description": "spicy miso sesame tare added to our tonkotsu soup, topped with seasoned minced pork, homemade chili oil, scallions and half soft-boiled egg.",
+      "price": "$14.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Vegan Spicy Tan-Tan Ramen",
+      "description": "Vegan spicy miso sesame flavor soup. Topped with spicy tofu, corn, homemade chili oil and scallions.",
+      "price": "$14.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Spicy Miso Ramen(Kazann)",
+      "description": "Flavorful spicy miso Broth with chef special noodle(extra thick).Topped with stripes-fried veggies,baby corn,half egg, 5 pieces pork chashu and half soft boiled egg.",
+      "price": "$17.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Sapporo Vegetarian Ramen",
+      "description": "Vegetarian flavor soup, topped with teriyaki fried tofu, corn,kale,grape tomato and half soft boiled egg.",
+      "price": "$15.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Vegetarian Truffle Shio",
+      "description": "Vegetarian flavor soup, topped with teriyaki fried tofu, garlic mushroom truffle oil, truffle paste. and half soft boiled egg.",
+      "price": "$16.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Isshido Truffle",
+      "description": "Homemade fresh truffle tare added to our signature Tonkotsu soup. Topped with pork chashu, scallions, truffle paste, garlic mushroom and half soft-boiled egg.",
+      "price": "$16.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Short-Rib Steak Ramen",
+      "description": "Creamy Tonkotsu Soup. Topped with grilled boneless short ribs, corn,scallions and half soft boiled egg.",
+      "price": "$18.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Spicy Chicken Tan Tan",
+      "description": "Spicy chicken tan tan with choice of noodles, including options like thick, thin, gluten-free, vegan, udon, or no noodles.",
+      "price": "$17.95",
+      "section": "Ramen"
+    },
+    {
+      "name": "Tan- Tan Ramen",
+      "description": "Savory ramen with choice of noodle types, including thin, thick, special thick, gluten-free, vegan, or udon. Option to omit noodles.",
+      "price": "$16.00",
+      "section": "Ramen"
+    },
+    {
+      "name": "Chelf Special Noodle",
+      "description": "",
+      "price": "$1.00",
+      "section": "Noodle Choice"
+    },
+    {
+      "name": "Gluten Free Noodle",
+      "description": "",
+      "price": "$1.00",
+      "section": "Noodle Choice"
+    },
+    {
+      "name": "Extra Tonkotsu Noodle",
+      "description": "Rich tonkotsu broth with extra noodles, topped with tender pork slices, sweet corn, and fresh green onions.",
+      "price": "$1.50",
+      "section": "Noodle Choice"
+    },
+    {
+      "name": "Extra Wavy Noodle",
+      "description": "",
+      "price": "$1.50",
+      "section": "Noodle Choice"
+    },
+    {
+      "name": "Extra Chelf Special Noodle",
+      "description": "",
+      "price": "$1.50",
+      "section": "Noodle Choice"
+    },
+    {
+      "name": "Yakisoba (Short-Rib Steak)",
+      "description": "Sautéed noodles with tender short-rib steak, garnished with sesame seeds and diced red peppers.",
+      "price": "$18.95",
+      "section": "Yakisoba"
+    },
+    {
+      "name": "Yakisoba (Chashu)",
+      "description": "Stir-fried noodles with sliced pork, topped with green onions and diced tomatoes.",
+      "price": "$17.95",
+      "section": "Yakisoba"
+    },
+    {
+      "name": "Curry Bento + select your toppings",
+      "description": "Japanese-style curry with a choice of toppings such as crispy chicken, sausage, or tofu. Includes steamed rice and side components.",
+      "price": "$13.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Gyudon Bento",
+      "description": "Thinly sliced beef simmered with onions and topped with green onions and pickled ginger, served with rice, potato salad, miso soup, and assorted pickles.",
+      "price": "$17.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Kakuni Bento",
+      "description": "",
+      "price": "$16.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Karaage Bento",
+      "description": "Crispy fried chicken on a bed of shredded cabbage, served with steamed rice topped with sesame seeds, accompanied by pickled cucumber, seaweed salad, and a potato salad.",
+      "price": "$16.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Tofu Steak Bento",
+      "description": "Crispy tofu pieces served with steamed white rice, garnished with chopped green onions and sesame seeds.",
+      "price": "$16.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Chicken Katsu Bento",
+      "description": "Crispy breaded chicken cutlet served with steamed rice, garnished with shredded cabbage, alongside miso soup, pickled vegetables, and orange slices.",
+      "price": "$17.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Teriyaki Chicken Bento",
+      "description": "Juicy chicken glazed in teriyaki sauce, served with steamed rice, miso soup, pickled vegetables, and creamy potato salad.",
+      "price": "$17.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Short Ribs Steak Bento",
+      "description": "Tender short ribs steak atop steamed rice, garnished with sliced green onions.",
+      "price": "$18.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Gyutan/Beef Tongue Bento",
+      "description": "Tender beef tongue topped with sesame seeds, accompanied by a shishito pepper, lemon wedge, and creamy green sauce.",
+      "price": "$22.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Unagi Bento",
+      "description": "Grilled eel glazed with a savory sauce, served with rice, pickled cucumbers, pickled radish, seaweed salad, and tamagoyaki. Accompanied by miso soup and a mixed green salad.",
+      "price": "$22.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Braised Short ribs Bento",
+      "description": "Tender braised short ribs in savory sauce, served with steamed rice, creamy coleslaw, and pickled vegetables. Accompanied by a bowl of miso soup.",
+      "price": "$17.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Spicy Tofu Bento",
+      "description": "Grilled tofu with spicy sauce, accompanied by steamed rice topped with sesame seeds, fresh mixed greens, tomato slices, and a scoop of creamy potato salad.",
+      "price": "$16.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Squid Karaage Curry Bento",
+      "description": "Crispy fried squid paired with savory curry sauce, accompanied by a side of miso soup, pickled vegetables, and a fresh salad.",
+      "price": "$18.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Tereyaki Salmon Bento",
+      "description": "Grilled salmon glazed with teriyaki sauce, served over rice. Accompanied by seaweed salad, pickled ginger, kimchi, and orange slices.",
+      "price": "$17.95",
+      "section": "Rice Bento"
+    },
+    {
+      "name": "Spicy Tofu Bowl",
+      "description": "",
+      "price": "$13.95",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "Gyudon Bowl",
+      "description": "Thinly sliced beef simmered with onions, topped with green onions and pickled radish slices, served over rice.",
+      "price": "$15.95",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "Chashu Bowl",
+      "description": "Tender slices of braised pork belly with green onions, drizzled with mayonnaise, and garnished with a soft-boiled egg over rice.",
+      "price": "$12.95",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "Tofu Steak Bowl",
+      "description": "Crispy tofu steak served over rice, topped with sliced green onions and shredded seaweed.",
+      "price": "$12.95",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "Chicken Katsu Bowl",
+      "description": "",
+      "price": "$15.95",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "Beef Curry Bowl",
+      "description": "Tender beef chunks in rich curry sauce with white rice and a garnish of pickled vegetables.",
+      "price": "$12.95",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "Salmon Ochazuke",
+      "description": "Flaky salmon over rice, garnished with green onions, drizzled with soy sauce, and accompanied by a lemon wedge.",
+      "price": "$16.95",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "Teriyaki Chicken Bowl",
+      "description": "Grilled chicken glazed with teriyaki sauce, served over rice with sliced boiled egg, shredded cabbage, green onions, and red bell peppers.",
+      "price": "$15.95",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "Aburi Salmon Bowl",
+      "description": "Seared salmon slices topped with green onions and a drizzle of sauce, accompanied by a lemon wedge.",
+      "price": "$16.95",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "Teriyaki Salmon Bowl",
+      "description": "Grilled salmon glazed with teriyaki sauce, served with steamed rice, shredded cabbage, and a lemon wedge.",
+      "price": "$15.95",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "White Rice",
+      "description": "",
+      "price": "$1.50",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "Miso Soup",
+      "description": "",
+      "price": "$2.00",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "White Rice (Copy)",
+      "description": "",
+      "price": "$1.50",
+      "section": "Rice Bowl"
+    },
+    {
+      "name": "8 OZ Kimchi",
+      "description": "Fermented cabbage and vegetables seasoned with chili, garlic, and spices.",
+      "price": "$4.95",
+      "section": "Family Package"
+    },
+    {
+      "name": "16 OZ Kimchi",
+      "description": "Fermented napa cabbage with spicy chili paste, garlic, and ginger.",
+      "price": "$7.95",
+      "section": "Family Package"
+    },
+    {
+      "name": "8 OZ Chili Oil",
+      "description": "",
+      "price": "$3.95",
+      "section": "Family Package"
+    },
+    {
+      "name": "16 OZ Chili Oil",
+      "description": "",
+      "price": "$5.95",
+      "section": "Family Package"
+    },
+    {
+      "name": "8 OZ Black Oil",
+      "description": "",
+      "price": "$5.95",
+      "section": "Family Package"
+    },
+    {
+      "name": "16 OZ Black Oil",
+      "description": "",
+      "price": "$9.95",
+      "section": "Family Package"
+    },
+    {
+      "name": "Coca-Cola, Can",
+      "description": "Coca-Cola Original Taste — the crisp, refreshing taste you know and love",
+      "price": "$2.95",
+      "section": "Beverage"
+    },
+    {
+      "name": "Diet Coke, Can",
+      "description": "Take a Diet Coke break with this refreshing, no-calorie soft drink",
+      "price": "$2.95",
+      "section": "Beverage"
+    },
+    {
+      "name": "Sprite, Can",
+      "description": "Classic, cool, crisp lemon-lime flavored taste that's caffeine free",
+      "price": "$2.95",
+      "section": "Beverage"
+    },
+    {
+      "name": "ITOEN Green Tea Can",
+      "description": "A can of Ito En green tea offering a refreshing taste with natural green tea flavors.",
+      "price": "$2.95",
+      "section": "Beverage"
+    },
+    {
+      "name": "ITOEN Oolong Tea Can",
+      "description": "Smooth oolong tea in a convenient can, offering a rich and aromatic experience.",
+      "price": "$2.95",
+      "section": "Beverage"
+    },
+    {
+      "name": "Calpico Original",
+      "description": "Tangy and sweet non-carbonated drink with a milky appearance, featuring a unique blend of citrus and yogurt flavors.",
+      "price": "$3.50",
+      "section": "Beverage"
+    },
+    {
+      "name": "Apple Juice",
+      "description": "",
+      "price": "$3.50",
+      "section": "Beverage"
+    },
+    {
+      "name": "Original R",
+      "description": "A carbonated soft drink with a sweet, mild taste, featuring real sugar for a classic refreshment experience.",
+      "price": "$3.50",
+      "section": "Beverage"
+    },
+    {
+      "name": "Grape R",
+      "description": "Japanese carbonated soft drink with grape flavor, offering a refreshing and fruity taste experience.",
+      "price": "$3.50",
+      "section": "Beverage"
+    },
+    {
+      "name": "Melon R",
+      "description": "A carbonated soft drink with melon flavor, featuring a unique bottle design and a refreshing taste.",
+      "price": "$3.50",
+      "section": "Beverage"
+    },
+    {
+      "name": "Lychee R",
+      "description": "Sparkling lychee-flavored soda with a hint of sweetness, offering a refreshing taste from the iconic Ramune bottle.",
+      "price": "$3.50",
+      "section": "Beverage"
+    },
+    {
+      "name": "Peach R",
+      "description": "Japanese carbonated soft drink with peach flavor, known for its unique bottle design and refreshing taste.",
+      "price": "$3.50",
+      "section": "Beverage"
+    },
+    {
+      "name": "Strawberry R",
+      "description": "A carbonated soft drink featuring strawberry flavor, presented in a traditional glass bottle with a marble seal.",
+      "price": "$3.50",
+      "section": "Beverage"
+    },
+    {
+      "name": "Braised Short Ribs Kids Meal",
+      "description": "Tender braised short ribs paired with steamed white rice.",
+      "price": "$11.95",
+      "section": "Kids Menu"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "restaurantId": "4836",
+  "name": "Original 40 Brewing Company",
+  "sourceUrl": "https://www.toasttab.com/the-original-40-brewery/v3",
+  "confidence": "high",
+  "crossCheckedAgainst": "",
+  "blocked": "",
+  "notes": "Own site (original40brewing.com) links to /menu/, /menus/ and /drink-menu/, none of which render food prices in raw HTML directly, but /menus/ links to the restaurant's Toast marketing page which named the Toast slug (the-original-40-brewery); read the full priced food menu from Toast's __OO_STATE__ Apollo cache (parsed by balancing braces from the opening {, not by matching to a closing script tag). Two Menu objects exist in the cache - 'Gift Cards' (empty) and 'Online Ordering' (one Food group, 12 items) - confirmed not a duplicate-menu case, only one real menu. The site's own /drink-menu/ page embeds a beer/cider/seltzer/wine/cocktail list as an image (OG40-BeerList image, dated visually current with a Sept-2025 upload path); read the image directly and confirmed by inspection that it lists every beer, wine, seltzer and cocktail by name and ABV/style only - genuinely no dollar price printed anywhere on the board, for any of the roughly 30 drink items. This is a real published gap, not a capture failure: the Toast online-ordering catalog also has no beer/drink group at all (only Food), consistent with a taproom that does not price its tap list for to-go ordering. Drink section is excluded entirely rather than guessed; only the 12 priced Toast food items are recorded.",
+  "dishes": [
+    {
+      "name": "House Cut French Fries",
+      "description": "",
+      "price": "$7.50",
+      "section": "Food"
+    },
+    {
+      "name": "Giant Bavarian Pretzel",
+      "description": "",
+      "price": "$14.00",
+      "section": "Food"
+    },
+    {
+      "name": "Crispy Chicken Wings",
+      "description": "",
+      "price": "$14.50",
+      "section": "Food"
+    },
+    {
+      "name": "Caesar Salad",
+      "description": "",
+      "price": "$14.00",
+      "section": "Food"
+    },
+    {
+      "name": "Beer Battered Fish Tacos",
+      "description": "",
+      "price": "$12.00",
+      "section": "Food"
+    },
+    {
+      "name": "All American Classic Cheeseburger",
+      "description": "",
+      "price": "$17.50",
+      "section": "Food"
+    },
+    {
+      "name": "Blue Cheese and Carmelized Onion Burger",
+      "description": "",
+      "price": "$20.00",
+      "section": "Food"
+    },
+    {
+      "name": "B.L.A.T. (Bacon, Lettuce, Avocado & Tomato)",
+      "description": "",
+      "price": "$16.00",
+      "section": "Food"
+    },
+    {
+      "name": "Baja Dog",
+      "description": "",
+      "price": "$9.00",
+      "section": "Food"
+    },
+    {
+      "name": "Chili Cheese Dog",
+      "description": "",
+      "price": "$9.00",
+      "section": "Food"
+    },
+    {
+      "name": "Pepperoni Flatbread",
+      "description": "",
+      "price": "$18.00",
+      "section": "Food"
+    },
+    {
+      "name": "Spicy Itailian Sausage Flatbread",
+      "description": "",
+      "price": "$20.00",
+      "section": "Food"
+    }
+  ]
+}

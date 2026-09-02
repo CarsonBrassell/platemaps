@@ -1,0 +1,9 @@
+{
+  "restaurantId": "3598",
+  "name": "Farmhouse 78",
+  "sourceUrl": "https://www.toasttab.com/farmhouse-78/v3",
+  "confidence": "low",
+  "blocked": "Toast catalog reachable and priced, but only exposes a 'LUNCH TO-GO' ordering menu (appetizers, burgers, sandwiches, sides, desserts, drinks) plus a separate 'HOT DRINKS' menu that is empty. The restaurant's own site (farmhouse78.com/menus/, BentoBox CMS) lists many more core sections not present in the Toast catalog at all: breakfast (The Hen House, Brunch Sammies, Hot-Off-The-Griddle), dinner (Beef & Pork, Fish & Chicken, Pasta), and a full bar list (Beer on Tap, Bottled Beer, Wine, Hard Seltzer, Hard Ciders). The restaurant's own site has the correct full section structure but every menu-item__details--price field in the HTML is empty (structure not prices, 143/143 blank). Missing pieces for a Chrome-equipped follow-up: check toasttab.com/farmhouse-78/v2/online-order for a dine-in/full catalog distinct from v3's to-go subset, or find a printed/PDF breakfast+dinner menu.",
+  "notes": "Do not treat the Toast LUNCH TO-GO catalog as the whole menu; it is missing two of the restaurant's core dayparts (breakfast, dinner) and the full bar list.",
+  "dishes": []
+}

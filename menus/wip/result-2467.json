@@ -1,0 +1,9 @@
+{
+  "restaurantId": "2467",
+  "name": "Dark Horse Coffee Roasters",
+  "sourceUrl": "https://www.darkhorsecoffeeroasters.com/locations-3",
+  "confidence": "low",
+  "blocked": "This is a multi-location chain (San Diego x7, La Mesa, Truckee, Koloa HI); the work-list address (811 25th St, San Diego, CA 92102) confirmed as the Golden Hill branch on the locations page. The only priced menu found anywhere on the domain is an image at /kauaimenu (KauaiMenu_12.01.25_webmenu.jpg) for the Koloa, Kauai HI location, which is a different branch with different (likely HI-priced) items and must not be used for Golden Hill. The homepage/shop pages are only retail coffee beans (Squarespace commerce), not the cafe drink menu. Found an UberEats storefront specific to this branch (ubereats.com/store/dark-horse-coffee-roasters-golden-hill/VvIxT9eiS--9UEDD9Xl3NQ) and a Yelp business page, but both 403/blocked curl and WebFetch equally (bot-gated). Needs a browser to open either.",
+  "notes": "Do not substitute the Kauai HI menu image for this San Diego branch. Missing piece: a Chrome-equipped agent should open the UberEats Golden Hill storefront (or Yelp's dated menu photos, filtering img alt for /menu/i) for this branch's actual drink/food prices.",
+  "dishes": []
+}

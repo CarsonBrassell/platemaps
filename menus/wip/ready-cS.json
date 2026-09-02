@@ -1,0 +1,1748 @@
+[
+  {
+    "restaurantId": "2577",
+    "name": "Surf Side Deli",
+    "sourceUrl": "https://www.doordash.com/store/surf-side-deli-san-diego-24315094/",
+    "confidence": "medium",
+    "notes": "The restaurant's own site (surfsidedelisd.com) lists full item names/descriptions for its Sandwiches under '#1 USS Nimitz' etc. but prices NOTHING on-page — it only links out to Clover ordering (clover.com/online-ordering/surf-side-deli-san-diego-2), which is a client-rendered React SPA (COLO2) with no server-rendered prices and no WordPress moo-clover REST endpoint on the domain (checked /wp-json/moo-clover/v1/categories, 404) — genuinely needs a browser. A second ordering domain (ordersurfsidedelisd.com) is the same dead end (only $0.00 cart placeholders in its static HTML). Used the DoorDash marketplace listing instead (schema.org Menu JSON-LD, server-side) — address confirmed as 1912 Rosecrans Street, matching the work list exactly. Markup check across all 74 raw items: no consistent divisor across 1.04/1.10/1.15/1.17/1.20/1.25/1.30 (POS-style odd-cent pricing, passes). Cross-checked the Sandwiches section's item names against the restaurant's own site: #1 USS Nimitz, #2 USS Midway, #3 Rockslides, #4 South Side, #5 Indicator and #6 The Admiral's Avocado Delight all matched by name, confirming this is the right menu and it's not stale. Dropped the 'Most Ordered' section (duplicate highlight reel of items already listed under their real categories) and 'Merchandise' (hats/t-shirts, adjunct, not food). Categories reached: Sandwiches (25, including a sandwich platter, kids sandwiches, custom/half-sandwich options), Surf Side Salads, Drinks, Sides, Sweets, Chips, Sliced Meats and Cheese (by-the-pound deli counter), Ice, Combo, Catering. This looks like the complete real menu for a sandwich deli — no obvious core section (e.g. hot entrees, breakfast) is referenced anywhere else that's missing here.",
+    "dishes": [
+      {
+        "name": "Sandwich Platter",
+        "description": "An assortment of sandwiches featuring various meats, cheeses, and condiments, typically arranged on a variety of breads for a diverse selection.",
+        "price": "$88.54",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#1 Uss Nimitz Sandwich",
+        "description": "Oven Roasted Turkey, Applewood Bacon, Lettuce, Tomato, Onion, Cheddar, Avocado and Herb Mayo on an Artisan Baguette",
+        "price": "$15.62",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#16 Cali Sub",
+        "description": "Traeger Smoked Tri-Tip, Pepper Jack Cheese, Green Chile, Avocado, Crispy Jalapenos, Chipotle Mayo, Lettuce and Tomato on an Artisan Baguette",
+        "price": "$17.70",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#8 Slightly Stoopid Sandwich",
+        "description": "Black Forest Ham, Oven Roasted Turkey, Applewood Smoked Bacon, Lettuce, Tomato, Onion, Cheddar Cheese, and Herb Mayo on an Artisan Baguette",
+        "price": "$16.66",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#11 Just The Tip Sandwich",
+        "description": "Traeger Smoked Tri-Tip, BBQ Sauce, Herb Mayo, Lettuce, Tomato, Jalapeno Crispies, and Provolone Cheese on an Artisan Baguette",
+        "price": "$16.66",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#5 Indicator Sandwich",
+        "description": "American Tuna, Avocado, Herb Mayo, Cheddar Cheese, Lettuce, Tomato and Onion on a Honey Wheat Roll",
+        "price": "$15.62",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#12 Forgetaboutit Sandwich",
+        "description": "Pastrami, Stone-Ground Mustard, Swiss Cheese, Lettuce, Tomato, Herb Mayo and Pepperoncinis on an Artisan Baguette",
+        "price": "$16.66",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#3 Rockslides Sandwich",
+        "description": "Sopressata Salami, Mortadella, Hard Salami, Provolone, Lettuce, Tomato, Onion, Herb Mayo and Oil and Vinegar on an Artisan Baguette",
+        "price": "$15.62",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#7 The Pl Pointer Sandwich",
+        "description": "Oven Roasted Turkey, Cheddar, Cranberry Dijon Mustard, Tomato, Onion, Herb Mayo and Baby Spinach on a Honey Wheat Roll",
+        "price": "$14.57",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#4 South Side Sandwich",
+        "description": "Black Forest Ham, Swiss Cheese and Herb Mayo, Lettuce, Tomato, Onion on an Artisan Baguette",
+        "price": "$14.57",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#14 Dominator Sandwich",
+        "description": "Hand-spanked Meatballs, Roasted Garlic Butter, House Made Marinara Sauce, Provolone Cheese and Pepperoncinis on an Artisan Baguette",
+        "price": "$15.62",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Kids Turkey Cheddar",
+        "description": "Oven Roasted Turkey and cheddar cheese on an Artisan Baguette,\n creating a simple sandwich option for kids.",
+        "price": "$7.28",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#17 Birds the Word",
+        "description": "Oven Roasted Turkey, BBQ Sauce, Onion Jam, Pepper Jack Cheese, Jalapenos, Herb Mayo, Lettuce and Tomato on an Artisan Baguette",
+        "price": "$15.62",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#9 Ob Longhorn Sandwich",
+        "description": "Pulled Pork, House Made BBQ Sauce, Crispy Onions, Provolone Cheese and Herb Mayo on an Artisan Baguette",
+        "price": "$15.62",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#13 Feel The Thunder Sandwich",
+        "description": "Traeger Smoked Brisket, Herb Mayo, Provolone Cheese, Onion Jam and BBQ Sauce, Lettuce, Tomato on an Artisan Baguette",
+        "price": "$16.66",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Pizza Bread",
+        "description": "Italian meat sauce, pepperoni, and provolone cheese served open-faced on an Italian roll.",
+        "price": "$13.53",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Custom Sandwich",
+        "description": "Create your own sandwich with a selection of meats, cheeses, and fresh vegetables, typically served on your choice of bread.",
+        "price": "$14.57",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Spicy Tip",
+        "description": "Traeger Smoked Tri-Tip, Pepperoni, Pepper Jack Cheese, Avocado, Crispy Onions, Lettuce, Tomato and Herb Mayo on an Artisan Baguette",
+        "price": "$16.66",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#10 Boomer'S Blt Sandwich",
+        "description": "Applewood Smoked Bacon, Cheddar, Lettuce, Tomato and Herb Mayo on an Artisan Baguette",
+        "price": "$14.57",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#2 Uss Midway Sandwich",
+        "description": "Peppercorn Crusted Roast Beef, Provolone, Herb Mayo, Lettuce, Tomato, and Crispy Onions on an Artisan Baguette",
+        "price": "$15.62",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "Cheesy delight on toasted bread, perfect for those craving a classic comfort food.",
+        "price": "$10.42",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#15 Golden State Greens Sandwich",
+        "description": "Avocado, Cucumbers, Carrots, Spinach, Lettuce, Tomatoes, Onions and Vegan Dressing on a Honey Wheat Roll",
+        "price": "$13.53",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Any 1/2 Sandwich",
+        "description": "A 1/2 sandwich typically features a variety of deli meats, cheeses, and fresh vegetables on your choice of bread, often complemented by condiments like mustard or mayonnaise.",
+        "price": "$8.32",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#6 The Admiral'S Avocado Delight Sandwich",
+        "description": "Avocado, Cheddar Cheese, Bean Sprouts, Raisins, Sunflower Seeds, Lettuce, Tomato, Onion, and Herb Mayo on a Honey Wheat Roll",
+        "price": "$13.53",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Kids Ham Cheddar",
+        "description": "Black Forest Ham and Cheddar Cheese on an Artisan Baguette, \ncreating a simple sandwich option for kids.",
+        "price": "$7.28",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "House Salad",
+        "description": "Fresh mix of greens, with an assortment of vegetables and homemade dressing.",
+        "price": "$10.42",
+        "section": "Surf Side Salads"
+      },
+      {
+        "name": "Can Soda",
+        "description": "Crisp, Chilled Can of Refreshing Soda - Perfect Thirst Quencher",
+        "price": "$3.13",
+        "section": "Drinks"
+      },
+      {
+        "name": "Mexican Coke",
+        "description": "Authentic Mexican cola made with real cane sugar for a refreshingly classic experience.",
+        "price": "$4.69",
+        "section": "Drinks"
+      },
+      {
+        "name": "Draft Soda",
+        "description": "A selection of popular soft drinks, typically featuring options like Coke, Diet Coke, Sprite, Fanta, and Dr. Pepper, served from a fountain dispenser.",
+        "price": "$4.17",
+        "section": "Drinks"
+      },
+      {
+        "name": "Lemonade",
+        "description": "Refreshing citrus beverage.",
+        "price": "$4.43",
+        "section": "Drinks"
+      },
+      {
+        "name": "Herbe Matte",
+        "description": "A refreshing infusion typically featuring a blend of herbs and botanicals, inspired by traditional yerba mate drinks.",
+        "price": "$4.69",
+        "section": "Drinks"
+      },
+      {
+        "name": "Powerade",
+        "description": "Electrolyte-Packed Sports Beverage for Enhanced Hydration and Performance",
+        "price": "$3.65",
+        "section": "Drinks"
+      },
+      {
+        "name": "Small Water",
+        "description": "A small bottle of fresh spring water, offering pure hydration without added flavors or enhancements.",
+        "price": "$2.60",
+        "section": "Drinks"
+      },
+      {
+        "name": "Side Meatballs (5 Per Order)",
+        "description": "Beef and pork meatballs, seasoned with herbs and garlic, typically served in a rich marinara sauce.",
+        "price": "$12.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Potato Salad",
+        "description": "Creamy potato salad with fresh herbs and a tangy mustard dressing.",
+        "price": "$5.20",
+        "section": "Sides"
+      },
+      {
+        "name": "Side Tuna",
+        "description": "Tuna mixed with celery, red onion, and mayo, enhanced with a touch of lemon juice and parsley.",
+        "price": "$8.33",
+        "section": "Sides"
+      },
+      {
+        "name": "Mac Salad",
+        "description": "Creamy macaroni salad with crisp vegetables and a tangy dressing.",
+        "price": "$5.20",
+        "section": "Sides"
+      },
+      {
+        "name": "Dog Treats",
+        "description": "Oven-baked dog treats made with wholesome ingredients like peanut butter, wheat flour, and eggs, offering a crunchy and satisfying snack for your furry friend.",
+        "price": "$5.21",
+        "section": "Sides"
+      },
+      {
+        "name": "Side Bread",
+        "description": "Freshly baked bread, typically served as a side, offering a simple and classic addition to any meal.",
+        "price": "$3.13",
+        "section": "Sides"
+      },
+      {
+        "name": "Bacon",
+        "description": "Crispy thick-cut, smoked to perfection.",
+        "price": "$3.13",
+        "section": "Sides"
+      },
+      {
+        "name": "Avocado",
+        "description": "Fresh and creamy fruit with a rich taste, perfect for adding a touch of luxury to any dish.",
+        "price": "$2.60",
+        "section": "Sides"
+      },
+      {
+        "name": "Cookies",
+        "description": "Delicate treats, made with love",
+        "price": "$3.13",
+        "section": "Sweets"
+      },
+      {
+        "name": "Chips",
+        "description": "These chips offer a satisfying crunch and typically include a variety of flavors like BBQ, sea salt and vinegar, or sour cream and onion.",
+        "price": "$2.86",
+        "section": "Chips"
+      },
+      {
+        "name": "1LB. Tri Tip, Brisket, Roast Beef, Pastrami, Tuna",
+        "description": "Thinly sliced tri tip, brisket, roast beef, pastrami, and tuna, typically including a blend of savory and cured flavors.",
+        "price": "$27.08",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "1 LB. Turkey, Ham, Salami, Pulled Pork, Meatballs, Bacon, Mortadella",
+        "description": "A selection of sliced turkey, ham, salami, pulled pork, meatballs, bacon, and mortadella, commonly found in deli offerings.",
+        "price": "$20.83",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "3/4 Pound Tri Tip, Brisket, Roast Beef, Pastrami, Tuna",
+        "description": "Sliced tri tip, brisket, roast beef, pastrami, and tuna typically served with mustard, lettuce, tomato, and pickles.",
+        "price": "$20.83",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "1/2 Pound Tri Tip, Brisket, Roast Beef, Pastrami, Tuna",
+        "description": "A selection of sliced tri tip, brisket, roast beef, pastrami, and tuna, typically featuring savory and tender cuts from the deli.",
+        "price": "$15.63",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "1LB. Sliced Cheese",
+        "description": "Sliced cheese, typically includes a variety of cheeses, freshly sliced for convenience.",
+        "price": "$12.50",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "1/2 Pound Turkey, Ham, Salami, Pulled Pork, Meatballs, Bacon, Mortadella",
+        "description": "This selection typically includes sliced turkey, ham, salami, pulled pork, meatballs, bacon, and mortadella, offering a variety of deli meats.",
+        "price": "$10.42",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "3/4 Pound Sliced Cheese",
+        "description": "Freshly sliced cheese, approximately 3/4 pound, typically includes a variety of deli selections.",
+        "price": "$9.38",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "1/4 Pound Tri Tip, Brisket, Roast Beef, Pastrami, Tuna",
+        "description": "Sliced tri tip, brisket, roast beef, pastrami, and tuna, typically featuring a variety of deli meats for a hearty selection.",
+        "price": "$8.33",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "1/2 Pound Sliced Cheese",
+        "description": "Sliced cheese, typically offered in a variety of types, available in half-pound portions.",
+        "price": "$6.77",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "1/4 Pound Turkey, Ham, Salami, Pulled Pork, Meatballs, Bacon, Mortadella",
+        "description": "A quarter pound assortment of turkey, ham, salami, pulled pork, meatballs, bacon, and mortadella, commonly sliced for deli-style enjoyment.",
+        "price": "$5.73",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "1/4 Pound Sliced Cheese",
+        "description": "Sliced cheese, typically featuring a variety of deli options, prepared to order.",
+        "price": "$4.43",
+        "section": "Sliced Meats and Cheese"
+      },
+      {
+        "name": "Bucket Ice",
+        "description": "A bucket of ice, typically used for chilling drinks or keeping items cool.",
+        "price": "$15.63",
+        "section": "Ice"
+      },
+      {
+        "name": "8lb. Bag Ice",
+        "description": "A bag of ice, typically used to chill beverages or for cooling purposes.",
+        "price": "$4.17",
+        "section": "Ice"
+      },
+      {
+        "name": "Draft Soda Or Bottle Water +Chips",
+        "description": "Choose from a variety of sodas like Coke, Pepsi, or Sprite, paired with classic chips such as Lays or Doritos.",
+        "price": "$5.20",
+        "section": "Combo"
+      },
+      {
+        "name": "Fruit Platter",
+        "description": "An assortment of seasonal fruits, typically including pineapple, kiwi, strawberries, oranges, and grapes, artfully arranged on a platter.",
+        "price": "$83.34",
+        "section": "Catering"
+      },
+      {
+        "name": "Large Mac Salad",
+        "description": "Elbow macaroni combined with mayonnaise, red onions, celery, and relish, offering a classic deli-style macaroni salad experience.",
+        "price": "$62.50",
+        "section": "Catering"
+      },
+      {
+        "name": "Sandwich Platter",
+        "description": "An assortment of sandwiches on various breads, typically featuring a selection of meats, cheeses, and vegetables, arranged for convenient serving.",
+        "price": "$88.54",
+        "section": "Catering"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2905",
+    "name": "Cotijas Taco Shop",
+    "sourceUrl": "https://www.toasttab.com/local/order/cotijas-taco-shop-10645-tierrasanta-blvd/r-ddb39f43-329b-4993-97f7-e590184523ab",
+    "confidence": "high",
+    "notes": "The work-list website (cotijastierrasanta.com) is unreachable — TLS handshake fails outright and the plain-HTTP fallback returns Cloudflare error 1001 (DNS resolution failure reaching the origin behind Cloudflare), so the domain's hosting looks broken rather than just JS-gated. Found the restaurant's own Toast ordering page instead (confirmed by exact address match in search: 10645 Tierrasanta Blvd Suite J), and this Toast deployment DID embed the full catalog directly in window.__OO_STATE__ (extracted by brace-balancing from the opening '{', 144KB) — unlike a same-batch Toast page for a different restaurant that only returned dining-option metadata. 229 priced dishes across 24 groups: Breakfast Plates, Breakfast Burritos, Burritos, Quesadillas, Enchiladas, Mini Tacos, Soft Tacos, Hard Tacos, Tortas, Combination Plates, Sea Food Plates, Mariscos, Special Plates, Baja Bowl, Flour Shell Bowl, Tostadas, Ensalada, Fries and Chips, Caldos, Kids Meals, A La Carte, Sides, Desserts, Drinks — this is a taco shop with real Soft/Hard/Mini Taco sections present (unlike a sibling restaurant in this batch whose only reachable source turned out to have no plain Tacos section at all). Markup check across all 229 items: no consistent divisor across 1.04/1.10/1.15/1.17/1.20/1.25/1.30 (highest hit rate 30/229 = 13%, consistent with ordinary POS odd-cent pricing, not a uniform surcharge) — this is the restaurant's own first-party ordering platform, so no markup was expected. Verified a sample dish name and price appear literally in the raw HTML bytes.",
+    "dishes": [
+      {
+        "name": "Chilaquiles",
+        "description": "Crispy tortillas tossed in red or green sauce. \r\nTopped with cheese, sour cream, and eggs. With a side of beans and rice",
+        "price": "$15.20",
+        "section": "Breakfast Plates (online)"
+      },
+      {
+        "name": "Chipotle Chilaquiles",
+        "description": "Crispy tortillas tossed in creamy chipotle sauce. Topped with cheese, sour cream, and eggs. With a side of beans and rice.",
+        "price": "$16.49",
+        "section": "Breakfast Plates (online)"
+      },
+      {
+        "name": "Chorizo Plate",
+        "description": "Chorizo and egg scramble, served with a side of sour cream, beans, and rice. \r\nChoice of flour or corn tortillas.",
+        "price": "$15.20",
+        "section": "Breakfast Plates (online)"
+      },
+      {
+        "name": "Machaca Plate",
+        "description": "Buttery shredded beef scrambled with bell peppers, onions, and eggs, served with a side of sour cream, beans, and rice.\r\nChoice of flour or corn tortillas",
+        "price": "$15.20",
+        "section": "Breakfast Plates (online)"
+      },
+      {
+        "name": "Huevos a la Mexicana",
+        "description": "Pico de gallo scrambled with eggs, served with a side of sour cream, beans, and rice. \r\nChoice of flour or corn tortillas.",
+        "price": "$15.20",
+        "section": "Breakfast Plates (online)"
+      },
+      {
+        "name": "Huevos Rancheros",
+        "description": "3 over-easy eggs on corn tortillas, topped with ranchero sauce and cheese, served with a side of sour cream, beans, and rice. \r\nChoice of flour or corn tortillas.",
+        "price": "$15.20",
+        "section": "Breakfast Plates (online)"
+      },
+      {
+        "name": "Huevos Verdes",
+        "description": "Eggs of your choice in green sauce, served with a side of sour cream, beans, and rice. \r\nChoice of flour or corn tortillas.",
+        "price": "$15.20",
+        "section": "Breakfast Plates (online)"
+      },
+      {
+        "name": "Scrambled Eggs",
+        "description": "Eggs scramble with your choice of protein. Served with a side of sour cream, beans, and rice. \r\nChoice of flour or corn tortillas.",
+        "price": "$15.20",
+        "section": "Breakfast Plates (online)"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "Scrambled eggs with your choice of protine: ham, bacon OR sausage. With refried beans, cheese, and sour cream.",
+        "price": "$11.50",
+        "section": "Breakfast Burritos  (online)"
+      },
+      {
+        "name": "Chorizo Burrito",
+        "description": "Scrambled eggs with chorizo, with your chice of refired beans",
+        "price": "$11.99",
+        "section": "Breakfast Burritos  (online)"
+      },
+      {
+        "name": "Grande Breakfast",
+        "description": "Double-wrapped burrito. Scrambled eggs, bacon, french fries, and cheese.",
+        "price": "$15.60",
+        "section": "Breakfast Burritos  (online)"
+      },
+      {
+        "name": "Hash Brown",
+        "description": "Scrambled eggs with bacon and sausage, cheese, sour cream, and hash browns.",
+        "price": "$12.60",
+        "section": "Breakfast Burritos  (online)"
+      },
+      {
+        "name": "Machaca Burrito",
+        "description": "Eggs scrambled with marinated buttered shredded beef with bell peppers and onions.",
+        "price": "$11.99",
+        "section": "Breakfast Burritos  (online)"
+      },
+      {
+        "name": "Steak and Bacon",
+        "description": "Scrambled eggs with bacon and carne asada, with cheese and sour cream.",
+        "price": "$14.50",
+        "section": "Breakfast Burritos  (online)"
+      },
+      {
+        "name": "Steak and Egg",
+        "description": "Scrambled eggs with fries, cheese, and carne asada.",
+        "price": "$14.30",
+        "section": "Breakfast Burritos  (online)"
+      },
+      {
+        "name": "Special Burrito",
+        "description": "Build your own breakfast burrito start with 3 eggs add at your liking!",
+        "price": "$6.99",
+        "section": "Breakfast Burritos  (online)"
+      },
+      {
+        "name": "Adobada Burrito",
+        "description": "Marinated pork, guacamole, onion, and cilantro.",
+        "price": "$13.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Bacon Jalapeno",
+        "description": "Carne asada, bacon, jalapenos, cheese, and beans.",
+        "price": "$14.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Bean Burrito",
+        "description": "Beans only!",
+        "price": "$3.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Bean and Rice Burrito",
+        "description": "Beans and Rice only!",
+        "price": "$7.54",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Bean and Cheese Burrito",
+        "description": "Beans and cheese only!",
+        "price": "$8.25",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Bean Rice and Cheese Burrito",
+        "description": "Mix it all together, beans, rice, and cheese!",
+        "price": "$8.94",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "California Burrito",
+        "description": "Crispy fries with your choice of protein, guacamole, cheese, sour cream, and pico de gallo.",
+        "price": "$14.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Carne Asada Burrito",
+        "description": "guacamole, and pico de gallo",
+        "price": "$13.99",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "Guacamole and pico de gallo",
+        "price": "$13.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Cabeza Burrito",
+        "description": "Onion and cilantro",
+        "price": "$13.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "Poblano pepper stuffed with cheese, with lettuce, guacamole, sour cream, beans, and rice.",
+        "price": "$12.99",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Chile Verde Burrito",
+        "description": "Pork in green sauce, with beans.",
+        "price": "$13.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Chimichanga",
+        "description": "Deep-fried burrito with beans and your choice of protein. Topped with guacamole, sour cream, cheese, pico, and lettuce",
+        "price": "$14.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Chipotle Shrimp",
+        "description": "Grilled shrimp tossed in chipotle, with rice.",
+        "price": "$13.99",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Cotjias Burrito",
+        "description": "Carne asada, cheese, anehime peppers, beans, and white sauce.",
+        "price": "$13.99",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Diablo Shrimp Burrito",
+        "description": "",
+        "price": "$13.99",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Grande Burrito",
+        "description": "Double tortilla, with fries, carne asada, pico de gallo, sour cream, and cheese.",
+        "price": "$16.59",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Fajitas Burrito",
+        "description": "",
+        "price": "$13.89",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Fish Burrito",
+        "description": "Breaded deep-fried fish, with pico de gallo, cabbage, and white sauce.",
+        "price": "$12.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Hot Cheeto Burrito",
+        "description": "Carne asada, hot cheetos, guacamole, cheese, and sour cream.",
+        "price": "$14.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Mixed Burrito",
+        "description": "Shrd Chkn  or Shrd Beef with refried beans.",
+        "price": "$12.99",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Pollo Asado Burrito",
+        "description": "",
+        "price": "$13.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Pollo Adobado Burrito",
+        "description": "Marinated grilled chicken, with guacamole, onion, and cilantro.",
+        "price": "$13.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Pescador",
+        "description": "Breaded grilled fish and carne asada, with guacamole, pico de gallo, white sauce, and cabbage.",
+        "price": "$14.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Roll Taco Burrito",
+        "description": "2 crispy beef roll tacos with carne asada, guacamole, pico de gallo, sour cream, and cheese.",
+        "price": "$14.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "",
+        "price": "$13.99",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Shrd Beef Burrito",
+        "description": "",
+        "price": "$12.59",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Shrd Chkn Burrito",
+        "description": "",
+        "price": "$12.59",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Surf and Turf Burrito",
+        "description": "Double wrapped burrito, shrimp, carne asada, pico de gallo, white sauce, rice, and cheese.",
+        "price": "$17.50",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Vegetarian Burrito",
+        "description": "",
+        "price": "$11.95",
+        "section": "Burritos  (online)"
+      },
+      {
+        "name": "Adobada Quesadilla",
+        "description": "All the guacamole, pico, and sour cream come on the side",
+        "price": "$13.99",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Carne Asada Quesadilla",
+        "description": "All the guacamole, pico, and sour cream come on the side",
+        "price": "$14.49",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Carnitas Quesadilla",
+        "description": "All the guacamole, pico, and sour cream come on the side",
+        "price": "$13.99",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Pollo Asado Quesadilla",
+        "description": "All the guacamole, pico, and sour cream come on the side",
+        "price": "$13.99",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Pollo Adobado Quesadilla",
+        "description": "All the guacamole, pico, and sour cream come on the side",
+        "price": "$13.99",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Vegetarian Quesadilla",
+        "description": "Veggie quesadilla is loaded with guacamole, pico, lettuce, and sour cream.",
+        "price": "$11.99",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Birria Quesadilla",
+        "description": "ON - Corn Tortilla. \r\nSlow-cooked shredded beef in spices. With Onion and Cilantro, with a side of consome.",
+        "price": "$15.50",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Shrimp Quesadilla",
+        "description": "Shrimp Quesadilla comes with pico inside, on the side, guacamole, and white sauce.",
+        "price": "$13.99",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "",
+        "price": "$8.50",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Ham and Cheese Quesadilla",
+        "description": "",
+        "price": "$10.50",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Quessa-Birria",
+        "description": "",
+        "price": "$8.50",
+        "section": "Quesadillas (online)"
+      },
+      {
+        "name": "Cheese Enchiladas",
+        "description": "",
+        "price": "$8.99",
+        "section": "Enchiladas (online)"
+      },
+      {
+        "name": "Chkn Enchiladas",
+        "description": "",
+        "price": "$10.25",
+        "section": "Enchiladas (online)"
+      },
+      {
+        "name": "Beef Enchiladas",
+        "description": "",
+        "price": "$10.25",
+        "section": "Enchiladas (online)"
+      },
+      {
+        "name": "Shrimp Enchiladas",
+        "description": "",
+        "price": "$10.50",
+        "section": "Enchiladas (online)"
+      },
+      {
+        "name": "Adobada Mini",
+        "description": "Guacamole, onion, and cilantro",
+        "price": "$3.69",
+        "section": "Mini Tacos  (online)"
+      },
+      {
+        "name": "Birria Mini",
+        "description": "Onion and cilantro. \r\nDoes NOT come with guacamole",
+        "price": "$3.69",
+        "section": "Mini Tacos  (online)"
+      },
+      {
+        "name": "Cabeza Mini",
+        "description": "Onion and cilantro. \r\nDoes NOT come with guacamole.",
+        "price": "$3.69",
+        "section": "Mini Tacos  (online)"
+      },
+      {
+        "name": "Carne Asada Mini",
+        "description": "Guacamole, onion, and cilantro",
+        "price": "$3.69",
+        "section": "Mini Tacos  (online)"
+      },
+      {
+        "name": "Carnitas Mini",
+        "description": "Guacamole, onion, and cilantro",
+        "price": "$3.69",
+        "section": "Mini Tacos  (online)"
+      },
+      {
+        "name": "Pollo Asado Mini",
+        "description": "Guacamole, onion, and cilantro",
+        "price": "$3.69",
+        "section": "Mini Tacos  (online)"
+      },
+      {
+        "name": "Pollo Adobado Mini",
+        "description": "Guacamole, onion, and cilantro",
+        "price": "$3.69",
+        "section": "Mini Tacos  (online)"
+      },
+      {
+        "name": "Adobada Taco",
+        "description": "Guacamole, onion, and cilantro",
+        "price": "$7.10",
+        "section": "Soft Tacos  (online)"
+      },
+      {
+        "name": "Birria Taco",
+        "description": "onion and cilantro",
+        "price": "$7.10",
+        "section": "Soft Tacos  (online)"
+      },
+      {
+        "name": "Cabeza Taco",
+        "description": "onion and cilantro",
+        "price": "$7.10",
+        "section": "Soft Tacos  (online)"
+      },
+      {
+        "name": "Carne Asada Taco",
+        "description": "guacamole and pico",
+        "price": "$7.10",
+        "section": "Soft Tacos  (online)"
+      },
+      {
+        "name": "Carnitas Taco",
+        "description": "guacamole and pico",
+        "price": "$7.10",
+        "section": "Soft Tacos  (online)"
+      },
+      {
+        "name": "Pollo Asado Taco",
+        "description": "guacamole and pico",
+        "price": "$7.10",
+        "section": "Soft Tacos  (online)"
+      },
+      {
+        "name": "Pollo Adobado Taco",
+        "description": "Guacamole, onion, and cilantro",
+        "price": "$7.10",
+        "section": "Soft Tacos  (online)"
+      },
+      {
+        "name": "Fish Taco",
+        "description": "Breaded fish, cabbage, white sauce, pico",
+        "price": "$5.70",
+        "section": "Soft Tacos  (online)"
+      },
+      {
+        "name": "Shrimp Taco",
+        "description": "Grilled shrimp, pico, white sauce",
+        "price": "$6.99",
+        "section": "Soft Tacos  (online)"
+      },
+      {
+        "name": "Shrd Beef Taco",
+        "description": "Lettuce, cheese",
+        "price": "$5.99",
+        "section": "Hard Tacos  (online)"
+      },
+      {
+        "name": "Shrd Chkn Taco",
+        "description": "Lettuce, cheese",
+        "price": "$5.99",
+        "section": "Hard Tacos  (online)"
+      },
+      {
+        "name": "Papa Taco",
+        "description": "cabbage, cheese, sour cream, pico",
+        "price": "$4.99",
+        "section": "Hard Tacos  (online)"
+      },
+      {
+        "name": "3 Beef Roll Tacos W/ Chz",
+        "description": "Cheese only",
+        "price": "$7.29",
+        "section": "Hard Tacos  (online)"
+      },
+      {
+        "name": "3 Chkn Roll Tacos W/ Chz",
+        "description": "Cheese only",
+        "price": "$7.29",
+        "section": "Hard Tacos  (online)"
+      },
+      {
+        "name": "3 Beef Roll Tacos W/ Guac",
+        "description": "Guacamole and cheese",
+        "price": "$7.70",
+        "section": "Hard Tacos  (online)"
+      },
+      {
+        "name": "3 Chkn Roll Tacos W/ Guac",
+        "description": "Guacamole and cheese",
+        "price": "$7.70",
+        "section": "Hard Tacos  (online)"
+      },
+      {
+        "name": "5 Beef Roll Tacos",
+        "description": "Guacamole, cheese, lettuce",
+        "price": "$9.79",
+        "section": "Hard Tacos  (online)"
+      },
+      {
+        "name": "5 Chicken Roll Tacos",
+        "description": "Guacamole, Cheese, Lettuce",
+        "price": "$9.79",
+        "section": "Hard Tacos  (online)"
+      },
+      {
+        "name": "5 Fish Roll Tacos",
+        "description": "Cabbage, white sauce, cheese, pico",
+        "price": "$9.79",
+        "section": "Hard Tacos  (online)"
+      },
+      {
+        "name": "Adobada Torta",
+        "description": "",
+        "price": "$13.50",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Breakfast Torta",
+        "description": "Eggs scrambled with ham, with beans, cheese, sour cream, onion, tomato, and avocado.",
+        "price": "$11.90",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "C-Asada Torta",
+        "description": "",
+        "price": "$13.50",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Carnitas Torta",
+        "description": "",
+        "price": "$13.50",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Chorizo Torta",
+        "description": "",
+        "price": "$11.90",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Ham and Cheese Torta",
+        "description": "Ham, cheese, lettuce, avocado, onion, tomato, and sour cream.",
+        "price": "$11.70",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Machaca Torta",
+        "description": "",
+        "price": "$11.90",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Milanesa Torta",
+        "description": "",
+        "price": "$13.99",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Pollo ADOBADO Torta",
+        "description": "Marinated chicken, lettuce, avocado, onion, tomato, cheese, and sour cream.",
+        "price": "$13.50",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Pollo Asado Torta",
+        "description": "",
+        "price": "$13.50",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Shrd Beef Torta",
+        "description": "Lettuce, avocado, onion, tomato, cheese, and sour cream.",
+        "price": "$12.99",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Shrd Chkn Torta",
+        "description": "Lettuce, avocado, onion, tomato, cheese and sour cream",
+        "price": "$12.99",
+        "section": "Tortas  (online)"
+      },
+      {
+        "name": "Combo #1",
+        "description": "Beef taco, cheese enchilada - Lettuce, cheese, sour cream, garnish (lettuce and pico) - Rice and beans",
+        "price": "$16.50",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #2",
+        "description": "Chile relleno, cheese enchilada - Lettuce, cheese, sour cream, garnish (lettuce and pico) - Rice and beans",
+        "price": "$16.50",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #3",
+        "description": "Beef taco, bean tostada - Lettuce, cheese, garnish (lettuce and pico) - Rice and beans",
+        "price": "$16.50",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #4",
+        "description": "Meat option - Guacamole, garnish (lettuce and pico) Rice and beans - Side of corn (4) or flour (2) tortillas",
+        "price": "$16.99",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #5",
+        "description": "Chimichanga - Shredded beef or chicken burrito deep fried Beans (inside) Topped w/ guacamole, pico, cheese, sour cream, garnish (lettuce and\r\npico) Rice and beans",
+        "price": "$16.50",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #6",
+        "description": "Chicken Tamal and Enchilada - Enchilada option: cheese, chicken, beef - Sour cream, cheese, garnish (lettuce and pico) - Rice and beans",
+        "price": "$16.50",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #7",
+        "description": "Hard shell Taco and Burrito - Beef or chicken - Lettuce, cheese, garnish (lettuce and pico) - Rice and beans",
+        "price": "$16.50",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #8",
+        "description": "Fajitas - Carne Asada - Pollo Asado - Shrimp (sub charge $0.99 ) - Bell pepper, onion, tossed in maggi sauce - Rice and beans - Side of corn (4) or flour (2) tortillas",
+        "price": "$16.99",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #9",
+        "description": "Tampiquena - Cheese enchilada with carne asada - Sour cream, garnish (lettuce and pico) - Rice and Beans - Side of corn (4) or flour (2) tortillas",
+        "price": "$16.99",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #10",
+        "description": "Bistec Ranchero - Carne asada tossed in tomato sauce, with bell pepper, onion. guacamole, garnish (lettuce and pico) Rice and beans. Side of corn (4) or flour (2) tortillas",
+        "price": "$16.99",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #11",
+        "description": "Chile Verde - Pork tossed in green sauce, Guacamole, garnish (lettuce and pico), Rice and beans, Side of corn (4) or flour (2) tortillas",
+        "price": "$16.50",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Combo #12",
+        "description": "Birria en Caldo - Slow cooked beef in spices, Side onion and cilantro, Rice and beans, Side of corn (4) or flour (2) tortillas",
+        "price": "$17.50",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "2 Cheese Enchilada Combo",
+        "description": "2 cheese enchildadas with rice and beans topped with sour cream. \r\nFRIDAY SPECIAL $9.99!",
+        "price": "$13.03",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Chile Relleno Combo",
+        "description": "1 Chile relleno with rice and beans topped with sour cream.\r\nSATURDAY SPECIAL $9.99!",
+        "price": "$10.50",
+        "section": "Combination Plates (online)"
+      },
+      {
+        "name": "Camarones al Mojo de Ajo",
+        "description": "24 grilled shrimp tossed in garlic and onion.",
+        "price": "$17.50",
+        "section": "Sea Food Plates  (online)"
+      },
+      {
+        "name": "Camarones a la Diabla",
+        "description": "24 grilled shrimp tossed in spicy diabla sauce.",
+        "price": "$17.50",
+        "section": "Sea Food Plates  (online)"
+      },
+      {
+        "name": "Camarones Rancheros",
+        "description": "24 Shrimp tossed in ranchera sauce (tomato base) with bell pepper and onion.",
+        "price": "$17.50",
+        "section": "Sea Food Plates  (online)"
+      },
+      {
+        "name": "Camarones Empanizados",
+        "description": "10 breaded deep-fried shrimp with green salad, rice, and french fries. With a creamy chipotle dipping sauce.",
+        "price": "$19.99",
+        "section": "Sea Food Plates  (online)"
+      },
+      {
+        "name": "Crazy Combo",
+        "description": "1 Fish Taco, 1 Shrimp Taco with rice and beans.",
+        "price": "$14.99",
+        "section": "Sea Food Plates  (online)"
+      },
+      {
+        "name": "2 Fish Taco Combo",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sea Food Plates  (online)"
+      },
+      {
+        "name": "Red Snapper",
+        "description": "**NOTE: LONGER PREP TIME 20MINS\r\n2-pound fish, lightly breaded and deep-fried, paired with a green salad, fries, and rice.",
+        "price": "$27.49",
+        "section": "Sea Food Plates  (online)"
+      },
+      {
+        "name": "Campechana",
+        "description": "CONTAINS RAW OR UNDERCOOKED INGREDIENTS\r\nShrimp and octopus in a tomato juice with cucumber, onion, tomato, cilantro, topped with avocado.",
+        "price": "$19.99",
+        "section": "Mariscos (online)"
+      },
+      {
+        "name": "Coctel de Camaron",
+        "description": "CONTAINS RAW OR UNDERCOOKED INGREDIENTS\r\nShrimp in a tomato juice with cucumber, onion, tomato, cilantro, topped with avocado.",
+        "price": "$18.99",
+        "section": "Mariscos (online)"
+      },
+      {
+        "name": "Ceviche TOSTADA",
+        "description": "CONTAINS RAW OR UNDERCOOKED INGREDIENTS\r\nShrimp cooked in lemon with cucumber, onion, tomato, cilantro, topped with avocado.",
+        "price": "$10.50",
+        "section": "Mariscos (online)"
+      },
+      {
+        "name": "Ceviche ORDER",
+        "description": "CONTAINS RAW OR UNDERCOOKED INGREDIENTS\r\nShrimp cooked in lemon with cucumber, onion, tomato, cilantro, topped with avocado.",
+        "price": "$16.99",
+        "section": "Mariscos (online)"
+      },
+      {
+        "name": "Spec. #19",
+        "description": "Bean tostada, beef taco, and 3 beef roll tacos with a medium fountain drink.",
+        "price": "$15.80",
+        "section": "Special Plates (online)"
+      },
+      {
+        "name": "Spec. #20",
+        "description": "Carne asada burrito, 3 beef roll tacos with a medium fountain drink.",
+        "price": "$17.99",
+        "section": "Special Plates (online)"
+      },
+      {
+        "name": "Spec. #21",
+        "description": "Your choice of pork or chicken tamal, 3 beef roll tacos, with a medium fountain drink.",
+        "price": "$14.30",
+        "section": "Special Plates (online)"
+      },
+      {
+        "name": "Spec. #22",
+        "description": "Cheese quesadilla with your choice of 3 beef or chicken roll tacos.",
+        "price": "$14.30",
+        "section": "Special Plates (online)"
+      },
+      {
+        "name": "Spec. #23",
+        "description": "2 hard shell tacos, your choice of beef or chicken, with one cheese enchilada.",
+        "price": "$15.80",
+        "section": "Special Plates (online)"
+      },
+      {
+        "name": "Baja Bowl",
+        "description": "",
+        "price": "$12.99",
+        "section": "Baja Bowl (online)"
+      },
+      {
+        "name": "Veggie Baja Bowl",
+        "description": "",
+        "price": "$11.99",
+        "section": "Baja Bowl (online)"
+      },
+      {
+        "name": "Flour Shell Bowl",
+        "description": "",
+        "price": "$14.50",
+        "section": "Flour Shell Bowl (online)"
+      },
+      {
+        "name": "Supreme Flour Shell Bowl",
+        "description": "",
+        "price": "$13.49",
+        "section": "Flour Shell Bowl (online)"
+      },
+      {
+        "name": "Veggie Flour Shell Bowl",
+        "description": "",
+        "price": "$12.50",
+        "section": "Flour Shell Bowl (online)"
+      },
+      {
+        "name": "Bean Tostada`",
+        "description": "",
+        "price": "$6.85",
+        "section": "Tostadas (online)"
+      },
+      {
+        "name": "Chkn Tostada",
+        "description": "",
+        "price": "$8.99",
+        "section": "Tostadas (online)"
+      },
+      {
+        "name": "Beef Tostada",
+        "description": "",
+        "price": "$8.99",
+        "section": "Tostadas (online)"
+      },
+      {
+        "name": "Ensalada",
+        "description": "Your choice of protein served with cilantro dressing!",
+        "price": "$16.99",
+        "section": "Ensalada (online)"
+      },
+      {
+        "name": "Veggie Salad",
+        "description": "Served with cilantro dressing!",
+        "price": "$14.50",
+        "section": "Ensalada (online)"
+      },
+      {
+        "name": "Ensalada de Mariscos",
+        "description": "CONTAINS RAW OR UNDERCOOKED INGREDIENTS\r\nChilled shrimp and octopus with chipotle!",
+        "price": "$18.99",
+        "section": "Ensalada (online)"
+      },
+      {
+        "name": "FULL Order Fries",
+        "description": "",
+        "price": "$17.50",
+        "section": "Fries and Chips (online)"
+      },
+      {
+        "name": "HALF Order Fries",
+        "description": "",
+        "price": "$13.99",
+        "section": "Fries and Chips (online)"
+      },
+      {
+        "name": "FULL Order Veggie Fries",
+        "description": "",
+        "price": "$15.50",
+        "section": "Fries and Chips (online)"
+      },
+      {
+        "name": "HALF Order Veggie Fries",
+        "description": "",
+        "price": "$13.50",
+        "section": "Fries and Chips (online)"
+      },
+      {
+        "name": "FULL Order Chips",
+        "description": "",
+        "price": "$17.50",
+        "section": "Fries and Chips (online)"
+      },
+      {
+        "name": "HALF Order Chips",
+        "description": "",
+        "price": "$13.99",
+        "section": "Fries and Chips (online)"
+      },
+      {
+        "name": "FULL Order Veggie Chips",
+        "description": "",
+        "price": "$15.50",
+        "section": "Fries and Chips (online)"
+      },
+      {
+        "name": "HALF Order Veggie Chips",
+        "description": "",
+        "price": "$13.50",
+        "section": "Fries and Chips (online)"
+      },
+      {
+        "name": "Chips w/ Guac and Cheese",
+        "description": "JUST CHIPS, GUACAMOLE AND CHEESE!",
+        "price": "$10.50",
+        "section": "Fries and Chips (online)"
+      },
+      {
+        "name": "Caldo De Res",
+        "description": "Beef soup with veggies: corn, squash, potatoes, and carrots\r\nWith a side of rice.",
+        "price": "$15.99",
+        "section": "Caldos (online)"
+      },
+      {
+        "name": "Menudo",
+        "description": "SUNDAY SPECIAL $12.99\r\nChewy beef soup in red broth. \r\nOUR MENUDO DOES NOT HAVE HOMINY.",
+        "price": "$15.99",
+        "section": "Caldos (online)"
+      },
+      {
+        "name": "Caldo De Camaron",
+        "description": "Shrimp soup with carrots, squash, celery, and cabbage",
+        "price": "$17.50",
+        "section": "Caldos (online)"
+      },
+      {
+        "name": "Caldo De Pescado",
+        "description": "Fish soup with carrots, squash, celery, and cabbage.",
+        "price": "$16.50",
+        "section": "Caldos (online)"
+      },
+      {
+        "name": "7 Mares",
+        "description": "7 sea soup: shrimp, fish, crab legs, clam, mussel, octopus, and scallops.  \r\nWith veggies, squash, carrots, celery, and cabbage. Longer prep time ~15-20 mins",
+        "price": "$21.99",
+        "section": "Caldos (online)"
+      },
+      {
+        "name": "Kids Burrito",
+        "description": "",
+        "price": "$9.99",
+        "section": "Kids Meals (online)"
+      },
+      {
+        "name": "Kids Quesadilla",
+        "description": "Quesadilla DOES NOT include meat - Cheese Quesadilla.",
+        "price": "$9.99",
+        "section": "Kids Meals (online)"
+      },
+      {
+        "name": "Kids Enchilada",
+        "description": "Enchilada DOES NOT have meat - Cheese Enchilada",
+        "price": "$9.99",
+        "section": "Kids Meals (online)"
+      },
+      {
+        "name": "Kids Roll Tacos",
+        "description": "",
+        "price": "$9.99",
+        "section": "Kids Meals (online)"
+      },
+      {
+        "name": "Chile Relleno",
+        "description": "",
+        "price": "$8.40",
+        "section": "A La Carte (online)"
+      },
+      {
+        "name": "Chkn  Tamal",
+        "description": "",
+        "price": "$6.99",
+        "section": "A La Carte (online)"
+      },
+      {
+        "name": "Pork Tamal",
+        "description": "",
+        "price": "$6.99",
+        "section": "A La Carte (online)"
+      },
+      {
+        "name": "Side French Fries",
+        "description": "",
+        "price": "$4.50",
+        "section": "A La Carte (online)"
+      },
+      {
+        "name": "Beef Flauta",
+        "description": "",
+        "price": "$9.50",
+        "section": "A La Carte (online)"
+      },
+      {
+        "name": "Chkn Flauta",
+        "description": "",
+        "price": "$9.50",
+        "section": "A La Carte (online)"
+      },
+      {
+        "name": "Small Chips",
+        "description": "",
+        "price": "$1.85",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Large Chips",
+        "description": "",
+        "price": "$4.30",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Hot Carrots",
+        "description": "",
+        "price": "$2.25",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Extra Corn Tortillas (4)",
+        "description": "",
+        "price": "$1.99",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Extra Flour Tortillas (2)",
+        "description": "",
+        "price": "$1.99",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Extra Flour Tortilla Grande",
+        "description": "",
+        "price": "$1.99",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Corn Tortilla 1-DZ",
+        "description": "",
+        "price": "$4.49",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Flour Tortillas 1-DZ",
+        "description": "",
+        "price": "$6.84",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Rice 8oz",
+        "description": "",
+        "price": "$3.60",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Rice 32oz",
+        "description": "",
+        "price": "$10.99",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Beans 8oz",
+        "description": "",
+        "price": "$3.60",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Beans 32oz",
+        "description": "",
+        "price": "$10.99",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Pico 4oz",
+        "description": "",
+        "price": "$1.85",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Pico 8oz",
+        "description": "",
+        "price": "$2.85",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Pico 32oz",
+        "description": "",
+        "price": "$10.09",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Chunky 4oz",
+        "description": "",
+        "price": "$1.85",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Chunky 8oz",
+        "description": "",
+        "price": "$2.85",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Chunky 32oz",
+        "description": "",
+        "price": "$10.09",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "4oz Salsa",
+        "description": "",
+        "price": "$1.85",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "8oz Salsa",
+        "description": "",
+        "price": "$2.85",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Guacamole 4oz",
+        "description": "",
+        "price": "$4.29",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Guacamole 8oz",
+        "description": "",
+        "price": "$5.60",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Sour Cream 4oz",
+        "description": "",
+        "price": "$3.35",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Sour Cream 8oz",
+        "description": "",
+        "price": "$5.60",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Chipotle 4oz",
+        "description": "",
+        "price": "$3.35",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Chipotle 8oz",
+        "description": "",
+        "price": "$5.60",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "White Sauce 4oz",
+        "description": "",
+        "price": "$3.35",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "White Sauce 8oz",
+        "description": "",
+        "price": "$5.60",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "8oz Ench Sauce",
+        "description": "",
+        "price": "$2.85",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Side Adobada",
+        "description": "",
+        "price": "$5.50",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Side Carne Asada",
+        "description": "",
+        "price": "$5.99",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Side Carnitas",
+        "description": "",
+        "price": "$5.50",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Side Pollo Asado",
+        "description": "",
+        "price": "$5.50",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Side Shrimp",
+        "description": "",
+        "price": "$4.99",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Side Fish",
+        "description": "",
+        "price": "$4.99",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Side Shrd Chkn",
+        "description": "",
+        "price": "$5.25",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Side Shrd Beef",
+        "description": "",
+        "price": "$5.25",
+        "section": "Sides (online)"
+      },
+      {
+        "name": "Churro",
+        "description": "Filled with dulce de leche",
+        "price": "$3.50",
+        "section": "Desserts (online)"
+      },
+      {
+        "name": "Flan",
+        "description": "contains eggs and milk",
+        "price": "$4.99",
+        "section": "Desserts (online)"
+      },
+      {
+        "name": "Cinnamon Treats",
+        "description": "Deep fried flour tortilla pieces tossed in sugar and cinnamon",
+        "price": "$4.25",
+        "section": "Desserts (online)"
+      },
+      {
+        "name": "Med Soda",
+        "description": "",
+        "price": "$3.75",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Med Horchata",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Med Jamaica",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Lg Soda",
+        "description": "",
+        "price": "$4.25",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Lg Horchata",
+        "description": "",
+        "price": "$4.50",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Lg Jamaica",
+        "description": "",
+        "price": "$4.50",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Caprisun",
+        "description": "",
+        "price": "$1.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Water Bottle",
+        "description": "",
+        "price": "$2.75",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Pineapple Jarritos",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Mandarin Jarritos",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Tamarindo Jarritos",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Mineral Jarritos",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Sidral",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Sangria",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Pepsi",
+        "description": "",
+        "price": "$2.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Diet Pepsi",
+        "description": "",
+        "price": "$2.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Squirt",
+        "description": "",
+        "price": "$2.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Manzanita",
+        "description": "",
+        "price": "$2.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Dr. Pepper",
+        "description": "",
+        "price": "$2.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Diet Dr. Pepper",
+        "description": "",
+        "price": "$2.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Red Gatorade",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Orange Gatorade",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      },
+      {
+        "name": "Yellow Gatorade",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks (online)"
+      }
+    ]
+  }
+]

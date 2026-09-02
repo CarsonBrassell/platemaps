@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import type { MatchedDish, Restaurant } from "@/data/restaurants";
+import type { MatchedDish, Restaurant } from "@/data/restaurantTypes";
 import { QUERY_PARAM } from "@/lib/discoverFilters";
 import { rank } from "@/lib/restaurantRank";
 import { StarIcon } from "@/components/icons";

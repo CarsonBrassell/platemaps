@@ -1,0 +1,1082 @@
+[
+  {
+    "restaurantId": "4253",
+    "name": "Miền Trung",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "Only one reachable tier-5 priced source (allmenus); no independent second source found. Restaurant's own NetWaiter widget (mientrungrestaurant.netwaiter.com) has online ordering disabled (CanOrder:false) and exposes no menu route -- confirmed prior finding still holds. zmenu.com and Yelp both 403'd curl (retried, still 403). No DoorDash/Toast/Square/ChowNow/Menufy presence found via search. Confirms prior block from menus/blocked-log.jsonl for this id.",
+    "notes": "Re-verified per coordinator note: NetWaiter storefront is genuinely empty/ordering-disabled, not worth further time. Search engines (Google JS-walled, DuckDuckGo captcha'd) limited discovery.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4110",
+    "name": "Swan Bar",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "No priced menu source reachable. Own domain originalswanbar.com redirects straight to Instagram (client-rendered, no priced content via curl). Facebook page (facebook.com/originalswanbar, categorized Burger Restaurant) has no menu tab/prices. Yelp menu tab is barred per rules and both curl and r.jina.ai were Cloudflare-walled (403) on yelp.com. No Toast/Square/Clover/Tock ordering presence found (guessed slugs 404 or Page Not Found). DuckDuckGo business panel shows Website/Directions/Map only, no Menu link. Reviews found describe only cocktails (espresso martini, drinks on draft), no food items or prices.",
+    "notes": "Google search bot-walled; Bing search engine returned irrelevant generic wildlife results for every query variant tried (curl and browser) so was not usable for discovery. Could not confirm whether this is food+drink or drinks-only; leaving blocked rather than not_found since the obstacles (Cloudflare, JS-only pages) are environmental, not proof of no prices.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1107",
+    "name": "The Leucadian",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "Re-checked per coordinator note. Own Squarespace site (theleucadianbar.com) still has no menu page in nav (Home, Contact, Photos, Specials only); /specials page carries only happy-hour drink pricing (Mon-Fri open-6pm, $5 wells, draft discounts), no food items. DDG/Yelp business panel categorizes it Dive bars in Encinitas; one review mentions hot food and a sports-bar back patio, so food likely exists on-site, but no DoorDash/UberEats/Toast/Square/ChowNow presence or priced food source was found via search. restaurantguru.com has a listing (Cuisine: Cocktail Bars) but is barred per rules without an independent second priced source, and none was found.",
+    "notes": "Same conclusion as prior block in menus/blocked-log.jsonl -- no bot wall was actually hit this time (site loaded fine), the blocker is simply that no food menu/prices are published anywhere reachable. Left as blocked rather than not_found because a reviewer confirms hot food exists on premises; a not_found would need confirmation the business truly prices nothing.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1206",
+    "name": "The Regal",
+    "sourceUrl": "https://theregalbar.com/",
+    "confidence": "high",
+    "notes": "not_found: drink-only bar. Homepage hero banner reads NO FOOD, JUST DRINKS verbatim, and site config carries made_of_food:false on its content blocks. Nav is Specials / Events / Parties only, no food/menu page. The site embeds a SpotHopper ordering widget (tmt.spotapps.co, spot_id 21921, spot_name confirmed The Regal Bar) but its menus array evaluates to genuinely empty ([]) -- never populated, consistent with the no-food banner. The /specials page carries only day-of-week rotating drink specials (Today/tomorrow style, e.g. Sunday  Bloody Marys, Tuesday  Hornitos) which are dated snapshots, not a stable menu, and excluded per rule against Today's Specials boards.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1177",
+    "name": "One More Thats It",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "No website on file and none found via search -- listed only on Yelp (One More Thats It Pub, dive bars category), which 403s curl on retry. No Facebook page found (guessed handles returned 400). No DoorDash/UberEats/Grubhub/Toast presence discoverable via search. A Yelp review mentions food (good bar food) so this is not confirmed drink-only, but no priced source could be reached.",
+    "notes": "DuckDuckGo business panel gives address/hours/phone only, no menu link. Genuinely no reachable priced source tonight; blocked rather than not_found since food appears to exist but nothing could be verified.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3227",
+    "name": "Beach + Taco Shack",
+    "sourceUrl": "https://sanqq.buy-ondemand.com/streamlinedmenu/0e48725f-e058-4cff-9628-a45854b43dcd/3596",
+    "confidence": "low",
+    "blocked": "Hotel Del Coronado Agilysys/IG OnDemand storefront (buy-ondemand.com), which was previously flagged needs-a-browser. Opened it in the browser this time: it loads (Datadome passes with real browser) but shows Oops! No menu is currently available. Network trace shows why -- /api/sites/260 payload confirms concept id 7517 = Beach & Taco Shack (displayProfileId 3596, matching this URL) with availableAt.availableNow:false, opens 12:00 pm closes 8:00 pm PST8PDT -- this is a closed-store time gate, not an empty menu; the session ran at ~3am PDT, well outside the ordering window. The concept-scoped POST .../concepts/3596 returned 410 while closed. hoteldel.com dine page itself carries no priced menu content (only the widget link).",
+    "notes": "Re-queue for a run during 12pm-8pm Pacific -- the concept and menu profile exist and are configured, only the live items were unreachable due to hours.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5685",
+    "name": "Mis Cuates Taco Shop",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "No website on file. DuckDuckGo/Yelp panel lists a domain miscuatestacoshoppala.onlygooddinnerplaces.xyz -- this reads as a directory-farm placeholder (generic .xyz farm-style subdomain), and downloading it triggered a permission-denied/quarantine lock on the local scratch file after curl reported 200, consistent with it being flagged as suspicious; not used as a source. No DoorDash/Facebook/menu presence found via search. Small rural taco shop near Pala Casino (reviews confirm burritos/tacos, no prices mentioned).",
+    "notes": "Reviews confirm this is the right business (casino across the street matches Pala Mission Rd location) despite Yelp listing a slightly different street number (1777 vs batch 11194 Pala Mission Rd) -- same road, same description. Left blocked, not not_found: no priced source reachable, but nothing confirms the business publishes no prices.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3337",
+    "name": "K T Donuts #2",
+    "sourceUrl": "https://s3-media0.fl.yelpcdn.com/bphoto/qY4O0faiau7EV-rtr-qgYw/o.jpg",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://s3-media0.fl.yelpcdn.com/bphoto/HQdRUMS152U8VSd3Zddj5A/o.jpg",
+    "notes": "No website; captured from two Yelp photos of the in-store cash-register menu board (alt text ws cash only menu / interior), found via img alt filtering for /menu/i on the biz_photos gallery. Both photos show the identical board, cross-checked against each other for consistency. Cash-only shop, no online ordering. Skipped as unreadable/ambiguous: a QUIK item whose price digit was illegible, a CHOCOLATE (milk) line whose price was cut off in both photos, and an unlabeled $7/$8 pair next to HALF DOZEN whose associated item could not be determined with confidence. Dozen-donut tiers (REG/MED/LRG) are bulk deals for named flavor groups per the board (Better By The Dozen), listed as their own priced items alongside the same flavors singles pricing.",
+    "dishes": [
+      {
+        "name": "Wheat N Honey Donut",
+        "description": "",
+        "price": "$1.25",
+        "section": "Donuts"
+      },
+      {
+        "name": "Cake Donut",
+        "description": "",
+        "price": "$1.25",
+        "section": "Donuts"
+      },
+      {
+        "name": "Devil's Food Donut",
+        "description": "",
+        "price": "$1.25",
+        "section": "Donuts"
+      },
+      {
+        "name": "Old Fashion Donut",
+        "description": "",
+        "price": "$1.25",
+        "section": "Donuts"
+      },
+      {
+        "name": "Glazed Donut",
+        "description": "",
+        "price": "$1.25",
+        "section": "Donuts"
+      },
+      {
+        "name": "Chocolate Glaze Donut",
+        "description": "",
+        "price": "$1.25",
+        "section": "Donuts"
+      },
+      {
+        "name": "Sugar Glaze Donut",
+        "description": "",
+        "price": "$1.25",
+        "section": "Donuts"
+      },
+      {
+        "name": "Crumb Glaze Donut",
+        "description": "",
+        "price": "$1.25",
+        "section": "Donuts"
+      },
+      {
+        "name": "Coconut Donut",
+        "description": "",
+        "price": "$1.25",
+        "section": "Donuts"
+      },
+      {
+        "name": "Twists",
+        "description": "",
+        "price": "$1.40",
+        "section": "Donuts"
+      },
+      {
+        "name": "Cinnamon Sticks",
+        "description": "",
+        "price": "$1.40",
+        "section": "Donuts"
+      },
+      {
+        "name": "Iced Bars",
+        "description": "",
+        "price": "$1.40",
+        "section": "Donuts"
+      },
+      {
+        "name": "Jellies",
+        "description": "",
+        "price": "$1.40",
+        "section": "Donuts"
+      },
+      {
+        "name": "Bear Claw",
+        "description": "",
+        "price": "$2.50",
+        "section": "Donuts"
+      },
+      {
+        "name": "Cinnamon Rolls",
+        "description": "",
+        "price": "$2.50",
+        "section": "Donuts"
+      },
+      {
+        "name": "Fritter",
+        "description": "",
+        "price": "$2.50",
+        "section": "Donuts"
+      },
+      {
+        "name": "Cherry Rolls",
+        "description": "",
+        "price": "$2.50",
+        "section": "Donuts"
+      },
+      {
+        "name": "Croissant",
+        "description": "",
+        "price": "$2.50",
+        "section": "Donuts"
+      },
+      {
+        "name": "Muffin",
+        "description": "",
+        "price": "$2.50",
+        "section": "Donuts"
+      },
+      {
+        "name": "Dozen Donuts - Regular (Glazed, Cake, Old Fashion)",
+        "description": "By the dozen",
+        "price": "$13.00",
+        "section": "Dozen Donuts"
+      },
+      {
+        "name": "Dozen Donuts - Medium (Twists, Bars, Jellies)",
+        "description": "By the dozen",
+        "price": "$16.00",
+        "section": "Dozen Donuts"
+      },
+      {
+        "name": "Dozen Donuts - Large (Cinnamon Roll & Cinnamon, Apple Fritters)",
+        "description": "By the dozen",
+        "price": "$23.00",
+        "section": "Dozen Donuts"
+      },
+      {
+        "name": "Dozen Donut Holes",
+        "description": "",
+        "price": "$2.00",
+        "section": "Dozen Donuts"
+      },
+      {
+        "name": "Gatorade",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coffee (Small)",
+        "description": "",
+        "price": "$1.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coffee (Medium)",
+        "description": "",
+        "price": "$1.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coffee (Large)",
+        "description": "",
+        "price": "$1.75",
+        "section": "Drinks"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Hot Cocoa (Small)",
+        "description": "",
+        "price": "$1.25",
+        "section": "Drinks"
+      },
+      {
+        "name": "Hot Cocoa (Medium)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Hot Cocoa (Large)",
+        "description": "",
+        "price": "$2.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Cappuccino (Small)",
+        "description": "",
+        "price": "$1.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Cappuccino (Medium)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Cappuccino (Large)",
+        "description": "",
+        "price": "$2.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Orange Juice",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Soda in Can",
+        "description": "",
+        "price": "$1.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Milk",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Big Water",
+        "description": "",
+        "price": "$1.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Small Water",
+        "description": "",
+        "price": "$1.00",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3223",
+    "name": "ENO Market & Pizzeria",
+    "sourceUrl": "https://sanqq.buy-ondemand.com/streamlinedmenu/0e48725f-e058-4cff-9628-a45854b43dcd/3543",
+    "confidence": "low",
+    "blocked": "Retried per coordinator note (prior block cited Datadome bot mitigation). This time the storefront loaded fine in a real browser -- not actually bot-walled, just time-gated. Same Hotel Del Coronado Agilysys/IG OnDemand platform as sibling Beach + Taco Shack (site UUID 0e48725f-e058-4cff-9628-a45854b43dcd). Network trace: /api/sites/260 confirms concept id 7519 = Eno Pizzeria (displayProfileId 3543, locationName ENO Pizzeria) with availableAt.availableNow:false, opens 12:00 pm closes 8:00 pm PST8PDT; the concept-scoped POST .../concepts/3543 returns 410 while closed. Session ran ~3am PDT, well outside the ordering window, hence Oops! No menu is currently available. hoteldel.com dine page itself has no priced menu content.",
+    "notes": "Re-queue for a run during 12pm-8pm Pacific -- the concept and menu profile exist and are configured (same as Beach + Taco Shack, restaurantId 3227, in this same batch), only the live items were unreachable due to hours.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3327",
+    "name": "Monavala Pizza",
+    "sourceUrl": "https://www.monavalapizzaelcajon.com/_files/ugd/0a68e5_c63bbefac1734d408153d76a96059b2b.pdf",
+    "confidence": "high",
+    "notes": "Priced from the dine-in menu PDF linked directly on the restaurant's own Wix site (monavalapizzaelcajon.com), text-layer, read with pdftotext -raw (address on the PDF -- 500 Broadway, Suite B, El Cajon, CA 92021 -- matches the batch address). Deliberately NOT sourced from the site's own order_now link to slicelife.com/restaurants/ca/el-cajon/92021/monavala-pizza-el-cajon/menu: extracted its __SLICE_REDUX_STATE__ (159 priced rows) and ran the markup test -- 154/159 (97%) divide cleanly to whole dollars at a 1.05 factor and cents were scattered across nearly every value 00-99, the classic surcharged-catalog signature, so that source was discarded per the fee-blocking rule rather than divided out. The PDF menu is also higher-confidence on its own terms: every price ends in .99 with no exceptions. Skipped as adjuncts/modifiers: per-topping add-on pricing, gluten-free crust surcharge, and a Chicken/Gyros add-on -- none are standalone dishes. The 10 Inch sandwich covers a build-your-own list of fillings printed on the PDF; a Combo (Salad/Fries) add-on price ($11.99) was left out as a modifier, not a separate dish. A second linked PDF was a blank catering order form with no menu content.",
+    "dishes": [
+      {
+        "name": "Margherita Pizza - 12\"",
+        "description": "",
+        "price": "$9.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Margherita Pizza - 14\"",
+        "description": "",
+        "price": "$11.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Margherita Pizza - 16\"",
+        "description": "",
+        "price": "$15.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Margherita Pizza - 20\"",
+        "description": "",
+        "price": "$22.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Margherita Pizza - 28\"",
+        "description": "",
+        "price": "$32.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Verona Pizza - 12\"",
+        "description": "",
+        "price": "$9.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Verona Pizza - 14\"",
+        "description": "",
+        "price": "$11.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Verona Pizza - 16\"",
+        "description": "",
+        "price": "$15.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Verona Pizza - 20\"",
+        "description": "",
+        "price": "$22.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Verona Pizza - 28\"",
+        "description": "",
+        "price": "$32.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Greek Pizza - 12\"",
+        "description": "",
+        "price": "$11.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Greek Pizza - 14\"",
+        "description": "",
+        "price": "$14.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Greek Pizza - 16\"",
+        "description": "",
+        "price": "$18.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Greek Pizza - 20\"",
+        "description": "",
+        "price": "$26.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Greek Pizza - 28\"",
+        "description": "",
+        "price": "$33.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Mexicana Pizza - 12\"",
+        "description": "",
+        "price": "$11.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Mexicana Pizza - 14\"",
+        "description": "",
+        "price": "$15.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Mexicana Pizza - 16\"",
+        "description": "",
+        "price": "$19.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Mexicana Pizza - 20\"",
+        "description": "",
+        "price": "$26.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Mexicana Pizza - 28\"",
+        "description": "",
+        "price": "$32.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Philly Cheese Pizza - 12\"",
+        "description": "",
+        "price": "$14.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Philly Cheese Pizza - 14\"",
+        "description": "",
+        "price": "$17.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Philly Cheese Pizza - 16\"",
+        "description": "",
+        "price": "$21.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Philly Cheese Pizza - 20\"",
+        "description": "",
+        "price": "$29.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Philly Cheese Pizza - 28\"",
+        "description": "",
+        "price": "$36.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Specialty Pizza - 12\"",
+        "description": "",
+        "price": "$12.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Specialty Pizza - 14\"",
+        "description": "",
+        "price": "$15.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Specialty Pizza - 16\"",
+        "description": "",
+        "price": "$19.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Specialty Pizza - 20\"",
+        "description": "",
+        "price": "$28.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Specialty Pizza - 28\"",
+        "description": "",
+        "price": "$35.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Meat Lover Pizza - 12\"",
+        "description": "",
+        "price": "$14.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Meat Lover Pizza - 14\"",
+        "description": "",
+        "price": "$16.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Meat Lover Pizza - 16\"",
+        "description": "",
+        "price": "$20.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Meat Lover Pizza - 20\"",
+        "description": "",
+        "price": "$29.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Meat Lover Pizza - 28\"",
+        "description": "",
+        "price": "$36.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Vegetarian Pizza - 12\"",
+        "description": "",
+        "price": "$13.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Vegetarian Pizza - 14\"",
+        "description": "",
+        "price": "$15.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Vegetarian Pizza - 16\"",
+        "description": "",
+        "price": "$19.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Vegetarian Pizza - 20\"",
+        "description": "",
+        "price": "$28.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Vegetarian Pizza - 28\"",
+        "description": "",
+        "price": "$35.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "5 Cheese Pizza - 12\"",
+        "description": "",
+        "price": "$14.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "5 Cheese Pizza - 14\"",
+        "description": "",
+        "price": "$16.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "5 Cheese Pizza - 16\"",
+        "description": "",
+        "price": "$20.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "5 Cheese Pizza - 20\"",
+        "description": "",
+        "price": "$29.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "5 Cheese Pizza - 28\"",
+        "description": "",
+        "price": "$36.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Buffalo Chicken Pizza - 12\"",
+        "description": "",
+        "price": "$9.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Buffalo Chicken Pizza - 14\"",
+        "description": "",
+        "price": "$11.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Buffalo Chicken Pizza - 16\"",
+        "description": "",
+        "price": "$15.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Buffalo Chicken Pizza - 20\"",
+        "description": "",
+        "price": "$22.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Buffalo Chicken Pizza - 28\"",
+        "description": "",
+        "price": "$31.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "BBQ Chicken Pizza - 12\"",
+        "description": "",
+        "price": "$10.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "BBQ Chicken Pizza - 14\"",
+        "description": "",
+        "price": "$12.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "BBQ Chicken Pizza - 16\"",
+        "description": "",
+        "price": "$16.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "BBQ Chicken Pizza - 20\"",
+        "description": "",
+        "price": "$23.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "BBQ Chicken Pizza - 28\"",
+        "description": "",
+        "price": "$32.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza - 12\"",
+        "description": "",
+        "price": "$10.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza - 14\"",
+        "description": "",
+        "price": "$12.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza - 16\"",
+        "description": "",
+        "price": "$16.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza - 20\"",
+        "description": "",
+        "price": "$23.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza - 28\"",
+        "description": "",
+        "price": "$32.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "White Pizza - 12\"",
+        "description": "",
+        "price": "$10.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "White Pizza - 14\"",
+        "description": "",
+        "price": "$12.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "White Pizza - 16\"",
+        "description": "",
+        "price": "$16.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "White Pizza - 20\"",
+        "description": "",
+        "price": "$23.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "White Pizza - 28\"",
+        "description": "",
+        "price": "$32.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Roasted Veggies Pizza - 12\"",
+        "description": "",
+        "price": "$13.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Roasted Veggies Pizza - 14\"",
+        "description": "",
+        "price": "$16.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Roasted Veggies Pizza - 16\"",
+        "description": "",
+        "price": "$20.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Roasted Veggies Pizza - 20\"",
+        "description": "",
+        "price": "$29.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Roasted Veggies Pizza - 28\"",
+        "description": "",
+        "price": "$35.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Supreme Pizza - 12\"",
+        "description": "",
+        "price": "$18.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Supreme Pizza - 14\"",
+        "description": "",
+        "price": "$22.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Supreme Pizza - 16\"",
+        "description": "",
+        "price": "$28.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Supreme Pizza - 20\"",
+        "description": "",
+        "price": "$39.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Supreme Pizza - 28\"",
+        "description": "",
+        "price": "$46.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza - 12\"",
+        "description": "",
+        "price": "$8.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza - 14\"",
+        "description": "",
+        "price": "$10.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza - 16\"",
+        "description": "",
+        "price": "$13.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza - 20\"",
+        "description": "",
+        "price": "$20.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza - 28\"",
+        "description": "",
+        "price": "$28.99",
+        "section": "Pizza"
+      },
+      {
+        "name": "Calzone (Medium)",
+        "description": "Ricotta cheese, mozzarella cheese + any 3 toppings",
+        "price": "$17.99",
+        "section": "Calzone"
+      },
+      {
+        "name": "Calzone (Large)",
+        "description": "Ricotta cheese, mozzarella cheese + any 3 toppings",
+        "price": "$20.99",
+        "section": "Calzone"
+      },
+      {
+        "name": "Garden Salad (Medium)",
+        "description": "",
+        "price": "$4.99",
+        "section": "Salad"
+      },
+      {
+        "name": "Garden Salad (Large)",
+        "description": "",
+        "price": "$5.99",
+        "section": "Salad"
+      },
+      {
+        "name": "Greek Salad (Medium)",
+        "description": "",
+        "price": "$5.99",
+        "section": "Salad"
+      },
+      {
+        "name": "Greek Salad (Large)",
+        "description": "",
+        "price": "$6.99",
+        "section": "Salad"
+      },
+      {
+        "name": "Caesar Salad (Medium)",
+        "description": "",
+        "price": "$5.99",
+        "section": "Salad"
+      },
+      {
+        "name": "Caesar Salad (Large)",
+        "description": "",
+        "price": "$6.99",
+        "section": "Salad"
+      },
+      {
+        "name": "Antipasto Salad (Medium)",
+        "description": "",
+        "price": "$6.99",
+        "section": "Salad"
+      },
+      {
+        "name": "Antipasto Salad (Large)",
+        "description": "",
+        "price": "$7.99",
+        "section": "Salad"
+      },
+      {
+        "name": "Monavala Salad (Medium)",
+        "description": "",
+        "price": "$7.99",
+        "section": "Salad"
+      },
+      {
+        "name": "Monavala Salad (Large)",
+        "description": "",
+        "price": "$8.99",
+        "section": "Salad"
+      },
+      {
+        "name": "Traditional Wings (6 pcs)",
+        "description": "",
+        "price": "$8.99",
+        "section": "Wings"
+      },
+      {
+        "name": "Traditional Wings (10 pcs)",
+        "description": "",
+        "price": "$14.99",
+        "section": "Wings"
+      },
+      {
+        "name": "Traditional Wings (15 pcs)",
+        "description": "",
+        "price": "$19.99",
+        "section": "Wings"
+      },
+      {
+        "name": "Traditional Wings (20 pcs)",
+        "description": "",
+        "price": "$26.99",
+        "section": "Wings"
+      },
+      {
+        "name": "Traditional Wings (25 pcs)",
+        "description": "",
+        "price": "$31.99",
+        "section": "Wings"
+      },
+      {
+        "name": "Boneless Wings (Small)",
+        "description": "",
+        "price": "$8.99",
+        "section": "Wings"
+      },
+      {
+        "name": "Boneless Wings (Large)",
+        "description": "",
+        "price": "$14.99",
+        "section": "Wings"
+      },
+      {
+        "name": "Ravioli (Meat or Cheese)",
+        "description": "",
+        "price": "$8.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Meat Lasagna",
+        "description": "",
+        "price": "$8.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Spaghetti",
+        "description": "",
+        "price": "$8.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Eggplant Parmesan",
+        "description": "",
+        "price": "$11.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Chicken Parmesan",
+        "description": "",
+        "price": "$11.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Chicken Tequila Fettuccine",
+        "description": "",
+        "price": "$16.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Monavala Tagliatelle",
+        "description": "",
+        "price": "$16.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Rigatoni al Pizzicotto",
+        "description": "",
+        "price": "$16.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Fettuccine Alfredo",
+        "description": "",
+        "price": "$15.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Garlic Bread",
+        "description": "",
+        "price": "$2.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Bread Sticks",
+        "description": "",
+        "price": "$3.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Side of Meatballs",
+        "description": "",
+        "price": "$3.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Mozzarella Sticks",
+        "description": "",
+        "price": "$7.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Cheese Sticks",
+        "description": "",
+        "price": "$5.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Bruschetta",
+        "description": "",
+        "price": "$5.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "French Fries (Small)",
+        "description": "",
+        "price": "$2.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "French Fries (Medium)",
+        "description": "",
+        "price": "$3.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "French Fries (Large)",
+        "description": "",
+        "price": "$4.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Cheese Fries (Small)",
+        "description": "",
+        "price": "$4.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Cheese Fries (Medium)",
+        "description": "",
+        "price": "$5.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Cheese Fries (Large)",
+        "description": "",
+        "price": "$6.99",
+        "section": "Side Order"
+      },
+      {
+        "name": "Creampuffs",
+        "description": "",
+        "price": "$1.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Cheesecake",
+        "description": "",
+        "price": "$3.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Cannoli",
+        "description": "",
+        "price": "$5.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Tiramisu",
+        "description": "",
+        "price": "$5.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Chocolate Mousse Cake",
+        "description": "",
+        "price": "$4.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Sandwich (10 Inch)",
+        "description": "Choice of Turkey, Ham, Roast Beef, Hot Pastrami, Prosciutto, Sliced Sausage, Meatballs, Philly Cheese Steak, Grilled Chicken, Eggplant Parm, Chicken Parm, Veggie, Monavala Torpedo, or Gyros",
+        "price": "$9.99",
+        "section": "Sandwiches"
+      }
+    ]
+  }
+]

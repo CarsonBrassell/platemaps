@@ -1,0 +1,395 @@
+[
+  {
+    "restaurantId": "907",
+    "name": "Rancho Giant Pizza",
+    "sourceUrl": "https://www.ranchogiantpizzamenu.com/",
+    "confidence": "high",
+    "notes": "The restaurant's own domain, which embeds its Slice ordering menu server-side as a `menuRequest.data.categories` JSON blob — a different embedding from the `__SLICE_REDUX_STATE__` shape already in the playbook, and readable by plain curl. This restaurant had been blocked as bot-walled; on retry tonight it returned 200 with the whole catalog in the HTML, so the earlier 403 was transient. Prices are strings as published. Ran the markup test across 1.03–1.30 divisors: no uniform signature, so the figures are not delivery-inflated. The page's streetAddress is 2441 Jamacha Rd, matching the record. Captured by the coordinator session 2026-08-31.",
+    "dishes": [
+      {
+        "name": "Cheese Pizza",
+        "description": "Classic cheese or create your own pizza.",
+        "price": "$13.99",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "Gluten Free Pizza",
+        "description": "",
+        "price": "$14.99",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "Godfather Pizza",
+        "description": "Pepperoni, onion, Italian sausage, bell peppers, and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Meat Lovers Pizza",
+        "description": "Pepperoni, ham, sausage, salami, and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Veggie Lovers Pizza",
+        "description": "Onions, mushrooms, bell peppers, black olives, tomatoes and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Works Pizza",
+        "description": "Pepperoni, sausage, ham, mushroom, onions, bell peppers and black olives.",
+        "price": "$25.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Greek Pizza",
+        "description": "Garlic butter sauce, onion, gyro meat, tomato, feta cheese and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Garlic Chicken Pizza",
+        "description": "Grilled chicken, onions, sun-dried tomatoes, garlic, and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Chicken Alfredo Pizza",
+        "description": "Alfredo sauce, mushrooms, onions, grilled chicken, and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Four Cheese Pizza",
+        "description": "Mozzarella, feta, ricotta, and parmesan cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Pesto Chicken Pizza",
+        "description": "Pesto sauce, grilled chicken, garlic, onion and mozzarella.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "White Pizza",
+        "description": "Olive oil, garlic, ricotta, parmesan and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "BBQ Chicken Pizza",
+        "description": "BBQ sauce, grilled chicken, onion, cilantro, and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Margarita Pizza",
+        "description": "Fresh tomato, basil, olive oil, garlic, and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza",
+        "description": "Ham, pineapple, bacon, and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Popeye Pizza",
+        "description": "Olive oil, spinach, garlic, ricotta, and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Buffalo Chicken Pizza",
+        "description": "Buffalo sauce, grilled chicken, garlic, ranch and mozzarella cheese.",
+        "price": "$20.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Philly Cheesesteak Pizza",
+        "description": "Garlic butter sauce, Philly, onions, mushrooms, bell peppers, and mozzarella cheese.",
+        "price": "$25.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Mexican Pizza",
+        "description": "Pizza sauce, ham, onion, jalapenos, chorizo, bacon, and mozzarella cheese.",
+        "price": "$25.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Mediterranean Pizza",
+        "description": "Garlic Butte, mozzarella cheese, Feta cheese, Slices Tomatoes & Garlic.",
+        "price": "$18.99",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Cheese Pizza",
+        "description": "Classic cheese or create your own pizza.",
+        "price": "$16.99",
+        "section": "Non Display Products"
+      },
+      {
+        "name": "Chicken Wings",
+        "description": "Flavors: Buffalo, extra buffalo, BBQ, teriyaki, honey mustard, sweet chili, lemon pepper, dry seasoning.",
+        "price": "$8.99",
+        "section": "Chicken Wings"
+      },
+      {
+        "name": "Garlic Knots",
+        "description": "A classic snack, our garlic knots are strips of pizza dough tied in a knot, baked, and then topped with melted butter, garlic, and parsley.",
+        "price": "$7.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Bread Sticks",
+        "description": "",
+        "price": "$6.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Bread Sticks with Cheese",
+        "description": "",
+        "price": "$8.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garlic Bread",
+        "description": "Bread, topped with garlic, herb seasoning, baked to perfection.",
+        "price": "$4.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garlic Bread with Cheese",
+        "description": "A cross between garlic bread and pizza, cheesy bread is a quick, easy, and delicious party snack.",
+        "price": "$5.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fries",
+        "description": "Our delicious French fries are deep-fried 'till golden brown, with a crunchy exterior and a light fluffy interior. Seasoned to perfection!",
+        "price": "$3.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Buffalo Chicken Fries",
+        "description": "",
+        "price": "$9.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mozzarella Sticks",
+        "description": "Deep fried cheese sticks. Crispy on the outside, gooey on the inside. Virtually guaranteed to be a table favorite! Served with a side of marinara sauce.",
+        "price": "$6.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Jalapeno Poppers",
+        "description": "Juicy jalapeno poppers breaded and filled with cheese and fried to golden perfection.",
+        "price": "$7.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Tenders",
+        "description": "With fries.",
+        "price": "$9.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Zucchini Fries",
+        "description": "",
+        "price": "$6.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Ranch Dressing",
+        "description": "",
+        "price": "$3.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garden Salad",
+        "description": "Fresh lettuce, tomatoes, green peppers, red onions, and black olives.",
+        "price": "$3.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Antipasto Salad",
+        "description": "Chopped cured meats, fresh cheeses, and briny olives.",
+        "price": "$5.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "Tomatoes, cucumbers, onions, olives, and feta cheese in an olive oil dressing.",
+        "price": "$5.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Crisp romaine tossed with croutons, Caesar dressing, and grated cheese.",
+        "price": "$3.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Chicken Salad",
+        "description": "Lettuce, red onions, cucumbers, eggs, tomatoes, and green peppers.",
+        "price": "$5.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Cheese Calzone",
+        "description": "",
+        "price": "$11.99",
+        "section": "Calzones"
+      },
+      {
+        "name": "Cheese Calzone with Three Toppings",
+        "description": "",
+        "price": "$15.99",
+        "section": "Calzones"
+      },
+      {
+        "name": "Original Philly Cheese Steak Sandwich",
+        "description": "Philly with onions & mozzarella cheese.",
+        "price": "$10.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Works Philly Cheese Steak Sandwich",
+        "description": "Philly with onions, green bell peppers, mushrooms & mozzarella cheese.",
+        "price": "$12.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "BLT Sandwich",
+        "description": "bacon, lettuce, tomato, mozzarella cheese.",
+        "price": "$9.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Ham & Cheese Sandwich",
+        "description": "ham, lettuce, tomato, onions, black olives, banana peppers, mozzarella cheese.",
+        "price": "$8.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Italian Sub",
+        "description": "pepperoni, ham salami, lettuce, tomato, onions, black olives, banana peppers,",
+        "price": "$10.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Meatball Sub",
+        "description": "Meatballs, marinara sauce & mozzarella cheese.",
+        "price": "$10.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Chicken Parmesan Sandwich",
+        "description": "Chicken, marinara sauce & mozzarella cheese.",
+        "price": "$10.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Pizza Sub",
+        "description": "Marinara sauce, pepperoni & mozzarella cheese.",
+        "price": "$8.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Italian Sausage Sub",
+        "description": "Onions, green bell peppers, Marinara sauce & mozzarella cheese.",
+        "price": "$10.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Club Sandwich",
+        "description": "Ham & bacon, lettuce, onions, tomatoes, black olives, banana peppers, mayo, Italian dressing & mozzarella cheese.",
+        "price": "$10.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Lasagna",
+        "description": "Stacked layers of pasta packed with meat and cheese, covered in red sauce. Pro tip: Go for the crispy edge pieces.",
+        "price": "$10.99",
+        "section": "Pastas"
+      },
+      {
+        "name": "Spaghetti",
+        "description": "",
+        "price": "$8.99",
+        "section": "Pastas"
+      },
+      {
+        "name": "Spaghetti with Meatballs",
+        "description": "",
+        "price": "$11.99",
+        "section": "Pastas"
+      },
+      {
+        "name": "Fettuccine Alfredo",
+        "description": "Fettuccine tossed in our creamy homemade alfredo sauce.",
+        "price": "$8.99",
+        "section": "Pastas"
+      },
+      {
+        "name": "Fettuccine Alfredo with Chicken",
+        "description": "",
+        "price": "$11.99",
+        "section": "Pastas"
+      },
+      {
+        "name": "Beef Ravioli",
+        "description": "",
+        "price": "$9.99",
+        "section": "Pastas"
+      },
+      {
+        "name": "Cheese Ravioli",
+        "description": "Ravioli stuffed with classic cheese.",
+        "price": "$9.99",
+        "section": "Pastas"
+      },
+      {
+        "name": "Cheesecake",
+        "description": "Classic cheesecake with a rich, dense, smooth, and creamy consistency.",
+        "price": "$3.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Tiramisu",
+        "description": "A delicious coffee-flavored Italian dessert. Ladyfingers dipped in coffee, layered with a whipped mixture of eggs, sugar & mascarpone cheese, flavored with cocoa.",
+        "price": "$3.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Cannoli",
+        "description": "Delicious tube of fried dough, filled with a sweet, creamy ricotta filling.",
+        "price": "$3.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Chocolate Cheesecake",
+        "description": "",
+        "price": "$3.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Soda",
+        "description": "",
+        "price": "$1.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Water",
+        "description": "",
+        "price": "$1.00",
+        "section": "Beverages"
+      }
+    ]
+  }
+]

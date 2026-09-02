@@ -10,7 +10,7 @@ import {
 } from "@/components/account/ledger";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
-import { cuisines } from "@/data/restaurants";
+import { cuisines } from "@/data/restaurantFacets";
 
 /**
  * Everything that changes what the app shows about you, on both bodies.

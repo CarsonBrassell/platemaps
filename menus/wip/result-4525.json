@@ -1,0 +1,227 @@
+{
+  "restaurantId": "4525",
+  "name": "Donut Touch",
+  "sourceUrl": "https://www.donuttouch.com/donut-touch-menu.php",
+  "confidence": "high",
+  "crossCheckedAgainst": "",
+  "blocked": "",
+  "notes": "Own site, plain server-rendered HTML with clean product/price divs, read directly with curl - no JS needed. Covered all 7 sections reached: Donuts, Fancies, Bagels, Breakfast All Day, Coffee & Tea, Espresso Bar Drinks, Ice Cold Beverages, Sandwich Menu. Coffee & Tea and Espresso Bar Drinks sections are on the page but genuinely publish no prices anywhere in the raw HTML (each item lists only Tall/Grande/Supremo as a size label, no dollar figure) - confirmed by grep, not a rendering gap, so those items were dropped rather than guessed. Ice Cold Beverages by contrast does list a price per size and was captured fully. No third-party source needed; this is a small independent bakery/cafe with a complete, current-looking own-site price list.",
+  "dishes": [
+    {
+      "name": "Donut (Single)",
+      "description": "Many varieties of award-winning donuts made fresh daily.",
+      "price": "$0.99",
+      "section": "Donuts"
+    },
+    {
+      "name": "Donuts (Half Dozen)",
+      "description": "",
+      "price": "$5.50",
+      "section": "Donuts"
+    },
+    {
+      "name": "Donuts (Dozen)",
+      "description": "",
+      "price": "$10.00",
+      "section": "Donuts"
+    },
+    {
+      "name": "Donut Holes (Single)",
+      "description": "",
+      "price": "$0.20",
+      "section": "Donuts"
+    },
+    {
+      "name": "Donut Holes (Dozen)",
+      "description": "",
+      "price": "$2.25",
+      "section": "Donuts"
+    },
+    {
+      "name": "Bear Claw",
+      "description": "Assortment of fresh baked goods.",
+      "price": "$1.75",
+      "section": "Fancies"
+    },
+    {
+      "name": "Apple Fritter",
+      "description": "",
+      "price": "$1.75",
+      "section": "Fancies"
+    },
+    {
+      "name": "Cinnamon Roll",
+      "description": "",
+      "price": "$1.75",
+      "section": "Fancies"
+    },
+    {
+      "name": "Cinnamon Bun",
+      "description": "",
+      "price": "$2.75",
+      "section": "Fancies"
+    },
+    {
+      "name": "Muffin",
+      "description": "Cream cheese, blueberry, cranberry, banana walnut, or apple oat bran.",
+      "price": "$1.75",
+      "section": "Fancies"
+    },
+    {
+      "name": "Scones",
+      "description": "Blueberry or cranberry.",
+      "price": "$1.75",
+      "section": "Fancies"
+    },
+    {
+      "name": "Bagel (Single)",
+      "description": "Freshly baked signature bagels; plain, sesame, poppy seed, onion.",
+      "price": "$0.99",
+      "section": "Bagels"
+    },
+    {
+      "name": "Bagels (Half Dozen)",
+      "description": "",
+      "price": "$5.50",
+      "section": "Bagels"
+    },
+    {
+      "name": "Bagels (Dozen)",
+      "description": "",
+      "price": "$10.00",
+      "section": "Bagels"
+    },
+    {
+      "name": "Bagels Mix and Match (Dozen)",
+      "description": "",
+      "price": "$10.00",
+      "section": "Bagels"
+    },
+    {
+      "name": "Bagel with Cream Cheese",
+      "description": "",
+      "price": "$2.75",
+      "section": "Bagels"
+    },
+    {
+      "name": "Bagel with Butter",
+      "description": "",
+      "price": "$1.85",
+      "section": "Bagels"
+    },
+    {
+      "name": "Egg and Cheese with Bacon, Ham, or Sausage",
+      "description": "",
+      "price": "$5.75",
+      "section": "Breakfast All Day"
+    },
+    {
+      "name": "Egg and Cheese",
+      "description": "",
+      "price": "$4.75",
+      "section": "Breakfast All Day"
+    },
+    {
+      "name": "Fruit Tea Smoothie Blast (Tall)",
+      "description": "Made with real fruit and real tea; vitamin C, antioxidants from green tea, ginko, ginseng, and guarana.",
+      "price": "$3.25",
+      "section": "Ice Cold Beverages"
+    },
+    {
+      "name": "Fruit Tea Smoothie Blast (Grande)",
+      "description": "Made with real fruit and real tea; vitamin C, antioxidants from green tea, ginko, ginseng, and guarana.",
+      "price": "$3.75",
+      "section": "Ice Cold Beverages"
+    },
+    {
+      "name": "Fruit Tea Smoothie Blast (Supremo)",
+      "description": "Made with real fruit and real tea; vitamin C, antioxidants from green tea, ginko, ginseng, and guarana.",
+      "price": "$4.25",
+      "section": "Ice Cold Beverages"
+    },
+    {
+      "name": "Iced Frappe (Tall)",
+      "description": "Mocha, caramel, or vanilla.",
+      "price": "$3.25",
+      "section": "Ice Cold Beverages"
+    },
+    {
+      "name": "Iced Frappe (Grande)",
+      "description": "Mocha, caramel, or vanilla.",
+      "price": "$3.75",
+      "section": "Ice Cold Beverages"
+    },
+    {
+      "name": "Iced Frappe (Supremo)",
+      "description": "Mocha, caramel, or vanilla.",
+      "price": "$4.25",
+      "section": "Ice Cold Beverages"
+    },
+    {
+      "name": "Mesquite Turkey Breast",
+      "description": "Choice of Gold Label imported Swiss, Provolone or Vermont Cheddar Cheese, lettuce, tomato, and red onion.",
+      "price": "$7.65",
+      "section": "Sandwiches (Boar's Head)"
+    },
+    {
+      "name": "Turkey Club",
+      "description": "Choice of baguette and cheese, with bacon, lettuce, tomato and red onion.",
+      "price": "$8.65",
+      "section": "Sandwiches (Boar's Head)"
+    },
+    {
+      "name": "California Dreamin'",
+      "description": "Mesquite wood smoked turkey breast, Swiss cheese, avocado, bacon, lettuce, tomato, red onion and ranch dressing.",
+      "price": "$8.65",
+      "section": "Sandwiches (Boar's Head)"
+    },
+    {
+      "name": "Grand Western",
+      "description": "Mesquite wood smoked turkey breast, pepper jack cheese, lettuce, tomato, red onion and chipotle dressing.",
+      "price": "$7.65",
+      "section": "Sandwiches (Boar's Head)"
+    },
+    {
+      "name": "Italian Style",
+      "description": "Hot Cappy Ham, Italian Dry Salami, provolone cheese, diced pepper spread, lettuce, tomato, red onion, red wine vinegar and olive oil dressing.",
+      "price": "$8.65",
+      "section": "Sandwiches (Boar's Head)"
+    },
+    {
+      "name": "Turkey Cran Gobbler",
+      "description": "Turkey, cranberries, cream cheese, lettuce, tomato, onion (seasonal).",
+      "price": "$7.29",
+      "section": "Sandwiches (Boar's Head)"
+    },
+    {
+      "name": "New Orleans Muffaletta",
+      "description": "Black Forest Ham, Italian Dry Salami, provolone cheese, marinated olive salad, lettuce, tomato and red onion.",
+      "price": "$8.65",
+      "section": "Sandwiches (Boar's Head)"
+    },
+    {
+      "name": "Chicken Caesar",
+      "description": "Golden classic chicken breast, Vermont Cheddar Cheese, lettuce, tomato, red onion and Caesar dressing.",
+      "price": "$7.65",
+      "section": "Sandwiches (Boar's Head)"
+    },
+    {
+      "name": "Londonport Roast Beef",
+      "description": "Choice of cheese, spicy brown mustard or horseradish spread, watercress if desired.",
+      "price": "$8.65",
+      "section": "Sandwiches (Boar's Head)"
+    },
+    {
+      "name": "Golden Classic Chicken Pesto",
+      "description": "Golden classic chicken breast, choice of cheese, lettuce, tomato, red onion and pesto mayonnaise.",
+      "price": "$7.65",
+      "section": "Sandwiches (Boar's Head)"
+    },
+    {
+      "name": "Black Forest Ham",
+      "description": "Choice of Gold Label imported Swiss, Provolone or Vermont Cheddar Cheese, lettuce, tomato and red onion.",
+      "price": "$7.65",
+      "section": "Sandwiches (Boar's Head)"
+    }
+  ]
+}

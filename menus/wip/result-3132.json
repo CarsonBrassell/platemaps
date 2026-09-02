@@ -1,0 +1,351 @@
+{
+  "restaurantId": "3132",
+  "name": "Bonchon Chicken",
+  "sourceUrl": "https://www.doordash.com/store/bonchon-san-diego-725240",
+  "confidence": "medium",
+  "notes": "Chain location; work-list address is 4690 Convoy Street #102, San Diego. DoorDash's own address FAQ for this store listing says '4690 Convoy St #120, San Diego, CA 92111, USA' (Bonchon's own restaurants.bonchon.com location page also uses 'suite-102' in its URL slug) -- same street address/building, minor suite-number discrepancy between sources, treated as the same location rather than a different branch. This restaurant's own Olo storefront (order.bonchon.com, serve-next.olo.com) is a fully static-exported Next.js app with zero server-rendered data -- all menu data is fetched client-side after JS runs, so it could not be read without a browser. DoorDash's server-rendered schema.org Menu JSON-LD was used instead (tier 3, medium at best). No second priced source was reachable to cross-check (bonchon.com/menu is a marketing page with no prices). Several items (chicken by cut: Drums/Strips/Wings/Mixed/Boneless, Dipping Sauce, Fried Rice, Potstickers) show a '+' base price because they are modifier-driven (pick a count/size); the price recorded is DoorDash's own listed starting price for the cheapest required option, noted as 'from' in the description. Dropped the 'Most Ordered' carousel entirely -- all 12 of its items are exact-name duplicates of items already captured in their real categories. Categories reached: NEW ITEMS, KOREAN FRIED CHICKEN, APPETIZERS, KOREAN DISHES, SIDES, DESSERTS, K-MEALS, DRINKS (8 real sections, 57 items after dedup). Did not see a Combos/Family-Meal section if one exists on this location's actual in-app menu -- DoorDash may not expose every category the restaurant has.",
+  "dishes": [
+    {
+      "name": "K-Chicken Sandwich",
+      "description": "Fried chicken breast brushed with a choice of signature flavor, topped with Korean Cucumber Salad*, Kewpie mayo on a brioche bun. Served with choice of side. (*Contains sesame seeds and/or sesame seed oil.)",
+      "price": "$17.99",
+      "section": "NEW ITEMS"
+    },
+    {
+      "name": "Bonchon Gold Dust Fried Zucchini",
+      "description": "Breaded zucchini, lightly salted and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+      "price": "$11.99",
+      "section": "NEW ITEMS"
+    },
+    {
+      "name": "Korean Cucumber Salad",
+      "description": "Sliced cucumbers, onions, scallions, and Korean red chili powder.",
+      "price": "$5.99",
+      "section": "NEW ITEMS"
+    },
+    {
+      "name": "Bonchon Gold Dust Onion Rings",
+      "description": "Thick slices of onions in a crunch batter served golden brown and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+      "price": "$11.99",
+      "section": "NEW ITEMS"
+    },
+    {
+      "name": "Bonchon Gold Dust Sweet Potato Waffle Fries",
+      "description": "Crispy waffle-cut sweet potato fries and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+      "price": "$11.99",
+      "section": "NEW ITEMS"
+    },
+    {
+      "name": "Bonchon Gold Dust French Fries",
+      "description": "Medium cut potatoes deep-fried and lightly salted and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+      "price": "$8.39",
+      "section": "NEW ITEMS"
+    },
+    {
+      "name": "Drums",
+      "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$22.19",
+      "section": "KOREAN FRIED CHICKEN"
+    },
+    {
+      "name": "Strips",
+      "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$22.19",
+      "section": "KOREAN FRIED CHICKEN"
+    },
+    {
+      "name": "Wings",
+      "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$22.19",
+      "section": "KOREAN FRIED CHICKEN"
+    },
+    {
+      "name": "Mixed",
+      "description": "Wings & Drumsticks, double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw. \r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$22.19",
+      "section": "KOREAN FRIED CHICKEN"
+    },
+    {
+      "name": "Boneless",
+      "description": "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$22.19",
+      "section": "KOREAN FRIED CHICKEN"
+    },
+    {
+      "name": "Dipping Sauce",
+      "description": "Asian honey mustard, spicy mayo, kimchi mayo, ranch, spicy ketcup (contains sesame seeds or sesame seed oil) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$1.19",
+      "section": "KOREAN FRIED CHICKEN"
+    },
+    {
+      "name": "Bulgogi Fries",
+      "description": "Bulgogi piled on our seasoned fries and topped with mozzarella, scallions and a drizzle of spicy mayo.  (*Contains sesame seeds or sesame seed oil.)",
+      "price": "$17.99",
+      "section": "APPETIZERS"
+    },
+    {
+      "name": "MoPo Corndog",
+      "description": "The Korean way to Corn Dog! Mozzarella cheese center in crispy breading with golden crunchy potato cubes with choice Soy Garlic brushed or sugar-cinnamon rolled. Choice of dipping sauce.",
+      "price": "$8.39",
+      "section": "APPETIZERS"
+    },
+    {
+      "name": "Shrimp Shumai",
+      "description": "Steamed or fried shrimp dumplings drizzled with spicy mayo & Soy Garlic sauce.",
+      "price": "$11.39",
+      "section": "APPETIZERS"
+    },
+    {
+      "name": "Sotteok Sotteok",
+      "description": "Popular Korean street food skewer of crispy, chewy rice cake and sausage, coated in sweet, spicy Yangnyeom sauce.",
+      "price": "$4.79",
+      "section": "APPETIZERS"
+    },
+    {
+      "name": "Takoyaki",
+      "description": "Fried octopus dumplings drizzled with Kewpie Mayo, katsu sauce and sprinkled with scallions.",
+      "price": "$11.39",
+      "section": "APPETIZERS"
+    },
+    {
+      "name": "Bao Buns",
+      "description": "Three steamed buns with cucumbers, coleslaw, spicy mayo and katsu sauce.  Your choice of Pork Belly, Fried Chicken, or Bulgogi. (*Contains sesame seeds or sesame seed oil.)  (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$17.99",
+      "section": "APPETIZERS"
+    },
+    {
+      "name": "Korean Tacos",
+      "description": "Three soft flour tortilla tacos topped with lettuce, coleslaw, spicy mayo, buttermilk ranch and scallions. (*Contains sesame seeds or sesame seed oil.) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$17.99",
+      "section": "APPETIZERS"
+    },
+    {
+      "name": "Potstickers",
+      "description": "Eight fried dumplings, brushed with Bonchon signature sauce. Choice of pork or vegetable. (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$15.59",
+      "section": "APPETIZERS"
+    },
+    {
+      "name": "Bulgogi",
+      "description": "Thinly sliced marinated USDA select beef, sauteed with mushrooms, scallions, sesame seeds and onions. Served with steamed rice. (*Contains sesame seeds or sesame seed oil.)",
+      "price": "$25.19",
+      "section": "KOREAN DISHES"
+    },
+    {
+      "name": "Japchae",
+      "description": "Glass noodles, red bell pepper, carrots, onions, spinach, mushrooms and bulgogi stir-fried with Soy Garlic sauce and topped with sesame seeds. (*Contains sesame seeds or sesame seed oil.)",
+      "price": "$21.59",
+      "section": "KOREAN DISHES"
+    },
+    {
+      "name": "Tteokbokki",
+      "description": "Rice cakes simmered in a spicy sauce with fish cakes, scallions, and onions, topped with mozzarella cheese and vegetable potstickers. Contains sesame seeds or sesame seed oil.",
+      "price": "$19.79",
+      "section": "KOREAN DISHES"
+    },
+    {
+      "name": "Chicken Katsu",
+      "description": "Breaded chicken breast served drizzled with katsu sauce and spicy mayo topped with scallions. On steamed rice with a side of coleslaw. (*Contains sesame seeds or sesame seed oil.)",
+      "price": "$20.39",
+      "section": "KOREAN DISHES"
+    },
+    {
+      "name": "Buldak",
+      "description": "Spicy chicken stir-fried with rice cakes, onions, and hot pepper sauce. Topped with scallions, sesame seeds, and mozzarella cheese. Served with steamed rice. (Contains sesame seeds or sesame seed oil.)",
+      "price": "$23.99",
+      "section": "KOREAN DISHES"
+    },
+    {
+      "name": "K-Chicken Sandwich",
+      "description": "Fried chicken breast brushed with a choice of signature flavor, topped with Korean Cucumber Salad*, Kewpie mayo on a brioche bun. Served with choice of side. (*Contains sesame seeds and/or sesame seed oil.)",
+      "price": "$17.99",
+      "section": "KOREAN DISHES"
+    },
+    {
+      "name": "Fried Rice",
+      "description": "Fried rice, eggs, red bell pepper, onions, scallions, cooked with Soy Garlic sauce, topped with sesame seeds and fresh cucumber garnish. (Contains sesame seeds or sesame seed oil.) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$17.39",
+      "section": "KOREAN DISHES"
+    },
+    {
+      "name": "Bibimbap",
+      "description": "Rice with scrambled egg, lettuce, carrots, sauteed onions, spinach and mushrooms. (Contains sesame seeds or sesame seed oil.) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$17.39",
+      "section": "KOREAN DISHES"
+    },
+    {
+      "name": "Sesame Salad ",
+      "description": "Romaine tossed with stir-fried kimchi, carrots, cabbage, red bell pepper, scallions and mozzarella cheese with toasted sesame dressing. (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$13.19",
+      "section": "KOREAN DISHES"
+    },
+    {
+      "name": "Udon Noodle Soup",
+      "description": "Wheat noodles in a broth with mushrooms and topped with scallions. (*Bulgogi protein option contains sesame seeds or sesame seed oil.) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$15.59",
+      "section": "KOREAN DISHES"
+    },
+    {
+      "name": "Seasoned French Fries",
+      "description": "French fries topped with a garlic seasoning, parmesan cheese, and parsley flakes.",
+      "price": "$10.79",
+      "section": "SIDES"
+    },
+    {
+      "name": "Bonchon Gold Dust Sweet Potato Waffle Fries",
+      "description": "Crispy waffle-cut sweet potato fries and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+      "price": "$11.99",
+      "section": "SIDES"
+    },
+    {
+      "name": "Korean Street Corn",
+      "description": "Grilled corn with Kewpie Mayo, mozzarella, Korean red chili flakes and topped with scallions.",
+      "price": "$8.39",
+      "section": "SIDES"
+    },
+    {
+      "name": "Bonchon Gold Dust Fried Zucchini",
+      "description": "Breaded zucchini, lightly salted and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+      "price": "$11.99",
+      "section": "SIDES"
+    },
+    {
+      "name": "French Fries",
+      "description": "Medium cut potatoes deep-fried and lightly salted.",
+      "price": "$7.19",
+      "section": "SIDES"
+    },
+    {
+      "name": "Seasoned Fried Zucchini",
+      "description": "Breaded zucchini topped with garlic seasoning, parmesan cheese, and parsley flakes.",
+      "price": "$11.99",
+      "section": "SIDES"
+    },
+    {
+      "name": "Korean Cucumber Salad",
+      "description": "Sliced cucumbers, onions, scallions, and Korean red chili powder.",
+      "price": "$5.99",
+      "section": "SIDES"
+    },
+    {
+      "name": "Onion Rings",
+      "description": "Thick slices of onions in a crunchy batter served golden brown.",
+      "price": "$10.79",
+      "section": "SIDES"
+    },
+    {
+      "name": "Kimchi",
+      "description": "National Korean dish consisting of fermented chili peppers mixed with cabbage.",
+      "price": "$5.39",
+      "section": "SIDES"
+    },
+    {
+      "name": "Bonchon Gold Dust French Fries",
+      "description": "Medium cut potatoes deep-fried and lightly salted and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+      "price": "$8.39",
+      "section": "SIDES"
+    },
+    {
+      "name": "Edamame",
+      "description": "Steamed soybeans sprinkled with salt.",
+      "price": "$7.79",
+      "section": "SIDES"
+    },
+    {
+      "name": "Sweet Potato Waffle Fries",
+      "description": "Crispy waffle-cut sweet potato fries.",
+      "price": "$10.79",
+      "section": "SIDES"
+    },
+    {
+      "name": "Steamed Rice",
+      "description": "Fluffy, cooked white rice.",
+      "price": "$3.59",
+      "section": "SIDES"
+    },
+    {
+      "name": "Fried Zucchini",
+      "description": "Breaded zucchini, lightly salted.",
+      "price": "$10.79",
+      "section": "SIDES"
+    },
+    {
+      "name": "Pickled Radish",
+      "description": "Juicy, crispy radish steeped in the perfect blend of slightly sweet and tangy flavors.",
+      "price": "$3.59",
+      "section": "SIDES"
+    },
+    {
+      "name": "Coleslaw",
+      "description": "Shredded cabbage and carrots fused with a sweet and creamy mayo-based sauce.",
+      "price": "$3.59",
+      "section": "SIDES"
+    },
+    {
+      "name": "Bonchon Gold Dust Onion Rings",
+      "description": "Thick slices of onions in a crunch batter served golden brown and dusted with Bonchon Gold Dust. (*Contains dairy.)",
+      "price": "$11.99",
+      "section": "SIDES"
+    },
+    {
+      "name": "Dipping Sauce",
+      "description": "Asian honey mustard, spicy mayo, kimchi mayo, ranch, spicy ketcup (contains sesame seeds or sesame seed oil) (price shown is the \"from\" price for the cheapest required option)",
+      "price": "$1.19",
+      "section": "SIDES"
+    },
+    {
+      "name": "2pc Korean Donuts & Sauce",
+      "description": "Two traditional soft and fluffy Korean donuts coated with cinnamon and sugar on the outside, served with a sweet cream dipping sauce.",
+      "price": "$7.19",
+      "section": "DESSERTS"
+    },
+    {
+      "name": "1pc Korean Donut & Sauce",
+      "description": "One traditional soft and fluffy Korean donut coated with cinnamon and sugar on the outside, served with a sweet cream dipping sauce.",
+      "price": "$4.19",
+      "section": "DESSERTS"
+    },
+    {
+      "name": "K-Meal To-Go for 4-6",
+      "description": "12 wings or boneless with 6 drumsticks and two sides.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+      "price": "$55.19",
+      "section": "K-MEALS"
+    },
+    {
+      "name": "K-Meal To-Go for 6-8",
+      "description": "30 wings or boneless with 10 drumsticks and three sides.\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+      "price": "$91.19",
+      "section": "K-MEALS"
+    },
+    {
+      "name": "K-Meal To-Go for 8-10",
+      "description": "45 wings or boneless with 14 drumsticks and four sides. \r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+      "price": "$128.39",
+      "section": "K-MEALS"
+    },
+    {
+      "name": "K-Box To-Go",
+      "description": "For the game or anytime!  50 wings or 50 boneless, fries and 5 dipping sauces.  For 6-8 people\r\n\r\n(*Korean BBQ contains sesame seeds and/or sesame seed oil. Bonchon Gold Dust contains dairy.)",
+      "price": "$113.99",
+      "section": "K-MEALS"
+    },
+    {
+      "name": "Pepsi Can",
+      "description": "20oz bottle",
+      "price": "$3.59",
+      "section": "DRINKS"
+    },
+    {
+      "name": "Diet Pepsi Can",
+      "description": "20oz bottle",
+      "price": "$3.59",
+      "section": "DRINKS"
+    },
+    {
+      "name": "Water Bottle",
+      "description": "16.9 fl oz bottle",
+      "price": "$3.59",
+      "section": "DRINKS"
+    }
+  ]
+}

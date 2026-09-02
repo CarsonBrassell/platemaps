@@ -10,7 +10,7 @@ import {
   updatePrivacySettings,
 } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
-import { cuisines } from "@/data/restaurants";
+import { cuisines } from "@/data/restaurantFacets";
 
 /**
  * The one profile-settings endpoint for both fields the spec asks for: the

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { neighborhoods, cuisines } from "@/data/restaurants";
+import { neighborhoods, cuisines } from "@/data/restaurantFacets";
 
 export type QuickFilter = "open-now" | "top-rated" | "trending";
 

@@ -946,6 +946,35 @@ const statements = [
   // for, and folding it in makes half the menu match half the queries.
   `CREATE INDEX IF NOT EXISTS idx_dishes_name_trgm
      ON dishes USING gin (name gin_trgm_ops)`,
+
+  // Which County of San Diego food-facility permit this restaurant is, and when
+  // we last confirmed it.
+  //
+  // `scripts/verify-coverage.mjs` can already answer "is this row backed by a
+  // permit?" — but only by re-downloading 17,503 records, re-normalising every
+  // name and address on both sides, and re-running the fuzzy matcher, which
+  // takes about a minute and produces a JSON file rather than an answer a query
+  // can read. That is fine for a weekly measurement and useless for everything
+  // else: the publish gate cannot consult it, an admin page cannot join against
+  // it, and a menu-extraction agent looking at a suspicious row cannot ask it.
+  //
+  // Writing the permit id onto the row turns "verified against a real permit"
+  // from a script's finding into a column. `deh_record_id IS NOT NULL` becomes
+  // a WHERE clause; `deh_verified_at` says how stale that claim is, so a
+  // re-verification pass can work oldest-first instead of redoing all of it.
+  //
+  // TEXT, not a foreign key: there is no permits table, and there should not be
+  // one — the county's list is an external fact we check against, not data we
+  // own. Same reasoning as `posts.restaurant_id` being a soft reference.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS deh_record_id TEXT`,
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS deh_verified_at TIMESTAMPTZ`,
+
+  // Not unique. One business can hold two permits (85 of the missing ones do),
+  // and the reverse also happens — a permit covering a food hall sits over
+  // several rows. The index is here so the import can ask "do we already have
+  // this permit?" per row without a sequential scan over the whole table.
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_deh_record_id
+     ON restaurants (deh_record_id) WHERE deh_record_id IS NOT NULL`,
 ];
 
 for (const statement of statements) {

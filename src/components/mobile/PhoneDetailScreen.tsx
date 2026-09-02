@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import type { Restaurant } from "@/data/restaurants";
+import type { Restaurant } from "@/data/restaurantTypes";
 import { dishStats, type Dish } from "@/data/dishes";
 import { DishSheet } from "@/components/DishSheet";
 import { FullMenu } from "@/components/FullMenu";

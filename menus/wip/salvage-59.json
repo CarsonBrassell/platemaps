@@ -1,0 +1,793 @@
+[
+  {
+    "restaurantId": "3958",
+    "name": "Silverback Breakfast and Cafe",
+    "sourceUrl": "http://silverbackbreakfast.com/vista-silverback-breakfast-and-cafe-food-menu",
+    "confidence": "high",
+    "crossCheckedAgainst": "",
+    "blocked": "",
+    "notes": "Own static HTML site, plain-text prices confirmed directly in curl'd bytes (no WebFetch summarization risk). Two tabs present in the same HTML: Breakfast and Lunch, each with their own pricing (e.g. Sides and kids items are cheaper on the Lunch tab, likely a lunch discount rather than markup - both are the restaurant's own numbers so both are recorded, sections tagged accordingly). Also pulled the separate Drinks menu page (own site). Reached: Classic Breakfasts, Omelets/Scramblers/Skillets, Batters, Eggs Benedicts, Grab and Go, Silverback Dishes, Senior Menu, Little Apes (kids) x2 dayparts, Sides x2 dayparts, Cold Sandwiches, Meltdowns, Burgers, Beverages, Kids Beverages. Not reached/omitted: the 'Fried Chicken' entree under Silverback Dishes has no single price (only priced as a combo with Pancakes/Waffles/French Toast at $17.95-$19.75) so it was dropped per the no-price rule rather than guessed.",
+    "dishes": [
+      {
+        "name": "2 Egg Breakfast",
+        "description": "",
+        "price": "$12.25",
+        "section": "Classic Breakfasts"
+      },
+      {
+        "name": "Bacon (3 strips) and Egg Breakfast",
+        "description": "",
+        "price": "$15.75",
+        "section": "Classic Breakfasts"
+      },
+      {
+        "name": "Turkey Sausage and Egg Breakfast",
+        "description": "",
+        "price": "$16.50",
+        "section": "Classic Breakfasts"
+      },
+      {
+        "name": "Sausage (patty, or links) and Egg Breakfast",
+        "description": "",
+        "price": "$16.50",
+        "section": "Classic Breakfasts"
+      },
+      {
+        "name": "Ham and Egg Breakfast",
+        "description": "",
+        "price": "$16.50",
+        "section": "Classic Breakfasts"
+      },
+      {
+        "name": "Kielbasa and Egg Breakfast",
+        "description": "",
+        "price": "$16.50",
+        "section": "Classic Breakfasts"
+      },
+      {
+        "name": "Ground Sirloin and Egg Breakfast",
+        "description": "",
+        "price": "$16.50",
+        "section": "Classic Breakfasts"
+      },
+      {
+        "name": "Country Fried Steak Breakfast",
+        "description": "Rib eye steak, tenderized, battered and fried, topped with house-made sausage gravy",
+        "price": "$19.95",
+        "section": "Classic Breakfasts"
+      },
+      {
+        "name": "Fried Chicken Breakfast",
+        "description": "",
+        "price": "$18.95",
+        "section": "Classic Breakfasts"
+      },
+      {
+        "name": "Denver Omelet",
+        "description": "Red bell pepper, mild cheddar cheese, chopped onion and ham",
+        "price": "$17.50",
+        "section": "Omelets, Scramblers and Skillets"
+      },
+      {
+        "name": "California Omelet",
+        "description": "Jack cheese, avocado, crispy bacon",
+        "price": "$17.95",
+        "section": "Omelets, Scramblers and Skillets"
+      },
+      {
+        "name": "Italian Omelet",
+        "description": "Olives, Italian sausage, mushrooms and mild cheddar cheese",
+        "price": "$17.95",
+        "section": "Omelets, Scramblers and Skillets"
+      },
+      {
+        "name": "Greek Omelet",
+        "description": "Feta cheese, tomatoes, turkey, spinach and olives",
+        "price": "$17.95",
+        "section": "Omelets, Scramblers and Skillets"
+      },
+      {
+        "name": "Country Omelet",
+        "description": "Sausage gravy, sausage and jack cheese",
+        "price": "$17.95",
+        "section": "Omelets, Scramblers and Skillets"
+      },
+      {
+        "name": "Chili Omelet",
+        "description": "Homemade hearty chili, cheddar cheese and topped with onion",
+        "price": "$17.95",
+        "section": "Omelets, Scramblers and Skillets"
+      },
+      {
+        "name": "Veggie Omelet",
+        "description": "Steamed spinach, broccoli, avocado, mushrooms, tomato and mild cheddar cheese",
+        "price": "$18.50",
+        "section": "Omelets, Scramblers and Skillets"
+      },
+      {
+        "name": "Marco Polo Omelet",
+        "description": "Ham, turkey breast, broccoli, topped with hollandaise and paprika",
+        "price": "$17.95",
+        "section": "Omelets, Scramblers and Skillets"
+      },
+      {
+        "name": "Build Your Own Omelet",
+        "description": "",
+        "price": "$12.25",
+        "section": "Omelets, Scramblers and Skillets"
+      },
+      {
+        "name": "2 Buttermilk Pancakes",
+        "description": "",
+        "price": "$9.95",
+        "section": "Batters"
+      },
+      {
+        "name": "French Toast",
+        "description": "",
+        "price": "$11.95",
+        "section": "Batters"
+      },
+      {
+        "name": "Old Fashion Waffle",
+        "description": "Thin and crispy",
+        "price": "$11.50",
+        "section": "Batters"
+      },
+      {
+        "name": "Belgian Waffle",
+        "description": "Thick and fluffy",
+        "price": "$12.50",
+        "section": "Batters"
+      },
+      {
+        "name": "Silverback French Toast",
+        "description": "House baked cinnamon roll, dipped in our French toast batter, grilled to perfection",
+        "price": "$13.95",
+        "section": "Batters"
+      },
+      {
+        "name": "Traditional Bene",
+        "description": "Ham",
+        "price": "$16.25",
+        "section": "Eggs Benedicts"
+      },
+      {
+        "name": "Popeye Bene",
+        "description": "Spinach",
+        "price": "$15.25",
+        "section": "Eggs Benedicts"
+      },
+      {
+        "name": "The Farmers' Bene",
+        "description": "Bacon and tomato",
+        "price": "$16.75",
+        "section": "Eggs Benedicts"
+      },
+      {
+        "name": "The Cali Bene",
+        "description": "Turkey and avocado",
+        "price": "$17.50",
+        "section": "Eggs Benedicts"
+      },
+      {
+        "name": "Hash Slinging Bene",
+        "description": "Our famous house hash benedict style",
+        "price": "$18.50",
+        "section": "Eggs Benedicts"
+      },
+      {
+        "name": "Country Bene",
+        "description": "Two sausage patties topped with sausage gravy",
+        "price": "$18.50",
+        "section": "Eggs Benedicts"
+      },
+      {
+        "name": "Breakfast Sandwich",
+        "description": "Served on English muffin, with 1 over hard egg, mild cheddar cheese, choice of meat, and a side of home fries, hashbrowns or fruit",
+        "price": "$13.95",
+        "section": "Grab and Go"
+      },
+      {
+        "name": "Breakfast Asada Burrito",
+        "description": "3 freshly cracked scrambled eggs, mild cheddar cheese, home fries, avocado, seasoned carne asada",
+        "price": "$16.95",
+        "section": "Grab and Go"
+      },
+      {
+        "name": "Chorizo Burrito",
+        "description": "3 freshly cracked scrambled eggs, mild cheddar cheese, home fries, with pork chorizo",
+        "price": "$14.50",
+        "section": "Grab and Go"
+      },
+      {
+        "name": "Egg, Cheese and Potato Burrito",
+        "description": "3 freshly cracked scrambled eggs, mild cheddar cheese and home fries",
+        "price": "$12.50",
+        "section": "Grab and Go"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "3 freshly cracked scrambled eggs, mild cheddar cheese, home fries, with choice of meat",
+        "price": "$14.50",
+        "section": "Grab and Go"
+      },
+      {
+        "name": "Country Fried Steak",
+        "description": "New York steak tenderized, breaded and fried golden, topped with house-made sausage gravy",
+        "price": "$19.95",
+        "section": "Silverback Dishes"
+      },
+      {
+        "name": "South of the Border Skillet",
+        "description": "3 freshly cracked scrambled eggs, pork chorizo, avocado, black beans, crispy home fries or hashbrowns, mild cheddar cheese, topped with house-made green salsa, served with toast, flour or corn tortillas",
+        "price": "$18.25",
+        "section": "Silverback Dishes"
+      },
+      {
+        "name": "Biscuits and Gravy",
+        "description": "Two biscuits smothered in homemade sausage gravy, served with two freshly cracked eggs, a choice of protein, and choice of home fries, hashbrowns, or fruit",
+        "price": "$18.50",
+        "section": "Silverback Dishes"
+      },
+      {
+        "name": "House Hash",
+        "description": "Corned beef brisket baked, grilled and seasoned with chopped potato, and sauteed chopped onion",
+        "price": "$18.95",
+        "section": "Silverback Dishes"
+      },
+      {
+        "name": "Choriquiles",
+        "description": "Traditional Mexican green salsa chilaquiles served with 2 freshly cracked scrambled eggs, pork chorizo, shredded mild cheddar, garnished with onion and cilantro, served with a side of black beans",
+        "price": "$16.25",
+        "section": "Silverback Dishes"
+      },
+      {
+        "name": "Senior Classic",
+        "description": "Two freshly cracked eggs cooked any style, choice of home fries, hashbrowns or fruit, and one slice of toast",
+        "price": "$9.75",
+        "section": "Senior Menu"
+      },
+      {
+        "name": "Silver Dollar Pancakes",
+        "description": "Four silver dollar buttermilk pancakes, served with one freshly cracked egg with choice of meat",
+        "price": "$10.75",
+        "section": "Senior Menu"
+      },
+      {
+        "name": "Slice of French Toast",
+        "description": "One slice of French toast, served with one freshly cracked egg with choice of meat",
+        "price": "$10.75",
+        "section": "Senior Menu"
+      },
+      {
+        "name": "Senior Omelet",
+        "description": "Two freshly cracked eggs, with a choice of cheese, hashbrowns, home fries or fruit and one slice of toast",
+        "price": "$11.95",
+        "section": "Senior Menu"
+      },
+      {
+        "name": "Grandpa's Bowl",
+        "description": "Three freshly cracked scrambled eggs, crispy home fries or hash browns, mild cheddar cheese, topped with home-made sausage gravy, served with choice of toast",
+        "price": "$12.95",
+        "section": "Senior Menu"
+      },
+      {
+        "name": "Senior Oat/Grits Breakfast",
+        "description": "One cup of oatmeal or grits, served with fruit and one slice of toast",
+        "price": "$8.95",
+        "section": "Senior Menu"
+      },
+      {
+        "name": "Kids Pancakes",
+        "description": "Two buttermilk pancakes",
+        "price": "$7.50",
+        "section": "Little Apes (Breakfast)"
+      },
+      {
+        "name": "Kids French Toast",
+        "description": "One slice of French toast (two pieces)",
+        "price": "$7.50",
+        "section": "Little Apes (Breakfast)"
+      },
+      {
+        "name": "Kids Classic Breakfast",
+        "description": "One freshly cracked egg, one slice of toast and one choice of side",
+        "price": "$7.50",
+        "section": "Little Apes (Breakfast)"
+      },
+      {
+        "name": "Kids Chicken Tenders",
+        "description": "Two crispy chicken tenders served with French fries",
+        "price": "$7.75",
+        "section": "Little Apes (Breakfast)"
+      },
+      {
+        "name": "Kids Grilled Cheese",
+        "description": "Served on white toast, mild cheddar cheese and French fries",
+        "price": "$7.50",
+        "section": "Little Apes (Breakfast)"
+      },
+      {
+        "name": "Kids Burger",
+        "description": "Kids sized plain burger served with French fries",
+        "price": "$7.50",
+        "section": "Little Apes (Breakfast)"
+      },
+      {
+        "name": "Three Strips of Bacon",
+        "description": "",
+        "price": "$5.25",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Sausage",
+        "description": "Pork sausage patty",
+        "price": "$4.50",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Ham",
+        "description": "",
+        "price": "$5.25",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Turkey Breast",
+        "description": "",
+        "price": "$5.00",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "One Egg",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Toast",
+        "description": "Wheat, Rye, Sourdough, White, English Muffin",
+        "price": "$2.75",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Bagel with Cream Cheese",
+        "description": "",
+        "price": "$4.25",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Hashbrowns",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Home Fries",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$4.50",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Fruit",
+        "description": "",
+        "price": "$3.50",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Cottage Cheese",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Country Fried Steak (side)",
+        "description": "",
+        "price": "$11.50",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "House Hash (side)",
+        "description": "",
+        "price": "$11.50",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Fried Chicken (side)",
+        "description": "",
+        "price": "$10.95",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Single Pancake",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "One Slice of French Toast",
+        "description": "",
+        "price": "$5.95",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "Cinnamon Roll",
+        "description": "",
+        "price": "$5.95",
+        "section": "Sides (Breakfast)"
+      },
+      {
+        "name": "BLT",
+        "description": "Served on sourdough toast, with crispy bacon, fresh lettuce, tomato and mayo",
+        "price": "$13.95",
+        "section": "Cold Sandwiches"
+      },
+      {
+        "name": "Club Sandwich",
+        "description": "Served on choice of toast, comes with crispy bacon, turkey, ham, fresh lettuce, tomato, choice of cheese and mayo",
+        "price": "$18.50",
+        "section": "Cold Sandwiches"
+      },
+      {
+        "name": "The Vista Melt",
+        "description": "Served on grilled sourdough toast, mild cheddar cheese, crispy bacon, turkey and tomato",
+        "price": "$16.75",
+        "section": "The Meltdowns"
+      },
+      {
+        "name": "Old San Marcos",
+        "description": "Grilled sourdough, cheddar cheese, turkey breast, and Ortega chilis",
+        "price": "$15.95",
+        "section": "The Meltdowns"
+      },
+      {
+        "name": "The Crispy Chicken Melt",
+        "description": "Served on grilled sourdough toast with mild cheddar cheese, crispy chicken strips, crispy bacon and tomato",
+        "price": "$16.50",
+        "section": "The Meltdowns"
+      },
+      {
+        "name": "The Patty Melt",
+        "description": "Served on grilled rye toast, burger patty, mild cheddar cheese and grilled onions",
+        "price": "$16.50",
+        "section": "The Meltdowns"
+      },
+      {
+        "name": "The Classic Burger",
+        "description": "Lettuce, tomato, pickles and onion served on the side",
+        "price": "$13.50",
+        "section": "Burgers"
+      },
+      {
+        "name": "Feeling Blue?",
+        "description": "Blue cheese crumbles, crispy bacon and grilled onions",
+        "price": "$16.95",
+        "section": "Burgers"
+      },
+      {
+        "name": "The Wild West",
+        "description": "BBQ sauce, crispy bacon, cheddar cheese and sauteed mushrooms",
+        "price": "$16.95",
+        "section": "Burgers"
+      },
+      {
+        "name": "Kids Pancakes",
+        "description": "Two buttermilk pancakes",
+        "price": "$5.95",
+        "section": "Little Apes (Lunch)"
+      },
+      {
+        "name": "Kids French Toast",
+        "description": "One slice of French toast (two pieces)",
+        "price": "$5.95",
+        "section": "Little Apes (Lunch)"
+      },
+      {
+        "name": "Kids Classic Breakfast",
+        "description": "One freshly cracked egg, one slice of toast and one choice of side",
+        "price": "$5.95",
+        "section": "Little Apes (Lunch)"
+      },
+      {
+        "name": "Kids Chicken Tenders",
+        "description": "Two crispy chicken tenders served with French fries",
+        "price": "$5.95",
+        "section": "Little Apes (Lunch)"
+      },
+      {
+        "name": "Kids Grilled Cheese",
+        "description": "Served on white toast, mild cheddar cheese and French fries",
+        "price": "$5.95",
+        "section": "Little Apes (Lunch)"
+      },
+      {
+        "name": "Kids Burger",
+        "description": "Kids sized plain burger served with French fries",
+        "price": "$5.95",
+        "section": "Little Apes (Lunch)"
+      },
+      {
+        "name": "Three Strips of Bacon",
+        "description": "",
+        "price": "$4.50",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Sausage",
+        "description": "Pork sausage patty",
+        "price": "$4.50",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Ham",
+        "description": "",
+        "price": "$5.25",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Turkey Breast",
+        "description": "",
+        "price": "$5.00",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "One Egg",
+        "description": "",
+        "price": "$1.25",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Toast",
+        "description": "Wheat, Rye, Sourdough, White, English Muffin",
+        "price": "$2.50",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Bagel with Cream Cheese",
+        "description": "",
+        "price": "$3.75",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Hashbrowns",
+        "description": "",
+        "price": "$4.75",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Home Fries",
+        "description": "",
+        "price": "$3.75",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$3.75",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Fruit",
+        "description": "",
+        "price": "$4.50",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Cottage Cheese",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Country Fried Steak (side)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "House Hash (side)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Fried Chicken (side)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Single Pancake",
+        "description": "",
+        "price": "$4.50",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "One Slice of French Toast",
+        "description": "",
+        "price": "$5.25",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Cinnamon Roll",
+        "description": "",
+        "price": "$5.00",
+        "section": "Sides (Lunch)"
+      },
+      {
+        "name": "Coffee",
+        "description": "Bottomless",
+        "price": "$3.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Iced-Coffee",
+        "description": "",
+        "price": "$3.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Soda",
+        "description": "",
+        "price": "$3.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Iced-Tea",
+        "description": "",
+        "price": "$3.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Strawberry Lemonade",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Lemonade",
+        "description": "",
+        "price": "$3.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Latte",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Double Espresso",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Matcha",
+        "description": "",
+        "price": "$5.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "Chai",
+        "description": "",
+        "price": "$4.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Jungle Java Latte",
+        "description": "Banana syrup and chocolate",
+        "price": "$5.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Baboon Latte",
+        "description": "Vanilla and caramel syrup",
+        "price": "$5.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Crazy Chimp Latte",
+        "description": "Chai powder and espresso",
+        "price": "$5.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Welcome to the Jungle Latte",
+        "description": "Chocolate and white chocolate syrup",
+        "price": "$5.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Spider Monkey Latte",
+        "description": "Authentic Mexican cocoa and chocolate syrup",
+        "price": "$6.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "The Mommaback Latte",
+        "description": "White chocolate syrup and hazelnut syrup",
+        "price": "$5.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Cocoa",
+        "description": "",
+        "price": "$3.50",
+        "section": "Kids Beverages"
+      },
+      {
+        "name": "Orange Juice",
+        "description": "",
+        "price": "$2.75",
+        "section": "Kids Beverages"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$2.75",
+        "section": "Kids Beverages"
+      },
+      {
+        "name": "Milk",
+        "description": "",
+        "price": "$2.75",
+        "section": "Kids Beverages"
+      },
+      {
+        "name": "Chocolate Milk",
+        "description": "",
+        "price": "$2.75",
+        "section": "Kids Beverages"
+      },
+      {
+        "name": "Lemonade (kids)",
+        "description": "",
+        "price": "$2.75",
+        "section": "Kids Beverages"
+      },
+      {
+        "name": "Strawberry Lemonade (kids)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Kids Beverages"
+      }
+    ]
+  }
+]

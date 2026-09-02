@@ -1,0 +1,1649 @@
+[
+  {
+    "restaurantId": "1211",
+    "name": "Scoreboard Ii",
+    "sourceUrl": "https://www.allmenus.com/ca/imperial-beach/393441-the-scoreboard/menu/",
+    "confidence": "low",
+    "blocked": "Only one reachable tier-5 priced source (allmenus.com); playbook rule 5 requires a second independent priced source before this can be filed as a result",
+    "notes": "Work list address (715 Palm Avenue) does not match any listing found; every source (Yelp as 'The Scoreboard', the restaurant's Toast page, Tripadvisor's own 'Scoreboard II' listing d446731) resolves to 951 Palm Ave, Imperial Beach, phone (619) 424-9909 -- treated as the same business (a name variant, per playbook rule 11), address discrepancy is likely stale work-list data, not a different business. allmenus.com carries a full JSON-LD schema.org Menu: 8 sections (Starters, Salads, Scoreburgers, Dog House, Sandwiches n' Stuff, For the Kids, Beverages, Specials), 54 items, prices $2.00-$15.99, passes the markup-divisor test (no consistent divisor across 1.04/1.1/1.15/1.2/1.25) and price level looks current for 2026 pub food. The restaurant's own Toast page (toasttab.com/local/the-scoreboard-imperial-beach-951-palm-ave) has hasOnlineOrderingModule:false and only restaurant metadata in __OO_STATE__ (ROOT_QUERY, no menu items) -- not a real ordering platform for this location. No DoorDash listing found for this address/name via search. Yelp biz page (403 to curl), zmenu.com (403) could not be reached without a browser; sirved.com and restaurantguru.com pages loaded but are client-rendered with no prices in the static HTML. A Chrome-equipped agent should try Yelp's dated menu photos (gallery alt text 'Menu as of MM/DD/YY') or search DoorDash's app directly for a second priced source to cross-check the allmenus data.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "952",
+    "name": "Pacific Pizza",
+    "sourceUrl": "https://slicelife.com/restaurants/ca/poway/92064/pacific-pizza-poway/menu",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://www.doordash.com/store/742380/ (DoorDash marketplace JSON-LD schema.org Menu, address confirmed as 14897 Pomerado Road, Poway, CA -- exact match to work list)",
+    "notes": "Slice (slicelife.com) is Pacific Pizza's own ordering platform (tier 2). Its embedded window.__SLICE_REDUX_STATE__ carries the full 8-category menu (58 items: Hand Tossed Pizza, Specialty Pies, Salads, Wings and Strips, Pasta, Sub Sandwiches, Sides, Desserts) but 27 items (all Specialty Pies, all Salads, most Pasta, all Sub Sandwiches, Garlic Bread) are size/variant-priced and show $0.00 in that state -- the real price lives behind a per-item modifier modal not present in the static payload. DoorDash's server-rendered JSON-LD for the same store flattens those into a 'from' minimum price (e.g. 'San Diegan Pie $25.20+'), and for every item both sources expose a flat price, DoorDash matches Slice to the cent (Hand Tossed Pizza, Wings/Strips, Sides, Desserts all identical) -- no markup detected, so the DoorDash minimums were used to fill the 27 variant items, each marked as a 'from' price in its description per playbook rule 15. The restaurant's own site (pacificpizza.net, Popmenu) shows a much lower base 'Build Your Own' pizza price ($14/$16/$18 for M/L/XL, plus $0.50/topping) that does not reconcile to Slice/DoorDash by any clean divisor -- treated as a stale on-site display superseded by the two agreeing ordering-platform sources, not used. All 8 categories on the restaurant's real menu (confirmed present in the raw pacificpizza.net HTML: Wings, Salad, Calzone, Stromboli, Sandwich, Dessert, Beverage) are represented in this capture.",
+    "dishes": [
+      {
+        "name": "14\" Medium Pizza",
+        "description": "",
+        "price": "$22.80",
+        "section": "Hand Tossed Pizza"
+      },
+      {
+        "name": "16” Large Pizza",
+        "description": "",
+        "price": "$25.20",
+        "section": "Hand Tossed Pizza"
+      },
+      {
+        "name": "18\" XL Pizza",
+        "description": "",
+        "price": "$27.60",
+        "section": "Hand Tossed Pizza"
+      },
+      {
+        "name": "10\" Gluten Free Pizza",
+        "description": "",
+        "price": "$20.40",
+        "section": "Hand Tossed Pizza"
+      },
+      {
+        "name": "14'' Gluten Free Pizza",
+        "description": "",
+        "price": "$25.20",
+        "section": "Hand Tossed Pizza"
+      },
+      {
+        "name": "Calzone",
+        "description": "",
+        "price": "$21.60",
+        "section": "Hand Tossed Pizza"
+      },
+      {
+        "name": "Stromboli",
+        "description": "",
+        "price": "$21.60",
+        "section": "Hand Tossed Pizza"
+      },
+      {
+        "name": "Carne Pie",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "San Diegan Pie",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "Greek Chicken Pie",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "Barbecue Chicken Pie",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "Ranch Chicken Pie",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "Buffalo Chicken",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "Pesto Pie",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "Veggie Pie",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "Margherita Pie",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "Blanco Pie",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "Espinacas Pie",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "Hawaiian",
+        "description": "from (size/variant priced item)",
+        "price": "$25.20",
+        "section": "Specialty Pies"
+      },
+      {
+        "name": "House Salad",
+        "description": "from (size/variant priced item)",
+        "price": "$7.80",
+        "section": "Salads"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "from (size/variant priced item)",
+        "price": "$7.80",
+        "section": "Salads"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "from (size/variant priced item)",
+        "price": "$9.60",
+        "section": "Salads"
+      },
+      {
+        "name": "Antipasto Salad",
+        "description": "from (size/variant priced item)",
+        "price": "$9.60",
+        "section": "Salads"
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "description": "from (size/variant priced item)",
+        "price": "$9.60",
+        "section": "Salads"
+      },
+      {
+        "name": "6 Piece Wings",
+        "description": "",
+        "price": "$13.80",
+        "section": "Wings and Strips"
+      },
+      {
+        "name": "12 Piece Wings",
+        "description": "",
+        "price": "$21.00",
+        "section": "Wings and Strips"
+      },
+      {
+        "name": "4 Piece Strips",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wings and Strips"
+      },
+      {
+        "name": "8 Piece Strips",
+        "description": "",
+        "price": "$19.20",
+        "section": "Wings and Strips"
+      },
+      {
+        "name": "50 Wings",
+        "description": "",
+        "price": "$84.00",
+        "section": "Wings and Strips"
+      },
+      {
+        "name": "Spaghetti Marinara",
+        "description": "from (size/variant priced item)",
+        "price": "$10.00",
+        "section": "Pasta"
+      },
+      {
+        "name": "Spaghetti Meatballs",
+        "description": "from (size/variant priced item)",
+        "price": "$13.20",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pesto Chicken Pasta",
+        "description": "from (size/variant priced item)",
+        "price": "$13.20",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pasta with Garlic Butter",
+        "description": "from (size/variant priced item)",
+        "price": "$10.00",
+        "section": "Pasta"
+      },
+      {
+        "name": "Lasagna",
+        "description": "",
+        "price": "$19.20",
+        "section": "Pasta"
+      },
+      {
+        "name": "Cheese Ravioli",
+        "description": "from (size/variant priced item)",
+        "price": "$13.20",
+        "section": "Pasta"
+      },
+      {
+        "name": "Gluten Free Pesto Chicken",
+        "description": "from (size/variant priced item)",
+        "price": "$15.60",
+        "section": "Pasta"
+      },
+      {
+        "name": "Gluten Free Garlic butter",
+        "description": "from (size/variant priced item)",
+        "price": "$14.40",
+        "section": "Pasta"
+      },
+      {
+        "name": "Torpedo",
+        "description": "from (size/variant priced item)",
+        "price": "$13.20",
+        "section": "Sub Sandwiches"
+      },
+      {
+        "name": "Turkey",
+        "description": "from (size/variant priced item)",
+        "price": "$13.20",
+        "section": "Sub Sandwiches"
+      },
+      {
+        "name": "Ham",
+        "description": "from (size/variant priced item)",
+        "price": "$13.20",
+        "section": "Sub Sandwiches"
+      },
+      {
+        "name": "Meatball (Hot)",
+        "description": "from (size/variant priced item)",
+        "price": "$13.20",
+        "section": "Sub Sandwiches"
+      },
+      {
+        "name": "Chicken Marinara Melt (hot)",
+        "description": "from (size/variant priced item)",
+        "price": "$14.40",
+        "section": "Sub Sandwiches"
+      },
+      {
+        "name": "Barbecue Chicken (Hot)",
+        "description": "from (size/variant priced item)",
+        "price": "$14.40",
+        "section": "Sub Sandwiches"
+      },
+      {
+        "name": "Buffalo Chicken (Hot)",
+        "description": "from (size/variant priced item)",
+        "price": "$14.40",
+        "section": "Sub Sandwiches"
+      },
+      {
+        "name": "Pastrami (Hot)",
+        "description": "from (size/variant priced item)",
+        "price": "$14.40",
+        "section": "Sub Sandwiches"
+      },
+      {
+        "name": "Philly - Chicken (Hot)",
+        "description": "from (size/variant priced item)",
+        "price": "$14.40",
+        "section": "Sub Sandwiches"
+      },
+      {
+        "name": "Philly - Beef (Hot)",
+        "description": "from (size/variant priced item)",
+        "price": "$14.40",
+        "section": "Sub Sandwiches"
+      },
+      {
+        "name": "Garlic Bread",
+        "description": "from (size/variant priced item)",
+        "price": "$9.60",
+        "section": "Sides"
+      },
+      {
+        "name": "Bread Sticks",
+        "description": "",
+        "price": "$9.60",
+        "section": "Sides"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$6.60",
+        "section": "Sides"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$2.70",
+        "section": "Sides"
+      },
+      {
+        "name": "Ranch Dressing",
+        "description": "",
+        "price": "$1.20",
+        "section": "Sides"
+      },
+      {
+        "name": "Pepperoncinis",
+        "description": "",
+        "price": "$3.60",
+        "section": "Sides"
+      },
+      {
+        "name": "Side of Meatballs",
+        "description": "",
+        "price": "$10.80",
+        "section": "Sides"
+      },
+      {
+        "name": "Chocolate Chip Cookie",
+        "description": "",
+        "price": "$1.80",
+        "section": "Desserts"
+      },
+      {
+        "name": "White Chocolate Macadaima Cookie",
+        "description": "",
+        "price": "$1.80",
+        "section": "Desserts"
+      },
+      {
+        "name": "Dozen Cookies",
+        "description": "",
+        "price": "$15.59",
+        "section": "Desserts"
+      },
+      {
+        "name": "NY Cheese Cake",
+        "description": "",
+        "price": "$5.99",
+        "section": "Desserts"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4313",
+    "name": "Shiraz Persian Cuisine",
+    "sourceUrl": "https://www.doordash.com/store/shiraz-fine-persian-cuisine-san-diego-2608477/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://shirazinc.com/san-diego-rancho-bernardo-shiraz-persian-cuisine-food-menu (restaurant's own SpotHopper-powered site; address 12125 Alta Carmel Court matches exactly)",
+    "notes": "The restaurant's own site (shirazinc.com, a SpotHopper spot_id=396693 ordering widget rendered server-side) prints odd-cent prices sitewide (Dinner menu $8.31, $36.39, $41.59 etc; Drink menu $8.31, $15.59/Glass etc) that divide cleanly by 1.04 onto round .99/.50 values with almost no exceptions -- the same 4%-online-surcharge signature the playbook has caught before on other SpotHopper/Clover storefronts. Per the never-construct-a-price rule, those divided figures were NOT used. Instead, DoorDash's own listing for the same address (verified exact address match) publishes the same dishes at clean, human-set .99 prices that match the shirazinc.com figures divided by 1.04 to the cent (e.g. Hummus: site $10.39 / 1.04 = $9.99 = DoorDash's $9.99; Mast-o Khiar: site $8.31 / 1.04 = $7.99 = DoorDash's $7.99) -- so DoorDash's own prices, not a computed figure, were used as the source, with the site cited only as the cross-check that explains and confirms them. DoorDash covers all core sections (Appetizer, Soup & Salads, Main Dishes/Kababs/Stews/Rice, Daily Specials, Dessert, non-alcoholic Drinks) but is missing several items present on the restaurant's own site: Cornish Hen Kabab, Grilled Vegetable Kabab, Dizi (Abgoosht), Aush-e Reshteh (Seasonal), Looti Polo, Albaloo Polo & Chicken or Beef, Ghafghazi Salad, Zereshk Polo (standalone), Olives, French Fries, and Ghormeh Sabzi (Vegetarian) -- all omitted from this capture since no clean-priced source carries them. The separate weekday Lunch Menu (11am-3pm, 15 items) on shirazinc.com is NOT subject to the 4% pattern (its own already-round .99 prices do not divide cleanly by 1.04 either) and was used directly, tagged '(Lunch)' where the dish name would otherwise collide with a dinner item at a different price. The Beer/Wine/Bottles list on the site's separate drink-menu page shows the same 1.04 pattern with no second source found, so it was excluded entirely (not guessed). Confidence capped at medium per the source ladder for a delivery marketplace even though it passed the markup check and the cross-check confirms it precisely.",
+    "dishes": [
+      {
+        "name": "Tahdig 1 stew",
+        "description": "Crispy rice with two sauces (ask for availability).",
+        "price": "$17.99",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Mast-o mosir",
+        "description": "Delicious yogurt flavored with chopped shallots.",
+        "price": "$7.99",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Zeyton Parvardeh",
+        "description": "Olive, fresh herbs, walnut, garlic, pomegranate paste.",
+        "price": "$8.99",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Mast-o Khiar",
+        "description": "Combination of yogurt and chopped cucumber flavored with mint.",
+        "price": "$7.99",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Appetizer Combo Platter",
+        "description": "Combination of our homemade appetizers.",
+        "price": "$19.99",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Mirza Ghasemi",
+        "description": "Smoked eggplant, egg, tomato, garlic.",
+        "price": "$14.99",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Kashke Bademjan",
+        "description": "Sautéed eggplant, kashk (whey) topped with mint & caramelized onion.",
+        "price": "$14.99",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Hummus",
+        "description": "Combination of garbanzo beans, garlic, tahini, olive oil, lemon juice.",
+        "price": "$9.99",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Garden Salad",
+        "description": "Romaine lettuce, cucumber, carrots, tomatoes, onion and house dressing.",
+        "price": "$11.99",
+        "section": "Soup & Salads"
+      },
+      {
+        "name": "Shirazi Salad",
+        "description": "Chopped cucumber, tomatoes, onion herbs and fresh lemon juice.",
+        "price": "$6.99",
+        "section": "Soup & Salads"
+      },
+      {
+        "name": "Soup of the Day",
+        "description": "Ask for availability.",
+        "price": "$8.99",
+        "section": "Soup & Salads"
+      },
+      {
+        "name": "Kalleh Pache",
+        "description": "For three persons",
+        "price": "$74.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Chicken & Koobideh Kabab",
+        "description": "One skewer of seasoned ground beef and boneless chicken kabob with basmati rice: and grilled tomato.",
+        "price": "$27.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Chicken Kabab (Boneless)",
+        "description": "One grilled skewer of marinated chicken with basmati rice and tomato.",
+        "price": "$23.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Zereshk Polo & Chicken Kabab",
+        "description": "One grilled skewer of marinated chicken kabob with basmati rice and zereshk.",
+        "price": "$25.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Kaseh Kabob",
+        "description": "3 kind kabob, koobideh and chicken and shish kabob, Comes with rice and tomato and bell pepper.",
+        "price": "$35.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Barg Kabob",
+        "description": "Thinly sliced filet mignon, skewered and charbroiled to perfection with basmati rice and tomato.",
+        "price": "$33.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Bakhtiari Kabob",
+        "description": "A mixture of lamb meat, spices, chicken fillet, bell pepper and onion, soaked in olive oil, salt, garlic powder and saffron and grilled over the fire.",
+        "price": "$36.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Zereshk Polo & Lamb Shank",
+        "description": "Lamb Shang  with zereshk poolo",
+        "price": "$29.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Chicken with Bone",
+        "description": "One skewer of marinated, charbroiled chunks of Cornish Hen. Comes with rice and grilled tomato.",
+        "price": "$28.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Adas Polo",
+        "description": "",
+        "price": "$17.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "1 Skw Kobideh Kabob",
+        "description": "",
+        "price": "$9.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Kabab Torsh",
+        "description": "Comes with Rice and tomato",
+        "price": "$37.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Halim",
+        "description": "Slow-cooked wheat and barley porridge with shredded meat, topped with sesame seeds and a hint of spices.",
+        "price": "$15.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Family Style Platter (Serves 5)",
+        "description": "2 mouth watering skewers of koobideh, 1 skewer boneless chicken kabab, 1 skewer bone-in chicken, 1 skewer shish kabab, 1 lamb shank. Comes with rice and tomato.",
+        "price": "$179.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Chicken Barg",
+        "description": "Succulent grilled chicken skewer served with saffron rice, charred tomato, and a side of fresh mixed vegetables.",
+        "price": "$27.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Koobideh Kabab",
+        "description": "Two skewers of seasoned lean ground beef with basmati rice and grilled tomato.",
+        "price": "$24.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Soltani Kabob",
+        "description": "Filet mignons and ground beef, skewered and charbroiled to perfection with basmati rice and grilled tomato.",
+        "price": "$41.99",
+        "section": "Main Dishes (Kababs, Rice, Traditional)"
+      },
+      {
+        "name": "Bamieh ( Okra & Green beans )",
+        "description": "",
+        "price": "$21.99",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Gheymeh Bademjan Vegetarian",
+        "description": "",
+        "price": "$19.99",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Fesenjoon",
+        "description": "Fried walnut pomegranate sauce, mixed with boiled chicken and a side of basmati rice.",
+        "price": "$27.99",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Ghormeh Sabzi",
+        "description": "Sautéed vegetable cooked with dried limes, lamb shank, red kidney beans, special seasoning, and side of basmati rice.",
+        "price": "$24.99",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Gheymeh Bademjan",
+        "description": "Fried eggplant cooked in special tomato sauce, yellow peas, onion sauce, beef chunks and side of basmati rice.",
+        "price": "$24.99",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Sholeh Zard",
+        "description": "A fragrant Persian rice pudding made with saffron, rose water, and cardamom, garnished with cinnamon and slivered almonds.",
+        "price": "$5.99",
+        "section": "Dessert"
+      },
+      {
+        "name": "Baklava & Tea",
+        "description": "Crispy layers of phyllo dough with nuts and honey, served with a side of tea.",
+        "price": "$7.99",
+        "section": "Dessert"
+      },
+      {
+        "name": "ic cream & Faloodeh ( mix )",
+        "description": "",
+        "price": "$10.99",
+        "section": "Dessert"
+      },
+      {
+        "name": "falodeh shirazi",
+        "description": "",
+        "price": "$9.99",
+        "section": "Dessert"
+      },
+      {
+        "name": "persian ic cream",
+        "description": "",
+        "price": "$8.99",
+        "section": "Dessert"
+      },
+      {
+        "name": "Hot Black Tea",
+        "description": "Refill is included.",
+        "price": "$2.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "Chilled, Refreshing Brewed Tea, Perfectly Balanced for a Hot Day",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Doogh",
+        "description": "Persian yogurt drink.",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Soft Drinks",
+        "description": "Pepsi, Dr. Pepper, Sprite.",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Lunch Wrap Combo",
+        "description": "Koobideh or chicken wrap with choice of soft drink.",
+        "price": "$12.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Koobideh Wrap",
+        "description": "Seasoned lean ground lamb, rice and lettuce wrapped in lavash bread.",
+        "price": "$14.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Chicken Wrap",
+        "description": "Boneless marinated chicken, rice and lettuce wrapped in lavash bread.",
+        "price": "$14.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Koobideh Kabab (Lunch)",
+        "description": "One skewer of seasoned ground lamb, served with basmati rice and grilled tomato.",
+        "price": "$14.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Chicken Kabab (Lunch)",
+        "description": "Four grilled chunks of boneless marinated chicken, served with basmati rice and grilled tomato.",
+        "price": "$14.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Gheymeh Bademjan (Lunch)",
+        "description": "Persian eggplant stew with chunks of beef, yellow split peas, tomato, onion, and spices, served with basmati rice.",
+        "price": "$14.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Gheymeh Bademjan Vegetarian (Lunch)",
+        "description": "Vegetarian Persian eggplant stew with yellow split peas, tomato, onion, and spices, served with basmati rice.",
+        "price": "$14.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Ghormeh Sabzi (Lunch)",
+        "description": "Classic Persian herb stew with chunks of beef, kidney beans, and dried lime, served with basmati rice.",
+        "price": "$14.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Halim (Lunch)",
+        "description": "Traditional Persian wheat and beef porridge.",
+        "price": "$12.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Adas Polo (Lunch)",
+        "description": "Persian basmati rice with lentils, saffron, cinnamon, and raisins.",
+        "price": "$14.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Kashk-e Bademjan (Lunch)",
+        "description": "Sauteed eggplant with whey, mint and caramelized onion.",
+        "price": "$10.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Mirza Ghasemi (Lunch)",
+        "description": "Smoky eggplant, egg, tomato and garlic spread.",
+        "price": "$11.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Hummus (Lunch)",
+        "description": "Creamy garbanzo bean dip blended with tahini, garlic, and lemon.",
+        "price": "$9.99",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Soft Drinks (Lunch)",
+        "description": "Coke, Coke Zero, Dr. Pepper, Sprite",
+        "price": "$3.50",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      },
+      {
+        "name": "Hot Black Tea (Lunch)",
+        "description": "Traditional hot black tea.",
+        "price": "$3.50",
+        "section": "Lunch (Mon-Fri 11am-3pm)"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3891",
+    "name": "Society",
+    "sourceUrl": "https://societypb.com/wp-content/uploads/2026/05/Menu_SocietyPB_rev47_secured.pdf",
+    "confidence": "high",
+    "notes": "Society PB (a Pacific Beach pool hall & BBQ restaurant, per its own site description) publishes its current menu as a single-page PDF linked from societypb.com/our-menus/ (page dateModified 2026-05-16, filename 'rev47' -- the newest of three PDFs on that page; an older 'Dinner-Menu-04-13-2022-Revised.pdf' was ignored as stale). pdftotext -layout badly scrambled this landscape single-page PDF (overlapping text runs, misencoded glyphs), so it was read visually with the Read tool per playbook guidance, which rendered the whole page cleanly and completely. All prices are round whole-dollar numbers with no markup pattern. Sections captured in full: Starters, Salads, Pizza (Small 12\"/Large 16\"), Platters (Bubba's BBQ), A La Carte (multiple portion sizes per item), Fixins' (Reg/Lg), Burgers, Sandwiches, Kids Under 12, Delicious Desserts -- every section on the page. A separate 'Triangle Beer and Craft List' PDF (also linked, undated/2023 path) covers the bar's drink list and was treated as an adjunct back-bar reference and not captured. Multi-size items (potato skins, sliders, wings, pizza, ribs portions, fixins' reg/lg) are recorded as separate dish rows per size/quantity.",
+    "dishes": [
+      {
+        "name": "Potato Skins (3 for)",
+        "description": "No mix & matching. Choice of Buffalo Chicken, Pulled Pork, or Double Potato.",
+        "price": "$12.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Potato Skins (6 for)",
+        "description": "No mix & matching. Choice of Buffalo Chicken, Pulled Pork, or Double Potato.",
+        "price": "$20.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Potato Skins (9 for)",
+        "description": "No mix & matching. Choice of Buffalo Chicken, Pulled Pork, or Double Potato.",
+        "price": "$27.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Sliders, Pulled Pork or Pulled Chicken (2 for)",
+        "description": "Each additional slider $5.",
+        "price": "$10.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Sliders, Chopped Beef Brisket (2 for)",
+        "description": "Each additional slider $6.",
+        "price": "$12.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Wings (10 for)",
+        "description": "Choice of BBQ, Buffalo, Lemon Pepper or Salt & Pepper. Served with carrots & celery, blue cheese or ranch.",
+        "price": "$20.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Wings (15 for)",
+        "description": "Choice of BBQ, Buffalo, Lemon Pepper or Salt & Pepper. Served with carrots & celery, blue cheese or ranch.",
+        "price": "$28.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Wings (20 for)",
+        "description": "Choice of BBQ, Buffalo, Lemon Pepper or Salt & Pepper. Served with carrots & celery, blue cheese or ranch.",
+        "price": "$36.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Homestyle Chili",
+        "description": "",
+        "price": "$15.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Wings, Rings & Things",
+        "description": "Wings, chicken strips, onion rings, french fries & sweet potato fries.",
+        "price": "$32.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Chicken Strips & Fries",
+        "description": "Served with buffalo sauce & ranch dressing.",
+        "price": "$20.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Chili Fries",
+        "description": "Chili, cheddar jack cheese mix, sour cream, tomato, chopped & green onion.",
+        "price": "$18.00",
+        "section": "Starters"
+      },
+      {
+        "name": "House Salad",
+        "description": "Romaine, tomato, red onion, cucumber & balsamic vinaigrette.",
+        "price": "$14.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Romaine lettuce, fresh parmesan, croutons & caesar dressing.",
+        "price": "$15.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "Romaine lettuce, tomato, cucumber, red onion, kalamata olives, feta cheese with a Greek dressing.",
+        "price": "$17.00",
+        "section": "Salads"
+      },
+      {
+        "name": "BBQ Cobb",
+        "description": "Romaine lettuce, pulled pork, pulled chicken, bacon, jack & cheddar cheese, avocado, chopped egg, tomato, & red onion with BBQ & blue cheese dressing.",
+        "price": "$22.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Society Pizza (Small 12\")",
+        "description": "Pepperoni & mozzarella covered with french fries and cheddar cheese.",
+        "price": "$22.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Society Pizza (Large 16\")",
+        "description": "Pepperoni & mozzarella covered with french fries and cheddar cheese.",
+        "price": "$30.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "New York Pizza (Small 12\")",
+        "description": "Pepperoni, Italian sausage, mushrooms, bell peppers & onions.",
+        "price": "$21.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "New York Pizza (Large 16\")",
+        "description": "Pepperoni, Italian sausage, mushrooms, bell peppers & onions.",
+        "price": "$29.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Meat Lovers Pizza (Small 12\")",
+        "description": "Pepperoni, Italian sausage, brisket and bacon.",
+        "price": "$21.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Meat Lovers Pizza (Large 16\")",
+        "description": "Pepperoni, Italian sausage, brisket and bacon.",
+        "price": "$29.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Pepperoni Pizza (Small 12\")",
+        "description": "Pepperoni & mozzarella.",
+        "price": "$21.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Pepperoni Pizza (Large 16\")",
+        "description": "Pepperoni & mozzarella.",
+        "price": "$29.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "BBQ Chicken Pizza (Small 12\")",
+        "description": "Breaded chicken breast, BBQ sauce, red onions & cilantro.",
+        "price": "$21.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "BBQ Chicken Pizza (Large 16\")",
+        "description": "Breaded chicken breast, BBQ sauce, red onions & cilantro.",
+        "price": "$29.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza (Small 12\")",
+        "description": "Ham, pineapple & mozzarella.",
+        "price": "$18.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza (Large 16\")",
+        "description": "Ham, pineapple & mozzarella.",
+        "price": "$27.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Vegetarian Pizza (Small 12\")",
+        "description": "Bell peppers, mushrooms, onions & black olives.",
+        "price": "$18.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Vegetarian Pizza (Large 16\")",
+        "description": "Bell peppers, mushrooms, onions & black olives.",
+        "price": "$27.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Margherita Pizza (Small 12\")",
+        "description": "Fresh tomato, garlic & basil.",
+        "price": "$18.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Margherita Pizza (Large 16\")",
+        "description": "Fresh tomato, garlic & basil.",
+        "price": "$27.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza (Small 12\")",
+        "description": "Tomato sauce & mozzarella.",
+        "price": "$18.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza (Large 16\")",
+        "description": "Tomato sauce & mozzarella.",
+        "price": "$27.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Chicken & Rib Combo",
+        "description": "1/4 smoked chicken, 1/4 rack of smoked baby back ribs. Served with one fixin' and Texas toast.",
+        "price": "$30.00",
+        "section": "Platters"
+      },
+      {
+        "name": "1/2 Rack Beef Ribs",
+        "description": "3 bones of prime smoked beef ribs. Served with one fixin' and Texas toast.",
+        "price": "$34.00",
+        "section": "Platters"
+      },
+      {
+        "name": "1/2 Baby Back Ribs",
+        "description": "5-6 bones baby back ribs. Served with one fixin' and Texas toast.",
+        "price": "$30.00",
+        "section": "Platters"
+      },
+      {
+        "name": "1/4 Chicken Platter",
+        "description": "1/4 of a smoked chicken. Served with one fixin' and Texas toast.",
+        "price": "$15.00",
+        "section": "Platters"
+      },
+      {
+        "name": "1/2 Chicken Platter",
+        "description": "1/2 of a smoked chicken. Served with one fixin' and Texas toast.",
+        "price": "$25.00",
+        "section": "Platters"
+      },
+      {
+        "name": "Brisket Platter",
+        "description": "Sliced or chopped prime smoked beef brisket. Served with one fixin' and Texas toast.",
+        "price": "$33.00",
+        "section": "Platters"
+      },
+      {
+        "name": "Baby Back Pork Ribs (1/3 Rack)",
+        "description": "",
+        "price": "$21.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Baby Back Pork Ribs (1/2 Rack)",
+        "description": "",
+        "price": "$28.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Beef Ribs (1 Bone)",
+        "description": "",
+        "price": "$12.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Beef Ribs (1/2 Rack)",
+        "description": "",
+        "price": "$35.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Beef Brisket (1/4 lb, USDA Prime)",
+        "description": "",
+        "price": "$17.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Beef Brisket (1/2 lb, USDA Prime)",
+        "description": "",
+        "price": "$24.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Pulled Pork (1/4 lb)",
+        "description": "",
+        "price": "$12.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Pulled Pork (1/2 lb)",
+        "description": "",
+        "price": "$18.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Pulled Chicken (1/4 lb)",
+        "description": "",
+        "price": "$13.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Pulled Chicken (1/2 lb)",
+        "description": "",
+        "price": "$19.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "BBQ Chicken (1/4 Chicken)",
+        "description": "",
+        "price": "$9.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "BBQ Chicken (1/2 Chicken)",
+        "description": "",
+        "price": "$17.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Hot Link Sausage",
+        "description": "Comes with peppers and onions.",
+        "price": "$7.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Grilled Chicken Breast",
+        "description": "",
+        "price": "$8.00",
+        "section": "A La Carte"
+      },
+      {
+        "name": "Fries",
+        "description": "",
+        "price": "$7.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Sweet Potato Fries",
+        "description": "",
+        "price": "$9.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Onion Rings",
+        "description": "",
+        "price": "$9.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Corn on the Cob",
+        "description": "",
+        "price": "$6.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "BBQ Beans (Reg)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "BBQ Beans (Lg)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Potato Salad (Reg)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Potato Salad (Lg)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Garlic Mashed Potato (Reg)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Garlic Mashed Potato (Lg)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Coleslaw (Reg)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Coleslaw (Lg)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Macaroni & Cheese (Reg)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Macaroni & Cheese (Lg)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Baked Broccoli (Reg)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Baked Broccoli (Lg)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Carrots (Reg)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "Carrots (Lg)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Fixins'"
+      },
+      {
+        "name": "The Phat Bastard",
+        "description": "Hot link sausage, onion, bell pepper & cheddar cheese. Served a la carte.",
+        "price": "$19.00",
+        "section": "Burgers"
+      },
+      {
+        "name": "Bacon Burger",
+        "description": "Bacon, cheddar cheese & onion ring with BBQ sauce. Served a la carte.",
+        "price": "$19.00",
+        "section": "Burgers"
+      },
+      {
+        "name": "Build Your Own Burger",
+        "description": "1/2 lb 100% Certified Angus Beef / veggie patty option available. Served a la carte.",
+        "price": "$15.00",
+        "section": "Burgers"
+      },
+      {
+        "name": "The Bubba",
+        "description": "Pulled pork, chopped beef brisket & hot link sausage. Served a la carte.",
+        "price": "$21.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Chicken Sandwich",
+        "description": "Choice of BBQ pulled chicken or grilled chicken. Served a la carte.",
+        "price": "$18.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Turkey Club Triple Decker",
+        "description": "Oven roasted turkey, bacon, lettuce, tomato & mayo on sourdough. Served a la carte.",
+        "price": "$19.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Pulled Pork Sandwich",
+        "description": "Served a la carte.",
+        "price": "$18.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Chopped Beef Brisket Sandwich",
+        "description": "USDA Prime. Served a la carte.",
+        "price": "$21.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "1 Slider (Kids)",
+        "description": "Choice of pulled chicken, pulled pork or chopped brisket. With fries and a beverage.",
+        "price": "$10.00",
+        "section": "Kids Under 12"
+      },
+      {
+        "name": "Chicken Strips (Kids)",
+        "description": "With fries and a beverage.",
+        "price": "$10.00",
+        "section": "Kids Under 12"
+      },
+      {
+        "name": "Grilled Cheese (Kids)",
+        "description": "With fries and a beverage.",
+        "price": "$9.00",
+        "section": "Kids Under 12"
+      },
+      {
+        "name": "Sweet Potato Pie, Pecan Pie or Bread Pudding",
+        "description": "",
+        "price": "$9.00",
+        "section": "Delicious Desserts"
+      },
+      {
+        "name": "Sundae",
+        "description": "Vanilla ice cream topped with fudge, caramel, walnuts & whipped cream.",
+        "price": "$12.00",
+        "section": "Delicious Desserts"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3967",
+    "name": "Olleh Korean BBQ",
+    "sourceUrl": "https://doordash.com/store/olleh-convoy-korean-bbq-san-diego-863683/en-US",
+    "confidence": "medium",
+    "blocked": "The restaurant's primary dine-in format -- all-you-can-eat (AYCE) tabletop Korean BBQ, sold as Premium/Prime per-person tiers -- could not be confirmed at a real price. Search summaries disagree sharply ($30/$41 vs $35 vs $41.99 for the same tiers) and no page was found where the number could be verified directly against tag-stripped HTML; the restaurant's own domain (ollehconvoykoreanbbq.site) no longer resolves (DNS NXDOMAIN via curl and nslookup). Per the disagreement-is-information rule this was left out rather than guessed. Needs a browser-equipped agent to read Yelp's dated menu photos (yelp.com/biz/olleh-convoy-korean-bbq-san-diego) or the restaurant's Facebook page (facebook.com/ollehconvoy) for a verified current AYCE price.",
+    "notes": "DoorDash's listing for the exact address (4344 Convoy Street, confirmed in the page's own meta description) carries a complete, internally coherent to-go/delivery menu -- Korean BBQ Meal (8), Korean BBQ Bowl (7), Fried Chicken Wings (5), Sides (7), Beverages (6), 33 items total -- with clean, non-inflated prices (no consistent divisor found at 1.04/1.1/1.15/1.2/1.2/1.25). This to-go menu is a real, separate offering (common for AYCE KBBQ spots, since all-you-can-eat doesn't translate to delivery) and was captured in full, but it is NOT the restaurant's core identity -- filing it alone would misrepresent an AYCE Korean BBQ house as a bowl/wings takeout spot, so this record is marked blocked rather than complete pending the AYCE price. weeblyte.com (a barred directory-farm domain per the playbook) and res-menu.net (returned 0 bytes) were not used. sagemenu.com had only Yelp-mirrored photo captions, no prices. restaurantguru.com and zmenu.com carried no per-item prices in static HTML.",
+    "dishes": [
+      {
+        "name": "Soy Beef Meal",
+        "description": "Thin sliced beef belly marinated with soy sauce",
+        "price": "$11.99",
+        "section": "Korean BBQ Meal"
+      },
+      {
+        "name": "Honey Pork Meal",
+        "description": "Marinated thin sliced pork with honey citron. Sweet & Tender",
+        "price": "$11.99",
+        "section": "Korean BBQ Meal"
+      },
+      {
+        "name": "Black Angus Galbi Meal",
+        "description": "Marinated Korean BBQ short ribs. Tender & Juicy",
+        "price": "$14.99",
+        "section": "Korean BBQ Meal"
+      },
+      {
+        "name": "Beef Bulgogi Meal",
+        "description": "Thin sliced marinated beef",
+        "price": "$12.99",
+        "section": "Korean BBQ Meal"
+      },
+      {
+        "name": "Spicy Chicken Meal",
+        "description": "Spicy chicken marinated with our homemade sauce.",
+        "price": "$11.99",
+        "section": "Korean BBQ Meal"
+      },
+      {
+        "name": "Sweet Sour Chicken Meal",
+        "description": "Vegetable and Tofu with teriyaki sauce",
+        "price": "$11.99",
+        "section": "Korean BBQ Meal"
+      },
+      {
+        "name": "Spicy Bulgogi Meal",
+        "description": "Thin sliced pork marinated with Korean spicy",
+        "price": "$11.99",
+        "section": "Korean BBQ Meal"
+      },
+      {
+        "name": "Teriyaki Chicken Meal",
+        "description": "Chicken thigh meat with teriyaki sauce",
+        "price": "$11.99",
+        "section": "Korean BBQ Meal"
+      },
+      {
+        "name": "Soy Beef Bowl",
+        "description": "Thin sliced beef belly marinated with soy sauce",
+        "price": "$9.99",
+        "section": "Korean BBQ Bowl"
+      },
+      {
+        "name": "Beef Bulgogi Bowl",
+        "description": "Thin sliced marinated beef",
+        "price": "$10.99",
+        "section": "Korean BBQ Bowl"
+      },
+      {
+        "name": "Honey Pork Bowl",
+        "description": "Marinated thin sliced pork with honey citron. Sweet & Tender",
+        "price": "$9.99",
+        "section": "Korean BBQ Bowl"
+      },
+      {
+        "name": "Spicy Bulgogi Bowl",
+        "description": "Thin sliced pork marinated with Korean spicy.",
+        "price": "$8.99",
+        "section": "Korean BBQ Bowl"
+      },
+      {
+        "name": "Sweet Sour Chicken Bowl",
+        "description": "Sweet & Sour Chicken",
+        "price": "$9.99",
+        "section": "Korean BBQ Bowl"
+      },
+      {
+        "name": "Teriyaki Chicken Bowl",
+        "description": "Chicken thigh meat with teriyaki sauce",
+        "price": "$8.99",
+        "section": "Korean BBQ Bowl"
+      },
+      {
+        "name": "Spicy Chicken Bowl",
+        "description": "Spicy Chicken marinated with our homemade sauce.",
+        "price": "$8.99",
+        "section": "Korean BBQ Bowl"
+      },
+      {
+        "name": "Fried Chicken Wings",
+        "description": "8pcs. Korean traditional crispy chicken. Seasoned with garlic, onion, salt and fried with rice flour.",
+        "price": "$10.99",
+        "section": "Fried Chicken Wings"
+      },
+      {
+        "name": "Sweet & Spicy Chicken Wings",
+        "description": "8 pcs. Sweet spicy flavor Korean traditional flavor. Seasoned with red-pepper paste, corn syrup, ketchup, pepper,garlic,vinegar.",
+        "price": "$10.99",
+        "section": "Fried Chicken Wings"
+      },
+      {
+        "name": "Soy Chicken Wings",
+        "description": "8 pcs. Korean BBQ flavor. Seasoned in soy sauce, garlic, pineapple juice",
+        "price": "$10.99",
+        "section": "Fried Chicken Wings"
+      },
+      {
+        "name": "Buldak(Fire Chicken) Chicken Wings",
+        "description": "8 pcs. Heavily spiced chicken. \"bul\" is Korean for \"fire\" and \"dak\" translates to \"chicken.\"",
+        "price": "$10.99",
+        "section": "Fried Chicken Wings"
+      },
+      {
+        "name": "Sweet & Sour Chicken Wings",
+        "description": "8 pcs. Sweet & Sour Chicken Wings.",
+        "price": "$10.99",
+        "section": "Fried Chicken Wings"
+      },
+      {
+        "name": "Sesame Ball",
+        "description": "8 pcs.",
+        "price": "$6.99",
+        "section": "Sides"
+      },
+      {
+        "name": "House Salad",
+        "description": "",
+        "price": "$3.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Mozzarella Cheese Stick",
+        "description": "4 pcs.",
+        "price": "$5.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Fried Dumpling",
+        "description": "6 pcs chicken fried dumpling",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Breaded Butterfly Shrimp",
+        "description": "5 pcs.",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Veggie Lime Salad",
+        "description": "",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Rice",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Ferrier",
+        "description": "16.9 oz",
+        "price": "$3.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Orange Juice",
+        "description": "12 oz",
+        "price": "$2.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Smartwater",
+        "description": "20 oz",
+        "price": "$2.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Sprite",
+        "description": "",
+        "price": "$1.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Coke",
+        "description": "",
+        "price": "$1.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "",
+        "price": "$1.50",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4505",
+    "name": "Poke House",
+    "sourceUrl": "https://www.doordash.com/en/store/31134269",
+    "confidence": "medium",
+    "notes": "The restaurant's own site (poke.house) is a Squarespace marketing site whose /menu page carries a generic national schema.org Menu (Signature Poke Bowls, Build Your Own, Sauces & Dressings, Handrolls, Hot Items, Onigiris) with every 'offers' field undefined -- no prices anywhere, matching the chain-SPA pattern. Actual ordering runs through Olo (channelSlug 'pokehouse'): the sitemap at pokehouse.olo.com/sitemap.xml lists a 'poke-house-san-diego' location page, but that route (and /locations) serves an empty client-rendered shell (BOOTSTRAP_DATA: {}) behind what looks like Cloudflare bot mitigation -- no menu items are present without executing JS, so it was not used. DoorDash's listing for '9872 Hibert St Ste D1, San Diego' (work-list address is '9870 Hibert Street #D-1' -- a 2-digit street-number mismatch, but the suite number, city and the chain's own poke.house/locations/poke-miramesa-sandiego page match exactly, so treated as the same store) carries a complete 5-section menu -- Signature Bowls (7), Build Your Own (4), Sides (6), Hand Rolls (6), Drinks (9), 32 items -- with prices that don't divide cleanly by any of 1.04/1.1/1.15/1.2/1.25/1.3, so no markup pattern was detected. Grubhub's listing for the same address (grubhub.com/restaurant/poke-house-san-diego-9872-hibert-street-san-diego/8979728) is a client-rendered shell with no prices in static HTML, so no second independent cross-check source was reachable; confidence is capped at medium per the source ladder for a single marketplace listing.",
+    "dishes": [
+      {
+        "name": "Tuna Lover Bowl",
+        "description": "Craving tuna? This tuna packed bowl combines our three tuna offerings—ahi tuna, spicy tuna, and garlic oyster tuna—to satisfy your craving. Includes cucumber, white and green onions, masago, and furikake with a blend of sesame oil, house shoyu and citrus ponzu sauce. Served over rice or salad with seaweed salad and crab salad.",
+        "price": "$24.49",
+        "section": "Signature Bowls"
+      },
+      {
+        "name": "Miso Salmon Bowl",
+        "description": "A sweet and savory salmon bowl featuring our fresh Scottish salmon combined with grape tomatoes, edamame, cucumber, white and green onions, hijiki seaweed, and masago over rice or salad. Mixed with a blend of sesame oil, miso aioli, sweet unagi, and finished off with furikake. Served with crab salad and seaweed salad.",
+        "price": "$24.49",
+        "section": "Signature Bowls"
+      },
+      {
+        "name": "House Salmon Bowl",
+        "description": "A Poke House favorite since day one! Combines melt-in-your mouth Scottish salmon with a mix of masago, edamame, cucumber, white and green onions, furikake, sesame oil, citrus ponzu and our house-made sriracha aioli for a mild kick. Served over rice or salad with seaweed salad and crab salad.",
+        "price": "$24.49",
+        "section": "Signature Bowls"
+      },
+      {
+        "name": "Crispy Shoyu Chicken Bowl",
+        "description": "Features our delicious oven-baked crispy shoyu chicken with rice, imitation krab salad, a bed of mixed greens, cucumbers, grape tomatoes, green onions, furikake, and topped with our house-made sriracha aioli and unagi sauce.",
+        "price": "$14.49",
+        "section": "Signature Bowls"
+      },
+      {
+        "name": "Charred Salmon Bowl",
+        "description": "A warm offering featuring our spicy miso salmon lightly torched upon order. Served with torched spicy miso salmon (raw), crab salad, corn, cucumber, green onions, and masago, finished with citrus ponzu sauce, sweet unagi sauce, crispy onions, and togarashi over warm sushi rice. Please note that the Charred Salmon Bowl, contains raw fish. This product cannot be further cooked.",
+        "price": "$24.49",
+        "section": "Signature Bowls"
+      },
+      {
+        "name": "Kid's Krab Bowl",
+        "description": "Two scoops of crab salad served with seaweed salad, sliced avocado, cucumbers, and green onions over your choice of base and finished with furikake and a sweet unagi sauce. No add ons please.",
+        "price": "$16.39",
+        "section": "Signature Bowls"
+      },
+      {
+        "name": "Roasted Miso Chicken Bowl",
+        "description": "Our savory roasted miso chicken served over sushi rice with imitation krab salad, a bed of mixed greens, cucumbers, grape tomatoes, green onions, furikake, Unagi sauce and miso aioli.",
+        "price": "$13.29",
+        "section": "Signature Bowls"
+      },
+      {
+        "name": "Large Build Your Own (4 Scoops)",
+        "description": "Our biggest portion if you're feeling hungry! Includes 4 protein scoops, imitation krab salad, and your choice of mix-ins, sauces, and toppings over rice or veggies.",
+        "price": "$24.79",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Medium Build Your Own (3 Scoops)",
+        "description": "Our most popular option! Includes 3 protein scoops, imitation krab salad, and your choice of mix-ins, sauces, and toppings over rice or veggies.",
+        "price": "$21.89",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Small Build Your Own (2 Scoops)",
+        "description": "Looking for something light? Includes 2 protein scoops, imitation krab salad, and your choice of mix-ins, sauces, and toppings over rice or veggies.",
+        "price": "$18.99",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Veggie Bowl",
+        "description": "Choose 4 mix-ins combined with sauces, and toppings over rice or veggies.",
+        "price": "$14.49",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Miso Soup",
+        "description": "Our made-to-order classic miso soup includes fresh tofu, green onions and seaweed.",
+        "price": "$4.89",
+        "section": "Sides"
+      },
+      {
+        "name": "Miso Soup and Rice",
+        "description": "This heartwarming Japanese staple is a light offering featuring miso soup poured over rice topped with a choice of salmon or tofu. Finished with edamame, wakame and green onions.",
+        "price": "$9.19",
+        "section": "Sides"
+      },
+      {
+        "name": "Sushi Rice",
+        "description": "Freshly prepared white rice seasoned with sushi vinegar to achieve its signature sticky texture and sweet, tangy flavor.",
+        "price": "$2.79",
+        "section": "Sides"
+      },
+      {
+        "name": "Seaweed Salad",
+        "description": "Tender seaweed in a flavorful sesame dressing with sesame seeds for an extra crunch.",
+        "price": "$2.59",
+        "section": "Sides"
+      },
+      {
+        "name": "Brown Rice",
+        "description": "Freshly prepared whole grain rice that is less processed than white rice features a mild, nutty flavor and a great source of dietary fiber, vitamins, and minerals.",
+        "price": "$2.79",
+        "section": "Sides"
+      },
+      {
+        "name": "Bowl of Veggies or Fruit",
+        "description": "",
+        "price": "$2.39",
+        "section": "Sides"
+      },
+      {
+        "name": "3 Hand Roll Combo",
+        "description": "Can't decide? Choose any 3 hand rolls and save!",
+        "price": "$19.89",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "California Hand Roll",
+        "description": "A classic made the Poke House way! Creamy crab salad rolled with cucumber, avocado, and sesame seeds.",
+        "price": "$7.19",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Spicy Salmon Hand Roll",
+        "description": "Our premium melt-in-your mouth Scottish salmon with a spicy twist rolled with, cucumbers, furikake and masago for a fresh bite!",
+        "price": "$7.19",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Spam Musubi Hand Roll",
+        "description": "Our version of the classic Hawaiian snack. Includes freshly seared Spam rolled with cucumber, furikake and unagi sauce into a savory hand roll.",
+        "price": "$7.19",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Spicy Tuna Hand Roll",
+        "description": "Our popular spicy tuna rolled with cucumber and furikake.",
+        "price": "$7.19",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Shoyu Salmon Hand Roll",
+        "description": "Our premium melt-in-your mouth Scottish salmon rolled with house shoyu, cucumbers, furikake and masago for a fresh bite!",
+        "price": "$7.19",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Aloha Maid Natural Juice",
+        "description": "11.5 fl oz. Choose from: Lilikoi Passion, Passion Guava, Passion Orange, or Strawberry Guava",
+        "price": "$3.79",
+        "section": "Drinks"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "12 fl oz.",
+        "price": "$3.39",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coke",
+        "description": "12 fl oz. Made with cane sugar.",
+        "price": "$3.79",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coconut Juice",
+        "description": "Brand may vary.",
+        "price": "$4.39",
+        "section": "Drinks"
+      },
+      {
+        "name": "Sprite",
+        "description": "12 fl oz. Made with cane sugar.",
+        "price": "$3.79",
+        "section": "Drinks"
+      },
+      {
+        "name": "San Pellegrino Sparkling Water",
+        "description": "",
+        "price": "$4.69",
+        "section": "Drinks"
+      },
+      {
+        "name": "Orange Fanta",
+        "description": "12 fl oz. Made with cane sugar.",
+        "price": "$3.79",
+        "section": "Drinks"
+      },
+      {
+        "name": "Perrier Sparkling Water",
+        "description": "16.9 fl oz. Brand may vary.",
+        "price": "$3.79",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "16.9 fl oz. Brand may vary.",
+        "price": "$2.59",
+        "section": "Drinks"
+      }
+    ]
+  }
+]

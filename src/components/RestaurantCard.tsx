@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { RestaurantView } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurantTypes";
 import { StarIcon } from "@/components/icons";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { OpenStatePill } from "@/components/OpenStatePill";

@@ -1,0 +1,1317 @@
+[
+  {
+    "restaurantId": "4028",
+    "name": "Chito's Taco Shop",
+    "sourceUrl": "https://www.allmenus.com/ca/escondido/716632-chitos-taco-shop/menu/",
+    "confidence": "low",
+    "blocked": "Only one reachable tier-5 priced source (allmenus, 109 items across Breakfast/Salads/Tostadas/Tacos/Combinations/Burritos/Tortas/Enchiladas/Caldos/A La Carte/Side Orders/Quesadilla/Seafood/Specials/Aguas/Soda). No own website (chitostacoshopca.com does not resolve). Grubhub, Seamless, SinglePlatform, Yelp, Tripadvisor and Zmenu all either 403'd a Chrome UA or are client-rendered SPAs with no prices in the raw HTML (would need a browser). menuweb.menu is a farm listing with no per-item prices in its own text (only category-name tag clouds) and its embedded thumbnail photo shows unrelated peso-level prices, so it was discarded, not used as a cross-check. Needs a browser to load Grubhub/Seamless/SinglePlatform, or a working fetch of Tripadvisor/Yelp/Zmenu, to get a second independent priced source.",
+    "notes": "allmenus data itself looks plausible (POS-style odd cents, no markup pattern) and structurally complete for a taco shop (tacos, burritos, enchiladas, tortas, seafood, combinations all present) but per playbook rule 5 a lone tier-5 source cannot be recorded without independent corroboration.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2004",
+    "name": "Okan Diner",
+    "sourceUrl": "https://okandinersd.webzum.com/menu.html",
+    "confidence": "low",
+    "blocked": "FINDINGS already covers this restaurant: its old domain (okanusa.com) was hijacked to a gambling site, and DoorDash's server-side schema.org Menu JSON-LD (confirmed again today at doordash.com/store/okan-diner-san-diego-312420 - same 66 items across 10 sections: Appetizers, Kama-Meshi, Ramen, Original Udon, Seiro, Nabeyaki, Hot Noodles, Cold Noodles, Hand Roll Sushi, Cut Roll Sushi) disagreed sharply with Grubhub and SinglePlatform on overlapping dishes (Karaage $16 vs $8.75), while the page itself is gated 'Currently Closed / Temporarily unavailable'. A NEW first-party site has since appeared, okandinersd.webzum.com (address confirmed: 5430 Clairemont Mesa Blvd, matches work list), with real, plausible prices ($6.50-$19.95, no markup pattern) - but menu.html has only 3 sections (Appetizers, Noodles, Kamameshi) and 8 items total, entirely missing Ramen, Udon, Seiro, Nabeyaki, and both sushi sections that DoorDash's own listing confirms exist. That is a representative sample of the site, not the menu. res-menu.net and wheree.com mirrors returned blank/403. Needs a browser to check whether DoorDash's gate lifts (or Grubhub currently) for a full, trustworthy in-stock read, since the disagreement problem found previously means the gated JSON-LD price list should not be taken on faith even though it parses cleanly.",
+    "notes": "Own site's 8 items, if ever needed as a partial: Edamame $6.50, Gyoza $8.95, Agedashi Tofu $7.95, Chicken Udon $14.95, Tonkotsu Ramen $16.50, Yakisoba $13.95, Chicken Kamameshi $17.95, Seafood Kamameshi $19.95 - not recorded because core sections (sushi, nabeyaki, seiro) are entirely absent from this source.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "862",
+    "name": "Kaiyo Sushi",
+    "sourceUrl": "https://www.doordash.com/store/kaiyo-sushi-chula-vista-468279",
+    "confidence": "low",
+    "blocked": "Two priced, plausibly-current sources disagree broadly and inconsistently. DoorDash's server-side schema.org Menu JSON-LD (91 unique items, matching order.online's white-label mirror of the same listing exactly on every overlapping item, so those two count as one source) covers only Most Ordered/Wings/Rice Bowl/Bento & Rice Bowl/Korean Noodle Soup/Appetizer/Classic Roll/Special Roll/Kaiyo Favorite Roll/Classic Maki Roll/Add On-Side - the rest of order.online's own category list (Salad, Hot Baked Special, Nigiri, Sashimi, Sushi Bento, Hand Roll, Dessert, Beverage, Chef's Special) sits in an empty client-side VirtualGridContainer with no server-rendered items, i.e. needs a browser. baggednbrought.com is a genuinely independent ordering platform (not DoorDash-family) with all 18 sections server-rendered (142 items total, including Nigiri/Sashimi/Hand Roll/Beverages/Salads/Chef's Special that DoorDash lacks). On the 40 items nameable on both, only 4 flat-fee items (Miso Soup $2.50, Steamed Rice $2.50, Side of Spicy Mayo $0.75, Side of Soy Mustard Sauce $1.00) match exactly; the other 36 disagree by a ratio that drifts from 1.06x to 1.7x (DD/BNB) with no consistent divisor (checked 1.04/1.1/1.15/1.2/1.25/1.3/1.35, best fit only 2/36 within 6 cents) - not a clean online-ordering markup and not simple staleness either. kaiyo-sushi.hey-restaurants.com looks like an own site by its subdomain but is an SEO farm page (same template family links out to unrelated businesses like als-garage and house-of-reuben) with zero prices in its /menu page; discarded, not used. allmenus.com has 142 items across 16 sections but is 30-85% cheaper than DoorDash on every overlapping item (Miso Soup $1.80 vs $2.50, California Roll $5.40 vs $9.00) - too stale to trust as the cross-check either. Needs a browser on order.online (or DoorDash's live app) to read the virtualized Nigiri/Sashimi/Hand Roll/Beverage/Dessert/Chef's Special sections directly and settle which platform's prices are current.",
+    "notes": "Section list is confirmed complete across sources (Appetizer, Salad, Classic/Special/Kaiyo Favorite/Classic Maki Roll, Hot Baked Special, Nigiri, Sashimi, Sushi Bento, Hand Roll, Bento Entrees, Rice Bowl, Korean Noodle Soup, Wings, Dessert, Beverage, Chef's Special, Add On/Side) - only the prices are in dispute, not which categories exist.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3215",
+    "name": "20 Twenty",
+    "sourceUrl": "https://www.20twentygrill.com/menu",
+    "confidence": "high",
+    "crossCheckedAgainst": null,
+    "notes": "Popmenu site (popmenu-version header confirmed) but this deployment server-renders the FULL schema.org Menu JSON-LD for every tab, not just the usual 3-item popular sample - verified across all 8 menus (Breakfast, Brunch, Lunch, Dinner, Happy Hour, Bar Drinks, Dessert, Kids Menu) fetched individually at /menus/<slug>?location=carlsbad. 180 raw priced+unpriced item entries, 173 priced, 152 unique after removing exact name+price duplicates shared across menus (e.g. Pacific Prawn Cocktail appears on Lunch/Dinner/Happy Hour For the Table sections; Avocado Toast on both Breakfast and Brunch). Dropped 7 items with no price field at all (Carlsbad Acai Bowl, Pina Colada Granola x2, Chef Coastal Board x3, Greek Yogurt-adjacent items) - these are unpriced on the site itself (board/bowl priced by size, not stated). Section field records which menu(s) the dish appeared under.",
+    "dishes": [
+      {
+        "name": "Avocado Toast",
+        "description": "Multigrain toast, baby greens, burrata, cherry tomatoes, watermelon radish",
+        "price": "$18.00",
+        "section": "Breakfast - Fresh Starters"
+      },
+      {
+        "name": "Buttermilk Pancakes",
+        "description": "Sugar dust, whipped butter, maple syrup\nAdd Blueberries, Chocolate Chips, Bananas, or Bacon Bits $5",
+        "price": "$17.00",
+        "section": "Breakfast - Griddled Sweets"
+      },
+      {
+        "name": "Belgian Waffle",
+        "description": "Candied strawberries, vanilla cream, maple syrup",
+        "price": "$20.00",
+        "section": "Breakfast - Griddled Sweets"
+      },
+      {
+        "name": "Brioche French Toast",
+        "description": "Texas Cut Brioche, Honey Butter, Caramel, Maple Syrup Served With Two Eggs Any Style",
+        "price": "$18.00",
+        "section": "Breakfast - Griddled Sweets"
+      },
+      {
+        "name": "All American Breakfast",
+        "description": "Two eggs, choice of meat, roasted potatoes, choice of toast",
+        "price": "$18.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Continental Breakfast",
+        "description": "Greek yogurt, fruit and berries, house-made-granola, fresh pastries, assorted spreads",
+        "price": "$18.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Craft Your Own Omelet",
+        "description": "Three farm fresh eggs, roasted potatoes, choice of toast. Select 3 omelet mix ins: bacon, ham, sausage, onion, poblano, cherry tomatoes, olives, mushroom, spinach, avocado, cheddar, Swiss, feta",
+        "price": "$20.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Classic Eggs Benedict",
+        "description": "Smoked pork, English muffin, house made hollandaise",
+        "price": "$21.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Crab Cake Benedict",
+        "description": "House-made lump crab cake, grilled tomato, English muffin, old bay hollandaise",
+        "price": "$28.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Portobello Eggs Benedict",
+        "description": "Spinach, tomato, avocado, house made hollandaise",
+        "price": "$18.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Lox & Bagel",
+        "description": "Smoked salmon, bagel, capers, dill cream cheese, cucumbers, shaved red onions",
+        "price": "$21.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "Boraccho beans, queso fresco, avocado, eggs, red onion, guajillo chile sauce",
+        "price": "$22.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Ultimate Fried Bologna Breakfast Sandwich",
+        "description": "Mortadella, provolone, pesto, farm fresh egg",
+        "price": "$22.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Steel Cut Irish Oats",
+        "description": "Bananas, walnuts, orange blossom honey",
+        "price": "$15.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Cauliflower Rice Bowl",
+        "description": "Piquillo peppers, scallions, broccolini, cage free eggs, turkey bacon",
+        "price": "$21.00",
+        "section": "Breakfast - Signature Savories"
+      },
+      {
+        "name": "Breakfast Meats",
+        "description": "Your choice of one: smoked pork loin, pork sausage, turkey bacon, applewood smoked bacon, chicken apple sausage",
+        "price": "$9.00",
+        "section": "Breakfast - Additions"
+      },
+      {
+        "name": "Cold Cereal",
+        "description": "Raisin bran, fruit loops, apple Jacks, frosted flakes, cheerios, cinnamon toast crunch",
+        "price": "$11.00",
+        "section": "Breakfast - Additions"
+      },
+      {
+        "name": "Fresh Berries",
+        "description": "",
+        "price": "$13.00",
+        "section": "Breakfast - Additions"
+      },
+      {
+        "name": "Seasonal Fruit",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast - Additions"
+      },
+      {
+        "name": "Greek Yogurt",
+        "description": "",
+        "price": "$6.00",
+        "section": "Breakfast - Additions"
+      },
+      {
+        "name": "Green Monster",
+        "description": "Kale, spinach, avocado, banana, pineapple, mango, coconut water",
+        "price": "$13.00",
+        "section": "Breakfast - Fresh Juices & Smoothies"
+      },
+      {
+        "name": "Recharge",
+        "description": "Carlsbad strawberries, banana, blueberries, dates, almond butter, almond milk, chia seeds",
+        "price": "$13.00",
+        "section": "Breakfast - Fresh Juices & Smoothies"
+      },
+      {
+        "name": "Kale-ifornia",
+        "description": "Kale, green apple, cucumber, ginger, parsley",
+        "price": "$13.00",
+        "section": "Breakfast - Fresh Juices & Smoothies"
+      },
+      {
+        "name": "Refresh",
+        "description": "Carrot, Cara Cara orange, tumeric",
+        "price": "$13.00",
+        "section": "Breakfast - Fresh Juices & Smoothies"
+      },
+      {
+        "name": "Lox",
+        "description": "Everything bagel, capers, dill cream cheese, Persian cucumbers, lemon, shaved red onions",
+        "price": "$20.00",
+        "section": "Brunch - Brunch Starters"
+      },
+      {
+        "name": "Pacific Prawn Cocktail",
+        "description": "Chilled Baja White Prawns, Bloody Mary Cocktail Sauce",
+        "price": "$22.00",
+        "section": "Brunch - Brunch Starters"
+      },
+      {
+        "name": "Steak and Eggs",
+        "description": "Hanger steak, two eggs, roasted potatoes, hot butter sauce",
+        "price": "$26.00",
+        "section": "Brunch - Signature Savories"
+      },
+      {
+        "name": "Ultimate Fried Bologna Sandwich",
+        "description": "Mortadella, provolone, pesto, farm fresh eggs, spelt bread",
+        "price": "$22.00",
+        "section": "Brunch - Signature Savories"
+      },
+      {
+        "name": "Build Your Own Omelet",
+        "description": "Three farm fresh eggs, roasted potatoes, choice of toast\nSelect 3 omelet mix ins: bacon, ham, sausage, onion, poblano, cherry tomatoes, olives, mushrooms\n\nEgg whites available upon request",
+        "price": "$20.00",
+        "section": "Brunch - Omelets"
+      },
+      {
+        "name": "Classic",
+        "description": "Smoked Pork, English Muffin, Hollandaise, Roasted Potatoes",
+        "price": "$21.00",
+        "section": "Brunch - Benedicts"
+      },
+      {
+        "name": "Portobello",
+        "description": "Spinach, tomato, avocado, hollandaise, roasted potatoes",
+        "price": "$18.00",
+        "section": "Brunch - Benedicts"
+      },
+      {
+        "name": "Grand Pacific Caesar Salad",
+        "description": "Chilled Romaine, Parmigiano Reggiano, Classic Caesar Dressing, Garlic & Anchovy Cheese Toast",
+        "price": "$16.00",
+        "section": "Brunch - Farm & Field"
+      },
+      {
+        "name": "Tomato & Cucumber Caprese",
+        "description": "Heirloom Tomatoes, Cucumbers, Basil, Red Onion, Pulled Burrata, Sourdough Croutons, Sherry Vinaigrette",
+        "price": "$17.00",
+        "section": "Brunch - Farm & Field"
+      },
+      {
+        "name": "Portobello Burger",
+        "description": "Arugula, Roasted Tomato, Caramelized Onion, Mozzarella, Avocado, Herb Aioli",
+        "price": "$24.00",
+        "section": "Brunch - Farm & Field"
+      },
+      {
+        "name": "Classic Burger",
+        "description": "20|TWENTY Signature Blend Patty, White Cheddar, Grilled Onion, House Sauce, Traditional Accompaniments | Choice of Fries or Side Salad\n\nPlant Based Option Available Upon Request",
+        "price": "$22.00",
+        "section": "Brunch - Farm & Field"
+      },
+      {
+        "name": "Cereal & Milk",
+        "description": "Raisin Bran, Fruit Loops, Apple Jacks, Frosted Flakes, Cheerios, Cinnamon Toast Crunch",
+        "price": "$11.00",
+        "section": "Brunch - Breakfast Additions"
+      },
+      {
+        "name": "Hot Oatmeal",
+        "description": "",
+        "price": "$13.00",
+        "section": "Brunch - Breakfast Additions"
+      },
+      {
+        "name": "Seasonal Fruit with Yogurt",
+        "description": "",
+        "price": "$18.00",
+        "section": "Brunch - Breakfast Additions"
+      },
+      {
+        "name": "Green Monster",
+        "description": "Kale, spinach, avocado, banana, pineapple, mango, coconut water",
+        "price": "$12.00",
+        "section": "Brunch - Fresh Juices & Smoothies"
+      },
+      {
+        "name": "Recharge",
+        "description": "Carlsbad strawberry, banana, blueberries, dates, almond butter, almond milk, chia seeds",
+        "price": "$12.00",
+        "section": "Brunch - Fresh Juices & Smoothies"
+      },
+      {
+        "name": "Kale-ifornia",
+        "description": "Kale, green apple, cucumber, ginger, parsley",
+        "price": "$12.00",
+        "section": "Brunch - Fresh Juices & Smoothies"
+      },
+      {
+        "name": "Refresh",
+        "description": "Carrot, Cara Cara orange, turmeric",
+        "price": "$12.00",
+        "section": "Brunch - Fresh Juices & Smoothies"
+      },
+      {
+        "name": "Mediterranean Mosaic",
+        "description": "Seasonal Hummus, Falafel, Tzatziki, Vegetable Crudité, Heirloom Tomato, Cucumber Salad, Garlic Naan",
+        "price": "$24.00",
+        "section": "Lunch - For the Table"
+      },
+      {
+        "name": "Crab Cakes",
+        "description": "Panko Crusted Crab Cakes, Pickled Heirloom Tomato Relish, Spicy Remoulade, Spicy Remoulade Frisee and Watercress Salad",
+        "price": "$24.00",
+        "section": "Lunch - For the Table"
+      },
+      {
+        "name": "Lamb Lollipops",
+        "description": "Herb Marinated Lamb Chops, Cucumber Mint Tzatziki",
+        "price": "$24.00",
+        "section": "Lunch - For the Table"
+      },
+      {
+        "name": "The Grand Pacific Caesar",
+        "description": "Chilled Romaine, Classic Caesar Dressing, Parmesan Reggiano, Garlic And Anchovy Cheese Toast",
+        "price": "$16.00",
+        "section": "Lunch - Salad & Greens"
+      },
+      {
+        "name": "Flower Field Cobb",
+        "description": "Grilled Chicken, Bacon, Hard Boiled Farm Egg, Cherry Tomatoes, Macerated Strawberries, Avocado, Feta, Edamame, Green Goddess Dressing",
+        "price": "$21.00",
+        "section": "Lunch - Salad & Greens"
+      },
+      {
+        "name": "Fresh Catch Tacos (3)",
+        "description": "Locally Sourced Grilled Seabass, Pico Slaw, Sliced Cucumber, Chipotle Lime Crema, Corn Tortillas, Served With Molcajete Salsa",
+        "price": "$20.00",
+        "section": "Lunch - Signature Plates"
+      },
+      {
+        "name": "Hot Italian Sandwich",
+        "description": "Mortadella, Salami, Pepperoni, Provolone, Pickled Pepper Relish, Arugula, Garlic Aioli, Toasted Ciabatta",
+        "price": "$20.00",
+        "section": "Lunch - Signature Plates"
+      },
+      {
+        "name": "Grilled Chicken Sandwich",
+        "description": "Arugula, Roasted Peppers, Caramelized Onion, Mozzarella, Avocado, Pesto Aioli, Served with Fries or Side Salad",
+        "price": "$20.00",
+        "section": "Lunch - Signature Plates"
+      },
+      {
+        "name": "Home-Style Chicken Salad Sandwich",
+        "description": "Multigrain bread, bibb lettuce, grapes, dijon, pickled onion",
+        "price": "$18.00",
+        "section": "Lunch - Signature Plates"
+      },
+      {
+        "name": "Shrimp Oreganata",
+        "description": "Citrus Garlic Shrimp, White Wine Butter Sauce, Tomato, Spaghetti, Oregano Pangrattato",
+        "price": "$27.00",
+        "section": "Lunch - Signature Plates"
+      },
+      {
+        "name": "Steak Frites",
+        "description": "8 oz Grilled Hanger Steak, Fries",
+        "price": "$28.00",
+        "section": "Lunch - Signature Plates"
+      },
+      {
+        "name": "The Bread Experience",
+        "description": "Griddled Focaccia, Trio of House Composed Butters",
+        "price": "$12.00",
+        "section": "Dinner - For the Table"
+      },
+      {
+        "name": "The Grand Pacific Caesar",
+        "description": "Chilled Romaine, Classic Caesar Dressing, Parmesan Reggiano, Garlic And Anchovy Cheese Toast",
+        "price": "$17.00",
+        "section": "Dinner - Garden Greens"
+      },
+      {
+        "name": "Westin Wedge",
+        "description": "Baby Iceberg, Bacon Lardons, Pickled Shallots, Heirloom Cherry Tomatoes, House-Made Blue Cheese Dressing",
+        "price": "$18.00",
+        "section": "Dinner - Garden Greens"
+      },
+      {
+        "name": "Heirloom Margherita Pinsa",
+        "description": "San Marzano Tomato Sauce, Mozzarella, Micro Basil, Parmigiano Reggiano\n*Add Pepperoni and Calabrian Hot Honey +2",
+        "price": "$19.00",
+        "section": "Dinner - Hearth & Broth"
+      },
+      {
+        "name": "Summer Harvest Flatbread",
+        "description": "Pesto, Mozzarella, Mushrooms, Spinach, Roasted Peppers, Caramelized Onions, Gorgonzola",
+        "price": "$19.00",
+        "section": "Dinner - Hearth & Broth"
+      },
+      {
+        "name": "Heirloom Tomato Soup",
+        "description": "",
+        "price": "$11.00",
+        "section": "Dinner - Hearth & Broth"
+      },
+      {
+        "name": "Soup of the Season",
+        "description": "",
+        "price": "$11.00",
+        "section": "Dinner - Hearth & Broth"
+      },
+      {
+        "name": "Cast Iron Pot Roast",
+        "description": "Braised Short Ribs, Creamy Polenta, Roasted Heirloom Baby Carrots, Red Wine Demi-Glace",
+        "price": "$105.00",
+        "section": "Dinner - Large Format Dinner"
+      },
+      {
+        "name": "Chicken Parmigiana",
+        "description": "Herb-Breaded Chicken Breast, San Marzano Marinara Sauce, Mozzarella, Fresh Basil, Spaghetti",
+        "price": "$90.00",
+        "section": "Dinner - Large Format Dinner"
+      },
+      {
+        "name": "Red & Green Enchiladas",
+        "description": "Chicken Verde, Pork Carnitas, Pico de Gallo, Black Beans, House-Made Tortilla Chips",
+        "price": "$85.00",
+        "section": "Dinner - Large Format Dinner"
+      },
+      {
+        "name": "Wild Caught Salmon",
+        "description": "Beluga Black Lentils, Asparagus, Pearl Onions, Baby Carrots, Sorrel Beurre Blanc",
+        "price": "$35.00",
+        "section": "Dinner - Signature Entrees"
+      },
+      {
+        "name": "Local Pacific Halibut",
+        "description": "Fried Homestyle Potatoes, Sundried Tomatoes, Capers, Basil Sauce, Black Lime Butter",
+        "price": "$36.00",
+        "section": "Dinner - Signature Entrees"
+      },
+      {
+        "name": "Miso Marinated Tofu and Cabbage",
+        "description": "Curried Carrot and Sweet Potato Mash, Cilantro Mint Chutney, Charred Tofu",
+        "price": "$24.00",
+        "section": "Dinner - Signature Entrees"
+      },
+      {
+        "name": "Rosemary Brick Chicken",
+        "description": "Fingerling Potatoes, Roasted Brussels Sprouts, Tomatoes, Zucchini, Sherry and Herb Jus",
+        "price": "$34.00",
+        "section": "Dinner - From The Grill"
+      },
+      {
+        "name": "Petite Filet | 8oz",
+        "description": "Butter Whipped Potatoes, Blue Lake Beans, Onion Confit, Red Wine Demi-Glace",
+        "price": "$50.00",
+        "section": "Dinner - From The Grill"
+      },
+      {
+        "name": "Ribeye \"Bull's Eye\" | 16oz",
+        "description": "Butter Whipped Potatoes, Trumpet Mushrooms, Onion Confit, Red Wine Demi-Glace",
+        "price": "$72.00",
+        "section": "Dinner - From The Grill"
+      },
+      {
+        "name": "Sumac Braised Lamb Shank",
+        "description": "Stewed White Beans, Peperonata, Tzatziki, Pickled Red Onion",
+        "price": "$36.00",
+        "section": "Dinner - From The Grill"
+      },
+      {
+        "name": "20|Twenty Wagyu Burger",
+        "description": "Cross Creek Ranch Wagyu, Garlic Aioli, Arugula, Bacon Jam, Smoked Gouda",
+        "price": "$30.00",
+        "section": "Dinner - From The Grill"
+      },
+      {
+        "name": "Mac & Cheese",
+        "description": "",
+        "price": "$12.00",
+        "section": "Dinner - On the Side"
+      },
+      {
+        "name": "Roasted Baby Cauliflower",
+        "description": "",
+        "price": "$12.00",
+        "section": "Dinner - On the Side"
+      },
+      {
+        "name": "Creamy Polenta",
+        "description": "",
+        "price": "$12.00",
+        "section": "Dinner - On the Side"
+      },
+      {
+        "name": "Asparagus",
+        "description": "",
+        "price": "$12.00",
+        "section": "Dinner - On the Side"
+      },
+      {
+        "name": "Mediterranean Mosaic",
+        "description": "Seasonal Hummus, Falafel, Tzatziki, Vegetable Crudité, Heirloom Tomato, Cucumber Salad, Garlic Naan",
+        "price": "$15.00",
+        "section": "Happy Hour - Happy Hour Bites"
+      },
+      {
+        "name": "Chicken Tenders",
+        "description": "Breaded Chicken Tenders, Served with Side of Fries or Side Salad",
+        "price": "$16.00",
+        "section": "Happy Hour - Happy Hour Bites"
+      },
+      {
+        "name": "Heirloom Margherita Pinsa",
+        "description": "San Marzano Tomato Sauce, Mozzarella, Micro Basil, and Parmigiano Reggiano",
+        "price": "$14.00",
+        "section": "Happy Hour - Happy Hour Bites"
+      },
+      {
+        "name": "Coconut Shrimp",
+        "description": "Toasted Coconut, Panko Fried Shrimp, Polynesian Sauce",
+        "price": "$13.00",
+        "section": "Happy Hour - Happy Hour Bites"
+      },
+      {
+        "name": "Teriyaki Beef Skewers",
+        "description": "Teriyaki Glazed Beef, Grilled Scallion, Lettuce Cups, Carrot Daikon Slaw",
+        "price": "$11.00",
+        "section": "Happy Hour - Happy Hour Bites"
+      },
+      {
+        "name": "Bacon Wrapped Dates",
+        "description": "Blue Cheese Filling, Honey, Jalapeño",
+        "price": "$11.00",
+        "section": "Happy Hour - Happy Hour Bites"
+      },
+      {
+        "name": "$30 Board & Bottle Night • Thursdays • Live Music",
+        "description": "Half Chef Coastal Board & House Bottle of Red or White Wine",
+        "price": "$30.00",
+        "section": "Happy Hour - Happy Hour Bites"
+      },
+      {
+        "name": "Lemon Lush",
+        "description": "House Vodka, Triple Sec, Lemon Juice, Simple Syrup, Sugar Rim",
+        "price": "$10.00",
+        "section": "Happy Hour - $10 Cocktails"
+      },
+      {
+        "name": "Whiskey Whisper",
+        "description": "House Whiskey, Sugar Cube, Angostura Bitters, Orange Peel & Black Cherry",
+        "price": "$10.00",
+        "section": "Happy Hour - $10 Cocktails"
+      },
+      {
+        "name": "Feugo Twist",
+        "description": "House Tequila, Triple Sec, Lime Juice, Spicy Agave, Tajin Rim",
+        "price": "$10.00",
+        "section": "Happy Hour - $10 Cocktails"
+      },
+      {
+        "name": "Mint Condition",
+        "description": "House Rum, Mint, Lime Juice, Simple Syrup",
+        "price": "$10.00",
+        "section": "Happy Hour - $10 Cocktails"
+      },
+      {
+        "name": "Pure Project \"Pure West\" IPA",
+        "description": "",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Draft Beers"
+      },
+      {
+        "name": "Burgeon \"Juice Press\" Hazy IPA",
+        "description": "",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Draft Beers"
+      },
+      {
+        "name": "Alesmith \".394\" Pale Ale",
+        "description": "",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Draft Beers"
+      },
+      {
+        "name": "Mission Brewing \"Blonde Ale\"",
+        "description": "",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Draft Beers"
+      },
+      {
+        "name": "Coronado \"Orange Ave. Wit\"",
+        "description": "",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Draft Beers"
+      },
+      {
+        "name": "Burgeon \"Invita\" Mexican Lager",
+        "description": "",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Draft Beers"
+      },
+      {
+        "name": "Pure Project \"Rain\" Pilsner",
+        "description": "",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Draft Beers"
+      },
+      {
+        "name": "House Whites",
+        "description": "",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 House Wines"
+      },
+      {
+        "name": "House Red",
+        "description": "",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 House Wines"
+      },
+      {
+        "name": "House Rose",
+        "description": "",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 House Wines"
+      },
+      {
+        "name": "The Carlsbad Fields",
+        "description": "Locals Only Vodka, Fresh Strawberry, Mint, Lemon Juice, Seltzer",
+        "price": "$16.00",
+        "section": "Bar Drinks - Specialty Cocktails"
+      },
+      {
+        "name": "Spicy Peach & Mango Margarita",
+        "description": "Califino Blanco, Orange Liqueur, Lime Juice, Spicy Peach & Mango Purée, Tajin Rim",
+        "price": "$16.00",
+        "section": "Bar Drinks - Specialty Cocktails"
+      },
+      {
+        "name": "Spanish Margarita",
+        "description": "Tequila, Orange Liqueur, Lime Juice, Jalapeño Agave, Brandy, Muddled Blackberry",
+        "price": "$16.00",
+        "section": "Bar Drinks - Specialty Cocktails"
+      },
+      {
+        "name": "Wake Up Call",
+        "description": "Grey Goose Vodka, Grind Espresso Liqueur, Freshly Brewed Espresso",
+        "price": "$18.00",
+        "section": "Bar Drinks - Specialty Cocktails"
+      },
+      {
+        "name": "Smoked Rosita",
+        "description": "Mezcal, Combier Pamplemousse, Aperol, Grapefruit Juice, Lime Juice, Tajin Rim",
+        "price": "$15.00",
+        "section": "Bar Drinks - Specialty Cocktails"
+      },
+      {
+        "name": "Hugo Spritz",
+        "description": "St‑Germain, Prosecco, Fresh Mint, Seltzer",
+        "price": "$16.00",
+        "section": "Bar Drinks - Specialty Cocktails"
+      },
+      {
+        "name": "Smoked Old‑Fashioned",
+        "description": "Bourbon, Chocolate Bitters, Smoked Table Side",
+        "price": "$22.00",
+        "section": "Bar Drinks - Specialty Cocktails"
+      },
+      {
+        "name": "Sazerac",
+        "description": "Rye Whiskey, Absinthe Rinse, Peychaud's Bitters, Lemon Twist",
+        "price": "$18.00",
+        "section": "Bar Drinks - Specialty Cocktails"
+      },
+      {
+        "name": "Seasonal Mule",
+        "description": "Seasonal Flavor Vodka, Lime Juice, Ginger Beer",
+        "price": "$12.00",
+        "section": "Bar Drinks - Specialty Cocktails"
+      },
+      {
+        "name": "Thyme in the Sun",
+        "description": "Lyer's Pink London Spirits, Grapefruit Juice, Thyme Syrup, Grapefruit Soda, Lemon Juice",
+        "price": "$14.00",
+        "section": "Bar Drinks - Zero Proof (Non-Alcoholic)"
+      },
+      {
+        "name": "Flor De Agave",
+        "description": "Almave Agave Blanco Spirit, Lime Juice, Hibiscus Syrup, Tajin Rim",
+        "price": "$14.00",
+        "section": "Bar Drinks - Zero Proof (Non-Alcoholic)"
+      },
+      {
+        "name": "Athletic Brewing \"Run Wild IPA\" – N/A",
+        "description": "",
+        "price": "$8.00",
+        "section": "Bar Drinks - Zero Proof (Non-Alcoholic)"
+      },
+      {
+        "name": "Heineken 0.0 N/A",
+        "description": "",
+        "price": "$6.00",
+        "section": "Bar Drinks - Zero Proof (Non-Alcoholic)"
+      },
+      {
+        "name": "Pure Project \"Pure West\" IPA",
+        "description": "",
+        "price": "$9.00",
+        "section": "Bar Drinks - Draft Beers"
+      },
+      {
+        "name": "Burgeon \"Juice Press\" Hazy IPA",
+        "description": "",
+        "price": "$9.00",
+        "section": "Bar Drinks - Draft Beers"
+      },
+      {
+        "name": "Alesmith \".394\" Pale Ale",
+        "description": "",
+        "price": "$9.00",
+        "section": "Bar Drinks - Draft Beers"
+      },
+      {
+        "name": "Coronado \"Orange Ave. Wit\"",
+        "description": "",
+        "price": "$9.00",
+        "section": "Bar Drinks - Draft Beers"
+      },
+      {
+        "name": "Seasonal Handle",
+        "description": "",
+        "price": "$9.00",
+        "section": "Bar Drinks - Draft Beers"
+      },
+      {
+        "name": "House Wine, White",
+        "description": "",
+        "price": "$10.00",
+        "section": "Bar Drinks - White Glass Pours"
+      },
+      {
+        "name": "Pinot Grigio, Friuli, Scarpetta",
+        "description": "",
+        "price": "$11.00",
+        "section": "Bar Drinks - White Glass Pours"
+      },
+      {
+        "name": "Pinot Gris, Russian River Valley, J Vineyards",
+        "description": "",
+        "price": "$18.00",
+        "section": "Bar Drinks - White Glass Pours"
+      },
+      {
+        "name": "Sauvignon Blanc, North Coast, Rombauer",
+        "description": "",
+        "price": "$15.00",
+        "section": "Bar Drinks - White Glass Pours"
+      },
+      {
+        "name": "Sancerre, France, Loire Valley, Domaine Reverdy-Ducroux \"Beau Roy\"",
+        "description": "",
+        "price": "$20.00",
+        "section": "Bar Drinks - White Glass Pours"
+      },
+      {
+        "name": "Chardonnay, Russian River, Chalk Hill",
+        "description": "",
+        "price": "$16.00",
+        "section": "Bar Drinks - White Glass Pours"
+      },
+      {
+        "name": "Chardonnay, Burgundy \"Bourgogne\", Louis Jadot",
+        "description": "",
+        "price": "$15.00",
+        "section": "Bar Drinks - White Glass Pours"
+      },
+      {
+        "name": "House Wine, Red",
+        "description": "",
+        "price": "$10.00",
+        "section": "Bar Drinks - Red Glass Pours"
+      },
+      {
+        "name": "Pinot Noir, Willamette Valley, Siduri",
+        "description": "",
+        "price": "$18.00",
+        "section": "Bar Drinks - Red Glass Pours"
+      },
+      {
+        "name": "Pinot Noir, Russian River, \"Les Pommiers\" Enroute by Farniente",
+        "description": "",
+        "price": "$25.00",
+        "section": "Bar Drinks - Red Glass Pours"
+      },
+      {
+        "name": "Red Blend, California, \"Eight Years in the Desert\" by Orin Swift",
+        "description": "",
+        "price": "$22.00",
+        "section": "Bar Drinks - Red Glass Pours"
+      },
+      {
+        "name": "GSM, Red Blend, Cuvée Réservée, André Brunel",
+        "description": "",
+        "price": "$25.00",
+        "section": "Bar Drinks - Red Glass Pours"
+      },
+      {
+        "name": "Cabernet Sauvignon, Paso Robles, Daou",
+        "description": "",
+        "price": "$18.00",
+        "section": "Bar Drinks - Red Glass Pours"
+      },
+      {
+        "name": "Old Vine Zinfandel, Lodi, Ironstone Vineyards",
+        "description": "",
+        "price": "$12.00",
+        "section": "Bar Drinks - Red Glass Pours"
+      },
+      {
+        "name": "Merlot, Napa Valley, Emmolo",
+        "description": "",
+        "price": "$25.00",
+        "section": "Bar Drinks - Red Glass Pours"
+      },
+      {
+        "name": "Sparkling Brut, France, Chamdeville",
+        "description": "",
+        "price": "$13.00",
+        "section": "Bar Drinks - Sparkling and Rosé Glass Pours"
+      },
+      {
+        "name": "Prosecco, Italy, Benvolio",
+        "description": "",
+        "price": "$12.00",
+        "section": "Bar Drinks - Sparkling and Rosé Glass Pours"
+      },
+      {
+        "name": "Rosé, Château d'Esclans, Whispering Angel",
+        "description": "",
+        "price": "$16.00",
+        "section": "Bar Drinks - Sparkling and Rosé Glass Pours"
+      },
+      {
+        "name": "Cassata Al Forno",
+        "description": "Baked Sicilian Cheesecake With Cannoli Cream, Chocolate Chips",
+        "price": "$14.00",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "Triple Chocolate Mousse",
+        "description": "Dark, Milk, and White Chocolate Mousse, Toasted Marshmallows, Fresh Berries",
+        "price": "$14.00",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "Classic Carrot Cake",
+        "description": "Spiced Cake With Cream Cheese Frosting, Crushed Walnuts",
+        "price": "$14.00",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "Chocolate Flourless Cake",
+        "description": "Scoop of Seasonal Gelato",
+        "price": "$14.00",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "20|Twenty Homemade Cookies (6)",
+        "description": "Daily Assorted Flavors",
+        "price": "$14.00",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "Scoop of Gelato",
+        "description": "Seasonal Flavors, Fresh Berries",
+        "price": "$12.00",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "Scoop of Sorbet",
+        "description": "Seasonal Flavors, Fresh Berries",
+        "price": "$12.00",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "2X2 Eggs & Bacon",
+        "description": "Choice of Toast",
+        "price": "$8.00",
+        "section": "Kid's Menu - Kid's Breakfast"
+      },
+      {
+        "name": "Buttermilk Pancakes",
+        "description": "Add Blueberries 2.00\nAdd Chocolate Chips 2.00",
+        "price": "$8.00",
+        "section": "Kid's Menu - Kid's Breakfast"
+      },
+      {
+        "name": "Ham & Cheese Omelet",
+        "description": "Choice of Toast",
+        "price": "$8.00",
+        "section": "Kid's Menu - Kid's Breakfast"
+      },
+      {
+        "name": "Mini Waffles (3)",
+        "description": "Add Blueberries 2.00\nAdd Chocolate Chips 2.00",
+        "price": "$8.00",
+        "section": "Kid's Menu - Kid's Breakfast"
+      },
+      {
+        "name": "Cereal with Seasonal Fruit & Milk",
+        "description": "",
+        "price": "$4.00",
+        "section": "Kid's Menu - Kid's Breakfast"
+      },
+      {
+        "name": "Build Your Own Granola Parfait",
+        "description": "",
+        "price": "$7.00",
+        "section": "Kid's Menu - Kid's Breakfast"
+      },
+      {
+        "name": "Kid's Burger",
+        "description": "Served with Fries",
+        "price": "$10.00",
+        "section": "Kid's Menu - Kid's Dinner"
+      },
+      {
+        "name": "Chicken Fingers",
+        "description": "Served with Carrots, Celery Sticks and Ranch",
+        "price": "$7.00",
+        "section": "Kid's Menu - Kid's Dinner"
+      },
+      {
+        "name": "Grilled Chicken",
+        "description": "Broccolini, Mashed Potato",
+        "price": "$8.00",
+        "section": "Kid's Menu - Kid's Dinner"
+      },
+      {
+        "name": "Pita Chips and Veggies",
+        "description": "Served with Hummus",
+        "price": "$10.00",
+        "section": "Kid's Menu - Kid's Dinner"
+      },
+      {
+        "name": "Soup of the Day",
+        "description": "",
+        "price": "$6.00",
+        "section": "Kid's Menu - Kid's Dinner"
+      },
+      {
+        "name": "House-Baked Cookies",
+        "description": "",
+        "price": "$5.00",
+        "section": "Kid's Menu - Kid's Dessert"
+      },
+      {
+        "name": "Berry Bowl",
+        "description": "Served with Seasonal Gelato",
+        "price": "$8.00",
+        "section": "Kid's Menu - Kid's Dessert"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2135",
+    "name": "La Costa Coffee Roasting",
+    "sourceUrl": "http://places.singleplatform.com/la-costa-coffee-roasting-2/menu",
+    "confidence": "low",
+    "blocked": "Every priced source found is retail coffee-bean and loose-tea pricing by the pound/bag, not a prepared-drink menu. Own site (lacostacoffee.com, address confirmed via JSON-LD: 6965 El Camino Real Ste 208, Carlsbad) is a React SPA rebuilt around a nationwide coffee subscription business - its sitemap.xml lists only /, /shop, /cart, /faq, no menu page. SinglePlatform (places.singleplatform.com/la-costa-coffee-roasting-2/menu) is server-rendered with 83 real prices, but every one of its 14 categories is Coffee-<region> or Tea-<type> sold by the 1lb bag ($12.92-$13.20), confirmed by the multiprice-group/1lb markup in the HTML - no espresso, latte, or food items anywhere in it. joe.coffee has a listing for this shop but its embedded JSON explicitly carries orderingUrl:null (no ordering enabled). No DoorDash, Grubhub, or Toast page found under this name or address despite trying direct slug guesses and site-restricted searches (one hit, la-costa-cafe-701-19th-street on Toast, is a different, unrelated business). Tripadvisor, Yelp biz page and Yelp photos all 403 a Chrome UA. Needs a browser on Yelp (441 reviews, 278 photos per search snippet) to check for a dated photo of an in-store menu board, which is the one plausible remaining source for this cafe's actual espresso/food prices.",
+    "notes": "Not marked not_found because a per-item priced catalog does exist for this business (bean/tea retail) - the gap is specifically a prepared-drink and food menu, which a 30+ year old cafe plausibly has on a physical board even if not published online. Recording the bean-by-weight prices as dishes was considered and rejected: they are not plates a diner orders and eats in-store.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4053",
+    "name": "Whiskers and Wine Bar",
+    "sourceUrl": "https://www.whiskersandwinebar.com/menu",
+    "confidence": "high",
+    "notes": "Restaurant's own Squarespace site, fully server-rendered plain HTML (no JS needed). Address on the page footer (2856 Adams Ave. San Diego, CA 92116) matches the work list exactly. All 7 sections present and priced: Starters, Flatbreads, Oven Roasted Sandwiches, Specialty Cocktails, Wine, Beer & Ciders, Non-Alcoholic Beverages - this is a cat-cafe/wine-bar concept so food is a small side menu (boards, flatbreads, sandwiches) alongside the cocktail/wine/beer list, which matches what the site itself presents as the whole menu. Dropped 3 unpriced entries that are notes, not dishes: \"Gluten Free Options Available\", the \"PREMIUM FLIGHTS\" section sub-header, and \"Ask About Our Delicious, Seasonal, Kombucha, Seltzer, & Hard Cider Flavors\".",
+    "dishes": [
+      {
+        "name": "SMALL CHEESE BOARD",
+        "description": "Three One Oz. Cheeses, Nuts, Crackers, & Fig Spread",
+        "price": "$16.00",
+        "section": "Starters"
+      },
+      {
+        "name": "CHARCATERIE BOARD 🎉",
+        "description": "Three One Oz. Cheeses & Salami, Prosciutto, Nuts, Two Rolls, Fig Spread, & Crackers",
+        "price": "$24.00",
+        "section": "Starters"
+      },
+      {
+        "name": "SEASONED CURLY FRIES",
+        "description": "Oven Baked! CATsup",
+        "price": "$10.00",
+        "section": "Starters"
+      },
+      {
+        "name": "SOFT PRETZEL",
+        "description": "Salt & Choice of Mustard (Reg or Spicy Brown)",
+        "price": "$10.00",
+        "section": "Starters"
+      },
+      {
+        "name": "KITTEN TOTS 👩‍🍳",
+        "description": "Oven Baked! Himalayan Salt, Ground Pepper, & CATsup",
+        "price": "$10.00",
+        "section": "Starters"
+      },
+      {
+        "name": "CHONKY TOTS 👩‍🍳",
+        "description": "Crispy Tots topped with Melted Cheese, Onions, Tomatoes, & Prosciutto with Garlic Aioli",
+        "price": "$16.00",
+        "section": "Starters"
+      },
+      {
+        "name": "CATPRESE SALAD",
+        "description": "Mozzarella, Tomato, Basil, Olive Oil, & Balsamic Vinegar Drizzle",
+        "price": "$12.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Add-On: Pesto & Prosciutto",
+        "description": "",
+        "price": "$4.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Assorted Chocolates",
+        "description": "",
+        "price": "$5.00",
+        "section": "Starters"
+      },
+      {
+        "name": "CATPRESE",
+        "description": "Marinara, Mozzarella, Tomato, Basil, Balsamic Drizzle. *Vegan available*",
+        "price": "$15.00",
+        "section": "Flatbreads"
+      },
+      {
+        "name": "PAWSITIVELY FRENCH 👩‍🍳",
+        "description": "Brie, Fig Spread, Prosciutto, Basil, Orange, Balsamic Drizzle",
+        "price": "$17.00",
+        "section": "Flatbreads"
+      },
+      {
+        "name": "MEOWZARELLA - VEGAN 🌿",
+        "description": "Marinara, Vegan Sausage, Olives, Onion, Giardiniera, Vegan Cheese",
+        "price": "$16.00",
+        "section": "Flatbreads"
+      },
+      {
+        "name": "PURRSCIUTTO",
+        "description": "Marinara, Mozzarella, Prosciutto, Salami, Olives, Onions",
+        "price": "$17.00",
+        "section": "Flatbreads"
+      },
+      {
+        "name": "TURKEY PAWSTO",
+        "description": "Turkey, Pesto, Swiss, Sun-Dried Tomatoes, Artichoke",
+        "price": "$16.00",
+        "section": "Flatbreads"
+      },
+      {
+        "name": "Add Double Meat to Any Flatbread or Sandwich",
+        "description": "",
+        "price": "$4.50",
+        "section": "Flatbreads"
+      },
+      {
+        "name": "Add Kitten Tots or Curly Seasoned Fries",
+        "description": "",
+        "price": "$5.00",
+        "section": "Flatbreads"
+      },
+      {
+        "name": "HAM AND CHEESE",
+        "description": "Lots of Ham. Lots of Cheddar. That’s It! Add-on: Garlic Aioli",
+        "price": "$14.00",
+        "section": "Oven Roasted Sandwiches"
+      },
+      {
+        "name": "TURKEY PAWSTO",
+        "description": "Turkey, Swiss, Pesto, Sun-Dried Tomato, Artichoke",
+        "price": "$16.00",
+        "section": "Oven Roasted Sandwiches"
+      },
+      {
+        "name": "ITALIAN 👩‍🍳",
+        "description": "Prosciutto, Ham, Salami, Cheddar, Giardiniera, Olive, Onion, Garlic Aioli",
+        "price": "$18.00",
+        "section": "Oven Roasted Sandwiches"
+      },
+      {
+        "name": "ADD",
+        "description": "Double Meat",
+        "price": "$4.50",
+        "section": "Oven Roasted Sandwiches"
+      },
+      {
+        "name": "ADD-ON",
+        "description": "Side of Kitten Tots or Seasoned Curly Fries",
+        "price": "$5.00",
+        "section": "Oven Roasted Sandwiches"
+      },
+      {
+        "name": "PEARFECT MEOWTINI",
+        "description": "Gin, Elderflower Liqueur, Pear Juice, Muddled Mint",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "MEOWHATTAN",
+        "description": "Bourbon, Sweet Vermouth, Angostura Bitters, Cherry",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "OLD FASHIONED",
+        "description": "Bourbon, Choice of Bitters, Simple Syrup, Orange Twist, Cherry",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "NEGRONI",
+        "description": "Gin, Campari, Sweet Vermouth, Orange Twist",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "THE FRENCH KITTY",
+        "description": "Gin, Prosecco, Lemon Juice, Simple Syrup, Cherry, Lemon Twist",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "STRAWBERRY LIMEAID",
+        "description": "Tequila, Prosecco, Strawberry, Lime Juice & Simple Syrup",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "STAY CLASSY SAN DIEGO",
+        "description": "Cucumber Vodka, Lemon Juice, Simple Syrup & Club Soda",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "WHISKEY MEOWER",
+        "description": "Whiskey, Sweet & Sour, Orange Bitters, Simple Syrup, Red Wine Float, Orange Slice",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "MEOWGARITA 👩‍🍳",
+        "description": "Tequila, Triple Sec, Lime Juice & Simple Syrup. Flavor Options: Mango, Strawberry, Peach, Pear",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "THE PEACH PUSSYCAT 👩‍🍳",
+        "description": "Whiskey, Peach Puree, Sweet & Sour",
+        "price": "$14.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "MEOWJITO",
+        "description": "Rum, Fresh Lime, Mint, Club Soda, Simple Syrup. Flavor Options: Mango, Strawberry, Peach, Pear",
+        "price": "$14.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "BLOODY MEOWY",
+        "description": "Regular or Spicy, Vodka, Olives, Lime & Salt or Tajin Rim",
+        "price": "$13.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "A-PURR-OL SPRITZ",
+        "description": "Aperol, Prosecco, Club Soda, Orange Slice",
+        "price": "$14.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "HUGO SPRITZ",
+        "description": "Elderflower Liquer, Prosecco, Club Soda, Lemon Slice, Mint",
+        "price": "$14.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "MEOWMOSA",
+        "description": "Flavor Options: Mango, Strawberry, Peach, Pear",
+        "price": "$12.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "MEOWMOSA FLIGHT 🎉",
+        "description": "Flavor Options: Mango, Strawberry, Peach, Pear",
+        "price": "$14.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "WHISKEY FLIGHT 🎉",
+        "description": "Four (4) 1 oz. pours of Premium Whiskey",
+        "price": "$35.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "TEQUILA FLIGHT 🎉",
+        "description": "Four (4) 1 oz. pours of Premium Tequila",
+        "price": "$35.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "IRISH COFFEE",
+        "description": "Coffee, Jameson, Vanilla Creamer, Whipped Cream. Served Hot or Cold",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "HISSPRESSO CATTAIL",
+        "description": "Coffee, Kahlua, Vodka, Vanilla Creamer, Whipped Cream",
+        "price": "$16.00",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "ROSE",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine"
+      },
+      {
+        "name": "SAUVIGNON BLANC",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine"
+      },
+      {
+        "name": "CHARDONNAY",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine"
+      },
+      {
+        "name": "PROSECCO",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine"
+      },
+      {
+        "name": "RESERVE PINOT NOIR",
+        "description": "",
+        "price": "$13.00",
+        "section": "Wine"
+      },
+      {
+        "name": "ESTATE SYRAH",
+        "description": "",
+        "price": "$14.00",
+        "section": "Wine"
+      },
+      {
+        "name": "GRENACHE",
+        "description": "",
+        "price": "$14.00",
+        "section": "Wine"
+      },
+      {
+        "name": "SANGRIA",
+        "description": "",
+        "price": "$14.00",
+        "section": "Wine"
+      },
+      {
+        "name": "CABERNET SAUVIGNON",
+        "description": "",
+        "price": "$15.00",
+        "section": "Wine"
+      },
+      {
+        "name": "16 oz MEXICAN LAGER 4.5% ABV",
+        "description": "",
+        "price": "$10.00",
+        "section": "Beer & Ciders"
+      },
+      {
+        "name": "GRAPEFRUIT BLOOD ORANGE RADLER 5.1% ABV",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer & Ciders"
+      },
+      {
+        "name": "16 oz DOUBLE NUT BROWN ALE 5.5% ABV",
+        "description": "",
+        "price": "$10.00",
+        "section": "Beer & Ciders"
+      },
+      {
+        "name": "16oz HAZY IPA 6.4% ABV",
+        "description": "",
+        "price": "$12.00",
+        "section": "Beer & Ciders"
+      },
+      {
+        "name": "MOCKTAIL",
+        "description": "Meowjito or Meogarita. Flavor Options: Mango, Strawberry, Peach, Pear",
+        "price": "$7.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "SODA",
+        "description": "Coke, Coke Zero, 7up, Sparkling Flavored Water, Coffee, Tea",
+        "price": "$3.50",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$6.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "HOT COCOA & WHIP CREAM",
+        "description": "",
+        "price": "$5.00",
+        "section": "Non-Alcoholic Beverages"
+      }
+    ]
+  }
+]

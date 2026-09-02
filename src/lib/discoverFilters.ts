@@ -10,7 +10,7 @@
 
 import { BEST_AT_LABELS } from "@/data/reviewScales";
 import { PRICE_BANDS, type PriceBand } from "@/data/priceBands";
-import type { MatchedDish, RestaurantView } from "@/data/restaurants";
+import type { MatchedDish, RestaurantView } from "@/data/restaurantTypes";
 import { aspectScores } from "@/lib/aspectScores";
 import type { PlateScore } from "@/lib/plateScore";
 import { SHOW_BLEND_STARS } from "@/lib/ratingDisplay";

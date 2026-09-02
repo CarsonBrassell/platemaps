@@ -1,0 +1,299 @@
+[
+  {
+    "restaurantId": "751",
+    "name": "Pizza Parlor",
+    "sourceUrl": "https://api.chownow.com/api/restaurant/1708/menu",
+    "confidence": "high",
+    "notes": "ChowNow, the restaurant's own ordering platform, read from its REST API with probe/extract_chownow.js. The menu lives at a versioned path — /api/restaurant/1708/menu returns an empty object, while /api/restaurant/1708/menu/<next_available_time> returns the catalog, and that stamp comes from /api/restaurant/1708. Prices are plain dollar numbers; nothing was computed. The restaurant endpoint gives the address as S. O St and Mc Cain Blvd, Building 614, Coronado — the Naval Base Coronado location, matching the record's 614 S O St, 92135. The \"Popular Items\" carousel was dropped as it repeats dishes from their real sections. Captured by the coordinator session 2026-08-31.",
+    "dishes": [
+      {
+        "name": "Boneless Chicken Wings (10)",
+        "description": "Served with ranch or Bleu cheese dressing.",
+        "price": "$11.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Breadsticks (4)",
+        "description": "Vegetarian. Served with marinara sauce or ranch.",
+        "price": "$5.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Buffalo Wings (12)",
+        "description": "Smothered with your choice of Buffalo or BBQ sauce and served with ranch or Bleu cheese dressing.",
+        "price": "$22.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Cheese Filled Breadsticks (4)",
+        "description": "Vegetarian. Served with marinara sauce or ranch.",
+        "price": "$9.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mozzarella Sticks (5)",
+        "description": "Vegetarian. Served with marinara sauce or ranch.",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Buffalo Wings | All Flats (12)",
+        "description": "",
+        "price": "$24.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chips",
+        "description": "Vegetarian.",
+        "price": "$2.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "description": "Comes with croutons.",
+        "price": "$12.95",
+        "section": "Fresh Salads"
+      },
+      {
+        "name": "Small Dinner Salad",
+        "description": "Vegetarian. Comes with croutons.",
+        "price": "$5.95",
+        "section": "Fresh Salads"
+      },
+      {
+        "name": "Chicken Bacon Ranch Panini",
+        "description": "Chicken, bacon and Mozzarella cheese with ranch dressing.",
+        "price": "$11.95",
+        "section": "Select a Meal Deal"
+      },
+      {
+        "name": "Pizza Sub | 9\" (A La Carte)",
+        "description": "Toasted 9\" French bread cut in half and served open-faced with cheese and sauce.",
+        "price": "$6.95",
+        "section": "Select a Meal Deal"
+      },
+      {
+        "name": "Meatball Sandwich (A La Carte)",
+        "description": "Italian meatballs, marinara sauce and melted cheese on 9\" French bread.",
+        "price": "$8.95",
+        "section": "Select a Meal Deal"
+      },
+      {
+        "name": "Large Cheese Calzone",
+        "description": "Vegetarian. Original crust only.",
+        "price": "$15.95",
+        "section": "Build Your Own Calzone"
+      },
+      {
+        "name": "Medium Cheese Calzone",
+        "description": "Vegetarian. Original crust only.",
+        "price": "$12.00",
+        "section": "Build Your Own Calzone"
+      },
+      {
+        "name": "Small Cheese Calzone",
+        "description": "Vegetarian. Original crust only.",
+        "price": "$6.95",
+        "section": "Build Your Own Calzone"
+      },
+      {
+        "name": "Large Cheese Pizza",
+        "description": "Original or thin crust.",
+        "price": "$15.95",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "Medium Cheese Pizza",
+        "description": "Vegetarian. Original or thin crust.",
+        "price": "$12.00",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "Small Cheese Pizza",
+        "description": "Original crust only.",
+        "price": "$6.95",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "BBQ Chicken Pizza | Medium",
+        "description": "Chicken, bacon, onion, cilantro and BBQ sauce.",
+        "price": "$17.95",
+        "section": "Specialty Pizzas | Medium"
+      },
+      {
+        "name": "Buffalo Chicken Pizza | Medium",
+        "description": "Chicken and onion smothered with Frank's Buffalo sauce.",
+        "price": "$14.95",
+        "section": "Specialty Pizzas | Medium"
+      },
+      {
+        "name": "Chicken Alfredo Pizza | Medium",
+        "description": "Chicken covered in alfredo sauce with mushrooms and basil.",
+        "price": "$15.95",
+        "section": "Specialty Pizzas | Medium"
+      },
+      {
+        "name": "Chicken Bacon Ranch Pizza | Medium",
+        "description": "Chicken, bacon and Mozzarella cheese over a creamy ranch sauce.",
+        "price": "$16.95",
+        "section": "Specialty Pizzas | Medium"
+      },
+      {
+        "name": "North Island Pizza | Medium",
+        "description": "Pepperoni, sausage and mushrooms.",
+        "price": "$14.95",
+        "section": "Specialty Pizzas | Medium"
+      },
+      {
+        "name": "Top Gun Pizza | Medium",
+        "description": "Pepperoni, sausage, mushrooms, olives, onions and bell peppers.",
+        "price": "$19.95",
+        "section": "Specialty Pizzas | Medium"
+      },
+      {
+        "name": "Meat Lovers Pizza | Medium",
+        "description": "Pepperoni, sausage, ham.",
+        "price": "$16.95",
+        "section": "Specialty Pizzas | Medium"
+      },
+      {
+        "name": "Garden Delight Pizza | Medium",
+        "description": "Vegetarian. Bell peppers, onion, olives, mushrooms.",
+        "price": "$16.95",
+        "section": "Specialty Pizzas | Medium"
+      },
+      {
+        "name": "North Island Pizza | Large",
+        "description": "Pepperoni, sausage and mushrooms.",
+        "price": "$19.95",
+        "section": "Specialty Pizzas | Large"
+      },
+      {
+        "name": "Top Gun Pizza | Large",
+        "description": "Pepperoni, sausage, mushrooms, olives, onions and bell peppers.",
+        "price": "$22.95",
+        "section": "Specialty Pizzas | Large"
+      },
+      {
+        "name": "BBQ Chicken Pizza | Large",
+        "description": "Chicken, bacon, onion, cilantro and BBQ sauce.",
+        "price": "$21.95",
+        "section": "Specialty Pizzas | Large"
+      },
+      {
+        "name": "Buffalo Chicken Pizza | Large",
+        "description": "Chicken and onion smothered with Frank's Buffalo sauce.",
+        "price": "$19.95",
+        "section": "Specialty Pizzas | Large"
+      },
+      {
+        "name": "Chicken Alfredo Pizza | Large",
+        "description": "Chicken covered in alfredo sauce with mushrooms and basil.",
+        "price": "$19.95",
+        "section": "Specialty Pizzas | Large"
+      },
+      {
+        "name": "Chicken Bacon Ranch Pizza | Large",
+        "description": "Chicken, bacon and Mozzarella cheese over a creamy ranch sauce.",
+        "price": "$20.95",
+        "section": "Specialty Pizzas | Large"
+      },
+      {
+        "name": "Meat Lovers Pizza | Large",
+        "description": "Pepperoni, sausage, ham.",
+        "price": "$20.95",
+        "section": "Specialty Pizzas | Large"
+      },
+      {
+        "name": "Garden Delight Pizza | Large",
+        "description": "Vegetarian. Bell peppers, onion, olives, mushrooms.",
+        "price": "$20.95",
+        "section": "Specialty Pizzas | Large"
+      },
+      {
+        "name": "Spaghetti",
+        "description": "Served with a hearty meat sauce and 2 breadsticks.",
+        "price": "$11.95",
+        "section": "Primo Pasta"
+      },
+      {
+        "name": "Lasagna",
+        "description": "Noodles in a meat sauce, Ricotta cheese, Mozzarella and topped with a melted 5-cheese blend. Served with 2 breadsticks.",
+        "price": "$13.95",
+        "section": "Primo Pasta"
+      },
+      {
+        "name": "Baked Ziti",
+        "description": "Ziti with a meat sauce and 5-cheese blend. Served with 2 breadsticks.",
+        "price": "$11.95",
+        "section": "Primo Pasta"
+      },
+      {
+        "name": "Chicken Alfredo Ziti",
+        "description": "Ziti with an alfredo sauce, chicken, mushrooms and topped with melted 5-cheese blend and basil. Served with 2 breadsticks.",
+        "price": "$12.95",
+        "section": "Primo Pasta"
+      },
+      {
+        "name": "Extra Blue Cheese Dressing",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side of Sauce"
+      },
+      {
+        "name": "Extra Ranch Dressing",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side of Sauce"
+      },
+      {
+        "name": "Extra Franks Red Hot Buffalo Sauce",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side of Sauce"
+      },
+      {
+        "name": "Extra BBQ Sauce",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side of Sauce"
+      },
+      {
+        "name": "Extra Jalapeño",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side of Sauce"
+      },
+      {
+        "name": "Extra Banana Peppers",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side of Sauce"
+      },
+      {
+        "name": "Monster Energy Drink / White",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Gatorade",
+        "description": "",
+        "price": "$3.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Bottled Water (Bottle)",
+        "description": "",
+        "price": "$1.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Canned Soda",
+        "description": "",
+        "price": "$2.75",
+        "section": "Beverages"
+      }
+    ]
+  }
+]

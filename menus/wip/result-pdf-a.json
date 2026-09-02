@@ -1,0 +1,533 @@
+[
+  {
+    "restaurantId": "4099",
+    "name": "Gaslamp Lumpia Factory",
+    "sourceUrl": "https://img1.wsimg.com/blobby/go/c7357239-ca6c-455b-83fb-30fabbd95306/8.5x14%20GLF%20Steampunk%20Menu%20AUG%202026.pdf",
+    "confidence": "high",
+    "notes": "The restaurant's own menu PDF, linked from gaslamplumpiafactory.com/menu and dated AUG 2026. It is image-only — pdftotext -layout and -raw both return 2 bytes — and this machine has no pdftoppm, which is why it was blocked twice. Both pages are embedded JPEGs, extracted with probe/extract_pdf_images.js (new tonight) and read with the Read tool, which works on JPEG. Every price here is printed on the page; nothing was derived. Page 1 is food, page 2 is the drinks menu, and both are included. Add-on lines (sub garlic rice $1.50, add jelly $.75, spicy bbq sauce $.75) are modifiers rather than dishes and were left out; the small/large salads and the glass/bottle wines are recorded as separate rows because the menu prints both. The footer notes a 3% credit-card processing fee, which is a payment surcharge and not part of the listed prices. Address on the site (423 F Street) matches the record.",
+    "dishes": [
+      {
+        "name": "House Lumpia",
+        "description": "Five pieces served with sweet chili sauce. Choose one: vegetable, chicken, beef or pork",
+        "price": "$8.95",
+        "section": "Lumpia"
+      },
+      {
+        "name": "Shanghai Lumpia",
+        "description": "Shrimp & pork. Six pieces served with sweet chili sauce",
+        "price": "$9.95",
+        "section": "Lumpia"
+      },
+      {
+        "name": "Specialty House Sauce",
+        "description": "GLF Sauce, Vinegar & Garlic, Sesame Soy, Dragon Sauce, Patis Fish Sauce, Papa Pili's Chilis or Papa Pili's BBQ",
+        "price": "$0.95",
+        "section": "Specialty House Sauces"
+      },
+      {
+        "name": "Pork Adobo",
+        "description": "Braised pork butt slow-simmered in soy sauce, garlic, vinegar & bay leaf. Served with 2 scoops of jasmine white rice",
+        "price": "$15.95",
+        "section": "Filipino Favorites"
+      },
+      {
+        "name": "Chicken Adobo",
+        "description": "Braised boneless chicken thighs slow-simmered in soy sauce, vinegar, garlic & bay leaf",
+        "price": "$15.25",
+        "section": "Filipino Favorites"
+      },
+      {
+        "name": "Mushroom Adobo",
+        "description": "Sauteed in tamari, vinegar, garlic & bay leaf. Vegetarian, vegan, gluten free",
+        "price": "$14.95",
+        "section": "Filipino Favorites"
+      },
+      {
+        "name": "Kalua Pork",
+        "description": "Tender slow-roasted pork & smoked sea salt served with pickled papaya. Gluten free. House favorite",
+        "price": "$15.95",
+        "section": "Filipino Favorites"
+      },
+      {
+        "name": "Garlic Fried Rice Bowl",
+        "description": "Choice of chicken tocino, beef tapa or pork longanisa sausage, served with pickled papaya topped with GLF sauce",
+        "price": "$15.95",
+        "section": "Filipino Favorites"
+      },
+      {
+        "name": "Corned Beef & Onion",
+        "description": "Shredded corned beef sauteed with onions, cabbage & black pepper topped with GLF sauce. Gluten free",
+        "price": "$15.95",
+        "section": "Filipino Favorites"
+      },
+      {
+        "name": "Beef Sitaw",
+        "description": "Flavorful ground chuck sauteed with onions, garlic, tomatoes, green beans, oyster & soy sauce. Chef's choice",
+        "price": "$15.95",
+        "section": "Filipino Favorites"
+      },
+      {
+        "name": "Pork Sinigang Soup",
+        "description": "24 oz. sour & savory pork tamarind soup with tomatoes, green beans & cabbage. Gluten free",
+        "price": "$14.95",
+        "section": "Filipino Favorites"
+      },
+      {
+        "name": "Sinigang Wings (Tamarind)",
+        "description": "1 lb. sour dry rub served with calamansi & GLF sauce. Gluten free",
+        "price": "$14.25",
+        "section": "Pulutan & Other Favorites"
+      },
+      {
+        "name": "Pili's Chili's BBQ Wings",
+        "description": "1 lb. tossed in spicy bbq sauce topped with green onion",
+        "price": "$14.25",
+        "section": "Pulutan & Other Favorites"
+      },
+      {
+        "name": "Basket of Fries",
+        "description": "Choice of house or sinigang seasoning",
+        "price": "$7.95",
+        "section": "Pulutan & Other Favorites"
+      },
+      {
+        "name": "Beer Battered Onion Rings",
+        "description": "Double dipping sauce: spicy bbq & garlic lime aioli",
+        "price": "$9.75",
+        "section": "Pulutan & Other Favorites"
+      },
+      {
+        "name": "Pandesal Smashburger",
+        "description": "5 oz. seasoned ground chuck patty smashed & seared, mild cheddar, grilled onions, GLF sauce. 2 for $20",
+        "price": "$10.95",
+        "section": "Pulutan & Other Favorites"
+      },
+      {
+        "name": "Tempura Shrimp (5)",
+        "description": "Served with dragon sauce and calamansi",
+        "price": "$12.25",
+        "section": "Pulutan & Other Favorites"
+      },
+      {
+        "name": "Seared Longanisa Bites",
+        "description": "Sweet pork sausage served with GLF sauce. Gluten free",
+        "price": "$13.25",
+        "section": "Pulutan & Other Favorites"
+      },
+      {
+        "name": "Sauteed Mushrooms",
+        "description": "Garlic butter, house spices & citrus. Vegetarian",
+        "price": "$12.50",
+        "section": "Pulutan & Other Favorites"
+      },
+      {
+        "name": "Cucumber Salad (small)",
+        "description": "Cucumber, tomato, onion, vinaigrette dressing. Vegetarian, vegan, gluten free",
+        "price": "$4.50",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Cucumber Salad (large)",
+        "description": "Cucumber, tomato, onion, vinaigrette dressing. Vegetarian, vegan, gluten free",
+        "price": "$8.00",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Macaroni Salad (small)",
+        "description": "Elbow macaroni, carrots, onion, pineapple dressing. Vegetarian",
+        "price": "$4.50",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Macaroni Salad (large)",
+        "description": "Elbow macaroni, carrots, onion, pineapple dressing. Vegetarian",
+        "price": "$8.00",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Wok Fried Green Beans",
+        "description": "Garlic, sesame soy, calamansi. Vegetarian, vegan",
+        "price": "$8.95",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Pickled Papaya (8oz)",
+        "description": "Vegetarian, vegan, gluten free",
+        "price": "$6.95",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Warm Pandesal with Butter",
+        "description": "Vegetarian",
+        "price": "$1.95",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Toasted Cheesy Pandesal",
+        "description": "Warm pandesal toasted with melted mild cheddar. Vegetarian",
+        "price": "$4.25",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Pandesal Grab & Go",
+        "description": "Bag of 12 pandesal rolls",
+        "price": "$11.00",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Side of Garlic Fried Rice",
+        "description": "Vegetarian, vegan, gluten free",
+        "price": "$5.50",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Side of Jasmine White Rice",
+        "description": "Vegetarian, vegan, gluten free",
+        "price": "$4.50",
+        "section": "Sides & Such"
+      },
+      {
+        "name": "Housemade Banana Turon",
+        "description": "Vanilla ice cream, caramel ube drizzle",
+        "price": "$9.50",
+        "section": "Family Treats & Sweets"
+      },
+      {
+        "name": "Ube Flan Cupcake",
+        "description": "",
+        "price": "$7.50",
+        "section": "Family Treats & Sweets"
+      },
+      {
+        "name": "Jeffrey's Signature Halo Halo",
+        "description": "",
+        "price": "$12.50",
+        "section": "Family Treats & Sweets"
+      },
+      {
+        "name": "Ice Cream Float",
+        "description": "Choice of royal tru orange or IBC root beer",
+        "price": "$9.50",
+        "section": "Family Treats & Sweets"
+      },
+      {
+        "name": "PPB&J",
+        "description": "Peanut butter & jelly pandesal",
+        "price": "$4.50",
+        "section": "Family Treats & Sweets"
+      },
+      {
+        "name": "Nagaraya Adobo Cracker Nuts",
+        "description": "",
+        "price": "$5.95",
+        "section": "Family Treats & Sweets"
+      },
+      {
+        "name": "San Miguel Pale Pilsen 16oz Draft",
+        "description": "",
+        "price": "$9.00",
+        "section": "Beer"
+      },
+      {
+        "name": "San Miguel Pale Pilsen 22oz Draft",
+        "description": "",
+        "price": "$11.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Phantom Bride, Belching Beaver 16oz Draft",
+        "description": "",
+        "price": "$10.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Phantom Bride, Belching Beaver 22oz Draft",
+        "description": "",
+        "price": "$12.50",
+        "section": "Beer"
+      },
+      {
+        "name": "Red Horse 16oz Draft",
+        "description": "",
+        "price": "$9.50",
+        "section": "Beer"
+      },
+      {
+        "name": "Red Horse 22oz Draft",
+        "description": "",
+        "price": "$12.00",
+        "section": "Beer"
+      },
+      {
+        "name": "San Miguel Pale Pilsen 12oz Bottle",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer"
+      },
+      {
+        "name": "San Miguel Apple 12oz Bottle",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "San Miguel Lychee 12oz Bottle",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Red Horse 12oz Bottle",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Ube Hazy IPA, Garage Brewing 19oz Can",
+        "description": "",
+        "price": "$12.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Corona 12oz Bottle",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer"
+      },
+      {
+        "name": "Sapporo 20oz Bottle",
+        "description": "",
+        "price": "$11.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Michelob Ultra 12oz Bottle",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer"
+      },
+      {
+        "name": "Angry Orchard Apple Cider 12oz Bottle",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer"
+      },
+      {
+        "name": "Stone IPA 12oz Bottle",
+        "description": "",
+        "price": "$8.50",
+        "section": "Beer"
+      },
+      {
+        "name": "AleSmith .394 Pale Ale 19oz Can",
+        "description": "",
+        "price": "$11.50",
+        "section": "Beer"
+      },
+      {
+        "name": "Topo Chico Hard Seltzer",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer"
+      },
+      {
+        "name": "Truly Seltzer (Assorted Flavors)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beer"
+      },
+      {
+        "name": "Heineken 00 (Non-Alcoholic)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Miguelito",
+        "description": "House favorite. San Miguel, house bloody mix, Papa Pili's chilis, tajin rim",
+        "price": "$10.50",
+        "section": "Beer"
+      },
+      {
+        "name": "Local Cabernet Sauvignon (House), California (glass/carafe)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Local Cabernet Sauvignon (House), California (bottle)",
+        "description": "",
+        "price": "$32.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Local Chardonnay (House), California (glass/carafe)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Local Chardonnay (House), California (bottle)",
+        "description": "",
+        "price": "$32.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Franciscan Cabernet, Monterey, Central Coast, CA (glass/carafe)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Franciscan Cabernet, Monterey, Central Coast, CA (bottle)",
+        "description": "",
+        "price": "$48.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "OZV Zinfandel, Lodi, CA (glass/carafe)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "OZV Zinfandel, Lodi, CA (bottle)",
+        "description": "",
+        "price": "$32.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Raeburn Chardonnay, Russian River Valley, CA (glass/carafe)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Raeburn Chardonnay, Russian River Valley, CA (bottle)",
+        "description": "",
+        "price": "$48.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Oyster Bay Sauvignon Blanc, Marlborough, NZ (glass/carafe)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Oyster Bay Sauvignon Blanc, Marlborough, NZ (bottle)",
+        "description": "",
+        "price": "$40.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "J Lohr Riesling, Arroyo Seco, Monterey (glass/carafe)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "J Lohr Riesling, Arroyo Seco, Monterey (bottle)",
+        "description": "",
+        "price": "$32.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Freixenet Carta Nevada Brut Cava, Spain (bottle)",
+        "description": "No glass pour listed",
+        "price": "$12.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Tenshi Angel Love Premium Sake (glass/carafe)",
+        "description": "",
+        "price": "$9.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Tenshi Angel Love Premium Sake (bottle)",
+        "description": "",
+        "price": "$27.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Tenshi Angel Happiness Premium Sake (glass/carafe)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Tenshi Angel Happiness Premium Sake (bottle)",
+        "description": "",
+        "price": "$30.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Han Jan Soju, Watermelon, Grape or Lychee (bottle)",
+        "description": "No glass pour listed",
+        "price": "$15.00",
+        "section": "Wine / Sake"
+      },
+      {
+        "name": "Calamansi Spritz",
+        "description": "Bartender's choice. Sparkling wine, calamansi syrup, bitters",
+        "price": "$11.95",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "Margarita",
+        "description": "Choice of calamansi, classic or strawberry",
+        "price": "$11.95",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "Pinay Colada",
+        "description": "Gold rum, pineapple, coconut cream",
+        "price": "$11.95",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "Sake Infused Sangria",
+        "description": "Sabe rum, calamansi syrup, OJ, mixed fruit",
+        "price": "$11.95",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "Maganda Forever",
+        "description": "Bartender's choice. Gold rum, ube cream, pineapple, coconut",
+        "price": "$11.95",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "Papa Pili Mai Tai",
+        "description": "Gold rum, pineapple, OJ",
+        "price": "$11.95",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "Espresso Martini",
+        "description": "Sabe vodka, espresso, cream",
+        "price": "$11.95",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "Strawberry Bullfrog",
+        "description": "Sabe vodka, lemonade, strawberry",
+        "price": "$11.95",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "Mayon Volcano",
+        "description": "Ola Sol blue agave, lime, red wine",
+        "price": "$11.95",
+        "section": "Specialty Cocktails"
+      },
+      {
+        "name": "Flying Fox Bowl (for 2)",
+        "description": "Sabe vodka, sabe rum, OJ, pineapple, four seasons",
+        "price": "$20.00",
+        "section": "Specialty Cocktails"
+      }
+    ]
+  }
+]

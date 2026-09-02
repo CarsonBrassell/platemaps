@@ -492,6 +492,11 @@ export function FoodPostCard(props: FoodPostCardProps) {
               (dishHref ? (
                 <Link
                   href={dishHref}
+                  /* First-run walkthrough anchor — see CoachTour.tsx. Every
+                     card carries it; the tour marks whichever one is in the
+                     viewport, which is why `findAnchor` prefers on-screen
+                     matches rather than the first in the DOM. */
+                  data-coach="restaurant"
                   className="min-w-0 truncate rounded-sm font-display text-[15px] font-semibold leading-tight text-pm-orange-text transition-colors hover:text-pm-orange hover:underline hover:underline-offset-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
                 >
                   {lineDish}

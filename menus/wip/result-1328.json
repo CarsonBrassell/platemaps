@@ -1,0 +1,1275 @@
+{
+  "restaurantId": "1328",
+  "name": "The Coffee Bean & Tea Leaf",
+  "sourceUrl": "https://www.doordash.com/store/the-coffee-bean-&-tea-leaf-poway-329297/",
+  "confidence": "medium",
+  "notes": "Chain location; work-list address 12314 Poway Road matches this DoorDash store's own FAQ address ('12314 Poway Rd, Poway, CA 92064') exactly. This restaurant's own Olo storefront (playbook: 'Coffee Bean & Tea Leaf's Olo storefront has defeated five attempts') was not retried; DoorDash was used instead as a different route. The page's schema.org JSON-LD Menu block only exposed 91 of the store's items across 7 sections (a curated subset -- Teas, Ice Blended drinks, Cold Brew, Cocoas, Retail were all missing from it) even though the page's own escaped Next.js RSC flight payload (self.__next_f.push, MenuBookCategory / MenuPageItemList / MenuPageItem objects) held the complete 24-category, 260-item catalog matching the category metadata's own numItems counts exactly. Used the RSC payload instead of the JSON-LD. Dropped the 'Most Ordered' carousel entirely (all 12 items were exact-name duplicates of items already present in their real categories). Dropped 3 items with no resolvable price ('Brewed Coffee' x2, 'Red Eye') per the never-write-a-dish-without-a-real-price rule -- these are build-your-own drinks whose modifier price could not be resolved from this payload (isEligible:false on the quick-add price with a $0 base). Items whose grid price is a 'from' price (build-your-own with required size/flavor choice) are noted as such in their description; the number recorded is the storefront's own displayed 'starting at' figure, not invented. Markup check: divided all 257 non-'from' prices by 1.04/1.10/1.15/1.20/1.25 -- none landed cleanly on round or .95 values (max 15% at 1.10, within the ~17-23% organic-noise band), so no delivery markup detected; treated as base restaurant pricing. Dropped the two 'Retail' categories (Coffee/Tea/Powders take-home bags, Merchandise) as adjunct retail rather than a drink/food menu. Categories captured: Seasonal Offerings, Food (Baked Goods, Breakfast, Lunch, Snacks & Treats), Coffee (The Perfect Americano, Iced Espresso, Espresso, Iced Coffee, Brewed Coffee), Cold Brew (Coffee, Tea), Ice Blended drink (Coffee Based, Kid Friendly, Tea Based), Tea (Hot Tea, Iced Tea, Hot Tea Latte, Iced Tea Latte), Cocoas, Bottled Beverages, Catering (Java To Go).",
+  "dishes": [
+    {
+      "name": "Pumpkin Dry Iced Americano™ drink",
+      "description": "Our viral drink is getting a Fall twist! A dry, iced Americano flavored with vanilla & pumpkin and topped with half & half cream and caramel drizzle around the cup. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Pumpkin Latte",
+      "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon.  A sprinkle of cinnamon brings out the flavors of Fall. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Iced Pumpkin Latte",
+      "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Iced Pumpkin Cream Latte",
+      "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon served over ice and topped with a delicious cream cap.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Pumpkin Cold Brew Oat Latte",
+      "description": "Our signature smooth Cold Brew infused with rich pumpkin flavor, topped with creamy Oatly® Oatmilk. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Pumpkin Ice Blended® drink",
+      "description": "A nostalgic flavor reminiscent of the classic Pumpkin pie dessert.   Fresh espresso, creamy pumpkin, nutmeg and cinnamon blended together and topped with fluffy whip cream and a sprinkle of cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Extreme Pumpkin Ice Blended® drink",
+      "description": "Our classic Pumpkin Ice Blended® but make it extra! With double the caffeine and no milk added, our Extreme Pumpkin Ice Blended® coffee-forward drink is perfect for Guests who want something indulgent that will wake them up! (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Pure Pumpkin Ice Blended® drink",
+      "description": "A nostalgic flavor reminiscent of the classic Pumpkin pie dessert.  Creamy pumpkin, nutmeg and cinnamon blended together and topped with fluffy whip cream and a sprinkle of cinnamon for a caffeine-free treat. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Hojicha Ice Blended® drink",
+      "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This creamy, Ice Blended drink  offers a taste that’s both soothing and refreshingly new.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Pumpkin Chai Latte",
+      "description": "The perfect blend of our signature spicy chai and creamy pumpkin flavor topped with a dusting of cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Iced Pumpkin Chai Latte",
+      "description": "The perfect blend of our signature spicy chai and creamy pumpkin flavor served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Hojicha Latte",
+      "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This velvety latte offers a taste that’s both soothing and refreshingly new.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Iced Hojicha Latte",
+      "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This velvety latte offers a taste that’s both soothing and refreshingly new served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Pumpkin Hojicha Latte",
+      "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This warming, creamy latte pairs this toasty flavor with spicy pumpkin.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Iced Pumpkin Hojicha Latte",
+      "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This warming, creamy latte pairs this toasty flavor with spicy pumpkin poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Seasonal Offerings"
+    },
+    {
+      "name": "Strawberry Cake Pop",
+      "description": "A delicious strawberry flavored cake pop dipped in pink chocolate coating and rainbow sprinkles. 150 Calories",
+      "price": "$4.60",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Blueberry Muffin",
+      "description": "A flavorful muffin that is moist and full of delicious blueberries, topped with a crunchy streusel. This has not been Kosher certified. 360 Calories",
+      "price": "$4.85",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Double Chocolate Muffin",
+      "description": "A rich, chocolately muffin with chocolate chips. This has not been Kosher certified. 440 Calories",
+      "price": "$4.85",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Butter Croissant",
+      "description": "A classic butter croissant with the perfect flaky top and soft, moist layers inside. This has not been Kosher certified. 290 Calories",
+      "price": "$4.85",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Cinnamon Roll",
+      "description": "A buttery croissant roll filled with cinnamon and sugar. This has not been Kosher certified. 420 Calories",
+      "price": "$4.85",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Chocolate Croissant",
+      "description": "Layers of flaky, buttery croissant dough filled with rich chocolate. This has not been Kosher certified. 350 Calories",
+      "price": "$5.45",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Blueberry Scone",
+      "description": "A classic scone filled with flavorful blueberries that's topped with sugar crystals. This has not been Kosher certified. 600 Calories",
+      "price": "$4.85",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Pumpkin Cream Cheese Muffin",
+      "description": "A pumpkin spiced muffin that's filled with a cream cheese filling. 400 Calories",
+      "price": "$5.20",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Chocolate Chip Cookie",
+      "description": "Delicious, chewy and filled with chocolate chips. This has not been Kosher certified. 330 Calories",
+      "price": "$4.30",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Vegan Banana Walnut Loaf",
+      "description": "A delicious vegan banana bread that's made with real bananas puree and full of chopped walnuts pieces. 290 Calories",
+      "price": "$4.85",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Almond Croissant",
+      "description": "A sweet butter croissant filled with a moist almond filling and topped with sliced almonds. This has not been Kosher certified. 430 Calories",
+      "price": "$5.45",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Coffee Crumble Cake",
+      "description": "A classic coffee cake with swirled cinnamon sugar and topped with a crunchy streusel topping. This has not been Kosher certified. 350 Calories",
+      "price": "$4.85",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Chocolate Cake Pop",
+      "description": "A delicious chocolate cake pop dipped in milk chocolate coating with rainbow sprinkles. 150 Calories",
+      "price": "$4.60",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Cheese Danish",
+      "description": "Rich tasting cream cheese is surrounded by a flaky Danish crust with a touch of sweetness. This has not been Kosher certified. 390 Calories",
+      "price": "$4.85",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Plain Bagel",
+      "description": "A classic New York-style bagel that can be enjoyed as you like it. Ask for it toasted and/or with cream cheese. This has not been Kosher certified. 200 Calories",
+      "price": "$3.60",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Cheese Jalapeño Bagel",
+      "description": "A classic New York-style bagel with a delicious combination of cheese and jalapeño. Ask for it toasted and/or with cream cheese. This has not been Kosher certified. 290 Calories",
+      "price": "$4.10",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Lemon Loaf",
+      "description": "A citrusy, lemon pound cake, topped in lemon icing for a refreshing treat.",
+      "price": "$4.85",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Everything Bagel",
+      "description": "A classic New York-style everything bagel that can be enjoyed as you like it. Ask for it toasted and/or with cream cheese. 240 Calories",
+      "price": "$4.10",
+      "section": "Food - Baked Goods"
+    },
+    {
+      "name": "Avocado Egg Toast",
+      "description": "Artisanal rustic bread, chunky avocado, lemon juice, flaky sea salt, sliced hardboiled egg and everything bagel seasoning. 280 Calories",
+      "price": "$8.50",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Dairy-Free Chia Pudding",
+      "description": "A creamy chia seed pudding made with coconut yogurt that's topped with fresh mixed berries & sweetened coconut shreds. (Gluten-Free & Vegan) 330 Calories",
+      "price": "$7.95",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Chorizo Breakfast Burrito",
+      "description": "Fluffy scrambled eggs with Mexican-spiced Chorizo, potatoes, melted pepper jack cheese, and fire roasted tomato salsa in a crisp flour tortilla. 530 Calories",
+      "price": "$8.50",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Overnight Oats",
+      "description": "Great breakfast option! Oats packed with yogurt, chia seeds, honey, strawberries, blueberries, and pecans. This has not been Kosher certified. 330 Calories",
+      "price": "$7.95",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Ham Egg and Cheese Brioche",
+      "description": "A buttery brioche bun filled with fluffy eggs, black forest ham and cheddar cheese. 400 Calories",
+      "price": "$7.95",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Avocado Toast",
+      "description": "Creamy avocado toast, Hint of sea salt and spice, Perfect start to your day. 200 Calories",
+      "price": "$7.30",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Spinach & Red Pepper Egg White Bites",
+      "description": "New and improved egg bite is fluffier and made with spinach & red pepper pesto. 120 Calories.",
+      "price": "$6.75",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Veggie & Feta Egg White Wrap",
+      "description": "An egg white burrito made with a whole wheat tortilla that's filled with fluffy egg whites, rosemary potatoes, sun dried tomatoes, monterey jack cheese, spinach and a garlic pesto aioli. 290 Calories.",
+      "price": "$8.50",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Bacon Cheddar Egg Bites",
+      "description": "Scrambled eggs with Cheddar Cheese, Potato, & Bacon. 250 Calories",
+      "price": "$6.75",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Sausage, Egg and Potato Burrito",
+      "description": "New! Oven roasted Italian style pork sausage, scrambled eggs, cheddar cheese, and potatoes all wrapped in a flour tortilla. 450 Calories",
+      "price": "$8.50",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Mixed Berries & Granola Parfait",
+      "description": "Plain Greek yogurt, mixed berries (strawberries, blueberries, and/or blackberries) and delicious crunchy granola. This has not been Kosher certified. 200 Calories",
+      "price": "$6.65",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Bacon Egg Cheese English Muffin",
+      "description": "Crispy bacon and fried egg topped with melted cheddar cheese on a toasted English Muffin. 400 Calories",
+      "price": "$7.30",
+      "section": "Food - Breakfast"
+    },
+    {
+      "name": "Homestyle Grilled Cheese Sandwich",
+      "description": "A classic grilled cheese made with mild cheddar and Monterey Jack cheese. Oven toasted to perfection.",
+      "price": "$5.50",
+      "section": "Food - Lunch"
+    },
+    {
+      "name": "Protein Picnic Box",
+      "description": "We've created a protein box that includes a Justin's peanut butter packet, mini cinnamon pita bread, hard boiled egg, sharp cheddar cheese, grapes, & apples. 340 Calories",
+      "price": "$8.50",
+      "section": "Food - Lunch"
+    },
+    {
+      "name": "Caprese Sandwich",
+      "description": "Sun blushed tomatoes, mozzarella, spinach and pesto dressing on an artisan roll. This has not been Kosher certified. 560 Calories",
+      "price": "$8.50",
+      "section": "Food - Lunch"
+    },
+    {
+      "name": "Pumpkin Dry Iced Americano™ drink",
+      "description": "Our viral drink is getting a Fall twist! A dry, iced Americano flavored with vanilla & pumpkin and topped with half & half cream and caramel drizzle around the cup. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Vanilla Dry Iced Americano™ drink",
+      "description": "Our viral Tik Tok drink! A Dry Iced Americano™ drink flavored with vanilla powder that's topped with half and half and a caramel waterfall around the cup. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Mocha Dry Iced Americano™ drink",
+      "description": "A twist on our viral Tik Tok drink! A Dry Iced Americano™ drink flavored with chocolate powder and that's topped with half and half and a dark chocolate waterfall around the cup. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Hazelnut Dry Iced Americano™ drink",
+      "description": "A twist on our viral Tik Tok drink! A Dry Iced Americano™ drink flavored with hazelnut powder and that's topped with half and half and a caramel waterfall around the cup. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Iced Vanilla Americano",
+      "description": "Freshly pulled shots of espresso combined with water and our French Deluxe™ vanilla powder poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Vanilla Americano",
+      "description": "Freshly pulled shots of espresso combined with hot water and our French Deluxe™ vanilla powder. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Iced Mocha Americano",
+      "description": "Freshly pulled shots of espresso combined with water and our Special Dutch™ chocolate powder poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Mocha Americano",
+      "description": "Freshly pulled shots of espresso combined with hot water and our Special Dutch™ chocolate powder. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Iced Hazelnut Americano",
+      "description": "Freshly pulled shots of espresso combined with water and our hazelnut powder poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Hazelnut Americano",
+      "description": "Freshly pulled shots of espresso combined with hot water and our hazelnut powder. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Iced Dark Chocolate Americano",
+      "description": "Freshly pulled shots of espresso combined with water and our dark chocolate powder poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Dark Chocolate Americano",
+      "description": "Freshly pulled shots of espresso combined with hot water and our dark chocolate powder. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Iced Caramel Americano",
+      "description": "Freshly pulled shots of espresso combined with water, our French Deluxe™ vanilla powder, and our caramel sauce poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Caramel Americano",
+      "description": "Freshly pulled shots of espresso combined with hot water, French Deluxe™ vanilla powder, and our caramel sauce. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Iced Cookie Butter Americano",
+      "description": "Freshly pulled shots of espresso combined with our cookie butter powder poured over ice and water.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Cookie Butter Americano",
+      "description": "Freshly pulled shots of espresso combined with hot water and our cookie butter powder. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Iced White Chocolate Americano",
+      "description": "Freshly pulled shots of espresso combined with water and our White Chocolate powder poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "White Chocolate Americano",
+      "description": "Freshly pulled shots of espresso combined with hot water and our White Chocolate powder. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Iced Americano",
+      "description": "Freshly pulled shots of espresso combined with water and poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$4.85",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Americano",
+      "description": "Freshly pulled shots of espresso combined with hot water. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$4.85",
+      "section": "Coffee - The Perfect Americano"
+    },
+    {
+      "name": "Iced Pumpkin Latte",
+      "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Pumpkin Cream Latte",
+      "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon served over ice and topped with a delicious cream cap.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Mexican Chocolate Latte",
+      "description": "Cozy up to winter with our new Warmth of Mexico line of drinks. These beverages combine rich dark chocolate with notes of warm cinnamon for a sweet new take on the traditional cultural favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Latte",
+      "description": "Freshly pulled shots of espresso and whole milk served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Protein Vanilla Latte",
+      "description": "Our new Protein Lattes are made of rich espresso, nonfat milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Vanilla Latte",
+      "description": "Freshly pulled shots of espresso with our French Deluxe™ vanilla powder and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Protein Hazelnut Latte",
+      "description": "Our new Protein Lattes are made of rich espresso, nonfat milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Hazelnut Latte",
+      "description": "Freshly pulled shots of espresso with our hazelnut powder and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Protein Caramel Latte",
+      "description": "Our new Protein Lattes are made of rich espresso, nonfat milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Caramel Latte",
+      "description": "Freshly pulled shots of espresso with our French Deluxe™ vanilla powder, caramel sauce and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Cookie Butter Latte",
+      "description": "Our premium espresso with spice and brown sugar cookie notes for a sweet and spicy treat. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced White Chocolate Latte",
+      "description": "Freshly pulled shots of espresso with our White Chocolate Dream® powder and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Mocha Latte",
+      "description": "Freshly pulled shots of espresso with Special Dutch™ chocolate powder and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Dark Chocolate Latte",
+      "description": "Freshly pulled shots of espresso with our dark chocolate powder and non-fat milk over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Spanish Latte",
+      "description": "Our Iced Spanish Latte pairs our bold espresso with rich, velvety, condensed milk for a delicious sweet drink. The drink is then topped with a sprinkle of cinnamon.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Cappuccino",
+      "description": "Freshly pulled shots of espresso with whole milk and foam served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Iced Caramel Cappuccino",
+      "description": "Freshly pulled shots of espresso combined with whole milk, foam, and our caramel sauce poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Iced Espresso"
+    },
+    {
+      "name": "Classic Flat White",
+      "description": "A double shot of espresso (for a 12oz. drink!) with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Caramel Flat White",
+      "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$9.00",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Cookie Butter Flat White",
+      "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders and finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$9.00",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Dark Chocolate Flat White",
+      "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$9.00",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Hazelnut Flat White",
+      "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$9.00",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Mocha Flat White",
+      "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$9.00",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Vanilla Flat White",
+      "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$9.00",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "White Chocolate Flat White",
+      "description": "A double shot of espresso (for a 12oz. drink!) is combined with our signature flavored powders that's finished with lightly aerated steamed milk to create the perfect, velvety espresso beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$9.00",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Pumpkin Latte",
+      "description": "A creamy blend of authentic pumpkin flavor combined with a delicate blend of nutmeg and cinnamon.  A sprinkle of cinnamon brings out the flavors of Fall. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Mexican Chocolate Latte",
+      "description": "Cozy up to winter with our new Warmth of Mexico line of drinks. These beverages combine rich dark chocolate with notes of warm cinnamon for a sweet new take on the traditional cultural favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Café Latte",
+      "description": "Freshly pulled shots of espresso with steamed milk and topped with thick foam.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Protein Caramel Latte",
+      "description": "Our new Protein Lattes are made of rich espresso, steamed milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Caramel Latte",
+      "description": "Freshly pulled shot of espresso with our French Deluxe™ vanilla powder, caramel sauce, steamed non-fat milk, topped with thick foam, and a drizzle of caramel sauce. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Cookie Butter Latte",
+      "description": "Our premium espresso with spice and brown sugar cookie notes, garnished with Speculoos Cookie Crumbs for a sweet and spicy treat. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Dark Chocolate Latte",
+      "description": "Freshly pulled shots of espresso with our rich dark chocolate powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Protein Hazelnut Latte",
+      "description": "Our new Protein Lattes are made of rich espresso, steamed milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Hazelnut Latte",
+      "description": "Freshly pulled shots of espresso with our hazelnut powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Protein Vanilla Latte",
+      "description": "Our new Protein Lattes are made of rich espresso, steamed milk and a protein boost for a delicious drink. Perfect for morning routines, post-workout rewards, or anytime you need more from your coffee.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Mocha Latte",
+      "description": "Freshly pulled shots of espresso with our Special Dutch™ chocolate powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Vanilla Latte",
+      "description": "Freshly pulled shots of espresso with our French Deluxe™ vanilla powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "White Chocolate Latte",
+      "description": "Freshly pulled shot of espresso with our White Chocolate Dream® powder, steamed non-fat milk, and topped with thick foam and a drizzle of chocolate sauce. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Spanish Latte",
+      "description": "Our Spanish Latte pairs our bold espresso with rich, velvety, condensed milk for a delicious sweet drink. The drink is then topped with a sprinkle of cinnamon.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Cappuccino",
+      "description": "A freshly pulled shot of espresso layered with steamed whole milk and thick rich foam to offer a luxurious velvety texture and complex aroma. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.65",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Caramel Cappuccino",
+      "description": "Freshly pulled shots of espresso with our caramel sauce, layered with steamed whole milk, thick rich foam, and topped with caramel drizzle to offer a sweet twist to a classic favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.90",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Espresso",
+      "description": "Perfectly balanced with a golden crema, this intense espresso has a caramel like aroma, velvety body, earthy flavor and a bittersweet finish. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$4.60",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Macchiato",
+      "description": "All of the aroma and flavor of our signature espresso with a splash of steamed whole milk and a dollop of foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$4.60",
+      "section": "Coffee - Espresso"
+    },
+    {
+      "name": "Iced Coffee",
+      "description": "Our specially brewed coffee served over ice for a refreshing and bold coffee taste. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$5.20",
+      "section": "Coffee - Iced Coffee"
+    },
+    {
+      "name": "Iced Caramel Coffee",
+      "description": "Our premium espresso shots blended with caramel sauce, French Deluxe™ vanilla powder, and served over ice for a refreshing and delicious caramel coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.45",
+      "section": "Coffee - Iced Coffee"
+    },
+    {
+      "name": "Iced Cookie Butter Coffee",
+      "description": "Our premium espresso shots blended with our sweet and spicy cookie butter powder and served over ice for a refreshing and delicious cookie butter coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.45",
+      "section": "Coffee - Iced Coffee"
+    },
+    {
+      "name": "Iced Dark Chocolate Coffee",
+      "description": "Our premium espresso shots blended with our dark chocolate powder and served over ice for a refreshing and delicious chocolate and coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.45",
+      "section": "Coffee - Iced Coffee"
+    },
+    {
+      "name": "Iced Hazelnut Coffee",
+      "description": "Our premium espresso shots blended with our specially developed hazelnut powder and served over ice for a refreshing and delicious hazelnut coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.45",
+      "section": "Coffee - Iced Coffee"
+    },
+    {
+      "name": "Iced Mocha Coffee",
+      "description": "Our premium espresso shots blended with our Special Dutch™ chocolate powder and served over ice for a refreshing and delicious chocolate coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.45",
+      "section": "Coffee - Iced Coffee"
+    },
+    {
+      "name": "Iced Vanilla Coffee",
+      "description": "Our premium espresso shots blended with our French Deluxe™ vanilla powder and served over ice for a refreshing and delicious vanilla coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.45",
+      "section": "Coffee - Iced Coffee"
+    },
+    {
+      "name": "Iced White Chocolate Coffee",
+      "description": "Our premium espresso shots blended with our White Chocolate powder and served over ice for a refreshing and delicious chocolate and coffee drink. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.45",
+      "section": "Coffee - Iced Coffee"
+    },
+    {
+      "name": "Café Au Lait",
+      "description": "Our light roast coffee with steamed whole milk and topped with thick velvety foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$5.35",
+      "section": "Coffee - Brewed Coffee"
+    },
+    {
+      "name": "Café Caramel",
+      "description": "Our light roast coffee with our French Deluxe™ vanilla powder, caramel sauce, steamed non-fat milk, topped with thick foam, and a drizzle of caramel sauce.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Coffee - Brewed Coffee"
+    },
+    {
+      "name": "Café Cookie Butter",
+      "description": "Our light roast coffee with our sweet and spicy cookie butter powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Coffee - Brewed Coffee"
+    },
+    {
+      "name": "Café Dark Chocolate",
+      "description": "Our light roast coffee with our dark chocolate powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Coffee - Brewed Coffee"
+    },
+    {
+      "name": "Café Hazelnut",
+      "description": "Our light roast coffee with our hazelnut powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Coffee - Brewed Coffee"
+    },
+    {
+      "name": "Café Mocha",
+      "description": "This signature drink combines our light roast coffee with our Special Dutch™ chocolate powder, steamed non-fat milk and topped with thick foam.\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Coffee - Brewed Coffee"
+    },
+    {
+      "name": "Café Vanilla",
+      "description": "Our light roast brewed coffee with our French Deluxe™ vanilla powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Coffee - Brewed Coffee"
+    },
+    {
+      "name": "Café White Chocolate",
+      "description": "Our light roast coffee with our White Chocolate powder, steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Coffee - Brewed Coffee"
+    },
+    {
+      "name": "Pumpkin Cold Brew Oat Latte",
+      "description": "Our signature smooth Cold Brew infused with rich pumpkin flavor, topped with creamy Oatly® Oatmilk. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Cold Brew - Cold Brew Coffee"
+    },
+    {
+      "name": "Cold Brew Coffee",
+      "description": "Our cold brew is a blend of our premium Bali Blue Moon and Ethiopia Yirgacheffe coffees with chicory that is delicately roasted and steeped cold for 20 hours. We use time instead of heat to extract as much flavor as possible and deliver a truly rich and delicious coffee experience. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Cold Brew - Cold Brew Coffee"
+    },
+    {
+      "name": "Midnight Mocha Latte Cold Brew Latte",
+      "description": "Dark Chocolate meets Cold Brew. Our NEW! Dark Chocolate Syrup combined with our surprisingly bold Cold Brew to create something drafted dark and delicious. Rich, creamy, decadent and velvety, this beverage will please coffee lovers and chocolate lovers alike. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Cold Brew - Cold Brew Coffee"
+    },
+    {
+      "name": "Cold Brew Ice Blended® drink",
+      "description": "Another classic version blends our delicious cold brew coffee, Our French Deluxe™ vanilla powder, non-fat milk, and our signature pebble ice. A must try for our coffee lovers looking for that extra kick. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Cold Brew - Cold Brew Coffee"
+    },
+    {
+      "name": "Vanilla Bean Cold Brew Latte",
+      "description": "Our handcrafted Cold Brew is brewed cold onsite for 20 hours, using time not heat, to create a rich bold flavor. Then we combine it with milk, vanilla bean sauce and pour it over ice to create a deliciously smooth and sweet latte. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Cold Brew - Cold Brew Coffee"
+    },
+    {
+      "name": "Vietnamese Cold Brew",
+      "description": "Combines sweetened condensed milk with our dark-roasted Cold Brew Coffee to create our spin on a wildly popular Vietnamese café staple. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Cold Brew - Cold Brew Coffee"
+    },
+    {
+      "name": "Mixed Berry Energy Tea",
+      "description": "A fruity fusion of strawberry, blueberry and raspberry harmonizes with cold brew Celyon tea and real berry pieces. \\r\\nEnergy source: Green coffee extract and green tea infused with Vitamin B12. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Cold Brew - Cold Brew Tea"
+    },
+    {
+      "name": "Mango Passionfruit Energy Tea",
+      "description": "Tropical and bold, mango and passion fruit are combined with a cold brew tea and real fruit pieces.\\r\\n\\r\\nEnergy source: Green coffee extract and green tea infused with Vitamin B12. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Cold Brew - Cold Brew Tea"
+    },
+    {
+      "name": "Pineapple Yuzu Energy Tea",
+      "description": "Sweet pineapple and exotic yuzu are blended with cold brew Ceylon tea to deliver a refreshing splash of the tropics.\\r\\nEnergy source: Green coffee extract and green tea infused with Vitamin B12. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Cold Brew - Cold Brew Tea"
+    },
+    {
+      "name": "Mango Cold Brew Tea",
+      "description": "We add mango syrup to our Scottish Breakfast tea for a tropical and refreshing treat in our Mango Cold Brew Tea. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Cold Brew - Cold Brew Tea"
+    },
+    {
+      "name": "Lemonade Cold Brew Tea",
+      "description": "We have re-imagined our ever-popular Iced Tea Lemonade to be brisker and more satisfying. Scottish Breakfast Cold Brew Tea combines with our sweet Lemonade Syrup for the perfect summertime treat! Arnold Palmer meets Cold Brew with this classic comeback beverage. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.05",
+      "section": "Cold Brew - Cold Brew Tea"
+    },
+    {
+      "name": "Pumpkin Ice Blended® drink",
+      "description": "A nostalgic flavor reminiscent of the classic Pumpkin pie dessert.   Fresh espresso, creamy pumpkin, nutmeg and cinnamon blended together and topped with fluffy whip cream and a sprinkle of cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Extreme Pumpkin Ice Blended® drink",
+      "description": "Our classic Pumpkin Ice Blended® but make it extra! With double the caffeine and no milk added, our Extreme Pumpkin Ice Blended® coffee-forward drink is perfect for Guests who want something indulgent that will wake them up! (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Mexican Chocolate Ice Blended® drink",
+      "description": "Cozy up to winter with our new Warmth of Mexico line of drinks. These beverages combine rich dark chocolate with notes of warm cinnamon for a sweet new take on the traditional cultural favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Caramel Ice Blended® drink",
+      "description": "A sweet treat blends our delicious coffee extract, French Deluxe™ vanilla powder, non-fat milk, caramel sauce, and our signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Cookie Butter Ice Blended® drink",
+      "description": "Fresh espresso blended with spice and brown sugar cookie, topped with fluffy whip cream and Speculoos Cookie Crumbs. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Cookies and Cream Ice Blended® drink",
+      "description": "The combination of sweet, creamy vanilla, coffee, and chocolate cookie pieces creates a cookie-licious treat that will satisfy any sweet tooth. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Dark Chocolate Ice Blended® drink",
+      "description": "A sophisticated dark chocolate treat blends our dark chocolate powder, coffee extract, non-fat milk, and signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Mocha Ice Blended® drink",
+      "description": "The frozen sensation that started it all blends our delicious coffee extract, our Special Dutch™ chocolate powder, non-fat milk, and our signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Hazelnut Ice Blended® drink",
+      "description": "A nutty twist on the Ice Blended® Drink blends our delicious coffee extract, hazelnut powder, non-fat milk blended, and signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Vanilla Ice Blended® drink",
+      "description": "Another classic version blends our delicious coffee extract, our French Deluxe™ vanilla powder, non-fat milk, and our signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Vanilla Affogato Ice Blended® drink",
+      "description": "Non-fat milk blended with French Deluxe™ vanilla powder and ice then topped with whipped cream. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "White Chocolate Ice Blended® drink",
+      "description": "A dream in a cup blends our White Chocolate powder, coffee extract, non-fat milk, and our signature pebble ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Coffee Based"
+    },
+    {
+      "name": "Pure Pumpkin Ice Blended® drink",
+      "description": "A nostalgic flavor reminiscent of the classic Pumpkin pie dessert.  Creamy pumpkin, nutmeg and cinnamon blended together and topped with fluffy whip cream and a sprinkle of cinnamon for a caffeine-free treat. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Pure Mexican Chocolate Ice Blended® drink",
+      "description": "Cozy up to winter with our new Warmth of Mexico line of drinks. These beverages combine rich dark chocolate with notes of warm cinnamon for a sweet new take on the traditional cultural favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Pure Caramel Ice Blended® drink",
+      "description": "A decadent treat blended with French Deluxe™ vanilla powder, non-fat milk, caramel sauce, and our signature pebble ice and topped with whipped cream and caramel drizzle. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Pure Vanilla Ice Blended® drink",
+      "description": "Non-fat milk blended with French Deluxe™ vanilla powder and ice then topped with whipped cream. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Pure Chocolate Ice Blended® drink",
+      "description": "Non-fat milk blended with Special Dutch™ chocolate powder and ice then topped with whipped cream. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Pure Cookies and Cream Ice Blended® drink",
+      "description": "The combination of sweet, creamy vanilla and chocolate cookie pieces creates a cookie-licious treat that will satisfy any sweet tooth. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Pure Cookie Butter Ice Blended® drink",
+      "description": "Spice and brown sugar cookie notes shine in this caffeine free blended drink, topped with fluffy whip cream and Speculoos Cookie Crumbs. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Pure Dark Chocolate Ice Blended® drink",
+      "description": "Non-fat milk blended with Dark Chocolate powder and ice and then topped with whipped cream. A delicious non-caffeinated treat. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Pure Hazelnut Ice Blended® drink",
+      "description": "Non-fat milk blended with Hazelnut powder and ice and then topped with whipped cream. A delicious non-caffeinated treat. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Mango Ice Blended® drink",
+      "description": "A delicious Ice Blended with a sweet, creamy and refreshing tropical mango flavor. This beverage is also a kid-friendly treat! (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Strawberry Ice Blended® drink",
+      "description": "Another classic version of our signature Ice Blended® drink. Made with strawberry syrup, milk, French Deluxe™ vanilla powder, and blended with ice then topped with whipped cream. A delicious summer treat! (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Kid Friendly"
+    },
+    {
+      "name": "Hojicha Ice Blended® drink",
+      "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This creamy, Ice Blended drink  offers a taste that’s both soothing and refreshingly new.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Tea Based"
+    },
+    {
+      "name": "Matcha Cookies & Cream Ice Blended® drink",
+      "description": "This Ice Blended drink combines our creamy Matcha powder with decadent cookie pieces for a delicious treat! \\r\\n\\r\\n (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.75",
+      "section": "Ice Blended® drink - Tea Based"
+    },
+    {
+      "name": "Matcha Green Tea Ice Blended® drink",
+      "description": "Our Matcha Tea Latte beverages are a creamy, lightly sweetened blend of matcha with our classic vanilla powder and milk. It's a great way to kick off your day or enjoy as a refreshing afternoon pick-me-up. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Ice Blended® drink - Tea Based"
+    },
+    {
+      "name": "Wellness Blend Tea",
+      "description": "Soothing mix of lemon and ginseng with hints of mint.",
+      "price": "$5.20",
+      "section": "Tea - Hot Tea"
+    },
+    {
+      "name": "Earl Grey",
+      "description": "Earl Grey derives its distinctive taste from oil of bergamot, a Mediterranean citrus fruit. Our handcrafted teas are blended locally and brewed to create an aromatic, comforting cup full of flavor.",
+      "price": "$5.20",
+      "section": "Tea - Hot Tea"
+    },
+    {
+      "name": "Ginseng Peppermint",
+      "description": "Blended with ginseng, eleuthero root, peppermint and other herbs. Our handcrafted Herbal Infusions are blended locally and brewed to create an aromatic, comforting cup full of flavor.",
+      "price": "$5.20",
+      "section": "Tea - Hot Tea"
+    },
+    {
+      "name": "Chai",
+      "description": "Our special Chai recipe is blended by hand using only the finest Darjeeling black tea from India, cinnamon cloves, cardamom, and other spices. The tea has an exotic aroma and a spicy taste. Our handcrafted teas are blended locally and brewed to create an aromatic, comforting cup full of flavor.",
+      "price": "$5.20",
+      "section": "Tea - Hot Tea"
+    },
+    {
+      "name": "English Breakfast",
+      "description": "Sri Lankan Black Ceylon tea, Taiwanese Black tea and Chinese Keemun Black tea are blended together to create a dark orange liqueur with a sweet and slightly smoky aroma. Our handcrafted teas are blended locally and brewed to create an aromatic, comforting cup full of flavor.",
+      "price": "$5.20",
+      "section": "Tea - Hot Tea"
+    },
+    {
+      "name": "Lemon Chamomile",
+      "description": "With an addition of orange peel, this honey colored infusion of lemon and chamomile is light and soothing with a delicate citrus flavor. Our handcrafted Herbal Infusions are blended locally and brewed to create an aromatic, comforting cup full of flavor.",
+      "price": "$5.20",
+      "section": "Tea - Hot Tea"
+    },
+    {
+      "name": "Hibiscus Berry Sunrise",
+      "description": "Our iced Swedish Berries and lemonade syrup combine to create a refreshingly delightful drink with a vibrant, beautiful ruby red color from hibiscus flowers.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$5.80",
+      "section": "Tea - Iced Tea"
+    },
+    {
+      "name": "English Breakfast Iced Tea",
+      "description": "Our full flavored teas chilled over ice for a refreshing addition to your day.\\r\\nSri Lankan Black Ceylon tea, Taiwanese Black tea and Chinese Keemun Black tea are blended together to create a dark orange liqueur with a sweet and slightly smoky aroma. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$4.85",
+      "section": "Tea - Iced Tea"
+    },
+    {
+      "name": "Pacific Coast Iced Tea",
+      "description": "Our full flavored teas chilled over ice for a refreshing addition to your day.\\r\\nPrepared specifically for iced preparation, this refreshing black tea has a rich golden color, woodsy aroma and a sweet, crisp flavor. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$4.85",
+      "section": "Tea - Iced Tea"
+    },
+    {
+      "name": "Orchard Peach Iced Tea",
+      "description": "Our full flavored teas chilled over ice for a refreshing addition to your day.\\r\\nThe sweet, succulent flavor of orchard fresh peaches perfectly complements the green tea grown in China. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$4.85",
+      "section": "Tea - Iced Tea"
+    },
+    {
+      "name": "Tropical Passion Iced Tea",
+      "description": "Our full flavored teas chilled over ice for a refreshing addition to your day.\\r\\nThis combination of Sri Lankan Ceylon black tea and passion and guava fruit flavoring, blended with malva and marigold flowers make for a perfectly balanced fruity cup of tea. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$4.85",
+      "section": "Tea - Iced Tea"
+    },
+    {
+      "name": "Swedish Berries Iced Tea",
+      "description": "Our full flavored teas chilled over ice for a refreshing addition to your day.\\r\\nA blend of hibiscus, raisins, and mixed berries, this infusion is well-balanced with natural fruit flavor and a sweet, fragrant aroma. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$4.85",
+      "section": "Tea - Iced Tea"
+    },
+    {
+      "name": "Hojicha Latte",
+      "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This velvety latte offers a taste that’s both soothing and refreshingly new.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Tea - Hot Tea Latte"
+    },
+    {
+      "name": "Pumpkin Hojicha Latte",
+      "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This warming, creamy latte pairs this toasty flavor with spicy pumpkin.  (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Tea - Hot Tea Latte"
+    },
+    {
+      "name": "Pumpkin Chai Latte",
+      "description": "The perfect blend of our signature spicy chai and creamy pumpkin flavor topped with a dusting of cinnamon. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Tea - Hot Tea Latte"
+    },
+    {
+      "name": "Chai Tea Latte",
+      "description": "A delicious blend of freshly brewed Chai Tea, steamed non-fat milk and our French Deluxe™ vanilla powder. Our special Chai recipe is blended by hand using only the finest Darjeeling black tea from India, cinnamon cloves, cardamom, and other spices. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Tea - Hot Tea Latte"
+    },
+    {
+      "name": "Dirty Chai Tea Latte",
+      "description": "A delicious blend of freshly brewed Chai Tea, steamed non-fat milk and our French Deluxe Vanilla Powder with an added shot of espresso. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.90",
+      "section": "Tea - Hot Tea Latte"
+    },
+    {
+      "name": "English Breakfast Tea Latte",
+      "description": "A delicious blend of freshly brewed English Breakfast Tea, steamed non-fat milk and our French Deluxe™ vanilla powder. Sri Lankan Black Ceylon tea, Taiwanese Black tea and Chinese Keemun black tea are blended together to create a dark orange liqueur with a sweet and slightly smoky aroma. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Tea - Hot Tea Latte"
+    },
+    {
+      "name": "Matcha Green Tea Latte",
+      "description": "Our new and improved Matcha Tea Latte beverages are a creamy, lightly sweetened blend of matcha with our classic vanilla powder and milk. With enhanced, brighter matcha flavor than ever before, it's a great way to kick off your day or enjoy as a refreshing afternoon pick-me-up. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Tea - Hot Tea Latte"
+    },
+    {
+      "name": "Iced Hojicha Latte",
+      "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This velvety latte offers a taste that’s both soothing and refreshingly new served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Tea - Iced Tea Latte"
+    },
+    {
+      "name": "Iced Pumpkin Hojicha Latte",
+      "description": "This fall, indulge in the rich, comforting flavors you crave with a twist you’ll want all season long. Introducing Houjicha, a Japanese roasted green tea known for its smooth, toasty notes. This warming, creamy latte pairs this toasty flavor with spicy pumpkin poured over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$7.30",
+      "section": "Tea - Iced Tea Latte"
+    },
+    {
+      "name": "Iced Pumpkin Chai Latte",
+      "description": "The perfect blend of our signature spicy chai and creamy pumpkin flavor served over ice. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Tea - Iced Tea Latte"
+    },
+    {
+      "name": "Iced Chai Tea Latte",
+      "description": "A delicious blend of Chai tea combined with our French Deluxe™ vanilla powder over ice. With bold tea flavor and a sweet vanilla finish, this refreshing beverage is the perfect way to keep your day cool. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Tea - Iced Tea Latte"
+    },
+    {
+      "name": "Iced English Breakfast Tea Latte",
+      "description": "A delicious blend of English Breakfast tea combined with our French Deluxe™ vanilla powder over ice. With bold tea flavor and a sweet vanilla finish, this refreshing beverage is the perfect way to keep your day cool. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Tea - Iced Tea Latte"
+    },
+    {
+      "name": "Iced Matcha Cream Strawberry Latte",
+      "description": "If you're a Matcha fan, you'll adore this harmonious blend of strawberries, fresh milk, and creamy Japanese matcha foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Tea - Iced Tea Latte"
+    },
+    {
+      "name": "Iced Matcha Cream Mango Latte",
+      "description": "If you're a Matcha fan, you'll adore this harmonious blend of mango, fresh milk, and creamy Japanese matcha foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$8.15",
+      "section": "Tea - Iced Tea Latte"
+    },
+    {
+      "name": "Iced Matcha Tea Latte",
+      "description": "Our new and improved Matcha Tea Latte beverages are a creamy, lightly sweetened blend of matcha with our classic vanilla powder and milk. With enhanced, brighter matcha flavor than ever before, it's a great way to kick off your day or enjoy as a refreshing afternoon pick-me-up. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.90",
+      "section": "Tea - Iced Tea Latte"
+    },
+    {
+      "name": "Hot Chocolate",
+      "description": "Our proprietary Special Dutch™ chocolate powder is combined with perfectly steamed non-fat milk and topped with thick foam or whipped cream. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$5.45",
+      "section": "Cocoas - Cocoas"
+    },
+    {
+      "name": "Hot Dark Chocolate",
+      "description": "Our dark chocolate powder is combined with perfectly steamed non-fat milk and topped with thick foam or whipped cream. A delicious non-caffeinated treat. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$5.45",
+      "section": "Cocoas - Cocoas"
+    },
+    {
+      "name": "Hot Vanilla",
+      "description": "Our French Deluxe™ vanilla powder with perfectly steamed non-fat milk and topped with thick foam. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$5.45",
+      "section": "Cocoas - Cocoas"
+    },
+    {
+      "name": "Mexican Hot Chocolate",
+      "description": "Cozy up to winter with our new Warmth of Mexico line of drinks. These beverages combine rich dark chocolate with notes of warm cinnamon for a sweet new take on the traditional cultural favorite. (price shown is the \"from\" price for the cheapest required size/option)",
+      "price": "$6.55",
+      "section": "Cocoas - Cocoas"
+    },
+    {
+      "name": "Milk Chocolate Sea Salt Almonds",
+      "description": "Fresh roasted California almonds covered in layers of chocolate and a hint of sea salt. 350 Calories",
+      "price": "$3.60",
+      "section": "Food - Snacks & Treats"
+    },
+    {
+      "name": "Marshmallow Bar",
+      "description": "A chewy rice treat made with gluten-free rice puffs, brown butter, mini marshmallows, and sea salt. 230 Calories",
+      "price": "$3.60",
+      "section": "Food - Snacks & Treats"
+    },
+    {
+      "name": "Siete Potato Chips Chipotle Barbeque",
+      "description": "Crispy, chipotle BBQ potato chips kettle cooked in avocado oil. Gluten-free, no GMOs, vegan, and soy-free. 200 Calories",
+      "price": "$3.60",
+      "section": "Food - Snacks & Treats"
+    },
+    {
+      "name": "Kind Dark Choc Nuts & Sea Salt Bar",
+      "description": "A sweet and salty blend of almonds, peanuts, and walnuts drizzled in chocolate with a touch of sea salt. 6g of protein and 7g of fiber. Non-GMO and Gluten-Free. 200 Calories",
+      "price": "$3.60",
+      "section": "Food - Snacks & Treats"
+    },
+    {
+      "name": "Vive Organic Wellness Shot",
+      "description": "Power-packed blend of roots, fruits and flowers for an ultimate immune system boost. 30 Calories",
+      "price": "$5.65",
+      "section": "Bottled Beverages - Bottled Beverages"
+    },
+    {
+      "name": "Natalie's - Orange Juice",
+      "description": "With only one ingredient, Natalie's fresh orange juice has no preservatives and no added sugar. No GMOs. 110 Calories",
+      "price": "$3.60",
+      "section": "Bottled Beverages - Bottled Beverages"
+    },
+    {
+      "name": "Smartwater (20oz)",
+      "description": "Vapor distilled water with added minerals for a pure, crisp taste.",
+      "price": "$3.50",
+      "section": "Bottled Beverages - Bottled Beverages"
+    },
+    {
+      "name": "Martinelli's Apple Juice",
+      "description": "Cold-pressed from the finest variety of U.S. grown fresh apples, our 100% apple juice is a sweet way to savor any moment. 130 Calories",
+      "price": "$3.25",
+      "section": "Bottled Beverages - Bottled Beverages"
+    },
+    {
+      "name": "Perrier",
+      "description": "Originating in France, its effervescent spirit is known worldwide. Elegant, sparkling and refreshing, with its unique blend of distinctive bubbles and balanced mineral content for over 150 years.",
+      "price": "$3.50",
+      "section": "Bottled Beverages - Bottled Beverages"
+    },
+    {
+      "name": "Spindrift Raspberry Lime",
+      "description": "Carbonated water flavored with real raspberry puree and lime juice. Gluten-free, no added sugar, and no GMOs. 5 Calories",
+      "price": "$3.50",
+      "section": "Bottled Beverages - Bottled Beverages"
+    },
+    {
+      "name": "Spindrift Lemon",
+      "description": "Carbonated water flavored with real raspberry puree and lime juice. Gluten-free, no added sugar, and no GMOs. 5 Calories",
+      "price": "$3.50",
+      "section": "Bottled Beverages - Bottled Beverages"
+    },
+    {
+      "name": "Organic Valley Chocolate Lowfat Milk",
+      "description": "Absolutely NO antibiotics, synthetic hormones, toxic pesticides or GMO anything. 130 Calories",
+      "price": "$3.25",
+      "section": "Bottled Beverages - Bottled Beverages"
+    },
+    {
+      "name": "Java To Go - Tea",
+      "description": "Perfect for your parties, office conference & meeting! Brewed Tea (8-12 Servings) available in takeaway container which keeps the beverage warm for approximately 1.5 hours. Cups, sugar and milk will be provided.",
+      "price": "$26.80",
+      "section": "Catering - Java To Go"
+    },
+    {
+      "name": "Java To Go - Hot Chocolate",
+      "description": "Perfect for your parties, office conference & meeting! Hot Chocolate (8-12 Servings) available in takeaway container which keeps the beverage warm for approximately 1.5 hours. Cups will be provided.",
+      "price": "$26.80",
+      "section": "Catering - Java To Go"
+    },
+    {
+      "name": "Cold Brew Growler",
+      "description": "A 32 fl oz glass growler of our delicious cold brew coffee. A perfect way to transport your drink home or to a meeting/event. Just add water and pour over ice. \\r\\n15 calories per serving",
+      "price": "$24.35",
+      "section": "Catering - Java To Go"
+    },
+    {
+      "name": "Java To Go - Coffee",
+      "description": "Perfect for your parties, office conference & meeting! Brewed Coffee (8-12 Servings) Available in takeaway container which keeps the beverage warm for approximately 1.5 hours. Cups, sugar and milk will be provided. Please note it may take up to 30 minutes to complete orders of 3 or more Java To Go boxes.",
+      "price": "$26.80",
+      "section": "Catering - Java To Go"
+    }
+  ]
+}

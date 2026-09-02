@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { RestaurantView } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurantTypes";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { photoRatio } from "@/lib/photoShape";

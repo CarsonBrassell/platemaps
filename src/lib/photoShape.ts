@@ -1,4 +1,4 @@
-import type { RestaurantView } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurantTypes";
 
 /**
  * What shape a restaurant's photo gets on a card, and how the cards stack.

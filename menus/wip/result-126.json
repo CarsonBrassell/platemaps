@@ -1,0 +1,584 @@
+[
+  {
+    "restaurantId": "3997",
+    "name": "Toasted",
+    "sourceUrl": "https://toasted.olo.com/menu/toasted-del-mar",
+    "confidence": "low",
+    "blocked": "Olo storefront (toasted.olo.com, channel 'toasted', location 'toasted-del-mar' -- address confirmed matches 12925 El Camino Real) gates its menu API behind a JS-issued anti-forgery token: /api/vendors/toasted-del-mar returns 403 {\"error\":\"Anti forgery validation failed\"} even with cookies from a prior GET. No token visible in HTML or the Next.js chunks (grepped all 7 JS chunks for AntiForgery/CSRF/RequestVerificationToken, none found) -- needs a real browser to complete the handshake. The restaurant's own site (toastedgastrobrunch.com/Menu) lists full dish names for the Del Mar location's breakfast/waffle sections but publishes no per-item prices (tag-stripped text has exactly one dollar figure on the whole page, a +$9.50 shrimp add-on). FINDINGS.md documents a prior capture of this restaurant's Toast/Olo catalog with a clean 'A LA CARTE' menu alongside a marked-up 'Delivery Brunch' menu (1.10x) -- that capture is not reproducible from this environment.",
+    "notes": "Needs a Chrome-equipped agent to load https://toasted.olo.com/menu/toasted-del-mar, let the SPA fetch its own anti-forgery token, then read window state or network responses for the menu JSON.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2220",
+    "name": "Carmen's Mexican Food",
+    "sourceUrl": "https://www.allmenus.com/ca/san-diego/721061-carmens-authentic-mexican-food/menu/",
+    "confidence": "low",
+    "blocked": "Two disagreeing tier-5 third-party listings, neither dated. allmenus.com (Grubhub-owned, curl-verified with a Googlebot UA -- server pre-renders for crawlers -- tag-stripped text confirms 107 priced items, e.g. Beef Tacos (2) $7.95, Carne Asada Burrito $9.00) and menucollectors.com (independent owner, also curl-verified) price overlapping items 10-40%+ higher and inconsistently (Beef Tacos (2) $9.95, Carne Asada Burrito $11.50) with no uniform ratio across items, so it is not a clean delivery markup either -- it looks like two different, unreliable snapshots. FINDINGS.md records a prior pass on this restaurant that found a first-party photo of the printed menu dated 2018 (now known stale) plus one third-party listing 40-50% higher, and concluded the higher/newer listing should be trusted -- but that reasoning assumed one dated source vs one undated source. Here there are two undated third-party sources disagreeing with each other, which is a different situation: no source here is confirmed current.",
+    "notes": "Neither allmenus nor menucollectors carries a visible date. The restaurant's own site (carmensmexican.com) is a template with a #menu anchor and the text 'Menu and prices subject to change. Call restaurant for current prices' -- zero prices in the HTML. Did not find the 2018 photo referenced in FINDINGS.md (not re-searched due to time) or any dated dine-in artefact. Uber Eats returns 403 to both curl and WebFetch. No DoorDash listing found via WebSearch. Recommend a Yelp photo search for a dated printed menu, or a phone call, to resolve which price level is current.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2333",
+    "name": "Dairy Queen",
+    "sourceUrl": "https://www.dairyqueen.com/en-us/order/?storeNo=11862",
+    "confidence": "low",
+    "blocked": "This is a DQ Treat Only store (5950 Santo Rd Ste P, San Diego -- address confirmed) currently OPEN (posted hours: today until 10:00 PM, checked at ~5pm local). FINDINGS.md documents a DIFFERENT DQ branch (Chula Vista) blocked by a closed-store price gate at night; that does not apply here since this store is open, but the block is different: the ordering flow is a Next.js SPA whose menu data comes from a GraphQL BFF at https://prod-api.dairyqueen.com/graphql/ (found in __NEXT_DATA__ as NEXT_PUBLIC_BFF_URL). That endpoint has introspection disabled ({\"errors\":[{\"message\":\"Introspection is not allowed for the current request.\"...) and needs specific persisted-query operation names/hashes that only appear in captured browser network traffic, not in any static HTML/JS reachable by curl. The national /en-us/menu/ page lists items with no prices (DQ prices vary by franchise).",
+    "notes": "Needs a Chrome-equipped agent to open https://www.dairyqueen.com/en-us/order/?storeNo=11862, let the SPA select the store, and read the network tab for the GraphQL menu query/response (or window state after it resolves).",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3715",
+    "name": "Pho Royal",
+    "sourceUrl": "https://www.doordash.com/store/pho-royal-lemon-grove-85983",
+    "confidence": "medium",
+    "notes": "FINDINGS.md records this restaurant as a prior fabrication case: its PDF menu is pure image (2 bytes of text), and its own domains (phoroyal.com, orderphoroyal.com) and Menufy storefront carry dish names/branding but zero prices -- all reconfirmed here (phoroyal.com/menu: 0 dollar-figures in tag-stripped text; orderphoroyal.com/order: Menufy 404). The only priced source found is DoorDash's server-side schema.org Menu JSON-LD (82 items across 8 sections), which is NOT the same failure mode as the PDF -- verified by parsing the actual <script type=\"application/ld+json\"> block, not a WebFetch summary. Address matches (6937 Federal Blvd = 6937 Federal Boulevard; DoorDash lists it as Lemon Grove, CA -- same location, our work-list entry just omits city). Markup test clean: no divisor (1.04/1.1/1.15/1.2/1.25) produces a round-number pattern; 71/82 prices end in .95 (organic POS pricing). CAUTION: the 'Pho' section holds exactly 1 item (Beef Noodle Soup $7.50) for a restaurant literally named Pho Royal -- this may be a genuine hybrid Vietnamese/Chinese-American menu (the catalog is heavy on Kung Pao/Orange Chicken/stir-fry, which is common at these hybrid pho shops) rather than a missing core section, but it could not be confirmed against a dine-in artefact -- own site and Menufy have no prices to check, and no independent second source (Grubhub's page was a client-rendered shell with no JSON-LD or SSR content) was reachable to corroborate. Sections captured: Appetizers, Pho, Vermicelli Noodle & Rice Entree, Chicken, Vegetarian, Featured Item, Vietnamese (banh mi sandwiches), House Specials.",
+    "dishes": [
+      {
+        "name": "Fried Oyster",
+        "description": "",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Crispy Popcorn Chicken",
+        "description": "",
+        "price": "$5.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Hot Wings",
+        "description": "",
+        "price": "$5.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Grilled Shrimp",
+        "description": "",
+        "price": "$5.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Shrimp",
+        "description": "",
+        "price": "$6.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Calamari",
+        "description": "",
+        "price": "$6.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken / Pork / Beef Skew",
+        "description": "",
+        "price": "$3.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Wonton Soup",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Summer Roll (4)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "S-9. Special Royal Roll",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "S-10. Egg Roll",
+        "description": "",
+        "price": "$5.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "S-12 Fried Dumpling",
+        "description": "",
+        "price": "$4.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "S-13 Steamed Dumpling",
+        "description": "",
+        "price": "$4.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Vietnamese Chicken Cabbage Salad",
+        "description": "",
+        "price": "$6.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "S-11. Veggie Egg Roll",
+        "description": "",
+        "price": "$3.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Beef Noodle Soup",
+        "description": "",
+        "price": "$7.50",
+        "section": "Pho"
+      },
+      {
+        "name": "Bun Royal",
+        "description": "",
+        "price": "$10.95",
+        "section": "Vermicelli Noodle & Rice Entree"
+      },
+      {
+        "name": "Com Royal",
+        "description": "",
+        "price": "$9.95",
+        "section": "Vermicelli Noodle & Rice Entree"
+      },
+      {
+        "name": "Chicken with Mix Vegetables",
+        "description": "",
+        "price": "$7.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "C-2. Kung Pao Chicken",
+        "description": "",
+        "price": "$8.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "C-3.  Sweet & Sour Chicken",
+        "description": "",
+        "price": "$7.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "C-9. Combination Fried Rice",
+        "description": "",
+        "price": "$8.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "C-6. Crispy Lemon Grass Chicken",
+        "description": "",
+        "price": "$7.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "C-7. Orange Chicken",
+        "description": "",
+        "price": "$8.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "C-8. Grilled Half Hen",
+        "description": "",
+        "price": "$8.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "C-10. Combination Stir Fried Noodle",
+        "description": "",
+        "price": "$8.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "C-4.  Crispy Half Hen",
+        "description": "",
+        "price": "$7.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Ginger & Onion Chicken",
+        "description": "",
+        "price": "$7.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Vegetarian Soup",
+        "description": "",
+        "price": "$8.75",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V-5. Vermicelli Noodle",
+        "description": "",
+        "price": "$7.95",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V-7. Buddha's Delight",
+        "description": "",
+        "price": "$8.95",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V-8. Orange Veggie Chicken",
+        "description": "",
+        "price": "$9.95",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V-9. Sweet & Sour Veggie Chicken",
+        "description": "",
+        "price": "$7.95",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V-10. Kung Pao Veggie Chicken",
+        "description": "",
+        "price": "$7.95",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V-11. Spicy Lemon Grass Tofu",
+        "description": "",
+        "price": "$8.95",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V-13. Egg Noodle Stir Fried",
+        "description": "",
+        "price": "$7.95",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V-6. Rice Noodle Stir Fried",
+        "description": "",
+        "price": "$7.95",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "V-12. Fried Rice",
+        "description": "",
+        "price": "$7.95",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "B-1. Filet Mignon",
+        "description": "",
+        "price": "$9.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "B-2. Beef Tongue Stew",
+        "description": "",
+        "price": "$9.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "B-4. Beef Stir Fried",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "B-5. Beef Stir Fried Rice Noodle",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "B-6. Beef Salad",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "B-7. Beef Au \"Vin\"",
+        "description": "",
+        "price": "$9.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "B-8. Crispy Egg Noodle",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "B-9. Rice Noodle Stir Fried Soft or Crispy",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "B-10. Kung Pao Beef",
+        "description": "",
+        "price": "$9.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "D-1. Tom Yum Noodle Soup",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "D-2. Shrimp Wonton Noodle Soup",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "D-3. Shrimp Salt & Pepper",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "D-4. Shrimp Snow Pea",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "D-5. Shrimp Paste On Sugarcane",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "D-6. Crispy Teriyaki Salmon",
+        "description": "",
+        "price": "$11.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "D-8. Crispy Fillet Fish",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "D-9. Fried Tilapia",
+        "description": "",
+        "price": "$9.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "D-10. Royal Catfish",
+        "description": "",
+        "price": "$9.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "Pad Thai",
+        "description": "",
+        "price": "$9.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "Yakisoba Noodle",
+        "description": "",
+        "price": "$9.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "Curry Stir Fried",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "Bean Thread Noodle Chicken Soup",
+        "description": "",
+        "price": "$7.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "Beef Tongue Noodle Soup (Lengua)",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "B-3. Spicy Lemongrass Beef Soup",
+        "description": "",
+        "price": "$8.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "D-7. Spicy Lemon Grass Salmon",
+        "description": "",
+        "price": "$13.95",
+        "section": "Featured Item"
+      },
+      {
+        "name": "2. Sardine w/ Tomato Sauce Sandwich",
+        "description": "",
+        "price": "$4.50",
+        "section": "Vietnamese"
+      },
+      {
+        "name": "4. Grilled Chicken Sandwich",
+        "description": "",
+        "price": "$4.50",
+        "section": "Vietnamese"
+      },
+      {
+        "name": "5. Grilled Beef Sandwich",
+        "description": "",
+        "price": "$5.95",
+        "section": "Vietnamese"
+      },
+      {
+        "name": "6. Shrimp Paste Sandwich",
+        "description": "",
+        "price": "$4.50",
+        "section": "Vietnamese"
+      },
+      {
+        "name": "7. Vegetarian Tofu Sandwich",
+        "description": "",
+        "price": "$4.50",
+        "section": "Vietnamese"
+      },
+      {
+        "name": "8. Vegetarian Chicken Sandwich",
+        "description": "",
+        "price": "$4.50",
+        "section": "Vietnamese"
+      },
+      {
+        "name": "1. Pork Meat Loaf Sandwich",
+        "description": "",
+        "price": "$4.50",
+        "section": "Vietnamese"
+      },
+      {
+        "name": "3. Grilled Pork Sandwich",
+        "description": "",
+        "price": "$5.95",
+        "section": "Vietnamese"
+      },
+      {
+        "name": "Cat Fish Steak w/ Pineapple",
+        "description": "",
+        "price": "$9.95",
+        "section": "House Specials"
+      },
+      {
+        "name": "Vietnamese Braised Fish In Clay Pot Catfish",
+        "description": "",
+        "price": "$8.95",
+        "section": "House Specials"
+      },
+      {
+        "name": "Pork Choy w/ Mushrooms",
+        "description": "",
+        "price": "$8.95",
+        "section": "House Specials"
+      },
+      {
+        "name": "Vietnamese Longan Desert",
+        "description": "",
+        "price": "$2.95",
+        "section": "House Specials"
+      },
+      {
+        "name": "Seafood Soup",
+        "description": "",
+        "price": "$9.95",
+        "section": "House Specials"
+      },
+      {
+        "name": "Broccoli Beef Snow Peas w/ Beef",
+        "description": "",
+        "price": "$8.95",
+        "section": "House Specials"
+      },
+      {
+        "name": "Squid Stir Fry w/ Pineapple & Tomato",
+        "description": "",
+        "price": "$10.95",
+        "section": "House Specials"
+      },
+      {
+        "name": "Green Tea Ice Cream",
+        "description": "",
+        "price": "$3.00",
+        "section": "House Specials"
+      },
+      {
+        "name": "Fried Banana",
+        "description": "",
+        "price": "$3.00",
+        "section": "House Specials"
+      },
+      {
+        "name": "Squid Stuffed with Savory Pork and Mushroom Filling",
+        "description": "",
+        "price": "$9.95",
+        "section": "House Specials"
+      },
+      {
+        "name": "Sour Soup Shrimps or Cat Fish",
+        "description": "",
+        "price": "$9.95",
+        "section": "House Specials"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3409",
+    "name": "The Coffee Bean & Tea Leaf",
+    "sourceUrl": "https://www.coffeebean.com/store/ca/san-diego/12070-caramel-mountain-rd",
+    "confidence": "low",
+    "blocked": "PLAYBOOK.md names this chain's Olo storefront as having defeated five prior extraction attempts and instructs blocking immediately rather than re-attempting. FINDINGS.md separately documents this exact San Diego location's Olo storefront gating all item pricing behind store-open status at night. Not re-attempted per the playbook's explicit guidance.",
+    "notes": "Per playbook rule: chains on Olo are better scheduled for a daytime, in-hours wave with a browser-equipped agent; this store's own on-page pricing has never been reachable by curl in any prior attempt.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1890",
+    "name": "Mariscos Mazatlan Mexican Grill",
+    "sourceUrl": "https://order.toasttab.com/online/mariscos-mazatlan-mexican-grill-escondido-1111-e-washington-ave",
+    "confidence": "low",
+    "blocked": "Two ordering platforms, both dead ends without a browser. (1) The own-site 'order online' link goes to clover.com/online-ordering/mariscos-mazatlan-hhh-escondido, which per playbook is Clover's hosted COLO2 React SPA -- confirmed by fetching the page: it loads window.APP_CONFIG-driven bootstrap JS with no server-rendered content and an empty #root div. The WordPress moo-clover REST path does not apply here (mariscosmazatlanhhh.com/wp-json/moo-clover/v1/categories returns 404 rest_no_route -- this restaurant is not running the WP plugin). (2) A Toast storefront also exists (order.toasttab.com/...) and was fetched with a Chrome UA -- window.__OO_STATE__ is present and parses cleanly (address confirmed: 1111 E Washington Ave, Escondido, CA 92025, guid fe92f364-9f5f-4a3c-b480-130e1f340450) but its Apollo cache holds only restaurant metadata (name, location, cuisine, hours config) with zero menu/item/price keys -- this is a client-side-fetch deployment per PLAYBOOK.md's note that some Toast pages embed the full catalog and others don't. Postmates (postmates.com/store/mariscos-mazatlan/...) 404s to curl; Grubhub's restaurant page is a client-rendered shell with no JSON-LD or SSR content.",
+    "notes": "Needs a Chrome-equipped agent on either the Toast storefront (read the client-side GraphQL response for the menu after it loads) or accept that Clover COLO2 has no known server-side workaround and is a dead end regardless of browser.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1127",
+    "name": "Tilted Stick",
+    "sourceUrl": "https://www.allmenus.com/ca/san-diego/334622-tilted-stick-bar-and-grill/menu/",
+    "confidence": "low",
+    "blocked": "Own site (tiltedstick.online) is behind a full Cloudflare JS challenge -- confirmed both by direct curl (403, Cloudflare challenge HTML) and via r.jina.ai proxy (also 403'd with the Cloudflare 'Just a moment...' challenge page), so it is not merely a curl-UA problem. Two curl-verified tier-4/5 sources agree on a LOW price level: SinglePlatform (singleplatform.com/tilted-stick-the/menu, schema.org Offer JSON embedded in the page) prices 1/3 lb. Burger $6.00, Double Burger $8.00, 2 Mahi Tacos $8.50; allmenus.com (Googlebot UA, item-title/item-price spans in the rendered HTML) prices Burger $7.25, Double Burger $9.50, 2 Mahi Tacos $9.00 -- different owners, same ballpark, satisfying the tier-5 two-independent-sources rule for those items. BUT WebSearch summaries citing Postmates/Uber Eats (which curl 404s and WebFetch 403s on this host, so unverifiable byte-for-byte) report the SAME items 40-90% higher: BBQ Stick Burger $12.00, Bacon Cheez Burger $15.50, Double Burger $17.00. That gap is too large and non-uniform to be a delivery markup (BBQ Stick ratio ~1.55x, Bacon Cheez ratio ~1.82x against the closest allmenus analogues) and reads instead as the staleness pattern documented for Carmen's Mexican Food in FINDINGS.md: a newer source disagreeing upward is ordinary, meaning the low, curl-verified SinglePlatform/allmenus figures are very likely outdated even though they agree with each other.",
+    "notes": "Neither the low pair nor the high pair can be fully trusted: the low pair is internally consistent but plausibly stale (both are the kind of restaurant-submitted/aggregator data the playbook already flags as often years old), and the high pair could not be verified against raw bytes because Postmates/Uber Eats 403/404 both curl and WebFetch from this environment. Needs a Chrome-equipped agent to either get past the Cloudflare challenge on tiltedstick.online directly, or load the Uber Eats / Postmates listing to confirm today's real prices byte-for-byte.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4228",
+    "name": "Coco Bomb",
+    "sourceUrl": "https://cocobombusa.com/menu",
+    "confidence": "low",
+    "blocked": "This restaurantId is the Linda Vista branch (2379 Ulric St, San Diego, confirmed via a 'Locations' card embedded in cocobombusa.com's page data: 'Linda Vista' / 'Address: 2379 Ulric St' / 'Phone: (619) 991-5533'). The site (built on Toast Sites) has online ordering with 39 priced items ONLY for the sibling Convoy Street branch (cocobombusa.com/menu/cocobomb-convoy-4690-convoy-street-suite-b103 -- ice cream/shave-bomb/drinks/Thai desserts, e.g. group_aea25c5d... 'Mango With Sticky Rice', 'Coconut Cake', etc, prices embedded in the page's GraphQL data). No equivalent /menu/cocobomb-linda-vista-... URL exists anywhere on the site (checked /, /menu, /about, /order -- the Linda Vista location card's button links only to /about, not an order/menu page). Per playbook, one branch's menu does not go under another branch's id.",
+    "notes": "Same brand, likely identical menu (small 2-location Thai dessert concept, not a chain with per-store variance), but not confirmed same prices for this specific location -- recommend propagation from the Convoy Street branch by name/distance if the pipeline supports it, rather than assigning its menu directly here. If Linda Vista is not itself in the corpus as a locatable Toast page, a Chrome-equipped agent should check cocobombusa.com/order for a location picker that might reveal a Linda Vista ordering slug.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2363",
+    "name": "Sammy's Woodfried Pizza",
+    "sourceUrl": "https://www.doordash.com/store/sammy's-woodfired-pizza-and-grill-san-marcos-85855/",
+    "confidence": "low",
+    "blocked": "Every reachable source is marked up, and the own-site/first-party sources are unreachable. Own site (sammyspizza.com) is Cloudflare-gated (403 to a Chrome UA on both the homepage and its Location-Details page). The restaurant's own Olo storefront (sammyswoodfiredpizza.olo.com/menu/sammys-san-marcos-2) uses the same serve-next architecture as Toasted's Olo storefront in this same batch -- __NEXT_DATA__ pageProps is empty, items are fetched client-side behind an anti-forgery-gated API, not reachable by curl. Two delivery channels ARE reachable and both confirmed address-matched (121 S Las Posas Rd, San Marcos, CA 92078): Slice (__SLICE_REDUX_STATE__, 75 priced items after dropping a 'Non Display Products' entry) and DoorDash (schema.org Menu JSON-LD, 84 items). DOORDASH FAILS THE MARKUP TEST CLEANLY: dividing DoorDash prices by 1.10 lands 54/72 non-'Most Ordered' items on an exact whole or half dollar with zero exceptions among the ones checked in detail (Kobe Beef Chili 15.40->14.00, Mini Duck Tacos 22.00->20.00, Lamb Chops 38.50->35.00, Oak Roasted Salmon 35.20->32.00, etc) -- a textbook 10% online-ordering surcharge. Slice's 28 overlapping items are consistently BELOW DoorDash's (never above) by a non-uniform 3-8%, which rules out Slice being the clean base too -- it reads as a smaller, separate markup on the same underlying menu, not the true price.",
+    "notes": "Per playbook: the markup test tells you a source is unusable, not what the real price was -- did NOT construct or report the divided-back (/1.10) numbers as dish prices even though they land suspiciously clean. Needs either the Cloudflare-gated own site or the anti-forgery-gated Olo storefront via a real browser to get a first-party number, or a dine-in menu photo (Yelp has 579 photos for this restaurant, not searched due to time).",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1211",
+    "name": "Scoreboard Ii",
+    "sourceUrl": "https://www.allmenus.com/ca/imperial-beach/393441-the-scoreboard/menu/",
+    "confidence": "low",
+    "blocked": "Address mismatch plus only one reachable tier-5 source. The work-list address is '715 Palm Avenue' with no website, but every independent listing found for the exact name 'Scoreboard Ii' -- Birdeye (reviews.birdeye.com/scoreboard-ii-149338205804244, same review-count ballpark as the work list) and Tripadvisor -- puts this business at 951 Palm Ave, Imperial Beach, CA 91932, phone (619) 424-9909, also doing business as 'The Scoreboard' / 'The Scoreboard IB' (same phone number ties the two names together, e.g. allmenus title '...  - (619) 424-9909'). No business at 715 Palm Ave in Imperial Beach turned up in search. Treating this as the same business at 951 Palm Ave (not verified against the work-list address, which appears stale or simply wrong), the restaurant's own domain from Birdeye's listing (ibscoreboard.net) returns HTTP 200 with a completely EMPTY body (0 bytes, confirmed by both curl and WebFetch) -- effectively a dead site. The only priced source reachable is allmenus.com (Googlebot UA, item-title/item-price spans, 54 items across 8 sections: Starters, Salads, Scoreburgers, Dog House, Sandwiches n' Stuff, For the Kids, Beverages, Specials -- clean bar-food price level $2.00-$15.99, no markup pattern on any tested divisor). menupix.com and zmenu.com both carry a second listing but both are behind a Cloudflare JS challenge (403 to curl) and menupix also 402'd WebFetch -- so no second independent source could be verified to corroborate allmenus per the two-tier-5-sources rule.",
+    "notes": "If the 715 Palm Avenue address in the work list is confirmed correct and distinct from 951 Palm Ave, this may be a DIFFERENT business entirely and none of the above applies -- worth double-checking the work list's source before propagating. The 54-item allmenus catalog looks like a complete, plausible sports-bar menu (core sections present, clean pricing, no markup signature) and would likely be usable at medium confidence with one more corroborating source.",
+    "dishes": []
+  }
+]

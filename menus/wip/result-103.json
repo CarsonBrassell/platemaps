@@ -1,0 +1,1076 @@
+[
+  {
+    "restaurantId": "4459",
+    "name": "Spiro's Mediterranean Cuisine",
+    "sourceUrl": "https://www.doordash.com/store/spiros-mediterranean-cuisine-23652481/",
+    "confidence": "medium",
+    "notes": "Restaurant's own site (spiroscuisineca.com, Popmenu platform) confirms same address (909 Prospect St Ste 100B, La Jolla) and location but items are client-fetched, not in server HTML - needs a browser, none available this session. Used DoorDash marketplace schema.org Menu JSON-LD instead (server-rendered, address matches exactly). Markup test run (divide by 1.04/1.10/1.15/1.17/1.20/1.25/1.30): no clean signature found on any divisor (best was 1.25 at 30.8%, well below the ~75-100% threshold for a real markup); price endings are POS-style (.00/.25/.50/.75/.95), consistent with genuine restaurant pricing. Dropped the 'Most Ordered' section (12 items) as a pure duplicate carousel of items already listed under their real categories - confirmed zero items unique to it. Reached: Let's Share, Pita Sandwiches, Soups and Salads, Platters, Not So Greek, For the Kiddos, Let's Drink, Family Packs, Party Packs, A La Carte, Sides - 11 categories covering starters, sandwiches, soups/salads, platters, family/party packs, sides and drinks. No dessert section found/observed on this source.",
+    "dishes": [
+      {
+        "name": "Spiro's Sampler",
+        "description": "Enjoy a selection of falafel, dolmades, roasted red pepper feta dip, hummus, tzatziki, Kalamata olives. Served with warm pita bread.",
+        "price": "$25.25",
+        "section": "Let's Share"
+      },
+      {
+        "name": "Gyro Fries",
+        "description": "Traditional gyro meat, feta cheese, diced tomatoes, red onion, Kalamata olives, pepperocini, and Greek spices atop our popular french fries.",
+        "price": "$14.50",
+        "section": "Let's Share"
+      },
+      {
+        "name": "Spanakopita",
+        "description": "Spinach and feta cheese housed between delicate layers of flaky phyllo dough coupled with a side of tzatziki.",
+        "price": "$13.75",
+        "section": "Let's Share"
+      },
+      {
+        "name": "Spinach Rustica",
+        "description": "Spinach, fresh garlic, basil and a blend of melted feta, jack and Parmesan cheeses. Served with pita or gluten-free crackers.",
+        "price": "$13.50",
+        "section": "Let's Share"
+      },
+      {
+        "name": "Hummus - Pita Starter",
+        "description": "A smooth, tangy bean dip with a subtle \"kick.\" Served with a side of Kalamata olives.",
+        "price": "$13.25",
+        "section": "Let's Share"
+      },
+      {
+        "name": "Falafel with Pita",
+        "description": "A mix of chickpeas and spices feature in the crispy yet tender Mediterranean dish. Served with hummus, tzatziki, Kalamata olives, and warm pita bread.",
+        "price": "$12.95",
+        "section": "Let's Share"
+      },
+      {
+        "name": "Roasted Red Pepper Feta Dip",
+        "description": "Roasted red peppers, garlic, olive oil, red wine vinegar, chili flakes, served with warm pita",
+        "price": "$12.50",
+        "section": "Let's Share"
+      },
+      {
+        "name": "Tabouli",
+        "description": "Fresh parsley, mint, tomato and green onion with lemon juice and garlic. Served with Spiro's tzatziki and warm pita.",
+        "price": "$12.50",
+        "section": "Let's Share"
+      },
+      {
+        "name": "Tzatziki and Pita",
+        "description": "Refreshing cucumber, lemon juice, and garlic folded into creamy yogurt to create Greece's most famous sauce.",
+        "price": "$11.50",
+        "section": "Let's Share"
+      },
+      {
+        "name": "Dolmades",
+        "description": "Fluffy rice accented with fragrant herbs rolled in marinated grape leaves. Served with tzatziki.",
+        "price": "$11.50",
+        "section": "Let's Share"
+      },
+      {
+        "name": "Chicken Kabob Sandwich",
+        "description": "Grilled chicken, marinated in a flavorful blend of Greek ingredients, housed in soft pita bread. Includes sliced tomato, red onion, and tzatziki.",
+        "price": "$19.75",
+        "section": "Pita Sandwiches"
+      },
+      {
+        "name": "Chicken Gyro Sandwich",
+        "description": "A unique twist on the original and equally delicious! Includes slided tomato, red onion, and tzatziki.",
+        "price": "$18.95",
+        "section": "Pita Sandwiches"
+      },
+      {
+        "name": "Lamb-Beef Gyro Sandwich",
+        "description": "Slices of the traditional lamb and beef blend nestled in solf pita. Includes sliced tomato, red onion, and tzatziki.",
+        "price": "$18.50",
+        "section": "Pita Sandwiches"
+      },
+      {
+        "name": "Falafel Sandwich",
+        "description": "Traditional Greek sandwich with falafel in warm pita bread generously spread with hummus. This vegeterian favorite includes sliced tomato, red onion and tzatziki.",
+        "price": "$16.25",
+        "section": "Pita Sandwiches"
+      },
+      {
+        "name": "Horiatiki Village Salad",
+        "description": "This classic Greek salad without the lettuce! It simply highlights all the toppings - juicy tomato, cucumber, red onion, Kalamata olives, pepperocini, topped with crumbled feta cheese. Served with creamy tzatziki.",
+        "price": "$21.25",
+        "section": "Soups and Salads"
+      },
+      {
+        "name": "Spinach, Mango & Papaya Salad",
+        "description": "Organic spinach, mango, papaya, red onion, avocado and crumbled feta. Served with Poppy seed dressing and garlic baguette.",
+        "price": "$19.50",
+        "section": "Soups and Salads"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "Tossed romaine and iceberg, feta cheese, tomato, cucumber, red onion, Kalamata olives, and pepperocini drizzled with house-made vinaigrette. Served with creamy tzatziki.",
+        "price": "$18.50",
+        "section": "Soups and Salads"
+      },
+      {
+        "name": "Traditional Caesar Salad",
+        "description": "Crisp romaine hand-tossed with our house-made croutons, Caesar dressing, and shaved Parmesan cheese. Served with a garlic baguette.",
+        "price": "$16.95",
+        "section": "Soups and Salads"
+      },
+      {
+        "name": "Avgolemeno Soup",
+        "description": "A savory, mildly tart soup authentically prepared with pulled chicken breast meat, lemon, egg, and orzo.",
+        "price": "$12.50",
+        "section": "Soups and Salads"
+      },
+      {
+        "name": "Lentil Bean Soup",
+        "description": "Tender lentils, celery, carrots, and cumin bathed in a richly seasoned broth.",
+        "price": "$11.50",
+        "section": "Soups and Salads"
+      },
+      {
+        "name": "Lamb Chops Platter",
+        "description": "Rich and flavorful Australian lamb chops, served with your choice of rice pilaf or french fries. Accompanied with a Greek salad, warm pita bread and tzatziki sauce.",
+        "price": "$43.95",
+        "section": "Platters"
+      },
+      {
+        "name": "Spiro's Signature Beef Kabob",
+        "description": "Aged beef seasoned with the Mediterranean touch. Served with your choice of rice pilaf or french fries and a Greek salad, warm pita bread and tzatziki sauce.",
+        "price": "$33.75",
+        "section": "Platters"
+      },
+      {
+        "name": "Grilled Salmon Platter",
+        "description": "Salmon grilled to perfection, your choice of rice pilaf or french fries, and a Greek salad. Includes warm pita bread and tzatziki sauce.",
+        "price": "$32.50",
+        "section": "Platters"
+      },
+      {
+        "name": "Chicken Kabob Platter",
+        "description": "Grilled chicken, marinated in a flavorful blend of Greek ingredients, served with your choice of rice pilaf or french fries and Greek salad. Includes warm pita bread and tzatziki sauce.",
+        "price": "$29.95",
+        "section": "Platters"
+      },
+      {
+        "name": "Lamb Kabob Platter",
+        "description": "Tender and succulent Australian lamb kabobs, sourced from grass-fed or grain-finished pastures, and marinated in a flavorful mix of Greek spices and herbs. Includes your choice of rice pilaf or french fries, Greek salad, warm pita bread and tzatziki sauce.",
+        "price": "$29.95",
+        "section": "Platters"
+      },
+      {
+        "name": "Shrimp Kabob Platter",
+        "description": "Marinated shrimp kabobs, your choice of rice pilaf or french fries, Greek salad and warm pita. Includes our tasty tzatziki sauce.",
+        "price": "$29.25",
+        "section": "Platters"
+      },
+      {
+        "name": "Chicken Gyro Platter",
+        "description": "Slices of our flavorful seasoned and marinated chicken, your choice of rice pilaf or french fries, and a Greek salad. Served with pita bread and tzatziki sauce.",
+        "price": "$26.95",
+        "section": "Platters"
+      },
+      {
+        "name": "Lamb-Beef Gyro Platter",
+        "description": "Slices of our traditional lamb and beef blend seasoned with herbs and spices, your choice of rice pilaf or french fries, and a Greek salad. Includes pita bread and tzatziki sauce.",
+        "price": "$26.50",
+        "section": "Platters"
+      },
+      {
+        "name": "Moussaka Platter",
+        "description": "The Greek version of lasagna.... ground beef, pasta, eggplant and tomato sauce topped with a rich bechamel sauce. Served with your choice of rice pilaf or french fries. Includes a Greek salad, pita bread and Spiro's Tzatziki sauce.",
+        "price": "$26.25",
+        "section": "Platters"
+      },
+      {
+        "name": "Spanakopita Platter",
+        "description": "Traditional Greek spinach pie featuring a savory filling of spinach, feta cheese, and seasonings enclosed in layers of delicate, flaky, phyllo dough. Served with your choice of rice pilaf or french fries and a Greek salad. Includes warm pita bread and tzatziki sauce.",
+        "price": "$24.50",
+        "section": "Platters"
+      },
+      {
+        "name": "Falafel Platter",
+        "description": "Traditional Greek dish, fried balls of ground chickpeas blended with Mediterranean herbs and spices. Your choice of rice pilaf or french fries. Also includes Greek salad, warm pita and tzatziki sauce.",
+        "price": "$23.75",
+        "section": "Platters"
+      },
+      {
+        "name": "Grilled Shrimp Tacos",
+        "description": "Three grilled shrimp tacos filled with romaine lettuce, pico de gallo, fresh avocado and wedges of lemon. Served with our salsa and Spiro's signature \"white sauce.\"",
+        "price": "$26.25",
+        "section": "Not So Greek"
+      },
+      {
+        "name": "Super Fish Sandwich & Fries",
+        "description": "Two pieces of our beer-battered cod, melted cheddar cheese, lettuce, tomato and red onion on a warm sesame seed bun.",
+        "price": "$23.95",
+        "section": "Not So Greek"
+      },
+      {
+        "name": "Baja Style Fish Tacos",
+        "description": "Two beer-battered codfish tacos stuffed with shredded cabbage, pico de gallo, wedges of lemon. Served with our house-made salsa.",
+        "price": "$22.95",
+        "section": "Not So Greek"
+      },
+      {
+        "name": "Greek Burger & Fries",
+        "description": "Spiro's take on the classic burger, Greek style. Includes feta cheese, oregano, and our homemade garlic aioli. Served with french fries.",
+        "price": "$21.75",
+        "section": "Not So Greek"
+      },
+      {
+        "name": "Cheeseburger & Fries",
+        "description": "All-American cheeseburger with cheese, lettuce, tomato, and red onion. Served with french fries.",
+        "price": "$21.75",
+        "section": "Not So Greek"
+      },
+      {
+        "name": "Fish and Chips",
+        "description": "Two beer-battered codfish fillets, french fries, creamy coleslaw, wedges of lemon, and our house-made tarter and cocktail sauces.",
+        "price": "$21.25",
+        "section": "Not So Greek"
+      },
+      {
+        "name": "Grilled Chicken Sandwich & Fries",
+        "description": "1/2 lb chicken breast cooked on the open flame, melted cheddar cheese, lettuce, tomato, red onion and our secret sauce. Served on a warm sesame seed bun.",
+        "price": "$20.75",
+        "section": "Not So Greek"
+      },
+      {
+        "name": "Crispy Calamari",
+        "description": "Bite-sized pieces served with house-made coctail and tarter sauces, garnished with wedges of lemon.",
+        "price": "$19.95",
+        "section": "Not So Greek"
+      },
+      {
+        "name": "Five-Cheese Mac & Cheese",
+        "description": "Our house-made mac & cheese topped with maple bacon bits and fresh chives. Served with a garlic baguette.",
+        "price": "$12.75",
+        "section": "Not So Greek"
+      },
+      {
+        "name": "Chicken Tenders with Fries",
+        "description": "",
+        "price": "$12.95",
+        "section": "For the Kiddos"
+      },
+      {
+        "name": "Traditional Mac & Cheese & Fries",
+        "description": "",
+        "price": "$12.00",
+        "section": "For the Kiddos"
+      },
+      {
+        "name": "Pepperoni Pizza Pita",
+        "description": "",
+        "price": "$11.50",
+        "section": "For the Kiddos"
+      },
+      {
+        "name": "Cheese Pizza Pita",
+        "description": "",
+        "price": "$11.50",
+        "section": "For the Kiddos"
+      },
+      {
+        "name": "Grilled Cheese & Fries",
+        "description": "",
+        "price": "$11.25",
+        "section": "For the Kiddos"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "",
+        "price": "$10.75",
+        "section": "For the Kiddos"
+      },
+      {
+        "name": "Sparkling Water",
+        "description": "",
+        "price": "$4.75",
+        "section": "Let's Drink"
+      },
+      {
+        "name": "Fountain Soda",
+        "description": "",
+        "price": "$4.50",
+        "section": "Let's Drink"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$4.50",
+        "section": "Let's Drink"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$4.00",
+        "section": "Let's Drink"
+      },
+      {
+        "name": "Lamb Kabob Family Pack",
+        "description": "Good for 4 people",
+        "price": "$124.00",
+        "section": "Family Packs"
+      },
+      {
+        "name": "Shrimp Kabob Family Pack",
+        "description": "Good for 4 people. Tangy grilled shrimp kabobs with family portions of Greek salad, rice or fries, pita bread and tzatziki sauce.",
+        "price": "$112.50",
+        "section": "Family Packs"
+      },
+      {
+        "name": "Spiro's Signature Beef Kabob Family Pack",
+        "description": "Good for 4 people. Juicy and tender beef kabobs. Dinner complete with Greek salad, rice or fries, pita bread and tzatziki sauce.",
+        "price": "$112.50",
+        "section": "Family Packs"
+      },
+      {
+        "name": "Chicken Kabob Family Pack",
+        "description": "Good for 4 people. Spiro's marinade and spices make tasty chicken kabobs. Includes Greek salad, rice or fries, pita bread and tzatziki sauce.",
+        "price": "$99.95",
+        "section": "Family Packs"
+      },
+      {
+        "name": "Chicken Gyro Family Pack",
+        "description": "Good for 4 people. Flavorful chicken gyro meat with family servings of Greek salad, rice or fries, pita bread and tzatziki sauce.",
+        "price": "$98.00",
+        "section": "Family Packs"
+      },
+      {
+        "name": "Lamb-Beef Gyro Family Pack",
+        "description": "Good for 4 people. Delicious lamb and beef gyro meat with Greek salad, rice or fries, pita bread and tzatziki sauce.",
+        "price": "$95.00",
+        "section": "Family Packs"
+      },
+      {
+        "name": "Lamb Kabob Party Pack",
+        "description": "Good for 10 people. Tender and succulent Australian lamb kabobs, sourced from grass-fed or grain finished pastures, and maritnated ina flavorful mix of Greek spices and herbs. Included Greek salad, rice or fries, warm pita bread and tzatziki sauce.",
+        "price": "$264.00",
+        "section": "Party Packs"
+      },
+      {
+        "name": "Shrimp Kabob Party Pack",
+        "description": "Good for 10 people. Tangy grilled shrimp kabobs with family portions of Greek salad, rice or fries, pita bread and tzatziki sauce.",
+        "price": "$242.00",
+        "section": "Party Packs"
+      },
+      {
+        "name": "Spiro's Signature Beef Kabob Party Pack",
+        "description": "Good for 10 people. Juicy and tender seasoned beef kabobs. Dinner complete with Greek salad, rice, pita bread and tzatziki sauce.",
+        "price": "$242.00",
+        "section": "Party Packs"
+      },
+      {
+        "name": "Chicken Kabob Party Pack",
+        "description": "Good for 10 people. Spiro's marinade and spices make tasty chicken kabobs. Includes Greek salad, rice or fries, pita bread and tzatziki sauce.",
+        "price": "$228.00",
+        "section": "Party Packs"
+      },
+      {
+        "name": "Chicken Gyro Party Pack",
+        "description": "Good for 10 people. Flavorful chicken gyro meat with family servings of Greek salad, rice or fries, pita bread and tzatziki sauce.",
+        "price": "$220.00",
+        "section": "Party Packs"
+      },
+      {
+        "name": "Lamb-Beef Gyro Party Pack",
+        "description": "Good for 10 people. Delicious lamb and beef gyro meat with Greek salad, rice or fries, pita bread and tzatziki sauce.",
+        "price": "$215.00",
+        "section": "Party Packs"
+      },
+      {
+        "name": "Roasted Red Pepper Feta Dip",
+        "description": "Roasted red peppers, garlic, olive oil, red wine vinegar, chili flakes, served with warm pita",
+        "price": "$18.00",
+        "section": "À La Carte"
+      },
+      {
+        "name": "Salmon",
+        "description": "",
+        "price": "$15.95",
+        "section": "À La Carte"
+      },
+      {
+        "name": "1 Lamb Kebob",
+        "description": "",
+        "price": "$15.00",
+        "section": "À La Carte"
+      },
+      {
+        "name": "Pita (Dozen)",
+        "description": "",
+        "price": "$15.00",
+        "section": "À La Carte"
+      },
+      {
+        "name": "1 Spiro's Signature Beef Kabob",
+        "description": "",
+        "price": "$14.95",
+        "section": "À La Carte"
+      },
+      {
+        "name": "1 Shrimp Kebob",
+        "description": "",
+        "price": "$11.50",
+        "section": "À La Carte"
+      },
+      {
+        "name": "1 Chicken Kabob",
+        "description": "",
+        "price": "$11.25",
+        "section": "À La Carte"
+      },
+      {
+        "name": "Spiro's Traditional Grilled Chicken",
+        "description": "",
+        "price": "$11.25",
+        "section": "À La Carte"
+      },
+      {
+        "name": "Lamb-Beef Gyro Meat",
+        "description": "",
+        "price": "$9.95",
+        "section": "À La Carte"
+      },
+      {
+        "name": "Chicken Gyro Meat",
+        "description": "",
+        "price": "$9.95",
+        "section": "À La Carte"
+      },
+      {
+        "name": "Salad Dressing",
+        "description": "12 oz",
+        "price": "$9.95",
+        "section": "À La Carte"
+      },
+      {
+        "name": "Tzatziki",
+        "description": "12 oz",
+        "price": "$9.95",
+        "section": "À La Carte"
+      },
+      {
+        "name": "Falafel",
+        "description": "Spiced mashed chickpea fritters, warm pita, olives, tzatziki, and hummus",
+        "price": "$7.75",
+        "section": "À La Carte"
+      },
+      {
+        "name": "Hummus",
+        "description": "2 oz",
+        "price": "$0.75",
+        "section": "À La Carte"
+      },
+      {
+        "name": "Side Lamb Beef Gyro",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sides"
+      },
+      {
+        "name": "Side of Fries",
+        "description": "",
+        "price": "$6.25",
+        "section": "Sides"
+      },
+      {
+        "name": "Side Greek Salad",
+        "description": "",
+        "price": "$6.25",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3886",
+    "name": "Areli's Taco Shop",
+    "sourceUrl": "https://www.doordash.com/store/arelis-taco-shop-san-diego-36087562/80692146/",
+    "confidence": "low",
+    "blocked": "Own site (arelistacoshop.site) does not resolve (DNS failure) - dead domain. Business is now at the same address under a NetWaiter storefront still branded 'Ortiz's Taco Shop' (ortizstacoshop.netwaiter.com, address 1313 Garnet Ave confirmed exactly, phone 8582748931 matches) - a tier-2 first-party platform - but its menu lives behind my.netwaiter.com, a JS search/ordering SPA with no server-rendered items reachable by curl; needs a browser. The two priced sources I could reach disagree on price level: DoorDash marketplace (server-rendered schema.org Menu JSON-LD, address matches exactly, 91 items/11 categories, no clean single markup divisor found in 1.04-1.30 range) runs 33-48% higher than sagemenu.com (tier 5, 208 items/18 categories, individually priced) on every overlapping item (e.g. tacos $5.99 vs $4.50, Carne Asada Fries $16.99 vs $11.50, Caldo de Res $16.99 vs $11.50) - not a single clean ratio, so neither a confirmed markup nor a confirmed match. DoorDash also omits Burritos, Breakfast (plates/burritos) and Enchiladas entirely, which sagemenu shows as full categories - a taco shop's own burrito section is core, not adjunct, so DoorDash alone cannot stand as the menu. Needs a browser to read the NetWaiter storefront (or another first-party source) to settle which price level is current.",
+    "notes": "Do not use sagemenu or DoorDash as the recorded menu until the disagreement is resolved - recording either risks either a stale (sagemenu, directory data) or delivery-marked-up (DoorDash) price list as if it were dine-in.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4599",
+    "name": "Don Lucios Mexican Food",
+    "sourceUrl": "https://www.doordash.com/en-US/store/don-lucio-s-taco-shop-ii-san-diego-63657/",
+    "confidence": "medium",
+    "notes": "No website listed on work list; found as 'Don Lucio's Taco Shop II' at the exact same address (9969 Mira Mesa Blvd, San Diego - matched via DoorDash's own address FAQ text). Same business, different display name across sources - verified on address per playbook guidance, not treated as a mismatch. A second, unrelated location ('Don Lucio's Taco Shop Otay', 2360 Paseo De Las Americas) exists and was NOT used - this record is Mira Mesa only. Restaurant's own NetWaiter storefront (donluciostacoshopii.netwaiter.com, address and phone both confirmed matching) exists but its menu lives behind a client-rendered my.netwaiter.com SPA with zero prices in server HTML - not used. Used DoorDash marketplace schema.org Menu JSON-LD instead (server-rendered). Markup test run (divide by 1.04/1.10/1.15/1.17/1.20/1.25/1.30): no clean signature on any divisor (best was 1.10 at 18.7%, well below the ~75-100% threshold for a real markup); odd-cent pricing throughout ($5.94, $6.45, $8.37, $8.51) reads as POS-generated dine-in pricing, not a delivery percentage markup. A WebSearch summary independently surfaced several of the same prices verbatim (Burrito $5.94, Steak Con Huevo $6.45, Egg & Cheese Burrito $2.75), consistent with this being the live listing rather than a stale or altered one. Price level (tacos $2.45-$3.45, burritos $4.50-$8.75) is low for 2026 generally but plausible for this specific old-school taco shop, per multiple reviews describing it as a longtime cheap hole-in-the-wall. Reached: Breakfast, Tortas, Tacos, Tostadas, Burritos, Enchiladas, Chimichangas, Hamburgers, Specials, Big Plate, Combination Plates, Extras - 12 categories including the core Burritos and Tacos sections. Did not reach a separate Side Orders or Drinks section that other listings mention existing - may be a gap in DoorDash's own category set.",
+    "dishes": [
+      {
+        "name": "Steak Con Huevo",
+        "description": "",
+        "price": "$6.45",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Egg & Cheese Burrito",
+        "description": "",
+        "price": "$2.75",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Huevos A La Mixicana",
+        "description": "",
+        "price": "$5.75",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Burrito",
+        "description": "",
+        "price": "$5.94",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Carnitas",
+        "description": "",
+        "price": "$5.88",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "",
+        "price": "$5.88",
+        "section": "Tortas"
+      },
+      {
+        "name": "Al Pastor",
+        "description": "",
+        "price": "$5.88",
+        "section": "Tortas"
+      },
+      {
+        "name": "Milanesa",
+        "description": "",
+        "price": "$5.88",
+        "section": "Tortas"
+      },
+      {
+        "name": "Beef",
+        "description": "",
+        "price": "$4.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Ham",
+        "description": "",
+        "price": "$4.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chorizo",
+        "description": "",
+        "price": "$5.25",
+        "section": "Tortas"
+      },
+      {
+        "name": "Machaca",
+        "description": "",
+        "price": "$5.25",
+        "section": "Tortas"
+      },
+      {
+        "name": "Fish",
+        "description": "",
+        "price": "$5.88",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$4.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carnitas",
+        "description": "",
+        "price": "$2.85",
+        "section": "Tacos"
+      },
+      {
+        "name": "Al Pastor",
+        "description": "",
+        "price": "$3.45",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo Asado",
+        "description": "",
+        "price": "$2.85",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shredded Beef",
+        "description": "",
+        "price": "$3.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$2.45",
+        "section": "Tacos"
+      },
+      {
+        "name": "Fish",
+        "description": "",
+        "price": "$2.85",
+        "section": "Tacos"
+      },
+      {
+        "name": "3 Rolled (with Guacamole)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Buche",
+        "description": "",
+        "price": "$2.85",
+        "section": "Tacos"
+      },
+      {
+        "name": "5 Rolled Tacos",
+        "description": "Guacamole & cheese.",
+        "price": "$7.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "",
+        "price": "$8.37",
+        "section": "Tacos"
+      },
+      {
+        "name": "3 Rolled (Plain)",
+        "description": "",
+        "price": "$4.70",
+        "section": "Tacos"
+      },
+      {
+        "name": "Flying Saucer",
+        "description": "",
+        "price": "$6.75",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Beef",
+        "description": "",
+        "price": "$3.50",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Beans",
+        "description": "",
+        "price": "$2.50",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "",
+        "price": "$4.25",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$3.50",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "",
+        "price": "$8.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas",
+        "description": "",
+        "price": "$7.88",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp",
+        "description": "",
+        "price": "$8.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Steak Ranchero",
+        "description": "",
+        "price": "$5.88",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asado",
+        "description": "",
+        "price": "$5.88",
+        "section": "Burritos"
+      },
+      {
+        "name": "Al Pastor",
+        "description": "",
+        "price": "$5.88",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chorizo",
+        "description": "",
+        "price": "$5.25",
+        "section": "Burritos"
+      },
+      {
+        "name": "Machaca",
+        "description": "",
+        "price": "$5.25",
+        "section": "Burritos"
+      },
+      {
+        "name": "California",
+        "description": "",
+        "price": "$8.51",
+        "section": "Burritos"
+      },
+      {
+        "name": "Vegetables",
+        "description": "",
+        "price": "$4.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Relleno",
+        "description": "",
+        "price": "$5.88",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fish",
+        "description": "",
+        "price": "$7.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$4.80",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bean",
+        "description": "",
+        "price": "$6.02",
+        "section": "Burritos"
+      },
+      {
+        "name": "Buche",
+        "description": "",
+        "price": "$5.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "Mixed",
+        "description": "",
+        "price": "$4.80",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beef",
+        "description": "",
+        "price": "$4.80",
+        "section": "Burritos"
+      },
+      {
+        "name": "2 Chicken",
+        "description": "",
+        "price": "$5.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "2 Mixed",
+        "description": "",
+        "price": "$5.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "2 Cheese",
+        "description": "",
+        "price": "$5.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "2 Beef",
+        "description": "",
+        "price": "$5.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Carna Asada",
+        "description": "",
+        "price": "$8.52",
+        "section": "Chimichangas"
+      },
+      {
+        "name": "Beef",
+        "description": "",
+        "price": "$6.50",
+        "section": "Chimichangas"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$8.10",
+        "section": "Chimichangas"
+      },
+      {
+        "name": "Beans",
+        "description": "",
+        "price": "$4.95",
+        "section": "Chimichangas"
+      },
+      {
+        "name": "Regular Hamburger",
+        "description": "",
+        "price": "$2.50",
+        "section": "Hamburgers"
+      },
+      {
+        "name": "Cheeseburger",
+        "description": "",
+        "price": "$5.00",
+        "section": "Hamburgers"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$1.75",
+        "section": "Hamburgers"
+      },
+      {
+        "name": "Carne Asada Burrito",
+        "description": "Rice & beans.",
+        "price": "$7.35",
+        "section": "Specials"
+      },
+      {
+        "name": "3 Rolled Tacos",
+        "description": "",
+        "price": "$5.10",
+        "section": "Specials"
+      },
+      {
+        "name": "3 Beef Flautas",
+        "description": "Rice & beans.",
+        "price": "$7.25",
+        "section": "Specials"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$16.74",
+        "section": "Specials"
+      },
+      {
+        "name": "5 Beef Rolled Tacos",
+        "description": "",
+        "price": "$5.99",
+        "section": "Specials"
+      },
+      {
+        "name": "Pollo En Chipotle",
+        "description": "",
+        "price": "$7.50",
+        "section": "Specials"
+      },
+      {
+        "name": "5 Mini Tacos",
+        "description": "Carne asada, al pastor, pollo asado, carnitas, beef, chicken.",
+        "price": "$7.75",
+        "section": "Specials"
+      },
+      {
+        "name": "Bean Cheese Burrito",
+        "description": "",
+        "price": "$4.96",
+        "section": "Specials"
+      },
+      {
+        "name": "Huarache",
+        "description": "Your choice: asada, al pastor, chicken, beef.",
+        "price": "$5.50",
+        "section": "Specials"
+      },
+      {
+        "name": "Menudo",
+        "description": "",
+        "price": "$8.75",
+        "section": "Specials"
+      },
+      {
+        "name": "Asada Quesadilla",
+        "description": "",
+        "price": "$8.50",
+        "section": "Specials"
+      },
+      {
+        "name": "2 Rolled Tacos, (with Guacamole) Beef Taco & Bean Toastada",
+        "description": "",
+        "price": "$6.50",
+        "section": "Big Plate"
+      },
+      {
+        "name": "1. Two Beef Tacos",
+        "description": "",
+        "price": "$8.50",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "2.Two Beef Sopas",
+        "description": "",
+        "price": "$7.50",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "3. Two Cheese Enchiladas",
+        "description": "",
+        "price": "$7.50",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "4. Beef Taco & Beef Burrito",
+        "description": "",
+        "price": "$7.90",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "5. Beef Taco & Cheese Enchilada",
+        "description": "",
+        "price": "$7.50",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "6. Beef Burrito & Cheese Enchilada",
+        "description": "",
+        "price": "$7.50",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "7. Cheese Enchilada & Beef Tostada",
+        "description": "",
+        "price": "$7.50",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "8. Carne Asada",
+        "description": "",
+        "price": "$8.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "9. Chorizo",
+        "description": "",
+        "price": "$7.35",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "11. Chile Relleno",
+        "description": "",
+        "price": "$8.35",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "13. Chmichanga",
+        "description": "",
+        "price": "$8.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "14. Carnitas",
+        "description": "",
+        "price": "$9.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "15. Two Fish Tacos",
+        "description": "",
+        "price": "$8.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "16. Al Pastor",
+        "description": "",
+        "price": "$8.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "17. Camarones Rancheros",
+        "description": "",
+        "price": "$8.75",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "18. Milanesa",
+        "description": "",
+        "price": "$8.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "10. Machaca",
+        "description": "",
+        "price": "$7.35",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "12. Steak Relleno",
+        "description": "",
+        "price": "$8.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Jalapenos",
+        "description": "",
+        "price": "$0.65",
+        "section": "Extras"
+      },
+      {
+        "name": "Guacamole",
+        "description": "",
+        "price": "$2.50",
+        "section": "Extras"
+      },
+      {
+        "name": "Sour Cream",
+        "description": "",
+        "price": "$1.25",
+        "section": "Extras"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3000",
+    "name": "Potato Corner",
+    "sourceUrl": "https://potatocorner.com/menu/",
+    "confidence": "low",
+    "blocked": "Listed site (potatocornerusa.com) is a Wix 'ConnectYourDomain Error' page - domain not connected to any site. The brand's real corporate site (potatocorner.com) has a /menu/ page but it is a flavor list with zero prices (franchise pricing varies by location and is set locally, not published corporate-wide). Could not find an ordering platform (DoorDash/UberEats/etc) specific to this store (3030 Plaza Bonita Rd Ste 2075, National City) - DoorDash's business page for the chain and its National City restaurant-listing page both loaded but neither contains a link to this specific location (likely geo-gated/client-rendered location search). Third-party listings (sirved.com, menupix.com, foursquare.com, restaurantji.com) either rendered with the address confirmed but zero prices in server HTML (sirved), 403/Cloudflare-challenged even via a Chrome UA and r.jina.ai (menupix), or redirected into a client app (foursquare). Yelp direct fetch returns a blocked stub (776 bytes) as usual. A WebSearch summary surfaced plausible-looking prices (Flavored Fries $8.99, Chicken Combos $12.99, Fries Combos $10.49, Chili Cheese Fries mega $9.99) but I could not independently verify them on a real page for this address, and two near-identical SEO domains (potatocornerprice.com / potatocornerprices.com) turned up for generic 'USA' pricing that is explicitly disclaimed as varying by location - not used. Needs a browser to reach DoorDash/UberEats with a National City address set, or to get past menupix's Cloudflare challenge.",
+    "notes": "Do not substitute another Potato Corner branch's storefront (e.g. the Los Angeles DoorDash listing found in search) for this location - per house rule, one branch's menu does not go under another branch's id.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3066",
+    "name": "Pinto Thai Bistro",
+    "sourceUrl": "https://pintosd.menufy.com/",
+    "confidence": "low",
+    "blocked": "Own site (pintosd.com, address confirmed San Diego CA 92124) links to a Menufy ordering storefront (pintosd.menufy.com) which is a client-rendered SPA - server HTML contains only $0.00 placeholders and no per-item data; no discoverable REST endpoint from the static bundle. 'Pinto Thai' is a multi-state chain with DoorDash listings in FL, WA, CA (Roseville), TX, OR, OH but none in San Diego - did not substitute another branch's storefront per house rule. Grubhub and Seamless both list this restaurant but load as client-side SPA shells (empty HTML, no prices) and are the same ownership as MenuPages, so even if reached they would not count as an independent second source. SinglePlatform (places.singleplatform.com/pinto-thai-bistro/menu, address matches exactly) only exposes a 'Sample Menu > Popular Items' set of 5 dishes with an explicit 'claim this menu' disclaimer - a representative sample, not a menu, per house rule. Yelp direct fetch returns a blocked stub as usual. Needs a browser to drive the Menufy ordering flow (or Grubhub/Seamless) to reach the real per-category priced menu.",
+    "notes": "The 5-item SinglePlatform sample (Fresh Spring Rolls $6.99, Glass Noodles Soup $4.99/$7.99, Pad Thai $7.99, Rad-Na Noodle $7.99, Pad Woonsen $7.99) is not recorded as dishes - it is explicitly a 'Sample Menu', not the restaurant's full menu, and using it would misrepresent a partial as complete.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2071",
+    "name": "Moment Sushi",
+    "sourceUrl": "https://www.momentsushi.com/s/order",
+    "confidence": "low",
+    "blocked": "Own site (momentsushi.com) is a Square Online storefront (window.__BOOTSTRAP_STATE__ shows squareMerchantId MLYEQ8R5GWGZT, selectedVertical 'restaurant') - fully client-rendered. The homepage's commerceLinks.categories lists real section names (Starters, Lunch Set, Udon And Fried Rice, Hand Rolls Combination Set, Special Hand Rolls, etc. via /shop/<slug>/<id> paths) but commerceLinks.products is empty {} on every page fetched (homepage and the /shop/starters/7 category page both) - items are fetched by client-side JS after load, zero prices in server HTML. The direct order page (/s/order) is the same SPA shell (326 raw '$' characters, all from minified JS, zero actual price matches). No DoorDash or UberEats listing found for this restaurant (a WebSearch summary explicitly noted delivery is listed as unavailable on MenuPix). Three third-party listings that might carry a captured menu - menupix.com, zmenu.com, and moment-sushi.wheree.com - are all behind a Cloudflare 'Just a moment...' managed challenge that defeated both a Chrome UA curl and WebFetch (403). moment-sushi.res-menu.net returned an empty 200 body to curl and a 403 to WebFetch. Yelp direct fetch returns the usual blocked stub. Needs a browser to either load the Square Online catalog client-side or get past the Cloudflare challenges on the third-party listings.",
+    "notes": "A WebSearch summary surfaced two prices (Moment Roll $30, Crunch Salmon Roll $25) but I could not independently verify them on any reachable page for this address - not recorded per house rule against trusting an unverified summary.",
+    "dishes": []
+  }
+]

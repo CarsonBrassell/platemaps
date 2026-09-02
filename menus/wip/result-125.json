@@ -1,0 +1,3239 @@
+[
+  {
+    "restaurantId": "3184",
+    "name": "Machete Beer House",
+    "sourceUrl": "https://www.toasttab.com/local/order/machete-beer-house-national-city-2325-highland-avenue",
+    "confidence": "low",
+    "notes": "not-found: craft-beer/cocktail bar with no kitchen (occasional food truck only, per its own description). Its own Toast online-ordering storefront (__OO_STATE__ paginatedMenuItems query) returns totalCount 0 / itemCount 0 for its only configured menu (\"Anniversary\") -- confirmed genuinely empty via the GraphQL response, not a closed-store gate. Searched Yelp, Untappd, restaurantguru, beerfordriving.com and general web search for any priced tap/cocktail list -- none exists. Rotating tap list with no published per-item pricing anywhere.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4028",
+    "name": "Chito's Taco Shop",
+    "sourceUrl": "https://www.allmenus.com/ca/escondido/716632-chitos-taco-shop/menu/",
+    "confidence": "low",
+    "blocked": "Only one reachable priced source: allmenus.com's listing (109 items, full section list -- breakfast, salads, tostadas, tacos, combinations, burritos, tortas, enchiladas, caldos, a la carte, sides, seafood, specials, drinks -- odd-cent POS-style prices, markup-tested clean against 1.04/1.1/1.15/1.2/1.25/1.3 divisors, max 18.3% landing round which is inside organic noise). allmenus/Grubhub/Seamless are one owner per the source ladder, so this needs an independent second priced source and none was reachable: SinglePlatform (places.singleplatform.com/chitos-taco-shop) lists the same section names but zero prices; Grubhub's own page, Seamless (same owner anyway), Zmenu and Menupix all returned JS shells or 403s to curl and WebFetch; the restaurant's own domain (chitostacoshopca.com, listed on SinglePlatform) times out / does not resolve. Name a Chrome-equipped pass at Zmenu/Menupix/Tripadvisor (all 403'd curl) or a dated Yelp menu photo as the fastest way to close this out.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2004",
+    "name": "Okan Diner",
+    "sourceUrl": "https://www.doordash.com/store/okan-diner-san-diego-312420",
+    "confidence": "medium",
+    "crossCheckedAgainst": "http://places.singleplatform.com/okan-diner/menu",
+    "notes": "Restaurant's own domain is hijacked (multi-hop redirect to an unrelated site) so DoorDash is the best reachable source. DoorDash's rendered DOM/JSON-LD shows the store gated (0 items), but the escaped Next.js RSC flight payload (self.__next_f.push chunks) carries the full GraphQL response -- 66 MenuPageItem objects across 10 MenuBookCategory sections (Appetizers, Kama-Meshi, Ramen, Original Udon, Seiro, Nabeyaki, Hot Noodles, Cold Noodles, Hand Roll Sushi, Cut Roll Sushi). Cross-checked against SinglePlatform (restaurant-submitted, tier 4): 8 of 10 overlapping items match to the cent (Beef Shabu Shabu Salad $10.50, Deluxe Curry Udon $13.50, Nabeyaki Udon $12.00, Sukiyaki Udon $13.00, Zaru Cold Noodles $8.00, Neba-Neba Cold Noodles $11.00, and both ramens' 'small' price); Blue Crab Salad ($10.50 SP vs $12.50 DD) and Carbonara Udon ($12.50 SP vs $13.00 DD) differ slightly, consistent with SinglePlatform being the older/stale side rather than markup. Markup test against 1.04/1.1/1.15/1.2/1.25/1.3 divisors: no divisor clears 30% clean (max 27.3% at 1.2), inside organic noise, so DoorDash is not carrying a uniform delivery markup. Ramen items priced here are the 'Small' size where SinglePlatform showed a Small/Large split; noted as base price. Categories reached: all 10 present in the DoorDash payload. No lunch/bento section found on SinglePlatform (checked directly, contrary to an earlier web-search summary that mentioned one) or anywhere else, so none is included.",
+    "dishes": [
+      {
+        "name": "Beef Shabu Shabu Salad",
+        "description": "Sesame garlic ponzu dressing.",
+        "price": "$10.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Blue Crab Salad",
+        "description": "Yuzu citrus dressing, poached egg.",
+        "price": "$12.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Kamo Toban Yaki",
+        "description": "Duck breast cooked on iron plate with sweet butter soy.",
+        "price": "$11.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "U S Wagyu Beef Tataki",
+        "description": "With garlic ponzu.",
+        "price": "$9.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Karaage",
+        "description": "Salted rice malt marinated deep fried chicken.",
+        "price": "$8.75",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Teriyaki Wing (5 Pieces)",
+        "description": "Deep fried, sweet soy and white pepper.",
+        "price": "$6.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Geso Karaage",
+        "description": "Deep fried squid legs.",
+        "price": "$7.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Shishito Pepper",
+        "description": "Deep fried shishito pepper with ginger soy.",
+        "price": "$5.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Deep Fried Crispy Tofu",
+        "description": "",
+        "price": "$5.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chili Garlic Edamame",
+        "description": "",
+        "price": "$4.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garlic French Fry",
+        "description": "",
+        "price": "$4.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Tako Yaki (5 Pieces)",
+        "description": "Deep fried octopus balls.",
+        "price": "$6.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Gyoza (5 Pieces)",
+        "description": "Chicken and pork dumplings (deep fry or pan fry).",
+        "price": "$6.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Cold Tofu with Garlic Chili Oil",
+        "description": "",
+        "price": "$4.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Ume Q",
+        "description": "Smashed cucumber with plum sauce.",
+        "price": "$4.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Tsukemono",
+        "description": "Assorted Japanese pickles.",
+        "price": "$4.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Seaweed Salad",
+        "description": "Seasoned mixed seaweed.",
+        "price": "$4.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Grilled Gyu Tan",
+        "description": "Thick sliced grilled beef tongue.",
+        "price": "$12.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Dashimaki",
+        "description": "Cage free egg omelet.",
+        "price": "$7.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Tori Gomoku Kama Meshi",
+        "description": "Chicken with mixed mushrooms, quail egg, gobo.",
+        "price": "$13.00",
+        "section": "Kama-Meshi"
+      },
+      {
+        "name": "Salmon & Ikura Kama Mesh",
+        "description": "Salmon with salmon caviar.",
+        "price": "$15.00",
+        "section": "Kama-Meshi"
+      },
+      {
+        "name": "Salmon & Ikura Kama Mesh",
+        "description": "Salmon with salmon caviar.",
+        "price": "$15.00",
+        "section": "Kama-Meshi"
+      },
+      {
+        "name": "Beef & Gobo Kama Meshi",
+        "description": "Sukiyaki beef with gobo root, pickled ginger.",
+        "price": "$15.00",
+        "section": "Kama-Meshi"
+      },
+      {
+        "name": "Scallop & Mentai Butter Kama Meshi",
+        "description": "Scallop, mixed mushrooms with mentai butter.",
+        "price": "$15.00",
+        "section": "Kama-Meshi"
+      },
+      {
+        "name": "Blue Crab & Mushrooms Kama Meshi",
+        "description": "Blue crabmeat and mixed mushrooms.",
+        "price": "$15.00",
+        "section": "Kama-Meshi"
+      },
+      {
+        "name": "Uni & Ikura Kama Meshi",
+        "description": "Sea urchin and salmon caviar.",
+        "price": "$20.00",
+        "section": "Kama-Meshi"
+      },
+      {
+        "name": "Unagi Kama Meshi",
+        "description": "Freshwater eel with sweet soy.",
+        "price": "$15.00",
+        "section": "Kama-Meshi"
+      },
+      {
+        "name": "Kakuni Tonkotsu Kama Meshi",
+        "description": "Pork belly, tonkotsu broth with poached egg.",
+        "price": "$15.00",
+        "section": "Kama-Meshi"
+      },
+      {
+        "name": "Kakuni Tonkotsu Ramen",
+        "description": "Pork belly, bean sprout, favored.",
+        "price": "$11.50",
+        "section": "Ramen"
+      },
+      {
+        "name": "Spicy Black Sesame Ramen",
+        "description": "Ground pork, bean sprout, chili oil.",
+        "price": "$10.50",
+        "section": "Ramen"
+      },
+      {
+        "name": "Tom Yam Ramen",
+        "description": "Shrimp, mixed mushrooms, cilantro in Thai style hot and sour soup.",
+        "price": "$10.50",
+        "section": "Ramen"
+      },
+      {
+        "name": "Pho Ramen",
+        "description": "Shabu shabu beef, bean sprout, jalapeño, cilantro in Vietnamese style soup.",
+        "price": "$10.50",
+        "section": "Ramen"
+      },
+      {
+        "name": "Carbonara Udon",
+        "description": "Bacon, mixed mushrooms with creamy four cheese alfredo and poached egg on top.",
+        "price": "$13.00",
+        "section": "Original Udon"
+      },
+      {
+        "name": "Vongole Udon",
+        "description": "Manila clams, mixed mushrooms with garlic butter sauce.",
+        "price": "$11.50",
+        "section": "Original Udon"
+      },
+      {
+        "name": "Tonkotsu Yaki Udon",
+        "description": "Tonkotsu flavored stir fried veggie, pork and seafood.",
+        "price": "$13.50",
+        "section": "Original Udon"
+      },
+      {
+        "name": "Creamy Uni Udon",
+        "description": "Fresh uni (sea urchin), mixed mushrooms with creamy four cheese alfredo.",
+        "price": "$19.50",
+        "section": "Original Udon"
+      },
+      {
+        "name": "Deluxe Curry Udon",
+        "description": "2 pieces shrimp tempura sukiyaki beef and poached egg.",
+        "price": "$13.50",
+        "section": "Original Udon"
+      },
+      {
+        "name": "Mentai Ankake Udon",
+        "description": "Mentaiko caviar in egg drop broth.",
+        "price": "$10.50",
+        "section": "Original Udon"
+      },
+      {
+        "name": "Seiro",
+        "description": "Soba or udon, half and half available. Mixed mushrooms, green onion and you can choose meat.",
+        "price": "$10.50",
+        "section": "Seiro"
+      },
+      {
+        "name": "Nabeyaki Udon",
+        "description": "Shrimp tempura, chicken, mixed mushrooms, fish cake and poached egg.",
+        "price": "$12.00",
+        "section": "Nabeyaki"
+      },
+      {
+        "name": "Sukiyaki Udon",
+        "description": "Sukiyaki beef, tofu, Napa cabbage, mixed mushrooms, fish cake and poached egg.",
+        "price": "$13.00",
+        "section": "Nabeyaki"
+      },
+      {
+        "name": "Tempura Hot Noodles",
+        "description": "2 pcs shrimp tempura and vegetables.",
+        "price": "$12.00",
+        "section": "Hot Noodles"
+      },
+      {
+        "name": "Beef Hot Noodles",
+        "description": "Sukiyaki beef with poached egg.",
+        "price": "$11.00",
+        "section": "Hot Noodles"
+      },
+      {
+        "name": "Chicken Hot Noodles",
+        "description": "Chicken with green onion.",
+        "price": "$9.50",
+        "section": "Hot Noodles"
+      },
+      {
+        "name": "Kinoko Hot Noodle",
+        "description": "Mixed mushrooms, fried tofu.",
+        "price": "$9.00",
+        "section": "Hot Noodles"
+      },
+      {
+        "name": "Zaru Cold Noodles",
+        "description": "Chilled noodles with cold dipping sauce.",
+        "price": "$8.00",
+        "section": "Cold Noodles"
+      },
+      {
+        "name": "Neba Neba Cold Noodles",
+        "description": "Chilled noodles with grated yam, poached egg, natto, and mekabu.",
+        "price": "$11.00",
+        "section": "Cold Noodles"
+      },
+      {
+        "name": "Crunchy Hand Roll (8 Pieces)",
+        "description": "Shrimp tempura, crabmeat, avocado, cucumber, and sweet sauce on top.",
+        "price": "$8.00",
+        "section": "Hand Roll Sushi"
+      },
+      {
+        "name": "Salmon Skin Hand Roll (8 Pieces)",
+        "description": "Baked crispy salmon skin, gobo, cucumber, and bonito flake.",
+        "price": "$4.00",
+        "section": "Hand Roll Sushi"
+      },
+      {
+        "name": "Spider Hand Roll (5 Pieces)",
+        "description": "Deep fried soft-shell crab, crabmeat, avocado, cucumber.",
+        "price": "$9.50",
+        "section": "Hand Roll Sushi"
+      },
+      {
+        "name": "Veggie Hand Roll (8 Pieces)",
+        "description": "Avocado, cucumber, gobo.",
+        "price": "$3.50",
+        "section": "Hand Roll Sushi"
+      },
+      {
+        "name": "California Hand Roll (8 Pieces)",
+        "description": "Imitation crab, avocado, cucumber.",
+        "price": "$3.50",
+        "section": "Hand Roll Sushi"
+      },
+      {
+        "name": "Spicy Tuna Hand Roll",
+        "description": "Minced spicy tuna, avocado, cucumber.",
+        "price": "$4.50",
+        "section": "Hand Roll Sushi"
+      },
+      {
+        "name": "California Cut Roll (8 Pieces)",
+        "description": "Imitation crab, avocado, cucumber.",
+        "price": "$6.00",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Spicy Tuna Cut Roll (8 Pieces)",
+        "description": "Minced spicy tuna, avocado, cucumber.",
+        "price": "$8.00",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Crunchy Cut Roll (8 Pieces)",
+        "description": "Shrimp tempura, crabmeat, avocado cucumber, and sweet sauce on top.",
+        "price": "$8.00",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Rainbow Cut Roll (8 Pieces)",
+        "description": "Tuna, salmon, yellowtail, albacore on the California roll.",
+        "price": "$11.00",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Caterpillar Cut Roll (8 Pieces)",
+        "description": "Baked freshwater eel, crabmeat, cucumber, avocado on top.",
+        "price": "$10.50",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Dinner Cut Roll A K A OMG Roll (5 Pieces)",
+        "description": "Shrimp tempura, spicy tuna, crabmeat, avocado, cucumber, gobo wrapped with soy paper, sweet and spicy sauce on top.",
+        "price": "$13.00",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Salmon Skin Cut Roll (8 Pieces)",
+        "description": "Baked crispy salmon skin, gobo, cucumber, and bonito flake.",
+        "price": "$7.50",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Veggie Cut Roll (8 Pieces)",
+        "description": "Avocado, cucumber, gobo.",
+        "price": "$6.00",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Beef Tataki Cut Roll (8 Pieces)",
+        "description": "American wagyu beef tataki (seared) on the California roll, garlic ponzu sauce.",
+        "price": "$12.50",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Jalapeño Yellowtail Cut Roll (8 Pieces)",
+        "description": "Yellowtail sashimi, sliced jalapeño on the California roll, yuzu citrus sauce.",
+        "price": "$12.00",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Garlic Albacore Cut Roll (8 Pieces)",
+        "description": "Albacore sashimi, fried garlic, and onion, on the California roll, garlic sauce.",
+        "price": "$12.00",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Yuzu Citrus Salmon Cut Roll (8 Pieces)",
+        "description": "Salmon sashimi, yuzu pepper, and peeled skin, ponzu jello on the California roll.",
+        "price": "$12.00",
+        "section": "Cut Roll Sushi"
+      },
+      {
+        "name": "Spider Cut Roll (5 Pieces)",
+        "description": "Deep fried soft-shell crab, crabmeat, avocado, cucumber.",
+        "price": "$9.50",
+        "section": "Cut Roll Sushi"
+      }
+    ]
+  },
+  {
+    "restaurantId": "862",
+    "name": "Kaiyo Sushi",
+    "sourceUrl": "https://order.online/store/kaiyo-sushi-chula-vista-468279",
+    "confidence": "medium",
+    "notes": "order.online (DoorDash white-label) DOM shows only a 'Most Ordered' carousel; full menu read from the escaped Next.js RSC flight payload (self.__next_f.push chunks) -- 21 MenuPageItemList categories, 166 MenuPageItem objects, matching the numItems counts in the payload's menuCategories list exactly (complete, not a sample). Dropped the 'Single use utensils' category (5 items: chopsticks/fork/napkin/soy sauce/spoon) -- all $0.00/unpriced, a free-add-on adjunct, not food. 161 priced dishes kept across 20 categories: Blue-Fin Tuna Weekly Special, Wings, Rice Bowl/Rice Plate, Bento & Rice Bowl, Korean Noodle Soup, Appetizer, Classic Roll, Special Roll, Kaiyo Favorite Roll, Classic Maki Roll, Add On/Side, Chef's Special, Salad, Hot Baked Special, Nigiri, Sashimi, Sushi Bento, Hand Roll, Dessert, Beverage. Markup test against 1.04-1.3 divisors: no divisor clears 30% clean (max 28.0% at 1.25), inside organic noise -- passes. Checked allmenus.com's Grubhub-branded listing for cross-check: it names identical dishes with matching descriptions (Crazy Bomb, Monkey Balls, Snow Ball, Edamame, Fried Calamari) but at non-uniform, 30-65% lower prices (Crazy Bomb $7.14 vs $10.50 here, Snow Ball $9.00 vs $12.00, Edamame $4.20 vs $7.00) -- not a clean common-divisor markup (ratios 1.31-1.67, all different), so per playbook this is staleness on the allmenus side, not evidence against order.online. allmenus' OWN price set divides cleanly by 1.2 on 95.8% of its 142 items, meaning it carries its own internal markup structure over a now-outdated base -- discarded entirely, not used for corroboration. No other independent priced source (SinglePlatform, restaurant's own site) was found, so this stands as a single tier-3 source.",
+    "dishes": [
+      {
+        "name": "Blue Fin Sashimi (5pcs)",
+        "description": "",
+        "price": "$20.00",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "Blue Fin Nigiri (2pcs)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "Blue Fin Handroll",
+        "description": "",
+        "price": "$14.50",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "Blue Fin Maki",
+        "description": "",
+        "price": "$14.50",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "BF Toro Sashimi (5pcs)",
+        "description": "",
+        "price": "$32.00",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "BF Toro Nigiri (2pcs)",
+        "description": "",
+        "price": "$17.00",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "Negi Toro Handroll",
+        "description": "",
+        "price": "$17.00",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "Negi Toro Maki",
+        "description": "",
+        "price": "$17.00",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "Negi Toro Cali",
+        "description": "Top: Blue fin belly and green onion \\nInside: California roll",
+        "price": "$20.00",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "Negi Toro Shrimp Tempura",
+        "description": "Top: Blue fin belly and green onion \\nInside: Shrimp tempura, crab mix and avocado",
+        "price": "$25.00",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "Negi Toro Spicy Tuna",
+        "description": "Top: Blue fin belly and green onion \\nInside: Spicy Tuna and cucumber",
+        "price": "$22.00",
+        "section": "Blue-Fin Tuna \"Weekly Special\""
+      },
+      {
+        "name": "Sweet & Spicy Wings (10pcs)",
+        "description": "Sweet & Spicy Wings (10 pcs)",
+        "price": "$20.00",
+        "section": "Wings"
+      },
+      {
+        "name": "Teriyaki Chicken Plate",
+        "description": "Teriyaki chicken on top of rice, topped with teriyaki sauce. 3 pcs of gyoza and house salad.",
+        "price": "$16.50",
+        "section": "Rice Bowl/ Rice Plate"
+      },
+      {
+        "name": "Teriyaki Beef Plate",
+        "description": "Teriyaki beef on top of rice, topped with teriyaki sauce. 3 pcs of gyoza and house salad.",
+        "price": "$16.50",
+        "section": "Rice Bowl/ Rice Plate"
+      },
+      {
+        "name": "Salmon Skin Plate",
+        "description": "Salmon skin strips on top of rice, topped with eel sauce, spicy mayo, green onion. 3 pcs of gyoza and house salad.",
+        "price": "$16.50",
+        "section": "Rice Bowl/ Rice Plate"
+      },
+      {
+        "name": "Chicken Karaage Plate",
+        "description": "Fried chicken karaage on top of rice, side of spicy mayo, lemon wedge. 3 pcs of gyoza and house salad.",
+        "price": "$16.50",
+        "section": "Rice Bowl/ Rice Plate"
+      },
+      {
+        "name": "Beef Sukiyaki Plate",
+        "description": "Stirred fried beef on top of rice, topped with chili pepper, green onion. 3 pcs of gyoza and house salad.",
+        "price": "$16.50",
+        "section": "Rice Bowl/ Rice Plate"
+      },
+      {
+        "name": "Chirashi Bowl (8 Pieces)",
+        "description": "Sashimi over rice.",
+        "price": "$20.00",
+        "section": "Rice Bowl/ Rice Plate"
+      },
+      {
+        "name": "Unagi Bowl (8 Pieces)",
+        "description": "Teriyaki eel over rice.",
+        "price": "$20.00",
+        "section": "Rice Bowl/ Rice Plate"
+      },
+      {
+        "name": "Miso Soup",
+        "description": "Traditional Japanese broth with tofu, seaweed, and green onions. Comfort in a bowl.",
+        "price": "$2.50",
+        "section": "Rice Bowl/ Rice Plate"
+      },
+      {
+        "name": "Steamed Rice",
+        "description": "Steamed white rice, served as a simple and classic base for a variety of toppings.",
+        "price": "$2.50",
+        "section": "Rice Bowl/ Rice Plate"
+      },
+      {
+        "name": "Sushi Rice",
+        "description": "A small bowl of seasoned rice, often prepared with sushi vinegar, serving as a base for various sushi dishes.",
+        "price": "$3.50",
+        "section": "Rice Bowl/ Rice Plate"
+      },
+      {
+        "name": "Chicken Karaage Bowl (Japanese Fried Chicken)",
+        "description": "Japanese Fried Chicken over rice, serve with lemon and spicy mayo",
+        "price": "$12.00",
+        "section": "Bento & Rice Bowl"
+      },
+      {
+        "name": "Beef Sukiyaki Bowl (Stir Fried Beef)",
+        "description": "Thinly sliced stir fried beef over rice, serve with pepper flakes and green onion.",
+        "price": "$12.00",
+        "section": "Bento & Rice Bowl"
+      },
+      {
+        "name": "Spicy Seafood Noodle Soup",
+        "description": "Spicy Korean soup base, udon noodle, shrimp, mussel, scallop, octopus, zucchini, carrot, cabbage, onion, green onion & shredded seaweed sesame mix",
+        "price": "$18.50",
+        "section": "Korean Noodle Soup"
+      },
+      {
+        "name": "Spicy Beef Noodle Soup",
+        "description": "Spicy Korean soup base, udon noodle, beef slice, zucchini, carrot, cabbage, onion, green onion & shredded seaweed sesame mix",
+        "price": "$16.50",
+        "section": "Korean Noodle Soup"
+      },
+      {
+        "name": "Spicy Beef & Dumpling Noodle Soup",
+        "description": "Spicy Korean soup base, udon noodle, beef, dumpling, zucchini, carrot, cabbage, onion, green onion & shredded seaweed sesame mix",
+        "price": "$18.50",
+        "section": "Korean Noodle Soup"
+      },
+      {
+        "name": "Seafood Noodle Soup",
+        "description": "Korean soup base, udon noodle, shrimp, mussel, scallop, octopus, zucchini, carrot, cabbage, onion, green onion & shredded seaweed sesame mix",
+        "price": "$18.50",
+        "section": "Korean Noodle Soup"
+      },
+      {
+        "name": "Beef Noodle Soup",
+        "description": "Korean soup base, udon noodle, beef slice, zucchini, carrot, cabbage, onion, green onion & shredded seaweed sesame mix",
+        "price": "$16.50",
+        "section": "Korean Noodle Soup"
+      },
+      {
+        "name": "Beef & Dumpling Noodle Soup",
+        "description": "Korean soup base, udon noodle, beef, dumpling, zucchini, carrot, cabbage, onion, green onion & shredded seaweed sesame mix",
+        "price": "$18.50",
+        "section": "Korean Noodle Soup"
+      },
+      {
+        "name": "Crazy Bomb",
+        "description": "In: fried stuffed jalapeños with cream cheese, spicy tuna. Top: spicy mayo and eel sauce and green onion.",
+        "price": "$10.50",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Cream Cheese Wonton (6 Pcs)",
+        "description": "",
+        "price": "$9.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Edamame",
+        "description": "",
+        "price": "$7.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Garlic Edamame",
+        "description": "Steamed soybeans tossed with fragrant garlic and sea salt.",
+        "price": "$7.50",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Spicy Garlic Edamame",
+        "description": "Succulent soybeans tossed in spicy garlic sauce.",
+        "price": "$7.50",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Fried Calamari",
+        "description": "",
+        "price": "$12.50",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Gyoza (6 Pcs)",
+        "description": "Six pieces of pan-fried dumplings filled with a mix of pork and vegetables.",
+        "price": "$9.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Monkey Balls",
+        "description": "In: fried stuffed mushroom with cream cheese, spicy tuna. Top: spicy mayo and eel sauce and green onion.",
+        "price": "$10.50",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Shrimp Tempura App (4 Pcs)",
+        "description": "Four pieces of shrimp, lightly battered and deep-fried, typically accompanied by a dipping sauce.",
+        "price": "$9.50",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Shrimp & Veggie Tempura App",
+        "description": "Two pieces shrimp, five pieces veggie.",
+        "price": "$11.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Veggie Tempura App",
+        "description": "Assorted vegetables lightly battered and deep-fried, typically includes a variety of seasonal vegetables accompanied by a tempura dipping sauce.",
+        "price": "$11.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Snow Ball",
+        "description": "In: fried imitation crab, cream cheese wrapped in seaweed. Top: spicy mayo and eel sauce and green onion.",
+        "price": "$12.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Soft Shell Crab (1 Pcs)",
+        "description": "Soft shell crab, available in single or double pieces.",
+        "price": "$9.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Soft Shell Crab (2 Pcs)",
+        "description": "Two pieces of soft shell crab, deep-fried and typically served with a unique dipping sauce.",
+        "price": "$16.50",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Alaska Roll",
+        "description": "Inside, salmon, imitation crab, avocado, cucumber, masago.",
+        "price": "$10.75",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Avocado Roll",
+        "description": "Inside, avocado.",
+        "price": "$8.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Cucumber Roll",
+        "description": "Inside, cucumber.",
+        "price": "$8.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "California Roll",
+        "description": "Inside, imitation crab, avocado, cucumber.",
+        "price": "$9.00",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Crunchy Roll",
+        "description": "Inside, shrimp tempura, imitation crab, avocado. Outside, eel sauce, crunchy flakes.",
+        "price": "$11.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Eel Roll",
+        "description": "Inside, eel, avocado, cucumber. Outside, eel sauce.",
+        "price": "$10.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Philadelphia Roll",
+        "description": "Inside, salmon, cream cheese, avocado, cucumber.",
+        "price": "$10.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Salmon Skin Roll",
+        "description": "Inside, baked salmon skin, avocado, cucumber, gobo. Outside, eel sauce, bonito flakes.",
+        "price": "$10.00",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Shrimp Tempura Roll",
+        "description": "Inside, shrimp tempura, imitation crab, avocado, cucumber. Outside, Seaweed, spicy mayo, eel sauce.",
+        "price": "$10.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Spider Roll",
+        "description": "Inside, tempura soft shell crab, imitation crab, avocado, cucumber. Outside, seaweed, spicy mayo, eel sauce.",
+        "price": "$11.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Veggie Roll",
+        "description": "Inside, avocado, cucumber, tomato, kanpyo, pickled daikon, lettuce, carrot. Outside, seaweed.",
+        "price": "$8.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Veggie Tempura Roll",
+        "description": "Inside, mix veggie tempura. Outside, seaweed.",
+        "price": "$9.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Spicy Crab Roll",
+        "description": "Inside, spicy imitation crab, cucumber.",
+        "price": "$9.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Spicy Salmon Roll",
+        "description": "Inside, spicy salmon, cucumber.",
+        "price": "$11.00",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Spicy Scallop Roll",
+        "description": "Inside, spicy scallop, cucumber.",
+        "price": "$11.00",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Spicy Tuna Roll",
+        "description": "Inside, spicy tuna, cucumber.",
+        "price": "$10.00",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Spicy Yellowtail Roll",
+        "description": "Inside, spicy yellowtail, cucumber, green onion.",
+        "price": "$11.50",
+        "section": "Classic Roll"
+      },
+      {
+        "name": "Albacore Special",
+        "description": "Inside, shrimp tempura, imitation crab. Top, albacore, avocado,imitation crab, masago, green onion, ponzu sauce.",
+        "price": "$15.50",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Caterpillar",
+        "description": "Inside, eel, imitation crab, cucumber. Top, avocado, eel sauce.",
+        "price": "$15.00",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Dragon",
+        "description": "Inside, imitation crab cucumber. Top, eel, avocado, eel sauce.",
+        "price": "$15.00",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Hawaiian",
+        "description": "Inside, imitation crab, avocado, cucumber. Top, spicy tuna, green onion, ponzu.",
+        "price": "$13.50",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Hot Lips",
+        "description": "Inside, spicy crab, cucumber. Top, spicy tuna, eel sauce, spicy mayo, sriracha sauce.",
+        "price": "$14.50",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Pokie Roll",
+        "description": "Inside, spicy tuna, cucumber. Top, salmon, avocado, cilantro, bonito flakes, ponzu sauce.",
+        "price": "$15.00",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Rainbow",
+        "description": "Inside, imitation crab, cucumber. Top, salmon, tuna, shrimp, albacore, avocado.",
+        "price": "$15.00",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Spanish",
+        "description": "Inside, imitation crab, cucumber. Top, salmon, lemon, cilantro, green onion, ponzu sauce.",
+        "price": "$14.50",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Spicy Albacore",
+        "description": "Inside, shrimp tempura, imitation crab. Top, albacore, avocado, spicy tuna, eel sauce, spicy mayo, sriracha sauce.",
+        "price": "$16.50",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Spicy Dragon",
+        "description": "Inside, spicv tuna, cucumber. Top, eel avocado, eel sauce, sriracha sauce.",
+        "price": "$16.00",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Spicy Rainbow",
+        "description": "Inside, spicy tuna, cucumber. Top, salmon, tuna, shrimp, albacore, avocado, sriracha sauce.",
+        "price": "$16.00",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Tiger",
+        "description": "Inside, shrimp tempura, imitation crab. Top, shrimp, avocado, spicy mayo.",
+        "price": "$15.00",
+        "section": "Special Roll"
+      },
+      {
+        "name": "Amazing Dragon",
+        "description": "In: Shrimp tempura, imitation, crab, cream cheese. Top: Eel, avocado, spicy mayo, eel sauce, crunchy flakes.",
+        "price": "$18.50",
+        "section": "Kaiyo Favorite Roll"
+      },
+      {
+        "name": "Hercules",
+        "description": "Cucumbers wrapped: Hamachi, tuna, salmon, shrimp, imitation crab, avocado, tobiko, ponzu sauce.",
+        "price": "$18.50",
+        "section": "Kaiyo Favorite Roll"
+      },
+      {
+        "name": "Yum Yum Roll",
+        "description": "In: Shrimp tempura, spicy imitation crab. Top: Salmon, avocado, mango, salsa, spicy mayo, crunchy flakes.",
+        "price": "$18.50",
+        "section": "Kaiyo Favorite Roll"
+      },
+      {
+        "name": "Samurai",
+        "description": "In: Shrimp tempura, spicy tuna. Top: Salmon, avocado, seared dynamite sauce, spicy mayo, eel sauce, topico.",
+        "price": "$18.50",
+        "section": "Kaiyo Favorite Roll"
+      },
+      {
+        "name": "Special Kaiyo Roll",
+        "description": "In: Shrimp tempura, spicy tuna. Top: Seared tuna, avocado, jalapeño, hot might sauce",
+        "price": "$18.50",
+        "section": "Kaiyo Favorite Roll"
+      },
+      {
+        "name": "Tempura Sake (Fried)",
+        "description": "In; Shrimp, imitation crab, cream cheese, avocado. TOp: Eel sauce, spicy mayo.",
+        "price": "$15.00",
+        "section": "Kaiyo Favorite Roll"
+      },
+      {
+        "name": "Ring of Fire (Fried)",
+        "description": "In: Salmon, imitation crab, cream cheese, avocado. Top: Eel sauce, spicy mayo, srircha sauce, jalapeño.",
+        "price": "$16.00",
+        "section": "Kaiyo Favorite Roll"
+      },
+      {
+        "name": "Salmon Maki",
+        "description": "Salmon, seaweed outside.",
+        "price": "$8.50",
+        "section": "Classic Maki Roll"
+      },
+      {
+        "name": "Tuna Maki",
+        "description": "Tuna, Seaweed outside.",
+        "price": "$8.50",
+        "section": "Classic Maki Roll"
+      },
+      {
+        "name": "Yelllowtail Maki",
+        "description": "Yellowtail, seaweed outside.",
+        "price": "$9.00",
+        "section": "Classic Maki Roll"
+      },
+      {
+        "name": "Add Avocado On Top",
+        "description": "Sliced avocado added on top of your selected sushi roll, enhancing its texture and flavor.",
+        "price": "$2.50",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Add Cream Cheese",
+        "description": "Smooth cream cheese available to enhance your sushi roll experience.",
+        "price": "$1.25",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Add Crunchy Flakes",
+        "description": "Tempura flakes provided as an add-on to enhance texture with a crispy finish.",
+        "price": "$1.25",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Add Cucumber",
+        "description": "Fresh cucumber added to enhance your sushi experience, complementing the dish's flavors and texture.",
+        "price": "$1.25",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Add Jalapeno",
+        "description": "Sliced jalapeño peppers, typically added to enhance the flavor with a spicy kick.",
+        "price": "$1.25",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Add Lemon Slices",
+        "description": "Fresh lemon slices, typically accompanying sushi dishes to enhance flavor with a citrus note.",
+        "price": "$1.25",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Add Masago ",
+        "description": "Masago addition typically includes a sprinkle of smelt roe to enhance the dish with a subtle ocean flavor.",
+        "price": "$2.50",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Add Soy Paper",
+        "description": "Soy paper alternative for sushi rolls, offering a different texture and presentation.",
+        "price": "$1.25",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Deep Fried",
+        "description": "Deep fried items, usually coated in batter or breadcrumbs, offering a crispy texture. Often includes seafood, vegetables, or chicken.",
+        "price": "$2.00",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Side of Eel Sauce",
+        "description": "A sweet and savory Japanese-style sauce, often used to enhance sushi dishes.",
+        "price": "$0.75",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Side of Gyoza Sauce",
+        "description": "A traditional Japanese dipping sauce, commonly paired with dumplings, offering a blend of savory and slightly tangy flavors.",
+        "price": "$0.75",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Side of Ponzu Sauce",
+        "description": "Ponzu sauce, a soy-based condiment, typically includes a citrus infusion, offering a balance of tart and sweet notes.",
+        "price": "$0.75",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Side of Soy Mustard Sauce",
+        "description": "A blend of soy sauce and mustard, creating a complementary sauce for enhancing sushi dishes.",
+        "price": "$1.00",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Side of Spicy Mayo",
+        "description": "A side of our in-house blend of creamy mayonnaise and spicy elements, creating a smooth yet fiery addition suitable for enhancing sushi dishes.",
+        "price": "$0.75",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Side of Sriracha",
+        "description": "Ground ripened chilies blended into a smooth paste with garlic, adding a spicy kick to any dish.",
+        "price": "$0.75",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Side of Sweet & Sour Sauce ",
+        "description": "A tangy and sweet condiment, typically including a blend of sugar, vinegar, and flavorings to complement sushi dishes.",
+        "price": "$0.75",
+        "section": "Add On / Side"
+      },
+      {
+        "name": "Crunchy Spicy Tuna Roll",
+        "description": "In: imitation crab, avocado, shrimp tempura. Top: spicy tuna, crunchy flakes, eel sauce.",
+        "price": "$15.00",
+        "section": "Chef's Special"
+      },
+      {
+        "name": "Crunchy - Pillar",
+        "description": "In: imitation crab, avocado, shrimp tempura. Top: spicy tuna, avocado, crunchy flakes, eel sauce, spicy mayo.",
+        "price": "$16.50",
+        "section": "Chef's Special"
+      },
+      {
+        "name": "Jessica - Alba",
+        "description": "In: spicy tuna, cucumber, cilantro. Top: albacore, lemon slices, green onion, ponzu sauce.",
+        "price": "$15.50",
+        "section": "Chef's Special"
+      },
+      {
+        "name": "Jalapeno Yellowtail (8 Pcs)",
+        "description": "Hamachi sashimi, green onion, jalapenos, sriracha, ponzu sauce.",
+        "price": "$21.00",
+        "section": "Chef's Special"
+      },
+      {
+        "name": "Special Tataki (8 Pcs)",
+        "description": "Seared tuna maguro, seaweed salad, avocado, seven spices pepper, hot might sauce.",
+        "price": "$21.00",
+        "section": "Chef's Special"
+      },
+      {
+        "name": "Seasoned Ponzu Salmon (8 Pcs)",
+        "description": "Sake sashimi, seven spices, sliced lemon, sesame ponzu sauce.",
+        "price": "$21.00",
+        "section": "Chef's Special"
+      },
+      {
+        "name": "Crab Salad",
+        "description": "Imitation crab, avocado, tomato, marinated cucumber, seaweed salad, mixed green, soy mustard dressing.",
+        "price": "$15.00",
+        "section": "Salad"
+      },
+      {
+        "name": "House Salad",
+        "description": "Mixed green, tomato, house dressing.",
+        "price": "$4.50",
+        "section": "Salad"
+      },
+      {
+        "name": "Poki Salad",
+        "description": "Tuna, cucumber,  seaweed salad, 7 spice pepper, soy mustard dressing.",
+        "price": "$12.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Salmon Skin Salad",
+        "description": "Salmon skin, avocado. tomato, marinated cucumber, seaweed salad, mixed green, soy mustard dressing.",
+        "price": "$15.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Sashimi Salad",
+        "description": "8 pcs  variety of fish, avocado, tomato, marinated cucumber, seaweed salad, mixed green, soy mustard dressing.",
+        "price": "$20.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Seaweed Salad",
+        "description": "Seaweed",
+        "price": "$9.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Seaweed Sunomono Salad",
+        "description": "Seaweed, marinated cucumber, ponzu sauce.",
+        "price": "$9.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Sunomono Salad",
+        "description": "Marinated cucumber, ponzu sauce.",
+        "price": "$7.50",
+        "section": "Salad"
+      },
+      {
+        "name": "Tako Sunomono Salad",
+        "description": "Octopus, marinated cucumber, ponzu sauce.",
+        "price": "$12.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Salmon Kama",
+        "description": "Fried salmon collar with ponzu, lemon.",
+        "price": "$10.50",
+        "section": "Hot Baked Special"
+      },
+      {
+        "name": "Baked Salmon Roll",
+        "description": "In: Imitation crab, avocado. Top: Salmon, dynamite sauce, eel sauce, spicy mayo, green onion",
+        "price": "$15.00",
+        "section": "Hot Baked Special"
+      },
+      {
+        "name": "Dynamic Special (Bowl)",
+        "description": "Imitation crab, mix sashimi, onion, dynamic sauce, spicy mayo, green onion.",
+        "price": "$15.00",
+        "section": "Hot Baked Special"
+      },
+      {
+        "name": "California Beach Roll",
+        "description": "In: Imitation crab, avocado. Top: spicy scallop, dynamite sauce, eel sauce, spicy mayo, green onion.",
+        "price": "$16.50",
+        "section": "Hot Baked Special"
+      },
+      {
+        "name": "Pizza Roll",
+        "description": "inside: salmon, cream cheese, imitation crab, avocado.\\nTopping: Dynamic sauce, eel sauce, spicy mayo, green onion.",
+        "price": "$16.00",
+        "section": "Hot Baked Special"
+      },
+      {
+        "name": "Volcano",
+        "description": "Inside: Imitation crab, mix sashimi, avocado.\\nTopping: Wrapped in salmon, dynamic sauce, eel sauce, spicy mayo, green onion.",
+        "price": "$15.00",
+        "section": "Hot Baked Special"
+      },
+      {
+        "name": "Albacore Nigiri",
+        "description": "Albacore nigiri consists of thinly sliced albacore tuna, typically served atop a small mound of vinegared sushi rice.",
+        "price": "$6.00",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Eel Nigiri",
+        "description": "Sliced eel, lightly seasoned and placed atop a small mound of vinegared sushi rice, typically includes a brush of sweet soy sauce.",
+        "price": "$6.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Mackerel Nigiri",
+        "description": "Mackerel nigiri features thinly sliced mackerel atop a compact mound of vinegared sushi rice, often seasoned with a hint of rice vinegar.",
+        "price": "$6.00",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Octopus Nigiri",
+        "description": "Sliced octopus atop sushi rice, typically served with ginger and wasabi.",
+        "price": "$6.00",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Salmon Nigiri",
+        "description": "Delicate slices of salmon atop seasoned sushi rice, accompanied by pickled ginger, wasabi, and a lemon slice.",
+        "price": "$6.00",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Salmon Roe Nigiri",
+        "description": "Salmon roe atop hand-pressed sushi rice, often encircled with a thin strip of nori.",
+        "price": "$7.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Scallop Nigiri",
+        "description": "Sliced scallop atop a small mound of vinegared rice, typically served in pairs.",
+        "price": "$7.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Shrimp Nigiri",
+        "description": "Cooked shrimp delicately placed on top of vinegared sushi rice, typically accompanied by a hint of wasabi.",
+        "price": "$5.00",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Tofu Pocket Nigiri",
+        "description": "Sweet fried tofu pouch traditionally filled with seasoned sushi rice.",
+        "price": "$4.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Tuna Nigiri",
+        "description": "Two slices of fresh tuna atop seasoned sushi rice, served with a side of pickled ginger, wasabi, and shredded daikon.",
+        "price": "$6.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Seared Tuna Nigiri",
+        "description": "Lightly seared tuna slices resting on a bed of vinegared sushi rice.",
+        "price": "$7.00",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Yellowtail Nigiri",
+        "description": "Yellowtail nigiri features a slice of yellowtail atop a mound of seasoned sushi rice, typically served in pairs.",
+        "price": "$7.00",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Albacore Sashimi (5 Pcs)",
+        "description": "Five pieces of albacore sashimi, typically garnished with green onion and served with ponzu sauce.",
+        "price": "$11.94",
+        "section": "Sashimi "
+      },
+      {
+        "name": "Saba Sashimi (5 Pcs)",
+        "description": "Thinly-sliced, raw mackerel, traditionally served with accompaniments like soy sauce, wasabi, and pickled ginger.",
+        "price": "$11.00",
+        "section": "Sashimi "
+      },
+      {
+        "name": "Salmon Sashimi (5 Pcs)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sashimi "
+      },
+      {
+        "name": "Tako (Octopus)  Sashimi (5 Pcs)",
+        "description": "Thinly sliced octopus, traditionally prepared and served as five pieces.",
+        "price": "$12.50",
+        "section": "Sashimi "
+      },
+      {
+        "name": "Tuna  Sashimi (5 Pcs)",
+        "description": "Sliced raw tuna, typically served with accompaniments like soy sauce, wasabi, and pickled ginger. One order includes five pieces.",
+        "price": "$12.95",
+        "section": "Sashimi "
+      },
+      {
+        "name": "Unagi (Eel) Sashimi (5 Pcs)",
+        "description": "Five pieces of unagi sashimi, typically featuring thinly sliced freshwater eel, often accompanied by a garnish such as daikon radish.",
+        "price": "$12.50",
+        "section": "Sashimi "
+      },
+      {
+        "name": "Yellowtail Sashimi (5 Pcs)",
+        "description": "Sliced raw yellowtail, typically accompanied by wasabi, ginger, and soy sauce.",
+        "price": "$13.50",
+        "section": "Sashimi "
+      },
+      {
+        "name": "Mix Sashimi (6 Pcs)",
+        "description": "Salrnon, tuna, yellowtail.",
+        "price": "$14.50",
+        "section": "Sashimi "
+      },
+      {
+        "name": "Mix Sashimi (9 Pcs)",
+        "description": "Nine pieces of carefully selected sashimi, typically featuring an assortment of salmon, tuna, and yellowtail, each presented in three pieces.",
+        "price": "$18.50",
+        "section": "Sashimi "
+      },
+      {
+        "name": "Maki Sampler Bento",
+        "description": "CA roll four pieces, spicy tuna roll four pieces and shrimp tempura roll. House salad.",
+        "price": "$17.50",
+        "section": "Sushi Bento"
+      },
+      {
+        "name": "Sushi Variety Bento",
+        "description": "Shrimp tempura roll. 6pc nigiri  tuna, salmon, yellowtail, albacore, mackerel, shrimp. House salad.",
+        "price": "$22.00",
+        "section": "Sushi Bento"
+      },
+      {
+        "name": "Kaiyo Special Bento",
+        "description": "Rainbow roll, (6 Pcs Nigiri,  tuna, salmon, yellowtail, albacore, mackerel, shrimp). House salad.",
+        "price": "$25.00",
+        "section": "Sushi Bento"
+      },
+      {
+        "name": "California Handroll",
+        "description": "Fresh crab and avocado rolled by hand in a crisp seaweed wrap.",
+        "price": "$7.50",
+        "section": "Hand Roll"
+      },
+      {
+        "name": "Eel Handroll",
+        "description": "Eel, cucumber, and avocado, typically wrapped in a nori cone with a drizzle of eel sauce.",
+        "price": "$8.50",
+        "section": "Hand Roll"
+      },
+      {
+        "name": "Salmon Skin Handroll",
+        "description": "Crispy salmon skin, cucumber, and sushi rice, elegantly wrapped in a nori sheet to form a cone-shaped hand roll, often accompanied by a drizzle of eel sauce.",
+        "price": "$8.00",
+        "section": "Hand Roll"
+      },
+      {
+        "name": "Shrimp Tempura Handroll",
+        "description": "Crispy shrimp tempura, avocado, cucumber, and sushi rice, wrapped in a seaweed cone with a touch of eel sauce.",
+        "price": "$9.00",
+        "section": "Hand Roll"
+      },
+      {
+        "name": "Spicy Salmon Handroll",
+        "description": "",
+        "price": "$8.00",
+        "section": "Hand Roll"
+      },
+      {
+        "name": "Spicy Tuna Handroll",
+        "description": "Fresh Tuna with a fiery kick, wrapped in crisp seaweed.",
+        "price": "$8.00",
+        "section": "Hand Roll"
+      },
+      {
+        "name": "Spicy Yellowtail Handroll",
+        "description": "Spicy yellowtail, cucumber, and sushi rice, typically wrapped in seaweed in a cone shape, often accompanied by spicy mayo and scallions.",
+        "price": "$9.00",
+        "section": "Hand Roll"
+      },
+      {
+        "name": "Spider Handroll",
+        "description": "Soft shell crab, avocado, and cucumber, wrapped in a seaweed cone, typically includes a touch of eel sauce.",
+        "price": "$9.50",
+        "section": "Hand Roll"
+      },
+      {
+        "name": "Veggie Handroll",
+        "description": "Wrapped in a seaweed cone, this hand roll combines cucumber, avocado, and a variety of pickled vegetables, typically seasoned with sesame seeds.",
+        "price": "$7.00",
+        "section": "Hand Roll"
+      },
+      {
+        "name": "Veggie Tempura  Handroll",
+        "description": "Assorted vegetables lightly coated in tempura batter, wrapped in a seaweed sheet with sushi rice, typically includes sweet potato and asparagus.",
+        "price": "$7.50",
+        "section": "Hand Roll"
+      },
+      {
+        "name": "Mochi Ice Cream (2 Pcs)",
+        "description": "Mochi ice cream, choice of strawberry, mango, or green tea matcha flavors.",
+        "price": "$5.00",
+        "section": "Dessert"
+      },
+      {
+        "name": "Flavored Iced Tea",
+        "description": "Iced tea infused with natural flavors to create a refreshing beverage.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Lemonade",
+        "description": "Refreshing citrus beverage.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Coke",
+        "description": "The cold, refreshing, sparkling classic that America loves.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "A crisp, refreshing taste you know and love with zero calories.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Dr. Pepper",
+        "description": "A carbonated soft drink with a unique blend of 23 flavors.",
+        "price": "$3.50",
+        "section": "Beverage"
+      },
+      {
+        "name": "Sprite",
+        "description": "The cold, refreshing flavors of lemon and lime, perfectly blended.",
+        "price": "$3.50",
+        "section": "Beverage"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2135",
+    "name": "La Costa Coffee Roasting",
+    "sourceUrl": "https://lacostacoffee.com/",
+    "confidence": "low",
+    "blocked": "Own site (lacostacoffee.com, address matches exactly) is a JS SPA on Shopify with only two real pages per its sitemap: '/' and '/shop'. /shop (via the myshopify.com products.json endpoint) is bags-of-beans-only e-commerce (61 products, all coffee bean bags/blends, $15.94-$36.50) -- confirmed this is the beans subscription store, not the in-cafe drink/food menu, per playbook guidance that products.json finds what a site sells online, not necessarily the cafe menu. The physical cafe serves espresso drinks, brewed coffee and pastries (confirmed via web search and joe.coffee listing) but has no online ordering: joe.coffee's page for this location explicitly states 'Mobile ordering isn't available here yet.' No Toast/Square/Clover storefront found under this name. Yelp (menu tab barred anyway, but even the photo gallery for a dated menu board) 403'd both curl and WebFetch. restaurantguru only had an aggregate 'price per person: $10-20' estimate, no per-item prices. Likely needs a Chrome-equipped pass at Yelp or Google Maps photos for a dated menu-board picture.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3147",
+    "name": "Blue Mug Coffee & Tea",
+    "sourceUrl": "https://sites.google.com/blue-mug.com/blue-mug/menu",
+    "confidence": "high",
+    "notes": "Restaurant's own site (blue-mug.com redirects to its Google Sites page) hosts two full-resolution photographed menu pages, read directly with the image tool: page 1 (Basics, Ice Blended Espresso Drinks, Handcrafted Espresso Drinks, Non-Coffee Drinks) and page 2 (Breakfast, Organic Bulk Coffee, Organic Loose Leaf Tea, Flavored Syrups, Kid's Drinks). Address on the menu confirms Escondido, CA matching the work list. Excluded as adjuncts/non-dishes: Organic Bulk Coffee (retail bagged beans by weight, 1/4-1lb), Organic Loose Leaf Tea and Flavored Syrups (flavor-name lists with no per-flavor price -- their prices are already captured via the sized Loose Leaf Tea drink and the flat \"Add Syrup $.50\" modifier), and modifiers (Extra Cream Cheese, Add Arugula, Side of Aioli, Add Banana, Alternative Milk, Add Espresso Shot, Add Cold Foam). Every hot/iced or 16/24oz size variant is recorded as its own line item since each carries a distinct price.",
+    "dishes": [
+      {
+        "name": "Espresso (Double)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Basics"
+      },
+      {
+        "name": "Espresso (Triple)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Basics"
+      },
+      {
+        "name": "Espresso (Quad)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Basics"
+      },
+      {
+        "name": "Cortado (8 oz)",
+        "description": "Espresso + Breve",
+        "price": "$4.00",
+        "section": "Basics"
+      },
+      {
+        "name": "Cubano (8 oz)",
+        "description": "Espresso + Breve + Raw Sugar",
+        "price": "$4.25",
+        "section": "Basics"
+      },
+      {
+        "name": "Hot Coffee (12 oz)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Basics"
+      },
+      {
+        "name": "Hot Coffee (20 oz)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Basics"
+      },
+      {
+        "name": "Iced Coffee (16 oz)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Basics"
+      },
+      {
+        "name": "Iced Coffee (24 oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Basics"
+      },
+      {
+        "name": "Cold Brew (16 oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Basics"
+      },
+      {
+        "name": "Cold Brew (24 oz)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Basics"
+      },
+      {
+        "name": "Turkish Coffee (8 oz)",
+        "description": "",
+        "price": "$2.50",
+        "section": "Basics"
+      },
+      {
+        "name": "Turkish Coffee (12 oz)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Basics"
+      },
+      {
+        "name": "Kona Mocha (16 oz)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Kona Mocha (24 oz)",
+        "description": "",
+        "price": "$6.75",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Banana Kona Mocha (16 oz)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Banana Kona Mocha (24 oz)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "PB & Banana Kona Mocha (16 oz)",
+        "description": "",
+        "price": "$6.25",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "PB & Banana Kona Mocha (24 oz)",
+        "description": "",
+        "price": "$7.25",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Caramel (16 oz)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Caramel (24 oz)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Vanilla (16 oz)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Vanilla (24 oz)",
+        "description": "",
+        "price": "$6.75",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Green Mint Mocha (16 oz)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Green Mint Mocha (24 oz)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Chai (16 oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Chai (24 oz)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Ice Blended Espresso Drinks"
+      },
+      {
+        "name": "Americano (Hot, 12 oz)",
+        "description": "",
+        "price": "$3.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Americano (Hot, 20 oz)",
+        "description": "",
+        "price": "$4.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Americano (Iced, 16 oz)",
+        "description": "",
+        "price": "$3.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Americano (Iced, 24 oz)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Latte (Hot, 12 oz)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Latte (Hot, 20 oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Latte (Iced, 16 oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Latte (Iced, 24 oz)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Cappuccino (Hot, 12 oz)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Cappuccino (Hot, 20 oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Mocha / White Mocha (Hot, 12 oz)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Mocha / White Mocha (Hot, 20 oz)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Mocha / White Mocha (Iced, 16 oz)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Mocha / White Mocha (Iced, 24 oz)",
+        "description": "",
+        "price": "$6.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Caramel Macchiato (Hot, 12 oz)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Caramel Macchiato (Hot, 20 oz)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Caramel Macchiato (Iced, 16 oz)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Caramel Macchiato (Iced, 24 oz)",
+        "description": "",
+        "price": "$6.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Orange Peel Mocha (Hot, 12 oz)",
+        "description": "Dark chocolate + orange peel",
+        "price": "$5.00",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Orange Peel Mocha (Hot, 20 oz)",
+        "description": "Dark chocolate + orange peel",
+        "price": "$6.00",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Orange Peel Mocha (Iced, 16 oz)",
+        "description": "Dark chocolate + orange peel",
+        "price": "$5.50",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Orange Peel Mocha (Iced, 24 oz)",
+        "description": "Dark chocolate + orange peel",
+        "price": "$6.50",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Mexican Mocha (Hot, 12 oz)",
+        "description": "Spiced chocolate + espresso",
+        "price": "$5.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Mexican Mocha (Hot, 20 oz)",
+        "description": "Spiced chocolate + espresso",
+        "price": "$6.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Mexican Mocha (Iced, 16 oz)",
+        "description": "Spiced chocolate + espresso",
+        "price": "$5.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Mexican Mocha (Iced, 24 oz)",
+        "description": "Spiced chocolate + espresso",
+        "price": "$6.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Steph's Special (Hot, 12 oz)",
+        "description": "Americano + vanilla bean powder",
+        "price": "$4.50",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Steph's Special (Hot, 20 oz)",
+        "description": "Americano + vanilla bean powder",
+        "price": "$5.50",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Steph's Special (Iced, 16 oz)",
+        "description": "Americano + vanilla bean powder",
+        "price": "$5.50",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Steph's Special (Iced, 24 oz)",
+        "description": "Americano + vanilla bean powder",
+        "price": "$6.50",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Dirty Chai Latte (Hot, 12 oz)",
+        "description": "Vanilla or spiced chai + espresso",
+        "price": "$5.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Dirty Chai Latte (Hot, 20 oz)",
+        "description": "Vanilla or spiced chai + espresso",
+        "price": "$6.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Dirty Chai Latte (Iced, 16 oz)",
+        "description": "Vanilla or spiced chai + espresso",
+        "price": "$5.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Dirty Chai Latte (Iced, 24 oz)",
+        "description": "Vanilla or spiced chai + espresso",
+        "price": "$6.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Maui Wowie (Hot, 12 oz)",
+        "description": "Caramel, coconut, macadamia nut",
+        "price": "$4.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Maui Wowie (Hot, 20 oz)",
+        "description": "Caramel, coconut, macadamia nut",
+        "price": "$5.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Maui Wowie (Iced, 16 oz)",
+        "description": "Caramel, coconut, macadamia nut",
+        "price": "$5.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Maui Wowie (Iced, 24 oz)",
+        "description": "Caramel, coconut, macadamia nut",
+        "price": "$6.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Snickerdoodle Latte (Hot, 12 oz)",
+        "description": "Brown sugar, vanilla, cinnamon",
+        "price": "$5.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Snickerdoodle Latte (Hot, 20 oz)",
+        "description": "Brown sugar, vanilla, cinnamon",
+        "price": "$6.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Snickerdoodle Latte (Iced, 16 oz)",
+        "description": "Brown sugar, vanilla, cinnamon",
+        "price": "$5.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Snickerdoodle Latte (Iced, 24 oz)",
+        "description": "Brown sugar, vanilla, cinnamon",
+        "price": "$6.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Brown Sugar Macadamia Nut Latte (Hot, 12 oz)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Brown Sugar Macadamia Nut Latte (Hot, 20 oz)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Brown Sugar Macadamia Nut Latte (Iced, 16 oz)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Brown Sugar Macadamia Nut Latte (Iced, 24 oz)",
+        "description": "",
+        "price": "$6.75",
+        "section": "Handcrafted Espresso Drinks"
+      },
+      {
+        "name": "Loose Leaf Tea (Hot, 12 oz)",
+        "description": "Tea list on back of menu",
+        "price": "$4.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Loose Leaf Tea (Hot, 20 oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Loose Leaf Tea (Iced, 16 oz)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Loose Leaf Tea (Iced, 24 oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Loose Leaf Tea (Iced, 32 oz)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Tea Latte (Hot, 12 oz)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Tea Latte (Hot, 20 oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Tea Latte (Iced, 16 oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Tea Latte (Iced, 24 oz)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Matcha Latte (Hot, 12 oz)",
+        "description": "Organic ceremonial grade",
+        "price": "$5.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Matcha Latte (Hot, 20 oz)",
+        "description": "Organic ceremonial grade",
+        "price": "$6.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Matcha Latte (Iced, 16 oz)",
+        "description": "Organic ceremonial grade",
+        "price": "$6.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Matcha Latte (Iced, 24 oz)",
+        "description": "Organic ceremonial grade",
+        "price": "$7.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Chai Latte (Hot, 12 oz)",
+        "description": "Vanilla or spiced chai",
+        "price": "$4.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Chai Latte (Hot, 20 oz)",
+        "description": "Vanilla or spiced chai",
+        "price": "$5.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Chai Latte (Iced, 16 oz)",
+        "description": "Vanilla or spiced chai",
+        "price": "$5.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Chai Latte (Iced, 24 oz)",
+        "description": "Vanilla or spiced chai",
+        "price": "$6.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Hot Chocolate (12 oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Hot Chocolate (20 oz)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Mexican Hot Chocolate (12 oz)",
+        "description": "Spiced chocolate",
+        "price": "$4.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Mexican Hot Chocolate (20 oz)",
+        "description": "Spiced chocolate",
+        "price": "$5.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Fruit Smoothie (16 oz)",
+        "description": "Strawberry, mango, or peach - add banana",
+        "price": "$5.75",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Fruit Smoothie (24 oz)",
+        "description": "Strawberry, mango, or peach - add banana",
+        "price": "$6.75",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Flavored Red Bull (16 oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Red Bull Smoothie (24 oz)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Lotus Energy Drink (24 oz)",
+        "description": "Raspberry or blueberry",
+        "price": "$5.50",
+        "section": "Non-Coffee Drinks"
+      },
+      {
+        "name": "Bagel w/ Butter",
+        "description": "",
+        "price": "$3.75",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bagel w/ Plain Cream Cheese",
+        "description": "",
+        "price": "$4.25",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bagel w/ Jalapeno Cream Cheese",
+        "description": "",
+        "price": "$4.75",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bagel w/ Veggie Garlic Cream Cheese",
+        "description": "",
+        "price": "$4.75",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bagel Sandwich",
+        "description": "Your choice of bagel w/ egg, bacon, cheese, & cream cheese",
+        "price": "$8.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Croissant Sandwich",
+        "description": "Butter croissant w/ egg, bacon, & cheese, served w/ pesto or chipotle aioli",
+        "price": "$7.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "English Muffin Sandwich",
+        "description": "English muffin w/ egg, bacon or turkey sausage, & cheese",
+        "price": "$6.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Egg, Bacon, & Cheese (no bread)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Oatmeal",
+        "description": "Brown sugar, cinnamon, craisins, almonds",
+        "price": "$4.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Hot Chocolate (8 oz)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Kid's Drinks"
+      },
+      {
+        "name": "Chocolate Milk (12 oz)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Kid's Drinks"
+      },
+      {
+        "name": "Milk Steamer (8 oz)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Kid's Drinks"
+      },
+      {
+        "name": "Cold Milk (12 oz)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Kid's Drinks"
+      },
+      {
+        "name": "Fruit Smoothie (12 oz)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Kid's Drinks"
+      },
+      {
+        "name": "Lemonade (12 oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Kid's Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2301",
+    "name": "Cortez Mexican Food",
+    "sourceUrl": "https://www.allmenus.com/ca/bonsall/1021327-cortez-mexican-food/menu/",
+    "confidence": "low",
+    "blocked": "Restaurant's own site (cortezmexicanfood.com) returns HTTP 521 'Web server is down' from Cloudflare with an unrelated error-page title (riccardofranchini.com), tried both https and http -- origin genuinely down, a temporary condition. UberEats hits a bot/device-verification challenge wall (def.uber.com/challenge) to curl. No DoorDash listing found. allmenus.com (Grubhub-owned, tier 5) is the only reachable priced source: a full, plausible combo-plate/burrito/taco/tostada/breakfast-burrito/enchilada/drinks/sides menu (~90 items, mostly $1.25-$9.59, footer dated 2023) -- but one row is unusable on its face (Sour Cream 2 oz listed at $89.00, obviously a transcription error for $0.89, dropped rather than guessed). Tier 5 needs an independent second priced source per the source ladder; Sirved.com only has a non-priced category-list graphic ('Cortez Mexican Food Offers: Burritos, Tacos, Enchiladas...'), Yelp's menu tab is barred, and menupix/restaurantji were not reachable in time. Needs either the restaurant's own site once it's back up, or a Chrome-equipped pass at UberEats.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3869",
+    "name": "Mr. Shwarma",
+    "sourceUrl": "https://order.online/store/mr-shawarma-garnet-ave-25078753",
+    "confidence": "low",
+    "blocked": "Only reachable priced source (order.online, DoorDash white-label, address 1050 Garnet Avenue #B matches the work item) fails the markup test badly: RSC-payload-extracted 93 items across 12 categories, 90.3% divide cleanly (to round or half-dollar values) by 1.3 -- a uniform 30% markup, not organic pricing (e.g. Beef & Lamb Shawarma $16.90 -> $13.00, Falafel $14.30 -> $11.00, Chicken Shawarma $15.60 -> $12.00). Per playbook this makes the source unusable for pricing, and the base price is not to be reconstructed by dividing it out. Restaurant's own site (mrshawarmausa.com) has no menu or pricing page -- nav only has about/catering/franchise/jobs/locations, ordering is app-only (iOS/Android). Its Toast listing (toasttab.com/local/mr-shawarma-pb-new-1050-garnet-avenue-b) is a directory/location page only -- __OO_STATE__ shows hasOnlineOrderingModule:false, no menu data. Independent cross-checks all failed: Postmates and Grubhub/Seamless (same company, wouldn't count anyway) both returned bot-challenge redirects or empty JS shells to curl and WebFetch. A second Grubhub listing exists for a different branch (3804 Ingraham Street) but per playbook one branch's menu cannot be recorded under another branch's id. Needs a Chrome-equipped pass at Postmates/UberEats, or the restaurant's own ordering app, for unmarked-up prices.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3465",
+    "name": "Harvest Taco Shop",
+    "sourceUrl": "https://www.allmenus.com/ca/san-diego/798757-harvest-taco-shop/menu/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.foodboss.com/san-diego-ca/harvest-taco-shop-9350-clairemont-mesa-blvd-san-diego-delivery (aggregates Postmates/Uber Eats -- different owner than Grubhub/allmenus)",
+    "notes": "Work list's own listed website (harvesttacoshopgo.site) does not resolve (DNS failure, both http and https, -k tried) -- dead/never-registered domain. A same-named 'harvesttacoshopgo.twupro.com' site was checked and is a generic templated placeholder (marketing filler like 'Street Tacos - Authentic style - Best Seller' with emoji headers, no real prices) -- not used. Primary source is allmenus.com (Grubhub-owned, tier 5, ~120 items across 16 sections, address 9350 Clairemont Mesa Blvd matches exactly). Cross-checked against FoodBoss, which aggregates Postmates and Uber Eats (Uber-owned -- independent of Grubhub) -- dozens of items match to the cent (Beef Soup $5.55, Flautas $5.95, Bunuelos $1.25, all burrito/torta/tostada prices, etc). Markup test on allmenus prices: no divisor clears 18% clean (max 17.5% at 1.1), inside organic noise -- passes. One item dropped for disagreement: 'Chips w/ Guacamole' is $8.50 on allmenus vs $3.95 on FoodBoss (2.15x, not a clean-divisor markup, just conflicting/stale data) -- excluded rather than guessed. Where allmenus collapsed an item into an 'X or Y' choice line, FoodBoss's fuller per-item breakdown was used to split it into separate priced rows (Taco Salad Beef/Chicken Taco, Two Beef/Chicken Tacos, Two Beef/Chicken Sopes, Two Cheese/Beef/Chicken Enchiladas) since both variants share the same source price. Also caught: allmenus' concatenated text reads as if 'Carne Asada $2.25' and 'Al Pastor $2.25' are separate 'Taco Salad' items, but FoodBoss's Taco Salad section has no such rows -- those are the Carne Asada Taco and Al Pastor Taco already recorded under Tacos, so they were not duplicated. Categories reached: Soup, The Big Plate, Burritos, Enchiladas, Tortas, Tostadas, Seafood, Chimichanga, Tacos, Taco Salad, Daily Specials, Combination Plates, Quesadillas, Side Orders, Extras, Drinks -- both sources cover the same full section list.",
+    "dishes": [
+      {
+        "name": "Albondigas Soup",
+        "description": "Served with side of rice and tortillas.",
+        "price": "$5.55",
+        "section": "Soup"
+      },
+      {
+        "name": "Menudo Soup",
+        "description": "Served with tortillas.",
+        "price": "$5.55",
+        "section": "Soup"
+      },
+      {
+        "name": "Beef Soup",
+        "description": "",
+        "price": "$5.55",
+        "section": "Soup"
+      },
+      {
+        "name": "Chicken Soup",
+        "description": "",
+        "price": "$5.55",
+        "section": "Soup"
+      },
+      {
+        "name": "Harvest Taco Shop Mole Plate",
+        "description": "Served with rice, beans, tortillas.",
+        "price": "$6.25",
+        "section": "Soup"
+      },
+      {
+        "name": "Flautas (3 pieces)",
+        "description": "Beef or chicken, with guacamole, sour cream, lettuce, Mexican salsa and cheese, rice and beans.",
+        "price": "$5.95",
+        "section": "Soup"
+      },
+      {
+        "name": "Fish Rolled Tacos (5 pieces)",
+        "description": "Served with tartar sauce, lettuce, Mexican salsa and cheese.",
+        "price": "$3.99",
+        "section": "Soup"
+      },
+      {
+        "name": "Two Rolled Tacos",
+        "description": "With guacamole, beef taco and bean tostada.",
+        "price": "$3.75",
+        "section": "The Big Plate"
+      },
+      {
+        "name": "Rolled Tacos (5 pieces)",
+        "description": "Served with guacamole, sour cream, lettuce, Mexican salsa and cheese.",
+        "price": "$3.99",
+        "section": "The Big Plate"
+      },
+      {
+        "name": "Bunuelos",
+        "description": "",
+        "price": "$1.25",
+        "section": "The Big Plate"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "",
+        "price": "$3.85",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asado Burrito",
+        "description": "",
+        "price": "$3.85",
+        "section": "Burritos"
+      },
+      {
+        "name": "Mix Burrito",
+        "description": "",
+        "price": "$3.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "Machaca Burrito",
+        "description": "",
+        "price": "$3.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "Milanesa Burrito",
+        "description": "",
+        "price": "$3.85",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fish Burrito",
+        "description": "",
+        "price": "$3.85",
+        "section": "Burritos"
+      },
+      {
+        "name": "Veggie Burrito",
+        "description": "",
+        "price": "$3.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beef Burrito",
+        "description": "",
+        "price": "$3.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bean Burrito",
+        "description": "",
+        "price": "$2.35",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chicken Burrito",
+        "description": "",
+        "price": "$3.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "Steak Ranchero Burrito",
+        "description": "",
+        "price": "$3.85",
+        "section": "Burritos"
+      },
+      {
+        "name": "Al Pastor Burrito",
+        "description": "",
+        "price": "$3.85",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chorizo Burrito",
+        "description": "",
+        "price": "$3.55",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "",
+        "price": "$4.45",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carne Asada Burrito",
+        "description": "",
+        "price": "$3.85",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "",
+        "price": "$3.85",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beef Enchilada",
+        "description": "",
+        "price": "$3.60",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Cheese Enchilada",
+        "description": "",
+        "price": "$3.60",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Shrimp Enchilada",
+        "description": "",
+        "price": "$4.25",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Chicken Enchilada",
+        "description": "",
+        "price": "$3.60",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Mix Enchilada",
+        "description": "",
+        "price": "$3.60",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Rolled Tacos Enchilada (3 pieces)",
+        "description": "With lettuce, sour cream, guacamole, Mexican salsa, cheese & rice & beans.",
+        "price": "$4.75",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Carne Asada Torta",
+        "description": "",
+        "price": "$3.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chorizo Torta",
+        "description": "",
+        "price": "$3.55",
+        "section": "Tortas"
+      },
+      {
+        "name": "Fish Torta",
+        "description": "",
+        "price": "$3.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Beef Torta",
+        "description": "",
+        "price": "$3.55",
+        "section": "Tortas"
+      },
+      {
+        "name": "Machaca Torta",
+        "description": "",
+        "price": "$3.55",
+        "section": "Tortas"
+      },
+      {
+        "name": "Milanesa Torta",
+        "description": "",
+        "price": "$3.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chicken Torta",
+        "description": "",
+        "price": "$3.55",
+        "section": "Tortas"
+      },
+      {
+        "name": "Ham Torta",
+        "description": "",
+        "price": "$3.55",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chile Relleno Torta",
+        "description": "",
+        "price": "$3.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Al Pastor Torta",
+        "description": "",
+        "price": "$3.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carnitas Torta",
+        "description": "",
+        "price": "$3.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Pollo Asado Torta",
+        "description": "",
+        "price": "$3.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Beef Tostada",
+        "description": "",
+        "price": "$2.35",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Ceviche Tostada",
+        "description": "",
+        "price": "$3.15",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Chicken Tostada",
+        "description": "",
+        "price": "$2.35",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Carnitas Tostada",
+        "description": "",
+        "price": "$3.15",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Pollo Asado Tostada",
+        "description": "",
+        "price": "$3.15",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Beans Tostada",
+        "description": "",
+        "price": "$2.10",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Carne Asada Tostada",
+        "description": "",
+        "price": "$3.15",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Shrimp Fajita",
+        "description": "",
+        "price": "$8.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp Soup",
+        "description": "",
+        "price": "$8.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp Ranchero",
+        "description": "",
+        "price": "$8.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp In Garlic Sauce",
+        "description": "",
+        "price": "$8.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp Cocktail",
+        "description": "Served with side of rice and tortillas.",
+        "price": "$8.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Special Shrimp Burrito",
+        "description": "Served with rice and beans.",
+        "price": "$5.55",
+        "section": "Seafood"
+      },
+      {
+        "name": "Fish Soup",
+        "description": "",
+        "price": "$8.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Breaded Shrimp",
+        "description": "",
+        "price": "$8.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "A La Diabla Shrimp",
+        "description": "Served with beans, rice and tortillas.",
+        "price": "$8.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Chicken Chimichanga",
+        "description": "Served with guacamole, sour cream and cheese on top.",
+        "price": "$4.45",
+        "section": "Chimichanga"
+      },
+      {
+        "name": "Carne Asada Chimichanga",
+        "description": "Served with guacamole, sour cream and cheese on top.",
+        "price": "$4.75",
+        "section": "Chimichanga"
+      },
+      {
+        "name": "Beef Chimichanga",
+        "description": "Served with guacamole, sour cream and cheese on top.",
+        "price": "$4.45",
+        "section": "Chimichanga"
+      },
+      {
+        "name": "Fish Taco",
+        "description": "",
+        "price": "$2.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Chicken Taco",
+        "description": "",
+        "price": "$1.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Flying Saucer (Beef or Chicken)",
+        "description": "",
+        "price": "$4.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Rolled Plain Taco (3 pieces)",
+        "description": "",
+        "price": "$1.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Rolled Taco with Guacamole (3 pieces)",
+        "description": "",
+        "price": "$2.15",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shredded Beef Taco",
+        "description": "",
+        "price": "$1.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carnitas Taco",
+        "description": "",
+        "price": "$2.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo Asado Taco",
+        "description": "",
+        "price": "$2.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Al Pastor Taco",
+        "description": "",
+        "price": "$2.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Taco",
+        "description": "",
+        "price": "$2.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Rolled Tacos, 5 pieces, w/ guacamole and cheese",
+        "description": "",
+        "price": "$2.75",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Salad Beef Taco",
+        "description": "",
+        "price": "$4.25",
+        "section": "Taco Salad"
+      },
+      {
+        "name": "Taco Salad Chicken Taco",
+        "description": "",
+        "price": "$4.25",
+        "section": "Taco Salad"
+      },
+      {
+        "name": "Flying Saucer Beef Taco",
+        "description": "",
+        "price": "$4.25",
+        "section": "Taco Salad"
+      },
+      {
+        "name": "Flying Saucer Chicken Taco",
+        "description": "",
+        "price": "$4.25",
+        "section": "Taco Salad"
+      },
+      {
+        "name": "Shrimp Soup (Daily Special)",
+        "description": "Served with rice and tortillas.",
+        "price": "$6.75",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Menudo Plate (Daily Special)",
+        "description": "Served with tortillas.",
+        "price": "$4.75",
+        "section": "Daily Specials"
+      },
+      {
+        "name": "Chorizo Plate",
+        "description": "Served with tortillas.",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Beef Tacos",
+        "description": "",
+        "price": "$5.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Chicken Tacos",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Steak Ranchero Plate",
+        "description": "Served with tortillas.",
+        "price": "$6.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Carne Asada Plate",
+        "description": "Served with tortillas.",
+        "price": "$6.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Fish Tacos",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Cheese Enchilada & Beef Burrito",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Chile Rellenos",
+        "description": "Served with tortillas.",
+        "price": "$6.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Machaca Plate",
+        "description": "Served with tortillas.",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Beef Taco & Beef Burrito",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Beef Sopes",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Chicken Sopes",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Cheese Enchiladas",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Beef Enchiladas",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Chicken Enchiladas",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Beef Taco & Cheese Enchilada",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Cheese Enchilada & Beef Tostada",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Carnitas Plate",
+        "description": "Served with tortillas.",
+        "price": "$6.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Beef Tamales",
+        "description": "",
+        "price": "$5.95",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Milanesa Plate",
+        "description": "Served with tortillas.",
+        "price": "$6.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Two Shrimp Enchiladas",
+        "description": "",
+        "price": "$6.35",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Chimichanga Plate",
+        "description": "",
+        "price": "$6.25",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Quesadilla (Ham, Beef, or Chicken)",
+        "description": "",
+        "price": "$3.75",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Shrimp Quesadilla",
+        "description": "",
+        "price": "$5.75",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Super Quesadilla",
+        "description": "Carne asada or pollo asado, guacamole and sour cream.",
+        "price": "$4.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Rice",
+        "description": "",
+        "price": "$1.25",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Beans",
+        "description": "",
+        "price": "$1.25",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Chile Relleno (side)",
+        "description": "",
+        "price": "$2.99",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Chips with Cheese",
+        "description": "",
+        "price": "$2.75",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Half Pint Guacamole",
+        "description": "",
+        "price": "$3.25",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Half Pint Mexican Salsa",
+        "description": "",
+        "price": "$1.25",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Carne Asada Chips",
+        "description": "",
+        "price": "$6.55",
+        "section": "Side Orders"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$1.45",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$5.15",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Mexican Salsa (extra)",
+        "description": "",
+        "price": "$0.69",
+        "section": "Extras"
+      },
+      {
+        "name": "Guacamole (extra)",
+        "description": "",
+        "price": "$0.69",
+        "section": "Extras"
+      },
+      {
+        "name": "Sour Cream (extra)",
+        "description": "",
+        "price": "$0.69",
+        "section": "Extras"
+      },
+      {
+        "name": "Cheese (extra)",
+        "description": "",
+        "price": "$0.69",
+        "section": "Extras"
+      },
+      {
+        "name": "Tortillas (extra)",
+        "description": "",
+        "price": "$0.69",
+        "section": "Extras"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$0.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Soda",
+        "description": "",
+        "price": "$1.15",
+        "section": "Drinks"
+      },
+      {
+        "name": "Milk",
+        "description": "",
+        "price": "$1.45",
+        "section": "Drinks"
+      },
+      {
+        "name": "Orange Juice",
+        "description": "",
+        "price": "$2.75",
+        "section": "Drinks"
+      },
+      {
+        "name": "Aguas Frescas",
+        "description": "",
+        "price": "$1.35",
+        "section": "Drinks"
+      },
+      {
+        "name": "Flan",
+        "description": "",
+        "price": "$1.35",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "751",
+    "name": "Pizza Parlor",
+    "sourceUrl": "https://coronado.navylifesw.com/modules/media/?do=download&id=ec7ec500-3815-4bb8-92ab-44bdc36a2e9c",
+    "confidence": "high",
+    "notes": "Navy MWR facility page (coronado.navylifesw.com, address S. O St. & McCain Blvd, Bldg. 614, Coronado -- matches work list exactly) links a 'Pizza Parlor Menu.pdf' whose real download URL had to be pulled out of the page's raw HTML (the visible link text carried no href in the rendered/stripped text). pdftotext -layout on the 18MB PDF (mostly embedded images) yielded a clean, small (11.5KB, 2 content pages) text layer that paired every name to a price without scrambling -- a good outcome unlike the wine-list-scrambling cases in FINDINGS. Its own site's ChowNow storefront (direct.chownow.com/order/969/locations/1708) was also found but is a pure client-side React app behind a Cloudflare challenge with no discoverable API endpoint (guessed several api.chownow.com paths, all 404) -- consistent with the playbook's list of ChowNow as needing a browser; the PDF made that unnecessary here. Sized items (pizza/calzone Medium/Large, meal-deal A-la-carte/Meal-Deal, cookies 2-pc/12-pc, canned/16oz/pitcher beer) are recorded as separate priced rows. Excluded as modifiers, not dishes: per-topping surcharges ($6.95 party-pizza topping, $1.50/$2.50/$3.00 build-your-own topping tiers, $0.60 wing-sauce add, $3.95 panini meal-deal add-on). Included 'Sauce/Dressing Cup $1.00 each' as one representative priced line since the source lists it as a standalone purchasable menu section (Sides and Sauces) rather than a per-item modifier.",
+    "dishes": [
+      {
+        "name": "Buffalo Wings (12 pc)",
+        "description": "Smothered with your choice of buffalo or BBQ sauce and served with ranch or bleu cheese dressing",
+        "price": "$22.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Buffalo Wings - All Flats (12 pc)",
+        "description": "Smothered with your choice of buffalo or BBQ sauce and served with ranch or bleu cheese dressing",
+        "price": "$24.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Boneless Chicken Wings (10 pc)",
+        "description": "Served with ranch or bleu cheese dressing",
+        "price": "$11.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Cheese Filled Breadsticks (4 pc)",
+        "description": "Served with marinara sauce or ranch",
+        "price": "$9.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Breadsticks (4 pc)",
+        "description": "Served with marinara sauce or ranch",
+        "price": "$5.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mozzarella Sticks (5 pc)",
+        "description": "Served with marinara sauce or ranch",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$2.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Meat Lovers Pizza (Medium)",
+        "description": "Pepperoni, sausage, ham",
+        "price": "$16.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Meat Lovers Pizza (Large)",
+        "description": "Pepperoni, sausage, ham",
+        "price": "$20.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Garden Delight Pizza (Medium)",
+        "description": "Bell peppers, onions, olives, mushrooms",
+        "price": "$16.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Garden Delight Pizza (Large)",
+        "description": "Bell peppers, onions, olives, mushrooms",
+        "price": "$20.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "North Island Pizza (Medium)",
+        "description": "Pepperoni, sausage, mushrooms",
+        "price": "$14.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "North Island Pizza (Large)",
+        "description": "Pepperoni, sausage, mushrooms",
+        "price": "$19.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Top Gun Pizza (Medium)",
+        "description": "Pepperoni, sausage, mushrooms, olives, onions, bell peppers",
+        "price": "$19.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Top Gun Pizza (Large)",
+        "description": "Pepperoni, sausage, mushrooms, olives, onions, bell peppers",
+        "price": "$22.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "BBQ Chicken Pizza (Medium)",
+        "description": "Chicken, bacon, onion, cilantro and BBQ sauce",
+        "price": "$17.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "BBQ Chicken Pizza (Large)",
+        "description": "Chicken, bacon, onion, cilantro and BBQ sauce",
+        "price": "$21.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Buffalo Chicken Pizza (Medium)",
+        "description": "Chicken, onions, smothered with buffalo sauce",
+        "price": "$14.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Buffalo Chicken Pizza (Large)",
+        "description": "Chicken, onions, smothered with buffalo sauce",
+        "price": "$19.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Chicken Alfredo Pizza (Medium)",
+        "description": "Chicken covered in alfredo sauce with mushrooms and basil",
+        "price": "$15.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Chicken Alfredo Pizza (Large)",
+        "description": "Chicken covered in alfredo sauce with mushrooms and basil",
+        "price": "$19.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Chicken Bacon Ranch Pizza (Medium)",
+        "description": "Chicken, bacon and mozzarella cheese over a ranch sauce",
+        "price": "$16.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Chicken Bacon Ranch Pizza (Large)",
+        "description": "Chicken, bacon and mozzarella cheese over a ranch sauce",
+        "price": "$20.95",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "\"Party Pizza\" (28\")",
+        "description": "Feeds 6 to 8 people. Original crust only, cut into squares.",
+        "price": "$39.95",
+        "section": "The Party Pizza"
+      },
+      {
+        "name": "Small Cheese Pizza",
+        "description": "Original crust only",
+        "price": "$6.95",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Medium Cheese Pizza",
+        "description": "Original or thin crust",
+        "price": "$12.00",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Large Cheese Pizza",
+        "description": "Original or thin crust",
+        "price": "$15.95",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Small Cheese Calzone",
+        "description": "Original crust only",
+        "price": "$6.95",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Medium Cheese Calzone",
+        "description": "Original crust only",
+        "price": "$12.00",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Large Cheese Calzone",
+        "description": "Original crust only",
+        "price": "$15.95",
+        "section": "Build Your Own"
+      },
+      {
+        "name": "Sauce/Dressing Cup",
+        "description": "Ranch, blue cheese dressing, Frank's RedHot buffalo, BBQ sauce, or jalapeno/banana peppers",
+        "price": "$1.00",
+        "section": "Sides and Sauces"
+      },
+      {
+        "name": "9\" Pizza Sub (A La Carte)",
+        "description": "Toasted 9\" French bread cut in half and served open faced with cheese and sauce",
+        "price": "$6.95",
+        "section": "Select a Meal Deal"
+      },
+      {
+        "name": "9\" Pizza Sub (Meal Deal)",
+        "description": "Includes chips and a fountain drink",
+        "price": "$9.95",
+        "section": "Select a Meal Deal"
+      },
+      {
+        "name": "Meatball Sandwich (A La Carte)",
+        "description": "Italian meatballs, marinara sauce and melted cheese on 9\" French bread",
+        "price": "$8.95",
+        "section": "Select a Meal Deal"
+      },
+      {
+        "name": "Meatball Sandwich (Meal Deal)",
+        "description": "Includes chips and a fountain drink",
+        "price": "$11.95",
+        "section": "Select a Meal Deal"
+      },
+      {
+        "name": "2-Slices Pizza (A La Carte)",
+        "description": "",
+        "price": "$5.95",
+        "section": "Select a Meal Deal"
+      },
+      {
+        "name": "2-Slices Pizza (Meal Deal)",
+        "description": "Includes chips and a fountain drink",
+        "price": "$8.95",
+        "section": "Select a Meal Deal"
+      },
+      {
+        "name": "Chicken Bacon Ranch Panini",
+        "description": "Chicken, bacon and mozzarella cheese with ranch dressing",
+        "price": "$11.95",
+        "section": "Panini Italian Sandwich"
+      },
+      {
+        "name": "Lasagna",
+        "description": "Noodles in a meat sauce, ricotta cheese, mozzarella and topped with a melted five cheese blend. Comes with two breadsticks.",
+        "price": "$13.95",
+        "section": "Primo Pasta"
+      },
+      {
+        "name": "Spaghetti",
+        "description": "Served with a hearty meat sauce and two meatballs. Comes with two breadsticks.",
+        "price": "$11.95",
+        "section": "Primo Pasta"
+      },
+      {
+        "name": "Baked Ziti",
+        "description": "Ziti with a meat sauce and five cheese blend. Comes with two breadsticks.",
+        "price": "$11.95",
+        "section": "Primo Pasta"
+      },
+      {
+        "name": "Chicken Alfredo Ziti",
+        "description": "Ziti with an alfredo sauce, chicken, mushrooms, topped with melted five cheese blend and basil. Comes with two breadsticks.",
+        "price": "$12.95",
+        "section": "Primo Pasta"
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "description": "Comes with croutons",
+        "price": "$12.95",
+        "section": "Fresh Salads"
+      },
+      {
+        "name": "Small Dinner Salad",
+        "description": "Vegetarian. Comes with croutons.",
+        "price": "$5.95",
+        "section": "Fresh Salads"
+      },
+      {
+        "name": "Chocolate Chip Cookies (2)",
+        "description": "",
+        "price": "$1.75",
+        "section": "Dessert"
+      },
+      {
+        "name": "Chocolate Chip Cookies (12)",
+        "description": "",
+        "price": "$10.25",
+        "section": "Dessert"
+      },
+      {
+        "name": "Fountain Soda",
+        "description": "",
+        "price": "$2.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Canned Soda",
+        "description": "",
+        "price": "$2.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$1.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Energy Drink",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Gatorade",
+        "description": "",
+        "price": "$3.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Arnold Palmer",
+        "description": "",
+        "price": "$3.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "White Claw",
+        "description": "Vodka & Soda, or Tequila Smash",
+        "price": "$7.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Domestic Beer (12 oz can)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Premium Beer (12 oz can)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Domestic Beer (16 oz)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Premium Beer (16 oz)",
+        "description": "",
+        "price": "$6.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Domestic Beer Pitcher",
+        "description": "",
+        "price": "$16.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "Premium Beer Pitcher",
+        "description": "",
+        "price": "$18.25",
+        "section": "Beverages"
+      }
+    ]
+  }
+]

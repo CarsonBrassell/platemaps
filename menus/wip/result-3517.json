@@ -1,0 +1,9 @@
+{
+  "restaurantId": "3517",
+  "name": "Portal Coffee",
+  "sourceUrl": "https://www.portalcoffeesd.com/",
+  "confidence": "low",
+  "blocked": "Site runs on Square Online (formerly Weebly/editmysite.com, APP_ORIGIN=square.online) with a Vue client-side storefront. sitemap.xml lists a full priced catalog structure (individual /product/<slug>/<id> pages plus /shop/<category>/<id> category pages, ~90 items across Traditional Espresso Drinks, Flavored Latte Drinks, Brewed, Pastries, Tea Latte, Hot/Iced Tea, Bottled Drinks, Coffee Beans, Kids Drinks, Sandwiches, Breakfast) but every page returns only a bare HTML shell with the item name in <title> and no price anywhere in server HTML, no JSON-LD, and no embedded state blob (checked window.* globals and script[type=application/json]). Needs a browser to load the Vue app and read rendered prices.",
+  "notes": "Full section list is known from the sitemap (see blocked reason) so a Chrome-equipped follow-up can judge completeness directly against it.",
+  "dishes": []
+}

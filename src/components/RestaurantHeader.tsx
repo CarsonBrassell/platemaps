@@ -1,4 +1,4 @@
-import type { Restaurant } from "@/data/restaurants";
+import type { Restaurant } from "@/data/restaurantTypes";
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { RestaurantPhoto } from "@/components/RestaurantPhoto";
 import { StarRating } from "@/components/StarRating";

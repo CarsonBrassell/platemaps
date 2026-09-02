@@ -1,0 +1,1091 @@
+[
+  {
+    "restaurantId": "4280",
+    "name": "kettle & stone",
+    "sourceUrl": "https://www.kettleandstonecafe.com/menu",
+    "confidence": "low",
+    "notes": "not_found: own Squarespace site menu page lists dish/drink names with no prices (only $1 substitute add-on fees appear in the text). allmenus.com and sagemenu.com listings for this restaurant also carry no per-item prices, only a 'Popular Dishes' name list. Multiple independent Yelp reviewers on the sagemenu-mirrored review feed explicitly complain the cafe does not disclose prices on its menu ('I do wish that they would list the prices on their entire menu... I don't understand why they don't disclose it', 'presumptuous that people want to pay $11 for a tiny piece [without] prices on the menu'). No ordering platform (Toast/Square/Clover/etc.) found on the site. Treating as a genuine not-found: a cafe that publishes no per-item prices anywhere.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1104",
+    "name": "Joycee'S Cocktails",
+    "sourceUrl": "https://www.orangebook.com/biz/5460/joycees-cocktails",
+    "confidence": "low",
+    "notes": "not_found: a Spring Valley dive/sports bar (darts, pool, jukebox, lottery, drink specials since 1989) with no website of its own -- only a Facebook page per the work list. Checked orangebook.com and bippermedia.com directory listings: contact info and hours only, no menu or prices. menupix returned 403. No ordering platform found. Fits the drink-only dive bar not-found pattern -- no per-item prices published anywhere.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3932",
+    "name": "Jomaru Korean Hot Pot",
+    "sourceUrl": "https://jomaru.menu11.com/sandiego/order",
+    "confidence": "low",
+    "blocked": "Own domain jomaruusa.com WAF-blocks every request (curl direct, mobile UA, and r.jina.ai proxy all return a Korean-language 403 'access denied' page), including the /bbs/content.php?co_id=menu&lang=en menu page found via search. Its ordering platform, jomaru.menu11.com/sandiego/order, is a pure client-rendered SPA (jQuery + Handlebars templates loaded from cdn-menu11.crunch11.com/.../order.js) -- the served HTML has no embedded menu JSON and no dollar amounts; grepping the JS bundle did not surface an API host. Grubhub's listing (grubhub.com/restaurant/jomaru-korean-hot-pot-4681-convoy-st-d-san-diego/6367608) is also client-rendered with nothing in the initial HTML. Needs a browser to drive either menu11's order flow or Grubhub/Seamless.",
+    "notes": "Restaurant confirmed at 4681 Convoy St #D, San Diego (matches work list). Handing back for a Chrome-equipped pass on jomaru.menu11.com/sandiego/order.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5605",
+    "name": "Jorge's Mexicatessen",
+    "sourceUrl": "http://orderjorgesmexicatessenca.com/",
+    "confidence": "low",
+    "blocked": "The work-list domain jorgesmexicatessengo.site is dead (DNS NXDOMAIN). Found the restaurant's current site (eatjorgesmexicatessen.com, near-empty of prices) and its real ordering platform, orderjorgesmexicatessenca.com, a MenuStar storefront (restaurant id 30800, address 417 Santa Fe Dr, Encinitas -- confirmed matches work list). MenuStar's documented API (functions/restaurant.php, function=get_categories_by_menu) DOES respond but ignores every id/code param tried (code, restaurant_id, id) and dumps the ENTIRE platform's ~22,878 categories across all MenuStar clients with no restaurant scoping field to filter on, so the category list can't be trusted item-by-item. function=get_items with category_id/id/cat_id all return an empty 'no items' template -- the real param name and the click-handler JS that wires .category_item to an item fetch live in a script that never loaded in the fetched HTML (order.html's own inline scripts don't reference item_listing or .category_item at all), so this needs a real browser to observe the actual XHR the site fires when a category is clicked.",
+    "notes": "Address on orderjorgesmexicatessenca.com matches the work list (417 Santa Fe Dr, Encinitas/San Diego area). Next agent: open orderjorgesmexicatessenca.com in Chrome, click a category, and read the Network tab for the real get_items request shape (or try MenuStar's html5_basic app at themenustar2.com/html5_basic/#/restaurant_info/30800/detail).",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4856",
+    "name": "Winston's Beach Club",
+    "sourceUrl": "http://www.winstonsob.com/tap",
+    "confidence": "low",
+    "notes": "not_found: a 21+ live music club/dive bar in Ocean Beach (1921 Bacon St, address confirmed via directory.oceanbeachsandiego.com/go/winstons). Its own site (winstonsob.com, Drupal) has no Menu or Food nav item at all -- only a beer 'On Draft' tap list page, and that page names beers with no prices. Yelp categorizes it as a Music Venue. zmenu.com and menupix.com both 403'd. Search results describe bar food (fries, nachos, burgers, sliders) and a door cover 'like $10 or less' from review text, but no source publishes actual food or drink prices. Fits the drink-only/venue not-found pattern.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4478",
+    "name": "Mesa Agricola",
+    "sourceUrl": "https://mesaagricola.square.site",
+    "confidence": "low",
+    "blocked": "This is a dine-in farm-to-table guisado restaurant at 707 S Escondido Blvd (address confirmed via sandiegomagazine.com/verynorthcounty.com coverage). Its own site mesaagricola.com embeds a real, server-rendered Ecwid product catalog with genuine prices ($95 whole Basque cheesecake, $60 build-your-own-tacos 12-count, $54 prepared burritos 1/2 dozen, $30 cookies 1/2 dozen, $42 pint of guisado, $13.50 pint of beans, $13.50 pint of rice, $9 corn tortillas 1/2 dozen, $12 flour tortillas 1/2 dozen) -- but that catalog has exactly one category, 'Catering' (productsCount 9), i.e. bulk party-tray items, not the regular counter menu, so excluding it as an adjunct per the party-trays rule. The regular dine-in/counter menu lives on the linked mesaagricola.square.site Square Online storefront, which is a pure client-rendered SPA -- curl returns only fee config and a catalog-wide price range ($0.10-$20) with zero individual items in the HTML. Needs a browser to drive the Square Online item list.",
+    "notes": "seamless.com and mesa-agricola.menustic.com listings both returned no usable price data (client-rendered / empty). A verynorthcounty.com press article paraphrases 'tacos run about $4, burritos $7, and agua frescas $5' -- consistent with the $0.10-$20 catalog range but not itemized dish names/prices, so not used as a source per-dish.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5222",
+    "name": "Sabertooth Mexican Grill",
+    "sourceUrl": "https://sandiegozoowildlifealliance.org/sites/default/files/2023-05/05.30.23_Sabertooth_Grill.pdf",
+    "confidence": "low",
+    "blocked": "This is a counter-serve concession stand inside the San Diego Zoo (2920 Zoo Dr, matches work list). No standalone website; the only in-park menu document found is the zoo's own PDF (sandiegozoowildlifealliance.org, dated 5/30/23), which is a pure scanned image -- pdftotext -layout and -raw both return 4 bytes, no text layer at all, so no name can be paired with a price. No pdfimages/pdftoppm available on this machine to render it, per house rules. Checked restaurantguru.com, zmenu.com (403), checkle.com (429), menupix.com (403), sagemenu.com, and menu-world.com -- none carry a structured priced item list; the only dollar figures anywhere are inside review text (horchata '$6.99', loaded fries '~$17', a diner reporting '$90' for a family order), which are anecdotes about specific orders, not a menu to record dish-by-dish.",
+    "notes": "The restaurant clearly does price its items (reviewers quote specific charges), so this is a sourcing gap, not a business that publishes no prices -- marked blocked, not not_found. A Chrome-equipped pass on the zoo's ordering kiosk or a fresh dated Yelp menu-board photo (112 photos on the Yelp listing) would likely resolve it.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1963",
+    "name": "3CAT Handcrafted Beverage",
+    "sourceUrl": "https://www.doordash.com/store/3cat-handcrafted-beverage-san-diego-34543843/",
+    "confidence": "medium",
+    "notes": "Own site (3catea.com, Wix) is fully client-rendered -- no menu data in the server HTML on the homepage or the /categories page, and Snackpass (order.snackpass.co) is likewise a client-side React app with nothing in the initial HTML. DoorDash's marketplace store page (doordash.com/store/3cat-handcrafted-beverage-san-diego-34543843) carries a server-rendered schema.org Menu JSON-LD with 9 sections; excluded a single '3Cat Fridge Magnet' item (a $1,098.90 merchandise entry, clearly not a food price and not a drink) as adjunct/bad data. Ran the markup divisor test (1.04/1.1/1.15/1.2/1.25) against all 49 prices -- none land cleanly on round or half-dollar values, prices carry POS-style odd cents ($6.32, $7.42, $8.52, etc.), so this passes as ungapped/unmarked-up. A prior web search quoted the restaurant's own stated price for 'Mochi Mango' as ~$7.50 with boba (base $6.75 + $0.75 boba); DoorDash's $7.64 for the same drink is within a few percent, consistent with no clean markup. Sibling 3CAT locations exist on DoorDash in LA-area cities but this capture is specific to the 4917 Convoy St, San Diego store id 34543843 (address matches work list).",
+    "dishes": [
+      {
+        "name": "雪梨青提冰 Grape Pear (W/Pear Jelly)",
+        "description": "Smoothies, Fresh Grape, Diced Pear, Pear Jelly, Cheese Mousse",
+        "price": "$8.52",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "榛香可可咸软酪 Hazelnut Choco Panna",
+        "description": "Cheesecake Cream, Salted Panna, Coconut Water, Choco Housemilk, Cheese Mousse, Waffle",
+        "price": "$8.25",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "青瓜糯糯 Silky Green",
+        "description": "Smoothie, Fresh Banana, Fresh Cucumber, Rice, House Milk, Soybean Mousse",
+        "price": "$7.98",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "雪梨青提冰 Grape Pear (W/out Pear Jelly)",
+        "description": "Smoothies, Fresh Grape, Diced Pear, Cheese Mousse",
+        "price": "$7.98",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "法酪莓果冰 Cheese Berry",
+        "description": "Smoothies, Berry Puree, Biscoff Crumbs, Cheesecake Cream",
+        "price": "$7.98",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "柚梨莓果冰 Yuzu Berry",
+        "description": "Smoothies, Berry Puree, Yuzu Tea, Diced Pear",
+        "price": "$7.98",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "抹茶龙井咸软酪 Matcha Dragonwell Panna",
+        "description": "Cheesecake Cream, Salted Panna, Matcha Mousse, Dragon Well, Housemilk, Cheese Mousse, Matcha Powder",
+        "price": "$7.98",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "青瓜青提冰 Grape Cucumber",
+        "description": "Smoothies, Fresh Cucumber, Grape Juice and Cheese Mousse",
+        "price": "$7.64",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "雨前龙井奶盖茶 Dragon Well Green Tea",
+        "description": "Dragon Well Green Tea, Cheese/Soybean/Matcha(contains dairy)",
+        "price": "$6.88",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "茉莉青提冰茶 Grape Jasmine",
+        "description": "Jasmine Green Tea, Fresh Lime and Green Grape Juice.",
+        "price": "$6.88",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "雨前龙井拿铁 Dragon Well Latte",
+        "description": "Dragon Well Green Tea, Straus Organic Milk, Heavy Cream",
+        "price": "$6.54",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "米酿酪酪冰 RiceFrost",
+        "description": "Smoothie, Sweet Fermented Rice, Water-Chestnut popping boba, Cheesecake\nCream, House Milk",
+        "price": "$7.98",
+        "section": "季节限定 Seasonal"
+      },
+      {
+        "name": "雨前龙井奶茶 Dragon Well Milk Tea",
+        "description": "Longjing tea with Straus organic milk",
+        "price": "$6.54",
+        "section": "鲜奶茶系列 Fresh Milk Tea"
+      },
+      {
+        "name": "胭脂伯爵奶茶 Earl Grey Milk Tea",
+        "description": "Earl Grey tea with Straus organic milk",
+        "price": "$6.32",
+        "section": "鲜奶茶系列 Fresh Milk Tea"
+      },
+      {
+        "name": "白桃乌龙奶茶 White Peach Oolong Milk Tea",
+        "description": "White Peach Oolong tea with Straus organic milk",
+        "price": "$6.32",
+        "section": "鲜奶茶系列 Fresh Milk Tea"
+      },
+      {
+        "name": "茉莉龙芽奶绿 Jasmine Milk Tea",
+        "description": "Jasmine green tea with Straus organic milk",
+        "price": "$6.32",
+        "section": "鲜奶茶系列 Fresh Milk Tea"
+      },
+      {
+        "name": "琥珀鎏金奶茶 Golden Amber Milk Tea",
+        "description": "Golden Amber Oolong tea with Straus organic milk",
+        "price": "$6.32",
+        "section": "鲜奶茶系列 Fresh Milk Tea"
+      },
+      {
+        "name": "桂花乌龙奶茶 Osmanthus Oolong Milk Tea",
+        "description": "Osmanthus Oolong tea with Straus organic milk",
+        "price": "$6.32",
+        "section": "鲜奶茶系列 Fresh Milk Tea"
+      },
+      {
+        "name": "骏王花香奶茶 Floral Black Milk Tea",
+        "description": "Floral Black tea with Straus organic milk",
+        "price": "$6.32",
+        "section": "鲜奶茶系列 Fresh Milk Tea"
+      },
+      {
+        "name": "芒果糯糯冰 Mochi Mango",
+        "description": "Smoothie, Milk, Fresh Mango, Handmade Rice Mochi, Whipping Cream, Wafer Crunch",
+        "price": "$7.64",
+        "section": "糯糯系列Handcrafted Mochi"
+      },
+      {
+        "name": "Mochi Barley Burst",
+        "description": "Combo: Floral black milk tea + barley popping boba + handcrafted mochi(contains dairy)",
+        "price": "$7.64",
+        "section": "糯糯系列Handcrafted Mochi"
+      },
+      {
+        "name": "抹茶糯糯冰 Mochi Matcha",
+        "description": "Smoothie, Milk, Matcha, Handmade Rice Mochi, Whipping Cream",
+        "price": "$7.42",
+        "section": "糯糯系列Handcrafted Mochi"
+      },
+      {
+        "name": "奥利奥糯糯冰 Mochi Oreo",
+        "description": "Smoothie, Milk, Oreo, Handmade Rice Mochi, Whipping Cream",
+        "price": "$7.42",
+        "section": "糯糯系列Handcrafted Mochi"
+      },
+      {
+        "name": "芒芒甘露 Mango Sweet Dew",
+        "description": "Smoothie, Jasmine Green Tea, Fresh Mango, Coconut milk, House Made Milk, Agar Boba, Pomelo",
+        "price": "$7.64",
+        "section": "水果系列 Fresh Fruit & Tea"
+      },
+      {
+        "name": "牛油果芒芒甘露 Avomango Sweet Dew",
+        "description": "Smoothie, Fresh Avocado, Coconut Milk, House Made Milk, Agar Boba, Pomelo",
+        "price": "$7.64",
+        "section": "水果系列 Fresh Fruit & Tea"
+      },
+      {
+        "name": "手压爆柠 Lime Explosion",
+        "description": "Jasmine Green Tea/ Floral Black Tea, Punched Fresh Lime & Lemon Slices",
+        "price": "$6.54",
+        "section": "水果系列 Fresh Fruit & Tea"
+      },
+      {
+        "name": "满杯橙橙 Super Orange",
+        "description": "Jasmine Green Tea, Fresh Orange Juice and Orange Slices",
+        "price": "$6.54",
+        "section": "水果系列 Fresh Fruit & Tea"
+      },
+      {
+        "name": "雨前龙井拿铁 Dragon Well Latte",
+        "description": "Dragon Well Green Tea, Straus Organic Milk, Heavy Cream",
+        "price": "$6.54",
+        "section": "中茶西做 Tea Latte"
+      },
+      {
+        "name": "白桃乌龙拿铁 White Peach Oolong Latte",
+        "description": "White Peach Oolong Tea, Straus Organic Milk, Heavy Cream",
+        "price": "$6.22",
+        "section": "中茶西做 Tea Latte"
+      },
+      {
+        "name": "茉莉龙芽拿铁 Jasmine Green Latte",
+        "description": "Jasmine Flower Tea, Straus Organic Milk, Heavy Cream",
+        "price": "$6.22",
+        "section": "中茶西做 Tea Latte"
+      },
+      {
+        "name": "琥珀鎏金拿铁 Golden Amber Oolong Latte",
+        "description": "Golden Amber  Oolong Tea, Straus Organic Milk, Heavy Cream",
+        "price": "$6.22",
+        "section": "中茶西做 Tea Latte"
+      },
+      {
+        "name": "骏王花香拿铁 Floral Black Latte",
+        "description": "Floral Black Tea, Straus Organic Milk, Heavy Cream",
+        "price": "$6.22",
+        "section": "中茶西做 Tea Latte"
+      },
+      {
+        "name": "桂花乌龙拿铁 Osmanthus Oolong Latte",
+        "description": "Osmanthus Oolong Tea, Straus Organic Milk, Heavy Cream",
+        "price": "$6.22",
+        "section": "中茶西做 Tea Latte"
+      },
+      {
+        "name": "雨前龙井奶盖茶 Dragon Well Green Tea",
+        "description": "Dragon Well Green Tea, Cheese/Soybean/Matcha(contains dairy)",
+        "price": "$6.88",
+        "section": "茗茶奶盖系列 Fresh Tea with Mousse"
+      },
+      {
+        "name": "桂花乌龙奶盖茶 Osmanthus Oolong Tea",
+        "description": "Fresh Osmanthus Oolong Tea, Cheese/Soybean",
+        "price": "$6.32",
+        "section": "茗茶奶盖系列 Fresh Tea with Mousse"
+      },
+      {
+        "name": "抹茶茉莉椰 CoCo Matcha",
+        "description": "Matcha Mousse, Coconut Water, Jasmine Longya Green Tea",
+        "price": "$7.42",
+        "section": "茗茶奶盖系列 Fresh Tea with Mousse"
+      },
+      {
+        "name": "抹茶茉莉 Jade Matcha",
+        "description": "Straus Milk, Matcha Mousse, Jasmine Longya Green Tea",
+        "price": "$7.42",
+        "section": "茗茶奶盖系列 Fresh Tea with Mousse"
+      },
+      {
+        "name": "琥珀鎏金奶盖茶 Golden Amber Oolong Tea",
+        "description": "Golden Amber Oolong Tea, Cheese/Soybean",
+        "price": "$6.32",
+        "section": "茗茶奶盖系列 Fresh Tea with Mousse"
+      },
+      {
+        "name": "白桃乌龙奶盖茶 White Peach Oolong Tea",
+        "description": "Fresh Peach Oolong Tea, Cheese/Soybean",
+        "price": "$6.32",
+        "section": "茗茶奶盖系列 Fresh Tea with Mousse"
+      },
+      {
+        "name": "茉莉龙芽奶盖茶 Jasmine Green Tea",
+        "description": "Fresh Jasmine Green Tea, Cheese/Soybean",
+        "price": "$6.32",
+        "section": "茗茶奶盖系列 Fresh Tea with Mousse"
+      },
+      {
+        "name": "豆乳龙井 Soybean Dragon Well",
+        "description": "Dragon Well Green Tea, House Milk, Soybean Mousse (contains dairy)",
+        "price": "$7.15",
+        "section": "回归系列 Return Series"
+      },
+      {
+        "name": "饼干茉莉 Biscoff Jasmine",
+        "description": "Jasmine Green Tea, House Milk, Soybean Mousse (contains dairy), Biscoff Piece",
+        "price": "$7.15",
+        "section": "回归系列 Return Series"
+      },
+      {
+        "name": "抹茶茉莉 Jade Matcha",
+        "description": "Straus Milk, Matcha Mousse, Jasmine Longya Green Tea",
+        "price": "$7.42",
+        "section": "熱飲 Hot Drinks"
+      },
+      {
+        "name": "抹茶茉莉椰 CoCo Matcha",
+        "description": "Matcha Mousse, Coconut Water, Jasmine Longya Green Tea",
+        "price": "$7.42",
+        "section": "熱飲 Hot Drinks"
+      },
+      {
+        "name": "豆乳龙井 Soybean Dragon Well",
+        "description": "Dragon Well Green Tea, House Milk, Soybean Mousse (contains dairy)",
+        "price": "$7.15",
+        "section": "熱飲 Hot Drinks"
+      },
+      {
+        "name": "饼干茉莉 Biscoff Jasmine",
+        "description": "Jasmine Green Tea, House Milk, Soybean Mousse (contains dairy), Biscoff Piece",
+        "price": "$7.15",
+        "section": "熱飲 Hot Drinks"
+      },
+      {
+        "name": "鮮奶茶 Fresh Milk Tea",
+        "description": "",
+        "price": "$6.32",
+        "section": "熱飲 Hot Drinks"
+      },
+      {
+        "name": "茗茶奶盖 Mousse Tea",
+        "description": "",
+        "price": "$6.32",
+        "section": "熱飲 Hot Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4444",
+    "name": "Grubby's Poke & Fish Market",
+    "sourceUrl": "https://www.doordash.com/store/grubby%E2%80%99s-poke-&-fish-market-carlsbad-593862/",
+    "confidence": "medium",
+    "notes": "Own site (grubbyspoke.com and grubbyspoke.com/menu/) WAF-blocks every request with a real 403 page (not a soft gate), so it could not be used directly. DoorDash's marketplace store page carries a server-rendered schema.org Menu JSON-LD with 6 sections; stripped the 'Most Ordered' section (12 items) because every one of them is an exact name+price duplicate of an item already listed under Custom Poke Bowls, Signature Poke Bowls, Milk Teas, or Beverages -- per the sample-list de-dup rule. Ran the markup divisor test (1.04/1.08/1.1/1.15/1.2/1.25) on the remaining 35 unique items: the best fit (1.2) lands only 8/35 (~23%) on round values, which is in the organic-noise band (~18-32%), not the clean 75-100% signature of a real markup -- treated as unmarked, restaurant-level pricing. Address confirmed 2501 El Camino Real #2030, Carlsbad (matches work list).",
+    "dishes": [
+      {
+        "name": "Large Bowl",
+        "description": "4 scoops of protein with choices of base, sauces and toppings",
+        "price": "$22.65",
+        "section": "Custom Poke Bowls"
+      },
+      {
+        "name": "Regular Bowl",
+        "description": "2 scoops of protein with your choice of base, sauces and proteins.",
+        "price": "$20.40",
+        "section": "Custom Poke Bowls"
+      },
+      {
+        "name": "Mini Bowl",
+        "description": "1 scoop of protein, with your choices of base, sauces and toppings.",
+        "price": "$16.95",
+        "section": "Custom Poke Bowls"
+      },
+      {
+        "name": "Picky Kid Bowl",
+        "description": "Kid's bowl. Pick a base and choose any toppings and sauce!\n(Proteins not included)",
+        "price": "$5.25",
+        "section": "Custom Poke Bowls"
+      },
+      {
+        "name": "Keto's Smokey Friend",
+        "description": "Smoked salmon and smoked shrimp mixed with cilantro, lime and poke sauce on a bed of mixed greens and cucumber noodles. Topped",
+        "price": "$18.90",
+        "section": "Signature Poke Bowls"
+      },
+      {
+        "name": "Spicy Surf n' Turf",
+        "description": "2 scoops of smoked shrimp and spicy tuna with spicy poke sauce on white rice. Topped with seaweed salad, krab, fried onion, fur",
+        "price": "$21.00",
+        "section": "Signature Poke Bowls"
+      },
+      {
+        "name": "Nacho Poke",
+        "description": "2 scoops of Ahi tuna with mild poke sauce on top of tortilla chips. Topped with avocado, krab, fried onion, furikake, spicy mayo and eel sauce",
+        "price": "$20.40",
+        "section": "Signature Poke Bowls"
+      },
+      {
+        "name": "Cali Crunch",
+        "description": "Comes with white rice, poke sauce, avocado, 2 scoops of Krab, cucumber, Fried Onion and eel sauce.  \n\n**does not include proteins but can be added with \"extra protein\" modifier.",
+        "price": "$13.65",
+        "section": "Signature Poke Bowls"
+      },
+      {
+        "name": "Peach Pineapple Kevita Kombucha",
+        "description": "Fermented tea with live probiotics, featuring pineapple and peach flavors.",
+        "price": "$5.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "Celsius Energy Drink",
+        "description": "Infused with starfruit and pineapple, this sparkling water offers a refreshing tropical twist.",
+        "price": "$4.65",
+        "section": "Beverages"
+      },
+      {
+        "name": "Calpico ",
+        "description": "Mango-flavored non-carbonated beverage with a blend of natural and artificial flavors.",
+        "price": "$4.05",
+        "section": "Beverages"
+      },
+      {
+        "name": "Coconut Juice",
+        "description": "Fresh coconut juice, offering a naturally sweet and hydrating beverage experience.",
+        "price": "$3.45",
+        "section": "Beverages"
+      },
+      {
+        "name": "Ito En Japanese Unsweetened Green Tea",
+        "description": "Authentic Japanese green tea with a pure, unsweetened taste.",
+        "price": "$3.45",
+        "section": "Beverages"
+      },
+      {
+        "name": "Jasmine Lychee Oolong Tea",
+        "description": "Blended with jasmine and lychee flavors, this oolong tea is sweetened with cane sugar and fruit juice.",
+        "price": "$3.45",
+        "section": "Beverages"
+      },
+      {
+        "name": "Fountain Drink",
+        "description": "Refreshing carbonated beverage with a hint of sweetness.",
+        "price": "$3.15",
+        "section": "Beverages"
+      },
+      {
+        "name": "Ramune Soda",
+        "description": "Japanese Soda Pop",
+        "price": "$3.45",
+        "section": "Beverages"
+      },
+      {
+        "name": "Pure Leaf Unsweet Tea",
+        "description": "Real brewed tea with no sugar, offering a pure and natural flavor.",
+        "price": "$3.45",
+        "section": "Beverages"
+      },
+      {
+        "name": "Aloha Maid Drink",
+        "description": "Passion fruit juice drink made from concentrate, offering a taste of tropical lilikoi.",
+        "price": "$3.15",
+        "section": "Beverages"
+      },
+      {
+        "name": "Yachak Yerba Mate",
+        "description": "Organic yerba mate energy drink with natural mint flavor and plant-based ingredients.",
+        "price": "$3.15",
+        "section": "Beverages"
+      },
+      {
+        "name": "Aqua Electra (24oz Alkaline Water)",
+        "description": "Premium purified alkaline water with added electrolytes.",
+        "price": "$3.15",
+        "section": "Beverages"
+      },
+      {
+        "name": "Diet Pepsi Can (12oz)",
+        "description": "A crisp tasting, refreshing pop of sweet, fizzy bubbles without calories.\n",
+        "price": "$2.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "Vietnamese Cold Brew",
+        "description": "French Roast coffee cold brew with condensed milk over ice",
+        "price": "$5.25",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Green Tea",
+        "description": "\"Refreshing blend of leaves, providing a soothing and invigorating experience for tea lovers.\"",
+        "price": "$4.20",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "Creamy and sweet Thai beverage made with black tea, condensed milk, and aromatic spices.",
+        "price": "$5.25",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Milk Tea",
+        "description": "Sweet and creamy milk tea with chewy tapioca pearls.",
+        "price": "$5.25",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Strawberry Mint Green Tea",
+        "description": "A refreshing blend of green tea infused with strawberry and mint flavors.",
+        "price": "$4.80",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Black Tea",
+        "description": "",
+        "price": "$4.65",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Crunchy Strawberry Pocky",
+        "description": "Strawberry cream-coated biscuit sticks offering a satisfying crunch.",
+        "price": "$4.05",
+        "section": "Snacks"
+      },
+      {
+        "name": "Matcha Pocky",
+        "description": "Matcha green tea cream-coated biscuit sticks.",
+        "price": "$4.05",
+        "section": "Snacks"
+      },
+      {
+        "name": "Oreo Pocky",
+        "description": "Cocoa biscuit sticks coated in a creamy cookies and cream layer.",
+        "price": "$4.05",
+        "section": "Snacks"
+      },
+      {
+        "name": "Hello Panda Chocolate",
+        "description": "Crunchy chocolate shells with a creamy center, offering a delightful snack experience.",
+        "price": "$2.40",
+        "section": "Snacks"
+      },
+      {
+        "name": "Hello Panda Vanilla",
+        "description": "Cream-filled crunchy cookie bites with a smooth vanilla flavor.",
+        "price": "$2.40",
+        "section": "Snacks"
+      },
+      {
+        "name": "Hi Chew Green Apple 10pc",
+        "description": "Chewy green grape-flavored candies, 10 pieces per pack.",
+        "price": "$2.40",
+        "section": "Snacks"
+      },
+      {
+        "name": "Hi Chew Mango 10pc",
+        "description": "Chewy mango-flavored candies, ten pieces per pack.",
+        "price": "$2.25",
+        "section": "Snacks"
+      },
+      {
+        "name": "Hi Chew Strawberry 10pc",
+        "description": "Chewy strawberry-flavored candy with a sweet and tangy taste, includes 10 pieces.",
+        "price": "$2.25",
+        "section": "Snacks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2907",
+    "name": "Submarina #2",
+    "sourceUrl": "https://www.doordash.com/store/1803682/",
+    "confidence": "medium",
+    "notes": "Work list gives only a Facebook page (facebook.com/submarina2) for this location; found the restaurant on DoorDash's marketplace instead, store id 1803682, address 10645 Tierrasanta Boulevard, San Diego confirmed exactly matching the work list via its schema.org Restaurant block. Extracted the server-rendered schema.org Menu JSON-LD: 2 sections, 'Most Ordered' (12 items) and 'Menu' (79 items). Deduped by exact name+price -- 7 of the 12 'Most Ordered' items were exact duplicates of Menu items and dropped; the other 5 (Macaroni Salad 8oz, Potato Salad 8oz, cookies, a Fountain Drink, and a 6-inch Ham-Turkey-Provolone size not otherwise listed) were genuinely new and kept, folded into Sides/Desserts/Beverages/Menu as appropriate -- so 'Most Ordered' was NOT a pure duplicate sample here, unlike other captures in this batch. Ran the markup divisor test (1.04/1.08/1.1/1.15/1.2/1.25) on all 84 unique prices: best fit 1.1 lands only 14/84 (~17%), in the organic-noise band, not a real markup signal. A WebSearch summary separately quoted specific prices (Grilled Chicken-Provolone 6\"/9\"/12\" and BLT 6\"/9\") that match this DoorDash capture to the cent, apparently sourced from allmenus.com -- but a direct curl of that allmenus page returned no prices (likely client-rendered), so it could not be independently confirmed and is not cited as crossCheckedAgainst.",
+    "dishes": [
+      {
+        "name": "14. Turkey Breast-Provolone Cheese (6\")",
+        "description": "Turkey breast and provolone cheese on a choice of squaw, wheat, or white bread. Options include the works, plain, old school, Italian style, Dena’s way, and Tierrasanta.",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "14. Turkey Breast-Provolone Cheese (9\")",
+        "description": "Turkey breast and provolone cheese on a 9\" sub. Bread choices: squaw, wheat, white. Style options include Italian, plain, old school, and more with various toppings.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "14. Turkey Breast-Provolone Cheese (12\")",
+        "description": "12\" Turkey Breast-Provolone Sandwich, options: Squaw, Wheat, White bread. Styles: Works, Plain, Old School, Italian, Dena’s Way, Tierrasanta with various toppings and dressings.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Macaroni Salad 8oz",
+        "description": "",
+        "price": "$5.95",
+        "section": "Sides"
+      },
+      {
+        "name": "30. Ham-Mortadella-Pepperoni-Salami-Provolone Cheese (6\")",
+        "description": "6\" sandwich with ham, mortadella, pepperoni, salami, provolone. Bread options: squaw, wheat, white. Styles: the works, plain, old school, Italian style, dena's way, tierrasanta.",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "David’s Freshly Baked Chocolate Chip Cookies ",
+        "description": "Two Chocolate Chip Cookies",
+        "price": "$4.95",
+        "section": "Desserts"
+      },
+      {
+        "name": "18. Ham-Turkey Breast-Provolone Cheese (6\")",
+        "description": "6\" sandwich with ham, turkey breast, provolone. Choices: squaw, wheat, white bread. Styles: The Works, Plain, Old School, Italian, Dena’s Way, Tierrasanta. Includes combinations of veggies, sauces, seasonings.",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "Fountain Drink 32oz",
+        "description": "Choose from Pepsi, Diet Pepsi, Mountain Dew, Dr. Pepper, Diet Dr. Pepper, Root Beer, Starry, or Mango Lemonade.",
+        "price": "$3.99",
+        "section": "Beverages"
+      },
+      {
+        "name": "18. Ham-Turkey Breast-Provolone Cheese (9\")",
+        "description": "9\" sandwich with ham, turkey breast, provolone cheese. Bread options: squaw, wheat, white. Styles include: the works, plain, old school, Italian style, dena’s way, tierrasanta.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "9. Capacolla-Ham-Salami-Pepperoni-Provolone Cheese (12\")",
+        "description": "Capacolla, ham, salami, pepperoni, provolone cheese on 12\" bread. Choice of squaw, wheat, or white. Options: The Works, Plain, Old School, Italian Style, Dena’s Way, Tierrasanta.",
+        "price": "$21.25",
+        "section": "Menu"
+      },
+      {
+        "name": "9. Capacolla-Ham-Salami-Pepperoni-Provolone Cheese (9\")",
+        "description": "Capacolla, ham, salami, pepperoni, provolone on 9\" with bread options: squaw, wheat, white. Styles include Italian, plain, old school, Dena’s, and Tierrasanta with varying veggies and dressings.",
+        "price": "$18.70",
+        "section": "Menu"
+      },
+      {
+        "name": "Potato Salad 8oz",
+        "description": "Potatoes mixed with mayonnaise, often enhanced with ingredients like celery, onion, and eggs, creating a classic side dish.",
+        "price": "$5.95",
+        "section": "Sides"
+      },
+      {
+        "name": "2. Ham-Provolone Cheese (12\")",
+        "description": "Ham and provolone cheese on a 12\" sub with bread options: squaw, wheat, white. Styles include the works, plain, old school, Italian style, Dena's way, Tierrasanta.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "23. Tuna Salad (6\")",
+        "description": "Tuna salad on choice of squaw, wheat, or white bread. Options: The Works, Plain, Old School, Italian Style, Dena’s Way, or Tierrasanta. Includes various veggies, dressings, and cheese.",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "20. Roast Beef-Turkey-Provolone Cheese (12\")",
+        "description": "Roast beef, turkey, provolone cheese on 12\" sandwich. Choose from squaw, wheat, or white bread. Option styles range from plain to \"Tierrasanta\" with various toppings including Italian dressing and vegetables.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "30. Ham-Mortadella-Pepperoni-Salami-Provolone Cheese (12\")",
+        "description": "12\" sandwich with ham, mortadella, pepperoni, salami, provolone. Options: squaw, wheat, or white bread. Styles: works, plain, old school, Italian, Dena’s way, Tierrasanta. Various veggies and dressings.",
+        "price": "$21.25",
+        "section": "Menu"
+      },
+      {
+        "name": "30. Ham-Mortadella-Pepperoni-Salami-Provolone Cheese (9\")",
+        "description": "9\" sandwich with ham, mortadella, pepperoni, salami, provolone. Choice of squaw, wheat, or white. Styles include the works, plain, old school, Italian, Dena's way, Tierrasanta.",
+        "price": "$18.70",
+        "section": "Menu"
+      },
+      {
+        "name": "17. BLT (6\") ",
+        "description": "This sandwich automatically comes with Bacon, Lettuce, Tomato and Mayonnaise. Any changes please specify in special instructions. ",
+        "price": "$11.55",
+        "section": "Menu"
+      },
+      {
+        "name": "5. Pastrami-Provolone Cheese (12\")",
+        "description": "Pastrami-provolone cheese on 12\" with bread options: squaw, wheat, white. Styles: works, plain, old school, Italian, dena’s, tierrasanta. Includes combinations of vegetables, dressings, and spices.",
+        "price": "$21.25",
+        "section": "Menu"
+      },
+      {
+        "name": "17. BLT (9\")",
+        "description": "This sandwich automatically comes with Bacon, Lettuce, Tomato and Mayonnaise. Any changes please specify in special instructions. ",
+        "price": "$15.30",
+        "section": "Menu"
+      },
+      {
+        "name": "21.Toasted Meatball-Provolone Cheese (12\")",
+        "description": "Provolone Cheese, Meatballs, Marinara Sauce toasted and topped with Parmesan Cheese.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "26. Mortadella, Provolone Cheese (12\")",
+        "description": "Mortadella and provolone on 12\" sandwich with choice of squaw, wheat, or white bread. Options include Italian styles, plain, or with varied additions like cucumber, spinach, or garlic sauce.",
+        "price": "$21.25",
+        "section": "Menu"
+      },
+      {
+        "name": "25. Ham-Pastrami-Provolone Cheese (9\")",
+        "description": "9\" ham, pastrami, and provolone cheese sandwich. Bread options: squaw, wheat, white. Style options include Italian, plain, old school, enhanced with toppings like cucumber, spinach, garlic sauce, Parmesan.",
+        "price": "$18.70",
+        "section": "Menu"
+      },
+      {
+        "name": "8. Capacolla-Provolone Cheese (12\")",
+        "description": "Capacolla-provolone cheese sub (12\") with options for squaw, wheat, or white bread. Choose from \"the works,\" plain, \"old school,\" Italian style, \"Dena's way,\" or \"Tierrasanta\" topping combinations.",
+        "price": "$21.25",
+        "section": "Menu"
+      },
+      {
+        "name": "9. Capacolla-Ham-Salami-Pepperoni-Provolone Cheese (6\")",
+        "description": "Capacolla, ham, salami, pepperoni, provolone on 6\" bread. Choices of squaw, wheat, white. Styles: The Works, Plain, Old School, Italian, Dena’s Way, Tierrasanta.",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "32. Triple Play (12\")",
+        "description": "Ham, turkey breast, roast beef, \nProvolone cheese.",
+        "price": "$21.25",
+        "section": "Menu"
+      },
+      {
+        "name": "25. Ham-Pastrami-Provolone Cheese (12\")",
+        "description": "Ham, pastrami, provolone cheese on 12\" with options: Squaw, wheat, white bread. Styles include \"The Works,\" \"Plain,\" \"Old School,\" Italian Style,\" \"Dena’s Way,\" \"Tierrasanta.\"",
+        "price": "$21.25",
+        "section": "Menu"
+      },
+      {
+        "name": "28. Ham-Mortadella-Provolone Cheese (12\")",
+        "description": "12\" sandwich featuring ham, mortadella, provolone with bread options: squaw, wheat, white. Style choices include The Works, Plain, Old School, Italian, Dena’s Way, Tierrasanta.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "19. Ham-Roast Beef-Provolone Cheese (12\")",
+        "description": "12\" sandwich with ham, roast beef, and provolone cheese. Choice of squaw, wheat, or white bread. Style options include 'the works,' plain, 'old school,' 'Italian style,' 'Dena’s way,' or 'Tierrasanta.'",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "22. Barbeque Beef (12\")",
+        "description": "Barbecue beef on 12\" with bread options: squaw, wheat, white. Styles include Italian, plain, old school, Dena’s way, or Tierrasanta with varied veggies, dressings, and cheeses.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "28. Ham-Mortadella-Provolone Cheese (9\")",
+        "description": "Ham, Mortadella, and Provolone cheese on a 9\" sandwich. Choice of Squaw, Wheat, or White bread. Select from styles like The Works, Plain, Old School, Italian Style, Dena’s Way, or Tierrasanta.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "18. Ham-Turkey Breast-Provolone Cheese (12\")",
+        "description": "Ham, turkey breast, provolone on 12\" sandwich with bread choices: squaw, wheat, white. Style options include Italian, plain, old school, Dena's way, Tierrasanta.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "26. Mortadella, Provolone Cheese (9\")",
+        "description": "Mortadella, provolone on 9\" sandwich. Choice of squaw, wheat, white bread. Styles: plain, old school, Italian, Dena’s way, Tierrasanta, or the works with varied veggies & condiments.",
+        "price": "$18.70",
+        "section": "Menu"
+      },
+      {
+        "name": "29. Pepperoni Pizza Sub (12\")",
+        "description": "Provolone Cheese, Pepperoni, Marinara Sauce, toasted an topped with Parmesan Cheese.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "10. Grilled Chicken-Provolone Cheese (12\")",
+        "description": "This comes toasted ",
+        "price": "$21.25",
+        "section": "Menu"
+      },
+      {
+        "name": "6. Ham-Salami-Provolone Cheese (9\")",
+        "description": "9\" ham, salami, provolone cheese sandwich with bread options: squaw, wheat, white. Styles: old school, Tierrasanta, Italian, the works, plain, Dena’s way. Includes various veggies, dressings.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "20. Roast Beef-Turkey-Provolone Cheese (9\")",
+        "description": "Roast beef, turkey, provolone on 9\" sandwich. Bread options: squaw, wheat, white. Styles include Italian, plain, old school, with variations adding cucumber, spinach, garlic sauce, parmesan.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "21.Toasted  Meatball-Provolone Cheese (6\")",
+        "description": "Provolone Cheese, Meatballs, Marinara Sauce toasted and topped with Parmesan Cheese.",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "8. Capacolla-Provolone Cheese (9\")",
+        "description": "Capacolla-Provolone Cheese on 9\" bread. Options: Squaw, Wheat, White. Styles: The Works, Plain, Old School, Italian Style, Dena’s Way, Tierrasanta. Customizations include onion, lettuce, tomato, Italian dressing, and more.",
+        "price": "$18.70",
+        "section": "Menu"
+      },
+      {
+        "name": "22. Barbeque Beef (9\")",
+        "description": "Barbeque beef on 9\" bread. Choice of squaw, wheat, white. Options: the works, plain, old school, Italian style, Dena’s way, Tierrasanta. Various toppings include mustard, mayo, veggies, dressing.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "33. French Dip - Provolone Cheese (12\")",
+        "description": "12\" French dip with provolone, choice of squaw, wheat, or white bread. Options: The Works, Plain, Old School, Italian Style, Dena’s Way, or Tierrasanta.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "1. Salami-Provolone Cheese (12\")",
+        "description": "12\" salami-provolone cheese sandwich, options of squaw, wheat, or white bread. Styles include plain, Italian, old school, The Works, Dena’s way, or Tierrasanta with various fresh ingredients and dressings.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "32. Triple Play (9\")",
+        "description": "Ham, turkey breast, roast beef, \nProvolone cheese.",
+        "price": "$18.70",
+        "section": "Menu"
+      },
+      {
+        "name": "7. Mortadella-Salami-Provolone Cheese (12\")",
+        "description": "12\" sandwich with mortadella, salami, provolone cheese. Bread options: squaw, wheat, white. Styles: works, plain, old school, Italian, Dena’s way, Tierrasanta. Includes various veggies, dressings, and seasonings.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "3. Ham-Capacolla-Provolone Cheese (12\")",
+        "description": "Ham-capacolla-provolone cheese on a 12\" sub. Choose bread: squaw, wheat, white. Style options include the works, plain, old school, Italian style, Dena's way, or Tierrasanta. Customizations available.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "23. Chicken Salad (12\")",
+        "description": "12\" chicken salad on choice of squaw, wheat, or white bread. Styles include The Works, Plain, Old School, Italian, Dena’s Way, or Tierrasanta with varying dressings and veggies.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "6. Ham-Salami-Provolone Cheese (12\")",
+        "description": "12\" sandwich filled with ham, salami, provolone. Options: Squaw, wheat, white bread. Styles: The Works, Plain, Old School, Italian, Dena’s Way, Tierrasanta with various veggies, condiments.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "24. Ham-Pepperoni-Provolone Cheese (12\")",
+        "description": "12\" ham, pepperoni, provolone cheese sandwich with bread options: squaw, wheat, white. Styles include the works, plain, old school, Italian, Dena’s way, Tierrasanta.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "17. BLT (12\")",
+        "description": "This sandwich automatically comes with Bacon, Lettuce, Tomato and Mayonnaise. Any changes please specify in special instructions. ",
+        "price": "$18.00",
+        "section": "Menu"
+      },
+      {
+        "name": "1. Salami-Provolone Cheese (9\")",
+        "description": "Salami-provolone on 9\" bread, choice of squaw, wheat, white. Styles: The Works, Plain, Old School, Italian Style, Dena's Way, Tierrasanta with various veggies, condiments, and dressings.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "23. Tuna Salad (12\")",
+        "description": "Tuna salad on a 12\" sandwich, choice of squaw, wheat, or white bread. Option styles include The Works, Plain, Old School, Italian Style, Dena's Way, or Tierrasanta.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "31. Egg Salad (12\")",
+        "description": "Egg salad on choice of squaw, wheat, or white bread. Options include The Works, Plain, Old School, Italian Style, Dena’s Way, or Tierrasanta style toppings.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "7. Mortadella-Salami-Provolone Cheese (9\")",
+        "description": "9\" mortadella, salami, provolone cheese on choice of squaw, wheat, or white bread. Styles: The Works, Plain, Old School, Italian Style, Dena's Way, Tierrasanta.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "3. Ham-Capacolla-Provolone Cheese (9\")",
+        "description": "Ham, capacolla, provolone cheese on a 9\" sub. Choice of squaw, wheat, or white bread. Option to customize with \"The Works,\" plain, \"Old School,\" Italian Style, \"Dena’s Way,\" or \"Tierrasanta\" toppings.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "13. Roast Beef-Provolone Cheese (12\")",
+        "description": "Roast beef, provolone on choice of squaw, wheat, or white bread. Options: The Works, Plain, Old School, Italian Style, Dena’s Way, Tierrasanta with diverse toppings.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "12. Turkey-Salami-Provolone Cheese (12\")",
+        "description": "12\" sandwich with turkey, salami, provolone cheese on squaw, wheat, or white bread. Options: works, plain, old school, Italian style, Dena’s way, Tierrasanta.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "31. Egg Salad (9\")",
+        "description": "Egg salad on your choice of squaw, wheat, or white bread. Options range from plain to \"the works,\" including Italian styles, Dena's way, and Tierrasanta variations.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "5. Pastrami-Provolone Cheese (9\")",
+        "description": "9\" pastrami-provolone cheese sandwich on squaw, wheat, or white. Styles: the works, plain, old school, Italian, dena’s way, tierrasanta. Options include mustard, mayo, cucumber, spinach, onion, tomato, dressing, garlic sauce, Parmesan.",
+        "price": "$18.70",
+        "section": "Menu"
+      },
+      {
+        "name": "12. Turkey-Salami-Provolone Cheese (9\")",
+        "description": "9\" turkey, salami, provolone on choice of squaw, wheat, white bread. Options: plain, Italian styles with varying veggies & dressings, or custom blends like Dena’s or Tierrasanta.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "33. French Dip - Provolone Cheese (9\")",
+        "description": "Succulent French Dip with Provolone Cheese, 9\". Choice of Squaw, Wheat, or White Bread. Options include The Works, Plain, Old School, Italian Style, Dena’s Way, or Tierrasanta.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "23. Chicken Salad (9\")",
+        "description": "Chicken salad on a 9\" bread with choice of squaw, wheat, or white. Options include the works, plain, old school, Italian, Dena's way, or Tierrasanta style toppings.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "4. Pepperoni-Provolone Cheese (9\")",
+        "description": "Pepperoni-provolone on 9\" cheese pizza. Bread options: squaw, wheat, white. Styles include: The Works, Plain, Old School, Italian Style, Dena’s Way, Tierrasanta. Features combinations of vegetables, condiments, and dressing.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "24. Ham-Pepperoni-Provolone Cheese (9\")",
+        "description": "9\" sandwich with ham, pepperoni, provolone cheese. Bread options: squaw, wheat, white. Style choices: the works, plain, old school, Italian, Dena’s way, Tierrasanta with varied veggies and dressings.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "13. Roast Beef-Provolone Cheese (6\")",
+        "description": "Roast beef and provolone on choice of squaw, wheat, white bread. Options include: Italian and old school styles, plain, or with unique combinations like \"Dena’s way\" and \"Tierrasanta\".",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "2. Ham-Provolone Cheese (9\")",
+        "description": "9\" ham and provolone cheese on squaw, wheat, or white bread. Option for \"The Works,\" plain, \"Old School,\" Italian style, \"Dena’s Way,\" or \"Tierrasanta\" style.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "19. Ham-Roast Beef-Provolone Cheese (9\")",
+        "description": "9\" sandwich featuring ham, roast beef, and provolone cheese. Options include: squaw, wheat, or white bread; styles range from plain to the works, with variations including Italian and customized combinations.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "10. Grilled Chicken-Provolone Cheese (9\")",
+        "description": "This comes toasted ",
+        "price": "$18.70",
+        "section": "Menu"
+      },
+      {
+        "name": "29. Pepperoni Pizza Sub (9\")",
+        "description": "Provolone Cheese, Pepperoni, Marinara Sauce, toasted and topped with Parmesan Cheese.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "27. Pepperoni-Salami-Provolone Cheese (12\")",
+        "description": "Pepperoni, salami, provolone on 12\" choice of squaw, wheat, white bread. Options: Works, Plain, Old School, Italian, Dena’s, Tierrasanta with veggies, dressings, condiments.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "13. Roast Beef-Provolone Cheese (9\")",
+        "description": "Roast beef, provolone (9\") on squaw, wheat, or white. Options: The Works, Plain, Old School, Italian Style, Dena’s Way, or Tierrasanta.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "4. Pepperoni-Provolone Cheese (12\")",
+        "description": "Pepperoni-provolone on a 12\" cheese pizza with choice of squaw, wheat, or white bread. Options include Italian style variations with toppings like mustard, mayo, cucumber, spinach, or garlic sauce.",
+        "price": "$18.50",
+        "section": "Menu"
+      },
+      {
+        "name": "27. Pepperoni-Salami-Provolone Cheese (9\")",
+        "description": "Pepperoni, salami, and provolone on a 9\" sub. Bread options: squaw, wheat, white. Styles: Works, Plain, Old School, Italian, Dena’s, Tierrasanta. Includes varying vegetables, dressings, seasonings.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "26. Mortadella, Provolone Cheese (6\")",
+        "description": "Mortadella and provolone cheese in a 6\" sandwich with choices of squaw, wheat, or white bread. Option to customize with variations from Italian style to plain or personalized blends.",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "21. Toasted Meatball-Provolone Cheese (9\")",
+        "description": "Provolone Cheese, Meatballs, Marinara Sauce toasted and topped with Parmesan Cheese.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "10. Grilled Chicken-Provolone Cheese (6\")",
+        "description": "This comes toasted ",
+        "price": "$14.95",
+        "section": "Menu"
+      },
+      {
+        "name": "33. French Dip - Provolone Cheese (6\")",
+        "description": "Thinly sliced prime rib, provolone on choice of squaw, wheat, or white bread. Options: The Works, Plain, Old School, Italian Style, Dena’s Way, Tierrasanta.",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "23. Tuna Salad (9\")",
+        "description": "9\" tuna salad on choice of squaw, wheat, or white bread. Options include Italian style variations, plain, or enhanced with a mix of dressings, cucumber, spinach, and parmesan.",
+        "price": "$16.90",
+        "section": "Menu"
+      },
+      {
+        "name": "12. Turkey-Salami-Provolone Cheese (6\")",
+        "description": "Turkey, salami, provolone on a choice of squaw, wheat, white bread. Styles: from \"The Works\" to \"Plain,\" including Italian-inspired, with variations adding house dressings, vegetables, and seasonings.",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "6. Ham-Salami-Provolone Cheese (6\")",
+        "description": "6\" sandwich with ham, salami, provolone. Choice of squaw, wheat, or white bread. Options range from plain to fully loaded with veggies, dressings, and spices, including a custom option, Dena’s way.",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "23. Chicken Salad (6\")",
+        "description": "Chicken salad on choice of squaw, wheat, or white bread. Options include \"The Works,\" \"Plain,\" \"Old School,\" \"Italian Style,\" \"Dena’s Way,\" or \"Tierrasanta\" with varied vegetables and dressings.",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "19. Ham-Roast Beef-Provolone Cheese (6\")",
+        "description": "Ham, roast beef, Provolone cheese on choice of squaw, wheat, or white bread. Options include the works, plain, old school, Italian style, Dena’s way, Tierrasanta.",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "22. Barbeque Beef (6\")",
+        "description": "BBQ beef on a 6\" sandwich with choice of squaw, wheat, or white bread. Options include The Works, Plain, Old School, Italian Style, Dena’s Way, or Tierrasanta.",
+        "price": "$13.15",
+        "section": "Menu"
+      },
+      {
+        "name": "11. Provolone Cheese (6\")",
+        "description": "Provolone cheese on choice of Squaw, Wheat, or White bread. Options include Italian style, Plain, Old School, Dena’s Way, or Tierrasanta variations with specific vegetables and dressings.",
+        "price": "$11.55",
+        "section": "Menu"
+      },
+      {
+        "name": "11. Provolone Cheese (9\")",
+        "description": "Provolone cheese on a 9\" sandwich with options for squaw, wheat, or white bread. Styles range from plain to Italian influenced, including 'the works' and 'dena’s way'.",
+        "price": "$15.30",
+        "section": "Menu"
+      }
+    ]
+  }
+]

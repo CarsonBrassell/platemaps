@@ -1,0 +1,5306 @@
+[
+  {
+    "restaurantId": "1011",
+    "name": "Petes Place",
+    "website": "http://www.petesplacelamesa.com/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on http://www.petesplacelamesa.com/"
+  },
+  {
+    "restaurantId": "3222",
+    "name": "Sun Deck",
+    "website": "https://hoteldel.com/dine/sun-deck/?SEO_id=GMB--R-SANQQQQ-1",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.hoteldel.com/dine/sun-deck/?SEO_id=GMB--R-SANQQQQ-1"
+  },
+  {
+    "restaurantId": "3074",
+    "name": "The Goods",
+    "website": "https://www.thegoodsdoughnuts.com/",
+    "platform": "clover",
+    "outcome": "gated",
+    "detail": "only 3 priced items from https://the-goods-carlsbad.cloveronline.com/menu/all at 3:53:06 PM PT - possible time gate, re-run in daylight"
+  },
+  {
+    "restaurantId": "3598",
+    "name": "Farmhouse 78",
+    "website": "https://www.farmhouse78.com/",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "64 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/farmhouse-78"
+  },
+  {
+    "restaurantId": "3188",
+    "name": "Steady State Coffee Roasters",
+    "website": "http://steadystateroasting.com/",
+    "platform": "shopify",
+    "outcome": "screened-out",
+    "detail": "Shopify /products.json is a retail catalog here (95 products, 83% packaged coffee/tea, 9% merchandise) - it is what the site ships, not what the counter serves"
+  },
+  {
+    "restaurantId": "3132",
+    "name": "Bonchon Chicken",
+    "website": "https://locations.bonchon.com/ll/US/CA/San-Diego/4690-Convoy-St",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://locations.bonchon.com/ll/US/CA/San-Diego/4690-Convoy-St)"
+  },
+  {
+    "restaurantId": "3517",
+    "name": "Portal Coffee",
+    "website": "https://www.portalcoffeesd.com/",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2467",
+    "name": "Dark Horse Coffee Roasters",
+    "website": "http://www.darkhorsecoffeeroasters.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.darkhorsecoffeeroasters.com/"
+  },
+  {
+    "restaurantId": "3592",
+    "name": "3N1 Sports Bar & Grill",
+    "website": "https://3n1sportsbarandgrill.com/",
+    "platform": "SpotOn",
+    "outcome": "needs-browser",
+    "detail": "SpotOn detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2849",
+    "name": "Kelly’s Pub",
+    "website": "https://kellyspublichouse.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (https://kellyspublichouse.com/)"
+  },
+  {
+    "restaurantId": "3977",
+    "name": "Imperial Mandarin",
+    "website": "http://www.imperial-mandarin.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.imperial-mandarin.com/"
+  },
+  {
+    "restaurantId": "2577",
+    "name": "Surf Side Deli",
+    "website": "https://www.surfsidedelisd.com/",
+    "platform": "clover",
+    "outcome": "screened-out",
+    "detail": "markup or platform fee: 43/64 prices divide by 1.0417 onto round dollars - https://surf-side-deli-san-diego-2.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "3715",
+    "name": "Pho Royal",
+    "website": "https://www.orderphoroyal.com",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (https://www.orderphoroyal.com)"
+  },
+  {
+    "restaurantId": "2135",
+    "name": "La Costa Coffee Roasting",
+    "website": "https://www.lacostacoffee.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://lacostacoffee.com/"
+  },
+  {
+    "restaurantId": "2220",
+    "name": "Carmen's Mexican Food",
+    "website": "http://www.carmensmexican.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.carmensmexican.com/"
+  },
+  {
+    "restaurantId": "3997",
+    "name": "Toasted",
+    "website": "http://toasted.net/",
+    "platform": "Paytronix",
+    "outcome": "needs-browser",
+    "detail": "Paytronix detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "1890",
+    "name": "Mariscos Mazatlan Mexican Grill",
+    "website": "https://mariscosmazatlanhhh.com/",
+    "platform": "clover",
+    "outcome": "screened-out",
+    "detail": "markup or platform fee: 123/156 prices divide by 1.0400 onto round dollars - https://mariscos-mazatlan-hhh-escondido.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "1127",
+    "name": "Tilted Stick",
+    "website": "http://tiltedstick.online/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://tiltedstick.online/"
+  },
+  {
+    "restaurantId": "4228",
+    "name": "Coco Bomb",
+    "website": "https://cocobombusa.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"9379 Poplar Avenue\" vs our \"2379 Ulric Street\""
+  },
+  {
+    "restaurantId": "2719",
+    "name": "Jochi Resto Grill",
+    "website": "http://jochi-resto-grill.poi.place/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "listed website redirects to the barred directory farm jochi-resto-grill.edan.io"
+  },
+  {
+    "restaurantId": "1027",
+    "name": "West End Pub",
+    "website": "https://westendpb.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo EAI_AGAIN westendpb.com) (https://westendpb.com/)"
+  },
+  {
+    "restaurantId": "4517",
+    "name": "Tandoor",
+    "website": "http://www.tandoorsandiego.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.tandoorsandiego.com/"
+  },
+  {
+    "restaurantId": "952",
+    "name": "Pacific Pizza",
+    "website": "https://www.pacificpizza.net/",
+    "platform": "popmenu",
+    "outcome": "filed",
+    "detail": "28 dishes from https://www.pacificpizza.net/menus/pizza?location=poway-ca"
+  },
+  {
+    "restaurantId": "4539",
+    "name": "Flora",
+    "website": "https://www.floranorthpark.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.floranorthpark.com/"
+  },
+  {
+    "restaurantId": "1501",
+    "name": "The Art of Espresso",
+    "website": "http://artofespresso.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://artofespresso.com/"
+  },
+  {
+    "restaurantId": "4281",
+    "name": "heartwork coffee",
+    "website": "https://heartworkcoffeebar.com",
+    "platform": "shopify",
+    "outcome": "screened-out",
+    "detail": "Shopify /products.json is a retail catalog here (6 products, 100% packaged coffee/tea, 0% merchandise) - it is what the site ships, not what the counter serves"
+  },
+  {
+    "restaurantId": "800",
+    "name": "Chicken Over Rice Co.",
+    "website": "https://www.chickenoverrice.co/",
+    "platform": "order.online",
+    "outcome": "screened-out",
+    "detail": "catalog looks doubled: 14 of 30 rows repeat by name and price across differently-named sections - https://order.online/store/chicken-over-rice-co-san-diego-27754709/"
+  },
+  {
+    "restaurantId": "2195",
+    "name": "Hungry Lu's",
+    "website": "https://www.hungrylus.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://hungrylus.com/"
+  },
+  {
+    "restaurantId": "3257",
+    "name": "Hanaya Sushi",
+    "website": "https://hanayasushicafego.site/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND hanayasushicafego.site) (https://hanayasushicafego.site/)"
+  },
+  {
+    "restaurantId": "1038",
+    "name": "Iron Door",
+    "website": "http://www.theirondoorbar.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.theirondoorbar.com/"
+  },
+  {
+    "restaurantId": "1620",
+    "name": "Honey Baked Ham",
+    "website": "https://www.honeybaked.com/stores/8914",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.honeybaked.com/stores/8914"
+  },
+  {
+    "restaurantId": "1894",
+    "name": "Royal India Express",
+    "website": "https://www.royalindiaexpress.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "listed website is a parked domain for sale (https://www.hugedomains.com/domain_profile.cfm?d=royalindiaexpress.com)"
+  },
+  {
+    "restaurantId": "3492",
+    "name": "Cafe Bella Drive Thru",
+    "website": "https://cafebellaob.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://cafebellaob.com/"
+  },
+  {
+    "restaurantId": "4371",
+    "name": "@Spacebar Cafe",
+    "website": "http://www.atspacebar.com/",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "priced menu printed as plain HTML at https://atspacebar.com/menu (~18 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+  },
+  {
+    "restaurantId": "4381",
+    "name": "We Olive & Wine Bar",
+    "website": "http://weolive.com/la-jolla/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (http://weolive.com/la-jolla/)"
+  },
+  {
+    "restaurantId": "2111",
+    "name": "Ginza Sushi",
+    "website": "https://www.ginzasushirb.com/",
+    "platform": "menufy",
+    "outcome": "screened-out",
+    "detail": "markup or platform fee: 228/231 prices divide by 1.0400 onto round dollars - https://api.menufy.com/v1/locations/48900/categories/all"
+  },
+  {
+    "restaurantId": "4869",
+    "name": "Surfing Crab Escondido",
+    "website": "https://www.surfingcrabca.com/",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4333",
+    "name": "The AubreyRose Tea Room",
+    "website": "https://www.theaubreyrosetearoom.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.theaubreyrosetearoom.com/"
+  },
+  {
+    "restaurantId": "3593",
+    "name": "Thai Island@",
+    "website": "https://www.facebook.com/thai.island/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://www.facebook.com/thai.island/)"
+  },
+  {
+    "restaurantId": "2482",
+    "name": "Serrano's Mexican Food",
+    "website": "http://serranosencinitas.com/",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3334",
+    "name": "Palomino's Mexican & Seafood",
+    "website": "https://www.facebook.com/Palominos",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://www.facebook.com/Palominos)"
+  },
+  {
+    "restaurantId": "1823",
+    "name": "Get N Go Donuts",
+    "website": "https://www.getngodonuts.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.getngodonuts.com/)"
+  },
+  {
+    "restaurantId": "3740",
+    "name": "Rosemonts Cafe",
+    "website": "https://Rosemontscafe.com",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/rosemonts-cafe-6830-la-jolla-blvd-101)"
+  },
+  {
+    "restaurantId": "2136",
+    "name": "Santos Coffee",
+    "website": "http://www.santoscoffeehousenp.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.santoscoffeehousenp.com/"
+  },
+  {
+    "restaurantId": "5522",
+    "name": "PGA Tour Grill",
+    "website": "http://www.san.org/Shop-Dine-Relax/Detail?ID=19&Source=WhatsNew",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.san.org/shop-dine/?ID=19&Source=WhatsNew"
+  },
+  {
+    "restaurantId": "2240",
+    "name": "Shozen BBQ",
+    "website": "https://shozenmanpo.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://shozenmanpo.com/"
+  },
+  {
+    "restaurantId": "5616",
+    "name": "La Colombe Coffee Roasters",
+    "website": "https://www.lacolombe.com/pages/cafes/la-jolla?utm_source=google&utm_medium=organic&utm_campaign=gbp",
+    "platform": "shopify",
+    "outcome": "screened-out",
+    "detail": "Shopify /products.json is a retail catalog here (127 products, 53% packaged coffee/tea, 25% merchandise) - it is what the site ships, not what the counter serves"
+  },
+  {
+    "restaurantId": "4736",
+    "name": "The Template",
+    "website": "https://www.obtemplate.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.obtemplate.com/"
+  },
+  {
+    "restaurantId": "3196",
+    "name": "Eugenio Italian Ristorante & More",
+    "website": "http://www.daeugenio.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.daeugenio.com/"
+  },
+  {
+    "restaurantId": "3930",
+    "name": "Cake de Partie",
+    "website": "https://cakedepartie.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://cakedepartie.com/"
+  },
+  {
+    "restaurantId": "2841",
+    "name": "Señor Tequero",
+    "website": "http://senortaquero2.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://senortaquero2.com/"
+  },
+  {
+    "restaurantId": "4636",
+    "name": "Kokoro Restaurant",
+    "website": "http://kokoro-restaurant.net/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://kokoro-restaurant.net/"
+  },
+  {
+    "restaurantId": "3455",
+    "name": "Marlen's Taco Shop",
+    "website": "https://marlenstacoshop.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND marlenstacoshop.com) (https://marlenstacoshop.com/)"
+  },
+  {
+    "restaurantId": "4350",
+    "name": "Popeyes Louisiana Kitchen",
+    "website": "https://www.popeyes.com/store-locator/store/restaurant_878702",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.popeyes.com/restaurants/restaurant_878702"
+  },
+  {
+    "restaurantId": "2644",
+    "name": "Bravo Cafe",
+    "website": "https://bravocafeandyogurt.site/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND bravocafeandyogurt.site) (https://bravocafeandyogurt.site/)"
+  },
+  {
+    "restaurantId": "4508",
+    "name": "Donuts Plus",
+    "website": "https://findaloco.com/en/directory/donuts-plus/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://findaloco.com/en/directory/donuts-plus/"
+  },
+  {
+    "restaurantId": "1855",
+    "name": "Silverlake Ramen",
+    "website": "https://silverlakeramen.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/silverlake-ramen-210807/)"
+  },
+  {
+    "restaurantId": "3000",
+    "name": "Potato Corner",
+    "website": "https://potatocornerusa.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://potatocornerusa.com/)"
+  },
+  {
+    "restaurantId": "5599",
+    "name": "Pizza Mania",
+    "website": "http://pizzamaniawhittier.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://pizzamaniawhittier.com/"
+  },
+  {
+    "restaurantId": "3906",
+    "name": "Cielo Rooftop",
+    "website": "http://tequiladelcielo.com/?utm_source=google&utm_medium=wix_google_business_profile&utm_campaign=17693379858281810344",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (http://tequiladelcielo.com/?utm_source=google&utm_medium=wix_google_business_profile&utm_campaign=17693379858281810344)"
+  },
+  {
+    "restaurantId": "3985",
+    "name": "Karami Ramen",
+    "website": "https://www.karamiramen.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.karamiramen.com/"
+  },
+  {
+    "restaurantId": "4085",
+    "name": "Em Coffee House",
+    "website": "https://www.emcoffeehouse.com",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4396",
+    "name": "Lucca's Pizzeria and Market",
+    "website": "https://www.luccaspizzeriamarket.com/",
+    "platform": "slice",
+    "outcome": "screened-out",
+    "detail": "markup or platform fee: 56/56 prices divide by 1.2000 onto round dollars - https://www.luccaspizzeriamarket.com/"
+  },
+  {
+    "restaurantId": "2051",
+    "name": "Kaffee Meister",
+    "website": "https://www.kaffeemeister.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://kaffeemeister.com/"
+  },
+  {
+    "restaurantId": "4496",
+    "name": "Barra Oliva",
+    "website": "https://barraoliba.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://barraoliba.com/"
+  },
+  {
+    "restaurantId": "1107",
+    "name": "The Leucadian",
+    "website": "http://www.theleucadianbar.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.theleucadianbar.com/"
+  },
+  {
+    "restaurantId": "3227",
+    "name": "Beach + Taco Shack",
+    "website": "https://hoteldel.com/dine/beach-taco-shack/?SEO_id=GMB--R-SANQQQQ-4",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.hoteldel.com/dine/beach-taco-shack/?SEO_id=GMB--R-SANQQQQ-4"
+  },
+  {
+    "restaurantId": "3223",
+    "name": "ENO Market & Pizzeria",
+    "website": "https://hoteldel.com/dine/eno-market-pizzeria/?SEO_id=GMB--R-SANQQQQ-2",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.hoteldel.com/dine/eno-market-pizzeria/?SEO_id=GMB--R-SANQQQQ-2"
+  },
+  {
+    "restaurantId": "4017",
+    "name": "Ko-Li Bar",
+    "website": "https://www.sandiegoyakyudori.com/page/ko-li",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sandiegoyakyudori.com/page/ko-li-bar"
+  },
+  {
+    "restaurantId": "3795",
+    "name": "IB Thai",
+    "website": "https://www.ibthaica.com/",
+    "platform": "menufy",
+    "outcome": "screened-out",
+    "detail": "prices are not shaped like a menu: 1% of 147 land on a conventional ending as published and 73% do after dividing by 1.0400 - a fee is baked into every price - https://api.menufy.com/v1/locations/51937/categories/all"
+  },
+  {
+    "restaurantId": "4478",
+    "name": "Mesa Agricola",
+    "website": "https://mesaagricola.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2809",
+    "name": "Industrial Grind Coffee",
+    "website": "http://industrialgrindcoffee.com/",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "782",
+    "name": "Song Huong Food to Go",
+    "website": "http://ordersonghuongfoodtogo.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://ordersonghuongfoodtogo.com/"
+  },
+  {
+    "restaurantId": "2182",
+    "name": "Kaito Sushi",
+    "website": "http://www.kaitorestaurant.net/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.kaitorestaurant.net/"
+  },
+  {
+    "restaurantId": "2868",
+    "name": "Seven Seas Roasting Company",
+    "website": "https://sevenseasroasting.com",
+    "platform": "shopify",
+    "outcome": "screened-out",
+    "detail": "Shopify /products.json is a retail catalog here (186 products, 55% packaged coffee/tea, 53% merchandise) - it is what the site ships, not what the counter serves"
+  },
+  {
+    "restaurantId": "4059",
+    "name": "Banh Mi Blvd",
+    "website": "https://www.banhmiblvd858.com/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "403 to two desktop UAs and to curl on https://www.banhmiblvd858.com/"
+  },
+  {
+    "restaurantId": "4864",
+    "name": "Tea Pavilion",
+    "website": "https://www.teapavilionsd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.teapavilionsd.com/"
+  },
+  {
+    "restaurantId": "3329",
+    "name": "Mathews Live Oak",
+    "website": "http://matthews-live-oaks.poi.place/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "listed website redirects to the barred directory farm matthews-live-oaks.edan.io"
+  },
+  {
+    "restaurantId": "728",
+    "name": "Dot Cafe",
+    "website": "https://www.dottodotcafe.com/",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2736",
+    "name": "Tambayan Filipino BBQ & Grill",
+    "website": "https://tambayansd.com",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 500 (https://tambayansd.com)"
+  },
+  {
+    "restaurantId": "3910",
+    "name": "Bar Kamon",
+    "website": "http://barkamon.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://barkamon.com/"
+  },
+  {
+    "restaurantId": "2017",
+    "name": "BB's Deli",
+    "website": "https://order.online/business/bbs-deli-40565",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/)"
+  },
+  {
+    "restaurantId": "3479",
+    "name": "Valentinas Taco Shop",
+    "website": "http://www.facebook.com/valentinastacoshop",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (http://www.facebook.com/valentinastacoshop)"
+  },
+  {
+    "restaurantId": "4572",
+    "name": "Milk Organics",
+    "website": "https://www.milkorganics.com/",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3393",
+    "name": "Chopsticks Chinese Cuisine",
+    "website": "https://chopstickschinesecuisine.site/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND chopstickschinesecuisine.site) (https://chopstickschinesecuisine.site/)"
+  },
+  {
+    "restaurantId": "1504",
+    "name": "Ché Café",
+    "website": "http://checafe.org/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://info6594074.wixsite.com/thechecafe"
+  },
+  {
+    "restaurantId": "1022",
+    "name": "The Reunion",
+    "website": "https://www.facebook.com/bigbill49/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://www.facebook.com/bigbill49/)"
+  },
+  {
+    "restaurantId": "2228",
+    "name": "Blue Pepper Asian Cuisine",
+    "website": "https://bluepepperucsd.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.bluepepperucsd.com/"
+  },
+  {
+    "restaurantId": "5271",
+    "name": "Seaview Restaurant",
+    "website": "https://www.hyatt.com/en-US/hotel/california/manchester-grand-hyatt-san-diego/sanrs/dining",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "429 rate limited on https://www.hyatt.com/en-US/hotel/california/manchester-grand-hyatt-san-diego/sanrs/dining"
+  },
+  {
+    "restaurantId": "2341",
+    "name": "FroYo Love",
+    "website": "http://froyolovesanmarcos.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://froyolovesanmarcos.com/"
+  },
+  {
+    "restaurantId": "4176",
+    "name": "Mama Antonia’s Restaurant",
+    "website": "https://mamantonia.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://mamantonia.com/"
+  },
+  {
+    "restaurantId": "3303",
+    "name": "Memo's Golden Bagel",
+    "website": "https://memosgoldenbagels.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND memosgoldenbagels.com) (https://memosgoldenbagels.com/)"
+  },
+  {
+    "restaurantId": "3597",
+    "name": "Dark Horse Coffee Roasters",
+    "website": "https://darkhorsecoffeeroasters.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.darkhorsecoffeeroasters.com/"
+  },
+  {
+    "restaurantId": "3157",
+    "name": "Robek's Smoothies",
+    "website": "https://robeks.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://robeks.com/"
+  },
+  {
+    "restaurantId": "3345",
+    "name": "Tony's Pizza",
+    "website": "https://www.tonyspizzasandiego.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND www.tonyspizzasandiego.com) (https://www.tonyspizzasandiego.com/)"
+  },
+  {
+    "restaurantId": "4008",
+    "name": "Kiin Extraordinary Thai",
+    "website": "http://www.kiinthaidelmar.com/",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "81 dishes from https://order.toasttab.com/online/kiin-extrodinary-thai-7145-calabria-ct-unit-a"
+  },
+  {
+    "restaurantId": "2423",
+    "name": "OMOMO Tea Shoppe",
+    "website": "https://www.omomoteashoppe.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.omomoteashoppe.com/"
+  },
+  {
+    "restaurantId": "4476",
+    "name": "Kalei's Kitchenette",
+    "website": "http://www.kaleiskitchenette.com/",
+    "platform": "SpotOn",
+    "outcome": "needs-browser",
+    "detail": "SpotOn detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2113",
+    "name": "Iron Wok",
+    "website": "https://ironwokrb.com/",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3623",
+    "name": "Big Apple Bagels",
+    "website": "http://bigapplebagels.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://bigapplebagels.com/"
+  },
+  {
+    "restaurantId": "2694",
+    "name": "Lime in the Coconut",
+    "website": "https://limexcoconut.com",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+  },
+  {
+    "restaurantId": "4127",
+    "name": "Tea Monks",
+    "website": "http://theteamonks.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://theteamonks.com/"
+  },
+  {
+    "restaurantId": "4428",
+    "name": "VanMan's Kitchen",
+    "website": "https://www.vanmanskitchen.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.vanmanskitchen.com/"
+  },
+  {
+    "restaurantId": "4142",
+    "name": "Communion",
+    "website": "https://www.dinecommunionsd.com/",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "499 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/communion-mission-hills-901-west-washington-street"
+  },
+  {
+    "restaurantId": "2914",
+    "name": "Vanitea",
+    "website": "http://vaniteacafe.com/",
+    "platform": "clover",
+    "outcome": "filed",
+    "detail": "172 dishes from https://vanitea-caf-chula-vista.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "4835",
+    "name": "Baja Rick's Cantina",
+    "website": "https://rockinbaja.com/baja-ricks/",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "only 0 priced items from https://order.toasttab.com/online/bajaricks at 3:53:07 PM PT - possible time gate, re-run in daylight"
+  },
+  {
+    "restaurantId": "1523",
+    "name": "Caribe Night Club",
+    "website": "https://thecaribesd.com/welcome/",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "10 dishes from https://thecaribesd.com/menu/"
+  },
+  {
+    "restaurantId": "2980",
+    "name": "Hatsuzakura",
+    "website": "https://www.hatsuzakurasd.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://hatsuzakurasd.com/"
+  },
+  {
+    "restaurantId": "2712",
+    "name": "Joses Taco Shop",
+    "website": "http://www.theislandatcarlsbad.com/tenant/joses-taco-shop/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.theislandatcarlsbad.com/tenant/joses-taco-shop/"
+  },
+  {
+    "restaurantId": "4049",
+    "name": "Pop Pie Co.",
+    "website": "http://www.poppieco.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.poppieco.com/"
+  },
+  {
+    "restaurantId": "4112",
+    "name": "Air Conditioned Lounge",
+    "website": "https://airconditionedlounge.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://airconditionedlounge.com/"
+  },
+  {
+    "restaurantId": "2455",
+    "name": "Le Bambou",
+    "website": "http://www.lebambourestaurant.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://lebambourestaurant.com/"
+  },
+  {
+    "restaurantId": "4006",
+    "name": "Glass Box",
+    "website": "https://www.glassboxsd.com/",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "224 dishes from https://order.toasttab.com/online/glass-box"
+  },
+  {
+    "restaurantId": "4029",
+    "name": "Rock On Pizza",
+    "website": "https://rockonpizza.com/?utm_source=google",
+    "platform": "slice",
+    "outcome": "needs-browser",
+    "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+  },
+  {
+    "restaurantId": "3320",
+    "name": "Iron Pan Thai Kitchen",
+    "website": "https://ironpanthaikitchen.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://ironpanthaikitchen.com/"
+  },
+  {
+    "restaurantId": "2913",
+    "name": "Nanay's Best BBQ",
+    "website": "https://nanaysbestbbqgo.twupro.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://nanaysbestbbqgo.twupro.com/"
+  },
+  {
+    "restaurantId": "3993",
+    "name": "Sue's Korean Kitchen",
+    "website": "https://sueskoreankitchen.square.site/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3998",
+    "name": "Cross Street Chicken and Beer",
+    "website": "https://www.crossstreetcnb.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"4403 Convoy St.\" vs our \"12955 El Camino Real G2, San Diego, CA 92130\""
+  },
+  {
+    "restaurantId": "3944",
+    "name": "Leucadia Pizzeria Shadowridge",
+    "website": "https://www.leucadiapizzarsf.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://leucadiapizza.com/"
+  },
+  {
+    "restaurantId": "4153",
+    "name": "Giant New York Pizza",
+    "website": "http://www.giantnewyorkpizzaonline.com/?utm_source=gbp",
+    "platform": "slice",
+    "outcome": "filed",
+    "detail": "95 dishes from https://www.giantnewyorkpizzaonline.com/?utm_source=gbp"
+  },
+  {
+    "restaurantId": "5352",
+    "name": "Purple Owl Cafe",
+    "website": "https://www.clover.com/online-ordering/purpleowlcafe",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.clover.com/online-ordering/purpleowlcafe"
+  },
+  {
+    "restaurantId": "3358",
+    "name": "Side Bar",
+    "website": "https://www.sidebarsd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sidebarsd.com/"
+  },
+  {
+    "restaurantId": "3524",
+    "name": "Idego Coffee Roasters",
+    "website": "https://www.idegocoffee.com/location/poway",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.idegocoffee.com/location/poway)"
+  },
+  {
+    "restaurantId": "1293",
+    "name": "Little Ceasar's",
+    "website": "https://littlecaesars.com/en-us/store/9847",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://littlecaesars.com/en-us/store/9847/"
+  },
+  {
+    "restaurantId": "4625",
+    "name": "Banh Mi San Marcos",
+    "website": "https://www.banhmism.com/",
+    "platform": "clover",
+    "outcome": "filed",
+    "detail": "73 dishes from https://banh-mi-san-marcos-san-marcos-3.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "2720",
+    "name": "Talitha Coffee Roasters",
+    "website": "https://talithacoffee.square.site",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2803",
+    "name": "Liberty Giant Pizza",
+    "website": "http://libertygiantpizza.com/?utm_source=gbp",
+    "platform": "slice",
+    "outcome": "filed",
+    "detail": "80 dishes from https://www.libertygiantpizza.com/?utm_source=gbp"
+  },
+  {
+    "restaurantId": "796",
+    "name": "Explorers Café",
+    "website": "https://seaworld.com/san-diego/dining/explorers-cafe/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://seaworld.com/san-diego/dining/explorers-cafe/"
+  },
+  {
+    "restaurantId": "4557",
+    "name": "Mikiya Wagyu Shabu House",
+    "website": "https://mikiyashabu.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://mikiyashabu.com/"
+  },
+  {
+    "restaurantId": "4585",
+    "name": "Tacoman",
+    "website": "https://tacomansd.com",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3641",
+    "name": "Rosarito's Mexican Food #2",
+    "website": "https://m.facebook.com/RosaritosLakeside2",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://m.facebook.com/RosaritosLakeside2)"
+  },
+  {
+    "restaurantId": "4338",
+    "name": "Criscito Pizza",
+    "website": "https://www.criscitopizza.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.criscitopizza.com/"
+  },
+  {
+    "restaurantId": "2727",
+    "name": "Rose Donuts",
+    "website": "https://order.online/store/-800591?hideModal=true",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on https://order.online/store/-800591?hideModal=true"
+  },
+  {
+    "restaurantId": "3529",
+    "name": "Ipo BBQ",
+    "website": "https://ipobbq.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://ipobbq.com/"
+  },
+  {
+    "restaurantId": "4631",
+    "name": "Pear's Thai Cuisine",
+    "website": "https://pearsthaicuisinego.site/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND pearsthaicuisinego.site) (https://pearsthaicuisinego.site/)"
+  },
+  {
+    "restaurantId": "733",
+    "name": "Al Teatro Panini Grill",
+    "website": "http://alteatropaninigrill.com",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND alteatropaninigrill.com) (http://alteatropaninigrill.com)"
+  },
+  {
+    "restaurantId": "3584",
+    "name": "San Elijo Vine & Tap",
+    "website": "http://www.sevineandtap.com/",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "38 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/vine&tap"
+  },
+  {
+    "restaurantId": "4592",
+    "name": "Tacos El Flaco",
+    "website": "https://www.instagram.com/tacos_elflacosd?igsh=eDRiejgwYjJxcGZx",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.instagram.com/tacos_elflacosd?igsh=eDRiejgwYjJxcGZx"
+  },
+  {
+    "restaurantId": "3581",
+    "name": "Los Amigos Mexican Food",
+    "website": "http://los-amigos-mexican-ramona.poi.place/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "listed website redirects to the barred directory farm los-amigos-mexican-ramona.edan.io"
+  },
+  {
+    "restaurantId": "2594",
+    "name": "Erickbertos Mexican Food",
+    "website": "https://www.facebook.com/erickbertosescondido/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://www.facebook.com/erickbertosescondido/)"
+  },
+  {
+    "restaurantId": "2552",
+    "name": "Thai Fresh",
+    "website": "https://thaifreshsd.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "5692",
+    "name": "Franca's Italian Kitchen & Bar",
+    "website": "https://francas-italian.com/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on https://francas-italian.com/"
+  },
+  {
+    "restaurantId": "4222",
+    "name": "Manzanita Roasting Company",
+    "website": "http://www.manzanitaroasting.com/",
+    "platform": "clover",
+    "outcome": "filed",
+    "detail": "50 dishes from https://manzanitaescondido.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "4562",
+    "name": "Fan-Fan",
+    "website": "http://www.fanfangroup.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3247",
+    "name": "VaniTea Café",
+    "website": "https://vaniteacafe.com/",
+    "platform": "clover",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"525 TELEGRAPH CANYON RD\" vs our \"2654 Jamacha Road\""
+  },
+  {
+    "restaurantId": "3645",
+    "name": "Bound Coffee Co.",
+    "website": "http://www.boundbycoffee.net/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2026",
+    "name": "Golden Spoon Yogurt",
+    "website": "http://www.goldenspoonus.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://goldenspoonus.com/"
+  },
+  {
+    "restaurantId": "4033",
+    "name": "Hino",
+    "website": "https://sandiegoyakyudori.com/page/hino",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sandiegoyakyudori.com/page/hino"
+  },
+  {
+    "restaurantId": "1927",
+    "name": "Robeks Juice",
+    "website": "https://robeks.com/locations/ca/san-diego/1025-camino-de-la-reina?utm_source=google&utm_medium=organic&utm_campaign=gbp&utm_content=website",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/robeks-san-diego-24604320/18615842/"
+  },
+  {
+    "restaurantId": "3706",
+    "name": "The Luau",
+    "website": "https://www.theluaubar.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.theluaubar.com/"
+  },
+  {
+    "restaurantId": "1964",
+    "name": "Ozone Billiard Cafe",
+    "website": "http://ozonebilliardcafe.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND ozonebilliardcafe.com) (http://ozonebilliardcafe.com/)"
+  },
+  {
+    "restaurantId": "2209",
+    "name": "Prince Hookah Cafe",
+    "website": "https://m.facebook.com/PrinceHookahCafe",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://m.facebook.com/PrinceHookahCafe)"
+  },
+  {
+    "restaurantId": "3671",
+    "name": "World Famous I Bar",
+    "website": "https://coronado.navylifesw.com/programs/32ba1adc-8f33-4532-af89-b3eec404d300",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://coronado.navylifesw.com/programs/32ba1adc-8f33-4532-af89-b3eec404d300"
+  },
+  {
+    "restaurantId": "2110",
+    "name": "Giant Pizza NY Style Halal Food",
+    "website": "https://www.giantpizzanystyle.com",
+    "platform": "slice",
+    "outcome": "needs-browser",
+    "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+  },
+  {
+    "restaurantId": "2487",
+    "name": "Surfdog's Java Hot",
+    "website": "http://www.surfdogsjavahut.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.surfdogjavahut.com/"
+  },
+  {
+    "restaurantId": "731",
+    "name": "Sushi MARU",
+    "website": "https://www.marusushisd.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://marusushisd.com/"
+  },
+  {
+    "restaurantId": "1876",
+    "name": "Croutons",
+    "website": "http://croutonstogo.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://croutonstogo.com/"
+  },
+  {
+    "restaurantId": "3530",
+    "name": "Tikka Pizza Kitchen",
+    "website": "https://www.tikkapizzakitchenmiramar.com/",
+    "platform": "slice",
+    "outcome": "filed",
+    "detail": "80 dishes from https://www.tikkapizzakitchenmiramar.com/"
+  },
+  {
+    "restaurantId": "4659",
+    "name": "SOT BBQ",
+    "website": "https://www.sotbbq.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sotbbq.com/"
+  },
+  {
+    "restaurantId": "3296",
+    "name": "Elena's Mexican Food",
+    "website": "https://www.elenasmexicanfoodrestaurant.com/",
+    "platform": "menufy",
+    "outcome": "filed",
+    "detail": "78 dishes from https://api.menufy.com/v1/locations/36055/categories/all"
+  },
+  {
+    "restaurantId": "3895",
+    "name": "Soi PB",
+    "website": "http://www.soipbsandiego.com/",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "105 dishes from https://order.toasttab.com/online/soi-pb-thai-street-food-4658-mission-blvd"
+  },
+  {
+    "restaurantId": "1802",
+    "name": "Mother's Kitchen",
+    "website": "https://www.motherskitchenpalomar.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.motherskitchenpalomar.com/"
+  },
+  {
+    "restaurantId": "4657",
+    "name": "Mexican Bar",
+    "website": "https://themexicanbar.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"9379 Poplar Avenue\" vs our \"12213 Poway Road\""
+  },
+  {
+    "restaurantId": "4005",
+    "name": "Craft House",
+    "website": "https://crafthouseskydeck.com/",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "216 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/craft-house-del-mar-skydeck-12841-el-camino-real-suite-202"
+  },
+  {
+    "restaurantId": "4535",
+    "name": "Thai Style",
+    "website": "https://www.windmillfoodhall.com/thai-style",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.windmillfoodhall.com/thai-style"
+  },
+  {
+    "restaurantId": "3877",
+    "name": "Mr. Charlie's",
+    "website": "https://mrcharlies.co/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/mr-charlies-la-new-acc-612-n-la-brea-ave)"
+  },
+  {
+    "restaurantId": "3788",
+    "name": "The Halal Shack",
+    "website": "http://www.thehalalshack.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.thehalalshack.com/"
+  },
+  {
+    "restaurantId": "3824",
+    "name": "Aztec Food Hub",
+    "website": "https://aztecfoodhubsd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://aztecfoodhubsd.com/"
+  },
+  {
+    "restaurantId": "3817",
+    "name": "BenGong's Tea",
+    "website": "https://www.bengongstea.us/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/ben-gongs-tea-ellicott-city-10045-baltimore-national-pike-ste-a10)"
+  },
+  {
+    "restaurantId": "4574",
+    "name": "Crispy Chicken n' Tomato",
+    "website": "https://clairemont.crispychicken.store/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://clairemont.crispychicken.store/"
+  },
+  {
+    "restaurantId": "1194",
+    "name": "Tony’s Newport Cafe",
+    "website": "http://www.tonysob.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.tonysob.com/"
+  },
+  {
+    "restaurantId": "3347",
+    "name": "Casablanca Lounge",
+    "website": "https://casablancasd.net/",
+    "platform": "order.online",
+    "outcome": "filed",
+    "detail": "9 dishes from https://www.doordash.com/store/casablanca-lounge-san-diego-27958232/33700154/"
+  },
+  {
+    "restaurantId": "3114",
+    "name": "Quantum Brewing",
+    "website": "https://www.quantumbrewingsd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://quantumbrewingsd.com/"
+  },
+  {
+    "restaurantId": "3946",
+    "name": "Acento Coffee Roasters",
+    "website": "http://acentocoffeeroasters.com/",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "1169",
+    "name": "P B Pub",
+    "website": "https://www.pacificbeachpub.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (Hostname/IP does not match certificate's altnames: Host: www.pacificbeachpub.com. is not in the cert's altnames: DNS:*.bluehos (https://www.pacificbeachpub.com/)"
+  },
+  {
+    "restaurantId": "4501",
+    "name": "Donut Stop",
+    "website": "http://donutstopmiramesa.wordpress.com/",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "priced menu printed as plain HTML at https://donutstopmiramesa.wordpress.com/menu/ (~24 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+  },
+  {
+    "restaurantId": "4324",
+    "name": "Croutons",
+    "website": "https://www.croutonstogo.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://croutonstogo.com/"
+  },
+  {
+    "restaurantId": "4318",
+    "name": "Zhang Liang Malatang",
+    "website": "https://www.zlmlt.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.zlmlt.com/"
+  },
+  {
+    "restaurantId": "1060",
+    "name": "Stagecoach Inn",
+    "website": "https://the-stagecoachinn.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://the-stagecoachinn.com/"
+  },
+  {
+    "restaurantId": "930",
+    "name": "Taco Time Food Truck",
+    "website": "https://taco-time-food-truck.edan.io/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "listed website redirects to the barred directory farm taco-time-food-truck.edan.io"
+  },
+  {
+    "restaurantId": "3384",
+    "name": "The Burrito Factory",
+    "website": "https://www.theburritofactory.shop/",
+    "platform": "own-jsonld",
+    "outcome": "wrong-branch",
+    "detail": "payload city \"Pontianak\" is not a city in this corpus - a different branch of the same brand (https://koreanrestaurantlynchburg.com/)"
+  },
+  {
+    "restaurantId": "3117",
+    "name": "Gong Cha",
+    "website": "https://www.gongchausa.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.gong-cha.com/usa/us-en"
+  },
+  {
+    "restaurantId": "3854",
+    "name": "Kona Coffee",
+    "website": "http://www.konacoffeeco.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.konacoffeeco.com/"
+  },
+  {
+    "restaurantId": "4279",
+    "name": "D Wings & Ribs",
+    "website": "http://dwingsusa.com/",
+    "platform": "SpotOn",
+    "outcome": "needs-browser",
+    "detail": "SpotOn detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4052",
+    "name": "Eat Crispy Burger",
+    "website": "https://www.eatcrispyburger.com",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/11234450)"
+  },
+  {
+    "restaurantId": "4335",
+    "name": "Blue Ocean Sushi",
+    "website": "https://blueoceansushibar.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"2958 Madison St.\" vs our \"4313 La Jolla Village Dr Ste 2265, San Diego, CA 92122\""
+  },
+  {
+    "restaurantId": "3559",
+    "name": "Cake Korner",
+    "website": "https://www.cakekorner.com/menu",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.cakekorner.com/menu"
+  },
+  {
+    "restaurantId": "4528",
+    "name": "Pho Lucky",
+    "website": "https://pholuckysandiego.kwickmenu.com/",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "87 dishes from https://pholuckysandiego.kwickmenu.com/"
+  },
+  {
+    "restaurantId": "3377",
+    "name": "Seahorse Coffee",
+    "website": "https://quartyardsd.com/seahorse-coffee-new-container-on-the-block/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://quartyardsd.com/seahorse-coffee-new-container-on-the-block/"
+  },
+  {
+    "restaurantId": "2631",
+    "name": "The Barista Botanist",
+    "website": "https://www.baristabotanist.com/",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4617",
+    "name": "The Pool House",
+    "website": "https://www.poolhousesd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.pendry.com/san-diego/dining/pool-house/"
+  },
+  {
+    "restaurantId": "4504",
+    "name": "N.Y. Giant Pizza",
+    "website": "http://nygpsd.com/",
+    "platform": "slice",
+    "outcome": "needs-browser",
+    "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+  },
+  {
+    "restaurantId": "5667",
+    "name": "Bonehead Burger Co.",
+    "website": "https://www.boneheadburgers.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+  },
+  {
+    "restaurantId": "5088",
+    "name": "64 Degrees",
+    "website": "https://hdh-web.ucsd.edu/dining/apps/diningservices",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://hdh-web.ucsd.edu/dining/apps/diningservices"
+  },
+  {
+    "restaurantId": "3972",
+    "name": "Matoi",
+    "website": "https://www.matoisandiego.com",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/menus)"
+  },
+  {
+    "restaurantId": "2272",
+    "name": "The Deli Stop",
+    "website": "https://thedelistop.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://thedelistop.com/"
+  },
+  {
+    "restaurantId": "3064",
+    "name": "C.H. Donuts",
+    "website": "http://www.chdonutsib.com/",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "33 dishes from https://chdonutsib.com/menu"
+  },
+  {
+    "restaurantId": "5503",
+    "name": "Cargo Cafe",
+    "website": "https://www.cargo-cafe.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4439",
+    "name": "Sankalp: The Taste of India",
+    "website": "https://www.sankalpsandiego.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sankalpsandiego.com/"
+  },
+  {
+    "restaurantId": "3680",
+    "name": "Zhengxin Chicken Steak",
+    "website": "http://www.zhengxinchickensteak.com/",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "1015",
+    "name": "Parkys",
+    "website": "http://www.parkysbarsd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://parkysbarsd.com/"
+  },
+  {
+    "restaurantId": "3791",
+    "name": "Topside Terrace Kitchen & Bar",
+    "website": "https://www.hotelrepublicsd.com/dining/topside-terrace-kitchen-bar",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.hotelrepublicsd.com/dining/topside-terrace-kitchen-bar)"
+  },
+  {
+    "restaurantId": "2772",
+    "name": "Chin's Gourmet",
+    "website": "https://www.chinsgourmetcarlsbad.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.chinsgourmetcarlsbad.com/"
+  },
+  {
+    "restaurantId": "4522",
+    "name": "Pichudo Mexican Grill",
+    "website": "http://pichudomexicangrill.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/pichudo-mexican-grill-san-diego-34241243/83791084/?event_type=autocomplete&pickup=false#"
+  },
+  {
+    "restaurantId": "3881",
+    "name": "Elixir Espresso Bar",
+    "website": "http://elixirespressobar.com/",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2718",
+    "name": "Shanghai Cuisine",
+    "website": "https://www.instagram.com/shanghai_cuisine",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.instagram.com/shanghai_cuisine"
+  },
+  {
+    "restaurantId": "870",
+    "name": "Sura BBQ & SHABU",
+    "website": "https://surakbbqsd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://surakbbqsd.com/"
+  },
+  {
+    "restaurantId": "3934",
+    "name": "Sul & Beans",
+    "website": "https://www.sulandbeans.com",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2941",
+    "name": "Gor Gai Thai Eatery",
+    "website": "http://www.gorgaithaieatery.com/",
+    "platform": "chownow",
+    "outcome": "needs-browser",
+    "detail": "ChowNow embed without a direct.chownow.com location id"
+  },
+  {
+    "restaurantId": "3974",
+    "name": "Harmony Cuisine 2b1",
+    "website": "https://www.hc2b1.com",
+    "platform": "clover",
+    "outcome": "filed",
+    "detail": "89 dishes from https://harmony-cuisine-2b1-san-diego.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "746",
+    "name": "Dive",
+    "website": "https://www.divecoronado.com/",
+    "platform": "popmenu",
+    "outcome": "filed",
+    "detail": "63 dishes from https://www.divecoronado.com/menus/breakfast?location=dive-coronado"
+  },
+  {
+    "restaurantId": "3462",
+    "name": "China Express",
+    "website": "https://www.chinaexpresssandiego.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sandiegochinaexpress.com/?utm_source=redirect&utm_medium=chinaexpresssandiego.com"
+  },
+  {
+    "restaurantId": "3045",
+    "name": "The Surf Club Oceanside",
+    "website": "https://www.surfcluboceanside.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.surfcluboceanside.com/"
+  },
+  {
+    "restaurantId": "4132",
+    "name": "ZzanG Hotdog & Chicken",
+    "website": "http://zzanghotdog.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2410",
+    "name": "Garden State Bagels",
+    "website": "http://www.gardenstatebagels.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.gardenstatebagels.com/"
+  },
+  {
+    "restaurantId": "1884",
+    "name": "Mom Kitchen - Hong Kong Cafe",
+    "website": "https://usmomkitchen.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://usmomkitchen.com/"
+  },
+  {
+    "restaurantId": "2722",
+    "name": "The Peruvian Spot",
+    "website": "https://www.theperuvianspot.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://theperuvianspot.com/"
+  },
+  {
+    "restaurantId": "3155",
+    "name": "Hooked On Pokè",
+    "website": "https://www.hkdonpokeandsushi.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/hooked-on-poke--sushi-11477203)"
+  },
+  {
+    "restaurantId": "4329",
+    "name": "Paris Sandwiches",
+    "website": "https://www.orderparissandwiches.com/",
+    "platform": "menufy",
+    "outcome": "filed",
+    "detail": "74 dishes from https://api.menufy.com/v1/locations/45256/categories/all"
+  },
+  {
+    "restaurantId": "4577",
+    "name": "Sky Sushi",
+    "website": "http://www.skysushivista.com/",
+    "platform": "clover",
+    "outcome": "filed",
+    "detail": "227 dishes from https://sky-sushi-vista.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "3940",
+    "name": "Sweetfin",
+    "website": "https://www.sweetfin.com/",
+    "platform": "olo",
+    "outcome": "needs-browser",
+    "detail": "Olo storefront with no merchant id in the served HTML (needs a store pick)"
+  },
+  {
+    "restaurantId": "1149",
+    "name": "Deano's Pub",
+    "website": "http://www.deanospub.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://deanospub.com/"
+  },
+  {
+    "restaurantId": "4070",
+    "name": "Thiên Hương Bánh Cuốn Vietnamese Cuisine",
+    "website": "https://www.thienhuongcali.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.thienhuongcali.com/"
+  },
+  {
+    "restaurantId": "3191",
+    "name": "Roots Bowls",
+    "website": "https://rootsbowls.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/roots-bowls-296772)"
+  },
+  {
+    "restaurantId": "3674",
+    "name": "King Market Pizza",
+    "website": "https://kingpizzaplaces.com/el-cajon?utm_source=google",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "90 dishes from https://kingpizzaplaces.com/menu"
+  },
+  {
+    "restaurantId": "3696",
+    "name": "Teaspoon",
+    "website": "https://www.teaspoonlife.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.teaspoonlife.com/"
+  },
+  {
+    "restaurantId": "5480",
+    "name": "Chen Golden Palace",
+    "website": "https://usmapz.me/chen-golden-palace-110354-us",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://bizsite.link/chen-golden-palace-110354-us"
+  },
+  {
+    "restaurantId": "3388",
+    "name": "Daniel's Taco Shop",
+    "website": "https://order.online/business/daniels-taco-shop-432350",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/)"
+  },
+  {
+    "restaurantId": "3512",
+    "name": "Pizza Hut Express",
+    "website": "https://locations.pizzahut.com/ca/san-diego/1599-la-media-road",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://locations.pizzahut.com/ca/san-diego/1599-la-media-road"
+  },
+  {
+    "restaurantId": "1878",
+    "name": "Curry Up Now",
+    "website": "https://www.curryupnow.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.curryupnow.com/"
+  },
+  {
+    "restaurantId": "1082",
+    "name": "Instant Replay",
+    "website": "https://theirdivebar.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://theirdivebar.com/"
+  },
+  {
+    "restaurantId": "3349",
+    "name": "Sadaf Restaurant",
+    "website": "https://www.sadafsandiego.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.sadafsandiego.com/)"
+  },
+  {
+    "restaurantId": "828",
+    "name": "Giant Pizza & Deli",
+    "website": "https://www.giantpizzadeli.com",
+    "platform": "slice",
+    "outcome": "filed",
+    "detail": "110 dishes from https://www.giantpizzadeli.com/"
+  },
+  {
+    "restaurantId": "4009",
+    "name": "Xin Chao, A Vietnamese Eatery",
+    "website": "http://xinchaousa.com/",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "57 dishes from https://order.toasttab.com/online/xinchaoeatery"
+  },
+  {
+    "restaurantId": "3964",
+    "name": "Szechuan Chef Chinese Cuisine",
+    "website": "https://www.szechuanchefca.com/",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4092",
+    "name": "Pho Cali",
+    "website": "https://phohungcali.shop/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://pho-hung-cali.localoria.com/"
+  },
+  {
+    "restaurantId": "1662",
+    "name": "El Cata Mariscos Sushi & Cortes",
+    "website": "http://elcatamariscoslm.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://elcatamariscoslm.com/"
+  },
+  {
+    "restaurantId": "3531",
+    "name": "Craft Café at Mingei",
+    "website": "https://www.mingei.org/visit/craft-café",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://mingei.org/visit/craft-caf%C3%A9"
+  },
+  {
+    "restaurantId": "5479",
+    "name": "Panda's Tortas and Frutas locas",
+    "website": "http://tortasfrutashotdogs.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://tortasfrutashotdogs.com/"
+  },
+  {
+    "restaurantId": "4703",
+    "name": "Tulum Seafood",
+    "website": "https://www.tulumfresh.com",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "429 rate limited on https://www.tulumfresh.com"
+  },
+  {
+    "restaurantId": "2109",
+    "name": "Submarina",
+    "website": "https://submarina.com/",
+    "platform": "order.online",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"2183 Vista Way\" vs our \"17090 Bernardo Center Drive\""
+  },
+  {
+    "restaurantId": "3976",
+    "name": "Bistro Kaz",
+    "website": "https://bistrokaz.site/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND bistrokaz.site) (https://bistrokaz.site/)"
+  },
+  {
+    "restaurantId": "5695",
+    "name": "La Central",
+    "website": "http://lacentralrestaurants.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://lacentralrestaurants.com/"
+  },
+  {
+    "restaurantId": "5688",
+    "name": "Qdoba",
+    "website": "https://locations.qdoba.com/us/ca/san-diego/3225-north-harbor-dr?utm_medium=organic&utm_source=google&utm_campaign=google_maps&utm_content=website&utm_term=2784",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://locations.qdoba.com/us/ca/san-diego/3225-north-harbor-dr?utm_medium=organic&utm_source=google&utm_campaign=google_maps&utm_content=website&utm_term=2784"
+  },
+  {
+    "restaurantId": "4316",
+    "name": "Kearny Mesa Brothers Mexican Restaurant",
+    "website": "http://brothersmexicanfood3ca.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://brothersmexicanfood3ca.com/"
+  },
+  {
+    "restaurantId": "3382",
+    "name": "Giant Bronx Pizza",
+    "website": "https://www.giantbronxpizza.com/",
+    "platform": "slice",
+    "outcome": "filed",
+    "detail": "187 dishes from https://www.giantbronxpizza.com/"
+  },
+  {
+    "restaurantId": "3604",
+    "name": "Vitality Bowls",
+    "website": "https://vitalitybowls.com/locations/san-diego/?utm_source=google&utm_medium=gmb&utm_campaign=gmbweblink",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://vitalitybowls.com/locations/san-diego/?utm_source=google&utm_medium=gmb&utm_campaign=gmbweblink"
+  },
+  {
+    "restaurantId": "2152",
+    "name": "Ace New York Giant Pizza Bar & Lounge",
+    "website": "https://acenypizza.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND acenypizza.com) (https://acenypizza.com/)"
+  },
+  {
+    "restaurantId": "4369",
+    "name": "Invita Cafe",
+    "website": "https://www.invitacafe.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "1740",
+    "name": "Mike Hess Brewing Tasting Room",
+    "website": "https://www.mikehessbrewing.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.mikehessbrewing.com/"
+  },
+  {
+    "restaurantId": "4594",
+    "name": "Upper East",
+    "website": "https://uppereastongrand.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/sites-api)"
+  },
+  {
+    "restaurantId": "3856",
+    "name": "Musashiya",
+    "website": "https://www.musashiyasd.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.musashiyasd.com/"
+  },
+  {
+    "restaurantId": "1069",
+    "name": "San Diego Eagle",
+    "website": "http://www.sandiegoeagle.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.sandiegoeagle.com/"
+  },
+  {
+    "restaurantId": "3571",
+    "name": "El Cubano",
+    "website": "http://orderelcubano.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://orderelcubano.com/"
+  },
+  {
+    "restaurantId": "5234",
+    "name": "Sushi Roka Bar & Grill",
+    "website": "https://www.sushirokasd.com/",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "196 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://sushiroka.toast.site/order"
+  },
+  {
+    "restaurantId": "2034",
+    "name": "The Brass Rail",
+    "website": "https://www.thebrassrailsd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://thebrassrailsd.com/"
+  },
+  {
+    "restaurantId": "817",
+    "name": "Kinchana",
+    "website": "https://kinchana.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3816",
+    "name": "Capital One Cafe",
+    "website": "https://www.capitalone.com/local/sandiego-westfieldutc/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.capitalone.com/local/sandiego-westfieldutc/"
+  },
+  {
+    "restaurantId": "4473",
+    "name": "Donutopolis",
+    "website": "https://donutopolismm.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://donutopolismm.twupro.com/"
+  },
+  {
+    "restaurantId": "4342",
+    "name": "Pop Pie Co. Pacific Beach",
+    "website": "http://www.poppieco.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.poppieco.com/"
+  },
+  {
+    "restaurantId": "5303",
+    "name": "Okavango Outpost",
+    "website": "http://sdzsafaripark.org/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sdzsafaripark.org/"
+  },
+  {
+    "restaurantId": "5175",
+    "name": "Canyon Vista Restaurant",
+    "website": "https://hdh-web.ucsd.edu/dining/apps/diningservices/Restaurants/MenuItem/24",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://hdh-web.ucsd.edu/dining/apps/diningservices/Restaurants/MenuItem/24)"
+  },
+  {
+    "restaurantId": "3728",
+    "name": "Cafe 86",
+    "website": "http://cafe-86.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload city \"Chino Hills\" is not a city in this corpus - a different branch of the same brand (https://order.toasttab.com/online/cafe86-chino)"
+  },
+  {
+    "restaurantId": "4069",
+    "name": "Ensui Sushi",
+    "website": "http://ensuisushi.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://ensuisushi.com/"
+  },
+  {
+    "restaurantId": "3690",
+    "name": "Hasta Mañana Cantina",
+    "website": "https://hastamananacantina.com/",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "28 dishes from https://order.toasttab.com/online/hasta-manana-310-fifth-avenue"
+  },
+  {
+    "restaurantId": "4559",
+    "name": "Pizza at the Ranch",
+    "website": "https://pizzaattheranchca.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://pizzaattheranchca.com/"
+  },
+  {
+    "restaurantId": "978",
+    "name": "San Marcos Deli",
+    "website": "https://www.sanmarcosdeliandcatering.com",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "213 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/san-marcos-deli-and-catering"
+  },
+  {
+    "restaurantId": "4320",
+    "name": "Mosa Tea",
+    "website": "https://www.mosa-tea.com",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4503",
+    "name": "Bale French Sandwiches",
+    "website": "https://balefrenchsandwiches.twupro.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://balefrenchsandwiches.twupro.com/"
+  },
+  {
+    "restaurantId": "3992",
+    "name": "Taste of Thai",
+    "website": "https://tasteofthai4sranch.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/taste-of-thai-(craftsman-way)-san-diego-24382391/17732356/?preview=1"
+  },
+  {
+    "restaurantId": "3664",
+    "name": "Marketplace Grille",
+    "website": "http://marketplacegrille.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.marketplacegrille.com/"
+  },
+  {
+    "restaurantId": "2691",
+    "name": "Spoon House",
+    "website": "https://spoonhouse.business.site",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://spoonhouse.business.site)"
+  },
+  {
+    "restaurantId": "3651",
+    "name": "Abierto's Mexican Food",
+    "website": "https://sayulitaseats.com/university-avenue?utm_source=google",
+    "platform": "own-jsonld",
+    "outcome": "wrong-branch",
+    "detail": "no address in payload and nothing ties https://sayulitaseats.com/menu (\"Sayulitas\") to \"Abierto's Mexican Food\" - likely a hijacked or misfiled website"
+  },
+  {
+    "restaurantId": "1564",
+    "name": "Hoffer's Cigar Bar",
+    "website": "https://hofferscigar.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://hofferscigar.com/"
+  },
+  {
+    "restaurantId": "3224",
+    "name": "Babcock & Story Bar",
+    "website": "https://hoteldel.com/restaurant-coronado/babcock-story/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.hoteldel.com/dine/babcock-and-story-bar/"
+  },
+  {
+    "restaurantId": "3547",
+    "name": "Spoon Thai",
+    "website": "https://spoonthaikitchen.com/?utm_source=google",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on https://spoonthaikitchen.com/?utm_source=google"
+  },
+  {
+    "restaurantId": "3847",
+    "name": "Mike's Giant New York Pizza",
+    "website": "https://www.mikesgiantnewyorkpizza.com/",
+    "platform": "slice",
+    "outcome": "screened-out",
+    "detail": "markup or platform fee: 59/69 prices divide by 1.1500 onto round dollars - https://www.mikesgiantnewyorkpizza.com/"
+  },
+  {
+    "restaurantId": "4023",
+    "name": "Achilles Coffee Roasters",
+    "website": "https://achillescoffeeroasters.com/pages/carmel-valleys-best-coffee-and-breakfast",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"100 Park Plaza\" vs our \"12730 Carmel Country Road #100\""
+  },
+  {
+    "restaurantId": "3260",
+    "name": "The Burrito City",
+    "website": "https://theburritocity.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+  },
+  {
+    "restaurantId": "4303",
+    "name": "Novecientos Grados by Tony Hawk",
+    "website": "https://www.san.org/shop-dine-relax/?keyword=Novecientos%20Grados",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.san.org/shop-dine/?keyword=Novecientos%20Grados"
+  },
+  {
+    "restaurantId": "793",
+    "name": "Dine with Orcas",
+    "website": "https://seaworld.com/san-diego/dining/dine-with-orcas/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://seaworld.com/san-diego/dining/dine-with-orcas/"
+  },
+  {
+    "restaurantId": "4395",
+    "name": "Dora",
+    "website": "https://www.doralajolla.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+  },
+  {
+    "restaurantId": "2069",
+    "name": "Super Dumpling",
+    "website": "https://superdumplingcafe.com/",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3225",
+    "name": "Nobu",
+    "website": "https://www.hoteldel.com/dine/nobu/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.hoteldel.com/dine/nobu/"
+  },
+  {
+    "restaurantId": "976",
+    "name": "Goli",
+    "website": "http://www.golisd.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3937",
+    "name": "Bopomofo Cafe",
+    "website": "https://www.bopomofocafe.com/kearnymesa-sandiego",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.bopomofocafe.com/kearnymesa-sandiego"
+  },
+  {
+    "restaurantId": "1944",
+    "name": "Lucky Doughnut",
+    "website": "http://www.luckydonutshouse.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.luckydonutshouse.com/"
+  },
+  {
+    "restaurantId": "1707",
+    "name": "Frida's Taqueria",
+    "website": "https://linktr.ee/fridas.taqueria?utm_source=linktree_profile_share&ltsid=56c19fb4-2fc7-4d9b-acb1-ce3ff7f6b7d8",
+    "platform": "order.online",
+    "outcome": "screened-out",
+    "detail": "prices are not shaped like a menu: 0% of 25 land on a conventional ending as published and 68% do after dividing by 1.1500 - a fee is baked into every price - https://www.doordash.com/store/fridas-taqueria-san-diego-35544809/76627927/"
+  },
+  {
+    "restaurantId": "4147",
+    "name": "Thai Ladle",
+    "website": "https://thailadle.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+  },
+  {
+    "restaurantId": "3727",
+    "name": "Leos Kitchen",
+    "website": "https://leoskitchen.net/",
+    "platform": "chownow",
+    "outcome": "needs-browser",
+    "detail": "ChowNow embed without a direct.chownow.com location id"
+  },
+  {
+    "restaurantId": "2540",
+    "name": "Robeks",
+    "website": "https://robeks.com/locations/ca/san-diego/8250-mira-mesa-blvd?utm_source=google&utm_medium=organic&utm_campaign=gbp&utm_content=website",
+    "platform": "order.online",
+    "outcome": "filed",
+    "detail": "58 dishes from https://www.doordash.com/store/robeks-san-diego-24856975/20721555/"
+  },
+  {
+    "restaurantId": "4622",
+    "name": "Junction Bar & Grill",
+    "website": "https://junctionbars.com/junctionbarandgrillsandiego?utm_source=google",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+  },
+  {
+    "restaurantId": "1034",
+    "name": "Smittys Downtown",
+    "website": "http://smittysdowntown.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.smittysdowntown.com/"
+  },
+  {
+    "restaurantId": "4536",
+    "name": "El Puerto Street Tacos",
+    "website": "https://www.elpuertocarlsbad.net/windmill",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4553",
+    "name": "Manzanita Roasting Co",
+    "website": "https://manzanitaroasting.com/",
+    "platform": "clover",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"301 East Grand Avenue\" vs our \"13330 Paseo Del Verano Norte S2, Poway, CA 92064\""
+  },
+  {
+    "restaurantId": "3703",
+    "name": "Godfather's Diner",
+    "website": "https://www.facebook.com/profile.php?id=100091808306926&mibextid=ZbWKwL",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://www.facebook.com/profile.php?id=100091808306926&mibextid=ZbWKwL)"
+  },
+  {
+    "restaurantId": "3415",
+    "name": "Pho & Wings",
+    "website": "https://www.phoandwings.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.phoandwings.com/"
+  },
+  {
+    "restaurantId": "4289",
+    "name": "La Nacional",
+    "website": "https://la-nacional.weeblyte.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "listed website redirects to the barred directory farm la-nacional.weeblyte.com"
+  },
+  {
+    "restaurantId": "3666",
+    "name": "Deli Belly",
+    "website": "https://delibellyusa.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/deli-belly-163031)"
+  },
+  {
+    "restaurantId": "4319",
+    "name": "Urban Bubble",
+    "website": "https://www.urbanbubblesd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.urbanbubblesd.com/"
+  },
+  {
+    "restaurantId": "4217",
+    "name": "Candor",
+    "website": "https://dinecandor.com/",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "40 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/candor"
+  },
+  {
+    "restaurantId": "3551",
+    "name": "Boba Joy",
+    "website": "https://www.bobajoy.org/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://order.online/store/boba-joy-santee-1747215/?delivery=true&hideModal=true&rwg_token=AAiGsob9AHW1Cq5dQE7sicTYsC8UupBF8Rwiir0tKvCUuvb2AvD2bHESQERhtIuR0LzPetdUYpLy_xVwEUAPAFK9FDOMoNuObw==&utm_source=gfo"
+  },
+  {
+    "restaurantId": "710",
+    "name": "Pho Olala",
+    "website": "https://phoolala.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo EAI_AGAIN phoolala.com) (https://phoolala.com/)"
+  },
+  {
+    "restaurantId": "4652",
+    "name": "Tenkatori",
+    "website": "https://www.tenkatoriusa.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.tenkatoriusa.com/"
+  },
+  {
+    "restaurantId": "3970",
+    "name": "Kanpai BBQ & Shabu",
+    "website": "https://kanpaibbqsd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://kanpaibbqsd.com/"
+  },
+  {
+    "restaurantId": "3475",
+    "name": "Ma's House",
+    "website": "http://www.mashouse.com/",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "5031",
+    "name": "The Bistro at the Strand",
+    "website": "https://hdh-web.ucsd.edu/dining/apps/diningservices/Restaurants/MenuItem/27",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://hdh-web.ucsd.edu/dining/apps/diningservices/Restaurants/MenuItem/27)"
+  },
+  {
+    "restaurantId": "1865",
+    "name": "Hyderabad Cafe",
+    "website": "https://hyderabadcafeca.com/",
+    "platform": "clover",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"26550 Ynez Road\" vs our \"9494 Black Mountain Road\""
+  },
+  {
+    "restaurantId": "3151",
+    "name": "Ai Sushi And Teriyaki",
+    "website": "https://www.aisushiteriyakipoway.com/",
+    "platform": "menufy",
+    "outcome": "filed",
+    "detail": "456 dishes from https://api.menufy.com/v1/locations/37009/categories/all"
+  },
+  {
+    "restaurantId": "4484",
+    "name": "Daffodil Cafe",
+    "website": "https://www.eatatdaffodil.com/",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "226 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/daffodil-cafe-4747-executive-drive"
+  },
+  {
+    "restaurantId": "4898",
+    "name": "The Villa on Grand",
+    "website": "https://order.toasttab.com/online/villaco-117-w-grand-ave",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "166 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/villaco-117-w-grand-ave"
+  },
+  {
+    "restaurantId": "4014",
+    "name": "La Banana Fruits - Fruteria",
+    "website": "https://mylabananafruits.com",
+    "platform": "SpotOn",
+    "outcome": "needs-browser",
+    "detail": "SpotOn detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3780",
+    "name": "Kind Coffee",
+    "website": "http://kindcornersd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://kindcornersd.com/"
+  },
+  {
+    "restaurantId": "3767",
+    "name": "Angry Petes Pizza Point Loma",
+    "website": "https://www.angrypetespizza.com/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on https://www.angrypetespizza.com/"
+  },
+  {
+    "restaurantId": "2943",
+    "name": "Sushi Ren",
+    "website": "https://sushirensd.com/?utm_source=google",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on https://sushirensd.com/?utm_source=google"
+  },
+  {
+    "restaurantId": "2856",
+    "name": "Leucadia Pizza Point Loma",
+    "website": "http://www.leucadiapizza.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://leucadiapizza.com/"
+  },
+  {
+    "restaurantId": "4003",
+    "name": "Understory Bar",
+    "website": "https://understorybar.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://understorybar.com/"
+  },
+  {
+    "restaurantId": "2262",
+    "name": "Picasso's Naturals",
+    "website": "http://picassonaturals.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://picassonaturals.com/"
+  },
+  {
+    "restaurantId": "4658",
+    "name": "Lark and Owl",
+    "website": "https://www.larkowlmenu.com/",
+    "platform": "slice",
+    "outcome": "needs-browser",
+    "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+  },
+  {
+    "restaurantId": "1668",
+    "name": "Nova Easy Kombucha",
+    "website": "http://www.novakombucha.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://novakombucha.com/"
+  },
+  {
+    "restaurantId": "4168",
+    "name": "Pho G-Beef",
+    "website": "https://phogbeef.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://phogbeef.com/"
+  },
+  {
+    "restaurantId": "4146",
+    "name": "Rad Habits Juice",
+    "website": "http://www.radhabitsjuice.com/",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4243",
+    "name": "Spicy Noodle",
+    "website": "https://www.spicynoodlesd.com",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3053",
+    "name": "The Grill at Vine Ripe",
+    "website": "https://grillatvine.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/grill-at-vine-ripe-la-mesa-763340/"
+  },
+  {
+    "restaurantId": "3947",
+    "name": "Nekter Juice Bar",
+    "website": "https://locations.nekterjuicebar.com/ll/us/ca/san-diego/2445-truxton-road/",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "52 dishes from https://locations.nekterjuicebar.com/ll/us/ca/san-diego/2445-truxton-road/"
+  },
+  {
+    "restaurantId": "3920",
+    "name": "Bonchon Chicken",
+    "website": "https://locations.bonchon.com/ll/US/CA/San-Diego/6030-Village-Way*-Suite-104",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://locations.bonchon.com/ll/US/CA/San-Diego/6030-Village-Way*-Suite-104)"
+  },
+  {
+    "restaurantId": "4156",
+    "name": "Panara Bread",
+    "website": "https://www.panerabread.com/en-us/cafe/locations/ca/san-diego/3711-sports-arena-blvd?utm_medium=local&utm_source=google&utm_campaign=dpm-dist&utm_term=204875&utm_content=main",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.panerabread.com/en-us/cafe/locations/ca/san-diego/3711-sports-arena-blvd?utm_medium=local&utm_source=google&utm_campaign=dpm-dist&utm_term=204875&utm_content=main"
+  },
+  {
+    "restaurantId": "5679",
+    "name": "Ngon Ngon To Go",
+    "website": "https://www.orderngonngontogo.com/",
+    "platform": "menufy",
+    "outcome": "filed",
+    "detail": "202 dishes from https://api.menufy.com/v1/locations/53890/categories/all"
+  },
+  {
+    "restaurantId": "3401",
+    "name": "Del Sushi",
+    "website": "https://delsushi.com/ucsd/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "listed website is a parked domain for sale (https://www.hugedomains.com/domain_profile.cfm?d=delsushi.com)"
+  },
+  {
+    "restaurantId": "2962",
+    "name": "Linda's Donuts",
+    "website": "https://www.facebook.com/pages/Lindas-Donut-Shop/115872808442477",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://www.facebook.com/pages/Lindas-Donut-Shop/115872808442477)"
+  },
+  {
+    "restaurantId": "2495",
+    "name": "Roberto's Taco Shop RB",
+    "website": "https://robertostacoshopsd.com/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on https://robertostacoshopsd.com/"
+  },
+  {
+    "restaurantId": "3182",
+    "name": "Ale Tales Taproom",
+    "website": "https://www.aletalestaproom.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/27706877"
+  },
+  {
+    "restaurantId": "3482",
+    "name": "Chainline Brew Café",
+    "website": "http://www.chainlinebikes.com/",
+    "platform": "shopify",
+    "outcome": "filed",
+    "detail": "25 dishes from https://www.chainlinebikes.com/products.json"
+  },
+  {
+    "restaurantId": "2902",
+    "name": "U Dessert Eats",
+    "website": "https://www.instagram.com/udesserteats/reels/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.instagram.com/udesserteats/reels/"
+  },
+  {
+    "restaurantId": "3962",
+    "name": "Tastea",
+    "website": "https://www.gotastea.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://gotastea.com/"
+  },
+  {
+    "restaurantId": "2875",
+    "name": "China Ann",
+    "website": "https://www.chinaannca.com/",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "192 dishes from https://www.chinaannca.com/menu"
+  },
+  {
+    "restaurantId": "4117",
+    "name": "Snack Shack",
+    "website": "http://www.sisterssnackshack.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+  },
+  {
+    "restaurantId": "4354",
+    "name": "Far Corner",
+    "website": "https://farcornersd.com",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "66 dishes from https://order.toasttab.com/online/far-corner-pizza-410-tenth-ave"
+  },
+  {
+    "restaurantId": "4486",
+    "name": "Uncle Joey's Pizza & Grill",
+    "website": "https://www.unclejoeyspizzagrill.com/",
+    "platform": "slice",
+    "outcome": "needs-browser",
+    "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+  },
+  {
+    "restaurantId": "4404",
+    "name": "The Whaling Bar",
+    "website": "https://www.lavalencia.com/dining/the-whaling-bar",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "121 dishes from https://www.lavalencia.com/dining/menus"
+  },
+  {
+    "restaurantId": "2112",
+    "name": "Hometown Taste",
+    "website": "https://www.hometowntaste.net",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.hometowntaste.net/"
+  },
+  {
+    "restaurantId": "3086",
+    "name": "Burrito King",
+    "website": "http://orderkingburritomexicanfood.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://orderkingburritomexicanfood.com/"
+  },
+  {
+    "restaurantId": "5094",
+    "name": "Granny's Apple Fries",
+    "website": "https://www.legoland.com/california/things-to-do/theme-park/dining/granny-s-apple-fries/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.legoland.com/california/things-to-do/theme-park/dining/granny-s-apple-fries/"
+  },
+  {
+    "restaurantId": "824",
+    "name": "Cali Mex Cocina",
+    "website": "https://calimexcocinaca.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://calimexcocinaca.com/"
+  },
+  {
+    "restaurantId": "3502",
+    "name": "Robeks",
+    "website": "https://robeks.com/locations/ca/chula-vista/374-east-h-st?utm_source=google&utm_medium=organic&utm_campaign=gbp&utm_content=website",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/robeks-chula-vista-88971/1410885/"
+  },
+  {
+    "restaurantId": "4567",
+    "name": "Burekas Box",
+    "website": "http://burekasbox.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"9379 Poplar Avenue\" vs our \"8585 Commerce Avenue\""
+  },
+  {
+    "restaurantId": "4109",
+    "name": "Deano's Pub East",
+    "website": "https://www.deanospub.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://deanospub.com/"
+  },
+  {
+    "restaurantId": "5587",
+    "name": "Seven Seas Roasting",
+    "website": "http://sevenseasroasting.com/",
+    "platform": "shopify",
+    "outcome": "screened-out",
+    "detail": "Shopify /products.json is a retail catalog here (186 products, 55% packaged coffee/tea, 53% merchandise) - it is what the site ships, not what the counter serves"
+  },
+  {
+    "restaurantId": "3423",
+    "name": "Dog Leg Brewing",
+    "website": "https://www.doglegbrewingco.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3911",
+    "name": "El Mercadito",
+    "website": "https://www.fiestadereyes.com/el-mercadito/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.fiestadereyes.com/el-mercadito/)"
+  },
+  {
+    "restaurantId": "4568",
+    "name": "Cafe 86",
+    "website": "https://www.cafe-86.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload city \"Chino Hills\" is not a city in this corpus - a different branch of the same brand (https://order.toasttab.com/online/cafe86-chino)"
+  },
+  {
+    "restaurantId": "4542",
+    "name": "A Louest",
+    "website": "https://alouestsd.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+  },
+  {
+    "restaurantId": "4050",
+    "name": "Lazy Eye Coffee",
+    "website": "https://www.lazyeyecoffee.com/",
+    "platform": "wix",
+    "outcome": "filed",
+    "detail": "28 dishes from https://www.lazyeyecoffee.com/menus"
+  },
+  {
+    "restaurantId": "4650",
+    "name": "Bowl To Go",
+    "website": "https://bowltogo.site/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND bowltogo.site) (https://bowltogo.site/)"
+  },
+  {
+    "restaurantId": "4218",
+    "name": "Java Earth Coffee",
+    "website": "https://javaearthcoffee.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://javaearthcoffee.com/"
+  },
+  {
+    "restaurantId": "5260",
+    "name": "Star Dust Donut Shop",
+    "website": "http://star-dust-donut-shop.poi.place/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "listed website redirects to the barred directory farm star-dust-donut-shop.edan.io"
+  },
+  {
+    "restaurantId": "4432",
+    "name": "Gem Coffee",
+    "website": "https://www.gemcoffeesd.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://gemcoffeesd.com/"
+  },
+  {
+    "restaurantId": "1702",
+    "name": "Las Michoacanas",
+    "website": "http://lasmichoacanastacoshopca.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://lasmichoacanastacoshopca.com/"
+  },
+  {
+    "restaurantId": "3136",
+    "name": "Kotobuki",
+    "website": "https://kotobukisd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://kotobukisd.com/"
+  },
+  {
+    "restaurantId": "1184",
+    "name": "Cj Lounge",
+    "website": "http://cjs-club.poi.place/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "listed website redirects to the barred directory farm cjs-club.edan.io"
+  },
+  {
+    "restaurantId": "1162",
+    "name": "Cheers",
+    "website": "http://www.cheerssandiego.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://cheerssandiego.com/"
+  },
+  {
+    "restaurantId": "4655",
+    "name": "New Wave Bagel",
+    "website": "https://www.newwavebagel.com/",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "8 dishes from https://www.newwavebagel.com/"
+  },
+  {
+    "restaurantId": "4554",
+    "name": "Chaiwale & Co. Tea Room & Cafe",
+    "website": "https://www.chaiwaleandco.com",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"177 N Glassell St\" vs our \"9430 Scranton Road #101\""
+  },
+  {
+    "restaurantId": "4458",
+    "name": "Thai Test Kitchen",
+    "website": "https://order.toasttab.com/online/thai-test-kitchen-10184-telesis-ct",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on https://order.toasttab.com/online/thai-test-kitchen-10184-telesis-ct"
+  },
+  {
+    "restaurantId": "4380",
+    "name": "Inspired Coffee Roasters",
+    "website": "https://www.drinkinspired.com/",
+    "platform": "shopify",
+    "outcome": "filed",
+    "detail": "49 dishes from https://drinkinspired.com/products.json"
+  },
+  {
+    "restaurantId": "3897",
+    "name": "The Pad Thai Stand",
+    "website": "https://padthaistand.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/the-pad-thai-stand-san-diego-1732303/"
+  },
+  {
+    "restaurantId": "775",
+    "name": "The Craft Taco at The Nat",
+    "website": "https://www.thecrafttaconat.com/",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3603",
+    "name": "Honeyjam Chicken & Beer",
+    "website": "https://www.facebook.com/profile.php?id=100083450355759&__n=K&locale=hi_IN",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://www.facebook.com/profile.php?id=100083450355759&__n=K&locale=hi_IN)"
+  },
+  {
+    "restaurantId": "2990",
+    "name": "Sarku Japan",
+    "website": "https://www.sarkujapan.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sarkujapan.com/"
+  },
+  {
+    "restaurantId": "3844",
+    "name": "Ten Seconds Yunnan Rice Noodle",
+    "website": "https://www.tensecondsricenoodles.com/",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3752",
+    "name": "Fallbrook Froyoi",
+    "website": "http://www.fallbrookfroyo.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://order.online/store/fallbrook-froyo-1065246"
+  },
+  {
+    "restaurantId": "4471",
+    "name": "Jungle Tea",
+    "website": "https://www.jungleteaboba.com",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND www.jungleteaboba.com) (https://www.jungleteaboba.com)"
+  },
+  {
+    "restaurantId": "4204",
+    "name": "Eat Crispy Burger",
+    "website": "https://www.eatcrispyburger.com",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/11234450)"
+  },
+  {
+    "restaurantId": "4603",
+    "name": "Castelli & Pizarro Family Vineyards & Winery",
+    "website": "https://www.cpfwinery.com",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3137",
+    "name": "Gotcha",
+    "website": "https://gotchateausa.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://gotchateausa.com/"
+  },
+  {
+    "restaurantId": "4018",
+    "name": "Papa's Pizza",
+    "website": "http://www.papaspizzasandiego.net/",
+    "platform": "slice",
+    "outcome": "needs-browser",
+    "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+  },
+  {
+    "restaurantId": "5072",
+    "name": "The Chicken Snack Shack",
+    "website": "https://seaworld.com/san-diego/dining/the-chicken-snack-shack/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://seaworld.com/san-diego/dining/the-chicken-snack-shack/"
+  },
+  {
+    "restaurantId": "2842",
+    "name": "Burros and Fries",
+    "website": "https://burrosandfries.com/",
+    "platform": "clover",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1705 SOUTH ESCONDIDO BOU\" vs our \"12608 Sabre Springs Pkwy, San Diego, CA 92128\""
+  },
+  {
+    "restaurantId": "4089",
+    "name": "Epic Wings",
+    "website": "https://location.epicwings.com/us/ca/san-diego/palm-promenade",
+    "platform": "olo",
+    "outcome": "needs-browser",
+    "detail": "Olo storefront with no merchant id in the served HTML (needs a store pick)"
+  },
+  {
+    "restaurantId": "2215",
+    "name": "Hongyuan Kebab",
+    "website": "https://www.hongyuankebab.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.hongyuankebab.com/"
+  },
+  {
+    "restaurantId": "797",
+    "name": "Hibisco Tacos and More",
+    "website": "https://seaworld.com/san-diego/dining/hibisco-tacos-and-more/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://seaworld.com/san-diego/dining/hibisco-tacos-and-more/"
+  },
+  {
+    "restaurantId": "3210",
+    "name": "Donuts Park",
+    "website": "https://menutoeat.com/donuts-park/",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "30 dishes from https://menutoeat.com/donuts-park/"
+  },
+  {
+    "restaurantId": "4571",
+    "name": "China Fun",
+    "website": "http://www.chinafunranchobernardo.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.chinafunranchobernardo.com/"
+  },
+  {
+    "restaurantId": "2696",
+    "name": "Bang Bang",
+    "website": "https://bangbang-sd.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (Hostname/IP does not match certificate's altnames: Host: bangbang-sd.com. is not in the cert's altnames: DNS:gtxm1233.sitegrou (https://bangbang-sd.com/)"
+  },
+  {
+    "restaurantId": "3955",
+    "name": "Orient Valley Filipino Cuisine",
+    "website": "https://orientvalley-filipinocuisine.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://orientvalley-filipinocuisine.com/"
+  },
+  {
+    "restaurantId": "3814",
+    "name": "DRIFT La Jolla",
+    "website": "https://www.driftlajolla.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.driftlajolla.com/"
+  },
+  {
+    "restaurantId": "4647",
+    "name": "PKI Sushi",
+    "website": "https://genkisushisd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://genkisushisd.com/"
+  },
+  {
+    "restaurantId": "5567",
+    "name": "Landshark Bar & Grill",
+    "website": "https://www.margaritavilleresorts.com/margaritaville-hotel-san-diego/eat-drink/landshark-bar-grill",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.margaritavilleresorts.com/margaritaville-hotel-san-diego/eat-drink/landshark-bar-grill"
+  },
+  {
+    "restaurantId": "2633",
+    "name": "Chauncey's",
+    "website": "http://chaunceyspizza.com/",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "54 dishes from https://order.toasttab.com/online/sb-pizza"
+  },
+  {
+    "restaurantId": "4248",
+    "name": "Marketplace Grille",
+    "website": "http://www.marketplacegrille.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.marketplacegrille.com/"
+  },
+  {
+    "restaurantId": "4263",
+    "name": "Modern Times Coffee",
+    "website": "https://theinvigatorium.com/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "429 rate limited on https://theinvigatorium.com/"
+  },
+  {
+    "restaurantId": "3870",
+    "name": "Bar Ella",
+    "website": "http://barellapb.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://barellapb.com/"
+  },
+  {
+    "restaurantId": "4612",
+    "name": "Leucadia Pizza",
+    "website": "https://scrippsranch.leucadiapizza.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://leucadiapizza.com/scripps"
+  },
+  {
+    "restaurantId": "1960",
+    "name": "The Curry Club",
+    "website": "https://www.thecurryclubsd.com",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "70 dishes from https://order.toasttab.com/online/curryclubsd"
+  },
+  {
+    "restaurantId": "2316",
+    "name": "Prendi E Vai",
+    "website": "https://prendievaicafe.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://prendievaicafe.com/"
+  },
+  {
+    "restaurantId": "2083",
+    "name": "Go Greek Authentic Yogurteria",
+    "website": "https://www.gogreekyogurt.com",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+  },
+  {
+    "restaurantId": "2628",
+    "name": "Cherry Bomb",
+    "website": "http://cherrybombbars.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://cherrybombbars.com/"
+  },
+  {
+    "restaurantId": "4072",
+    "name": "Yogurtland",
+    "website": "https://www.yogurtland.com/locations/view/1245",
+    "platform": "Paytronix",
+    "outcome": "needs-browser",
+    "detail": "Paytronix detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3228",
+    "name": "Breezes",
+    "website": "https://www.bluepillow.com/search/68126dd41a0d3c624b00ba2e?dest=bpex&cat=House&lat=32.68188&lng=-117.17716&language=en",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.bluepillow.com/search/68126dd41a0d3c624b00ba2e?dest=bpex&cat=House&lat=32.68188&lng=-117.17716&language=en"
+  },
+  {
+    "restaurantId": "4034",
+    "name": "Sieu Sieu BBQ",
+    "website": "https://sieusieubbqgo.site/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND sieusieubbqgo.site) (https://sieusieubbqgo.site/)"
+  },
+  {
+    "restaurantId": "4506",
+    "name": "El Viejon",
+    "website": "https://elviejonseafood.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/en/business/~978359?source=pop_up&spot_id=117109&destination=order&promotion=order_online)"
+  },
+  {
+    "restaurantId": "4078",
+    "name": "Protector Brewery",
+    "website": "https://protectorbrewery.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://protectorbrewery.com/"
+  },
+  {
+    "restaurantId": "3790",
+    "name": "Flour Atelier",
+    "website": "https://www.flouratelier.com",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4516",
+    "name": "Möge Tee",
+    "website": "https://www.mogeteeusa.com/store-locations-1/ca",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.mogeteeusa.com/store-locations-1/ca"
+  },
+  {
+    "restaurantId": "4145",
+    "name": "Me Sen Thai Noodle Shop",
+    "website": "https://mesenthainoodleshop.com/",
+    "platform": "chownow",
+    "outcome": "gated",
+    "detail": "only 0 priced items from https://api.chownow.com/api/restaurant/65099 at 3:53:12 PM PT - possible time gate, re-run in daylight"
+  },
+  {
+    "restaurantId": "5042",
+    "name": "Knights' Smokehouse BBQ",
+    "website": "https://www.legoland.com/california/things-to-do/theme-park/dining/knights-smokehouse-bbq/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.legoland.com/california/things-to-do/theme-park/dining/knights-smokehouse-bbq/"
+  },
+  {
+    "restaurantId": "4046",
+    "name": "Tora Tora Sushi Specialist",
+    "website": "https://www.toratorasushi.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+  },
+  {
+    "restaurantId": "4529",
+    "name": "Bobalicious",
+    "website": "http://www.bobalicious.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo EAI_AGAIN www.bobalicious.com) (http://www.bobalicious.com/)"
+  },
+  {
+    "restaurantId": "5105",
+    "name": "Lapper Kitchen + Tap",
+    "website": "https://www.towncountry.com/dine/lapper",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.towncountry.com/dine/lapper/"
+  },
+  {
+    "restaurantId": "4461",
+    "name": "Roppongi",
+    "website": "https://roppongiusa.net/",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "priced menu printed as plain HTML at https://roppongilajolla.com/menu/ (~83 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+  },
+  {
+    "restaurantId": "3779",
+    "name": "Su Su Sushi",
+    "website": "http://sususushibar.com/",
+    "platform": "clover",
+    "outcome": "filed",
+    "detail": "116 dishes from https://su-su-sushi-san-diego.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "1863",
+    "name": "Egg Holic",
+    "website": "https://eggholic.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"829 West Higgins Road\" vs our \"9474 Black Mountain Road #H\""
+  },
+  {
+    "restaurantId": "2593",
+    "name": "Quick Wok",
+    "website": "http://quickwoksandiego.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://quickwoksandiego.com/"
+  },
+  {
+    "restaurantId": "4390",
+    "name": "Qin West",
+    "website": "https://qinwestnoodle.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/qin-west-noodle-416483)"
+  },
+  {
+    "restaurantId": "2144",
+    "name": "Vinya Yoga and Wine Bar",
+    "website": "https://www.vinyasd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.vinyasd.com/"
+  },
+  {
+    "restaurantId": "5681",
+    "name": "Casa De Otay – The Casita",
+    "website": "http://www.casadeotay.com/",
+    "platform": "shopify",
+    "outcome": "screened-out",
+    "detail": "Shopify /products.json is a retail catalog here (81 products, 0% packaged coffee/tea, 43% merchandise) - it is what the site ships, not what the counter serves"
+  },
+  {
+    "restaurantId": "4446",
+    "name": "Caffeine Queens",
+    "website": "http://caffeinequeenscoffee.com/",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "128 dishes from https://order.toasttab.com/online/caffeine-queens-n-a"
+  },
+  {
+    "restaurantId": "5058",
+    "name": "Hua Mei Cafe",
+    "website": "http://www.sandiegozoo.org/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sandiegozoowildlifealliance.org/"
+  },
+  {
+    "restaurantId": "4472",
+    "name": "T. P. Bánh Bao 3",
+    "website": "https://www.tpbanhbao3.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://tpbanhbao3.com/"
+  },
+  {
+    "restaurantId": "4355",
+    "name": "Milk & Cookies",
+    "website": "https://cookiebox.com/",
+    "platform": "shopify",
+    "outcome": "filed",
+    "detail": "37 dishes from https://cookiebox.com/products.json"
+  },
+  {
+    "restaurantId": "4633",
+    "name": "Cafe Aero",
+    "website": "https://www.epipay.com/the_cafe_aero/en/WebOrder?STORE_CODE=MTAwMA==&table_num=MTAwMA==",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.epipay.com/the_cafe_aero/en/WebOrder?STORE_CODE=MTAwMA==&table_num=MTAwMA=="
+  },
+  {
+    "restaurantId": "2123",
+    "name": "Necter Juice Bar",
+    "website": "https://locations.nekterjuicebar.com/ll/us/ca/encinitas/127-n-el-camino-real-ste-c/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://locations.nekterjuicebar.com/ll/us/ca/encinitas/127-n-el-camino-real-ste-c/"
+  },
+  {
+    "restaurantId": "3677",
+    "name": "Presotea",
+    "website": "http://presotea.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://presotea.com/"
+  },
+  {
+    "restaurantId": "979",
+    "name": "The Pad Thai Stand",
+    "website": "https://padthaistand.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/the-pad-thai-stand-san-diego-1732303/"
+  },
+  {
+    "restaurantId": "3789",
+    "name": "Gather",
+    "website": "https://www.gathercoffeebar.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.gathercoffeebar.com/"
+  },
+  {
+    "restaurantId": "2091",
+    "name": "Oakberry Açaí bowls",
+    "website": "https://www.superberryacai.net/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.superberryacai.net/)"
+  },
+  {
+    "restaurantId": "2491",
+    "name": "Bonita Donuts",
+    "website": "http://facebook.com/bonitadonuts",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (http://facebook.com/bonitadonuts)"
+  },
+  {
+    "restaurantId": "721",
+    "name": "Chopstix",
+    "website": "https://chopstixno2sd.com/",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "200 dishes from https://chopstixno2sd.com/menu"
+  },
+  {
+    "restaurantId": "4196",
+    "name": "Hammer's New York Pizza",
+    "website": "http://hammersnypizza.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://hammersnypizza.com/"
+  },
+  {
+    "restaurantId": "3885",
+    "name": "Creperie Antoinette",
+    "website": "https://creperieantoinette.wixsite.com/creperie-antoinette",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://creperieantoinette.wixsite.com/creperie-antoinette"
+  },
+  {
+    "restaurantId": "3508",
+    "name": "Mochinut",
+    "website": "https://www.mochinut.com",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://order.online/online-ordering/business-group/10844735"
+  },
+  {
+    "restaurantId": "2281",
+    "name": "Tasty Donuts",
+    "website": "https://findaloco.com/en/directory/tasty-donuts/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://findaloco.com/en/directory/tasty-donuts/"
+  },
+  {
+    "restaurantId": "3782",
+    "name": "Caffe Di Talya",
+    "website": "https://caffeditalya.com",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "priced menu printed as plain HTML at https://caffeditalya.com/menu/ (~9 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+  },
+  {
+    "restaurantId": "3424",
+    "name": "BobaPOP Tea Bar",
+    "website": "http://bobapop-tea-bar.square.site/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4527",
+    "name": "Tree House",
+    "website": "https://treehousesm.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"9945 Pacific Heights Boulevard\" vs our \"9442 Pacific Heights Boulevard #200\""
+  },
+  {
+    "restaurantId": "4387",
+    "name": "Poke One N Half",
+    "website": "http://onenhalf.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/poki-one-n-half-58794)"
+  },
+  {
+    "restaurantId": "4656",
+    "name": "Harney",
+    "website": "https://harneypoway.com/",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "206 dishes from https://order.toasttab.com/online/harney-poway"
+  },
+  {
+    "restaurantId": "1867",
+    "name": "Old Town Eatery",
+    "website": "https://www.oturbanmarket.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.oturbanmarket.com/"
+  },
+  {
+    "restaurantId": "2256",
+    "name": "Ridgewalk Social",
+    "website": "https://www.theridgewalksocial.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.theridgewalksocial.com/"
+  },
+  {
+    "restaurantId": "5059",
+    "name": "Sydney's",
+    "website": "http://www.sandiegozoo.org/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sandiegozoowildlifealliance.org/"
+  },
+  {
+    "restaurantId": "5624",
+    "name": "Nomada",
+    "website": "https://nomadadining.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+  },
+  {
+    "restaurantId": "3280",
+    "name": "Mariscos La Morena",
+    "website": "https://mariscoslamorenaca.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (104B0000:error:0A00010B:SSL routines:tls_validate_record_header:wrong version number:openssl\\ssl\\record\\methods\\tlsany_meth.c: (https://mariscoslamorenaca.com/)"
+  },
+  {
+    "restaurantId": "2522",
+    "name": "J Box",
+    "website": "http://www.jboxtogo.com/",
+    "platform": "wix",
+    "outcome": "filed",
+    "detail": "17 dishes from https://www.jboxtogo.com/menu"
+  },
+  {
+    "restaurantId": "4466",
+    "name": "Cha Cha Tea Spot",
+    "website": "https://chateaspot.menubb.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://chateaspot.menubb.com/"
+  },
+  {
+    "restaurantId": "5631",
+    "name": "Cafe Pascale Grill & Deli",
+    "website": "https://www.cafepascale.com",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "Square Online (own domain) detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3730",
+    "name": "Sunny Dumpling House",
+    "website": "https://www.sunnydumplinghouse.shop/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sunnydumplinghouse.shop/"
+  },
+  {
+    "restaurantId": "4086",
+    "name": "Pancho's Mexican Grill",
+    "website": "https://panchosauthentic.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://panchosauthentic.com/"
+  },
+  {
+    "restaurantId": "3174",
+    "name": "Bean Box",
+    "website": "http://thebeanboxca.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4465",
+    "name": "Cluck N Sip",
+    "website": "https://www.clucknsip.com",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "403 to two desktop UAs and to curl on https://www.clucknsip.com"
+  },
+  {
+    "restaurantId": "3880",
+    "name": "Bamboo Pho and Sushi",
+    "website": "https://www.bamboophoandsushi.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.bamboophoandsushi.com/"
+  },
+  {
+    "restaurantId": "4615",
+    "name": "Pure Squeeze",
+    "website": "https://m.yelp.com/biz/pure-squeeze-juice-bar-san-diego",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "DataDome on https://m.yelp.com/biz/pure-squeeze-juice-bar-san-diego"
+  },
+  {
+    "restaurantId": "2024",
+    "name": "Cork & Stem",
+    "website": "http://www.corkandstemsd.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+  },
+  {
+    "restaurantId": "3537",
+    "name": "Pacific Coast Health Smoothie",
+    "website": "https://pacificcoastsmoothie.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/pacific-coast-health-smoothie-san-diego-2251040/"
+  },
+  {
+    "restaurantId": "4106",
+    "name": "DaYung's Tea",
+    "website": "https://www.dayungsteasd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.dayungsteasd.com/"
+  },
+  {
+    "restaurantId": "3259",
+    "name": "Qualcomm Cafe Q",
+    "website": "https://www.qualcomm.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.qualcomm.com/"
+  },
+  {
+    "restaurantId": "4627",
+    "name": "Ohana Nutrition",
+    "website": "https://joe.coffee/locations/ca/la-mesa/ohana-nutrition-smoothies-and-teas-la-mesa-32c3a76d-4652-4ea6-823d-bd558c0b843e",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://joe.coffee/locations/ca/la-mesa/ohana-nutrition-smoothies-and-teas-la-mesa-32c3a76d-4652-4ea6-823d-bd558c0b843e"
+  },
+  {
+    "restaurantId": "4356",
+    "name": "Jaguar Paw",
+    "website": "https://jaguarpawsd.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://jaguarpawsd.com/"
+  },
+  {
+    "restaurantId": "4957",
+    "name": "Carl's Jr. / Green Burrito",
+    "website": "https://www.carlsjr.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.carlsjr.com/"
+  },
+  {
+    "restaurantId": "3956",
+    "name": "56 Thai Cafe",
+    "website": "http://www.56thaicafe.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+  },
+  {
+    "restaurantId": "2531",
+    "name": "Linda's Yogurt & Deli",
+    "website": "https://www.lindasyogurt.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://lindasyogurt.com/"
+  },
+  {
+    "restaurantId": "4602",
+    "name": "The Hangout",
+    "website": "https://www.thehangoutrestaurantandbar.com/",
+    "platform": "toast",
+    "outcome": "gated",
+    "detail": "126 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/the-hangout-restaurant-and-bar-2736-adams-ave"
+  },
+  {
+    "restaurantId": "4690",
+    "name": "Bivouac Adventure Lodge Coffee Shop",
+    "website": "https://www.bivouaccider.com/cafe/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.bivouaccider.com/cafe/"
+  },
+  {
+    "restaurantId": "4711",
+    "name": "All That Shabu",
+    "website": "https://www.allthatshabu.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.allthatshabu.com/"
+  },
+  {
+    "restaurantId": "4420",
+    "name": "Don Roman Taco Shop",
+    "website": "http://orderdonroman.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://orderdonroman.com/"
+  },
+  {
+    "restaurantId": "4526",
+    "name": "The Poke Co.",
+    "website": "https://thepokeco.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://order.online/store/-171377?hideModal=true"
+  },
+  {
+    "restaurantId": "5565",
+    "name": "Monkey Bar",
+    "website": "https://www.towncountry.com/dine/monkey-bar",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.towncountry.com/dine/monkeybar/"
+  },
+  {
+    "restaurantId": "3496",
+    "name": "Warner Springs Golf Shop & Grill",
+    "website": "https://warnerspringsranchresort.com/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "429 rate limited on https://warnerspringsranchresort.com/"
+  },
+  {
+    "restaurantId": "4194",
+    "name": "Cafe X: By Any Beans Necessary",
+    "website": "https://www.byanybeans.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.byanybeans.com/"
+  },
+  {
+    "restaurantId": "4582",
+    "name": "Everytable",
+    "website": "https://everytable.com/",
+    "platform": "shopify",
+    "outcome": "filed",
+    "detail": "393 dishes from https://everytable.com/products.json"
+  },
+  {
+    "restaurantId": "4170",
+    "name": "Cali Banh Mi",
+    "website": "https://findaloco.com/en/directory/cali-banh-mi-16845-36/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://findaloco.com/en/directory/cali-banh-mi-16845-36/"
+  },
+  {
+    "restaurantId": "3342",
+    "name": "La Moreña Mariscos",
+    "website": "http://orderlamorenamariscosca.com",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND orderlamorenamariscosca.com) (http://orderlamorenamariscosca.com)"
+  },
+  {
+    "restaurantId": "4149",
+    "name": "Montebello",
+    "website": "http://www.montebellocafe.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "732",
+    "name": "Timestead by Modern Times",
+    "website": "https://timesteadpub.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://timesteadpub.com/"
+  },
+  {
+    "restaurantId": "4620",
+    "name": "The Golf Bar",
+    "website": "http://www.thegolfbar.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.thegolfbar.com/"
+  },
+  {
+    "restaurantId": "3771",
+    "name": "MuMu Sushi & K-Food",
+    "website": "https://mumusushi.co/",
+    "platform": "clover",
+    "outcome": "filed",
+    "detail": "185 dishes from https://mumusushi.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "2511",
+    "name": "Pita Pit",
+    "website": "http://pitagrillsd.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/menus)"
+  },
+  {
+    "restaurantId": "3884",
+    "name": "The Collective",
+    "website": "http://www.collective-sd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.collective-sd.com/"
+  },
+  {
+    "restaurantId": "3834",
+    "name": "All Things Ube Desserts",
+    "website": "https://allthingsubedesserts.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://allthingsubedesserts.com/"
+  },
+  {
+    "restaurantId": "2223",
+    "name": "Pub 1795",
+    "website": "https://www.mccscp.com/food",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://pendleton.usmc-mccs.org/dining-entertainment/dining/restaurants"
+  },
+  {
+    "restaurantId": "2939",
+    "name": "Choice Juicery",
+    "website": "http://www.choicejuicery.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.choicejuicery.com/"
+  },
+  {
+    "restaurantId": "3567",
+    "name": "Alohana Açaí Bowls",
+    "website": "https://www.alohanaacai.com/locations/carlsbad-ca",
+    "platform": "popmenu",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"2205 S Melrose Dr #102\" vs our \"5671 Palmer Way H, Carlsbad, CA 92010\""
+  },
+  {
+    "restaurantId": "2419",
+    "name": "Lemongrass",
+    "website": "http://www.lemongrassplates.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.lemongrassplates.com/"
+  },
+  {
+    "restaurantId": "5566",
+    "name": "5 O'Clock Somewhere Rooftop Bar",
+    "website": "https://www.margaritavilleresorts.com/margaritaville-hotel-san-diego/eat-drink/5-oclock-somewhere-rooftop-bar",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.margaritavilleresorts.com/margaritaville-hotel-san-diego/eat-drink/5-oclock-somewhere-rooftop-bar"
+  },
+  {
+    "restaurantId": "4007",
+    "name": "Zen Modern Asian Bistro",
+    "website": "https://www.zenmodernasian.com",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "53 dishes from https://order.toasttab.com/online/zen-modern-asian-bistro"
+  },
+  {
+    "restaurantId": "4388",
+    "name": "Suki Hana",
+    "website": "https://www.sukihanaca.com/",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3924",
+    "name": "MYM Tea & Coffee",
+    "website": "https://www.mymteacoffee.com",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+  },
+  {
+    "restaurantId": "2309",
+    "name": "Tazza D'Oro",
+    "website": "http://www.tazzadorosd.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 503 (http://www.tazzadorosd.com/)"
+  },
+  {
+    "restaurantId": "4272",
+    "name": "Sunlife Organics",
+    "website": "https://www.sunlifeorganics.com/",
+    "platform": "shopify",
+    "outcome": "filed",
+    "detail": "146 dishes from https://sunlifeorganics.com/products.json"
+  },
+  {
+    "restaurantId": "4383",
+    "name": "Johnny Radz Pizza",
+    "website": "https://johnnyradz.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"9379 Poplar Avenue\" vs our \"828 North Coast Highway 101\""
+  },
+  {
+    "restaurantId": "2328",
+    "name": "The Loft at UC San Diego",
+    "website": "https://www.theloft.ucsd.edu/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://theloft.ucsd.edu/"
+  },
+  {
+    "restaurantId": "2640",
+    "name": "Cream",
+    "website": "https://handelsicecream.com/store/sdsu-college-area/",
+    "platform": "chownow",
+    "outcome": "gated",
+    "detail": "only 0 priced items from https://api.chownow.com/api/restaurant/36247 at 3:53:14 PM PT - possible time gate, re-run in daylight"
+  },
+  {
+    "restaurantId": "3765",
+    "name": "Mike Hess Brewing - Seaport Village Taphouse",
+    "website": "https://www.mikehessbrewing.com/mike-hess-brewing-seaport-village-taphouse/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.mikehessbrewing.com/mike-hess-brewing-seaport-village-taphouse/"
+  },
+  {
+    "restaurantId": "5672",
+    "name": "Ziggi's Coffee",
+    "website": "https://www.ziggiscoffee.com/",
+    "platform": "Paytronix",
+    "outcome": "needs-browser",
+    "detail": "Paytronix detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "3272",
+    "name": "Thorntree Terrace",
+    "website": "http://www.sdzsafaripark.org/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sdzsafaripark.org/"
+  },
+  {
+    "restaurantId": "5697",
+    "name": "Birria el Chavita",
+    "website": "https://www.facebook.com/profile.php?id=100040970355242&mibextid=LQQJ4d",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://www.facebook.com/profile.php?id=100040970355242&mibextid=LQQJ4d)"
+  },
+  {
+    "restaurantId": "4490",
+    "name": "Grab & Go",
+    "website": "https://www.grabngosubs.com",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+  },
+  {
+    "restaurantId": "4205",
+    "name": "La Jolla Boba",
+    "website": "https://www.lajollaboba.com",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "429 rate limited on https://www.lajollaboba.com"
+  },
+  {
+    "restaurantId": "3849",
+    "name": "Sunright Tea Studio",
+    "website": "https://www.snrtea.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.snrtea.com/"
+  },
+  {
+    "restaurantId": "774",
+    "name": "Lady Carolyn’s Pub",
+    "website": "https://www.theoldglobe.org",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.theoldglobe.org/"
+  },
+  {
+    "restaurantId": "2058",
+    "name": "Refresh Coffee",
+    "website": "http://www.refreshcoffee.co/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (http://www.refreshcoffee.co/)"
+  },
+  {
+    "restaurantId": "4464",
+    "name": "F Street Cafe",
+    "website": "https://fstreetcafe.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://fstreetcafe.com/"
+  },
+  {
+    "restaurantId": "5655",
+    "name": "Dockside Casual Seafood Counter",
+    "website": "https://docksidesd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://docksidesd.com/"
+  },
+  {
+    "restaurantId": "4470",
+    "name": "Jimmy John's",
+    "website": "https://locations.jimmyjohns.com/ca/sandiego/sandwiches-4683.html?utm_source=google-my-business&utm_medium=organic&utm_campaign=website-link&y_source=1_MjAyNDA4MzMzOC03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://locations.jimmyjohns.com/ca/san-diego/sandwiches-4683.html?utm_source=google-my-business&utm_medium=organic&utm_campaign=website-link&y_source=1_MjAyNDA4MzMzOC03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D"
+  },
+  {
+    "restaurantId": "5666",
+    "name": "Zoo Brew",
+    "website": "https://zoo.sandiegozoo.org/dining",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://zoo.sandiegozoo.org/dining"
+  },
+  {
+    "restaurantId": "4386",
+    "name": "Mong Q",
+    "website": "https://fashionvalley.ordermongq.com/",
+    "platform": "menufy",
+    "outcome": "filed",
+    "detail": "9 dishes from https://api.menufy.com/v1/locations/51975/categories/all"
+  },
+  {
+    "restaurantId": "4590",
+    "name": "Shabu Spot",
+    "website": "http://www.shabuspot.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (other side closed) (http://www.shabuspot.com/)"
+  },
+  {
+    "restaurantId": "5563",
+    "name": "The MRKT",
+    "website": "https://www.towncountry.com/dine/mrkt",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.towncountry.com/dine/mrkt/"
+  },
+  {
+    "restaurantId": "3840",
+    "name": "Suki Hana",
+    "website": "https://www.westfield.com/en-US/utc/restaurant/Suki-Hana/76217",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.westfield.com/en-US/utc/restaurant/Suki-Hana/76217)"
+  },
+  {
+    "restaurantId": "4160",
+    "name": "Zest Wine Bistro",
+    "website": "https://www.zestwinebistro.com",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+  },
+  {
+    "restaurantId": "3975",
+    "name": "Yuki Yuki",
+    "website": "https://www.yukiyukisd.com/",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "5581",
+    "name": "62 Area Chow Hall",
+    "website": "http://www.marines.mil/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.marines.mil/"
+  },
+  {
+    "restaurantId": "4537",
+    "name": "Craft Pizza",
+    "website": "https://www.windmillfoodhall.com/craft-pizza",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.windmillfoodhall.com/craft-pizza"
+  },
+  {
+    "restaurantId": "4201",
+    "name": "Royal Pearl Tea",
+    "website": "https://www.royalpearltea.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.royalpearltea.com/"
+  },
+  {
+    "restaurantId": "4339",
+    "name": "Monstra Coffee",
+    "website": "https://mostracoffee.com/",
+    "platform": "shopify",
+    "outcome": "filed",
+    "detail": "276 dishes from https://mostracoffee.com/products.json"
+  },
+  {
+    "restaurantId": "4192",
+    "name": "Chennai 2 Hyderabad",
+    "website": "https://chennai2hyderabad.com/",
+    "platform": "clover",
+    "outcome": "filed",
+    "detail": "107 dishes from https://chennai2hyderabad.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "4190",
+    "name": "Tapas Bar",
+    "website": "https://romescomexmed.com/page/tapas-bar",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on https://romescomexmed.com/page/tapas-bar"
+  },
+  {
+    "restaurantId": "5107",
+    "name": "Treetops Cafe",
+    "website": "https://zoo.sandiegozoo.org/dining",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://zoo.sandiegozoo.org/dining"
+  },
+  {
+    "restaurantId": "4737",
+    "name": "Nicholson Commons",
+    "website": "https://plnudining.sodexomyway.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://plnudining.sodexomyway.com/"
+  },
+  {
+    "restaurantId": "798",
+    "name": "Manta Pizza",
+    "website": "https://seaworld.com/san-diego/dining/manta-pizza/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://seaworld.com/san-diego/dining/manta-pizza/"
+  },
+  {
+    "restaurantId": "4406",
+    "name": "Everytable",
+    "website": "https://everytable.com/",
+    "platform": "shopify",
+    "outcome": "filed",
+    "detail": "393 dishes from https://everytable.com/products.json"
+  },
+  {
+    "restaurantId": "4277",
+    "name": "Moniker General",
+    "website": "http://www.monikergroup.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.monikergroup.com/"
+  },
+  {
+    "restaurantId": "3661",
+    "name": "Pure Green",
+    "website": "https://www.puregreenfranchise.com/california/carmel-valley/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.puregreenfranchise.com/california/carmel-valley/"
+  },
+  {
+    "restaurantId": "4066",
+    "name": "Pressed Juicery",
+    "website": "https://pressed.com/juice-bar-locations/ca/san-diego/12853-el-camino-real-suite-110?utm_source=google_gmb&utm_medium=organic",
+    "platform": "shopify",
+    "outcome": "filed",
+    "detail": "140 dishes from https://pressed.com/products.json"
+  },
+  {
+    "restaurantId": "5270",
+    "name": "Market One",
+    "website": "https://www.hyatt.com/en-US/hotel/california/manchester-grand-hyatt-san-diego/sanrs/dining",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "429 rate limited on https://www.hyatt.com/en-US/hotel/california/manchester-grand-hyatt-san-diego/sanrs/dining"
+  },
+  {
+    "restaurantId": "5612",
+    "name": "Sip Fresh",
+    "website": "http://www.sipfreshjuice.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sipfreshjuice.com/"
+  },
+  {
+    "restaurantId": "3108",
+    "name": "longball cocktail",
+    "website": "https://drinklongball.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://drinklongball.com/"
+  },
+  {
+    "restaurantId": "4564",
+    "name": "Blue Bowl Superfoods",
+    "website": "http://www.mybluebowl.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.mybluebowl.com/"
+  },
+  {
+    "restaurantId": "4122",
+    "name": "Jorge's Mexicatessen",
+    "website": "http://orderjorgesmexicatessenca.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://orderjorgesmexicatessenca.com/"
+  },
+  {
+    "restaurantId": "4103",
+    "name": "Coco Bomb",
+    "website": "https://cocobombusa.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"9379 Poplar Avenue\" vs our \"4690 Convoy Street #103\""
+  },
+  {
+    "restaurantId": "792",
+    "name": "La Paloma",
+    "website": "https://www.sandiego.edu/dining/campus/la-paloma.php",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sandiego.edu/dining/campus/la-paloma.php"
+  },
+  {
+    "restaurantId": "4950",
+    "name": "The Lookout at Lake Poway",
+    "website": "https://poway.org/432/Concessions-The-Lookout",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://poway.org/432/Concessions-The-Lookout"
+  },
+  {
+    "restaurantId": "4368",
+    "name": "Chester's",
+    "website": "https://locations.chesterschicken.com/ca/valley-center/31267-valley-center-rd",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://locations.chesterschicken.com/ca/valley-center/31267-valley-center-rd"
+  },
+  {
+    "restaurantId": "2632",
+    "name": "Prado Perk",
+    "website": "https://www.balboapark.org/eat-drink/prado-perk",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://balboapark.org/attraction-type/food/"
+  },
+  {
+    "restaurantId": "4154",
+    "name": "WUHU TEA & DELI",
+    "website": "https://order.online/business/wuhu-tea-and-deli-11791011",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/wuhu-tea-and-deli-11791011)"
+  },
+  {
+    "restaurantId": "4580",
+    "name": "Mister G Salsa",
+    "website": "https://www.facebook.com/mistergssalsa/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://www.facebook.com/mistergssalsa/)"
+  },
+  {
+    "restaurantId": "4920",
+    "name": "Collette’s Collaborative Collective Cuisine",
+    "website": "https://vincentsongrand.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://gardengrillecafe.com/"
+  },
+  {
+    "restaurantId": "3275",
+    "name": "Mombasa Cooker",
+    "website": "https://sdzsafaripark.org/dining",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sdzsafaripark.org/dining"
+  },
+  {
+    "restaurantId": "5400",
+    "name": "El Cilantro Mexican Grill",
+    "website": "https://elcilantromexicancusine.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://elcilantromexicancusine.com/"
+  },
+  {
+    "restaurantId": "4482",
+    "name": "Thérapie Bistro",
+    "website": "https://therapiebistro.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://therapiebistro.com/"
+  },
+  {
+    "restaurantId": "1901",
+    "name": "Club Med",
+    "website": "https://hdh-web.ucsd.edu/dining/apps/diningservices/Restaurants/Venue_V3?locId=15&subLocNum=00&locDetID=7&dayNum=0",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://hdh-web.ucsd.edu/dining/apps/diningservices/Restaurants/Venue_V3?locId=15&subLocNum=00&locDetID=7&dayNum=0"
+  },
+  {
+    "restaurantId": "3317",
+    "name": "Poway Social House",
+    "website": "https://powaysocialhouse.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://powaysocialhouse.com/"
+  },
+  {
+    "restaurantId": "4630",
+    "name": "Warung RieRie",
+    "website": "https://www.warungrierie.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.warungrierie.com/"
+  },
+  {
+    "restaurantId": "923",
+    "name": "Topo's Tacos",
+    "website": "http://topostacosca.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://topostacosca.com/"
+  },
+  {
+    "restaurantId": "2984",
+    "name": "Pizza Hut Express",
+    "website": "https://locations.pizzahut.com/ca/national-city/3060-plaza-bonita-road",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://locations.pizzahut.com/ca/national-city/3060-plaza-bonita-road"
+  },
+  {
+    "restaurantId": "4139",
+    "name": "Oriste Fairway Cafe",
+    "website": "http://oriste-fairway-cafe-tavern2.website.spoton.com/",
+    "platform": "SpotOn",
+    "outcome": "needs-browser",
+    "detail": "SpotOn detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4604",
+    "name": "Chagee",
+    "website": "https://chagee.us/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://chagee.us/"
+  },
+  {
+    "restaurantId": "3128",
+    "name": "Junya's Crispy Karaage",
+    "website": "https://rakirakiramen.com/jck-convoy/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"9995 CARMEL MOUNTAIN ROAD STE B6\" vs our \"4646 Convoy Street\""
+  },
+  {
+    "restaurantId": "5227",
+    "name": "Unico Juice Shop",
+    "website": "https://viveunico.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND viveunico.com) (https://viveunico.com/)"
+  },
+  {
+    "restaurantId": "4363",
+    "name": "Lò Bánh Cuốn Tân Định",
+    "website": "https://findaloco.com/en/directory/lo-banh-cuon-tan-dinh/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://findaloco.com/en/directory/lo-banh-cuon-tan-dinh/"
+  },
+  {
+    "restaurantId": "3484",
+    "name": "Chalo's Taco Shop",
+    "website": "https://chalostacoshop.lovable.app/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/45751234?utm_source=mx_share&aw=p1iXJo9LcC7maLgq"
+  },
+  {
+    "restaurantId": "745",
+    "name": "Fallen Empire",
+    "website": "https://www.thebabygrandcoronado.com/fallen-empire",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.thebabygrandcoronado.com/fallen-empire"
+  },
+  {
+    "restaurantId": "3238",
+    "name": "Shawii Kitchen",
+    "website": "https://shawiikitchen.com/",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "priced menu printed as plain HTML at https://www.shawiikitchen.com/menu/ (~72 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+  },
+  {
+    "restaurantId": "4563",
+    "name": "Copa Vida",
+    "website": "https://copa-vida.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "2191",
+    "name": "Boba n More",
+    "website": "https://www.itsbobatime.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.itsbobatime.com/"
+  },
+  {
+    "restaurantId": "929",
+    "name": "Pavilion Dining",
+    "website": "https://www.sandiego.edu/dining/campus/pavilion.php",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sandiego.edu/dining/campus/pavilion.php"
+  },
+  {
+    "restaurantId": "791",
+    "name": "Bert's Bistro",
+    "website": "https://www.sandiego.edu/dining/campus/berts-bistro.php",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sandiego.edu/dining/campus/berts-bistro.php"
+  },
+  {
+    "restaurantId": "931",
+    "name": "Bosley Cafe",
+    "website": "https://www.sandiego.edu/dining/campus/bosley-cafe.php",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sandiego.edu/dining/campus/bosley-cafe.php"
+  },
+  {
+    "restaurantId": "4353",
+    "name": "Jimmy John's",
+    "website": "https://locations.jimmyjohns.com/ca/sandiego/sandwiches-4500.html?utm_source=google-my-business&utm_medium=organic&utm_campaign=website-link&y_source=1_MjAyNDA4MzYzOC03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://locations.jimmyjohns.com/ca/san-diego/sandwiches-4500.html?utm_source=google-my-business&utm_medium=organic&utm_campaign=website-link&y_source=1_MjAyNDA4MzYzOC03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D"
+  },
+  {
+    "restaurantId": "730",
+    "name": "Med Cafe",
+    "website": "https://medcafe.net/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND medcafe.net) (https://medcafe.net/)"
+  },
+  {
+    "restaurantId": "2602",
+    "name": "Mission Brewing (fka Rough Draft)",
+    "website": "https://missionbrewery.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://missionbrewery.com/"
+  },
+  {
+    "restaurantId": "2748",
+    "name": "Filipino Desserts Plus",
+    "website": "https://www.filipinodessertsplus.com/",
+    "platform": "clover",
+    "outcome": "filed",
+    "detail": "16 dishes from https://filipino-desserts-plus-3-chula-vista.cloveronline.com/menu/all"
+  },
+  {
+    "restaurantId": "4216",
+    "name": "Brick & Bell Plus",
+    "website": "http://brickandbell.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://brickandbell.com/"
+  },
+  {
+    "restaurantId": "3852",
+    "name": "Trade Restaurant & Lounge",
+    "website": "https://www.hotelrepublicsd.com/dining/trade-restaurant-lounge",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.hotelrepublicsd.com/dining/trade-restaurant-lounge)"
+  },
+  {
+    "restaurantId": "2161",
+    "name": "Mis Dos Gallos Taqueria, Fruit & Deli",
+    "website": "http://misdosgalloselcajon.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND misdosgalloselcajon.com) (http://misdosgalloselcajon.com/)"
+  },
+  {
+    "restaurantId": "3866",
+    "name": "Joe & The Juice",
+    "website": "https://www.joejuice.com/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "429 rate limited on https://www.joejuice.com/"
+  },
+  {
+    "restaurantId": "5598",
+    "name": "Chicken & Crown",
+    "website": "https://www.legoland.com/california/things-to-do/theme-park/dining/chicken-and-crown/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.legoland.com/california/things-to-do/theme-park/dining/chicken-and-crown/"
+  },
+  {
+    "restaurantId": "2247",
+    "name": "Shakesmart",
+    "website": "https://shakesmart.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://shakesmart.com/"
+  },
+  {
+    "restaurantId": "3069",
+    "name": "Veladora",
+    "website": "https://ranchovalencia.com/rancho-santa-fe-restaurants/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://ranchovalencia.com/san-diego-resort-dining/"
+  },
+  {
+    "restaurantId": "5220",
+    "name": "Arctic Snacks",
+    "website": "http://www.sandiegozoo.org/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sandiegozoowildlifealliance.org/"
+  },
+  {
+    "restaurantId": "3776",
+    "name": "Grover's Grill",
+    "website": "https://sesameplace.com/san-diego/dining/grovers-grill/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sesameplace.com/san-diego/dining/grovers-grill/"
+  },
+  {
+    "restaurantId": "3169",
+    "name": "Terrace Lounge",
+    "website": "https://www.fairmont.com/san-diego/dining/terrace-lounge/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.fairmont.com/en/hotels/san-diego/fairmont-grand-del-mar/dining.html"
+  },
+  {
+    "restaurantId": "3560",
+    "name": "Kahumbo",
+    "website": "https://kahumbo.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://order.online/store/37309049?pickup=true&redirected=true"
+  },
+  {
+    "restaurantId": "3234",
+    "name": "Citrina Berry Fresh",
+    "website": "https://citrinaberryfresh.com",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND citrinaberryfresh.com) (https://citrinaberryfresh.com)"
+  },
+  {
+    "restaurantId": "3979",
+    "name": "Yonny Mini Hotpot",
+    "website": "https://www.fishwithyousd.com",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "MealKeyWay detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4825",
+    "name": "Corbin's Q",
+    "website": "https://corbinsq.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/invoice)"
+  },
+  {
+    "restaurantId": "3704",
+    "name": "Bubba’s Smokehouse BBQ",
+    "website": "https://www.bubbassmokehousebbq.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+  },
+  {
+    "restaurantId": "5439",
+    "name": "Congo Kitchen",
+    "website": "http://www.sdzsafaripark.org/dining",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sdzsafaripark.org/dining"
+  },
+  {
+    "restaurantId": "1825",
+    "name": "Allen's New York Pizza",
+    "website": "http://allensnewyorkpizza.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://allensnewyorkpizza.com/"
+  },
+  {
+    "restaurantId": "5542",
+    "name": "Monster Snacks",
+    "website": "https://sesameplace.com/san-diego/dining/monster-snacks/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sesameplace.com/san-diego/dining/monster-snacks/"
+  },
+  {
+    "restaurantId": "1756",
+    "name": "Souplantation",
+    "website": "https://www.souplantation.com/",
+    "platform": "SpotOn",
+    "outcome": "needs-browser",
+    "detail": "SpotOn detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4398",
+    "name": "Colimas Mexican Grull",
+    "website": "https://colimasnorthpark.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://colimasnorthpark.com/"
+  },
+  {
+    "restaurantId": "4649",
+    "name": "Paradise Kabob",
+    "website": "https://paradisekabob.com",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/paradise-kabob-san-diego-26085530/62364152"
+  },
+  {
+    "restaurantId": "3494",
+    "name": "Shake Smart",
+    "website": "https://shakesmart.com/store_locations/ucsd/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://shakesmart.com/store_locations/ucsd/"
+  },
+  {
+    "restaurantId": "5450",
+    "name": "Lion Camp Slush and Snacks",
+    "website": "http://sdzsafaripark.org/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sdzsafaripark.org/"
+  },
+  {
+    "restaurantId": "1875",
+    "name": "Truluck's",
+    "website": "https://trulucks.com/locations/la-jolla-california/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://trulucks.com/locations/la-jolla-california/)"
+  },
+  {
+    "restaurantId": "3357",
+    "name": "Ginger’s",
+    "website": "http://www.gingersgaslamp.com/",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "101 dishes from https://order.toasttab.com/online/barleymash-600-5th-ave"
+  },
+  {
+    "restaurantId": "1905",
+    "name": "Nektar",
+    "website": "https://locations.nekterjuicebar.com/ll/us/ca/la-jolla/villa-la-jolla-drive-suite-402/",
+    "platform": "own-jsonld",
+    "outcome": "filed",
+    "detail": "55 dishes from https://locations.nekterjuicebar.com/ll/us/ca/la-jolla/villa-la-jolla-drive-suite-402/"
+  },
+  {
+    "restaurantId": "3276",
+    "name": "Kibo Cones & Snacks",
+    "website": "https://sdzsafaripark.org/dining",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sdzsafaripark.org/dining"
+  },
+  {
+    "restaurantId": "2816",
+    "name": "Dutch Bros. Coffee",
+    "website": "https://www.dutchbros.com/locations/ca/vista/1025-e-bobier-dr",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.dutchbros.com/locations/ca/vista/1025-e-bobier-dr"
+  },
+  {
+    "restaurantId": "3170",
+    "name": "Cent'Anni Café",
+    "website": "https://www.fairmont.com/san-diego/dining/cent-anni/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.fairmont.com/en/hotels/san-diego/fairmont-grand-del-mar/dining/cent-anni.restaurant.html"
+  },
+  {
+    "restaurantId": "2194",
+    "name": "Antique Thai",
+    "website": "http://www.antiquethaicuisine.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND www.antiquethaicuisine.com) (http://www.antiquethaicuisine.com/)"
+  },
+  {
+    "restaurantId": "2731",
+    "name": "Sweet Labors",
+    "website": "https://sweetlabors.wixsite.com/home",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sweetlabors.wixsite.com/home"
+  },
+  {
+    "restaurantId": "2513",
+    "name": "BCB Coffee Company",
+    "website": "http://www.bcbcafesd.com/location/sdsu-coffee-carts/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+  },
+  {
+    "restaurantId": "2257",
+    "name": "TEC Cafe",
+    "website": "https://www.instagram.com/teccafeucsd/?hl=en",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.instagram.com/teccafeucsd/?hl=en"
+  },
+  {
+    "restaurantId": "2249",
+    "name": "University Towers Kitchen",
+    "website": "https://www.eatatsdsu.com/Venues/UTK",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.eatatsdsu.com/Venues/UTK"
+  },
+  {
+    "restaurantId": "2177",
+    "name": "Dryer's Ice Cream Parlor",
+    "website": "https://seaworld.com/san-diego/dining/seaside-coffee-and-bakery/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on https://seaworld.com/san-diego/dining/seaside-coffee-and-bakery/"
+  },
+  {
+    "restaurantId": "4936",
+    "name": "Mawazo Kitchen",
+    "website": "https://sdzsafaripark.org/dining",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sdzsafaripark.org/dining"
+  },
+  {
+    "restaurantId": "4605",
+    "name": "Chef Fei",
+    "website": "https://cheffei.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"9379 Poplar Avenue\" vs our \"4301 La Jolla Village Drive #2040\""
+  },
+  {
+    "restaurantId": "2611",
+    "name": "Carnitas’ Snack Shack",
+    "website": "https://carnitassnackshack.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"1004 N Harbor Dr\" vs our \"2632 University Avenue\""
+  },
+  {
+    "restaurantId": "3607",
+    "name": "Jungle Cart",
+    "website": "http://www.sdzsafaripark.org/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sdzsafaripark.org/"
+  },
+  {
+    "restaurantId": "2605",
+    "name": "Lucha Libre Taco Shop",
+    "website": "https://luchalibretacoshop.com/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "5403",
+    "name": "The Waterfront",
+    "website": "https://seaworld.com/san-diego/dining/waterfront/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "Cloudflare challenge on https://seaworld.com/san-diego/dining/waterfront/"
+  },
+  {
+    "restaurantId": "5543",
+    "name": "Telly's Trattoria",
+    "website": "https://sesameplace.com/san-diego/dining/tellys-trattoria/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sesameplace.com/san-diego/dining/tellys-trattoria/"
+  },
+  {
+    "restaurantId": "2193",
+    "name": "Native Foods",
+    "website": "https://www.nativefoods.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://nativefoods.com/"
+  },
+  {
+    "restaurantId": "974",
+    "name": "India Princess",
+    "website": "http://www.indiaprincess.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://indiaprincess.com/"
+  },
+  {
+    "restaurantId": "5592",
+    "name": "Benny's Rocket Fuel",
+    "website": "https://www.legoland.com/california/things-to-do/theme-park/rides/benny-s-playship/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.legoland.com/california/things-to-do/theme-park/rides/benny-s-playship/"
+  },
+  {
+    "restaurantId": "5519",
+    "name": "The Hamlett",
+    "website": "https://www.thehamlett.com/",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "403 to two desktop UAs and to curl on https://www.thehamlett.com/"
+  },
+  {
+    "restaurantId": "4162",
+    "name": "Café de Anza",
+    "website": "https://biomedrealty.aramarkcafe.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://biomedrealty.aramarkcafe.com/"
+  },
+  {
+    "restaurantId": "2648",
+    "name": "OB Kebab",
+    "website": "https://oceanbeachkabob.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (104B0000:error:0A000410:SSL routines:ssl3_read_bytes:ssl/tls alert handshake failure:openssl\\ssl\\record\\rec_layer_s3.c:918:SSL (https://oceanbeachkabob.com/)"
+  },
+  {
+    "restaurantId": "5293",
+    "name": "Toast Gastrobrunch",
+    "website": "https://toastgastrobrunch.com",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 500 (https://toastgastrobrunch.com)"
+  },
+  {
+    "restaurantId": "5501",
+    "name": "Jamacha Junction",
+    "website": "https://www.junctionbar-grill.com/",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+  },
+  {
+    "restaurantId": "1610",
+    "name": "Hacienda De Vega",
+    "website": "https://haciendadevega.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.omichael.com/about-o-michael.html"
+  },
+  {
+    "restaurantId": "5160",
+    "name": "Mikko Sushi",
+    "website": "https://mikkosushi.com/",
+    "platform": "clover",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"330 MAIN STREET\" vs our \"1025 Carlsbad Village Drive\""
+  },
+  {
+    "restaurantId": "4909",
+    "name": "Tango Restaurant & Lounge",
+    "website": "http://www.tangoongrand.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND www.tangoongrand.com) (http://www.tangoongrand.com/)"
+  },
+  {
+    "restaurantId": "4922",
+    "name": "Chippy's Diner",
+    "website": "https://myspace.com/themetaphorcafe",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://myspace.com/themetaphorcafe"
+  },
+  {
+    "restaurantId": "1939",
+    "name": "New York Buffalo Wings",
+    "website": "https://www.nywingsandribs.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND www.nywingsandribs.com) (https://www.nywingsandribs.com/)"
+  },
+  {
+    "restaurantId": "5052",
+    "name": "2GOOD2B Bakery & Cafe",
+    "website": "https://2good2b.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://2good2b.com/"
+  },
+  {
+    "restaurantId": "5049",
+    "name": "Pizzicato",
+    "website": "https://www.pizzicatopizza.com/find-a-location-2/encinitas/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.pizzicatopizza.com/find-a-location-2/encinitas/)"
+  },
+  {
+    "restaurantId": "4953",
+    "name": "La Salsa",
+    "website": "https://www.lasalsa.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.lasalsa.com/"
+  },
+  {
+    "restaurantId": "4952",
+    "name": "Coco's Bakery",
+    "website": "https://www.cocosbakery.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.cocosbakery.com/)"
+  },
+  {
+    "restaurantId": "2155",
+    "name": "Aromas",
+    "website": "https://www.sandiego.edu/dining/campus/aromas.php",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sandiego.edu/dining/campus/aromas.php"
+  },
+  {
+    "restaurantId": "4940",
+    "name": "Stage Room at the Pub",
+    "website": "http://universitycenters.ucsd.edu/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://universitycenters.ucsd.edu/"
+  },
+  {
+    "restaurantId": "4900",
+    "name": "Escondido Joe's",
+    "website": "http://www.escondidojoes.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND www.escondidojoes.com) (http://www.escondidojoes.com/)"
+  },
+  {
+    "restaurantId": "4905",
+    "name": "the Koffie Co",
+    "website": "https://www.thekoffie.co",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND www.thekoffie.co) (https://www.thekoffie.co)"
+  },
+  {
+    "restaurantId": "4716",
+    "name": "Rush Bowls",
+    "website": "https://www.rushbowls.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://rushbowls.com/"
+  },
+  {
+    "restaurantId": "3755",
+    "name": "Old Gallery Coffee House",
+    "website": "https://oldgallerysd.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://oldgallerysd.com/"
+  },
+  {
+    "restaurantId": "3616",
+    "name": "Our Green Affair",
+    "website": "https://www.ourgreenaffair.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://ourgreenaffair.com/"
+  },
+  {
+    "restaurantId": "3527",
+    "name": "Nékter Juice Bar",
+    "website": "https://locations.nekterjuicebar.com/ll/us/ca/san-diego/11975-carmel-mountain-rd-ste-606/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://locations.nekterjuicebar.com/"
+  },
+  {
+    "restaurantId": "5295",
+    "name": "Tradewinds",
+    "website": "https://www.swccd.edu/student-life/dining",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.swccd.edu/"
+  },
+  {
+    "restaurantId": "4456",
+    "name": "Lagoon Terrace",
+    "website": "http://zoo.sandiegozoo.org/animals/terrace-lagoon",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://zoo.sandiegozoo.org/animals/terrace-lagoon"
+  },
+  {
+    "restaurantId": "5071",
+    "name": "Underwater Cantina",
+    "website": "https://seaworld.com/san-diego/dining/underwater-cantina/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://seaworld.com/san-diego/dining/underwater-cantina/"
+  },
+  {
+    "restaurantId": "1708",
+    "name": "Rancho Cafe",
+    "website": "https://www.facebook.com/TheRanchoCafe/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 400 (https://www.facebook.com/TheRanchoCafe/)"
+  },
+  {
+    "restaurantId": "3372",
+    "name": "Lefty's Cheesesteaks",
+    "website": "https://eatleftys.com/locations/san-diego/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://eatleftys.com/locations/san-diego/)"
+  },
+  {
+    "restaurantId": "1219",
+    "name": "Greenbrier Inn",
+    "website": "https://www.liveatgreenbriervillage.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.liveatgreenbriervillage.com/"
+  },
+  {
+    "restaurantId": "5274",
+    "name": "Time Out Café",
+    "website": "https://swceats.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://swcevents.org/"
+  },
+  {
+    "restaurantId": "3846",
+    "name": "Hanaoka",
+    "website": "https://www.hanaoka-restaurant.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://hanaoka-restaurant.com/"
+  },
+  {
+    "restaurantId": "5224",
+    "name": "Ituri Hut",
+    "website": "http://www.sandiegozoo.org/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sandiegozoowildlifealliance.org/"
+  },
+  {
+    "restaurantId": "3738",
+    "name": "Ming Ky",
+    "website": "http://www.mihn-ky-chinese.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.mihn-ky-chinese.com/"
+  },
+  {
+    "restaurantId": "3565",
+    "name": "Deli Belly",
+    "website": "https://delibellyusa.com/",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/deli-belly-163031)"
+  },
+  {
+    "restaurantId": "3568",
+    "name": "Qdoba",
+    "website": "https://locations.qdoba.com/us/ca/valley-center/31267-valley-center-rd.html",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://locations.qdoba.com/us/ca/valley-center/31267-valley-center-rd.html)"
+  },
+  {
+    "restaurantId": "3497",
+    "name": "China China Restaurant",
+    "website": "https://chinabento.com/",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "184 dishes from https://order.toasttab.com/online/china-china-restaurant-386-east-h-street-suite-206-207"
+  },
+  {
+    "restaurantId": "3323",
+    "name": "Las Pinches Tortas",
+    "website": "http://www.laspinches.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND www.laspinches.com) (http://www.laspinches.com/)"
+  },
+  {
+    "restaurantId": "3278",
+    "name": "Rift Sand Bar",
+    "website": "http://www.sdzsafaripark.org/dining",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://sdzsafaripark.org/dining"
+  },
+  {
+    "restaurantId": "5396",
+    "name": "Quarter Deck Inn Cocktails",
+    "website": "http://quarterdeckcocktails.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND quarterdeckcocktails.com) (http://quarterdeckcocktails.com/)"
+  },
+  {
+    "restaurantId": "4618",
+    "name": "Cafecito 1806",
+    "website": "https://cafecito-1806.square.site/",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "Square Online storefront detected; no fetchable payload"
+  },
+  {
+    "restaurantId": "4619",
+    "name": "Kayak Cafe",
+    "website": "https://www.kayakcafesd.com/",
+    "platform": "wix",
+    "outcome": "filed",
+    "detail": "12 dishes from https://www.kayakcafesd.com/menu"
+  },
+  {
+    "restaurantId": "2969",
+    "name": "Auntie Anne's",
+    "website": "https://www.auntieannes.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.auntieannes.com/"
+  },
+  {
+    "restaurantId": "2958",
+    "name": "Cafe Virtuoso",
+    "website": "https://www.cafevirtuoso.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (Connect Timeout Error (attempted address: www.cafevirtuoso.com:443, timeout: 10000ms)) (https://www.cafevirtuoso.com/)"
+  },
+  {
+    "restaurantId": "2858",
+    "name": "Border X Brewing",
+    "website": "https://borderxbrewing.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://borderxbrewing.com/"
+  },
+  {
+    "restaurantId": "2838",
+    "name": "Creme De La Crepe",
+    "website": "https://www.cremedelacrepe.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.cremedelacrepe.com/"
+  },
+  {
+    "restaurantId": "1969",
+    "name": "Trisler's San Diego Wine Bar",
+    "website": "https://trislers.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://trislers.com/"
+  },
+  {
+    "restaurantId": "2661",
+    "name": "OB Garden Café",
+    "website": "https://obgardencafe.coop",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (getaddrinfo ENOTFOUND obgardencafe.coop) (https://obgardencafe.coop)"
+  },
+  {
+    "restaurantId": "692",
+    "name": "Capriotti's Sandwich Shop",
+    "website": "https://www.capriottis.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "HTTP 404 (https://www.capriottis.com/)"
+  },
+  {
+    "restaurantId": "714",
+    "name": "Wagyu Shawarma Grill",
+    "website": "https://www.wagyushawarmagrill.com/",
+    "platform": "toast",
+    "outcome": "wrong-branch",
+    "detail": "payload address \"10467 San Diego Mission Road\" vs our \"2654 Jamacha Road\""
+  },
+  {
+    "restaurantId": "696",
+    "name": "SanSai Japanese Grill",
+    "website": "http://www.sansaijapanesegrill.com",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on http://www.sansaijapanesegrill.com/"
+  },
+  {
+    "restaurantId": "794",
+    "name": "Oliva",
+    "website": "https://www.sandiego.edu/dining/campus/oliva-cafe.php",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.sandiego.edu/dining/campus/oliva-cafe.php"
+  },
+  {
+    "restaurantId": "973",
+    "name": "Inland Tavern",
+    "website": "https://www.inlandtavern.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.inlandtavern.com/"
+  },
+  {
+    "restaurantId": "969",
+    "name": "In Between",
+    "website": "https://the-inbetween.net/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (self-signed certificate; if the root CA is installed locally, try running Node.js with --use-system-ca) (https://the-inbetween.net/)"
+  },
+  {
+    "restaurantId": "833",
+    "name": "Buka - Taste of Nigeria",
+    "website": "https://www.bukaloungerestaurant.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://expireddomains.com/domain/bukaloungerestaurant.com?utm_source=redi"
+  },
+  {
+    "restaurantId": "977",
+    "name": "Mama Kat's Restaurant and Pie Shop",
+    "website": "http://www.mamakatsrestaurant.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://oops.pbrowsinga.online/?clickid=91208159366&cid=9863&tag=dm&dkw=mamakatsrestaurant.com&pid=20931&yid=ncp2&cachecode=AVOISyzQEHWzVgAknvmOkg%3D%3D&rhi=17e0f027-a01f-4a69-808b-7615adfabc7e"
+  },
+  {
+    "restaurantId": "5078",
+    "name": "All Fried Up",
+    "website": "https://seaworldparks.com/en/seaworld-sandiego/dine-and-shop/dining/all-fried-up/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "This operation was aborted (https://seaworldparks.com/en/seaworld-sandiego/dine-and-shop/dining/all-fried-up/)"
+  },
+  {
+    "restaurantId": "4027",
+    "name": "Healthy Grill Mediterranean",
+    "website": "http://healthygrille.com/",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "fetch failed (Connect Timeout Error (attempted address: healthygrille.com:80, timeout: 10000ms)) (http://healthygrille.com/)"
+  },
+  {
+    "restaurantId": "5387",
+    "name": "Ground Up Cafe",
+    "website": "http://cafegroundup.com/",
+    "platform": null,
+    "outcome": "no-platform",
+    "detail": "no known platform on https://www.hartsdalepetcrematory.com/"
+  }
+]

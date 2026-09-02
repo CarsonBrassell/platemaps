@@ -1,0 +1,461 @@
+[
+  {
+    "restaurantId": "2363",
+    "name": "Sammy's Woodfried Pizza",
+    "sourceUrl": "https://slicelife.com/restaurants/ca/san-marcos/92078/sammy-s-restaurant-bar-san-marcos/menu",
+    "confidence": "medium",
+    "notes": "Own site (sammyspizza.com) and DoorDash both 403'd on curl/WebFetch (bot protection). sammyspizza.com's own Olo storefront (sammyswoodfiredpizza.olo.com/menu/sammys-san-marcos-2, serve-next.olo.com) is a fully client-fetched Next.js app with no server-embedded price state -- needs a browser. Used Sammy's own Slice storefront instead (listed there as \"Sammy's Restaurant & Bar\", address-confirmed exact match: 121 S Las Posas Rd, San Marcos, CA 92078), extracted 75 priced dishes from __SLICE_REDUX_STATE__ JSON across 9 sections (Woodfired Pizzas, Shareables, Soups, Salads, Tacos & Burgers, Pastas, Entrees, Kids Menu, Desserts). Ran the markup division test against 1.03/1.04/1.05/1.08/1.10/1.15/1.20/1.25/1.30 -- no divisor cleared more than 14/76 items to round or half-dollar values, i.e. no uniform markup signature; prices carry restaurant-native odd cents (e.g. 23.10, 22.52, 24.83), consistent with a first-party POS price list rather than a delivery surcharge. Excluded a 1-item \"Non Display Products\" category and any zero-price rows.",
+    "dishes": [
+      {
+        "name": "Organic Arugula & Pear Pizza",
+        "description": "Prosciutto, gorgonzola, organic arugula salad tossed in balsamic basil dressing.",
+        "price": "$23.10",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Brie Cheese & Truffle Oil Pizza",
+        "description": "",
+        "price": "$23.68",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Four Cheese Pizza",
+        "description": "(Vegetarian). Smoked gouda, Romano, mozzarella, gorgonzola.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Garlic Shrimp Pizza",
+        "description": "Mushrooms, bell peppers, red onion, roasted garlic sauce.",
+        "price": "$24.83",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Goat Cheese Pizza",
+        "description": "(Vegetarian). Mushrooms, garlic, spinach, red onion, pine nuts, roasted tomato.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Royal Hawaiian Pizza",
+        "description": "Fresh golden pineapple, Canadian bacon, tomato sauce.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "LaDou’s BBQ Chicken Pizza",
+        "description": "Smoked Gouda, BBQ sauce, red onion, cilantro.",
+        "price": "$23.10",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Margherita Pizza",
+        "description": "(Vegetarian). Tomatoes, roasted garlic sauce, fresh basil.",
+        "price": "$21.37",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Mozzarella Cheese Pizza",
+        "description": "(Vegetarian). Fresh organic basil, house-made tomato sauce.",
+        "price": "$20.79",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "New York Style Pizza",
+        "description": "Sauteed mushrooms, all-natural pepperoni, salami, Italian sausage, and house-made tomato sauce.",
+        "price": "$24.26",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "All-Natural Pepperoni Pizza",
+        "description": "Fresh organic oregano, house-made tomato sauce.",
+        "price": "$23.68",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Sicilian Pizza",
+        "description": "All natural pepperoni, Italian sausage, bell peppers, house-made tomato sauce, and red onion.",
+        "price": "$23.68",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Spicy Italian Sausage Pizza",
+        "description": "Fresh organic oregano, house-made tomato sauce.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Sundried Tomato Pizza",
+        "description": "Artisan thin crust, goat cheese, pine nuts, sun-dried tomatoes, basil.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Thai Chicken Pizza",
+        "description": "(Gluten-free option not available). Julienned vegetables, peanuts, lime juice, cilantro, scallions, fresh mint, spicy Thai peanut sauce.",
+        "price": "$23.10",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Tuscan Pizza",
+        "description": "Vegetarian. roma tomatoes, mushrooms, garlic, gorgonzola, red onion, fresh oregano.",
+        "price": "$22.52",
+        "section": "Woodfired Pizzas"
+      },
+      {
+        "name": "Baba Ganoush",
+        "description": "",
+        "price": "$18.48",
+        "section": "Shareables"
+      },
+      {
+        "name": "Roasted Eggplant Hummus",
+        "description": "With grilled herb flatbread.",
+        "price": "$18.48",
+        "section": "Shareables"
+      },
+      {
+        "name": "Brussels Sprouts",
+        "description": "Romano, walnuts, balsamic glaze.",
+        "price": "$19.06",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chicken Tenders",
+        "description": "Basil ranch.",
+        "price": "$19.06",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chicken Lettuce Cups",
+        "description": "Wok aromatics, water chestnuts, scallions, sesame seeds, black bean hoisin sauce.",
+        "price": "$20.79",
+        "section": "Shareables"
+      },
+      {
+        "name": "Crispy Spring Rolls",
+        "description": "Seasoned beef mix with sweet chili sauce..",
+        "price": "$16.75",
+        "section": "Shareables"
+      },
+      {
+        "name": "Garlic Cheese Bread",
+        "description": "",
+        "price": "$17.90",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chickpea Hummus",
+        "description": "With grilled herb flatbread.",
+        "price": "$19.06",
+        "section": "Shareables"
+      },
+      {
+        "name": "Lebni/Kefir",
+        "description": "",
+        "price": "$18.48",
+        "section": "Shareables"
+      },
+      {
+        "name": "Meatballs & Marinara",
+        "description": "",
+        "price": "$17.33",
+        "section": "Shareables"
+      },
+      {
+        "name": "Mediterranean Dip Sampler",
+        "description": "Chickpea hummus, lebni, and roasted eggplant hummus, EVOO with grilled herb flatbread",
+        "price": "$21.95",
+        "section": "Shareables"
+      },
+      {
+        "name": "Mini Duck Tacos",
+        "description": "French feta, tomatoes, napa cabbage, lebni, cilantro ranch.",
+        "price": "$21.37",
+        "section": "Shareables"
+      },
+      {
+        "name": "Pork Dumplings",
+        "description": "",
+        "price": "$16.75",
+        "section": "Shareables"
+      },
+      {
+        "name": "Sweet Chili Wings",
+        "description": "Sweet chili glaze, sesame seeds, scallion.",
+        "price": "$20.21",
+        "section": "Shareables"
+      },
+      {
+        "name": "Truffle Fries",
+        "description": "Romano cheese.",
+        "price": "$16.17",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chips & Guac",
+        "description": "",
+        "price": "$20.79",
+        "section": "Shareables"
+      },
+      {
+        "name": "Chicken Taquitos",
+        "description": "Fresh hand-rolled, guacamole, cilantro lime crema, tomatoes, queso fresco, cilantro.",
+        "price": "$17.33",
+        "section": "Shareables"
+      },
+      {
+        "name": "Lobster Bisque Soup",
+        "description": "Fresh herbs, cream, and sherry in a rich stock.",
+        "price": "$16.75",
+        "section": "Soups"
+      },
+      {
+        "name": "Fresh Tomato Basil Soup",
+        "description": "Shaved Romano, drizzled herb oil.",
+        "price": "$13.86",
+        "section": "Soups"
+      },
+      {
+        "name": "Kobe Beef Chili",
+        "description": "(Gluten Free). Mozzarella, scallions.",
+        "price": "$15.02",
+        "section": "Soups"
+      },
+      {
+        "name": "Balsamic Grilled Chicken",
+        "description": "Mixed greens, Gorgonzola, walnuts, basil, balsamic vinaigrette.",
+        "price": "$21.37",
+        "section": "Salads"
+      },
+      {
+        "name": "Bob's Cobb Salad",
+        "description": "Romaine, egg, tomatoes, Gorgonzola, avocado, smoked turkey, scallions, crispy prosciutto, basil ranch.",
+        "price": "$20.21",
+        "section": "Salads"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "",
+        "price": "$17.90",
+        "section": "Salads"
+      },
+      {
+        "name": "Chinese Chicken Salad",
+        "description": "Napa cabbage, bok choy, carrots, bell peppers, sesame seeds, cilantro, scallions, crispy noodles, Mandarin oranges, soy Asian dressing.",
+        "price": "$20.21",
+        "section": "Salads"
+      },
+      {
+        "name": "Chopped Chicken Salad",
+        "description": "Lettuce, tomatoes, basil, mozzarella, vinaigrette, choice of sun-dried tomatoes or Kalamata olives.",
+        "price": "$21.37",
+        "section": "Salads"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "Romaine, spinach, bibb lettuce, red onions, Kalamata olives, tomatoes, cucumbers, pepperoncinis, French feta, vinaigrette.",
+        "price": "$17.90",
+        "section": "Salads"
+      },
+      {
+        "name": "Grilled Shrimp Salad",
+        "description": "Mixed greens, scallions, bell peppers, spinach, tomatoes, French feta, cilantro, sunflower seeds, balsamic vinaigrette.",
+        "price": "$22.52",
+        "section": "Salads"
+      },
+      {
+        "name": "Spicy Thai Grilled Chicken Salad",
+        "description": "Romaine, egg, tomatoes, Gorgonzola, avocado, smoked turkey,scallions, crispy prosciutto, basil ranch.",
+        "price": "$20.21",
+        "section": "Salads"
+      },
+      {
+        "name": "Mini Burgers",
+        "description": "",
+        "price": "$23.68",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Wagyu Cheeseburger",
+        "description": "Chipotle aioli, served with French fries.",
+        "price": "$24.83",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Chicken Tacos",
+        "description": "Chipotle crema, red onions, tomatoes, red salsa, and cilantro. 2 tacos, served with chips and salsa. Choice of flour or corn tortilla.",
+        "price": "$20.21",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Carne Asada Tacos",
+        "description": "Mashed avocado, green avocado sauce, white onions, cilantro. 2 tacos, served with chips and salsa. Choice of flour or corn tortilla.",
+        "price": "$20.79",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Grilled Fish Tacos",
+        "description": "Sea bass, chipotle crema, avocado crema, white onions, cilantro. 2 tacos, served with chips and salsa. Choice of flour or corn tortilla.",
+        "price": "$21.95",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Grilled Shrimp Tacos",
+        "description": "Mashed avocado, avocado crema, pineapple pico de gallo, cotija, cilantro. 2 tacos, served with chips and salsa. Choice of flour or corn tortilla.",
+        "price": "$21.95",
+        "section": "Tacos & Burgers"
+      },
+      {
+        "name": "Chicken Fettuccine Alfredo",
+        "description": "Garlic, romano, alfredo sauce, fettuccine, tomatoes.",
+        "price": "$31.76",
+        "section": "Pastas"
+      },
+      {
+        "name": "Chicken Tequila Fettuccine",
+        "description": "Spinach fettuccine, bell peppers, red onions, jalapeños, cilantro, tequila-lime cream sauce.",
+        "price": "$32.34",
+        "section": "Pastas"
+      },
+      {
+        "name": "Shrimp Angel Hair",
+        "description": "Shiitake and cremini mushrooms, artichokes, carrots, zucchini, light cream sauce.",
+        "price": "$34.65",
+        "section": "Pastas"
+      },
+      {
+        "name": "Spaghetti Bolognese",
+        "description": "",
+        "price": "$31.19",
+        "section": "Pastas"
+      },
+      {
+        "name": "Tomato Angel Hair",
+        "description": "Tomatoes, garlic, chicken broth, evoo, basil.",
+        "price": "$24.83",
+        "section": "Pastas"
+      },
+      {
+        "name": "Bone-In Short Ribs",
+        "description": "Tri-color potatoes, baby carrots, demi glacé.",
+        "price": "$36.96",
+        "section": "Entrees"
+      },
+      {
+        "name": "Oak Roasted Sea Bass",
+        "description": "",
+        "price": "$39.27",
+        "section": "Entrees"
+      },
+      {
+        "name": "Lamb Chops",
+        "description": "Grilled with crisp Brussels sprouts, tri-color potatoes, balsamic glaze.",
+        "price": "$38.12",
+        "section": "Entrees"
+      },
+      {
+        "name": "Oak Roasted Salmon Filet",
+        "description": "Asian salad, edamame, cucumbers, ponzu sauce.",
+        "price": "$34.65",
+        "section": "Entrees"
+      },
+      {
+        "name": "Shrimp Orzitto",
+        "description": "Shiitake and cremini mushrooms, garlic, white wine, mascarpone, Romano, truffle oil.",
+        "price": "$34.65",
+        "section": "Entrees"
+      },
+      {
+        "name": "Roasted Chicken Breast",
+        "description": "",
+        "price": "$33.50",
+        "section": "Entrees"
+      },
+      {
+        "name": "Steak Frites",
+        "description": "",
+        "price": "$39.85",
+        "section": "Entrees"
+      },
+      {
+        "name": "Kid's Cheese Pizza",
+        "description": "6-inch perfectly sized and freshly baked.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Pepperoni Pizza",
+        "description": "6-inch perfectly sized and freshly baked.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Hawaiian Pizza",
+        "description": "6-inch perfectly sized and freshly baked.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's BBQ Chicken Pizza",
+        "description": "6-inch perfectly sized and freshly baked.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Fried Chicken Fingers",
+        "description": "",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Pasta",
+        "description": "Make your own pasta; choose any combo.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Cheese Sliders",
+        "description": "With cheddar cheese and a choice of French fries or carrot sticks.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Quesadilla",
+        "description": "Filled with cheddar and mozzarella with a side of carrot sticks and ranch dressing.",
+        "price": "$11.55",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Little Dippers",
+        "description": "(Choose any combo) Cucumbers or carrot sticks | Dips: ranch or hummus.",
+        "price": "$4.62",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kid's Mug of Ice Cream",
+        "description": "",
+        "price": "$5.78",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Messy Sundae",
+        "description": "Vanilla bean ice cream, chocolate & caramel sauce, walnuts, whipped cream.",
+        "price": "$16.75",
+        "section": "Desserts"
+      },
+      {
+        "name": "Apple Pie Sweet Pizza",
+        "description": "Topped with vanilla ice cream, caramel drizzle.",
+        "price": "$20.79",
+        "section": "Desserts"
+      },
+      {
+        "name": "S'mores Sweet Pizza",
+        "description": "Artisan thin crust, dark chocolate, marshmallows, graham cracker crumble.",
+        "price": "$20.79",
+        "section": "Desserts"
+      }
+    ]
+  }
+]

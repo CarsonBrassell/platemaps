@@ -1,0 +1,9 @@
+{
+  "restaurantId": "3188",
+  "name": "Steady State Coffee Roasters",
+  "sourceUrl": "https://www.steadystateroasting.com/",
+  "confidence": "low",
+  "blocked": "Restaurant's own site (Shopify) has no cafe/drink menu page and no ordering link with prices; /products.json is only retail coffee bags/merch, not the in-cafe drink menu (Coke etc. not relevant here). Found the cafe is on joe.coffee ordering (https://joe.coffee/locations/ca/carlsbad/steady-state-roasting-carlsbad/) but it is a client-rendered app with no prices in the served HTML/JSON — needs a browser to read the actual item prices. checkle.com menu listing 429'd; restaurantji.com listing has no prices.",
+  "notes": "Needs a Chrome-equipped agent to load joe.coffee's ordering page and read drink prices client-side, or find a Toast/Square page not discovered by curl.",
+  "dishes": []
+}

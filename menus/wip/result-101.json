@@ -1,0 +1,1316 @@
+[
+ {
+  "restaurantId": "1947",
+  "name": "Juice Bar",
+  "sourceUrl": "https://www.doordash.com/store/bahia-mexican-food-&-pb-juice-bar-san-diego-51091/",
+  "confidence": "medium",
+  "notes": "Work-list name 'Juice Bar' matches address exactly (909 Grand Ave, San Diego) to 'Bahia Mexican Food & PB Juice Bar' -- a combined Mexican-food/juice-bar business at that address (prior tenant at same address, Shakeaway, is permanently closed per Yelp). No independent restaurant website. Sourced from the DoorDash marketplace listing's schema.org Menu JSON-LD (server-rendered, no browser needed). Markup check passed: dividing by 1.2/1.15/1.1/1.04 gave at most 28.6% clean-cent landings (1.2), well short of the ~75-100% signature of a real markup, and prices are POS-style odd cents ($8.10, $11.40, $17.40) consistent with a real menu, not a divisor. Captured all 16 menu sections on the listing: Most Ordered, Tortas (x2), Seafood Appetizers, Fruit Salad, Soups & Salads, Salads, Seafood Soups, Seafood Cocktails, Chimichangas, Enchiladas, Combos, Quesadillas, More Delicious Food, Burritos, Seafood Platter -- this is a complete Mexican-food menu. However the 'PB Juice Bar' half of the business (smoothies, tropical/green juice, wraps, acai berry bowls) is NOT represented beyond a single 'Acai Bowl small $8.50' in Most Ordered -- the delivery listing evidently does not carry that side of the menu for online ordering. Grubhub and Uber Eats listings for the same business are client-rendered JS shells and returned no data via curl; Yelp 403s curl. This is the best available source; the juice/smoothie side of the menu could not be confirmed priced anywhere reachable without a browser.",
+  "dishes": [
+   {
+    "name": "4 Rolled Tacos",
+    "description": "guacamole, sour cream, and cheese. choice  beef, chicken or potato.",
+    "price": "$8.10",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Street Taco",
+    "description": "onions,cilantro and guacamole on a mini double corn tortilla and choice of meat (asada, grilled chicken, adobada, carnitas)",
+    "price": "$3.50",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Acai Bowl small",
+    "description": "Topped with granola, freshly diced banana, strawberry, and honey.",
+    "price": "$8.50",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Bahia Burrito",
+    "description": "refried pinto beans, enchilada sauce, sour cream, cheese and chile relleno filled with monterrey cheese.",
+    "price": "$11.99",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Fish Taco",
+    "description": "Fried in beer batter, cabbage, salsa fresca and white sauce.",
+    "price": "$3.50",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Beans & Cheese Burrito",
+    "description": "refried pinto beans and cheese.",
+    "price": "$8.90",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "California Burrito",
+    "description": "Asada, french fries, guacamole,salsa fresca and cheese.",
+    "price": "$13.50",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Don Jose Soup",
+    "description": "Chicken or beef and vegetables with a side of red rice,tortillas, cilantro and onions.",
+    "price": "$15.00",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Surf & Turf Burrito",
+    "description": "Asada,shrimp, guacamole, white sauce, pico de gallo and rice.",
+    "price": "$14.50",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Guacamole & Chips",
+    "description": "1/2 pint of guacamole and large side of chips.",
+    "price": "$9.50",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Bottled Soda",
+    "description": "Bottled soda available in Coke, Diet Coke, Sprite, Squirt.",
+    "price": "$3.60",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Rice",
+    "description": "1/2 pint of red rice.",
+    "price": "$4.50",
+    "section": "Most Ordered"
+   },
+   {
+    "name": "Milanesa Torta",
+    "description": "Breaded meat, beans, mayo, avocado, tomato, red onion Mexican sandwich. Side of fries and fried jalapeno wrapped in bacon.",
+    "price": "$15.50",
+    "section": "Tortas"
+   },
+   {
+    "name": "Torta",
+    "description": "Lettuce, salsa fresca, cheese, sour cream and guacamole Mexican sandwich. Your choice of meat with side of french fries.",
+    "price": "$13.99",
+    "section": "Tortas"
+   },
+   {
+    "name": "Turkey or Ham  Torta",
+    "description": "mayo, lettuce, onions, avocado slices, turkey or ham and side of  fries.",
+    "price": "$13.99",
+    "section": "Tortas"
+   },
+   {
+    "name": "Shrimp Ceviche",
+    "description": "Shrimp , tomato, onion, cucumber, tomato juice and lemon ceviche. With a small side of tortilla chips.",
+    "price": "$12.50",
+    "section": "Seafood Appetizers"
+   },
+   {
+    "name": "Tostada De Ceviche",
+    "description": "Shrimp  ceviche on a tostada.\n( chopped shrimp, tomato,onion,cucumber, tomato juice and lemon.) 0n a flat tostada.",
+    "price": "$7.50",
+    "section": "Seafood Appetizers"
+   },
+   {
+    "name": "Fruit Salad",
+    "description": "Seasonal fruit topped with cottage cheese, granola, raisins, and honey.",
+    "price": "$11.00",
+    "section": "Fruit Salad"
+   },
+   {
+    "name": "Bionics Salad",
+    "description": "Sixteen ounces. Chopped seasonal fruit topped with sweet cream, granola, raisins, almonds, and coconut.",
+    "price": "$10.50",
+    "section": "Fruit Salad"
+   },
+   {
+    "name": "Pico De Gallo Salad",
+    "description": "Fresh fruit topped with chile and lemon.",
+    "price": "$11.00",
+    "section": "Fruit Salad"
+   },
+   {
+    "name": "Strawberries & Cream Salad",
+    "description": "16oz. chopped strawberries mix with a sweet cream",
+    "price": "$10.50",
+    "section": "Fruit Salad"
+   },
+   {
+    "name": "Don Jose Soup",
+    "description": "Chicken or beef and vegetables with a side of red rice,tortillas, cilantro and onions.",
+    "price": "$15.00",
+    "section": "Soups & Salads"
+   },
+   {
+    "name": "Don Jose Salad",
+    "description": "romaine lettuce or spring mix, sliced tomatoes, cucumbers,onions, slices of avocado,cheese, choice of meat and  dressing side.",
+    "price": "$11.40",
+    "section": "Soups & Salads"
+   },
+   {
+    "name": "Greek Salad",
+    "description": "spring mix, tomatoes, cucumbers, onions, pepperoncinis, feta cheese and a dressing side.",
+    "price": "$11.50",
+    "section": "Salads"
+   },
+   {
+    "name": "Turkey & Cheese Salad",
+    "description": "spring mix, tomatoes, cucumbers, onions ,pepperoncinis, turkey, cheese  and side of dressing.",
+    "price": "$11.50",
+    "section": "Salads"
+   },
+   {
+    "name": "Tuna Salad",
+    "description": "spring mix, tomatoes, cucumbers, onions , peperoncinis and tuna mix ( tuna,mayo, mustar, chopped celery) and dressing side.",
+    "price": "$11.50",
+    "section": "Salads"
+   },
+   {
+    "name": "Romaine Salad",
+    "description": "romaine lettuce, tomatoes, onions, cucumbers, pepperoncinis and avocado slices with a side of dressing.",
+    "price": "$11.50",
+    "section": "Salads"
+   },
+   {
+    "name": "Fish Soup",
+    "description": "Swaui filet soup with carrots and squash. With a side of tortillas, red rice, cilantro and onions.",
+    "price": "$16.20",
+    "section": "Seafood Soups"
+   },
+   {
+    "name": "7 Seas Soup",
+    "description": "Shrimp, scallops, muscles, fish, octopus, carrots and squash soup. With a side of tortillas.",
+    "price": "$18.99",
+    "section": "Seafood Soups"
+   },
+   {
+    "name": "Shrimp Soup",
+    "description": "Shrimp soup with squash and carrots with side of red rice, cilantro, onions and tortillas.",
+    "price": "$17.40",
+    "section": "Seafood Soups"
+   },
+   {
+    "name": "Shrimp Cocktail",
+    "description": "Tomato juice, shrimp, tomato, onion, cilantro,avocado slices on top  and lime juice all in a tasty cocktail.",
+    "price": "$17.40",
+    "section": "Seafood Cocktails"
+   },
+   {
+    "name": "Campechana Cocktail",
+    "description": "Shrimp, octopus tomato juice, tomato, onion, cilantro, lime juice and avocado slices on top with side of chips.",
+    "price": "$19.80",
+    "section": "Seafood Cocktails"
+   },
+   {
+    "name": "Shrimp Chimichanga",
+    "description": "Topped with guac, sour cream, pico de gallo and cheese.",
+    "price": "$15.00",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Carne Asada Chimichanga",
+    "description": "Carne asada chimichanga. Topped with guac, sour cream, pico de gallo and cheese.",
+    "price": "$13.99",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Grilled Chicken Chimichanga",
+    "description": "G. Chicken chimichanga. Topped with guac, sour cream, pico de gallo and cheese.",
+    "price": "$13.99",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Beef Chimichanga",
+    "description": "Shredded beef chimichanga. Topped with guac, sour cream, pico de gallo.",
+    "price": "$13.99",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Chicken Chimichanga",
+    "description": "Shredded chicken chimichanga. Topped with guac, sour cream, pico de gallo and cheese.",
+    "price": "$13.99",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Calamari Chimichanga",
+    "description": "Topped with guac, sour cream, pico de gallo and cheese.",
+    "price": "$15.00",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Lobster Chimichanga",
+    "description": "Topped with guac, sour cream, pico de gallo and cheese.",
+    "price": "$15.50",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Fish Chimichanga",
+    "description": "Swai filet chimichanga. Topped with guac, sour cream, pico de gallo and cheese.",
+    "price": "$15.00",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "(2) Cheese Enchilada",
+    "description": "two cheese enchiladas with enchilada sauce on top, Lettuce, pico de gallo and cheese.",
+    "price": "$9.99",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "(2)Shrimp Enchiladas",
+    "description": "two shrimp enchiladas, enchilada sauce on top, Lettuce, pico de gallo and cheese.",
+    "price": "$13.50",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "(2)Beef Enchilada",
+    "description": "two beef enchiladas with enchilada sauce on top, Lettuce, pico de gallo and cheese.",
+    "price": "$10.50",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "(2) Mixed Enchilada",
+    "description": "two Beef and beans enchiladas with enchilada sauce on top, lettuce, pico de gallo and cheese.",
+    "price": "$10.50",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "(2) Calamari Enchilada",
+    "description": "two calamari enchiladas with enchilada sauce on top,Lettuce, pico de gallo and cheese.",
+    "price": "$13.50",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "(2) Chicken Enchilada",
+    "description": "two chicken enchiladas with enchilada sauce on top,Lettuce, pico de gallo and cheese.",
+    "price": "$9.99",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "(2) Lobster Enchiladas",
+    "description": "two lobster enchiladas with enchilada sauce, Lettuce, pico de gallo and cheese.",
+    "price": "$13.99",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "Carne Asada Combo",
+    "description": "chopped Steak or grilled chicken breast, rice and beans on the side with a side of tortillas.",
+    "price": "$17.40",
+    "section": "Combos"
+   },
+   {
+    "name": "Machaca Plate Combo",
+    "description": "",
+    "price": "$16.20",
+    "section": "Combos"
+   },
+   {
+    "name": "Fajitas Combo",
+    "description": "Steak, chicken, or vegetable fajitas, rice and beans on the side and side of tortillas.",
+    "price": "$17.40",
+    "section": "Combos"
+   },
+   {
+    "name": "Carnitas Combo",
+    "description": "carnitas, rice and beans on the side , side of tortillas, lettuce and pico de gallo.",
+    "price": "$16.20",
+    "section": "Combos"
+   },
+   {
+    "name": "2 Tacos Combo",
+    "description": "two Beef or chicken tacos, In a hard shell taco, rice and beans on the side.",
+    "price": "$14.50",
+    "section": "Combos"
+   },
+   {
+    "name": "Taco & Burrito Combo",
+    "description": "1 hard shell taco and 1 burrito choice of beef or chicken, rice and beans on the side.",
+    "price": "$14.50",
+    "section": "Combos"
+   },
+   {
+    "name": "Tostada & Enchilada Combo",
+    "description": "1 tostada and 1 enchilada choice of Beef or chicken with a side of rice and beans.",
+    "price": "$14.50",
+    "section": "Combos"
+   },
+   {
+    "name": "2 Enchilada Combo",
+    "description": "two enchiladas choice of Beef, chicken, or cheese, lettuce, salsa fresca and cheese on top with  side of rice and beans.",
+    "price": "$14.50",
+    "section": "Combos"
+   },
+   {
+    "name": "Adobada Combo",
+    "description": "chopped pastor, rice and beans on the side , lettuce pico de gallo and side of tortillas.",
+    "price": "$16.20",
+    "section": "Combos"
+   },
+   {
+    "name": "Chile Verde Combo",
+    "description": "chopped pork meat in salsa verde , rice and beans on the side and side of tortillas.",
+    "price": "$17.40",
+    "section": "Combos"
+   },
+   {
+    "name": "Steak Ranchero Combo",
+    "description": "steak ranchero , rice and beans on the side and side of tortillas.",
+    "price": "$18.50",
+    "section": "Combos"
+   },
+   {
+    "name": "Supreme Quesadilla",
+    "description": "Choice of meat, guacamole, salsa, cheese and sour cream.",
+    "price": "$14.99",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Bahia Quesadilla",
+    "description": "Cheese, choice of meat and a side of rice and beans.",
+    "price": "$12.99",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Plain Quesadilla",
+    "description": "Quesadilla with only cheese.",
+    "price": "$7.99",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Reyna Quesadilla",
+    "description": "Olives, mushrooms and cheese. Rice, lettuce, salsa fresca, guacamole and sour cream on the side.",
+    "price": "$12.99",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Shrimp Quesadilla",
+    "description": "Shrimp and cheese quesadilla.",
+    "price": "$14.99",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Nachos Supremos",
+    "description": "Nachos topped with beans, ground beef, nacho cheese, salsa fresca, guacamole and sour cream. and a choice of meat.",
+    "price": "$14.50",
+    "section": "More Delicious Food"
+   },
+   {
+    "name": "Bahia Bowl",
+    "description": "Rice, black beans, cheese, salsa fresca and your choice of meat in a bowl.",
+    "price": "$13.60",
+    "section": "More Delicious Food"
+   },
+   {
+    "name": "Super Special Combo",
+    "description": "Four roll tacos with guacamole, sour cream and cheese with rice and beans on the side.",
+    "price": "$12.50",
+    "section": "More Delicious Food"
+   },
+   {
+    "name": "Nachos with Guacamole",
+    "description": "chips, guacamole and nacho cheese.",
+    "price": "$10.50",
+    "section": "More Delicious Food"
+   },
+   {
+    "name": "Sopes",
+    "description": "Two sopes with beans, lettuce, salsa fresca, cotija cheese and a meat to choice (shredded beef or shredded chicken)",
+    "price": "$10.50",
+    "section": "More Delicious Food"
+   },
+   {
+    "name": "Carne Asada Fries",
+    "description": "Carne asada, French fries, shredded cheese, nacho cheese, salsa fresca, guacamole and sour cream.",
+    "price": "$14.50",
+    "section": "More Delicious Food"
+   },
+   {
+    "name": "Chile Relleno",
+    "description": "Cheese stuffed poblano pepper doused with enchilada sauce and topped with sour cream.",
+    "price": "$9.60",
+    "section": "More Delicious Food"
+   },
+   {
+    "name": "California Burrito",
+    "description": "Asada, french fries, guacamole,salsa fresca and cheese.",
+    "price": "$13.50",
+    "section": "Burritos"
+   },
+   {
+    "name": "Asada Burrito",
+    "description": "Asada, salsa fresca and guacamole.",
+    "price": "$11.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Grilled Chicken Burrito",
+    "description": "Grilled chicken breast with salsa fresca and cheese.",
+    "price": "$11.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Burrito Supreme",
+    "description": "refried pinto beans, rice, guacamole, salsa fresca, cheese and a choice of meat.",
+    "price": "$13.50",
+    "section": "Burritos"
+   },
+   {
+    "name": "Beans & Cheese Burrito",
+    "description": "refried pinto beans and cheese.",
+    "price": "$8.90",
+    "section": "Burritos"
+   },
+   {
+    "name": "Surfer Gigante Burrito",
+    "description": "rice, black beans,salsa fresca,guacamole, lettuce on a whole wheat tortilla with side of chips.",
+    "price": "$12.60",
+    "section": "Burritos"
+   },
+   {
+    "name": "Calamari Burrito",
+    "description": "Grilled calamari, salsa fresca, cheese and white sauce.",
+    "price": "$11.00",
+    "section": "Burritos"
+   },
+   {
+    "name": "Fajita Burrito",
+    "description": "Steak or chicken. bell peppers, red onions, tomatoes, teriyaki sauce and cheese.",
+    "price": "$12.50",
+    "section": "Burritos"
+   },
+   {
+    "name": "Carnitas Burrito",
+    "description": "carnitas, salsa fresca and guacamole.",
+    "price": "$11.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Adobada Burrito",
+    "description": "Pastor, salsa fresca and guacamole.",
+    "price": "$11.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Beef Burrito",
+    "description": "Shredded beef or shredded chicken.",
+    "price": "$11.50",
+    "section": "Burritos"
+   },
+   {
+    "name": "Mixed Burrito",
+    "description": "shredded Beef, beans and cheese.",
+    "price": "$11.50",
+    "section": "Burritos"
+   },
+   {
+    "name": "Grilled Fish Burrito",
+    "description": "grilled fish, salsa fresca, cheese and white sauce.",
+    "price": "$11.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Don Jose Burrito",
+    "description": "",
+    "price": "$11.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Surf & Turf Burrito",
+    "description": "Asada,shrimp, guacamole, white sauce, pico de gallo and rice.",
+    "price": "$14.50",
+    "section": "Burritos"
+   },
+   {
+    "name": "Shrimp Burrito",
+    "description": "grilled shrimp, salsa fresca, cheese and white sauce.",
+    "price": "$13.50",
+    "section": "Burritos"
+   },
+   {
+    "name": "Grilled Fish Taco Platter",
+    "description": "Two grilled fish tacos with rice and beans on the side.",
+    "price": "$17.50",
+    "section": "Seafood Platter"
+   },
+   {
+    "name": "Lobster Burrito & Shrimp Taco Platter",
+    "description": "Lobster burrito and a shrimp taco with rice and beans on the side.",
+    "price": "$18.50",
+    "section": "Seafood Platter"
+   },
+   {
+    "name": "Shrimp Burrito & Fish Taco Platter",
+    "description": "Shrimp burrito and a deep fried fish taco with rice and beans on the side.",
+    "price": "$18.50",
+    "section": "Seafood Platter"
+   },
+   {
+    "name": "Fillet of Fish Platter",
+    "description": "Tilapia fish platter with rice and beans on the side and side of tortillas.",
+    "price": "$16.99",
+    "section": "Seafood Platter"
+   },
+   {
+    "name": "Shrimp a La Diabla Platter",
+    "description": "Shrimp in a spicy sauce with rice and beans on the side.",
+    "price": "$18.50",
+    "section": "Seafood Platter"
+   }
+  ]
+ },
+ {
+  "restaurantId": "3901",
+  "name": "The American Acai Cafe",
+  "sourceUrl": "https://theamericanacaicafe.com/menu",
+  "confidence": "low",
+  "blocked": "Own site (theamericanacaicafe.com/menu) gives only category-level price RANGES ($13.00-$25.00 Acai/Cupuacu Bowls, $3.50-$6.75 Coffee, $10.00-$12.50 Smoothies, $3.50-$5.75 Pastries, $2.75-$5.50 Soft Drinks), not per-item prices -- confirmed by stripping tags and checking, only 6 dollar-figures on the whole page, all ranges. Real per-item ordering is at the-american-acai-cafe-san-diego-3.cloveronline.com, Clover's hosted COLO2 React SPA (no server-rendered prices, no reachable REST endpoint) -- needs a browser. DoorDash marketplace listing (address-matched: 1001 Garnet Ave, San Diego) has full per-item prices but a confirmed 1.3x markup: dividing by 1.3 gave 92.2% of 51 prices landing on round/.99/.75/.50/.25 values (BYO Cup/Bowl $16.90->$13.00, 32oz $32.50->$25.00, matching the site's own stated bowl range exactly at both ends), so it is unusable per the no-construct-a-price rule even though the divided figures fit the site's stated ranges. Yelp menu tab is barred and the business page 403s curl / CAPTCHA-gates the jina.ai reader, so no dated menu photo could be checked. Needs: a browser on cloveronline.com to read the real per-item prices.",
+  "notes": "Address-verified (1001 Garnet Ave Ste 105, San Diego). No priced dishes recorded -- see blocked reason.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "2785",
+  "name": "Bottlecraft",
+  "sourceUrl": "https://www.taphunter.com/location/bottlecraft-beer-shop-north-park/49397792",
+  "confidence": "high",
+  "notes": "not_found: Bottlecraft North Park (3007 University Ave, San Diego -- address matches work list exactly) is a craft beer shop / tasting room: ~12 beers on draft plus hundreds of bottles, no kitchen, no food. Checked the restaurant's own site (bottlecraft.com/locations/north-park-beer-shop/ and /beers-on-tap/, both stripped-tag scanned, zero dollar figures), the TapHunter beer-list widget the shop itself links to (comprehensive -- ~87 beers, ABV/IBU/brewery for each, only ONE dollar figure on the whole page: a $35 price for a 'kranz' -- a multi-glass Kolsch serving rack, a specialty format, not representative per-pour pricing), and WebSearch (no pour-price menu found; Wine-Searcher gates its pricing behind login). Untappd and the site's own /shop/ path both 403. This is a beer shop/tasting room that genuinely does not publish per-item pour or bottle prices online -- matches the playbook's 'a brewery's beer board may genuinely print nothing' case. Not a menu once the single non-representative $35 item is excluded.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "4660",
+  "name": "La Rosa Giant Pizza",
+  "sourceUrl": "https://rosagiantpizza.netwaiter.com/chula-vista/about/",
+  "confidence": "low",
+  "blocked": "Work-list entry 'La Rosa Giant Pizza' at 1680 Broadway #G matches 'Rosa Giant Pizza', 1680 Broadway Ste G, Chula Vista, CA (address confirmed exact on the restaurant's own NetWaiter about page, which also confirmed via Apple Maps link '1680 Broadway G in Chula Vista, CA'). No independent restaurant website found. Its online-ordering platform is NetWaiter (tier-2, own platform) -- rosagiantpizza.netwaiter.com/chula-vista/about/ is server-rendered (checked, 0 dollar figures -- it's a hours/location page) but the actual menu/order flow redirects to my.netwaiter.com, a client-rendered JS SPA with no reachable per-item REST endpoint found via curl. No DoorDash, Grubhub, or Uber Eats storefront exists for this business (WebSearch for both name variants came back empty or matched unrelated same-named restaurants in other cities). zmenu.com 403s; restaurantguru.com has only an aggregate '$10-$20 per person' price-range badge, no per-item prices. Yelp 403s curl for both the business page and photos. Needs: a browser on my.netwaiter.com (chain=883be8dc-6621-e511-941c-00155d06083c) to read the real per-item pizza/menu prices.",
+  "notes": "Old-school family pizzeria, cash-only per web summaries; a real per-item priced menu almost certainly exists on the NetWaiter storefront, just not reachable without a browser.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "932",
+  "name": "La Gran Terraza",
+  "sourceUrl": "https://www.lagranterraza.com/_files/ugd/27b8ca_0c99f5b782b344fbb73794819da53d0b.pdf",
+  "confidence": "high",
+  "crossCheckedAgainst": "https://www.lagranterraza.com/_files/ugd/27b8ca_672bfa97dcf0481ab0e9eef0d351bbd1.pdf",
+  "notes": "Restaurant is O'Toole's / La Gran Terraza, University of San Diego's on-campus fine-dining room, at 5998 Alcala Park Way -- matches work list address exactly (menu header reads 'UNIVERSITY OF SAN DIEGO'). Own Wix site (lagranterraza.com) links 4 first-party PDF menus directly in the page HTML. pdftotext -layout scrambled/dropped many prices where the PDF used a small dot-separator glyph instead of extractable text, so both food PDFs were read visually with the Read tool (per playbook) rather than trusted from pdftotext -- recovered soup cup/bowl prices, salad add-on prices, and the full beverage list that pdftotext had silently dropped. Two food PDFs (Lunch; and the Shareables/Salads/Plates dinner menu, labelled 'O'Toole's La Gran Terraza') overlap heavily (same salads, same add-on prices, several shared entrees at identical prices) -- treated as one cross-check: every overlapping dish/price matched exactly between the two documents, so duplicates were recorded once. A third PDF (Beer/Wine list) was also read visually and its numbers (which pdftotext rendered with no '$' at all) are real per-item prices printed on the document -- included as Beer and Wine sections. The draft-beer price grid ($7 12oz / $8 16oz / $24 pitcher) is a flat rate across all listed taps, not a per-beer price, and is recorded as three generic 'Local Draft Beer' rows rather than fabricating a price per beer name; each tap beer this rate covers is named in that row's description. A fourth PDF ('Summer 2026 Special Event Menus') is a private-event/catering/buffet packet -- excluded as an adjunct, not the walk-in menu. Categories reached: Lunch (Soups, Salads, Entrees, Desserts, Beverages), Shareables, Plates, Dinner Desserts, Dinner Beverages, Beer (draft + bottled/canned), Wine (by the glass + by the bottle). Categories not reached / excluded: the private-event catering PDF (adjunct, by design).",
+  "dishes": [
+   {
+    "name": "Lobster Bisque (Cup)",
+    "description": "",
+    "price": "$6.00",
+    "section": "Lunch - Soups"
+   },
+   {
+    "name": "Lobster Bisque (Bowl)",
+    "description": "",
+    "price": "$8.25",
+    "section": "Lunch - Soups"
+   },
+   {
+    "name": "Vichyssoise with Green Scallion Oil (Cup)",
+    "description": "",
+    "price": "$5.75",
+    "section": "Lunch - Soups"
+   },
+   {
+    "name": "Vichyssoise with Green Scallion Oil (Bowl)",
+    "description": "",
+    "price": "$7.75",
+    "section": "Lunch - Soups"
+   },
+   {
+    "name": "Chell's Crab and Shrimp Louie",
+    "description": "Butter Leaf Lettuce, Heirloom Tomatoes, Grilled Asparagus, Hard Boiled Egg, Mediterranean Olives, and Creamy Housemade Louie Dressing",
+    "price": "$22.00",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "Grilled Caesar Salad",
+    "description": "Artisan Romaine, Fried Anchovies, Marinated Cherry Tomatoes, Parmesan, Croutons, and Housemade Caesar Dressing",
+    "price": "$17.75",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "Terraza Cobb",
+    "description": "Baby Gem Lettuce, Bacon, Avocado, Bleu Cheese, Heirloom Tomatoes, Hard Boiled Egg, Sugar Snap Peas, and Green Goddess Dressing",
+    "price": "$19.00",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "Carrot and Heart of Palm Salad",
+    "description": "Tri-color Carrots, Red Endive, Arugula, Candied Kumquats, Blood Orange Segments, Cilantro, and Tangerine Vinaigrette",
+    "price": "$19.00",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "Heirloom Tomato Carpaccio Salad",
+    "description": "Slow-roasted Cherry Tomatoes, Hydro Watercress, Purple Radishes, Red Onions, and Balsamic Dressing",
+    "price": "$18.50",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "Peach and Burrata Salad",
+    "description": "Grilled Peaches, Crispy Prosciutto, Pistachios, Frisee, Honey Vinaigrette and Balsamic Glaze",
+    "price": "$19.00",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "Nicoise Salad",
+    "description": "Ahi Tuna, Tender Greens, Tomatoes, Hard Boiled Egg, Olives, Potatoes, Green Beans, and Red Wine Dressing",
+    "price": "$19.50",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "Add to Salad: Chicken",
+    "description": "",
+    "price": "$6.00",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "Add to Salad: Grilled Steak",
+    "description": "",
+    "price": "$7.00",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "Add to Salad: Salmon",
+    "description": "",
+    "price": "$9.25",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "Add to Salad: Shrimp",
+    "description": "",
+    "price": "$7.50",
+    "section": "Lunch - Salads"
+   },
+   {
+    "name": "French Dip Sandwich",
+    "description": "Sliced Prime Rib, Swiss Cheese, Caramelized Onion and Au Jus, with Garlic French Fries",
+    "price": "$19.50",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Terraza Wagyu Burger",
+    "description": "Premium Wagyu Beef (medium rare), Marinated Grilled Tomato, Arugula, Bacon Jam and Roasted Garlic Aioli, with Housemade Truffle Chips",
+    "price": "$19.50",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Add to Burger: Bacon",
+    "description": "",
+    "price": "$3.00",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Add to Burger: Avocado",
+    "description": "",
+    "price": "$2.75",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Add to Burger: Cheese",
+    "description": "",
+    "price": "$2.50",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Steak Frites",
+    "description": "Grilled Hanger Steak (medium rare) with Truffle French Fries",
+    "price": "$22.00",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Braised Short Rib",
+    "description": "Turnip Puree, Corn Succotash and Red Wine Demi",
+    "price": "$22.00",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Roasted Airline Chicken",
+    "description": "Cannelini Bean Spread, Charred Broccolini, Red Bell Pepper, and Creamy Peppercorn Sauce",
+    "price": "$19.75",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Portobello 'Wellington'",
+    "description": "Carrot Mousse, Garlic Spinach, with Mushroom Au Jus",
+    "price": "$19.00",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Seared Salmon",
+    "description": "Celeriac Puree, Green Bean and Mushroom Medley, Green Apple and Radish Salad",
+    "price": "$21.25",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Sauteed Scallops",
+    "description": "Garlic Pomme Puree, Oyster Mushrooms, Yellow Squash, Leeks and Parsley Nage",
+    "price": "$22.25",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Truffle Carbonara",
+    "description": "Linguine, Pancetta, Pepper Drops, Egg Yolk and Truffle Shavings",
+    "price": "$20.25",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Florentine Ravioli",
+    "description": "Creamy Tomato Sauce, Spinach and Sundried Tomatoes",
+    "price": "$19.50",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Peppercorn Market Fish",
+    "description": "Braised Red Potatoes, Sous Vide Fennel, Baby Carrots, Shiitake Mushrooms, and Whole Grain Mustard Sauce",
+    "price": "$21.25",
+    "section": "Lunch - Entrees"
+   },
+   {
+    "name": "Smoked Almond & Plum",
+    "description": "Almond Financier, Milk Chocolate Cremeux with Plum Ice Cream",
+    "price": "$8.25",
+    "section": "Lunch - Desserts"
+   },
+   {
+    "name": "ChocoFlan",
+    "description": "Sweet Corn and Cherry Ice Cream, Cherries, and Cornbread Crumb",
+    "price": "$8.25",
+    "section": "Lunch - Desserts"
+   },
+   {
+    "name": "Lemon Apricot",
+    "description": "Vanilla Mousse, Lemon Curd, and Apricot Compote",
+    "price": "$7.75",
+    "section": "Lunch - Desserts"
+   },
+   {
+    "name": "Mango Peach Cake",
+    "description": "Thyme-poached White Peaches, Mango 'Cream', and Mango Sorbet",
+    "price": "$8.25",
+    "section": "Lunch - Desserts"
+   },
+   {
+    "name": "Nectarine 'Taco' Cake",
+    "description": "Diplomat Cream, Fresh Nectarines, Rhubarb Ice Cream",
+    "price": "$7.75",
+    "section": "Lunch - Desserts"
+   },
+   {
+    "name": "Refillable Soft Drink, Iced Tea or Lemonade",
+    "description": "",
+    "price": "$3.00",
+    "section": "Lunch - Beverages"
+   },
+   {
+    "name": "Pellegrino Sparkling Water (500 mL)",
+    "description": "",
+    "price": "$4.25",
+    "section": "Lunch - Beverages"
+   },
+   {
+    "name": "Pellegrino Sparkling Water (1 L)",
+    "description": "",
+    "price": "$7.00",
+    "section": "Lunch - Beverages"
+   },
+   {
+    "name": "Acqua Panna Still Water (500 mL)",
+    "description": "",
+    "price": "$4.25",
+    "section": "Lunch - Beverages"
+   },
+   {
+    "name": "Acqua Panna Still Water (1 L)",
+    "description": "",
+    "price": "$7.00",
+    "section": "Lunch - Beverages"
+   },
+   {
+    "name": "Coffee",
+    "description": "",
+    "price": "$3.00",
+    "section": "Lunch - Beverages"
+   },
+   {
+    "name": "Tea Forte",
+    "description": "",
+    "price": "$3.00",
+    "section": "Lunch - Beverages"
+   },
+   {
+    "name": "Cheese and Charcuterie Board",
+    "description": "Salami, Prosciutto, Capicolla, Bleu Cheese, Humboldt Fog, Manchego, Dijon Mustard, Cornichons, Fig Jam. Served with Mini Baguettes",
+    "price": "$15.50",
+    "section": "Shareables"
+   },
+   {
+    "name": "Fig Flatbread",
+    "description": "Burrata Cheese, Pesto, Prosciutto, Arugula, Balsamic Glaze",
+    "price": "$16.00",
+    "section": "Shareables"
+   },
+   {
+    "name": "Steak Bites",
+    "description": "Balsamic Marinated Tenderloin, Mashed Potatoes, Slow Roasted Tomatoes, Chimichurri Sauce",
+    "price": "$16.25",
+    "section": "Shareables"
+   },
+   {
+    "name": "Ahi Nachos",
+    "description": "Seared Ahi, Crispy Chips, Pico, Avocado Puree, Scallions, Sambal Aioli",
+    "price": "$17.00",
+    "section": "Shareables"
+   },
+   {
+    "name": "Calamari",
+    "description": "With Spicy Tartar Sauce",
+    "price": "$15.00",
+    "section": "Shareables"
+   },
+   {
+    "name": "Crispy Sweet Chili Brussels Sprouts",
+    "description": "With Parmesan Cheese",
+    "price": "$9.25",
+    "section": "Shareables"
+   },
+   {
+    "name": "Crispy Chicken Wings (6)",
+    "description": "Choice of Salt and Pepper, Barbeque, Classic Buffalo Sauce. Served with Ranch",
+    "price": "$11.00",
+    "section": "Shareables"
+   },
+   {
+    "name": "Garlic Parmesan Fries",
+    "description": "",
+    "price": "$6.75",
+    "section": "Shareables"
+   },
+   {
+    "name": "Garlic Parmesan Fries: Add Truffle Oil",
+    "description": "",
+    "price": "$1.00",
+    "section": "Shareables"
+   },
+   {
+    "name": "Steak Fries",
+    "description": "Steak Tips, Queso Blanco, Pico, Chimichurri",
+    "price": "$13.50",
+    "section": "Shareables"
+   },
+   {
+    "name": "Sliders",
+    "description": "Mini Grass Fed Burger Patties, California Sharp Cheddar, Bacon Jam, Garlic Aioli, Garlic Parmesan Fries",
+    "price": "$16.25",
+    "section": "Shareables"
+   },
+   {
+    "name": "Carne Asada Tacos (3)",
+    "description": "Carne Asada, Guacamole, Pico De Gallo, Salsa, Corn Tortillas, Side of Street Corn Salad",
+    "price": "$14.50",
+    "section": "Shareables"
+   },
+   {
+    "name": "Buffalo Crispy Chicken Sandwich",
+    "description": "Cole Slaw, Bleu Cheese Sauce, and Brioche Bun. Served with French Fries",
+    "price": "$19.00",
+    "section": "Plates"
+   },
+   {
+    "name": "Fish and Chips",
+    "description": "Torero Beer Battered Fish, Crispy Old Bay Potatoes, House Tartar Sauce, and Grilled Lemon",
+    "price": "$19.50",
+    "section": "Plates"
+   },
+   {
+    "name": "Dot Cake",
+    "description": "Vanilla Cake, Buttercream, topped with Nonpareils",
+    "price": "$7.75",
+    "section": "Dinner - Desserts"
+   },
+   {
+    "name": "Triple Chocolate Brownie",
+    "description": "Coffee Ice Cream and Caramel Drizzle",
+    "price": "$8.25",
+    "section": "Dinner - Desserts"
+   },
+   {
+    "name": "Seasonal Beverage",
+    "description": "",
+    "price": "$3.50",
+    "section": "Dinner - Beverages"
+   },
+   {
+    "name": "Espresso",
+    "description": "",
+    "price": "$3.75",
+    "section": "Dinner - Beverages"
+   },
+   {
+    "name": "Double Espresso",
+    "description": "",
+    "price": "$5.75",
+    "section": "Dinner - Beverages"
+   },
+   {
+    "name": "Americano",
+    "description": "",
+    "price": "$3.75",
+    "section": "Dinner - Beverages"
+   },
+   {
+    "name": "Cappuccino",
+    "description": "",
+    "price": "$5.75",
+    "section": "Dinner - Beverages"
+   },
+   {
+    "name": "Latte",
+    "description": "",
+    "price": "$5.75",
+    "section": "Dinner - Beverages"
+   },
+   {
+    "name": "Flavored Latte",
+    "description": "",
+    "price": "$6.25",
+    "section": "Dinner - Beverages"
+   },
+   {
+    "name": "Local Draft Beer (12oz)",
+    "description": "Price per pour; taps include Hopnonymous Torero Blonde Ale, Torero West Coast IPA, Leaving without Saying Goodbye UK & Irish Ale, Stone Buenaveza Salt & Lime Lager, Stone Hazy IPA, Coronado Orange Ave Wit, Mother Earth Cali Creamin' Vanilla Cream Ale, JuneShine P.O.G. Hard Kombucha, Julian Hard Cider",
+    "price": "$7.00",
+    "section": "Beer"
+   },
+   {
+    "name": "Local Draft Beer (16oz)",
+    "description": "",
+    "price": "$8.00",
+    "section": "Beer"
+   },
+   {
+    "name": "Local Draft Beer (Pitcher)",
+    "description": "",
+    "price": "$24.00",
+    "section": "Beer"
+   },
+   {
+    "name": "Coronado Salty Crew Blonde Ale (12oz can)",
+    "description": "",
+    "price": "$6.00",
+    "section": "Beer - Bottled & Canned"
+   },
+   {
+    "name": "Coronado Weekend Vibes IPA (16oz can)",
+    "description": "",
+    "price": "$7.00",
+    "section": "Beer - Bottled & Canned"
+   },
+   {
+    "name": "Maui Brewing Coconut Hiwa Porter (12oz can)",
+    "description": "",
+    "price": "$6.00",
+    "section": "Beer - Bottled & Canned"
+   },
+   {
+    "name": "Torero Punch (Longball x USD Craft Cocktail)",
+    "description": "Hibiscus and Pineapple",
+    "price": "$9.00",
+    "section": "Beer - Bottled & Canned"
+   },
+   {
+    "name": "Torero Mule (Longball x USD Craft Cocktail)",
+    "description": "Natural Ginger Tea, Grape and Lime",
+    "price": "$9.00",
+    "section": "Beer - Bottled & Canned"
+   },
+   {
+    "name": "Pizza Port Swami's India Pale Ale",
+    "description": "",
+    "price": "$7.00",
+    "section": "Beer - Bottled & Canned"
+   },
+   {
+    "name": "Pighin Pinot Grigio (glass)",
+    "description": "Friuli-Venezia Giulia, Italy",
+    "price": "$11.00",
+    "section": "Wine - By the Glass"
+   },
+   {
+    "name": "Kim Crawford Sauvignon Blanc (glass)",
+    "description": "Marlborough, New Zealand",
+    "price": "$12.00",
+    "section": "Wine - By the Glass"
+   },
+   {
+    "name": "Ruffino Prosecco (glass)",
+    "description": "Italy",
+    "price": "$10.00",
+    "section": "Wine - By the Glass"
+   },
+   {
+    "name": "CK Mondavi Chardonnay (glass)",
+    "description": "Napa, CA",
+    "price": "$9.00",
+    "section": "Wine - By the Glass"
+   },
+   {
+    "name": "Charles Krug Chardonnay (glass)",
+    "description": "Carneros, CA",
+    "price": "$12.00",
+    "section": "Wine - By the Glass"
+   },
+   {
+    "name": "Whispering Angel Rose (glass)",
+    "description": "Caves d'Esclans Sacha Lichine, Cotes de Provence, France",
+    "price": "$10.00",
+    "section": "Wine - By the Glass"
+   },
+   {
+    "name": "St. Francis Pinot Noir (glass)",
+    "description": "Sonoma County, CA",
+    "price": "$13.00",
+    "section": "Wine - By the Glass"
+   },
+   {
+    "name": "French Blue Bordeaux Rouge Bien Ensemble (glass)",
+    "description": "France",
+    "price": "$10.00",
+    "section": "Wine - By the Glass"
+   },
+   {
+    "name": "Sequoia Grove Cabernet Sauvignon (glass)",
+    "description": "Napa Valley, CA",
+    "price": "$12.00",
+    "section": "Wine - By the Glass"
+   },
+   {
+    "name": "Daou Cabernet Sauvignon (glass)",
+    "description": "Alexander Valley, CA",
+    "price": "$15.00",
+    "section": "Wine - By the Glass"
+   },
+   {
+    "name": "Francis Coppola Sofia Brut Rose (bottle)",
+    "description": "Monterey County, CA",
+    "price": "$31.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Juve y Camps Reserva de la Familia Gran Reserva Cava (bottle)",
+    "description": "Spain",
+    "price": "$28.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "GH Mumm Brut (bottle)",
+    "description": "Napa, CA",
+    "price": "$30.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Nicolas Feuillatte Brut Champagne (bottle)",
+    "description": "France",
+    "price": "$57.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Taittinger La Francaise Brut Champagne (bottle)",
+    "description": "France",
+    "price": "$75.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Pighin Pinot Grigio (bottle)",
+    "description": "Pavia Di Udine, Italy",
+    "price": "$23.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Villa Pereire Bordeaux Blanc (bottle)",
+    "description": "France",
+    "price": "$30.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "BounGuido Malvasia Bianca (bottle)",
+    "description": "Suisun Valley",
+    "price": "$55.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Sanford and Benedict Viognier (bottle)",
+    "description": "Sta. Rita Hill, CA",
+    "price": "$50.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Frank Family Chardonnay (bottle)",
+    "description": "Napa Valley (Treasury Wine Estates)",
+    "price": "$38.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Resonance Pinot Noir (bottle)",
+    "description": "Willamette Valley, Oregon",
+    "price": "$40.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "St. Francis Chardonnay (bottle)",
+    "description": "Sonoma, CA",
+    "price": "$25.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Beaulieu Vineyard Chardonnay (bottle)",
+    "description": "Carneros, CA",
+    "price": "$45.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Ferrari Carano Chardonnay (bottle)",
+    "description": "Anderson Valley, CA",
+    "price": "$30.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Whitehall Lane Chardonnay (bottle)",
+    "description": "Carneros, CA",
+    "price": "$35.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Daou Chardonnay (bottle)",
+    "description": "Alexander Valley, CA",
+    "price": "$38.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "George Duboeuf Pouilly-Fuisse (bottle)",
+    "description": "France",
+    "price": "$53.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Daou Rose (bottle)",
+    "description": "Paso Robles, CA",
+    "price": "$44.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Gundlach Bundschu Rhinefarm Rose (bottle)",
+    "description": "CA",
+    "price": "$40.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Ferrari Carano Pinot Noir (bottle)",
+    "description": "Anderson Valley, CA",
+    "price": "$30.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Francis Coppola Diamond Collection Pinot Noir (bottle)",
+    "description": "CA",
+    "price": "$40.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Backstage Pinot Noir (bottle)",
+    "description": "Napa Valley",
+    "price": "$60.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Rochioli Pinot Noir (bottle)",
+    "description": "Russian River, CA",
+    "price": "$112.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Ruffino Chianti Classico Reserva (bottle)",
+    "description": "Italy",
+    "price": "$29.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Sterling Vineyard Merlot (bottle)",
+    "description": "Napa, CA",
+    "price": "$38.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Beaulieu Vineyard Merlot (bottle)",
+    "description": "Napa, CA",
+    "price": "$48.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "St. Supery Merlot (bottle)",
+    "description": "Rutherford, CA",
+    "price": "$60.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Fontanafredda Silver Label Barolo DOCG (bottle)",
+    "description": "Italy",
+    "price": "$56.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "La Posta by La Pizzella Family Malbec (bottle)",
+    "description": "Mendoza, Argentina",
+    "price": "$40.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Beaulieu Vineyard Reserve Cabernet Sauvignon (bottle)",
+    "description": "Rutherford, CA",
+    "price": "$70.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Hall Family Cabernet Sauvignon (bottle)",
+    "description": "Napa, CA",
+    "price": "$80.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Stags Leap Cabernet Sauvignon (bottle)",
+    "description": "Napa, CA",
+    "price": "$79.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Backstage by Mountain View Winery Cabernet Sauvignon (bottle)",
+    "description": "Napa, CA",
+    "price": "$86.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Neyers Left Bank Red Blend (bottle)",
+    "description": "Napa, CA",
+    "price": "$58.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "Saldo by Prisoner Red Blend (bottle)",
+    "description": "Oakville, CA",
+    "price": "$65.00",
+    "section": "Wine - By the Bottle"
+   },
+   {
+    "name": "St. Francis Reserve Zinfandel (bottle)",
+    "description": "Dry Creek Valley, CA",
+    "price": "$70.00",
+    "section": "Wine - By the Bottle"
+   }
+  ]
+ },
+ {
+  "restaurantId": "3195",
+  "name": "Nacho Taco Shop",
+  "sourceUrl": "https://www.allmenus.com/ca/san-marcos/713627-nachos/menu/",
+  "confidence": "low",
+  "blocked": "Address confirmed: Yelp and restaurantguru both list 'Nachos Taco Shop' at 681 S Rancho Santa Fe Rd, San Marcos, CA (restaurantguru URL slug says 'San-Diego' but its own address/phone match San Marcos exactly, phone -0797). No independent restaurant website. allmenus.com carries a full per-item priced menu (schema.org JSON-LD, 15 sections, ~70 items -- Hamburgers, Tortas, Tacos, Burritos, Enchiladas, A La Carte, Specials, Combinations, Side Orders, Desserts, Drinks) but the price level is implausible for 2026: full combination plates (protein + rice + beans + tortillas) at $7.49-$8.85, a 4oz side of guacamole at $0.95, soda at $1.30, coffee at $1.39, tacos at $2.20-$2.85 -- consistent with a listing dating to roughly 2010-2012, not current pricing, per the playbook's price-level staleness rule. menutoeat.com's page for this restaurant is actually a 'Restaurant Not Found' 404 -- its Next.js RSC payload does contain dollar figures ($8.40, $6.95, etc.) but they belong to an unrelated 'ThePriceBoard' placeholder widget on the 404 page itself, confirmed by reading the surrounding JSON (children:'Restaurant Not Found' / 'The restaurant you're looking for doesn't exist'), not to this business -- correctly excluded per the strip-tags-and-verify-it's-your-restaurant rule. Uber Eats has a storefront ('Nacho's Taco Shop & Seafood') but redirects to a bot-detection challenge page (def.uber.com/challenge) -- needs a browser. zmenu.com CAPTCHA-gates both direct curl and the jina.ai reader -- needs a browser. No DoorDash storefront found for this specific San Marcos location (a DoorDash 'Nacho's Nachos Taco Shop' exists but it's a different location, in Santee -- not used, per the one-branch's-menu-is-not-another-branch's-id rule). Needs: a browser on the Uber Eats storefront (or zmenu) to get current per-item prices; the allmenus data is real but too old to trust.",
+  "notes": "A real, structured per-item menu exists (allmenus) but its price level reads as roughly 15 years stale; not used as the priced source.",
+  "dishes": []
+ }
+]

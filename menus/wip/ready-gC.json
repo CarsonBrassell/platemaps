@@ -1,0 +1,1001 @@
+[
+  {
+    "restaurantId": "4315",
+    "name": "Pho Fusion",
+    "sourceUrl": "https://order.online/store/pho-fusion-san-diego-62525",
+    "confidence": "medium",
+    "notes": "order.online (DoorDash white-label) store page for the Clairemont Mesa Blvd location (address confirmed in RSC payload, phone matches search results). The listed website URL (order.online/business/pho-fusion-39900) resolved to a stale/empty 'near me' fallback page with no storeId, so the working store slug (pho-fusion-san-diego-62525) was found via web search instead. Full RSC flight payload with 'Full Menu' book, 15 categories, 165 priced items; 'Most Ordered' carousel of 10 items is a pure duplicate subset (0 unique items), dropped. Markup test: raw prices already land on nice endings (.00/.25/.50/.75/.95/.99) 59% of the time (98/165), and no divisor (1.04, 1/0.96, 1.10, 1.15, 1.17, 1.20, 1.25, 1.30) improves on that fraction, so this reads as genuine restaurant pricing (many pho/rice items priced at odd cents like $13.85, $9.55) rather than a delivery markup. Filed as medium per tier-3 white-label ladder position, not tier-1.",
+    "dishes": [
+      {
+        "name": "1. Dac Biet (Large Only)",
+        "description": "Rare steak, brisket, flank, tendon, marbled flank, tripe.",
+        "price": "$16.50",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "2. Tai",
+        "description": "Rare steak.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "3. Tai, Chin",
+        "description": "Rare steak, brisket.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "4. Chin",
+        "description": "Brisket.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "5. Tai, Nam",
+        "description": "Rare steak, flank.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "6. Tai, Sach",
+        "description": "Rare steak, tripe.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "7. Tai, Nam, Chin",
+        "description": "Rare steak, flank, brisket.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "8. Tai, Nam, Gau",
+        "description": "Rare steak, flank, marbled flank.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "9. Chin, Nam",
+        "description": "Brisket, flank.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "10. Tai, Gan",
+        "description": "Rare steak, tendon.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "11. Tai, Nam, Gan",
+        "description": "Rare steak, flank, tendon.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "12. Tai, Nam, Gan, Sach",
+        "description": "Rare steak, flank, tendon, tripe.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "13. Tai, Nam, Gau, Gan, Sach",
+        "description": "Rare steak, flank, marbled flank, tendon, tripe.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "14. Chin, Nam, Gau, Gan, Sach",
+        "description": "Brisket, flank, marbled flank, tendon, tripe.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "15. Chin, Nam, Gau, Gan",
+        "description": "Brisket, flank, tendon, marbled flank.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "16. Bo Vien",
+        "description": "Beef meatballs.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "17. Tai, Sate (Spicy)",
+        "description": "Rare steak, sate pepper.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "18. Ga",
+        "description": "Chicken.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "19. Ga, Sate (Spicy)",
+        "description": "Chicken, sate pepper.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "20. Tom",
+        "description": "Shrimp.",
+        "price": "$14.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "21. Veggies (vegan)",
+        "description": "Broccoli, cabbage, carrots.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "22. Dau Hu (vegan) ",
+        "description": "Tofu.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "23. Thit Nuong",
+        "description": "Grilled pork.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "24. Ga Nuong",
+        "description": "Grilled chicken.",
+        "price": "$13.85",
+        "section": "Phở (Noodle Soup)"
+      },
+      {
+        "name": "25. Egg in Beef Soup",
+        "description": "",
+        "price": "$6.25",
+        "section": "Khai Vị (Appetizers)"
+      },
+      {
+        "name": "26. Chả Giò Xà Lách (4)",
+        "description": "4 Pork egg rolls (fried) served with fresh greens.",
+        "price": "$8.95",
+        "section": "Khai Vị (Appetizers)"
+      },
+      {
+        "name": "27. Chả Giò Xà Lách (6)",
+        "description": "6 Pork egg rolls (fried) served with fresh greens.",
+        "price": "$11.95",
+        "section": "Khai Vị (Appetizers)"
+      },
+      {
+        "name": "29. Gà Chiên Lăn Bột (Cay)",
+        "description": "Spicy. Popcorn chicken.",
+        "price": "$8.95",
+        "section": "Khai Vị (Appetizers)"
+      },
+      {
+        "name": "30. Tôm Chiên Lăn Bột (Cay)",
+        "description": "Spicy. Popcorn shrimp.",
+        "price": "$9.55",
+        "section": "Khai Vị (Appetizers)"
+      },
+      {
+        "name": "31. Dumpling Chicken",
+        "description": "Choice: steamed or fried.",
+        "price": "$7.95",
+        "section": "Khai Vị (Appetizers)"
+      },
+      {
+        "name": "32. Cream Cheese Wontons",
+        "description": "Spicy.",
+        "price": "$7.95",
+        "section": "Khai Vị (Appetizers)"
+      },
+      {
+        "name": "35. Thịt Nướng",
+        "description": "Grilled pork.",
+        "price": "$9.55",
+        "section": "Spring Rolls (2 Fresh)"
+      },
+      {
+        "name": "36. Gà Nướng",
+        "description": "Grilled chicken.",
+        "price": "$9.55",
+        "section": "Spring Rolls (2 Fresh)"
+      },
+      {
+        "name": "37. Bò Nướng",
+        "description": "Grilled beef.",
+        "price": "$9.95",
+        "section": "Spring Rolls (2 Fresh)"
+      },
+      {
+        "name": "38. Chạo Tôm",
+        "description": "Grilled sugarcane ground shrimp.",
+        "price": "$9.95",
+        "section": "Spring Rolls (2 Fresh)"
+      },
+      {
+        "name": "40. Thịt Nướng",
+        "description": "Grilled pork strips.",
+        "price": "$14.95",
+        "section": "Bún (Vermicelli Noodle)"
+      },
+      {
+        "name": "41. Thịt Nướng, Chả Giò",
+        "description": "Grilled pork strips, egg rolls.",
+        "price": "$15.75",
+        "section": "Bún (Vermicelli Noodle)"
+      },
+      {
+        "name": "43. Gà Nướng",
+        "description": "Grilled chicken fillet.",
+        "price": "$14.95",
+        "section": "Bún (Vermicelli Noodle)"
+      },
+      {
+        "name": "44. Gà Nướng, Chả Giò",
+        "description": "Grilled chicken fillet, egg rolls.",
+        "price": "$15.75",
+        "section": "Bún (Vermicelli Noodle)"
+      },
+      {
+        "name": "45. Bò Nướng",
+        "description": "Grilled beef strips.",
+        "price": "$15.95",
+        "section": "Bún (Vermicelli Noodle)"
+      },
+      {
+        "name": "46. Chạo Tôm, Chả Giò",
+        "description": "Grilled sugarcane ground shrimp, egg rolls.",
+        "price": "$15.95",
+        "section": "Bún (Vermicelli Noodle)"
+      },
+      {
+        "name": "47. Tôm Nướng",
+        "description": "Grilled shrimp.",
+        "price": "$15.75",
+        "section": "Bún (Vermicelli Noodle)"
+      },
+      {
+        "name": "50. Thịt Nướng, Trứng Chiên",
+        "description": "Grilled pork strips, fried egg.",
+        "price": "$14.55",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "52. Sườn Nướng, Trứng Chiên",
+        "description": "Grilled pork chop (boneless), fried egg.",
+        "price": "$14.55",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "54. Gà Nướng, Trứng Chiên",
+        "description": "Grilled chicken fillet, fried egg.",
+        "price": "$14.55",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "55. Gà Chiên Lăn Bột (Cay)",
+        "description": "Spicy. Popcorn chicken.",
+        "price": "$14.55",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "56. Bò Nướng",
+        "description": "Grilled beef strips.",
+        "price": "$14.95",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "57. Sườn Đại Hàn",
+        "description": "Grilled Korean ribs.",
+        "price": "$16.55",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "58. Bò Kho",
+        "description": "Vietnamese beef stew.",
+        "price": "$15.95",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "59. Cà Ri Gà (Cay)",
+        "description": "Spicy. Chicken curry.",
+        "price": "$14.95",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "60. Cá Salmon",
+        "description": "Grilled salmon.",
+        "price": "$16.55",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "61. Tôm Chiên Lăn Bột (Cay)",
+        "description": "Spicy. Popcorn shrimp.",
+        "price": "$14.95",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "62. Tôm Nướng",
+        "description": "Grilled shrimp.",
+        "price": "$14.55",
+        "section": "Cơm (Rice Plates)"
+      },
+      {
+        "name": "65. Thịt Nướng",
+        "description": "Grilled pork.",
+        "price": "$9.95",
+        "section": "Bánh Mì (Vietnamese Sandwiches)"
+      },
+      {
+        "name": "66. Gà Nướng",
+        "description": "Grilled chicken.",
+        "price": "$9.95",
+        "section": "Bánh Mì (Vietnamese Sandwiches)"
+      },
+      {
+        "name": "67. Bò Nướng",
+        "description": "Grilled beef.",
+        "price": "$10.25",
+        "section": "Bánh Mì (Vietnamese Sandwiches)"
+      },
+      {
+        "name": "68. Trứng Chiên",
+        "description": "Egg.",
+        "price": "$9.95",
+        "section": "Bánh Mì (Vietnamese Sandwiches)"
+      },
+      {
+        "name": "70. Cơm Bò Xào",
+        "description": "Beef, bell peppers, onions stir fry with steamed rice.",
+        "price": "$15.55",
+        "section": "Đặc Biệt (Specialty Items)"
+      },
+      {
+        "name": "71. Cơm Bò Bông Cải Xanh",
+        "description": "Beef and broccoli with steamed rice.",
+        "price": "$15.55",
+        "section": "Đặc Biệt (Specialty Items)"
+      },
+      {
+        "name": "72. Bún Cà Ri Gà (Cay)",
+        "description": "Spicy. Chicken curry vermicelli noodle.",
+        "price": "$14.95",
+        "section": "Đặc Biệt (Specialty Items)"
+      },
+      {
+        "name": "73. Hủ Tiếu Bò Kho",
+        "description": "Vietnamese beef stew rice noodle.",
+        "price": "$15.95",
+        "section": "Đặc Biệt (Specialty Items)"
+      },
+      {
+        "name": "74. Cơm Gà Teriyaki",
+        "description": "Teriyaki chicken, steamed veggies with steamed rice.",
+        "price": "$14.55",
+        "section": "Đặc Biệt (Specialty Items)"
+      },
+      {
+        "name": "75. Cơm Cá Teriyaki Salmon",
+        "description": "Teriyaki salmon, steamed veggies with steamed rice.",
+        "price": "$16.55",
+        "section": "Đặc Biệt (Specialty Items)"
+      },
+      {
+        "name": "77. Cơm Chiên",
+        "description": "Fried rice (no meat).",
+        "price": "$8.55",
+        "section": "Đặc Biệt (Specialty Items)"
+      },
+      {
+        "name": "78. Cơm Chiên Đặc Biệt",
+        "description": "House fried rice with beef, chicken and shrimp.",
+        "price": "$14.95",
+        "section": "Đặc Biệt (Specialty Items)"
+      },
+      {
+        "name": "80. Chả Giò Chay Xà Lách (4)",
+        "description": "4 Veggie egg rolls (fried) served with fresh greens.",
+        "price": "$8.95",
+        "section": "Đồ Chay (Vegan Items)"
+      },
+      {
+        "name": "81. Chả Giò Chay Xà Lách (6)",
+        "description": "6 Veggie egg rolls (fried) served with fresh greens.",
+        "price": "$11.95",
+        "section": "Đồ Chay (Vegan Items)"
+      },
+      {
+        "name": "82. Đậu Hũ Chiên",
+        "description": "Fried tofu.",
+        "price": "$6.95",
+        "section": "Đồ Chay (Vegan Items)"
+      },
+      {
+        "name": "83. Bì Chay Cuốn (2 Fresh)",
+        "description": "Veggie tofu mix spring roll.",
+        "price": "$9.95",
+        "section": "Đồ Chay (Vegan Items)"
+      },
+      {
+        "name": "84. Cơm Đậu Hũ Chiên",
+        "description": "Fried tofu with steamed rice.",
+        "price": "$14.55",
+        "section": "Đồ Chay (Vegan Items)"
+      },
+      {
+        "name": "85. Bún Bì Chay Chả Giò Chay",
+        "description": "Rice vermicelli with veggie tofu mix and veggie egg rolls.",
+        "price": "$15.75",
+        "section": "Đồ Chay (Vegan Items)"
+      },
+      {
+        "name": "88. Bánh Mì Bì Chay",
+        "description": "Veggie tofu mix Vietnamese sandwich.",
+        "price": "$10.25",
+        "section": "Đồ Chay (Vegan Items)"
+      },
+      {
+        "name": "89. Cơm Đậu Hũ Xào Rau Cải",
+        "description": "Teriyaki tofu and veggies with steamed rice.",
+        "price": "$14.95",
+        "section": "Đồ Chay (Vegan Items)"
+      },
+      {
+        "name": "Chuối Chiên",
+        "description": "Banana rolls fried with whipped cream and caramel.",
+        "price": "$8.95",
+        "section": "Tráng Miệng (Desserts)"
+      },
+      {
+        "name": "Táo Quế Chiên (6)",
+        "description": "Apple cinnamon rolls fried with whipped cream and caramel.",
+        "price": "$8.95",
+        "section": "Tráng Miệng (Desserts)"
+      },
+      {
+        "name": "Sinh Tố Bơ or Sinh Tố Mít",
+        "description": "Avocado smoothie or jackfruit smoothie.",
+        "price": "$7.95",
+        "section": "Tráng Miệng (Desserts)"
+      },
+      {
+        "name": "Strawberry* Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Mango* Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Peach* Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Pineapple Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Green Apple Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Lychee Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Watermelon* Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Cantaloupe Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Blackberry Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Cherry* Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Almond* Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Vanilla* Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Piña Colada Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Lime* Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Kiwi Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Raspberry* Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Passion Fruit Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Pink Lemonade Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Blueberry Slush",
+        "description": "",
+        "price": "$6.95",
+        "section": "Slushie"
+      },
+      {
+        "name": "Taro* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Passion Fruit Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Peach* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Blackberry Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Banana* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Piña Colada Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Almond* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Blueberry Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Cookies N' Cream Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Chocolate* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Strawberry* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Green Apple Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Mango* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Vanilla* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Honeydew Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Mocha* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Coffee* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Kiwi Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Pineapple Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Coconut* Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Cantaloupe Snow",
+        "description": "",
+        "price": "$7.25",
+        "section": "Snow Bubble (Smoothie)"
+      },
+      {
+        "name": "Mango* Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Lychee Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Peach* Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Green Apple Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Almond* Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Lime* Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Peppermint Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Cantaloupe Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Strawberry* Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Coconut* Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Vanilla* Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Cherry* Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Passion Fruit Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Kiwi Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Pineapple Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Raspberry* Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Ginger Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Black Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Jasmine Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tea (Hot or Iced)"
+      },
+      {
+        "name": "Thai Tea Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Coffee* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Blackberry Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Cherry* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Lime* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Strawberry* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Peach* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Pineapple Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Passion Fruit Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Mango*Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Cantaloupe Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Jasmine* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Hong Kong Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Taro* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Almond* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Coconut* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Raspberry* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Green Apple Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Honeydew* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Vanilla* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Peppermint* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Chocolate* Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Ginger Milk Tea",
+        "description": "",
+        "price": "$6.55",
+        "section": "Milk Tea (Hot or Iced)"
+      },
+      {
+        "name": "Vietnamese Coffee",
+        "description": "Iced Vietnamese coffee.",
+        "price": "$6.55",
+        "section": "Other Beverages"
+      },
+      {
+        "name": "Thai Coffee",
+        "description": "Iced Thai coffee.",
+        "price": "$6.55",
+        "section": "Other Beverages"
+      },
+      {
+        "name": "Watermelon Juice",
+        "description": "Watermelon juice.",
+        "price": "$5.55",
+        "section": "Other Beverages"
+      },
+      {
+        "name": "Iced / Hot Chai",
+        "description": "Vanilla or chocolate.",
+        "price": "$6.55",
+        "section": "Other Beverages"
+      },
+      {
+        "name": "Iced Lemonade",
+        "description": "",
+        "price": "$5.55",
+        "section": "Other Beverages"
+      },
+      {
+        "name": "Soda",
+        "description": "Soda.",
+        "price": "$3.95",
+        "section": "Other Beverages"
+      },
+      {
+        "name": "Red Bull Slush (With Fruit Flavor)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Fusion Pick Me Up"
+      }
+    ]
+  }
+]

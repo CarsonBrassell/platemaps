@@ -1,0 +1,1439 @@
+{
+  "restaurantId": "3564",
+  "name": "Señor Burro",
+  "sourceUrl": "https://senorburro.smartonlineorder.com/",
+  "confidence": "high",
+  "crossCheckedAgainst": "",
+  "blocked": "",
+  "notes": "Listed website (seorburrogo.site) does not resolve (DNS failure) - a dead/lapsed domain, not a hijack (no redirect target observed). Found the restaurant's own Clover/WordPress ordering platform via search: senorburro.smartonlineorder.com, address-matched (8960 Fletcher Pkwy Ste B, La Mesa). Read all 16 categories via /wp-json/moo-clover/v1/categories and /categories/{uuid}/items. Markup test run on the 237 non-round prices: no divisor (1.04/1.1/1.15/1.2/1.25) clears 25%, so this reads as real POS pricing, not a marked-up channel. Dropped 56 $0 items (free-with-order sides like beans/rice/salsa/sour cream - genuinely no price, confirmed in raw JSON). One empty category ('Extra', 0 items, confirmed via item count) excluded. 'Baja Bowls' and 'Combination Plates' categories on this platform duplicate several items already listed under 'Plates' and 'Fries & Tortas' respectively at identical prices - those duplicates were dropped, keeping only the bowl/combo-specific items. 'Party Trays' section (large-format catering trays, $31-$83) is the restaurant's own bulk-order menu, included as legitimate priced items.",
+  "dishes": [
+    {
+      "name": "Flautas",
+      "description": "",
+      "price": "$10.39",
+      "section": "A La Carte"
+    },
+    {
+      "name": "1 Enchilada A La Carte",
+      "description": "",
+      "price": "$5.78",
+      "section": "A La Carte"
+    },
+    {
+      "name": "Birria caldo (soup)",
+      "description": "",
+      "price": "$14.61",
+      "section": "A La Carte"
+    },
+    {
+      "name": "Taco Salad",
+      "description": "",
+      "price": "$15.59",
+      "section": "A La Carte"
+    },
+    {
+      "name": "Menudo",
+      "description": "",
+      "price": "$14.61",
+      "section": "A La Carte"
+    },
+    {
+      "name": "Chile Relleno A La Carte",
+      "description": "",
+      "price": "$7.69",
+      "section": "A La Carte"
+    },
+    {
+      "name": "Pozole",
+      "description": "",
+      "price": "$14.61",
+      "section": "A La Carte"
+    },
+    {
+      "name": "2 Enchiladas A La Carte",
+      "description": "",
+      "price": "$9.14",
+      "section": "A La Carte"
+    },
+    {
+      "name": "Chimichanga",
+      "description": "fry burrto, cheese, sour cream, guac, pico de gallo, lettuce",
+      "price": "$14.55",
+      "section": "A La Carte"
+    },
+    {
+      "name": "3 Roll De Papa",
+      "description": "",
+      "price": "$7.33",
+      "section": "Tacos"
+    },
+    {
+      "name": "Regular Fish Taco",
+      "description": "",
+      "price": "$6.75",
+      "section": "Tacos"
+    },
+    {
+      "name": "Dorado Chicken Taco",
+      "description": "Crispy taco filled with seasoned chicken, typically includes lettuce, cheese, and a blend of Mexican crema and salsa for a traditional taste.",
+      "price": "$7.79",
+      "section": "Tacos"
+    },
+    {
+      "name": "5 rolled Taco",
+      "description": "5 Roll Taco: Choice of chicken or beef, wrapped in soft tortillas.",
+      "price": "$11.43",
+      "section": "Tacos"
+    },
+    {
+      "name": "5 Loco Roll",
+      "description": "",
+      "price": "$12.46",
+      "section": "Tacos"
+    },
+    {
+      "name": "Regular tacos",
+      "description": "",
+      "price": "$7.79",
+      "section": "Tacos"
+    },
+    {
+      "name": "5 Potato Roll Tacos",
+      "description": "",
+      "price": "$9.88",
+      "section": "Tacos"
+    },
+    {
+      "name": "Regular Birria",
+      "description": "",
+      "price": "$7.79",
+      "section": "Tacos"
+    },
+    {
+      "name": "Pollo Adobado Mini Street Tacos",
+      "description": "",
+      "price": "$3.73",
+      "section": "Tacos"
+    },
+    {
+      "name": "Shrimp Taco",
+      "description": "Delicate shrimp nestled in a soft taco shell with fresh salsa and other toppings.",
+      "price": "$6.75",
+      "section": "Tacos"
+    },
+    {
+      "name": "Pollo Asado Mini Street Taco",
+      "description": "",
+      "price": "$3.73",
+      "section": "Tacos"
+    },
+    {
+      "name": "Adobada Mini Street Taco",
+      "description": "",
+      "price": "$3.73",
+      "section": "Tacos"
+    },
+    {
+      "name": "Cabeza Mini Street Tacos",
+      "description": "",
+      "price": "$3.73",
+      "section": "Tacos"
+    },
+    {
+      "name": "Potato Taco",
+      "description": "Cabbage, pico, sour cream & cotija cheese.",
+      "price": "$4.67",
+      "section": "Tacos"
+    },
+    {
+      "name": "Shredded Beef Taco",
+      "description": "Shredded beef, lettuce, and cheese served in a hard shell corn tortilla.",
+      "price": "$7.79",
+      "section": "Tacos"
+    },
+    {
+      "name": "Carnitas Mini Street Tacos",
+      "description": "",
+      "price": "$3.73",
+      "section": "Tacos"
+    },
+    {
+      "name": "2 Mini Taco Plate",
+      "description": "",
+      "price": "$11.43",
+      "section": "Tacos"
+    },
+    {
+      "name": "Baja Fish Mini",
+      "description": "Beer-battered fish, served on a small corn tortilla, typically includes cabbage, a creamy sauce, and a touch of pico de gallo.",
+      "price": "$2.59",
+      "section": "Tacos"
+    },
+    {
+      "name": "3 Loco Roll",
+      "description": "",
+      "price": "$9.81",
+      "section": "Tacos"
+    },
+    {
+      "name": "Carne Asada Mini Street Taco",
+      "description": "",
+      "price": "$3.73",
+      "section": "Tacos"
+    },
+    {
+      "name": "Birria Mini Street Taco",
+      "description": "",
+      "price": "$3.73",
+      "section": "Tacos"
+    },
+    {
+      "name": "3 Rolled Taco",
+      "description": "",
+      "price": "$7.79",
+      "section": "Tacos"
+    },
+    {
+      "name": "Pollo Adobado Torta",
+      "description": "",
+      "price": "$13.51",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "La Torta",
+      "description": "",
+      "price": "$16.17",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Chipottle Fries",
+      "description": "",
+      "price": "$13.82",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Break fries",
+      "description": "",
+      "price": "$16.63",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "1/2 Fries",
+      "description": "Half portion of crispy golden strips of deliciousness served hot and seasoned to perfection.",
+      "price": "$12.99",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Carne Asada Fries",
+      "description": "Fries, guacamole cheese, sour cream, pico de gallo, & carne asada",
+      "price": "$18.38",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Pollo adobado fries",
+      "description": "Crispy fries topped with marinated pollo adobado, typically includes guacamole, sour cream, and cheese.",
+      "price": "$14.92",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Special Torta",
+      "description": "",
+      "price": "$14.55",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Carne Asada Torta",
+      "description": "Lettuce, tomato, onion, avocado & chipotle sauce.",
+      "price": "$14.55",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Adobada Fries",
+      "description": "Fríes. Cheese. Guacamole. Pico de gallo. Adobada (pastor)",
+      "price": "$14.92",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "1/2 Campechana Fries",
+      "description": "",
+      "price": "$11.74",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Torta hawaiana",
+      "description": "Torta Hawaiana.",
+      "price": "$12.99",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Carnitas Torta",
+      "description": "",
+      "price": "$13.51",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Milanesa Torta",
+      "description": "",
+      "price": "$11.43",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Birria Torta",
+      "description": "",
+      "price": "$13.51",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "1/2 Veggie Fries",
+      "description": "",
+      "price": "$9.66",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Nacho Fries",
+      "description": "",
+      "price": "$17.00",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Surf & Turf Fries",
+      "description": "seasoned fries topped with carne asada, shrimp, guacamole, pico de gallo, a blend of cheeses, and creamy chipotle sauce.",
+      "price": "$19.71",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Campechana Fries",
+      "description": "Fries topped with choice of carne asado, pollo asado, carnitas, adobada, or pollo adobado, served with Mexican cheese blend, avocado, and sour cream.",
+      "price": "$18.67",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Veggies Fries",
+      "description": "",
+      "price": "$12.99",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Carnitas Fries",
+      "description": "French fries topped with carnitas, typically includes refried beans, guacamole, sour cream, and a blend of cheeses.",
+      "price": "$14.92",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Adobada Torta",
+      "description": "Lettuce, avocado, onion, tomato",
+      "price": "$13.51",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "French Fries",
+      "description": "",
+      "price": "$4.13",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Pollo Asado Torta",
+      "description": "Tomato, onion, lettuce, avocado",
+      "price": "$13.51",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Pollo Asado Fries",
+      "description": "fries topped with marinated adobado chicken, typically includes guacamole, sour cream, and cheese.",
+      "price": "$14.92",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "HAMM TORTA",
+      "description": "Ham Onion Tomato Cheese Lettuce Avocado Chiptle Sauce",
+      "price": "$13.50",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Torta cubana",
+      "description": "",
+      "price": "$12.99",
+      "section": "Fries & Tortas"
+    },
+    {
+      "name": "Hash bowl",
+      "description": "Hash browns, eggs, cheese, bacon, sausage, & choice of sauce, sour cream or chipotle",
+      "price": "$11.54",
+      "section": "Breakfast"
+    },
+    {
+      "name": "B-k bowl",
+      "description": "2 eggs, ham, bacon, chipotle or sour cream, jack & cotija cheese.",
+      "price": "$10.47",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Chilaquiles Plate",
+      "description": "",
+      "price": "$12.76",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Chorizo plate",
+      "description": "",
+      "price": "$11.95",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Chorizo torta",
+      "description": "",
+      "price": "$11.49",
+      "section": "Breakfast"
+    },
+    {
+      "name": "The Hash Brown",
+      "description": "",
+      "price": "$11.52",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Chilaquiles Burrito",
+      "description": "",
+      "price": "$10.92",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Break #4",
+      "description": "Fries, beans, eggs & cheese",
+      "price": "$8.47",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Big break fast",
+      "description": "",
+      "price": "$16.63",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Machaca",
+      "description": "",
+      "price": "$10.39",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Jessie's Breakfast",
+      "description": "Ham, eggs, beans, sour cream & cheese",
+      "price": "$10.45",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Chorizo",
+      "description": "",
+      "price": "$9.31",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Break #1",
+      "description": "Fresh potatoes, eggs, beans, & cheese",
+      "price": "$8.27",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Soy Chorizo Burr",
+      "description": "",
+      "price": "$9.31",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Machaca torta",
+      "description": "",
+      "price": "$9.83",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Steak & Bacon",
+      "description": "carne asada, bacon, eggs, sour cream & cheese",
+      "price": "$12.95",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Morning Burrito",
+      "description": "Bacon, egg, beans, ham, potatoes & cheese",
+      "price": "$9.85",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Chilaquiles Bowl",
+      "description": "",
+      "price": "$10.35",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Egg & Cheese Burrito",
+      "description": "Scrambled eggs and melted cheese wrapped in a soft flour tortilla.",
+      "price": "$6.82",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Ham & egg plate",
+      "description": "",
+      "price": "$12.99",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Steak & Egg",
+      "description": "Carne asada, eggs, fries & cheese",
+      "price": "$12.64",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Machaca plate",
+      "description": "",
+      "price": "$12.99",
+      "section": "Breakfast"
+    },
+    {
+      "name": "Surf & Turf Burrito",
+      "description": "",
+      "price": "$18.19",
+      "section": "Burritos"
+    },
+    {
+      "name": "Chile Relleno Burrito",
+      "description": "",
+      "price": "$13.50",
+      "section": "Burritos"
+    },
+    {
+      "name": "El Cali Mex Burrito",
+      "description": "",
+      "price": "$15.59",
+      "section": "Burritos"
+    },
+    {
+      "name": "KIDS BEAN CHEESE",
+      "description": "",
+      "price": "$5.19",
+      "section": "Burritos"
+    },
+    {
+      "name": "Bean Burrito",
+      "description": "Homemade refried beans wrapped in a warm flour tortilla.",
+      "price": "$4.77",
+      "section": "Burritos"
+    },
+    {
+      "name": "Fajitas Burrito",
+      "description": "Meat choice, carne asada, shrimp or chicken with guacamole",
+      "price": "$14.12",
+      "section": "Burritos"
+    },
+    {
+      "name": "Fish Burrito",
+      "description": "",
+      "price": "$13.50",
+      "section": "Burritos"
+    },
+    {
+      "name": "Mix Burrito",
+      "description": "",
+      "price": "$13.44",
+      "section": "Burritos"
+    },
+    {
+      "name": "Carne Asada Burrito",
+      "description": "",
+      "price": "$14.72",
+      "section": "Burritos"
+    },
+    {
+      "name": "Milanesa Burrito",
+      "description": "",
+      "price": "$13.50",
+      "section": "Burritos"
+    },
+    {
+      "name": "Senor Burro",
+      "description": "",
+      "price": "$14.72",
+      "section": "Burritos"
+    },
+    {
+      "name": "Bean & Rice",
+      "description": "Refried beans and rice wrapped in a soft flour tortilla.",
+      "price": "$5.19",
+      "section": "Burritos"
+    },
+    {
+      "name": "Pollo Adobada Burrito",
+      "description": "",
+      "price": "$13.50",
+      "section": "Burritos"
+    },
+    {
+      "name": "Shrimp Burrito",
+      "description": "",
+      "price": "$12.46",
+      "section": "Burritos"
+    },
+    {
+      "name": "California Burrito",
+      "description": "",
+      "price": "$16.24",
+      "section": "Burritos"
+    },
+    {
+      "name": "Pollo Asado Burrito",
+      "description": "",
+      "price": "$13.50",
+      "section": "Burritos"
+    },
+    {
+      "name": "Carnitas Burrito",
+      "description": "Carnitas, guacamole & pico de gallo",
+      "price": "$13.50",
+      "section": "Burritos"
+    },
+    {
+      "name": "Hot Chile Rojo Burrito",
+      "description": "",
+      "price": "$11.95",
+      "section": "Burritos"
+    },
+    {
+      "name": "Cali Surf & Turf Burrito",
+      "description": "shrimp, carne asada, rice, pico de gallo, white sauce, doble wrap , 16 inch flour tortilla",
+      "price": "$17.65",
+      "section": "Burritos"
+    },
+    {
+      "name": "Rolo Burro",
+      "description": "",
+      "price": "$14.03",
+      "section": "Burritos"
+    },
+    {
+      "name": "Diablo Shrimp Burrito",
+      "description": "Shrimp, Salsa diabla (Extra Spicy), Rice, & white sauce",
+      "price": "$13.68",
+      "section": "Burritos"
+    },
+    {
+      "name": "Hot Habanero Burrito",
+      "description": "Chicken or steak",
+      "price": "$13.68",
+      "section": "Burritos"
+    },
+    {
+      "name": "Chile Verde Burrito",
+      "description": "Chile verde sauce, choice of pork, steak, chicken, or carnitas. Wrapped in a soft tortilla.\nDescription gener",
+      "price": "$13.50",
+      "section": "Burritos"
+    },
+    {
+      "name": "Bean & Cheese Burrito",
+      "description": "",
+      "price": "$6.43",
+      "section": "Burritos"
+    },
+    {
+      "name": "Bean Rice Chs",
+      "description": "Refried beans and rice wrapped in a soft flour tortilla.",
+      "price": "$7.06",
+      "section": "Burritos"
+    },
+    {
+      "name": "Chipotle Burrito",
+      "description": "",
+      "price": "$13.50",
+      "section": "Burritos"
+    },
+    {
+      "name": "Hot Chettos Burrito",
+      "description": "Hot Cheetos, rice, nacho cheese, and sour cream wrapped in a flour tortilla.",
+      "price": "$15.59",
+      "section": "Burritos"
+    },
+    {
+      "name": "Really Big Buro",
+      "description": "",
+      "price": "$18.04",
+      "section": "Burritos"
+    },
+    {
+      "name": "Birria Burrito",
+      "description": "Shredded birria beef, rice, beans, onions, cilantro, and cheese wrapped in a flour tortilla.",
+      "price": "$14.72",
+      "section": "Burritos"
+    },
+    {
+      "name": "Adobada Burrito",
+      "description": "Porck Adobada, Onion, Cilantro & Guacamole",
+      "price": "$13.50",
+      "section": "Burritos"
+    },
+    {
+      "name": "Veggie Burrito",
+      "description": "",
+      "price": "$13.45",
+      "section": "Burritos"
+    },
+    {
+      "name": "Birria Nachos",
+      "description": "",
+      "price": "$16.21",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "1/2 veggie chips",
+      "description": "Half portion of crispy tortilla chips, typically includes a variety of vegetables.",
+      "price": "$10.08",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Super Nachos",
+      "description": "Nacho cheese, beans, jalapeño peppers, pico de gallo, guacamole, choice of meat.",
+      "price": "$16.41",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Pollo Adobado",
+      "description": "cheese, beans, guacamole, sour cream, pico de gallo",
+      "price": "$14.84",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "1/2 Order Chips",
+      "description": "",
+      "price": "$11.95",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Campechana Chips",
+      "description": "",
+      "price": "$16.63",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Pollo Asado Chips",
+      "description": "Grilled chicken served over crispy tortilla chips, commonly accompanied by guacamole, sour cream, and a blend of cheeses.",
+      "price": "$14.84",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Chips w Guac & Pico",
+      "description": "",
+      "price": "$8.30",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Suft & Turf Chips",
+      "description": "",
+      "price": "$18.29",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Small Bag Chips",
+      "description": "",
+      "price": "$1.34",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Adobada Chips",
+      "description": "tortilla chips topped with marinated pork, typically includes beans, cheese, guacamole, sour cream, and a touch of Mexican salsa.",
+      "price": "$14.84",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Veggies chips",
+      "description": "",
+      "price": "$11.95",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Chips w. guacamole",
+      "description": "Crispy tortilla chips topped with creamy guacamole and a blend of shredded cheeses.",
+      "price": "$8.30",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Carnitas Chips",
+      "description": "Slow-cooked carnitas served over crispy tortilla chips, typically includes guacamole, sour cream, pico de gallo, and a blend of cheeses.",
+      "price": "$14.84",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Carne Asada Chips",
+      "description": "",
+      "price": "$15.59",
+      "section": "Chips & Nachos"
+    },
+    {
+      "name": "Sunkis",
+      "description": "",
+      "price": "$2.28",
+      "section": "Drinks"
+    },
+    {
+      "name": "Botle Water",
+      "description": "",
+      "price": "$2.24",
+      "section": "Drinks"
+    },
+    {
+      "name": "Sangria",
+      "description": "",
+      "price": "$3.32",
+      "section": "Drinks"
+    },
+    {
+      "name": "Jarri Tamarind",
+      "description": "",
+      "price": "$3.32",
+      "section": "Drinks"
+    },
+    {
+      "name": "Mexican Coke",
+      "description": "",
+      "price": "$3.94",
+      "section": "Drinks"
+    },
+    {
+      "name": "Orange Juice",
+      "description": "Sml Orange Juice",
+      "price": "$1.56",
+      "section": "Drinks"
+    },
+    {
+      "name": "Dr Pepper",
+      "description": "",
+      "price": "$2.28",
+      "section": "Drinks"
+    },
+    {
+      "name": "Can Diet Coke",
+      "description": "",
+      "price": "$2.28",
+      "section": "Drinks"
+    },
+    {
+      "name": "Sml Drink",
+      "description": "",
+      "price": "$3.11",
+      "section": "Drinks"
+    },
+    {
+      "name": "Refill",
+      "description": "",
+      "price": "$2.07",
+      "section": "Drinks"
+    },
+    {
+      "name": "Root Beer",
+      "description": "Root Beer.",
+      "price": "$2.15",
+      "section": "Drinks"
+    },
+    {
+      "name": "Can Coke",
+      "description": "",
+      "price": "$2.28",
+      "section": "Drinks"
+    },
+    {
+      "name": "Jarri Pinaple",
+      "description": "",
+      "price": "$3.32",
+      "section": "Drinks"
+    },
+    {
+      "name": "Can Sprite",
+      "description": "",
+      "price": "$2.28",
+      "section": "Drinks"
+    },
+    {
+      "name": "Sidral Apple",
+      "description": "",
+      "price": "$3.32",
+      "section": "Drinks"
+    },
+    {
+      "name": "Jarri Mandarin",
+      "description": "",
+      "price": "$3.32",
+      "section": "Drinks"
+    },
+    {
+      "name": "Large Soda",
+      "description": "",
+      "price": "$4.21",
+      "section": "Drinks"
+    },
+    {
+      "name": "Can Pepsi",
+      "description": "",
+      "price": "$2.28",
+      "section": "Drinks"
+    },
+    {
+      "name": "Med Soda",
+      "description": "",
+      "price": "$3.54",
+      "section": "Drinks"
+    },
+    {
+      "name": "Squirt",
+      "description": "",
+      "price": "$2.28",
+      "section": "Drinks"
+    },
+    {
+      "name": "Caprisun",
+      "description": "",
+      "price": "$1.03",
+      "section": "Drinks"
+    },
+    {
+      "name": "4 Oz Consome Birria",
+      "description": "",
+      "price": "$2.13",
+      "section": "Sides"
+    },
+    {
+      "name": "4 Oz Aguacate",
+      "description": "",
+      "price": "$3.11",
+      "section": "Sides"
+    },
+    {
+      "name": "Hot carrots Side",
+      "description": "",
+      "price": "$1.34",
+      "section": "Sides"
+    },
+    {
+      "name": "Carne Asada Side",
+      "description": "",
+      "price": "$7.27",
+      "section": "Sides"
+    },
+    {
+      "name": "2 Chile Toreados Side",
+      "description": "",
+      "price": "$0.26",
+      "section": "Sides"
+    },
+    {
+      "name": "Corn Tortilla Side",
+      "description": "",
+      "price": "$1.65",
+      "section": "Sides"
+    },
+    {
+      "name": "8 oz Enchilada",
+      "description": "",
+      "price": "$5.61",
+      "section": "Sides"
+    },
+    {
+      "name": "4 Oz. Carnitas",
+      "description": "",
+      "price": "$4.46",
+      "section": "Sides"
+    },
+    {
+      "name": "2 Mini Corn Tortilla",
+      "description": "Homemade Tortilla",
+      "price": "$1.03",
+      "section": "Sides"
+    },
+    {
+      "name": "Pollo Adobada Side",
+      "description": "",
+      "price": "$5.19",
+      "section": "Sides"
+    },
+    {
+      "name": "4 oz Enchilada",
+      "description": "",
+      "price": "$3.63",
+      "section": "Sides"
+    },
+    {
+      "name": "4 Oz Adobada",
+      "description": "",
+      "price": "$4.46",
+      "section": "Sides"
+    },
+    {
+      "name": "8 Oz Conzome Birria",
+      "description": "",
+      "price": "$4.11",
+      "section": "Sides"
+    },
+    {
+      "name": "32 Oz Sour Cream",
+      "description": "",
+      "price": "$10.37",
+      "section": "Sides"
+    },
+    {
+      "name": "Flour Tortilla Side",
+      "description": "",
+      "price": "$1.34",
+      "section": "Sides"
+    },
+    {
+      "name": "Carnitas Side",
+      "description": "",
+      "price": "$6.23",
+      "section": "Sides"
+    },
+    {
+      "name": "Adobada Side",
+      "description": "Marinated pork typically includes a blend of spices and adobo sauce.",
+      "price": "$6.23",
+      "section": "Sides"
+    },
+    {
+      "name": "8oz Ench Sauce Side",
+      "description": "",
+      "price": "$4.37",
+      "section": "Sides"
+    },
+    {
+      "name": "4 Oz Carne Asada",
+      "description": "",
+      "price": "$4.46",
+      "section": "Sides"
+    },
+    {
+      "name": "Pollo Asado Side",
+      "description": "",
+      "price": "$6.23",
+      "section": "Sides"
+    },
+    {
+      "name": "4 Oz Pollo Asado",
+      "description": "Grill Chkn",
+      "price": "$4.46",
+      "section": "Sides"
+    },
+    {
+      "name": "8oz Relleno Salsa",
+      "description": "",
+      "price": "$4.37",
+      "section": "Sides"
+    },
+    {
+      "name": "Kids Burrito",
+      "description": "",
+      "price": "$9.09",
+      "section": "Kids Menu & Churros"
+    },
+    {
+      "name": "CHURRO PLAIN",
+      "description": "",
+      "price": "$3.17",
+      "section": "Kids Menu & Churros"
+    },
+    {
+      "name": "Kids Roll Tacos",
+      "description": "",
+      "price": "$8.50",
+      "section": "Kids Menu & Churros"
+    },
+    {
+      "name": "CHURRO PLAIN",
+      "description": "",
+      "price": "$3.42",
+      "section": "Kids Menu & Churros"
+    },
+    {
+      "name": "KIDS QUESADILLA",
+      "description": "",
+      "price": "$8.16",
+      "section": "Kids Menu & Churros"
+    },
+    {
+      "name": "Kids Quesadilla",
+      "description": "",
+      "price": "$8.50",
+      "section": "Kids Menu & Churros"
+    },
+    {
+      "name": "Churros w Cajeta",
+      "description": "Churro filled with cajeta, a traditional Mexican caramel, and coated in a mixture of cinnamon and sugar.",
+      "price": "$3.42",
+      "section": "Kids Menu & Churros"
+    },
+    {
+      "name": "Churros Plain",
+      "description": "Crisp golden-brown fried dough stick, dusted with cinnamon sugar",
+      "price": "$3.17",
+      "section": "Kids Menu & Churros"
+    },
+    {
+      "name": "Carne Asada Plate",
+      "description": "Carne Asada served with choice of tortilla and beans. Options include corn, flour, or no tortilla and refried, pinto, or black beans.",
+      "price": "$16.75",
+      "section": "Plates"
+    },
+    {
+      "name": "4 roll tacos plato",
+      "description": "",
+      "price": "$13.88",
+      "section": "Plates"
+    },
+    {
+      "name": "2 Mini Taco Plate",
+      "description": "",
+      "price": "$11.43",
+      "section": "Plates"
+    },
+    {
+      "name": "Carnitas Plate",
+      "description": "Carnitas with choice of corn, flour, or no tortilla. Served with refried, pinto, or black beans.",
+      "price": "$15.50",
+      "section": "Plates"
+    },
+    {
+      "name": "Milanesa Plate",
+      "description": "Milanesa filet, rice, beans, tortillas, lettuce, pico de gallo & guacamole.",
+      "price": "$15.50",
+      "section": "Plates"
+    },
+    {
+      "name": "Pollo Asado Plate",
+      "description": "Roasted chicken served with options for tortillas (corn, flour, or none) and beans (refried, pinto, or black).",
+      "price": "$15.48",
+      "section": "Plates"
+    },
+    {
+      "name": "Fajita Plate",
+      "description": "Fajita plate with options for corn, flour, or no tortilla. Choices of refried, pinto, or black beans. Select shrimp, steak, or chicken.",
+      "price": "$15.15",
+      "section": "Plates"
+    },
+    {
+      "name": "Pollo Adobado Plate",
+      "description": "Adobado chicken, served with choice of tortilla: corn, flour, or without. Accompanied by a selection of beans: refried, pinto, or black.",
+      "price": "$15.50",
+      "section": "Plates"
+    },
+    {
+      "name": "2 Enchiladas Late",
+      "description": "",
+      "price": "$13.76",
+      "section": "Plates"
+    },
+    {
+      "name": "Diablo shrimp plate",
+      "description": "",
+      "price": "$15.57",
+      "section": "Plates"
+    },
+    {
+      "name": "Chile Relleno Plate",
+      "description": "Corn or flour tortillas, rice, beans & chips.",
+      "price": "$15.50",
+      "section": "Plates"
+    },
+    {
+      "name": "Adobada Plate",
+      "description": "Marinated pork adobada served with a choice of tortilla (corn, flour, or none) and beans (refried, pinto, or black).",
+      "price": "$15.50",
+      "section": "Plates"
+    },
+    {
+      "name": "Chile Verde Plate",
+      "description": "Chile verde with your choice of chicken, steak, or pork. Served with tortillas (corn, flour, or none) and beans (refried, pinto, black).",
+      "price": "$15.50",
+      "section": "Plates"
+    },
+    {
+      "name": "Shrimp Baja Bowl",
+      "description": "Served with choice of beans including refried, pinto, black, or no beans with only rice.",
+      "price": "$14.84",
+      "section": "Baja Bowls"
+    },
+    {
+      "name": "Taco Salad",
+      "description": "",
+      "price": "$14.55",
+      "section": "Baja Bowls"
+    },
+    {
+      "name": "Pollo Asado Bowl",
+      "description": "",
+      "price": "$14.55",
+      "section": "Baja Bowls"
+    },
+    {
+      "name": "Surf & Turf Baja Bowl",
+      "description": "",
+      "price": "$16.40",
+      "section": "Baja Bowls"
+    },
+    {
+      "name": "Carnitas Bowl",
+      "description": "",
+      "price": "$14.55",
+      "section": "Baja Bowls"
+    },
+    {
+      "name": "Pollo Adobado Bowl",
+      "description": "",
+      "price": "$14.55",
+      "section": "Baja Bowls"
+    },
+    {
+      "name": "Veggie Bowl",
+      "description": "",
+      "price": "$12.43",
+      "section": "Baja Bowls"
+    },
+    {
+      "name": "Adobada Bowl",
+      "description": "Adobada bowl with rice, option of refried, pinto, or black beans; or rice/beans only.",
+      "price": "$14.55",
+      "section": "Baja Bowls"
+    },
+    {
+      "name": "Carne Asada Bowl",
+      "description": "",
+      "price": "$14.55",
+      "section": "Baja Bowls"
+    },
+    {
+      "name": "Make it combo",
+      "description": "",
+      "price": "$4.15",
+      "section": "Make it Combo"
+    },
+    {
+      "name": "COMBO #2",
+      "description": "2 Potato Tacos",
+      "price": "$13.42",
+      "section": "Combination Plates"
+    },
+    {
+      "name": "COMBO #7",
+      "description": "Potato Taco + Bean Tostada",
+      "price": "$12.94",
+      "section": "Combination Plates"
+    },
+    {
+      "name": "COMBO #1",
+      "description": "Rice & Beans  2 Beef Tacos",
+      "price": "$13.76",
+      "section": "Combination Plates"
+    },
+    {
+      "name": "COMBO#4",
+      "description": "2 Enchiladas Any Meat",
+      "price": "$14.01",
+      "section": "Combination Plates"
+    },
+    {
+      "name": "COMBO # 5",
+      "description": "Enchilada + Shredded Beef Taco",
+      "price": "$13.42",
+      "section": "Combination Plates"
+    },
+    {
+      "name": "COMBO #3",
+      "description": "2 Regular Tacos  W. Any Meat",
+      "price": "$13.76",
+      "section": "Combination Plates"
+    },
+    {
+      "name": "Combo #9",
+      "description": "4 Roll Tacos   Rice & Beans",
+      "price": "$14.09",
+      "section": "Combination Plates"
+    },
+    {
+      "name": "COMBO #8",
+      "description": "Chimichanga (Any Protein)",
+      "price": "$15.58",
+      "section": "Combination Plates"
+    },
+    {
+      "name": "Combo #6",
+      "description": "3 Mini Tacos Any Meat",
+      "price": "$13.42",
+      "section": "Combination Plates"
+    },
+    {
+      "name": "Shrimp Quesadilla",
+      "description": "",
+      "price": "$13.70",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Beef Tostada",
+      "description": "",
+      "price": "$8.21",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Carnitas Quesadilla",
+      "description": "",
+      "price": "$13.59",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Pollo Adobado Quesadilla",
+      "description": "",
+      "price": "$13.59",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Carne Asada Quesadilla",
+      "description": "",
+      "price": "$14.74",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Bean Tostada",
+      "description": "",
+      "price": "$6.21",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Kids Quesadilla",
+      "description": "",
+      "price": "$8.50",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Surf & Turf Quesadilla",
+      "description": "",
+      "price": "$16.70",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Plain Quesadilla",
+      "description": "",
+      "price": "$9.05",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Hot Cheetos Quesadilla",
+      "description": "A quesadilla filled with hot cheetos, accompanied by guacamole, sour cream, and a blend of cheeses, wrapped in a flour tortilla.",
+      "price": "$15.78",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Adobada Quesadilla",
+      "description": "",
+      "price": "$13.57",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Veggie quesadillas",
+      "description": "",
+      "price": "$13.34",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Pollo Asado Quesadilla",
+      "description": "",
+      "price": "$13.59",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Birria Quesadilla",
+      "description": "",
+      "price": "$16.37",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Chicken Tostada",
+      "description": "",
+      "price": "$7.17",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Mulitas",
+      "description": "",
+      "price": "$9.95",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Quezabirria",
+      "description": "Corn or flour tortilla filled with melted cheese and tender, slow-cooked birria beef, typically garnished with onions and cilantro, served with consomé.",
+      "price": "$8.30",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "Quesadillas with Meat & Beans",
+      "description": "",
+      "price": "$13.41",
+      "section": "Quesadillas & Tostadas"
+    },
+    {
+      "name": "32 oz guacamole",
+      "description": "",
+      "price": "$11.43",
+      "section": "Party Trays"
+    },
+    {
+      "name": "Try carne asada",
+      "description": "",
+      "price": "$83.20",
+      "section": "Party Trays"
+    },
+    {
+      "name": "Try carnitas",
+      "description": "",
+      "price": "$83.20",
+      "section": "Party Trays"
+    },
+    {
+      "name": "Try adobada",
+      "description": "",
+      "price": "$83.20",
+      "section": "Party Trays"
+    },
+    {
+      "name": "1 dozen mini tortillas",
+      "description": "",
+      "price": "$4.15",
+      "section": "Party Trays"
+    },
+    {
+      "name": "Pollo adobado",
+      "description": "",
+      "price": "$83.20",
+      "section": "Party Trays"
+    },
+    {
+      "name": "Trays Chips",
+      "description": "",
+      "price": "$3.11",
+      "section": "Party Trays"
+    },
+    {
+      "name": "Trata rice",
+      "description": "",
+      "price": "$31.20",
+      "section": "Party Trays"
+    },
+    {
+      "name": "Trays beans",
+      "description": "",
+      "price": "$31.20",
+      "section": "Party Trays"
+    },
+    {
+      "name": "Trays Roll Tacos",
+      "description": "",
+      "price": "$72.80",
+      "section": "Party Trays"
+    },
+    {
+      "name": "Try pollo asado",
+      "description": "",
+      "price": "$83.20",
+      "section": "Party Trays"
+    }
+  ]
+}

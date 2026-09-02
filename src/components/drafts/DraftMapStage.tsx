@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, type ComponentType, type RefObject } from "react";
 import dynamic from "next/dynamic";
 import type { Map as MapLibreMap } from "maplibre-gl";
-import type { RestaurantView } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurantTypes";
 import type { Dish } from "@/data/dishes";
 import { mapCommentsByRestaurant, withDishIds, type MapComment } from "@/data/mapComments";
 

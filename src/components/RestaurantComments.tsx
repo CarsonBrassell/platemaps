@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/auth";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
 import { StarRating } from "@/components/StarRating";
-import type { Restaurant } from "@/data/restaurants";
+import type { Restaurant } from "@/data/restaurantTypes";
 
 /**
  * The slice of `/api/posts` this thread reads — a narrowed mirror of `Post` in

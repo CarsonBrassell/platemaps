@@ -1,0 +1,1265 @@
+[
+  {
+    "restaurantId": "2630",
+    "name": "Surfside Fish House",
+    "sourceUrl": "https://surfsidefishhouse.com/wp-content/uploads/2026/06/Surfside-In-House-Menu-6.1.2026.pdf",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://surfsidefishhouse.com/wp-content/uploads/2026/06/Surfside-Happy-Hour-Menu-6.1.2026.pdf",
+    "notes": "surfsidefishhouse.com 403s a direct curl/plain fetch (custom WAF), so the PDFs were pulled via WebFetch (which returns the actual binary) and read with pdftotext -raw. The in-house PDF renders as parallel name-block/price-block columns rather than inline pairs; sequence-order pairing was cross-checked against pdftotext -layout output for every section and matched exactly (verified section by section: starters, soups, salads, poke bowls, entrees, prepared-fish choices, tacos, burritos, sandwiches, sides, drinks, oysters). Happy Hour is a genuine separate dine-in-only menu (stated 'DINE-IN ONLY') with lower prices on overlapping items - kept as daypart variants, not deduped. Kids menu (kidsmenu.jpg) read directly off the image, flat $5.99 per item including a fountain soda. Cup/bowl soup pricing and oyster tiered pricing split into separate rows to keep one price per row. Sections reached: starters, soups, salads, poke bowls, oysters, entrees, prepared fish, full tacos, a la carte tacos, burritos, sandwiches, sides, non-alcoholic drinks, happy hour, kids menu. Not reached: full bar/wine/beer list referenced as 'full drink menu' (adjunct, not priced on this PDF).",
+    "dishes": [
+      {
+        "name": "Ceviche Mixto",
+        "description": "Whitefish marinated in lime with a touch of salt and pepper, bell peppers, onions and cilantro.",
+        "price": "$12.99",
+        "section": "Starters"
+      },
+      {
+        "name": "Poke Nachos",
+        "description": "Fresh marinated poke with imitation crabmeat, spicy scallops, pico de gallo and sriracha mayo over homemade tortilla chips with a seaweed salad and nori furikake garnish.",
+        "price": "$12.99",
+        "section": "Starters"
+      },
+      {
+        "name": "Guacamole & Chips",
+        "description": "Fresh made with lime, corn, cilantro and pico de gallo.",
+        "price": "$7.99",
+        "section": "Starters"
+      },
+      {
+        "name": "Shrimp Tempura",
+        "description": "Lightly battered and crisp, served with our spicy aioli.",
+        "price": "$11.99",
+        "section": "Starters"
+      },
+      {
+        "name": "Fried Calamari",
+        "description": "Cornmeal battered calamari fried to a golden yet tender crisp.",
+        "price": "$8.99",
+        "section": "Starters"
+      },
+      {
+        "name": "Korean Chili Glazed Shishito Peppers",
+        "description": "Flash fried to blistery perfection with a spicy kick.",
+        "price": "$7.99",
+        "section": "Starters"
+      },
+      {
+        "name": "Spicy Poke & Crispy Rice",
+        "description": "The classic, served with avocado, jalapeño and a nori garnish.",
+        "price": "$10.99",
+        "section": "Starters"
+      },
+      {
+        "name": "New England Clam Chowder (Cup)",
+        "description": "White clam chowder with onions, celery and potatoes.",
+        "price": "$5.99",
+        "section": "Soups"
+      },
+      {
+        "name": "New England Clam Chowder (Bowl)",
+        "description": "White clam chowder with onions, celery and potatoes.",
+        "price": "$8.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Seafood Chowder (Cup)",
+        "description": "Tomato-based broth with clams, fish, carrots, onion, celery, potatoes and hominy corn.",
+        "price": "$5.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Seafood Chowder (Bowl)",
+        "description": "Tomato-based broth with clams, fish, carrots, onion, celery, potatoes and hominy corn.",
+        "price": "$8.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Quinoa Kale Salad with Chimichurri Shrimp",
+        "description": "Citrus kale with quinoa, brussels sprouts, cherry tomatoes, granny smith apples, raspberries, and cornbread croutons with a honey Dijon dressing.",
+        "price": "$14.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Cajun Salmon Caesar Salad",
+        "description": "Blend of lightly chopped Romaine & kale, with cherry tomatoes, crunchy croutons and shaved parmesan cheese.",
+        "price": "$14.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Southwest Quinoa Salad with Chimichurri Shrimp",
+        "description": "Romaine and mixed greens with quinoa, cherry tomatoes, avocado, cilantro, black beans, tortilla strips and Monterey Jack cheese with an avocado-ranch dressing.",
+        "price": "$14.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Hawaiian Poke Salad",
+        "description": "Mixed greens and romaine with cucumber, cherry tomatoes, edamame, carrots and our ponzu vinaigrette. Choice of Ahi, Spicy or Salmon Poke.",
+        "price": "$14.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Cajun Shrimp Cobb Salad",
+        "description": "Romaine and mixed greens with bacon, avocado, hardboiled egg, cherry tomatoes, and bleu cheese crumbles with a balsamic vinaigrette.",
+        "price": "$15.99",
+        "section": "Salads"
+      },
+      {
+        "name": "OG Poke Bowl",
+        "description": "Choice of marinated Ahi Tuna, Salmon or Spicy Poke. Served with choice of white/brown rice, pickled cucumbers, avocado and nori furikake.",
+        "price": "$14.99",
+        "section": "Poke Bowls"
+      },
+      {
+        "name": "California Poke Bowl",
+        "description": "Ahi Poke with our sweet imitation crabmeat.",
+        "price": "$15.99",
+        "section": "Poke Bowls"
+      },
+      {
+        "name": "Maui Poke Bowl",
+        "description": "Ahi Poke with seaweed salad, edamame and masago.",
+        "price": "$15.99",
+        "section": "Poke Bowls"
+      },
+      {
+        "name": "Fresh Oysters (each, minimum 3)",
+        "description": "Fresh raw oysters delivered daily.",
+        "price": "$3.00",
+        "section": "Oysters"
+      },
+      {
+        "name": "Fresh Oysters (1/2 Dozen)",
+        "description": "Fresh raw oysters delivered daily.",
+        "price": "$18.00",
+        "section": "Oysters"
+      },
+      {
+        "name": "Fresh Oysters (Dozen)",
+        "description": "Fresh raw oysters delivered daily.",
+        "price": "$36.00",
+        "section": "Oysters"
+      },
+      {
+        "name": "Beer Battered Fish & Chips",
+        "description": "Lightly battered and seasoned Alaskan Cod, served with our sweet chili slaw.",
+        "price": "$15.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "Shrimp & Chips",
+        "description": "Homemade panko breaded jumbo shrimp, served with our sweet chili slaw.",
+        "price": "$14.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "Catfish & Chips",
+        "description": "The ultimate Southern staple. Cornmeal breaded whitefish, deep fried to perfection, served with our sweet chili slaw.",
+        "price": "$14.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "The Seafood Boil",
+        "description": "Mix of mussels, clams, shrimp, scallops, calamari, Andouille sausage, corn and red potatoes. Seasoned with choice of garlic butter or Louisiana cajun spices.",
+        "price": "$19.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "Spicy Shrimp Linguine",
+        "description": "Light and flavorful with a spicy kick. Tender, jumbo shrimp sautéed with a white wine and lemon butter sauce, topped with shredded parmesan.",
+        "price": "$16.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "Chicken Tinga Bowl",
+        "description": "Slow marinated chicken, served over rice with avocado, sautéed peppers and onions, mango pico de gallo, pickled onions and our chipotle mayo. Topped with shredded monterey jack.",
+        "price": "$15.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "Ginger Garlic Shrimp",
+        "description": "Shell-on shrimp with a sweet and savory ginger garlic sauce. Served with rice and pickled cucumber salad.",
+        "price": "$18.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "Seafood Cioppino",
+        "description": "Our version of the seafood feast with shrimp, clams, mussels, scallops and calamari, stewed in a savory tomato broth. Served with rice and butter toast.",
+        "price": "$19.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "Louisiana Creole Gumbo",
+        "description": "Classic rich and hearty roux with a spicy kick, with Andouille sausage, chicken and shrimp, served over rice with butter toast.",
+        "price": "$14.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "Beer Steamed Moules-Frites",
+        "description": "The Classic, but beer-steamed with herbs, garlic and shallots.",
+        "price": "$15.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "Chimichurri Cauli & Quinoa Bowl",
+        "description": "Chimichurri cauliflower, sweet potato, cajun corn, black beans, mango pico & avocado drizzle, served over red quinoa with cucumber crema. Protein choice includes: garlic-butter mahi mahi, cajun salmon, chimichurri shrimp or grilled chicken.",
+        "price": "$16.99",
+        "section": "Entrees"
+      },
+      {
+        "name": "White Fish Basa (Prepared)",
+        "description": "With your choice of Creamy Garlic Butter, Louisiana Cajun, or Korean Chili Glaze. Served with rice and sautéed veggies.",
+        "price": "$13.99",
+        "section": "Prepared Fish"
+      },
+      {
+        "name": "Salmon (Prepared)",
+        "description": "With your choice of Creamy Garlic Butter, Louisiana Cajun, or Korean Chili Glaze. Served with rice and sautéed veggies.",
+        "price": "$16.99",
+        "section": "Prepared Fish"
+      },
+      {
+        "name": "Barramundi (Prepared)",
+        "description": "With your choice of Creamy Garlic Butter, Louisiana Cajun, or Korean Chili Glaze. Served with rice and sautéed veggies.",
+        "price": "$16.99",
+        "section": "Prepared Fish"
+      },
+      {
+        "name": "Mahi Mahi (Prepared)",
+        "description": "With your choice of Creamy Garlic Butter, Louisiana Cajun, or Korean Chili Glaze. Served with rice and sautéed veggies.",
+        "price": "$16.99",
+        "section": "Prepared Fish"
+      },
+      {
+        "name": "Grilled Jumbo Shrimp (Prepared)",
+        "description": "With your choice of Creamy Garlic Butter, Louisiana Cajun, or Korean Chili Glaze. Served with rice and sautéed veggies.",
+        "price": "$16.99",
+        "section": "Prepared Fish"
+      },
+      {
+        "name": "Ahi Tuna (Prepared, Medium Rare)",
+        "description": "With your choice of Creamy Garlic Butter, Louisiana Cajun, or Korean Chili Glaze. Served with rice and sautéed veggies.",
+        "price": "$16.99",
+        "section": "Prepared Fish"
+      },
+      {
+        "name": "Classic Fish Tacos",
+        "description": "Beer battered fish tacos, with cabbage, pico de gallo and our Surfside crema on corn tortillas. Two tacos served with black beans and our homemade chips & salsa.",
+        "price": "$10.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Cajun Salmon Tacos",
+        "description": "Blackened salmon with cabbage, corn-pico, cucumber crema, and pickled onions on flour tortillas with an avocado spread.",
+        "price": "$12.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Avocado Shrimp Tacos",
+        "description": "Old bay seasoned shrimp with cabbage, corn-pico, cucumber crema, and pickled onions on flour tortillas with an avocado spread.",
+        "price": "$12.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Cajun White Fish Tacos",
+        "description": "Blackened whitefish with cabbage, mango-pico, pickled onions and our Surfside crema on corn tortillas with an avocado spread.",
+        "price": "$11.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Roasted Sweet Potato Tacos",
+        "description": "Chimichurri cauliflower with sweet potatoes, cabbage, corn-pico, and pickled onions on corn tortillas with an avocado spread.",
+        "price": "$11.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Classic Fish Taco",
+        "description": "A la carte, single taco.",
+        "price": "$4.50",
+        "section": "A La Carte Tacos"
+      },
+      {
+        "name": "Cajun Whitefish Taco",
+        "description": "A la carte, single taco.",
+        "price": "$5.00",
+        "section": "A La Carte Tacos"
+      },
+      {
+        "name": "Roasted Sweet Potato Taco",
+        "description": "A la carte, single taco.",
+        "price": "$5.00",
+        "section": "A La Carte Tacos"
+      },
+      {
+        "name": "Avocado Shrimp Taco",
+        "description": "A la carte, single taco.",
+        "price": "$5.50",
+        "section": "A La Carte Tacos"
+      },
+      {
+        "name": "Cajun Salmon Taco",
+        "description": "A la carte, single taco.",
+        "price": "$5.50",
+        "section": "A La Carte Tacos"
+      },
+      {
+        "name": "Chicken Tinga Burrito",
+        "description": "Rice, beans, cabbage, pico de gallo and our Surfside crema in a flour tortilla wrap. Served with our homemade chips and salsa.",
+        "price": "$13.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Cajun Salmon Burrito",
+        "description": "Rice, beans, cabbage, pico de gallo and our Surfside crema in a flour tortilla wrap. Served with our homemade chips and salsa.",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Grilled White Fish Burrito",
+        "description": "Rice, beans, cabbage, pico de gallo and our Surfside crema in a flour tortilla wrap. Served with our homemade chips and salsa.",
+        "price": "$11.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chimichurri Shrimp Burrito",
+        "description": "Rice, beans, cabbage, pico de gallo and our Surfside crema in a flour tortilla wrap. Served with our homemade chips and salsa.",
+        "price": "$13.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Cajun Mahi Mahi Sandwich",
+        "description": "Grilled Mahi Mahi with blackened seasoning, caramelized onions, butter lettuce, tomatoes and tartar sauce on a King's Hawaiian bun. Served with sweet chili slaw.",
+        "price": "$15.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Fried Chicken Sandwich",
+        "description": "Crispy chicken breast with pickles, citrus vinaigrette slaw, fried onions and mayo on a King's Hawaiian bun. Grilled chicken option available. Served with sweet chili slaw.",
+        "price": "$13.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Shrimp Po Boy",
+        "description": "Panko breaded shrimp with avocado, butter lettuce, tomatoes and our house spread on a hoagie roll. Served with sweet chili slaw.",
+        "price": "$14.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Fried Oyster Po Boy",
+        "description": "Cornmeal breaded oysters with butter lettuce, tomatoes, pickles and our spicy aioli on a hoagie roll. Served with sweet chili slaw.",
+        "price": "$14.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Filet O' Surf",
+        "description": "Panko breaded cod with crispy bacon, butter lettuce, pickles, tomatoes, American cheese and tartar sauce on a King's Hawaiian bun. Served with sweet chili slaw.",
+        "price": "$13.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Chimichurri Cauliflower",
+        "description": "Side.",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Grilled Zucchini",
+        "description": "Side.",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Garlic Brussel Sprouts",
+        "description": "Side.",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Sautéed Vegetables",
+        "description": "Side.",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Seaweed Salad (Side)",
+        "description": "Side.",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Pickled Cucumbers & Onions",
+        "description": "Side.",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Chips & Salsa",
+        "description": "Side.",
+        "price": "$2.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Rice / Brown Rice",
+        "description": "Side.",
+        "price": "$2.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Black Beans",
+        "description": "Side.",
+        "price": "$2.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Sweet Chili Slaw",
+        "description": "Side.",
+        "price": "$2.99",
+        "section": "Sides"
+      },
+      {
+        "name": "French Fries",
+        "description": "Side.",
+        "price": "$2.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Parmesan Garlic Fries",
+        "description": "Side.",
+        "price": "$2.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Coke / Diet Coke / Sprite",
+        "description": "",
+        "price": "$2.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Stubborn Fountain Soda",
+        "description": "",
+        "price": "$2.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Hawaiian Sun",
+        "description": "",
+        "price": "$2.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Pellegrino Sparkling Water",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Kombucha",
+        "description": "",
+        "price": "$5.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Craft Beers",
+        "description": "Happy hour, dine-in only.",
+        "price": "$6.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Glass of Wine (Red, White or Rosé)",
+        "description": "Happy hour, dine-in only.",
+        "price": "$7.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Nigori Sake",
+        "description": "Happy hour, dine-in only.",
+        "price": "$8.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Ceviche Mixto (Happy Hour)",
+        "description": "Happy hour, dine-in only.",
+        "price": "$8.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Shrimp Tempura (Happy Hour)",
+        "description": "Happy hour, dine-in only.",
+        "price": "$8.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Fried Calamari (Happy Hour)",
+        "description": "Happy hour, dine-in only.",
+        "price": "$7.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Clams with Chorizo Butter",
+        "description": "Happy hour, dine-in only.",
+        "price": "$8.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Ginger Garlic Wings",
+        "description": "Happy hour, dine-in only.",
+        "price": "$7.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Lemon Pepper Wings",
+        "description": "Happy hour, dine-in only.",
+        "price": "$7.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Guacamole & Chips (Happy Hour)",
+        "description": "Happy hour, dine-in only.",
+        "price": "$6.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Poke Nachos (Happy Hour)",
+        "description": "Happy hour, dine-in only.",
+        "price": "$9.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Southern Fried Oysters",
+        "description": "Happy hour, dine-in only.",
+        "price": "$8.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Classic Fish Taco (Happy Hour)",
+        "description": "Happy hour, dine-in only.",
+        "price": "$2.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Chicken Tinga Taco (Happy Hour)",
+        "description": "Happy hour, dine-in only.",
+        "price": "$3.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Chowder Fries",
+        "description": "Happy hour, dine-in only.",
+        "price": "$6.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Chicken Black Bean Nachos",
+        "description": "Happy hour, dine-in only.",
+        "price": "$8.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Korean Chili Glazed Shishito Peppers (Happy Hour)",
+        "description": "Happy hour, dine-in only.",
+        "price": "$6.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Fresh Shucked Oysters (Happy Hour, min 3 each)",
+        "description": "Happy hour, dine-in only.",
+        "price": "$2.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Chicken Tenders (Kids)",
+        "description": "Served with french fries. Includes a fountain soda.",
+        "price": "$5.99",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Grilled Fish Taco (Kids)",
+        "description": "Served with chips & rice. Includes a fountain soda.",
+        "price": "$5.99",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Cheese Quesadilla (Kids)",
+        "description": "Served with rice and homemade chips n' salsa. Includes a fountain soda.",
+        "price": "$5.99",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Crispy Fish n' Chips (Kids)",
+        "description": "Served with fries and our homemade tartar sauce. Includes a fountain soda.",
+        "price": "$5.99",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Crispy Shrimp n' Chips (Kids)",
+        "description": "Served with fries and our homemade cocktail sauce. Includes a fountain soda.",
+        "price": "$5.99",
+        "section": "Kids Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3348",
+    "name": "VYBZ Kitchen & Lounge",
+    "sourceUrl": "https://www.doordash.com/store/vybz-kitchen-lounge-san-diego-312221/",
+    "confidence": "medium",
+    "notes": "vybzsd.com (the work-list URL) is a hijacked domain — curl -sL follows a redirect chain to an unrelated Indonesian gambling/slots site ('SLOT777... Situs Slot88'). The restaurant's real current site is vybzsandiego.com (found via WebSearch, corroborated by Yelp/Tripadvisor/gaslamp.org all giving the same 840 5th Ave address), but its SpotHopper-powered /food-menu page server-renders only an explicit empty-state message ('We are updating our menu. Please stay tuned.') — confirmed genuinely empty, not gated, by reading the rendered HTML directly (food_menu_v2 section, empty-content-message block). Fell back to the DoorDash marketplace listing, which server-renders full schema.org Menu/MenuItem JSON-LD (29 items across 6 sections: Starters, Salads/Soup, Small Plates, Burgers, Fire Oven Pizzas, Tacos/Burros/Papas). Ran the markup-divisor test (1.04/1.1/1.15/1.2/1.25) against all 29 prices — no consistent divisor lands them on round numbers, so this reads as organic whole-dollar pricing rather than a uniform delivery markup. No second priced source was reachable to cross-check (own site menu is empty), so this stays medium per the tier-3 DoorDash-marketplace ceiling. Sections reached: Starters, Salads/Soup, Small Plates, Burgers, Pizzas, Tacos/Burros/Papas. Not reached: any dedicated entrees/mains section (may not exist for a lounge menu) and the full bar/cocktail list (adjunct).",
+    "dishes": [
+      {
+        "name": "Sample Platter",
+        "description": "Crispy, golden brown jumbo chicken wings, calamari, French fries, mozzarella cheesy sticks and Mexican 3-cheese quesadilla with choice of dipping sauces, serves 4.",
+        "price": "$24.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Chicken Wings",
+        "description": "Crispy, golden brown wings tossed in your choice of signature sauces. Served with celery sticks and ranch for dipping.",
+        "price": "$12.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Crispy Calamari",
+        "description": "Season dusted and drizzled with a tamarind sweet and spicy tajin infused balsamic reduction, served with chipotle aioli dipping sauce.",
+        "price": "$13.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Certified Angus Beef Sliders with Fries",
+        "description": "3 juicy flame broiled steak burgers served on fluffy baby brioche buns topped with cheddar cheese and jalapeño aioli.",
+        "price": "$11.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Bacon Wrapped Stuffed Jalapeño Poppers",
+        "description": "Oven baked with seasoned cream cheese and cilantro, wrapped with a hickory smoked bacon.",
+        "price": "$11.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Mozzarella Cheese Sticks",
+        "description": "Extra thick, cheesy and coated with Italian bread crumbs then fried crispy golden brown, served with marinara dipping sauce.",
+        "price": "$8.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Onion Rings",
+        "description": "",
+        "price": "$7.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Mexican Chopped Lime Cilantro Salad",
+        "description": "",
+        "price": "$12.00",
+        "section": "Salads/Ensaladas & Soup/Sopa"
+      },
+      {
+        "name": "Berry Salad",
+        "description": "",
+        "price": "$13.00",
+        "section": "Salads/Ensaladas & Soup/Sopa"
+      },
+      {
+        "name": "Cobb Salad",
+        "description": "",
+        "price": "$12.00",
+        "section": "Salads/Ensaladas & Soup/Sopa"
+      },
+      {
+        "name": "House Salad",
+        "description": "",
+        "price": "$9.00",
+        "section": "Salads/Ensaladas & Soup/Sopa"
+      },
+      {
+        "name": "Caesar",
+        "description": "",
+        "price": "$8.00",
+        "section": "Salads/Ensaladas & Soup/Sopa"
+      },
+      {
+        "name": "Tostadas",
+        "description": "",
+        "price": "$9.00",
+        "section": "Small Plates"
+      },
+      {
+        "name": "Flautas",
+        "description": "",
+        "price": "$9.00",
+        "section": "Small Plates"
+      },
+      {
+        "name": "Quesadillas",
+        "description": "",
+        "price": "$9.00",
+        "section": "Small Plates"
+      },
+      {
+        "name": "Guacamole & Chips",
+        "description": "",
+        "price": "$9.00",
+        "section": "Small Plates"
+      },
+      {
+        "name": "Bacon Cheddar Avocado Steak Burger",
+        "description": "",
+        "price": "$14.00",
+        "section": "Burgers/Hamburgers"
+      },
+      {
+        "name": "The Crudo Steak Burger (Aka the Hangover Burger)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Burgers/Hamburgers"
+      },
+      {
+        "name": "Carnitas Torta",
+        "description": "",
+        "price": "$12.00",
+        "section": "Burgers/Hamburgers"
+      },
+      {
+        "name": "Black Bean Veggie Burger",
+        "description": "",
+        "price": "$12.00",
+        "section": "Burgers/Hamburgers"
+      },
+      {
+        "name": "The Melted Majestic Steak Burger",
+        "description": "",
+        "price": "$13.00",
+        "section": "Burgers/Hamburgers"
+      },
+      {
+        "name": "BBQ Chicken",
+        "description": "",
+        "price": "$12.00",
+        "section": "Vybz Fire Oven Pizzas"
+      },
+      {
+        "name": "Spinach Pizza",
+        "description": "",
+        "price": "$11.00",
+        "section": "Vybz Fire Oven Pizzas"
+      },
+      {
+        "name": "B.y.o",
+        "description": "",
+        "price": "$11.00",
+        "section": "Vybz Fire Oven Pizzas"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$12.00",
+        "section": "Tacos, Burros & Papas"
+      },
+      {
+        "name": "Carnitas Fries",
+        "description": "",
+        "price": "$11.00",
+        "section": "Tacos, Burros & Papas"
+      },
+      {
+        "name": "Pollo Asado Fries",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tacos, Burros & Papas"
+      },
+      {
+        "name": "Street Tacos",
+        "description": "",
+        "price": "$9.00",
+        "section": "Tacos, Burros & Papas"
+      },
+      {
+        "name": "Burritos",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tacos, Burros & Papas"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4101",
+    "name": "The Bon Cha",
+    "sourceUrl": "https://www.doordash.com/store/bon-cha-san-diego-1060771/",
+    "confidence": "medium",
+    "notes": "theboncha.com is a Wix site whose homepage and every path tried (/menu, /order, /food-menu, /ordering) all return the identical client-routed SPA shell (title always 'HOME | Theboncha') with no data-hook=\"item.name\"/\"item.price\" spans anywhere and no ordering-platform embed found in the HTML — the site itself carries no readable menu. Fell back to the DoorDash marketplace listing (address confirmed streetAddress '330 G Street', matching the work list exactly), which server-renders full schema.org Menu/MenuItem JSON-LD. The 'Most Ordered' carousel (12 items) is a pure duplicate sample of items that also appear, at matching prices, in the proper categories below — dropped per the dedupe rule since nothing in it is unique. Markup-divisor test (1.04/1.1/1.15/1.2/1.25) on all 51 remaining prices found no consistent divisor landing them on round numbers; the .50/.00 pattern reads as this business's normal boba/coffee pricing, not a uniform delivery markup. No second priced source was reachable to cross-check, so this stays medium per the tier-3 DoorDash-marketplace ceiling. Sections reached: Milk Teas, Smoothies, Flavored Teas, Espresso/Latte/Mocha, Acai Bowls, Cookies & Desserts. Not reached: none apparent on the DoorDash storefront beyond these.",
+    "dishes": [
+      {
+        "name": "Brown sugar milk tea",
+        "description": "",
+        "price": "$8.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Thai milk tea",
+        "description": "",
+        "price": "$8.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Taro milk tea",
+        "description": "",
+        "price": "$8.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Strawberry milk tea",
+        "description": "",
+        "price": "$8.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Classic milk tea",
+        "description": "",
+        "price": "$8.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Wintermelon milk tea",
+        "description": "",
+        "price": "$8.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Hokkaido creamy milk tea",
+        "description": "",
+        "price": "$8.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Matcha milk tea",
+        "description": "",
+        "price": "$8.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Mango milk tea",
+        "description": "",
+        "price": "$8.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Lavender milk tea",
+        "description": "",
+        "price": "$8.50",
+        "section": "Milk Teas"
+      },
+      {
+        "name": "Pineapple mango smoothie",
+        "description": "",
+        "price": "$13.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry banana smoothie",
+        "description": "",
+        "price": "$13.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Berry Boost Smoothie",
+        "description": "",
+        "price": "$13.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Cacao love smoothie",
+        "description": "",
+        "price": "$13.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Mango Strawberry Smoothie",
+        "description": "",
+        "price": "$13.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Flamingo smoothie",
+        "description": "",
+        "price": "$13.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry (Flavored Tea)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Flavored Teas"
+      },
+      {
+        "name": "Lychee (Flavored Tea)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Flavored Teas"
+      },
+      {
+        "name": "Passion fruit (Flavored Tea)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Flavored Teas"
+      },
+      {
+        "name": "Peach (Flavored Tea)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Flavored Teas"
+      },
+      {
+        "name": "Winter melon (Flavored Tea)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Flavored Teas"
+      },
+      {
+        "name": "Mango (Flavored Tea)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Flavored Teas"
+      },
+      {
+        "name": "Dirty chai latte",
+        "description": "",
+        "price": "$7.00",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Iced Strawberry Matcha Tea Latte",
+        "description": "",
+        "price": "$7.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Salted Caramel Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Caramel Macchiato",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Iced Mango Matcha Tea Latte",
+        "description": "",
+        "price": "$7.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Pumkin Spiced Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Mexican Mocha",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Vanilla Latte",
+        "description": "",
+        "price": "$6.00",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Caramel Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Hazelnut Vanilla Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$6.00",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Irish Cinnamon Latte",
+        "description": "",
+        "price": "$6.00",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Latte",
+        "description": "",
+        "price": "$6.00",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "White Mocha",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Brown Sugar Cinnamon Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$5.00",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Salted Caramel Vanilla Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Matcha Tea Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Spiced Chai Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Mocha",
+        "description": "",
+        "price": "$6.50",
+        "section": "Espresso, Latte, Mocha"
+      },
+      {
+        "name": "Make Your Own Acai",
+        "description": "",
+        "price": "$18.50",
+        "section": "Acai Bowls"
+      },
+      {
+        "name": "Classic acai bowl",
+        "description": "",
+        "price": "$17.50",
+        "section": "Acai Bowls"
+      },
+      {
+        "name": "Bon cha acai bowl",
+        "description": "",
+        "price": "$17.50",
+        "section": "Acai Bowls"
+      },
+      {
+        "name": "Tropical acai bowl",
+        "description": "",
+        "price": "$17.50",
+        "section": "Acai Bowls"
+      },
+      {
+        "name": "Coco bowl",
+        "description": "",
+        "price": "$17.50",
+        "section": "Acai Bowls"
+      },
+      {
+        "name": "Mango acai bowl",
+        "description": "",
+        "price": "$17.50",
+        "section": "Acai Bowls"
+      },
+      {
+        "name": "Banana Pudding",
+        "description": "",
+        "price": "$13.50",
+        "section": "Cookies & Desserts"
+      },
+      {
+        "name": "Biscoff Cheesecake",
+        "description": "",
+        "price": "$13.50",
+        "section": "Cookies & Desserts"
+      },
+      {
+        "name": "Tiramisu",
+        "description": "",
+        "price": "$13.50",
+        "section": "Cookies & Desserts"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4246",
+    "name": "Kusina",
+    "sourceUrl": "https://kusinasd.com/food-menu",
+    "confidence": "high",
+    "notes": "kusinasd.com is a SpotHopper site whose /food-menu page server-renders the full catalog directly in HTML (food-item-title/food-price/menu-section-name markup), address on the page confirmed as '7580 Miramar Road' matching the work list exactly. Two sides (Garlic Achiote Red Rice, Steamed Rice) have no single food-price value — they carry two sizes each in the description text ('Small $4.00 | Large $6.00' / 'Small $3.00 | Large $5.00') — split into separate Small/Large rows to keep one numeric price per row. Sections reached: Appetizers, Rice & Noodles, Soups, Combos with Rice & Mac Salad, Entrees. The site also has separate /drink-menu and /catering pages (adjuncts, not checked) and a /specials page that server-rendered as genuinely empty (empty-content-message, no items).",
+    "dishes": [
+      {
+        "name": "Lumpia",
+        "description": "",
+        "price": "$9.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicharon Bulaklak",
+        "description": "",
+        "price": "$10.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Steamed Shumai",
+        "description": "",
+        "price": "$9.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garlic Achiote Red Rice (Small)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Rice & Noodles"
+      },
+      {
+        "name": "Garlic Achiote Red Rice (Large)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Rice & Noodles"
+      },
+      {
+        "name": "Steamed Rice (Small)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Rice & Noodles"
+      },
+      {
+        "name": "Steamed Rice (Large)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Rice & Noodles"
+      },
+      {
+        "name": "Chow Fun Pancit - Palabok",
+        "description": "",
+        "price": "$19.00",
+        "section": "Rice & Noodles"
+      },
+      {
+        "name": "Chow Fun Pancit - Pancit Miki",
+        "description": "",
+        "price": "$19.00",
+        "section": "Rice & Noodles"
+      },
+      {
+        "name": "Pork Sinigang",
+        "description": "",
+        "price": "$15.00",
+        "section": "Soups"
+      },
+      {
+        "name": "Fish Sinigang",
+        "description": "",
+        "price": "$17.00",
+        "section": "Soups"
+      },
+      {
+        "name": "Chicken Adobo (Combo)",
+        "description": "Combo with rice & mac salad.",
+        "price": "$15.00",
+        "section": "Combos with Rice & Mac Salad"
+      },
+      {
+        "name": "Pork Adobo (Combo)",
+        "description": "Combo with rice & mac salad.",
+        "price": "$15.00",
+        "section": "Combos with Rice & Mac Salad"
+      },
+      {
+        "name": "Loco Moco",
+        "description": "Combo with rice & mac salad.",
+        "price": "$16.00",
+        "section": "Combos with Rice & Mac Salad"
+      },
+      {
+        "name": "Chicken Katsu",
+        "description": "Combo with rice & mac salad.",
+        "price": "$14.00",
+        "section": "Combos with Rice & Mac Salad"
+      },
+      {
+        "name": "Daing Bangus",
+        "description": "",
+        "price": "$19.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Pork Adobo",
+        "description": "",
+        "price": "$17.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Chicken Inasal",
+        "description": "",
+        "price": "$16.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Beef Kare Kare",
+        "description": "",
+        "price": "$24.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Crispy Pasta",
+        "description": "",
+        "price": "$26.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Grilled Pork Liempo",
+        "description": "",
+        "price": "$15.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Sizzling Sisig",
+        "description": "",
+        "price": "$19.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Lechon Kawali",
+        "description": "",
+        "price": "$15.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Green Beans Adobo",
+        "description": "",
+        "price": "$11.00",
+        "section": "Entrees"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3316",
+    "name": "In The Mix Yogurt",
+    "sourceUrl": "https://www.inthemixyogurt.com/menu",
+    "confidence": "high",
+    "notes": "Self-serve frozen yogurt shop, priced by weight at the register, not by item — confirmed by reading both the Squarespace /menu page (a flavor list: Ube, Strawberry Banana, Plain Tart, Dole Pineapple, Cake Batter, Cold Brew Gelato, Peanut Butter, Chocolate, Vanilla, plus seasonal flavors, and a toppings/sauces list) and the /store-1 online-order page, which sells only $10/$25/$50 gift cards — no per-ounce or per-item price is published anywhere on the site. Same category as a gelateria priced by size: a genuine not-found, not a gap in the capture.",
+    "dishes": []
+  }
+]

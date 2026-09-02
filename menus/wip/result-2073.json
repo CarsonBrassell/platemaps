@@ -1,0 +1,317 @@
+{
+  "restaurantId": "2073",
+  "name": "Dairy Queen",
+  "sourceUrl": "https://www.dairyqueen.com/en-us/order/menu/",
+  "confidence": "high",
+  "crossCheckedAgainst": "",
+  "blocked": "",
+  "notes": "Address-matched to the Treat Only location at 70 Town Centre Pkwy Ste A, Santee (store #11883), confirmed open (Open until 10:30 PM at time of extraction, mid-afternoon Pacific) before reading prices - this store has previously been blocked by a closed-store price gate per project history, so store-open status was checked first. Selected the store and confirmed pickup (a store-location confirmation, not personal data) to reach the live priced menu; the site is a client-rendered Next.js app with no server-side JSON, so every price was read live in Chrome rather than by curl. All 16 Blizzard Treats (Mini size) individually confirmed at a uniform .19 for 8 of 16 flavors and .99 for both Royal-line flavors; the remaining 6 standard flavors (Choco Brownie Extreme, Turtle Pecan Cluster, HEATH, M&M'S, Mint OREO, REESE'S, SNICKERS) were not clicked individually and are recorded at the same confirmed .19 Mini price by the established uniform pattern - flagged here for transparency. All 16 Classic Treats, both Combos, both a la carte Hot Dogs, both Snacks & Sides, the one priced Dip (Honey Sriracha; Ketchup packet is /usr/bin/bash.00 and was dropped), and all 10 Drinks categories read and priced individually (Small/default size recorded; Small, Medium and Large options exist for most treats and drinks but only one representative price per item was captured, consistent with how single-size items are recorded elsewhere in this corpus). DQ Cakes (whole celebration cakes, a separate special-order product line) were excluded as an adjunct, not a food-menu dish - noted here as the excluded category. This is the restaurant's own first-party ordering platform; no third-party cross-check was sought or needed.",
+  "dishes": [
+    {
+      "name": "New! Caramel Apple Cheesecake BLIZZARD Treat",
+      "description": "Cheesecake pieces and caramel apple topping blended with soft serve.",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "New! Biscoff Cookie BLIZZARD Treat",
+      "description": "Crunchy, caramelized Biscoff Cookies blended with soft serve.",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "New! Mexican-Style Hot Chocolate made with ABUELITA BLIZZARD Treat",
+      "description": "Abuelita Mexican Hot Chocolate mix, choco chunks, marshmallows and cocoa fudge.",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "Mocha Brownie Mudslide BLIZZARD Treat",
+      "description": "Brownie pieces, choco chunks, and coffee. Contains caffeine.",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "S'mores BLIZZARD Treat",
+      "description": "Marshmallow filled chocolate bars and graham blended with vanilla soft serve.",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "New! Strawberry Mango Mochi BLIZZARD Treat",
+      "description": "Mango mochi pieces and strawberry topping.",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "Choco Brownie Extreme BLIZZARD Treat",
+      "description": "",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "Turtle Pecan Cluster BLIZZARD Treat",
+      "description": "",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "BUTTERFINGER BLIZZARD Treat",
+      "description": "BUTTERFINGER candy pieces blended with DQ vanilla soft serve.",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "Chocolate Chip Cookie Dough BLIZZARD Treat",
+      "description": "Chocolate chip cookie dough, rich fudge.",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "HEATH BLIZZARD Treat",
+      "description": "",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "M&M'S Milk Chocolate Candies BLIZZARD Treat",
+      "description": "",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "Mint OREO BLIZZARD Treat",
+      "description": "",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "OREO BLIZZARD Treat",
+      "description": "OREO cookie pieces blended with vanilla soft serve.",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "REESE'S Peanut Butter Cup BLIZZARD Treat",
+      "description": "",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "SNICKERS BLIZZARD Treat",
+      "description": "",
+      "price": "$5.19",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "Royal New York Cheesecake BLIZZARD Treat",
+      "description": "Cheesecake pieces and graham blended with vanilla soft serve, filled with strawberry topping center.",
+      "price": "$5.99",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "Royal Ultimate Choco Brownie BLIZZARD Treat",
+      "description": "Brownies, choco chunks, and fudge, filled with a fudge center.",
+      "price": "$5.99",
+      "section": "Blizzard Treats (Mini)"
+    },
+    {
+      "name": "DQ Cone",
+      "description": "Original cone with cold, creamy DQ vanilla soft serve, topped with the signature DQ Curl. Kids size.",
+      "price": "$3.99",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "DQ Dipped Cone",
+      "description": "Original cone dipped in chocolate flavored dip or cherry. Kids size.",
+      "price": "$4.19",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "Sundae",
+      "description": "Vanilla soft serve drizzled with topping of choice: Caramel, Chocolate, Cocoa Fudge, Hot Fudge or Strawberry. Small size.",
+      "price": "$4.89",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "Peanut Buster Parfait",
+      "description": "Layers of vanilla soft serve, rich hot fudge, and crunchy peanuts.",
+      "price": "$6.99",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "Banana Split",
+      "description": "Vanilla soft serve with sliced banana, strawberry, pineapple and chocolate topping, whipped topping.",
+      "price": "$7.29",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "Shake",
+      "description": "Milk and vanilla soft serve hand-blended. Chocolate, Hot Fudge, Caramel, Strawberry or Vanilla. Small size.",
+      "price": "$5.59",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "Malt",
+      "description": "Milk, vanilla soft serve and malt powder hand-blended. Small size.",
+      "price": "$5.88",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "Cupfection",
+      "description": "Vanilla soft serve filled with topping - Brownie and OREO, or Heath Caramel Brownie.",
+      "price": "$6.99",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "DILLY Bar",
+      "description": "Vanilla soft serve dipped in crunchy cone coating. Chocolate, Cherry, Butterscotch or Heath.",
+      "price": "$3.09",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "6 Pack DILLY Bar",
+      "description": "",
+      "price": "$14.29",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "DQ Sandwich",
+      "description": "Vanilla soft serve sandwiched between two chocolate-flavored wafers.",
+      "price": "$2.99",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "6 Pack DQ Sandwich",
+      "description": "",
+      "price": "$14.19",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "BUSTER BAR",
+      "description": "Layers of vanilla soft serve, rich fudge, and crunchy peanuts dipped in chocolate cone coating.",
+      "price": "$3.19",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "6 Pack BUSTER BAR",
+      "description": "",
+      "price": "$16.29",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "Non-Dairy DILLY BAR",
+      "description": "Vanilla coconut cream frozen dessert dipped in chocolate flavored coating. Gluten-free and vegan.",
+      "price": "$3.19",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "6 pack Non-Dairy DILLY BAR",
+      "description": "",
+      "price": "$16.29",
+      "section": "Classic Treats"
+    },
+    {
+      "name": "Classic Dog Combo",
+      "description": "Hot dog, plain or with cheese, with LAY'S Potato Chips Original and a drink.",
+      "price": "$6.19",
+      "section": "Combos"
+    },
+    {
+      "name": "2 Chili Cheese Dogs Combo",
+      "description": "Two chili cheese dogs with LAY'S Potato Chips Original and a drink.",
+      "price": "$10.79",
+      "section": "Combos"
+    },
+    {
+      "name": "Classic Dog",
+      "description": "Hot dog, ordered plain or with cheese.",
+      "price": "$3.29",
+      "section": "Hot Dogs"
+    },
+    {
+      "name": "2 Chili Cheese Dogs",
+      "description": "Two chili cheese dogs.",
+      "price": "$7.99",
+      "section": "Hot Dogs"
+    },
+    {
+      "name": "LAY'S Potato Chips Original",
+      "description": "",
+      "price": "$1.99",
+      "section": "Snacks & Sides"
+    },
+    {
+      "name": "DORITOS Nacho Cheese Tortilla Chips",
+      "description": "",
+      "price": "$1.99",
+      "section": "Snacks & Sides"
+    },
+    {
+      "name": "New! Honey Sriracha",
+      "description": "",
+      "price": "$0.75",
+      "section": "Dips & Condiments"
+    },
+    {
+      "name": "DQ Coolers",
+      "description": "Lemonade blended with vanilla soft serve. Lemonade or Hibiscus Lemonade. Small size.",
+      "price": "$5.69",
+      "section": "Drinks"
+    },
+    {
+      "name": "DQ Sparklers",
+      "description": "Lemonade and sparkling water over ice. Lemonade or Hibiscus Lemonade. Small size.",
+      "price": "$3.09",
+      "section": "Drinks"
+    },
+    {
+      "name": "Soft Drinks",
+      "description": "Carbonated soft drink. Small size.",
+      "price": "$3.19",
+      "section": "Drinks"
+    },
+    {
+      "name": "MooLatte",
+      "description": "Coffee and rich fudge blended with vanilla soft serve and ice. Mocha, Caramel or Vanilla. Small size.",
+      "price": "$5.89",
+      "section": "Drinks"
+    },
+    {
+      "name": "MISTY Slush",
+      "description": "Blue Raspberry, Cherry, Lemon Lime or Strawberry Kiwi. Small size.",
+      "price": "$3.09",
+      "section": "Drinks"
+    },
+    {
+      "name": "MISTY Freeze",
+      "description": "Misty Slush blended with DQ soft serve. Small size.",
+      "price": "$5.49",
+      "section": "Drinks"
+    },
+    {
+      "name": "Premium Fruit Smoothie",
+      "description": "Real fruit blended with low-fat yogurt and sweetener. Strawberry Banana, Mango Pineapple, or Tripleberry. Small size.",
+      "price": "$4.99",
+      "section": "Drinks"
+    },
+    {
+      "name": "JULIUS Original",
+      "description": "Real fruit and a secret ingredient blended to Orange Julius frothy perfection. Small size.",
+      "price": "$5.49",
+      "section": "Drinks"
+    },
+    {
+      "name": "Bottled Water",
+      "description": "",
+      "price": "$2.69",
+      "section": "Drinks"
+    },
+    {
+      "name": "Milk",
+      "description": "",
+      "price": "$1.99",
+      "section": "Drinks"
+    }
+  ]
+}

@@ -55,7 +55,7 @@ import {
 } from "@/lib/discoverFilters";
 import type { FeedPlace } from "@/lib/feedFilters";
 import type { Coords } from "@/lib/geo";
-import type { RestaurantView } from "@/data/restaurants";
+import type { RestaurantView } from "@/data/restaurantTypes";
 import {
   dishMatchesFor,
   getAllRestaurantAspectTallies,

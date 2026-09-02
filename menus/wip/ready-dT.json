@@ -1,0 +1,2351 @@
+[
+  {
+    "restaurantId": "4538",
+    "name": "Tabu Shabu",
+    "sourceUrl": "https://tabushabusandiego.com/menu",
+    "confidence": "high",
+    "notes": "First-party site (tabushabusandiego.com/menu, address on page confirmed 3647 30TH ST, San Diego, CA 92104, matching work list). Menu is a Next.js RSC-streamed page with no plain HTML prices; extracted by reconstructing the full React Server Component payload from self.__next_f.push() chunks (resolving all \"$Lxx\" forward references into their source segments) then reading the resulting name/description/price tree. Protein items are priced per portion size (menu legend: '4oz reg · 6oz lg · 8oz dbl · 3oz side'); each size is recorded as a separate dish since each is a real distinct price. Broth/noodle upgrades (Sukiyaki, Tonkotsu, Ramen noodle, Kale ramen noodle) are recorded at their stated upcharge. Included no-charge items (Traditional kombu, Miso broth, White/brown rice, Udon, Shirataki, Craft beer, 'Save your noodles', Hot tea) were dropped -- they carry no per-item price, they are bundled into the hot-pot base price. Categories reached: Step 1 Broth, Step 2&3 Rice+Noodle, Step 4 Pick Your Protein, Tabu Exclusive Premium Proteins, Step 5 Finish, Starters, Extras & Garnishes, Sake, Beer & Wine, Zero-Proof, Dessert -- this is the restaurant's full published menu, no sections held back.",
+    "dishes": [
+      {
+        "name": "Sukiyaki (Upgrade)",
+        "description": "Sweet soy-sake broth, served with a pasteurized egg for dipping — upcharge over included broth/noodle",
+        "price": "$3.00",
+        "section": "Step 1 · Broth"
+      },
+      {
+        "name": "Tonkotsu (Upgrade)",
+        "description": "Creamy ramen pork-bone broth — upcharge over included broth/noodle",
+        "price": "$4.00",
+        "section": "Step 1 · Broth"
+      },
+      {
+        "name": "Ramen noodle (Upgrade)",
+        "description": "Upcharge over included broth/noodle",
+        "price": "$1.00",
+        "section": "Step 2 & 3 · Rice + Noodle"
+      },
+      {
+        "name": "Kale ramen noodle (Upgrade)",
+        "description": "Upcharge over included broth/noodle",
+        "price": "$1.00",
+        "section": "Step 2 & 3 · Rice + Noodle"
+      },
+      {
+        "name": "Prime beef brisket (4oz Reg)",
+        "description": "Demkota Ranch",
+        "price": "$24.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Prime beef brisket (6oz Lg)",
+        "description": "Demkota Ranch",
+        "price": "$28.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Prime beef brisket (8oz Dbl)",
+        "description": "Demkota Ranch",
+        "price": "$34.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Prime beef brisket (3oz Side)",
+        "description": "Demkota Ranch",
+        "price": "$10.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wagyu beef toro (4oz Reg)",
+        "description": "",
+        "price": "$24.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wagyu beef toro (6oz Lg)",
+        "description": "",
+        "price": "$28.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wagyu beef toro (8oz Dbl)",
+        "description": "",
+        "price": "$34.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wagyu beef toro (3oz Side)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wagyu chuck eye (4oz Reg)",
+        "description": "Snake River Farms",
+        "price": "$28.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wagyu chuck eye (6oz Lg)",
+        "description": "Snake River Farms",
+        "price": "$32.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wagyu chuck eye (8oz Dbl)",
+        "description": "Snake River Farms",
+        "price": "$38.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wagyu chuck eye (3oz Side)",
+        "description": "Snake River Farms",
+        "price": "$12.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Certified Angus ribeye (4oz Reg)",
+        "description": "",
+        "price": "$28.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Certified Angus ribeye (6oz Lg)",
+        "description": "",
+        "price": "$34.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Certified Angus ribeye (8oz Dbl)",
+        "description": "",
+        "price": "$44.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Certified Angus ribeye (3oz Side)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Kurobuta pork (4oz Reg)",
+        "description": "Snake River Farms",
+        "price": "$22.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Kurobuta pork (6oz Lg)",
+        "description": "Snake River Farms",
+        "price": "$26.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Kurobuta pork (8oz Dbl)",
+        "description": "Snake River Farms",
+        "price": "$32.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Kurobuta pork (3oz Side)",
+        "description": "Snake River Farms",
+        "price": "$10.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Free-range chicken (4oz Reg)",
+        "description": "All natural, hormone free",
+        "price": "$22.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Free-range chicken (6oz Lg)",
+        "description": "All natural, hormone free",
+        "price": "$26.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Free-range chicken (8oz Dbl)",
+        "description": "All natural, hormone free",
+        "price": "$32.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Free-range chicken (3oz Side)",
+        "description": "All natural, hormone free",
+        "price": "$10.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Colorado lamb (4oz Reg)",
+        "description": "",
+        "price": "$26.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Colorado lamb (6oz Lg)",
+        "description": "",
+        "price": "$30.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Colorado lamb (8oz Dbl)",
+        "description": "",
+        "price": "$38.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Colorado lamb (3oz Side)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wild shrimp (4oz Reg)",
+        "description": "",
+        "price": "$26.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wild shrimp (6oz Lg)",
+        "description": "",
+        "price": "$30.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wild shrimp (8oz Dbl)",
+        "description": "",
+        "price": "$38.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wild shrimp (3oz Side)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Norwegian salmon (4oz Reg)",
+        "description": "Sashimi grade",
+        "price": "$28.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Norwegian salmon (6oz Lg)",
+        "description": "Sashimi grade",
+        "price": "$34.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Norwegian salmon (8oz Dbl)",
+        "description": "Sashimi grade",
+        "price": "$42.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Norwegian salmon (3oz Side)",
+        "description": "Sashimi grade",
+        "price": "$12.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "2-item combo (Large)",
+        "description": "Mix any two",
+        "price": "$32.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "2-item combo (Double)",
+        "description": "Mix any two",
+        "price": "$38.00",
+        "section": "Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Prime ribeye (4oz Reg)",
+        "description": "Double R Ranch · gold grade",
+        "price": "$34.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Prime ribeye (6oz Lg)",
+        "description": "Double R Ranch · gold grade",
+        "price": "$40.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Prime ribeye (8oz Dbl)",
+        "description": "Double R Ranch · gold grade",
+        "price": "$52.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Prime ribeye (3oz Side)",
+        "description": "Double R Ranch · gold grade",
+        "price": "$16.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Wagyu short rib (4oz Reg)",
+        "description": "Snake River Farms · BMS 8",
+        "price": "$32.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Wagyu short rib (6oz Lg)",
+        "description": "Snake River Farms · BMS 8",
+        "price": "$38.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Wagyu short rib (8oz Dbl)",
+        "description": "Snake River Farms · BMS 8",
+        "price": "$48.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Wagyu short rib (3oz Side)",
+        "description": "Snake River Farms · BMS 8",
+        "price": "$16.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "2-item premium combo (Large)",
+        "description": "",
+        "price": "$38.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "2-item premium combo (Double)",
+        "description": "",
+        "price": "$48.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Wagyu Japanese A5 (4oz Reg)",
+        "description": "Miyazaki, Japan · BMS 10",
+        "price": "$65.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Wagyu Japanese A5 (3oz Side)",
+        "description": "Miyazaki, Japan · BMS 10",
+        "price": "$45.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Vegetarian",
+        "description": "No protein · double veggies",
+        "price": "$18.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Kids only plate",
+        "description": "10 & under · 3oz, choose 1: toro, brisket, chicken or shrimp",
+        "price": "$16.00",
+        "section": "Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Tabu porridge",
+        "description": "Rice + pasteurized egg cooked in your leftover broth — a rich finish, or take it to go",
+        "price": "$7.00",
+        "section": "Step 5 · Finish — Soup It Up"
+      },
+      {
+        "name": "Steamed edamame",
+        "description": "",
+        "price": "$7.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Truffle sea salt edamame",
+        "description": "",
+        "price": "$8.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Crunchy garlic edamame",
+        "description": "",
+        "price": "$8.50",
+        "section": "Starters"
+      },
+      {
+        "name": "Cucumber salad",
+        "description": "",
+        "price": "$7.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Spicy serrano cucumbers",
+        "description": "",
+        "price": "$8.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Chicken & veggie dumplings",
+        "description": "Warmed in your broth",
+        "price": "$8.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Spicy salmon poke bowl",
+        "description": "",
+        "price": "$20.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Salmon crudo",
+        "description": "",
+        "price": "$20.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Garlic chili crunch",
+        "description": "",
+        "price": "$3.00",
+        "section": "Extras & Garnishes"
+      },
+      {
+        "name": "Pickled serranos",
+        "description": "",
+        "price": "$3.00",
+        "section": "Extras & Garnishes"
+      },
+      {
+        "name": "Pasteurized egg",
+        "description": "",
+        "price": "$3.00",
+        "section": "Extras & Garnishes"
+      },
+      {
+        "name": "Truffle oil",
+        "description": "",
+        "price": "$3.00",
+        "section": "Extras & Garnishes"
+      },
+      {
+        "name": "Xtra noodle portion",
+        "description": "",
+        "price": "$5.00",
+        "section": "Extras & Garnishes"
+      },
+      {
+        "name": "Xtra single veggie",
+        "description": "",
+        "price": "$4.00",
+        "section": "Extras & Garnishes"
+      },
+      {
+        "name": "Xtra full veggie plate",
+        "description": "",
+        "price": "$10.00",
+        "section": "Extras & Garnishes"
+      },
+      {
+        "name": "Sake bomb traditional",
+        "description": "",
+        "price": "$7.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Sake bomb premium",
+        "description": "",
+        "price": "$8.00",
+        "section": "Sake"
+      },
+      {
+        "name": "House sake carafe",
+        "description": "Cold or hot",
+        "price": "$10.00",
+        "section": "Sake"
+      },
+      {
+        "name": "House nigori carafe",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Hakutsuru superior",
+        "description": "300 mL",
+        "price": "$20.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Kikisui junmai",
+        "description": "300 mL",
+        "price": "$22.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Nihonsakari yuzu sake",
+        "description": "300 mL",
+        "price": "$28.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Sho Chiku Bai “Rei” junmai daiginjo",
+        "description": "300 mL",
+        "price": "$36.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Sayuri nigori",
+        "description": "300 mL",
+        "price": "$20.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Hana lychee",
+        "description": "375 mL",
+        "price": "$20.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Hana white peach",
+        "description": "375 mL",
+        "price": "$20.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Ippin junmai",
+        "description": "300 mL",
+        "price": "$26.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Justin sauvignon blanc (Glass)",
+        "description": "",
+        "price": "$13.00",
+        "section": "Beer & Wine"
+      },
+      {
+        "name": "Justin sauvignon blanc (Bottle)",
+        "description": "",
+        "price": "$36.00",
+        "section": "Beer & Wine"
+      },
+      {
+        "name": "Mondavi private select cabernet (Glass)",
+        "description": "",
+        "price": "$11.00",
+        "section": "Beer & Wine"
+      },
+      {
+        "name": "Mondavi private select cabernet (Bottle)",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beer & Wine"
+      },
+      {
+        "name": "Wine corkage",
+        "description": "Max two bottles per party",
+        "price": "$20.00",
+        "section": "Beer & Wine"
+      },
+      {
+        "name": "Black tea",
+        "description": "Unsweetened",
+        "price": "$5.00",
+        "section": "Zero-Proof"
+      },
+      {
+        "name": "Jasmine green tea",
+        "description": "Unsweetened",
+        "price": "$5.00",
+        "section": "Zero-Proof"
+      },
+      {
+        "name": "Topo Chico sparkling water",
+        "description": "",
+        "price": "$5.00",
+        "section": "Zero-Proof"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "Small",
+        "price": "$3.50",
+        "section": "Zero-Proof"
+      },
+      {
+        "name": "Mexican Coke",
+        "description": "",
+        "price": "$5.00",
+        "section": "Zero-Proof"
+      },
+      {
+        "name": "Mexican Sprite",
+        "description": "",
+        "price": "$5.00",
+        "section": "Zero-Proof"
+      },
+      {
+        "name": "Marble “ramune” soda",
+        "description": "",
+        "price": "$5.00",
+        "section": "Zero-Proof"
+      },
+      {
+        "name": "Simply Lemonade",
+        "description": "",
+        "price": "$5.00",
+        "section": "Zero-Proof"
+      },
+      {
+        "name": "Mochi (Each)",
+        "description": "Rotating flavors: green tea w/ boba, black sesame, red bean, plum, mint choc chip, coffee, chocolate, mango, strawberry, vanilla & more",
+        "price": "$3.00",
+        "section": "Dessert"
+      },
+      {
+        "name": "Mochi (3-piece)",
+        "description": "Rotating flavors: green tea w/ boba, black sesame, red bean, plum, mint choc chip, coffee, chocolate, mango, strawberry, vanilla & more",
+        "price": "$8.00",
+        "section": "Dessert"
+      },
+      {
+        "name": "Raspberry sorbet",
+        "description": "",
+        "price": "$7.00",
+        "section": "Dessert"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4436",
+    "name": "Valle",
+    "sourceUrl": "https://www.valleoceanside.com/menu/",
+    "confidence": "high",
+    "notes": "First-party site (address on page confirmed 222 North Pacific Street, matching work list). Valle is a fixed-tasting-menu fine-dining restaurant (Michelin-starred). The site's own schema.org Menu JSON-LD confirms this is a real gap, not a capture failure: the Tasting Menu and Menu Breve blocks price the whole menu (not per-course), and the El Sillon Bar, Bar Menu and Cocktails JSON-LD blocks list every dish/drink name and description but every 'offers' field is either absent or an empty {\"@type\":\"Offer\"} with no price key -- confirmed by reading the raw JSON-LD, not just the rendered page. So per-item a la carte and cocktail prices are not published anywhere on the restaurant's own site. Categories reached: Tasting Menu (priced), Menu Breve (priced), El Sillon Bar Experience (reached, genuinely unpriced), Bar Menu (reached, genuinely unpriced -- 14 items: Bean Bread, Sikil Pak, Ceviche Verde Tostada, Trucha Tom Kha, Half Dozen Baja Oysters, Not Cesar, Burrito, THE Cheeseburger, Quesataco, Birria, Pescado, Arroz con Leche, Ice Cream, Legoland flan), Cocktails (reached, genuinely unpriced -- 7 drinks: Milpa, Fogata, Malinche, Polanco, Rum-Cha-Cha, Sandy, Maggie). Recorded the tasting-menu tiers and supplements as the priced 'dishes' since that is the restaurant's actual per-order pricing structure; course lists are folded into each menu's description.",
+    "dishes": [
+      {
+        "name": "Sample Tasting Menu",
+        "description": "Multi-course tasting menu, price per person (++ = plus tax and 20% service charge). Courses: Botanas (tomatillo, hoja santa, epazote infusion; oyster; fish taco; huitlacoche infladita), Tomate (nixtamalized tomato, humboldt fog, chia, basil), Cebolla y Caviar (charred onion, imperial royal ossetra caviar, vegetable demi-glace), Atun Tom Kha (san diego ikejime bluefin tuna, local kiwi, cold tom kha), Mole Blanco (local spring vegetables, white mole, almonds, pinenuts, sesame), Cangrejo (santa barbara rock crab minilla, panipurri, chilpachole), Bean Bread (black bean bread, black garlic butter, chicharron butter), Pescado (oceanside harbor pelican rock cod, chichilo, roasted cauliflower, jicama), Frijol con Puerco (iowa duroc sakura pork, lipstick chile relleno, heirloom corn), Sandia (watermelon flan, patilla, cucumber mint sorbet), Elote Tres Leches (corn cake, leche quemada, oat milk, corn 'milk'), Dulces (corico, tascalate macaron, margarita gomita), Cono (cactus, lime, tajin).",
+        "price": "$220.00",
+        "section": "Tasting Menu"
+      },
+      {
+        "name": "Sample Tasting Menu — Mexican Wine Pairing",
+        "description": "Add-on wine pairing for the Sample Tasting Menu.",
+        "price": "$170.00",
+        "section": "Tasting Menu"
+      },
+      {
+        "name": "Sample Tasting Menu — Global Wine Pairing",
+        "description": "Add-on wine pairing for the Sample Tasting Menu.",
+        "price": "$230.00",
+        "section": "Tasting Menu"
+      },
+      {
+        "name": "Sample Tasting Menu — Non-Alcoholic Beverage Pairing",
+        "description": "Add-on non-alcoholic pairing for the Sample Tasting Menu.",
+        "price": "$80.00",
+        "section": "Tasting Menu"
+      },
+      {
+        "name": "Japanese A5 Drunken Wagyu Bistec Ranchero Supplement",
+        "description": "Optional upgrade supplement on the Sample Tasting Menu.",
+        "price": "$60.00",
+        "section": "Tasting Menu"
+      },
+      {
+        "name": "Menu Breve (Breve Experience)",
+        "description": "Concise tasting menu available during select early and late hours, price per person (++ = plus tax and 20% service charge). Courses: Botanas (oyster, fish taco, huitlacoche infladita), Cangrejo (santa barbara rock crab minilla, panipurri, chilpachole), Bean Bread (black bean bread, black garlic butter, chicharron butter), Pescado (oceanside harbor pelican rock cod, chichilo, roasted cauliflower, jicama), Bistec Ranchero (grilled imperial american wagyu, black bean, poblano pepper), Legoland (chocolate flan, strawberry atole, strawberry long pepper sorbet), Dulces (corico, tascalate macaron, margarita gomita), Cono (cactus, lime, tajin).",
+        "price": "$140.00",
+        "section": "Menu Breve"
+      },
+      {
+        "name": "Menu Breve — Mexican Wine Pairing",
+        "description": "Add-on wine pairing for Menu Breve.",
+        "price": "$105.00",
+        "section": "Menu Breve"
+      },
+      {
+        "name": "Menu Breve — Global Wine Pairing",
+        "description": "Add-on wine pairing for Menu Breve.",
+        "price": "$150.00",
+        "section": "Menu Breve"
+      },
+      {
+        "name": "Menu Breve — Non-Alcoholic Beverage Pairing",
+        "description": "Add-on non-alcoholic pairing for Menu Breve.",
+        "price": "$40.00",
+        "section": "Menu Breve"
+      },
+      {
+        "name": "Japanese A5 Drunken Wagyu Supplement (Menu Breve)",
+        "description": "Optional upgrade supplement on Menu Breve.",
+        "price": "$60.00",
+        "section": "Menu Breve"
+      }
+    ]
+  },
+  {
+    "restaurantId": "933",
+    "name": "Avian Sandwiches Fresh Drinking Water & Boba",
+    "sourceUrl": "https://www.doordash.com/store/avian-sandwiches-san-diego-23395731/",
+    "confidence": "medium",
+    "notes": "No first-party website (work list website=null). DoorDash marketplace schema.org Menu JSON-LD, 60 items, address on DD page confirmed 6937 Linda Vista Road, matching work list. Sections: Most Ordered, Tea, Latte, Juice, Smoothies, Dessert, Food, Special Rolls -- covers banh mi/spring rolls/bao (Food), the full boba/tea lineup, and specialty rolls. Ran the markup divisor test across all 60 prices (only 11 distinct price points): no divisor from 1.04-1.3 produced a clean-landing majority (best was 1.3 at 18/60 = 30%, well short of the ~75-100% pattern that flags real markup), consistent with plain tiered POS pricing rather than delivery markup. No independent second source found to cross-check (Uber Eats and Postmates listings exist but both require a browser/JS to read).",
+    "dishes": [
+      {
+        "name": "Banh Mi (Authentic)",
+        "description": "",
+        "price": "$11.65",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Spring Rolls (Authentic)",
+        "description": "",
+        "price": "$15.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Vietnamese Iced Coffee (Small)",
+        "description": "",
+        "price": "$7.80",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "",
+        "price": "$8.45",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Pork Bao Bun (Authentic)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Taro Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Sugar Cane Juice (Large)",
+        "description": "",
+        "price": "$14.30",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Strawberry Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Coconut Jello",
+        "description": "",
+        "price": "$10.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Che Thai",
+        "description": "",
+        "price": "$10.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Mango Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Pork Belly Spring Roll",
+        "description": "",
+        "price": "$16.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Milk Green Tea",
+        "description": "",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Taro Milk Tea",
+        "description": "",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Honeydew Milk Tea",
+        "description": "",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Jasmine Milk Green Tea",
+        "description": "",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Jasmine Green Tea",
+        "description": "",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Milk Tea",
+        "description": "",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "",
+        "price": "$7.80",
+        "section": "Latte"
+      },
+      {
+        "name": "Vietnamese Iced Coffee (Large)",
+        "description": "",
+        "price": "$13.65",
+        "section": "Latte"
+      },
+      {
+        "name": "Vietnamese Iced Coffee (Small)",
+        "description": "",
+        "price": "$7.80",
+        "section": "Latte"
+      },
+      {
+        "name": "Iced Latte",
+        "description": "",
+        "price": "$8.45",
+        "section": "Latte"
+      },
+      {
+        "name": "Sugar Cane Juice (Large)",
+        "description": "",
+        "price": "$14.30",
+        "section": "Juice"
+      },
+      {
+        "name": "Pennywort Juice",
+        "description": "",
+        "price": "$10.40",
+        "section": "Juice"
+      },
+      {
+        "name": "Sugarcane Juice (Small)",
+        "description": "",
+        "price": "$10.40",
+        "section": "Juice"
+      },
+      {
+        "name": "Passionfruit Juice",
+        "description": "",
+        "price": "$10.40",
+        "section": "Juice"
+      },
+      {
+        "name": "Honeydew Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Taro Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Mango Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Avocado Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Mocha Blast Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Lychee Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Soursop Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Thai Tea Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Pineapple Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Cherry Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Banana Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Coconut Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry Banana Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Pina Colada Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Jackfruit Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Durian Smoothie",
+        "description": "",
+        "price": "$12.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Milk Tea Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Milk Green Tea Smoothie",
+        "description": "",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Coconut Jello",
+        "description": "",
+        "price": "$10.50",
+        "section": "Dessert"
+      },
+      {
+        "name": "Che Thai",
+        "description": "",
+        "price": "$10.50",
+        "section": "Dessert"
+      },
+      {
+        "name": "Pandan Leaf Jello",
+        "description": "",
+        "price": "$10.50",
+        "section": "Dessert"
+      },
+      {
+        "name": "Pork Bao Bun (Authentic)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Food"
+      },
+      {
+        "name": "Banh Mi (Authentic)",
+        "description": "",
+        "price": "$11.65",
+        "section": "Food"
+      },
+      {
+        "name": "Spring Rolls (Authentic)",
+        "description": "",
+        "price": "$15.50",
+        "section": "Food"
+      },
+      {
+        "name": "Grilled Pork Loaf Special Roll",
+        "description": "",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Pork Belly Special Roll",
+        "description": "",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Shrimp Special Roll",
+        "description": "",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Tofu Special Roll",
+        "description": "",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Egg Special Roll",
+        "description": "",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Veggie Special Roll",
+        "description": "",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Grilled Pork Special Roll",
+        "description": "",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Grilled Chicken Special Roll",
+        "description": "",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4230",
+    "name": "AVANT Restaurant",
+    "sourceUrl": "https://places.singleplatform.com/avant-17/menu",
+    "confidence": "medium",
+    "notes": "First-party site (avantrestaurant.com) embeds a SinglePlatform widget (data-location=/avant-17) rather than hosting menu HTML/PDF directly; resolved the widget's redirect chain to the live SinglePlatform page, which the site actively loads as its own 'Our Menu' content (not a third-party directory listing found independently). Address on the page confirmed 17550 Bernardo Oaks Dr, San Diego, CA 92128, matching work list. Parsed the page's embedded schema.org Restaurant/OfferCatalog JSON-LD (nested Menu > Section > Offer tree) for the bulk of items. Two known JSON-LD gaps were hand-patched from the page's own rendered text: (1) Seafood Tower only carried its 'Small' price ($85) in the JSON-LD -- the Large ($135) and both Supplemental Upcharge tiers ($50/$80) were read from the surrounding text and added; (2) the four private-event Bar Packages price per-person-per-hour in plain text inside the item name rather than in the JSON-LD price field ('$37 Per Person for (1) Hour; $23 Per Person for Each Additional Hour', etc.) -- split into First Hour / Each Additional Hour rows. Dropped items with no real price: the Garden/Market/Artisan private-dining prix-fixe course lists genuinely carry no per-person price anywhere on the page (private-event menus priced on inquiry). Categories reached and priced: AVANT Dinner Menu (Signature Prix Fixe, crudo, Beginnings, Land+Sea, Accompaniment, full wine-by-glass and cocktail lists), AVANT Bar Happy Hour Menu, Wines by Sommelier (bottle list), Bar Packages, Reception Hors D'Oeuvres & Canapes, AVANT Dessert Menu. Reached but unpriced: Garden/Market/Artisan private-event menus (no per-person price published). Prices look internally consistent (a clean, ascending fine-dining ladder with no repeating divisor pattern), consistent with genuine first-party pricing rather than a directory markup, but SinglePlatform listings are known to go stale, so confidence is medium rather than high.",
+    "dishes": [
+      {
+        "name": "Three Course",
+        "description": "select: 1 x beginnings, 1 x land + sea & 1 x dessert",
+        "price": "$79.00",
+        "section": "AVANT Dinner Menu > Signature Prix Fixe Experience"
+      },
+      {
+        "name": "Four Course",
+        "description": "select: 1 x crudo, 1 x beginnings, 1 x land + sea & 1 x dessert",
+        "price": "$89.00",
+        "section": "AVANT Dinner Menu > Signature Prix Fixe Experience"
+      },
+      {
+        "name": "West Coast Oysters",
+        "description": "champagne mignonette + cocktail sauce",
+        "price": "$25.00",
+        "section": "AVANT Dinner Menu > crudo"
+      },
+      {
+        "name": "Local Bluefin Tuna",
+        "description": "cured olives + cucumbers + RBI garden celery + basil + spicy tomato ponzu",
+        "price": "$22.00",
+        "section": "AVANT Dinner Menu > crudo"
+      },
+      {
+        "name": "Hamachi",
+        "description": "makrut lime + lemongrass + serrano + coriander + coconut fish sauce",
+        "price": "$23.00",
+        "section": "AVANT Dinner Menu > crudo"
+      },
+      {
+        "name": "Seafood Tower",
+        "description": "oysters + king crab + prawns + diver scallops",
+        "price": "$85.00",
+        "section": "AVANT Dinner Menu > crudo"
+      },
+      {
+        "name": "Lobster Bisque",
+        "description": "maine lobster salad + chive",
+        "price": "$22.00",
+        "section": "AVANT Dinner Menu > Beginnings"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "roma crunch + pumpkin seeds + cured olives + espelette crouton + green goddess caesar",
+        "price": "$21.00",
+        "section": "AVANT Dinner Menu > Beginnings"
+      },
+      {
+        "name": "Iceberg & Blue*",
+        "description": "smoked bacon + cherry tomatoes + candied walnuts + point reyes blue cheese dressing",
+        "price": "$25.00",
+        "section": "AVANT Dinner Menu > Beginnings"
+      },
+      {
+        "name": "Heirloom Tomatoes & Burrata",
+        "description": "compressed watermelon + basil pistou + RBI garden herbs",
+        "price": "$26.00",
+        "section": "AVANT Dinner Menu > Beginnings"
+      },
+      {
+        "name": "Grilled Jumbo Prawns",
+        "description": "grilled sweet peppers + confit baby corn + bomba sauce",
+        "price": "$28.00",
+        "section": "AVANT Dinner Menu > Beginnings"
+      },
+      {
+        "name": "Radiatori a la Vodka",
+        "description": "spicy calabrese + roasted tomatoes + basil + ricotta salata",
+        "price": "$34.00",
+        "section": "AVANT Dinner Menu > Beginnings"
+      },
+      {
+        "name": "Fire Roasted Cauliflower*",
+        "description": "sumac yogurt + chili + smoked almond crunch + herb salad",
+        "price": "$42.00",
+        "section": "AVANT Dinner Menu > Land + Sea"
+      },
+      {
+        "name": "Hokkaido Diver Scallops",
+        "description": "sweet corn & summer bean succotash + chorizo + black garlic",
+        "price": "$48.00",
+        "section": "AVANT Dinner Menu > Land + Sea"
+      },
+      {
+        "name": "Alaskan Halibut",
+        "description": "summer squash + castelvetrano relish + sungold tomato soubise",
+        "price": "$45.00",
+        "section": "AVANT Dinner Menu > Land + Sea"
+      },
+      {
+        "name": "Grilled Whole Branzino",
+        "description": "haricot verts almondine + citrus & caper relish",
+        "price": "$50.00",
+        "section": "AVANT Dinner Menu > Land + Sea"
+      },
+      {
+        "name": "Niman Ranch Pork Chop",
+        "description": "celery + flame roasted grape salsa",
+        "price": "$48.00",
+        "section": "AVANT Dinner Menu > Land + Sea"
+      },
+      {
+        "name": "Herb Crusted Rack of Lamb",
+        "description": "baby artichokes + thumbelina carrots + panisse + rosemary olive jus",
+        "price": "$68.00",
+        "section": "AVANT Dinner Menu > Land + Sea"
+      },
+      {
+        "name": "SRF Black Label NY Strip",
+        "description": "potato terrine + broccoli mousse + morel mushroom jus",
+        "price": "$79.00",
+        "section": "AVANT Dinner Menu > Land + Sea"
+      },
+      {
+        "name": "Prime Angus Tomahawk",
+        "description": "32oz long bone ribeye + creamed spinach + patatas bravas + au poivre",
+        "price": "$190.00",
+        "section": "AVANT Dinner Menu > Land + Sea"
+      },
+      {
+        "name": "Parker House Roll",
+        "description": "seasonal butter + sea salt",
+        "price": "$11.00",
+        "section": "AVANT Dinner Menu > Accompaniment"
+      },
+      {
+        "name": "Foraged Mushrooms",
+        "description": "charred onion + garlic",
+        "price": "$15.00",
+        "section": "AVANT Dinner Menu > Accompaniment"
+      },
+      {
+        "name": "Patatas Bravas",
+        "description": "chipotle + crema + cilantro",
+        "price": "$15.00",
+        "section": "AVANT Dinner Menu > Accompaniment"
+      },
+      {
+        "name": "Wood Fire Broccoli",
+        "description": "chimmichurri + aged parmesan + lemon",
+        "price": "$15.00",
+        "section": "AVANT Dinner Menu > Accompaniment"
+      },
+      {
+        "name": "Blistered Shishito Peppers*",
+        "description": "truffle sea salt",
+        "price": "$15.00",
+        "section": "AVANT Dinner Menu > Accompaniment"
+      },
+      {
+        "name": "Herb Glazed Spring Vegetables*",
+        "description": "asparagus + peas + radishes + watercress + goat cheese",
+        "price": "$16.00",
+        "section": "AVANT Dinner Menu > Accompaniment"
+      },
+      {
+        "name": "Zonin, Prosecco",
+        "description": "prosecco, italy",
+        "price": "$13.00",
+        "section": "AVANT Dinner Menu > Sparkling"
+      },
+      {
+        "name": "Scarpetta",
+        "description": "brut rosé friulli, italy",
+        "price": "$15.00",
+        "section": "AVANT Dinner Menu > Sparkling"
+      },
+      {
+        "name": "mirabelle by schramsberg",
+        "description": "brut, california NV",
+        "price": "$19.00",
+        "section": "AVANT Dinner Menu > Sparkling"
+      },
+      {
+        "name": "Moët & Chandon",
+        "description": "brut 'imperial' epernay, champagne",
+        "price": "$25.00",
+        "section": "AVANT Dinner Menu > Sparkling"
+      },
+      {
+        "name": "Benvolio, Pinot Grigio, Friuli",
+        "description": "",
+        "price": "$13.00",
+        "section": "AVANT Dinner Menu > White"
+      },
+      {
+        "name": "Terras Gauda Albariño Rias Baixas, Spain",
+        "description": "",
+        "price": "$14.00",
+        "section": "AVANT Dinner Menu > White"
+      },
+      {
+        "name": "Three Brooms, Sauvignon Blanc, Marlborough",
+        "description": "",
+        "price": "$14.00",
+        "section": "AVANT Dinner Menu > White"
+      },
+      {
+        "name": "Grgich Hills Sauvignon Blanc, Napa Valley",
+        "description": "",
+        "price": "$17.00",
+        "section": "AVANT Dinner Menu > White"
+      },
+      {
+        "name": "Dr. H Thanisch Riesling Kabinett Mosel, Germany",
+        "description": "",
+        "price": "$17.00",
+        "section": "AVANT Dinner Menu > White"
+      },
+      {
+        "name": "Les Belles Roches Chardonnay, Burgundy",
+        "description": "",
+        "price": "$14.00",
+        "section": "AVANT Dinner Menu > White"
+      },
+      {
+        "name": "Zd Chardonnay, California",
+        "description": "",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > White"
+      },
+      {
+        "name": "Frank Family Chardonnay, Napa Valley",
+        "description": "",
+        "price": "$25.00",
+        "section": "AVANT Dinner Menu > White"
+      },
+      {
+        "name": "Mont Gravet Rosé, Pays D'oc",
+        "description": "",
+        "price": "$13.00",
+        "section": "AVANT Dinner Menu > White"
+      },
+      {
+        "name": "Damien Martin, Pinot Noir, Burgundy, France",
+        "description": "",
+        "price": "$16.00",
+        "section": "AVANT Dinner Menu > Red"
+      },
+      {
+        "name": "Aston, Pinot Noir, Sonoma Coast",
+        "description": "",
+        "price": "$25.00",
+        "section": "AVANT Dinner Menu > Red"
+      },
+      {
+        "name": "Turley 'Juvenile' Zinfandel, California",
+        "description": "",
+        "price": "$17.00",
+        "section": "AVANT Dinner Menu > Red"
+      },
+      {
+        "name": "Presqu'ile Syrah, Santa Barbara County",
+        "description": "",
+        "price": "$15.00",
+        "section": "AVANT Dinner Menu > Red"
+      },
+      {
+        "name": "Cecchi Chianti Classico, Italy",
+        "description": "",
+        "price": "$15.00",
+        "section": "AVANT Dinner Menu > Red"
+      },
+      {
+        "name": "Catena, Malbec, Mendoza, Argentina",
+        "description": "",
+        "price": "$17.00",
+        "section": "AVANT Dinner Menu > Red"
+      },
+      {
+        "name": "The Walking Fool Red Blend, Suisun Valley",
+        "description": "",
+        "price": "$20.00",
+        "section": "AVANT Dinner Menu > Red"
+      },
+      {
+        "name": "Treana Cabernet Sauvignon, Paso Robles",
+        "description": "",
+        "price": "$14.00",
+        "section": "AVANT Dinner Menu > Red"
+      },
+      {
+        "name": "Caterwaul Cabernet Sauvignon, Sonoma County",
+        "description": "",
+        "price": "$25.00",
+        "section": "AVANT Dinner Menu > Red"
+      },
+      {
+        "name": "Brotte Chateauneuf-du-pape, France",
+        "description": "",
+        "price": "$27.00",
+        "section": "AVANT Dinner Menu > Red"
+      },
+      {
+        "name": "Societe 'The Harlot' Blonde Ale, San Diego, 10, 5.6%",
+        "description": "",
+        "price": "$10.00",
+        "section": "AVANT Dinner Menu > Draft Beer"
+      },
+      {
+        "name": "Unibroue 'la fin du monde', Belgian Triple Ale, Canada, 9.0%",
+        "description": "",
+        "price": "$10.00",
+        "section": "AVANT Dinner Menu > Draft Beer"
+      },
+      {
+        "name": "Lost Abbey 'Farmhouse' Lager, San Diego, 5.0%",
+        "description": "",
+        "price": "$10.00",
+        "section": "AVANT Dinner Menu > Draft Beer"
+      },
+      {
+        "name": "Fall 'Magical and Delicious' Pale Ale, San Diego 5. 5%",
+        "description": "",
+        "price": "$10.00",
+        "section": "AVANT Dinner Menu > Draft Beer"
+      },
+      {
+        "name": "Thorn Brewing 'Hopster Pot' Hazy Ipa San Diego 7. 0%",
+        "description": "",
+        "price": "$10.00",
+        "section": "AVANT Dinner Menu > Draft Beer"
+      },
+      {
+        "name": "Harland West Coast Ipa, San Diego 6.5%",
+        "description": "",
+        "price": "$10.00",
+        "section": "AVANT Dinner Menu > Draft Beer"
+      },
+      {
+        "name": "Athletic Golden - non-alcoholic",
+        "description": "",
+        "price": "$7.00",
+        "section": "AVANT Dinner Menu > Can Beer"
+      },
+      {
+        "name": "Guinness",
+        "description": "",
+        "price": "$10.00",
+        "section": "AVANT Dinner Menu > Can Beer"
+      },
+      {
+        "name": "Pacifico",
+        "description": "",
+        "price": "$9.00",
+        "section": "AVANT Dinner Menu > Can Beer"
+      },
+      {
+        "name": "LIFE WATER",
+        "description": "golden chamomile tea, coconut water, orange essence",
+        "price": "$12.00",
+        "section": "AVANT Dinner Menu > ZERO PROOF"
+      },
+      {
+        "name": "MOROCCAN DREAMS",
+        "description": "coconut milk, maghreb mint tea, aquafaba, soda water, lime essence, mint",
+        "price": "$12.00",
+        "section": "AVANT Dinner Menu > ZERO PROOF"
+      },
+      {
+        "name": "ORANGE CREAMSICLE",
+        "description": "orange, lemon, vanilla, aquafaba",
+        "price": "$12.00",
+        "section": "AVANT Dinner Menu > ZERO PROOF"
+      },
+      {
+        "name": "VIOLET COSMOS",
+        "description": "blue spirulina, cranberry, lemon ginger, garden flowers",
+        "price": "$12.00",
+        "section": "AVANT Dinner Menu > ZERO PROOF"
+      },
+      {
+        "name": "WOODSMAN",
+        "description": "kikori japanese whiskey, jasmine lemongrass, orange bitters",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > OLD-FASHIONEDS"
+      },
+      {
+        "name": "OLD AGAVE",
+        "description": "rbi maestro dobel añejo tequila agave, citrus bitters",
+        "price": "$20.00",
+        "section": "AVANT Dinner Menu > OLD-FASHIONEDS"
+      },
+      {
+        "name": "GOLD FASHIONED",
+        "description": "sipsmith london dry gin, fernet branca orange bitters",
+        "price": "$17.00",
+        "section": "AVANT Dinner Menu > OLD-FASHIONEDS"
+      },
+      {
+        "name": "EIGHTY-SIXED",
+        "description": "off hours bourbon, maple angostura & orange bitters",
+        "price": "$17.00",
+        "section": "AVANT Dinner Menu > OLD-FASHIONEDS"
+      },
+      {
+        "name": "SUMMER THYME",
+        "description": "tito's vodka, citrus, thyme, prosecco",
+        "price": "$17.00",
+        "section": "AVANT Dinner Menu > REFRESHING & NOVEL"
+      },
+      {
+        "name": "LAVENDER HAZE",
+        "description": "empress 1908 gin, earl grey tea, coconut milk vanilla, scrappy's lavender bitters",
+        "price": "$19.00",
+        "section": "AVANT Dinner Menu > REFRESHING & NOVEL"
+      },
+      {
+        "name": "SWEDISH GIMLET",
+        "description": "tanqueray no. ten gin, lime, aquafaba cardamom & orange bitters",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > REFRESHING & NOVEL"
+      },
+      {
+        "name": "JALISCO ROOTS",
+        "description": "cazadores reposado tequila, cointreau, ginger, lime",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > REFRESHING & NOVEL"
+      },
+      {
+        "name": "ALL PUFFED UP",
+        "description": "courvoisier vsop cognac, cointreau, orgeat, lime, bitter truth pimento dram, east imperial ginger beer, cinnamon",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > REFRESHING & NOVEL"
+      },
+      {
+        "name": "CURES THE BLUES",
+        "description": "belvedere vodka, bacardi silver rum, blue spirulina, coconut water, vanilla",
+        "price": "$19.00",
+        "section": "AVANT Dinner Menu > REFRESHING & NOVEL"
+      },
+      {
+        "name": "APEROL FIZZ",
+        "description": "aperol, grapefruit, lemon, coconut milk, aquafaba, orange flower water, soda",
+        "price": "$17.00",
+        "section": "AVANT Dinner Menu > REFRESHING & NOVEL"
+      },
+      {
+        "name": "AMERICAN THEOREM",
+        "description": "rbi private barrel whistle pig 10 year rye madeira, benedictine, black walnut bitters",
+        "price": "$21.00",
+        "section": "AVANT Dinner Menu > BOLD & NUANCED"
+      },
+      {
+        "name": "FUNKY NEGRONI",
+        "description": "batavia arrack van oosten, bruto americano, bigallet china-china",
+        "price": "$17.00",
+        "section": "AVANT Dinner Menu > BOLD & NUANCED"
+      },
+      {
+        "name": "NASSAU 1930",
+        "description": "talisker single malt scotch, cointreau, batavia arrack van oosten, mexican chocolate & orange bitters",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > BOLD & NUANCED"
+      },
+      {
+        "name": "CHASING YESTERDAY",
+        "description": "the producer mezcal, chareau aloe liqueur lime, agave, orange bitters",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > BOLD & NUANCED"
+      },
+      {
+        "name": "SMOKIN' DIAMONDS",
+        "description": "old forester 100 proof rye, amaro nonino, benedictine, smoked wood chips",
+        "price": "$19.00",
+        "section": "AVANT Dinner Menu > BOLD & NUANCED"
+      },
+      {
+        "name": "RYE & DRY",
+        "description": "rittenhouse rye, carpano dry vermouth, yellow chartreuse, luxardo maraschino liqueur orange bitters",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > BOLD & NUANCED"
+      },
+      {
+        "name": "STRAW HAT",
+        "description": "hibiki harmony japanese whisky, harmless harvest coconut water",
+        "price": "$19.00",
+        "section": "AVANT Dinner Menu > BOLD & NUANCED"
+      },
+      {
+        "name": "DARK PEDIGREE",
+        "description": "remy martin xo cognac, boulard vsop calvados benedictine, coffee & chocolate spritz",
+        "price": "$34.00",
+        "section": "AVANT Dinner Menu > NIGHT CAP"
+      },
+      {
+        "name": "AIR SAILOR",
+        "description": "suntory ao world whisky, brown sugar, whipped cream, dark chocolate, sea salt",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > NIGHT CAP"
+      },
+      {
+        "name": "EL GUAPO",
+        "description": "el tesoro reposado tequila, licor 43, kahlúa, espresso, whiskey barrel aged bitters, cinnamon",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > NIGHT CAP"
+      },
+      {
+        "name": "NAOMI KNOWS BEST",
+        "description": "ketel one vodka, mr. black cold brew coffee liqueur, espresso, vanilla bean",
+        "price": "$19.00",
+        "section": "AVANT Dinner Menu > NIGHT CAP"
+      },
+      {
+        "name": "WHEN IN BEAUNE",
+        "description": "hennessy vsop cognac, caffe moka espresso liqueur, bigallet china-china, cold brew coffee, black walnut",
+        "price": "$18.00",
+        "section": "AVANT Dinner Menu > NIGHT CAP"
+      },
+      {
+        "name": "oysters trio",
+        "description": "champagne mignonette + lime",
+        "price": "$12.00",
+        "section": "AVANT Bar Happy Hour Menu > Bites"
+      },
+      {
+        "name": "local ahi tuna",
+        "description": "cured olives + cucumbers + rbi garden celery + basil + spicy tomato ponzu",
+        "price": "$12.00",
+        "section": "AVANT Bar Happy Hour Menu > Bites"
+      },
+      {
+        "name": "hamachi",
+        "description": "makrut lime + lemongrass + serrano + coriander + coconut fish sauce",
+        "price": "$12.00",
+        "section": "AVANT Bar Happy Hour Menu > Bites"
+      },
+      {
+        "name": "blistered shishito peppers",
+        "description": "truffle sea salt",
+        "price": "$10.00",
+        "section": "AVANT Bar Happy Hour Menu > Bites"
+      },
+      {
+        "name": "wood fired wagyu beef skewers",
+        "description": "black garlic + nasturtium + chimichurri",
+        "price": "$12.00",
+        "section": "AVANT Bar Happy Hour Menu > Bites"
+      },
+      {
+        "name": "artisian cheese duo",
+        "description": "traditional condiments",
+        "price": "$12.00",
+        "section": "AVANT Bar Happy Hour Menu > Bites"
+      },
+      {
+        "name": "parker house roll",
+        "description": "seasonal butter + sea salt",
+        "price": "$10.00",
+        "section": "AVANT Bar Happy Hour Menu > Bites"
+      },
+      {
+        "name": "sommelier's selections",
+        "description": "sparkling, white, rosé, or red",
+        "price": "$7.00",
+        "section": "AVANT Bar Happy Hour Menu > Wine"
+      },
+      {
+        "name": "seasonal draft",
+        "description": "",
+        "price": "$6.00",
+        "section": "AVANT Bar Happy Hour Menu > Beer"
+      },
+      {
+        "name": "daily cocktail",
+        "description": "",
+        "price": "$10.00",
+        "section": "AVANT Bar Happy Hour Menu > Cocktail"
+      },
+      {
+        "name": "zonin",
+        "description": "prosecco",
+        "price": "$52.00",
+        "section": "Wines by Sommelier Joe Baumgardner > sparkling by the bottle."
+      },
+      {
+        "name": "roederer estate",
+        "description": "brut rosé, anderson valley",
+        "price": "$76.00",
+        "section": "Wines by Sommelier Joe Baumgardner > sparkling by the bottle."
+      },
+      {
+        "name": "moët & chandon",
+        "description": "brut 'imperial,' epernay champagne",
+        "price": "$100.00",
+        "section": "Wines by Sommelier Joe Baumgardner > sparkling by the bottle."
+      },
+      {
+        "name": "benvolio",
+        "description": "pinot grigio, friuli",
+        "price": "$52.00",
+        "section": "Wines by Sommelier Joe Baumgardner > white by the bottle."
+      },
+      {
+        "name": "giunco",
+        "description": "vermentino, di sardegna",
+        "price": "$56.00",
+        "section": "Wines by Sommelier Joe Baumgardner > white by the bottle."
+      },
+      {
+        "name": "three brooms",
+        "description": "sauvignon blanc, marlborough",
+        "price": "$56.00",
+        "section": "Wines by Sommelier Joe Baumgardner > white by the bottle."
+      },
+      {
+        "name": "grgich hills",
+        "description": "sauvignon blanc, napa valley",
+        "price": "$68.00",
+        "section": "Wines by Sommelier Joe Baumgardner > white by the bottle."
+      },
+      {
+        "name": "filaboa",
+        "description": "albarino rias baixas, spain",
+        "price": "$64.00",
+        "section": "Wines by Sommelier Joe Baumgardner > white by the bottle."
+      },
+      {
+        "name": "heymann-lowenstein",
+        "description": "riesling mosel, germany",
+        "price": "$52.00",
+        "section": "Wines by Sommelier Joe Baumgardner > white by the bottle."
+      },
+      {
+        "name": "les belles roches",
+        "description": "chardonnay, burgundy",
+        "price": "$56.00",
+        "section": "Wines by Sommelier Joe Baumgardner > white by the bottle."
+      },
+      {
+        "name": "duckhorn",
+        "description": "chardonnay, napa valley",
+        "price": "$72.00",
+        "section": "Wines by Sommelier Joe Baumgardner > white by the bottle."
+      },
+      {
+        "name": "frank family",
+        "description": "chardonnay, napa valley",
+        "price": "$100.00",
+        "section": "Wines by Sommelier Joe Baumgardner > white by the bottle."
+      },
+      {
+        "name": "mont gravet",
+        "description": "rosé, pays d'oc",
+        "price": "$52.00",
+        "section": "Wines by Sommelier Joe Baumgardner > white by the bottle."
+      },
+      {
+        "name": "tantara",
+        "description": "pinot noir, santa lucia highlands",
+        "price": "$60.00",
+        "section": "Wines by Sommelier Joe Baumgardner > red by the bottle."
+      },
+      {
+        "name": "hanzell \"sebella\"",
+        "description": "pinot noir, sonoma coast",
+        "price": "$80.00",
+        "section": "Wines by Sommelier Joe Baumgardner > red by the bottle."
+      },
+      {
+        "name": "turley",
+        "description": "zinfandel, california",
+        "price": "$68.00",
+        "section": "Wines by Sommelier Joe Baumgardner > red by the bottle."
+      },
+      {
+        "name": "numanthia",
+        "description": "termes' tempranillo, spain",
+        "price": "$60.00",
+        "section": "Wines by Sommelier Joe Baumgardner > red by the bottle."
+      },
+      {
+        "name": "cecchi",
+        "description": "chianti classico, italy",
+        "price": "$60.00",
+        "section": "Wines by Sommelier Joe Baumgardner > red by the bottle."
+      },
+      {
+        "name": "brotte",
+        "description": "cru des cotes du rhone, cairanne",
+        "price": "$64.00",
+        "section": "Wines by Sommelier Joe Baumgardner > red by the bottle."
+      },
+      {
+        "name": "treana",
+        "description": "cabernet sauvignon, paso robles",
+        "price": "$56.00",
+        "section": "Wines by Sommelier Joe Baumgardner > red by the bottle."
+      },
+      {
+        "name": "chateau milon",
+        "description": "red blend, st. émilion grand cru",
+        "price": "$72.00",
+        "section": "Wines by Sommelier Joe Baumgardner > red by the bottle."
+      },
+      {
+        "name": "hourglass hg3",
+        "description": "cabernet sauvignon blend, napa valley",
+        "price": "$100.00",
+        "section": "Wines by Sommelier Joe Baumgardner > red by the bottle."
+      },
+      {
+        "name": "Gougère",
+        "description": "summer vegetable emulsion",
+        "price": "$7.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Vegetarian"
+      },
+      {
+        "name": "Beet & Goat Cheese Mousse",
+        "description": "dill, mustard seed",
+        "price": "$8.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Vegetarian"
+      },
+      {
+        "name": "Black Truffle Arancini",
+        "description": "mozzarella, parmesan",
+        "price": "$8.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Vegetarian"
+      },
+      {
+        "name": "Mushroom Tart",
+        "description": "puffed wild rice",
+        "price": "$9.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Vegetarian"
+      },
+      {
+        "name": "Prawn Cocktail",
+        "description": "bourbon cocktail sauce, avant seasoning",
+        "price": "$9.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Seafood"
+      },
+      {
+        "name": "Grilled Shrimp",
+        "description": "melted butter, scallion",
+        "price": "$9.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Seafood"
+      },
+      {
+        "name": "Dungeness Crab Cake",
+        "description": "lemon aioli, green onion",
+        "price": "$11.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Seafood"
+      },
+      {
+        "name": "Blue Fin Tuna Crudo",
+        "description": "yuzu aioli, spicy pepper, avocado butter",
+        "price": "$11.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Seafood"
+      },
+      {
+        "name": "Prosciutto Stuffed Brioche",
+        "description": "whipped brie",
+        "price": "$9.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Meat"
+      },
+      {
+        "name": "Wagyu Beef Tartare Cornet",
+        "description": "horseradish creme fraiche, shallot",
+        "price": "$10.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Meat"
+      },
+      {
+        "name": "Duck Truffle",
+        "description": "roasted almond, berries",
+        "price": "$11.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Meat"
+      },
+      {
+        "name": "Roasted Wagyu Steak Yakitori Skewers",
+        "description": "puffed grain, fried garlic, green onion",
+        "price": "$15.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Meat"
+      },
+      {
+        "name": "Cheese",
+        "description": "chef's selection of three artisan cheeses, including crackers, artisan bread and accoutrements",
+        "price": "$14.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Stationed Hors D'oeuvres"
+      },
+      {
+        "name": "Charcuterie",
+        "description": "chef's selection of three cured or smoked meats, including our house-made accoutrements",
+        "price": "$16.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Stationed Hors D'oeuvres"
+      },
+      {
+        "name": "Cheese & Charcuterie",
+        "description": "chef's selection of three cured or smoked meats and three artisan cheeses, including crackers, artisan bread and our house-made accoutrements",
+        "price": "$26.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Stationed Hors D'oeuvres"
+      },
+      {
+        "name": "Bruschetta Tower",
+        "description": "display of seasonal bruschetta and creamy italian cheeses",
+        "price": "$14.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Stationed Hors D'oeuvres"
+      },
+      {
+        "name": "Seafood Raw Bar Display",
+        "description": "prawns & crab cocktail, oysters, aguachile, hot sauce, lemon, cocktail sauce, mignonette sauce",
+        "price": "$40.00",
+        "section": "Reception: Tray Passed Hors D' Oeuvres & Canapés > Stationed Hors D'oeuvres"
+      },
+      {
+        "name": "oranges on the trees",
+        "description": "caramelized vanilla custard + burnt honey cream + mango + yuzu sorbet",
+        "price": "$15.00",
+        "section": "AVANT Dessert Menu > Desserts"
+      },
+      {
+        "name": "strawberries at RBI",
+        "description": "harry's berries + RBI lavender cream + slow baked tuille + champagne strawberry sorbet",
+        "price": "$15.00",
+        "section": "AVANT Dessert Menu > Desserts"
+      },
+      {
+        "name": "all I want it chocolate",
+        "description": "dark chocolate + hazelnut praline + passionfruit sorbet",
+        "price": "$15.00",
+        "section": "AVANT Dessert Menu > Desserts"
+      },
+      {
+        "name": "baked alaska",
+        "description": "strawberry & pistachio gelato + meringue + strawberry consume",
+        "price": "$15.00",
+        "section": "AVANT Dessert Menu > Desserts"
+      },
+      {
+        "name": "wake me up chef!",
+        "description": "dulche stuffed cinnamon sugar donuts + affogato",
+        "price": "$15.00",
+        "section": "AVANT Dessert Menu > Desserts"
+      },
+      {
+        "name": "Castelnau Sauternes",
+        "description": "aromatic spiced honey, baked apple, golden raisin, orange blossom, meyer lemon",
+        "price": "$15.00",
+        "section": "AVANT Dessert Menu > After Dinner Drinks"
+      },
+      {
+        "name": "Royal Tokaji 2013, Aszu 5 Puttonyos",
+        "description": "delightfully sweet and refreshingly crisp, peach, honeysuckle, candied apricot",
+        "price": "$15.00",
+        "section": "AVANT Dessert Menu > After Dinner Drinks"
+      },
+      {
+        "name": "Sandeman 10 yr Tawny Port",
+        "description": "Sandeman 10 Year Old Tawny Port is a premium, aged port with an intense red-tawny color and a complex aroma of ripe fruit, jam, nuts, and vanilla. It is full-bodied, smooth, and balanced, offering a rich palate of caramel, dried apricot, and soft wood acidity with a persistent finish.",
+        "price": "$15.00",
+        "section": "AVANT Dessert Menu > After Dinner Drinks"
+      },
+      {
+        "name": "Broadbent 10 yr Madeira",
+        "description": "Aged in oak casks for at least 10 years. A superb, full-bodied, wonderfully rich Madeira with a sweet, rich chocolaty flavor and a concentrated bouquet. Best enjoyed with desserts, or on its own after a meal.",
+        "price": "$20.00",
+        "section": "AVANT Dessert Menu > After Dinner Drinks"
+      },
+      {
+        "name": "Taylor Fladgate Late Bottled Vintage Port 2012",
+        "description": "powerful dark cherry, black fruit and herbal aromas, gently mulled plum, light toffee, bakers chocolate",
+        "price": "$25.00",
+        "section": "AVANT Dessert Menu > After Dinner Drinks"
+      },
+      {
+        "name": "Rémy Martin XO",
+        "description": "cognac fine champagne, a mature blend of over 400 eaux-de-vie, served with paired accoutrements",
+        "price": "$35.00",
+        "section": "AVANT Dessert Menu > After Dinner Drinks"
+      },
+      {
+        "name": "Hennessey Paradis",
+        "description": "This is an ultra-premium, \"Hors d'âge\" cognac known for its exceptional smoothness, rich copper color, and profound, silky complexity. Created in 1979 by Maurice Fillioux, this blend features rare eaux-de-vie aged for decades (some up to 130 years), offering a harmonious symphony of floral, spice, and candied fruit notes",
+        "price": "$50.00",
+        "section": "AVANT Dessert Menu > Premium Cognac"
+      },
+      {
+        "name": "Louis Xiii Rémy Martin",
+        "description": "This rare cognac takes four generations of cellar masters over 100 years to craft, creating a drink of unparalleled complexity",
+        "price": "$75.00",
+        "section": "AVANT Dessert Menu > Premium Cognac"
+      },
+      {
+        "name": "Seafood Tower (Large)",
+        "description": "oysters + king crab + prawns + diver scallops, gluten-free",
+        "price": "$135.00",
+        "section": "AVANT Dinner Menu > crudo"
+      },
+      {
+        "name": "Seafood Tower Supplemental Upcharge (Small)",
+        "description": "add-on upcharge to the AVANT prix fixe experience",
+        "price": "$50.00",
+        "section": "AVANT Dinner Menu > crudo"
+      },
+      {
+        "name": "Seafood Tower Supplemental Upcharge (Large)",
+        "description": "add-on upcharge to the AVANT prix fixe experience",
+        "price": "$80.00",
+        "section": "AVANT Dinner Menu > crudo"
+      },
+      {
+        "name": "Luxury Bar Package (First Hour, Per Person)",
+        "description": "grey goose vodka, hendricks gin, ron zacapa 23 spiced rum, patron anejo tequila, woodford reserve bourbon, macallan 12yr single malt scotch, whistle pig piggy back rye, remy martin vsop cognac; martin ray sauvignon blanc/rose/chardonnay/pinot noir/cabernet sauvignon; domaine chandon brut sparkling; coors light, stella, corona, stone ipa, ballast point sculpin, alesmith .394",
+        "price": "$37.00",
+        "section": "Bar Packages"
+      },
+      {
+        "name": "Luxury Bar Package (Each Additional Hour, Per Person)",
+        "description": "grey goose vodka, hendricks gin, ron zacapa 23 spiced rum, patron anejo tequila, woodford reserve bourbon, macallan 12yr single malt scotch, whistle pig piggy back rye, remy martin vsop cognac; martin ray sauvignon blanc/rose/chardonnay/pinot noir/cabernet sauvignon; domaine chandon brut sparkling; coors light, stella, corona, stone ipa, ballast point sculpin, alesmith .394",
+        "price": "$23.00",
+        "section": "Bar Packages"
+      },
+      {
+        "name": "Premium Bar Package (First Hour, Per Person)",
+        "description": "titos vodka, bombay sapphire gin, bacardi silver rum, herradura reposado tequila, maker's mark bourbon, glenmorangie x blended scotch, courvoisier vsop cognac; angeline reserve sauvignon blanc/rose/chardonnay/pinot noir/reserve merlot/cabernet sauvignon, bianchi brut sparkling; coors light, stella artois, corona, stone ipa, ballast point sculpin, alesmith .394",
+        "price": "$33.00",
+        "section": "Bar Packages"
+      },
+      {
+        "name": "Premium Bar Package (Each Additional Hour, Per Person)",
+        "description": "titos vodka, bombay sapphire gin, bacardi silver rum, herradura reposado tequila, maker's mark bourbon, glenmorangie x blended scotch, courvoisier vsop cognac; angeline reserve sauvignon blanc/rose/chardonnay/pinot noir/reserve merlot/cabernet sauvignon, bianchi brut sparkling; coors light, stella artois, corona, stone ipa, ballast point sculpin, alesmith .394",
+        "price": "$21.00",
+        "section": "Bar Packages"
+      },
+      {
+        "name": "Select Bar Package (First Hour, Per Person)",
+        "description": "beefeater gin, smirnoff vodka, meyers white rum, el jimador blanco tequila, jim beam bourbon, cutty sark scotch; sycamore lane pinot grigio/chardonnay/pinot noir/cabernet sauvignon, opera prima brut sparkling",
+        "price": "$29.00",
+        "section": "Bar Packages"
+      },
+      {
+        "name": "Select Bar Package (Each Additional Hour, Per Person)",
+        "description": "beefeater gin, smirnoff vodka, meyers white rum, el jimador blanco tequila, jim beam bourbon, cutty sark scotch; sycamore lane pinot grigio/chardonnay/pinot noir/cabernet sauvignon, opera prima brut sparkling",
+        "price": "$19.00",
+        "section": "Bar Packages"
+      },
+      {
+        "name": "Beer and Wine Bar Package (First Hour, Per Person)",
+        "description": "sycamore lane chardonnay, sycamore lane wines",
+        "price": "$23.00",
+        "section": "Bar Packages"
+      },
+      {
+        "name": "Beer and Wine Bar Package (Each Additional Hour, Per Person)",
+        "description": "sycamore lane chardonnay, sycamore lane wines",
+        "price": "$13.00",
+        "section": "Bar Packages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5462",
+    "name": "Fruity Loco",
+    "sourceUrl": "https://www.doordash.com/store/fruity-loco-spring-valley-312022/",
+    "confidence": "medium",
+    "notes": "No first-party website (work list website=null). DoorDash marketplace schema.org Menu JSON-LD, 56 items, address on DD page confirmed 9766 Campo Road, Spring Valley, matching work list. Sections: Most Ordered, Tortas, Fruit Salads, Fruit Cocktail, Sweet Fruit Cups, Fruit Cup, Green Salads, Juices, Smoothies, Cha Cha Cha, Aguas Frescas, Clamato, Acai Bowl, Elote, Breakfast, Frappe, Locos, Diablitos, Nachos -- broad coverage of a fruteria/loncheria menu. Ran the markup divisor test: only 6 distinct price points across all 56 items (10.99, 12.49, 13.99, 15.49, 16.99, 18.49), forming a clean internal $1.50-increment tier ladder; no divisor from 1.04-1.3 produced a majority clean-landing pattern (best was 1.25 at 13%), consistent with genuine tiered POS pricing rather than delivery markup. One item, 'Fruit Salad' (and its Fruit Cocktail counterpart), showed as '$15.49+' -- a build-your-own item priced by fruit selection; recorded at its base/cheapest listed price per playbook guidance on modifier-priced items. No independent second source found to cross-check.",
+    "dishes": [
+      {
+        "name": "Large Smoothie",
+        "description": "",
+        "price": "$12.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Torta Ham",
+        "description": "",
+        "price": "$16.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Large Chamango",
+        "description": "",
+        "price": "$13.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Large Acai Bowl",
+        "description": "",
+        "price": "$18.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Large Strawberries & Cream Cup",
+        "description": "",
+        "price": "$15.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Tostilocos",
+        "description": "",
+        "price": "$15.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Fruit Salad",
+        "description": "Build-your-own fruit selection, price from base size",
+        "price": "$15.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Elote Cup",
+        "description": "",
+        "price": "$12.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Aguas Frescas",
+        "description": "",
+        "price": "$10.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Turkey Torta",
+        "description": "",
+        "price": "$16.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Large Jalapeno & Cheese Nacho",
+        "description": "",
+        "price": "$12.49",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Chicken Breast Torta",
+        "description": "",
+        "price": "$16.99",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Chicken Breast Torta",
+        "description": "",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Lomo Torta",
+        "description": "",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Tuna Torta",
+        "description": "",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Panela Cheese Torta",
+        "description": "",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Veggie Torta",
+        "description": "",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta Ham",
+        "description": "",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Turkey Torta",
+        "description": "",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Fruit Salad",
+        "description": "Build-your-own fruit selection, price from base size",
+        "price": "$15.49",
+        "section": "Fruit Salads"
+      },
+      {
+        "name": "Fruit Cocktail",
+        "description": "Build-your-own fruit selection, price from base size",
+        "price": "$15.49",
+        "section": "Fruit Cocktail"
+      },
+      {
+        "name": "Large Strawberries & Cream Cup",
+        "description": "",
+        "price": "$15.49",
+        "section": "Sweet Fruit Cups"
+      },
+      {
+        "name": "Large Bionico Cup",
+        "description": "",
+        "price": "$15.49",
+        "section": "Sweet Fruit Cups"
+      },
+      {
+        "name": "Large Escamocha Cup",
+        "description": "",
+        "price": "$15.49",
+        "section": "Sweet Fruit Cups"
+      },
+      {
+        "name": "Large Coconut Cup",
+        "description": "",
+        "price": "$13.99",
+        "section": "Fruit Cup"
+      },
+      {
+        "name": "Large Cucumber Cup",
+        "description": "",
+        "price": "$13.99",
+        "section": "Fruit Cup"
+      },
+      {
+        "name": "Large Mix Fruit Cup",
+        "description": "",
+        "price": "$13.99",
+        "section": "Fruit Cup"
+      },
+      {
+        "name": "Large Mango Cup",
+        "description": "",
+        "price": "$13.99",
+        "section": "Fruit Cup"
+      },
+      {
+        "name": "Large Green Salad",
+        "description": "",
+        "price": "$18.49",
+        "section": "Green Salads"
+      },
+      {
+        "name": "Large Green Juice",
+        "description": "",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Carrot Juice",
+        "description": "",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Red Juice",
+        "description": "",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Coconut Juice",
+        "description": "",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Orange Juice",
+        "description": "",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Large Smoothie",
+        "description": "",
+        "price": "$12.49",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Large Chamango",
+        "description": "",
+        "price": "$13.99",
+        "section": "Cha Cha Cha"
+      },
+      {
+        "name": "Large Chawatermelon",
+        "description": "",
+        "price": "$13.99",
+        "section": "Cha Cha Cha"
+      },
+      {
+        "name": "Large Chapineapple",
+        "description": "",
+        "price": "$13.99",
+        "section": "Cha Cha Cha"
+      },
+      {
+        "name": "Large Chastrawberry",
+        "description": "",
+        "price": "$13.99",
+        "section": "Cha Cha Cha"
+      },
+      {
+        "name": "Aguas Frescas",
+        "description": "",
+        "price": "$10.99",
+        "section": "Aguas Frescas"
+      },
+      {
+        "name": "Large Clamato",
+        "description": "",
+        "price": "$13.99",
+        "section": "Clamato"
+      },
+      {
+        "name": "Large Acai Bowl",
+        "description": "",
+        "price": "$18.49",
+        "section": "Acai Bowl"
+      },
+      {
+        "name": "Large Dragon Fruit Bowl",
+        "description": "",
+        "price": "$18.49",
+        "section": "Acai Bowl"
+      },
+      {
+        "name": "Elote Cup",
+        "description": "",
+        "price": "$12.49",
+        "section": "Elote"
+      },
+      {
+        "name": "Elote Stick",
+        "description": "",
+        "price": "$10.99",
+        "section": "Elote"
+      },
+      {
+        "name": "Ham & Cheese Croissant",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Cream Cheese Bagel",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Ham & Cheese Bagel",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Large Frappe",
+        "description": "",
+        "price": "$12.49",
+        "section": "Frappe"
+      },
+      {
+        "name": "Tostilocos",
+        "description": "",
+        "price": "$15.49",
+        "section": "Locos"
+      },
+      {
+        "name": "Churolocos",
+        "description": "",
+        "price": "$15.49",
+        "section": "Locos"
+      },
+      {
+        "name": "Takilocos",
+        "description": "",
+        "price": "$15.49",
+        "section": "Locos"
+      },
+      {
+        "name": "Cheetolocos",
+        "description": "",
+        "price": "$15.49",
+        "section": "Locos"
+      },
+      {
+        "name": "Large Mango Diablito",
+        "description": "",
+        "price": "$13.99",
+        "section": "Diablitos"
+      },
+      {
+        "name": "Large Jalapeno & Cheese Nacho",
+        "description": "",
+        "price": "$12.49",
+        "section": "Nachos"
+      }
+    ]
+  }
+]

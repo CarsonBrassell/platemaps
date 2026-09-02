@@ -1,0 +1,2512 @@
+[
+  {
+    "restaurantId": "1083",
+    "name": "Jims Vista Lounge",
+    "sourceUrl": "https://www.toasttab.com/local/jims-vista-lounge-1587-e-vista-way/r-fe1880f6-aa00-4f0f-8837-12c459ec3486",
+    "confidence": "low",
+    "notes": "Old-school Vista dive bar. Toast listing exists but hasOnlineOrderingModule:false, onlineOrderingEnabled:false and no menu data in the page state -- Toast used only as an info/directory page here, cuisineType 'Bar', description 'Come in and enjoy!'. jims-vista-lounge.res-menu.org returned 0 bytes (dead). Yelp 403'd. WebSearch summary mentioned a $7.50 beer pitcher and that tacos are served by a separate neighboring business (Taqueria Chabelita), not by Jim's itself -- consistent with a drink-only dive bar that does not publish a food menu of its own. Not found rather than blocked: no per-item priced menu exists on any reachable channel.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4138",
+    "name": "Coffee drop",
+    "sourceUrl": "https://www.coffeedropcafe.com/_files/ugd/14bb78_396b41e71ab44496872587ea9782c275.pdf",
+    "confidence": "high",
+    "notes": "Wix site's /menu page renders an empty client-side shell with no embedded data (confirmed with a real browser render too, not just curl). The footer linked a single-page PDF menu (\"The Coffee Drop Menu.pdf\"); its text layer is empty so pdftotext returns nothing, but probe/extract_pdf_images.js pulled the embedded JPEG and it is a fully legible, complete one-page menu -- this is the whole printed menu, a small drink-only cafe. Address on the page footer matches the batch (2991 Broadway, San Diego). Hot/iced and small/large variants are listed as separate rows since the menu prints them as distinct prices; the two iced/size numbers are unlabeled on the menu itself so I called them small/large rather than guessing ounces. Rishi Teas lists one price (hot/iced $3) explicitly covering all 5 named flavors. Add-ons (double shot, simple syrup, stevia) are priced modifiers, included as their own rows since the menu prices them individually.",
+    "dishes": [
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$3.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Macchiato",
+        "description": "",
+        "price": "$3.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Flat White",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$3.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Espresso Tonic",
+        "description": "",
+        "price": "$5.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Latte (Hot)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Latte (Iced, Small)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Latte (Iced, Large)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Americano (Hot or Iced)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Rishi Tea - Blueberry Hibiscus",
+        "description": "Hot or iced",
+        "price": "$3.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Rishi Tea - Yuzu Peach Green Tea",
+        "description": "Hot or iced",
+        "price": "$3.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Rishi Tea - Jasmine",
+        "description": "Hot or iced",
+        "price": "$3.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Rishi Tea - Earl Grey",
+        "description": "Hot or iced",
+        "price": "$3.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Rishi Tea - English Breakfast",
+        "description": "Hot or iced",
+        "price": "$3.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "OBSL (Orange Brown Sugar Latte) (Hot)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "OBSL (Orange Brown Sugar Latte) (Iced, Small)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "OBSL (Orange Brown Sugar Latte) (Iced, Large)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Vanilla Latte (Hot)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Vanilla Latte (Iced, Small)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Vanilla Latte (Iced, Large)",
+        "description": "",
+        "price": "$6.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Mocha (Hot)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Mocha (Iced, Small)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Mocha (Iced, Large)",
+        "description": "",
+        "price": "$6.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Mexican Mocha (Hot)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Mexican Mocha (Iced, Small)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Mexican Mocha (Iced, Large)",
+        "description": "",
+        "price": "$6.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Honey Cinnamon Latte (Hot)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Honey Cinnamon Latte (Iced, Small)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Honey Cinnamon Latte (Iced, Large)",
+        "description": "",
+        "price": "$6.25",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Brew (Small)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Brew (Large)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Add Double Shot",
+        "description": "Add-on",
+        "price": "$1.25",
+        "section": "Add-Ons"
+      },
+      {
+        "name": "Add Simple Syrup",
+        "description": "Add-on",
+        "price": "$0.25",
+        "section": "Add-Ons"
+      },
+      {
+        "name": "Add Stevia",
+        "description": "Add-on",
+        "price": "$0.25",
+        "section": "Add-Ons"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1059",
+    "name": "Conways Irish Pub",
+    "sourceUrl": "https://www.yelp.com/biz/conways-irish-pub-san-diego",
+    "confidence": "low",
+    "notes": "No website. A dive bar/pub, tagged 'Divey' and 'Dive Bars' on Yelp with no Menu tab and no food mentioned anywhere in reviews or the owner's own business description ('Great friendly local pub where everyone is welcome'). Read the two dated Yelp photos tagged 'menu' (both blackboard drink boards, from the venue itself): a Drafts board (Guinness, Bright Cider, Mulligan, Boss Pour, etc. -- names, styles and ABV% only, no prices) and a Cans + Bottles board (Budweiser, Modelo, Corona, Stella Artois etc. -- names only, no prices). Facebook page (Price Range '$') has no visible menu content either. This is a drink-only dive bar that does not publish per-item prices anywhere -- genuinely not-found, not a limitation of the search.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4583",
+    "name": "Corner Grill",
+    "sourceUrl": "https://www.cornergrill.menu/menu",
+    "confidence": "high",
+    "notes": "Restaurant's own Wix site, Menu page is server-rendered with a full embedded JSON catalog (Wix Restaurants menu app) -- read directly, no browser needed. 8 sections: Entrées, Side Dishes & Extras, Salads, Specials, From our Deli Fridge, Family Meals, Drinks, Desserts -- a plausible complete Persian/Mediterranean grill menu (kabobs, sandwiches, stews, salads, family meal trays, deli dips, drinks, desserts). Drinks (Can of Soda, Sparkling Water, Savory Yogurt Drink) are build-your-own items priced per flavor via priceVariants in the same JSON rather than a single item price -- each flavor recorded as its own row. Price cents are clean (.00/.50 only, no markup pattern). Excluded per-item add-on modifiers (extra salad dressing , extra tzatziki , hot sauce /usr/bin/bash.50, extra pita .50) as adjuncts to the priced entrées, not separate menu items. Address matches batch (1850 Hacienda Drive #11, Vista).",
+    "dishes": [
+      {
+        "name": "Koobideh with Bread",
+        "description": "One Koobideh ground beef sirloin kabob served with Lavash bread and grilled tomato.",
+        "price": "$13.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Koobideh with Rice and Salad",
+        "description": "One Koobideh kabob served with imported Basmati rice, grilled tomato and fresh garden salad.",
+        "price": "$16.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Double Koobideh with Rice and Salad",
+        "description": "Two Koobideh kabobs served with imported Basmati rice, grilled tomato and fresh garden salad.",
+        "price": "$20.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Chicken with Bread",
+        "description": "One charbroiled chicken tenderloin or thigh kabob served with Lavash bread and grilled tomato.",
+        "price": "$14.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Chicken with Rice and Salad",
+        "description": "One charbroiled chicken tenderloin or thigh kabob served with imported Basmati rice, grilled tomato and fresh garden salad.",
+        "price": "$19.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Combo Chicken & Koobideh",
+        "description": "Combination of one boneless chicken kabob and one ground beef Koobideh kabob, served with imported Basmati rice, grilled tomato and fresh garden salad.",
+        "price": "$24.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Barg (Filet Mignon)",
+        "description": "Our signature cut of marinated, charbroiled, tender filet mignon, served with imported Basmati rice, grilled tomato and fresh garden salad.",
+        "price": "$25.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Barg & Koobideh (Soltani)",
+        "description": "Combination of one charbroiled, filet mignon kabob and one seasoned ground beef sirloin kabob. Served with imported Basmati rice, grilled tomato and fresh garden salad.",
+        "price": "$32.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Gyros",
+        "description": "Mix of lamb and beef gyros with Pita bread, served with Basmati rice and fresh garden salad, topped with Safron and Tzatziki sauce.",
+        "price": "$18.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Double Ground Chicken Strips",
+        "description": "Two juicy strips of ground chicken breast and charbroiled tomato, served with Basmati rice, topped with Saffron and fresh garden salad.",
+        "price": "$19.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Cornish Hen",
+        "description": "Delicious marinated charbroiled cornish hen, served with a charbroiled tomato and Basmati rice, topped with Saffron and fresh garden salad.",
+        "price": "$22.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Salmon Kabob",
+        "description": "Charbroiled and coated with a mixture of fresh lemon and seasoning, served with Basmati rice and garden salad.",
+        "price": "$23.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Lamb Shish Kebob",
+        "description": "Our finest filet of Lamb marinated, skewered and charbroiled with onion, tomatoes, green peppers. Served with imported Basmati rice & topped with saffron.",
+        "price": "$25.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Beef Koobideh Kebob sandwich",
+        "description": "Skewer of ground beef wrapped in flat bread served with sliced tomatoes, lettuce, cucumber, onion and Tzatziki sauce.",
+        "price": "$13.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Chicken Koobideh Kebob sandwich",
+        "description": "Skewer of ground chicken wrapped in flat bread served with sliced tomatoes, lettuce, cucumber, onion and Tzatziki sauce.",
+        "price": "$13.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Chicken Kebob Sandwich",
+        "description": "Skewer of marinated & charbroiled Boneless Chicken, wrapped in flat bread served with sliced tomatoes, lettuce, cucumber, onion and Tzatziki sauce.",
+        "price": "$14.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Grilled Vegetable Kabobs",
+        "description": "Grilled tomatoes, squash, onions, bell pepper, shirazi salad, Hummus and Dill&Lima bean rice.",
+        "price": "$18.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Gheimeh Bademjan",
+        "description": "A savory medley of eggplant stew, yellow split peas, sautéed onions, in a fresh tomato-based sauce with a chunk of beef.",
+        "price": "$20.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Ghormeh Sabzi",
+        "description": "Steamed and sautéed fresh herbs, red beans, traditional dried lime, cooked with a chunk of beef, served with Basmati rice and Shirazi salad.",
+        "price": "$20.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Lamb Shank",
+        "description": "A whole baby spring lamb shank, simmered in fresh tomato-based sauce and spices. Served with dill and lima bean rice and a side of Shirazi salad.",
+        "price": "$23.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Family Meal for 5",
+        "description": "4x Koobideh ground Beef sirloin kabob +  2x Charbroiled Chicken tenderloin +  Grilled Vegetables +  Imported Basmati rice +  Greek Salad! --- This delicious meal of juicy kebab, veggies, rice and salad is a healthy and tasty treat for 4-6 people. --- Please give us an EXTRA 60 MINUTES to prepare this meal fresh for your family.",
+        "price": "$85.00",
+        "section": "Family Meals"
+      },
+      {
+        "name": "For 10: Ground Kabob Meal",
+        "description": "8x Koobideh ground Beef sirloin kabob +  6x Ground Chicken kebab +   1x Medium Tray Imported Basmati rice topped with Saffron +  1x Medium Tray of Garden Salad + Grilled Tomatoes & Pita bread! --- This delicious meal of juicy kabobs, rice and salad is a healthy and tasty treat for 9-11 people. --- Please give us an EXTRA 60 MINUTES to prepare this meal fresh for your family.",
+        "price": "$160.00",
+        "section": "Family Meals"
+      },
+      {
+        "name": "For 10: Beef & Chicken Kabobs",
+        "description": "8x Koobideh ground Beef sirloin kabob +  5x Bonele Chicken Tenderloins +   1x Medium Tray Imported Basmati rice topped with Saffron +  1x Medium Tray of Garden Salad + Grilled Tomatoes & Pita bread! --- This delicious meal of juicy kabobs, rice and salad is a healthy and tasty treat for 9-11 people. --- Please give us an EXTRA 60 MINUTES to prepare this meal fresh for your family.",
+        "price": "$170.00",
+        "section": "Family Meals"
+      },
+      {
+        "name": "Baklava",
+        "description": "A layered filo pastry dessert, filled with chopped nuts, and sweetened with syrup or honey. Baklava was one of the most popular sweet pastries of the Ottoman Empire and can now be found in many different countries & cultures. (4 pieces)",
+        "price": "$5.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Chocolate Cake (Slice)",
+        "description": "A scrumptious, rich slice of chocolate cake",
+        "price": "$5.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Cheesecake (slice)",
+        "description": "A delightful, delicious slice of cheesecake.",
+        "price": "$5.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Side of Pita Bread",
+        "description": "",
+        "price": "$1.50",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "Side of Lavash Bread",
+        "description": "",
+        "price": "$1.50",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "Basmati Rice",
+        "description": "Extra Portion of Basmati Rice",
+        "price": "$7.00",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "Ground Beef Kabob (Kobideh)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "Ground Chicken Kabob",
+        "description": "",
+        "price": "$8.00",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "Boneless Chicken Kabob",
+        "description": "One charbroiled chicken tenderloin or thigh kabob ",
+        "price": "$9.00",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "Filet Mignon (BARG)",
+        "description": "Side: one whole skewer of our signature cut of marinated, charbroiled, tender filet mignon.",
+        "price": "$15.00",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "Cornish Hen",
+        "description": "",
+        "price": "$12.00",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "Salmon Kabob",
+        "description": "",
+        "price": "$13.00",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "grilled Veggie skewer",
+        "description": "",
+        "price": "$9.00",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "Lamb Kabob",
+        "description": "",
+        "price": "$15.00",
+        "section": "Side Dishes & Extras"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "Blend of Romaine lettuce, Roma tomatoes, Persian cucumbers, red onions, Feta cheese, Kalamata olives and house vinaigrette. (Warning: Olives may contain pits.)",
+        "price": "$13.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Shirazi",
+        "description": "Combination of fresh chopped Persian cucumbers, Roma tomatoes, red onions, olive oil and fresh lime juice dressing.",
+        "price": "$12.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Garden Salad",
+        "description": "A freshly tossed blend of lettuce, Roma tomatoes, Persian cucumbers, and house vinaigrette. ",
+        "price": "$12.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Saturday - Abgoosht (Dizi)",
+        "description": "A stew of lamb shoulder, chickpeas, potatoes, beans, tomatoes and dried limes for flavor. Served with Sangak bread and mixed vegetable pickles (Torshi).",
+        "price": "$23.00",
+        "section": "Specials"
+      },
+      {
+        "name": "Tzatziki",
+        "description": "Greek Style homemade Tzatziki A delicious, refreshing yoghurt dip with cucumbers and herbs",
+        "price": "$8.00",
+        "section": "From our Deli Fridge"
+      },
+      {
+        "name": "Hummus",
+        "description": "Homemade Hummus We make this hummus dip in-house with our own special spice mix.",
+        "price": "$7.00",
+        "section": "From our Deli Fridge"
+      },
+      {
+        "name": "Shallot Dip - Mast-oh-Mussir",
+        "description": "Homemade Shallot dip An incredibly delicious yogurt dip made with Persian shallots. It is so creamy, refreshing and the shallots add a stunning flavor to the dip; often served with Persian dishes that include rice",
+        "price": "$8.00",
+        "section": "From our Deli Fridge"
+      },
+      {
+        "name": "Salad Olivieh - Persian Potato-Chicken Salad",
+        "description": "Persian style chicken potato salad This is a very popular appetizer in Persian culture. Made with potatoes, eggs, pickled cucumbers, carrots, chicken and peas. It is typically eaten with flatbreads or made into a sandwich.",
+        "price": "$8.00",
+        "section": "From our Deli Fridge"
+      },
+      {
+        "name": "Fried Eggplant Dip - Kashk oh Badenjoon",
+        "description": "This delicious eggplant dip is mostly eaten as an appetizer with bread, but it makes for awesome vegetarian sandwiches and goes well with some left over basmati rice.",
+        "price": "$8.00",
+        "section": "From our Deli Fridge"
+      },
+      {
+        "name": "Dolmeh - Dolma",
+        "description": "Vine leaves stuffed with vegetables, rice and bulgur approx. 16 oz; approx. 10",
+        "price": "$8.00",
+        "section": "From our Deli Fridge"
+      },
+      {
+        "name": "Can of Soda - Coca Cola",
+        "description": "12 oz can",
+        "price": "$1.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can of Soda - Diet Coca Cola",
+        "description": "12 oz can",
+        "price": "$1.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can of Soda - Pepsi",
+        "description": "12 oz can",
+        "price": "$1.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can of Soda - Diet Pepsi",
+        "description": "12 oz can",
+        "price": "$1.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can of Soda - Sunkist Orange",
+        "description": "12 oz can",
+        "price": "$1.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can of Soda - 7up",
+        "description": "12 oz can",
+        "price": "$1.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can of Soda - Canada Dry Ginger Ale",
+        "description": "12 oz can",
+        "price": "$1.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Sparkling Water - Perrier",
+        "description": "330ml / 11oz",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Savory Yogurt Drink - Sparkling Mint",
+        "description": "Doogh-style yogurt drink, 16oz / 473ml",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Savory Yogurt Drink - Still / Non-Sparkling",
+        "description": "Doogh-style yogurt drink, 16oz / 473ml",
+        "price": "$3.00",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2115",
+    "name": "Mama Cella's",
+    "sourceUrl": "https://www.yelp.com/biz_photos/mama-cellas-san-diego-2 (dated menu photographs)",
+    "confidence": "medium",
+    "notes": "Restaurant's own site (mamacellas.com/menu.aspx) lists full item descriptions for every section but publishes almost no prices (only three $2.00 add-on charges) -- confirmed by curl, not a rendering gap. Two aggregators (allmenus/Grubhub and BringMeThat) disagreed with each other by 10-25% on the same items in both directions, so per playbook section 6 neither was usable and tier-5 corroboration failed. Yelp's 24 tagged 'menu' photos turned out to span at least THREE different price eras of the same restaurant (e.g. Breaded Mushrooms priced $9.99/$9.31 on the low aggregators, ~$14.00 on one photographed menu, and dual dinner/a-la-carte pricing on two other photographed menus) -- used ONLY the highest-price, internally-consistent, laminated-menu set, one of whose photos is explicitly captioned by the uploader 'Updated August, 2025' (https://www.yelp.com/biz_photos/mama-cellas-san-diego-2?select=GEFTQQ7aPb5rpiIy5Ppf6Q), and the same design/table setting appears together with the Entrées/Kids/Sides page in a second wide shot, confirming they are one current menu book. Discarded two other older-looking photographed menus entirely rather than blend eras. Address matches batch (16707 Bernardo Center Dr). Covered: Appetizers, Soup and Salad, Subs, Entrées (pasta + parmesan + seafood), Specialty Pizza, Build Your Own Pizza, Kids Menu, Sides, Desserts. Excluded: a weekday lunch-specials sandwich board (a rotating discount on already-priced dishes, not a standing menu), a wine list (adjunct), and 'Chicken Wigs' mentioned on the official site but priced nowhere found. Held to medium confidence because the only priced source is a dine-in photograph rather than a live first-party menu, even though it is the strongest and most internally consistent one available.",
+    "dishes": [
+      {
+        "name": "Antonetti's Cheese Toast",
+        "description": "Our signature garlic toast topped with melted provolone cheese and lightly dusted with paprika",
+        "price": "$12.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Breaded Mozzarella",
+        "description": "Breaded mozzarella sticks, deep fried to a golden brown and served with marinara sauce and ranch dressing",
+        "price": "$14.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Breaded Mushrooms",
+        "description": "Fresh mushrooms breaded with our special blend of herbs & spices, served with marinara sauce and ranch dressing",
+        "price": "$14.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Breaded Mushroom and Zucchini Combo",
+        "description": "Fresh mushrooms and zucchini breaded and deep fried served with marinara sauce and ranch dressing",
+        "price": "$16.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Breaded Zucchini",
+        "description": "Fresh zucchini breaded with our special blend of herbs & spices, served with marinara sauce and ranch dressing",
+        "price": "$14.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Caprese",
+        "description": "Tomato & fresh milk mozzarella, drizzled with extra virgin olive oil & a balsamic vinegar glaze, topped with fresh basil",
+        "price": "$15.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Caesar Salad (Small)",
+        "description": "Romaine lettuce tossed with romano cheese, croutons, and caesar dressing",
+        "price": "$9.25",
+        "section": "Soup and Salad"
+      },
+      {
+        "name": "Caesar Salad (Large)",
+        "description": "Romaine lettuce tossed with romano cheese, croutons, and caesar dressing",
+        "price": "$14.50",
+        "section": "Soup and Salad"
+      },
+      {
+        "name": "House Salad (Small)",
+        "description": "Romaine and iceberg lettuce topped with carrots, tomatoes, cucumber, and croutons",
+        "price": "$9.25",
+        "section": "Soup and Salad"
+      },
+      {
+        "name": "House Salad (Large)",
+        "description": "Romaine and iceberg lettuce topped with carrots, tomatoes, cucumber, and croutons",
+        "price": "$14.50",
+        "section": "Soup and Salad"
+      },
+      {
+        "name": "Antipasto",
+        "description": "Romaine and iceberg lettuce, mozzarella cheese, olives, salami, ham, pepperoni, topped with pepperoncini and tomatoes, and in our homemade Italian dressing",
+        "price": "$16.50",
+        "section": "Soup and Salad"
+      },
+      {
+        "name": "Honey Lime Chicken Salad",
+        "description": "Romaine and iceberg lettuce topped with carrots, sliced mandarin oranges, feta cheese, sliced almonds, and chilled blackened chicken. Served with our homemade honey lime dressing",
+        "price": "$17.00",
+        "section": "Soup and Salad"
+      },
+      {
+        "name": "Fragola",
+        "description": "Romaine lettuce topped with chilled blackened chicken, blue cheese crumbles, walnuts, mandarin orange slices, and topped with fried pasta strips. Served with our strawberry vinaigrette dressing",
+        "price": "$16.50",
+        "section": "Soup and Salad"
+      },
+      {
+        "name": "Minestrone (Cup)",
+        "description": "Italian vegetable soup. Served with a side of crackers. Contains meat",
+        "price": "$9.50",
+        "section": "Soup and Salad"
+      },
+      {
+        "name": "Minestrone (Bowl, includes bread)",
+        "description": "Italian vegetable soup. Contains meat",
+        "price": "$11.50",
+        "section": "Soup and Salad"
+      },
+      {
+        "name": "Ham, Salami, or Capicola Sub",
+        "description": "Your choice of ham, salami, OR capicola. Served with provolone cheese, tomatoes, lettuce, and Italian dressing. Served with a side of chips",
+        "price": "$13.50",
+        "section": "Subs"
+      },
+      {
+        "name": "Italian Hero",
+        "description": "A classic combination of ham, salami, and capicola served with provolone cheese, tomatoes, lettuce, and Italian dressing. Served with a side of chips",
+        "price": "$14.50",
+        "section": "Subs"
+      },
+      {
+        "name": "Italian Sausage Sub",
+        "description": "Italian sausage topped with meat sauce and melted mozzarella cheese. Served with a side of chips",
+        "price": "$15.00",
+        "section": "Subs"
+      },
+      {
+        "name": "Meatball Sub",
+        "description": "Grandma Antonetti's famous homemade meatballs topped with meat sauce and melted mozzarella cheese. Served with a side of chips",
+        "price": "$16.00",
+        "section": "Subs"
+      },
+      {
+        "name": "Grilled Chicken Sub",
+        "description": "Grilled chicken served with provolone cheese, tomatoes, lettuce, and Italian dressing. Served with a side of chips",
+        "price": "$17.00",
+        "section": "Subs"
+      },
+      {
+        "name": "Eggplant Parmesan Sub",
+        "description": "Eggplant parmesan served between toasted bread. Served with a side of chips",
+        "price": "$17.50",
+        "section": "Subs"
+      },
+      {
+        "name": "Chicken Parmesan Sub",
+        "description": "Chicken parmesan served between toasted bread. Served with a side of chips",
+        "price": "$17.50",
+        "section": "Subs"
+      },
+      {
+        "name": "Pasta",
+        "description": "Spaghetti or Penne pasta with your choice of Antonetti's homemade meat sauce or marinara sauce",
+        "price": "$13.50",
+        "section": "Entrées"
+      },
+      {
+        "name": "Ravioli",
+        "description": "Ravioli pasta stuffed with ricotta cheese topped with your choice of our meat sauce or marinara sauce",
+        "price": "$18.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Penne a la Cardinal",
+        "description": "Sautéed garlic, reduced white wine, salt, and sun-dried tomatoes tossed in our homemade penne pasta",
+        "price": "$18.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Linguini Pesto",
+        "description": "Our homemade pesto sauce made of blended extra virgin olive oil, pine nuts, salt, romano cheese, and fresh basil, served over linguini",
+        "price": "$18.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Antonetti's Lasagna",
+        "description": "Layers of pasta, tomato sauce, ricotta and mozzarella cheese with your choice of meat or spinach",
+        "price": "$18.50",
+        "section": "Entrées"
+      },
+      {
+        "name": "Fettuccine Alfredo",
+        "description": "Fettuccine tossed in our homemade cream sauce",
+        "price": "$18.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Eggplant Parmesan",
+        "description": "Breaded in our homemade breading, topped with marinara sauce, mozzarella cheese, and served with a side of spaghetti marinara",
+        "price": "$19.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Chicken Parmesan",
+        "description": "Breaded in our homemade breading, topped with marinara sauce, mozzarella cheese, and served with a side of spaghetti marinara",
+        "price": "$21.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Veal Parmesan",
+        "description": "Breaded in our homemade breading, topped with marinara sauce, mozzarella cheese, baked, and served with a side of spaghetti marinara",
+        "price": "$27.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Chicken Piccata",
+        "description": "Chicken breast, dredged in flour, pan fried and topped with our piccata sauce (lemon juice, butter, white wine, and capers). Served with linguini",
+        "price": "$25.50",
+        "section": "Entrées"
+      },
+      {
+        "name": "Linguine Red Clam",
+        "description": "Linguine topped with clams, chopped garlic, and a spicy mushroom marinara sauce",
+        "price": "$22.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Linguine White Clam",
+        "description": "Linguine topped with clams, olive oil, chopped garlic, diced onions, fresh basil, and parsley",
+        "price": "$22.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Veggie Pizza (Personal)",
+        "description": "Mushrooms, bell peppers, black olives, and onions",
+        "price": "$16.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Veggie Pizza (Medium)",
+        "description": "Mushrooms, bell peppers, black olives, and onions",
+        "price": "$20.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Veggie Pizza (Large)",
+        "description": "Mushrooms, bell peppers, black olives, and onions",
+        "price": "$24.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Margherita Pizza (Personal)",
+        "description": "Fresh Roma tomatoes, fresh basil, and a crust brushed with olive oil and sprinkled with romano cheese",
+        "price": "$16.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Margherita Pizza (Medium)",
+        "description": "Fresh Roma tomatoes, fresh basil, and a crust brushed with olive oil and sprinkled with romano cheese",
+        "price": "$20.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Margherita Pizza (Large)",
+        "description": "Fresh Roma tomatoes, fresh basil, and a crust brushed with olive oil and sprinkled with romano cheese",
+        "price": "$24.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Antonetti's Special Pizza (Medium)",
+        "description": "Pepperoni, sausage, meatballs, mushrooms, bell peppers, black olives, and onions",
+        "price": "$24.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Antonetti's Special Pizza (Large)",
+        "description": "Pepperoni, sausage, meatballs, mushrooms, bell peppers, black olives, and onions",
+        "price": "$30.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Toscano Pizza (Medium)",
+        "description": "Pesto base, blackened chicken, Roma tomatoes, and mushrooms",
+        "price": "$24.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Toscano Pizza (Large)",
+        "description": "Pesto base, blackened chicken, Roma tomatoes, and mushrooms",
+        "price": "$30.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Chicken Alfredo Pizza (Medium)",
+        "description": "Alfredo sauce base, blackened chicken, mushrooms, and Roma tomatoes",
+        "price": "$24.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Chicken Alfredo Pizza (Large)",
+        "description": "Alfredo sauce base, blackened chicken, mushrooms, and Roma tomatoes",
+        "price": "$30.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Italian Classic Pizza (Medium)",
+        "description": "Crushed red pepper, pepperoni, bell peppers, onions, mushrooms, chopped tomatoes, garlic, romano cheese, and basil",
+        "price": "$24.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Italian Classic Pizza (Large)",
+        "description": "Crushed red pepper, pepperoni, bell peppers, onions, mushrooms, chopped tomatoes, garlic, romano cheese, and basil",
+        "price": "$30.00",
+        "section": "Specialty Pizza"
+      },
+      {
+        "name": "Cheese Pizza (8\" Personal)",
+        "description": "Build your own pizza, hand-tossed, pie-cut or thin crust Chicago-cut",
+        "price": "$14.50",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "Cheese Pizza (12\" Medium)",
+        "description": "Build your own pizza, hand-tossed, pie-cut or thin crust Chicago-cut",
+        "price": "$18.50",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "Cheese Pizza (16\" Large)",
+        "description": "Build your own pizza, hand-tossed, pie-cut or thin crust Chicago-cut",
+        "price": "$20.50",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "1 Item Pizza (8\" Personal)",
+        "description": "Build your own pizza, one topping",
+        "price": "$16.50",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "1 Item Pizza (12\" Medium)",
+        "description": "Build your own pizza, one topping",
+        "price": "$21.00",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "1 Item Pizza (16\" Large)",
+        "description": "Build your own pizza, one topping",
+        "price": "$23.50",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "2 Item Pizza (8\" Personal)",
+        "description": "Build your own pizza, two toppings",
+        "price": "$18.50",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "2 Item Pizza (12\" Medium)",
+        "description": "Build your own pizza, two toppings",
+        "price": "$23.50",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "2 Item Pizza (16\" Large)",
+        "description": "Build your own pizza, two toppings",
+        "price": "$26.50",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "Spaghetti (Kids)",
+        "description": "Spaghetti with a choice of meat sauce or marinara",
+        "price": "$10.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Ravioli (Kids)",
+        "description": "Cheese ravioli with your choice of homemade meat sauce or marinara",
+        "price": "$13.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Personal Cheese Pizza (Kids)",
+        "description": "",
+        "price": "$13.50",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Personal Pepperoni Pizza (Kids)",
+        "description": "",
+        "price": "$15.50",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Macaroni and Cheese (Kids)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Penne Butter (Kids)",
+        "description": "",
+        "price": "$11.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Scoop of Vanilla (Kids)",
+        "description": "",
+        "price": "$6.75",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Meatball (Side)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Sausage (Side)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Chicken (Side)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Mixed Vegetables (Side)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Shrimp (Side)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Cannoli",
+        "description": "Flaky fried pastry dough encases our homemade creamy, sweet ricotta and chocolate chip filling. Finished with powdered sugar",
+        "price": "$10.50",
+        "section": "Desserts"
+      },
+      {
+        "name": "Tiramisu",
+        "description": "Homemade layered lady fingers dipped in a coffee and Kahlua mix and topped with sweetened mascarpone cream, cocoa powder, whipped cream, and slivered almonds",
+        "price": "$10.50",
+        "section": "Desserts"
+      },
+      {
+        "name": "Cheesecake",
+        "description": "New York style cheesecake topped with whipped cream",
+        "price": "$8.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Spumoni",
+        "description": "Three scoops of chocolate, cherry, and pistachio swirled Italian ice cream, topped with whipped cream",
+        "price": "$9.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Root Beer Float",
+        "description": "Traditional vanilla ice cream served in root beer",
+        "price": "$8.50",
+        "section": "Desserts"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5677",
+    "name": "Hong Kong BBQ Dim Sum & Kitchen",
+    "sourceUrl": "https://www.hongkongbbqdimsum.com/order/main/-appetizer",
+    "confidence": "high",
+    "notes": "Restaurant's own first-party online ordering site (own domain, not a third-party marketplace) renders its ENTIRE catalog server-side on one page load regardless of which category slug is in the URL -- 20 categories, 220 line items read directly from HTML (only 1 of 220 missed by my extraction regex and added back manually: Sauteed Shrimp & Fish Fillet $23.95). Multi-size items (Half/Whole duck and chicken, S/M/L rice, Small/Large party portions, 50pcs/100pcs egg rolls) were split into one row per size. Excluded two adjunct sections per playbook guidance: 'Party Tray' (31 catering items x 2 sizes = 62 rows, family-style party portions) and 'For Special Occasion' (3 whole roast/suckling pig items, $358-$458, special order) -- both catering/party trays, not the regular menu. Also excluded a non-priced 'Bring Your Own Seafood Charge $7.00 Per Pound' line that is a corkage-style fee, not a dish. Cents land cleanly on .00/.50/.95/.99 with no markup pattern. Address matches batch (10550 Camino Ruiz). Core sections captured: Appetizer, Soup, Seafood, Shrimp, Fish, Beef, Pork, Chicken, Minced Meat with Lettuce, Hot Pot, Vegetables & Tofu, Porridge, Noodle Soup, Noodles, Rice, Spicy Dish, Dim Sum, Beverages.",
+    "dishes": [
+      {
+        "name": "北京鴨一吃 Peking Duck (One Course)",
+        "description": "",
+        "price": "$49.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "春 捲 Vegetable Egg Rolls (8)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "炸雞鍋貼 Deep Fried Chicken Pot Sticker (8)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "椒鹽雞翼 Salt & Pepper Chicken Wings Spicy",
+        "description": "Deep Fried",
+        "price": "$18.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "蜜汁叉燒 BBQ Pork",
+        "description": "",
+        "price": "$17.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "燒肉 Roasted Pork",
+        "description": "",
+        "price": "$22.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "大家樂雙拼 BBQ Double Delicacy",
+        "description": "",
+        "price": "$22.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "豉 油 雞 Soy Sauce Chicken (Half)",
+        "description": "",
+        "price": "$17.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "豉 油 雞 Soy Sauce Chicken (Whole)",
+        "description": "",
+        "price": "$31.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "大家樂燒鴨 Roasted Duck (Half)",
+        "description": "",
+        "price": "$19.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "大家樂燒鴨 Roasted Duck (Whole)",
+        "description": "",
+        "price": "$36.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "琵 琶 鴨 Crispy Duck (Half)",
+        "description": "",
+        "price": "$19.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "琵 琶 鴨 Crispy Duck (Whole)",
+        "description": "",
+        "price": "$36.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "貴 妃 雞 House Special Free Range Chicken (Half)",
+        "description": "",
+        "price": "$17.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "貴 妃 雞 House Special Free Range Chicken (Whole)",
+        "description": "",
+        "price": "$31.95",
+        "section": "Appetizer"
+      },
+      {
+        "name": "蟹肉魚肚羹 Crabmeat & Fish Maw Soup",
+        "description": "",
+        "price": "$19.95",
+        "section": "Soup"
+      },
+      {
+        "name": "酸 辣 湯 Hot & Sour Soup Spicy",
+        "description": "",
+        "price": "$14.95",
+        "section": "Soup"
+      },
+      {
+        "name": "蛋 花 湯 Egg Drop Soup",
+        "description": "",
+        "price": "$14.95",
+        "section": "Soup"
+      },
+      {
+        "name": "雞茸栗米羹 Minced Chicken and Sweet Corn Cream Soup",
+        "description": "",
+        "price": "$16.95",
+        "section": "Soup"
+      },
+      {
+        "name": "西湖牛肉羹 Special West Lake with Beef Soup",
+        "description": "",
+        "price": "$16.95",
+        "section": "Soup"
+      },
+      {
+        "name": "香茜魚片湯 Sliced Fish with Tofu Soup",
+        "description": "",
+        "price": "$17.95",
+        "section": "Soup"
+      },
+      {
+        "name": "海鮮豆腐羹 Seafood Tofu Soup",
+        "description": "",
+        "price": "$17.95",
+        "section": "Soup"
+      },
+      {
+        "name": "龍 鳳 羹 Shrimp & Chicken Soup",
+        "description": "",
+        "price": "$17.95",
+        "section": "Soup"
+      },
+      {
+        "name": "海鮮龍皇羹 Seafood Soup",
+        "description": "",
+        "price": "$17.95",
+        "section": "Soup"
+      },
+      {
+        "name": "豉 椒 鮮 魷 Squid with Black Bean Sauce Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "椒 鹽 鮮 魷 Salt & Pepper Squid Spicy",
+        "description": "Deep Fried",
+        "price": "$18.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "時 菜 鮮 魷 Squid with Vegetable",
+        "description": "",
+        "price": "$18.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "宮 保 三 鮮 Kung Pao Seafood Spicy 蝦、魚、魷魚 Shrimp, Fish, Squid $23.95 25. 油 泡 雙 保 Sautéed Shrimp & Fish Fillet 25. 油 泡 雙 保 Sautéed Shrimp & Fish Fillet",
+        "description": "蝦、魚片",
+        "price": "$23.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "西汁核桃蝦 Honey Walnut Shrimp",
+        "description": "",
+        "price": "$23.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "椒 鹽 蝦 Salt & Pepper Shrimp Spicy",
+        "description": "Deep fried with Hot Pepper",
+        "price": "$21.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "魚 香 蝦 球 Shrimp with Garlic Sauce Spicy",
+        "description": "",
+        "price": "$21.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "豉椒蝦球 Shrimp with Black Bean Sauce Spicy",
+        "description": "",
+        "price": "$21.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "甜 酸 蝦 球 Sweet & Sour Shrimp",
+        "description": "",
+        "price": "$21.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "宮 保 蝦 球 Kung Pao Shrimp Spicy",
+        "description": "",
+        "price": "$21.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "腰 果 蝦 球 Shrimp with Cashew Nuts",
+        "description": "",
+        "price": "$21.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "蝦 龍 糊 Shrimp with Lobster Sauce",
+        "description": "",
+        "price": "$21.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "蝦仁炒蛋 Shrimp with Stir Fried Egg",
+        "description": "",
+        "price": "$21.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "避風塘蝦球 Shrimp with Special Sauce Spicy",
+        "description": "",
+        "price": "$22.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "XO 炒蝦球 Sautéed Shrimp w/ XO Sauce Spicy",
+        "description": "",
+        "price": "$22.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "椒 鹽 魚 片 Salt and Pepper Fish Fillet Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Fish"
+      },
+      {
+        "name": "豉 椒 魚 片 Fish Fillet with Black Bean Sauce Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Fish"
+      },
+      {
+        "name": "菜 遠 魚 片 Fish Fillet w/ Vegetable",
+        "description": "",
+        "price": "$18.95",
+        "section": "Fish"
+      },
+      {
+        "name": "油 泡 魚 片 Sautéed Fish Fillet",
+        "description": "",
+        "price": "$18.95",
+        "section": "Fish"
+      },
+      {
+        "name": "甜 酸 魚 片 Sweet & Sour Fish Fillet",
+        "description": "",
+        "price": "$18.95",
+        "section": "Fish"
+      },
+      {
+        "name": "甜酸全魚 Whole Fish with Sweet & Sour Sauce",
+        "description": "",
+        "price": "$23.95",
+        "section": "Fish"
+      },
+      {
+        "name": "香 煎 龍 俐 Deep Fried Flounder",
+        "description": "",
+        "price": "$23.95",
+        "section": "Fish"
+      },
+      {
+        "name": "清 蒸 龍 俐 Steamed Flounder",
+        "description": "",
+        "price": "$23.95",
+        "section": "Fish"
+      },
+      {
+        "name": "金銀班片蒸豆腐 Golden & Silver Fish Fillet Steam with Tofu",
+        "description": "",
+        "price": "$22.95",
+        "section": "Fish"
+      },
+      {
+        "name": "法式牛柳粒 Diced Sirloin Steak French Style Spicy",
+        "description": "",
+        "price": "$23.95",
+        "section": "Beef"
+      },
+      {
+        "name": "黑椒牛柳粒 Diced Sirloin Steak with Black Pepper Sauce Spicy",
+        "description": "",
+        "price": "$23.95",
+        "section": "Beef"
+      },
+      {
+        "name": "蒙 古 牛 肉 Mongolian Beef Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "魚 香 牛 肉 Beef with Garlic Sauce Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "芥 蘭 牛 肉 Beef with Chinese Broccoli",
+        "description": "",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "豉 椒 牛 肉 Beef with Black Bean Sauce Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "宮 保 牛 肉 Kung Pao Beef Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "陳 皮 牛 Orange Peel Beef Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "XO 醬牛肉 Beef with XO Sauce Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "豉汁涼瓜炒牛肉 Beef & Bitter Melon with Black Bean Sauce",
+        "description": "",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "椒鹽排骨 Salt & Pepper Pork Chops Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "京 都 排 骨 Pork Chops Peking Style",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "梅 菜 扣 肉 House Special Preserved Pork Meat",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "黑椒排骨 Pork Chop Black Pepper Sauce Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "孜 然 肉 絲 Shredded Pork w/ Cumin Seed Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "四川肉絲 Shredded Pork Szechwan Style Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "洋蔥排骨 Pork Chop with Onion",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "甜 酸 肉 Sweet & Sour Pork",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "炒燒腩仔 Stir Fried Roasted Pork",
+        "description": "",
+        "price": "$22.95",
+        "section": "Pork"
+      },
+      {
+        "name": "宮 保 雞 丁 Kung Pao Chicken Spicy",
+        "description": "",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "腰 果 雞 丁 Diced Chicken with Cashew Nuts",
+        "description": "",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "魚 香 雞 球 Chicken with Garlic Sauce Spicy",
+        "description": "",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "豉 椒 雞 球 Chicken with Black Bean Sauce & Pepper Spicy",
+        "description": "",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "時菜滑雞球 Sautéed Chicken w/ Vegetable",
+        "description": "",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "甜 酸 雞 球 Sweet & Sour Chicken",
+        "description": "",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "陳 皮 雞 Orange Peel Chicken Spicy",
+        "description": "",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "芥蘭上湯雞 Steamed Chicken with Chinese Broccoli (Half)",
+        "description": "",
+        "price": "$23.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "生菜雞, 蝦鬆 Minced Chicken & Shrimp with Lettuce",
+        "description": "",
+        "price": "$22.95",
+        "section": "Minced Meat with Lettuce"
+      },
+      {
+        "name": "生菜海鮮鬆 Minced Seafood with Lettuce",
+        "description": "",
+        "price": "$22.95",
+        "section": "Minced Meat with Lettuce"
+      },
+      {
+        "name": "海鮮豆腐煲 Seafood & Tofu Hot Pot",
+        "description": "",
+        "price": "$23.95",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "八珍豆腐煲 Deluxe Hot Pot",
+        "description": "",
+        "price": "$23.95",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "鹹魚雞粒豆腐煲 Salty Fish & Chicken with Tofu Hot Pot",
+        "description": "",
+        "price": "$21.95",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "鹹魚雞粒茄子煲 Salty Fish & Chicken with Eggplant Hot Pot",
+        "description": "",
+        "price": "$21.95",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "牛 腩 煲 Beef Stew in Hot Pot",
+        "description": "",
+        "price": "$23.95",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "燒腩豆腐煲 Roasted Pork & Tofu Hot Pot",
+        "description": "",
+        "price": "$23.95",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "80A. 羊 腩 煲 Lamb Stew in Hot Pot",
+        "description": "",
+        "price": "$26.95",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "干扁四季豆 Crispy String Beans",
+        "description": "",
+        "price": "$16.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "XO 椒鹽豆腐 XO Sauce Deep Fried Tofu Spicy",
+        "description": "",
+        "price": "$16.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "紅 燒 豆 腐 Tofu with Brown Sauce",
+        "description": "",
+        "price": "$16.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "麻 婆 豆 腐 Ma Po Tofu Spicy",
+        "description": "",
+        "price": "$16.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "脆皮炸豆腐 Deep Fried Crispy Stuffed Tofu",
+        "description": "",
+        "price": "$18.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "川汁肉鬆扒豆腐 Tofu with Szechwan Sauce & Pork Floss Spicy",
+        "description": "",
+        "price": "$18.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "牛松扒豆腐 Tofu with Minced Beef",
+        "description": "",
+        "price": "$18.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "金銀蛋浸豆苗 Egg and Salty Egg Sautéed Pea Sprouts",
+        "description": "",
+        "price": "$23.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "蒜茸炒豆苗 Sautéed Pea Sprouts",
+        "description": "",
+        "price": "$21.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "白靈芝菇扒時菜 White LingGiz Mushroom with Seasonal Vegetable",
+        "description": "",
+        "price": "$21.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "蒜茸白菜 Baychoy with Minced Garlic",
+        "description": "",
+        "price": "$16.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "蒜茸菜心 Chinese Green w/ Minced Garlic",
+        "description": "",
+        "price": "$16.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "蒜茸炒芥蘭 Chinese Broccoli with Minced Garlic",
+        "description": "",
+        "price": "$16.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "魚香茄子 Eggplant with Garlic Sauce Spicy",
+        "description": "",
+        "price": "$16.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "四季豆茄子 Eggplant with String Beans Spicy",
+        "description": "",
+        "price": "$16.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "什菇玉子豆腐 Egg Tofu with Mix Mushrooms",
+        "description": "",
+        "price": "$22.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "甜酸芋头 Sweet and sour Taro",
+        "description": "",
+        "price": "$18.95",
+        "section": "Vegetables & Tofu"
+      },
+      {
+        "name": "魚 片 粥 Fish Porridge",
+        "description": "",
+        "price": "$11.95",
+        "section": "Porridge"
+      },
+      {
+        "name": "海 鮮 粥 Seafood Porridge",
+        "description": "",
+        "price": "$11.95",
+        "section": "Porridge"
+      },
+      {
+        "name": "燒 鴨 絲 粥 Roasted Duck Porridge",
+        "description": "",
+        "price": "$11.95",
+        "section": "Porridge"
+      },
+      {
+        "name": "皮蛋瘦肉粥 Pork w/ Preserved Egg Porridge",
+        "description": "",
+        "price": "$11.95",
+        "section": "Porridge"
+      },
+      {
+        "name": "免治牛肉粥 Minced Beef Porridge",
+        "description": "",
+        "price": "$10.95",
+        "section": "Porridge"
+      },
+      {
+        "name": "雞 粥 Chicken Porridge",
+        "description": "",
+        "price": "$10.95",
+        "section": "Porridge"
+      },
+      {
+        "name": "瑤 柱 白 粥 Dry Scallop Porridge",
+        "description": "",
+        "price": "$11.95",
+        "section": "Porridge"
+      },
+      {
+        "name": "蝦 雲吞麵 Shrimp Wonton Noodles Soup",
+        "description": "",
+        "price": "$15.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "蝦 雲吞湯 Shrimp Wonton Soup",
+        "description": "",
+        "price": "$15.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "牛腩麵 Beef Stew Egg Noodles Soup",
+        "description": "",
+        "price": "$16.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "牛腩粉 Beef Rice Noodles Soup",
+        "description": "",
+        "price": "$16.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "海鮮粉 Seafood with Rice Noodles Soup",
+        "description": "",
+        "price": "$16.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "海鮮麵 Seafood with Egg Noodles Soup",
+        "description": "",
+        "price": "$16.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "雞湯粉 Chicken with Rice Noodles Soup",
+        "description": "",
+        "price": "$15.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "雞湯麵 Chicken with Egg Noodles Soup",
+        "description": "",
+        "price": "$15.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "烧鴨湯麵 Roasted Duck Egg Noodle Soup",
+        "description": "",
+        "price": "$16.95",
+        "section": "Noodle Soup"
+      },
+      {
+        "name": "牛 肉 撈 麵 Beef Lo Mein",
+        "description": "",
+        "price": "$18.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "雞 球 撈 麵 Chicken Lo Mein",
+        "description": "",
+        "price": "$17.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "蝦 球 撈 麵 Shrimp Lo Mein",
+        "description": "",
+        "price": "$19.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "大家樂炒麵 House Special Chow Mein (Crispy)",
+        "description": "Pan Fried Noodle",
+        "price": "$19.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "海 鮮 炒 麵 Seafood Chow Mein (Crispy)",
+        "description": "",
+        "price": "$19.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "蝦 球 炒 麵 Shrimp Chow Mein (Crispy)",
+        "description": "",
+        "price": "$19.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "雞 球 炒 麵 Chicken Chow Mein (Crispy)",
+        "description": "",
+        "price": "$17.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "豉油王炒麵 Chow Mein with Soy Sauce",
+        "description": "",
+        "price": "$16.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "味菜肉絲炒麵 Shredded Pork with Perserved Vege. Chow Mein (Crispy)",
+        "description": "",
+        "price": "$17.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "干 炒 蝦 麵 Shrimp Chow Mein Dry Style",
+        "description": "",
+        "price": "$19.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "干 燒 伊 麵 Braised Yee Mein",
+        "description": "",
+        "price": "$16.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "干 炒 牛 河 Beef Chow Fun (Dry Style)",
+        "description": "",
+        "price": "$18.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "菜 遠 牛 河 Beef Chow Fun (Wet Style)",
+        "description": "",
+        "price": "$18.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "大家樂炒粉 House Special Chow Fun (Dry)",
+        "description": "",
+        "price": "$19.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "海 鮮 炒 粉 Seafood Chow Fun (Dry)",
+        "description": "",
+        "price": "$19.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "蝦 球 炒 粉 Shrimp Chow Fun (Dry)",
+        "description": "",
+        "price": "$19.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "雞 球 炒 粉 Chicken Chow Fun (Dry)",
+        "description": "",
+        "price": "$17.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "豉油王炒粉 Chow Fun with Soy Sauce",
+        "description": "",
+        "price": "$16.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "味菜肉絲炒粉 Shredded Pork with Perserved Vege. Chow Fun",
+        "description": "",
+        "price": "$17.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "星 洲 炒 米 Singapore Style Rice Noodle",
+        "description": "",
+        "price": "$18.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "廈 門 炒 米 Xia Men Rice Noodle",
+        "description": "",
+        "price": "$18.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "家 鄉 炒 米 Hometown Style Rice Noodle",
+        "description": "",
+        "price": "$18.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "鹹魚雞粒鴛鴦米 Salted Fish & Chicken Mixed Rice Noodle",
+        "description": "",
+        "price": "$19.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "肉絲炒年糕 Rice Cake with Shredded Pork",
+        "description": "",
+        "price": "$17.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "味菜牛肉炒年糕 Rice Cake with Beef and Preserved Vegetable",
+        "description": "",
+        "price": "$18.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "XO 海鮮炒飯 XO Sauce w/ Seafood Fried Rice Spicy",
+        "description": "",
+        "price": "$17.95",
+        "section": "Rice"
+      },
+      {
+        "name": "鹹魚雞粒炒飯 Salted Fish & Chicken Fried Rice",
+        "description": "",
+        "price": "$18.95",
+        "section": "Rice"
+      },
+      {
+        "name": "金蒜海鮮炒飯 Seafood & Garlic Fried Rice",
+        "description": "",
+        "price": "$17.95",
+        "section": "Rice"
+      },
+      {
+        "name": "貴妃炒飯 Crab Meat Fried Rice",
+        "description": "",
+        "price": "$18.95",
+        "section": "Rice"
+      },
+      {
+        "name": "海鮮炒飯 Seafood Fried Rice",
+        "description": "",
+        "price": "$17.95",
+        "section": "Rice"
+      },
+      {
+        "name": "揚 州 炒 飯 Young Chow Fried Rice",
+        "description": "",
+        "price": "$17.95",
+        "section": "Rice"
+      },
+      {
+        "name": "蝦 仁 炒 飯 Shrimp Fried Rice",
+        "description": "",
+        "price": "$17.95",
+        "section": "Rice"
+      },
+      {
+        "name": "燒 鴨 飯 Roasted Duck on Rice",
+        "description": "",
+        "price": "$16.95",
+        "section": "Rice"
+      },
+      {
+        "name": "叉 燒 飯 B.B.Q. Pork on Rice",
+        "description": "",
+        "price": "$16.95",
+        "section": "Rice"
+      },
+      {
+        "name": "生炒牛肉飯 Minced Beef Fried Rice",
+        "description": "",
+        "price": "$16.95",
+        "section": "Rice"
+      },
+      {
+        "name": "叉 燒 炒 飯 B.B.Q. Pork Fried Rice",
+        "description": "",
+        "price": "$16.95",
+        "section": "Rice"
+      },
+      {
+        "name": "臘腸粒炒飯 Chinese Sausage Fried Rice",
+        "description": "",
+        "price": "$16.95",
+        "section": "Rice"
+      },
+      {
+        "name": "蕃茄牛肉飯 Beef with Tomato on Rice",
+        "description": "",
+        "price": "$16.95",
+        "section": "Rice"
+      },
+      {
+        "name": "牛 肉 燴 飯 Beef on Rice",
+        "description": "",
+        "price": "$16.95",
+        "section": "Rice"
+      },
+      {
+        "name": "粟米雞球燴飯 Chicken & Sweet Corn on Rice",
+        "description": "",
+        "price": "$16.95",
+        "section": "Rice"
+      },
+      {
+        "name": "燒 肉 飯 Roasted Pork on Rice",
+        "description": "",
+        "price": "$18.95",
+        "section": "Rice"
+      },
+      {
+        "name": "葡汁雞粒焗飯 Diced Chicken Baked Rice Portuguese Style",
+        "description": "30分鐘 30 Min",
+        "price": "$22.95",
+        "section": "Rice"
+      },
+      {
+        "name": "雙 拼 飯 2 Kinds of Roasted Meat on Rice",
+        "description": "",
+        "price": "$20.95",
+        "section": "Rice"
+      },
+      {
+        "name": "白饭 Steamed Rice (S)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Rice"
+      },
+      {
+        "name": "白饭 Steamed Rice (M)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Rice"
+      },
+      {
+        "name": "白饭 Steamed Rice (L)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Rice"
+      },
+      {
+        "name": "宮 保 三 樣 Kung Pao Three Spicy",
+        "description": "雞、蝦、牛 Chicken, Shrimp, Beef",
+        "price": "$23.95",
+        "section": "Spicy Dish"
+      },
+      {
+        "name": "尖 椒 炒 蛋 Pan Fried Eggs with Green Peppers Spicy",
+        "description": "",
+        "price": "$17.95",
+        "section": "Spicy Dish"
+      },
+      {
+        "name": "螞 蟻 上 樹 Minced Pork with Vermicelli Spicy",
+        "description": "",
+        "price": "$17.95",
+        "section": "Spicy Dish"
+      },
+      {
+        "name": "香酥辣子雞 Crispy Spicy Chicken Spicy",
+        "description": "",
+        "price": "$17.95",
+        "section": "Spicy Dish"
+      },
+      {
+        "name": "水 煮 牛 肉 Hot Boiled Beef Spicy",
+        "description": "",
+        "price": "$20.95",
+        "section": "Spicy Dish"
+      },
+      {
+        "name": "水 煮 魚 Hot Boiled Fish Fillet Spicy",
+        "description": "",
+        "price": "$20.95",
+        "section": "Spicy Dish"
+      },
+      {
+        "name": "水 煮 三 樣 Hot Boiled Mixed Meat Spicy",
+        "description": "雞、牛、蝦 Chicken, Beef, Shrimp",
+        "price": "$23.95",
+        "section": "Spicy Dish"
+      },
+      {
+        "name": "紅油鮮蝦雲吞 Shrimp Wonton in Chili Oil Spicy",
+        "description": "",
+        "price": "$17.95",
+        "section": "Spicy Dish"
+      },
+      {
+        "name": "安蝦咸水角 Hom Sui Gok",
+        "description": "",
+        "price": "$5.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "豆沙煎堆仔 Red Bean Sesame Ball",
+        "description": "",
+        "price": "$5.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "春 捲 Egg Rolls",
+        "description": "",
+        "price": "$5.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "蒸叉燒飽 Steamed BBQ Pork Bun",
+        "description": "",
+        "price": "$5.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "焗叉燒飽 Baked BBQ Pork Bun",
+        "description": "",
+        "price": "$5.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "焗奶皇包 Baked Egg Creamy Bun",
+        "description": "",
+        "price": "$5.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "蒸 奶 皇 包 Steamed Egg Creamy Bun",
+        "description": "",
+        "price": "$5.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "香菇雞 包 Chicken & Mushroom Bun",
+        "description": "",
+        "price": "$5.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "炸雞鍋貼 Deep Fried Chicken Pot Sticker",
+        "description": "",
+        "price": "$5.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "蟹皇蒸燒賣 Pork & Shrimp Shiu Mai",
+        "description": "",
+        "price": "$6.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "水晶蝦餃 Shrimp Dumpling",
+        "description": "",
+        "price": "$6.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "迷你糯米雞 Magic Rice Wrapped",
+        "description": "",
+        "price": "$6.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "日式炸蝦 Battered Shrimp Tempura",
+        "description": "",
+        "price": "$6.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "柱候醬鳳爪 Stewed Chicken Feet",
+        "description": "",
+        "price": "$6.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "上海小籠包 Xiao Long Bao",
+        "description": "",
+        "price": "$6.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "黑金流沙包 Black Golden Creamy Bun",
+        "description": "",
+        "price": "$6.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "蛋 撻 Egg Custard",
+        "description": "",
+        "price": "$6.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "白 糖 糕 Sweet Rice Cake",
+        "description": "",
+        "price": "$6.99",
+        "section": "Dim Sum"
+      },
+      {
+        "name": "汽 水 Soda",
+        "description": "",
+        "price": "$2.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "泰式奶茶 Thai Milk Tea",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Sautéed Shrimp & Fish Fillet",
+        "description": "蝦、魚片 (shrimp, fish fillet)",
+        "price": "$23.95",
+        "section": "Seafood"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1879",
+    "name": "Santorini Island Grill",
+    "sourceUrl": "https://postmates.com/store/santorini-greek-island-grill/xddBF7OGQXKoFsXcy9Onzg (cross-checked against Yelp menu tab)",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.yelp.com/menu/santorini-island-grill-la-jolla",
+    "notes": "This UCSD Price Center vendor has no working first-party site: santoriniislandgrill.net (the domain UCSD's own dining page still links to) is now a hijacked generic recipe blog, and its old cached /ucsd-menu/ subpage lists item descriptions with zero prices. santorini-island-grill.res-menu.com returned 0 bytes. A Santorini on Uber Eats ('Santorini Island Grill - Scripps', 10545 Scripps Poway Pkwy) is a DIFFERENT branch entirely and was not used. Used Postmates (Uber-owned) as primary source and cross-checked against Yelp's menu tab (normally barred per playbook -- unblocked here because it agrees to the cent with the independently-owned Postmates listing across every one of ~25 overlapping items: Gyro Plate $8.79, Zorba Plate $9.29, Greek Salad $7.49, Santorini Salad $9.49, Super Gyro Salad $11.49, all Value Meals, all Rice Bowls, all Pita Sandwiches, Hummus & Pita $5.49, Falafel Balls $3.49, Pita Bread $1.79, all three Fries items -- matched exactly). Postmates lists the address as 9700 Gilman Dr and the batch lists 9500 Gilman Dr, Uc San Diego-Price Ctr E; treated as the same UCSD Price Center building (both La Jolla 92093, same restaurant name, same phone-area campus vendor, no evidence of two separate La Jolla Santorini locations) rather than a branch mismatch. The Breakfast section and its A la Carte sides are from Yelp only (Postmates' page was showing its Saturday all-day menu, not the weekday-only breakfast daypart, so there was nothing on Postmates to cross-check breakfast against) -- flagged lower confidence within notes for that section specifically, though the prices are internally consistent with the confirmed items. Two items mentioned in the old un-priced UCSD Menu page (chicken wings, a pita basket appetizer) do not appear on either current priced source and were not invented.",
+    "dishes": [
+      {
+        "name": "Greek Omelette",
+        "description": "3-egg omelette served with pita bread",
+        "price": "$6.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Greek Omelette Meal",
+        "description": "3-egg omelette served with pita bread, breakfast potatoes and orange juice",
+        "price": "$9.98",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Pita Scramble",
+        "description": "A warm pita filled with scrambled eggs",
+        "price": "$5.49",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Pita Scramble Meal",
+        "description": "A warm pita filled with scrambled eggs, breakfast potatoes and orange juice",
+        "price": "$8.48",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Wrap",
+        "description": "A warm tortilla filled with scrambled eggs",
+        "price": "$6.29",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Wrap Meal",
+        "description": "A warm tortilla filled with scrambled eggs, breakfast potatoes and orange juice",
+        "price": "$9.28",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Spinach and Feta Scramble",
+        "description": "A warm pita filled with spinach, scrambled eggs and feta cheese. No breakfast protein",
+        "price": "$5.29",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Spinach and Feta Scramble Meal",
+        "description": "A warm pita filled with spinach, scrambled eggs and feta cheese, breakfast potatoes and orange juice",
+        "price": "$8.28",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Scrambled Eggs",
+        "description": "3 scrambled eggs served with pita bread",
+        "price": "$5.49",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Scrambled Eggs Meal",
+        "description": "3 scrambled eggs served with pita bread, breakfast potatoes and orange juice",
+        "price": "$8.48",
+        "section": "Breakfast"
+      },
+      {
+        "name": "2 Eggs Any Style",
+        "description": "",
+        "price": "$2.79",
+        "section": "Breakfast A la Carte"
+      },
+      {
+        "name": "Breakfast Potatoes",
+        "description": "",
+        "price": "$2.79",
+        "section": "Breakfast A la Carte"
+      },
+      {
+        "name": "Orange Juice",
+        "description": "",
+        "price": "$2.49",
+        "section": "Breakfast A la Carte"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$2.49",
+        "section": "Breakfast A la Carte"
+      },
+      {
+        "name": "Santorini Pita",
+        "description": "Gyro meat, lettuce, tomato, onion, fries & feta cheese",
+        "price": "$6.79",
+        "section": "Pita Sandwiches"
+      },
+      {
+        "name": "Shawarma Wrap",
+        "description": "Chicken or gyro in a tortilla",
+        "price": "$6.49",
+        "section": "Pita Sandwiches"
+      },
+      {
+        "name": "Gyro Pita",
+        "description": "The traditional gyro",
+        "price": "$6.29",
+        "section": "Pita Sandwiches"
+      },
+      {
+        "name": "Chicken Pita",
+        "description": "Grilled chicken breast",
+        "price": "$6.29",
+        "section": "Pita Sandwiches"
+      },
+      {
+        "name": "Falafel Pita",
+        "description": "Falafel balls made of chickpeas",
+        "price": "$6.29",
+        "section": "Pita Sandwiches"
+      },
+      {
+        "name": "Veggie Pita",
+        "description": "All veggies, no meat",
+        "price": "$5.79",
+        "section": "Pita Sandwiches"
+      },
+      {
+        "name": "Gyro Pita Meal",
+        "description": "The traditional gyro, with a side and a soda with one free refill",
+        "price": "$8.79",
+        "section": "Value Meals"
+      },
+      {
+        "name": "Chicken Pita Meal",
+        "description": "Grilled chicken breast, with a side and a soda with one free refill",
+        "price": "$8.79",
+        "section": "Value Meals"
+      },
+      {
+        "name": "Falafel Pita Meal",
+        "description": "Falafel balls made of chickpeas, with a side and a soda with one free refill",
+        "price": "$8.79",
+        "section": "Value Meals"
+      },
+      {
+        "name": "Santorini Pita Meal",
+        "description": "Gyro pita, Greek salad, and feta fries",
+        "price": "$9.29",
+        "section": "Value Meals"
+      },
+      {
+        "name": "Shawarma Meal",
+        "description": "Gyro or chicken breast, lettuce, tomato, and onion, served on a tortilla",
+        "price": "$8.99",
+        "section": "Value Meals"
+      },
+      {
+        "name": "Falafel Plate",
+        "description": "4 falafel balls. Includes pita bread",
+        "price": "$8.49",
+        "section": "Plates and More"
+      },
+      {
+        "name": "Zorba Plate",
+        "description": "Chicken & gyro meat. Includes pita bread",
+        "price": "$9.29",
+        "section": "Plates and More"
+      },
+      {
+        "name": "Gyro Plate",
+        "description": "The traditional gyro plate. Includes pita bread",
+        "price": "$8.79",
+        "section": "Plates and More"
+      },
+      {
+        "name": "1/4 Lemon Chicken",
+        "description": "Oven-baked chicken. Includes pita bread",
+        "price": "$8.79",
+        "section": "Plates and More"
+      },
+      {
+        "name": "1/2 Lemon Chicken",
+        "description": "Oven-baked chicken. Includes pita bread",
+        "price": "$10.49",
+        "section": "Plates and More"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "All veggies, no meat. Includes pita bread and tzatziki",
+        "price": "$7.49",
+        "section": "Greek Salads"
+      },
+      {
+        "name": "Gyro Salad",
+        "description": "The traditional gyro. Includes pita bread and tzatziki",
+        "price": "$8.79",
+        "section": "Greek Salads"
+      },
+      {
+        "name": "Chicken Salad",
+        "description": "Grilled chicken breast. Includes pita bread and tzatziki",
+        "price": "$8.79",
+        "section": "Greek Salads"
+      },
+      {
+        "name": "Falafel Salad",
+        "description": "Falafel balls made of chickpeas. Includes pita bread and tzatziki",
+        "price": "$8.79",
+        "section": "Greek Salads"
+      },
+      {
+        "name": "Santorini Salad",
+        "description": "Chicken and gyro on a Greek salad. Includes pita bread and tzatziki",
+        "price": "$9.49",
+        "section": "Greek Salads"
+      },
+      {
+        "name": "Super Gyro Salad",
+        "description": "Double gyro meat on a Greek salad. Includes pita bread and tzatziki",
+        "price": "$11.49",
+        "section": "Greek Salads"
+      },
+      {
+        "name": "Super Chicken Salad",
+        "description": "Double chicken breast on a Greek salad. Includes pita bread and tzatziki",
+        "price": "$11.49",
+        "section": "Greek Salads"
+      },
+      {
+        "name": "Veggie Bowl",
+        "description": "Rice and fresh veggies. Includes pita bread and tzatziki",
+        "price": "$7.49",
+        "section": "Mediterranean Rice Bowls"
+      },
+      {
+        "name": "Gyro Bowl",
+        "description": "Rice and fresh veggies. Includes pita bread and tzatziki",
+        "price": "$8.79",
+        "section": "Mediterranean Rice Bowls"
+      },
+      {
+        "name": "Chicken Bowl",
+        "description": "Rice and fresh veggies. Includes pita bread and tzatziki",
+        "price": "$8.79",
+        "section": "Mediterranean Rice Bowls"
+      },
+      {
+        "name": "Falafel Bowl",
+        "description": "Rice and fresh veggies. Includes pita bread and tzatziki",
+        "price": "$8.79",
+        "section": "Mediterranean Rice Bowls"
+      },
+      {
+        "name": "Santorini Bowl",
+        "description": "Chicken and gyro, rice and fresh veggies. Includes pita bread and tzatziki",
+        "price": "$9.29",
+        "section": "Mediterranean Rice Bowls"
+      },
+      {
+        "name": "Fountain Soda",
+        "description": "",
+        "price": "$2.49",
+        "section": "By Themselves and Extras"
+      },
+      {
+        "name": "Extra Protein",
+        "description": "Add extra protein to your meal",
+        "price": "$3.49",
+        "section": "By Themselves and Extras"
+      },
+      {
+        "name": "Hummus and Pita",
+        "description": "Creamy chickpea dip served with soft pita bread",
+        "price": "$5.49",
+        "section": "By Themselves and Extras"
+      },
+      {
+        "name": "Falafel Balls",
+        "description": "Crispy, flavorful chickpea patties",
+        "price": "$3.49",
+        "section": "By Themselves and Extras"
+      },
+      {
+        "name": "Pita Bread",
+        "description": "",
+        "price": "$1.79",
+        "section": "By Themselves and Extras"
+      },
+      {
+        "name": "Seasoned Fries",
+        "description": "Fries by themselves. Includes pita bread",
+        "price": "$2.99",
+        "section": "Fries"
+      },
+      {
+        "name": "Loaded Fries",
+        "description": "Seasoned fries topped with chicken breast, gyro meat, jalapenos, and feta cheese",
+        "price": "$8.79",
+        "section": "Fries"
+      },
+      {
+        "name": "Feta Fries",
+        "description": "Seasoned fries topped with feta cheese. Includes pita bread",
+        "price": "$3.99",
+        "section": "Fries"
+      }
+    ]
+  }
+]

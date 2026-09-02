@@ -1,0 +1,1193 @@
+{
+  "restaurantId": "1525",
+  "name": "Chin's Szechwan",
+  "sourceUrl": "https://images.getbento.com/accounts/c912badbc6749fd7f96e1e085f9cd3ce/media/t7sFXYoGQ4Cq5TNIauT7_2026_0722%20Chin-s%20Dine%20In%20Menu_NEW%20for%20web.pdf",
+  "confidence": "high",
+  "crossCheckedAgainst": "",
+  "blocked": "",
+  "notes": "Own site (govisitchins.com, redirects to www) links to a current dated dine-in menu PDF (filename dated 2026_0722). pdftotext -layout produced clean, confidently-paired name/price text (only 2 pages, mostly single-item-per-line tables), cross-checked against the visual layout description in the text. Entrees are priced by protein category (Chicken/Shrimp/Pork/Fish/Scallops/Beef/Vegetables & Tofu) with separate Lunch and Dinner prices for every dish in that category - both were captured as separate dish rows (section suffixed Lunch/Dinner) per the several-distinct-menus rule, since this restaurant genuinely runs two price tiers all day rather than one. A House Specialties section had 5 dishes with prices distinct from the base category pricing (kept) and several duplicate listings of dishes already priced elsewhere in the PDF (skipped to avoid double counting) - one specialty (Pao Hu Pork) showed only a single price with no visible lunch/dinner split, recorded as-is and noted. Fried Rice and Lo Mein are build-your-own base dishes priced by size (small/large) rather than lunch/dinner; captured that way. No drink/bar menu found on the site - this is a Chinese dine-in restaurant that does not appear to publish a separate bar list; Beverage is a flat .95 line item on the food menu itself.",
+  "dishes": [
+    {
+      "name": "Egg Roll (2)",
+      "description": "Dough filled with vegetables and fried to a crispy perfection.",
+      "price": "$8.95",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Shanghai Egg Roll (4)",
+      "description": "Fried thin wrap filled with a mix of vegetables.",
+      "price": "$8.95",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Crispy Cream Cheese Wontons (5)",
+      "description": "Ultra crispy wonton filled with melted honeyed cream cheese, white onion, and krabmeat.",
+      "price": "$7.95",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Crispy Chicken Dumplings (8)",
+      "description": "Deep fried dumplings filled with seasoned chicken, cabbage, and onions.",
+      "price": "$10.95",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Pot Stickers (8)",
+      "description": "Handmade pan-fried pork dumplings served with a chef's special sauce and homemade chili.",
+      "price": "$14.95",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Salt & Pepper Chicken Wings (6)",
+      "description": "Salt & pepper chicken wing flats wok-tossed with garlic and green onions.",
+      "price": "$13.95",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Spicy Honey & Sesame Chicken Wings (6)",
+      "description": "Chicken wing flats wok-tossed in spicy honey sauce, red chili peppers, and sesame seeds.",
+      "price": "$13.95",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Golden Fried Shrimps (6)",
+      "description": "Butterflied jumbo shrimp coated in seasoned breadcrumbs then fried to golden brown perfection.",
+      "price": "$13.95",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Fried Pork Wonton Crisps (10)",
+      "description": "Miniature wontons filled with a light spread of pork then fried to perfection.",
+      "price": "$7.95",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Imperial Soup",
+      "description": "Minced ingredients of shrimp, chicken, and krabmeat in a light egg flower chicken broth. Includes a bag of wonton crisps.",
+      "price": "$14.95",
+      "section": "Soup"
+    },
+    {
+      "name": "Imperial Noodle Soup",
+      "description": "Minced ingredients of shrimp, chicken, and krabmeat in a light egg flower chicken broth. Includes a bag of wonton crisps.",
+      "price": "$17.95",
+      "section": "Soup"
+    },
+    {
+      "name": "Hot & Sour Soup",
+      "description": "A blend of tofu, wood ear mushrooms, bamboo shoots, lily buds, and pork in a hot and sour egg flower chicken broth. Includes a bag of wonton crisps.",
+      "price": "$14.95",
+      "section": "Soup"
+    },
+    {
+      "name": "Hot & Sour Noodle Soup",
+      "description": "A blend of tofu, wood ear mushrooms, bamboo shoots, lily buds, and pork in a hot and sour egg flower chicken broth. Includes a bag of wonton crisps.",
+      "price": "$17.95",
+      "section": "Soup"
+    },
+    {
+      "name": "Wonton Soup",
+      "description": "A blend of pork wontons, chicken, beef, shrimp, mushrooms, Napa cabbage, and carrots in a savory chicken broth. Includes a bag of wonton crisps.",
+      "price": "$14.95",
+      "section": "Soup"
+    },
+    {
+      "name": "Wonton Noodle Soup",
+      "description": "A blend of pork wontons, chicken, beef, shrimp, mushrooms, Napa cabbage, and carrots in a savory chicken broth. Includes a bag of wonton crisps.",
+      "price": "$17.95",
+      "section": "Soup"
+    },
+    {
+      "name": "Sizzling Rice Soup",
+      "description": "A blend of chicken, beef, shrimp, mushroom, Napa cabbage, carrots, and snow peas in a savory chicken broth with sizzling rice on top. Includes a bag of wonton crisps.",
+      "price": "$14.95",
+      "section": "Soup"
+    },
+    {
+      "name": "Sizzling Rice Noodle Soup",
+      "description": "A blend of chicken, beef, shrimp, mushroom, Napa cabbage, carrots, and snow peas in a savory chicken broth with sizzling rice on top. Includes a bag of wonton crisps.",
+      "price": "$17.95",
+      "section": "Soup"
+    },
+    {
+      "name": "GF Egg Flower Soup",
+      "description": "A blend of carrots, Napa cabbage, peas, and tofu in a light egg flower chicken broth. Includes a bag of wonton crisps.",
+      "price": "$14.95",
+      "section": "Soup"
+    },
+    {
+      "name": "GF Egg Flower Noodle Soup",
+      "description": "A blend of carrots, Napa cabbage, peas, and tofu in a light egg flower chicken broth. Includes a bag of wonton crisps.",
+      "price": "$17.95",
+      "section": "Soup"
+    },
+    {
+      "name": "Black Pepper Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Black Pepper Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Cashew Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Cashew Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Chicken A La Mandarin",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Chicken A La Mandarin",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Chicken & Broccoli in Brown Sauce (Moo Goo)",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Chicken & Broccoli in Brown Sauce (Moo Goo)",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Chicken & Snow Peas",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Chicken & Snow Peas",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Chicken & Szechwan String Beans",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Chicken & Szechwan String Beans",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Chop Suey Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Chop Suey Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Hunan Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Hunan Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Ku Ting Crispy Chicken (General Tso's)",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Ku Ting Crispy Chicken (General Tso's)",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Kung Pao Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Kung Pao Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Ma La Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Ma La Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Moo Shi Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Moo Shi Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Pao Hu Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Pao Hu Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Spicy Honey & Sesame Chicken (Orange)",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Spicy Honey & Sesame Chicken (Orange)",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Sweet & Sour Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Sweet & Sour Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Szechwan Garlic Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Szechwan Garlic Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Tangerine Chicken",
+      "description": "",
+      "price": "$17.95",
+      "section": "Chicken - Lunch"
+    },
+    {
+      "name": "Tangerine Chicken",
+      "description": "",
+      "price": "$23.95",
+      "section": "Chicken - Dinner"
+    },
+    {
+      "name": "Cashew Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Cashew Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Chop Suey Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Chop Suey Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Imperial Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Imperial Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Ku Ting Crispy Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Ku Ting Crispy Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Kung Pao Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Kung Pao Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Ma La Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Ma La Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Moo Shi Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Moo Shi Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Pao Hu Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Pao Hu Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Shrimp & Snow Peas",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Shrimp & Snow Peas",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Shrimp & Szechwan String Beans",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Shrimp & Szechwan String Beans",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Spicy Honey & Sesame Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Spicy Honey & Sesame Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Sweet & Sour Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Sweet & Sour Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Szechwan Garlic Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Szechwan Garlic Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Tangerine Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Tangerine Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Walnut Shrimp",
+      "description": "",
+      "price": "$18.95",
+      "section": "Shrimp - Lunch"
+    },
+    {
+      "name": "Walnut Shrimp",
+      "description": "",
+      "price": "$25.95",
+      "section": "Shrimp - Dinner"
+    },
+    {
+      "name": "Chop Suey Pork",
+      "description": "",
+      "price": "$17.95",
+      "section": "Pork - Lunch"
+    },
+    {
+      "name": "Chop Suey Pork",
+      "description": "",
+      "price": "$23.95",
+      "section": "Pork - Dinner"
+    },
+    {
+      "name": "Mapo Tofu & Pork",
+      "description": "",
+      "price": "$17.95",
+      "section": "Pork - Lunch"
+    },
+    {
+      "name": "Mapo Tofu & Pork",
+      "description": "",
+      "price": "$23.95",
+      "section": "Pork - Dinner"
+    },
+    {
+      "name": "Moo Shi Pork",
+      "description": "",
+      "price": "$17.95",
+      "section": "Pork - Lunch"
+    },
+    {
+      "name": "Moo Shi Pork",
+      "description": "",
+      "price": "$23.95",
+      "section": "Pork - Dinner"
+    },
+    {
+      "name": "Pao Hu Pork",
+      "description": "",
+      "price": "$17.95",
+      "section": "Pork - Lunch"
+    },
+    {
+      "name": "Pao Hu Pork",
+      "description": "",
+      "price": "$23.95",
+      "section": "Pork - Dinner"
+    },
+    {
+      "name": "Pork & Szechwan String Beans",
+      "description": "",
+      "price": "$17.95",
+      "section": "Pork - Lunch"
+    },
+    {
+      "name": "Pork & Szechwan String Beans",
+      "description": "",
+      "price": "$23.95",
+      "section": "Pork - Dinner"
+    },
+    {
+      "name": "Pork & Szechwan Garlic Eggplant",
+      "description": "",
+      "price": "$17.95",
+      "section": "Pork - Lunch"
+    },
+    {
+      "name": "Pork & Szechwan Garlic Eggplant",
+      "description": "",
+      "price": "$23.95",
+      "section": "Pork - Dinner"
+    },
+    {
+      "name": "Shanghai Crispy Pork",
+      "description": "",
+      "price": "$17.95",
+      "section": "Pork - Lunch"
+    },
+    {
+      "name": "Shanghai Crispy Pork",
+      "description": "",
+      "price": "$23.95",
+      "section": "Pork - Dinner"
+    },
+    {
+      "name": "Sweet & Sour Pork",
+      "description": "",
+      "price": "$17.95",
+      "section": "Pork - Lunch"
+    },
+    {
+      "name": "Sweet & Sour Pork",
+      "description": "",
+      "price": "$23.95",
+      "section": "Pork - Dinner"
+    },
+    {
+      "name": "Szechwan Garlic Pork",
+      "description": "",
+      "price": "$17.95",
+      "section": "Pork - Lunch"
+    },
+    {
+      "name": "Szechwan Garlic Pork",
+      "description": "",
+      "price": "$23.95",
+      "section": "Pork - Dinner"
+    },
+    {
+      "name": "Hunan Fish Fillet",
+      "description": "",
+      "price": "$18.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Hunan Fish Fillet",
+      "description": "",
+      "price": "$25.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Imperial Fish Fillet",
+      "description": "",
+      "price": "$18.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Imperial Fish Fillet",
+      "description": "",
+      "price": "$25.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Ma La Fish Fillet",
+      "description": "",
+      "price": "$18.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Ma La Fish Fillet",
+      "description": "",
+      "price": "$25.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Sweet & Sour Fish Fillet",
+      "description": "",
+      "price": "$18.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Sweet & Sour Fish Fillet",
+      "description": "",
+      "price": "$25.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Szechwan Garlic Fish Fillet",
+      "description": "",
+      "price": "$18.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Szechwan Garlic Fish Fillet",
+      "description": "",
+      "price": "$25.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Black Pepper Scallops",
+      "description": "",
+      "price": "$20.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Black Pepper Scallops",
+      "description": "",
+      "price": "$27.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Chop Suey Seafood (Shrimp, Krabmeat & Scallops)",
+      "description": "",
+      "price": "$20.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Chop Suey Seafood (Shrimp, Krabmeat & Scallops)",
+      "description": "",
+      "price": "$27.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Hunan Scallops",
+      "description": "",
+      "price": "$20.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Hunan Scallops",
+      "description": "",
+      "price": "$27.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Imperial Scallops",
+      "description": "",
+      "price": "$20.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Imperial Scallops",
+      "description": "",
+      "price": "$27.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Ma La Scallops",
+      "description": "",
+      "price": "$20.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Ma La Scallops",
+      "description": "",
+      "price": "$27.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Szechwan Garlic Scallops",
+      "description": "",
+      "price": "$20.95",
+      "section": "Fish & Scallops - Lunch"
+    },
+    {
+      "name": "Szechwan Garlic Scallops",
+      "description": "",
+      "price": "$27.95",
+      "section": "Fish & Scallops - Dinner"
+    },
+    {
+      "name": "Beef A La Mandarin",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Beef A La Mandarin",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Beef & Broccoli in Brown Sauce",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Beef & Broccoli in Brown Sauce",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Beef & Szechwan String Beans",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Beef & Szechwan String Beans",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Black Pepper Beef",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Black Pepper Beef",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Chop Suey Beef",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Chop Suey Beef",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Hunan Beef",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Hunan Beef",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Kung Pao Beef",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Kung Pao Beef",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Ma La Beef",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Ma La Beef",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Mongolian Beef",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Mongolian Beef",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Moo Shi Beef",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Moo Shi Beef",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Szechwan Garlic Beef",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Szechwan Garlic Beef",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Tangerine Beef",
+      "description": "",
+      "price": "$18.95",
+      "section": "Beef - Lunch"
+    },
+    {
+      "name": "Tangerine Beef",
+      "description": "",
+      "price": "$24.95",
+      "section": "Beef - Dinner"
+    },
+    {
+      "name": "Baby Bok Choy with Mushrooms",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Baby Bok Choy with Mushrooms",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Chop Suey Tofu",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Chop Suey Tofu",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Chop Suey Vegetable",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Chop Suey Vegetable",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Hunan Tofu",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Hunan Tofu",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Kung Pao Tofu",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Kung Pao Tofu",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Ma La Tofu",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Ma La Tofu",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Mapo Tofu",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Mapo Tofu",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Moo Shi Tofu",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Moo Shi Tofu",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Sweet & Sour Tofu",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Sweet & Sour Tofu",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Szechwan String Beans",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Szechwan String Beans",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Szechwan String Beans & Tofu",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Szechwan String Beans & Tofu",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Szechwan Garlic Eggplant",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Szechwan Garlic Eggplant",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Szechwan Garlic Eggplant & Tofu",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Szechwan Garlic Eggplant & Tofu",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Tofu in Brown Sauce",
+      "description": "",
+      "price": "$16.95",
+      "section": "Vegetables & Tofu - Lunch"
+    },
+    {
+      "name": "Tofu in Brown Sauce",
+      "description": "",
+      "price": "$19.95",
+      "section": "Vegetables & Tofu - Dinner"
+    },
+    {
+      "name": "Chop Suey House",
+      "description": "Shrimp, beef, and chicken wok-tossed with fresh chunks of cabbage, snow peas, mushrooms, bok choy, straw mushrooms, broccoli, baby corn, and squash in a special wine sauce.",
+      "price": "$18.95",
+      "section": "House Specialties - Lunch"
+    },
+    {
+      "name": "Chop Suey House",
+      "description": "Shrimp, beef, and chicken wok-tossed with fresh chunks of cabbage, snow peas, mushrooms, bok choy, straw mushrooms, broccoli, baby corn, and squash in a special wine sauce.",
+      "price": "$25.95",
+      "section": "House Specialties - Dinner"
+    },
+    {
+      "name": "Imperial Double Happiness",
+      "description": "Select scallops and shrimp wok-tossed with broccoli, mushrooms, snow peas, and carrots in a garlic white sauce.",
+      "price": "$20.95",
+      "section": "House Specialties - Lunch"
+    },
+    {
+      "name": "Imperial Double Happiness",
+      "description": "Select scallops and shrimp wok-tossed with broccoli, mushrooms, snow peas, and carrots in a garlic white sauce.",
+      "price": "$27.95",
+      "section": "House Specialties - Dinner"
+    },
+    {
+      "name": "Kung Pao Three Flavor",
+      "description": "A combination of chicken, shrimp, and scallops wok-tossed with mushrooms, squash, peanuts, and red chili peppers in a mild kung pao sauce.",
+      "price": "$19.95",
+      "section": "House Specialties - Lunch"
+    },
+    {
+      "name": "Kung Pao Three Flavor",
+      "description": "A combination of chicken, shrimp, and scallops wok-tossed with mushrooms, squash, peanuts, and red chili peppers in a mild kung pao sauce.",
+      "price": "$27.95",
+      "section": "House Specialties - Dinner"
+    },
+    {
+      "name": "Ma La Three Flavor",
+      "description": "Shrimp, beef, and chicken wok-tossed with mushrooms, snow peas, straw mushrooms, baby corn, and carrots in a mild numbing ma la sauce.",
+      "price": "$18.95",
+      "section": "House Specialties - Lunch"
+    },
+    {
+      "name": "Ma La Three Flavor",
+      "description": "Shrimp, beef, and chicken wok-tossed with mushrooms, snow peas, straw mushrooms, baby corn, and carrots in a mild numbing ma la sauce.",
+      "price": "$25.95",
+      "section": "House Specialties - Dinner"
+    },
+    {
+      "name": "Pao Hu Pork",
+      "description": "Shredded pork wok-tossed with crushed peanuts, wonton crisps, red chili peppers, and green onions in a sweet pao hu sauce. Only one price is shown for this item on the menu.",
+      "price": "$17.95",
+      "section": "House Specialties"
+    },
+    {
+      "name": "Fried Rice (choice of chicken, pork, beef, tofu, or vegetable)",
+      "description": "Wok-tossed fried rice with egg, onions, peas, and carrots. Shrimp or house special add $1.00. Seafood add $3.00. Extra egg omelet add $3.00.",
+      "price": "$15.95",
+      "section": "Fried Rice & Lo Mein - Small"
+    },
+    {
+      "name": "Fried Rice (choice of chicken, pork, beef, tofu, or vegetable)",
+      "description": "Wok-tossed fried rice with egg, onions, peas, and carrots. Shrimp or house special add $1.00. Seafood add $3.00. Extra egg omelet add $3.00.",
+      "price": "$18.95",
+      "section": "Fried Rice & Lo Mein - Large"
+    },
+    {
+      "name": "Lo Mein Soft Noodles (choice of chicken, pork, beef, tofu, or vegetable)",
+      "description": "Wok-tossed soft noodle dish with bean sprouts, cabbage, onions, and carrots. Shrimp or house special add $1.00. Seafood add $3.00.",
+      "price": "$15.95",
+      "section": "Fried Rice & Lo Mein - Small"
+    },
+    {
+      "name": "Lo Mein Soft Noodles (choice of chicken, pork, beef, tofu, or vegetable)",
+      "description": "Wok-tossed soft noodle dish with bean sprouts, cabbage, onions, and carrots. Shrimp or house special add $1.00. Seafood add $3.00.",
+      "price": "$18.95",
+      "section": "Fried Rice & Lo Mein - Large"
+    },
+    {
+      "name": "Steamed Rice (Small, 13 oz)",
+      "description": "",
+      "price": "$3.00",
+      "section": "Other"
+    },
+    {
+      "name": "Steamed Rice (Large, 26 oz)",
+      "description": "",
+      "price": "$4.00",
+      "section": "Other"
+    },
+    {
+      "name": "Brown Rice (Small, 13 oz)",
+      "description": "",
+      "price": "$3.00",
+      "section": "Other"
+    },
+    {
+      "name": "Brown Rice (Large, 26 oz)",
+      "description": "",
+      "price": "$4.00",
+      "section": "Other"
+    },
+    {
+      "name": "Wonton Crisps",
+      "description": "",
+      "price": "$2.50",
+      "section": "Other"
+    },
+    {
+      "name": "Beverage",
+      "description": "",
+      "price": "$3.95",
+      "section": "Other"
+    },
+    {
+      "name": "Sweet & Sour Sauce (8 oz)",
+      "description": "",
+      "price": "$4.00",
+      "section": "Other"
+    },
+    {
+      "name": "Hot Mustard Sauce (8 oz)",
+      "description": "",
+      "price": "$4.00",
+      "section": "Other"
+    },
+    {
+      "name": "Chili & Garlic Sauce (8 oz)",
+      "description": "",
+      "price": "$8.00",
+      "section": "Other"
+    }
+  ]
+}

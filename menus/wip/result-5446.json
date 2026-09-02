@@ -1,0 +1,479 @@
+{
+  "restaurantId": "5446",
+  "name": "China Panda Garden",
+  "sourceUrl": "https://www.doordash.com/store/china-panda-garden-el-cajon-47385376/",
+  "confidence": "medium",
+  "crossCheckedAgainst": "",
+  "blocked": "",
+  "notes": "No website on record. Own ordering platform (chinapandagarden.netwaiter.com, address-confirmed 1788 E Main St, El Cajon) has no menu published for this location at all - checked live in Chrome, the store page shows Delivery: No and no Menu tab/link, unlike neighboring NetWaiter listings that do show one; this is a real absence, not a closed-store gate (site loaded fine, just has no ordering menu for this restaurant). Used the DoorDash marketplace page instead (address-matched via its own JSON-LD, 1788 E Main St), reading the schema.org Menu/MenuItem JSON-LD block server-side (91 items across 11 sections incl. a duplicate Most Ordered section, deduped to 78 unique dishes). Markup test on DoorDash: only 1 of 78 prices has cents at all (the rest are whole dollars), so the standard divisor test is uninformative here (round-dollar prices break the test per prior findings) - recorded as medium rather than high for that reason. Cross-checked against allmenus.com (tier 5, Grubhub family, independent of DoorDash): allmenus prices are substantially lower (.00-5.45 for entrees split across lunch/dinner tiers) than DoorDash's (9-2 for the same category), a persistent gap rather than a single clean ratio. Allmenus carries no visible per-page date; given the repeated pattern in this corpus of allmenus pages running years stale, and that DoorDash's own pricing is internally consistent with no markup signature, DoorDash was used as the primary source and allmenus was NOT used as a corroborating cross-check (the disagreement means they do not agree, so the cross-check field is left empty per the rule that it only records sources that agree on price). zmenu.com 403'd.",
+  "dishes": [
+    {
+      "name": "Fried rice (cup)",
+      "description": "Stir-fried rice with peas, carrots, and egg.",
+      "price": "$5.00",
+      "section": "Side and sauces"
+    },
+    {
+      "name": "Steam rice (cup)",
+      "description": "Steamed white rice served in a cup, a staple accompaniment in Chinese cuisine.",
+      "price": "$4.00",
+      "section": "Side and sauces"
+    },
+    {
+      "name": "Cup of sweet and sour sauce 8oz",
+      "description": "Sweet and sour sauce, typically featuring a tangy blend of sweetness and sourness, perfect for dipping or drizzling.",
+      "price": "$3.50",
+      "section": "Side and sauces"
+    },
+    {
+      "name": "Hot mustard",
+      "description": "Spicy, tangy mustard sauce, commonly used as a condiment or dipping sauce in Chinese cuisine.",
+      "price": "$1.00",
+      "section": "Side and sauces"
+    },
+    {
+      "name": "Small sweet and sour 2oz",
+      "description": "Sweet and sour sauce, typically combining tangy and sweet flavors, served as a small 2 oz side.",
+      "price": "$1.00",
+      "section": "Side and sauces"
+    },
+    {
+      "name": "Chile paste",
+      "description": "Chili paste typically includes chili peppers and five spice, offering a spicy and aromatic addition to your meal.",
+      "price": "$1.00",
+      "section": "Side and sauces"
+    },
+    {
+      "name": "Mandarin Noodles",
+      "description": "Shrimp, chicken and beef with cabbage carrots, green onions, bamboo and beansprout",
+      "price": "$21.00",
+      "section": "Soft Noodles"
+    },
+    {
+      "name": "Chicken Lo Mein",
+      "description": "Chicken with cabbage, carrots, green onions, bamboo shoots, and bean sprouts",
+      "price": "$20.00",
+      "section": "Soft Noodles"
+    },
+    {
+      "name": "Beef Lo Mein",
+      "description": "Beef with cabbage, green onions, bamboo shoots, carrots and bean sprouts",
+      "price": "$20.00",
+      "section": "Soft Noodles"
+    },
+    {
+      "name": "Vegetable Lo Mein",
+      "description": "Broccoli, snow peas, carrots, mushroom, cabbage, bean sprout, bamboo, green onions,Napa cabbage",
+      "price": "$19.00",
+      "section": "Soft Noodles"
+    },
+    {
+      "name": "Shrimp Lo Mein",
+      "description": "Shrimp with cabbage, carrots, green onions, bamboo shoots, and bean sprouts",
+      "price": "$21.00",
+      "section": "Soft Noodles"
+    },
+    {
+      "name": "BBQ Pork Lo Mein",
+      "description": "Barbecue pork with cabbage, carrots, green onions, bamboo shoots, and bean sprouts",
+      "price": "$20.00",
+      "section": "Soft Noodles"
+    },
+    {
+      "name": "BBQ Pork Fried Rice",
+      "description": "Barbecue pork with peas, carrots, onions, eggs and soy sauce",
+      "price": "$19.00",
+      "section": "Rice Dishes"
+    },
+    {
+      "name": "Chicken Fried Rice",
+      "description": "Chicken with peas, carrots, onions, eggs and soy sauce",
+      "price": "$19.00",
+      "section": "Rice Dishes"
+    },
+    {
+      "name": "Mandarin Fried Rice",
+      "description": "Shrimp, chicken and beef with peas and carrots, eggs and onions and soy sauce",
+      "price": "$20.00",
+      "section": "Rice Dishes"
+    },
+    {
+      "name": "Shrimp Fried Rice",
+      "description": "Shrimp with peas, carrots, onions, eggs, and soy sauce",
+      "price": "$20.00",
+      "section": "Rice Dishes"
+    },
+    {
+      "name": "Beef Fried Rice",
+      "description": "Beef with peas and carrots, onions, eggs, and soy sauce",
+      "price": "$19.00",
+      "section": "Rice Dishes"
+    },
+    {
+      "name": "Vegetable Fried Rice",
+      "description": "Broccoli, snow peas, Napa cabbage, mushrooms, peas and carrots, eggs, onions and soy sauce",
+      "price": "$18.00",
+      "section": "Rice Dishes"
+    },
+    {
+      "name": "Vegetarian Delight",
+      "description": "Stirfry broccoli, snowpeas, mushrooms, bamboo shoots, carrots, Napa, waterchestnuts, and a brown sauce",
+      "price": "$19.00",
+      "section": "Vegetables Dishes"
+    },
+    {
+      "name": "Sautéed Broccoli",
+      "description": "Broccoli and bamboo shoots with a brown sauce",
+      "price": "$19.00",
+      "section": "Vegetables Dishes"
+    },
+    {
+      "name": "Mushroom Beancurd",
+      "description": "Tofu fried with mushrooms, snow peas, carrots, bamboo shoots, waterchestnuts in a brown sauce",
+      "price": "$19.00",
+      "section": "Vegetables Dishes"
+    },
+    {
+      "name": "Curry Vegetables*",
+      "description": "Yellow curry with broccoli, snow,peas, carrots, bamboo shoots, waterchestnuts, mushrooms, Napa cabbage spicy",
+      "price": "$19.00",
+      "section": "Vegetables Dishes"
+    },
+    {
+      "name": "Sautéed Snowpeas",
+      "description": "Snow peas, bamboo shoots and waterchestnuts in a white sauce",
+      "price": "$19.00",
+      "section": "Vegetables Dishes"
+    },
+    {
+      "name": "Broccoli Beef",
+      "description": "Beef cook with broccoli and bamboo shoots brown sauce",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Crispy Beef*",
+      "description": "Beef breaded and fried with celery and carrots, in a sweet and spicy brown sauce",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Mongolian Beef",
+      "description": "Beef stirfry with green onions and bamboo shoots",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Green Pepper Beef",
+      "description": "Beef cook with bell peppers and onions with a brown sauce",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Beef Chop Suey",
+      "description": "Beef, stirfry with broccoli, snowpeas, carrots, bamboo shoots, water chestnuts, mushrooms, bean sprouts and cabbage in a brown sauce",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Kung Pao Beef*",
+      "description": "Beef with bamboo shoots, green onions and onions, peanuts, dry chile spicy with a touch of sweetness",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Beef with Snowpeas",
+      "description": "Beef with snow, peas, bamboo shoots, and water chestnuts in a brown sauce",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Beef Szechuan *",
+      "description": "Beef with bell peppers, carrots, onions, bamboo shoots, waterchestnuts,mushrooms with a sweet and spicy brown sauce",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Orange Beef*",
+      "description": "Beef, breaded and fried with onions, green onions, and orange peels in a Sweet and spicy brown sauce",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Curry Beef*",
+      "description": "Beef cook with bell peppers, carrots, onions, with yellow curry sauce, spicy",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Sesame Beef*",
+      "description": "Beef, breaded and fried cook with a sweet spicy sauce, topped with sesame seeds",
+      "price": "$20.00",
+      "section": "Beef Dishes"
+    },
+    {
+      "name": "Sweet and Sour Pork",
+      "description": "Pork, breaded and fried with bell peppers, carrots, onions, pineapples with a cup of sweet-and-sour sauce",
+      "price": "$20.00",
+      "section": "Pork Dishes"
+    },
+    {
+      "name": "Twice Cooked Pork",
+      "description": "Strips of pork cook with bell peppers, carrots, onions, green onions, bamboo, cabbage with a sweet and spicy brown sauce",
+      "price": "$20.00",
+      "section": "Pork Dishes"
+    },
+    {
+      "name": "Green Pepper Pork",
+      "description": "Strips of pork cook with bell peppers and onions in a brown sauce",
+      "price": "$20.00",
+      "section": "Pork Dishes"
+    },
+    {
+      "name": "Szechuan Pork*",
+      "description": "Strips of pork cook with bell peppers, carrots, onions, bamboo waterchestnuts ,mushrooms, green onions in the spicy sweet brown sauce",
+      "price": "$20.00",
+      "section": "Pork Dishes"
+    },
+    {
+      "name": "Pork Chop Suey",
+      "description": "Strips of pork with broccoli, snowpeas, carrots, bean sprouts, mushrooms, cabbage, bamboo, waterchestnuts, and a brown sauce",
+      "price": "$20.00",
+      "section": "Pork Dishes"
+    },
+    {
+      "name": "Orange Chicken *",
+      "description": "Chicken breast meat , breaded and fried cooked with green onions, onions, orange peels, and a spicy tangy sauce brown color",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Sweet & Sour Chicken",
+      "description": "Chicken breast meat  breaded and fried cook with bell peppers, carrots, onions, pineapples, and sweet-and-sour sauce",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Cashew Chicken",
+      "description": "Chicken stirfry with bell peppers, mushrooms, water, chestnuts, and a brown, sweet savory sauce",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Kung Pao Chicken*",
+      "description": "Chicken stirfry with onions, green onions, bamboo shoots, peanuts, and spicy brown sauce",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Sesame Chicken *",
+      "description": "Chicken breast meat , breaded and fried cook with a brown, sweet savory sauce, topped with sesame seeds",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Mushroom Chicken",
+      "description": "Mushroom with chicken served alongside rice options: fried rice, steamed rice, or without rice. Simple Chinese poultry dish.",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Broccoli Chicken",
+      "description": "Chicken stirfry with broccoli and carrots in a white sauce",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Almond Chicken",
+      "description": "Chicken stirfry with peas, carrots, mushrooms bamboo shoots in a white sauce",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "General Tao’s Chicken*",
+      "description": "Chicken breaded and fried cook with bell peppers, carrots and onions with the sweet savory sauce spicy",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Szechuan Chicken *",
+      "description": "Chicken cook with bell peppers, carrots, onions, bamboo shoots waterchestnut,mushrooms in a spicy tangy brown sauce",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Lemon Chicken",
+      "description": "Chicken breast meat breaded  and fried serve with a cup of lemon sauce",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Snowpea Chicken",
+      "description": "Chicken stirfry with snow, peas, bamboo shoots, waterchestnuts,  in a white sauce",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Curry Chicken *",
+      "description": "Chicken cooked with bell peppers carrots, onions with yellow curry spicy",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Chicken Chop Suey",
+      "description": "Chicken stirfry with broccoli, snow, peas, carrots, bamboo, water, chestnuts, cabbage beansprouts and mushrooms in a white sauce",
+      "price": "$20.00",
+      "section": "Poultry"
+    },
+    {
+      "name": "Shrimp chop suey",
+      "description": "Shrimp stirfry with broccoli, snow, peas, carrots, bamboo shoots, water, chestnuts, mushrooms, Bean sprouts cabbage, and in white sauce",
+      "price": "$21.00",
+      "section": "Shrimp Dishes"
+    },
+    {
+      "name": "Salt & Pepper Shrimp*",
+      "description": "Shrimp, breaded, and fried cook with Green onions, garlic, and chili peppers",
+      "price": "$22.00",
+      "section": "Shrimp Dishes"
+    },
+    {
+      "name": "Shrimp With Snowpeas",
+      "description": "Shrimp with snow, peas, bamboo shoots, and water chestnuts white sauce",
+      "price": "$21.00",
+      "section": "Shrimp Dishes"
+    },
+    {
+      "name": "Szechuan Shrimp*",
+      "description": "Bell pepper, carrots,onion,bamboo,waterchestnuts and cook with a spicy and tangy brown sauce",
+      "price": "$21.00",
+      "section": "Shrimp Dishes"
+    },
+    {
+      "name": "Cashew Shrimp",
+      "description": "Shrimp cook with bell peppers, mushrooms, water chestnuts in a brown sweet and savory sauce",
+      "price": "$21.00",
+      "section": "Shrimp Dishes"
+    },
+    {
+      "name": "Sweet &Sour Shrimp",
+      "description": "Shrimp, breaded and fried cook with bell peppers, carrots, onions, pineapples with sweet-and-sour sauce",
+      "price": "$21.00",
+      "section": "Shrimp Dishes"
+    },
+    {
+      "name": "Kung Pao Shrimp*",
+      "description": "Shrimp cook with onions, green onions, bamboo shoots, and peanuts spicy",
+      "price": "$22.00",
+      "section": "Shrimp Dishes"
+    },
+    {
+      "name": "Shrimp In Lobster Sauce",
+      "description": "Shrimp stirfry with peas, carrots, mushrooms, bamboo shoots, waterchestnuts, with a white sauce, and egg whites",
+      "price": "$21.00",
+      "section": "Shrimp Dishes"
+    },
+    {
+      "name": "Curry Shrimp*",
+      "description": "Shrimp cook with bell peppers, carrots, onions, with yellow curry spicy",
+      "price": "$21.00",
+      "section": "Shrimp Dishes"
+    },
+    {
+      "name": "Chef Shrimp",
+      "description": "Shrimp stirfry with broccoli, snow peas, mushrooms, carrots, in a white sauce",
+      "price": "$21.00",
+      "section": "Shrimp Dishes"
+    },
+    {
+      "name": "Salted Pepper Chicken Wings (12)",
+      "description": "Spicy. Crispy fried chicken wings & sauteed with onions, garlic, and drychili peppers",
+      "price": "$26.00",
+      "section": "House Specialties"
+    },
+    {
+      "name": "Kung Pao Triple",
+      "description": "Spicy. Shrimp, chicken, beef, with Green onions, onions, bamboo shoots and peanuts, cooked in spicy chili sauce.",
+      "price": "$21.00",
+      "section": "House Specialties"
+    },
+    {
+      "name": "Sauteed Shrimp & Chicken",
+      "description": "Shrimp & chicken sauteed with Bell peppers, mushrooms, carrots, snow,peas, onions, bamboo shoots, water chestnuts,  in a white sauce",
+      "price": "$21.00",
+      "section": "House Specialties"
+    },
+    {
+      "name": "Sweet & Sour Three Flavor",
+      "description": "Shrimp, chicken and pork with bell peppers, carrots, onions, and pineapples with sweet-and-sour sauce",
+      "price": "$21.00",
+      "section": "House Specialties"
+    },
+    {
+      "name": "Chow Sam",
+      "description": "A combination of shrimp, beef, chicken with Broccoli, mushrooms, carrots, bamboo shoot ,water chestnuts, and in brown sauce.",
+      "price": "$21.00",
+      "section": "House Specialties"
+    },
+    {
+      "name": "Three Flavored Meat W/ Scallion",
+      "description": "Chicken, beef & shrimp sauteed with green onions and bamboo shoots",
+      "price": "$21.00",
+      "section": "House Specialties"
+    },
+    {
+      "name": "Two Flavored Meat W/ Scallion",
+      "description": "Chicken and beef with green onions and bamboo shoots",
+      "price": "$21.00",
+      "section": "House Specialties"
+    },
+    {
+      "name": "Happy Family",
+      "description": "A Delightful combination of white meat Chicken, shrimp, beef, B.B.Q. Pork & Chinese vegetables. (Snow pea, water chestnuts, bamboo, mushroom sauteed in brown sauce.)",
+      "price": "$22.00",
+      "section": "House Specialties"
+    },
+    {
+      "name": "Pot Stickers (8)",
+      "description": "Potstickers are pan fried, and filled with pork",
+      "price": "$16.00",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Crab Rangoon (6) (Imitation Crab + Cream Cheese)",
+      "description": "Crispy wonton wrappers filled with imitation crab and smooth cream cheese. Six pieces per serving.",
+      "price": "$13.00",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Barbecued Sliced Pork",
+      "description": "Half pound of barbecue pork cooked with seasoning, and topped with sesame seeds",
+      "price": "$17.00",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Fried Shrimps (4)",
+      "description": "Crispy golden shrimp in a light batter, offering four pieces accompanied by a savory dipping sauce.",
+      "price": "$15.00",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Fried Stuffed Wonton (10) (Pork)",
+      "description": "Deep-fried wontons filled with seasoned pork, typically accompanied by a sweet and sour sauce.",
+      "price": "$13.00",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Egg Roll (2)",
+      "description": "Crispy rolls filled with vegetables and seasoned ground beef, served in pairs.",
+      "price": "$4.00",
+      "section": "Appetizers"
+    },
+    {
+      "name": "Fried Wonton (10) (Big Chips)",
+      "description": "Big fried chips with no filling",
+      "price": "$7.00",
+      "section": "Appetizers"
+    }
+  ]
+}

@@ -1,0 +1,547 @@
+[
+  {
+    "restaurantId": "3105",
+    "name": "Cancun Mexican and Seafood",
+    "sourceUrl": "https://www.doordash.com/store/cancun-mexican-&-seafood-21943/",
+    "confidence": "medium",
+    "notes": "No first-party website found (cancunmex.top is a barred .top farm domain, not used). Captured from DoorDash marketplace JSON-LD (schema.org Menu), address confirmed exact match to work-list address (1766 North Coast Highway 101, Encinitas). Markup divisor test run on all 91 raw items across 1.04/1.10/1.15/1.17/1.20/1.25/1.30 - no divisor cleared even 30% clean, so prices read as real POS pricing, not a delivery markup. allmenus.com has a listing for this restaurant but prices are 2x+ lower on overlapping items (e.g. Carne Asada Burrito $6.99 allmenus vs $16.88 here) - per playbook a 2x+ gap is staleness not markup, so allmenus was treated as a stale old page and NOT used to cross-check. Categories reached: Tortas, Tacos, Combination Plates, Shrimp Combination Plates, Fish Combination Plates, Seafood Soups, Soups, Burritos, Crispy Tacos, Beef Rolled Tacos, Salads, Taco Salad, Nachos and Fries, Tostadas, Quesadillas, Enchiladas a la carte (only 1 item - may be incomplete for this one section), Side Orders (partial, only 3 items surfaced via the 'Most Ordered' carousel). Categories NOT reached / not confirmed priced: Dessert, Drinks, a separate Breakfast Plates section (a Breakfast Burrito exists under Burritos). These are adjuncts to a Mexican seafood menu whose core sections (tacos, burritos, combination plates, seafood plates, quesadillas, tortas, tostadas, soups, salads) are all present and priced, so treated as complete rather than partial.",
+    "dishes": [
+      {
+        "name": "Beans 8 oz.",
+        "description": "",
+        "price": "$4.99",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Chips and 8oz. salsa",
+        "description": "",
+        "price": "$8.74",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Rice 8oz.",
+        "description": "",
+        "price": "$4.99",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Chicken Asado Torta",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carne Asada Torta",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carnitas Torta (pork)",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Shredded Chicken Torta",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Adobada Torta (pork)",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Shredded Beef Torta",
+        "description": "",
+        "price": "$14.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Grilled Fish Taco",
+        "description": "",
+        "price": "$8.44",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Taco",
+        "description": "",
+        "price": "$8.44",
+        "section": "Tacos"
+      },
+      {
+        "name": "Breaded Fish Taco",
+        "description": "",
+        "price": "$8.44",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carnitas Taco",
+        "description": "",
+        "price": "$8.44",
+        "section": "Tacos"
+      },
+      {
+        "name": "Chicken Asado Taco",
+        "description": "",
+        "price": "$8.44",
+        "section": "Tacos"
+      },
+      {
+        "name": "Adobada Taco (pork)",
+        "description": "",
+        "price": "$8.44",
+        "section": "Tacos"
+      },
+      {
+        "name": "#1 Beef Taco & Cheese Enchilada",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#11 Chile Verde (Pork)",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#6 Chimichanga",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#4 Carne Asada (Angus)",
+        "description": "",
+        "price": "$23.74",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#5 Bistec Ranchero (Angus)",
+        "description": "",
+        "price": "$23.74",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#3 Two Cheese Enchiladas",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#14 Chicken Fajitas",
+        "description": "",
+        "price": "$21.24",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#2 Chile Relleno & Cheese Enchilada",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#12 Chicken Cilantro",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#13 Chicken Monterrey",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#10 Adobada (Pork)",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#9 Carnitas (Pork)",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#7 Machaca",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#8 Chorizo",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "#15 Camarones al Ajo",
+        "description": "",
+        "price": "$24.99",
+        "section": "Shrimp Combination Plates"
+      },
+      {
+        "name": "#17 Camarones Empanizados",
+        "description": "",
+        "price": "$24.99",
+        "section": "Shrimp Combination Plates"
+      },
+      {
+        "name": "#16 Camarones a la Diabla",
+        "description": "",
+        "price": "$24.99",
+        "section": "Shrimp Combination Plates"
+      },
+      {
+        "name": "#19 Camarones Fajitas",
+        "description": "",
+        "price": "$24.99",
+        "section": "Shrimp Combination Plates"
+      },
+      {
+        "name": "#22 Filete Grilled",
+        "description": "",
+        "price": "$24.99",
+        "section": "Fish Combination Plates"
+      },
+      {
+        "name": "#23 Mojarra Tilapia",
+        "description": "",
+        "price": "$24.99",
+        "section": "Fish Combination Plates"
+      },
+      {
+        "name": "#21 Filete Empanizado",
+        "description": "",
+        "price": "$24.99",
+        "section": "Fish Combination Plates"
+      },
+      {
+        "name": "#26.    7 Mares",
+        "description": "",
+        "price": "$31.25",
+        "section": "Seafood Soups"
+      },
+      {
+        "name": "Mariscada",
+        "description": "",
+        "price": "$31.25",
+        "section": "Seafood Soups"
+      },
+      {
+        "name": "#27 Shrimp Soup",
+        "description": "",
+        "price": "$23.74",
+        "section": "Seafood Soups"
+      },
+      {
+        "name": "#28 Fish soup",
+        "description": "",
+        "price": "$23.74",
+        "section": "Seafood Soups"
+      },
+      {
+        "name": "Ceviche Tostada Shrimp",
+        "description": "",
+        "price": "$11.24",
+        "section": "Seafood Soups"
+      },
+      {
+        "name": "Chicken Soup",
+        "description": "",
+        "price": "$18.12",
+        "section": "Soups"
+      },
+      {
+        "name": "Beef soup",
+        "description": "",
+        "price": "$18.60",
+        "section": "Soups"
+      },
+      {
+        "name": "Surf & Turf Burrito",
+        "description": "",
+        "price": "$19.36",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chicken Asado Burrito",
+        "description": "",
+        "price": "$15.63",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "",
+        "price": "$16.88",
+        "section": "Burritos"
+      },
+      {
+        "name": "Grilled Fish Burrito",
+        "description": "",
+        "price": "$15.63",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carne Asada Burrito",
+        "description": "",
+        "price": "$16.88",
+        "section": "Burritos"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Breaded Fish Burrito",
+        "description": "",
+        "price": "$15.63",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bean & Cheese Burrito",
+        "description": "",
+        "price": "$9.06",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "",
+        "price": "$17.49",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "",
+        "price": "$15.63",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "",
+        "price": "$15.63",
+        "section": "Burritos"
+      },
+      {
+        "name": "Machaca  Burrito",
+        "description": "",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Adobada Burrito",
+        "description": "",
+        "price": "$15.63",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bean and Rice Burrito",
+        "description": "",
+        "price": "$8.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shredded Chicken Burrito",
+        "description": "",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shredded Beef Burrito",
+        "description": "",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chorizo Burrito",
+        "description": "",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Veggie Burrito",
+        "description": "",
+        "price": "$11.86",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shredded Beef Taco",
+        "description": "",
+        "price": "$6.81",
+        "section": "Crispy Tacos"
+      },
+      {
+        "name": "Shredded Chicken Taco",
+        "description": "",
+        "price": "$6.81",
+        "section": "Crispy Tacos"
+      },
+      {
+        "name": "5 Rolled Tacos",
+        "description": "",
+        "price": "$11.50",
+        "section": "Beef Rolled Tacos"
+      },
+      {
+        "name": "3 Rolled Tacos",
+        "description": "",
+        "price": "$9.00",
+        "section": "Beef Rolled Tacos"
+      },
+      {
+        "name": "Grilled Fish Salad",
+        "description": "",
+        "price": "$17.49",
+        "section": "Salads"
+      },
+      {
+        "name": "Chicken Asado Salad",
+        "description": "",
+        "price": "$17.49",
+        "section": "Salads"
+      },
+      {
+        "name": "Shredded Chicken Taco Salad",
+        "description": "",
+        "price": "$17.49",
+        "section": "Taco Salad"
+      },
+      {
+        "name": "Shredded Beef Taco Salad",
+        "description": "",
+        "price": "$17.49",
+        "section": "Taco Salad"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$18.74",
+        "section": "Nachos and Fries"
+      },
+      {
+        "name": "Super Nachos",
+        "description": "",
+        "price": "$18.74",
+        "section": "Nachos and Fries"
+      },
+      {
+        "name": "Shredded Chicken Tostada",
+        "description": "",
+        "price": "$11.23",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Shredded Beef Tostada",
+        "description": "",
+        "price": "$11.23",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Bean Tostada",
+        "description": "",
+        "price": "$8.74",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Chicken Asado Quesadilla",
+        "description": "",
+        "price": "$14.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Shredded Chicken Quesadilla",
+        "description": "",
+        "price": "$14.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Shrimp Quesadilla",
+        "description": "",
+        "price": "$17.49",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Shredded Beef Quesadilla",
+        "description": "",
+        "price": "$14.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Carne Asada Quesadilla",
+        "description": "",
+        "price": "$14.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Carnitas Quesadilla",
+        "description": "",
+        "price": "$14.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "",
+        "price": "$8.74",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "2 Cheese",
+        "description": "",
+        "price": "$13.74",
+        "section": "Enchiladas a la carte"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5670",
+    "name": "The Tower Bar",
+    "sourceUrl": "http://www.thetowerbar.com/",
+    "confidence": "high",
+    "notes": "not_found: drink-only dive bar / punk rock music venue since 1932, address confirmed exact match (4757 University Avenue, San Diego, CA 92105) on the restaurant's own WordPress site. Own site has no menu page - the top nav 'Menu' item is a mobile hamburger-menu label, not a link to a food/drink menu; the only price-like text on the whole site is 'Happy Hour 4pm-7pm ($1 off all drafts and wells)', a discount amount, not an item price. Checked beermenus.com listing (address confirmed matching) - it exists but is empty, 'No photos yet', no beers logged, no dollar amounts anywhere on the page. No DoorDash/Grubhub/Uber Eats storefront found for this business. WebSearch summaries mentioning '$4.50 for 14oz' and 'free nachos' could not be verified on any actual page - not used. This matches the playbook's own example of a drink-only dive bar that publishes no per-item prices anywhere. Also checked restaurantji.com (address confirmed matching) - its only $ signs are a $$ price-range badge and code artifacts, zero per-item prices; its templated \"welcoming spot for families\" description does not match this venue (a punk-rock dive bar/music venue), a farm-style generic-filler tell.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3599",
+    "name": "Main Street Coffee",
+    "sourceUrl": "https://mainstreetcoffeeramona.com/menu/",
+    "confidence": "low",
+    "blocked": "Only real menu/prices are behind a Square Online storefront at http://main-street-coffee-llc.square.site (linked as 'Order Here' from the restaurant's own /menu/ page) - a client-side-rendered React/Weebly app on the barred 'genuinely needs a browser' Square Online list. Checked the page's window.__BOOTSTRAP_STATE__ blob (30KB) - it holds only site/store metadata (siteId, verticalV4:'quick-serve-restaurant', squareMerchantId), no catalog or menu items; zero '$' price signs anywhere in the fetched HTML. The restaurant's own WordPress /menu/ page (address 680 Main Street, Ramona confirmed via search results) only describes offerings in prose (specialty coffees, crepes, breakfast/lunch sandwiches, pastries) with no per-item prices and links out to the Square storefront for ordering. No DoorDash store page found for this specific Ramona location (only a multi-location DoorDash 'business' aggregator page with no address/menu data server-rendered, and other Main Street Coffee locations in Staten Island NY / La Quinta CA / Denver NC - not this one). menupix.com listing is behind a Cloudflare 'Just a moment...' challenge page. Needs a browser to load the Square storefront and read the rendered catalog.",
+    "notes": "Two suspicious-looking farm domains surfaced in search (main-street-coffee.bartgrocerybbq.com, mainstreetcoffee.restaurants-us.com) - not used, names unrelated to the business.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2719",
+    "name": "Jochi Resto Grill",
+    "sourceUrl": "https://www.allmenus.com/ca/chula-vista/719807-jochi-resto-grill/menu/",
+    "confidence": "low",
+    "blocked": "Work-list website (jochi-resto-grill.poi.place) is a barred farm domain, not used. Only one reachable priced source found: allmenus.com (tier 5), 50 items across Combo Regular Item, Specialty Item, A la Carte, Desserts, Party Trays and Lechon, and Drinks - a cafeteria-style Filipino 'turo-turo' menu with mostly $0.40-$10 per-item pricing, consistent with restaurantguru.com's review-derived 'Price per person $1-20' for the same address (289 E Orange Ave, Chula Vista, exact match) but restaurantguru has no per-item prices so it cannot serve as the required second priced source. Per the playbook, tier-5 needs two independent agreeing priced sources: the restaurant's own Grubhub listing (grubhub.com/restaurant/jochi-resto-grill-289-east-orange-avenue-chula-vista/1594378) is a pure client-side SPA shell (13KB, no server-rendered content, no JSON-LD) that needs a browser; zmenu.com's listing is behind a Cloudflare 'Just a moment...' challenge; cafes-guide.com and edan.io listings are barred farm domains per the playbook and were not used. Needs a browser to load the Grubhub storefront (or another priced source) to corroborate the allmenus capture before it can be written in at medium+ confidence.",
+    "notes": "allmenus items with missing/undefined price (Pork Dish, Sisig Regular under Party Trays and Lechon) were excluded per the never-construct-a-price rule; not included in any future capture either.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4517",
+    "name": "Tandoor",
+    "sourceUrl": "http://www.tandoorsandiego.com/menu.html",
+    "confidence": "low",
+    "blocked": "Address confirmed exact match to work list (5608 Mission Center Road / Mission Center Rd #902, San Diego, CA 92108) via both the restaurant's own site and Yelp - this is NOT the different-Tandoor-across-town case the playbook warns about. However the restaurant's own site is an old Flash-era HTML page (banner uses Adobe Flash / AC_FL_RunContent) whose menu.html prices every item at a price level matching the playbook's own documented stale-pricing case almost exactly: vegetable samosas $2.99, combination plates $6.99-$14.99, a la carte $5.89-$9.99 - implausibly low for a current San Diego sit-down Indian restaurant. Per the playbook, implausible price level means blocked regardless of how complete/first-party the source looks. Searched for a current corroborating source: no DoorDash, Grubhub or Uber Eats storefront found for this specific location (5608 Mission Center Rd) despite searching by name+address; restaurant.com's listing describes it as now a 'buffet-style eatery featuring combo plates' which if accurate would mean the business model itself has changed since the old a la carte site was built, making the old per-item prices doubly unusable. menuism.com listing returned a Cloudflare 522 timeout. Needs a current priced source (a working delivery-platform storefront, a dated Yelp/Google menu photo, or a browser-rendered current site) to establish today's prices.",
+    "notes": "",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4997",
+    "name": "El Indio de Tijuana",
+    "sourceUrl": "https://elindiodetijuanatacoshop.netwaiter.com/escondido/about/",
+    "confidence": "low",
+    "blocked": "No first-party website in the work list; found the restaurant's own NetWaiter ordering platform (elindiodetijuanatacoshop.netwaiter.com), address confirmed exact match (810 N Broadway, Escondido, CA 92025) via its own JSON-LD. The site's config exposes 'MenuRoot':'/escondido/menu/', but every fetch of that path (plain, cased-domain, with a session cookie + Referer carried over from the about page) 302-redirects back to the about/landing page rather than serving menu content - it appears to require a client-side order-type selection (delivery vs pickup) before the catalog renders, so this is a JS-gated ordering flow, not a data restriction curl can route around. Checked fallback tier-5 sources: zmenu.com and menupix.com (two different listings) both sit behind Cloudflare 'Just a moment...' challenge pages; Groupon's page for this business (address confirmed matching) has zero per-item menu prices, only 'similar deals' for unrelated nearby businesses and the prose line 'affordable prices that almost always stay under $15'; el-indio-de-tijuana.edan.io is a barred farm domain per the playbook and was not used. Needs a browser to click through the NetWaiter delivery/pickup selector on the restaurant's own ordering site and read the resulting catalog.",
+    "notes": "",
+    "dishes": []
+  }
+]

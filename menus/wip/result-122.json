@@ -1,0 +1,386 @@
+[
+ {
+  "restaurantId": "1979",
+  "name": "Cotijas",
+  "sourceUrl": "https://cotijasmarkest.smartonlineorder.com/wp-json/moo-clover/v1/categories",
+  "confidence": "low",
+  "blocked": "Own Clover storefront (WordPress moo-clover plugin, 2295 Market St location confirmed by on-page address) carries a clean 4% online-ordering surcharge -- 161/214 items land on .99/.00/.49/.50 endings after dividing by 1.04, vs only 36/214 at raw .99. Per project precedent this surcharge must not be divided out (division is inference, and dozens of items do not divide cleanly). Needs a re-extraction from an unsurcharged view -- a dine-in/in-store price list, board photo, or PDF -- rather than another pass at this same API.",
+  "notes": "24 categories reachable via /wp-json/moo-clover/v1/categories/{uuid}/items (breakfast, burritos, tacos, enchiladas, quesadillas, tortas, combos, birria, seafood, salads, sides, desserts, beverages) -- full taco shop shape, so the ONLY blocker is the surcharge, not missing data. Raw (surcharged) prices are on file in scratch if a future pass wants the multiplier reference.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "3074",
+  "name": "The Goods",
+  "sourceUrl": "https://www.clover.com/online-ordering/the-goods-carlsbad",
+  "confidence": "low",
+  "blocked": "Core menu (doughnuts, ~20 flavors) lives only behind the Clover COLO2 React SPA at clover.com/online-ordering/the-goods-carlsbad (bootstrap.js shell only, no server-rendered data, no readable REST endpoint -- different Clover product from the WordPress moo-clover plugin) and is additionally gated to store hours 8am-2pm. Needs a Chrome-equipped agent during trading hours.",
+  "notes": "Own site (Squarespace) has zero prices, only a Drink Menu PDF (House Drip $2.25/2.75, espresso drinks $3-5) that reads as stale (DoorDash lists House Drip at $4.50, ~2x higher -- staleness not markup per playbook rule, so neither is trustworthy alone). DoorDash listing (https://www.doordash.com/en/store/the-goods-doughnuts-carlsbad-718451/, JSON-LD schema.org Menu, 64 items after de-duplication) carries ONLY coffee/drinks/retail beans -- zero doughnuts, which is the core product for a doughnut shop, so this source is a partial delivery listing missing the core section and is not usable as the menu. Confirmed correct location: 2965 State Street, Carlsbad matches own site and DoorDash listing address.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "1977",
+  "name": "Cotijas Taco Shop",
+  "sourceUrl": "https://www.allmenus.com/ca/san-diego/52266-cotijas-taco-shop-rancho-bernardo/menu/",
+  "confidence": "low",
+  "blocked": "Only one tier-5 source reachable (allmenus, address-confirmed: 17090 Bernardo Ctr Dr Ste 124 matches exactly, 135 priced items across drinks/breakfast/tortas/burritos). allmenus and Grubhub are one company so this is not independent corroboration. Uber Eats and Postmates both 307-redirected (bot/geo block) rather than serving content. The DoorDash listing found by search (doordash.com/store/cotijas-taco-shop-san-diego-84249) resolves to a DIFFERENT branch at 13350 Camino Del Sur, not this one -- not usable per the one-branch-does-not-cover-another rule. Needs a Chrome-equipped agent to reach Uber Eats/Postmates for a genuine second source, or find this branch specific DoorDash/Toast/Clover listing.",
+  "notes": "This is a standalone location NOT part of either San Diego Cotijas web chain: thecotijastacoshop.com lists only Market St and Fairmount Ave locations; cotijastacoshopca.com lists Camino Del Sur and Market St. Neither lists Bernardo Center Drive, so no first-party site exists to check against. Confirmed as a genuinely separate restaurant/franchise from restaurant 1979 (Cotijas, 2295 Market St) despite the shared brand name.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "4972",
+  "name": "George Burgers",
+  "sourceUrl": "https://www.doordash.com (unaffiliated marketplace listing)",
+  "confidence": "low",
+  "blocked": "Own domain (georgeburgers.com) is dead -- redirects to a GoDaddy domain-parking lander, no content. Grubhub listing (grubhub.com/restaurant/george-burgers-350-n-broadway-escondido/2126305) is a client-rendered shell with no server-side prices. The only priced source found is a DoorDash listing whose 91 items divide cleanly by exactly 1.20 -- a confirmed real 20% marketplace markup per prior extraction on this exact restaurant, not the wall price. Per project rule the markup is not to be divided out (that is inference, not a read); needs an unmarked first-party source -- a menu board photo, PDF, or working own-site -- which none of the checked sources provide right now.",
+  "notes": "350 N Broadway, Escondido -- address consistent across Grubhub/Yelp/Uber Eats listings found by search.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "3694",
+  "name": "Hokkaido Ramen Santouka",
+  "sourceUrl": "",
+  "confidence": "low",
+  "blocked": "The chain HQ site (santouka.co.jp) has only a generic /en/menu page with no prices for any market. A US-specific site exists at santouka-usa.com with an actual Take-out-menu.jpg image, but that site is branded for the Bellevue, WA location (page mentions Bellevue, no San Diego/Kearny Mesa reference) -- using its prices would be borrowing a different branch menu, which is barred. Delivery platforms (Grubhub/DoorDash) either render client-side shells with no data or no confirmed store page was found; the restaurant is reported cash-only/no-delivery by several listings. Yelp (which would carry dated menu photos) 403s a plain curl. Needs either a Chrome-equipped agent to read Yelp menu photos for the San Diego / Kearny Mesa (Mitsuwa Marketplace) location specifically, or confirmation that santouka-usa.com covers this branch too.",
+  "notes": "Address confirmed via santouka.co.jp/en/shop-foreign/usa/foreign01-005 (Kearny Mesa Rd match). This is a small ramen-chain counter inside Mitsuwa Marketplace; menu shape is short (shio/shoyu/miso/spicy-miso ramen plus toppings and sides) per multiple secondary descriptions, but none of them carry verifiable per-item prices.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "4725",
+  "name": "The Coffee Bean & Tea Leaf",
+  "sourceUrl": "",
+  "confidence": "low",
+  "blocked": "Playbook names this chain explicitly: its Olo storefront has defeated five prior extraction attempts and is to be blocked immediately without spending further time on it. Chain publishes no prices on its own marketing site either. Needs a Chrome-equipped agent on the Olo ordering flow for the 9343 Clairemont Mesa Blvd, San Diego store specifically.",
+  "notes": "Not re-attempted this pass per explicit playbook guidance (section: Genuinely needs a browser -- hand back fast).",
+  "dishes": []
+ },
+ {
+  "restaurantId": "3222",
+  "name": "Sun Deck",
+  "sourceUrl": "",
+  "confidence": "low",
+  "blocked": "Own site (hoteldel.com/dine/sun-deck) embeds a SinglePlatform widget (places.singleplatform.com/sundeck/menu, address-confirmed 1500 Orange Ave, Coronado) whose schema.org feed has 76 menu items but only 1 carries a price -- 75 of 76 stripped, the exact stripped-widget failure mode named in the playbook. A third-party menuweb.menu PDF (wnam-cdn.menuweb.menu/.../sun-deck-coronado-menu.pdf) has prices but the 2-column layout is scrambled by pdftotext -- prices consistently attach to the SECTION HEADER above an item rather than the item itself (e.g. Aperol Spritz priced under Alcoholic Drinks header row, actual item price missing), so name-to-price pairing cannot be trusted; it also lists item names (Aperol Spritz, Pepperoni Flat Bread) that do not match a WebSearch summary of the same page describing entirely different dishes (Farmers Market Greens, flat iron steak), suggesting this farm PDF is stale or mismatched. Needs a Chrome-equipped agent to read the current live menu (hilton.com/en/hotels/sanqqqq-hotel-del-coronado/dining/sun-deck/ or OpenTable) or a dated photo.",
+  "notes": "Restaurant is real and address-confirmed; the failure is entirely about unreliable price sourcing, not a missing menu.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "1011",
+  "name": "Petes Place",
+  "sourceUrl": "",
+  "confidence": "low",
+  "blocked": "Listed domain (petesplacelamesa.com) is dead, redirecting to a Network Solutions expired-domain parking page. Its Facebook page is the listed website per third-party directories but was not reachable without a browser. zmenu.com and menupix.com both return Cloudflare JS challenge pages to curl. Yelp 403s a plain curl (needed for dated menu photos, likely the best remaining source for a dive bar this old). restaurantguru.com confirms the address and price range (0-30/person, American) but carries no itemized menu. Needs a Chrome-equipped agent for Yelp photos or the Facebook page.",
+  "notes": "Third-generation family bar since 1954, 8330 La Mesa Blvd (address confirmed via restaurantguru). Classic bar food (burgers, wings, nachos) plus a brunch menu (Country Benedict, Sausage Gravy & Biscuits) per secondary descriptions -- a real priced menu almost certainly exists, just not found in a reachable digital source this pass.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "3458",
+  "name": "Cali's & Fries",
+  "sourceUrl": "https://www.allmenus.com/ca/san-diego/721049-calis-fries/menu/",
+  "confidence": "low",
+  "blocked": "Only one tier-5 source reachable: allmenus/Grubhub (address-confirmed, 5150 Murphy Canyon Road, 170 priced items, passes the markup test -- best multiplier fit is 1.20 at only 43/170 = 25%, well below the ~75-100% threshold for a real surcharge, so this reads as organic pricing not markup). No independent second source could be reached: the restaurant's own ordering platform links found by search (calisandfries.menu-res.com, calis-fries.res-menu.net) both return blank 9-byte responses to curl -- JS shells needing a browser, not the res-menu.net host-outage case described in FINDINGS since both mirror domains are blank. No working DoorDash/Uber Eats store URL for this specific location was found via search (a same-named different restaurant, Cali O Burgers, kept surfacing instead). No official restaurant website exists in the work list. Needs a Chrome-equipped agent on calisandfries.menu-res.com or calis-fries.res-menu.net, or a DoorDash search from a browser.",
+  "notes": "Mexican/California-burrito taco shop, established 1985. allmenus data (breakfast plates, burritos, chips, fries, steaks, wraps, sandwiches, wings, sides) reads as a plausible full menu shape, ready to use the moment a second independent source confirms it.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "5698",
+  "name": "Dairy Queen",
+  "sourceUrl": "https://www.doordash.com/en/store/dairy-queen-24877119/",
+  "confidence": "medium",
+  "notes": "This location is listed on dairyqueen.com as DQ Treat Only (not a Grill and Chill), which matches the DoorDash catalog exactly: Blizzards, shakes/malts, DQ Coolers/Sparklers/Misty, Dilly Bars, Buster Bars, hot dogs, and cakes -- no burgers, fries, or chicken baskets, because this store does not serve them. Own dairyqueen.com site and its /en-us/order/ Next.js storefront for store #12979 render no prices server-side (client-fetched); DoorDash JSON-LD (address-confirmed: 664 Palomar Street, Chula Vista) was the only source with real prices. Markup test: best-fit multiplier 1.20 hits only 15/49 (31%), below the threshold for a confirmed surcharge given odd-cent pricing throughout (.47, .59, .95, .19) -- read as organic pricing, not a marketplace markup, so not divided out. Grubhub listing found by search renders a client-side shell with no data, so no independent cross-check was reachable.",
+  "dishes": [
+   {
+    "name": "Mint OREO® BLIZZARD® Treat ",
+    "description": "OREO® cookie pieces and creme de menthe blended with our world-famous soft serve to Blizzard® perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "OREO® BLIZZARD® Treat",
+    "description": "OREO® cookie pieces blended with world-famous vanilla soft serve to Blizzard® Perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "REESE'S® Peanut Butter Cup BLIZZARD® Treat ",
+    "description": "REESE'S® Peanut Butter Cups® blended with world-famous vanilla soft serve to Blizzard® Perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "Choco Brownie Extreme BLIZZARD® Treat",
+    "description": "Chewy brownie pieces, choco chunks and cocoa fudge blended with world-famous vanilla soft serve to Blizzard® Perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "Chocolate Chip Cookie Dough BLIZZARD® Treat",
+    "description": "Chocolate chip cookie dough, rich fudge blended with world-famous vanilla soft serve to Blizzard® Perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "Royal New York Cheesecake BLIZZARD® Treat ",
+    "description": "Cheesecake pieces and graham blended with creamy DQ® vanilla soft serve then filled with a perfectly paired strawberry topping center.",
+    "price": "$7.43",
+    "section": ""
+   },
+   {
+    "name": "M&M’S® Milk Chocolate Candies BLIZZARD® Treat ",
+    "description": "M&M's® candy pieces and chocolaty topping blended with world-famous vanilla soft serve to Blizzard® Perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "BUTTERFINGER® BLIZZARD® Treat ",
+    "description": "BUTTERFINGER® candy pieces blended with creamy DQ® vanilla soft serve to BLIZZARD® perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "SNICKERS® BLIZZARD® Treat",
+    "description": "SNICKERS® pieces and chocolaty topping blended with world-famous vanilla soft serve to Blizzard® Perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "Pretzel Sticks with Zesty Queso",
+    "description": "Soft pretzel sticks, served hot from the oven, topped with salt and served with warm zesty queso dipping sauce. ",
+    "price": "$3.95",
+    "section": ""
+   },
+   {
+    "name": "Turtle Pecan Cluster BLIZZARD® Treat ",
+    "description": "Pecan pieces, chocolaty shavings and rich caramel blended with world-famous vanilla soft serve to Blizzard® Perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "HEATH® BLIZZARD® Treat ",
+    "description": "HEATH® candy pieces and fudge blended with world-famous vanilla soft serve to Blizzard® Perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "New! Caramel Apple Cheesecake BLIZZARD® Treat",
+    "description": "Cheesecake pieces and caramel apple topping blended with our world-famous soft serve to BLIZZARD® perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "NEW! Biscoff® Cookie BLIZZARD® Treat",
+    "description": "Crunchy, caramelized Biscoff® Cookies blended with our world-famous soft serve to Blizzard® perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "Choco Frosted Donut BLIZZARD® Treat",
+    "description": "Chocolate frosted donut pieces and sprinkles blended with our world-famous soft serve to BLIZZARD® perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "NEW! Mexican-Style Hot Chocolate made with ABUELITA™ BLIZZARD® Treat",
+    "description": "Abuelita™ Mexican Hot Chocolate mix, choco chunks, marshmallows and cocoa fudge blended with our world-famous soft serve to BLIZZARD® perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "Mocha Brownie Mudslide BLIZZARD® Treat",
+    "description": "Brownie pieces, choco chunks, and coffee blended with our world-famous soft serve to BLIZZARD® perfection.         \r\n     *Contains caffeine.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "Nestle® DRUMSTICK® with Peanuts BLIZZARD® Treat",
+    "description": "Drumstick® pieces, chopped peanuts and chocolatey shavings blended with our world-famous soft serve to BLIZZARD® Perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "S'mores BLIZZARD® Treat",
+    "description": "Marshmallow filled chocolate bars and graham blended with our world-famous vanilla soft serve to Blizzard® Perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "NEW! Strawberry Mango Mochi BLIZZARD® Treat",
+    "description": "Mango mochi pieces and strawberry topping blended with our world-famous soft serve to BLIZZARD® perfection.",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "Royal Ultimate Choco Brownie BLIZZARD® Treat",
+    "description": "Brownies, choco chunks, and fudge blended with our world-famous soft serve to BLIZZARD® Treat perfection and filled with a fudge center.",
+    "price": "$7.43",
+    "section": ""
+   },
+   {
+    "name": "2 Chili Cheese Dogs Combo",
+    "description": "No one does hot-dogs better than your local DQ® restaurant! Order them plain or for the ultimate taste sensation, try our fabulous Chili Cheese dog",
+    "price": "$10.91",
+    "section": ""
+   },
+   {
+    "name": "Classic Dog Combo",
+    "description": "No one does hot-dogs better than your local DQ® restaurant! Order them any way you want: plain or with cheese ",
+    "price": "$6.47",
+    "section": ""
+   },
+   {
+    "name": "Chili Cheese Dog Combo",
+    "description": "No one does hot-dogs better than your local DQ® restaurant! Order them plain or for the ultimate taste sensation, try our fabulous Chili Cheese dog",
+    "price": "$6.95",
+    "section": ""
+   },
+   {
+    "name": "DQ® Coolers",
+    "description": "Lemonade blended with our world-famous soft serve to beverage perfection. Available in Lemonade and Hibiscus Lemonade.",
+    "price": "$4.19",
+    "section": ""
+   },
+   {
+    "name": "DQ® Sparklers",
+    "description": "Lemonade and sparkling water served over ice to beverage perfection. Available in Lemonade and Hibiscus Lemonade.",
+    "price": "$3.59",
+    "section": ""
+   },
+   {
+    "name": "Soft Drinks",
+    "description": "A refreshing carbonated soft drink.\r\n",
+    "price": "$2.75",
+    "section": ""
+   },
+   {
+    "name": "Shake",
+    "description": "Milk and creamy DQ® vanilla soft serve hand-blended into a classic DQ® shake until it's velvety thick and delicious and garnished with a swirl of whipped topping. Try your favorite classic flavor: Chocolate, Hot Fudge, Caramel, Strawberry or Vanilla. Or try our NEW! Fruity Pebbles™ or Savannah Bananas™ Split for a Limited Time Only.",
+    "price": "$5.87",
+    "section": ""
+   },
+   {
+    "name": "Malt",
+    "description": "Milk, creamy DQ® vanilla soft serve and malt powder hand-blended into a classic DQ® malt until it's velvety thick and delicious and garnished with a swirl of whipped topping",
+    "price": "$6.46",
+    "section": ""
+   },
+   {
+    "name": "MooLatté® ",
+    "description": "Coffee and rich fudge blended with creamy DQ® vanilla soft serve and ice, and garnished with whipped topping and a chocolaty drizzle. Available in Mocha, Caramel and Vanilla flavors.\r\n",
+    "price": "$5.99",
+    "section": ""
+   },
+   {
+    "name": "MISTY® Slush",
+    "description": "A sweet and refreshing slushy drink. Available in Blue Raspberry, Cherry, Lemon Lime and Strawberry Kiwi.",
+    "price": "$3.59",
+    "section": ""
+   },
+   {
+    "name": "MISTY® Freeze",
+    "description": "Our cool and refreshing Misty® Slush blended with world-famous DQ® soft serve. Available in your favorite Misty Slush flavors: Blue Raspberry, Cherry, Lemon Lime and Strawberry Kiwi.",
+    "price": "$5.39",
+    "section": ""
+   },
+   {
+    "name": "Premium Fruit Smoothie ",
+    "description": "Real fruit blended with low-fat yogurt and sweetener. Available in Strawberry Banana, Mango Pineapple, Tripleberry®. At select locations only.\r\n",
+    "price": "$5.63",
+    "section": ""
+   },
+   {
+    "name": "6 pack Non-Dairy DILLY® BAR ",
+    "description": "Vanilla coconut cream frozen dessert dipped in chocolate flavored coating. Made with coconut cream, gluten-free and vegan.\r\n",
+    "price": "$16.19",
+    "section": ""
+   },
+   {
+    "name": "Cupfection",
+    "description": "Cold and creamy DQ® vanilla soft serve and filled with delicious topping. Try the Brownie and OREO® Cupfection - topped with a Triple Chocolate Brownie, OREO® cookie pieces, rich chocolate sauce and marshmallow topping or the New! Heath® Caramel Brownie - made with hot fudge and caramel toppings, chocolate brownie and Heath® pieces",
+    "price": "$8.75",
+    "section": ""
+   },
+   {
+    "name": "6 Pack DILLY® Bar",
+    "description": "Our classic DILLY® Bar. Made with cold, creamy DQ® vanilla soft serve dipped in our crunchy cone coating. Flavors include Chocolate, Cherry, Butterscotch and Heath®.  *flavors available at participating locations.\r\nThis nutrition information is for manufactured DILLY® Bars and BUSTER BAR® treats, which are packaged in clear plastic. See packaging for DILLY® Bars and BUSTER BAR® treats in paper bags.",
+    "price": "$16.79",
+    "section": ""
+   },
+   {
+    "name": "6 Pack BUSTER BAR®",
+    "description": "A fresh take on our classic PEANUT BUSTER® Parfait, the BUSTER BAR® is made with layers of cold, creamy DQ® vanilla soft serve, rich fudge, and crunchy peanuts all dipped in our crunchy chocolate cone coating.\r\n\r\nThis nutrition information is for manufactured DILLY® Bars and BUSTER BAR® treats, which are packaged in clear plastic. See packaging for DILLY® Bars and BUSTER BAR® treats in paper bags.",
+    "price": "$19.79",
+    "section": ""
+   },
+   {
+    "name": "6 Pack DQ® Sandwich",
+    "description": "Our world famous vanilla soft serve sandwiched between two chocolate-flavored wafers.",
+    "price": "$16.79",
+    "section": ""
+   },
+   {
+    "name": "DQ® Sandwich",
+    "description": "Our world famous vanilla soft serve sandwiched between two chocolate-flavored wafers.",
+    "price": "$3.59",
+    "section": ""
+   },
+   {
+    "name": "BUSTER BAR®",
+    "description": "A fresh take on our classic PEANUT BUSTER® Parfait, the BUSTER BAR® is made with layers of cold, creamy DQ® vanilla soft serve, rich fudge, and crunchy peanuts all dipped in our crunchy chocolate cone coating.\r\n\r\nThis nutrition information is for manufactured DILLY® Bars and BUSTER BAR® treats, which are packaged in clear plastic. See packaging for DILLY® Bars and BUSTER BAR® treats in paper bags.",
+    "price": "$3.95",
+    "section": ""
+   },
+   {
+    "name": "DILLY® Bar ",
+    "description": "Our classic DILLY® Bar. Made with cold, creamy DQ® vanilla soft serve dipped in our crunchy cone coating. Flavors include Chocolate, Cherry, Butterscotch and Heath®.  *flavors available at participating locations\r\nThis nutrition information is for manufactured DILLY® Bars and BUSTER BAR® treats, which are packaged in clear plastic. See packaging for DILLY® Bars and BUSTER BAR® treats in paper bags.",
+    "price": "$3.59",
+    "section": ""
+   },
+   {
+    "name": "Non-Dairy DILLY® BAR ",
+    "description": "Vanilla coconut cream frozen dessert dipped in chocolate flavored coating. Made with coconut cream, gluten-free and vegan.\r\n",
+    "price": "$3.47",
+    "section": ""
+   },
+   {
+    "name": "2 Chili Cheese Dogs",
+    "description": "No one does hot-dogs better than your local DQ® restaurant! Order them plain or for the ultimate taste sensation, try our fabulous Chili Cheese dog.",
+    "price": "$8.75",
+    "section": ""
+   },
+   {
+    "name": "Classic Dog",
+    "description": "No one does hot-dogs better than your local DQ® restaurant!",
+    "price": "$3.95",
+    "section": ""
+   },
+   {
+    "name": "Chili Cheese Dog",
+    "description": "No one does hot-dogs better than your local DQ® restaurant! Order them plain or for the ultimate taste sensation, try our fabulous Chili Cheese dog.",
+    "price": "$5.03",
+    "section": ""
+   },
+   {
+    "name": "DQ® Signature All Occasion Cake",
+    "description": "DQ® signature fudge and crunch center surrounded by our world-famous vanilla and chocolate soft serve and decorated with white icing border and our DQ Signature Sprinkles\r\n\r\nCakes ordered on the DQ Mobile app cannot be customized; designs and flavors may vary by DQ restaurant location.\r\n\r\nIf you would like to order a customized DQ cake, please visit DQcakes.com\r\n",
+    "price": "$44.39",
+    "section": ""
+   },
+   {
+    "name": "Chocolate Chip Cookie Dough BLIZZARD® Cake",
+    "description": "A base layer of our world-famous vanilla soft serve, our signature fudge and crunch center, and a top layer of Chocolate Chip Cookie Dough BLIZZARD® treat, topped with cookie dough pieces and a chocolatey drizzle.\r\n\r\nCakes ordered on the DQ® mobile app come as shown with no option for customization at this time.\r\n\r\nIf you would like to order a customized DQ cake, please visit DQcakes.com. Cake designs and flavors may vary by DQ® Restaurant location. ",
+    "price": "$46.79",
+    "section": ""
+   },
+   {
+    "name": "Choco Brownie Extreme BLIZZARD® Cake",
+    "description": "A base layer of our world-famous chocolate soft serve, our signature fudge and crunch center, and a top layer of Choco Brownie Extreme BLIZZARD® treat, topped with choco chunks, choco brownie pieces, and a chocolatey drizzle.\r\n\r\nCakes ordered on the DQ® mobile app come as shown with no option for customization at this time.\r\n\r\nIf you would like to order a customized DQ cake, please visit DQcakes.com. Cake designs and flavors may vary by DQ® Restaurant location. ",
+    "price": "$46.79",
+    "section": ""
+   },
+   {
+    "name": "OREO® BLIZZARD® Cake",
+    "description": "A base layer of our world-famous vanilla soft serve, our signature fudge and crunch center, and a top layer of OREO® BLIZZARD® treat, topped with OREO® cookie pieces and a chocolatey drizzle.\r\n\r\nCakes ordered on the DQ® mobile app come as shown with no option for customization at this time.\r\n\r\nIf you would like to order a customized DQ cake, please visit DQcakes.com. Cake designs and flavors may vary by DQ® Restaurant location. \r\n",
+    "price": "$46.79",
+    "section": ""
+   }
+  ]
+ }
+]

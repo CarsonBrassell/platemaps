@@ -1,0 +1,1619 @@
+[
+  {
+    "restaurantId": "4436",
+    "name": "Valle",
+    "sourceUrl": "https://www.valleoceanside.com/menu/",
+    "confidence": "high",
+    "notes": "Michelin-starred tasting-menu restaurant (chef Roberto Alcocer). Only whole-experience prices are published: Sample Tasting Menu $220++, Breve Experience (El Sillon bar experience) $140++, plus wine-pairing add-ons ($40-$230). The a-la-carte 'Bar Menu' (Bean Bread, Sikil Pak, Ceviche Verde Tostada, Burrito, THE Cheeseburger, Quesataco, Birria, Pescado, etc.) and the Cocktails menu list dish/drink names with zero per-item prices anywhere: checked the site's own JSON-LD (six Menu blocks, every item's offers empty/absent), the rendered HTML (no price elements at all beyond the tasting-package copy), and the SinglePlatform mirror (places.singleplatform.com/valle/menu), which lists the same items with price:\"\" on every single Offer. No PDF menu, no ordering platform found. This is the 'fine-dining room that prices only the caviar' case from the playbook - per-item prices are never published anywhere, so not_found rather than blocked.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4538",
+    "name": "Tabu Shabu",
+    "sourceUrl": "https://tabushabusandiego.com/menu",
+    "confidence": "high",
+    "notes": "First-party site, server-rendered HTML (Next.js) with explicit name/desc/price spans for every item. Shabu-shabu (hot pot) format: Step 4 proteins and the 2-item combos are priced by portion size (4oz reg / 6oz lg / 8oz dbl / 3oz side) - recorded price is the reg/first listed tier, full tier breakdown kept in description per item. Broth and noodle upgrades (Sukiyaki, Tonkotsu, Ramen noodle, Kale ramen noodle) are priced as upcharges over an included default (traditional kombu broth / rice or udon or shirataki noodle, all free) - recorded at their upcharge amount with that noted in description. Wine (Justin sauvignon blanc, Mondavi cabernet) recorded at the glass price, bottle price noted in description. Dropped as unpriced/no real price: included default broth (Traditional kombu, Miso), included default starches (rice, udon, shirataki), free items (Save your noodles finish, Hot tea), and Craft beer (\"see our rotating tap & bottle board\", genuinely unpriced/variable). Categories reached: FIVE SIMPLE STEPS (hot-pot build: broth, rice/noodle, included veggies, standard proteins, premium proteins, finish), SNACKS & STARTERS (starters, extras & garnishes), DRINKS & DESSERT (sake, beer & wine, zero-proof, dessert). Nothing else on the site (only Home/Menu links present) so no categories were missed.",
+    "dishes": [
+      {
+        "name": "Sukiyaki",
+        "description": "Sweet soy-sake broth, served with a pasteurized egg for dipping (upcharge over included default, +$3)",
+        "price": "$3",
+        "section": "FIVE SIMPLE STEPS - Step 1 · Broth"
+      },
+      {
+        "name": "Tonkotsu",
+        "description": "Creamy ramen pork-bone broth (upcharge over included default, +$4)",
+        "price": "$4",
+        "section": "FIVE SIMPLE STEPS - Step 1 · Broth"
+      },
+      {
+        "name": "Ramen noodle",
+        "description": "Upcharge over included default, +$1",
+        "price": "$1",
+        "section": "FIVE SIMPLE STEPS - Step 2 & 3 · Rice + Noodle"
+      },
+      {
+        "name": "Kale ramen noodle",
+        "description": "Upcharge over included default, +$1",
+        "price": "$1",
+        "section": "FIVE SIMPLE STEPS - Step 2 & 3 · Rice + Noodle"
+      },
+      {
+        "name": "Prime beef brisket",
+        "description": "Demkota Ranch (tiered pricing: 24 · 28 · 34 · 10)",
+        "price": "$24",
+        "section": "FIVE SIMPLE STEPS - Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wagyu beef toro",
+        "description": "Tiered pricing: 24 · 28 · 34 · 10",
+        "price": "$24",
+        "section": "FIVE SIMPLE STEPS - Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wagyu chuck eye",
+        "description": "Snake River Farms (tiered pricing: 28 · 32 · 38 · 12)",
+        "price": "$28",
+        "section": "FIVE SIMPLE STEPS - Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Certified Angus ribeye",
+        "description": "Tiered pricing: 28 · 34 · 44 · 12",
+        "price": "$28",
+        "section": "FIVE SIMPLE STEPS - Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Kurobuta pork",
+        "description": "Snake River Farms (tiered pricing: 22 · 26 · 32 · 10)",
+        "price": "$22",
+        "section": "FIVE SIMPLE STEPS - Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Free-range chicken",
+        "description": "All natural, hormone free (tiered pricing: 22 · 26 · 32 · 10)",
+        "price": "$22",
+        "section": "FIVE SIMPLE STEPS - Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Colorado lamb",
+        "description": "Tiered pricing: 26 · 30 · 38 · 12",
+        "price": "$26",
+        "section": "FIVE SIMPLE STEPS - Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Wild shrimp",
+        "description": "Tiered pricing: 26 · 30 · 38 · 12",
+        "price": "$26",
+        "section": "FIVE SIMPLE STEPS - Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Norwegian salmon",
+        "description": "Sashimi grade (tiered pricing: 28 · 34 · 42 · 12)",
+        "price": "$28",
+        "section": "FIVE SIMPLE STEPS - Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "2-item combo",
+        "description": "Mix any two (tiered pricing: 32 lg · 38 dbl)",
+        "price": "$32",
+        "section": "FIVE SIMPLE STEPS - Step 4 · Pick Your Protein"
+      },
+      {
+        "name": "Prime ribeye",
+        "description": "Double R Ranch · gold grade (tiered pricing: 34 · 40 · 52 · 16)",
+        "price": "$34",
+        "section": "FIVE SIMPLE STEPS - Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Wagyu short rib",
+        "description": "Snake River Farms · BMS 8 (tiered pricing: 32 · 38 · 48 · 16)",
+        "price": "$32",
+        "section": "FIVE SIMPLE STEPS - Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "2-item premium combo",
+        "description": "Tiered pricing: 38 lg · 48 dbl",
+        "price": "$38",
+        "section": "FIVE SIMPLE STEPS - Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Wagyu Japanese A5",
+        "description": "Miyazaki, Japan · BMS 10 (tiered pricing: 65 · — · — · 45)",
+        "price": "$65",
+        "section": "FIVE SIMPLE STEPS - Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Vegetarian",
+        "description": "No protein · double veggies",
+        "price": "$18",
+        "section": "FIVE SIMPLE STEPS - Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Kids only plate",
+        "description": "10 & under · 3oz, choose 1: toro, brisket, chicken or shrimp",
+        "price": "$16",
+        "section": "FIVE SIMPLE STEPS - Tabu Exclusive · Premium Proteins"
+      },
+      {
+        "name": "Tabu porridge",
+        "description": "Rice + pasteurized egg cooked in your leftover broth — a rich finish, or take it to go",
+        "price": "$7",
+        "section": "FIVE SIMPLE STEPS - Step 5 · Finish — Soup It Up"
+      },
+      {
+        "name": "Steamed edamame",
+        "description": "",
+        "price": "$7",
+        "section": "SNACKS & STARTERS - Starters"
+      },
+      {
+        "name": "Truffle sea salt edamame",
+        "description": "",
+        "price": "$8",
+        "section": "SNACKS & STARTERS - Starters"
+      },
+      {
+        "name": "Crunchy garlic edamame",
+        "description": "",
+        "price": "$8.50",
+        "section": "SNACKS & STARTERS - Starters"
+      },
+      {
+        "name": "Cucumber salad",
+        "description": "",
+        "price": "$7",
+        "section": "SNACKS & STARTERS - Starters"
+      },
+      {
+        "name": "Spicy serrano cucumbers",
+        "description": "",
+        "price": "$8",
+        "section": "SNACKS & STARTERS - Starters"
+      },
+      {
+        "name": "Chicken & veggie dumplings",
+        "description": "Warmed in your broth",
+        "price": "$8",
+        "section": "SNACKS & STARTERS - Starters"
+      },
+      {
+        "name": "Spicy salmon poke bowl",
+        "description": "",
+        "price": "$20",
+        "section": "SNACKS & STARTERS - Starters"
+      },
+      {
+        "name": "Salmon crudo",
+        "description": "",
+        "price": "$20",
+        "section": "SNACKS & STARTERS - Starters"
+      },
+      {
+        "name": "Garlic chili crunch",
+        "description": "",
+        "price": "$3",
+        "section": "SNACKS & STARTERS - Extras & Garnishes"
+      },
+      {
+        "name": "Pickled serranos",
+        "description": "",
+        "price": "$3",
+        "section": "SNACKS & STARTERS - Extras & Garnishes"
+      },
+      {
+        "name": "Pasteurized egg",
+        "description": "",
+        "price": "$3",
+        "section": "SNACKS & STARTERS - Extras & Garnishes"
+      },
+      {
+        "name": "Truffle oil",
+        "description": "",
+        "price": "$3",
+        "section": "SNACKS & STARTERS - Extras & Garnishes"
+      },
+      {
+        "name": "Xtra noodle portion",
+        "description": "",
+        "price": "$5",
+        "section": "SNACKS & STARTERS - Extras & Garnishes"
+      },
+      {
+        "name": "Xtra single veggie",
+        "description": "",
+        "price": "$4",
+        "section": "SNACKS & STARTERS - Extras & Garnishes"
+      },
+      {
+        "name": "Xtra full veggie plate",
+        "description": "",
+        "price": "$10",
+        "section": "SNACKS & STARTERS - Extras & Garnishes"
+      },
+      {
+        "name": "Sake bomb traditional",
+        "description": "",
+        "price": "$7",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "Sake bomb premium",
+        "description": "",
+        "price": "$8",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "House sake carafe",
+        "description": "Cold or hot",
+        "price": "$10",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "House nigori carafe",
+        "description": "",
+        "price": "$10",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "Hakutsuru superior",
+        "description": "300 mL",
+        "price": "$20",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "Kikisui junmai",
+        "description": "300 mL",
+        "price": "$22",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "Nihonsakari yuzu sake",
+        "description": "300 mL",
+        "price": "$28",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "Sho Chiku Bai “Rei” junmai daiginjo",
+        "description": "300 mL",
+        "price": "$36",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "Sayuri nigori",
+        "description": "300 mL",
+        "price": "$20",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "Hana lychee",
+        "description": "375 mL",
+        "price": "$20",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "Hana white peach",
+        "description": "375 mL",
+        "price": "$20",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "Ippin junmai",
+        "description": "300 mL",
+        "price": "$26",
+        "section": "DRINKS & DESSERT - Sake"
+      },
+      {
+        "name": "Justin sauvignon blanc",
+        "description": "Tiered pricing: 13 · 36",
+        "price": "$13",
+        "section": "DRINKS & DESSERT - Beer & Wine"
+      },
+      {
+        "name": "Mondavi private select cabernet",
+        "description": "Tiered pricing: 11 · 32",
+        "price": "$11",
+        "section": "DRINKS & DESSERT - Beer & Wine"
+      },
+      {
+        "name": "Wine corkage",
+        "description": "Max two bottles per party",
+        "price": "$20",
+        "section": "DRINKS & DESSERT - Beer & Wine"
+      },
+      {
+        "name": "Black tea",
+        "description": "Unsweetened",
+        "price": "$5",
+        "section": "DRINKS & DESSERT - Zero-Proof"
+      },
+      {
+        "name": "Jasmine green tea",
+        "description": "Unsweetened",
+        "price": "$5",
+        "section": "DRINKS & DESSERT - Zero-Proof"
+      },
+      {
+        "name": "Topo Chico sparkling water",
+        "description": "",
+        "price": "$5",
+        "section": "DRINKS & DESSERT - Zero-Proof"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "Small",
+        "price": "$3.50",
+        "section": "DRINKS & DESSERT - Zero-Proof"
+      },
+      {
+        "name": "Mexican Coke",
+        "description": "",
+        "price": "$5",
+        "section": "DRINKS & DESSERT - Zero-Proof"
+      },
+      {
+        "name": "Mexican Sprite",
+        "description": "",
+        "price": "$5",
+        "section": "DRINKS & DESSERT - Zero-Proof"
+      },
+      {
+        "name": "Marble “ramune” soda",
+        "description": "",
+        "price": "$5",
+        "section": "DRINKS & DESSERT - Zero-Proof"
+      },
+      {
+        "name": "Simply Lemonade",
+        "description": "",
+        "price": "$5",
+        "section": "DRINKS & DESSERT - Zero-Proof"
+      },
+      {
+        "name": "Mochi",
+        "description": "Rotating flavors: green tea w/ boba, black sesame, red bean, plum, mint choc chip, coffee, chocolate, mango, strawberry, vanilla & more (tiered pricing: 3 ea · 3 for 8)",
+        "price": "$3",
+        "section": "DRINKS & DESSERT - Dessert"
+      },
+      {
+        "name": "Raspberry sorbet",
+        "description": "",
+        "price": "$7",
+        "section": "DRINKS & DESSERT - Dessert"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2404",
+    "name": "Thai Thai San Marcos",
+    "sourceUrl": "https://www.thaithaisanmarcosrestaurant.com/uvqeh3m5/restaurant/menu",
+    "confidence": "medium",
+    "crossCheckedAgainst": "",
+    "notes": "The domain from the work list (thaithaisanmarcosrestaurant.com) 404s at its root, but the site is real and live at this /uvqeh3m5/restaurant/menu path (found via search indexing) - a BeyondMenu-hosted ordering storefront on the restaurant's own domain, matching the work-list address exactly (801 S Twin Oaks Valley Rd #101). A second candidate first-party domain, thaithaisanmarcos.com, is fully dead (404/expired Webflow site on both www and bare host) so no independent first-party cross-check was available. Prices were pulled from the escaped Next.js RSC flight JSON embedded in the page (menuCatName/menuGroupName/menuItemName/menuItemPrice), not the rendered DOM, which shows nothing without JS. Ran the markup-divisor test (1.04/1.08/1.10/1.15/1.17/1.20/1.25/1.30) across all 109 priced items: every divisor left 0-4% of prices landing on a round or .50/.95/.99 value, i.e. no consistent divisor - this reads as the restaurant's real (if online-order-priced) menu rather than a delivery markup layered on top, so treated as tier-2 own-ordering-platform rather than discounted to a marketplace tier. Dropped 'Fresh Spring Rolls' (price 0, evidently 86'd/placeholder). Categories reached: Appetizers, Salads, Soup, Noodles, Fried Rice, Curry, Entree, Specialties, Desserts, Side Orders, Beverages - a full Thai-restaurant section shape (curries, noodles incl. Pad Thai, soups incl. Tom Yum/Tom Kha, salads incl. Papaya Salad/Larb) with nothing obviously missing. No other menu path or tab found on the site.",
+    "dishes": [
+      {
+        "name": "Egg Rolls",
+        "description": "Deep fried vegetarian rolls of cabbage, celery, carrot, served with sweet & sour sauce.",
+        "price": "$14.91",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Satay Chicken",
+        "description": "Grilled marinated chicken breast with Thai herbs served with peanut sauce and cucumber salad.",
+        "price": "$17.62",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Cheesy Crabs",
+        "description": "Imitation crab meat, cream cheese, wrapped with wonton skin served with sweet & sour sauce.",
+        "price": "$17.62",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Potsticker",
+        "description": "Fried dumplings filled with ground chicken & cabbage served with shoyu house sauce.",
+        "price": "$14.91",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Sampler",
+        "description": "A combination of egg rolls, potsticker, shrimp tempura, and cheesy crabs, served with sweet & sour sauce.",
+        "price": "$23.04",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Spicy Edamame",
+        "description": "Sauteed fresh edamame (soy bean) with garlic chilli sauce.",
+        "price": "$13.56",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Thai Samosa",
+        "description": "Chicken curry Thai samosa served with cucumber salad.",
+        "price": "$17.62",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Angel Wings",
+        "description": "Deep fried chicken wings top with crispy Thai basil and garlic Thai chilli sauce.",
+        "price": "$18.98",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Bacon Scallops",
+        "description": "Scallop wrap with bacon and served with our house sauce.",
+        "price": "$17.62",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Winter Shrimp",
+        "description": "Marinated shrimps wrapped in egg roll skins deep fried and served with sweet and sour.",
+        "price": "$17.62",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Tofu",
+        "description": "Deep fried fresh tofu served with sweet Thai sauce.",
+        "price": "$14.91",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fallbrook Crunchy Calamari",
+        "description": "Deep fried calamari served with our house sauce.",
+        "price": "$18.98",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Papaya Salad",
+        "description": "Shredded green papaya, carrot, tomatoes, green bean mixed with thai chili, lime juice, garlic and top with peanut.",
+        "price": "$17.62",
+        "section": "Salads"
+      },
+      {
+        "name": "Larb",
+        "description": "Minced chicken or pork tossed with spicy lime dressing, red onions, mint, dried chilli, green onion & homemade rice powder",
+        "price": "$18.98",
+        "section": "Salads"
+      },
+      {
+        "name": "Cucumber Salad",
+        "description": "Slide fresh cucumber and carrot and vinegar dressing.",
+        "price": "$9.49",
+        "section": "Salads"
+      },
+      {
+        "name": "Seafood Salad",
+        "description": "Fresh shrimp, fish, scallop, calamari, mussel mixed with lime juice, cucumbers, fresh thai chilli, red onions, tomatoes, green onion and mint leaves.",
+        "price": "$25.76",
+        "section": "Salads"
+      },
+      {
+        "name": "Glass Noodle Salad (Yam Woon Sen)",
+        "description": "Clear glass noodle combined with ground chicken, shrimp, calamari, lime juice, fresh thai chilli, red onions, tomatoes, green onion and mint leaves.",
+        "price": "$24.40",
+        "section": "Salads"
+      },
+      {
+        "name": "Beef Salad",
+        "description": "Slice beef mixed with lime juice, cucumbers, chili, red onions, green onion, cilantro tomatoes and fresh mint.",
+        "price": "$23.04",
+        "section": "Salads"
+      },
+      {
+        "name": "Shrimp Salad",
+        "description": "Fresh shrimp mixed with lime juice, cucumbers, fresh thai chilli, red onions, tomatoes, green onion and mint leaves.",
+        "price": "$24.40",
+        "section": "Salads"
+      },
+      {
+        "name": "Tom Kha SM",
+        "description": "",
+        "price": "$17.62",
+        "section": "Soup"
+      },
+      {
+        "name": "Tom Kha LG",
+        "description": "",
+        "price": "$21.68",
+        "section": "Soup"
+      },
+      {
+        "name": "Tom Yum SM",
+        "description": "",
+        "price": "$17.62",
+        "section": "Soup"
+      },
+      {
+        "name": "Tom Yum LG",
+        "description": "",
+        "price": "$21.68",
+        "section": "Soup"
+      },
+      {
+        "name": "Wonton Soup SM",
+        "description": "",
+        "price": "$17.62",
+        "section": "Soup"
+      },
+      {
+        "name": "Wonton Soup LG",
+        "description": "",
+        "price": "$21.68",
+        "section": "Soup"
+      },
+      {
+        "name": "Glass Noodle Soup SM",
+        "description": "",
+        "price": "$17.62",
+        "section": "Soup"
+      },
+      {
+        "name": "Glass Noodle Soup LG",
+        "description": "",
+        "price": "$21.68",
+        "section": "Soup"
+      },
+      {
+        "name": "Thai Beef Noodle Soup",
+        "description": "Rice noodles in a rish beef broth with bean sprouts, celery, green onion, fried garlic, meat ball, beef stew and cilantro.",
+        "price": "$21.68",
+        "section": "Soup"
+      },
+      {
+        "name": "Pad Thai Noodles",
+        "description": "",
+        "price": "$17.62",
+        "section": "Noodles"
+      },
+      {
+        "name": "Pad See-ewe",
+        "description": "Stir fried flat rice noodles with egg, carrot and broccoli and chinese broccoli.",
+        "price": "$17.62",
+        "section": "Noodles"
+      },
+      {
+        "name": "Spicy Noodle",
+        "description": "Stir fried flat rice noodles with egg, onion, bell pepper, chili and thai basil.",
+        "price": "$17.62",
+        "section": "Noodles"
+      },
+      {
+        "name": "Chow Mein Noodle",
+        "description": "Stir fried egg noodle with onion, celery, napa, cabbage, bean sprouts, snow peas, carrot, zucchini and broccoli.",
+        "price": "$17.62",
+        "section": "Noodles"
+      },
+      {
+        "name": "Pad Woonsen",
+        "description": "Stir fried glass noodle with egg, napa, onion, zucchini, snow peas, broccoli, bean sprout, cabbage, carrot and celery served in clay pot.",
+        "price": "$17.62",
+        "section": "Noodles"
+      },
+      {
+        "name": "Lard Nar Noodles",
+        "description": "",
+        "price": "$17.62",
+        "section": "Noodles"
+      },
+      {
+        "name": "Kai Kua Noodles",
+        "description": "",
+        "price": "$17.62",
+        "section": "Noodles"
+      },
+      {
+        "name": "Thai Fried Rice",
+        "description": "Stir fried rice with egg, pea, carrot, and onion.",
+        "price": "$17.62",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Pineapple Fried Rice",
+        "description": "Served in a fresh pineapple. stir fried shrimp, chicken, pineapple, onion, egg, peas and carrot, cashew nuts and yellow curry powder.",
+        "price": "$27.10",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Spicy Fried Rice",
+        "description": "Spicy. stir fried rice with egg, garlic, basil, bell pepper, onion and chili.",
+        "price": "$17.62",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Chinese Sausage Fried Rice",
+        "description": "Stir fried rice with chinese sausage, egg, green & white onions, peas & carrots and chinese broccoli in special sauce.",
+        "price": "$27.10",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Combination Fried Rice",
+        "description": "Stir fried chicken, pork, beef and shrimp with rice, egg, peas & carrots and onion.",
+        "price": "$27.10",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Crab Fried Rice",
+        "description": "Stir fried jasmine rice with fresh crab meat, egg, green & white onions, peas, carrots in special sauce.",
+        "price": "$27.10",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Yellow Curry",
+        "description": "Coconut milk, potatoes, carrot and white onions in yellow curry sauce.",
+        "price": "$17.62",
+        "section": "Curry"
+      },
+      {
+        "name": "Panang Curry",
+        "description": "Coconut milk, green bean, pea & carrot, bell pepper, sweet thai basil in panang curry sauce.",
+        "price": "$17.62",
+        "section": "Curry"
+      },
+      {
+        "name": "Mussaman Curry",
+        "description": "Coconut milk, potatoes, onion, carrot and cashew nuts with peanuts sauce in mussaman curry paste.",
+        "price": "$17.62",
+        "section": "Curry"
+      },
+      {
+        "name": "Green Curry",
+        "description": "Coconut milk, bamboo shoot, eggplant, sweet thai basil and bell pepper in green curry sauce.",
+        "price": "$17.62",
+        "section": "Curry"
+      },
+      {
+        "name": "Red Curry",
+        "description": "Coconut milk, bamboo shoot, sweet thai basil and bell pepper in red curry sauce.",
+        "price": "$17.62",
+        "section": "Curry"
+      },
+      {
+        "name": "Duck Curry",
+        "description": "Roasted duck, coconut milk, tomato, pineapple, bell pepper, sweet thai basil in red curry sauce.",
+        "price": "$24.40",
+        "section": "Curry"
+      },
+      {
+        "name": "Pumpkin Curry",
+        "description": "Red curry sauce with pumpkin, coconut milk, bell peppers and sweet thai basil.",
+        "price": "$17.62",
+        "section": "Curry"
+      },
+      {
+        "name": "Pineapple Curry",
+        "description": "Pineapple, coconut milk, bell pepper, and sweet thai basil in red curry sauce.",
+        "price": "$17.62",
+        "section": "Curry"
+      },
+      {
+        "name": "Spicy Basil",
+        "description": "Spicy. pad kha pow. sauteed basil with thai chili, green and red bell pepper, onion, zucchini, bamboo shoots, carrot and garlic.",
+        "price": "$17.62",
+        "section": "Entrée"
+      },
+      {
+        "name": "Garlic & Pepper",
+        "description": "Stir fried choice of meat with fresh garlic and fresh ground black pepper over shredded cabbages.",
+        "price": "$17.62",
+        "section": "Entrée"
+      },
+      {
+        "name": "Cashew Nut",
+        "description": "Stir fried water chestnuts, green & white onions, carrot, bell pepper, celery and cashew nuts in special thai sweet chilli sauce.",
+        "price": "$17.62",
+        "section": "Entrée"
+      },
+      {
+        "name": "Spicy Eggplant",
+        "description": "Sautéed eggplant, sweet thai basil, garlic, zucchini, carrot, bell pepper and onion.",
+        "price": "$17.62",
+        "section": "Entrée"
+      },
+      {
+        "name": "Pad Phrik-Khing",
+        "description": "Sautéed green bean, kaffir lime leaves, bell pepper with red curry paste.",
+        "price": "$17.62",
+        "section": "Entrée"
+      },
+      {
+        "name": "Broccoli Oyster Sauce",
+        "description": "Sautéed broccoli with oyster sauce, carrot and garlic..",
+        "price": "$17.62",
+        "section": "Entrée"
+      },
+      {
+        "name": "Mixed Vegetables Lover",
+        "description": "Sauteed vegetable such as broccoli, carrot, cabbage, zucchini, onion, asparagus, snow peas and bean sprouts with our special brown sauce.",
+        "price": "$17.62",
+        "section": "Entrée"
+      },
+      {
+        "name": "Sweet & Sour",
+        "description": "Pineapple, tomato, green & white onion, cucumber, carrot, and bell pepper.",
+        "price": "$17.62",
+        "section": "Entrée"
+      },
+      {
+        "name": "Pad Prik Sod",
+        "description": "Sauteed jalapeno with garlic, carrot, mushroom, snow peas and bell pepper.",
+        "price": "$17.62",
+        "section": "Entrée"
+      },
+      {
+        "name": "Fresh Ginger",
+        "description": "Sautéed fresh ginger root with mushroom, onion, carrot, snow peas, pineapple, bell pepper and celery.",
+        "price": "$17.62",
+        "section": "Entrée"
+      },
+      {
+        "name": "Orange Chicken",
+        "description": "Deep fried diced chicken with thai sweet orange sauce.",
+        "price": "$18.98",
+        "section": "Specialties"
+      },
+      {
+        "name": "Tiger Cry Steak",
+        "description": "Grilled steak served with authentic thai spicy sauce and fresh cucumber.",
+        "price": "$27.10",
+        "section": "Specialties"
+      },
+      {
+        "name": "Ginger Perfect Fish",
+        "description": "(deep fried filet fish available) steamed fish filet topped with fresh ginger, pineapple, mushroom, celery, onion, bell pepper, carrot and snow peas with our special sauce.",
+        "price": "$31.17",
+        "section": "Specialties"
+      },
+      {
+        "name": "Kao Soy",
+        "description": "Egg noodles in northern style curry soup with lime juice, shallot, green onion, cilantro and dried chilli.",
+        "price": "$24.40",
+        "section": "Specialties"
+      },
+      {
+        "name": "BBQ Chicken",
+        "description": "Marinated bbq chicken with thai sweet chili sauce.",
+        "price": "$25.76",
+        "section": "Specialties"
+      },
+      {
+        "name": "Khao Man Gai",
+        "description": "",
+        "price": "$25.76",
+        "section": "Specialties"
+      },
+      {
+        "name": "Cashew Salmon",
+        "description": "",
+        "price": "$29.82",
+        "section": "Specialties"
+      },
+      {
+        "name": "Asparagus Shrimp",
+        "description": "Shrimps stir fried with asparagus, bell pepper, onion, carrot, snow peas, mushroom with garlic sauce.",
+        "price": "$29.82",
+        "section": "Specialties"
+      },
+      {
+        "name": "Honey Roasted Duck",
+        "description": "Homemade roasted duck. beded on steamed bok choy, topped with honey and served with homemade sauce. served with jasmine rice.",
+        "price": "$29.82",
+        "section": "Specialties"
+      },
+      {
+        "name": "Pad Ped Ta Lay",
+        "description": "Fish, calamari, shrimp, scallops, mussels, green bean, bell pepper, bamboo shoots and basil stir fried in a delicious red curry paste.",
+        "price": "$29.82",
+        "section": "Specialties"
+      },
+      {
+        "name": "Panang Salmon",
+        "description": "Salmon topped with panang curry sauce then served on bed of freshly steamed vegetable.",
+        "price": "$29.82",
+        "section": "Specialties"
+      },
+      {
+        "name": "Ocean Seafood",
+        "description": "Fresh calamari, shrimp, scallops, mussels, fish, carrots, onions, mushroom, bell pepper, and thai basil in our special sauce.",
+        "price": "$29.82",
+        "section": "Specialties"
+      },
+      {
+        "name": "Hot Pot Noodle",
+        "description": "Noodle in beef broth, beef, tender beef, and meatball.",
+        "price": "$33.87",
+        "section": "Specialties"
+      },
+      {
+        "name": "Kana Moo Krob",
+        "description": "Sauteed chinese broccoli with crispy pork belly.",
+        "price": "$29.82",
+        "section": "Specialties"
+      },
+      {
+        "name": "Northern Larb",
+        "description": "",
+        "price": "$32.53",
+        "section": "Specialties"
+      },
+      {
+        "name": "Pla Lad Prick",
+        "description": "Deep fried filet fish served with our special savory thai chilli sauce.",
+        "price": "$32.53",
+        "section": "Specialties"
+      },
+      {
+        "name": "Pla Pad Cha",
+        "description": "Crispy tilapia fillet topped with chilli sauce, krachai (finger root), young peppercorn, kaffir lime leaves, green bean, hot thai basil, thai eggplant & bell pepper.",
+        "price": "$32.53",
+        "section": "Specialties"
+      },
+      {
+        "name": "Pla Pak Ah",
+        "description": "Deep fried whole fish topped with hot chili sauce, basil and bell pepper.",
+        "price": "$32.53",
+        "section": "Specialties"
+      },
+      {
+        "name": "Po Thak",
+        "description": "",
+        "price": "$33.87",
+        "section": "Specialties"
+      },
+      {
+        "name": "Spicy Mussels",
+        "description": "Spicy. new zealand green mussels stir fried with onions, bell peppers, fresh ginger, carrots and fresh basil in our homemade chili sauce.",
+        "price": "$29.82",
+        "section": "Specialties"
+      },
+      {
+        "name": "Sweet Rice W/Mango",
+        "description": "",
+        "price": "$16.26",
+        "section": "Desserts"
+      },
+      {
+        "name": "Fried Banana",
+        "description": "",
+        "price": "$13.56",
+        "section": "Desserts"
+      },
+      {
+        "name": "Coconut Ice Cream",
+        "description": "",
+        "price": "$9.49",
+        "section": "Desserts"
+      },
+      {
+        "name": "Jasmine Rice -Small",
+        "description": "",
+        "price": "$2.72",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Peanut Sauce -Small",
+        "description": "",
+        "price": "$4.07",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Peanut Sauce -Large",
+        "description": "",
+        "price": "$6.77",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Steamed Vegetables",
+        "description": "",
+        "price": "$5.42",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Sticky Rice",
+        "description": "",
+        "price": "$4.07",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Extra Meat",
+        "description": "",
+        "price": "$4.07",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Brown Rice",
+        "description": "",
+        "price": "$4.07",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Steamed Noodles",
+        "description": "",
+        "price": "$4.07",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Three Flavored Sauce Small",
+        "description": "",
+        "price": "$4.07",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Three Flavored Sauce Large",
+        "description": "",
+        "price": "$6.77",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Extra Vegetables",
+        "description": "",
+        "price": "$2.72",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Thai Iced Tea",
+        "description": "",
+        "price": "$6.77",
+        "section": "Beverages"
+      },
+      {
+        "name": "Thai Iced Tea W/Boba",
+        "description": "",
+        "price": "$8.14",
+        "section": "Beverages"
+      },
+      {
+        "name": "Thai Iced Coffee",
+        "description": "",
+        "price": "$6.77",
+        "section": "Beverages"
+      },
+      {
+        "name": "Thai Iced Coffee w/ Boba",
+        "description": "",
+        "price": "$8.14",
+        "section": "Beverages"
+      },
+      {
+        "name": "Coke",
+        "description": "",
+        "price": "$2.72",
+        "section": "Beverages"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "",
+        "price": "$2.72",
+        "section": "Beverages"
+      },
+      {
+        "name": "Sprite",
+        "description": "",
+        "price": "$2.72",
+        "section": "Beverages"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$6.77",
+        "section": "Beverages"
+      },
+      {
+        "name": "Root Beer",
+        "description": "",
+        "price": "$2.72",
+        "section": "Beverages"
+      },
+      {
+        "name": "Lemonade",
+        "description": "",
+        "price": "$2.72",
+        "section": "Beverages"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$2.72",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Coffee",
+        "description": "",
+        "price": "$6.77",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Ginger Tea",
+        "description": "",
+        "price": "$8.14",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$6.77",
+        "section": "Beverages"
+      },
+      {
+        "name": "Regular Ice Tea",
+        "description": "",
+        "price": "$6.77",
+        "section": "Beverages"
+      },
+      {
+        "name": "Sparling Water",
+        "description": "",
+        "price": "$5.42",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5462",
+    "name": "Fruity Loco",
+    "sourceUrl": "https://order.online/store/fruity-loco-campo-road-312022",
+    "confidence": "medium",
+    "notes": "No independent restaurant-owned website (fruitylocogo.twupro.com, found via search, is a generic AI-template marketing page - literal placeholder menu items 'Chef Special / Daily pick', 'Fresh Salad / Crisp Popular', 'House Soup / Homemade Classic' with no real names or prices - discarded as unusable, not a real source). Prices pulled from order.online (DoorDash white-label storefront, the restaurant's own ordering page), reading the escaped Next.js RSC flight payload (MenuBookCategory list + per-category MenuPageItemList/MenuPageItem objects with displayPrice), not the virtualized DOM grid which renders empty. Captured all 18 real categories; item counts per category matched the platform's own declared numItems exactly (e.g. Tortas 7/7, Juices 6/6), so this is the complete menu, not a sample. Excluded the 'Most Ordered' list (10 items) as a duplicate cross-section of items already counted under their real categories. Ran the markup-divisor test: 1.08 came back 16/44 (36%) clean, other divisors 0-11%; this is above the pure-noise band but well short of the 75-100% a real markup shows, and the menu only has 6 distinct price points total (0.99/2.49/3.99/5.49/6.99/8.49) reused across every category - consistent with a small fruit-stand/loco-snack shop that genuinely prices this way, not delivery inflation. No independent priced first-party or dine-in source was available to fully clear the markup question, hence medium rather than high confidence. Fruit Salad and Fruit Cocktail are priced '5.49+' (has size/add-on options) - recorded at the base price with that noted in description. Categories reached: Tortas, Fruit Salads, Fruit Cocktail, Sweet Fruit Cups, Fruit Cup, Green Salads, Juices, Smoothies, Cha Cha Cha, Aguas Frescas, Clamato, Acai Bowl, Elote, Breakfast, Frappe, Locos, Diablitos, Nachos - this is the full category list from the platform, none skipped.",
+    "dishes": [
+      {
+        "name": "Torta Ham",
+        "description": "Mayo, mustard, lettuce, tomatoes, onions, avocado, jalapeño, American cheese, and chipotle(made from scratch.).",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Turkey Torta",
+        "description": "Mayo, mustard, lettuce, tomatoes, onions, avocado, jalapeño, American cheese, and chipotle(made from scratch.).",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Tuna Torta",
+        "description": "Mayo, mustard, lettuce, tomatoes, onions, avocado, jalapeño, swiss cheese, and chipotle(made from scratch.).",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Lomo Torta",
+        "description": "Mayo, mustard, lettuce, tomatoes, onions, avocado, jalapeño, swiss cheese, and chipotle(made from scratch.).",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chicken Breast Torta",
+        "description": "Mayo, mustard, lettuce, tomatoes, onions, avocado, jalapeño, swiss cheese, and chipotle(made from scratch.).",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Panela Cheese Torta",
+        "description": "Mayo, mustard, lettuce, tomatoes, onions, avocado, jalapeño, and chipotle(made from scratch.).",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Veggie Torta",
+        "description": "Mayo, mustard, lettuce, tomatoes, onions, avocado, jalapeño, swiss cheese, and chipotle(made from scratch.).",
+        "price": "$16.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Fruit Salad",
+        "description": "Mango, strawberry, apple, watermelon, honeydew, bananas, papaya, cantaloupe, raisins, coconut, granola, honey, and cottage cheese. (price shown is starting/base price; item has size or add-on options)",
+        "price": "$15.49",
+        "section": "Fruit Salads"
+      },
+      {
+        "name": "Fruit Cocktail",
+        "description": "Pineapple, jicama, cucumber, mango, coconut, watermelon with lime, chamoy, and tajin. (price shown is starting/base price; item has size or add-on options)",
+        "price": "$15.49",
+        "section": "Fruit Cocktail"
+      },
+      {
+        "name": "Large Strawberries & Cream Cup",
+        "description": "Chopped strawberries, house cream and granola.",
+        "price": "$15.49",
+        "section": "Sweet Fruit Cups"
+      },
+      {
+        "name": "Large Bionico Cup",
+        "description": "Chopped fruit mango, strawberry red apple, honeydew, banana, papaya, cantaloupe, house cream, raisins, coconut and granola.",
+        "price": "$15.49",
+        "section": "Sweet Fruit Cups"
+      },
+      {
+        "name": "Large Escamocha Cup",
+        "description": "Chopped sweet fruit, mango, strawberry red apple, honeydew, banana, papaya, cantaloupe, condensed milk, raisins, coconut, granola, and vanilla ice cream.",
+        "price": "$15.49",
+        "section": "Sweet Fruit Cups"
+      },
+      {
+        "name": "Large Mix Fruit Cup",
+        "description": "Pineapple, jicama, cucumber, mango, coconut, watermelon, lime, chamoy, and tajin.",
+        "price": "$13.99",
+        "section": "Fruit Cup"
+      },
+      {
+        "name": "Large Mango Cup",
+        "description": "Sliced mango with chamoy, tajin, and lime.",
+        "price": "$13.99",
+        "section": "Fruit Cup"
+      },
+      {
+        "name": "Large Coconut Cup",
+        "description": "Sliced coconut with tajin, chamoy and lime.",
+        "price": "$13.99",
+        "section": "Fruit Cup"
+      },
+      {
+        "name": "Large Cucumber Cup",
+        "description": "Chopped cucumber with tajin, chamoy, and lime.",
+        "price": "$13.99",
+        "section": "Fruit Cup"
+      },
+      {
+        "name": "Large Green Salad",
+        "description": "Romaine lettuce, mixed greens, tomato, avocado, cucumber, onions, banana peppers, olives, panela cheese and croutons. Your choice of chicken, turkey, ham or tuna.",
+        "price": "$18.49",
+        "section": "Green Salads"
+      },
+      {
+        "name": "Coconut Juice",
+        "description": "Fresh coconut juice.",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Orange Juice",
+        "description": "Freshly squeezed orange juice.",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Carrot Juice",
+        "description": "Juiced carrots.",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Red Juice",
+        "description": "Freshly squeezed beets, carrots, and oranges.",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Large Green Juice",
+        "description": "Apple, pineapple, celery, kale, spinach, parsley, cucumber, and orange juice.",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "Freshly squeezed apple juice your choice of red or green apple.",
+        "price": "$13.99",
+        "section": "Juices"
+      },
+      {
+        "name": "Large Smoothie",
+        "description": "Your choice of milk or juice. Pick up to 2 fruits.",
+        "price": "$12.49",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Large Chamango",
+        "description": "We drizzle chamoy inside the cup pour in a smoothie top it with chaca-chaca mango chunks and candy straw.",
+        "price": "$13.99",
+        "section": "Cha Cha Cha"
+      },
+      {
+        "name": "Large Chapineapple",
+        "description": "A large pineapple, generously coated in chamoy, rolled in tajin for a sweet, tangy, and slightly spicy finish.",
+        "price": "$13.99",
+        "section": "Cha Cha Cha"
+      },
+      {
+        "name": "Large Chastrawberry",
+        "description": "We drizzle chamoy inside the cup pour in a smoothie top it with chaca-chaca strawberry chunks and candy straw.",
+        "price": "$13.99",
+        "section": "Cha Cha Cha"
+      },
+      {
+        "name": "Large Chawatermelon",
+        "description": "We drizzle chamoy inside the cup pour in a smoothie top it with chaca-chaca watermelon chunks and candy straw.",
+        "price": "$13.99",
+        "section": "Cha Cha Cha"
+      },
+      {
+        "name": "Aguas Frescas",
+        "description": "X-large.",
+        "price": "$10.99",
+        "section": "Aguas Frescas"
+      },
+      {
+        "name": "Large Clamato",
+        "description": "Clamato preparado: clamato, peanuts, cucumber, jicama, pigskin, lime, tajin, chile and chamoy.",
+        "price": "$13.99",
+        "section": "Clamato"
+      },
+      {
+        "name": "Large Acai Bowl",
+        "description": "Bananas, strawberries, honey, coconut, granola.",
+        "price": "$18.49",
+        "section": "Acai Bowl"
+      },
+      {
+        "name": "Large Dragon Fruit Bowl",
+        "description": "Bananas, strawberries, honey, coconut, granola.",
+        "price": "$18.49",
+        "section": "Acai Bowl"
+      },
+      {
+        "name": "Elote Stick",
+        "description": "Coated in creamy mayonnaise, cotija cheese, and chili powder, this corn on the cob is served on a stick with a drizzle of hot sauce.",
+        "price": "$10.99",
+        "section": "Elote"
+      },
+      {
+        "name": "Elote Cup",
+        "description": "Roasted corn combined with mayo, cotija cheese, lime, and a dusting of chili powder, served in a convenient cup.",
+        "price": "$12.49",
+        "section": "Elote"
+      },
+      {
+        "name": "Ham & Cheese Bagel",
+        "description": "Boiled and baked round bread roll.",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Cream Cheese Bagel",
+        "description": "Boiled and baked round bread roll.",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Ham & Cheese Croissant",
+        "description": "A flaky French pastry.",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Large Frappe",
+        "description": "Choice of flavor.",
+        "price": "$12.49",
+        "section": "Frappe"
+      },
+      {
+        "name": "Tostilocos",
+        "description": "Jicama, cucumber, peanuts, pig skin, chaca-chaca, chili, chamoy.",
+        "price": "$15.49",
+        "section": "Locos"
+      },
+      {
+        "name": "Cheetolocos",
+        "description": "Crunchy cheese-flavored snacks, peanuts, and beans mixed with fresh vegetables.",
+        "price": "$15.49",
+        "section": "Locos"
+      },
+      {
+        "name": "Takilocos",
+        "description": "Takilocos typically includes Takis, complemented by cucumber, jicama, Japanese peanuts, cueritos, and a blend of chamoy and Valentina hot sauce.",
+        "price": "$15.49",
+        "section": "Locos"
+      },
+      {
+        "name": "Churolocos",
+        "description": "Churolocos typically feature churros combined with cucumbers, peanuts, tamarind pieces, and cueritos, all tossed with chamoy, tajín, and a variety of hot sauces.",
+        "price": "$15.49",
+        "section": "Locos"
+      },
+      {
+        "name": "Large Mango Diablito",
+        "description": "Swirled mango sorbet topped with chili powder, chamoy sauce, and a tamarind candy stick.",
+        "price": "$13.99",
+        "section": "Diablitos"
+      },
+      {
+        "name": "Large Jalapeno & Cheese Nacho",
+        "description": "Crispy tortilla chips topped with melted cheese and sliced jalapeños.",
+        "price": "$12.49",
+        "section": "Nachos"
+      }
+    ]
+  },
+  {
+    "restaurantId": "933",
+    "name": "Avian Sandwiches Fresh Drinking Water & Boba",
+    "sourceUrl": "https://order.online/en-CA/store/avian-sandwiches-linda-vista-rd-23395731",
+    "confidence": "medium",
+    "notes": "No restaurant-owned website (this business is primarily a water-refill/purification storefront - Yelp category 'Water Purification Services' - that also sells boba, smoothies, banh mi and fresh spring rolls). Prices pulled from order.online (the restaurant's own DoorDash white-label storefront), reading the escaped Next.js RSC flight payload (MenuBookCategory + MenuPageItemList/MenuPageItem with displayPrice), not the empty virtualized DOM. Per-category item counts matched the platform's declared numItems exactly (Tea 7/7, Smoothies 19/19, Special Rolls 8/8, etc.) confirming this is the complete menu. Excluded the duplicate 'Most Ordered' list (10 items already counted under their real categories). Ran the markup-divisor test across 1.04-1.50: only 1.30 stood out (15/48 items, 31% clean), which sits in the ambiguous band between the playbook's noise range (18-30%) and a real markup (75-100%) - not a clear uniform markup, but flagged rather than ignored. A WebSearch summary separately quoted lower prices for several drinks (e.g. milk tea ~.45 vs the .45 read here, ~1.3x apart, which lines up with that same 1.30 divisor) sourced from lower-tier aggregators (restaurantguru.com, bestprosintown.com) that I could not reach directly (curl/WebFetch got no independent confirmation, and Uber Eats/Postmates both bot-block curl and WebFetch with a 403/challenge - no browser available this run). Since I could not independently verify either number on a live page, and order.online is the only source I could directly fetch and structurally validate, it is used here at medium confidence with the discrepancy stated rather than silently resolved. A Chrome-equipped agent should open Uber Eats or Postmates directly to settle whether .45-class pricing is real and current or a stale aggregator artifact. Categories reached: Tea, Latte, Juice, Smoothies, Dessert, Food, Special Rolls - the platform's full category list, none skipped.",
+    "dishes": [
+      {
+        "name": "Thai Tea",
+        "description": "Sweet and creamy Thai tea with chewy tapioca pearls, topped with a swirl of whipped cream.",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Milk Tea",
+        "description": "A soothing blend of black tea and milk, often sweetened to enhance the flavor.",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Milk Green Tea",
+        "description": "Milk green tea is a smooth blend of brewed green tea sweetened with milk, offering a refreshing and creamy taste.",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Taro Milk Tea",
+        "description": "Taro milk tea combines taro root puree with brewed tea and milk, typically served with tapioca pearls.",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Honeydew Milk Tea",
+        "description": "A refreshing blend of sweet honeydew flavor mixed with brewed tea and milk.",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Jasmine Milk Green Tea",
+        "description": "Jasmine green tea blended with milk, offering a harmonious mix of floral jasmine notes and creamy undertones.",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Jasmine Green Tea",
+        "description": "Green tea delicately scented with jasmine blossoms, offering a soothing and aromatic experience.",
+        "price": "$8.45",
+        "section": "Tea"
+      },
+      {
+        "name": "Iced Latte",
+        "description": "Chilled espresso and milk, perfectly blended for a refreshing coffee experience.",
+        "price": "$8.45",
+        "section": "Latte"
+      },
+      {
+        "name": "Vietnamese Iced Coffee (small)",
+        "description": "Vietnamese coffee, sweetened condensed milk, iced, available in small or large.",
+        "price": "$7.80",
+        "section": "Latte"
+      },
+      {
+        "name": "HOT CHOCOLATE",
+        "description": "Smooth, rich chocolate drink, perfectly steamed to warm your soul.",
+        "price": "$7.80",
+        "section": "Latte"
+      },
+      {
+        "name": "Vietnamese Iced coffee (Large)",
+        "description": "Brewed with strong coffee and sweetened condensed milk, served chilled.",
+        "price": "$13.65",
+        "section": "Latte"
+      },
+      {
+        "name": "Passionfruit Juice",
+        "description": "Freshly extracted passionfruit juice, offering a sweet and tangy flavor profile.",
+        "price": "$10.40",
+        "section": "Juice"
+      },
+      {
+        "name": "Sugarcane Juice (small)",
+        "description": "Freshly pressed sugarcane juice, small serving. Option to choose large.",
+        "price": "$10.40",
+        "section": "Juice"
+      },
+      {
+        "name": "Pennywort Juice",
+        "description": "Pennywort juice, available in small or large sizes.",
+        "price": "$10.40",
+        "section": "Juice"
+      },
+      {
+        "name": "SUGAR CANE (LRG)",
+        "description": "Freshly extracted sugar cane juice, offering a sweet and natural taste.",
+        "price": "$14.30",
+        "section": "Juice"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "Creamy Thai tea with chewy tapioca pearls, topped with whipped cream.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Milk Tea",
+        "description": "Classic milk tea, typically includes brewed tea and milk, often sweetened to enhance the flavor.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Milk Green Tea",
+        "description": "Brewed green tea blended with milk, typically includes a sweetener.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Taro",
+        "description": "Creamy taro smoothie blended with milk and ice, featuring chewy tapioca pearls at the bottom.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Honeydew",
+        "description": "Honeydew, blended with hints of other complementary fruits, typically includes a base of apple or pear juice for sweetness.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Pineapple",
+        "description": "Pineapple blended with a mix of other fruits and sweeteners, often including ingredients like honey or coconut milk.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Mocha Blast",
+        "description": "Coffee and chocolate blended with milk, typically includes a touch of sweetener.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Cherry",
+        "description": "Cherries blended with a mix of other fruits, typically sweetened with honey or agave, and enriched with almond milk or yogurt for a smooth texture.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Lychee",
+        "description": "Lychee smoothie typically includes pureed lychee, banana, and a hint of agave syrup, blended to a smooth consistency.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Banana",
+        "description": "Banana blended with milk and a hint of honey, creating a smooth and refreshing drink.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry",
+        "description": "Creamy blend of fresh strawberries with chewy tapioca pearls.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Coconut",
+        "description": "Coconut milk blended with a selection of tropical fruits, typically featuring pineapple, mango, and banana.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry Banana",
+        "description": "Strawberries and bananas blended with milk or yogurt, often sweetened with honey or agave syrup.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Piña Colada",
+        "description": "Pineapple and coconut blended into a smoothie, often including banana or coconut milk for a creamy texture.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Avocado",
+        "description": "Avocado smoothie typically includes blended avocado with a mix of banana, almond milk, and a hint of natural sweeteners.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Mango",
+        "description": "Blended fresh mango with a hint of honey and Greek yogurt, offering a creamy and tropical flavor profile.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Jackfruit",
+        "description": "Jackfruit smoothie typically includes fresh jackfruit blended with banana, a hint of lime, and coconut milk for a tropical flavor.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Soursop",
+        "description": "Soursop, typically includes a blend of soursop fruit with ingredients such as banana or pineapple to enhance its creamy, tropical flavor.",
+        "price": "$11.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Durian",
+        "description": "Durian blended with condensed milk, evaporated milk, and a hint of sugar.",
+        "price": "$12.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Che Thai",
+        "description": "A dessert featuring a mix of tropical fruits and jellies, often accompanied by coconut milk.",
+        "price": "$10.50",
+        "section": "Dessert"
+      },
+      {
+        "name": "Pandan Leaf  Jello",
+        "description": "Layered pandan leaf jello with alternating green and white stripes, offering a visually appealing and unique dessert experience.",
+        "price": "$10.50",
+        "section": "Dessert"
+      },
+      {
+        "name": "Coconut Jello",
+        "description": "Smooth and creamy coconut jello with a delicate, layered texture and subtle coconut flavor.",
+        "price": "$10.50",
+        "section": "Dessert"
+      },
+      {
+        "name": "Spring Rolls (Authentic)",
+        "description": "Fresh rice paper wraps filled with shrimp, lettuce, and herbs. Served with a side of hoisin and peanut dipping sauce.",
+        "price": "$15.50",
+        "section": "Food"
+      },
+      {
+        "name": "Banh Mi (Authentic)",
+        "description": "Choice of jalapenos, veggie ham, special, grilled pork/chicken/beef, pork loaf, Vietnamese ham, avocado, tuna, egg, meatball, turkey/avocado. Served in a crusty  French Roll",
+        "price": "$11.65",
+        "section": "Food"
+      },
+      {
+        "name": "PORK BAO BUN (Authentic)",
+        "description": "Soft steamed bun filled with savory, marinated pork.",
+        "price": "$5.50",
+        "section": "Food"
+      },
+      {
+        "name": "Grilled Pork",
+        "description": "Grilled pork served on a bread roll, typically includes fresh cilantro, pickled vegetables, and a spread of garlic aioli.",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Grilled Chicken",
+        "description": "Grilled chicken typically paired with lettuce, tomato, and provolone cheese, often finished with a touch of mayo on a roll.",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Grilled Pork Loaf",
+        "description": "Grilled pork loaf typically includes a savory blend of seasoned pork, enveloped in a crusty roll, complemented by a selection of herbs and condiments.",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Shrimp",
+        "description": "Shrimp roll typically includes seasoned shrimp combined with a selection of fresh vegetables, wrapped in a soft, thin bread.",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Pork Belly",
+        "description": "Pork belly, often accompanied by a variety of pickled vegetables, sauces like aioli or sriracha, and occasionally cheese, served in a freshly baked roll.",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Tofu",
+        "description": "Tofu typically includes fresh, marinated tofu accompanied by a variety of vegetables and a savory sauce, wrapped or layered in a special roll.",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Egg",
+        "description": "Egg roll typically includes a soft, house-made roll filled with scrambled or fried eggs.",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Veggie",
+        "description": "",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      }
+    ]
+  }
+]
