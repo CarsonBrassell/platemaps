@@ -725,9 +725,15 @@ h3 {
    color-only on press. Icons that scale under the cursor make the card twitch
    at the moment you're reading what you just did to it. See PostActions. */
 
+/* The sweep travels as a transform on an overlay rather than as a moving
+   background-position. Percentage background positions are resolved against
+   (container - image) width, which reverses direction as soon as the image is
+   wider than the box and made the old sweep run the wrong way at some sizes.
+   A translate is unambiguous and is what the pattern everyone recognises
+   actually uses. */
 @keyframes shimmer {
-  from { background-position: -180% 0; }
-  to   { background-position: 180% 0; }
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
 }
 
 @keyframes rank-rise {
@@ -785,17 +791,61 @@ h3 {
   animation: points-float 1.6s ease-out forwards;
 }
 
-/* Skeleton blocks: a warm sweep rather than a grey pulse, so loading state
-   still reads as the same paper surface as the loaded card. */
+/*
+ * Skeleton blocks — the shimmer every app shows while something loads.
+ *
+ * A flat base with a highlight band sliding across it, which is the shape
+ * people already read as "loading". It used to be a three-stop gradient moved
+ * by background-position, and the highlight was so close to the base
+ * (#f7f2ea on #efe9e0) that the sweep barely showed at all — it looked like a
+ * static grey box, which is the thing a skeleton exists not to be.
+ *
+ * Warm, not the usual cold grey: these sit on the cream ground, and a neutral
+ * grey block reads as a hole in the page rather than as the card that is about
+ * to arrive.
+ */
 .skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--pm-grey-tint);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background-image: linear-gradient(
     90deg,
-    var(--pm-grey-tint) 0%,
-    #f7f2ea 45%,
-    var(--pm-grey-tint) 90%
+    transparent 0%,
+    rgba(255, 255, 255, 0.9) 50%,
+    transparent 100%
   );
-  background-size: 180% 100%;
-  animation: shimmer 1.4s linear infinite;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/*
+ * The same thing for the map, which is the one dark surface in a cream app
+ * (DESIGN.md's night-map exception). A cream skeleton over the tiles would
+ * flash white in the middle of the dark chrome, so the base and the highlight
+ * both come down to the map's own palette.
+ */
+.skeleton-dark {
+  position: relative;
+  overflow: hidden;
+  background-color: #22262e;
+}
+
+.skeleton-dark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.07) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.5s ease-in-out infinite;
 }
 
 /* Horizontal snap track for the post media carousel. */
@@ -848,9 +898,18 @@ img {
   .points-float,
   .badge-arrive,
   .ring-pulse,
-  .tap-flash,
-  .skeleton {
+  .tap-flash {
     animation: none;
+  }
+
+  /* The sweep lives on the overlay, so that is what has to stop — killing the
+     animation on the block itself would leave the band parked mid-sweep as a
+     permanent bright stripe. Hidden outright: a still highlight is not a
+     loading signal, and the flat base already reads as a placeholder. */
+  .skeleton::after,
+  .skeleton-dark::after {
+    animation: none;
+    opacity: 0;
   }
 
   .points-float { opacity: 1; }

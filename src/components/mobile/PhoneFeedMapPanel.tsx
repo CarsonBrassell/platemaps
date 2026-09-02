@@ -98,12 +98,15 @@ const RestaurantMap = dynamic(
        colour at the map's fixed 540px; here it is `h-full`, because the phone
        map is sized by its container (see the wrapper below). */
     loading: () => (
+      /* The map is the one dark surface here, so its placeholder shimmers in
+         the map's own palette rather than flashing a cream block over the
+         tiles. Same height and radius as what replaces it, so nothing
+         resizes under the reader when the chunk lands. */
       <div
         role="status"
-        className="flex h-full w-full items-center justify-center bg-[#191c22] font-mono text-sm text-[#8b939c]"
-      >
-        Loading map…
-      </div>
+        aria-label="Loading map"
+        className="skeleton-dark h-full w-full rounded-xl"
+      />
     ),
   },
 );

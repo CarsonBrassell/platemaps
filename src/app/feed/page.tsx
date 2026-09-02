@@ -44,10 +44,9 @@ const RestaurantMap = dynamic(
     loading: () => (
       <div
         role="status"
-        className="flex h-[540px] w-full items-center justify-center rounded-xl bg-[#191c22] font-mono text-sm text-[#8b939c]"
-      >
-        Loading map…
-      </div>
+        aria-label="Loading map"
+        className="skeleton-dark h-[540px] w-full rounded-xl"
+      />
     ),
   },
 );
