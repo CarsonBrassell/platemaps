@@ -17,6 +17,7 @@ import { PhotoPrivacyNotice } from "@/components/post/PhotoPrivacyNotice";
 import type { PostMedia } from "@/components/feed/types";
 import { CharCount } from "@/components/post/CharCount";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
+import { tapFlash } from "@/lib/tapFlash";
 
 /**
  * Posting a plate, phone version.
@@ -48,7 +49,7 @@ const legend = "mono-label mb-1.5 block text-zinc-500";
    under the floor AGENTS.md sets. Everything else about the chip is the web
    version's. */
 const chip =
-  "min-h-11 rounded-full px-3.5 text-xs font-medium transition-all hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+  "min-h-11 rounded-full px-3.5 text-sm font-medium transition-all hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
 export default function PhonePost() {
   const router = useRouter();
@@ -563,10 +564,15 @@ export default function PhonePost() {
                           aria-pressed={on}
                           // Tapping the chosen one again clears it — "best at"
                           // is a claim, and there has to be a way to unmake it.
-                          onClick={() => setBestAt(on ? null : b.label)}
+                          onClick={(e) => {
+                            /* Flash only, no hold: a chip toggles in place, so
+                               there is no step change to wait for. */
+                            tapFlash(e.currentTarget);
+                            setBestAt(on ? null : b.label);
+                          }}
                           className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
                             on
-                              ? "bg-pm-charcoal text-white"
+                              ? "bg-pm-orange text-[#F7F4EC]"
                               : "bg-pm-grey-tint text-pm-grey-text hover:text-zinc-900"
                           }`}
                         >
@@ -600,17 +606,28 @@ export default function PhonePost() {
                           type="button"
                           aria-pressed={on}
                           disabled={isBest}
-                          onClick={() => setWorstAt(on ? null : b.label)}
+                          onClick={(e) => {
+                            /* Flash only, no hold: a chip toggles in place, so
+                               there is no step change to wait for. */
+                            tapFlash(e.currentTarget);
+                            setWorstAt(on ? null : b.label);
+                          }}
+                          /* Orange, not the `red-700` DESIGN.md gives "let you
+                             down" — both chip groups wear the one accent now.
+                             That makes hue useless as the tell, and these two
+                             rows render the *same* BEST_AT emoji and labels, so
+                             the picked fault is struck through instead: a
+                             strength and a fault can no longer read alike. */
                           className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
                             isBest
                               ? "cursor-not-allowed bg-pm-grey-tint/40 text-zinc-400"
                               : on
-                                ? "bg-red-700 text-white"
-                                : "bg-pm-grey-tint text-pm-grey-text hover:text-red-700"
+                                ? "bg-pm-orange text-[#F7F4EC]"
+                                : "bg-pm-grey-tint text-pm-grey-text hover:text-pm-orange-text"
                           }`}
                         >
                           <span aria-hidden="true">{b.emoji}</span>
-                          {b.label}
+                          <span className={on ? "line-through" : undefined}>{b.label}</span>
                         </button>
                       );
                     })}

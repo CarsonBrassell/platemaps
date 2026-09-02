@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { placeLine } from "@/lib/placeLine";
+import { tapFlash } from "@/lib/tapFlash";
 
 /**
  * What this picker needs of a restaurant, and nothing else.
@@ -115,7 +116,7 @@ export function RestaurantPicker({
               <li key={r.id}>
                 <button
                   type="button"
-                  onClick={() => onSelect(r)}
+                  onClick={(e) => tapFlash(e.currentTarget, () => onSelect(r))}
                   aria-pressed={on}
                   className={`flex min-h-14 w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-pm-orange ${
                     on ? "bg-pm-orange-tint/60" : "hover:bg-pm-grey-tint/60"
@@ -144,7 +145,7 @@ export function RestaurantPicker({
       {onSkip && (
         <button
           type="button"
-          onClick={onSkip}
+          onClick={(e) => tapFlash(e.currentTarget, onSkip)}
           className="mt-4 min-h-11 w-full rounded-full bg-pm-grey-tint/60 px-4 text-sm text-pm-grey-text transition-colors hover:bg-pm-grey-tint hover:text-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
         >
           Not about a particular place

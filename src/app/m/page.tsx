@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandMark, WordMark } from "@/components/BrandMark";
+import { PhoneDiscoverSearch } from "@/components/mobile/PhoneDiscoverSearch";
 import { PhoneFilterBar } from "@/components/mobile/PhoneFilterBar";
 import type {
   PhoneFilterChip,
@@ -287,33 +288,19 @@ export default async function PhoneDiscover({
         reachable, and it is.
       */}
       <header className="px-4 pb-3 pt-4">
-        <div className="flex items-center justify-between gap-3">
-          {/* BrandMark ships at its artwork size (165×210) and relies on the
-              caller to size it — see its header comment. Sized and set
-              (text-[19px] on the wrapper, which is what WordMark's bare span
-              inherits) to echo the desktop header's own brand lockup — see
-              Header.tsx's `text-[22px]` Link — rather than the smaller
-              default this screen used to carry. */}
-          <span className="flex items-center gap-2.5 text-[19px]">
-            <BrandMark className="h-9 w-9" />
-            <WordMark tone="dark" />
-          </span>
-          {/* Rightmost element is the one circular icon, flush to the edge —
-              the same bilateral shape the desktop header closes on with its
-              avatar circle (Header.tsx), rather than a text link trailing
-              past the icon. */}
-          <span className="flex shrink-0 items-center gap-1">
-            <Link
-              href="/"
-              /* An escape hatch while both versions are live and being compared.
-                 Not a permanent feature — when UA routing lands this becomes a
-                 "view desktop site" affordance or disappears entirely. */
-              className="min-h-11 shrink-0 self-center rounded-full px-2 font-mono text-[11px] text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
-            >
-              Web version
-            </Link>
-          </span>
-        </div>
+        {/* The brand lockup is the whole top row now. It used to be one half of
+            a `justify-between` pair, with a "Web version" escape hatch closing
+            the right edge while both versions were live and being compared;
+            that link is gone, and with nothing to sit opposite, the row that
+            spaced them apart went with it. BrandMark ships at its artwork size
+            (165×210) and relies on the caller to size it — see its header
+            comment. Sized and set (text-[19px] on the wrapper, which is what
+            WordMark's bare span inherits) to echo the desktop header's own
+            brand lockup — see Header.tsx's `text-[22px]` Link. */}
+        <span className="flex items-center gap-2.5 text-[19px]">
+          <BrandMark className="h-9 w-9" />
+          <WordMark tone="dark" />
+        </span>
 
         <h1 className="font-display mt-4 text-[26px] font-semibold leading-tight tracking-tight text-zinc-900">
           {heading}
@@ -324,7 +311,12 @@ export default async function PhoneDiscover({
         </p>
       </header>
 
-      <div className="px-4 pb-4">
+      {/* Search above the filters, because a name is the question most people
+          arrive with and Discover is the screen they arrive at. The page could
+          already be narrowed by `?q=` — the heading and the summary chip both
+          read it — but nothing here could produce one. */}
+      <div className="flex flex-col gap-2.5 px-4 pb-4">
+        <PhoneDiscoverSearch value={filters.q ?? ""} />
         <PhoneFilterBar model={model} />
       </div>
 

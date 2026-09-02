@@ -6,9 +6,11 @@ import type { FeedTab } from "@/components/feed/types";
  * The feed's screen tabs, phone version.
  *
  * Rank 2 in DESIGN.md's control hierarchy: plain text, the active tab marked by
- * weight and a short orange underline. **Never pills** — the phone nav at the
- * bottom is rank 1 and the comment sort inside CommentsScreen is rank 3, so if
- * this wore a pill the three would read as one menu in three places.
+ * weight, orange ink and a short orange underline. **Never pills** — the phone
+ * nav at the bottom is rank 1 and the comment sort inside CommentsScreen is
+ * rank 3, so if this wore a pill the three would read as one menu in three
+ * places. The accent moving into the label is still rank 2: the row gains no
+ * track and no fill, so what separates it from rank 1 is unchanged.
  *
  * **The feed leads, and it is the screen's launch view** (PhoneFeedScreen's
  * initial tab). The order is the web's, in the same sequence, which is the
@@ -52,6 +54,12 @@ export function PhoneFeedTabs({
    * onto the map without turning into a third kind of control. The active
    * underline stays `--pm-orange`: it is the one accent, and it reads on both
    * grounds.
+   *
+   * The active *label* is the one thing that does not carry across. On cream it
+   * is `--pm-orange-text` (#A8481A), which is the darkened orange that clears
+   * 4.5:1 at label sizes — and darkening is exactly what makes it illegible
+   * against the night tiles, so here the active tab stays cream and the
+   * underline alone carries the accent.
    */
   onDark = false,
 }: {
@@ -59,8 +67,15 @@ export function PhoneFeedTabs({
   onChange: (tab: FeedTab) => void;
   onDark?: boolean;
 }) {
+  /* text-base, not the web's text-sm: these are read at arm's length, and the
+     row can afford it. Measured at 390px: the three labels plus their two 20px
+     gaps come to 202px (worst case, "Friends feed" active and so bold) inside
+     the 358px `px-4` leaves, so nothing wraps or truncates. That 156px of slack
+     is what the larger size is spending, and it only exists because this row
+     has nothing else on it — the sort switch and search sit on the row below
+     (see PhoneFeedScreen). Anything that joins this row has to re-measure. */
   return (
-    <div role="tablist" aria-label="Feed filter" className="flex items-center gap-5 text-sm">
+    <div role="tablist" aria-label="Feed filter" className="flex items-center gap-5 text-base">
       {TABS.map((tab) => {
         const on = tab.value === active;
         return (
@@ -92,7 +107,10 @@ export function PhoneFeedTabs({
                   ? "font-semibold text-[#F7F4EC]"
                   : "text-[#d3dae1]"
                 : on
-                  ? "font-semibold text-zinc-900"
+                  ? /* --pm-orange-text, never --pm-orange: at a 16px label this
+                       is small text, and the undarkened orange is a fill/large-
+                       numeral colour that misses 4.5:1 on cream (AGENTS.md). */
+                    "font-semibold text-pm-orange-text"
                   : /* On the cream ground, so --pm-grey-text rather than
                        zinc-500, which is only 4.28:1 here. */
                     "text-pm-grey-text"

@@ -177,6 +177,42 @@ function clamp(n: number, lo: number, hi: number) {
  */
 export function plateScoreLabel(score: PlateScore): string {
   if (score.percent !== null) return `${score.percent}%`;
-  if (score.dishCount === 0) return "No plates rated yet";
-  return score.dishCount === 1 ? "1 plate rated" : `${score.dishCount} plates rated`;
+  /* Kept short enough for the narrowest container that shows it — the chip on
+     a Discover grid card, which is a third of a 375px screen. "6 plates from a
+     score" wrapped to two lines there and read as a paragraph on a photo. */
+  if (score.dishCount === 0) return "Be the first";
+  return `${plateScoreGap(score)} to a score`;
+}
+
+/**
+ * How many more plates have to be rated before this restaurant gets a score.
+ *
+ * The floor needs `MIN_RATED_DISHES` distinct dishes *and* `MIN_TOTAL_RATINGS`
+ * ratings, and a rating on a dish nobody has rated yet advances both at once —
+ * so the smallest number of ratings that can clear the floor is whichever of
+ * the two shortfalls is larger. That is the number to ask someone for. Rating
+ * a dish that already has a rating still helps the total but not the count,
+ * which is why this is a floor on the ask rather than a promise.
+ *
+ * ## Why this exists
+ *
+ * Below the floor the label used to read "No plates rated yet" or "3 plates
+ * rated" — true, and inert. It described a hole. Measured against the live
+ * corpus, exactly **one restaurant of 5,694** clears the floor, so that
+ * inert sentence was the product's answer on 99.98% of its own pages, with
+ * borrowed Yelp stars carrying the surface underneath it.
+ *
+ * Turning the same fact into a countdown makes it an ask instead: the gap is
+ * usually small (40 restaurants sit within seven ratings of a score), it is
+ * attached to a specific place the reader is already looking at, and the
+ * action it invites — rate a plate — is the exact behaviour the corpus needs
+ * to become worth anything.
+ */
+export function plateScoreGap(score: PlateScore): number {
+  if (score.ready) return 0;
+  return Math.max(
+    MIN_RATED_DISHES - score.dishCount,
+    MIN_TOTAL_RATINGS - score.ratingCount,
+    0,
+  );
 }

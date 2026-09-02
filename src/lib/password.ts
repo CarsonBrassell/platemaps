@@ -13,15 +13,28 @@
  * type and the server can run it again on submit. The client copy is a
  * courtesy; the server call is the one that decides.
  *
- * **Deliberately not here: composition rules.** No required digit, symbol or
- * capital. They push people toward `Password1!` — which satisfies every rule
- * and is on the list below — and away from length, which is the only property
- * that actually costs an attacker anything. This follows NIST SP 800-63B:
- * length floor, blocklist, nothing else.
+ * **The rule was changed by the owner, against the advice below.** It is now
+ * six characters with at least one digit, down from an eight-character floor
+ * with no composition rule.
+ *
+ * The original reasoning, kept because it is still true and because whoever
+ * revisits this should see both sides: NIST SP 800-63B says length floor,
+ * blocklist, nothing else. A required digit pushes people toward `Password1!`
+ * — which satisfies every composition rule ever written and is on the
+ * blocklist below — and away from length, which is the only property that
+ * actually costs an attacker anything. Six characters with a digit is a
+ * weaker secret than eight without one.
+ *
+ * What survived: the blocklist and the identity checks, which do more work
+ * than either rule. If the floor goes back up, change MIN_PASSWORD_LENGTH and
+ * drop REQUIRE_DIGIT — both ends read from here.
  */
 
-/** Eight is the NIST floor for a human-chosen secret. */
-export const MIN_PASSWORD_LENGTH = 8;
+/** Six, by owner decision. NIST's floor for a human-chosen secret is eight. */
+export const MIN_PASSWORD_LENGTH = 6;
+
+/** At least one 0-9. See the note above about what this trades away. */
+export const REQUIRE_DIGIT = true;
 
 /**
  * bcrypt hashes the first 72 **bytes** and silently ignores the rest, so
@@ -60,6 +73,10 @@ export function checkPassword(
     return `Use at least ${MIN_PASSWORD_LENGTH} characters.`;
   }
 
+  if (REQUIRE_DIGIT && !/[0-9]/.test(password)) {
+    return "Include at least one number.";
+  }
+
   if (new TextEncoder().encode(password).length > MAX_PASSWORD_BYTES) {
     return "That's too long — keep it under 72 characters.";
   }
@@ -86,4 +103,4 @@ export function checkPassword(
 }
 
 /** The one-line rule, for the hint under a password field. */
-export const PASSWORD_HINT = `At least ${MIN_PASSWORD_LENGTH} characters. Longer beats complicated — a short phrase is stronger than a word with symbols in it.`;
+export const PASSWORD_HINT = `At least ${MIN_PASSWORD_LENGTH} characters and one number. Longer still beats complicated — a short phrase with a digit in it is stronger than a word with symbols.`;

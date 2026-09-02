@@ -140,6 +140,11 @@ export function PostMediaCarousel({
                 loading={i === 0 ? "eager" : "lazy"}
                 decoding="async"
                 onError={() => setFailed((prev) => ({ ...prev, [i]: true }))}
+                /* Belt to the stylesheet's braces: the `img` rule in
+                   globals.css stops the iOS lift, and this stops the desktop
+                   drag ghost for browsers that honour the attribute but not
+                   the property. See that rule for why the photo moved. */
+                draggable={false}
                 className="h-full w-full object-cover"
               />
             )}

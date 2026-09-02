@@ -88,12 +88,28 @@ export async function GET(req: Request) {
       getRestaurantMapRows(),
       getAllRestaurantPlateScores(),
     ]);
+    /*
+     * A restaurant with no rated plates sends no `plateScore` at all, and the
+     * client substitutes `EMPTY_PLATE_SCORE` — which is what that constant is
+     * exported for ("a restaurant absent from an aggregate and one with no
+     * ratings are the same restaurant").
+     *
+     * It is worth a branch because of how lopsided the corpus is: measured on
+     * production, 4,768 of 4,792 rows — 99.5% — carried the identical
+     * `{percent:null,dishCount:0,ratingCount:0,ready:false}`, which is 344 KB
+     * of the 1,133 KB this endpoint shipped. Both map surfaces fetch it on
+     * mount and parse it on the main thread, so that repetition was paid for
+     * in phone jank, twice.
+     *
+     * This shrinks as the corpus gets rated, which is the right direction: the
+     * payload grows only with restaurants that actually have a score to send.
+     */
     return NextResponse.json(
       {
-        restaurants: rows.map((r) => ({
-          ...r,
-          plateScore: plates[r.id] ?? EMPTY_PLATE_SCORE,
-        })),
+        restaurants: rows.map((r) => {
+          const plateScore = plates[r.id];
+          return plateScore ? { ...r, plateScore } : r;
+        }),
       },
       { headers: { "Cache-Control": CACHE_CONTROL } },
     );

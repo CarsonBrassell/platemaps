@@ -76,8 +76,13 @@ which carries at 14px medium and above and must never be asked to hold a
 label-sized line. If a screen has more than about three orange elements beyond
 the per-card data numbers, remove some.
 
-Semantic colors stay tiny: emerald dot = open/up, `red-700` = destructive or
-"let you down". Avatars use the muted warm `AVATAR_PALETTE` in
+Semantic colors stay tiny: emerald dot = open/up, `red-700` = destructive.
+It no longer marks "let you down" — the composer's fault chips were moved onto
+the one accent by owner decision, which left hue unable to separate a picked
+strength from a picked fault (both rows render the same `BEST_AT` labels), so
+**a selected fault is struck through instead**. Both composers do this; they
+are one flow and a colour they disagree about is a bug. Avatars use the muted
+warm `AVATAR_PALETTE` in
 `src/lib/format.ts`.
 
 ## Shape

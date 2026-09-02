@@ -272,9 +272,9 @@ export async function getDiscoverPage(
  */
 export type PostPlaces = Record<string, FeedPlace>;
 
-/** Keys the dish index. ` ` cannot occur in a name, so it cannot collide. */
+/** Keys the dish index. `\0` cannot occur in a name, so it cannot collide. */
 function dishKey(restaurantId: string, name: string): string {
-  return `${restaurantId} ${name.trim().toLowerCase()}`;
+  return `${restaurantId}\0${name.trim().toLowerCase()}`;
 }
 
 export async function resolvePostRefs<

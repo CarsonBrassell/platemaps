@@ -17,6 +17,7 @@ import { PhotoPrivacyNotice } from "@/components/post/PhotoPrivacyNotice";
 import type { PostMedia } from "@/components/feed/types";
 import { CharCount } from "@/components/post/CharCount";
 import { MAX_POST_TEXT } from "@/lib/postLimits";
+import { tapFlash } from "@/lib/tapFlash";
 
 /**
  * Posting a plate, as a page rather than a modal.
@@ -50,7 +51,7 @@ const noteField =
   "w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-base transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
 const legend = "mono-label mb-1.5 block text-zinc-500";
 const chip =
-  "min-h-9 rounded-full px-3 text-xs font-medium transition-all hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
+  "min-h-9 rounded-full px-3 text-sm font-medium transition-all hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";
 
 function PostComposer() {
   const router = useRouter();
@@ -528,10 +529,15 @@ function PostComposer() {
                           aria-pressed={on}
                           // Tapping the chosen one again clears it — "best at"
                           // is a claim, and there has to be a way to unmake it.
-                          onClick={() => setBestAt(on ? null : b.label)}
+                          onClick={(e) => {
+                            /* Flash only, no hold: a chip toggles in place, so
+                               there is no step change to wait for. */
+                            tapFlash(e.currentTarget);
+                            setBestAt(on ? null : b.label);
+                          }}
                           className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
                             on
-                              ? "bg-pm-charcoal text-white"
+                              ? "bg-pm-orange text-[#F7F4EC]"
                               : "bg-pm-grey-tint text-pm-grey-text hover:text-zinc-900"
                           }`}
                         >
@@ -569,17 +575,30 @@ function PostComposer() {
                           type="button"
                           aria-pressed={on}
                           disabled={isBest}
-                          onClick={() => setWorstAt(on ? null : b.label)}
+                          onClick={(e) => {
+                            /* Flash only, no hold: a chip toggles in place, so
+                               there is no step change to wait for. */
+                            tapFlash(e.currentTarget);
+                            setWorstAt(on ? null : b.label);
+                          }}
                           className={`${on ? "chip-pop" : ""} ${chip} flex items-center gap-1.5 ${
                             isBest
                               ? "cursor-not-allowed bg-pm-grey-tint/40 text-zinc-400"
                               : on
-                                ? "bg-red-700 text-white"
-                                : "bg-pm-grey-tint text-pm-grey-text hover:text-red-700"
+                          /* Orange, not the `red-700` DESIGN.md gives "let you
+                             down" — both chip groups wear the one accent now.
+                             That makes hue useless as the tell, and these two
+                             rows render the *same* BEST_AT emoji and labels, so
+                             the picked fault is struck through instead. Kept in
+                             step with the phone composer deliberately: these two
+                             files are one flow, and a colour they disagree about
+                             is a bug (CLAUDE.md). */
+                                ? "bg-pm-orange text-[#F7F4EC]"
+                                : "bg-pm-grey-tint text-pm-grey-text hover:text-pm-orange-text"
                           }`}
                         >
                           <span aria-hidden="true">{b.emoji}</span>
-                          {b.label}
+                          <span className={on ? "line-through" : undefined}>{b.label}</span>
                         </button>
                       );
                     })}

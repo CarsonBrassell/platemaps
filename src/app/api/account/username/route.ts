@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { accountJson } from "@/lib/account";
 import { getUserByName, getUserById, updateUserName } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { BLOCKED_MESSAGE, moderateUsername } from "@/lib/moderation";
+import { userConflictMessage } from "@/lib/uniqueViolation";
 
 /** The signup rule, repeated deliberately rather than imported from that
     route — a route importing another route's constant is a circular-ish
@@ -43,6 +45,13 @@ export async function POST(req: Request) {
     );
   }
 
+  /* Held to the stricter tier: a handle is printed on every post, comment and
+     leaderboard row its owner touches, so ordinary profanity that is fine
+     inside one review is not fine as a name. See moderateUsername. */
+  if (moderateUsername(name).action === "block") {
+    return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });
+  }
+
   if (name === user.name) {
     return NextResponse.json({ error: "That's already your username." }, { status: 400 });
   }
@@ -54,7 +63,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "That username is already taken." }, { status: 409 });
   }
 
-  await updateUserName(user.id, name);
+  /* Same race as signup, same backstop: the check above and this write are two
+     statements, and the unique index is what actually keeps the name single.
+     See lib/uniqueViolation.ts. */
+  try {
+    await updateUserName(user.id, name);
+  } catch (error) {
+    const conflict = userConflictMessage(error);
+    if (!conflict) throw error;
+    return NextResponse.json({ error: conflict }, { status: 409 });
+  }
 
   const fresh = await getUserById(user.id);
   if (!fresh) return NextResponse.json({ error: "Account not found." }, { status: 404 });

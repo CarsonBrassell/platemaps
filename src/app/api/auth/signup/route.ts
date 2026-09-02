@@ -5,6 +5,9 @@ import { randomUUID } from "node:crypto";
 import { getUserByEmail, getUserByName, createUser, createSession } from "@/lib/db";
 import { setSessionCookie } from "@/lib/session";
 import { checkPassword } from "@/lib/password";
+import { checkEmail, normalizeEmail } from "@/lib/emailAddress";
+import { BLOCKED_MESSAGE, moderateUsername } from "@/lib/moderation";
+import { userConflictMessage } from "@/lib/uniqueViolation";
 
 /** Same charset a handle already renders in — no space could survive
     FoodPostCard's handleFor() anyway, so a signup that let one through would
@@ -18,6 +21,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Fill in every field." }, { status: 400 });
   }
 
+  /* Shape-checked before anything else touches it. An address that cannot
+     receive mail produces an account that can never verify, reset or recover —
+     every route out of that state mails a link. Normalised at the same time so
+     the uniqueness check below and every later lookup compare the same
+     string. */
+  const badEmail = checkEmail(String(email));
+  if (badEmail) {
+    return NextResponse.json({ error: badEmail }, { status: 400 });
+  }
+  const address = normalizeEmail(String(email));
+
   if (!USERNAME_PATTERN.test(String(name))) {
     return NextResponse.json(
       {
@@ -28,10 +42,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  /* Same stricter tier as a rename — a handle chosen at signup is the one
+     everybody sees. See moderateUsername. */
+  if (moderateUsername(String(name)).action === "block") {
+    return NextResponse.json({ error: BLOCKED_MESSAGE }, { status: 422 });
+  }
+
   // Checked against the username and address being created, so a password
   // can't be the very thing it is protecting. See lib/password.ts for why
   // there are no digit/symbol requirements.
-  const weak = checkPassword(String(password), { name: String(name), email: String(email) });
+  const weak = checkPassword(String(password), { name: String(name), email: address });
   if (weak) {
     return NextResponse.json({ error: weak }, { status: 400 });
   }
@@ -43,7 +63,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (await getUserByEmail(String(email))) {
+  if (await getUserByEmail(address)) {
     return NextResponse.json(
       { error: "An account with that email already exists." },
       { status: 409 }
@@ -58,12 +78,27 @@ export async function POST(req: NextRequest) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const user = await createUser({
-    id: randomUUID(),
-    name,
-    email,
-    passwordHash,
-  });
+
+  /* The checks above answer the common case; this answers the race. Two people
+     can pass the same `getUserByName` before either writes, and the unique
+     index — not the check — is what actually keeps the name single. Measured:
+     four concurrent signups on one new username produced three 500s and one
+     success before this existed. See lib/uniqueViolation.ts. */
+  let user;
+  try {
+    user = await createUser({
+      id: randomUUID(),
+      name,
+      email: address,
+      passwordHash,
+    });
+  } catch (error) {
+    const conflict = userConflictMessage(error);
+    // Not a constraint we know how to explain — let it be a 500 rather than
+    // dressing an unknown failure up as "already taken".
+    if (!conflict) throw error;
+    return NextResponse.json({ error: conflict }, { status: 409 });
+  }
 
   const token = randomUUID();
   await createSession(token, user.id);
