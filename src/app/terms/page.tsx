@@ -392,8 +392,15 @@ export default function TermsPage() {
               U.S.C. § 512(g). We may terminate accounts of repeat infringers.
             </p>
             <p className="font-mono text-xs text-zinc-500">
-              DMCA Agent: Carson Brassell · helloplatemaps@gmail.com · [mailing address] ·
-              registered with the U.S. Copyright Office
+              {/* Says "designated", not "registered": the Copyright Office
+                  filing has not been made yet, and claiming a registration we
+                  do not hold is both false and a claim to a Section 512 safe
+                  harbour we would not actually have. Change this to
+                  "registered with the U.S. Copyright Office" the day the
+                  filing goes through — that wording is what the statute
+                  expects, and it is only true after the fact. */}
+              DMCA Agent: Carson Brassell · helloplatemaps@gmail.com · 4812 Campanile Dr,
+              San Diego, CA 92115
             </p>
           </Section>
 
@@ -563,7 +570,9 @@ export default function TermsPage() {
             <p className="font-mono text-sm text-zinc-900">
               Carson Brassell (sole proprietor, d/b/a PlateMaps)
               <br />
-              [mailing address]
+              4812 Campanile Dr
+              <br />
+              San Diego, CA 92115
               <br />
               helloplatemaps@gmail.com
             </p>

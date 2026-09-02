@@ -337,7 +337,9 @@ export default function PrivacyPage() {
             <p className="font-mono text-sm text-zinc-900">
               Carson Brassell (sole proprietor, d/b/a PlateMaps)
               <br />
-              [mailing address]
+              4812 Campanile Dr
+              <br />
+              San Diego, CA 92115
               <br />
               helloplatemaps@gmail.com
             </p>
