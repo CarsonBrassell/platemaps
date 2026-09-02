@@ -2837,6 +2837,20 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
  * rows. It is generous rather than tight - ranking happens after this, in the
  * caller, so cutting too close here would hide a better match that sorting
  * would have brought to the top.
+  * **Every field is coalesced.** Postgres propagates NULL through
+ * concatenation, so `name || ' ' || cuisine || ' ' || neighborhood` is NULL for
+ * any row missing a cuisine or a neighborhood — and NULL never matches ILIKE.
+ * That silently hid **404 listed restaurants** from every search term,
+ * including their own exact name: they were browsable but unfindable, which
+ * reads to a visitor as "this restaurant isn't on the app". `concat_ws` skips
+ * `coalesce` turns each missing field into an empty string instead of
+ * poisoning the whole expression. It is `coalesce` rather than the tidier
+ * `concat_ws` because concat_ws is STABLE, and Postgres will not build an
+ * index on a non-IMMUTABLE expression.
+ *
+ * The GIN trigram index has to be built on the *same* expression or the
+ * planner cannot use it — `idx_restaurants_search_ws` in scripts/migrate.mjs
+ * is that index. Change one, change both.
  */
 export async function searchRestaurants(term: string, limit = 60): Promise<RestaurantView[]> {
   const needle = `%${term}%`;
@@ -2858,8 +2872,8 @@ export async function searchRestaurants(term: string, limit = 60): Promise<Resta
       AND (
         dm.restaurant_id IS NOT NULL
         OR (
-          r.name || ' ' || coalesce(r.cuisine, '') || ' ' ||
-          coalesce(r.cuisine_tags, '') || ' ' || r.neighborhood
+          coalesce(r.name, '') || ' ' || coalesce(r.cuisine, '') || ' ' ||
+          coalesce(r.cuisine_tags, '') || ' ' || coalesce(r.neighborhood, '')
         ) ILIKE ${needle}
       )
     ORDER BY r.sort_order, r.id

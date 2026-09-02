@@ -737,6 +737,33 @@ const statements = [
   `CREATE INDEX IF NOT EXISTS idx_restaurants_search ON restaurants
      USING gin ((name || ' ' || cuisine || ' ' || neighborhood) gin_trgm_ops)`,
 
+  // The same index with every field coalesced, which is what
+  // `searchRestaurants` matches on now. The bare `||` expression above is NULL
+  // for any row missing a cuisine or a neighborhood — Postgres propagates NULL
+  // through concatenation — so 404 listed restaurants could not be found by
+  // any search term, including their own exact name.
+  //
+  // **`coalesce`, not `concat_ws`.** concat_ws skips NULLs too and reads
+  // better, but it is STABLE rather than IMMUTABLE, and Postgres refuses to
+  // build an index on it ("functions in index expression must be marked
+  // IMMUTABLE"). coalesce and `||` are both immutable, so this indexes.
+  //
+  // The old index is left in place rather than dropped: it is what the
+  // deployed build queries through until this migration and the code ship
+  // together, and an unused GIN index costs writes, not reads. Drop it in a
+  // later migration once nothing queries the bare `||` form.
+  `CREATE INDEX IF NOT EXISTS idx_restaurants_search_v2 ON restaurants
+     USING gin ((coalesce(name,'') || ' ' || coalesce(cuisine,'') || ' ' ||
+                 coalesce(cuisine_tags,'') || ' ' || coalesce(neighborhood,'')) gin_trgm_ops)`,
+
+  // An earlier pass created the same index over three fields, before
+  // `searchRestaurants` grew `cuisine_tags`. A GIN index is only usable when
+  // its expression matches the predicate exactly, so the three-field one can
+  // never be chosen again — and `CREATE INDEX IF NOT EXISTS` matches on *name*,
+  // not on expression, so it would not have been rebuilt under the old name.
+  // Dropped rather than left: an unusable GIN index still costs every write.
+  `DROP INDEX IF EXISTS idx_restaurants_search_ws`,
+
   // Failed sign-in attempts, for the login throttle in lib/loginThrottle.ts.
   // Postgres rather than memory on purpose: every serverless instance gets its
   // own heap and instances scale to zero, so an in-process counter would reset

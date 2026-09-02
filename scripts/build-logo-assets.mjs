@@ -93,27 +93,30 @@ async function mark(width, out) {
  * onto opaque cream left every pixel at alpha 255 and the channel still there,
  * which reads as opaque to a human and as a rejected upload to Apple.
  */
-/**
- * `alpha` is not cosmetic and the two consumers want opposite things.
- *
- * Apple rejects an app icon that *carries* an alpha channel, even one that is
- * opaque everywhere — so the iOS asset passes `alpha: false`.
- *
- * The favicon needs the opposite. Its ICO directory entry below declares 32
- * bits per pixel, and Next.js's ICO decoder refuses a PNG that is not RGBA:
- * "Format error decoding Ico: The PNG is not in RGBA format!" — which fails the
- * whole route, not just the icon, so every page 500s.
- *
- * Dropping alpha in here unconditionally satisfied Apple and broke the site.
- */
-async function square(size, out, { padding = 0.1, alpha = true } = {}) {
+async function square(size, out, { padding = 0.1, alpha = false } = {}) {
   const pad = Math.max(1, Math.round(size * padding));
   const inner = size - pad * 2;
-  const pipeline = sharp({
+  const shaped = sharp({
     create: { width: size, height: size, channels: 4, background: SOURCE_CREAM },
-  }).composite([{ input: await pin(Math.round(inner * ASPECT), inner), gravity: "center" }]);
+  })
+    .composite([{ input: await pin(Math.round(inner * ASPECT), inner), gravity: "center" }]);
 
-  const composited = await (alpha ? pipeline : pipeline.removeAlpha()).png().toBuffer();
+  /*
+   * The two consumers want opposite things, and the difference is not
+   * cosmetic — getting it wrong breaks one of them outright.
+   *
+   * **The iOS app icon must not carry an alpha channel**: App Store validation
+   * rejects one even when every pixel is opaque, so it is stripped by default.
+   * **`favicon.ico` must carry one**: Next's ICO decoder accepts only RGBA
+   * members and fails the entire build with "Format error decoding Ico: The
+   * PNG is not in RGBA format!" on an RGB member.
+   *
+   * Stripping alpha for the app icon and letting the favicon inherit it is
+   * exactly what broke `next build`, so these two paths disagree on purpose.
+   */
+  const composited = await (alpha ? shaped.ensureAlpha() : shaped.removeAlpha())
+    .png()
+    .toBuffer();
   if (out) writeFileSync(out, composited);
   return composited;
 }
@@ -125,7 +128,7 @@ async function square(size, out, { padding = 0.1, alpha = true } = {}) {
  */
 async function favicon(out, sizes) {
   const pngs = [];
-  for (const size of sizes) pngs.push(await square(size, null, { padding: 0.06 }));
+  for (const size of sizes) pngs.push(await square(size, null, { padding: 0.06, alpha: true }));
 
   const header = Buffer.alloc(6);
   header.writeUInt16LE(0, 0); // reserved
@@ -186,9 +189,9 @@ const built = [
   await mark(660, "public/logo.png"),
   await square(512, "src/app/icon.png").then(() => "src/app/icon.png — 512x512"),
   await favicon("src/app/favicon.ico", [16, 32, 48]),
-  await square(1024, "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png", {
-    alpha: false,
-  }).then(() => "ios AppIcon-512@2x.png — 1024x1024, no alpha"),
+  await square(1024, "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png").then(
+    () => "ios AppIcon-512@2x.png — 1024x1024, no alpha",
+  ),
   await splash(2732, [
     "ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png",
     "ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-1.png",

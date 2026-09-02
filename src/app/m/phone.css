@@ -139,6 +139,22 @@ html.pm-lock-scroll body {
 
 .pm-phone-content {
   padding-bottom: var(--phone-nav-space);
+  /*
+   * Clear the status bar / Dynamic Island.
+   *
+   * `viewport-fit=cover` (see app/layout.tsx) is what lets this layout run to
+   * the physical edges, and the bottom inset was already being spent in three
+   * places above. The **top** inset was never spent anywhere, so in the native
+   * WebView the first row of every /m screen rendered underneath the clock —
+   * on the Discover screen the wordmark sat behind the Dynamic Island. It does
+   * not reproduce in a browser or in the desktop phone frame, because only the
+   * native shell draws under the status bar; it was found on the simulator.
+   *
+   * Applied on the scroller rather than on each screen's header so it cannot
+   * be forgotten by the next screen someone adds, and so a screen that scrolls
+   * carries its content out from under the bar as it moves.
+   */
+  padding-top: env(safe-area-inset-top);
 }
 
 /*
