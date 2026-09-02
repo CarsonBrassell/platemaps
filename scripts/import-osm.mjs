@@ -42,6 +42,7 @@
 
 import { neon } from "@neondatabase/serverless";
 import { regions } from "../src/data/regions.ts";
+import { canonicalCuisine, tagsFor } from "../src/data/cuisines.ts";
 
 const sql = neon(process.env.DATABASE_URL);
 const OVERPASS = "https://overpass-api.de/api/interpreter";
@@ -127,18 +128,27 @@ const AMENITY_FALLBACK = {
 /**
  * OSM cuisine tags are lowercase, semicolon-separated, and occasionally
  * describe a serving style rather than a food ("sandwich;coffee_shop"). The
- * first token wins, underscores become spaces, and the result is title-cased.
- * Anything unmapped still reads acceptably: "middle_eastern" becomes "Middle
- * Eastern".
+ * first token wins.
+ *
+ * It used to be title-cased and written straight to the column. That is what
+ * put 162 distinct cuisines in front of a visitor across 4,792 restaurants —
+ * a contributor's typo became the filter option "Coffe Shop", `pho` became a
+ * two-restaurant "Pho" sitting below a sixty-one-restaurant "Vietnamese", and
+ * "middle_eastern" read acceptably while matching nothing else in the corpus.
+ * Reading acceptably was never the bar; joining an existing bucket was.
+ *
+ * Now the tag is mapped through the vocabulary in src/data/cuisines.ts and
+ * anything unrecognised becomes null rather than a new one-row category. The
+ * raw tag is kept in `cuisine_raw` and its searchable form in `cuisine_tags`,
+ * so nothing the tag knew is lost — see that file.
  */
 function cuisineFor(tags) {
-  const raw = tags.cuisine?.split(";")[0]?.trim();
-  if (!raw) return AMENITY_FALLBACK[tags.amenity] ?? "Restaurant";
-  return raw
-    .replace(/_/g, " ")
-    .split(" ")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
+  const raw = tags.cuisine?.split(";")[0]?.trim() || AMENITY_FALLBACK[tags.amenity] || "restaurant";
+  return {
+    cuisine: canonicalCuisine(raw),
+    cuisineRaw: raw,
+    cuisineTags: tagsFor(raw).join(" ") || null,
+  };
 }
 
 /** "3960 W Point Loma Blvd" — house number and street, or nothing. */
@@ -269,7 +279,7 @@ const venues = elements
       name: e.tags.name.trim(),
       lat,
       lng,
-      cuisine: cuisineFor(e.tags),
+      ...cuisineFor(e.tags),
       neighborhood: neighborhoodFor(e.tags, lat, lng),
       website: websiteFor(e.tags),
       hours: parseOpeningHours(e.tags.opening_hours),
@@ -365,7 +375,7 @@ if (DRY_RUN) {
   console.log("Dry run - nothing written. A sample of what would be inserted:\n");
   for (const v of inserts.slice(0, 15)) {
     console.log(
-      `  ${v.name} - ${v.neighborhood} / ${v.cuisine}` +
+      `  ${v.name} - ${v.neighborhood} / ${v.cuisine ?? "(no cuisine)"}` +
         `${v.website ? " / site" : ""}${v.hours ? " / hours" : ""}`,
     );
   }
@@ -375,11 +385,13 @@ if (DRY_RUN) {
 for (const [i, v] of inserts.entries()) {
   await sql`
     INSERT INTO restaurants
-      (id, name, cuisine, neighborhood, lat, lng, source_key, website, hours,
+      (id, name, cuisine, cuisine_raw, cuisine_tags, neighborhood, lat, lng,
+       source_key, website, hours,
        address, city,
        sort_order, listed, distance, walk_time, closing_time, status, status_label)
     VALUES
-      (${v.id}, ${v.name}, ${v.cuisine}, ${v.neighborhood}, ${v.lat}, ${v.lng},
+      (${v.id}, ${v.name}, ${v.cuisine}, ${v.cuisineRaw}, ${v.cuisineTags},
+       ${v.neighborhood}, ${v.lat}, ${v.lng},
        ${v.sourceKey}, ${v.website},
        ${v.hours ? JSON.stringify(v.hours) : null}::jsonb,
        ${v.address}, ${v.city},
@@ -408,7 +420,20 @@ for (const v of refreshes) {
        * name beats a near miss. Inside San Diego proper the geometric label
        * stays, because "Little Italy" beats "San Diego".
        */
-      neighborhood = COALESCE(${v.usesCityName ? v.neighborhood : null}, neighborhood)
+      neighborhood = COALESCE(${v.usesCityName ? v.neighborhood : null}, neighborhood),
+      /*
+       * Cuisine fills a gap like the fields above it, and the gap it fills is
+       * real: a row whose tag was unmapped when it was imported has a null
+       * cuisine, and a later OSM edit — or a later entry in the vocabulary —
+       * is exactly what should fill it.
+       *
+       * cuisine_raw is filled the same way, so a row imported before the
+       * vocabulary existed gains the raw tag it was missing and becomes
+       * re-mappable by the backfill.
+       */
+      cuisine     = COALESCE(cuisine, ${v.cuisine}),
+      cuisine_raw = COALESCE(cuisine_raw, ${v.cuisineRaw}),
+      cuisine_tags = COALESCE(cuisine_tags, ${v.cuisineTags})
     WHERE id = ${v.id}`;
 }
 

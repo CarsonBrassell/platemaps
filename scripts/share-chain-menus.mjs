@@ -37,7 +37,51 @@
 
 import { neon } from "@neondatabase/serverless";
 
-const sql = neon(process.env.DATABASE_URL);
+const rawSql = neon(process.env.DATABASE_URL);
+
+/*
+ * Retry through a dropped connection.
+ *
+ * `load-menus.mjs` grew this on 2026-08-27 after two loads died mid-file on
+ * ECONNRESET. The same fix was never applied here, and on 2026-08-29 this
+ * script died the same way after several minutes of work - which is worse here
+ * than there, because this is the longest-running script in the project (ten
+ * minutes plus) and every minute of it is a minute of exposure to one bad
+ * packet. It also failed silently as far as the shell was concerned: the
+ * wrapper reported exit 0 while the script had thrown.
+ *
+ * Wrapping `sql` itself rather than each call site means nothing has to
+ * remember to opt in. Every tagged-template query in this file goes through it.
+ *
+ * Only connection-level failures retry. A constraint violation or a bad value
+ * is a real error and must still stop the run.
+ */
+async function withRetry(fn, attempts = 8) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      const text = [
+        err?.message ?? "",
+        err?.cause?.code ?? "",
+        err?.sourceError?.cause?.code ?? "",
+        err?.sourceError?.message ?? "",
+      ].join(" ");
+      const transient =
+        /ECONNRESET|ETIMEDOUT|EAI_AGAIN|ENOTFOUND|ECONNREFUSED|UND_ERR_CONNECT_TIMEOUT|socket hang up|fetch failed/i.test(
+          text,
+        );
+      if (!transient || attempt >= attempts) throw err;
+      const waitMs = Math.min(250 * 2 ** (attempt - 1), 8000);
+      console.warn(
+        `  connection trouble (${text.trim().slice(0, 80)}), retry ${attempt}/${attempts - 1} in ${waitMs}ms`,
+      );
+      await new Promise((r) => setTimeout(r, waitMs));
+    }
+  }
+}
+
+const sql = (strings, ...values) => withRetry(() => rawSql(strings, ...values));
 const DRY_RUN = process.argv.includes("--dry");
 
 /**

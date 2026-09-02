@@ -4,6 +4,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 @AGENTS.md
 
+## Running the menu extraction pipeline
+
+If the task is extracting restaurant menus, **read `probe/RUNBOOK.md` and
+`probe/STATE.md` first.** They are written to be self-contained — a fresh
+session needs no prior conversation.
+
+- **`probe/RUNBOOK.md`** — how to run the pipeline. The rolling-agent loop,
+  screening and loading, salvaging and resuming dead agents, reading agent
+  reports for judgement errors, batch cutting, the agent brief, and the standing
+  constraints (never commit, never run a Google or Yelp script). Every rule in
+  it was learned by getting it wrong.
+- **`probe/STATE.md`** — current coverage, what the remaining queue is made of,
+  the browser-only backlog, open items needing Calvin.
+- **`probe/PLAYBOOK.md`** — what extraction AGENTS read. ~475 lines. Give them
+  this, never `FINDINGS.md`.
+- **`probe/FINDINGS.md`** — the archive, ~35,000 tokens. Grep it for a specific
+  restaurant or platform; **never read it whole and never tell an agent to.**
+
 ## Documentation hierarchy
 
 Four docs, each authoritative over a different thing. Read the relevant one before changing that area:

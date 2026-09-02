@@ -147,10 +147,31 @@ function chunk(items, size) {
   return out;
 }
 
+/**
+ * Clears the measured photo size when, and only when, the photo itself changed.
+ *
+ * `photo_w` / `photo_h` are absent from RESTAURANT_COLUMNS on purpose: the seed
+ * file has no opinion about them, they are measured from the image by
+ * `npm run photos:size`, and an import that wrote them would blank every one on
+ * every run. Leaving them out entirely is not enough, though — a restaurant
+ * whose photo URL is replaced would keep the old picture's dimensions and hand
+ * the grid a card sized for an image that no longer exists.
+ *
+ * So they survive an unchanged photo and reset to null on a changed one, which
+ * is exactly the state the backfill looks for. `IS DISTINCT FROM` rather than
+ * `<>` so a row gaining or losing a photo counts as a change too.
+ */
+const RESET_PHOTO_SIZE = `
+  photo_w = CASE WHEN restaurants.photo IS DISTINCT FROM EXCLUDED.photo
+                 THEN NULL ELSE restaurants.photo_w END,
+  photo_h = CASE WHEN restaurants.photo IS DISTINCT FROM EXCLUDED.photo
+                 THEN NULL ELSE restaurants.photo_h END`;
+
 async function upsertRestaurants(rows) {
-  const updates = RESTAURANT_COLUMNS.filter((c) => c !== "id")
-    .map((c) => `${c} = EXCLUDED.${c}`)
-    .join(", ");
+  const updates =
+    RESTAURANT_COLUMNS.filter((c) => c !== "id")
+      .map((c) => `${c} = EXCLUDED.${c}`)
+      .join(", ") + "," + RESET_PHOTO_SIZE;
 
   // Indexed before chunking, so `sort_order` is the position in the whole file
   // rather than the position within a batch.

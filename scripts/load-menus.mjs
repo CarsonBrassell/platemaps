@@ -45,6 +45,60 @@ if (!process.env.DATABASE_URL) {
 }
 
 const sql = neon(process.env.DATABASE_URL);
+
+/*
+ * Retry a statement through a dropped connection.
+ *
+ * The header above says a half-applied batch is the worst outcome here, and it
+ * is right, but it was guarding against the wrong cause. Validation runs before
+ * any write, so a typo cannot half-apply a batch. The network can: on
+ * 2026-08-27 two loads died mid-file on `read ECONNRESET` from the Neon HTTP
+ * endpoint, leaving 4 of 9 and 7 of 9 restaurants written. This driver opens a
+ * fresh request per statement, and a 500-dish menu is 500 chances for one of
+ * them to be reset.
+ *
+ * Both were caught by comparing what loaded against what the extracting agent
+ * reported, and repaired by re-running - `menu_lookups` upserts and dishes are
+ * replaced per restaurant, so a re-run is safe. But noticing was luck, and the
+ * check only exists because someone thought to run it.
+ *
+ * Only connection-level failures are retried. A constraint violation or a bad
+ * value is a real error and must still stop the run.
+ */
+async function withRetry(fn, attempts = 8) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      const text = [
+        err?.message ?? "",
+        err?.cause?.code ?? "",
+        err?.sourceError?.cause?.code ?? "",
+        err?.sourceError?.message ?? "",
+      ].join(" ");
+      const transient =
+        /ECONNRESET|ETIMEDOUT|EAI_AGAIN|ENOTFOUND|ECONNREFUSED|UND_ERR_CONNECT_TIMEOUT|socket hang up|fetch failed/i.test(
+          text,
+        );
+      if (!transient || attempt >= attempts) throw err;
+
+      /*
+       * Capped exponential backoff, ~30s of patience in total.
+       *
+       * The first version gave up after 3.75s, which covers a dropped socket
+       * but not what actually happened next: the endpoint went from ECONNRESET
+       * to a run of UND_ERR_CONNECT_TIMEOUT - not a blip but a minute or so of
+       * the database being hard to reach. Backing off to 8s and trying eight
+       * times rides that out, and still fails cleanly rather than hanging if
+       * the outage is real.
+       */
+      const waitMs = Math.min(250 * 2 ** (attempt - 1), 8000);
+      console.warn(`  connection trouble (${text.trim().slice(0, 80)}), retry ${attempt}/${attempts - 1} in ${waitMs}ms`);
+      await new Promise((r) => setTimeout(r, waitMs));
+    }
+  }
+}
+
 const entries = JSON.parse(await readFile(path, "utf8"));
 
 if (!Array.isArray(entries)) {
@@ -121,11 +175,27 @@ for (const entry of entries) {
   }
 
   if (dishes.length > 0) {
-    // Replace rather than append: a menu is a snapshot of one page, and merging
-    // two extractions of the same restaurant produces a menu that never existed.
-    await sql`DELETE FROM dishes WHERE restaurant_id = ${entry.restaurantId}`;
+    /*
+     * Replace rather than append: a menu is a snapshot of one page, and merging
+     * two extractions of the same restaurant produces a menu that never existed.
+     *
+     * The INSERT below upserts on the primary key, which is belt-and-braces
+     * against this DELETE. On 2026-08-29 a load died on `dishes_pkey` at dish 55
+     * of 129 for one restaurant, having already written the previous seven
+     * cleanly - a duplicate id that this DELETE should have made impossible.
+     * The cause was never established, and the two candidates both argue for the
+     * upsert: either the DELETE did not take effect before the inserts, or
+     * `withRetry` re-ran an INSERT whose success we never saw the response for.
+     *
+     * The second is a real hazard created by the retry itself. A statement that
+     * commits and then loses its connection looks identical to one that never
+     * ran, and retrying it is only safe if re-running is harmless. Making the
+     * write idempotent is what earns the retry the right to exist.
+     */
+    await withRetry(() => sql`DELETE FROM dishes WHERE restaurant_id = ${entry.restaurantId}`);
     for (const [i, dish] of dishes.entries()) {
-      await sql`
+      await withRetry(
+        () => sql`
         INSERT INTO dishes (id, restaurant_id, name, description, price, section, yes_votes, no_votes, sort_order)
         VALUES (
           ${`${entry.restaurantId}-${i + 1}`},
@@ -136,7 +206,15 @@ for (const entry of entries) {
           ${dish.section || ""},
           0, 0, ${i}
         )
-      `;
+        ON CONFLICT (id) DO UPDATE SET
+          restaurant_id = EXCLUDED.restaurant_id,
+          name = EXCLUDED.name,
+          description = EXCLUDED.description,
+          price = EXCLUDED.price,
+          section = EXCLUDED.section,
+          sort_order = EXCLUDED.sort_order
+      `,
+      );
     }
     dishesWritten += dishes.length;
   } else {
@@ -162,17 +240,20 @@ for (const entry of entries) {
    * honest — a non-Yelp host simply gets no credit line.
    */
   if (entry.photo) {
-    await sql`
+    await withRetry(
+      () => sql`
       UPDATE restaurants
       SET photo = COALESCE(photo, ${entry.photo}),
           photo_alt = COALESCE(photo_alt, ${entry.photoAlt || null})
-      WHERE id = ${entry.restaurantId}`;
+      WHERE id = ${entry.restaurantId}`,
+    );
   }
 
   // The ledger is upserted, unlike the on-demand path which refused to
   // overwrite: there, a second row meant someone had paid twice. Here a second
   // load is a deliberate re-extraction, and the newest attempt is the true one.
-  await sql`
+  await withRetry(
+    () => sql`
     INSERT INTO menu_lookups (restaurant_id, status, source_url, confidence, dish_count, attempted_at)
     VALUES (
       ${entry.restaurantId},
@@ -188,7 +269,8 @@ for (const entry of entries) {
       confidence = EXCLUDED.confidence,
       dish_count = EXCLUDED.dish_count,
       attempted_at = EXCLUDED.attempted_at
-  `;
+  `,
+  );
 }
 
 const [{ n: withMenus }] = await sql`SELECT count(DISTINCT restaurant_id)::int AS n FROM dishes`;

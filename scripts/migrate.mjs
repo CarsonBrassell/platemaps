@@ -727,6 +727,12 @@ const statements = [
   // "hillcrest" the neighbourhood, from the same box), and the expression has to
   // match the predicate in db.ts for the planner to use it. If you change either
   // side, change both.
+  // Superseded further down, once `cuisine_tags` exists: cuisine became a
+  // controlled vocabulary, the tags joined the haystack, and every part had
+  // to be coalesced because `cuisine` is now nullable. Left exactly as it ran
+  // rather than edited in place — this array is append-only, and a fresh
+  // database building this index once before the gated rebuild replaces it is
+  // cheaper than the reproducibility that editing it would cost.
   `CREATE EXTENSION IF NOT EXISTS pg_trgm`,
   `CREATE INDEX IF NOT EXISTS idx_restaurants_search ON restaurants
      USING gin ((name || ' ' || cuisine || ' ' || neighborhood) gin_trgm_ops)`,
@@ -747,6 +753,172 @@ const statements = [
      ON login_attempts (email, attempted_at DESC)`,
   `CREATE INDEX IF NOT EXISTS idx_login_attempts_ip
      ON login_attempts (ip, attempted_at DESC)`,
+
+  // Whether this account has been told what happens to its photos.
+  //
+  // The photo rule is the one thing about posting nobody can infer from the
+  // composer: the plate is public, the photo is not, and `share_photos_publicly`
+  // above defaults to off. `PhotoPrivacyNotice` says so once, on the first post
+  // that actually carries a photo, and this column is the "once".
+  //
+  // It is a separate flag from `share_photos_publicly` rather than a nullable
+  // version of it, because "hidden, and you were told" and "hidden, and nobody
+  // has mentioned it" are different states and only one of them still owes the
+  // user an explanation.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS photo_notice_seen BOOLEAN NOT NULL DEFAULT false`,
+
+  // A ledger of one-shot DATA statements, as opposed to the DDL above.
+  //
+  // Everything else in this file is idempotent by construction — `IF NOT EXISTS`
+  // means the second run is a no-op. A backfill is not like that: it is a
+  // sentence about a moment ("everyone who had already posted *when this
+  // shipped*"), and re-running it turns that sentence into a standing rule that
+  // keeps applying to people it was never about. There was nowhere to record
+  // "this one has already happened", so this is that place. Claim a key here and
+  // gate the statement on the claim; see the backfill below for the shape.
+  `CREATE TABLE IF NOT EXISTS data_migrations (
+    key TEXT PRIMARY KEY,
+    applied_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+
+  // Everyone already posting when this shipped is past their first post, so the
+  // question has no first post left to open on and would only ambush them on
+  // their next one.
+  //
+  // **Gated on the claim, and that is not decoration.** Run unguarded on every
+  // migrate, this silently answers the question on behalf of anyone who
+  // dismissed it and then posted — they would never be asked again, decided by a
+  // deploy rather than by them. Dismissing has to keep meaning "ask me next
+  // time". The INSERT runs on every migrate and does nothing after the first;
+  // `claim` is empty from then on, so the UPDATE matches no rows.
+  `WITH claim AS (
+     INSERT INTO data_migrations (key) VALUES ('photo-notice-backfill')
+     ON CONFLICT (key) DO NOTHING
+     RETURNING key
+   )
+   UPDATE users SET photo_notice_seen = true
+     WHERE photo_notice_seen = false
+       AND EXISTS (SELECT 1 FROM claim)
+       AND EXISTS (SELECT 1 FROM posts WHERE posts.user_id = users.id)`,
+
+  // The pixel size of `photo`, so a card can reserve the right box before the
+  // image arrives.
+  //
+  // Discover crops every photo into a fixed 128px band, which needs no
+  // dimensions — the box is the same whatever the file turns out to be. A card
+  // that keeps the photo's own proportions cannot do that: without the ratio it
+  // is a zero-height box until the image lands and then snaps to size, once per
+  // card, which is the layout shift AGENTS.md's accessibility floor rules out.
+  //
+  // Derived, not sourced. Neither Yelp nor Google returns dimensions with a
+  // photo URL, so `backfill-photo-size.mjs` reads them out of the image header
+  // over a range request. That makes these the only columns on this table the
+  // seed file has no opinion about — `import-restaurants.mjs` deliberately
+  // leaves them out of its upsert so a data refresh doesn't blank them, and
+  // instead clears them only for the rows whose `photo` actually changed.
+  //
+  // Nullable on purpose, and null means exactly one thing: not measured yet.
+  // Every reader has to keep the fixed-crop path working for that case, because
+  // a new restaurant is in it from the moment it lands until the backfill next
+  // runs.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS photo_w INTEGER`,
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS photo_h INTEGER`,
+
+  // Cuisine becomes a controlled vocabulary. See src/data/cuisines.ts.
+  //
+  // The column held 162 distinct values across 4,792 listed rows — three
+  // unreconciled vocabularies layered on top of each other, with 79 values
+  // carrying two restaurants or fewer. `import-osm.mjs` title-cased raw
+  // OpenStreetMap tags with no map at all, so "Coffe Shop" (a contributor's
+  // typo) was a filter option sitting near "Coffee Shop", "Cafe", "Coffee"
+  // and "Coffee & Tea", all describing the same room.
+  //
+  // Three columns after this, with one job each:
+  //
+  //   `cuisine`      the filter. One of ~29 canonical values, or NULL.
+  //   `cuisine_raw`  what the row arrived with, kept verbatim.
+  //   `cuisine_tags` the specific labels, as a search haystack.
+  //
+  // `cuisine_raw` is not decoration — it is what makes the collapse
+  // reversible. Re-running the backfill after editing the vocabulary re-reads
+  // this column rather than the already-collapsed one, so a mapping mistake
+  // costs an edit and a re-run instead of a re-import of the whole city.
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS cuisine_raw TEXT`,
+  `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS cuisine_tags TEXT`,
+
+  // NULL is now a real value, and it means "no cuisine was ever given" — the
+  // ~400 rows that had been carrying the literal word "Restaurant". That
+  // string read as a category to anyone looking at the facet, which is why it
+  // has to become an absence rather than stay a label.
+  `ALTER TABLE restaurants ALTER COLUMN cuisine DROP NOT NULL`,
+
+  // The search index has to be rebuilt, and not only because there is a new
+  // column in the haystack.
+  //
+  // `a || b` is NULL when either side is, so the moment `cuisine` became
+  // nullable the old expression evaluated to NULL for every row without one —
+  // which would have made those ~400 restaurants unfindable by *name*, a far
+  // worse bug than the one being fixed. Every part is coalesced now.
+  //
+  // `cuisine_tags` is joined text rather than `text[]` for this index's sake:
+  // `array_to_string` is STABLE, not IMMUTABLE, so an array could not appear
+  // in an index expression at all. Nothing reads the tags as a list — they are
+  // only ever a haystack — so the join costs nothing.
+  //
+  // Still one index over a concatenation, and it still has to match the
+  // predicate in db.ts exactly or the planner drops to a sequential scan. If
+  // you change either side, change both.
+  //
+  // Gated on the definition rather than written as a plain DROP + CREATE:
+  // building a GIN index over 4,792 rows on every single migrate, forever, to
+  // replace it with a byte-identical copy is not idempotence, it is waste.
+  // The first run after this shipped rebuilds; every run after that no-ops.
+  `DO $$
+   BEGIN
+     IF NOT EXISTS (
+       SELECT 1 FROM pg_indexes
+       WHERE indexname = 'idx_restaurants_search'
+         AND indexdef LIKE '%cuisine_tags%'
+     ) THEN
+       DROP INDEX IF EXISTS idx_restaurants_search;
+       CREATE INDEX idx_restaurants_search ON restaurants
+         USING gin ((
+           name || ' ' || coalesce(cuisine, '') || ' ' ||
+           coalesce(cuisine_tags, '') || ' ' || neighborhood
+         ) gin_trgm_ops);
+     END IF;
+   END $$`,
+
+  // Whether this account has been walked through the app once — see
+  // components/tour/CoachTour.tsx. One-way, like photo_notice_seen.
+  //
+  // **Not backfilled, deliberately**, and that is the difference from
+  // `photo_notice_seen` above. That one is an explanation somebody is *owed*
+  // before their first photo, so an existing poster who never got it would only
+  // be ambushed by it late; this is an orientation to the app, and everybody
+  // who has an account predates it existing. Letting it run once for current
+  // users is the point, not a leak.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS tour_seen BOOLEAN NOT NULL DEFAULT false`,
+
+  // Trigram search over dish names, so a menu is reachable from the search box.
+  //
+  // 171,662 dishes across 2,676 restaurants were already in this table,
+  // extracted from real menu pages and paid for a token at a time — and no
+  // search in the app could reach a single one of them. "Carne asada fries"
+  // returned nothing while 129 listed restaurants served it; "california
+  // burrito" returned only the places with those words in their *name* while
+  // 184 had it on the menu. The largest body of searchable text in the product
+  // was invisible.
+  //
+  // GIN over `gin_trgm_ops` for the same reason the restaurant index uses one:
+  // every query is `ILIKE '%term%'`, and a leading wildcard makes a btree
+  // useless.
+  //
+  // Just the name, not the description. A description mentioning carne asada
+  // in a list of what comes with the burrito is not the dish being searched
+  // for, and folding it in makes half the menu match half the queries.
+  `CREATE INDEX IF NOT EXISTS idx_dishes_name_trgm
+     ON dishes USING gin (name gin_trgm_ops)`,
 ];
 
 for (const statement of statements) {
