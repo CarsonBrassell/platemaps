@@ -59,6 +59,23 @@ export default function RootLayout({
       className={`${splineMono.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        {/* The brand mark, asked for before React has run. Every screen paints
+            it, so it should never be discovered late — a preload starts the
+            fetch while the document is still parsing instead of waiting for
+            the component tree. React hoists this into <head>.
+
+            React also emits its own preload for the same file, off the
+            <source> inside BrandMark, so the head carries two — identical
+            hrefs, which every browser dedupes into one fetch. This one stays
+            because it is declared at the root and so flushes in the first
+            streamed chunk no matter where the mark sits in the tree, while
+            React's arrives whenever that component renders.
+
+            `type` so a browser without WebP skips it rather than downloading a
+            file it cannot decode; the <picture> in BrandMark hands that case
+            the PNG. It is 7.6KB, small enough that preloading it costs nothing
+            on a screen that somehow doesn't show it. */}
+        <link rel="preload" as="image" type="image/webp" href="/logo-mark-240.webp" />
         {/*
           THESIS: warm, airy, photo-forward food app with an editorial layer —
           typography with a point of view, not a template. Refuses the

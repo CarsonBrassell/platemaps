@@ -66,19 +66,27 @@ const ASPECT = BOX.width / BOX.height;
  */
 const SOURCE_CREAM = { r: BOX.background[0], g: BOX.background[1], b: BOX.background[2], alpha: 1 };
 
-/** The mark, cropped to itself, at `width`x`height`. */
-function pin(width, height) {
-  return sharp(SOURCE)
+/**
+ * The mark, cropped to itself, at `width`x`height`.
+ *
+ * WebP when the filename asks for it. The artwork is a photographed-looking
+ * cream field rather than flat colour, which is the case PNG is worst at — the
+ * 240px mark is 54KB as a PNG and 6KB as WebP for the same pixels. The PNG
+ * outputs stay because a favicon, an iOS app icon and an outside link to
+ * /logo.png all still want one.
+ */
+function pin(width, height, format = "png") {
+  const img = sharp(SOURCE)
     .extract({ left: BOX.left, top: BOX.top, width: BOX.width, height: BOX.height })
-    .resize(width, height, { fit: "fill" })
-    .png()
-    .toBuffer();
+    .resize(width, height, { fit: "fill" });
+  return (format === "webp" ? img.webp({ quality: 90 }) : img.png()).toBuffer();
 }
 
-/** The mark at its own proportions. */
+/** The mark at its own proportions, in whatever format the name implies. */
 async function mark(width, out) {
   const height = Math.round(width / ASPECT);
-  writeFileSync(out, await pin(width, height));
+  const format = out.endsWith(".webp") ? "webp" : "png";
+  writeFileSync(out, await pin(width, height, format));
   return `${out} — ${width}x${height}`;
 }
 
@@ -181,7 +189,15 @@ async function splash(size, out) {
 }
 
 const built = [
+  await mark(660, "public/logo-mark.webp"),
   await mark(660, "public/logo-mark.png"),
+  /* The size the app actually paints. Every place `BrandMark` renders is 96px
+     CSS or smaller — the phone splash is the largest at h-24 — so 240px wide
+     covers all of them at 3x and is what the component loads by default. The
+     660 above is ~196KB and was being downloaded to draw a 60px header mark,
+     which is why the logo could arrive a beat after everything else. */
+  await mark(240, "public/logo-mark-240.webp"),
+  await mark(240, "public/logo-mark-240.png"),
   /* Nothing in `src/` reads this any more — the sign-in form used to load it
      as a stacked lockup and no longer shows a logo at all. It is regenerated
      rather than deleted so an outside link to /logo.png gets the real

@@ -209,7 +209,7 @@ export function PostFlash() {
           >
             {/* The bob is `globals.css`'s, already used on the mark elsewhere —
                 a little life in it while it is being eaten. */}
-            <BrandMark className="logo-bob h-full w-auto" />
+            <BrandMark size="full" className="logo-bob h-full w-auto" />
           </span>
         </span>
       </span>
