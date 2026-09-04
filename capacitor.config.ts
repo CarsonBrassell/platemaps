@@ -1,5 +1,25 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
+/*
+ * The site the shipped app loads.
+ *
+ * **The default is the production domain on purpose.** This string is compiled
+ * into the binary, so a build made without thinking about it has to be the
+ * correct one — the failure that matters is shipping a test URL to the App
+ * Store, not the reverse.
+ *
+ * Override it for a TestFlight build while platemaps.com still points at
+ * Squarespace:
+ *
+ *   PLATEMAPS_APP_URL=https://platemap-five.vercel.app/m npx cap sync ios
+ *
+ * That is a real workflow, not a hack: TestFlight has no opinion about the
+ * domain, so internal testing does not have to wait on DNS. Just never submit
+ * a binary built that way — platemap-five.vercel.app is a hosting-provider
+ * subdomain that would then be frozen into v1 for everyone who installed it.
+ */
+const SITE_URL = process.env.PLATEMAPS_APP_URL ?? 'https://platemaps.com/m';
+
 const config: CapacitorConfig = {
   appId: 'com.platemapsapp.ios',
   appName: 'PlateMaps',
@@ -21,7 +41,7 @@ const config: CapacitorConfig = {
     // it moved to the real domain before the first submission rather than
     // after: platemap-five.vercel.app was a hosting-provider subdomain that
     // would have been frozen into v1.
-    url: 'https://platemaps.com/m',
+    url: SITE_URL,
     cleartext: false,
 
     // What the WebView shows when it cannot reach that URL. Without this it
@@ -30,9 +50,13 @@ const config: CapacitorConfig = {
     // of the more common ones for an app that loads a remote site.
     //
     // Resolved against the bundled copy of webDir, so the file is
-    // public/offline.html. It hardcodes this same URL to retry, because a
-    // local error page cannot reload its way back to a remote site; if the
-    // url above ever changes, change it there too.
+    // public/offline.html. That file names the production URL directly to
+    // retry, because a local error page cannot reload its way back to a
+    // remote site and it sits in a different bundle directory from this
+    // config, so it cannot read it. The one consequence is that a temporary
+    // PLATEMAPS_APP_URL build sends "Try again" to production rather than to
+    // the override — harmless for internal testing, and it self-corrects the
+    // moment the default is what ships.
     errorPath: 'offline.html'
   }
 };
