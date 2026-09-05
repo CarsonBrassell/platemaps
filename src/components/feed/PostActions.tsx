@@ -16,6 +16,14 @@ import { voteBurst } from "@/lib/voteBurst";
  * bursts. A row of icons that grows under the cursor makes the whole card
  * twitch at the moment you're trying to read what you just did to it, so
  * state changes here are carried entirely by fill and hue.
+ *
+ * **The vote arrows are the one exception, and they respect the rule they
+ * appear to break.** Casting a vote throws the arrow, trails it, and scatters
+ * a few embers (see "Casting a vote" in globals.css) — but every layer of it
+ * is translation and light. Nothing in the row changes size, so the card
+ * still cannot twitch. Votes earn the exception because they are the only
+ * control here whose whole point is that you did something to the ranking;
+ * a save or a share is bookkeeping and stays quiet.
  */
 const action =
   "flex min-h-11 items-center gap-1.5 rounded-full px-1.5 text-sm text-zinc-500 transition-colors hover:text-zinc-900 disabled:opacity-45 disabled:hover:text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange";

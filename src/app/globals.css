@@ -922,7 +922,7 @@ img {
 
 /* --- Casting a vote ---------------------------------------------------
  *
- * Three things fire together off one class, and none of them touch the
+ * Five things fire together off one class, and none of them touch the
  * arrow's size.
  *
  * **That constraint is the whole design.** AGENTS.md records that the mark's
@@ -941,23 +941,47 @@ img {
  * 3. `vote-bloom` (::after) — a ring off the button's edge, the same
  *    acknowledgment vocabulary as `ring-pulse` and `tap-flash`, tuned tighter
  *    because this control is 28px wide rather than a card.
+ * 4. `vote-sparks-*` (.vote-mark::after) — five embers thrown the way the
+ *    arrow went, all five drawn by one element's box-shadow list.
+ * 5. `vote-flare` (the svg) — a brief orange glow *around* the mark.
+ *
+ * Layers 4 and 5 are the "more flare" pass. They were added the same way the
+ * first three were built: by adding light and trail, never geometry. Between
+ * them they roughly double how much happens on a press while the arrow still
+ * occupies exactly the same pixels it did at rest.
  *
  * The whole thing lands inside DESIGN.md's 300ms motion budget, and it plays
  * only when a vote is *cast* — taking one back is a correction, and
  * celebrating a correction is how a UI starts feeling sarcastic.
  */
 
+/* Anticipation, launch, overshoot, settle — four beats where there were
+ * three. The extra one is the crouch at 12%: a mark that dips *against* the
+ * direction before it goes reads as pushing off something, and it is most of
+ * why this now feels like a throw rather than a nudge. It costs 2px and no
+ * extra time.
+ *
+ * **Translate only, never scale.** An arrow that changes size on click is the
+ * exact bug the icon rewrite fixed — the retired text glyphs grew on press
+ * because they resolved to a different fallback font once filled. A transient
+ * squash would not be that bug, but it would look identical to it, and the
+ * one thing this animation must never do is make the mark appear to resize.
+ * The flare comes from the sparks and the glow instead. */
 @keyframes vote-travel-up {
   0%   { transform: translateY(0); }
-  30%  { transform: translateY(-5px); }
-  62%  { transform: translateY(1.5px); }
+  12%  { transform: translateY(2px); }
+  34%  { transform: translateY(-7px); }
+  58%  { transform: translateY(1.5px); }
+  78%  { transform: translateY(-0.5px); }
   100% { transform: translateY(0); }
 }
 
 @keyframes vote-travel-down {
   0%   { transform: translateY(0); }
-  30%  { transform: translateY(5px); }
-  62%  { transform: translateY(-1.5px); }
+  12%  { transform: translateY(-2px); }
+  34%  { transform: translateY(7px); }
+  58%  { transform: translateY(-1.5px); }
+  78%  { transform: translateY(0.5px); }
   100% { transform: translateY(0); }
 }
 
@@ -1023,6 +1047,95 @@ img {
   border: 1.5px solid var(--pm-orange);
 }
 
+/* Sparks.
+ *
+ * Five of them, and all five are one element: a 3px dot whose `box-shadow`
+ * lists five copies at five offsets, animated outward together. The obvious
+ * build is five spans, which means five DOM nodes per arrow, two arrows per
+ * card and sixty cards in a feed — 600 nodes that exist to be invisible
+ * 99.9% of the time. Shadows cost nothing until they paint.
+ *
+ * The dot itself never shows: its background stays transparent, and
+ * box-shadow draws off the border box regardless of background, so only the
+ * copies are ever visible.
+ *
+ * They fan *with* the arrow rather than radially, and the negative spread
+ * shrinks each one as it travels, so the burst thins out instead of ending
+ * abruptly. Offsets stay inside the 44px button so nothing is clipped by the
+ * neighbouring control. */
+@keyframes vote-sparks-up {
+  0% {
+    opacity: 0;
+    box-shadow: 0 0 0 0 var(--pm-orange), 0 0 0 0 var(--pm-orange),
+                0 0 0 0 var(--pm-orange), 0 0 0 0 var(--pm-orange),
+                0 0 0 0 var(--pm-orange);
+  }
+  22% { opacity: 1; }
+  100% {
+    opacity: 0;
+    box-shadow:  -8px -11px 0 -0.5px var(--pm-orange),
+                   0px -14px 0 -0.5px var(--pm-orange),
+                   8px -11px 0 -0.5px var(--pm-orange),
+                 -12px  -4px 0 -1px   var(--pm-orange),
+                  12px  -4px 0 -1px   var(--pm-orange);
+  }
+}
+
+@keyframes vote-sparks-down {
+  0% {
+    opacity: 0;
+    box-shadow: 0 0 0 0 var(--pm-orange), 0 0 0 0 var(--pm-orange),
+                0 0 0 0 var(--pm-orange), 0 0 0 0 var(--pm-orange),
+                0 0 0 0 var(--pm-orange);
+  }
+  22% { opacity: 1; }
+  100% {
+    opacity: 0;
+    box-shadow:  -8px  11px 0 -0.5px var(--pm-orange),
+                   0px  14px 0 -0.5px var(--pm-orange),
+                   8px  11px 0 -0.5px var(--pm-orange),
+                 -12px   4px 0 -1px   var(--pm-orange),
+                  12px   4px 0 -1px   var(--pm-orange);
+  }
+}
+
+/* The heat. A drop-shadow rather than a colour change, because the mark's
+   colour is *state* — outline grey until you have voted, orange after — and a
+   keyframe touching it would briefly lie about which way you voted. A glow
+   sits on top of whatever colour the state has already decided. */
+@keyframes vote-flare {
+  0%   { filter: drop-shadow(0 0 0 rgba(201, 89, 31, 0)); }
+  30%  { filter: drop-shadow(0 0 5px rgba(201, 89, 31, 0.85)); }
+  100% { filter: drop-shadow(0 0 0 rgba(201, 89, 31, 0)); }
+}
+
+/* The sparks hang off the mark, not the button: the button's ::before and
+   ::after are already the streak and the ring, and a third layer would
+   otherwise need a third DOM node. */
+.vote-mark {
+  position: relative;
+}
+
+.vote-mark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 999px;
+  background: transparent;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.vote-cast-up .vote-mark::after   { animation: vote-sparks-up 0.3s ease-out; }
+.vote-cast-down .vote-mark::after { animation: vote-sparks-down 0.3s ease-out; }
+
+.vote-cast-up .vote-mark svg,
+.vote-cast-down .vote-mark svg { animation: vote-flare 0.3s ease-out; }
+
 .vote-cast-up .vote-mark  { animation: vote-travel-up 0.28s cubic-bezier(0.2, 0.8, 0.3, 1); }
 .vote-cast-down .vote-mark { animation: vote-travel-down 0.28s cubic-bezier(0.2, 0.8, 0.3, 1); }
 
@@ -1038,7 +1151,11 @@ img {
   .vote-cast-up::before,
   .vote-cast-down::before,
   .vote-cast-up::after,
-  .vote-cast-down::after {
+  .vote-cast-down::after,
+  .vote-cast-up .vote-mark::after,
+  .vote-cast-down .vote-mark::after,
+  .vote-cast-up .vote-mark svg,
+  .vote-cast-down .vote-mark svg {
     animation: none;
   }
 }
