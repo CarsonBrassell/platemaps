@@ -6,6 +6,7 @@ import { Header } from "@/components/Header";
 import { PointsBadge } from "@/components/feed/PointsBadge";
 import { useAuth } from "@/lib/auth";
 import { initials } from "@/lib/format";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 /** Mirrors lib/db.ts's FriendSummary — that module is server-only. */
 type Friend = {
@@ -194,9 +195,12 @@ export default function FriendsPage() {
                       <Avatar name={r.name} avatarUrl={r.avatarUrl} />
                       <Link
                         href={`/u/${r.userId}`}
-                        className="min-w-0 flex-1 truncate text-sm font-medium text-zinc-900 hover:underline"
+                        className="flex min-w-0 flex-1 items-center gap-1 text-sm font-medium text-zinc-900 hover:underline"
                       >
-                        {r.name}
+                        {/* The name truncates inside its own span so a long one
+                            clips itself rather than the badge beside it. */}
+                        <span className="truncate">{r.name}</span>
+                        <VerifiedBadge userId={r.userId} />
                       </Link>
                       <button
                         type="button"
@@ -225,9 +229,10 @@ export default function FriendsPage() {
                       <Avatar name={r.name} avatarUrl={r.avatarUrl} />
                       <Link
                         href={`/u/${r.userId}`}
-                        className="min-w-0 flex-1 truncate text-sm text-zinc-500 hover:underline"
+                        className="flex min-w-0 flex-1 items-center gap-1 text-sm text-zinc-500 hover:underline"
                       >
-                        {r.name}
+                        <span className="truncate">{r.name}</span>
+                        <VerifiedBadge userId={r.userId} />
                       </Link>
                       {/* Machine state, so it's set in mono like every other
                           non-prose value on the page. */}
@@ -343,8 +348,9 @@ export default function FriendsPage() {
                       href={`/u/${friend.id}`}
                       className="min-w-0 flex-1 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange"
                     >
-                      <span className="block truncate text-sm font-medium text-zinc-900">
-                        {friend.name}
+                      <span className="flex items-center gap-1 text-sm font-medium text-zinc-900">
+                        <span className="truncate">{friend.name}</span>
+                        <VerifiedBadge userId={friend.id} />
                       </span>
                       <PointsBadge points={friend.points} className="mt-0.5" />
                     </Link>

@@ -11,6 +11,7 @@ import { uploadAvatar } from "@/lib/photos";
 import { SettingsIcon } from "@/components/icons";
 import { PlatePointsPanel } from "@/components/PlatePointsPanel";
 import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 const inputClass =
   "mb-4 w-full rounded-xl bg-pm-grey-tint/60 px-3.5 py-2.5 text-sm transition-colors placeholder:text-zinc-500 focus:bg-pm-grey-tint/40 focus:outline-2 focus:outline-offset-2 focus:outline-pm-orange";
@@ -418,7 +419,10 @@ function AccountOverview() {
             className="hidden"
           />
           <div className="min-w-0 pb-1">
-            <h1 className="font-display text-xl font-semibold text-zinc-900">{account.name}</h1>
+            <h1 className="flex items-center gap-1.5 font-display text-xl font-semibold text-zinc-900">
+              <span className="truncate">{account.name}</span>
+              <VerifiedBadge userId={account.id} />
+            </h1>
             <p className="text-sm text-zinc-500">{account.email}</p>
             {uploading && <p className="mt-1 text-xs text-zinc-500">Uploading...</p>}
             {avatarError && <p className="mt-1 text-xs text-red-600">{avatarError}</p>}

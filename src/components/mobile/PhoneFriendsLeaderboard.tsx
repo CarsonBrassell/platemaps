@@ -2,6 +2,7 @@ import { formatPoints } from "@/lib/points";
 import { avatarPalette, initials } from "@/lib/format";
 import { STATIONS } from "@/lib/stations";
 import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 type Entry = { id: string; name: string; avatarUrl?: string; points: number };
 
@@ -163,8 +164,12 @@ function Seat({ entry, rank, gap, isYou }: Seat) {
           standing line, and that line truncated mid-number. */}
       <span className="min-w-0 flex-1">
         <span className="flex items-end gap-1.5">
-          <span className="font-display truncate text-[15px] font-semibold leading-tight text-zinc-900">
-            {isYou ? "You" : entry.name}
+          <span className="font-display flex min-w-0 items-center gap-1 text-[15px] font-semibold leading-tight text-zinc-900">
+            <span className="truncate">{isYou ? "You" : entry.name}</span>
+            {/* Rendered on your own row too — "You" is still a verified
+                account, and hiding it there would make the badge look like
+                something only other people have. */}
+            <VerifiedBadge userId={entry.id} />
           </span>
           <span aria-hidden="true" className={`${DOTS} mb-[5px] min-w-4`} />
           <span className="shrink-0 whitespace-nowrap font-mono text-sm font-semibold leading-none tabular-nums text-zinc-900">

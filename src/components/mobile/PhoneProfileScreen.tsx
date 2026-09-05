@@ -12,6 +12,7 @@ import { resizeImageToJpeg } from "@/lib/image";
 import { uploadAvatar } from "@/lib/photos";
 import { PlatePointsPanel } from "@/components/PlatePointsPanel";
 import { ProfileShelves, useRollCallArrival } from "@/components/ProfileShelves";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 /**
  * Profile, phone version.
@@ -272,8 +273,9 @@ function ProfileOverview() {
             />
 
             <div className="min-w-0 flex-1 pb-1">
-              <h1 className="font-display truncate text-[22px] font-semibold leading-tight tracking-tight text-zinc-900">
-                {account.name}
+              <h1 className="font-display flex items-center gap-1.5 text-[22px] font-semibold leading-tight tracking-tight text-zinc-900">
+                <span className="truncate">{account.name}</span>
+                <VerifiedBadge userId={account.id} />
               </h1>
               {/* An address is a machine value, so mono (DESIGN.md). */}
               <p className="mt-0.5 truncate font-mono text-[11px] text-zinc-500">

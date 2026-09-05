@@ -4,6 +4,7 @@ import { initials, avatarPalette } from "@/lib/format";
 import { formatPoints } from "@/lib/points";
 import { STATIONS } from "@/lib/stations";
 import type { LeaderboardEntry } from "./types";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 /** Rank as a machine value: mono numeral, tan coin for the podium. */
 function Rank({ rank }: { rank: number }) {
@@ -85,9 +86,10 @@ export function LeaderboardRow({
           leader running between them the way a printed menu sets a price. */}
       <div className="flex min-w-0 flex-1 items-end gap-1.5">
         <span className="min-w-0">
-          <span className="font-display block truncate text-sm font-semibold text-zinc-900">
-            {entry.name}
-            {isCurrentUser && <span className="ml-1 font-mono text-xs text-zinc-600">(you)</span>}
+          <span className="font-display flex min-w-0 items-center gap-1 text-sm font-semibold text-zinc-900">
+            <span className="truncate">{entry.name}</span>
+            <VerifiedBadge userId={entry.id} />
+            {isCurrentUser && <span className="font-mono text-xs text-zinc-600">(you)</span>}
           </span>
           <span className="block truncate font-mono text-[11px] text-zinc-500">
             {station ? `${station} · ${plates}` : plates}

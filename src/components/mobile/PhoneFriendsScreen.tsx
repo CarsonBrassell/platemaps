@@ -11,6 +11,7 @@ import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
 import { PhoneFriendsLeaderboard, rankSeats } from "@/components/mobile/PhoneFriendsLeaderboard";
 import { useAuth } from "@/lib/auth";
 import { avatarPalette, initials, relativeTime } from "@/lib/format";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 /**
  * Friends, phone version.
@@ -390,8 +391,9 @@ export function PhoneFriendsScreen() {
                       href={to(`/m/u/${friend.id}`)}
                       className={`min-w-0 flex-1 rounded-lg py-1.5 ${FOCUS}`}
                     >
-                      <span className="font-display block truncate text-[16px] font-semibold leading-tight text-zinc-900">
-                        {friend.name}
+                      <span className="font-display flex items-center gap-1 text-[16px] font-semibold leading-tight text-zinc-900">
+                        <span className="truncate">{friend.name}</span>
+                        <VerifiedBadge userId={friend.id} />
                       </span>
                       {/* Points are a sanctioned number — friend counts are not,
                           and there is deliberately none on this screen. */}

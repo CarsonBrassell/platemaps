@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { avatarPalette, initials } from "@/lib/format";
 import { PhoneSectionLabel } from "@/components/mobile/PhoneSectionLabel";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 type SearchResult = { id: string; name: string; avatarUrl?: string };
 
@@ -172,9 +173,10 @@ export function PhoneFindFriends({
                   )}
                   <Link
                     href={`/m/u/${person.id}`}
-                    className={`font-display min-w-0 flex-1 truncate rounded-lg text-[15px] font-semibold text-zinc-900 ${FOCUS}`}
+                    className={`font-display flex min-w-0 flex-1 items-center gap-1 rounded-lg text-[15px] font-semibold text-zinc-900 ${FOCUS}`}
                   >
-                    {person.name}
+                    <span className="truncate">{person.name}</span>
+                    <VerifiedBadge userId={person.id} />
                   </Link>
                   {isFriend ? (
                     <span className="mono-label shrink-0 text-pm-grey-text">Friends</span>
