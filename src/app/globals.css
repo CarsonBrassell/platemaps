@@ -920,6 +920,129 @@ img {
      stagger/count-up entirely — motion is never load-bearing. */
 }
 
+/* --- Casting a vote ---------------------------------------------------
+ *
+ * Three things fire together off one class, and none of them touch the
+ * arrow's size.
+ *
+ * **That constraint is the whole design.** AGENTS.md records that the mark's
+ * size invariant is load-bearing: the retired ▲/△ glyphs came from two
+ * different fallback fonts at two optical sizes, so the arrow visibly grew on
+ * click, and that — not the arrow shape — was the bug being fixed. A scale on
+ * press would walk straight back into it. So the arrow *travels* instead:
+ * `translateY` moves it without changing a single glyph metric.
+ *
+ * 1. `vote-travel-*` — the arrow flicks the way it votes and settles with a
+ *    small overshoot, so up and down feel like opposite gestures rather than
+ *    the same tap on two buttons.
+ * 2. `vote-streak` (::before) — a short bar that shoots out behind the arrow
+ *    in the same direction and fades. This is the trail that makes the flick
+ *    read as motion rather than a jump.
+ * 3. `vote-bloom` (::after) — a ring off the button's edge, the same
+ *    acknowledgment vocabulary as `ring-pulse` and `tap-flash`, tuned tighter
+ *    because this control is 28px wide rather than a card.
+ *
+ * The whole thing lands inside DESIGN.md's 300ms motion budget, and it plays
+ * only when a vote is *cast* — taking one back is a correction, and
+ * celebrating a correction is how a UI starts feeling sarcastic.
+ */
+
+@keyframes vote-travel-up {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-5px); }
+  62%  { transform: translateY(1.5px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes vote-travel-down {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(5px); }
+  62%  { transform: translateY(-1.5px); }
+  100% { transform: translateY(0); }
+}
+
+/* The streak trails the arrow rather than hiding under it.
+ *
+ * It started centred, and at 4x that was visibly wrong: the arrow is an
+ * outline, so a bar behind it just filled its hollow and read as the mark
+ * changing colour — the one thing this animation must not appear to do. The
+ * button is 44px tall around an 18px arrow, so there is ~13px of clear space
+ * on each side; the plume lives there, moving *away* from the direction of
+ * travel like exhaust, which is also what makes the arrow look propelled
+ * rather than merely translated. */
+@keyframes vote-streak-up {
+  0%   { opacity: 0.85; transform: translate(-50%, 8px) scaleY(0.35); }
+  55%  { opacity: 0.45; transform: translate(-50%, 15px) scaleY(1); }
+  100% { opacity: 0;    transform: translate(-50%, 20px) scaleY(0.4); }
+}
+
+@keyframes vote-streak-down {
+  0%   { opacity: 0.85; transform: translate(-50%, -8px) scaleY(0.35); }
+  55%  { opacity: 0.45; transform: translate(-50%, -15px) scaleY(1); }
+  100% { opacity: 0;    transform: translate(-50%, -20px) scaleY(0.4); }
+}
+
+@keyframes vote-bloom {
+  0%   { opacity: 0.5; transform: translate(-50%, -50%) scale(0.5); }
+  100% { opacity: 0;   transform: translate(-50%, -50%) scale(1.85); }
+}
+
+/* The button is the positioning context for both pseudo-elements, and neither
+   may ever take a pointer event — the whole box is the vote target. */
+.vote-btn {
+  position: relative;
+}
+
+.vote-btn::before,
+.vote-btn::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* The streak: a 2px rounded bar sitting behind the arrow. */
+.vote-btn::before {
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 12px;
+  margin-top: -6px;
+  border-radius: 999px;
+  background: var(--pm-orange);
+}
+
+/* The ring: centred on the button, drawn as a border so it stays a ring
+   rather than a filling disc as it grows. */
+.vote-btn::after {
+  left: 50%;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1.5px solid var(--pm-orange);
+}
+
+.vote-cast-up .vote-mark  { animation: vote-travel-up 0.28s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.vote-cast-down .vote-mark { animation: vote-travel-down 0.28s cubic-bezier(0.2, 0.8, 0.3, 1); }
+
+.vote-cast-up::before   { animation: vote-streak-up 0.28s ease-out; }
+.vote-cast-down::before { animation: vote-streak-down 0.28s ease-out; }
+
+.vote-cast-up::after,
+.vote-cast-down::after { animation: vote-bloom 0.3s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vote-cast-up .vote-mark,
+  .vote-cast-down .vote-mark,
+  .vote-cast-up::before,
+  .vote-cast-down::before,
+  .vote-cast-up::after,
+  .vote-cast-down::after {
+    animation: none;
+  }
+}
+
 /* --- Review composer -------------------------------------------------- */
 
 /* The composer's tap acknowledgment: two orange beats and a ring that blooms

@@ -9,6 +9,7 @@ import {
   VoteArrowUpIcon,
   VoteArrowDownIcon,
 } from "@/components/icons";
+import { voteBurst } from "@/lib/voteBurst";
 
 /**
  * Every control in this row is color-only on press — nothing scales, pops or
@@ -230,7 +231,13 @@ function VotePair({
     return (
       <button
         type="button"
-        onClick={() => onVote(direction)}
+        onClick={(e) => {
+          /* Only a *cast* animates. `active` is this arrow's state before the
+             press, so an active arrow being pressed is the vote being taken
+             back — see voteBurst. */
+          if (!active) voteBurst(e.currentTarget, direction);
+          onVote(direction);
+        }}
         aria-pressed={active}
         aria-label={
           active
@@ -241,7 +248,7 @@ function VotePair({
               ? "Upvote this plate"
               : "Downvote this plate"
         }
-        className={`flex h-11 w-7 items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
+        className={`vote-btn flex h-11 w-7 items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pm-orange ${
           active
             ? "text-pm-orange"
             : "text-zinc-400 hover:text-pm-orange-text"
@@ -252,7 +259,11 @@ function VotePair({
             old ▲/△ text glyphs could not hold (two characters, two fallback
             fonts, two optical sizes, so the arrow jumped on click) and it is
             what lets the mark be an arrow again rather than a thumb. */}
-        <Arrow filled={active} className="h-[18px] w-[18px]" />
+        {/* The travel animation drives this wrapper, not the svg, so the
+            icon's own box is never the thing being transformed. */}
+        <span className="vote-mark flex">
+          <Arrow filled={active} className="h-[18px] w-[18px]" />
+        </span>
       </button>
     );
   };
