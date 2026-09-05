@@ -58,31 +58,34 @@ import { useEffect, useRef, useState } from "react";
  *
  * `.pm-phone-content` (phone.css) carries `padding-top: env(safe-area-inset-top)`
  * so the *resting* position of every /m screen's first row clears the status
- * bar / Dynamic Island. That padding only buys the first paint, though —
- * `top: 0` is the scrollport's physical top edge, which on a real iPhone is
- * under the clock, and pinning this bar there put it right back under the
- * thing the padding was spent avoiding. On reveal it slid back in at `top: 0`
- * too, so the same gap reappeared on the first upward scroll.
+ * bar / Dynamic Island. That padding is also what positions this bar once it
+ * sticks: a sticky `top` is measured from the scroll container's **content**
+ * edge, not its padding edge — WebKit and Chromium both subtract the
+ * scroller's padding when they build the constraining rectangle (a scroller
+ * with `padding-top: 50px` pins a `top: 0` child 50px down; measured in Chrome
+ * 2026-09-05). So `top: 0` here already sits exactly under the clock, and the
+ * shown/hidden pair is plain `0` / `-height`.
  *
- * The offset this bar sticks at is `env(safe-area-inset-top, 0px)`, not `0` —
- * shown is `top: inset`, hidden is `top: calc(inset - height)`. That is one
- * spend of the inset, not two: the scroller's own padding still reserves it
- * once for the page at rest, and this only changes *where the sticky offset
- * measures from*, not a second padding stacked on top.
+ * It did not always read that way. This bar shipped for a day with
+ * `top: env(safe-area-inset-top)` on the theory that `0` was the scrollport's
+ * physical edge and needed pushing down. On the phone that spent the inset
+ * twice — padding *and* offset — and the bar came back on every upward
+ * scroll a full inset below where it rests, with a band of feed showing
+ * through above it. That was the "awkward gap" reported twice. Do not add the
+ * inset to `top` again; the padding is the inset.
  *
- * That still leaves a gap for content to show through. Sticking `inset` px
- * down from the scrollport's edge means the bar covers `inset..(inset+height)`
- * while the band from `0..inset` — where the padding no longer reserves
- * anything, because scrolling has carried the page past it — is uncovered.
- * Whatever card is scrolled to that position paints straight through it,
- * visibly sliding under the clock. The `slab` below is what stops that: a
- * `position: fixed` strip the exact height of the inset, cream, sitting above
- * the bar (z-30) and below `PhoneNav` (z-40) so a full-screen sheet can still
- * cover it. It only needs to exist while the bar is `stuck` — at rest nothing
- * has scrolled into that band yet, the padding is still doing the job.
+ * What the padding does **not** do is cover the band it reserved once the page
+ * has scrolled past it: the strip from `0..inset` is under the clock, the bar
+ * sticks just below it, and whatever card is scrolled to that height paints
+ * straight through, visibly sliding under the status bar. The `slab` below is
+ * what stops that: a `position: fixed` strip the exact height of the inset,
+ * cream, sitting above the bar (z-30) and below `PhoneNav` (z-40) so a
+ * full-screen sheet can still cover it. It only needs to exist while the bar
+ * is `stuck` — at rest nothing has scrolled into that band yet, the padding
+ * is still doing the job.
  *
- * On desktop the inset is 0: the slab is a 0-height strip, inert, and the top
- * offset resolves to plain `0`/`-height` — today's behaviour, unchanged.
+ * On desktop the inset is 0: the slab is a 0-height strip, inert, and nothing
+ * else changes.
  */
 export function PhoneStickyBar({
   children,
@@ -147,18 +150,18 @@ export function PhoneStickyBar({
          sticks. See the header note for why this is not `offsetTop`. */
       const depth = frameTop() - anchor.getBoundingClientRect().top;
 
-      /* The bar's sticky offset is `insetPx`, not 0, so it catches the flow
-         position that much earlier than depth 0 — a sticky `top: insetPx`
-         sticks once the element's flow position would sit `insetPx` above the
-         frame, which is `depth > -insetPx`, not `depth > 0`. On desktop
-         `insetPx` is 0 and this is exactly the old comparison. */
+      /* The sticky origin is the scroller's content edge, `insetPx` below the
+         frame's top (see the header note), so the bar catches its flow
+         position that much earlier than depth 0: it sticks once the anchor
+         would sit `insetPx` above the frame, which is `depth > -insetPx`. On
+         desktop `insetPx` is 0 and this is exactly the old comparison. */
       setStuck(depth > -insetPx);
 
       /* Not stuck far enough to hide into. Hiding right at the stick point
          would be legal but puts the whole animation on screen at the moment
          the first card reaches the bar, which reads as the row flinching. A
          bar-height of travel first — measured from the stick point, which is
-         now `-insetPx` rather than `0`, so the threshold shifts by the same
+         `-insetPx` rather than `0`, so the threshold shifts by the same
          amount and the actual travel distance is unchanged. */
       if (depth < bar.offsetHeight - insetPx) {
         setHidden(false);
@@ -241,15 +244,10 @@ export function PhoneStickyBar({
         } ${className}`}
         /* `height` is 0 until the effect measures, which is one paint on a bar
            that starts visible anyway — `hidden` cannot be true before then.
-           Pinned at the safe-area inset rather than 0 — see the header note —
-           so the shown position always sits just below the clock and the
-           hidden position is that same offset minus the bar's height, not the
-           scrollport's bare top edge. */
-        style={{
-          top: hidden
-            ? `calc(env(safe-area-inset-top, 0px) - ${height}px)`
-            : "env(safe-area-inset-top, 0px)",
-        }}
+           Plain `0`, not the safe-area inset: the scroller's padding already
+           places the sticky origin under the clock — see the header note on
+           why adding the inset here doubled it. */
+        style={{ top: hidden ? `-${height}px` : 0 }}
       >
         {children}
       </div>
