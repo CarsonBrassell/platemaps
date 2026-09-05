@@ -1,0 +1,1846 @@
+[
+ {
+  "restaurantId": "6057",
+  "name": "Home Sweet Home Cafe",
+  "sourceUrl": "https://homesweethomecafe.net",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "host unreachable: connection timed out (shared IP 76.223.105.230 / 13.248.243.5 also seen for Tak Grill and Bistro Pazzo in this batch — looks like a currently-down or bot-filtering shared host, not restaurant-specific)"
+ },
+ {
+  "restaurantId": "5848",
+  "name": "Arizona Chinese Restaurant",
+  "sourceUrl": "https://arizonachineserestaurantcv.com/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "GoDaddy Website Builder stub site — homepage only, no working menu link or priced content found"
+ },
+ {
+  "restaurantId": "4371",
+  "name": "@Spacebar Cafe",
+  "sourceUrl": "https://www.ubereats.com",
+  "confidence": "medium",
+  "notes": "No priced menu on atspacebar.com; restaurant runs two Uber Eats virtual-brand storefronts at the same address (7454 University Ave, La Mesa) — \"Acai & Smoothie Cafe\" and \"Panini Grill Sandwich Cafe\" — read via schema.org ld+json on each listing. Merged by exact name match; ~5-10% price differences exist between the two listings for a few overlapping items (e.g. Quinoa Brown Rice Bowl $17.90 vs $17.00) and a couple of items appear twice under slightly different names (e.g. \"Piña Colada\" vs \"Piña Colada Smoothie\", \"Mango Pineapple Smoothie\" vs \"Mango-Pineapple Smoothie\") because punctuation differed between listings — left as separate lines rather than guessing which is canonical. Gift-card entries excluded as adjunct.",
+  "dishes": [
+   {
+    "name": "Hulk Smoothie",
+    "description": "Kale, mint, cilantro, pineapple, banana, apple juice, and ic",
+    "price": "$9.00",
+    "section": "Veggie Smoothies"
+   },
+   {
+    "name": "Green Monster Smoothie",
+    "description": "Spinach, celery, carrots, mango, pineapple, apple juice, and",
+    "price": "$10.00",
+    "section": "Veggie Smoothies"
+   },
+   {
+    "name": "Mango Pineapple Smoothie",
+    "description": "Mango, pineapple, pineapple sherbet, apple juice, and ice.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Acai Smoothie",
+    "description": "Acai, strawberries, bananas, apple juice, and ice.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Pitaya Smoothie",
+    "description": "Pitaya, mango, banana, lime juice, apple juice, and ice.",
+    "price": "$9.50",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Matcha Mode Smoothie",
+    "description": "Matcha green tea and ice cream blended with milk and ice.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Fruit Splash Smoothie",
+    "description": "Strawberry, mango, raspberry sherbet, apple juice, and ice.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Acai Bowl",
+    "description": "Blended Acai with Strawberries and Banana. Topped with Grano",
+    "price": "$15.00",
+    "section": "Bowls"
+   },
+   {
+    "name": "Pitaya Bowl",
+    "description": "Blended Pitaya with Mango, Banana with Hint of Lime Juice. t",
+    "price": "$15.00",
+    "section": "Bowls"
+   },
+   {
+    "name": "Cranberry Juice",
+    "description": "",
+    "price": "$3.00",
+    "section": "Juice"
+   },
+   {
+    "name": "Orange Juice",
+    "description": "",
+    "price": "$4.50",
+    "section": "Juice"
+   },
+   {
+    "name": "Apple Juice",
+    "description": "",
+    "price": "$4.50",
+    "section": "Juice"
+   },
+   {
+    "name": "Iced Latte",
+    "description": "Espresso with Milk & Ice.",
+    "price": "$8.00",
+    "section": "Latte"
+   },
+   {
+    "name": "Hot Latte",
+    "description": "Espresso with Steamed Milk",
+    "price": "$8.00",
+    "section": "Latte"
+   },
+   {
+    "name": "Grilled Chicken Panini",
+    "description": "Grilled chicken, pesto,  provolone cheese, and a pickle wedg",
+    "price": "$18.00",
+    "section": "Panini Sandwiches"
+   },
+   {
+    "name": "Pacific Bagel",
+    "description": "Cream Cheese, Smoked Salmon, Red Onions Capers. With a Side",
+    "price": "$19.00",
+    "section": "Bagel Sandwiches"
+   },
+   {
+    "name": "Cheeseburger",
+    "description": "Cheddar Cheese, Lettuce, Grilled Onions, Ketchup.",
+    "price": "$18.00",
+    "section": "Burgers"
+   },
+   {
+    "name": "Hamburger",
+    "description": "Lettuce, Grilled Onions &  Ketchup",
+    "price": "$17.00",
+    "section": "Burgers"
+   },
+   {
+    "name": "Regular Fries",
+    "description": "Fries Served with Ketchup",
+    "price": "$8.00",
+    "section": "Fries"
+   },
+   {
+    "name": "Buffalo Wings",
+    "description": "10 wings with carrots and celery, ranch dressing",
+    "price": "$19.00",
+    "section": "Wings"
+   },
+   {
+    "name": "Quinoa Brown Rice Bowl",
+    "description": "Topped with Sauteed Mushrooms, Asparagus, Bell Peppers, Red",
+    "price": "$17.90",
+    "section": "Vegetarian"
+   },
+   {
+    "name": "Shrimp & Fries",
+    "description": "Served with Cocktail Sauce and Ketchup",
+    "price": "$19.00",
+    "section": "Lunch & Dinner"
+   },
+   {
+    "name": "Parmesan Fries",
+    "description": "Fries topped with House Made Parmesan Garlic Mix, served wit",
+    "price": "$9.00",
+    "section": "Lunch & Dinner"
+   },
+   {
+    "name": "Grilled Chicken over Quinoa/Brown Rice Bowl",
+    "description": "Grilled Chicken with grilled red onions, bell peppers, spina",
+    "price": "$21.00",
+    "section": "Lunch & Dinner"
+   },
+   {
+    "name": "Fish & Fries",
+    "description": "Sawi Beer Battered Fish, Fries. Served with Ketchup and Tart",
+    "price": "$21.00",
+    "section": "Lunch & Dinner"
+   },
+   {
+    "name": "Salmon Breakfast Bagel",
+    "description": "2 Eggs topped with Smoked Salmon, Red Onions, Capers. Served",
+    "price": "$21.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "French Toast Sticks",
+    "description": "",
+    "price": "$12.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Breakfast Bagel",
+    "description": "Choice of Meat, Egg & cheddar Cheese Served with a Side",
+    "price": "$11.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Breakfast Panini",
+    "description": "Choice Of Meat, Eggs & Cheddar Cheese Served with a side",
+    "price": "$13.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Belgian Waffle",
+    "description": "",
+    "price": "$13.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Ranch",
+    "description": "",
+    "price": "$0.75",
+    "section": "Extra Sauces"
+   },
+   {
+    "name": "Buffalo Sauce",
+    "description": "",
+    "price": "$0.75",
+    "section": "Extra Sauces"
+   },
+   {
+    "name": "Ketchup",
+    "description": "",
+    "price": "$0.75",
+    "section": "Extra Sauces"
+   },
+   {
+    "name": "Pesto",
+    "description": "",
+    "price": "$1.00",
+    "section": "Extra Sauces"
+   },
+   {
+    "name": "Tartar Sauce",
+    "description": "",
+    "price": "$0.75",
+    "section": "Extra Sauces"
+   },
+   {
+    "name": "Cocktail Sauce",
+    "description": "",
+    "price": "$0.75",
+    "section": "Extra Sauces"
+   },
+   {
+    "name": "Mayonnaise",
+    "description": "",
+    "price": "$0.75",
+    "section": "Extra Sauces"
+   },
+   {
+    "name": "Fruit Bowl",
+    "description": "",
+    "price": "$8.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Oatmeal",
+    "description": "",
+    "price": "$7.50",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Breakfast English Muffin",
+    "description": "Breakfast English Muffin",
+    "price": "$8.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Quinoa and Brown Rice Bowl",
+    "description": "",
+    "price": "$17.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Piña Colada",
+    "description": "Pineapple, milk, coconut cream, and lemon sorbet",
+    "price": "$6.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Pitaya Smoothies",
+    "description": "",
+    "price": "$9.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Green Monster",
+    "description": "",
+    "price": "$9.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Quinoa & Brown Rice - Lunch",
+    "description": "",
+    "price": "$17.00",
+    "section": "Lunch"
+   },
+   {
+    "name": "Garden Salad - Lunch",
+    "description": "",
+    "price": "$15.00",
+    "section": "Lunch"
+   },
+   {
+    "name": "Salmon Salad - Lunch",
+    "description": "",
+    "price": "$22.50",
+    "section": "Lunch"
+   },
+   {
+    "name": "Pesto Bagel",
+    "description": "",
+    "price": "$12.50",
+    "section": "Lunch"
+   },
+   {
+    "name": "Wraps",
+    "description": "",
+    "price": "$15.00",
+    "section": "Lunch"
+   },
+   {
+    "name": "Buffalo Chicken Fries - Tapas Bar",
+    "description": "Crispy fries topped with tender buffalo chicken, seasoned wi",
+    "price": "$19.50",
+    "section": "Tapas Bar"
+   },
+   {
+    "name": "Garden Salad - Tapas Bar",
+    "description": "",
+    "price": "$15.00",
+    "section": "Tapas Bar"
+   },
+   {
+    "name": "Veggie Flatbread - Tapas Bar",
+    "description": "",
+    "price": "$20.50",
+    "section": "Tapas Bar"
+   },
+   {
+    "name": "Veggie Flatbread Pizza - Tapas Bar",
+    "description": "",
+    "price": "$20.50",
+    "section": "Tapas Bar"
+   },
+   {
+    "name": "Hamburger - Tapas Bar",
+    "description": "Lettuce, tomatoes, and onions",
+    "price": "$12.50",
+    "section": "Tapas Bar"
+   },
+   {
+    "name": "Shrimp and Fries - Tapas Bar",
+    "description": "Shrimp and Fries - Tapas Bar",
+    "price": "$22.50",
+    "section": "Tapas Bar"
+   },
+   {
+    "name": "Cheese Board - Tapas Bar",
+    "description": "",
+    "price": "$20.50",
+    "section": "Tapas Bar"
+   },
+   {
+    "name": "Calamari & fries",
+    "description": "Calamari Frito",
+    "price": "$22.50",
+    "section": "Tapas Bar"
+   },
+   {
+    "name": "Piña Colada Smoothie",
+    "description": "Pineapple, milk, coconut cream, and lemon sorbet",
+    "price": "$7.00",
+    "section": "Açaí and Smoothies Cafe"
+   },
+   {
+    "name": "Mango-Pineapple Smoothie",
+    "description": "Mango, pineapple, and lemon sorbet",
+    "price": "$7.00",
+    "section": "Açaí and Smoothies Cafe"
+   },
+   {
+    "name": "Strawberry-Banana Smoothie",
+    "description": "",
+    "price": "$7.00",
+    "section": "Açaí and Smoothies Cafe"
+   },
+   {
+    "name": "Fruit Bowl - Açaí and Smoothies Cafe",
+    "description": "",
+    "price": "$8.00",
+    "section": "Açaí and Smoothies Cafe"
+   },
+   {
+    "name": "Iced Dirty Chai",
+    "description": "",
+    "price": "$6.00",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Espresso",
+    "description": "",
+    "price": "$4.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Iced Coffee",
+    "description": "",
+    "price": "$3.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Iced Americano",
+    "description": "",
+    "price": "$3.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Iced Breve",
+    "description": "",
+    "price": "$5.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Iced White Mocha",
+    "description": "",
+    "price": "$6.00",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Mocha - Dark",
+    "description": "",
+    "price": "$5.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Iced Mexican Mocha",
+    "description": "",
+    "price": "$6.00",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Mexican Mocha",
+    "description": "",
+    "price": "$6.00",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Drip Coffee",
+    "description": "",
+    "price": "$1.00",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Hot Cappuccino",
+    "description": "",
+    "price": "$4.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Lattes",
+    "description": "",
+    "price": "$4.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Iced Dark Mocha",
+    "description": "",
+    "price": "$4.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Iced Cappuccino",
+    "description": "",
+    "price": "$4.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Cold Brew",
+    "description": "",
+    "price": "$4.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Dirty Chai",
+    "description": "",
+    "price": "$6.00",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Mocha - White",
+    "description": "",
+    "price": "$6.00",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Canister of Coffee",
+    "description": "",
+    "price": "$22.00",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Iced Espresso",
+    "description": "",
+    "price": "$4.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Drip Coffee - Refill",
+    "description": "",
+    "price": "$1.00",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "Americano",
+    "description": "",
+    "price": "$3.50",
+    "section": "Drinks - Coffee and Espresso Bar"
+   },
+   {
+    "name": "7 Up",
+    "description": "Canned soda",
+    "price": "$2.00",
+    "section": "Drinks - Soft Drinks"
+   },
+   {
+    "name": "Coke",
+    "description": "Canned soda",
+    "price": "$2.00",
+    "section": "Drinks - Soft Drinks"
+   },
+   {
+    "name": "Diet Coke",
+    "description": "Canned soda",
+    "price": "$2.00",
+    "section": "Drinks - Soft Drinks"
+   },
+   {
+    "name": "Dr. Pepper",
+    "description": "Canned soda",
+    "price": "$2.00",
+    "section": "Drinks - Soft Drinks"
+   },
+   {
+    "name": "Italian Soda",
+    "description": "Perrier sparkling water with flavor syrup. Topped with a spl",
+    "price": "$5.00",
+    "section": "Drinks - Soft Drinks"
+   },
+   {
+    "name": "Hibiscus Tea",
+    "description": "Unlike ornamental hibiscus flowers, it is the calyx of the s",
+    "price": "$3.50",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Jasmine (Green Tea)",
+    "description": "",
+    "price": "$4.00",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Earl Grey (Black Tea)",
+    "description": "",
+    "price": "$4.00",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Dirty Chai - Tea",
+    "description": "",
+    "price": "$4.50",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Iced Matcha Mate",
+    "description": "",
+    "price": "$3.50",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Iced Peach Blossom",
+    "description": "",
+    "price": "$3.00",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Iced Orange Blossom",
+    "description": "",
+    "price": "$4.00",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Hot Dirty Chai - Tea",
+    "description": "",
+    "price": "$4.50",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Earl Grey Tea",
+    "description": "",
+    "price": "$3.50",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Peppermint Tea",
+    "description": "",
+    "price": "$3.00",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Jasmine Tea",
+    "description": "",
+    "price": "$3.50",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Masala Chai (Black Tea)",
+    "description": "",
+    "price": "$3.50",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Orange Blossom (Green Tea)",
+    "description": "Orange Blossom features fragrant jasmine green tea blended w",
+    "price": "$3.50",
+    "section": "Drinks - Tea"
+   },
+   {
+    "name": "Cinnamon Muffin",
+    "description": "",
+    "price": "$3.50",
+    "section": "Pastries"
+   },
+   {
+    "name": "Chocolate Muffin",
+    "description": "",
+    "price": "$3.50",
+    "section": "Pastries"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6334",
+  "name": "Tak Grill Fresh Mediterranean Food",
+  "sourceUrl": "http://www.takgrill.us/menu.html",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "host unreachable: connection timed out (shared IP with Home Sweet Home Cafe and Bistro Pazzo in this batch)"
+ },
+ {
+  "restaurantId": "1855",
+  "name": "Silverlake Ramen",
+  "sourceUrl": "https://silverlakeramen.com/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "CAPTCHA wall (sgcaptcha meta-refresh) — never bypassed per safety rule"
+ },
+ {
+  "restaurantId": "2644",
+  "name": "Bravo Cafe",
+  "sourceUrl": "https://bravocafeandyogurt.site/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "domain expired/parked — resolves to an expired-domain marketplace page, no restaurant content; no alternate source checked yet"
+ },
+ {
+  "restaurantId": "6306",
+  "name": "Olive Baking Company",
+  "sourceUrl": "https://order.toasttab.com/online/the-olive-baking-company-735-a-santa-clara-place",
+  "confidence": "high",
+  "notes": "Read from Toast rendered-HTML payload (menuGroup-*-heading pattern), 8 categories. Excluded two merch categories (\"Olive Merch\", \"Not Olive Merch\" — 55 items of totes/stickers/aprons/mugs) as adjunct retail, not food. Kept \"Groceries\" (jam, honey, coffee, olives) and \"Pepsi Cooler\" as core packaged food/drink.",
+  "dishes": [
+   {
+    "name": "Cinnamon Roll",
+    "description": "",
+    "price": "$4.95",
+    "section": "Featured Items"
+   },
+   {
+    "name": "Chocolate Croissant",
+    "description": "",
+    "price": "$4.95",
+    "section": "Featured Items"
+   },
+   {
+    "name": "Almond Croissant",
+    "description": "",
+    "price": "$5.25",
+    "section": "Pastries"
+   },
+   {
+    "name": "Chocolate Croissant",
+    "description": "",
+    "price": "$4.95",
+    "section": "Pastries"
+   },
+   {
+    "name": "Cinnamon Roll",
+    "description": "",
+    "price": "$4.95",
+    "section": "Pastries"
+   },
+   {
+    "name": "Croissant",
+    "description": "",
+    "price": "$4.65",
+    "section": "Pastries"
+   },
+   {
+    "name": "Lemon Loaf Gf",
+    "description": "Please note that we cannot guarantee that any of our menu items are free of allergens because we use shared equipment and handle common allergens throughout our bakery-cafe.",
+    "price": "$4.50",
+    "section": "Pastries"
+   },
+   {
+    "name": "Sticky Bun",
+    "description": "",
+    "price": "$4.95",
+    "section": "Pastries"
+   },
+   {
+    "name": "Stroopwafel",
+    "description": "",
+    "price": "$2.50",
+    "section": "Pastries"
+   },
+   {
+    "name": "Sourdough Boule",
+    "description": "",
+    "price": "$7.75",
+    "section": "Bread"
+   },
+   {
+    "name": "Bubble Gum",
+    "description": "",
+    "price": "$0.25",
+    "section": "Groceries"
+   },
+   {
+    "name": "Ghost Pepper Hot Honey",
+    "description": "",
+    "price": "$12.00",
+    "section": "Groceries"
+   },
+   {
+    "name": "Honey Large",
+    "description": "",
+    "price": "$12.00",
+    "section": "Groceries"
+   },
+   {
+    "name": "Honey Small",
+    "description": "",
+    "price": "$5.00",
+    "section": "Groceries"
+   },
+   {
+    "name": "Jackies Jam",
+    "description": "Jackie’s Jams crafts jams and jellies the old-fashioned way, by hand and using only natural ingredients.  Created with locally grown fruits whenever possible from farmers throughout Southern California.  We take time preparing our small handmade batches of jams, jellies, and marmalades, by slow cooking each to fully extract the exceptional flavors and gemlike hues real fruit has to offer. You’ll never find any artificial flavors or high fructose corn syrup.",
+    "price": "$8.00",
+    "section": "Groceries"
+   },
+   {
+    "name": "K Cup pods",
+    "description": "",
+    "price": "$1.95",
+    "section": "Groceries"
+   },
+   {
+    "name": "Maple Hot Honey",
+    "description": "",
+    "price": "$12.00",
+    "section": "Groceries"
+   },
+   {
+    "name": "Olive Blend Coffee 1 lb Bag",
+    "description": "Whole beans. Need it ground? Ask an employee in store.",
+    "price": "$16.00",
+    "section": "Groceries"
+   },
+   {
+    "name": "Olive Jar",
+    "description": "",
+    "price": "$12.00",
+    "section": "Groceries"
+   },
+   {
+    "name": "Olive Spread",
+    "description": "",
+    "price": "$11.00",
+    "section": "Groceries"
+   },
+   {
+    "name": "Olives Basil & Garlic",
+    "description": "",
+    "price": "$1.89",
+    "section": "Groceries"
+   },
+   {
+    "name": "Olives Chili & Garlic",
+    "description": "",
+    "price": "$1.89",
+    "section": "Groceries"
+   },
+   {
+    "name": "Perfect Bar",
+    "description": "",
+    "price": "$3.99",
+    "section": "Groceries"
+   },
+   {
+    "name": "Pistachios",
+    "description": "",
+    "price": "$1.75",
+    "section": "Groceries"
+   },
+   {
+    "name": "Americano",
+    "description": "",
+    "price": "$4.25",
+    "section": "Beverages"
+   },
+   {
+    "name": "Cafe Au Lait",
+    "description": "",
+    "price": "$3.25",
+    "section": "Beverages"
+   },
+   {
+    "name": "Cappuccino",
+    "description": "",
+    "price": "$4.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Chai Tea Latte",
+    "description": "",
+    "price": "$5.05",
+    "section": "Beverages"
+   },
+   {
+    "name": "Chocolate Milk",
+    "description": "",
+    "price": "$4.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Cold Brew",
+    "description": "Organic cold brew coffee from our local vendors DropKick Brew.",
+    "price": "$6.10",
+    "section": "Beverages"
+   },
+   {
+    "name": "Double Espresso",
+    "description": "Organic coffee roasted locally by our vendor DropKick Brew. Our espresso beans are a blend from Mexico and Honduras.",
+    "price": "$4.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "Flavor",
+    "description": "",
+    "price": "$1.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "Hammerhead",
+    "description": "House coffee and 2 espresso shots",
+    "price": "$5.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "Hot Chocolate",
+    "description": "Made with Ghirardelli chocolate",
+    "price": "$4.25",
+    "section": "Beverages"
+   },
+   {
+    "name": "House Coffee",
+    "description": "Organic Coffee from local vendor DropKick Brew. Our Olive specialty house beans are a medium roast blend from Brasil and Indonesia.",
+    "price": "$3.25",
+    "section": "Beverages"
+   },
+   {
+    "name": "Iced Tea",
+    "description": "Black unsweetened brewed tea",
+    "price": "$3.75",
+    "section": "Beverages"
+   },
+   {
+    "name": "Italian Soda",
+    "description": "",
+    "price": "$4.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Latte",
+    "description": "2 espresso shots and your choice of milk",
+    "price": "$4.65",
+    "section": "Beverages"
+   },
+   {
+    "name": "Loose Leaf Tea",
+    "description": "",
+    "price": "$3.75",
+    "section": "Beverages"
+   },
+   {
+    "name": "Matcha",
+    "description": "",
+    "price": "$5.65",
+    "section": "Beverages"
+   },
+   {
+    "name": "Mexican Hot Chocolate",
+    "description": "Made in house using Ghirardelli chocolate powder",
+    "price": "$4.55",
+    "section": "Beverages"
+   },
+   {
+    "name": "Mexican Mocha",
+    "description": "House made with Ghirardelli chocolate powder",
+    "price": "$5.65",
+    "section": "Beverages"
+   },
+   {
+    "name": "Milk",
+    "description": "",
+    "price": "$3.55",
+    "section": "Beverages"
+   },
+   {
+    "name": "Mocha",
+    "description": "Made with Ghirardelli chocolate",
+    "price": "$5.35",
+    "section": "Beverages"
+   },
+   {
+    "name": "Refresher",
+    "description": "",
+    "price": "$5.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Spicy Strawberry Splash",
+    "description": "",
+    "price": "$5.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Steamer",
+    "description": "",
+    "price": "$3.45",
+    "section": "Beverages"
+   },
+   {
+    "name": "White Hot Chocolate",
+    "description": "",
+    "price": "$4.55",
+    "section": "Beverages"
+   },
+   {
+    "name": "White Mocha",
+    "description": "Made with Ghirardelli white chocolate powder",
+    "price": "$5.65",
+    "section": "Beverages"
+   },
+   {
+    "name": "Cortado",
+    "description": "",
+    "price": "$4.65",
+    "section": "Beverages"
+   },
+   {
+    "name": "Tea Latte",
+    "description": "Tea, flavor, and steamed milk",
+    "price": "$4.75",
+    "section": "Beverages"
+   },
+   {
+    "name": "The Gabby",
+    "description": "1/2 sweet pumpkin spice latte with oat milk",
+    "price": "$6.90",
+    "section": "Beverages"
+   },
+   {
+    "name": "Bottled Apple Juice",
+    "description": "",
+    "price": "$3.70",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Bottled Water",
+    "description": "",
+    "price": "$3.00",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Can Soda",
+    "description": "",
+    "price": "$2.75",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Coconut Hydr8 Juice",
+    "description": "",
+    "price": "$9.24",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Cold Brew Can",
+    "description": "DropKick Brew",
+    "price": "$5.20",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Culture Pop Soda",
+    "description": "Black Cherry",
+    "price": "$3.50",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Gatorade",
+    "description": "",
+    "price": "$3.25",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Golden Girl Juice",
+    "description": "",
+    "price": "$9.24",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Immunity Shot Pure",
+    "description": "",
+    "price": "$4.75",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Immunity Shot Vive",
+    "description": "",
+    "price": "$4.00",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Kombucha",
+    "description": "",
+    "price": "$4.20",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Naked Juice",
+    "description": "",
+    "price": "$4.24",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Pellegrino Water",
+    "description": "",
+    "price": "$3.25",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Pure Greens Juice",
+    "description": "",
+    "price": "$9.24",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "San Pellegrino Can Blood Orange",
+    "description": "",
+    "price": "$3.25",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Soul Kick Juice",
+    "description": "",
+    "price": "$9.24",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Topo Chico",
+    "description": "",
+    "price": "$3.90",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Tropicana Bottled OJ",
+    "description": "12 oz",
+    "price": "$3.70",
+    "section": "Pepsi Cooler"
+   },
+   {
+    "name": "Waterloo Sparkling",
+    "description": "",
+    "price": "$2.75",
+    "section": "Pepsi Cooler"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6033",
+  "name": "Bistro Pazzo",
+  "sourceUrl": "http://www.bistropazzo.com/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "host unreachable: connection timed out (shared IP with Home Sweet Home Cafe and Tak Grill in this batch)"
+ },
+ {
+  "restaurantId": "6571",
+  "name": "Sushiman",
+  "sourceUrl": "",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no website on file and no platform pre-identified by the router; no starting point found within time budget"
+ },
+ {
+  "restaurantId": "5788",
+  "name": "House of Pizza",
+  "sourceUrl": "",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no website on file and no platform pre-identified by the router; no starting point found within time budget"
+ },
+ {
+  "restaurantId": "6188",
+  "name": "Park Blvd Express",
+  "sourceUrl": "https://www.parkblvdexpress.com/menu",
+  "confidence": "medium",
+  "notes": "Read from an Owner.com-style Next.js RSC payload (double-escaped JSON; custom regex on \\\"menuItemId\\\"/\\\"menuItemPrice\\\" pattern), 9 categories, 85 items. Menu images are hosted at imgprod.beyondmenu.com, meaning the backend menu-management system is BeyondMenu (a barred tier-5 aggregator) even though the storefront displays as the restaurant's own live ordering flow at its own domain — treated as medium-confidence first-party rather than blocked since the ordering page itself is on the restaurant's own domain, not an aggregator listing page.",
+  "dishes": [
+   {
+    "name": "Cream Cheese Wonton (6 Pcs)",
+    "description": "Crispy wontons filled with smooth cream cheese, served in a portion of six pieces.",
+    "price": "$7.29",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Pot Stickers (6 Pcs)",
+    "description": "Pan-fried dumplings filled with seasoned meat and vegetables, served in a portion of six.",
+    "price": "$8.49",
+    "section": "Appetizers"
+   },
+   {
+    "name": "BBQ Pork",
+    "description": "",
+    "price": "$8.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Spring Roll (2 Pcs)",
+    "description": "Crispy spring rolls filled with a savory mix of vegetables, served with a tangy dipping sauce. (2 pcs)",
+    "price": "$2.49",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Butterfly Shrimp (10 Pcs)",
+    "description": "Crispy, golden-fried shrimp served with a tangy dipping sauce. Ten pieces.",
+    "price": "$8.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Teriyaki Chicken on the Sticks (3)",
+    "description": "Grilled chicken skewers glazed with a savory teriyaki sauce.",
+    "price": "$7.29",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Chicken Egg Roll (1)",
+    "description": "Crispy chicken-filled egg roll paired with fresh cabbage and a side of sweet dipping sauce.",
+    "price": "$2.49",
+    "section": "Appetizers"
+   },
+   {
+    "name": "French Fries",
+    "description": "Crispy, golden potato fries lightly salted for a satisfying crunch with each bite.",
+    "price": "$4.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Honey Butter Biscuits (3)",
+    "description": "Golden, flaky biscuits glazed with honey and butter, offering a sweet and rich flavor in each bite. Includes three biscuits.",
+    "price": "$4.69",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Coconut Shrimp",
+    "description": "Deep fried batter shrimp with house special coconut sauce",
+    "price": "$19.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Wonton Soup",
+    "description": "Savory broth with delicate wontons and fresh green onions.",
+    "price": "$10.99",
+    "section": "Soup"
+   },
+   {
+    "name": "Egg Drop Soup",
+    "description": "Delicate strands of egg float in a savory broth, accented with peas and carrots.",
+    "price": "$9.99",
+    "section": "Soup"
+   },
+   {
+    "name": "Vegetable Soup",
+    "description": "Veggie.",
+    "price": "$10.99",
+    "section": "Soup"
+   },
+   {
+    "name": "Chicken Noodle Soup",
+    "description": "32 oz for two people",
+    "price": "$11.99",
+    "section": "Soup"
+   },
+   {
+    "name": "Chicken Rice Soup",
+    "description": "32 oz for two people",
+    "price": "$10.99",
+    "section": "Soup"
+   },
+   {
+    "name": "Seafood Soup",
+    "description": "Shrimp fish crab meat and vegetable",
+    "price": "$15.99",
+    "section": "Soup"
+   },
+   {
+    "name": "Hot and Sour Soup",
+    "description": "Spicy.",
+    "price": "$10.99",
+    "section": "Soup"
+   },
+   {
+    "name": "Shrimp Fried Rice",
+    "description": "",
+    "price": "$15.99",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Pork Fried Rice",
+    "description": "Savory stir-fried rice with succulent pork and a medley of vegetables",
+    "price": "$15.79",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Chicken Fried Rice",
+    "description": "Classic chicken fried rice with tender pieces of chicken, veggies, and perfectly seasoned rice.",
+    "price": "$15.79",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Assorted Vegetable Fried RIce",
+    "description": "A blend of broccoli, carrots, mushrooms, and peas mixed with seasoned fried rice.",
+    "price": "$12.99",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Beef Fried Rice",
+    "description": "Savory rice stir-fried with tender beef, veggies, and aromatic spices create this flavorful Fried Rice.",
+    "price": "$15.99",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "House Special Fried Rice",
+    "description": "Tender chicken pieces and savory sauce over fluffy fried rice.",
+    "price": "$16.99",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Yang Chow Fried Rice",
+    "description": "Shrimp, diced vegetables, and char siu pork mixed with seasoned rice.",
+    "price": "$16.99",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Singapore Mei Fun",
+    "description": "Thin rice noodles stir-fried with shrimp, vegetables, and curry seasoning.",
+    "price": "$16.99",
+    "section": "Chow Mein"
+   },
+   {
+    "name": "Beef Chow Mein",
+    "description": "Beef Stir-Fry with Crispy Noodles, and Scrumptious Veggies",
+    "price": "$16.99",
+    "section": "Chow Mein"
+   },
+   {
+    "name": "Chicken Mei Fun",
+    "description": "Tender chicken pieces, stir-fried rice noodles, cabbage, carrots, and onions in a savory sauce.",
+    "price": "$16.99",
+    "section": "Chow Mein"
+   },
+   {
+    "name": "Chicken Chow Mein",
+    "description": "A delightful medley of tender chicken and stir-fried noodles.",
+    "price": "$15.99",
+    "section": "Chow Mein"
+   },
+   {
+    "name": "Pork Chow Mein",
+    "description": "Tender pork slices with stir-fried noodles, crisp cabbage, and a savory sauce.",
+    "price": "$16.99",
+    "section": "Chow Mein"
+   },
+   {
+    "name": "Shrimp Chow Mein",
+    "description": "Tender shrimp atop stir-fried noodles, garnished with fresh cilantro and green onions.",
+    "price": "$16.99",
+    "section": "Chow Mein"
+   },
+   {
+    "name": "Shrimp Mei Fun",
+    "description": "Delicate rice noodles stir-fried with shrimp, mixed vegetables, and a hint of soy sauce.",
+    "price": "$16.99",
+    "section": "Chow Mein"
+   },
+   {
+    "name": "House Special Chow Mein",
+    "description": "Shrimp pork chicken with soft noodle",
+    "price": "$17.99",
+    "section": "Chow Mein"
+   },
+   {
+    "name": "Vegetable Chow Mein",
+    "description": "Savory stir-fried noodles with crisp, seasonal vegetables in a light sauce.",
+    "price": "$12.99",
+    "section": "Chow Mein"
+   },
+   {
+    "name": "General Tao's Chicken",
+    "description": "Spicy. Chicken chunks in spicy house special sauce with broccoli.",
+    "price": "$16.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Mongolian Beef",
+    "description": "Spicy.",
+    "price": "$17.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Kung Pao Chicken",
+    "description": "Spicy.",
+    "price": "$16.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Happy Family",
+    "description": "Shrimp, pork, chicken, beef and vegetables in brown sauce.",
+    "price": "$18.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Orange Chicken",
+    "description": "Spicy.",
+    "price": "$16.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Triple Delight",
+    "description": "Spicy. Shrimp, pork, chicken.",
+    "price": "$18.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Hunan Beef",
+    "description": "Spicy.",
+    "price": "$16.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Broccoli Chicken",
+    "description": "Chicken and broccoli, served with either fried rice or steamed rice.",
+    "price": "$16.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Mixed Vegetables",
+    "description": "Veggie.",
+    "price": "$13.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Tofu with Mixed Vegetables",
+    "description": "Veggie.",
+    "price": "$13.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Sauteed String Bean",
+    "description": "Crisp string beans sautéed with black pepper and seasonings.",
+    "price": "$14.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "String Bean Chicken",
+    "description": "",
+    "price": "$16.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Broccoli Beef",
+    "description": "Succulent beef paired with crisp broccoli",
+    "price": "$16.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Kung Pao Shrimp",
+    "description": "Spicy.",
+    "price": "$17.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Pepper Steak",
+    "description": "Spicy.",
+    "price": "$16.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Shrimp with Garlic Sauce",
+    "description": "Spicy.",
+    "price": "$17.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Shrimp with Mixed Vegetable",
+    "description": "Tender shrimp paired with a medley of broccoli, carrots, and cabbage.",
+    "price": "$17.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Shrimp with Lobster Sauce",
+    "description": "Tender shrimp in a savory lobster sauce with peas, carrots, and egg.",
+    "price": "$17.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "String Bean Shrimp",
+    "description": "",
+    "price": "$17.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Mushroom Chicken",
+    "description": "Tender chicken pieces with mushrooms, zucchini, and carrots in a savory sauce.",
+    "price": "$16.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Mapo Tofu",
+    "description": "",
+    "price": "$14.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Jalapeno Chicken",
+    "description": "Tender chicken pieces stir-fried with fresh jalapeños, seasoned with a blend of spices for a bold and savory experience.",
+    "price": "$16.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Black Pepper Chicken",
+    "description": "Tender chicken pieces stir-fried with green bell peppers, onions, and carrots, seasoned with black pepper and garnished with fresh parsley.",
+    "price": "$17.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Seafood Combination",
+    "description": "Scallops, shrimp, crabmeat and mixed vegetable in white sauce.",
+    "price": "$18.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Shrimp Broccoli",
+    "description": "Tender shrimp sautéed with fresh broccoli, carrots, and green onions in a light sauce.",
+    "price": "$17.99",
+    "section": "Chef Special"
+   },
+   {
+    "name": "Any 3 Entrees Combo",
+    "description": "Combination of any 3 entrees. Options for sides include chow mein, fried rice, or steamed rice.",
+    "price": "$14.99",
+    "section": "Special Combinations"
+   },
+   {
+    "name": "Any 1 Entrée Combo",
+    "description": "Select one entrée: orange chicken, butterfly shrimp, varieties of shrimp and chicken, beef options, or mixed vegetables. Choose a side of chow mein, fried, or steamed rice.",
+    "price": "$12.99",
+    "section": "Special Combinations"
+   },
+   {
+    "name": "8pcs crispy Chicken Tenders",
+    "description": "",
+    "price": "$20.99",
+    "section": "Fish Combos"
+   },
+   {
+    "name": "Leg",
+    "description": "Crispy fried drumstick with a golden, crunchy exterior.",
+    "price": "$2.99",
+    "section": "Fish Combos"
+   },
+   {
+    "name": "3pcs Dark Chicken",
+    "description": "Crispy fried chicken pieces with a side of tangy dipping sauce.",
+    "price": "$7.99",
+    "section": "Fish Combos"
+   },
+   {
+    "name": "3pcs Chicken Tenders",
+    "description": "Crispy, golden-brown chicken tenders served with a side of dipping sauce.",
+    "price": "$8.99",
+    "section": "Fish Combos"
+   },
+   {
+    "name": "8pcs Dark Chicken",
+    "description": "Crispy and golden-brown fried chicken drumsticks, eight pieces.",
+    "price": "$21.99",
+    "section": "Fish Combos"
+   },
+   {
+    "name": "20pcs crispy fried chicken",
+    "description": "",
+    "price": "$46.99",
+    "section": "Fish Combos"
+   },
+   {
+    "name": "12pcs Chicken Tenders",
+    "description": "",
+    "price": "$25.99",
+    "section": "Fish Combos"
+   },
+   {
+    "name": "12pcs Fried Chicken (dark)",
+    "description": "",
+    "price": "$25.99",
+    "section": "Fish Combos"
+   },
+   {
+    "name": "Fried Flounder Fish",
+    "description": "1pcs Fired Fish with Fried Rice, French Fries or Chow Mein.",
+    "price": "$11.99",
+    "section": "Fish Combos"
+   },
+   {
+    "name": "Thigh",
+    "description": "Crispy, golden-fried fish thigh with a crunchy coating.",
+    "price": "$3.49",
+    "section": "Fish Combos"
+   },
+   {
+    "name": "Chow Mein",
+    "description": "Your choice of vegetable; chicken, beef, pork or shrimp.",
+    "price": "$59.99",
+    "section": "Party Tray"
+   },
+   {
+    "name": "Fried Rice",
+    "description": "Your choice of vegetable; chicken, beef, pork or shrimp.",
+    "price": "$54.99",
+    "section": "Party Tray"
+   },
+   {
+    "name": "Any Meat Entree",
+    "description": "Meat entrée options including beef, chicken, shrimp dishes with varying spice levels; choices like General Tao's, Hunan style, Kung Pao, and special combinations available.",
+    "price": "$64.99",
+    "section": "Party Tray"
+   },
+   {
+    "name": "Orange",
+    "description": "Refreshing orange soda with a tangy citrus flavor.",
+    "price": "$1.69",
+    "section": "Beverages"
+   },
+   {
+    "name": "Dr Pepper",
+    "description": "A classic carbonated drink with a unique blend of 23 flavors.",
+    "price": "$1.69",
+    "section": "Beverages"
+   },
+   {
+    "name": "Coke Zero",
+    "description": "The same great taste but with zero calories.",
+    "price": "$1.69",
+    "section": "Beverages"
+   },
+   {
+    "name": "Bottle Pepsi",
+    "description": "The bold, refreshing, robust cola",
+    "price": "$2.69",
+    "section": "Beverages"
+   },
+   {
+    "name": "Mtn Dew",
+    "description": "Exhilarate and quench your thirst with a one of a kind taste.",
+    "price": "$1.69",
+    "section": "Beverages"
+   },
+   {
+    "name": "Diet Coke",
+    "description": "A crisp, refreshing taste you know and love with zero calories.",
+    "price": "$1.69",
+    "section": "Beverages"
+   },
+   {
+    "name": "7 Up",
+    "description": "A refreshing lemon-lime soda, caffeine-free and crisp.",
+    "price": "$1.69",
+    "section": "Beverages"
+   },
+   {
+    "name": "Root Beer",
+    "description": "Traditional root beer with a rich, creamy flavor and a hint of vanilla.",
+    "price": "$1.69",
+    "section": "Beverages"
+   },
+   {
+    "name": "Bottle Water",
+    "description": "Pure, refreshing bottled water to quench your thirst.",
+    "price": "$1.69",
+    "section": "Beverages"
+   },
+   {
+    "name": "Arizona Ice Tea",
+    "description": "Brewed green tea with ginseng and honey, offering a natural taste with no artificial colors or preservatives.",
+    "price": "$2.29",
+    "section": "Beverages"
+   },
+   {
+    "name": "Red Power Ade",
+    "description": "A combination of electrolytes and carbohydrates that provide effective hydration and energy.",
+    "price": "$2.49",
+    "section": "Beverages"
+   },
+   {
+    "name": "Monster Energy Drink",
+    "description": "Boost your energy with a can of Monster Energy Drink, featuring taurine and caffeine.",
+    "price": "$3.99",
+    "section": "Beverages"
+   }
+  ]
+ },
+ {
+  "restaurantId": "3358",
+  "name": "Side Bar",
+  "sourceUrl": "https://www.sidebarsd.com/wp-content/uploads/2026/07/SB-Lounge-Cocktail-Menu-July-2026.pdf",
+  "confidence": "high",
+  "notes": "Read via pdftotext -layout from a dated (July 2026) PDF on the restaurant's own domain. Venue is primarily a nightclub with separate Bottle-Service and Bottle-Service-Packages PDFs on the same page — both excluded as adjunct. This \"Lounge Cocktail Menu\" PDF is the core priced food+drink menu (cocktails, mocktails, beer, sparkling wine, burger & bites). Sideburger and Grilled Cheese each carry a second combo price with fries added, noted in description rather than split into a separate line.",
+  "dishes": [
+   {
+    "name": "Sandia Sonata",
+    "description": "vodka, italicus bergamot, aperol, basil, watermelon, rosewater",
+    "price": "$19.00",
+    "section": "Cocktails"
+   },
+   {
+    "name": "Guava Glow",
+    "description": "gin, guava, aperol, lemongrass, passionfruit, orange, peach, seltzer",
+    "price": "$19.00",
+    "section": "Cocktails"
+   },
+   {
+    "name": "Midnight in Ibiza",
+    "description": "bourbon, alma finca, ancho reyes, chipotle raspberry, honey, egg white",
+    "price": "$22.00",
+    "section": "Cocktails"
+   },
+   {
+    "name": "Bonita Nights",
+    "description": "rum, kahlua, banana, espresso, coconut macadamia, sweet cream",
+    "price": "$19.00",
+    "section": "Cocktails"
+   },
+   {
+    "name": "Sunset in San Pedro",
+    "description": "tequila reposado, planetary pineapple rum, caramelized pineapple, ginger, sweet almond, mango chamoy",
+    "price": "$21.00",
+    "section": "Cocktails"
+   },
+   {
+    "name": "Island Time",
+    "description": "tequila blanco, strawberry, kiwi, mint",
+    "price": "$19.00",
+    "section": "Cocktails"
+   },
+   {
+    "name": "Dark Tide",
+    "description": "vodka, borghetti, vanilla, fresh espresso",
+    "price": "$18.00",
+    "section": "Cocktails"
+   },
+   {
+    "name": "Clase Royale",
+    "description": "2 oz Clase Azul Mezcal San Luis Potosi, caramelized pineapple, mango, chamoy; ID hold required",
+    "price": "$160.00",
+    "section": "Cocktails"
+   },
+   {
+    "name": "Hot Girl Spritz",
+    "description": "12 oz champagne, 8 oz Aperol, orange slices; minimum 2 guests, ID hold required",
+    "price": "$69.00",
+    "section": "Cocktails"
+   },
+   {
+    "name": "Summer Crush",
+    "description": "seedlip grove 42, passion, orange, guava, mango soda",
+    "price": "$14.00",
+    "section": "Mocktails"
+   },
+   {
+    "name": "Outdoor Shower",
+    "description": "seedlip garden 108, mint, cucumber, lime, non-alcoholic prosecco",
+    "price": "$15.00",
+    "section": "Mocktails"
+   },
+   {
+    "name": "Coors Light",
+    "description": "",
+    "price": "$8.00",
+    "section": "Beer + Seltzer + Non-Alcoholic"
+   },
+   {
+    "name": "Corona",
+    "description": "",
+    "price": "$10.00",
+    "section": "Beer + Seltzer + Non-Alcoholic"
+   },
+   {
+    "name": "Peroni",
+    "description": "",
+    "price": "$10.00",
+    "section": "Beer + Seltzer + Non-Alcoholic"
+   },
+   {
+    "name": "Seltzers",
+    "description": "",
+    "price": "$12.00",
+    "section": "Beer + Seltzer + Non-Alcoholic"
+   },
+   {
+    "name": "Red Bull - Flavors",
+    "description": "subject to availability",
+    "price": "$6.00",
+    "section": "Beer + Seltzer + Non-Alcoholic"
+   },
+   {
+    "name": "Evian Water 330 mL",
+    "description": "",
+    "price": "$6.00",
+    "section": "Beer + Seltzer + Non-Alcoholic"
+   },
+   {
+    "name": "Sidebar Sparkling Brut",
+    "description": "",
+    "price": "$15.00",
+    "section": "Sparkling Wine"
+   },
+   {
+    "name": "Sideburger",
+    "description": "double wagyu patties, american cheese, secret sauce, toasted brioche buns; $25 with fries",
+    "price": "$20.00",
+    "section": "Burger & Bites"
+   },
+   {
+    "name": "Grilled Cheese",
+    "description": "american cheese, toasted brioche buns; $21 with fries",
+    "price": "$15.00",
+    "section": "Burger & Bites"
+   },
+   {
+    "name": "Full House Fries",
+    "description": "lightly salted",
+    "price": "$12.00",
+    "section": "Burger & Bites"
+   },
+   {
+    "name": "Adult Happy Meal",
+    "description": "sideburger, fries, mini martini",
+    "price": "$28.00",
+    "section": "Burger & Bites"
+   }
+  ]
+ },
+ {
+  "restaurantId": "1293",
+  "name": "Little Ceasar's",
+  "sourceUrl": "https://littlecaesars.com/en-us/store/9847",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "needs-browser: store page is a Next.js static-export shell (pageProps empty) that fetches store/menu data client-side, plus a Cloudflare challenge-platform script present"
+ },
+ {
+  "restaurantId": "6697",
+  "name": "Black Radish",
+  "sourceUrl": "https://www.blckrdsh.com/menus",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "needs-browser: Wix site, /menus page SSR body is a near-empty JS shell (nav labels only, no data-hook item widgets and no prices in ~968KB of HTML) — menu content renders client-side"
+ },
+ {
+  "restaurantId": "3721",
+  "name": "Heavenly Donuts",
+  "sourceUrl": "",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no website on file and no platform pre-identified by the router; no starting point found within time budget"
+ },
+ {
+  "restaurantId": "2552",
+  "name": "Thai Fresh",
+  "sourceUrl": "https://thaifreshsd.com/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "GoDaddy Website Builder site — menu nav shows 6 category tabs (Appetizers, Soups & Salads, Curries, Woks, Noodles and Rices, Desserts & Drinks, Extra) but static HTML carries zero dollar amounts; item content renders client-side"
+ },
+ {
+  "restaurantId": "3137",
+  "name": "Gotcha",
+  "sourceUrl": "https://gotchateausa.com/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "domain unreachable (connect timeout) per router; a prior fetch attempt showed the domain redirecting to an ad-tracking/parked-domain page (purefindresults.com) rather than restaurant content"
+ },
+ {
+  "restaurantId": "4033",
+  "name": "Hino",
+  "sourceUrl": "https://sandiegoyakyudori.com/page/hino",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "restaurant-group site (USA Yakyudori Inc., multiple brands) has only an About-style page for Hino with no menu or pricing link found; no PDF or ordering-platform link present"
+ },
+ {
+  "restaurantId": "6132",
+  "name": "Coral Tree Tea House",
+  "sourceUrl": "http://www.coraltreeteahouse.com/CoralTreeTeaHouse/Welcome.html",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "reservation-only high-tea service; homepage has no menu link, PDF, or pricing — could not confirm whether pricing is per-person/prix-fixe (which would make this not_found) or simply unpublished; not enough evidence yet for a permanent verdict"
+ },
+ {
+  "restaurantId": "3671",
+  "name": "World Famous I Bar",
+  "sourceUrl": "https://coronado.navylifesw.com/programs/32ba1adc-8f33-4532-af89-b3eec404d300",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "restricted-access Navy MWR officers' bar (cashless, base-access-only) — official page is history/hours/contact only, no menu or pricing published there; not enough evidence yet to rule out a menu existing on another MWR page"
+ }
+]

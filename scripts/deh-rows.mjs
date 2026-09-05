@@ -121,6 +121,16 @@ export function buildRow(fields, allocate) {
     cuisine: fields.cuisine ?? null,
     cuisineRaw: fields.cuisineRaw ?? null,
     cuisineTags: fields.cuisineTags ?? null,
+    /*
+     * Carried in from a Serper resolve (`import-deh.mjs`'s MIN_REVIEWS floor
+     * decides whether `rating`/`reviewCount` are real or null); absent for
+     * every row resolved via Google, which matches the table default exactly
+     * - `rating` NULL, `reviewCount` 0 - so a plain Google-resolved insert is
+     * byte-for-byte what it was before these fields existed.
+     */
+    rating: fields.rating ?? null,
+    reviewCount: fields.reviewCount ?? 0,
+    website: fields.website ?? null,
   };
 }
 
@@ -151,13 +161,13 @@ export async function insertRow(sql, r, verifiedAt, { onConflict } = { onConflic
       INSERT INTO restaurants
         (id, name, cuisine, cuisine_raw, cuisine_tags, neighborhood, lat, lng,
          source_key, address, city, google_place_id, hold_reason,
-         deh_record_id, deh_verified_at,
+         deh_record_id, deh_verified_at, rating, review_count, website,
          sort_order, listed, distance, walk_time, closing_time, status, status_label)
       VALUES
         (${r.id}, ${r.name}, ${r.cuisine}, ${r.cuisineRaw}, ${r.cuisineTags},
          ${r.neighborhood}, ${r.lat}, ${r.lng},
          ${r.sourceKey}, ${r.address}, ${r.city}, ${r.googlePlaceId}, ${r.holdReason},
-         ${r.dehRecordId}, ${verifiedAt}::timestamptz,
+         ${r.dehRecordId}, ${verifiedAt}::timestamptz, ${r.rating}, ${r.reviewCount}, ${r.website},
          ${r.sortOrder}, FALSE, '', '', '', 'calm', '')
       ON CONFLICT (source_key) WHERE source_key IS NOT NULL DO UPDATE SET
         name            = EXCLUDED.name,
@@ -171,19 +181,28 @@ export async function insertRow(sql, r, verifiedAt, { onConflict } = { onConflic
         cuisine_raw     = COALESCE(restaurants.cuisine_raw, EXCLUDED.cuisine_raw),
         cuisine_tags    = COALESCE(restaurants.cuisine_tags, EXCLUDED.cuisine_tags),
         deh_record_id   = EXCLUDED.deh_record_id,
-        deh_verified_at = EXCLUDED.deh_verified_at`;
+        deh_verified_at = EXCLUDED.deh_verified_at,
+        /* Additive only, same rule as google_place_id above: a re-run must
+         * never displace a rating or website this row already carries, from
+         * Serper, Google enrichment or a human. NULLIF(review_count, 0)
+         * repeats enrich-places.mjs's own guard - see its header - so the
+         * unmeasured 0 every pre-Serper import row defaults to is never
+         * mistaken for a value worth keeping over EXCLUDED's. */
+        rating          = COALESCE(restaurants.rating, EXCLUDED.rating),
+        review_count    = COALESCE(NULLIF(restaurants.review_count, 0), EXCLUDED.review_count),
+        website         = COALESCE(restaurants.website, EXCLUDED.website)`;
   }
   return sql`
     INSERT INTO restaurants
       (id, name, cuisine, cuisine_raw, cuisine_tags, neighborhood, lat, lng,
        source_key, address, city, google_place_id, hold_reason,
-       deh_record_id, deh_verified_at,
+       deh_record_id, deh_verified_at, rating, review_count, website,
        sort_order, listed, distance, walk_time, closing_time, status, status_label)
     VALUES
       (${r.id}, ${r.name}, ${r.cuisine}, ${r.cuisineRaw}, ${r.cuisineTags},
        ${r.neighborhood}, ${r.lat}, ${r.lng},
        ${r.sourceKey}, ${r.address}, ${r.city}, ${r.googlePlaceId}, ${r.holdReason},
-       ${r.dehRecordId}, ${verifiedAt}::timestamptz,
+       ${r.dehRecordId}, ${verifiedAt}::timestamptz, ${r.rating}, ${r.reviewCount}, ${r.website},
        ${r.sortOrder}, FALSE, '', '', '', 'calm', '')
     ON CONFLICT (source_key) WHERE source_key IS NOT NULL DO NOTHING`;
 }

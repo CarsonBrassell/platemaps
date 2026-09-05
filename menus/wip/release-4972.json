@@ -1,0 +1,653 @@
+[
+ {
+  "restaurantId": "4972",
+  "name": "George Burgers",
+  "sourceUrl": "https://www.ubereats.com/store/george-burgers/cQpdoAnBRj6TmZ_jh7n4mA",
+  "confidence": "medium",
+  "notes": "Router was null (no website on record). No own website found by search; only ordering-platform storefronts exist. Address-confirmed via DoorDash's store page FAQ block (\"George Burgers is located at 350 N Broadway, Escondido, CA 92025\") matching the work list's 350 North Broadway exactly. DoorDash's own store page (george-burgers-escondido-171661) carries a full schema.org Menu JSON-LD (91 items) but FAILS the markup test hard: 13/13 sampled prices divide cleanly by 1.20 onto round or half-dollar values (e.g. $8.40/1.2=$7.00, $10.80/1.2=$9.00, $6.30/1.2=$5.25) with zero exceptions - a uniform 20% delivery surcharge, so DoorDash was not used. Uber Eats' store page (same address city \"San Diego\" region tag but title confirms \"George Burgers\") returned 200 with real content (title tag: \"George Burgers | Menu | San Diego | Uber Eats\"); menu data pulled from __REACT_QUERY_STATE__ (quotes escaped as literal \\u0022, unescaped before parsing catalogItems by regex since the outer blob contains an unrelated doubly-escaped metaJson sub-string that breaks a full JSON.parse). Uber Eats prices end almost entirely in .99/.49/.50 (51 of 54 sampled end in .99) with no divisor (1.04/1.1/1.15/1.2/1.25/1.3/0.96) producing a round-number cluster - passes the markup test, so used as the source despite being a delivery marketplace rather than the restaurant's own site. Uber Eats and DoorDash list overlapping but not identical items at different absolute prices (e.g. Hot Dog $2.99 vs $3.00-equivalent, Onion Rings $2.99 vs $4.80/1.2=$4.00) - not used as a cross-check per the rule that disagreement is information, not corroboration. 107 dishes across 16 sections (George's Combo Meals, Burgers, Sandwiches, Deli Sandwiches, Melts, Hot Dogs, Plate, Pita's, Fresh Salads, Mexican Burritos, Mexican Quesadillas, Kids Mains, Sides, Drinks, Shakes, Salad Wraps) - matches the cuisine and popular-items description (Cheeseburger, Gyro, Greek/Mexican items, kids menu) found via WebSearch summaries of aggregator pages. None inferred, merged, divided, or truncated.",
+  "dishes": [
+   {
+    "name": "1/4 Burger Combo",
+    "description": "Lettuce, tomato, onion, pickles, and Thousand Island dressing.",
+    "price": "$7.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Chicken Sandwich Combo",
+    "description": "Lettuce, tomato, mayonnaise, and wheat bun.",
+    "price": "$8.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Fish Sandwich Combo",
+    "description": "Lettuce, tomato, pickles, and tartar sauce.",
+    "price": "$8.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Gyro Sandwich Combo",
+    "description": "Red onion, tomato, and Tzatziki on the side.",
+    "price": "$10.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Half lb. Burger Combo",
+    "description": "Lettuce, tomato, onion, pickles, and Thousand Island dressing.",
+    "price": "$9.49",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Reuben Sandwich Combo",
+    "description": "Sauerkraut, swiss cheese, Thousand Island on marble rye.",
+    "price": "$9.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Pastrami Sandwich Combo",
+    "description": "Mustard and pickles on a French roll.",
+    "price": "$10.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Swiss Mushroom Burger Combo",
+    "description": "Lettuce, tomato, grilled onion, mushroom, and mayonnaise on a wheat bun.",
+    "price": "$9.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Garden Burger Combo",
+    "description": "Lettuce, tomato, red onion, pickles, and mayonnaise on a wheat bun.",
+    "price": "$9.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Hawaiian Burger Combo",
+    "description": "Lettuce, tomato, grilled red onions, teriyaki, and pineapple on a wheat bun.",
+    "price": "$9.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Chicken Caesar Pita Combo",
+    "description": "Romaine, caesar, tomato, and Parmesan.",
+    "price": "$9.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Bacon Ranch Burger Combo",
+    "description": "Lettuce, tomato, onion, pickles, cheese, bacon, and ranch.",
+    "price": "$9.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Texas Chicken Burger Combo",
+    "description": "Shredded lettuce, tomato, BBQ, cheese, and bacon.",
+    "price": "$9.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Western Burger Combo",
+    "description": "Lettuce, tomato, BBQ, cheese, onion ring, and bacon.",
+    "price": "$9.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "Chili Cheese Dog Combo",
+    "description": "",
+    "price": "$7.99",
+    "section": "George's Combo Meals"
+   },
+   {
+    "name": "1/4 lb. Burger",
+    "description": "Lettuce, tomato, onion, pickles, and Thousand Island.",
+    "price": "$4.49",
+    "section": "Burgers"
+   },
+   {
+    "name": "1/2 lb. Burger",
+    "description": "Lettuce, tomato, onion, pickles, and Thousand Island.",
+    "price": "$5.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Guacamole Burger",
+    "description": "Lettuce, tomato, onion, pickles, and mayonnaise.",
+    "price": "$5.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Western Burger",
+    "description": "Lettuce, tomato, BBQ, onion ring, cheese, and bacon.",
+    "price": "$5.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Hawaiian Burger",
+    "description": "Lettuce, tomato, grilled red onions, pineapple. and teriyaki on a wheat bun.",
+    "price": "$5.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Gyro Burger",
+    "description": "Lettuce, tomato, onion, pickles, and Thousand Island.",
+    "price": "$6.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Pastrami Burger",
+    "description": "Lettuce, tomato, onion, pickles, and Thousand Island.",
+    "price": "$6.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Bacon Ranch Burger",
+    "description": "Lettuce, tomato, onion, pickle, cheese, and ranch.",
+    "price": "$5.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Chili Cheese Burger",
+    "description": "Cheddar, chili, onion, and pickles.",
+    "price": "$5.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Jalapeno Burger",
+    "description": "Lettuce, tomato, onion, pickles, and mayonnaise.",
+    "price": "$5.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Turkey Burger",
+    "description": "Lettuce, tomato, and mayonnaise.",
+    "price": "$5.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Garden Burger",
+    "description": "Lettuce, tomato, red onion, pickles, avocado, and mayonnaise on a wheat bun.",
+    "price": "$5.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Swiss Mushroom Burger",
+    "description": "Swiss, Mushroom, lettuce, tomato, grilled onions, and mayonnaise on a wheat bun.",
+    "price": "$5.99",
+    "section": "Burgers"
+   },
+   {
+    "name": "Grilled Chicken Sandwich",
+    "description": "Lettuce, tomato, and mayonnaise.",
+    "price": "$4.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Spicy Grilled Chicken Sandwich",
+    "description": "Shredded lettuce, jalapenos, Tapatio, tomato, and mayonnaise.",
+    "price": "$5.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Texas Chicken Sandwich",
+    "description": "Lettuce, tomato, BBQ, cheese, and bacon.",
+    "price": "$6.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Chicken Club Sandwich",
+    "description": "Lettuce, tomato, mayonnaise, swiss, and bacon.",
+    "price": "$6.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Pastrami Sandwich",
+    "description": "Mustard and pickle on a French roll.",
+    "price": "$7.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Reuben Sandwich",
+    "description": "Sauerkraut, swiss cheese, and Thousand Island on marble rye.",
+    "price": "$6.49",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Steak Philly Sandwich",
+    "description": "Swiss cheese, grilled red onion, ranch, and peppers.",
+    "price": "$8.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Chicken Philly Sandwich",
+    "description": "Swiss, ranch, peppers, and grilled red onions.",
+    "price": "$7.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Fish Sandwich",
+    "description": "Lettuce, tomato, pickles, and tartar sauce.",
+    "price": "$4.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "BLT Sandwich",
+    "description": "Bacon, lettuce, tomato, and Texas bread.",
+    "price": "$5.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Cali BLT Sandwich",
+    "description": "Swiss, avocado, bacon, lettuce, and tomato.",
+    "price": "$5.49",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Grilled Cheese Sandwich",
+    "description": "",
+    "price": "$3.49",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Tuna Sandwich",
+    "description": "Lettuce, tomato, and mayonnaise.",
+    "price": "$6.99",
+    "section": "Deli Sandwiches"
+   },
+   {
+    "name": "Turkey Sandwich",
+    "description": "Lettuce, tomato, and mayonnaise.",
+    "price": "$6.99",
+    "section": "Deli Sandwiches"
+   },
+   {
+    "name": "Turkey Club Sandwich",
+    "description": "Lettuce, tomato, mayonnaise, swiss, and bacon.",
+    "price": "$7.99",
+    "section": "Deli Sandwiches"
+   },
+   {
+    "name": "Turkey Avocado and Swiss Sandwich",
+    "description": "Lettuce, tomato, mayonnaise, avocado, and swiss cheese.",
+    "price": "$7.99",
+    "section": "Deli Sandwiches"
+   },
+   {
+    "name": "Original Melt on Rye",
+    "description": "Swiss cheese and grilled onion.",
+    "price": "$5.99",
+    "section": "Melts"
+   },
+   {
+    "name": "Turkey on Sourdough Melt",
+    "description": "Swiss, tomato, and mayonnaise.",
+    "price": "$5.99",
+    "section": "Melts"
+   },
+   {
+    "name": "Tuna on Sourdough Melt",
+    "description": "Swiss, tomato, and mayonnaise.",
+    "price": "$5.99",
+    "section": "Melts"
+   },
+   {
+    "name": "Hot Dog",
+    "description": "",
+    "price": "$2.99",
+    "section": "Hot Dogs"
+   },
+   {
+    "name": "Chili Cheese Hot Dog",
+    "description": "Cheddar.",
+    "price": "$4.99",
+    "section": "Hot Dogs"
+   },
+   {
+    "name": "Carlitos Way Hot Dog",
+    "description": "Mayonnaise, mustard, ketchup, relish, jalapenos, and tomato.",
+    "price": "$4.99",
+    "section": "Hot Dogs"
+   },
+   {
+    "name": "Gyro Plate",
+    "description": "",
+    "price": "$10.99",
+    "section": "Plate"
+   },
+   {
+    "name": "Chicken Plate",
+    "description": "",
+    "price": "$10.99",
+    "section": "Plate"
+   },
+   {
+    "name": "Fish Plate",
+    "description": "",
+    "price": "$10.99",
+    "section": "Plate"
+   },
+   {
+    "name": "Original Gyro Pita",
+    "description": "Red onion and tomato.",
+    "price": "$6.99",
+    "section": "Pita's"
+   },
+   {
+    "name": "Chicken Gyro Pita",
+    "description": "Red onion and tomato.",
+    "price": "$5.99",
+    "section": "Pita's"
+   },
+   {
+    "name": "Caesar Pita",
+    "description": "Romaine, caesar, tomato, and Parmesan.",
+    "price": "$5.99",
+    "section": "Pita's"
+   },
+   {
+    "name": "Cali Pita",
+    "description": "Lettuce, tomato, cheddar, ranch, and avocado.",
+    "price": "$6.99",
+    "section": "Pita's"
+   },
+   {
+    "name": "Philly Pita",
+    "description": "Swiss, peppers, grilled onion, and ranch.",
+    "price": "$7.99",
+    "section": "Pita's"
+   },
+   {
+    "name": "Greek Salad",
+    "description": "Tomato, onion, cucumber, Peperchinni, bell peppers, olives, and feta.",
+    "price": "$6.99",
+    "section": "Fresh Salads"
+   },
+   {
+    "name": "Tuna Salad",
+    "description": "Tomato, cucumber, eggs, onion, pickles, and olives.",
+    "price": "$8.99",
+    "section": "Fresh Salads"
+   },
+   {
+    "name": "Chicken Caesar Salad",
+    "description": "",
+    "price": "$9.49",
+    "section": "Fresh Salads"
+   },
+   {
+    "name": "Garden Salad",
+    "description": "Tomato, cucumber, red onion, avocado, and bell peppers.",
+    "price": "$9.49",
+    "section": "Fresh Salads"
+   },
+   {
+    "name": "Cobb Salad",
+    "description": "Tomato, bacon, chicken, avocado, egg, and feta.",
+    "price": "$9.49",
+    "section": "Fresh Salads"
+   },
+   {
+    "name": "Crispy Chicken Salad",
+    "description": "Tomato, cheddar, egg, onion, and cucumber.",
+    "price": "$9.49",
+    "section": "Fresh Salads"
+   },
+   {
+    "name": "Greek Gyro Salad",
+    "description": "Served with warm pita.",
+    "price": "$6.99",
+    "section": "Fresh Salads"
+   },
+   {
+    "name": "Greek Chicken Salad",
+    "description": "Served with warm pita.",
+    "price": "$6.99",
+    "section": "Fresh Salads"
+   },
+   {
+    "name": "Cali Chicken Burrito",
+    "description": "",
+    "price": "$8.99",
+    "section": "Mexican Burritos"
+   },
+   {
+    "name": "Cali Steak Burrito",
+    "description": "",
+    "price": "$9.99",
+    "section": "Mexican Burritos"
+   },
+   {
+    "name": "Asada Burrito",
+    "description": "",
+    "price": "$8.99",
+    "section": "Mexican Burritos"
+   },
+   {
+    "name": "Chicken and Rice Burrito",
+    "description": "",
+    "price": "$7.99",
+    "section": "Mexican Burritos"
+   },
+   {
+    "name": "Fish Burrito",
+    "description": "Tomato, tartar, lettuce, and cheddar.",
+    "price": "$7.99",
+    "section": "Mexican Burritos"
+   },
+   {
+    "name": "Bean and Cheese Burrito",
+    "description": "",
+    "price": "$4.99",
+    "section": "Mexican Burritos"
+   },
+   {
+    "name": "Extreme Burrito",
+    "description": "Beans, rice, lettuce, tomato, chili, and onion.",
+    "price": "$8.99",
+    "section": "Mexican Burritos"
+   },
+   {
+    "name": "Cheese Quesadilla",
+    "description": "",
+    "price": "$4.99",
+    "section": "Mexican Quesadillas"
+   },
+   {
+    "name": "Veggie Quesadilla",
+    "description": "",
+    "price": "$6.99",
+    "section": "Mexican Quesadillas"
+   },
+   {
+    "name": "Chicken Quesadilla",
+    "description": "",
+    "price": "$7.99",
+    "section": "Mexican Quesadillas"
+   },
+   {
+    "name": "Gyro Quesadilla",
+    "description": "",
+    "price": "$9.99",
+    "section": "Mexican Quesadillas"
+   },
+   {
+    "name": "Asada Quesadilla",
+    "description": "",
+    "price": "$9.99",
+    "section": "Mexican Quesadillas"
+   },
+   {
+    "name": "Kids Burger",
+    "description": "Cheese, ketchup only.",
+    "price": "$5.99",
+    "section": "Kids Mains"
+   },
+   {
+    "name": "Kids Nuggets",
+    "description": "",
+    "price": "$5.99",
+    "section": "Kids Mains"
+   },
+   {
+    "name": "Kids Grilled Cheese",
+    "description": "",
+    "price": "$5.99",
+    "section": "Kids Mains"
+   },
+   {
+    "name": "Kids Corn Dog",
+    "description": "",
+    "price": "$5.99",
+    "section": "Kids Mains"
+   },
+   {
+    "name": "Onion Rings",
+    "description": "",
+    "price": "$2.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Zucchini",
+    "description": "",
+    "price": "$2.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Chili Cheese Fries",
+    "description": "",
+    "price": "$4.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Fries",
+    "description": "",
+    "price": "$1.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Sampler",
+    "description": "",
+    "price": "$6.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Chili Bowl",
+    "description": "",
+    "price": "$2.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Asada French Fries",
+    "description": "Guacamole, sour cream, and cheese.",
+    "price": "$8.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Gyro French Fries",
+    "description": "Tomato, red onion, and feta",
+    "price": "$8.99",
+    "section": "Sides"
+   },
+   {
+    "name": "SD Crispy FF",
+    "description": "",
+    "price": "$3.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Drink",
+    "description": "",
+    "price": "$1.99",
+    "section": "Drinks"
+   },
+   {
+    "name": "Bottle of Water",
+    "description": "",
+    "price": "$1.50",
+    "section": "Drinks"
+   },
+   {
+    "name": "Orange Juice",
+    "description": "",
+    "price": "$1.99",
+    "section": "Drinks"
+   },
+   {
+    "name": "Apple Juice",
+    "description": "",
+    "price": "$1.99",
+    "section": "Drinks"
+   },
+   {
+    "name": "Energy Drinks",
+    "description": "",
+    "price": "$2.99",
+    "section": "Drinks"
+   },
+   {
+    "name": "Vanilla Shake",
+    "description": "",
+    "price": "$3.99",
+    "section": "Shakes"
+   },
+   {
+    "name": "Chocolate Shake",
+    "description": "",
+    "price": "$3.99",
+    "section": "Shakes"
+   },
+   {
+    "name": "Oreo Shake",
+    "description": "",
+    "price": "$3.99",
+    "section": "Shakes"
+   },
+   {
+    "name": "Strawberry Shake",
+    "description": "",
+    "price": "$3.99",
+    "section": "Shakes"
+   },
+   {
+    "name": "Greek Chicken Wrap",
+    "description": "Lettuce, tomato, cucumber, red onion, and feta.",
+    "price": "$8.99",
+    "section": "Salad Wraps"
+   },
+   {
+    "name": "Cobb Wrap",
+    "description": "Feta, egg, tomato, Chicken, bacon, and avocado.",
+    "price": "$8.99",
+    "section": "Salad Wraps"
+   },
+   {
+    "name": "Greek Gyro Wrap",
+    "description": "Lettuce, tomato, cucumber, red onion, and feta.",
+    "price": "$8.99",
+    "section": "Salad Wraps"
+   },
+   {
+    "name": "Chicken Caesar Wrap",
+    "description": "Lettuce, Parmesan, cheese, and caesar dressing.",
+    "price": "$8.99",
+    "section": "Salad Wraps"
+   },
+   {
+    "name": "Tuna Wrap",
+    "description": "Tomato, cucumber, eggs, onion, and pickles.",
+    "price": "$8.99",
+    "section": "Salad Wraps"
+   },
+   {
+    "name": "Crispy Chicken Wrap",
+    "description": "",
+    "price": "$8.99",
+    "section": "Salad Wraps"
+   },
+   {
+    "name": "Garden Wrap",
+    "description": "",
+    "price": "$8.99",
+    "section": "Salad Wraps"
+   }
+  ]
+ }
+]

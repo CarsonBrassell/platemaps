@@ -1,0 +1,2090 @@
+[
+  {
+    "restaurantId": "4281",
+    "name": "heartwork coffee",
+    "sourceUrl": "https://www.doordash.com/en-US/store/heartwork-coffee-bar-san-diego-312329/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.allmenus.com/ca/san-diego/786030-heartwork-coffee/menu/",
+    "notes": "Shopify /products.json is retail-only (6 bagged coffees), no in-house menu page or nav link found on heartworkcoffeebar.com. Fell back to tier-5: DoorDash's SEO store page (schema.org Menu JSON-LD, server-rendered, read via navigation headers) and allmenus (Grubhub) agree to the cent on all 23 items - independent owners (DoorDash vs Grubhub), so treated as two agreeing tier-5 sources per the ladder. allmenus carried 2 extra ambiguous duplicate rows (a second 'Iced Latte' $4.00 and a 'Hot Latte' $4.00 layered under a 'Not Coffee' section alongside the sized Espresso-section variants) that DoorDash's cleaner listing omits; dropped as scrape-duplication noise, not read as disagreement. Cents cluster on .00/.25/.50/.75 - no delivery-fee divisor (1.04/1.1/1.15/1.2/1.25) produces a round-number pattern, so no markup suspected. Price level (small counter, $2.50 double espresso, $4.50 small latte) is plausible for a walk-up-window cafe with no seating area, per its own Yelp reviews describing it as 'basically a pickup window.' Could not reach a dine-in artefact (no browser) to confirm currency further within budget.",
+    "dishes": [
+      {
+        "name": "Espresso (Double)",
+        "description": "",
+        "price": "$2.50",
+        "section": "Espresso"
+      },
+      {
+        "name": "Americano (Small)",
+        "description": "",
+        "price": "$2.75",
+        "section": "Espresso"
+      },
+      {
+        "name": "Americano (Medium)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Espresso"
+      },
+      {
+        "name": "Americano (Large)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Espresso"
+      },
+      {
+        "name": "Macchiato",
+        "description": "",
+        "price": "$3.25",
+        "section": "Espresso"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$3.25",
+        "section": "Espresso"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$4.00",
+        "section": "Espresso"
+      },
+      {
+        "name": "Latte (Small)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Espresso"
+      },
+      {
+        "name": "Latte (Large)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Espresso"
+      },
+      {
+        "name": "Iced Americano (Small)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Espresso"
+      },
+      {
+        "name": "Iced Americano (Large)",
+        "description": "",
+        "price": "$4.25",
+        "section": "Espresso"
+      },
+      {
+        "name": "Iced Latte (Small)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Espresso"
+      },
+      {
+        "name": "Iced Latte (Large)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Espresso"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$3.75",
+        "section": "Brewed Coffee"
+      },
+      {
+        "name": "Daily Brew",
+        "description": "",
+        "price": "$2.25",
+        "section": "Brewed Coffee"
+      },
+      {
+        "name": "Cafe Au Lait",
+        "description": "",
+        "price": "$2.50",
+        "section": "Brewed Coffee"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$3.00",
+        "section": "Not Coffee"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$3.00",
+        "section": "Not Coffee"
+      },
+      {
+        "name": "Iced Tea Latte",
+        "description": "",
+        "price": "$4.00",
+        "section": "Not Coffee"
+      },
+      {
+        "name": "Hot Tea Latte",
+        "description": "",
+        "price": "$4.00",
+        "section": "Not Coffee"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "",
+        "price": "$3.50",
+        "section": "Not Coffee"
+      },
+      {
+        "name": "Milk",
+        "description": "",
+        "price": "$1.50",
+        "section": "Not Coffee"
+      },
+      {
+        "name": "Vanilla Milk Steamer",
+        "description": "",
+        "price": "$2.00",
+        "section": "Not Coffee"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2195",
+    "name": "Hungry Lu's",
+    "sourceUrl": "https://www.doordash.com/store/hungry-lu's-san-diego-62440/",
+    "confidence": "medium",
+    "notes": "hungrylus.com is a Canva-exported landing page with an 'Our Menu' heading but no item list or prices in the markup (image-only presentation, no nav link to an order page) - only outbound links found on it were to unrelated business sites (grabngosubs.com, mimmos.biz, montelepreforno.com), not menus. Fell back to DoorDash's marketplace store page (schema.org Menu JSON-LD, read via navigation headers), address confirmed as 4920 Voltaire Street matching the work list. Cents run .00/.29/.45/.49/.50/.99/.99 with no divisor (1.04-1.3) producing a round-number pattern, so no marketplace fee suspected - looks like the restaurant's own numbered sandwich board (items are literally numbered 1-18). Dropped one row, 'OB Special' ($50.00 personal 8in pizza) as an implausible outlier next to four sibling pizzas at $5.00-$6.45 - almost certainly an upstream data error, not a real price; did not invent a replacement. No second priced source reached to cross-check within budget.",
+    "dishes": [
+      {
+        "name": "Garden Salad",
+        "description": "",
+        "price": "$3.50",
+        "section": "Salads"
+      },
+      {
+        "name": "Artichoke Salad",
+        "description": "",
+        "price": "$3.50",
+        "section": "Salads"
+      },
+      {
+        "name": "Olive Salad",
+        "description": "",
+        "price": "$3.50",
+        "section": "Salads"
+      },
+      {
+        "name": "Tunisian Salad",
+        "description": "",
+        "price": "$3.50",
+        "section": "Salads"
+      },
+      {
+        "name": "Rustica",
+        "description": "",
+        "price": "$6.45",
+        "section": "8\" Personal Pizza"
+      },
+      {
+        "name": "Meat Lovers",
+        "description": "",
+        "price": "$6.45",
+        "section": "8\" Personal Pizza"
+      },
+      {
+        "name": "Traditional",
+        "description": "",
+        "price": "$5.00",
+        "section": "8\" Personal Pizza"
+      },
+      {
+        "name": "Vegetarian",
+        "description": "",
+        "price": "$5.00",
+        "section": "8\" Personal Pizza"
+      },
+      {
+        "name": "3. Turkey & Provolone",
+        "description": "",
+        "price": "$8.29",
+        "section": "Classic"
+      },
+      {
+        "name": "10. Homemade Meatball Sub",
+        "description": "",
+        "price": "$8.49",
+        "section": "Classic"
+      },
+      {
+        "name": "1. The Italian",
+        "description": "",
+        "price": "$8.49",
+        "section": "Classic"
+      },
+      {
+        "name": "8. Hungry Lu's Special",
+        "description": "",
+        "price": "$8.49",
+        "section": "Classic"
+      },
+      {
+        "name": "2. Ham & Provolone",
+        "description": "",
+        "price": "$7.99",
+        "section": "Classic"
+      },
+      {
+        "name": "9. Pastrami Melt",
+        "description": "",
+        "price": "$8.49",
+        "section": "Classic"
+      },
+      {
+        "name": "12. Baked Eggplant",
+        "description": "",
+        "price": "$8.99",
+        "section": "Classic"
+      },
+      {
+        "name": "7. The Sicilian (Toasted Roll)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Classic"
+      },
+      {
+        "name": "5. Tunisia",
+        "description": "",
+        "price": "$7.99",
+        "section": "Classic"
+      },
+      {
+        "name": "6. Grilled Cheese Feta",
+        "description": "",
+        "price": "$6.50",
+        "section": "Classic"
+      },
+      {
+        "name": "4. Roast Beef",
+        "description": "",
+        "price": "$6.50",
+        "section": "Classic"
+      },
+      {
+        "name": "11. Homemade Italian Sausage",
+        "description": "",
+        "price": "$6.50",
+        "section": "Classic"
+      },
+      {
+        "name": "16. Salami Milano & Fontina",
+        "description": "",
+        "price": "$7.50",
+        "section": "Signature"
+      },
+      {
+        "name": "14. Eggplant & Sausage",
+        "description": "",
+        "price": "$8.99",
+        "section": "Signature"
+      },
+      {
+        "name": "18. Roast Beef & Havarti",
+        "description": "",
+        "price": "$8.49",
+        "section": "Signature"
+      },
+      {
+        "name": "17. Capocollo & Provolone",
+        "description": "",
+        "price": "$7.50",
+        "section": "Signature"
+      },
+      {
+        "name": "13. Italian Beef",
+        "description": "",
+        "price": "$8.49",
+        "section": "Signature"
+      },
+      {
+        "name": "15. Lu's Roast Beef & Sausage",
+        "description": "",
+        "price": "$7.50",
+        "section": "Signature"
+      },
+      {
+        "name": "Torpedo Special",
+        "description": "",
+        "price": "$6.00",
+        "section": "Everyday Special"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1038",
+    "name": "Iron Door",
+    "sourceUrl": "https://restaurantguru.com/Iron-Door-Ocotillo-Wells",
+    "confidence": "high",
+    "notes": "Remote desert dive bar in Ocotillo Wells/Borrego Springs (5460 Split Mountain Rd, matches work list). theirondoorbar.com is a bare Wix landing page with no menu section or nav link. Web search plus restaurantguru, wanderlog, mindtrip, restaurantji and place-all all describe it only as 'cold beer, pool table, complimentary popcorn, pepperoni pizza made on-site, weekend tacos/waffles specials' with an aggregate '$10-$20 per person' Yelp-style price band - none carry a single itemized dish price. No DoorDash/UberEats/Grubhub/order.online listing found, no Toast/Square/Clover storefront, no PDF or photographed board reachable without a browser. Treating as not-found: a simple dive-bar menu with no per-item prices published anywhere, matching the archetype in the playbook.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6598",
+    "name": "Feast and Fareway",
+    "sourceUrl": "https://feastandfarewaycoronado.com/restaurant/wp-content/uploads/2026/05/FF-BrunchAllDay-Menu-WEB.jpg",
+    "confidence": "high",
+    "notes": "The bare www root is an unconfigured WordPress template ('Click to assign menu', placeholder Amsterdam address) - the real site lives one path deeper at /restaurant/. Its 'Menus' section embeds four full-page designed menu images (Brunch, Fareway Bar drinks, Kids' Menu, Snack Shack), fetched via the wp-json media endpoint at full resolution and read directly - a first-party, dated (uploads/2026/05, 2026/06, 2026/08) dine-in artefact, the strongest tier available. All four read cleanly with no ambiguous prices. Section list checked against DoorDash's own listing (which described fish tacos/nachos/burgers/salads under generic 'entrees') - those items are not on the current site menus at all; DoorDash's cached prices also divide cleanly by 1.15 onto round dollars ($18.40->$16, $9.20->$8, $16.10->$14, $20.70->$18, $17.25->$15), so that DoorDash listing is treated as stale/fee-marked and NOT used - the restaurant's own current photographed menus are the sole source here. Brunch runs 7:00am-3:00pm; Snack Shack (deli sandwiches, hot dogs, beer, snacks) appears to cover the rest of the day for the golf course. Kids' 'Hole-in-One' breakfast item is time-gated 7am-3pm, included as printed. Modifier add-ons ('+2' bacon, '+2.25' avocado, '+$2' chicken) are not separate dishes and were dropped, as were the two happy-hour discount blocks (not itemized dish prices). Sausage side lists two flavors at one price - both included at $6.00. Six-Pack Special carries two prices (import/domestic) - both included as separate rows.",
+    "dishes": [
+      {
+        "name": "Ribeye & Eggs",
+        "description": "Grilled 6oz ribeye, chimichurri, two eggs any style, hash browns, choice of toast",
+        "price": "$26.00",
+        "section": "Brunch / Signature Favorites"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "Ham, applewood smoked bacon, scrambled eggs, hash browns, cheddar, pico de gallo, guacamole, chipotle crema, side of house beans",
+        "price": "$17.00",
+        "section": "Brunch / Signature Favorites"
+      },
+      {
+        "name": "Southern Shrimp & Grits",
+        "description": "Creamy gouda grits, sauteed shrimp, sweet corn, chives, two eggs any style",
+        "price": "$17.50",
+        "section": "Brunch / Signature Favorites"
+      },
+      {
+        "name": "Traditional Canadian Bacon Benedict",
+        "description": "Poached eggs, english muffin, hollandaise, chives, house potatoes; classic preparation",
+        "price": "$14.50",
+        "section": "Brunch / Benedicts"
+      },
+      {
+        "name": "California Benedict",
+        "description": "Applewood smoked bacon, tomato, avocado",
+        "price": "$15.00",
+        "section": "Brunch / Benedicts"
+      },
+      {
+        "name": "Garden Florentine Benedict",
+        "description": "Sauteed spinach, tomato",
+        "price": "$13.00",
+        "section": "Brunch / Benedicts"
+      },
+      {
+        "name": "Bacon Three Ways",
+        "description": "Candied bacon, applewood smoked bacon, ham, caramelized onions, jack & cheddar",
+        "price": "$16.50",
+        "section": "Brunch / Omelets & Scrambles"
+      },
+      {
+        "name": "Chicken Fennel Sausage & Mozzarella",
+        "description": "Artisan fennel sausage, mozzarella, red onion, bell pepper, jalapeno",
+        "price": "$16.00",
+        "section": "Brunch / Omelets & Scrambles"
+      },
+      {
+        "name": "Garden Harvest",
+        "description": "Seasonal vegetables, jack & cheddar",
+        "price": "$14.00",
+        "section": "Brunch / Omelets & Scrambles"
+      },
+      {
+        "name": "Classic Denver",
+        "description": "Ham, bell peppers, onion, jack & cheddar",
+        "price": "$16.00",
+        "section": "Brunch / Omelets & Scrambles"
+      },
+      {
+        "name": "Soy Chorizo",
+        "description": "Soy chorizo, onion, red bell pepper, pico de gallo, cilantro",
+        "price": "$14.50",
+        "section": "Brunch / Omelets & Scrambles"
+      },
+      {
+        "name": "The Clubhouse Breakfast",
+        "description": "Choice of applewood smoked bacon or sausage, two eggs any style, house potatoes, choice of toast",
+        "price": "$14.00",
+        "section": "Brunch / Clubhouse Classics"
+      },
+      {
+        "name": "The Tee Time Sandwich",
+        "description": "Maple sage sausage patty, bacon, fried egg, cheddar, garlic aioli, brioche bun",
+        "price": "$14.00",
+        "section": "Brunch / Clubhouse Classics"
+      },
+      {
+        "name": "Chilaquiles Verdes or Rojos",
+        "description": "Crispy tortillas, black beans, salsa verde or roja, cotija, crema, pickled onion, two eggs",
+        "price": "$15.00",
+        "section": "Brunch / Clubhouse Classics"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "Grilled artisan bread, smashed avocado, arugula, cherry tomato, fig-balsamic, choice of egg",
+        "price": "$13.00",
+        "section": "Brunch / Clubhouse Classics"
+      },
+      {
+        "name": "Breakfast Tostadas",
+        "description": "Corn tostadas, black beans, jack & cheddar, avocado, pico de gallo, sour cream, two eggs, house potatoes",
+        "price": "$12.00",
+        "section": "Brunch / Clubhouse Classics"
+      },
+      {
+        "name": "Yogurt & Granola Bowl",
+        "description": "Greek yogurt, fresh berries, banana, house granola, honey",
+        "price": "$13.00",
+        "section": "Brunch / Clubhouse Classics"
+      },
+      {
+        "name": "Buttermilk Stack",
+        "description": "Fluffy pancakes, whipped butter, warm syrup",
+        "price": "$9.50",
+        "section": "Brunch / Griddle Favorites"
+      },
+      {
+        "name": "Lemon Raspberry Pancakes",
+        "description": "Macerated raspberries, lemon glaze",
+        "price": "$10.50",
+        "section": "Brunch / Griddle Favorites"
+      },
+      {
+        "name": "Cinnamon Roll Pancakes",
+        "description": "Cream cheese glaze, candied walnuts",
+        "price": "$11.00",
+        "section": "Brunch / Griddle Favorites"
+      },
+      {
+        "name": "Strawberry Cheesecake Pancakes",
+        "description": "Cheesecake cream, strawberries, graham crumble",
+        "price": "$12.00",
+        "section": "Brunch / Griddle Favorites"
+      },
+      {
+        "name": "Brioche French Toast",
+        "description": "",
+        "price": "$10.00",
+        "section": "Brunch / Griddle Favorites"
+      },
+      {
+        "name": "Churro French Toast",
+        "description": "Cinnamon sugar, vanilla ice cream, cajeta",
+        "price": "$12.75",
+        "section": "Brunch / Griddle Favorites"
+      },
+      {
+        "name": "Berry Crumble French Toast",
+        "description": "Mixed berry jam, brown sugar crumble, whipped cream",
+        "price": "$12.75",
+        "section": "Brunch / Griddle Favorites"
+      },
+      {
+        "name": "Fareway Sampler",
+        "description": "Choose any three pancakes or french toast selections",
+        "price": "$21.00",
+        "section": "Brunch / Griddle Favorites"
+      },
+      {
+        "name": "Applewood Smoked Bacon",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Candied Bacon",
+        "description": "",
+        "price": "$6.50",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Turkey Bacon",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Sausage (Chicken Asiago Fennel)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Sausage (Maple Sage)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Seasonal Fresh Fruit",
+        "description": "",
+        "price": "$8.00",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Hash Browns",
+        "description": "",
+        "price": "$5.00",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "House Potatoes",
+        "description": "",
+        "price": "$5.00",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Eggs (1 Egg)",
+        "description": "",
+        "price": "$2.50",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Eggs (2 Eggs)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Eggs (3 Eggs)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Toast Selection",
+        "description": "Sourdough, rye, whole wheat, multigrain, english muffin, gluten free",
+        "price": "$4.00",
+        "section": "Brunch / Sides"
+      },
+      {
+        "name": "Back Nine Bloody",
+        "description": "Tito's handmade vodka or tequila, housemade bloody mary mix, celery, pickle, olives, tajin rim (vegan)",
+        "price": "$12.00",
+        "section": "Fareway Bar / Signature Cocktails"
+      },
+      {
+        "name": "Cold Brew Martini",
+        "description": "Ketel One vodka, house cold brew, Mr Black cold brew liqueur, Licor 43 cold foam",
+        "price": "$15.00",
+        "section": "Fareway Bar / Signature Cocktails"
+      },
+      {
+        "name": "19th Hole Transfusion",
+        "description": "Tito's handmade vodka, grape, lime, ginger ale",
+        "price": "$14.00",
+        "section": "Fareway Bar / Signature Cocktails"
+      },
+      {
+        "name": "The Classic Daly",
+        "description": "House vodka, lemonade, house-brewed iced tea",
+        "price": "$13.00",
+        "section": "Fareway Bar / Signature Cocktails"
+      },
+      {
+        "name": "Fareway Spritz",
+        "description": "Feast & Fareway prosecco, St-Germain elderflower, soda, lemon twist, thyme",
+        "price": "$16.00",
+        "section": "Fareway Bar / Signature Cocktails"
+      },
+      {
+        "name": "Clubhouse Seasonal Margarita",
+        "description": "Herradura reposado tequila, Cointreau, agave, lime",
+        "price": "$16.00",
+        "section": "Fareway Bar / Signature Cocktails"
+      },
+      {
+        "name": "Cherrywood Old Fashioned",
+        "description": "Bulleit bourbon, cherry simple, luxardo cherry, aromatic bitters",
+        "price": "$16.00",
+        "section": "Fareway Bar / Signature Cocktails"
+      },
+      {
+        "name": "Coronado Press",
+        "description": "White cane rum, pineapple, lime, soda",
+        "price": "$13.00",
+        "section": "Fareway Bar / Signature Cocktails"
+      },
+      {
+        "name": "Sunset Gin & Tonic",
+        "description": "Tanqueray gin, blood orange liqueur, citrus, tonic",
+        "price": "$14.00",
+        "section": "Fareway Bar / Signature Cocktails"
+      },
+      {
+        "name": "Mulligan Coffee",
+        "description": "Baileys, butterscotch schnapps, salted caramel",
+        "price": "$13.00",
+        "section": "Fareway Bar / Signature Cocktails"
+      },
+      {
+        "name": "Traditional Mimosa",
+        "description": "Fresh squeezed orange, cranberry, grapefruit, or pineapple",
+        "price": "$9.75",
+        "section": "Fareway Bar / Bubbles"
+      },
+      {
+        "name": "Prosecco Mimosa",
+        "description": "Fresh squeezed orange, cranberry, grapefruit, or pineapple",
+        "price": "$10.75",
+        "section": "Fareway Bar / Bubbles"
+      },
+      {
+        "name": "F&F Mimosa Flight",
+        "description": "Choice of traditional or prosecco with a choice of juice",
+        "price": "$16.00",
+        "section": "Fareway Bar / Bubbles"
+      },
+      {
+        "name": "Bottle of Bubbles & Juice",
+        "description": "",
+        "price": "$28.00",
+        "section": "Fareway Bar / Bubbles"
+      },
+      {
+        "name": "Ginger Peach Fizz",
+        "description": "Ritual zero-proof gin, ginger beer, peach, lemon",
+        "price": "$12.00",
+        "section": "Fareway Bar / Zero-Proof Cocktails"
+      },
+      {
+        "name": "Cherry Mango Sunrise",
+        "description": "Ritual zero-proof rum, mango, cherry, citrus, lime",
+        "price": "$12.00",
+        "section": "Fareway Bar / Zero-Proof Cocktails"
+      },
+      {
+        "name": "Crispy Chicken Tenders",
+        "description": "Served with choice of fruit or french fries",
+        "price": "$10.00",
+        "section": "Kids Menu / Food"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "Jack and cheddar cheese on a flour tortilla",
+        "price": "$7.00",
+        "section": "Kids Menu / Food"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "Served with choice of fruit or french fries",
+        "price": "$7.00",
+        "section": "Kids Menu / Food"
+      },
+      {
+        "name": "Cheeseburger",
+        "description": "Served with choice of fruit or french fries",
+        "price": "$10.00",
+        "section": "Kids Menu / Food"
+      },
+      {
+        "name": "Mac & Cheese",
+        "description": "Three cheese curly mac",
+        "price": "$8.00",
+        "section": "Kids Menu / Food"
+      },
+      {
+        "name": "Kids Hole-In-One",
+        "description": "One egg, two strips of bacon, buttermilk pancake with butter and syrup (7am-3pm only)",
+        "price": "$10.00",
+        "section": "Kids Menu / Food"
+      },
+      {
+        "name": "Fresh Squeezed Orange Juice",
+        "description": "",
+        "price": "$4.50",
+        "section": "Kids Menu / Drinks"
+      },
+      {
+        "name": "Juice",
+        "description": "Apple, Grapefruit, or Cranberry",
+        "price": "$4.50",
+        "section": "Kids Menu / Drinks"
+      },
+      {
+        "name": "Soda or Lemonade",
+        "description": "Pepsi, Diet Pepsi, Starry, Dr Pepper, Root Beer, Ginger Ale",
+        "price": "$3.50",
+        "section": "Kids Menu / Drinks"
+      },
+      {
+        "name": "Tropical Iced Tea",
+        "description": "",
+        "price": "$3.50",
+        "section": "Kids Menu / Drinks"
+      },
+      {
+        "name": "Shirley Temple",
+        "description": "",
+        "price": "$3.50",
+        "section": "Kids Menu / Drinks"
+      },
+      {
+        "name": "Sunrise Breakfast Burrito",
+        "description": "Smoked applewood bacon, scrambled egg, cheddar cheese (until 11am)",
+        "price": "$9.00",
+        "section": "Snack Shack / Breakfast"
+      },
+      {
+        "name": "First Tee Sandwich",
+        "description": "English muffin, fried egg, Canadian bacon & cheddar (until 11am)",
+        "price": "$7.00",
+        "section": "Snack Shack / Breakfast"
+      },
+      {
+        "name": "Morning Pastries",
+        "description": "Fresh muffins or danishes - assorted flavors",
+        "price": "$4.00",
+        "section": "Snack Shack / Breakfast"
+      },
+      {
+        "name": "All Beef Hot Dog",
+        "description": "",
+        "price": "$6.00",
+        "section": "Snack Shack / Turn Favorites"
+      },
+      {
+        "name": "Bacon Wrapped Hotdog",
+        "description": "",
+        "price": "$8.00",
+        "section": "Snack Shack / Turn Favorites"
+      },
+      {
+        "name": "Spam Masubi",
+        "description": "Japanese steamed rice, spam, nori, oyster sauce, furikake",
+        "price": "$5.00",
+        "section": "Snack Shack / Turn Favorites"
+      },
+      {
+        "name": "Coronado Turkey Club",
+        "description": "Roasted turkey, applewood smoked bacon, tomato, lettuce, cheddar, garlic aioli on sourdough",
+        "price": "$10.00",
+        "section": "Snack Shack / Fairway Deli"
+      },
+      {
+        "name": "The Eagle Ham & Swiss",
+        "description": "Black forest ham, swiss cheese, tomato, lettuce, dijon mustard, garlic aioli on a french roll",
+        "price": "$10.00",
+        "section": "Snack Shack / Fairway Deli"
+      },
+      {
+        "name": "Harbor Tuna & Cheddar",
+        "description": "House tuna salad, cheddar, lettuce, tomato, on wheat",
+        "price": "$11.00",
+        "section": "Snack Shack / Fairway Deli"
+      },
+      {
+        "name": "Chicken Caesar Wrap",
+        "description": "Grilled chicken, romaine, parmesan, house croutons, caesar dressing in a flour tortilla",
+        "price": "$11.00",
+        "section": "Snack Shack / Fairway Deli"
+      },
+      {
+        "name": "Italian Wrap",
+        "description": "Salami, pepperoni, ham, provolone, lettuce, tomato, banana peppers, italian dressing, in a flour tortilla",
+        "price": "$11.00",
+        "section": "Snack Shack / Fairway Deli"
+      },
+      {
+        "name": "Clubhouse Chicken Caesar",
+        "description": "Grilled chicken, romaine, parmesan, house croutons, caesar dressing",
+        "price": "$9.00",
+        "section": "Snack Shack / Fresh Greens"
+      },
+      {
+        "name": "Chef Salad",
+        "description": "Turkey, ham, cheddar, tomato, hard boiled egg, iceburg, ranch",
+        "price": "$10.00",
+        "section": "Snack Shack / Fresh Greens"
+      },
+      {
+        "name": "Chocolate Chip Ice Cream Sandwich",
+        "description": "",
+        "price": "$4.50",
+        "section": "Snack Shack / Sweet Frozen Treats"
+      },
+      {
+        "name": "Oreo Bites",
+        "description": "",
+        "price": "$6.00",
+        "section": "Snack Shack / Sweet Frozen Treats"
+      },
+      {
+        "name": "Strawberry Shortcake Bar",
+        "description": "",
+        "price": "$4.50",
+        "section": "Snack Shack / Sweet Frozen Treats"
+      },
+      {
+        "name": "Chips",
+        "description": "Lay's Classic, Lay's BBQ, Doritos Nacho Cheese, Doritos Cool Ranch, Cheetos, Flamin' Hot Cheetos, Miss Vickie's Jalapeno, Miss Vickie's Sea Salt & Vinegar",
+        "price": "$3.00",
+        "section": "Snack Shack / Course Snacks"
+      },
+      {
+        "name": "Uncrustables",
+        "description": "Strawberry, Grape",
+        "price": "$4.50",
+        "section": "Snack Shack / Course Snacks"
+      },
+      {
+        "name": "Peanuts",
+        "description": "",
+        "price": "$3.00",
+        "section": "Snack Shack / Course Snacks"
+      },
+      {
+        "name": "Trail Mix",
+        "description": "",
+        "price": "$4.00",
+        "section": "Snack Shack / Course Snacks"
+      },
+      {
+        "name": "Beef Jerky",
+        "description": "",
+        "price": "$6.00",
+        "section": "Snack Shack / Course Snacks"
+      },
+      {
+        "name": "Granola Bar",
+        "description": "",
+        "price": "$3.00",
+        "section": "Snack Shack / Course Snacks"
+      },
+      {
+        "name": "Pretzels",
+        "description": "",
+        "price": "$3.00",
+        "section": "Snack Shack / Course Snacks"
+      },
+      {
+        "name": "Protein Bars",
+        "description": "",
+        "price": "$5.00",
+        "section": "Snack Shack / Course Snacks"
+      },
+      {
+        "name": "Candy",
+        "description": "Gummy Bears, Snickers, Twix, M&M's, Peanut M&M's",
+        "price": "$3.25",
+        "section": "Snack Shack / Course Snacks"
+      },
+      {
+        "name": "Cookies",
+        "description": "Grandma's chocolate chip",
+        "price": "$3.00",
+        "section": "Snack Shack / Course Snacks"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$4.25",
+        "section": "Snack Shack / Beverages"
+      },
+      {
+        "name": "Orange Juice",
+        "description": "",
+        "price": "$4.50",
+        "section": "Snack Shack / Beverages"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$4.50",
+        "section": "Snack Shack / Beverages"
+      },
+      {
+        "name": "Fountain Drinks",
+        "description": "Pepsi, Diet Pepsi, Starry, Root Beer, Dr Pepper, Ginger Ale, Lemonade",
+        "price": "$3.50",
+        "section": "Snack Shack / Beverages"
+      },
+      {
+        "name": "Gatorade",
+        "description": "",
+        "price": "$4.50",
+        "section": "Snack Shack / Beverages"
+      },
+      {
+        "name": "Red Bull",
+        "description": "Regular, Sugar Free, Seasonal",
+        "price": "$5.00",
+        "section": "Snack Shack / Beverages"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$3.50",
+        "section": "Snack Shack / Beverages"
+      },
+      {
+        "name": "Michelob Ultra",
+        "description": "",
+        "price": "$7.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Coors Light",
+        "description": "",
+        "price": "$6.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Coors Banquet",
+        "description": "",
+        "price": "$6.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Modelo",
+        "description": "",
+        "price": "$7.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Pacifico",
+        "description": "",
+        "price": "$7.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Stella",
+        "description": "",
+        "price": "$7.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Guinness",
+        "description": "",
+        "price": "$8.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Stone Delicious IPA",
+        "description": "",
+        "price": "$7.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Boat Shoes Hazy IPA",
+        "description": "",
+        "price": "$8.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Kona Big Wave",
+        "description": "",
+        "price": "$7.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": ".394 Pale Ale",
+        "description": "",
+        "price": "$7.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Salty Crew Blonde",
+        "description": "",
+        "price": "$7.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Weekend Vibes IPA",
+        "description": "",
+        "price": "$8.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Non Alcoholic Beer",
+        "description": "Athletic Blonde, IPA, Hazy IPA, or Mexican Lager",
+        "price": "$7.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "Feast and Fareway Cooler",
+        "description": "",
+        "price": "$6.00",
+        "section": "Snack Shack / Cold Ones"
+      },
+      {
+        "name": "High Noon",
+        "description": "Variety flavor",
+        "price": "$10.00",
+        "section": "Snack Shack / Ready to Drink"
+      },
+      {
+        "name": "Sun Cruisers",
+        "description": "Vodka tea + lemonade, variety flavors",
+        "price": "$10.00",
+        "section": "Snack Shack / Ready to Drink"
+      },
+      {
+        "name": "Cutwater",
+        "description": "Margarita, Paloma, Mule, or Transfusion",
+        "price": "$10.00",
+        "section": "Snack Shack / Ready to Drink"
+      },
+      {
+        "name": "Archer Roose Wine",
+        "description": "Sauvignon Blanc, Pinot Grigio, or Pinot Noir",
+        "price": "$12.00",
+        "section": "Snack Shack / Ready to Drink"
+      },
+      {
+        "name": "Hot Dog Combo",
+        "description": "Hot dog + chips + fountain drink",
+        "price": "$10.00",
+        "section": "Snack Shack / Golf Specials"
+      },
+      {
+        "name": "Bacon Hot Dog Combo",
+        "description": "Bacon hot dog + chips + fountain drink",
+        "price": "$12.00",
+        "section": "Snack Shack / Golf Specials"
+      },
+      {
+        "name": "Fairway Lunch",
+        "description": "Any sandwich or wrap + chips + fountain drink",
+        "price": "$14.00",
+        "section": "Snack Shack / Golf Specials"
+      },
+      {
+        "name": "Early Tee Time",
+        "description": "Breakfast burrito + coffee",
+        "price": "$11.00",
+        "section": "Snack Shack / Golf Specials"
+      },
+      {
+        "name": "Six-Pack Special (Import)",
+        "description": "",
+        "price": "$35.00",
+        "section": "Snack Shack / Golf Specials"
+      },
+      {
+        "name": "Six-Pack Special (Domestic)",
+        "description": "",
+        "price": "$30.00",
+        "section": "Snack Shack / Golf Specials"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7090",
+    "name": "The Funky Lemon",
+    "sourceUrl": "https://order.toasttab.com/online/the-funky-lemon-3415-mission-blvd-san-diego-ca-92109",
+    "confidence": "high",
+    "notes": "thefunkylemonsd.com sits behind a SiteGround bot-mitigation captcha wall (HTTP 202, redirect to /.well-known/sgcaptcha/) on every attempt with and without navigation headers - not bypassed, blocked and moved to the restaurant's own Toast storefront instead. __OO_STATE__ parsed by brace-balancing carried the full 11-group, 135-item catalog server-side (no client fetch needed). Cents run .00/.19/.25/.50/.75/.95/.99 - no delivery-fee divisor (1.04-1.3) produces a round-number cluster, so no markup suspected; this reads as the shop's own printed pricing. Dropped 2 items with a null price (Cup of Milk, Cup of Water - no real price to report) and dropped the pure retail-merchandise rows inside the 'MISC' group (apparel, tote bags, mugs, candles, palo santo/sage/incense, a meditation deck, coffee bean bags) as adjuncts; kept the grab-and-go bottled drinks that were mixed into the same group (water, kombucha, sodas, sparkling waters) as menu items, filed under 'Misc / Grab-and-Go Drinks'.",
+    "dishes": [
+      {
+        "name": "Almond Croissant",
+        "description": "",
+        "price": "$5.25",
+        "section": "Bakery"
+      },
+      {
+        "name": "Apple Danish",
+        "description": "",
+        "price": "$4.19",
+        "section": "Bakery"
+      },
+      {
+        "name": "Banana and Blueberry Nut Muffin",
+        "description": "",
+        "price": "$4.00",
+        "section": "Bakery"
+      },
+      {
+        "name": "Blueberry Muffin",
+        "description": "",
+        "price": "$4.00",
+        "section": "Bakery"
+      },
+      {
+        "name": "Cheese Danish",
+        "description": "",
+        "price": "$4.19",
+        "section": "Bakery"
+      },
+      {
+        "name": "Chocolate Chip Muffin",
+        "description": "",
+        "price": "$4.00",
+        "section": "Bakery"
+      },
+      {
+        "name": "Chocolate Croissant",
+        "description": "",
+        "price": "$5.19",
+        "section": "Bakery"
+      },
+      {
+        "name": "Croissant",
+        "description": "",
+        "price": "$4.25",
+        "section": "Bakery"
+      },
+      {
+        "name": "Palmier",
+        "description": "",
+        "price": "$4.00",
+        "section": "Bakery"
+      },
+      {
+        "name": "Caramel Sea Salt Crumbonne Intulip Muffin",
+        "description": "",
+        "price": "$4.00",
+        "section": "Bakery"
+      },
+      {
+        "name": "Zesty Lemon Bread",
+        "description": "",
+        "price": "$3.00",
+        "section": "Bakery"
+      },
+      {
+        "name": "Strawberry Cream Danish",
+        "description": "",
+        "price": "$4.50",
+        "section": "Bakery"
+      },
+      {
+        "name": "Guava Danish",
+        "description": "",
+        "price": "$4.50",
+        "section": "Bakery"
+      },
+      {
+        "name": "Doing Me",
+        "description": "Acai berries, apple juice, banana, blueberries",
+        "price": "$12.50",
+        "section": "Bliss Bowls"
+      },
+      {
+        "name": "Once in a Blue Moon",
+        "description": "Banana, pineapple, almond milk, vanilla extract, dates, blue majik",
+        "price": "$13.00",
+        "section": "Bliss Bowls"
+      },
+      {
+        "name": "Passion Fruit",
+        "description": "",
+        "price": "$12.50",
+        "section": "Bliss Bowls"
+      },
+      {
+        "name": "Pinky Promise",
+        "description": "",
+        "price": "$12.50",
+        "section": "Bliss Bowls"
+      },
+      {
+        "name": "Coconut Bliss Bowl",
+        "description": "",
+        "price": "$12.50",
+        "section": "Bliss Bowls"
+      },
+      {
+        "name": "Avoca-Duh! Toast",
+        "description": "",
+        "price": "$9.75",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Bagel and Cream Cheese",
+        "description": "",
+        "price": "$6.75",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Bagels",
+        "description": "",
+        "price": "$5.50",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Custom Sandwich",
+        "description": "",
+        "price": "$11.25",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Ham and Cheese Croissant",
+        "description": "",
+        "price": "$7.50",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Hole-in-One",
+        "description": "",
+        "price": "$9.25",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Joey's Fav",
+        "description": "Fried egg, prosciutto ham, gruyere cheese on brioche",
+        "price": "$11.75",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Mio Caro Caro",
+        "description": "",
+        "price": "$10.25",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Scrambled Eggs",
+        "description": "",
+        "price": "$6.00",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "The Notorious Ham Sandwich",
+        "description": "",
+        "price": "$11.25",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "The Nutty Girl PB & J",
+        "description": "",
+        "price": "$9.25",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Toast",
+        "description": "",
+        "price": "$4.50",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Toastie Melt",
+        "description": "",
+        "price": "$11.25",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Xochill the Turkey Cobb",
+        "description": "",
+        "price": "$11.75",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Zen Breakfast Burrito",
+        "description": "",
+        "price": "$9.50",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Side of Bacon",
+        "description": "",
+        "price": "$5.95",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Empanadas",
+        "description": "",
+        "price": "$5.50",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Sides",
+        "description": "",
+        "price": "$2.00",
+        "section": "Breakfast & Lunch"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$3.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cafe Au Lait",
+        "description": "",
+        "price": "$2.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$3.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$5.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$4.49",
+        "section": "Coffee"
+      },
+      {
+        "name": "Dirty Chai Latte",
+        "description": "",
+        "price": "$3.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Dirty Matcha Latte",
+        "description": "",
+        "price": "$3.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Espresso Shot",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Flat White",
+        "description": "",
+        "price": "$4.49",
+        "section": "Coffee"
+      },
+      {
+        "name": "Horchata Latte",
+        "description": "",
+        "price": "$3.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "House Coffee",
+        "description": "",
+        "price": "$2.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Ice Coffee",
+        "description": "",
+        "price": "$2.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "La Vida Mocha",
+        "description": "",
+        "price": "$3.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Latte",
+        "description": "",
+        "price": "$3.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Lavander Latte",
+        "description": "",
+        "price": "$3.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Macchiato",
+        "description": "",
+        "price": "$4.49",
+        "section": "Coffee"
+      },
+      {
+        "name": "Winter Wonderland",
+        "description": "",
+        "price": "$3.99",
+        "section": "Coffee"
+      },
+      {
+        "name": "Affogato",
+        "description": "",
+        "price": "$8.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Fresh Celery Juice",
+        "description": "",
+        "price": "$8.00",
+        "section": "Juices"
+      },
+      {
+        "name": "Fresh Orange Juice",
+        "description": "",
+        "price": "$8.00",
+        "section": "Juices"
+      },
+      {
+        "name": "My Heart Beets",
+        "description": "",
+        "price": "$11.00",
+        "section": "Juices"
+      },
+      {
+        "name": "Oh Kale Yes!",
+        "description": "",
+        "price": "$11.00",
+        "section": "Juices"
+      },
+      {
+        "name": "Sexy Mexi",
+        "description": "",
+        "price": "$11.00",
+        "section": "Juices"
+      },
+      {
+        "name": "The Funky Mix",
+        "description": "",
+        "price": "$11.00",
+        "section": "Juices"
+      },
+      {
+        "name": "The Morning After",
+        "description": "",
+        "price": "$11.00",
+        "section": "Juices"
+      },
+      {
+        "name": "Fresh Apple Juice",
+        "description": "",
+        "price": "$8.00",
+        "section": "Juices"
+      },
+      {
+        "name": "Bottle Water",
+        "description": "",
+        "price": "$2.45",
+        "section": "Misc / Grab-and-Go Drinks"
+      },
+      {
+        "name": "Coconut Water",
+        "description": "",
+        "price": "$3.00",
+        "section": "Misc / Grab-and-Go Drinks"
+      },
+      {
+        "name": "Kombucha",
+        "description": "",
+        "price": "$4.15",
+        "section": "Misc / Grab-and-Go Drinks"
+      },
+      {
+        "name": "San Pellegrino",
+        "description": "",
+        "price": "$3.70",
+        "section": "Misc / Grab-and-Go Drinks"
+      },
+      {
+        "name": "Topo Chico",
+        "description": "",
+        "price": "$3.25",
+        "section": "Misc / Grab-and-Go Drinks"
+      },
+      {
+        "name": "United Soda",
+        "description": "",
+        "price": "$3.95",
+        "section": "Misc / Grab-and-Go Drinks"
+      },
+      {
+        "name": "Cold Brew Dark Horse Can",
+        "description": "",
+        "price": "$5.00",
+        "section": "Misc / Grab-and-Go Drinks"
+      },
+      {
+        "name": "Maison Perrier Sparkling Water",
+        "description": "",
+        "price": "$3.00",
+        "section": "Misc / Grab-and-Go Drinks"
+      },
+      {
+        "name": "Butterly Lavander Lemonade",
+        "description": "",
+        "price": "$7.00",
+        "section": "Signature Lemonade"
+      },
+      {
+        "name": "Detoxing Black Lemonade",
+        "description": "",
+        "price": "$7.00",
+        "section": "Signature Lemonade"
+      },
+      {
+        "name": "Hibiscus Lemonade",
+        "description": "",
+        "price": "$7.00",
+        "section": "Signature Lemonade"
+      },
+      {
+        "name": "Rose Water Limeade",
+        "description": "",
+        "price": "$7.00",
+        "section": "Signature Lemonade"
+      },
+      {
+        "name": "Sparkling Mint Limeade",
+        "description": "",
+        "price": "$7.00",
+        "section": "Signature Lemonade"
+      },
+      {
+        "name": "Strawberry Lemonade",
+        "description": "",
+        "price": "$7.00",
+        "section": "Signature Lemonade"
+      },
+      {
+        "name": "Lemonade",
+        "description": "",
+        "price": "$7.00",
+        "section": "Signature Lemonade"
+      },
+      {
+        "name": "Adulting",
+        "description": "",
+        "price": "$10.25",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Berry Monsta",
+        "description": "",
+        "price": "$10.25",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Easy Peasy Lemon Squezy",
+        "description": "",
+        "price": "$10.25",
+        "section": "Smoothies"
+      },
+      {
+        "name": "I Kaledd It!",
+        "description": "",
+        "price": "$10.25",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Lollicup",
+        "description": "",
+        "price": "$8.25",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Oh Honey!",
+        "description": "",
+        "price": "$10.25",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Custom Smoothie",
+        "description": "",
+        "price": "$8.25",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Apple",
+        "description": "",
+        "price": "$0.99",
+        "section": "Snacks"
+      },
+      {
+        "name": "Banana",
+        "description": "",
+        "price": "$0.99",
+        "section": "Snacks"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$2.50",
+        "section": "Snacks"
+      },
+      {
+        "name": "Lemon",
+        "description": "",
+        "price": "$0.99",
+        "section": "Snacks"
+      },
+      {
+        "name": "Orange",
+        "description": "",
+        "price": "$0.99",
+        "section": "Snacks"
+      },
+      {
+        "name": "Fit Crunch Protein Bar",
+        "description": "",
+        "price": "$3.00",
+        "section": "Snacks"
+      },
+      {
+        "name": "Barebells Protein Bar",
+        "description": "",
+        "price": "$5.00",
+        "section": "Snacks"
+      },
+      {
+        "name": "Chai Latte",
+        "description": "",
+        "price": "$3.99",
+        "section": "Teas and Other Drinks"
+      },
+      {
+        "name": "Golden Turmeric Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Teas and Other Drinks"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "",
+        "price": "$3.50",
+        "section": "Teas and Other Drinks"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$3.75",
+        "section": "Teas and Other Drinks"
+      },
+      {
+        "name": "Ice Tea",
+        "description": "",
+        "price": "$3.75",
+        "section": "Teas and Other Drinks"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "",
+        "price": "$3.99",
+        "section": "Teas and Other Drinks"
+      },
+      {
+        "name": "London Fog",
+        "description": "",
+        "price": "$3.75",
+        "section": "Teas and Other Drinks"
+      },
+      {
+        "name": "Affogato Matcha",
+        "description": "",
+        "price": "$8.00",
+        "section": "Teas and Other Drinks"
+      },
+      {
+        "name": "Ginger Zen Shot",
+        "description": "",
+        "price": "$6.00",
+        "section": "Wellness Shots"
+      },
+      {
+        "name": "Heavenly Honey",
+        "description": "",
+        "price": "$6.00",
+        "section": "Wellness Shots"
+      },
+      {
+        "name": "Veggie Sticks Shot",
+        "description": "",
+        "price": "$6.00",
+        "section": "Wellness Shots"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3257",
+    "name": "Hanaya Sushi",
+    "sourceUrl": "http://places.singleplatform.com/hanaya-sushi/menu",
+    "confidence": "medium",
+    "notes": "hanayasushicafego.site (the work-list domain) still connect-times-out on retry, confirming the router's fetch-failed finding - genuinely dead, not a transient block. The JSON-LD on that page names a second domain, teamsina.com, which is a bare Squarespace 'under construction' parking page - also dead. SinglePlatform's own listing (address 10066 Pacific Heights Blvd, San Diego CA 92121 - exact match) was the only reachable source with real prices, read directly from its embedded schema.org OfferCatalog via plain curl. Only one priced source was reachable, so per the ladder this stands alone at medium confidence - flagging the known staleness risk explicitly rather than treating the read as current. Cents are almost entirely .95 with a few .00/.50 - a conventional printed-menu pattern, no delivery-fee divisor pattern found. Dropped the entire 'Bento' section (10 items) - every single price field was an empty string, matching the playbook's documented SinglePlatform failure mode of stripping prices server-side while keeping the item list; wrote no invented prices for it. Dropped 'Party Tray' ($30 catering tray) as a non-core adjunct. Kept Appetizer & Side, Deluxe Spicy Roll, Sushi (per-piece), and Rolls sections in full.",
+    "dishes": [
+      {
+        "name": "Rice",
+        "description": "",
+        "price": "$1.00",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Soup",
+        "description": "",
+        "price": "$1.00",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Soy Bean",
+        "description": "",
+        "price": "$2.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Green Salad",
+        "description": "",
+        "price": "$2.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Fruit Bowl",
+        "description": "",
+        "price": "$2.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Seaweed Salad",
+        "description": "",
+        "price": "$4.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Crab Salad",
+        "description": "",
+        "price": "$4.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Cold Tofu Salad",
+        "description": "",
+        "price": "$4.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Gyoza",
+        "description": "",
+        "price": "$3.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Egg Roll",
+        "description": "",
+        "price": "$3.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Egg Roll (Large)",
+        "description": "",
+        "price": "$5.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Kama, Y-tail Or Salmon",
+        "description": "",
+        "price": "$7.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Soft Shell Crab",
+        "description": "",
+        "price": "$7.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Baked Mussel",
+        "description": "",
+        "price": "$4.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Inari",
+        "description": "",
+        "price": "$1.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Inari (w/ spicy crab)",
+        "description": "w/spicy crab",
+        "price": "$2.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Baby Octopus",
+        "description": "",
+        "price": "$5.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Seasneil",
+        "description": "",
+        "price": "$5.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Stuffed Mushroom",
+        "description": "",
+        "price": "$4.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Dynamite",
+        "description": "",
+        "price": "$7.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Tempura Sushi",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Baked Salmon Special",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Spicy Seared Tuna",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Sashimi",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Sushi (8pc)",
+        "description": "8pc",
+        "price": "$12.95",
+        "section": "Appetizer & Side"
+      },
+      {
+        "name": "Tuna (Deluxe Spicy Roll)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Deluxe Spicy Roll"
+      },
+      {
+        "name": "Crab (Deluxe Spicy Roll)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Deluxe Spicy Roll"
+      },
+      {
+        "name": "Shrimp (Deluxe Spicy Roll)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Deluxe Spicy Roll"
+      },
+      {
+        "name": "Scallop (Deluxe Spicy Roll)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Deluxe Spicy Roll"
+      },
+      {
+        "name": "Lobster Langostino (Deluxe Spicy Roll)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Deluxe Spicy Roll"
+      },
+      {
+        "name": "Cooked Baked Seafood Mix (Deluxe Spicy Roll)",
+        "description": "",
+        "price": "$8.95",
+        "section": "Deluxe Spicy Roll"
+      },
+      {
+        "name": "Tuna (Sushi)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "White Tuna (Sushi)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Albacore (Sushi)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Yellowtail (Sushi)",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Salmon (Sushi)",
+        "description": "smoked or fresh",
+        "price": "$3.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "White Fish (Sushi)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Mackerel (Sushi)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Shrimp (Sushi)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Octopus (Sushi)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Squid (Sushi)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Surf Clam (Sushi)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Jumbo Clam (Sushi)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Crab (Sushi)",
+        "description": "imitation",
+        "price": "$1.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Scallop (Sushi)",
+        "description": "w/sauce",
+        "price": "$2.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Smelt Roe (Sushi)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Salmon Roe (Sushi)",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Sea Urchin (Sushi)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Sushi"
+      },
+      {
+        "name": "Eel (Sushi)",
+        "description": "",
+        "price": "$4.95",
+        "section": "Sushi"
+      },
+      {
+        "name": "Raw Shrimp (Sushi)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Sushi"
+      },
+      {
+        "name": "California Roll",
+        "description": "",
+        "price": "$3.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Philadelphia Roll",
+        "description": "",
+        "price": "$4.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Tuna Roll",
+        "description": "",
+        "price": "$3.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Cucumber Roll",
+        "description": "",
+        "price": "$1.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Veg Roll",
+        "description": "",
+        "price": "$3.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Rainbow Roll",
+        "description": "",
+        "price": "$8.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Albacore Roll",
+        "description": "",
+        "price": "$8.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Shrimp Tempura Roll",
+        "description": "",
+        "price": "$6.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Soft Shell Crab Roll",
+        "description": "",
+        "price": "$7.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Salmon Skin Roll",
+        "description": "",
+        "price": "$5.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Red Caterpillar Roll",
+        "description": "",
+        "price": "$8.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Orange Caterpillar Roll",
+        "description": "",
+        "price": "$8.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Snow Caterpillar Roll",
+        "description": "",
+        "price": "$8.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Dragon Roll",
+        "description": "",
+        "price": "$9.95",
+        "section": "Rolls"
+      },
+      {
+        "name": "Caterpillar Roll",
+        "description": "",
+        "price": "$8.95",
+        "section": "Rolls"
+      }
+    ]
+  }
+]

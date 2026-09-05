@@ -1,0 +1,2891 @@
+[
+ {
+  "restaurantId": "6450",
+  "name": "California's Taco Shop",
+  "blocked": true,
+  "notes": "Listed website californiastacoshop.shop 301-redirects to a wholly different registrable domain (foodyvo.com, a known directory farm) -- barred farm-domain pattern, not first-party. DoorDash JSON-LD Menu is genuinely present but empty (hasMenuSection:[[]]) -- dead end, not a fetch failure. Uber Eats JSON-LD is populated (101 items, address matches National City) but is a single uncorroborated aggregator, and internally incoherent: same dish (California Burrito) priced twice at $13.43 and $16.18 in the same feed, and prices are implausibly high for a taco shop (Big Mama Burrito $32.38). Markup-divisor sweep found no clean divisor (best ~35% conventional at 1.09). Re-queue for a human/browser pass to find the real ordering platform or a DoorDash refresh.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "6234",
+  "name": "Pegah's Kitchen",
+  "sourceUrl": "https://www.pegahskitchen.com/files/pegahs-menu-4-01-25-price-updates-pdf.pdf",
+  "confidence": "high",
+  "notes": "First-party Popmenu site; router had mislabeled the site 'no-platform' but page source carries Popmenu sign-in JSON. The site's /menu route 301-redirects straight to this dated PDF (Apr 2025) rather than to Popmenu's usual /menus/<slug> HTML shell. The cached copy of this URL fetched via cached-page.mjs was corrupted (tool writes cached PDF bodies as UTF-8 text, mangling binary bytes -- confirmed by a byte-count mismatch between the tool's reported write size and the real file size); re-fetched the PDF fresh with curl directly and pdftotext -layout extracted it cleanly, two-column name/price pairing intact. Conventional .99-ending pricing throughout, consistent with a 2025 sit-down diner menu. Dishes transcribed below are a representative full pass over every priced item in the PDF (kids-menu sub-items, senior-menu sub-items, and a la carte toppings/side list omitted as adjunct/no-independent-price rows).",
+  "dishes": [
+   {
+    "name": "A.M. Starter",
+    "description": "Two eggs any style, served with choice of bacon, sausage patties, sausage links or ham steak.",
+    "price": "$15.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Combo Breakfast",
+    "description": "Homemade biscuit topped with sausage gravy, served with two eggs any style & choice of two strips of bacon, two sausage links or one sausage patty.",
+    "price": "$17.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Pegah's Scramble",
+    "description": "Two eggs blended with sausage, grilled onions & melted cheese, served open face over toast.",
+    "price": "$15.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Country Fried Steak & Eggs",
+    "description": "Famous country fried steak topped with sausage gravy, served with two eggs any style.",
+    "price": "$17.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Steak & Eggs",
+    "description": "Tender sirloin steak served with two eggs.",
+    "price": "$18.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Pork Chops & Eggs",
+    "description": "Two tender pork chops served with two eggs.",
+    "price": "$18.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Biscuits & Sausage Gravy",
+    "description": "Two homemade biscuits topped with sausage gravy.",
+    "price": "$9.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Breakfast Quesadilla",
+    "description": "Large flour tortilla stuffed with eggs, onions, green peppers & choice of sausage, bacon, or ham.",
+    "price": "$16.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Grilled Ham & Egg Sandwich",
+    "description": "Two scrambled eggs, melted cheddar cheese, & sliced ham on grilled sourdough bread.",
+    "price": "$15.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Kielbasa & Eggs",
+    "description": "Grilled kielbasa served with two eggs any style.",
+    "price": "$15.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Jalapeno Hash & Eggs",
+    "description": "Homemade jalapeno hash served with two eggs, choice of bacon, sausage patties, or sausage links.",
+    "price": "$16.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Huevos Rancheros",
+    "description": "Crispy corn or flour tortillas topped with two eggs any style, Spanish sauce, & melted jack and cheddar cheese, served with Spanish rice, refried beans, & extra tortillas.",
+    "price": "$16.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Corned Beef Hash & Eggs",
+    "description": "Corned beef hash served with two eggs.",
+    "price": "$15.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Diced Ham & Scrambled Eggs",
+    "description": "A two egg & diced ham scramble.",
+    "price": "$14.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Sunrise Breakfast",
+    "description": "Two eggs any style.",
+    "price": "$13.99",
+    "section": "Pegah's Classics"
+   },
+   {
+    "name": "Kids Breakfast/Lunch Plate",
+    "description": "Ages 12 and under only. Choice of Hotcake Combo, French Toast Combo, Chicken Strips & Fries, Mac N Cheese & Garlic Toast, Grilled Cheese & Fries, or Mini Burger & Fries.",
+    "price": "$8.99",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Spicy California Skillet",
+    "description": "Home-style potatoes, bacon, mushrooms, tomatoes, jalapenos, scrambled eggs & cheese.",
+    "price": "$15.99",
+    "section": "Breakfast Skillets"
+   },
+   {
+    "name": "Country Skillet",
+    "description": "Home-style potatoes topped with sausage gravy, melted cheese & two eggs any style.",
+    "price": "$15.99",
+    "section": "Breakfast Skillets"
+   },
+   {
+    "name": "Mexican Skillet",
+    "description": "Home-style potatoes topped with Spanish sauce, melted cheese & two eggs any style.",
+    "price": "$15.99",
+    "section": "Breakfast Skillets"
+   },
+   {
+    "name": "Mission Omelet",
+    "description": "Bacon, spinach, mushrooms, ortega chilies & melted cheese.",
+    "price": "$15.99",
+    "section": "Omelets & More"
+   },
+   {
+    "name": "Denver Omelet",
+    "description": "Diced ham, onions, bell-peppers & melted cheese.",
+    "price": "$15.99",
+    "section": "Omelets & More"
+   },
+   {
+    "name": "Italian Omelet",
+    "description": "Italian sausage, black olives, tomatoes & cheese.",
+    "price": "$15.99",
+    "section": "Omelets & More"
+   },
+   {
+    "name": "Veggie Omelet",
+    "description": "Sauteed mushrooms, onions, bell peppers, tomatoes, spinach, avocado & melted cheese.",
+    "price": "$16.99",
+    "section": "Omelets & More"
+   },
+   {
+    "name": "Greek Omelet",
+    "description": "Spinach, tomatoes, bell-peppers, black olives & feta cheese.",
+    "price": "$15.99",
+    "section": "Omelets & More"
+   },
+   {
+    "name": "Country Omelet",
+    "description": "Bacon, sausage & onions, covered with country gravy & shredded cheese.",
+    "price": "$16.99",
+    "section": "Omelets & More"
+   },
+   {
+    "name": "Spanish Omelet",
+    "description": "Plain omelet covered with Spanish sauce & melted cheese.",
+    "price": "$15.99",
+    "section": "Omelets & More"
+   },
+   {
+    "name": "Meatlover's Omelet",
+    "description": "Bacon, ham, sausage, kielbasa & melted cheese.",
+    "price": "$17.99",
+    "section": "Omelets & More"
+   },
+   {
+    "name": "BOA Omelet",
+    "description": "Bacon, ortega chilies, avocado & cheese.",
+    "price": "$16.99",
+    "section": "Omelets & More"
+   },
+   {
+    "name": "Border Omelet",
+    "description": "Ground beef, ortega chilies, onions & cheese, served with salsa & sour cream.",
+    "price": "$17.99",
+    "section": "Omelets & More"
+   },
+   {
+    "name": "Classic Benedict",
+    "description": "Two poached eggs & ham on top of an English Muffin, topped with Hollandaise Sauce.",
+    "price": "$16.99",
+    "section": "Eggs Benedict"
+   },
+   {
+    "name": "Country Benedict",
+    "description": "Two poached eggs & two sausage patties on famous biscuit, topped with Country Gravy & cheese.",
+    "price": "$16.99",
+    "section": "Eggs Benedict"
+   },
+   {
+    "name": "California Benedict",
+    "description": "Two poached eggs, bacon, avocado & tomato on top of an English Muffin, topped with Hollandaise Sauce.",
+    "price": "$17.99",
+    "section": "Eggs Benedict"
+   },
+   {
+    "name": "Potato Scramble Burrito",
+    "description": "Three scrambled eggs, potatoes, onions, green peppers & cheese.",
+    "price": "$14.99",
+    "section": "Breakfast Burritos"
+   },
+   {
+    "name": "Chorizo Burrito",
+    "description": "Three scrambled eggs, Mexican sausage & cheese.",
+    "price": "$14.99",
+    "section": "Breakfast Burritos"
+   },
+   {
+    "name": "Mexican Burrito",
+    "description": "Three scrambled eggs, sauteed tomatoes, onions, bell peppers, jalapenos & cheese.",
+    "price": "$14.99",
+    "section": "Breakfast Burritos"
+   },
+   {
+    "name": "Bacon, Sausage, Or Ham Burrito",
+    "description": "Choice of meat, mixed with three scrambled eggs & cheese.",
+    "price": "$14.99",
+    "section": "Breakfast Burritos"
+   },
+   {
+    "name": "Short Stack",
+    "description": "Two buttermilk pancakes.",
+    "price": "$8.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Full Stack",
+    "description": "Three buttermilk pancakes.",
+    "price": "$9.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Pancake Combo",
+    "description": "Two buttermilk pancakes, two eggs any style & choice of four strips of bacon, four sausage links, or two sausage patties.",
+    "price": "$15.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Classic French Toast (Two Slices)",
+    "description": "Thick sliced egg bread, grilled golden brown, dusted with powdered sugar.",
+    "price": "$8.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Classic French Toast (Three Slices)",
+    "description": "Thick sliced egg bread, grilled golden brown, dusted with powdered sugar.",
+    "price": "$9.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Raisin French Toast (Two Slices)",
+    "description": "",
+    "price": "$7.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Raisin French Toast (Three Slices)",
+    "description": "",
+    "price": "$8.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "French Toast Combo",
+    "description": "Two slices of French toast served with two eggs any style & choice of four strips bacon, four sausage links, or two sausage patties.",
+    "price": "$15.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Stuffed French Toast - Banana Nutella",
+    "description": "Sliced bananas & Nutella chocolate sandwiched between two pieces of French toast.",
+    "price": "$14.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Stuffed French Toast - Strawberry Cream Cheese",
+    "description": "Strawberries & cream cheese sandwiched between two pieces of French toast.",
+    "price": "$14.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Belgian Waffle",
+    "description": "Golden brown waffle topped with powdered sugar, served with butter & maple syrup.",
+    "price": "$9.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Old-Fashioned Waffle",
+    "description": "Golden brown, crispy thin waffle.",
+    "price": "$8.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "Waffle Combo",
+    "description": "Waffle served with two eggs any style & choice of four strips of bacon, four sausage links, or two sausage patties.",
+    "price": "$15.99",
+    "section": "Off the Griddle"
+   },
+   {
+    "name": "ABC Burger",
+    "description": "Burger topped with melted cheddar cheese, bacon, avocado & all the fixings.",
+    "price": "$16.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Standard Burger",
+    "description": "Burger served with all the fixings.",
+    "price": "$14.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Mushroom Burger",
+    "description": "Burger topped with fresh sauteed mushrooms & melted Jack cheese.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Chili Size Burger",
+    "description": "Burger served open-face on a hamburger bun & topped with homemade chili and melted shredded cheese.",
+    "price": "$16.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Bleu Cheese Burger",
+    "description": "Burger topped with bleu cheese crumbles & all the fixings.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Bacon Cheese Burger",
+    "description": "Burger topped with two strips of bacon and choice of melted cheddar or Jack cheese.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Patty Melt",
+    "description": "Burger served on grilled rye-bread with melted cheddar cheese & grilled onions.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Pegah's Chicken Bacon Melt",
+    "description": "Marinated chicken breast topped with melted cheddar cheese, a grilled pineapple ring & crispy bacon, on a toasted sesame seed bun.",
+    "price": "$16.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Philly Steak Sandwich",
+    "description": "Lean shaved Philly steak, grilled onions & green peppers, smothered with melted Monterey Jack cheese, on a toasted hoagie roll.",
+    "price": "$16.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Tuna Salad Sandwich",
+    "description": "Homemade tuna salad served with lettuce and tomato on sourdough bread.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Super Bird",
+    "description": "Turkey breast topped with crispy bacon, tomatoes, cheddar & Monterey Jack cheese on grilled sourdough bread.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Tuna Melt",
+    "description": "Homemade tuna salad & melted cheddar cheese served on grilled rye bread.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "French Dip",
+    "description": "Sliced roast beef & melted Jack cheese on a toasted hoagie roll with a side of Au Jus.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Monte Cristo",
+    "description": "Grilled ham & melted Monterey Jack cheese served on two slices of French toast.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Hot Roast Beef",
+    "description": "Tender lean roast beef served open-face on two slices of white bread & topped with beef gravy, served with vegetable of the day.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Grilled Ham & Cheese",
+    "description": "Grilled sourdough bread topped with melted cheese & sliced ham.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Reuben Sandwich",
+    "description": "Lean corned beef topped with sauerkraut & melted Jack cheese, on grilled rye bread with Thousand Island dressing.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Grilled Cheese Sandwich",
+    "description": "Grilled sourdough bread topped with cheddar & Monterey Jack cheese.",
+    "price": "$12.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "B.L.T.",
+    "description": "Bacon, lettuce, tomatoes & mayonnaise served on two slices of toasted bread.",
+    "price": "$14.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Hot Turkey Sandwich",
+    "description": "Thin sliced turkey breast served open-face on grilled sourdough bread & topped with turkey gravy, served with vegetable of the day & cranberry sauce.",
+    "price": "$15.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Turkey Croissant",
+    "description": "Thin sliced turkey breast served with lettuce, tomatoes, cheese, mayonnaise & avocado.",
+    "price": "$16.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Club Sandwich",
+    "description": "Triple-decker on toasted bread with mayonnaise, turkey, bacon, cheddar cheese, lettuce & tomatoes.",
+    "price": "$16.99",
+    "section": "Burgers & Sandwiches"
+   },
+   {
+    "name": "Chef's Salad",
+    "description": "Crispy tossed greens with diced ham, turkey strips, cheddar cheese, jack cheese, hard-boiled egg, & tomato slices.",
+    "price": "$15.99",
+    "section": "Salads & More"
+   },
+   {
+    "name": "Mediterranean Salad",
+    "description": "Mixed greens, tomatoes, red onions, cucumbers, hard-boiled egg, black olives, feta cheese & grilled chicken breast, with garlic bread.",
+    "price": "$15.99",
+    "section": "Salads & More"
+   },
+   {
+    "name": "Chicken Strip Salad",
+    "description": "Fried chicken strips, chopped bacon, shredded cheese, tomato slices & a hard-boiled egg on a bed of greens.",
+    "price": "$15.99",
+    "section": "Salads & More"
+   },
+   {
+    "name": "Santa Fe Chicken Salad",
+    "description": "Mixed greens tossed with shredded cheese, tortilla strips, diced tomatoes, & Mexi-ranch dressing, topped with fried chicken strips.",
+    "price": "$15.99",
+    "section": "Salads & More"
+   },
+   {
+    "name": "Cobb Salad",
+    "description": "Mixed greens topped with ham, bacon, turkey, egg, tomato, olives & bleu cheese crumbles.",
+    "price": "$15.99",
+    "section": "Salads & More"
+   },
+   {
+    "name": "Taco Salad",
+    "description": "Crispy flour shell filled with lettuce, marinated grilled chicken, tomatoes & cheese, served with salsa and sour cream.",
+    "price": "$15.99",
+    "section": "Salads & More"
+   },
+   {
+    "name": "Grilled Chicken Salad",
+    "description": "Marinated grilled chicken breast, cucumbers, tomatoes & a hard-boiled egg on a bed of greens.",
+    "price": "$15.99",
+    "section": "Salads & More"
+   },
+   {
+    "name": "Pegah's Homemade Chili",
+    "description": "",
+    "price": "$6.99",
+    "section": "Soup & Chili"
+   },
+   {
+    "name": "Homemade Soup of the Day",
+    "description": "",
+    "price": "$5.99",
+    "section": "Soup & Chili"
+   },
+   {
+    "name": "Ice Cream",
+    "description": "",
+    "price": "$5.99",
+    "section": "Dessert"
+   },
+   {
+    "name": "Homemade Cinnamon Roll",
+    "description": "",
+    "price": "$5.99",
+    "section": "Dessert"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6687",
+  "name": "Maui Hawaiian Barbeque",
+  "sourceUrl": "https://www.doordash.com/store/maui-hawaiian-bbq-oceanside-63507/",
+  "crossCheckedAgainst": "https://www.ubereats.com/store/maui-hawaiian-bbq/Y5NN3tvZWPO6pGALGrd38g",
+  "confidence": "medium",
+  "notes": "Listed first-party domain ordermauihawaiianbbq.com is DNS-dead. Used DoorDash JSON-LD (address confirmed 2455 Vista Way, Oceanside) as primary, 68 items after dropping the duplicate 'Most Ordered' carousel; cross-checked against Uber Eats JSON-LD (68 items, same address), which agreed to the cent on every sampled item except 'Maui Combo' (Uber Eats showed a broken $0.00; recorded here as DoorDash's from-price). Cent distribution is scattered with no clean single markup divisor (best 33% conventional at 1.09x), but the subtraction test passed twice on Large/Small variant pairs (Katsu $15.02-$12.83=$2.19; BBQ Chicken $14.47-$12.28=$2.19 -- identical differential), which is strong evidence this is a real (if oddly-priced) menu rather than a computed/corrupted field. Two independently-owned marketplaces agreeing satisfies the no-single-aggregator rule.",
+  "dishes": [
+   {
+    "name": "BBQ Mixed Combo",
+    "description": "A blend of our three famous BBQ Mixes: BBQ Beef, BBQ Short Ribs and BBQ Chicken",
+    "price": "$17.20",
+    "section": "Combo Plate"
+   },
+   {
+    "name": "Half n Half Meat",
+    "description": "Combo plate with a choice of two meats ranging from BBQ chicken, kalua pork, katsu, fish, shrimp, short ribs, BBQ beef, lau lau, to patties.",
+    "price": "$14.20",
+    "section": "Combo Plate"
+   },
+   {
+    "name": "Kakele Mixed Combo",
+    "description": "Chicken Katsu, Kalua Pork, and Beef Patty with Gravy",
+    "price": "$16.93",
+    "section": "Combo Plate"
+   },
+   {
+    "name": "Curry Mixed Combo",
+    "description": "Beef Patty, Kalua Pork and BBQ Beef with Curry Sauce",
+    "price": "$16.65",
+    "section": "Combo Plate"
+   },
+   {
+    "name": "Kalua & Lau Lau Combo",
+    "description": "An old Hawaiian traditional, Hefty pork chuck wrapped with taro leaf steamed to perfection paired with smoked flavor succulent pork slowly roasted to a flavorful finish",
+    "price": "$17.20",
+    "section": "Combo Plate"
+   },
+   {
+    "name": "Maui Combo",
+    "description": "Fried Fish and Fried Breaded butterfly shrimp with a choice of meat (starting price; build-your-own combo)",
+    "price": "$15.75",
+    "section": "Combo Plate"
+   },
+   {
+    "name": "Fried SHRIMP (Large)",
+    "description": "Deep Fried Shrimp served with Tartar Sauce",
+    "price": "$16.65",
+    "section": "Seafood"
+   },
+   {
+    "name": "GRILLED SALMON",
+    "description": "Grilled Salmon served with Rice, Brocoli, Carrot, Green Onion and Teryaki sauce",
+    "price": "$16.38",
+    "section": "Seafood"
+   },
+   {
+    "name": "Fried FISH (Large)",
+    "description": "Deep Fried fish fillet served with Tartar Sauce",
+    "price": "$16.65",
+    "section": "Seafood"
+   },
+   {
+    "name": "Fried FISH (Small)",
+    "description": "Deep Fried fish fillet served with Tartar Sauce",
+    "price": "$12.28",
+    "section": "Seafood"
+   },
+   {
+    "name": "GARLIC Shrimp (GARLIC)",
+    "description": "Battered and fried shrimp sautéed with rich garlic and green onion.",
+    "price": "$16.65",
+    "section": "Seafood"
+   },
+   {
+    "name": "GRILLED SHRIMP (GRILLED)",
+    "description": "Shrimp on Skewer served with Tartar sauce",
+    "price": "$16.65",
+    "section": "Seafood"
+   },
+   {
+    "name": "Fried SHRIMP (Small)",
+    "description": "Deep Fried Shrimp served with Tartar Sauce",
+    "price": "$12.56",
+    "section": "Seafood"
+   },
+   {
+    "name": "Fish & Shrimp",
+    "description": "A Combination of Fried Shrimp, and Fried Fish",
+    "price": "$16.93",
+    "section": "Seafood"
+   },
+   {
+    "name": "BBQ Beef",
+    "description": "Grilled beef with side of rice and macaroni salad",
+    "price": "$16.38",
+    "section": "Beef"
+   },
+   {
+    "name": "BBQ Short Ribs",
+    "description": "Grilled Kalbi Short ribs with side of rice and macaroni salad",
+    "price": "$16.65",
+    "section": "Beef"
+   },
+   {
+    "name": "Loco Moco (Small)",
+    "description": "One Beef Patty, one Egg over rice, green onion, and gravy sauce",
+    "price": "$12.01",
+    "section": "Beef"
+   },
+   {
+    "name": "Hamburger Steak (Large)",
+    "description": "Three beef patty with green onion and gravy sauce",
+    "price": "$16.11",
+    "section": "Beef"
+   },
+   {
+    "name": "Loco Moco (Large)",
+    "description": "Two Beef Patty, Two Egg over rice, green onion, and gravy sauce",
+    "price": "$16.11",
+    "section": "Beef"
+   },
+   {
+    "name": "Beef Curry",
+    "description": "Grilled beef and Curry with side of rice and macaroni salad",
+    "price": "$16.65",
+    "section": "Beef"
+   },
+   {
+    "name": "Hamburger Steak (Small)",
+    "description": "Two beef patty with green onion and gravy sauce",
+    "price": "$12.28",
+    "section": "Beef"
+   },
+   {
+    "name": "Katsu (Large)",
+    "description": "Everyone's favorite! Crispy breaded chicken served with our famous Katsu dipping sauce",
+    "price": "$15.02",
+    "section": "Chicken"
+   },
+   {
+    "name": "BBQ Chicken (Large)",
+    "description": "Hawaiian best Seller! Grilled boneless chicken marinated in our special hawaiian BBQ sauce.",
+    "price": "$14.47",
+    "section": "Chicken"
+   },
+   {
+    "name": "Katsu (Small)",
+    "description": "Everyone's favorite! Crispy breaded chicken served with our famous Katsu dipping sauce",
+    "price": "$12.83",
+    "section": "Chicken"
+   },
+   {
+    "name": "BBQ Chicken (Small)",
+    "description": "Hawaiian best Seller! Grilled boneless chicken marinated in our special hawaiian BBQ sauce.",
+    "price": "$12.28",
+    "section": "Chicken"
+   },
+   {
+    "name": "Curry Katsu (Large)",
+    "description": "Golden crispy breaded chicken with Curry sauce",
+    "price": "$15.02",
+    "section": "Chicken"
+   },
+   {
+    "name": "Chicken Wing",
+    "description": "Chicken Wing sauteed with garlic, green onion, and served with tartar sauce",
+    "price": "$16.11",
+    "section": "Chicken"
+   },
+   {
+    "name": "Curry Katsu (Small)",
+    "description": "Golden crispy breaded chicken with Curry sauce",
+    "price": "$12.83",
+    "section": "Chicken"
+   },
+   {
+    "name": "Cutlet CH (Large)",
+    "description": "Golden crispy breaded chicken with gravy sauce",
+    "price": "$15.02",
+    "section": "Chicken"
+   },
+   {
+    "name": "Cutlet CH (Small)",
+    "description": "Golden crispy breaded chicken with gravy sauce",
+    "price": "$12.83",
+    "section": "Chicken"
+   },
+   {
+    "name": "Lau Lau",
+    "description": "An old Hawaiian traditional. Hefty pork chunk wrapped with Taro leaf steamed to perfection paired with smoked flavor pork slowly roasted to a flavorful finish.",
+    "price": "$17.20",
+    "section": "Pork"
+   },
+   {
+    "name": "Kalua Pork (Large)",
+    "description": "Also called Kalua Pig! Is a traditional Hawaiian dish. The end result is tender, tasty, and juicy meat that falls of the bone and has a unique smoky flavor.",
+    "price": "$15.83",
+    "section": "Pork"
+   },
+   {
+    "name": "Kalua Pork (Small)",
+    "description": "Also called Kalua Pig! Is a traditional Hawaiian dish. The end result is tender, tasty, and juicy meat that falls of the bone and has a unique smoky flavor.",
+    "price": "$12.56",
+    "section": "Pork"
+   },
+   {
+    "name": "Atkin's Large",
+    "description": "BBQ Short rib, BBQ Beef, BBQ Chicken, 2 Eggs and cabbage (no rice or Macaroni Salad)",
+    "price": "$16.11",
+    "section": "Low Carb"
+   },
+   {
+    "name": "Atkins Small",
+    "description": "BBQ Chicken, BBQ Beef, one egg, and cabbage  (no rice or macaroni Salad)",
+    "price": "$12.56",
+    "section": "Low Carb"
+   },
+   {
+    "name": "Chicken Burger (Dbl)",
+    "description": "double the BBQ Chicken, two Cheese, Tomato, Onion, lettuce, and Mayonnaise",
+    "price": "$9.83",
+    "section": "Burger"
+   },
+   {
+    "name": "Chicken Burger (Sgl)",
+    "description": "BBQ Chicken, Cheese, Tomato, Onion, lettuce, and Mayonnaise",
+    "price": "$7.64",
+    "section": "Burger"
+   },
+   {
+    "name": "Kalua Burger (Sgl)",
+    "description": "Kalua Pork, Cheese, Tomato, Onion, lettuce, and Mayonnaise",
+    "price": "$7.10",
+    "section": "Burger"
+   },
+   {
+    "name": "Burger (Double)",
+    "description": "Two Beef Patty, two cheese, tomato, Onion, Lettuce, and mayonnaise",
+    "price": "$9.56",
+    "section": "Burger"
+   },
+   {
+    "name": "Hwai Burger (Dbl)",
+    "description": "two Beef Patty, two cheese, Pineapple, tomato, Onion, Lettuce, and mayonnaise",
+    "price": "$9.83",
+    "section": "Burger"
+   },
+   {
+    "name": "Burger (Single)",
+    "description": "Beef Patty, cheese, tomato, Onion, Lettuce, and mayonnaise",
+    "price": "$7.37",
+    "section": "Burger"
+   },
+   {
+    "name": "Hwai Burger (Sgl)",
+    "description": "Beef Patty, cheese, Pineapple, tomato, Onion, Lettuce, and mayonnaise",
+    "price": "$7.64",
+    "section": "Burger"
+   },
+   {
+    "name": "Spam Musubi (4)",
+    "description": "Spam, rice, Teriyaki Sauce, wrapped with seaweed",
+    "price": "$11.47",
+    "section": "Musubi"
+   },
+   {
+    "name": "Spam Musubi (2)",
+    "description": "Spam, rice, Teriyaki Sauce, wrapped with seaweed",
+    "price": "$6.01",
+    "section": "Musubi"
+   },
+   {
+    "name": "Chicken Musubi (4)",
+    "description": "BBQ Chicken, Rice, Teriyaki Sauce, wrapped with Seaweed",
+    "price": "$11.74",
+    "section": "Musubi"
+   },
+   {
+    "name": "Portuguese Musubi (2)",
+    "description": "Portuguese Sausage, Rice, Teriyaki Sauce, wrapped in Seaweed",
+    "price": "$6.28",
+    "section": "Musubi"
+   },
+   {
+    "name": "Chicken Musubi (2)",
+    "description": "BBQ Chicken, Rice, Teriyaki Sauce, wrapped with Seaweed",
+    "price": "$6.28",
+    "section": "Musubi"
+   },
+   {
+    "name": "Portuguese Musubi (4)",
+    "description": "Portuguese Sausage, Rice, Teriyaki Sauce, wrapped in Seaweed",
+    "price": "$11.74",
+    "section": "Musubi"
+   },
+   {
+    "name": "Seaweed Saimin",
+    "description": "Spam, Seaweed, noodles, and green onion",
+    "price": "$9.28",
+    "section": "Soup"
+   },
+   {
+    "name": "Chicken Saimin",
+    "description": "BBQ Chicken, noodles, cabbage, and green onion",
+    "price": "$10.37",
+    "section": "Soup"
+   },
+   {
+    "name": "Aloha Saimin",
+    "description": "BBQ Chicken, Spam, Egg, Noodles, cabbage, and green onion",
+    "price": "$11.47",
+    "section": "Soup"
+   },
+   {
+    "name": "Beef Saimin",
+    "description": "BBQ beef, Noodles, cabbage, and green onion",
+    "price": "$10.92",
+    "section": "Soup"
+   },
+   {
+    "name": "Spam Saimin",
+    "description": "Spam, noodles, cabbage, and green onion",
+    "price": "$8.74",
+    "section": "Soup"
+   },
+   {
+    "name": "Side Katsu Chicken",
+    "description": "",
+    "price": "$7.10",
+    "section": "Side Order"
+   },
+   {
+    "name": "BBQ Chicken (8 oz)",
+    "description": "",
+    "price": "$7.64",
+    "section": "Side Order"
+   },
+   {
+    "name": "Potsticker (5)",
+    "description": "Pork and Veggies potsticker (5 pcs)",
+    "price": "$6.55",
+    "section": "Side Order"
+   },
+   {
+    "name": "Macaroni Salad (2)",
+    "description": "Mcaroni Salad 2 scoops",
+    "price": "$4.64",
+    "section": "Side Order"
+   },
+   {
+    "name": "Egg Roll (3)",
+    "description": "Egg Roll 3 Pcs",
+    "price": "$6.28",
+    "section": "Side Order"
+   },
+   {
+    "name": "French Fries",
+    "description": "French Fries",
+    "price": "$4.10",
+    "section": "Side Order"
+   },
+   {
+    "name": "Steamed Broccoli & Carrot",
+    "description": "Steamed broccoli and carrot",
+    "price": "$4.37",
+    "section": "Side Order"
+   },
+   {
+    "name": "Manapua Pork",
+    "description": "Manapua pork",
+    "price": "$2.73",
+    "section": "Side Order"
+   },
+   {
+    "name": "BBQ Beef (8 oz)",
+    "description": "",
+    "price": "$7.64",
+    "section": "Side Order"
+   },
+   {
+    "name": "Kimchi",
+    "description": "Kimchi",
+    "price": "$4.10",
+    "section": "Side Order"
+   },
+   {
+    "name": "Brown Rice (2)",
+    "description": "brown rice 2 scoops",
+    "price": "$2.46",
+    "section": "Side Order"
+   },
+   {
+    "name": "Steamed Rice (2)",
+    "description": "Steamed rice 2 scoops",
+    "price": "$2.46",
+    "section": "Side Order"
+   },
+   {
+    "name": "Scoop of Kalua",
+    "description": "",
+    "price": "$4.91",
+    "section": "Side Order"
+   },
+   {
+    "name": "Curry Sauce (8 oz)",
+    "description": "",
+    "price": "$3.00",
+    "section": "Side Order"
+   },
+   {
+    "name": "Chili Paste (8 oz)",
+    "description": "",
+    "price": "$3.00",
+    "section": "Side Order"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6464",
+  "name": "Madeleine Cafe & Bakery",
+  "sourceUrl": "https://www.doordash.com/en/store/madeleine-cafe-&-bakery-solana-beach-593342/",
+  "crossCheckedAgainst": "http://places.singleplatform.com/madeleine-cafe--bakery/menu (via allmenus.com mirror)",
+  "confidence": "medium-high",
+  "notes": "Wix first-party site's /menu and /order routes both 404 (Wix Restaurants Orders widget renders client-side, no static content); only in-page priced content is an adjunct /catering-menu (package pricing, not core menu) and a 2MB /online-ordering page with almost no extractable prices. Used DoorDash JSON-LD instead (76 items after dropping duplicate 'Most Ordered' carousel), all conventional .00/.50-ending prices, matching the French-cafe section structure (Les Oeufs, Les Crepes, Les Salades, Les Tartines etc.) independently reported by SinglePlatform/allmenus. Cross-check: Croque Madame is $25.00 on both DoorDash and the SinglePlatform-sourced listing -- exact match confirms same underlying menu. Some items (e.g. Croissant $6.00 here vs $4.50 on SinglePlatform, salads $22-23 here vs $17 there) differ, consistent with ordinary delivery-platform markup over dine-in price, not corruption -- no clean single divisor found across the full item set, so DoorDash's own displayed prices are used as-is rather than adjusted.",
+  "dishes": [
+   {
+    "name": "Eggs Your Way",
+    "description": "Served with toast, butter and mixed greens. Gluten Free Bread available upon request.",
+    "price": "$16.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "French Toast",
+    "description": "Served with seasonal berries, whipped cream and maple syrup. Gluten-free bread available upon request.",
+    "price": "$20.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Le Granola",
+    "description": "Yogurt or milk, fresh seasonal fruit, honey.",
+    "price": "$17.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Les Tartines",
+    "description": "Half fresh baked baguette (toasted or plain) with butter and jam.",
+    "price": "$13.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Add avocado",
+    "description": "Extra item",
+    "price": "$3.00",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Apple Turnover",
+    "description": "Flaky pastry filled with sweet apple compote, encased in golden-brown, buttery layers.",
+    "price": "$7.00",
+    "section": "Boulangerie"
+   },
+   {
+    "name": "Chocolate Croissant",
+    "description": "Pain au chocolat",
+    "price": "$6.00",
+    "section": "Boulangerie"
+   },
+   {
+    "name": "Almond Croissant",
+    "description": "Flaky croissant filled with rich almond paste and topped with sliced almonds.",
+    "price": "$7.00",
+    "section": "Boulangerie"
+   },
+   {
+    "name": "Raisin Twist",
+    "description": "Pain au Raisin",
+    "price": "$7.00",
+    "section": "Boulangerie"
+   },
+   {
+    "name": "Chocolate Almond Croissant",
+    "description": "Freshly baked croissant filled with almond paste and chocolate, topped with sliced almonds.",
+    "price": "$7.00",
+    "section": "Boulangerie"
+   },
+   {
+    "name": "Croissant",
+    "description": "Flaky, buttery pastry with a golden, crisp exterior and a tender, airy interior.",
+    "price": "$6.00",
+    "section": "Boulangerie"
+   },
+   {
+    "name": "Fresh Baguette",
+    "description": "A French-style loaf, freshly baked and characterized by a crisp crust and soft interior.",
+    "price": "$6.00",
+    "section": "Boulangerie"
+   },
+   {
+    "name": "Madeleine",
+    "description": "",
+    "price": "$5.00",
+    "section": "Boulangerie"
+   },
+   {
+    "name": "Parisienne Omelette",
+    "description": "French cooked ham, Gruyere cheese, fresh herbs.",
+    "price": "$23.00",
+    "section": "Les Oeufs"
+   },
+   {
+    "name": "Classic Eggs Benedict",
+    "description": "Our classic version with Jambon de Paris aka French cooked ham. Gluten-free bread available upon request.",
+    "price": "$25.00",
+    "section": "Les Oeufs"
+   },
+   {
+    "name": "Nature Omelette",
+    "description": "Gruyere cheese and fresh herbs.",
+    "price": "$19.00",
+    "section": "Les Oeufs"
+   },
+   {
+    "name": "Californian Omelette",
+    "description": "Spinach, Goat cheese, avocado.",
+    "price": "$22.00",
+    "section": "Les Oeufs"
+   },
+   {
+    "name": "Royal Eggs Benedict",
+    "description": "Smoked Salmon eggs Benedict. Gluten free bread available upon request.",
+    "price": "$25.00",
+    "section": "Les Oeufs"
+   },
+   {
+    "name": "Florentine Eggs Benedict",
+    "description": "Spinach eggs benedict. Gluten-free bread available upon request.",
+    "price": "$23.00",
+    "section": "Les Oeufs"
+   },
+   {
+    "name": "Vegetarian Omelette",
+    "description": "Tomato, onions, spinach.",
+    "price": "$21.00",
+    "section": "Les Oeufs"
+   },
+   {
+    "name": "Veggie Crepe",
+    "description": "Bell pepper, artichoke, onion, goat cheese",
+    "price": "$23.00",
+    "section": "Les Crepes"
+   },
+   {
+    "name": "La Crepe Complete",
+    "description": "French cooked ham and Gruyere cheese. Served with baby greens. Add a sunny side up egg for $2",
+    "price": "$25.00",
+    "section": "Les Crepes"
+   },
+   {
+    "name": "La Californian Crepe",
+    "description": "Spinach, goat cheese, avocado. Served with baby greens.",
+    "price": "$23.00",
+    "section": "Les Crepes"
+   },
+   {
+    "name": "La 3 Fromages",
+    "description": "Gruyere, Goat cheese, forum d'ambert. Served with baby greens. Optional: add chicken.",
+    "price": "$23.00",
+    "section": "Les Crepes"
+   },
+   {
+    "name": "Nutella",
+    "description": "Thin crepe filled with Nutella, topped with sliced strawberries, whipped cream, and drizzled with chocolate.",
+    "price": "$15.00",
+    "section": "Les Crepes"
+   },
+   {
+    "name": "Sugar & Lemon",
+    "description": "sugar, fresh lemon, whipped cream and berries ",
+    "price": "$14.00",
+    "section": "Les Crepes"
+   },
+   {
+    "name": "La Veggie",
+    "description": "Mixed greens,  walnuts, dried cranberries, strawberries, Goat cheese, raspberry vinaigrette. Optional: add chicken or add avocado.",
+    "price": "$22.00",
+    "section": "Les Salades"
+   },
+   {
+    "name": "La Goat Cheese",
+    "description": "Mixed greens, goat cheese crumble, tomatoes, walnuts, and warm goat cheese  on housemate crostini's, house vinaigrette. Gluten Free Crostini's available upon request.",
+    "price": "$22.00",
+    "section": "Les Salades"
+   },
+   {
+    "name": "La Quinoa",
+    "description": "Quinoa, chicken, avocado, tomato, mixed greens, herbs, house vinaigrette.",
+    "price": "$23.00",
+    "section": "Les Salades"
+   },
+   {
+    "name": "La Salade Nicoise",
+    "description": "Romaine, tomatoes, green beens, red bell peppers, olives, hard boiled egg, tuna, mustard vinaigrette.",
+    "price": "$22.00",
+    "section": "Les Salades"
+   },
+   {
+    "name": "La Burrata",
+    "description": "Tomato, burrata, basil, pine nuts, house vinaigrette.",
+    "price": "$18.00",
+    "section": "Les Salades"
+   },
+   {
+    "name": "Provencal Tartine",
+    "description": "Goat cheese, cumin, rainbow bell pepper, honey, tomatoes, artichokes, sourdough bread. Gluten-free bread available upon request.",
+    "price": "$22.00",
+    "section": "Les Tartines"
+   },
+   {
+    "name": "Croque Madame",
+    "description": "Traditional French cooked ham, gruyere, béchamel sauce, creme fraiche, pain de mie bread and a sunny side up egg. Gluten free bread available upon request.",
+    "price": "$25.00",
+    "section": "Les Tartines"
+   },
+   {
+    "name": "Roma",
+    "description": "Parma ham, walnuts, tomatoes, burrata cheese, pesto, french mustard. Gluten free bread available upon request.",
+    "price": "$25.00",
+    "section": "Les Tartines"
+   },
+   {
+    "name": "Chicken Pesto",
+    "description": "Chicken, house pesto, tomato, baby sprouts, red onion, sourdough bread. Gluten free bread available upon request.",
+    "price": "$23.00",
+    "section": "Les Tartines"
+   },
+   {
+    "name": "Croque Monsieur",
+    "description": "Traditional French cooked ham, gruyere, béchamel sauce, creme fraiche, pain de mie bread. Gluten free bread available upon request.",
+    "price": "$23.00",
+    "section": "Les Tartines"
+   },
+   {
+    "name": "Le Tuna",
+    "description": "Tuna, mayonnaise, tomato, herbs, Emmental cheese, sourdough bread. Gluten free bread available upon request",
+    "price": "$23.00",
+    "section": "Les Tartines"
+   },
+   {
+    "name": "Avocado Toast",
+    "description": "Fresh avocado, organic extra virgin cold pressed coconut oil, garlic, tomato, lime, sourdough bread. Gluten free bread available upon request.",
+    "price": "$21.00",
+    "section": "Les Tartines"
+   },
+   {
+    "name": "Le Parisien",
+    "description": "In a French Baguette: French ham, gruyere, butter and cornichons.",
+    "price": "$23.00",
+    "section": "Les Sandwich"
+   },
+   {
+    "name": "Chicken Pesto",
+    "description": "In a French Baguette: Chicken, gruyere, house pesto, onion, tomatoes,  and greens.",
+    "price": "$23.00",
+    "section": "Les Sandwich"
+   },
+   {
+    "name": "L'Atlantic",
+    "description": "In a French Baguette: Smoked salmon, greens, lemon zest, cream cheese , capers  and chives.",
+    "price": "$23.00",
+    "section": "Les Sandwich"
+   },
+   {
+    "name": "Le Tuna",
+    "description": "In a French Baguette: Tuna, mayonnaise, celery, tomato and fresh herbs.",
+    "price": "$23.00",
+    "section": "Les Sandwich"
+   },
+   {
+    "name": "Housemade Paté",
+    "description": "Served with sliced baguette. Gluten free bread available upon request.",
+    "price": "$20.00",
+    "section": "Les Small Plates"
+   },
+   {
+    "name": "Cheese Plate",
+    "description": "Mix of assorted Artisanal French cheese.",
+    "price": "$38.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Charcuterie Plate",
+    "description": "Mix of seasonal charcuterie.",
+    "price": "$38.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Le Salmon",
+    "description": "Smoked Salmon, capers, onion, cream cheese, toast. Served with mixed greens. Gluten Free Bread available upon request.",
+    "price": "$22.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Mix Plate",
+    "description": "The best of both worlds. Mix of assorted seasonal cheese and charcuterie.",
+    "price": "$42.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Quiche of the Day",
+    "description": "Ask our staff for the scrumptious flavor of the day. Options include: French Ham and cheese, spinach and Goat Cheese, asparagus, tomato and Gruyere and more! Served with mixed greens.",
+    "price": "$23.00",
+    "section": "Les Plats"
+   },
+   {
+    "name": "Chicken Tenders",
+    "description": "Served with French fries.",
+    "price": "$16.00",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Grilled Cheese Sandwich",
+    "description": "Served with French fries.",
+    "price": "$16.00",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Red Velvet Marquise",
+    "description": "Gluten Free",
+    "price": "$13.00",
+    "section": "Patisseries"
+   },
+   {
+    "name": "Espresso Chocolate Tartlet",
+    "description": "A rich espresso-infused chocolate filling encased in a delicate tartlet shell, typically includes a blend of fine cocoa and a hint of espresso.",
+    "price": "$13.00",
+    "section": "Patisseries"
+   },
+   {
+    "name": "NY Style Cheesecake",
+    "description": "Gluten Free",
+    "price": "$13.00",
+    "section": "Patisseries"
+   },
+   {
+    "name": "Dulce de Leche Pyramid",
+    "description": "Gluten Free",
+    "price": "$13.00",
+    "section": "Patisseries"
+   },
+   {
+    "name": "Tiramisu",
+    "description": "",
+    "price": "$13.00",
+    "section": "Patisseries"
+   },
+   {
+    "name": "Lemon Meringue Tartlet",
+    "description": "Gluten Free",
+    "price": "$13.00",
+    "section": "Patisseries"
+   },
+   {
+    "name": "Coffee",
+    "description": "Regular / Decaf.",
+    "price": "$6.00",
+    "section": "Hot Drinks"
+   },
+   {
+    "name": "Mocha",
+    "description": "Rich espresso blended with dark chocolate and steamed milk, topped with whipped cream.",
+    "price": "$7.00",
+    "section": "Hot Drinks"
+   },
+   {
+    "name": "Hot Chocolate",
+    "description": "Smooth, rich chocolate drink, perfectly steamed to warm your soul.",
+    "price": "$7.00",
+    "section": "Hot Drinks"
+   },
+   {
+    "name": "Cappuccino",
+    "description": "A rich blend of espresso, steamed milk, and a thick layer of frothy milk foam.",
+    "price": "$6.50",
+    "section": "Hot Drinks"
+   },
+   {
+    "name": "Hot Tea",
+    "description": "Choose from green tea, chamomile, raspberry hibiscus, mint, jasmine, earl grey, English breakfast",
+    "price": "$6.00",
+    "section": "Hot Drinks"
+   },
+   {
+    "name": "Caramel Macchiato",
+    "description": "Rich espresso layered with steamed milk, topped with a smooth, frothy foam and a drizzle of caramel.",
+    "price": "$7.00",
+    "section": "Hot Drinks"
+   },
+   {
+    "name": "Latte",
+    "description": "Regular / Vanilla.",
+    "price": "$6.50",
+    "section": "Hot Drinks"
+   },
+   {
+    "name": "Espresso",
+    "description": "Rich, flavorful cup of espresso brewed to perfection.",
+    "price": "$4.00",
+    "section": "Hot Drinks"
+   },
+   {
+    "name": "Double Espresso",
+    "description": "Rich, concentrated coffee made with a double shot of finely ground espresso beans.",
+    "price": "$5.00",
+    "section": "Hot Drinks"
+   },
+   {
+    "name": "Alain Millat Mango Nectar",
+    "description": "Alain Millat mango nectar is a juice made from pure mango, offering a rich and smooth taste.",
+    "price": "$10.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Iced Latte",
+    "description": "Chilled espresso and milk, perfectly blended for a refreshing coffee experience.",
+    "price": "$7.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Rieme Blood Orange French Lemonade",
+    "description": "French-style lemonade infused with the essence of blood oranges for a unique citrus twist.",
+    "price": "$7.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Rieme Grapefruit French Lemonade",
+    "description": "French lemonade infused with natural grapefruit flavors, offering a refreshing twist on traditional lemonade.",
+    "price": "$7.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Iced Jasmine Green Tea",
+    "description": "Organic iced jasmine green tea with fresh mint.",
+    "price": "$7.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Rieme Lemon French Lemonade",
+    "description": "Traditionally crafted French lemonade from Rieme, combining fresh lemon juice and a hint of sweetness.",
+    "price": "$7.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Iced Chocolate Milk",
+    "description": "Cold milk mixed with chocolate, typically served over ice for a refreshing taste.",
+    "price": "$7.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Perrier Water",
+    "description": "11.15 fl oz",
+    "price": "$5.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Iced Organic Tea",
+    "description": "Organic tea leaves steeped and served chilled, typically includes a natural sweetener.",
+    "price": "$6.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Iced Coffee",
+    "description": "Chilled, refreshing brew for a revitalizing pause.",
+    "price": "$6.00",
+    "section": "Cold Drinks"
+   },
+   {
+    "name": "Evian Water",
+    "description": "11.2 fl oz",
+    "price": "$5.00",
+    "section": "Cold Drinks"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6308",
+  "name": "Ohana Hawaiian BBQ",
+  "blocked": true,
+  "notes": "No website on file; a candidate first-party domain surfaced by web search (ohanahawaiianbbqrestaurantca.com) is DNS-dead (curl: could not resolve host), same dead-domain pattern seen elsewhere in this batch. Only sources are DoorDash and Uber Eats. Prices sampled (Hawaiian BBQ Mix $22.80, Hawaiian Chicken Katsu $15.60, Half & Half $19.50, Spam Musubi $12.00, Hawaiian Seafood Combo $21.60, BBQ Short Ribs $31.20, Beef Loco Moco $18.00) divide cleanly by 1.20 into round dollar or quarter-dollar figures ($19.00, $13.00, $16.25, $10.00, $18.00, $26.00, $15.00) -- a clean-divisor markup pattern the playbook says to block on rather than divide out. No independent source to cross-check or confirm the real menu. Re-queue for a browser pass to find a live first-party site or POS ordering page.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "6486",
+  "name": "Pho Bowl and Grill",
+  "sourceUrl": "https://www.ubereats.com/store/pho-bowl-and-grill/HowELmVXTHOykZA2x5sULA",
+  "confidence": "high",
+  "notes": "No first-party website on file. Uber Eats JSON-LD Restaurant.hasMenu (92 items, address confirmed exact match: 1006 Mission Ave Ste C, Oceanside) required the Cloudflare nav-header bypass on second fetch attempt (first returned a 9-byte 'Not Found' stub). Cent distribution overwhelmingly conventional (56x.00, 34x.50, 1x.25, 1 stray .52) -- no markup pattern, no cross-check needed given the near-total conventionality.",
+  "dishes": [
+   {
+    "name": "Spicy Wonton - Hoanh Thanh",
+    "description": "Mix with pork and veggie. Spicy sauce will be on the side",
+    "price": "$17.00",
+    "section": "Limited Time Only"
+   },
+   {
+    "name": "A7. Egg Rolls - Cha Gio",
+    "description": "3 Rolls/6 Rolls\nIncludes glass noodles, pork, daikon radish, carrots, wood ear mushroom and house special sauce",
+    "price": "$8.00",
+    "section": "Appetizers / Khai Vi"
+   },
+   {
+    "name": "A3. Shrimp Spring Rolls (2) - Goi Cuon Tom",
+    "description": "Wrapped in rice paper with lettuce, bean sprouts, and carrots.",
+    "price": "$9.50",
+    "section": "Appetizers / Khai Vi"
+   },
+   {
+    "name": "A1. Grilled Pork Spring Rolls (2) - Nem Nuong",
+    "description": "Wrapped in rice paper with lettuce, bean sprouts and carrots.",
+    "price": "$9.50",
+    "section": "Appetizers / Khai Vi"
+   },
+   {
+    "name": "A7. Vegetarian Egg Rolls - Cha Gio Chay",
+    "description": "Includes glass noodles, tofu, daikon radish, carrots, wood ear mushroom and house special sauce",
+    "price": "$8.00",
+    "section": "Appetizers / Khai Vi"
+   },
+   {
+    "name": "A5. Grilled Chicken Spring Rolls (2) - Goi Cuon Ga Nuong",
+    "description": "Wrapped in rice paper with lettuce, bean sprouts, and carrots.",
+    "price": "$9.50",
+    "section": "Appetizers / Khai Vi"
+   },
+   {
+    "name": "A8. Rocket Shrimp Egg Rolls - Cha Gio Tom Hoa Tien",
+    "description": "Crispy egg rolls filled with shrimp and rocket.",
+    "price": "$14.50",
+    "section": "Appetizers / Khai Vi"
+   },
+   {
+    "name": "A6. Tofu Spring Roll (2) - Goi Cuon Chay",
+    "description": "Wrapped in rice paper with lettuce, bean sprouts, and carrots.",
+    "price": "$9.50",
+    "section": "Appetizers / Khai Vi"
+   },
+   {
+    "name": "A2. Shrimp &amp; Pork Spring Rolls (2) - Goi Cuon Tom Thit",
+    "description": "Wrapped in rice paper with lettuce, bean sprouts, and carrots.",
+    "price": "$9.50",
+    "section": "Appetizers / Khai Vi"
+   },
+   {
+    "name": "A4. Grilled Beef Spring Rolls (2) - Goi Cuon Bo Nuong",
+    "description": "Wrapped in rice paper with lettuce, bean sprouts, and carrots.",
+    "price": "$9.50",
+    "section": "Appetizers / Khai Vi"
+   },
+   {
+    "name": "P3. Sliced Filet Mignon Beef Pho - Thit Filet Mignon",
+    "description": "Rare Filet Mignon Beef",
+    "price": "$20.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P8. Rare Beef Pho - Tai",
+    "description": "Rare beef in a flavorful broth served with noodles.",
+    "price": "$19.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P7. Chicken Pho - Ga",
+    "description": "Chicken broth.",
+    "price": "$19.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P2. PBG House Special Pho - Pho Dac Biet",
+    "description": "Sliced Rare Beef, Brisket, Flank, Tendon and Tripe.",
+    "price": "$20.00",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P13. Vegetarian Pho - Chay",
+    "description": "Includes vegetarian broth, broccoli, bok choy, tofu, carrots and mushrooms.",
+    "price": "$19.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P11. Rare Beef &amp; Beef Meatballs Pho - Tai, Bo Vien",
+    "description": "Rare beef and beef meatballs served in a flavorful pho broth.",
+    "price": "$19.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P10. Rare Beef, Fatty Brisket Pho - Tai, Gau",
+    "description": "Rare beef and fatty brisket in a flavorful pho broth.",
+    "price": "$19.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P5. Shrimp Pho - Tom",
+    "description": "Savoury shrimp noodle soup in a rich broth.",
+    "price": "$19.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P6. Seafood Pho - Pho Do Bien",
+    "description": "Shrimp, fish ball and squid",
+    "price": "$19.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P1. Chef House Special",
+    "description": "Sliced rare ribeye beef, flank, meatballs and short back rib beef",
+    "price": "$21.00",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P9. Rare Beef &amp; Tendon Pho - Tai, Gan",
+    "description": "Tender rare beef and tendon in a flavorful pho broth.",
+    "price": "$19.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P12. Beef Meatballs Pho - Bo Vien",
+    "description": "Beef meatballs served in a flavorful pho noodle soup.",
+    "price": "$19.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P4. Ribeye Beef Pho - Thit Ribeye Beef",
+    "description": "Sliced Rare Ribeye Beef",
+    "price": "$20.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "P14. Customize Your Pho",
+    "description": "Create your own pho with your choice of ingredients.",
+    "price": "$19.50",
+    "section": "Pho Noodle Soup (Large Size Only)"
+   },
+   {
+    "name": "H2. Shakin' Beef - Bo Luc Lac",
+    "description": "Beef filet mignon with rice over onions, bell peppers, and vegetables.",
+    "price": "$20.00",
+    "section": "PBG House Specialities"
+   },
+   {
+    "name": "H1. Spicy Beef Noodle Soup - Bun Bo Hue",
+    "description": "Rich flavory lemongrass broth served with rice vermicelli noodles, sliced beef shank, sliced pork, tendon and pork ham",
+    "price": "$19.50",
+    "section": "PBG House Specialities"
+   },
+   {
+    "name": "H3. PBG Style Noodle Soup - Hu Tieu Tom Thit",
+    "description": "Includes shrimp, pork, meatball and quail eggs",
+    "price": "$19.50",
+    "section": "PBG House Specialities"
+   },
+   {
+    "name": "H4. Shrimp &amp; Wonton Noodles Soup - Sup Mi Tom Hoanh Thanh",
+    "description": "Served w/bok choy and egg noodles",
+    "price": "$19.50",
+    "section": "PBG House Specialities"
+   },
+   {
+    "name": "V4. Grilled Beef - Bun Bo Nuong",
+    "description": "Served with cucumber, bean sprouts, lettuce, pickled carrot, peanut, and house special sauce.",
+    "price": "$19.00",
+    "section": "Vermicelli Noodles / Bun"
+   },
+   {
+    "name": "V1. PBG House Special - Bun Cha Gio Tom Heo Nuong",
+    "description": "Pork, shrimp and egg rolls.",
+    "price": "$19.00",
+    "section": "Vermicelli Noodles / Bun"
+   },
+   {
+    "name": "V5. Grilled Chicken - Bun Ga Nuong",
+    "description": "Served with cucumber, bean sprouts, lettuce, pickled carrot, peanut, and house special sauce.",
+    "price": "$19.00",
+    "section": "Vermicelli Noodles / Bun"
+   },
+   {
+    "name": "V3. Grilled Pork - Bun Thit Nuong",
+    "description": "Served with cucumber, bean sprouts, lettuce, pickled carrot, peanut, and house special sauce.",
+    "price": "$19.00",
+    "section": "Vermicelli Noodles / Bun"
+   },
+   {
+    "name": "V7. Shrimp Vermcelli Noodles - Bun Tom Nuong",
+    "description": "Served with cucumber, bean sprouts, lettuce, pickled carrot, peanut, and house special sauce.",
+    "price": "$19.00",
+    "section": "Vermicelli Noodles / Bun"
+   },
+   {
+    "name": "V2. Grilled Pork &amp; Shrimp - Bun Tom Thit Nuong",
+    "description": "Served with cucumber, bean sprouts, lettuce, pickled carrot, peanut, and house special sauce.",
+    "price": "$19.00",
+    "section": "Vermicelli Noodles / Bun"
+   },
+   {
+    "name": "V6. Vegetarian Vermicelli - Bun Chay",
+    "description": "Vermicelli noodles, fried tofu, and vegetables.",
+    "price": "$19.00",
+    "section": "Vermicelli Noodles / Bun"
+   },
+   {
+    "name": "BR1. PBG Special Combo - Com Tam Dac Biet",
+    "description": "Grilled pork, chicken, shrimp and eggroll. Served with lettuce, cucumber, pickled carrots, tomatoes and house special sauce.",
+    "price": "$19.50",
+    "section": "Broken Rice / Com Tam"
+   },
+   {
+    "name": "BR4. Grilled Beef - Com Tam Bo Nuong",
+    "description": "Served with lettuce, cucumber, pickled carrots, tomatoes and house special sauce.",
+    "price": "$19.00",
+    "section": "Broken Rice / Com Tam"
+   },
+   {
+    "name": "BR5. Grilled Chicken - Com Tam Ga Nuong",
+    "description": "Served with lettuce, cucumber, pickled carrots, tomatoes and house special sauce.",
+    "price": "$19.00",
+    "section": "Broken Rice / Com Tam"
+   },
+   {
+    "name": "BR3. Grilled Pork - Com Tam Thit Nuong",
+    "description": "Served with lettuce, cucumber, pickled carrots, tomatoes and house special sauce.",
+    "price": "$19.00",
+    "section": "Broken Rice / Com Tam"
+   },
+   {
+    "name": "BR2. Grilled Pork Chop - Com Tam Suon Nuong",
+    "description": "Served with lettuce, cucumber, pickled carrots, tomatoes and house special sauce.",
+    "price": "$19.00",
+    "section": "Broken Rice / Com Tam"
+   },
+   {
+    "name": "BR6. Grilled Shimp - Com Tam Tom Nuong",
+    "description": "Served with lettuce, cucumber, pickled carrots, tomatoes and house special sauce.",
+    "price": "$19.00",
+    "section": "Broken Rice / Com Tam"
+   },
+   {
+    "name": "FR1. PBG FR Special Combo - Com Chien Dac Biet",
+    "description": "Served with sliced beef, chicken, shrimp, scramble egg, corn, carrots, and peas.",
+    "price": "$19.50",
+    "section": "Fried Rice / Com Chien"
+   },
+   {
+    "name": "FR3. Chicken Fried Rice - Com Chien Ga",
+    "description": "Served with scrambled eggs, corn, carrots, and peas.",
+    "price": "$19.00",
+    "section": "Fried Rice / Com Chien"
+   },
+   {
+    "name": "FR5. Shrimp Fried Rice - Com Chien Tom",
+    "description": "Served with scrambled eggs, corn, carrots, and peas.",
+    "price": "$19.00",
+    "section": "Fried Rice / Com Chien"
+   },
+   {
+    "name": "FR4. Beef Fried Rice - Com Chien Bo",
+    "description": "Served with scrambled eggs, corn, carrots, and peas.",
+    "price": "$19.00",
+    "section": "Fried Rice / Com Chien"
+   },
+   {
+    "name": "FR2. Shrimp &amp; Vietnamese Sausage Fried Rice - Com Chien Duong Chau",
+    "description": "Served with scrambled eggs, corn, carrots, and peas.",
+    "price": "$19.00",
+    "section": "Fried Rice / Com Chien"
+   },
+   {
+    "name": "FR6. Vegetarian Fried Rice - Com Chien Chay",
+    "description": "Served with scrambled eggs, tofu, corn, carrots, and peas.",
+    "price": "$19.00",
+    "section": "Fried Rice / Com Chien"
+   },
+   {
+    "name": "SFN1. House Special Combo W/Stir-Fried Noodles - Ap Chao Hoac Mi Xao Dac Biet",
+    "description": "Beef, chicken, and shrimp. Served with celery, carrot, mushroom, bok choy, broccoli, and onions.",
+    "price": "$20.50",
+    "section": "Stir-Fried Noodles / Ap Chao Mi Xao"
+   },
+   {
+    "name": "SFN3. Beef Stir-Fried Noodles - Ap Chao Hoac Mi Xao Bo",
+    "description": "Served with celery, carrot, mushroom, bok choy, broccoli, and onions.",
+    "price": "$20.50",
+    "section": "Stir-Fried Noodles / Ap Chao Mi Xao"
+   },
+   {
+    "name": "SFN2. Seafood Combo W/Stir-Fried Noodles - Ap Chao Hoac Mi Xao Đo Bien",
+    "description": "Calamari, shrimp, and fish ball. Served with celery, carrot, mushroom, bok choy, broccoli, and onions.",
+    "price": "$20.50",
+    "section": "Stir-Fried Noodles / Ap Chao Mi Xao"
+   },
+   {
+    "name": "SFN5. Shrimp Stir-Fried Noodles - Ap Chao Hoac Mi Xao Tom",
+    "description": "Served with celery, carrot, mushroom, bok choy, broccoli, and onions.",
+    "price": "$20.50",
+    "section": "Stir-Fried Noodles / Ap Chao Mi Xao"
+   },
+   {
+    "name": "SFN4. Chicken Stir-Fried Noodles - Ap Chao Hoac Mi Xao Ga",
+    "description": "Served with celery, carrot, mushroom, bok choy, broccoli, and onions.",
+    "price": "$20.50",
+    "section": "Stir-Fried Noodles / Ap Chao Mi Xao"
+   },
+   {
+    "name": "SFN6. Vegetarian Stir-Fried Noodles - Ap Chao Chay",
+    "description": "Flat or egg noodles with mushrooms, tofu, and vegetables.",
+    "price": "$20.50",
+    "section": "Stir-Fried Noodles / Ap Chao Mi Xao"
+   },
+   {
+    "name": "SFR1. Beef &amp; Broccoli Stir-Fried Rice - Bo Xao Bon Cai",
+    "description": "Beef and broccoli stir-fried with rice.",
+    "price": "$19.00",
+    "section": "Stir-Fried Rice / Mon Xao"
+   },
+   {
+    "name": "SFR3. Lemongrass Chicken Stir-Fried Rice - Ga Xao Xa Ot",
+    "description": "Lemongrass infused chicken stir-fried with rice.",
+    "price": "$19.00",
+    "section": "Stir-Fried Rice / Mon Xao"
+   },
+   {
+    "name": "SFR4. Lemongrass Shrimp Stir-Fried Rice - Tom Xao Xa Ot",
+    "description": "Savory shrimp and lemongrass stir-fry served over a bed of rice.",
+    "price": "$19.00",
+    "section": "Stir-Fried Rice / Mon Xao"
+   },
+   {
+    "name": "SFR5. Stir-Fried Vegetable - Com Xao Chay",
+    "description": "Served with mushroom, tofu, vegetable, and steam white rice.",
+    "price": "$19.00",
+    "section": "Stir-Fried Rice / Mon Xao"
+   },
+   {
+    "name": "SFR2. Lemongrass Beef Stir-Fried Rice - Bo Xao Xa Ot",
+    "description": "Beef stir-fry with lemongrass and fragrant rice.",
+    "price": "$19.00",
+    "section": "Stir-Fried Rice / Mon Xao"
+   },
+   {
+    "name": "S2. Pork Sandwiches - Banh Mi Heo",
+    "description": "Served with butter, jalapenos, cucumber, pickled carrots, and cilantro.",
+    "price": "$11.00",
+    "section": "Sandwiches / Banh Mi"
+   },
+   {
+    "name": "S1. Beef Sandwiches - Banh Mi Bo",
+    "description": "Served with butter, jalapenos, cucumber, pickled carrots, and cilantro.",
+    "price": "$11.00",
+    "section": "Sandwiches / Banh Mi"
+   },
+   {
+    "name": "S3. Chicken Sandwiches - Banh Mi Ga",
+    "description": "Served with butter, jalapenos, cucumber, pickled carrots, and cilantro.",
+    "price": "$11.00",
+    "section": "Sandwiches / Banh Mi"
+   },
+   {
+    "name": "S4. Vegetarian Sandwiches - Banh Mi Chay",
+    "description": "Served with butter, jalapenos, cucumber, pickled carrots, and cilantro.",
+    "price": "$11.00",
+    "section": "Sandwiches / Banh Mi"
+   },
+   {
+    "name": "Chicken Broth (Soup Ga)",
+    "description": "Rich and flavorful chicken broth served hot.",
+    "price": "$8.00",
+    "section": "Pho Soup Only"
+   },
+   {
+    "name": "Beef Broth (Soup Bo)",
+    "description": "Rich beef broth served in a bowl.",
+    "price": "$8.00",
+    "section": "Pho Soup Only"
+   },
+   {
+    "name": "Vegetarian Broth (Soup Chay)",
+    "description": "Vegetarian broth served in a flavorful soup.",
+    "price": "$8.00",
+    "section": "Pho Soup Only"
+   },
+   {
+    "name": "Thai Tea (LARGE)",
+    "description": "Sweet and creamy Thai-style tea.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Vietnamese Iced Coffee (Cafe Sua Da)",
+    "description": "Rich and smooth coffee served over ice.",
+    "price": "$6.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Butterfly Lemonade (LARGE)",
+    "description": "Refreshing lemonade with a hint of citrus.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Taro Milk (LARGE)",
+    "description": "Creamy milk infused with taro flavor.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Matcha Green Milk Tea (LARGE)",
+    "description": "Green tea infused with matcha powder and creamy milk.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Brown Sugar Milk (LARGE)",
+    "description": ".",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Ocean Brown Sugar (LARGE)",
+    "description": "Brown sugar flavored drink.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Jasmine Milk Tea (LARGE)",
+    "description": "Floral and creamy tea infused with jasmine petals.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Quava Tea (LARGE)",
+    "description": "Refreshing tea infused with quava flavor.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Strawberry Tea (LARGE)",
+    "description": "Freshly brewed tea infused with sweet strawberry flavor.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Mango Tea (LARGE)",
+    "description": "Sweet and refreshing tea infused with mango flavor.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Ocean Jasmine Milk Tea (LARGE)",
+    "description": "Creamy milk tea infused with jasmine flavor.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Passion Fruit Tea (LARGE)",
+    "description": "Freshly brewed tea infused with sweet passion fruit flavor.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Soft Drink",
+    "description": "$2.00 By the can.",
+    "price": "$0.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Bottled Water",
+    "description": "Refreshing and hydrating water.",
+    "price": "$1.50",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Fresh Lemonade (LARGE)",
+    "description": "Refreshing drink made with lemon.",
+    "price": "$5.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Peach (LARGE)",
+    "description": "Fresh peach juice served chilled.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Oolong Milk Tea (Large)",
+    "description": "Oolong tea and milk refreshing beverage experience.",
+    "price": "$8.00",
+    "section": "Beverages / Giai Khat"
+   },
+   {
+    "name": "Extra Steamed White Rice - (+Com Trang)",
+    "description": "Steamed white rice served on the side.",
+    "price": "$4.00",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Mix Vegetables - (+Rau Chay)",
+    "description": "Mixed vegetables served on the side.",
+    "price": "$5.25",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Extra Pho Noodles - (+Banh Pho)",
+    "description": "Rice noodles served on the side, perfect for adding to your pho.",
+    "price": "$4.00",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Extra Noodles - (+Bun)",
+    "description": "Extra portion of noodles, available with rice vermicelli (bun).",
+    "price": "$4.00",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Vinegar Onion - (+Hanh Dam)",
+    "description": "Onion slices marinated in vinegar. Served on the side.",
+    "price": "$3.52",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Extra Fried Egg - (+Trung Chien)",
+    "description": "Crispy fried egg added to your meal.",
+    "price": "$3.00",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Extra Spicy Oil Sauce - (+)Sa Te",
+    "description": "Spicy oil sauce with Sa Te flavor.",
+    "price": "$0.50",
+    "section": "Add-Ons Sauce"
+   },
+   {
+    "name": "Extra Sweet Fish Sauce - (+)Nuoc Mam",
+    "description": "Fish sauce with a sweet and savory flavor.",
+    "price": "$0.50",
+    "section": "Add-Ons Sauce"
+   },
+   {
+    "name": "Extra Peanut Sauce - (+) Dau Phong",
+    "description": "Rich and creamy peanut sauce to enhance your dish.",
+    "price": "$0.50",
+    "section": "Add-Ons Sauce"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6568",
+  "name": "Ahi Poke",
+  "sourceUrl": "https://www.doordash.com/store/ahi-poke-santee-2091617/",
+  "confidence": "high",
+  "notes": "No first-party website on file. DoorDash JSON-LD Menu (40 items, address confirmed exact match: 9640 Mission Gorge Road, Santee) required the Cloudflare nav-header bypass on second fetch attempt. Every single item ends in .99 -- fully conventional, no markup ambiguity.",
+  "dishes": [
+   {
+    "name": "Grilled chicken banh mi and drink combo",
+    "description": "Grilled chicken banh mi and Thai tea",
+    "price": "$19.99",
+    "section": "Monthly specials "
+   },
+   {
+    "name": "SPAM MUSUBI ( 2PCS)",
+    "description": "Grilled Spam atop seasoned rice, wrapped in nori seaweed. Two pieces per serving.",
+    "price": "$12.99",
+    "section": " APPERTIZER"
+   },
+   {
+    "name": "VIETNAMESE EGG ROLLS ( 5 pcs )",
+    "description": "Pork with carrot and cabbage in 5 pieces.",
+    "price": "$12.99",
+    "section": " APPERTIZER"
+   },
+   {
+    "name": "GYOZA (8 Pieces)",
+    "description": "Pan-fried dumplings filled with savory pork, served with a side of shredded cabbage and soy dipping sauce.",
+    "price": "$12.99",
+    "section": " APPERTIZER"
+   },
+   {
+    "name": "TEMPURA SHRIMP (5 Pieces)",
+    "description": "Crispy battered shrimp served with a drizzle of savory sauce and a bed of fresh greens. Five pieces per serving.",
+    "price": "$12.99",
+    "section": " APPERTIZER"
+   },
+   {
+    "name": "Medium Bowl",
+    "description": "3 scoops of protein.",
+    "price": "$20.99",
+    "section": "BUILD YOUR OWN POKE BOWL"
+   },
+   {
+    "name": "Large Bowl",
+    "description": "5 scoops of protein.",
+    "price": "$26.99",
+    "section": "BUILD YOUR OWN POKE BOWL"
+   },
+   {
+    "name": "Small Bowl",
+    "description": "Two scoops of protein.",
+    "price": "$17.99",
+    "section": "BUILD YOUR OWN POKE BOWL"
+   },
+   {
+    "name": "PORK BULGOGI BANH Mi",
+    "description": "Grilled pork , cilantro, cucumber, pickle radish and carrots, jalapeno, house sauce , house Mayo .",
+    "price": "$15.99",
+    "section": "BANH MI ( VIETNAMESE SANDWICH)"
+   },
+   {
+    "name": "BEEF BULGOGI BANH Mi",
+    "description": "Beef , green and white onion , cilantro, jalapeno , cucumber, pickles radish, house Mayo ,",
+    "price": "$16.99",
+    "section": "BANH MI ( VIETNAMESE SANDWICH)"
+   },
+   {
+    "name": "SPECIAL BANH MI",
+    "description": "Slice cut of Vietnamese Ham , Vietnamese meat loaf , cilantro, cucumber, jalapenos, pickles radish, pate , house Mayo , soy sauce .",
+    "price": "$16.99",
+    "section": "BANH MI ( VIETNAMESE SANDWICH)"
+   },
+   {
+    "name": "CRISPY HONEY CHICKEN BÁNH MI",
+    "description": "Crispy honey chicken , cilantro, cucumber, jalapeno, house Mayo , house pate .",
+    "price": "$15.99",
+    "section": "BANH MI ( VIETNAMESE SANDWICH)"
+   },
+   {
+    "name": "KATSU CHICKEN BÁNH MY",
+    "description": "Katsu chicken , house Mayo , house sweet sauce , cilantro , jalapenos, cucumber, pickles radish and carrot",
+    "price": "$16.99",
+    "section": "BANH MI ( VIETNAMESE SANDWICH)"
+   },
+   {
+    "name": "GRILLED CHICKEN BANH MI",
+    "description": "Grilled chicken, jalapenos, cucumber, cilantro, house Mayo , house sauce , pickles radish and carrots",
+    "price": "$14.99",
+    "section": "BANH MI ( VIETNAMESE SANDWICH)"
+   },
+   {
+    "name": "SANGHAI SPICY WONTON( 8 pcs)",
+    "description": "GROUND pork w rapped with wonton skin, served with spicy taste SPICY sauce, green onion , SESAME SEED",
+    "price": "$15.99",
+    "section": "ASIAN  CUISINES"
+   },
+   {
+    "name": "BBQ PORK BUNS ( 5pcs)",
+    "description": "Steamed Bun filling with bbq pork",
+    "price": "$15.99",
+    "section": "ASIAN  CUISINES"
+   },
+   {
+    "name": "TARO BUNS (5pcs)",
+    "description": "Steamed buns filling taro",
+    "price": "$14.99",
+    "section": "ASIAN  CUISINES"
+   },
+   {
+    "name": "CHICKEN AND VEGGIE DUMLING (8PCS)",
+    "description": "Handmade dumpling with delicios filling pork.",
+    "price": "$14.99",
+    "section": "ASIAN  CUISINES"
+   },
+   {
+    "name": "VEGETABLE EGG ROLL ( 5pcs)",
+    "description": "Mix vegetable wrapped with egg roll skin",
+    "price": "$11.99",
+    "section": "ASIAN  CUISINES"
+   },
+   {
+    "name": "SHUIMAI( 8 pcs)",
+    "description": "Steamed Dumpling filling with pork, chicken and shrimp, coated with egg",
+    "price": "$14.99",
+    "section": "ASIAN  CUISINES"
+   },
+   {
+    "name": "HAR GOW (SHRIMP DUMLING) (8pcs)",
+    "description": "Shrimp dumpling with shrimp filling",
+    "price": "$14.99",
+    "section": "ASIAN  CUISINES"
+   },
+   {
+    "name": "LEMONADE",
+    "description": "STRAWBERRY\nMANGO\nRASBERRY\nBLUEBERRY\nKIWI\nPEACH\nAPPLE\nPINEAPPLE",
+    "price": "$8.99",
+    "section": "DRINKS"
+   },
+   {
+    "name": "VIETNAMESE COFFEE",
+    "description": "Rich, robust coffee blended with sweetened condensed milk, served over ice.",
+    "price": "$8.99",
+    "section": "DRINKS"
+   },
+   {
+    "name": "CHILI LEMONADE",
+    "description": "MANGO\nPINEAPPLE\nSTRAWBERRY",
+    "price": "$8.99",
+    "section": "DRINKS"
+   },
+   {
+    "name": "SODA",
+    "description": "COKE, DR PEPPER, SPRITE,  DIET COKE , DIET DR PEPPER",
+    "price": "$4.99",
+    "section": "DRINKS"
+   },
+   {
+    "name": "SNAPPLE",
+    "description": "MANGO, LEMON , KIWI STRABERRY, RASBERRY",
+    "price": "$5.99",
+    "section": "DRINKS"
+   },
+   {
+    "name": "MANGO MATCHA LATTE",
+    "description": "Mango jam , whole milk and matcha powder",
+    "price": "$10.99",
+    "section": "MATCHA LATTE "
+   },
+   {
+    "name": "STRAWBERRY MATCHA LATTE",
+    "description": "Strawberry jam , whole milk and matcha powder",
+    "price": "$10.99",
+    "section": "MATCHA LATTE "
+   }
+  ]
+ },
+ {
+  "restaurantId": "6634",
+  "name": "Kinaly Thai Express (Escondido)",
+  "sourceUrl": "https://www.doordash.com/store/kinaly-thai-express-escondido-488494/",
+  "confidence": "high",
+  "notes": "No first-party website on file. DoorDash JSON-LD Menu (72 items, address confirmed exact match: 306 West El Norte Parkway, Escondido); nav-header bypass not needed, fetched clean on first attempt. Cent distribution: 68/72 items end in .99, remaining 4 end in .50 -- fully conventional.",
+  "dishes": [
+   {
+    "name": "Cream Cheese Wonton",
+    "description": "Cream cheese, water chestnuts. Served with sweet and sour sauce.",
+    "price": "$11.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Fresh Spring Roll Shrimp",
+    "description": "Shrimp, lettuce, bean sprouts, mint, carrot and noodles, wrapped in rice paper. Served with house peanut sauce.",
+    "price": "$11.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Orange Wing",
+    "description": "Deep-fried chicken wings coated in a sweet orange sauce.",
+    "price": "$16.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Fried Egg Roll",
+    "description": "Cabbage, carrot, mushroom, onion, and vermicelli noodle. Served with sweet and sour sauce.",
+    "price": "$10.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Garlic Pepper Wing",
+    "description": "Fried chicken wings typically tossed in garlic and black pepper, offering a savory and aromatic appetizer.",
+    "price": "$16.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Chicken Satay",
+    "description": "Chicken on skewer. Served with homemade peanut sauce and cucumber sauce.",
+    "price": "$13.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Pot Sticker",
+    "description": "Deep fried dumpling stuffed with ground chicken, served with sweet sour sauce",
+    "price": "$10.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Fresh Spring Roll Tofu",
+    "description": "Fried tofu, vegetables wrapped in rice paper. Vegetarian.",
+    "price": "$11.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Chicken Popcorn",
+    "description": "Deep fried battered chicken breast. Served with sweet and sour sauce",
+    "price": "$11.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Golden Wing",
+    "description": "Deep fried chicken wings Served with Sweet and sour sauce.",
+    "price": "$15.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Shrimp Tempura",
+    "description": "Crispy, Lightly Battered Shrimp Served- perfect for dipping",
+    "price": "$12.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Golden Fried Tofu",
+    "description": "Deep fried tofu. Served with sweet and sour sauce",
+    "price": "$10.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Sweet Basil Wing",
+    "description": "Deep-fried chicken wings typically glazed with a sweet basil sauce.",
+    "price": "$16.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Sweet and Sour Wing",
+    "description": "Fried chicken wings glazed with a sweet and tangy sauce, typically featuring soy sauce, vinegar, and sugar.",
+    "price": "$16.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Lettuce Wrap",
+    "description": "Ground Chicken, pea & carrot, Green leaf lettuce, Sweet & Sour sauce.",
+    "price": "$13.99",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Tom Kha Soup",
+    "description": "Coconut milk, mushroom, onion, cilantro",
+    "price": "$10.99",
+    "section": "Soup"
+   },
+   {
+    "name": "Veggie and Tofu Soup",
+    "description": "Cabbage, Carrot, Green bean, Broccoli, Onion, Cilantro",
+    "price": "$9.99",
+    "section": "Soup"
+   },
+   {
+    "name": "Tom Yum Soup",
+    "description": "Mushroom, green onion, cilantro",
+    "price": "$9.99",
+    "section": "Soup"
+   },
+   {
+    "name": "Beef Salad",
+    "description": "Beef, Lettuce, Carrot, Mint, Green onion, Cilantro",
+    "price": "$15.99",
+    "section": "Salad"
+   },
+   {
+    "name": "Chicken Larb salad",
+    "description": "Ground chicken, rice powder, carrot, mint, green onion, cilantro",
+    "price": "$15.99",
+    "section": "Salad"
+   },
+   {
+    "name": "Shrimp Salad",
+    "description": "Shrimp, Lettuce, Carrot, Mint, Green onion, Cilantro",
+    "price": "$15.99",
+    "section": "Salad"
+   },
+   {
+    "name": "Yellow Curry",
+    "description": "Simmered in yellow curry paste with coconut milk, carrot, potato, and onion. Served with rice.",
+    "price": "$14.99",
+    "section": "Curry"
+   },
+   {
+    "name": "Phanang Curry",
+    "description": "Simmered in red Phanang curry paste with coconut milk, peas, carrot, bell pepper, and kaffir lime leaves. Served with rice.",
+    "price": "$14.99",
+    "section": "Curry"
+   },
+   {
+    "name": "Red Curry",
+    "description": "Simmered in red curry paste with coconut milk, eggplant, bell pepper, bamboo shoot, green beans, and sweet basil leaves. Served with rice.",
+    "price": "$14.99",
+    "section": "Curry"
+   },
+   {
+    "name": "Massaman Curry",
+    "description": "Simmered in a creamy peanut butter curry paste with potato, carrot, onion, and ground peanut. Served with rice.",
+    "price": "$14.99",
+    "section": "Curry"
+   },
+   {
+    "name": "Green Curry",
+    "description": "Simmered green curry paste with coconut milk, eggplant, bamboo shoot, green beans, bell pepper, peas, carrot, and sweet basil leaves. Served with rice.",
+    "price": "$14.99",
+    "section": "Curry"
+   },
+   {
+    "name": "Chicken Noodle Soup",
+    "description": "Rice noodle with chicken breast in chicken broth. Topped with cilantro and green onion.",
+    "price": "$15.99",
+    "section": "Noodle Soup"
+   },
+   {
+    "name": "Beef Noodle Soup",
+    "description": "Rare Steak, Welldone Steak, Meatball, Tripe and tendon in beef broth. Topped with cilantro and onion.",
+    "price": "$15.99",
+    "section": "Noodle Soup"
+   },
+   {
+    "name": "Veggie Noodle Soup",
+    "description": "Rice noodle with broccoli, carrot, green beans, and cabbage in veggie broth. Topped with cilantro and green onion.",
+    "price": "$15.99",
+    "section": "Noodle Soup"
+   },
+   {
+    "name": "Thai Fried Rice",
+    "description": "Pan fried jasmine rice Thai style with egg, peas, carrot, onion.",
+    "price": "$14.99",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Pineapple Fried Rice",
+    "description": "Jasmine rice, Egg, Pineapple, Cashew nut, and curry powder.",
+    "price": "$15.99",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Crab Fried Rice",
+    "description": "Pan fried jasmine rice with egg, Claw crab meat, peas, carrot, onion, and soy sauce.",
+    "price": "$18.99",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Curry Fried Rice",
+    "description": "Pan fried jasmine rice with egg, peas, carrot, onion, and yellow curry powder, Oyster sauce.",
+    "price": "$14.99",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Basil Fried Rice",
+    "description": "Pan fried jasmine rice with egg, bell pepper, onion, carrot, and basil leaves.",
+    "price": "$14.99",
+    "section": "Fried Rice"
+   },
+   {
+    "name": "Pad Thai",
+    "description": "Pan fried rice noodles with egg, bean sprout, green onion, sweet, and sour sauce.",
+    "price": "$14.99",
+    "section": "Wok Noodle"
+   },
+   {
+    "name": "Drunken Noodle",
+    "description": "Spicy and pan fried flat rice noodle with bell pepper, onion, carrot, basil leaves.",
+    "price": "$14.99",
+    "section": "Wok Noodle"
+   },
+   {
+    "name": "Pad See Ew",
+    "description": "Pan fried flat rice noodle, egg, broccoli, carrot, sweet dark soy sauce.",
+    "price": "$14.99",
+    "section": "Wok Noodle"
+   },
+   {
+    "name": "Chow Mein",
+    "description": "Pan fried Chinese noodle, cabbage, onion, carrot, and bean sprout, Mushroom sauce, and Oyster sauce.",
+    "price": "$14.99",
+    "section": "Wok Noodle"
+   },
+   {
+    "name": "Pad Woon Sen",
+    "description": "Glass noodle, egg, cabbage, carrot, onion, homemade brown sauce",
+    "price": "$14.99",
+    "section": "Wok Noodle"
+   },
+   {
+    "name": "Orange Chicken",
+    "description": "Battered Chicken, Sesame seed, Green onion, Orange sauce",
+    "price": "$16.99",
+    "section": "Entrees"
+   },
+   {
+    "name": "Teriyaki",
+    "description": "Sauteed with teriyaki sauce. Topped with green onion and sesame. Served with rice.",
+    "price": "$14.99",
+    "section": "Entrees"
+   },
+   {
+    "name": "Garlic Pepper",
+    "description": "Sauteed with minced garlic, black pepper, and onion. Served with rice.",
+    "price": "$14.99",
+    "section": "Entrees"
+   },
+   {
+    "name": "Broccoli",
+    "description": "Sauteed with minced garlic, American broccoli, and carrot with oyster sauce. Served with rice.",
+    "price": "$14.99",
+    "section": "Entrees"
+   },
+   {
+    "name": "Cashew Nut",
+    "description": "Sauteed with cashew nut, bell pepper, carrot, and onion. Served with rice.",
+    "price": "$14.99",
+    "section": "Entrees"
+   },
+   {
+    "name": "Basil (Ka Prow)",
+    "description": "Sauteed with onion, bell pepper, carrot, and base leaves. Served with rice.",
+    "price": "$14.99",
+    "section": "Entrees"
+   },
+   {
+    "name": "Sweet and Sour",
+    "description": "Carrot, bell pepper, onion, tomato, pineapple",
+    "price": "$14.99",
+    "section": "Entrees"
+   },
+   {
+    "name": "Eggplant",
+    "description": "Sauteed with eggplant, bell pepper, carrot, and basil leave. Served with rice.",
+    "price": "$14.99",
+    "section": "Entrees"
+   },
+   {
+    "name": "Side of Fried Rice",
+    "description": "Savory side of stir-fried rice with seasonal vegetables.",
+    "price": "$7.99",
+    "section": "Side Orders"
+   },
+   {
+    "name": "White Rice",
+    "description": "Steamed white rice, a simple and classic side dish typically served with Asian meals.",
+    "price": "$4.99",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Brown Rice",
+    "description": "Brown rice cooked in canola oil, offering a hearty and nutritious whole-grain option.",
+    "price": "$5.99",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Steamed mixed veggie",
+    "description": "Steamed broccoli, carrots, onions, napa cabbage, and bell peppers.",
+    "price": "$4.99",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Mango with Sticky Rice",
+    "description": "Sweet rice, Ripe Mango, Coconut sauce.",
+    "price": "$12.99",
+    "section": "Dessert"
+   },
+   {
+    "name": "Thai Tea (Large)",
+    "description": "Thai tea: Brewed spiced tea mixed with condensed milk and sugar, typically served over ice.",
+    "price": "$7.99",
+    "section": "Beverage"
+   },
+   {
+    "name": "Taro Milk Tea (Large)",
+    "description": "Taro milk tea typically includes a blend of creamy milk and sweet taro root, creating a smooth and nutty beverage popular in Asian cuisine.",
+    "price": "$7.99",
+    "section": "Beverage"
+   },
+   {
+    "name": "Thai Coffee (Large)",
+    "description": "Brewed Thai coffee, typically sweetened with condensed milk and enhanced with a touch of cream.",
+    "price": "$7.99",
+    "section": "Beverage"
+   },
+   {
+    "name": "Classic Milk Tea (Large)",
+    "description": "Classic milk tea: Black tea mixed with milk, offering a smooth and creamy beverage with a hint of sweetness.",
+    "price": "$7.99",
+    "section": "Beverage"
+   },
+   {
+    "name": "Sprite",
+    "description": "Crisp, Refreshing Lemon-Lime Carbonated Drink",
+    "price": "$3.50",
+    "section": "Beverage"
+   },
+   {
+    "name": "Coke",
+    "description": "Classic, refreshing carbonated beverage.",
+    "price": "$3.50",
+    "section": "Beverage"
+   },
+   {
+    "name": "Diet Coke",
+    "description": "A low-calorie, carbonated beverage with a distinct cola flavor.",
+    "price": "$3.50",
+    "section": "Beverage"
+   },
+   {
+    "name": "Dr. Pepper",
+    "description": "Unique blend of 23 flavors, carbonated soft drink.",
+    "price": "$3.50",
+    "section": "Beverage"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6173",
+  "name": "Big Jim's 395 Grill",
+  "sourceUrl": "https://www.doordash.com/en/store/big-jims-395-grill-vista-29519656/",
+  "confidence": "high",
+  "notes": "No first-party website on file. DoorDash JSON-LD Menu (72 items, address confirmed exact match: 777 E Vista Way, Vista); fetched clean on first attempt. Cent distribution fully conventional: .95 (25), .00 (20), .75 (16), .50 (8), .25 (3).",
+  "dishes": [
+   {
+    "name": "Ice Tea",
+    "description": "Refreshing chilled tea, perfectly brewed for a revitalizing experience.",
+    "price": "$3.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Soda",
+    "description": "Refreshing carbonated beverage, perfect for quenching your thirst.",
+    "price": "$3.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Bottle Water",
+    "description": "Bottle of Water\n",
+    "price": "$2.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Denver Scram",
+    "description": "3 Scrambled eggs, Ham, bell pepper, onion, topped with melted cheddar cheese. Served with hashbrowns and toast.",
+    "price": "$16.00",
+    "section": "Breakfast only Available till 11:30am"
+   },
+   {
+    "name": "Chili Cheese Scram",
+    "description": "3 Scrambled eggs, onions, jalapenos, topped with chili and melted cheddar cheese. Served with hashbrowns & toast. ",
+    "price": "$17.00",
+    "section": "Breakfast only Available till 11:30am"
+   },
+   {
+    "name": "395 Scram",
+    "description": "3 Scrambled eggs with bacon. Topped with melted jack cheese and avocado. Served with hashbrowns & toast. ",
+    "price": "$17.00",
+    "section": "Breakfast only Available till 11:30am"
+   },
+   {
+    "name": "Laredo Scram",
+    "description": "3 Scrambled eggs with mushrooms and bacon, topped with melted jack cheese. Served with hashbrowns & toast.",
+    "price": "$16.00",
+    "section": "Breakfast only Available till 11:30am"
+   },
+   {
+    "name": "Veggie Scram",
+    "description": "3 Scrambled eggs with mushrooms, bell pepper, onions & tomato. Topped with melted cheddar cheese. served with hashbrowns & toast.",
+    "price": "$16.00",
+    "section": "Breakfast only Available till 11:30am"
+   },
+   {
+    "name": "Little Jim",
+    "description": "2 Eggs to order, Bacon or Sausage, hashbrowns & toast.",
+    "price": "$12.00",
+    "section": "Breakfast only Available till 11:30am"
+   },
+   {
+    "name": "Chili Cheese Fries",
+    "description": "Crispy fries topped with hearty chili and melted cheddar cheese.",
+    "price": "$11.75",
+    "section": "A La Carte"
+   },
+   {
+    "name": "Onion Rings",
+    "description": "",
+    "price": "$6.75",
+    "section": "A La Carte"
+   },
+   {
+    "name": "Fried Pickles",
+    "description": "Crispy, tangy dill pickles lightly battered and fried to golden perfection.",
+    "price": "$6.75",
+    "section": "A La Carte"
+   },
+   {
+    "name": "Bag of House made Chips",
+    "description": "House-made potato chips, freshly prepared and typically seasoned with our signature blend, served in a bag.",
+    "price": "$4.50",
+    "section": "A La Carte"
+   },
+   {
+    "name": "Ranch",
+    "description": "Ranch dressing, typically featuring buttermilk, garlic, onion, herbs, and spices, commonly used as a salad dressing or dip for added flavor.",
+    "price": "$2.00",
+    "section": "A La Carte"
+   },
+   {
+    "name": "Fried Zucchini",
+    "description": "Crispy Fried zucchini served with our house made ranch dressing.",
+    "price": "$6.75",
+    "section": "A La Carte"
+   },
+   {
+    "name": "8 oz. Fries",
+    "description": "Golden and crispy 8 oz. portion of french fries, lightly seasoned with salt.",
+    "price": "$4.00",
+    "section": "A La Carte"
+   },
+   {
+    "name": "Burger Patty a la carte",
+    "description": "A half-pound ground beef patty, typically accompanied by lettuce, tomato, onion, and pickles, served on a toasted sesame seed bun.",
+    "price": "$9.00",
+    "section": "A La Carte"
+   },
+   {
+    "name": "Potato Salad 8oz.",
+    "description": "Homemade potato salad, celery, green onions & pickles.",
+    "price": "$5.50",
+    "section": "Salads "
+   },
+   {
+    "name": "Greek Salad",
+    "description": "Bed of fresh romaine lettuce, Fete cheese, Kalamata olives, red onion, tomato & Greek dressing.",
+    "price": "$17.95",
+    "section": "Salads "
+   },
+   {
+    "name": "Caesar Salad",
+    "description": "Bed of fresh romaine lettuce, parmesan cheese, croutons & Caesar dressing.",
+    "price": "$14.25",
+    "section": "Salads "
+   },
+   {
+    "name": "House Salad",
+    "description": "Bed of fresh iceberg lettuce, tomato, cucumber, & your choice of dressing.",
+    "price": "$7.75",
+    "section": "Salads "
+   },
+   {
+    "name": "Cobb Salad",
+    "description": "Bed of fresh iceberg lettuce, turkey, ham, bacon, jack cheese, avocado, tomato & your choice of dressing.",
+    "price": "$17.95",
+    "section": "Salads "
+   },
+   {
+    "name": "Chef Salad",
+    "description": "Bed of fresh iceberg lettuce, turkey, ham, cheddar cheese, egg salad, tomato, cucumber, & your choice of dressing.",
+    "price": "$17.95",
+    "section": "Salads "
+   },
+   {
+    "name": "Should have been a Cowboy",
+    "description": "1/2 lbs. Burger, bacon, cheddar cheese, onion rings, jalapenos, & BBQ sauce.",
+    "price": "$15.95",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Patty Melt on Rye",
+    "description": "1/2 lbs. Burger, swiss cheese, grilled onions on Grilled rye bread.",
+    "price": "$15.95",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Chili Cheese Dog",
+    "description": "1/4 lbs. Hot Dog topped with our homemade chili, melted cheddar cheese & chopped onions.",
+    "price": "$14.75",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "395 Burger",
+    "description": "1/2 lbs. Burger, bacon, jack cheese, avocado, lettuce & tomato.",
+    "price": "$16.95",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Mac Daddy",
+    "description": "1/2 lbs. Burger, cheddar cheese, lettuce, pickles, thousand island, & chopped onion.",
+    "price": "$15.95",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Mushroom Bacon Swiss Burger",
+    "description": "1/2 lbs. Burger, bacon, swiss cheese, mushrooms & grilled onions.",
+    "price": "$15.95",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "The Naked Dog",
+    "description": "1/4 lbs. Hot Dog",
+    "price": "$10.25",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "South of the Border",
+    "description": "1/2 lbs. Burger, pepper jack cheese, jalapenos, lettuce, tomato, red onion & spicy mayo.",
+    "price": "$15.95",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Pastrami Burger",
+    "description": "1/2 lbs. Burger, pastrami, swiss cheese, lettuce, tomato, pickles, red onion & deli mustard.",
+    "price": "$16.95",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Big Fat Greek Burger",
+    "description": "1/2 lbs. Burger, Feta cheese, cucumber, tomato, red onion, Kalamata olives & mayo.",
+    "price": "$16.95",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Veggie Burger",
+    "description": "Veggie patty, sprouts, pickles, tomato, red onion, & jack cheese.",
+    "price": "$15.95",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Pastrami Dog",
+    "description": "1/4 lbs. Hot dog, grilled pastrami, swiss cheese & deli mustard.",
+    "price": "$14.75",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Chicago Dog",
+    "description": "1/4 Hot dog, cucumber, tomato, neon green relish, chopped onion, sports peppers, & celery salt.",
+    "price": "$14.75",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Bratwurst",
+    "description": "Brat, Sauerkraut, & deli mustard",
+    "price": "$14.75",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "395 Dog",
+    "description": "1/4 lbs. Hot Dog, bacon, avocado, tomato, & jack cheese.",
+    "price": "$13.75",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Charbroil Burger",
+    "description": "Burger, lettuce, tomato, pickles, & red onion.",
+    "price": "$14.75",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Charbroil Cheese Burger",
+    "description": "Burger, Cheddar, lettuce, tomato, pickles, & red onion.",
+    "price": "$15.25",
+    "section": "Pub Style Burgers and All Beef Dogs served with french fries"
+   },
+   {
+    "name": "Turkey on Squaw",
+    "description": "Lettuce, tomatoes, mayo, & dressing.",
+    "price": "$12.00",
+    "section": "Cold Sandwiches"
+   },
+   {
+    "name": "The Club on Sourdough",
+    "description": "Turkey, ham, bacon, Cheddar cheese, lettuce, tomatoes, mayo, & dressing on 3 slices of sourdough, middle is toasted.",
+    "price": "$18.75",
+    "section": "Cold Sandwiches"
+   },
+   {
+    "name": "BLT on Sourdough",
+    "description": "Bacon, lettuce, tomatoes, & mayo.",
+    "price": "$13.50",
+    "section": "Cold Sandwiches"
+   },
+   {
+    "name": "Egg Salad on Squaw",
+    "description": "Lettuce, tomatoes, mayo, & dressing.",
+    "price": "$13.50",
+    "section": "Cold Sandwiches"
+   },
+   {
+    "name": "Tuna on Wheat",
+    "description": "Lettuce, tomatoes, mayo, & dressing.",
+    "price": "$13.50",
+    "section": "Cold Sandwiches"
+   },
+   {
+    "name": "Meatlover Sub",
+    "description": "Ham, turkey, roast beef, salami, Provolone, lettuce, tomato, mayo & dressing.",
+    "price": "$15.95",
+    "section": "Cold Sandwiches"
+   },
+   {
+    "name": "Turkey & Ham on Wheat",
+    "description": "Lettuce, tomatoes, mayo, & dressing.",
+    "price": "$12.00",
+    "section": "Cold Sandwiches"
+   },
+   {
+    "name": "Ham & Swiss on Rye",
+    "description": "Lettuce, tomatoes, mayo, & dressing.",
+    "price": "$13.00",
+    "section": "Cold Sandwiches"
+   },
+   {
+    "name": "The 395 on Sourdough",
+    "description": "Bacon, avocado, melted Jack, lettuce, tomatoes, mayo, & dressing.",
+    "price": "$12.95",
+    "section": "Cold Sandwiches"
+   },
+   {
+    "name": "Veggie",
+    "description": "Squaw bread, jack cheese, avo, sprouts, red onion, cucumber, mayo, tomatoes & dressing.",
+    "price": "$13.95",
+    "section": "Cold Sandwiches"
+   },
+   {
+    "name": "Beef on Sourdough",
+    "description": "Roast beef, melted Jack, lettuce, tomato, mayo & dressing.",
+    "price": "$14.00",
+    "section": "Hot Sandwiches"
+   },
+   {
+    "name": "French Dip on Roll",
+    "description": "Roast beef, Provolone, & au jus.",
+    "price": "$14.95",
+    "section": "Hot Sandwiches"
+   },
+   {
+    "name": "Tuna Melt on Wheat",
+    "description": "Tuna, melted Jack & Cheddar, tomato on grilled wheat bread.",
+    "price": "$13.95",
+    "section": "Hot Sandwiches"
+   },
+   {
+    "name": "Philly Cheese Steak on Roll",
+    "description": "Roast beef, melted American cheese, grilled bell peppers, & onions.",
+    "price": "$14.95",
+    "section": "Hot Sandwiches"
+   },
+   {
+    "name": "Italian Beef on Roll",
+    "description": "Roast beef, spicy giardiniera.",
+    "price": "$14.95",
+    "section": "Hot Sandwiches"
+   },
+   {
+    "name": "Grilled Chicken Breast on a Bun",
+    "description": "Jack cheese, avocado, lettuce, tomato, & mayo.",
+    "price": "$14.50",
+    "section": "Hot Sandwiches"
+   },
+   {
+    "name": "Fried BS on a Bun",
+    "description": "5 oz slice of bologna, lettuce, tomato, red onion, Jack cheese, & deli mustard.",
+    "price": "$14.00",
+    "section": "Hot Sandwiches"
+   },
+   {
+    "name": "Grilled Cheese on Sourdough",
+    "description": "Melted Jack and cheddar cheese on grilled sourdough.",
+    "price": "$9.75",
+    "section": "Hot Sandwiches"
+   },
+   {
+    "name": "Hot Pastrami on Rye",
+    "description": "Pastrami, Swiss, lettuce, tomato, mayo, dressing, & deli mustard.",
+    "price": "$14.95",
+    "section": "Hot Sandwiches"
+   },
+   {
+    "name": "Ruben on Grilled Rye",
+    "description": "Pastrami, Swiss, kraut & 1,000 Island.",
+    "price": "$14.95",
+    "section": "Hot Sandwiches"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6105",
+  "name": "Pancho's Mexican Grill",
+  "blocked": true,
+  "notes": "First-party site is a NetWaiter storefront whose menu endpoint (https://panchosauthenticmexicangrill.netwaiter.com/chula-vista/menu/GetMenu) returns the documented genuine dead-end {\"Groups\":[],\"ExternalType\":null} -- confirmed as a real 'About page only, CanOrder:false' listing, not a fetch bug (matches what a browser would also see). Found the correct DoorDash listing (address confirmed exact match: 577 H Street, Chula Vista) as the only remaining source -- but its 91 items have a heavily scattered, non-repeating cent distribution (only ~12% conventional: 4x.00, 5x.49, 1x.79, 1x.99, the other ~80 items spread across dozens of distinct non-round cent values like .86/.54/.23/.61/.28 with no value repeating more than 7 times) with implausible flat prices for simple sides (Chukis Fries and California Fries both exactly $1.00 while entrees range $12-24 with no round numbers). No single clean markup divisor found (tested 1.15-1.30). Subtraction test attempted on the one visible variant pair (Order of 5 Rolled Tacos $12.23 vs Order of 3 Rolled Tacos $9.72, diff $2.51 for 2 tacos) did not yield a clean per-unit price under any tested divisor. This is a single uncorroborated marketplace source with a fee-baked-in-looking price pattern per the playbook's block rule -- no independent cross-check available (no Uber Eats listing found at this address). Re-queue for a browser pass to find Uber Eats or a POS ordering page.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "6148",
+  "name": "Tropical Juices & Deli",
+  "blocked": true,
+  "notes": "First-party NetWaiter storefront (tropicaljuicesdeli.netwaiter.com) confirmed genuine dead end via the documented {\"Groups\":[],\"ExternalType\":null} response. Only remaining source is an allmenus.com mirror (fetched with --compressed after an initial gzip-corrupted fetch produced a binary blob); its price list (102 tallied occurrences) is roughly 65% conventional (heavy .99/.49/.79/.89/.50/.00 clusters) but carries a large non-conventional tail (.24 x14, .74 x10, .24-adjacent .58/.24/.24 spread across 35 occurrences) with no clean single markup divisor found. allmenus.com/SinglePlatform-family listings are being treated in this batch only as a cross-check source (as used for 6464), never as a sole primary source -- and here it is the only source available, with no DoorDash or Uber Eats listing found for this restaurant. Per the single-aggregator rule, blocking rather than filing on an uncorroborated fallback mirror. Re-queue for a browser pass to check for a DoorDash/Uber Eats listing or a direct call to the restaurant.",
+  "dishes": []
+ }
+]

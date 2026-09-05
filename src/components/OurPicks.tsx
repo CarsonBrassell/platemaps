@@ -86,7 +86,7 @@ export function OurPicks({
                 ) : (
                   <span className="text-zinc-400">{plateScoreLabel(score(r))}</span>
                 )}
-                {SHOW_BLEND_STARS && (
+                {SHOW_BLEND_STARS && r.rating != null && (
                   <>
                     <span className="text-zinc-300">·</span>
                     <span className="flex items-center gap-0.5 font-medium text-zinc-600">

@@ -1,0 +1,691 @@
+[
+  {
+    "restaurantId": "5738",
+    "name": "Paul's Place",
+    "sourceUrl": "https://pauls-place.grubbio.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "farm-domain: paulsplace.shop 301-redirects to pauls-place.grubbio.com; grubbio is on the barred domain list. No other first-party site or ordering platform found."
+  },
+  {
+    "restaurantId": "5990",
+    "name": "Boudin SF",
+    "sourceUrl": "https://www.doordash.com/store/boudin-sf-san-marcos-.../",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "truncated-capture: DoorDash JSON-LD returned 91 items across 15 sections, but the page's own embedded menu-book category list shows several whole categories missing entirely (Kids Menu, Sweets and Treats, Milkshakes, Beverages, Market Place) and Fresh Baked Bread undercounted (2 of 17). Own-site Olo storefront (order.boudinbakery.com) renders empty client-side, no prices, no oloservice merchant id found."
+  },
+  {
+    "restaurantId": "5830",
+    "name": "La Concha Bakery",
+    "sourceUrl": "https://www.laconchabakery.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "incomplete-menu: own site only publishes prices for cakes; core case items (pan dulce, bolillos, empanadas etc.) have no listed prices anywhere on the site or a discoverable ordering platform."
+  },
+  {
+    "restaurantId": "5953",
+    "name": "Edelweiss Bakery",
+    "sourceUrl": "http://web.archive.org/web/*/edelweissbakerysandiego.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-itemized-prices: own domain times out on all http/https and www/non-www combinations (curl exit 28). Wayback Machine snapshot only has category-level price RANGES (e.g. \"Pound Cakes $11.95 - $16.95\"), not itemized per-dish prices; cannot file a constructed price."
+  },
+  {
+    "restaurantId": "5822",
+    "name": "Lucy's Bakery",
+    "sourceUrl": "https://lucys-bakery.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "mixed-payload: documented worked example in probe/AGENT-BRIEF.md — scattered non-round cent prices, subtraction test across dish variants fails to show a consistent delta, cannot confirm genuine vs corrupted pricing."
+  },
+  {
+    "restaurantId": "5795",
+    "name": "Baci Restaurant | Italian",
+    "sourceUrl": "https://www.doordash.com/store/baci-restaurant-san-diego-63454/",
+    "confidence": "medium",
+    "notes": "marketplace capture; divisor sweep confirms no hidden markup (divisor 1.00 = 100% hit, 31x.95 + 3x.00 cent endings, fully conventional); address matches work list.",
+    "dishes": [
+      {
+        "section": "Antipasti",
+        "name": "Insalata Caprese",
+        "description": "Fior di latte mozzarella, heirloom tomato, basil and extra virgin olive oil.",
+        "price": "$13.95"
+      },
+      {
+        "section": "Antipasti",
+        "name": "Portobello Alla Baci",
+        "description": "Sliced portobello mushrooms cooked with prosciutto, sage and white wine.",
+        "price": "$14.95"
+      },
+      {
+        "section": "Antipasti",
+        "name": "Calamari Fritti",
+        "description": "Lightly coated fried calamari with marinara sauce.",
+        "price": "$14.95"
+      },
+      {
+        "section": "Antipasti",
+        "name": "Carpaccio Di Manzo",
+        "description": "Raw filet mignon, lemon juice, arugula, shaved grana padano, capers and extra virgin olive oil.",
+        "price": "$15.95"
+      },
+      {
+        "section": "Antipasti",
+        "name": "Prosciutto E Melone",
+        "description": "Cured Italian ham draped over cantaloupe.",
+        "price": "$11.95"
+      },
+      {
+        "section": "Antipasti",
+        "name": "Steamed Mussels",
+        "description": "Steamed local black mussels, olive oil, garlic, white wine and tarragon.",
+        "price": "$16.95"
+      },
+      {
+        "section": "Insalate",
+        "name": "Caesar",
+        "description": "Classic caesar dressing croutons and grated grana padano.",
+        "price": "$9.95"
+      },
+      {
+        "section": "Insalate",
+        "name": "Capriciosa",
+        "description": "Baby mixed artisan lettuce, goat cheese, candied walnuts, sliced orange and red onion in balsamic vinaigrette.",
+        "price": "$10.95"
+      },
+      {
+        "section": "Insalate",
+        "name": "Baci Garden Salad",
+        "description": "Baby mixed artisan lettuce, fennel, watermelon radish and olives in balsamic vinaigrette.",
+        "price": "$9.95"
+      },
+      {
+        "section": "Insalate",
+        "name": "Hearts Of Palm",
+        "description": "Over baby mixed artisan lettuce with creamy dressing.",
+        "price": "$12.95"
+      },
+      {
+        "section": "Insalate",
+        "name": "Rucola",
+        "description": "Wild baby arugula, shaved grana padano, lemon juice and extra virgin olive oil.",
+        "price": "$9.95"
+      },
+      {
+        "section": "Paste",
+        "name": "Scampi In Lobster Sauce",
+        "description": "Butterflied shrimp, cognac, garlic, and lobster sauce.",
+        "price": "$30.95"
+      },
+      {
+        "section": "Paste",
+        "name": "Tortellini Con Prosciutto",
+        "description": "Handmade, veal stuffed tortellini with prosciutto, sage and cream sauce.",
+        "price": "$25.95"
+      },
+      {
+        "section": "Paste",
+        "name": "Linguine Zingarella",
+        "description": "Veal tips, mushrooms, peas, tomato sauce and cream.",
+        "price": "$23.95"
+      },
+      {
+        "section": "Paste",
+        "name": "Linguine Alle Cozze",
+        "description": "Local black mussels, garlic, extra virgin olive oil, white wine and tomato sauce.",
+        "price": "$18.95"
+      },
+      {
+        "section": "Paste",
+        "name": "Linguine Pescatora",
+        "description": "Local black mussels, manila clams, calamari, fish, and a butterflied shrimp in tomato sauce.",
+        "price": "$27.95"
+      },
+      {
+        "section": "Paste",
+        "name": "Gnocchi Quattro Formaggi",
+        "description": "Handmade potato gnocchi in gorgonzola, fontina, mozzarella and grana padano cream sauce.",
+        "price": "$21.95"
+      },
+      {
+        "section": "Paste",
+        "name": "Linguine Alle Vongole",
+        "description": "Manila clams, garlic, extra virgin olive oil, and white wine.",
+        "price": "$20.95"
+      },
+      {
+        "section": "Paste",
+        "name": "Penne Arrabiata",
+        "description": "Tomato sauce, garlic, crushed red peppers, and basil.",
+        "price": "$16.95"
+      },
+      {
+        "section": "Paste",
+        "name": "Pappardelle Al Sugo D’agnello",
+        "description": "Lamb ragu, black truffle shaving and white truffle oil.",
+        "price": "$27.00"
+      },
+      {
+        "section": "Secondi - Vegetarian",
+        "name": "Eggplant Parmigiana",
+        "description": "Thick eggplant steaks, breaded and pan fried, baked with mozzarella and marinara.",
+        "price": "$19.95"
+      },
+      {
+        "section": "Secondi - Pesce",
+        "name": "Swordfish Oreganato",
+        "description": "Garlic, olive oil and oregano breadcrumb encrusted thick cut swordfish baked with white wine and garlic.",
+        "price": "$35.95"
+      },
+      {
+        "section": "Secondi - Pesce",
+        "name": "Atlantic Salmon Piccata",
+        "description": "White wine, capers, garlic and lemon juice.",
+        "price": "$27.95"
+      },
+      {
+        "section": "Secondi - Pollo",
+        "name": "Pollo Marsala",
+        "description": "Boneless chicken breast with marsala wine, sage and mushrooms.",
+        "price": "$23.95"
+      },
+      {
+        "section": "Secondi - Pollo",
+        "name": "Pollo Parmigiana",
+        "description": "Breaded chicken breast, mozzarella and tomato sauce.",
+        "price": "$26.95"
+      },
+      {
+        "section": "Secondi - Pollo",
+        "name": "Pollo Toscano",
+        "description": "Stuffed with gorgonzola and prosciutto and baked with red wine, fontina and sage.",
+        "price": "$28.00"
+      },
+      {
+        "section": "Secondi - Vitello",
+        "name": "Veal Piccata",
+        "description": "Veal scallopine with white wine, capers, garlic, and fresh lemon juice.",
+        "price": "$31.95"
+      },
+      {
+        "section": "Secondi - Vitello",
+        "name": "Veal Parmigiana",
+        "description": "Breaded veal cutlet, mozzarella and tomato sauce.",
+        "price": "$32.95"
+      },
+      {
+        "section": "Secondi - Vitello",
+        "name": "Veal Chop Milanesa",
+        "description": "Breaded and pan fried, accompanied with chopped tomato arugula, extra virgin olive oil and garlic.",
+        "price": "$43.95"
+      },
+      {
+        "section": "Secondi - Vitello",
+        "name": "Veal Chop Ai Porcini",
+        "description": "Porcini mushrooms, cream, cognac and shallots.",
+        "price": "$47.95"
+      },
+      {
+        "section": "Secondi - Vitello",
+        "name": "Veal Chop Lamberti",
+        "description": "Grilled tender veal chop, topped with roasted garlic.",
+        "price": "$48.00"
+      },
+      {
+        "section": "Secondi - Carne",
+        "name": "Rack Of Lamb",
+        "description": "Dijon and breadcrumb encrusted with balsamic reduction.",
+        "price": "$36.95"
+      },
+      {
+        "section": "Secondi - Carne",
+        "name": "10 Oz Prime New York Steak",
+        "description": "Broiled center cut 1855 black angus beef.",
+        "price": "$37.95"
+      },
+      {
+        "section": "Secondi - Carne",
+        "name": "Filet Mignon Al Cognac",
+        "description": "Beef tenderloin with mushrooms, shallots and cognac.",
+        "price": "$41.95"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6667",
+    "name": "Lani Coffee",
+    "sourceUrl": "https://www.doordash.com/store/lani-coffee-san-diego-911636/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.doordash.com/store/lani-coffee-san-diego-911636/",
+    "notes": "own WordPress site's menu page has stale placeholder content (literal unfilled template text: \"This is a description of the Lani's Iced Coffee product\"), so DoorDash capture preferred. DoorDash 80-item capture cross-checked exactly against its own embedded menu-book category counts (not truncated). Dropped the 'Most Ordered' carousel duplicates plus one further internal duplicate; 67 final dishes.",
+    "dishes": [
+      {
+        "section": "Sandwiches and Bagels",
+        "name": "Breakfast Sandwich",
+        "description": "Ham or Turkey, egg, and your choice of (Pepperjack/ cheddar/ Provolone) cheese are sandwiched into croissant, wheat bread or bagel to make a quick and delicious unique breakfast sandwich.",
+        "price": "$16.95"
+      },
+      {
+        "section": "Sandwiches and Bagels",
+        "name": "Bagel",
+        "description": "Choose one of our 6 delicious options toasted with the choice of Cream Cheese, Butter, or Peanut butter.",
+        "price": "$9.99"
+      },
+      {
+        "section": "Sandwiches and Bagels",
+        "name": "Salmon Bagel",
+        "description": "An open-face smoked salmon, cream cheese bagel with optional capers and onions makes for a great breakfast or brunch offering. Time to enjoy it !!!!",
+        "price": "$18.95"
+      },
+      {
+        "section": "Sandwiches and Bagels",
+        "name": "Lunch Sandwich",
+        "description": "Your choice of Ham or Turkey and your pick of (Pepper jack/ cheddar) cheese are sandwiched into croissant, wheat bread or bagel to make a quick and delicious and healthy Lunch Sandwich.",
+        "price": "$13.25"
+      },
+      {
+        "section": "Sandwiches and Bagels",
+        "name": "Lunch Special Sand",
+        "description": "Your choice of Ham or Turkey and your pick of (Pepper jack/ cheddar/provolone) cheese are sandwiched into croissant, wheat bread or bagel to make a quick, delicious, and healthy Lunch Sandwich. Free drink (Soda, Tea, O.J or hot coffee)& chips as a compliment. ",
+        "price": "$14.25"
+      },
+      {
+        "section": "Burritos",
+        "name": "Steak Burrito",
+        "description": "A mouth dropping mix of Potato, Eggs. Cheese & Steak",
+        "price": "$18.95"
+      },
+      {
+        "section": "Burritos",
+        "name": "Turkey Sausage Burrito",
+        "description": "A mouth dropping mix of Potato, Eggs. Cheese & Turkey Sausage",
+        "price": "$18.95"
+      },
+      {
+        "section": "Acai Bowls",
+        "name": "Blueberry Bowl",
+        "description": "a perfect Blend of Organic Acai Fruit and banana topped with Organic & gluten-free Granola Fresh Strawberries, Blueberries and honey",
+        "price": "$18.25"
+      },
+      {
+        "section": "Acai Bowls",
+        "name": "Coconut Bowl",
+        "description": "A supper healthy breakfast bowl has Organic Acai fruit as a base and topped with Granola, Banana, Strawberries, Coconut, and Honey.",
+        "price": "$16.65"
+      },
+      {
+        "section": "Acai Bowls",
+        "name": "The Duke Bowl",
+        "description": "This supper healthy breakfast bowl made out of  Organic Acai fruit as a base and topped with Organic Gluten-Free Granola, Banana, Strawberries, and Honey.",
+        "price": "$13.75"
+      },
+      {
+        "section": "Acai Bowls",
+        "name": "Pitaya Bowl",
+        "description": "This supper healthy breakfast bowl made out of Organic Pitaya fruit as a base and topped with Organic Gluten-Free Granola, Banana, Strawberries, and Honey.",
+        "price": "$13.75"
+      },
+      {
+        "section": "Acai Bowls",
+        "name": "Peanutbutter Bowl",
+        "description": "Supper healthy Organic Acai Bowl blended with Peanut butter and topped with Granola, Banana, Strawberries, and Honey.",
+        "price": "$16.95"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "W Chocolate Rasp Mocha",
+        "description": "W Chocolate Rasp Mocha",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Coconut Latte",
+        "description": "Freshly steamed milk with coconut-flavored syrup marked with double shot espresso ",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Pumpkin Spice Latte",
+        "description": "Pumpkin Spice Latte",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Cafe Latte",
+        "description": "coffee drink made with espresso and your choice of steamed diary or non-diary milk. ",
+        "price": "$5.95"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Lion Thai Latte",
+        "description": "Your choice of diary or non-diary milk marked with double espresso shots and condensed milk ",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Americano",
+        "description": "A drink prepared by diluting an espresso with hot water, giving it a similar strength to, but different flavor from, traditionally brewed coffee. ",
+        "price": "$4.45"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Salted Caramel Latte",
+        "description": "Salted Caramel Latte",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Macadamia Nut Latte",
+        "description": "Your choice of diary or non-diary milk marked with double espresso shots & Macadamia Nut Syrup",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Lion Thai Mocha",
+        "description": "Your choice of diary or non-diary milk marked with double espresso shots and condensed milk & Ghirardelli chocolate",
+        "price": "$6.85"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Caramel Macchiato",
+        "description": "Freshly steamed milk with vanilla-flavored syrup marked with espresso and topped with a Real caramel drizzle for a bright and sweetened morning. ",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Vanilla Latte",
+        "description": "Your choice of diary or non-diary milk marked with double espresso shots and Vanilla Syrup.",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Hot Chocolate",
+        "description": "Hot Chocolate",
+        "price": "$5.45"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Peppermint Mocha",
+        "description": "Peppermint Mocha",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Aloha Mocha",
+        "description": "Double Espresso shots mixed with Ghirardelli Chocolate, Banana, Coconut flavor, and your choice of diary or non-diary milk.",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Cafe Mocha",
+        "description": "Your choice of milk plus double shot espresso mixed with Ghirardelli Chocolate, ",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "White Choc Mocha",
+        "description": "Your choice of diary or non-diary milk marked with double espresso shots and white Ghirardelli Chocolate ",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Espresso",
+        "description": "Double Shot Espresso",
+        "price": "$3.75"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Cappuccino",
+        "description": "A  drink made with Double shot Espresso and steamed milk foam.",
+        "price": "$5.95"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Drip coffee large",
+        "description": "Brewed in small batches, this large drip coffee offers a rich and satisfying taste.",
+        "price": "$5.95"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Aloha White Mocha",
+        "description": "Double Espresso shots mixed with white Ghirardelli Chocolate, Banana, Coconut flavor, and your choice of diary or non-diary milk.",
+        "price": "$6.65"
+      },
+      {
+        "section": "Espresso Drinks",
+        "name": "Mahalo Latte",
+        "description": "Your choice of diary or non-diary milk marked with double espresso shots, Coconut Powder and Macadamia",
+        "price": "$6.65"
+      },
+      {
+        "section": "Smoothies",
+        "name": "POG Smoothie",
+        "description": "A rich and sweet mixture of natural Passion Fruit juice, Orange Juice & a natural Guava juice. Made with real fruit, it contains no preservatives, artificial colors, or artificial flavors.",
+        "price": "$7.35"
+      },
+      {
+        "section": "Smoothies",
+        "name": "Big Island Mix",
+        "description": "Choose 3 of your favorite flavors: Strawberry, Guava, Wild Berry, Mango, Raspberry, Passion Fruit, Banana, or Orange Juice.",
+        "price": "$7.35"
+      },
+      {
+        "section": "Smoothies",
+        "name": "Acai Berry Smoothie",
+        "description": "A well balanced mix of Fresh Banana & Strawberry, and Organic Acai Fruit with Wildberries & raspberry. ",
+        "price": "$8.45"
+      },
+      {
+        "section": "Smoothies",
+        "name": "Shaka Smoothie",
+        "description": "Blend of Strawberries and Banana  Made with real fruit, it contains no preservatives, artificial colors, or artificial flavors.",
+        "price": "$7.35"
+      },
+      {
+        "section": "Smoothies",
+        "name": "North Shore Smoothie",
+        "description": "Ice blend of of Strawberries, Raspberries & Blueberries. Made with real fruit, it contains no preservatives, artificial colors, or artificial flavors.",
+        "price": "$7.35"
+      },
+      {
+        "section": "Frappa  Chilla",
+        "name": "Caramel Frappa",
+        "description": "Cold Pressed coffee with real caramel , Milk and ice. Whip cream can be added upon request.",
+        "price": "$7.95"
+      },
+      {
+        "section": "Frappa  Chilla",
+        "name": "Kona Mocha Frappa",
+        "description": "100% Kona cold pressed coffee, Kona Mocha, Milk, and ice. Whip cream can be added upon request.",
+        "price": "$7.95"
+      },
+      {
+        "section": "Frappa  Chilla",
+        "name": "Kahuna Coco Frappa",
+        "description": "Cold pressed coffee, coconut, milk, and ice. Whip cream can be added upon request.",
+        "price": "$7.95"
+      },
+      {
+        "section": "Frappa  Chilla",
+        "name": "Mocha Frappa",
+        "description": "Cold pressed coffee, Ghirardelli chocolate, milk, and ice. Whip cream can be added upon request.",
+        "price": "$7.95"
+      },
+      {
+        "section": "Frappa  Chilla",
+        "name": "Hazelnut Frappa",
+        "description": "Double shot espresso, milk, and toasted hazelnut, with ice. Whip cream can be added upon request.",
+        "price": "$7.95"
+      },
+      {
+        "section": "Frappa  Chilla",
+        "name": "Da Kine Van Frappa",
+        "description": "Cold Pressed coffee, vanilla, milk, and ice. Whip cream can be added upon request.",
+        "price": "$7.95"
+      },
+      {
+        "section": "Frappa  Chilla",
+        "name": "Coffee Frappa",
+        "description": "Cold Pressed coffee, coffee powder , milk, and ice. Whip cream can be added upon request.",
+        "price": "$7.95"
+      },
+      {
+        "section": "Chai Tea Lattes",
+        "name": "Spiced Chai Latte",
+        "description": "Spiced Chai Latte",
+        "price": "$3.85"
+      },
+      {
+        "section": "Chai Tea Lattes",
+        "name": "Vanilla Chai Latte",
+        "description": "Vanilla Chai Latte",
+        "price": "$3.85"
+      },
+      {
+        "section": "Chai Tea Lattes",
+        "name": "Green Tea Latte",
+        "description": "Green Tea Latte",
+        "price": "$3.85"
+      },
+      {
+        "section": "Hot Brew Coffee",
+        "name": "Hammerhead",
+        "description": "A double shot espresso indulged in coffee of your choice!!!!!! talking about harmony. ",
+        "price": "$4.25"
+      },
+      {
+        "section": "Hot Brew Coffee",
+        "name": "Coffee",
+        "description": "Coffee",
+        "price": "$2.45"
+      },
+      {
+        "section": "Hot Brew Coffee",
+        "name": "Kona",
+        "description": "Our 100% genuine Kona Coffee is highly prized throughout the world for its full bodied flavor and pleasing aroma. Coffee trees thrive on the cool slopes of the Hualalai  Mountains in rich volcanic soil and afternoon cloud cover. ... Before being graded, ",
+        "price": "$3.45"
+      },
+      {
+        "section": "Pastries",
+        "name": "Croissant \"Chocolate \"",
+        "description": "Croissant \"Chocolate \"",
+        "price": "$5.85"
+      },
+      {
+        "section": "Pastries",
+        "name": "Danish",
+        "description": "Danish",
+        "price": "$5.65"
+      },
+      {
+        "section": "Pastries",
+        "name": "Muffin",
+        "description": "Muffin",
+        "price": "$5.45"
+      },
+      {
+        "section": "Pastries",
+        "name": "Croissant\"Almond \"",
+        "description": "Croissant\"Almond \"",
+        "price": "$5.85"
+      },
+      {
+        "section": "Pastries",
+        "name": "Croissant \"Plain \"",
+        "description": "Croissant \"Plain \"",
+        "price": "$5.25"
+      },
+      {
+        "section": "Pastries",
+        "name": "Scone",
+        "description": "Scone",
+        "price": "$4.95"
+      },
+      {
+        "section": "Beverages",
+        "name": "Chocolate Milk",
+        "description": "Chocolate Milk",
+        "price": "$2.55"
+      },
+      {
+        "section": "Beverages",
+        "name": "Coke",
+        "description": "Coke",
+        "price": "$2.45"
+      },
+      {
+        "section": "Beverages",
+        "name": "Sprite",
+        "description": "Sprite",
+        "price": "$2.45"
+      },
+      {
+        "section": "Beverages",
+        "name": "Arrowhead Water",
+        "description": "Arrowhead Water",
+        "price": "$2.25"
+      },
+      {
+        "section": "Beverages",
+        "name": "OJ",
+        "description": "OJ",
+        "price": "$2.75"
+      },
+      {
+        "section": "Beverages",
+        "name": "Diet Coke",
+        "description": "Diet Coke",
+        "price": "$2.45"
+      },
+      {
+        "section": "Hawaiian Tea",
+        "name": "Sweetened Ice Tea",
+        "description": "Sweetened Ice Tea",
+        "price": "$2.55"
+      },
+      {
+        "section": "Hawaiian Tea",
+        "name": "Herbal Tea",
+        "description": "Herbal Tea",
+        "price": "$2.35"
+      },
+      {
+        "section": "Hawaiian Tea",
+        "name": "Black Tea",
+        "description": "Black Tea",
+        "price": "$2.35"
+      },
+      {
+        "section": "Hawaiian Tea",
+        "name": "Green Tea",
+        "description": "Green Tea",
+        "price": "$2.35"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6577",
+    "name": "Yingli Restaurant | Chula Vista",
+    "sourceUrl": "https://www.yinglica.com/4q1zys97/yingli-restaurant-chula-vista-chula-vista-91911/order-online",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "unverified-pricing: 51 prices on the white-label order-online storefront all show non-standard, scattered cent endings (e.g. $26.03, $32.17, $18.59, $25.11) with none of the conventional .00/.50/.95/.99/.25/.75 endings. Divisor sweep (1.00-1.35, expanded 0.60-1.60) found no candidate clearing 55% (best 0.715 at 53%), well below confirmed-markup hit rates. Prices do repeat identically across many distinct dishes (tiered pricing), consistent with either genuine Chinese-restaurant tier pricing or a currency/fee conversion artifact -- could not distinguish the two with available evidence, so blocking rather than filing a possibly-corrupted price set."
+  },
+  {
+    "restaurantId": "6391",
+    "name": "Señor Taquero",
+    "sourceUrl": "https://themenustar.com/webspace/menus.php?code=senortaquero.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "fee-baked-in: MenuStar's functions/restaurant.php?function=get_items across all 16 categories (72 items) sweeps cleanly at divisor 1.139: $3.41 tacos -> $2.99, $15.93 burritos -> $13.99, $2.28 bottle water -> $2.00, $4.55 Red Bull -> $3.99 (53/72 = 74% land on conventional .99/.98/.49/.00 cents once divided). Displayed prices are not the menu price; per house rule, never divide out a confirmed markup, so blocking."
+  },
+  {
+    "restaurantId": "6378",
+    "name": "Royal Sweets",
+    "sourceUrl": "https://royalsweets.smartonlineorder.com/wp-json/moo-clover/v1/categories",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "fee-baked-in: confirms router pre-screening. Fetched all 13 Clover categories (208 items) directly from the wp-json/moo-clover/v1 REST API; divisor sweep finds 1.040 as the clear best fit (143/208 = 69% land on round dollars once divided), consistent with a 4% platform fee baked into every displayed price. No fee-free alternate source found (own domain proxies the same smartonlineorder.com Clover storefront). Never dividing out a confirmed markup, so blocking."
+  }
+]

@@ -1,0 +1,176 @@
+[
+  {
+    "restaurantId": "6938",
+    "name": "Flor and Seed Coffee Roasters",
+    "sourceUrl": "https://florandseedcoffee.com/products.json",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the shopify payload. read from the Shopify /products.json catalog - this is what the site sells online; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Catrina BLEND (Whole Bean)",
+        "description": "CATRINA, BLEND Farmer: Oaxaca/Guerrero",
+        "price": "$19.00",
+        "section": "Single Bag"
+      },
+      {
+        "name": "Catrina BLEND (Ground Bean)",
+        "description": "CATRINA, BLEND Farmer: Oaxaca/Guerrero",
+        "price": "$19.00",
+        "section": "Single Bag"
+      },
+      {
+        "name": "Lucha BLEND (Whole Bean)",
+        "description": "LUCHA , BLEND Farmer: Oaxaca/Chiapas",
+        "price": "$19.00",
+        "section": "Single Bag"
+      },
+      {
+        "name": "Lucha BLEND (Ground Bean)",
+        "description": "LUCHA , BLEND Farmer: Oaxaca/Chiapas",
+        "price": "$19.00",
+        "section": "Single Bag"
+      },
+      {
+        "name": "Chiapas Familia Meza (Whole Bean)",
+        "description": "CHIAPAS, Tenejapa Farmer Finca: Familia Meza",
+        "price": "$19.00",
+        "section": "Single Bag"
+      },
+      {
+        "name": "Chiapas Familia Meza (Ground Bean)",
+        "description": "CHIAPAS, Tenejapa Farmer Finca: Familia Meza",
+        "price": "$19.00",
+        "section": "Single Bag"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4835",
+    "name": "Baja Rick's Cantina",
+    "sourceUrl": "https://order.toasttab.com/online/bajaricks",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the toast payload. Toast served this catalog with respectAvailability=true at 9/4/2026, 5:59:15 PM PT, so it holds only what was being served then",
+    "dishes": [
+      {
+        "name": "Guacamole & Chips",
+        "description": "",
+        "price": "$17.00",
+        "section": "Apps"
+      },
+      {
+        "name": "Hot Wings",
+        "description": "",
+        "price": "$21.00",
+        "section": "Apps"
+      },
+      {
+        "name": "Chicken Taquitos",
+        "description": "",
+        "price": "$14.00",
+        "section": "Apps"
+      },
+      {
+        "name": "Street Corn in a Cup",
+        "description": "",
+        "price": "$9.00",
+        "section": "Apps"
+      },
+      {
+        "name": "Fried Calamari & Shrimp",
+        "description": "",
+        "price": "$19.00",
+        "section": "Apps"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7979",
+    "name": "Sourpuss Donuts",
+    "sourceUrl": "https://www.sourpussdonuts.com/menu",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the wix payload. read from Wix item.name / item.price data-hooks in document order; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Vanilla Bean Glazed",
+        "description": "Sourdough Brioche Donut with Vanilla Bean",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Cinnamon Sugar Twisty",
+        "description": "Sourdough Brioche Twist with Organic Cane",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Organic Apple Pie",
+        "description": "Sourdough Brioche Donut with Local Apple",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Cookies & Cream",
+        "description": "Sourdough Donut with Sweet Cream Glaze,",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "California Sunshine",
+        "description": "Sourdough Brioche Donut Mandarin & Valencia",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Dark Chocolate Glazed",
+        "description": "Sourdough Brioche Donut Glazed with 70% Dark",
+        "price": "$6.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Donut of the Day",
+        "description": "Rotating selection of Chefs Choice, always",
+        "price": "$6.50",
+        "section": "Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3868",
+    "name": "Cabo Cantina",
+    "sourceUrl": "https://tmt.spotapps.co/ordering-menu/?spot_id=19362",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the spothopper payload. read from the SpotHopper ordering widget's __NUXT__ payload - this is the ORDERABLE menu, which is usually a subset of what the site's own menu page prints; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Muchos Nachos",
+        "description": "A mountain of fresh tortilla chips with a",
+        "price": "$12.99",
+        "section": "Menu / Starters & Shareables"
+      },
+      {
+        "name": "Chicken Taquitos",
+        "description": "Four crispy rolled tacos served with",
+        "price": "$10.69",
+        "section": "Menu / Starters & Shareables"
+      },
+      {
+        "name": "Cantina Tacos",
+        "description": "Chicken, steak or sautéed veggies, cheese,",
+        "price": "$12.49",
+        "section": "Menu / Mega Tacos"
+      },
+      {
+        "name": "Taco Salad",
+        "description": "Served in a tostada shell with choice of",
+        "price": "$12.75",
+        "section": "Menu / Salads & Wraps"
+      },
+      {
+        "name": "Fajitas (Chicken, Steak, or Shrimp)",
+        "description": "Seasoned and sautéed with bell peppers and",
+        "price": "$17.99",
+        "section": "Menu / Entrees"
+      }
+    ]
+  }
+]

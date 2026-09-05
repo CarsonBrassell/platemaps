@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting...</title>
+    <script>
+      ;(function () {
+        var q = new URLSearchParams(window.location.search)
+        if (q.get('restaurantId') && !q.get('restaurantid')) q.set('restaurantid', q.get('restaurantId'))
+        var params = []
+        q.forEach(function (v, k) {
+          params.push(encodeURIComponent(k) + '=' + encodeURIComponent(v))
+        })
+        window.location.replace('./#/menu' + (params.length ? '?' + params.join('&') : ''))
+      })()
+    </script>
+  </head>
+  <body>Redirecting...</body>
+</html>

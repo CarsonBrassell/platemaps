@@ -67,11 +67,11 @@ export type Restaurant = {
    * placeholder would put a number on the page that nobody measured, which is
    * the failure PRODUCT.md exists to prevent.
    *
-   * Nothing unrated is ever displayed — `restaurants.listed` is false until a
-   * rating and a real menu both exist (see scripts/publish-restaurants.mjs),
-   * and `getRestaurants()` filters on it. That gate, not this type, is what
-   * guarantees a card always has a number; `RestaurantView.rating` is
-   * therefore still required, because it only ever carries listed rows.
+   * `restaurants.listed` no longer guarantees a rating — the publish gate
+   * (see scripts/publish-restaurants.mjs) requires a real menu but not a
+   * sourced rating, so a listed restaurant can still carry a null one here.
+   * `RestaurantView.rating` is typed `number | null` to match: every reader
+   * has to handle the absence rather than assume the gate did it for them.
    */
   rating?: number;
   reviewCount?: number;
@@ -204,8 +204,16 @@ export type RestaurantView = {
   hours: Hours;
   lat: number;
   lng: number;
-  rating: number;
-  reviewCount: number;
+  /**
+   * Null means "not sourced yet" — never zero. `restaurants.listed` no
+   * longer implies a rating: a restaurant can publish with a real menu and
+   * no Yelp/Google match, and this carries that absence through instead of
+   * laundering it into a fake number. Every renderer needs a story for the
+   * null, the way `cuisine` above does — omit the rating/blend element
+   * rather than showing "0", "N/A", or an empty star row.
+   */
+  rating: number | null;
+  reviewCount: number | null;
   trending?: boolean;
   photo?: string;
   photoAlt?: string;

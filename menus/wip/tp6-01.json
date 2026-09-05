@@ -1,0 +1,114 @@
+[
+  {
+    "restaurantId": "5828",
+    "name": "Frutas 100% Natural",
+    "address": "616 Broadway, Chula Vista, CA 91910",
+    "website": "http://frutas100natural.com/",
+    "reviewCount": 1611,
+    "router": {
+      "platform": null,
+      "outcome": "fetch-failed",
+      "detail": "HTTP 500 (http://frutas100natural.com/)"
+    }
+  },
+  {
+    "restaurantId": "6606",
+    "name": "La Dolce Vita Ristorante",
+    "address": "1237 Prospect St Ste p, La Jolla, CA 92037",
+    "website": "http://ladolcevitalajolla.com/",
+    "reviewCount": 1045,
+    "router": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://www.ladolcevitalajolla.com/"
+    }
+  },
+  {
+    "restaurantId": "5905",
+    "name": "Los Reyes Mexican Restaurant & Cantina",
+    "address": "2496 Broadway, San Diego, CA 92102",
+    "website": "http://www.losreyesfood.com/",
+    "reviewCount": 1032,
+    "router": {
+      "platform": null,
+      "outcome": "fetch-failed",
+      "detail": "fetch failed (Connect Timeout Error (attempted addresses: 76.223.105.230:80, 13.248.243.5:80, timeout: 10000ms)) (http://www.losreyesfood.com/)"
+    }
+  },
+  {
+    "restaurantId": "6004",
+    "name": "Sushi House",
+    "address": "509 Telegraph Canyon Rd suite A, Chula Vista, CA 91910",
+    "website": "https://sushi-house.org/our-menu/",
+    "reviewCount": 1013,
+    "router": null
+  },
+  {
+    "restaurantId": "6028",
+    "name": "Tony's Sports Bar and Grill",
+    "address": "274 S Harbor Dr, Oceanside, CA 92054",
+    "website": "http://tonysintheharbor.net/",
+    "reviewCount": 990,
+    "router": {
+      "platform": null,
+      "outcome": "fetch-failed",
+      "detail": "fetch failed (Hostname/IP does not match certificate's altnames: Host: tonysintheharbor.net. is not in the cert's altnames: DNS:*.netlify.ap (http://tonysintheharbor.net/)"
+    }
+  },
+  {
+    "restaurantId": "6265",
+    "name": "Señor Mangos",
+    "address": "4607 30th St, San Diego, CA 92116",
+    "website": "http://www.senormangos.com/",
+    "reviewCount": 983,
+    "router": {
+      "platform": "clover",
+      "outcome": "wrong-branch",
+      "detail": "payload address \"101 WEST WASHINGTON STRE\" vs our \"4607 30th St, San Diego, CA 92116\""
+    }
+  },
+  {
+    "restaurantId": "5956",
+    "name": "Imperial Fish Market",
+    "address": "894 Euclid Ave, San Diego, CA 92114",
+    "website": null,
+    "reviewCount": 971,
+    "router": null
+  },
+  {
+    "restaurantId": "6444",
+    "name": "Tony's Fresh Mexican Food",
+    "address": "1578 Rosecrans St #2262, San Diego, CA 92106",
+    "website": "https://tonysfreshmexicanfood.shop/",
+    "reviewCount": 944,
+    "router": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://tonysfreshmexicanfood.shop/"
+    }
+  },
+  {
+    "restaurantId": "5979",
+    "name": "Giorgino's",
+    "address": "1237 28th St, San Diego, CA 92102",
+    "website": "http://www.giorginos.com/",
+    "reviewCount": 917,
+    "router": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://www.giorginos.com/"
+    }
+  },
+  {
+    "restaurantId": "6037",
+    "name": "Mom's Pie House - Wynola",
+    "address": "4510 CA-78, Julian, CA 92036",
+    "website": "https://momspiesjulian.com/",
+    "reviewCount": 914,
+    "router": {
+      "platform": "toast",
+      "outcome": "wrong-branch",
+      "detail": "payload address \"2119 Main St., PO Box 2367\" vs our \"4510 CA-78, Julian, CA 92036\""
+    }
+  }
+]

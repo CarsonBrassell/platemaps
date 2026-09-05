@@ -1,0 +1,16 @@
+
+duplicate rows dropped (same name, price and section):
+  Valerie's Taco Stand mar y tierra burrito: dropped 1 exact duplicate row(s)
+clean:      9 entries (9 with menus, 0 confirmed not-found), 655 dishes
+quarantine: 10 entries, 0 dishes withheld
+
+  Green Vine Delicatessen (0 dishes) - blocked, not absent: needs-browser: site's own PDF menu has real prices but pdftotext -layout/-raw/-table all interleave text from multiple columns/sections character-by-character (e.g. headers merge into unreadable strings); no embedded JPEGs to transcribe instead. Also carries an iMenu360 order widget (orderonlinemenu.com/GreenVineDeli), itself browser-only.
+  Fruity Fruits (0 dishes) - blocked, not absent: no first-party site, no DoorDash/Uber Eats/Grubhub listing found after multiple targeted searches - only Yelp, Atly, social media, and tier-5 aggregators surfaced, none with menu pricing
+  Gooseberries kafe (0 dishes) - blocked, not absent: site connect-times-out (unreachable, not confirmed closed); web search surfaced only tier-5 aggregators (zmenu, restaurantji, wheree, res-discover) and no DoorDash/Uber Eats/Grubhub listing - a temporary reachability problem with my search, not evidence of closure
+  664 Tj Birrieria (0 dishes) - blocked, not absent: needs-browser: Uber Eats store page (address-confirmed 505 Highland Ave, National City - distinct from a separate "Bonita" branch of the same name) has no schema.org JSON-LD menu; items live in catalogSectionsMap/catalogItems client-side
+  Tacos de Birria El Chinito Jr (0 dishes) - blocked, not absent: first-party site is a single contact/location page with no menu section, no prices, and no ordering platform link found
+  Danish & Donuts (0 dishes) - blocked, not absent: no first-party site or marketplace listing found - only Yelp, aggregator/directory sites, and social media; one apparent Uber Eats search hit turned out to be an unrelated, differently-located restaurant
+  China Fun (0 dishes) - blocked, not absent: needs-browser: order-online page is a client-rendered Next.js app; JSON-LD Restaurant block present but hasMenu just points back at itself with no items, no other API found
+  La Sabrosita (0 dishes) - blocked, not absent: both the Breakfast and Dinner PDF menus are Flate bitmap images with no text layer and no embedded JPEGs to transcribe
+  La Pesca Cevichería Baja (0 dishes) - blocked, not absent: no legitimate first-party or marketplace source found - only tier-5 aggregators (including explicitly-barred menutoeat), Yelp, and social media; the one Uber Eats search hit found was for an unrelated, differently-named restaurant ('La Baja Sushi')
+  Pho46 & Banh Mi (0 dishes) - blocked, not absent: the only DoorDash link found (doordash.com/business/pho-banh-mi-14779794/) is a generic 'X's Delivery & Takeout Near You' SEO hub page, not a real store listing - its title, and the absence of the restaurant's own address anywhere in its content (the one address-like match found belonged to an unrelated nearby Capriotti's), disqualify it as a source. A follow-up search for an actual doordash.com/store/... URL for this restaurant came up empty. Remaining sources were tier-5/farm-adjacent aggregators only (zmenu, restaurantguru, checkle, res-menu.net, goto-restaurants.com - the last explicitly barred)

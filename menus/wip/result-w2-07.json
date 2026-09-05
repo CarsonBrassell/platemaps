@@ -1,0 +1,2277 @@
+[
+ {
+  "restaurantId": "4662",
+  "name": "Sandwich Place",
+  "sourceUrl": "https://thesandwichplace.netwaiter.com/san-diego/about/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "NetWaiter online-ordering endpoint (GetMenu) returns a genuinely empty catalog (Groups:[], ExternalType:null); no PDF or alternate first-party menu found on the about page; no ordering-platform (DoorDash/UberEats) listing found for this address"
+ },
+ {
+  "restaurantId": "4360",
+  "name": "1904 Street Dogs",
+  "sourceUrl": "https://www.atly.com/location/1904StreetDogs",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no website on file; web search surfaces only directory/aggregator listings with no itemised prices for this hot dog stand at 600 W Broadway"
+ },
+ {
+  "restaurantId": "3840",
+  "name": "Suki Hana",
+  "sourceUrl": "https://www.ubereats.com/store/suki-hana-utc/tmOIcGnUViO7Gq8AmINhtA",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "DoorDash (doordash.com/store/23649600) and Uber Eats disagree on entree prices by a flat ~$1.50-1.80 (e.g. Chicken Teriyaki $13.49 DD vs $11.99 UE) with no first-party site (only a Westfield UTC directory page); disagreement between two ordering channels is not corroboration, no price filed"
+ },
+ {
+  "restaurantId": "6745",
+  "name": "Choice Juicery",
+  "sourceUrl": "https://www.choicejuicery.com/entire-menu",
+  "confidence": "high",
+  "notes": "read from first-party Squarespace page (emoji-marked cup/bowl prices, 14 flavors x 2 sizes); only the Smoothies & Bowls section was reachable, other categories (juices, milks, snacks, toast) were cache-misses and not fetched, so this is a partial menu; Uber Eats lists the same flavors at a flat +$2.50 delivery-channel markup (e.g. Warrior Smoothie $16.50 UE vs $14.00 site, Warrior Bowl $19.50 UE vs $17.00 site) - not used, not divided out",
+  "dishes": [
+   {
+    "name": "Warrior (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, House Made Almond Butter, Spirulina, & Spinach. Suggested Boosts : Maca, Hemp Seeds, Choice Raspberry Chia Jam.",
+    "price": "$14.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Warrior (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, House Made Almond Butter, Spirulina, & Spinach. Suggested Boosts : Maca, Hemp Seeds, Choice Raspberry Chia Jam.",
+    "price": "$17.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Strawberry Zen (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, & Strawberry. Suggested Boosts: Coconut Butter, Peanut Butter, Almond Butter, Coconut Caramel*.",
+    "price": "$12.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Strawberry Zen (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, & Strawberry. Suggested Boosts: Coconut Butter, Peanut Butter, Almond Butter, Coconut Caramel*.",
+    "price": "$15.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Spicy Amor (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Maca, Cinnamon, Nutmeg, Cayenne Pepper, Almond Butter, & Cacao Powder. Suggested Boosts: Coconut Butter, Cacao Nibs, Spinach.",
+    "price": "$12.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Spicy Amor (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Maca, Cinnamon, Nutmeg, Cayenne Pepper, Almond Butter, & Cacao Powder. Suggested Boosts: Coconut Butter, Cacao Nibs, Spinach.",
+    "price": "$15.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Superhero Vanilla (Cup)",
+    "description": "(chocolate +1*) House Made Plant-Based Milk, Date, Superfood Protein, Banana, Almond Butter & Cinnamon (Cacao). Suggested Boosts: Coconut Butter, Peanut Butter, Almond Butter, Coconut Caramel*.",
+    "price": "$11.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Superhero Vanilla (Bowl)",
+    "description": "(chocolate +1*) House Made Plant-Based Milk, Date, Superfood Protein, Banana, Almond Butter & Cinnamon (Cacao). Suggested Boosts: Coconut Butter, Peanut Butter, Almond Butter, Coconut Caramel*.",
+    "price": "$14.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Pb&J (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, House Made Peanut Butter, & Choice Raspberry Chia Jam. Suggested Boosts: Coconut Butter, Extra Choice Superfood Protein, Cacao.",
+    "price": "$13.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Pb&J (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, House Made Peanut Butter, & Choice Raspberry Chia Jam. Suggested Boosts: Coconut Butter, Extra Choice Superfood Protein, Cacao.",
+    "price": "$16.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Orange Dreamsicle (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Orange, & Pineapple. Suggested Boosts: Coconut Butter, Baobab, Spinach.",
+    "price": "$12.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Orange Dreamsicle (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Orange, & Pineapple. Suggested Boosts: Coconut Butter, Baobab, Spinach.",
+    "price": "$15.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Mint Chip (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Mint Extract, Spinach, Almond Butter & Cacao Nibs (folded in). Suggested Boosts: Coconut Butter, Chocolate Chip Cookie Butter*, Spirulina.",
+    "price": "$13.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Mint Chip (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Mint Extract, Spinach, Almond Butter & Cacao Nibs (folded in). Suggested Boosts: Coconut Butter, Chocolate Chip Cookie Butter*, Spirulina.",
+    "price": "$16.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Coffee Buzz (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Cold Pressed Coffee, Almond Butter & Cinnamon. Suggested Boosts : Peanut Butter, Coconut Butter, Cacao Nibs, Maca.",
+    "price": "$12.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Coffee Buzz (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Cold Pressed Coffee, Almond Butter & Cinnamon. Suggested Boosts : Peanut Butter, Coconut Butter, Cacao Nibs, Maca.",
+    "price": "$15.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Acai Vitality (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Strawberry, & Açai. Suggested Boosts : Spinach, Almond Butter, Baobab.",
+    "price": "$12.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Acai Vitality (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Strawberry, & Açai. Suggested Boosts : Spinach, Almond Butter, Baobab.",
+    "price": "$15.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Newtella (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, & Choice Chocolate Hazelnut Spread. Suggested Boosts: Cacao Nibs, E3Live Blue Majik, Sprouted Almonds.",
+    "price": "$13.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Newtella (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, & Choice Chocolate Hazelnut Spread. Suggested Boosts: Cacao Nibs, E3Live Blue Majik, Sprouted Almonds.",
+    "price": "$16.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Alpha Chai (Cup)",
+    "description": "House Made Oat Milk, Alpha Chai Elixir, Date, Superfood Protein, Banana, & Almond Butter. Suggested Boosts : Coconut Caramel*, Hemp Seeds.",
+    "price": "$12.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Alpha Chai (Bowl)",
+    "description": "House Made Oat Milk, Alpha Chai Elixir, Date, Superfood Protein, Banana, & Almond Butter. Suggested Boosts : Coconut Caramel*, Hemp Seeds.",
+    "price": "$15.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Mystical Matcha (Cup)",
+    "description": "House Made Plant-Based Milk, Mystical Matcha Elixir, Date, Superfood Protein, Banana & Liquid Chlorophyll. Suggested Boosts: Sprouted Amonds, E3Live Blue Majik.",
+    "price": "$12.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Mystical Matcha (Bowl)",
+    "description": "House Made Plant-Based Milk, Mystical Matcha Elixir, Date, Superfood Protein, Banana & Liquid Chlorophyll. Suggested Boosts: Sprouted Amonds, E3Live Blue Majik.",
+    "price": "$15.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Unicorn (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Strawberry, Cake Batter Cashew Almond Butter & E3Live Blue Majik. Suggested Boosts: Choice Raspberry Chia Jam, Peanut Butter.",
+    "price": "$14.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Unicorn (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Strawberry, Cake Batter Cashew Almond Butter & E3Live Blue Majik. Suggested Boosts: Choice Raspberry Chia Jam, Peanut Butter.",
+    "price": "$17.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Avatar (Cup)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Orange, Pineapple, Spinach, & E3Live Blue Majik. Suggested Boosts: Coconut Butter, Baobab.",
+    "price": "$13.00",
+    "section": "Smoothies & Bowls"
+   },
+   {
+    "name": "Avatar (Bowl)",
+    "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Orange, Pineapple, Spinach, & E3Live Blue Majik. Suggested Boosts: Coconut Butter, Baobab.",
+    "price": "$16.00",
+    "section": "Smoothies & Bowls"
+   }
+  ]
+ },
+ {
+  "restaurantId": "5909",
+  "name": "Nutri Juice",
+  "sourceUrl": "https://www.doordash.com/store/37316979",
+  "confidence": "medium",
+  "notes": "read from DoorDash JSON-LD (listing name/address matches 4984 Shawline St exactly); Most Ordered duplicate carousel dropped; Uber Eats lists the same store (ubereats.com/store/nutri-juice) but uses the catalogSectionsMap shape, not parsed this pass",
+  "dishes": [
+   {
+    "name": "Pineapple Strawberry",
+    "description": "Pineapple and strawberry blend. Choices: Medium or Large.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Peach Mango",
+    "description": "Peach and mango blended smoothie. Available in Medium or Large size.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Mango Banana",
+    "description": "Refreshing blend of mango and banana. Available in Medium or Large sizes.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Strawberry Peach",
+    "description": "A blend of fresh strawberries and juicy peaches. Available in medium or large sizes.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Pineapple Blueberry",
+    "description": "Tropical blend of pineapple and blueberry. Medium or large size options.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Raspberry Banana",
+    "description": "Raspberry and banana blend. Available in Medium or Large sizes.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Pineapple Peach",
+    "description": "Pineapple and peach smoothie, available in medium or large.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Peach Banana",
+    "description": "Peach and banana blend. Available in medium or large.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Raspberry Orange Blast",
+    "description": "Raspberry orange blend in medium or large sizes.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Ocean Surprise",
+    "description": "Raspberry, peach, and orange.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Sunrise Cooler",
+    "description": "Orange, strawberry, and banana.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Berry Blast",
+    "description": "Mixed berry.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Strawberry Banana",
+    "description": "Strawberries, bananas, blended fruit smoothie. Size options: Medium, Large.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Blueberry Banana",
+    "description": "Blueberry Banana Smoothie: Blueberry and banana blend. Sizes: Medium or Large.",
+    "price": "$9.00",
+    "section": "Fruit Smoothies"
+   },
+   {
+    "name": "Berry Blast",
+    "description": "",
+    "price": "$5.00",
+    "section": "Kids Fruit Smoothies"
+   },
+   {
+    "name": "Chunky Monkey",
+    "description": "",
+    "price": "$5.00",
+    "section": "Kids Fruit Smoothies"
+   },
+   {
+    "name": "Strawberry Banana",
+    "description": "A blend of strawberries and bananas, creating a creamy and fruity smoothie.",
+    "price": "$5.00",
+    "section": "Kids Fruit Smoothies"
+   },
+   {
+    "name": "Carrot, Celery, and Beet",
+    "description": "",
+    "price": "$10.00",
+    "section": "Freshly Squeezed Juices"
+   },
+   {
+    "name": "Cold Fighter",
+    "description": "Ginger, carrot, and 1000 ml vitamin C.",
+    "price": "$10.00",
+    "section": "Freshly Squeezed Juices"
+   },
+   {
+    "name": "Carrot, Apple, and Ginger",
+    "description": "",
+    "price": "$10.00",
+    "section": "Freshly Squeezed Juices"
+   },
+   {
+    "name": "Carrot and Ginger",
+    "description": "",
+    "price": "$10.00",
+    "section": "Freshly Squeezed Juices"
+   },
+   {
+    "name": "Carrot, Orange, and Ginger",
+    "description": "",
+    "price": "$10.00",
+    "section": "Freshly Squeezed Juices"
+   },
+   {
+    "name": "Wheat Grass",
+    "description": "2oz.",
+    "price": "$3.00",
+    "section": "Shots"
+   },
+   {
+    "name": "Chocolate Peanut Butter Banana",
+    "description": "Large. With chocolate protein.",
+    "price": "$11.00",
+    "section": "Power Shakes"
+   },
+   {
+    "name": "Cappuccino Peanut Butter Banana",
+    "description": "Large. With cappuccino protein.",
+    "price": "$11.00",
+    "section": "Power Shakes"
+   },
+   {
+    "name": "Mocha Peanut Butter Banana",
+    "description": "Large. With mocha protein.",
+    "price": "$11.00",
+    "section": "Power Shakes"
+   },
+   {
+    "name": "Weight Loss Shake",
+    "description": "Large.",
+    "price": "$11.00",
+    "section": "Power Shakes"
+   },
+   {
+    "name": "Super Mass Gainer",
+    "description": "Large.",
+    "price": "$11.00",
+    "section": "Power Shakes"
+   },
+   {
+    "name": "Pina Colada / Strawberry Colada Shake",
+    "description": "Large. With pina colada protein.",
+    "price": "$11.00",
+    "section": "Power Shakes"
+   },
+   {
+    "name": "Green Tea Shake",
+    "description": "Large.",
+    "price": "$11.00",
+    "section": "Power Shakes"
+   },
+   {
+    "name": "Power House-High Protein Shake",
+    "description": "With 2 scoops protein and 1 scoop creatine.",
+    "price": "$12.00",
+    "section": "Power Shakes"
+   },
+   {
+    "name": "Blueberry Banana",
+    "description": "Large. With vanilla protein.",
+    "price": "$11.00",
+    "section": "Power Shakes"
+   },
+   {
+    "name": "Strawberry Banana",
+    "description": "Large. With vanilla protein.",
+    "price": "$11.00",
+    "section": "Power Shakes"
+   },
+   {
+    "name": "Acai Super Antioxidant",
+    "description": "",
+    "price": "$10.00",
+    "section": "Specialty Smoothies"
+   },
+   {
+    "name": "Acai Bowl",
+    "description": "A blend of acai topped with fresh strawberries, blueberries, and crunchy granola.",
+    "price": "$12.00",
+    "section": "Specialty Smoothies"
+   },
+   {
+    "name": "Meal Replacement",
+    "description": "",
+    "price": "$10.00",
+    "section": "Specialty Smoothies"
+   }
+  ]
+ },
+ {
+  "restaurantId": "4201",
+  "name": "Royal Pearl Tea",
+  "sourceUrl": "https://www.royalpearltea.com",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "royalpearltea.com is a parked/dead domain (serves an ad-block-detection redirect script, no real content); no DoorDash/Uber Eats listing found matching 6939 Federal Blvd within search"
+ },
+ {
+  "restaurantId": "6282",
+  "name": "Forum Deli",
+  "sourceUrl": "https://forumdelicarlsbad.com",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "needs-browser: site is served through the EatStreet white-label ordering platform (CLIENT_CONFIG JS blob, eatstreet.com session cookies); the raw HTML shell carries no menu/price data, it is rendered client-side"
+ },
+ {
+  "restaurantId": "6005",
+  "name": "Caffe Positano, Fairbanks",
+  "sourceUrl": "https://www.facebook.com/CaffePositanoRSFfairbanks/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no website on file; only directory/aggregator pages (Yelp, restaurantguru, zmenu) found, none carrying itemised prices; Facebook page located but not a priced source"
+ },
+ {
+  "restaurantId": "5107",
+  "name": "Treetops Cafe",
+  "sourceUrl": "https://sdzwa.org/dining/treetops-cafe/menu",
+  "confidence": "high",
+  "dishes": []
+ },
+ {
+  "restaurantId": "4737",
+  "name": "Nicholson Commons",
+  "sourceUrl": "https://plnudining.sodexomyway.com/",
+  "confidence": "high",
+  "dishes": []
+ },
+ {
+  "restaurantId": "6082",
+  "name": "Panadería González",
+  "sourceUrl": "https://www.facebook.com/panaderiaglez/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no website on file; only per-review anecdotal prices found (e.g. $1.00 each vs $1.25 each from different reviews) which is hearsay, not a source; no ordering-platform listing found"
+ },
+ {
+  "restaurantId": "4311",
+  "name": "SIP Wine Bar",
+  "sourceUrl": "https://www.axios.com/local/san-diego/2025/09/09/new-local-restaurants-san-diego-airport-terminal-1",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "airport Terminal 1 concession, no website on file; press coverage describes wine flights and snack offerings but no itemised prices found anywhere"
+ },
+ {
+  "restaurantId": "5811",
+  "name": "Panadería El Trigal",
+  "sourceUrl": "https://www.facebook.com/p/Panaderia-El-Trigal-100072227116185/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no website on file; only directory listings found (Yelp, zmenu, restaurantguru), none carrying itemised prices; a DoorDash listing under the same name is a different branch (Orange, NJ)"
+ },
+ {
+  "restaurantId": "4507",
+  "name": "Pavaraga Hawaiian Coffee & Tea",
+  "sourceUrl": "https://pavaraga.net/collections/all",
+  "confidence": "high",
+  "notes": "read from the restaurant's own Shopify storefront (product-card price blocks), 3 pages of /collections/all; one $0.00 Custom Retail placeholder product dropped; site has no section/category structure beyond one flat product grid",
+  "dishes": [
+   {
+    "name": "Black Coffee (No Milk)",
+    "description": "",
+    "price": "$6.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Cold Brew",
+    "description": "",
+    "price": "$6.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Craft Coffee (Hawaiian Style Slow-Brew)",
+    "description": "",
+    "price": "$6.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Dark Chocolate Haupia Cake",
+    "description": "",
+    "price": "$6.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Fruit & Acai Bowls",
+    "description": "",
+    "price": "$8.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Hawaiian  Shoyu",
+    "description": "",
+    "price": "$12.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Hot Brew Latte",
+    "description": "",
+    "price": "$6.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Hot Brew Latte (With Milk)",
+    "description": "",
+    "price": "$6.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Ice Teas",
+    "description": "",
+    "price": "$4.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Island Tuna",
+    "description": "",
+    "price": "$8.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Jelly Desserts",
+    "description": "",
+    "price": "$5.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Legendary Island Frappe",
+    "description": "",
+    "price": "$6.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Macarons",
+    "description": "",
+    "price": "$3.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Maui Coffee Latte",
+    "description": "",
+    "price": "$6.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Mauka B.L.T.",
+    "description": "",
+    "price": "$8.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Pancakes",
+    "description": "",
+    "price": "$8.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Red Velvet Ice Cream Sandwich",
+    "description": "",
+    "price": "$6.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Sandwich Combos",
+    "description": "",
+    "price": "$8.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Spicy Volcano",
+    "description": "",
+    "price": "$12.00",
+    "section": "Menu"
+   },
+   {
+    "name": "Steak Plates",
+    "description": "",
+    "price": "$10.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Waffle",
+    "description": "",
+    "price": "$8.50",
+    "section": "Menu"
+   },
+   {
+    "name": "Waikiki Panini",
+    "description": "",
+    "price": "$8.50",
+    "section": "Menu"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6389",
+  "name": "Test Kitchen",
+  "sourceUrl": "https://www.testkitchensd.com/menu",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "needs-browser: Wix Thunderbolt site; raw HTML for both the homepage and /menu carries no data-hook price attributes and no visible dollar prices, content is rendered client-side from a warmupData blob not present in the fetched document"
+ },
+ {
+  "restaurantId": "3838",
+  "name": "Sumo Go",
+  "sourceUrl": "https://www.ubereats.com/store/sumo-go-7128-miramar-rd/hYO6H-xMVC6plOo1VRzMqA",
+  "confidence": "high",
+  "crossCheckedAgainst": "https://www.doordash.com/store/sumo-go-japanese-grab-and-go-san-diego-43839011/",
+  "notes": "Uber Eats (266 items, full catalog) and DoorDash agree exactly on every sampled dish across 7 spot checks (e.g. Una Don $24.70 both, Egg Salad Sando $10.33 both, Milo Shaken Espresso $9.03 both) despite unconventional cent endings - two independent ordering channels matching exactly is real corroboration, prices used as-is, nothing divided out; DoorDash Most Ordered duplicate carousel excluded",
+  "dishes": [
+   {
+    "name": "Gyoza",
+    "description": "",
+    "price": "$11.63",
+    "section": "Appertizers"
+   },
+   {
+    "name": "Karaage Chicken",
+    "description": "",
+    "price": "$18.13",
+    "section": "Appertizers"
+   },
+   {
+    "name": "Shrimp Tempura",
+    "description": "",
+    "price": "$10.33",
+    "section": "Appertizers"
+   },
+   {
+    "name": "Shumai",
+    "description": "",
+    "price": "$12.93",
+    "section": "Appertizers"
+   },
+   {
+    "name": "Takoyaki",
+    "description": "",
+    "price": "$16.83",
+    "section": "Appertizers"
+   },
+   {
+    "name": "Gyu Don",
+    "description": "Thinly sliced beef, white onion, sweet & savory soy sauce, and Japanese rice",
+    "price": "$24.70",
+    "section": "Hot Food"
+   },
+   {
+    "name": "Gyu Don Curry",
+    "description": "Thinly sliced beef onions, potatoes, carrots, and Japanese rice",
+    "price": "$24.70",
+    "section": "Hot Food"
+   },
+   {
+    "name": "Una Don",
+    "description": "Grilled eel fillets, homemade teriyaki sauce, aonori, tougarashi, sesame seeds, and japanese rice",
+    "price": "$24.70",
+    "section": "Hot Food"
+   },
+   {
+    "name": "Teriyaki Rice Bowl",
+    "description": "",
+    "price": "$13.00",
+    "section": "Hot Food"
+   },
+   {
+    "name": "Donburi Bowl",
+    "description": "",
+    "price": "$13.00",
+    "section": "Hot Food"
+   },
+   {
+    "name": "Orange Rice Bowl",
+    "description": "",
+    "price": "$13.00",
+    "section": "Hot Food"
+   },
+   {
+    "name": "Japanese Curry Bowl",
+    "description": "",
+    "price": "$13.00",
+    "section": "Hot Food"
+   },
+   {
+    "name": "Curry Sauce",
+    "description": "",
+    "price": "$9.10",
+    "section": "Food Add-Ons"
+   },
+   {
+    "name": "Japanese White Rice",
+    "description": "",
+    "price": "$5.85",
+    "section": "Food Add-Ons"
+   },
+   {
+    "name": "Katsu Pork Sando",
+    "description": "",
+    "price": "$12.93",
+    "section": "Sando"
+   },
+   {
+    "name": "Egg Salad Sando",
+    "description": "",
+    "price": "$10.33",
+    "section": "Sando"
+   },
+   {
+    "name": "Espresso",
+    "description": "Double shots",
+    "price": "$6.04",
+    "section": "Espresso"
+   },
+   {
+    "name": "Cappuccino",
+    "description": "",
+    "price": "$8.38",
+    "section": "Espresso"
+   },
+   {
+    "name": "Espresso - Affogato",
+    "description": "Choices of ice cream (vanilla or matcha) serves with two shots of espresso.",
+    "price": "$7.73",
+    "section": "Espresso"
+   },
+   {
+    "name": "Latte",
+    "description": "",
+    "price": "$8.38",
+    "section": "Espresso"
+   },
+   {
+    "name": "Americano",
+    "description": "",
+    "price": "$7.08",
+    "section": "Espresso"
+   },
+   {
+    "name": "Matcha - Affogato",
+    "description": "",
+    "price": "$8.12",
+    "section": "Matcha"
+   },
+   {
+    "name": "Matcha - Cappuccino (Hot)",
+    "description": "",
+    "price": "$8.77",
+    "section": "Matcha"
+   },
+   {
+    "name": "Matcha Latte",
+    "description": "",
+    "price": "$8.77",
+    "section": "Matcha"
+   },
+   {
+    "name": "Matcha Americano",
+    "description": "",
+    "price": "$7.47",
+    "section": "Matcha"
+   },
+   {
+    "name": "Usucha",
+    "description": "Traditional Matcha shots using Saemidori Matcha from Shizuoaka, serves hot only.",
+    "price": "$6.43",
+    "section": "Matcha"
+   },
+   {
+    "name": "Hojicha Latte",
+    "description": "",
+    "price": "$8.77",
+    "section": "Matcha"
+   },
+   {
+    "name": "Candied Orange Oat Latte",
+    "description": "Espresso or matcha premium Japanese orange",
+    "price": "$9.03",
+    "section": "Signature Drinks"
+   },
+   {
+    "name": "Coco Crush",
+    "description": "Espresso or matcha",
+    "price": "$9.03",
+    "section": "Signature Drinks"
+   },
+   {
+    "name": "Double Matcha",
+    "description": "Sweeten Matcha Iced latte with Matcha cloud foam (using ceremonial grade)",
+    "price": "$9.03",
+    "section": "Signature Drinks"
+   },
+   {
+    "name": "Einspanner",
+    "description": "",
+    "price": "$9.03",
+    "section": "Signature Drinks"
+   },
+   {
+    "name": "Lychee Cloud Kori",
+    "description": "Blended Iced drink of whole milk, coconut milk, lychee fruit, condensed milk & your choice of Matcha or Espresso.",
+    "price": "$10.98",
+    "section": "Signature Drinks"
+   },
+   {
+    "name": "Milo Shaken Espresso",
+    "description": "Espresso, milo chocolate, brown sugar, vanilla, cloud foam",
+    "price": "$9.03",
+    "section": "Signature Drinks"
+   },
+   {
+    "name": "Ichigo Latte (Strawberry Iced Latte)",
+    "description": "Premium Strawberry puree serve with whole milk and your choices of espresso or matcha (ceremonial grade)",
+    "price": "$9.68",
+    "section": "Signature Drinks"
+   },
+   {
+    "name": "House Coffee",
+    "description": "",
+    "price": "$5.13",
+    "section": "House Coffee & Tea"
+   },
+   {
+    "name": "Loose Leaf Tea",
+    "description": "16 oz.",
+    "price": "$5.13",
+    "section": "House Coffee & Tea"
+   },
+   {
+    "name": "Orange Crepe Vanilla",
+    "description": "",
+    "price": "$5.18",
+    "section": "Desserts"
+   },
+   {
+    "name": "Orange Eclair Cream",
+    "description": "",
+    "price": "$3.25",
+    "section": "Desserts"
+   },
+   {
+    "name": "Orihiro Jelly Grape",
+    "description": "",
+    "price": "$3.51",
+    "section": "Desserts"
+   },
+   {
+    "name": "Orihiro Jelly Muscat",
+    "description": "",
+    "price": "$3.51",
+    "section": "Desserts"
+   },
+   {
+    "name": "Orihiro Jelly Orange",
+    "description": "",
+    "price": "$3.51",
+    "section": "Desserts"
+   },
+   {
+    "name": "Orihiro Jelly Peach",
+    "description": "",
+    "price": "$3.51",
+    "section": "Desserts"
+   },
+   {
+    "name": "Tarami Jelly Cup Grape",
+    "description": "",
+    "price": "$4.55",
+    "section": "Desserts"
+   },
+   {
+    "name": "Choco Mochi",
+    "description": "",
+    "price": "$4.55",
+    "section": "Desserts"
+   },
+   {
+    "name": "Strawberry Milk Mochi",
+    "description": "",
+    "price": "$4.55",
+    "section": "Desserts"
+   },
+   {
+    "name": "Orange Strawberry Short Cake",
+    "description": "",
+    "price": "$7.78",
+    "section": "Desserts"
+   },
+   {
+    "name": "Swiss Roll Strawberry",
+    "description": "",
+    "price": "$6.24",
+    "section": "Desserts"
+   },
+   {
+    "name": "Fruit Swiss Roll",
+    "description": "",
+    "price": "$6.24",
+    "section": "Desserts"
+   },
+   {
+    "name": "Milk Swiss Roll",
+    "description": "",
+    "price": "$6.24",
+    "section": "Desserts"
+   },
+   {
+    "name": "Steamed Cheese Cake",
+    "description": "",
+    "price": "$2.53",
+    "section": "Desserts"
+   },
+   {
+    "name": "Marble Roll Cake",
+    "description": "",
+    "price": "$5.85",
+    "section": "Desserts"
+   },
+   {
+    "name": "Swiss Roll Cookie & Cream",
+    "description": "",
+    "price": "$6.24",
+    "section": "Desserts"
+   },
+   {
+    "name": "Cookie & Cream Mochi",
+    "description": "",
+    "price": "$4.55",
+    "section": "Desserts"
+   },
+   {
+    "name": "Lays Classic",
+    "description": "",
+    "price": "$1.95",
+    "section": "Snacks"
+   },
+   {
+    "name": "Calbee Potato Chips Honey Butter",
+    "description": "",
+    "price": "$7.78",
+    "section": "Snacks"
+   },
+   {
+    "name": "Calbee Jagarico Stick Cheese",
+    "description": "",
+    "price": "$3.75",
+    "section": "Snacks"
+   },
+   {
+    "name": "Calbee Shrimp Chips Original",
+    "description": "",
+    "price": "$3.67",
+    "section": "Snacks"
+   },
+   {
+    "name": "Calbee Shrimp Chips Hot Garlic",
+    "description": "",
+    "price": "$3.67",
+    "section": "Snacks"
+   },
+   {
+    "name": "Calbee Jagarico Hokkaido Butter",
+    "description": "",
+    "price": "$3.75",
+    "section": "Snacks"
+   },
+   {
+    "name": "Lays Fried Crab",
+    "description": "",
+    "price": "$4.22",
+    "section": "Snacks"
+   },
+   {
+    "name": "Lays Ghost Pepper",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Ms Vickies Bbq",
+    "description": "",
+    "price": "$2.79",
+    "section": "Snacks"
+   },
+   {
+    "name": "Popcorner Cheddar",
+    "description": "",
+    "price": "$1.62",
+    "section": "Snacks"
+   },
+   {
+    "name": "Popcorner Kettle",
+    "description": "",
+    "price": "$1.95",
+    "section": "Snacks"
+   },
+   {
+    "name": "Popcorner Seasalt",
+    "description": "",
+    "price": "$1.62",
+    "section": "Snacks"
+   },
+   {
+    "name": "Pretz Original",
+    "description": "",
+    "price": "$2.58",
+    "section": "Snacks"
+   },
+   {
+    "name": "Pretz Pizza",
+    "description": "",
+    "price": "$2.58",
+    "section": "Snacks"
+   },
+   {
+    "name": "Pretz Sour Cream&onion",
+    "description": "",
+    "price": "$2.58",
+    "section": "Snacks"
+   },
+   {
+    "name": "Pretz Spicy BBQ",
+    "description": "",
+    "price": "$2.58",
+    "section": "Snacks"
+   },
+   {
+    "name": "Pretz Tomato",
+    "description": "",
+    "price": "$6.48",
+    "section": "Snacks"
+   },
+   {
+    "name": "Pringles Cheese",
+    "description": "",
+    "price": "$2.80",
+    "section": "Snacks"
+   },
+   {
+    "name": "Pringles Original",
+    "description": "",
+    "price": "$2.80",
+    "section": "Snacks"
+   },
+   {
+    "name": "Pringles Sour Cream",
+    "description": "",
+    "price": "$2.80",
+    "section": "Snacks"
+   },
+   {
+    "name": "Tao Kae Noi Grilled Seaweed BBQ",
+    "description": "",
+    "price": "$7.47",
+    "section": "Snacks"
+   },
+   {
+    "name": "Tao Kae Noi Classic Seaweed Classic",
+    "description": "",
+    "price": "$7.47",
+    "section": "Snacks"
+   },
+   {
+    "name": "Tao Kae Noi Seaweed Spicy Grilled Squid",
+    "description": "",
+    "price": "$7.47",
+    "section": "Snacks"
+   },
+   {
+    "name": "Squid Peanut Kasugai",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Sunchip Cheddar",
+    "description": "",
+    "price": "$2.79",
+    "section": "Snacks"
+   },
+   {
+    "name": "Sunchips French Onion",
+    "description": "",
+    "price": "$2.79",
+    "section": "Snacks"
+   },
+   {
+    "name": "Sunchips Original",
+    "description": "",
+    "price": "$2.79",
+    "section": "Snacks"
+   },
+   {
+    "name": "Karamucho Hot Chili",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Lays 2n1 Seafood Sauce",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Lays Grilled Squid",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Lays Roasted Chicken Wing",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Lays Spicy Crayfish",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Lays Steak Flavor",
+    "description": "",
+    "price": "$4.55",
+    "section": "Snacks"
+   },
+   {
+    "name": "Oishi Tomato Potato Chips",
+    "description": "",
+    "price": "$2.92",
+    "section": "Snacks"
+   },
+   {
+    "name": "Orion Turtle Chips Choco Churros",
+    "description": "",
+    "price": "$6.82",
+    "section": "Snacks"
+   },
+   {
+    "name": "Orion Turtle Chips Sweet Corn",
+    "description": "",
+    "price": "$6.82",
+    "section": "Snacks"
+   },
+   {
+    "name": "Amanoya Rice Crackers",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Bento Squid",
+    "description": "",
+    "price": "$3.10",
+    "section": "Snacks"
+   },
+   {
+    "name": "Bento Squid Spicy Larb",
+    "description": "",
+    "price": "$3.10",
+    "section": "Snacks"
+   },
+   {
+    "name": "Bin-bin Rice Cracker",
+    "description": "",
+    "price": "$2.71",
+    "section": "Snacks"
+   },
+   {
+    "name": "Calbee Hot&Spicy (Large)",
+    "description": "7.05 oz",
+    "price": "$7.78",
+    "section": "Snacks"
+   },
+   {
+    "name": "Calbee Potato Chips Pizza",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Calbee Potato Chips Seaweed Salt (Large)",
+    "description": "7.05 oz",
+    "price": "$7.78",
+    "section": "Snacks"
+   },
+   {
+    "name": "Jagarico Potato Sticks Umami Seaweed",
+    "description": "",
+    "price": "$3.75",
+    "section": "Snacks"
+   },
+   {
+    "name": "Jagarico Teriyaki Sticks",
+    "description": "",
+    "price": "$3.75",
+    "section": "Snacks"
+   },
+   {
+    "name": "Calbee Takoyaki Ball Corned Puffs",
+    "description": "",
+    "price": "$4.55",
+    "section": "Snacks"
+   },
+   {
+    "name": "Cheetos Japanese Steak",
+    "description": "",
+    "price": "$3.62",
+    "section": "Snacks"
+   },
+   {
+    "name": "Cheetos American Turkey",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Cheetos Flamin’ Hot",
+    "description": "",
+    "price": "$1.95",
+    "section": "Snacks"
+   },
+   {
+    "name": "FF Tomato Chips",
+    "description": "",
+    "price": "$2.92",
+    "section": "Snacks"
+   },
+   {
+    "name": "Hello Panda Strawberry Bag (Small)",
+    "description": "",
+    "price": "$2.58",
+    "section": "Snacks"
+   },
+   {
+    "name": "Himemaru Rice Cracker",
+    "description": "",
+    "price": "$2.86",
+    "section": "Snacks"
+   },
+   {
+    "name": "Himemaru Wasabi Rice Cracker",
+    "description": "",
+    "price": "$2.86",
+    "section": "Snacks"
+   },
+   {
+    "name": "Kasugai Mame",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Kasugai Mame (Big)",
+    "description": "",
+    "price": "$9.42",
+    "section": "Snacks"
+   },
+   {
+    "name": "Kasugai Shrimp Pea Snack",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Kirkland Seaweed",
+    "description": "",
+    "price": "$2.58",
+    "section": "Snacks"
+   },
+   {
+    "name": "Knott Rasberry Cookies",
+    "description": "",
+    "price": "$1.62",
+    "section": "Snacks"
+   },
+   {
+    "name": "Rich Milk Candy Strawberry",
+    "description": "",
+    "price": "$2.60",
+    "section": "Snacks"
+   },
+   {
+    "name": "Roasted Green Peas",
+    "description": "",
+    "price": "$3.88",
+    "section": "Snacks"
+   },
+   {
+    "name": "Alfort Mini Choco",
+    "description": "",
+    "price": "$3.05",
+    "section": "Sweets"
+   },
+   {
+    "name": "Bing Cone Choco",
+    "description": "",
+    "price": "$6.22",
+    "section": "Sweets"
+   },
+   {
+    "name": "Bing Cone Strawberry",
+    "description": "",
+    "price": "$6.22",
+    "section": "Sweets"
+   },
+   {
+    "name": "Bourbon Choco & Coffee",
+    "description": "",
+    "price": "$4.55",
+    "section": "Sweets"
+   },
+   {
+    "name": "Meiji Chocorooms",
+    "description": "5 oz. (142g)",
+    "price": "$5.57",
+    "section": "Sweets"
+   },
+   {
+    "name": "Chocoroom (Small)",
+    "description": "",
+    "price": "$1.62",
+    "section": "Sweets"
+   },
+   {
+    "name": "Cororo Cola",
+    "description": "",
+    "price": "$2.58",
+    "section": "Sweets"
+   },
+   {
+    "name": "Cororo Grape",
+    "description": "",
+    "price": "$2.58",
+    "section": "Sweets"
+   },
+   {
+    "name": "Cororo Peach Gummies",
+    "description": "",
+    "price": "$2.58",
+    "section": "Sweets"
+   },
+   {
+    "name": "Cororo Shine Muscat",
+    "description": "",
+    "price": "$2.58",
+    "section": "Sweets"
+   },
+   {
+    "name": "Couque Coffee Biscuit",
+    "description": "",
+    "price": "$10.40",
+    "section": "Sweets"
+   },
+   {
+    "name": "Couque Vanilla",
+    "description": "",
+    "price": "$10.40",
+    "section": "Sweets"
+   },
+   {
+    "name": "Famous Chocolate Chip",
+    "description": "",
+    "price": "$1.67",
+    "section": "Sweets"
+   },
+   {
+    "name": "Ginbis Shimi Choco",
+    "description": "",
+    "price": "$4.55",
+    "section": "Sweets"
+   },
+   {
+    "name": "Glico Mini Caplico",
+    "description": "",
+    "price": "$5.96",
+    "section": "Sweets"
+   },
+   {
+    "name": "Hello Panda Caramel",
+    "description": "",
+    "price": "$6.48",
+    "section": "Sweets"
+   },
+   {
+    "name": "Hello Panda Choco",
+    "description": "",
+    "price": "$6.48",
+    "section": "Sweets"
+   },
+   {
+    "name": "Hello Panda Choco (Small)",
+    "description": "",
+    "price": "$2.58",
+    "section": "Sweets"
+   },
+   {
+    "name": "Hello Panda Pretzel",
+    "description": "",
+    "price": "$2.86",
+    "section": "Sweets"
+   },
+   {
+    "name": "Hello Panda Strawberry",
+    "description": "",
+    "price": "$6.48",
+    "section": "Sweets"
+   },
+   {
+    "name": "Hello Panda Vanilla (Small)",
+    "description": "",
+    "price": "$2.58",
+    "section": "Sweets"
+   },
+   {
+    "name": "Hi-chew Sweet&Sour",
+    "description": "",
+    "price": "$9.47",
+    "section": "Sweets"
+   },
+   {
+    "name": "Koalas March Bitter Choco",
+    "description": "",
+    "price": "$8.82",
+    "section": "Sweets"
+   },
+   {
+    "name": "Koalas March Bitter Choco (Small)",
+    "description": "",
+    "price": "$3.10",
+    "section": "Sweets"
+   },
+   {
+    "name": "Koalas March Mango (Small)",
+    "description": "",
+    "price": "$3.36",
+    "section": "Sweets"
+   },
+   {
+    "name": "Koalas March Strawberry (Small)",
+    "description": "",
+    "price": "$3.36",
+    "section": "Sweets"
+   },
+   {
+    "name": "Maruka Gum Mix",
+    "description": "",
+    "price": "$2.34",
+    "section": "Sweets"
+   },
+   {
+    "name": "Fujiya Pekopoko Choco Pop",
+    "description": "",
+    "price": "$2.60",
+    "section": "Sweets"
+   },
+   {
+    "name": "Fujiya Strawberry Choco",
+    "description": "",
+    "price": "$2.92",
+    "section": "Sweets"
+   },
+   {
+    "name": "Hello Kitty Strawberry Marshmallow",
+    "description": "",
+    "price": "$4.29",
+    "section": "Sweets"
+   },
+   {
+    "name": "Couque Coffee Biscuit (2pcs)",
+    "description": "",
+    "price": "$1.30",
+    "section": "Sweets"
+   },
+   {
+    "name": "Couque Vanilla (2pcs)",
+    "description": "",
+    "price": "$1.30",
+    "section": "Sweets"
+   },
+   {
+    "name": "Knott Rasberry Cookies",
+    "description": "",
+    "price": "$1.62",
+    "section": "Sweets"
+   },
+   {
+    "name": "Lil Jasmine Blueberry",
+    "description": "",
+    "price": "$4.16",
+    "section": "Sweets"
+   },
+   {
+    "name": "Lil Jasmine Lime Jelly",
+    "description": "",
+    "price": "$4.16",
+    "section": "Sweets"
+   },
+   {
+    "name": "Lil Jasmine Straw Jelly",
+    "description": "",
+    "price": "$4.16",
+    "section": "Sweets"
+   },
+   {
+    "name": "Lumonde Cocoa",
+    "description": "",
+    "price": "$3.75",
+    "section": "Sweets"
+   },
+   {
+    "name": "Meltyblend Strawberry",
+    "description": "",
+    "price": "$5.96",
+    "section": "Sweets"
+   },
+   {
+    "name": "Nature Valley",
+    "description": "",
+    "price": "$2.27",
+    "section": "Sweets"
+   },
+   {
+    "name": "Nutella B Ready",
+    "description": "",
+    "price": "$1.95",
+    "section": "Sweets"
+   },
+   {
+    "name": "Nutella Breadstick",
+    "description": "",
+    "price": "$3.23",
+    "section": "Sweets"
+   },
+   {
+    "name": "Oreo Peach",
+    "description": "",
+    "price": "$4.79",
+    "section": "Sweets"
+   },
+   {
+    "name": "Oreo Strawberry",
+    "description": "",
+    "price": "$4.79",
+    "section": "Sweets"
+   },
+   {
+    "name": "Peko Milk Candy",
+    "description": "",
+    "price": "$2.86",
+    "section": "Sweets"
+   },
+   {
+    "name": "Pocky Almond Crush",
+    "description": "",
+    "price": "$3.88",
+    "section": "Sweets"
+   },
+   {
+    "name": "Pocky Banana",
+    "description": "",
+    "price": "$3.88",
+    "section": "Sweets"
+   },
+   {
+    "name": "Pocky Cherry Matcha",
+    "description": "",
+    "price": "$6.48",
+    "section": "Sweets"
+   },
+   {
+    "name": "Pocky Cookies&Cream",
+    "description": "",
+    "price": "$3.77",
+    "section": "Sweets"
+   },
+   {
+    "name": "Pocky Matcha",
+    "description": "",
+    "price": "$3.77",
+    "section": "Sweets"
+   },
+   {
+    "name": "Pocky Strawberry",
+    "description": "",
+    "price": "$3.77",
+    "section": "Sweets"
+   },
+   {
+    "name": "Pocky Strawberry Crunchy",
+    "description": "",
+    "price": "$3.77",
+    "section": "Sweets"
+   },
+   {
+    "name": "Sakeru Gum Grape",
+    "description": "",
+    "price": "$2.34",
+    "section": "Sweets"
+   },
+   {
+    "name": "Sakeru Gum Lemon",
+    "description": "",
+    "price": "$2.34",
+    "section": "Sweets"
+   },
+   {
+    "name": "Sakeru Gum Peach",
+    "description": "",
+    "price": "$2.34",
+    "section": "Sweets"
+   },
+   {
+    "name": "Shittori Corn Puff",
+    "description": "",
+    "price": "$3.62",
+    "section": "Sweets"
+   },
+   {
+    "name": "Stringy Gummy Grape",
+    "description": "",
+    "price": "$2.60",
+    "section": "Sweets"
+   },
+   {
+    "name": "Stringy Gummy Orange",
+    "description": "",
+    "price": "$2.60",
+    "section": "Sweets"
+   },
+   {
+    "name": "Stringy Gummy Peach",
+    "description": "",
+    "price": "$2.60",
+    "section": "Sweets"
+   },
+   {
+    "name": "Trail Mix",
+    "description": "",
+    "price": "$2.27",
+    "section": "Sweets"
+   },
+   {
+    "name": "Triple Choc Power",
+    "description": "",
+    "price": "$2.60",
+    "section": "Sweets"
+   },
+   {
+    "name": "Yan Yan Strawberry",
+    "description": "",
+    "price": "$2.58",
+    "section": "Sweets"
+   },
+   {
+    "name": "Yan Yan Vanilla",
+    "description": "",
+    "price": "$2.58",
+    "section": "Sweets"
+   },
+   {
+    "name": "Yanyan Choco",
+    "description": "",
+    "price": "$2.58",
+    "section": "Sweets"
+   },
+   {
+    "name": "Hello Panda Choco (Small)",
+    "description": "",
+    "price": "$2.58",
+    "section": "Single Snack"
+   },
+   {
+    "name": "Hello Panda Vanilla (Small)",
+    "description": "",
+    "price": "$2.58",
+    "section": "Single Snack"
+   },
+   {
+    "name": "Couque Coffee Biscuit (2pcs)",
+    "description": "",
+    "price": "$1.30",
+    "section": "Single Snack"
+   },
+   {
+    "name": "Couque Vanilla (2pcs)",
+    "description": "",
+    "price": "$1.30",
+    "section": "Single Snack"
+   },
+   {
+    "name": "Hello Panda Caramel Bag (Small)",
+    "description": "",
+    "price": "$2.58",
+    "section": "Single Snack"
+   },
+   {
+    "name": "Hello Panda Strawberry Bag (Small)",
+    "description": "",
+    "price": "$2.58",
+    "section": "Single Snack"
+   },
+   {
+    "name": "Imuraya Strawberry Wafer",
+    "description": "",
+    "price": "$3.90",
+    "section": "Ice Cream"
+   },
+   {
+    "name": "Imuraya Vanilla Wafer",
+    "description": "",
+    "price": "$3.90",
+    "section": "Ice Cream"
+   },
+   {
+    "name": "Orange Choco Vanilla Cone",
+    "description": "",
+    "price": "$3.88",
+    "section": "Ice Cream"
+   },
+   {
+    "name": "Orange Strawberry Soft",
+    "description": "",
+    "price": "$3.88",
+    "section": "Ice Cream"
+   },
+   {
+    "name": "Melona Melon",
+    "description": "",
+    "price": "$3.90",
+    "section": "Single Icecream"
+   },
+   {
+    "name": "Melona Choco Banana",
+    "description": "",
+    "price": "$3.90",
+    "section": "Single Icecream"
+   },
+   {
+    "name": "Ice Pop Fruit Flavored",
+    "description": "",
+    "price": "$1.30",
+    "section": "Single Icecream"
+   },
+   {
+    "name": "MAMA Carbonara",
+    "description": "",
+    "price": "$2.99",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "MAMA Chicken Curry",
+    "description": "",
+    "price": "$2.99",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "MAMA Shrimp Creamy Tom Yum",
+    "description": "",
+    "price": "$2.92",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "MAMA Shrimp Tom Yum",
+    "description": "",
+    "price": "$2.92",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nissin Beef",
+    "description": "",
+    "price": "$3.88",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nissin Chicken",
+    "description": "",
+    "price": "$3.88",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nissin Curry",
+    "description": "",
+    "price": "$3.88",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nissin Original",
+    "description": "",
+    "price": "$3.88",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nissin Seafood",
+    "description": "",
+    "price": "$3.88",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nissin Shrimp",
+    "description": "",
+    "price": "$3.88",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nissin Stirfry K-BBQ",
+    "description": "",
+    "price": "$3.88",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nissin Stirfry Sweet Chilli",
+    "description": "",
+    "price": "$3.88",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nissin Stirfry Teriyaki Beef",
+    "description": "",
+    "price": "$3.88",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nongshim Premium Tonkotsu Ramen",
+    "description": "",
+    "price": "$4.22",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nong Shim Shin Noodle",
+    "description": "",
+    "price": "$3.88",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Nong Shim Udon",
+    "description": "",
+    "price": "$5.52",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Samyang Carbonara Buldak Spicy Ramen",
+    "description": "",
+    "price": "$4.22",
+    "section": "Instant Noodles"
+   },
+   {
+    "name": "Fiji Water (Small)",
+    "description": "",
+    "price": "$3.88",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Coconut Water",
+    "description": "",
+    "price": "$5.85",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Essential Water",
+    "description": "",
+    "price": "$5.52",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Gatorade Cool Blue",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Gatorade Fruit Punch",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Gatorade Lemon Lime",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Itoen Green Tea",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Itoen Jasmine Tea",
+    "description": "",
+    "price": "$4.03",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Juroku Caffeine Free",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Kogome Carrot&Orange",
+    "description": "",
+    "price": "$2.99",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Little Jasmine Lychee Oolong Tea",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Little Jamine Mango",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Little Jamine Passion Fruit",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Little Jamine White Peach Black Tea",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Little Jasmine Pineapple",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Melon Ramu Bottle",
+    "description": "",
+    "price": "$5.20",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Original Ramu Botte",
+    "description": "",
+    "price": "$5.20",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Grape Ramu Bottle",
+    "description": "",
+    "price": "$5.20",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Ramuné Lychee",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Ramuné Melon",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Ramuné Peach",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Ramuné Strawberry",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Sparkling Water",
+    "description": "",
+    "price": "$4.22",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Strawberry Ramu Bottle",
+    "description": "",
+    "price": "$5.20",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Tejava Lemon",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Tejava Peach",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Tejava Raspberry",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Aloe Vera Lychee",
+    "description": "1.5L",
+    "price": "$6.43",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Aloe Vera Pineapple",
+    "description": "1.5L",
+    "price": "$6.43",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Star Aloe Drink",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Binggrae Banana",
+    "description": "",
+    "price": "$2.60",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Ume Sparkling",
+    "description": "",
+    "price": "$4.55",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Mogu Mogu Melon",
+    "description": "",
+    "price": "$3.52",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Mogu Mogu Orange",
+    "description": "",
+    "price": "$3.52",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Aloe Vera Orginal",
+    "description": "",
+    "price": "$6.43",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Ramuné Orange",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Binggrae Strawberry Milk",
+    "description": "",
+    "price": "$2.60",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "JB Aloe Vera",
+    "description": "",
+    "price": "$3.90",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "Binggrae Melon Milk",
+    "description": "",
+    "price": "$2.60",
+    "section": "Bottled Drinks"
+   },
+   {
+    "name": "7 Up",
+    "description": "",
+    "price": "$2.60",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Apple Sidra",
+    "description": "",
+    "price": "$3.90",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Binggrae Banana",
+    "description": "",
+    "price": "$2.60",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Boss Black Coffee",
+    "description": "",
+    "price": "$4.03",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Calpico Original Citrusy",
+    "description": "",
+    "price": "$3.12",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Coke",
+    "description": "",
+    "price": "$2.60",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Crush Orange",
+    "description": "",
+    "price": "$2.60",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Melon Cream Soda",
+    "description": "",
+    "price": "$3.88",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Ocean Bomb Honey lemon",
+    "description": "",
+    "price": "$3.88",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Ocean Bomb Lychee",
+    "description": "",
+    "price": "$3.88",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Ocean Bomb Mango",
+    "description": "",
+    "price": "$3.88",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Red Bull",
+    "description": "",
+    "price": "$3.90",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Royal Milk Tea",
+    "description": "",
+    "price": "$3.90",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "UCC Kona Hawaii",
+    "description": "",
+    "price": "$3.23",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Ginger Ale (Canada Dry)",
+    "description": "",
+    "price": "$2.08",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "A&W Root Beer",
+    "description": "",
+    "price": "$2.60",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Mountain Dew",
+    "description": "",
+    "price": "$2.60",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Sangaria Strawberry Milk",
+    "description": "",
+    "price": "$3.90",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Ocean Bomb Tropical Fruit",
+    "description": "",
+    "price": "$3.90",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Ocean Bomb White Grape",
+    "description": "",
+    "price": "$3.90",
+    "section": "Canned Drinks"
+   },
+   {
+    "name": "Calpico Pineapple",
+    "description": "",
+    "price": "$3.18",
+    "section": "Canned Drinks"
+   }
+  ]
+ },
+ {
+  "restaurantId": "1088",
+  "name": "El Uno Bar",
+  "sourceUrl": "https://www.sandiegoreader.com/places/uno-bar/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no website on file, cash-only bar; only a beer-bucket deal price ($14) found via Groupon, not a menu; no itemised food/drink menu located"
+ },
+ {
+  "restaurantId": "6255",
+  "name": "Super Express Chinese Food",
+  "sourceUrl": "https://superexpresschinesefood.netwaiter.com/chula-vista/about/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "NetWaiter online-ordering endpoint (GetMenu) returns a genuinely empty catalog (Groups:[], ExternalType:null); only per-review anecdotal prices found elsewhere (hearsay, not a source)"
+ },
+ {
+  "restaurantId": "6691",
+  "name": "Rancho Roasters",
+  "sourceUrl": "https://www.doordash.com/store/rancho-roasters-san-diego-25870759/",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "the only DoorDash listing found for this name resolves to 1250 Prospect Street (La Jolla), not the target address 16950 Via De Santa Fe (Rancho Santa Fe) - wrong branch, not filed; no correct listing found within time budget"
+ },
+ {
+  "restaurantId": "4331",
+  "name": "TG Cafe",
+  "sourceUrl": "https://www.yelp.com/biz/tg-cafe-chula-vista",
+  "confidence": "low",
+  "dishes": [],
+  "blocked": "no website on file; only directory/aggregator pages found (Yelp, menustic, menupix), none carrying itemised prices; a per-order price range from an aggregator is not an itemised menu"
+ }
+]

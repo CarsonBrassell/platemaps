@@ -1,0 +1,4581 @@
+[
+  {
+    "restaurantId": "6644",
+    "name": "100's seafood grill buffet",
+    "sourceUrl": "https://100sbuffet.com/restaurantmenu/",
+    "confidence": "high",
+    "notes": "All-you-can-eat buffet restaurant. Own site's menu page prices only buffet admission tiers, not per-item dishes: Lunch Buffet Adult $28.99 / Kid $1.50 per year (weekend) or Adult $16.99 / Kid $1 per year (weekday), Dinner Buffet $43.99/person, Lobster Buffet (Thursdays) $56.99/person, Buffet Togo $10.99/lb. No individual dish is priced anywhere on the site (sections listed are just category descriptions: Teppanyaki, Seafood, Sushi, Salad, Grill, Hot dish, Dessert). This matches the playbook's explicit not_found example of a buffet with one all-in price -- there are several admission tiers but no per-dish prices to record.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6232",
+    "name": "Union Kitchen and Tap Gaslamp",
+    "blocked": "needs-browser: gaslampunion.com serves an SG-Captcha bot-detection challenge (HTTP 202, header \"SG-Captcha: challenge\", meta-refresh to /.well-known/sgcaptcha/) on both the homepage and /menu to plain curl with a desktop Chrome UA; r.jina.ai proxy also 403s. No known ordering platform found before the wall. Needs a browser to clear the challenge.",
+    "notes": "Homepage and /menu both gated identically; did not reach any menu content.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6588",
+    "name": "The Henry",
+    "sourceUrl": "https://www.thehenryrestaurant.com/menus/?location=the-henry-coronado",
+    "confidence": "high",
+    "notes": "Restaurant's own site (FOX Restaurant Concepts brand), server-rendered JSON blob (<script class=\"all-locations-menus-menu-data\">) keyed by location id, this branch is id \"609\" whose location_page_url confirms /locations/the-henry-coronado/. Captured all 8 dayparts served for this location: Breakfast, Weekend Brunch, Lunch, Dinner, Sushi Menu, Dessert, Kids, Beverage. Prices are plain dollar numbers (e.g. \"15\", \"4.5\"), cents cluster on .00/.50/.75/.95 with no markup pattern. 73 items across the payload carry a null/empty price (all 14 Kids items, some Cocktails, some wine-by-the-glass rows, Zero Proof, XV Coffee, Smoothies, Fresh Baked Pastries) and were dropped per the no-price rule rather than guessed; sections are prefixed with the daypart name (e.g. Sushi Menu items were also duplicated near-identically across some menus and were not double counted).",
+    "dishes": [
+      {
+        "name": "Avocado Toast",
+        "description": "grilled country bread, olive oil, aged cheddar, sea salt",
+        "price": "$15",
+        "section": "Breakfast - Breakfast"
+      },
+      {
+        "name": "Henry's Irish Oats",
+        "description": "brown sugar, raisin preserve",
+        "price": "$14",
+        "section": "Breakfast - Breakfast"
+      },
+      {
+        "name": "Flower Child Scramble",
+        "description": "eggs, roasted mushroom & asparagus, romanesco, kale, parmesan",
+        "price": "$19",
+        "section": "Breakfast - Breakfast"
+      },
+      {
+        "name": "2 Egg Breakfast*",
+        "description": "bacon, crispy potato & toast",
+        "price": "$17",
+        "section": "Breakfast - Breakfast"
+      },
+      {
+        "name": "Greek Yogurt Parfait",
+        "description": "ancient grain granola, banana, strawberry, blueberry, honey, toasted coconut",
+        "price": "$14",
+        "section": "Breakfast - Breakfast"
+      },
+      {
+        "name": "Original Egg Sandwich*",
+        "description": "bacon, avocado, american cheese, mayonnaise",
+        "price": "$18",
+        "section": "Breakfast - Breakfast"
+      },
+      {
+        "name": "Egg White Turkey Omelette",
+        "description": "roasted turkey, smashed avocado, pico de gallo, swiss cheese, parmesan",
+        "price": "$19",
+        "section": "Breakfast - Breakfast"
+      },
+      {
+        "name": "Smoked Salmon Bagel*",
+        "description": "everything bagel, whipped cream cheese, vine ripe tomato, caper, red onion",
+        "price": "$22",
+        "section": "Breakfast - Breakfast"
+      },
+      {
+        "name": "California Burrito or Bowl",
+        "description": "eggs, bacon, pepper jack, american cheese, havarti cheese, potato, avocado, salsa",
+        "price": "$21",
+        "section": "Breakfast - Breakfast"
+      },
+      {
+        "name": "Quinoa Burrito or Bowl",
+        "description": "eggs, black bean, pasilla chili, blistered pepper, avocado, cotija",
+        "price": "$18",
+        "section": "Breakfast - Breakfast"
+      },
+      {
+        "name": "Breakfast Potatoes",
+        "description": "",
+        "price": "$6",
+        "section": "Breakfast - Sides"
+      },
+      {
+        "name": "Fresh Fruit",
+        "description": "",
+        "price": "$5",
+        "section": "Breakfast - Sides"
+      },
+      {
+        "name": "Crisp Bacon",
+        "description": "",
+        "price": "$7",
+        "section": "Breakfast - Sides"
+      },
+      {
+        "name": "Toasted Bagel & Cream Cheese",
+        "description": "plain or everything",
+        "price": "$7",
+        "section": "Breakfast - Sides"
+      },
+      {
+        "name": "The Rocket",
+        "description": "espresso, toasted cinnamon, whole milk",
+        "price": "$6.50",
+        "section": "Breakfast - XV Coffee"
+      },
+      {
+        "name": "Go North",
+        "description": "Espresso, cocoa, cream. Served neat & cold",
+        "price": "$6.50",
+        "section": "Breakfast - XV Coffee"
+      },
+      {
+        "name": "The Cleo",
+        "description": "espresso, almond milk, hazelnut",
+        "price": "$6.50",
+        "section": "Breakfast - XV Coffee"
+      },
+      {
+        "name": "The Butcher",
+        "description": "espresso, colombian drip, splash of sweet cream",
+        "price": "$6.50",
+        "section": "Breakfast - XV Coffee"
+      },
+      {
+        "name": "Wildflower",
+        "description": "espresso, vanilla, splash of chai, steamed milk",
+        "price": "$6.50",
+        "section": "Breakfast - XV Coffee"
+      },
+      {
+        "name": "The Dropout",
+        "description": "espresso, colombian drip, chocolate, caramel, au lait",
+        "price": "$6.50",
+        "section": "Breakfast - XV Coffee"
+      },
+      {
+        "name": "Pushing Daisies",
+        "description": "organic matcha, orange blossom, vanilla, soy milk",
+        "price": "$6.50",
+        "section": "Breakfast - XV Coffee"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$4.75",
+        "section": "Breakfast - Espresso"
+      },
+      {
+        "name": "Latte",
+        "description": "",
+        "price": "$5.75",
+        "section": "Breakfast - Espresso"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$5.75",
+        "section": "Breakfast - Espresso"
+      },
+      {
+        "name": "Mocha",
+        "description": "",
+        "price": "$5.75",
+        "section": "Breakfast - Espresso"
+      },
+      {
+        "name": "Flat White",
+        "description": "",
+        "price": "$4.75",
+        "section": "Breakfast - Espresso"
+      },
+      {
+        "name": "Macchiato",
+        "description": "",
+        "price": "$4.50",
+        "section": "Breakfast - Espresso"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$4.50",
+        "section": "Breakfast - Espresso"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$4.75",
+        "section": "Breakfast - Espresso"
+      },
+      {
+        "name": "Gibraltar",
+        "description": "",
+        "price": "$4.75",
+        "section": "Breakfast - Espresso"
+      },
+      {
+        "name": "Matcha",
+        "description": "",
+        "price": "$5.75",
+        "section": "Breakfast - Bold Blends"
+      },
+      {
+        "name": "Chai",
+        "description": "",
+        "price": "$5.75",
+        "section": "Breakfast - Bold Blends"
+      },
+      {
+        "name": "Cold Brew Coffee",
+        "description": "on tap",
+        "price": "$5.50",
+        "section": "Breakfast - Bold Blends"
+      },
+      {
+        "name": "Fresh Squeezed Orange Juice",
+        "description": "",
+        "price": "$6",
+        "section": "Breakfast - Featured Drinks"
+      },
+      {
+        "name": "Acqua Panna",
+        "description": "",
+        "price": "$9",
+        "section": "Breakfast - Featured Drinks"
+      },
+      {
+        "name": "San Pelligrino",
+        "description": "",
+        "price": "$9",
+        "section": "Breakfast - Featured Drinks"
+      },
+      {
+        "name": "Mimosas",
+        "description": "choose 1: classic, peach, guava + pineapple",
+        "price": "$14",
+        "section": "Breakfast - Cocktails"
+      },
+      {
+        "name": "Spritzes",
+        "description": "choose 1: original aperol, grapefruit, pomegranate hibiscus",
+        "price": "$15",
+        "section": "Breakfast - Cocktails"
+      },
+      {
+        "name": "Bloody Marys",
+        "description": "choose 1: spicy poblano, garden vegetable, bacon + blue cheese",
+        "price": "$16",
+        "section": "Breakfast - Cocktails"
+      },
+      {
+        "name": "Hank's Espresso Martini",
+        "description": "vodka, borghetti espresso liqueur, licor 43, spiced cold foam",
+        "price": "$17",
+        "section": "Breakfast - Cocktails"
+      },
+      {
+        "name": "Mimosas",
+        "description": "choose 1: classic, peach, guava + pineapple",
+        "price": "$14",
+        "section": "Weekend Brunch - Brunch Cocktails"
+      },
+      {
+        "name": "Spritzes",
+        "description": "choose 1: original aperol, grapefruit, pomegranate hibiscus",
+        "price": "$15",
+        "section": "Weekend Brunch - Brunch Cocktails"
+      },
+      {
+        "name": "Bloody Marys",
+        "description": "choose 1: spicy poblano, garden vegetable, bacon + blue cheese",
+        "price": "$16",
+        "section": "Weekend Brunch - Brunch Cocktails"
+      },
+      {
+        "name": "Hank's Espresso Martini",
+        "description": "vodka, borghetti espresso liqueur, licor 43, spiced cold foam",
+        "price": "$17",
+        "section": "Weekend Brunch - Brunch Cocktails"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "grilled country bread, olive oil, aged cheddar, sea salt",
+        "price": "$15",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Henry's Irish Oats",
+        "description": "brown sugar, raisin preserve",
+        "price": "$14",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Flower Child Scramble",
+        "description": "eggs, roasted mushroom & asparagus, romanesco, kale, parmesan",
+        "price": "$19",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "2 Egg Breakfast*",
+        "description": "bacon, crispy potato & toast",
+        "price": "$17",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Eggs Benedict*",
+        "description": "glazed canadian bacon, house made english muffin, poached egg, hollandaise, mixed greens, crispy potato",
+        "price": "$23",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Greek Yogurt Parfait",
+        "description": "ancient grain granola, banana, strawberry, blueberry, honey, toasted coconut",
+        "price": "$14",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Huevos Rancheros Enchiladas*",
+        "description": "soft scrambled egg, ranchero sauce, queso oaxaca, guacamole, pico de gallo, sour cream, poblano crema, toasted pepita",
+        "price": "$19",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Original Egg Sandwich*",
+        "description": "bacon, avocado, american cheese, mayonnaise",
+        "price": "$18",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Egg White Turkey Omelette",
+        "description": "roasted turkey, smashed avocado, pico de gallo, swiss cheese, parmesan",
+        "price": "$19",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Smoked Salmon Bagel*",
+        "description": "everything bagel, whipped cream cheese, vine ripe tomato, caper, red onion",
+        "price": "$22",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Cinnamon Sugar French Toast",
+        "description": "toasted brioche, cinnamon caramel, cream cheese frosting",
+        "price": "$19",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Ham & Cheese Quiche",
+        "description": "rosemary ham, aged cheddar, havarti, gouda",
+        "price": "$22",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "California Burrito or Bowl",
+        "description": "eggs, bacon, pepper jack, american cheese, havarti cheese, potato, avocado, salsa",
+        "price": "$21",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Quinoa Burrito or Bowl",
+        "description": "eggs, black bean, pasilla chili, blistered pepper, avocado, cotija",
+        "price": "$18",
+        "section": "Weekend Brunch - Breakfast"
+      },
+      {
+        "name": "Breakfast Potatoes",
+        "description": "",
+        "price": "$6",
+        "section": "Weekend Brunch - Sides"
+      },
+      {
+        "name": "Fresh Fruit",
+        "description": "",
+        "price": "$5",
+        "section": "Weekend Brunch - Sides"
+      },
+      {
+        "name": "Crisp Bacon",
+        "description": "",
+        "price": "$7",
+        "section": "Weekend Brunch - Sides"
+      },
+      {
+        "name": "Toasted Bagel & Cream Cheese",
+        "description": "plain or everything",
+        "price": "$7",
+        "section": "Weekend Brunch - Sides"
+      },
+      {
+        "name": "Chicken Tortilla Soup",
+        "description": "pico de gallo, avocado, crema, queso blanco",
+        "price": "$16",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Spicy Tuna & Crispy Rice*",
+        "description": "fresno chile, avocado, cilantro, scallion, sweet soy",
+        "price": "$20",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Artichoke & Ricotta Dip",
+        "description": "asparagus, snap pea, truffle vinaigrette, everything spice lavash",
+        "price": "$17",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Grilled & Chilled Shrimp",
+        "description": "horseradish cocktail, henry sauce, charred lemon",
+        "price": "$25",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Pretzels & Provolone Fondue",
+        "description": "our famous recipe",
+        "price": "$18",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Umami Brussels Sprouts",
+        "description": "parmesan, sweet soy",
+        "price": "$15",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Pressed Yellowtail Sushi*",
+        "description": "avocado, spicy yuzu marmalade, truffle chili crunch, thai basil",
+        "price": "$22",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Parmesan Truffle Fries",
+        "description": "truffle aioli",
+        "price": "$16",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Short Rib Potstickers",
+        "description": "toasted sesame, cilantro, ponzu",
+        "price": "$20",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Jumbo Lump Crab Cake",
+        "description": "sweet corn salad, oven roasted tomato, remoulade, lemon",
+        "price": "$32",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Guacamole",
+        "description": "roasted poblano, toasted pumpkin seed, cotija",
+        "price": "$16",
+        "section": "Weekend Brunch - Appetizers"
+      },
+      {
+        "name": "Classic Caesar",
+        "description": "parmesan crouton, black pepper",
+        "price": "$16",
+        "section": "Weekend Brunch - Salads"
+      },
+      {
+        "name": "Roasted Chicken & Avocado",
+        "description": "romaine, baby greens, glazed bacon, maytag bleu, campari tomato, toasted pine nuts, ranch",
+        "price": "$22",
+        "section": "Weekend Brunch - Salads"
+      },
+      {
+        "name": "Seared Tuna Chop*",
+        "description": "avocado, snap pea, carrot, wonton, cashew, sesame ginger vinaigrette",
+        "price": "$26",
+        "section": "Weekend Brunch - Salads"
+      },
+      {
+        "name": "Sprouts & Squash",
+        "description": "roasted brussels, maple glazed butternut, kale, farro, cauliflower, quinoa, golden raisin, fig, pumpkin seed, candied pecan, pecorino, mustard vinaigrette",
+        "price": "$20",
+        "section": "Weekend Brunch - Salads"
+      },
+      {
+        "name": "Scottish Salmon*",
+        "description": "farro risotto, roasted beets, pomegranate molasses, marcona almond pesto",
+        "price": "$37",
+        "section": "Weekend Brunch - Entrées"
+      },
+      {
+        "name": "Bolognese",
+        "description": "traditional meat sauce, truffle mushroom butter, herbed ricotta, garlic toast",
+        "price": "$29",
+        "section": "Weekend Brunch - Entrées"
+      },
+      {
+        "name": "Wagyu Cheeseburger*",
+        "description": "lettuce, tomato, pickle, charred onion, white cheddar, american cheese, henry sauce, french fries",
+        "price": "$24",
+        "section": "Weekend Brunch - Entrées"
+      },
+      {
+        "name": "Seabass*",
+        "description": "corn custard, arugula, roasted tomato, asparagus, snap pea, lemon chili vinaigrette",
+        "price": "$40",
+        "section": "Weekend Brunch - Entrées"
+      },
+      {
+        "name": "Roasted Turkey French Dip",
+        "description": "horseradish aioli, havarti, garlic parmesan roll, natural jus, french fries",
+        "price": "$19",
+        "section": "Weekend Brunch - Entrées"
+      },
+      {
+        "name": "Beverly Hills Club",
+        "description": "roasted turkey, bibb lettuce, tomato, bacon, swiss cheese, mayonnaise, french fries",
+        "price": "$23",
+        "section": "Weekend Brunch - Entrées"
+      },
+      {
+        "name": "Korean Prime Skirt Steak*",
+        "description": "double egg fried rice, snap pea, bok choy, pickled shiitake, mint, cilantro, ginger",
+        "price": "$43",
+        "section": "Weekend Brunch - Entrées"
+      },
+      {
+        "name": "Harvest Bowl",
+        "description": "melted sweet potato, ancient grains, grilled portobello mushroom, caramelized cauliflower, snap pea, grilled artichoke & asparagus, avocado, marcona almond pesto, cashew harissa",
+        "price": "$26",
+        "section": "Weekend Brunch - Entrées"
+      },
+      {
+        "name": "Grapefruit",
+        "description": "aperol, grapefruit, yuzu, sparkling wine",
+        "price": "$15",
+        "section": "Lunch - Spritzes"
+      },
+      {
+        "name": "Pomegranate Hibiscus",
+        "description": "cactus blossom, aperol, pomegranate, lemon, sparkling wine",
+        "price": "$15",
+        "section": "Lunch - Spritzes"
+      },
+      {
+        "name": "Original Aperol",
+        "description": "aperol, citrus smash, sparkling wine",
+        "price": "$15",
+        "section": "Lunch - Spritzes"
+      },
+      {
+        "name": "Chicken Tortilla Soup",
+        "description": "pico de gallo, avocado, crema, queso blanco",
+        "price": "$16",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Spicy Tuna & Crispy Rice*",
+        "description": "fresno chile, avocado, cilantro, scallion, sweet soy",
+        "price": "$20",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Artichoke & Ricotta Dip",
+        "description": "asparagus, snap pea, truffle vinaigrette, everything spice lavash",
+        "price": "$17",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Grilled & Chilled Shrimp",
+        "description": "horseradish cocktail, henry sauce, charred lemon",
+        "price": "$25",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Pretzels & Provolone Fondue",
+        "description": "our famous recipe",
+        "price": "$18",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Umami Brussels Sprouts",
+        "description": "parmesan, sweet soy",
+        "price": "$15",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Pressed Yellowtail Sushi*",
+        "description": "avocado, spicy yuzu marmalade, truffle chili crunch, thai basil",
+        "price": "$22",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Parmesan Truffle Fries",
+        "description": "truffle aioli",
+        "price": "$16",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Short Rib Potstickers",
+        "description": "toasted sesame, cilantro, ponzu",
+        "price": "$20",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Jumbo Lump Crab Cake",
+        "description": "sweet corn salad, oven roasted tomato, remoulade, lemon",
+        "price": "$32",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Guacamole",
+        "description": "roasted poblano, toasted pumpkin seed, cotija",
+        "price": "$16",
+        "section": "Lunch - Appetizers"
+      },
+      {
+        "name": "Henry House Salad",
+        "description": "tomato, cage-free egg, cucumber, bacon, heirloom carrot, herb crouton, parmesan",
+        "price": "$14",
+        "section": "Lunch - Salads"
+      },
+      {
+        "name": "Classic Caesar",
+        "description": "parmesan crouton, black pepper",
+        "price": "$16",
+        "section": "Lunch - Salads"
+      },
+      {
+        "name": "Roasted Chicken & Avocado",
+        "description": "romaine, baby greens, glazed bacon, maytag bleu, campari tomato, toasted pine nuts, ranch",
+        "price": "$22",
+        "section": "Lunch - Salads"
+      },
+      {
+        "name": "Seared Tuna Chop*",
+        "description": "avocado, snap pea, carrot, wonton, cashew, sesame ginger vinaigrette",
+        "price": "$26",
+        "section": "Lunch - Salads"
+      },
+      {
+        "name": "Sprouts & Squash",
+        "description": "roasted brussels, maple glazed butternut, kale, farro, cauliflower, quinoa, golden raisin, fig, pumpkin seed, candied pecan, pecorino, mustard vinaigrette",
+        "price": "$20",
+        "section": "Lunch - Salads"
+      },
+      {
+        "name": "Hot Honey Crispy Chicken",
+        "description": "sriracha aioli, bread and butter pickle slaw",
+        "price": "$22",
+        "section": "Lunch - Sandwiches"
+      },
+      {
+        "name": "Beverly Hills Club",
+        "description": "roasted turkey, bibb lettuce, tomato, bacon, swiss cheese, mayonnaise",
+        "price": "$23",
+        "section": "Lunch - Sandwiches"
+      },
+      {
+        "name": "Roasted Turkey French Dip",
+        "description": "horseradish aioli, havarti, garlic parmesan roll, natural jus",
+        "price": "$19",
+        "section": "Lunch - Sandwiches"
+      },
+      {
+        "name": "Wagyu Cheeseburger*",
+        "description": "lettuce, tomato, pickle, charred onion, white cheddar, american cheese, henry sauce",
+        "price": "$24",
+        "section": "Lunch - Sandwiches"
+      },
+      {
+        "name": "Roasted Chicken Frites",
+        "description": "lemon garlic pan sauce, french fries, truffle aioli",
+        "price": "$29",
+        "section": "Lunch - Entrées"
+      },
+      {
+        "name": "Scottish Salmon*",
+        "description": "farro risotto, roasted beets, pomegranate molasses, marcona almond pesto",
+        "price": "$37",
+        "section": "Lunch - Entrées"
+      },
+      {
+        "name": "Bolognese",
+        "description": "traditional meat sauce, truffle mushroom butter, herbed ricotta, garlic toast",
+        "price": "$29",
+        "section": "Lunch - Entrées"
+      },
+      {
+        "name": "Korean Prime Skirt Steak*",
+        "description": "double egg fried rice, snap pea, bok choy, pickled shiitake, mint, cilantro, ginger",
+        "price": "$43",
+        "section": "Lunch - Entrées"
+      },
+      {
+        "name": "Blackened Seabass Tacos",
+        "description": "blue corn tortilla, grilled pineapple salsa, red cabbage slaw, poblano crema",
+        "price": "$28",
+        "section": "Lunch - Entrées"
+      },
+      {
+        "name": "Rigatoni alla Vodka",
+        "description": "burrata, calabrian chile, mint, lemon, bread crumb",
+        "price": "$27",
+        "section": "Lunch - Entrées"
+      },
+      {
+        "name": "Harvest Bowl",
+        "description": "melted sweet potato, ancient grains, grilled portobello mushroom, caramelized cauliflower, snap pea, grilled artichoke & asparagus, avocado, marcona almond pesto, cashew harissa",
+        "price": "$26",
+        "section": "Lunch - Entrées"
+      },
+      {
+        "name": "Mac & Cheese",
+        "description": "",
+        "price": "$11",
+        "section": "Lunch - Sides"
+      },
+      {
+        "name": "Spicy Double Egg Fried Rice",
+        "description": "",
+        "price": "$10",
+        "section": "Lunch - Sides"
+      },
+      {
+        "name": "Spanish Quinoa",
+        "description": "",
+        "price": "$9",
+        "section": "Lunch - Sides"
+      },
+      {
+        "name": "Grilled Asparagus & Snap Pea",
+        "description": "",
+        "price": "$10",
+        "section": "Lunch - Sides"
+      },
+      {
+        "name": "Chicken Tortilla Soup",
+        "description": "pico de gallo, avocado, crema, queso blanco",
+        "price": "$16",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Spicy Tuna & Crispy Rice*",
+        "description": "fresno chile, avocado, cilantro, scallion, sweet soy",
+        "price": "$20",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Artichoke & Ricotta Dip",
+        "description": "asparagus, snap pea, truffle vinaigrette, everything spice lavash",
+        "price": "$17",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Grilled & Chilled Shrimp",
+        "description": "horseradish cocktail, henry sauce, charred lemon",
+        "price": "$25",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Pretzels & Provolone Fondue",
+        "description": "our famous recipe",
+        "price": "$18",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Umami Brussels Sprouts",
+        "description": "parmesan, sweet soy",
+        "price": "$15",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Pressed Yellowtail Sushi*",
+        "description": "avocado, spicy yuzu marmalade, truffle chili crunch, thai basil",
+        "price": "$22",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Parmesan Truffle Fries",
+        "description": "truffle aioli",
+        "price": "$16",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Short Rib Potstickers",
+        "description": "toasted sesame, cilantro, ponzu",
+        "price": "$20",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Jumbo Lump Crab Cake",
+        "description": "sweet corn salad, oven roasted tomato, remoulade, lemon",
+        "price": "$32",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Guacamole",
+        "description": "roasted poblano, toasted pumpkin seed, cotija",
+        "price": "$16",
+        "section": "Dinner - Appetizers"
+      },
+      {
+        "name": "Henry House Salad",
+        "description": "tomato, cage-free egg, cucumber, bacon, heirloom carrot, herb crouton, parmesan",
+        "price": "$14",
+        "section": "Dinner - Salads"
+      },
+      {
+        "name": "Classic Caesar",
+        "description": "parmesan crouton, black pepper",
+        "price": "$16",
+        "section": "Dinner - Salads"
+      },
+      {
+        "name": "Seared Tuna Chop*",
+        "description": "avocado, snap pea, carrot, wonton, cashew, sesame ginger vinaigrette",
+        "price": "$26",
+        "section": "Dinner - Salads"
+      },
+      {
+        "name": "Sprouts & Squash",
+        "description": "roasted brussels, maple glazed butternut, kale, farro, cauliflower, quinoa, golden raisin, fig, pumpkin seed, candied pecan, pecorino, mustard vinaigrette",
+        "price": "$20",
+        "section": "Dinner - Salads"
+      },
+      {
+        "name": "Scottish Salmon*",
+        "description": "farro risotto, roasted beets, pomegranate molasses, marcona almond pesto",
+        "price": "$37",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Filet Mignon*",
+        "description": "loaded twice baked potato, asparagus, steak diane sauce",
+        "price": "$61",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Bolognese",
+        "description": "traditional meat sauce, truffle mushroom butter, herbed ricotta, garlic toast",
+        "price": "$29",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Seabass*",
+        "description": "corn custard, arugula, roasted tomato, asparagus, snap pea, lemon chili vinaigrette",
+        "price": "$40",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Wagyu Cheeseburger*",
+        "description": "lettuce, tomato, pickle, charred onion, white cheddar, american cheese, henry sauce, french fries",
+        "price": "$24",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Roasted Chicken Frites",
+        "description": "lemon garlic pan sauce, french fries, truffle aioli",
+        "price": "$29",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Braised Short Rib",
+        "description": "bourbon caramel, roasted mushroom, fourme d'ambert, smashed potatoes",
+        "price": "$39",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Rigatoni alla Vodka",
+        "description": "burrata, calabrian chile, mint, lemon, bread crumb",
+        "price": "$27",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Korean Prime Skirt Steak*",
+        "description": "double egg fried rice, snap pea, bok choy, pickled shiitake, mint, cilantro, ginger",
+        "price": "$43",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Harvest Bowl",
+        "description": "melted sweet potato, ancient grains, grilled portobello mushroom, caramelized cauliflower, snap pea, grilled artichoke & asparagus, avocado, marcona almond pesto, cashew harissa",
+        "price": "$26",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Mac & Cheese",
+        "description": "",
+        "price": "$11",
+        "section": "Dinner - Sides"
+      },
+      {
+        "name": "Loaded Twice Baked Potato",
+        "description": "",
+        "price": "$12",
+        "section": "Dinner - Sides"
+      },
+      {
+        "name": "Spicy Double Egg Fried Rice",
+        "description": "",
+        "price": "$10",
+        "section": "Dinner - Sides"
+      },
+      {
+        "name": "Smashed Potatoes",
+        "description": "",
+        "price": "$9",
+        "section": "Dinner - Sides"
+      },
+      {
+        "name": "Grilled Asparagus & Snap Pea",
+        "description": "",
+        "price": "$10",
+        "section": "Dinner - Sides"
+      },
+      {
+        "name": "Spicy Tuna & Crispy Rice*",
+        "description": "fresno chile, avocado, cilantro, scallion, sweet soy",
+        "price": "$20",
+        "section": "Sushi Menu - Sushi"
+      },
+      {
+        "name": "California Roll",
+        "description": "lump crab, avocado, cucumber, toasted sesame",
+        "price": "$20",
+        "section": "Sushi Menu - Sushi"
+      },
+      {
+        "name": "Pressed Yellowtail*",
+        "description": "avocado, spicy yuzu marmalade, truffle chili crunch, thai basil",
+        "price": "$22",
+        "section": "Sushi Menu - Sushi"
+      },
+      {
+        "name": "Rainbow Roll*",
+        "description": "lump crab, ahi tuna, yellowtail, salmon, avocado, lemon oil",
+        "price": "$25",
+        "section": "Sushi Menu - Sushi"
+      },
+      {
+        "name": "Ahi Tuna Crudo*",
+        "description": "black truffle ponzu, toasted sesame, miso aioli, thai basil",
+        "price": "$22",
+        "section": "Sushi Menu - Sushi"
+      },
+      {
+        "name": "Spicy Avocado Roll",
+        "description": "thai basil, cashew, avocado, cucumber, togarashi",
+        "price": "$16",
+        "section": "Sushi Menu - Sushi"
+      },
+      {
+        "name": "Warm Croissant Bread Pudding",
+        "description": "toasted pecan, apple raisin compote, caramel ice cream",
+        "price": "$14",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "Lemon Olive Oil Cake",
+        "description": "strawberry coulis, lemon curd, whipped mascarpone, basil, strawberry gelato",
+        "price": "$14",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "Chocolate Fudge Pie",
+        "description": "peanut butter crunch, milk chocolate mousse, candied peanut caramel, chantilly cream",
+        "price": "$14",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "Molten Butter Cake",
+        "description": "warm caramel, pretzel toffee, vanilla gelato",
+        "price": "$15",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "Ice Cream",
+        "description": "vanilla bean or salted caramel",
+        "price": "$5",
+        "section": "Dessert - Dessert"
+      },
+      {
+        "name": "The Rocket",
+        "description": "espresso, toasted cinnamon, whole milk",
+        "price": "$6.50",
+        "section": "Dessert - XV Coffee"
+      },
+      {
+        "name": "Go North",
+        "description": "espresso, cocoa, cream - served neat & cold",
+        "price": "$6.50",
+        "section": "Dessert - XV Coffee"
+      },
+      {
+        "name": "The Cleo",
+        "description": "espresso, almond milk, hazelnut",
+        "price": "$6.50",
+        "section": "Dessert - XV Coffee"
+      },
+      {
+        "name": "The Butcher",
+        "description": "espresso, colombian drip, splash of sweet cream",
+        "price": "$6.50",
+        "section": "Dessert - XV Coffee"
+      },
+      {
+        "name": "Wildflower",
+        "description": "espresso, vanilla, splash of chai, steamed milk",
+        "price": "$6.50",
+        "section": "Dessert - XV Coffee"
+      },
+      {
+        "name": "The Dropout",
+        "description": "espresso, colombian drip, chocolate, caramel, au lait",
+        "price": "$6.50",
+        "section": "Dessert - XV Coffee"
+      },
+      {
+        "name": "Pushing Daisies",
+        "description": "organic matcha, orange blossom, vanilla, soy milk",
+        "price": "$6.50",
+        "section": "Dessert - XV Coffee"
+      },
+      {
+        "name": "Latte",
+        "description": "",
+        "price": "$5.75",
+        "section": "Dessert - XV Coffee"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$5.75",
+        "section": "Dessert - XV Coffee"
+      },
+      {
+        "name": "Mocha",
+        "description": "",
+        "price": "$5.75",
+        "section": "Dessert - XV Coffee"
+      },
+      {
+        "name": "Hank's Espresso Martini",
+        "description": "vodka, borghetti espresso liqueur, licor 43, spiced cold foam",
+        "price": "$17",
+        "section": "Dessert - Cocktails"
+      },
+      {
+        "name": "El Carajillo",
+        "description": "don q gran reserva añejo rum, licor 43, bruléed banana, slow steeped espresso",
+        "price": "$16",
+        "section": "Dessert - Cocktails"
+      },
+      {
+        "name": "The Old Fashioned",
+        "description": "buffalo trace bourbon, burnt demerara, angostura, orange oil",
+        "price": "$17",
+        "section": "Dessert - Cocktails"
+      },
+      {
+        "name": "Seasonal Sangria",
+        "description": "watermelon rum, guava, passion fruit, brandy, white wine",
+        "price": "$16",
+        "section": "Beverage - Cocktails"
+      },
+      {
+        "name": "Famous \"Pineaperol\" Spritz",
+        "description": "classic or island style (passion fruit + orange + guava)",
+        "price": "$16",
+        "section": "Beverage - Frozen"
+      },
+      {
+        "name": "Lavish Piña Colada",
+        "description": "don q cristal, spiced rum, pineapple, lime, crème de coconut",
+        "price": "$16",
+        "section": "Beverage - Frozen"
+      },
+      {
+        "name": "Vice City",
+        "description": "strawberry daiquiri x lavish piña colada",
+        "price": "$18",
+        "section": "Beverage - Frozen"
+      },
+      {
+        "name": "L'aubry Fils 1er Cru Brut NV, Montagne de Reims",
+        "description": "",
+        "price": "$105",
+        "section": "Beverage - Bubbles"
+      },
+      {
+        "name": "Pierre Gimonnet & Fils, 1er Cru Blanc de Blancs, Extra Brut NV",
+        "description": "",
+        "price": "$136",
+        "section": "Beverage - Bubbles"
+      },
+      {
+        "name": "Krug \"Grand Cuvee 172nd Edition\" Brut, NV, Reims",
+        "description": "",
+        "price": "$475",
+        "section": "Beverage - Bubbles"
+      },
+      {
+        "name": "Dom Perignon Brut '13, Épernay",
+        "description": "",
+        "price": "$450",
+        "section": "Beverage - Bubbles"
+      },
+      {
+        "name": "Patz & Hall, Sonoma Coast, CA",
+        "description": "",
+        "price": "$107",
+        "section": "Beverage - Chardonnay"
+      },
+      {
+        "name": "Domaine Laroche \"St. Martin\" Chablis AOC, Burgundy, France",
+        "description": "",
+        "price": "$79",
+        "section": "Beverage - Chardonnay"
+      },
+      {
+        "name": "Etude \"Grace Benoist Ranch\" Estate, Carneros, CA",
+        "description": "",
+        "price": "$85",
+        "section": "Beverage - Pinot Noir"
+      },
+      {
+        "name": "Paul Hobbs \"Crossbarn\" Sonoma Coast, CA",
+        "description": "",
+        "price": "$105",
+        "section": "Beverage - Pinot Noir"
+      },
+      {
+        "name": "Beaux Freres, Willamette, OR",
+        "description": "",
+        "price": "$155",
+        "section": "Beverage - Pinot Noir"
+      },
+      {
+        "name": "Nickel & Nickel, Napa Valley, CA",
+        "description": "",
+        "price": "$275",
+        "section": "Beverage - Cabernet Sauvignon"
+      },
+      {
+        "name": "Pilcrow \"Hillwalker\" Mt Veeder, CA",
+        "description": "",
+        "price": "$209",
+        "section": "Beverage - Cabernet Sauvignon"
+      },
+      {
+        "name": "Joseph Phelps, Napa Valley, CA",
+        "description": "",
+        "price": "$220",
+        "section": "Beverage - Cabernet Sauvignon"
+      },
+      {
+        "name": "Denner \"Mother of Exiles\" Paso Robles, CA",
+        "description": "",
+        "price": "$195",
+        "section": "Beverage - Cabernet Sauvignon"
+      },
+      {
+        "name": "Jordan, Alexander Valley, CA",
+        "description": "",
+        "price": "$155",
+        "section": "Beverage - Cabernet Sauvignon"
+      },
+      {
+        "name": "Daou \"The Bodyguard\" (Petit Verdot/Petite Syrah) Paso Robles, CA",
+        "description": "",
+        "price": "$84",
+        "section": "Beverage - New World"
+      },
+      {
+        "name": "Klinker Brick \"Old Ghost\" (Zinfandel) Lodi, CA",
+        "description": "",
+        "price": "$107",
+        "section": "Beverage - New World"
+      },
+      {
+        "name": "Harvey & Harriet (Bordeaux Blend) San Luis Obispo, CA",
+        "description": "",
+        "price": "$75",
+        "section": "Beverage - New World"
+      },
+      {
+        "name": "Damilano \"Lecinquevigne\" Barolo DOCG, Piedmont, Italy",
+        "description": "",
+        "price": "$80",
+        "section": "Beverage - Old World"
+      },
+      {
+        "name": "La Spinetta \"Bordini\" Barbaresco DOCG, Piedmont, Italy",
+        "description": "",
+        "price": "$150",
+        "section": "Beverage - Old World"
+      },
+      {
+        "name": "Department 66 \"D66\" Grenache, Maury, France",
+        "description": "",
+        "price": "$100",
+        "section": "Beverage - Old World"
+      },
+      {
+        "name": "Gaja \"Pieve Santa Restituta\" Brunello di Montalcino DOCG, Tuscany, Italy",
+        "description": "",
+        "price": "$200",
+        "section": "Beverage - Old World"
+      },
+      {
+        "name": "Coronado Brewing, Weekend Vibes IPA",
+        "description": "local",
+        "price": "$9",
+        "section": "Beverage - Draught"
+      },
+      {
+        "name": "Societe Brewing Co., The Pupil IPA",
+        "description": "local",
+        "price": "$9",
+        "section": "Beverage - Draught"
+      },
+      {
+        "name": "Karl Strauss, Hank's House Blonde",
+        "description": "local",
+        "price": "$9",
+        "section": "Beverage - Draught"
+      },
+      {
+        "name": "Thorn Brewing, Barrio Lager",
+        "description": "local",
+        "price": "$9",
+        "section": "Beverage - Draught"
+      },
+      {
+        "name": "Modern Times, Orderville Hazy IPA (12oz)",
+        "description": "local",
+        "price": "$8",
+        "section": "Beverage - Bottles & Cans"
+      },
+      {
+        "name": "Two Towns Ciderhouse, Rotating",
+        "description": "",
+        "price": "$8",
+        "section": "Beverage - Bottles & Cans"
+      },
+      {
+        "name": "Latitude, Blood Orange IPA",
+        "description": "local",
+        "price": "$7",
+        "section": "Beverage - Bottles & Cans"
+      },
+      {
+        "name": "Lighter Side",
+        "description": "coors light, michelob ultra, modelo especial, dos xx, pacifico clara",
+        "price": "$7",
+        "section": "Beverage - Bottles & Cans"
+      },
+      {
+        "name": "Best Day Brewing Non-Alc, Kölsch | Hazy IPA",
+        "description": "local",
+        "price": "$6",
+        "section": "Beverage - Bottles & Cans"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverage - Espresso"
+      },
+      {
+        "name": "Macchiato",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverage - Espresso"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$4.75",
+        "section": "Beverage - Espresso"
+      },
+      {
+        "name": "Gibraltar",
+        "description": "",
+        "price": "$4.75",
+        "section": "Beverage - Espresso"
+      },
+      {
+        "name": "Flat White",
+        "description": "",
+        "price": "$4.75",
+        "section": "Beverage - Espresso"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$4.75",
+        "section": "Beverage - Espresso"
+      },
+      {
+        "name": "Latte",
+        "description": "",
+        "price": "$5.75",
+        "section": "Beverage - Espresso"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$5.75",
+        "section": "Beverage - Espresso"
+      },
+      {
+        "name": "Mocha",
+        "description": "",
+        "price": "$5.75",
+        "section": "Beverage - Espresso"
+      },
+      {
+        "name": "Cold Brew Coffee",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverage - Bold Blends"
+      },
+      {
+        "name": "Iced Green Tea",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverage - Bold Blends"
+      },
+      {
+        "name": "Iced Black Tea",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverage - Bold Blends"
+      },
+      {
+        "name": "Matcha",
+        "description": "",
+        "price": "$5.75",
+        "section": "Beverage - Bold Blends"
+      },
+      {
+        "name": "Chai",
+        "description": "",
+        "price": "$5.75",
+        "section": "Beverage - Bold Blends"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6174",
+    "name": "The Baked Bear",
+    "sourceUrl": "https://order.online/store/the-baked-bear-san-diego-724059/",
+    "confidence": "medium",
+    "notes": "Router's /pacificbeach/ URL 404s; the restaurant's own site links this location at /locations/pacific-beach/ (address 4516 Mission Blvd confirmed), which itself has no priced menu but links an order.online storefront (white-label DoorDash) whose page title and embedded address both read \"4516 Mission Boulevard\" -- confirmed same branch. Extracted from the escaped Next.js RSC flight payload (MenuBookCategory numItems matched exactly: Ice Cream Sandwiches 8, Ice Cream Pints 13, Cookies 4, Drinks 3 = 28 total, all priced; the 10-item \"Most Ordered\" carousel is a duplicate subset and was not double counted). Markup test: prices end in .00/.50/.75/.95, dividing by 1.04/1.10/1.15/1.20/1.25 does not land the set cleanly on round or standard endings -- no markup pattern detected. Tier-3 white-label source with no first-party price to cross-check, so held at medium rather than high.",
+    "dishes": [
+      {
+        "name": "Custom Ice Cream Sandwich",
+        "description": "",
+        "price": "$10.95",
+        "section": "Ice Cream Sandwiches"
+      },
+      {
+        "name": "1 Cookie",
+        "description": "",
+        "price": "$3.50",
+        "section": "Cookies"
+      },
+      {
+        "name": "Brownies w/ Mint Chip Ice Cream",
+        "description": "",
+        "price": "$10.95",
+        "section": "Ice Cream Sandwiches"
+      },
+      {
+        "name": "Custom 6 Cookie Box",
+        "description": "",
+        "price": "$17.00",
+        "section": "Cookies"
+      },
+      {
+        "name": "Chocolate Chip Cookies w/ Cookie Dough Ice Cream",
+        "description": "",
+        "price": "$9.95",
+        "section": "Ice Cream Sandwiches"
+      },
+      {
+        "name": "Brownie",
+        "description": "",
+        "price": "$3.75",
+        "section": "Cookies"
+      },
+      {
+        "name": "Gooey Butter Cake Cookies w/ Blackberry Crumble Ice Cream",
+        "description": "",
+        "price": "$9.95",
+        "section": "Ice Cream Sandwiches"
+      },
+      {
+        "name": "Toasted S'mores Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Custom Dozen Cookie Box",
+        "description": "",
+        "price": "$30.00",
+        "section": "Cookies"
+      },
+      {
+        "name": "Cookie Dough Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Funfetti Cookies w/ Cookies & Cream Ice Cream",
+        "description": "",
+        "price": "$9.95",
+        "section": "Ice Cream Sandwiches"
+      },
+      {
+        "name": "Vegan Chocolate Chip Cookie Sandwich (Gluten-Free)",
+        "description": "",
+        "price": "$10.95",
+        "section": "Ice Cream Sandwiches"
+      },
+      {
+        "name": "Vegan Fudgy Brownie Cookie Sandwich (Gluten Free)",
+        "description": "",
+        "price": "$10.95",
+        "section": "Ice Cream Sandwiches"
+      },
+      {
+        "name": "Mini Ice Cream Sandwich 3-pack",
+        "description": "",
+        "price": "$13.95",
+        "section": "Ice Cream Sandwiches"
+      },
+      {
+        "name": "Bear Batter Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Strawberry Shortcake Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Blackberry Crumble Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Dark Chocolate Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Cookies & Cream Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Mint Chip Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Old Fashioned Vanilla Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Caramel Pretzel Fudge Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Vegan Chocolate Chip Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Mud Pie",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Milk & Cookies Pint",
+        "description": "",
+        "price": "$13.50",
+        "section": "Ice Cream Pints"
+      },
+      {
+        "name": "Organic Milk",
+        "description": "",
+        "price": "$2.95",
+        "section": "Drinks"
+      },
+      {
+        "name": "Aquafina Water Bottle",
+        "description": "",
+        "price": "$2.95",
+        "section": "Drinks"
+      },
+      {
+        "name": "Mexican Coke",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6197",
+    "name": "Bobboi Natural Gelato",
+    "blocked": "needs-browser: order.online business page for this chain (order.online/business/BobboiNaturalGelato-14193301) never resolves a store server-side -- storeId is literally \"$undefined\" in the dehydrated payload and no address/menu data is present, meaning it needs client-side geolocation or a manual store pick to reach the La Jolla storefront's items. The restaurant's own Wix site (homepage, /our-flavors, /la-jolla) prices nothing anywhere -- consistent with a gelateria priced by size rather than a missing capture.",
+    "notes": "No known ordering platform besides order.online was linked from the site. Own site checked in full (homepage, /our-flavors, /la-jolla, /find-a-store) -- zero $ prices on any of them.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6252",
+    "name": "Wood Ranch Mission Valley",
+    "blocked": "needs-browser: order.woodranch.com/menu/wood-ranch-mission-valley-san-diego is an Olo storefront (channelSlug \"woodranch\") that ships a client-side-only Next.js loading shell to plain curl (no menu data, no discoverable merchant/vendor id in the HTML) plus a Cloudflare challenge script; needs a browser to resolve. Router already screened out order.online/DoorDash for this branch on a 1.15x markup, so that channel is not re-fileable without a dine-in artefact.",
+    "notes": "The restaurant's own site (woodranch.com/restaurants/san-diego/menu/) prices ONLY its catering section (Packages $20-33/guest, BBQ Platters $80-360 by size) -- an adjunct per the playbook, not the dine-in menu. Every regular dine-in item (salads, BBQ entrees, steaks, sandwiches) is listed with full descriptions but zero dollar prices anywhere in that page's HTML -- confirmed by stripping tags first, not a raw-grep miss.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6350",
+    "name": "Tajima Ramen East Village",
+    "sourceUrl": "https://www.toasttab.com/tajima-east-village/v3/?mode=fulfillment",
+    "confidence": "high",
+    "notes": "Router matched the wrong Tajima branch (a different location's Toast page, 6061 El Cajon Blvd). This restaurant's own site links its correct Toast storefront (toasttab.com/tajima-east-village); the __OO_STATE__ restaurantV2ByShortUrl object confirms address '901 E Street, San Diego, CA 92101', matching the work list exactly. Read all 6 menus in the catalog (Utensils, Drinks, Appetizers, Ramens, Rice Dishes, Dessert) via the balanced-brace __OO_STATE__ blob; 2 items (Add Utensils, Extra Appetizers Toppings) carry no price and were dropped. Cents cluster only on .00/.50/.75 (whole/half dollar), no markup pattern.",
+    "dishes": [
+      {
+        "name": "JUNESHINE-Mango Day Dream (can)",
+        "description": "Juneshine Kombucha Co. Organic Hard Kombucha 6% ABV 12oz can",
+        "price": "$7",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "JUNESHINE-Midnight Painkiller (can)",
+        "description": "Hard Kombucha w/ activated charcoal Probiotic & Gluten-Free Coconut, Pineapple, Orange, & Nutmeg 12 oz. 6% ABV",
+        "price": "$7",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "NOVA-Sexy Pina Colada (can)",
+        "description": "Organic Hard Kombucha 8% ABV 12oz can",
+        "price": "$7.50",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "NOVA-Watermelon Mint (can)",
+        "description": "Organic Hard Kombucha 8% ABV 12oz can",
+        "price": "$8",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "16oz NEWTOPIA-Apple Soiree",
+        "description": "NEWTOPIA CYDER Co. Hard Cider 6.5% ABV",
+        "price": "$8",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "16oz SAPPORO",
+        "description": "",
+        "price": "$7.50",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "16oz ELYSIAN-Space Dust",
+        "description": "American IPA w/ notes of guava & mango  7.5% ABV",
+        "price": "$8",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "16oz EASY RIDER-Easy Rider",
+        "description": "Easy Rider Brewing Co. American Light Lager 4.5% ABV",
+        "price": "$7.50",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "16oz MOTHER EARTH-Cali Creamin (Nitro)",
+        "description": "American Cream Ale,  Made with Madagascar Vanilla Bean to give it that \"cream soda\" feel 5% ABV",
+        "price": "$7.50",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "16oz HARLAND-Hazy IPA",
+        "description": "New England IPA Smooth & creamy mouthfeel from oats & wheat, bright aromas of citrus & gooseberry rise to the surface for an exceedingly aromatic IPA.   6.5%, ABV",
+        "price": "$7.50",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "16oz HARLAND-Japanese Lager",
+        "description": "",
+        "price": "$7.50",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "16oz PIZZA PORT-Coastin'",
+        "description": "Pizza Port Co. Tropical IPA 8.2% ABV",
+        "price": "$7.50",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "16oz MODERN TIMES-Orderville",
+        "description": "Hazy IPA 7.2% ABV",
+        "price": "$8",
+        "section": "Drinks - Hard Kombucha, Cider, & Beer"
+      },
+      {
+        "name": "16oz Filtered Flavored Sake",
+        "description": "",
+        "price": "$10",
+        "section": "Drinks - Sake Take Out"
+      },
+      {
+        "name": "16oz Unfiltered Sake",
+        "description": "",
+        "price": "$10",
+        "section": "Drinks - Sake Take Out"
+      },
+      {
+        "name": "16oz House Cold Sake",
+        "description": "",
+        "price": "$9",
+        "section": "Drinks - Sake Take Out"
+      },
+      {
+        "name": "16oz House Nigori Sake",
+        "description": "",
+        "price": "$9",
+        "section": "Drinks - Sake Take Out"
+      },
+      {
+        "name": "16oz House Hot Sake",
+        "description": "",
+        "price": "$9",
+        "section": "Drinks - Sake Take Out"
+      },
+      {
+        "name": "Kikusui Perfect Snow (btl)",
+        "description": "Nigori Sake Sweet, rich, and full body nigori sake  21% ABV",
+        "price": "$12",
+        "section": "Drinks - Sake Take Out"
+      },
+      {
+        "name": "Kurosawa (btl)",
+        "description": "",
+        "price": "$15",
+        "section": "Drinks - Sake Take Out"
+      },
+      {
+        "name": "Coconut Nigori Sake",
+        "description": "Creamy & smooth sake (300ml & 10% ABV)",
+        "price": "$10",
+        "section": "Drinks - Sake Take Out"
+      },
+      {
+        "name": "Mango Matcha Refresher",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks - Bottles & Cans Drinks"
+      },
+      {
+        "name": "Melon Matcha Refresher",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks - Bottles & Cans Drinks"
+      },
+      {
+        "name": "Strawberry Matcha Refresher",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks - Bottles & Cans Drinks"
+      },
+      {
+        "name": "Passionfruit Matcha Refresher",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks - Bottles & Cans Drinks"
+      },
+      {
+        "name": "Lychee Matcha Refresher",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks - Bottles & Cans Drinks"
+      },
+      {
+        "name": "Pellegrino Sparkling Water (btl)",
+        "description": "",
+        "price": "$1.75",
+        "section": "Drinks - Bottles & Cans Drinks"
+      },
+      {
+        "name": "Edamame",
+        "description": "Steamed Soy Beans lightly salted.",
+        "price": "$5.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garlic Edamame",
+        "description": "Steamed soy beans cooked with garlic and butter.",
+        "price": "$5.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Katsu Bun",
+        "description": "Steamed Bun with Crispy Chicken Cutlet glazed in House Sauce, Shredded Cabbage and Mayo Mustard.",
+        "price": "$5.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Pork Gyoza",
+        "description": "Pan fried pork dumplings served with gyoza sauce",
+        "price": "$7.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Karaage",
+        "description": "Seasoned deep fried chicken with spicy mayo on the side.",
+        "price": "$8.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Takoyaki",
+        "description": "Octopus fritters topped with Brown Sauce,, Mayo, Bonito Flakes, and Seaweed Flakes.",
+        "price": "$10",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Crispy Rice Spicy Tuna",
+        "description": "Spicy Tuna, Japaneno, and Avocado on Crispy rice Topped with Spicy Mayo & Eel Sauce.",
+        "price": "$7.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Crunchy Cucumber Salad",
+        "description": "Chopped Crunchy cucumber topped with house made Fried Chili Oil and Sesame Seeds.",
+        "price": "$5",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Shishito Peppers",
+        "description": "Sauteed sweet chill peppers with garlic",
+        "price": "$7",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Salmon Sushi Hand Roll",
+        "description": "Sushi rice, sesame seeds, Japanese seaweed, and Salmon.",
+        "price": "$6.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Spicy Tuna Sushi Hand Roll",
+        "description": "Sushi rice, sesame seeds, Japanese seaweed, and Spicy tuna with spicy mayo.",
+        "price": "$6.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Tajima Fries",
+        "description": "French Fries, Minced Pork, and Onions topped with Mozzarella Cheese and Spicy Mayo.",
+        "price": "$10.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Kimchi",
+        "description": "Spicy and sour pickled Napa Cabbage.",
+        "price": "$5",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Seaweed Salad",
+        "description": "",
+        "price": "$4.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "French Fries",
+        "description": "French fries.",
+        "price": "$4.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garlic Shrimp Noodles",
+        "description": "Grilled shrimp over daily-crafted fresh noodles tossed in an umami secret sauce. Finished with wood ear mushrooms, diced onions, green onions, and fried garlic.",
+        "price": "$17",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Traditional Tonkotsu Ramen",
+        "description": "Original Pork Bone Broth with Noodles, Thin sliced Pork Chashu, Wood Ear Mushrooms, Green Onions, and Sesame Seeds, topped with Red Bomb.",
+        "price": "$16",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Tajima Red",
+        "description": "Spicy Tonkotsu Pork bone broth, Egg Noodles, Pork Chashu, ½ Ramen Egg, Corn, Baby Bok Choy, Green Onions, and Sesame Seeds.",
+        "price": "$18",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Tajima Black",
+        "description": "Original Tonkotsu Pork Bone broth with Black Garlic Oil, Egg Noodles, Pork Chashu, ½ Ramen Egg, Fried Garlic, Corn, Baby Bok Choy, Green Onions, and Sesame Seeds.",
+        "price": "$18",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Tajima Ramen",
+        "description": "Original Tonkotsu Pork Bone broth, Egg Noodles, Pork Chashu, ½ Ramen Egg, Fried Garlic, Corn, Baby Bok Choy, Green Onions, and Sesame Seeds.",
+        "price": "$18",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Spicy Sesame Ramen",
+        "description": "Spicy Tonkotsu Pork Bone broth, mixed with special Sesame Paste, Egg Noodles, Ground Pork, ½ Ramen Egg, Corn, Wood ear Mushrooms, Baby Bok Choy, Diced Onions, Dried Chili, and Sesame Seeds.",
+        "price": "$18",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Vegan  Ramen",
+        "description": "Creamy Soy base Broth, Spinach Noodles, marinated Tofu, braised Takenoko, Wood Ear Mushrooms, Baby Bok Choy, Corn, Red Radish, and Sesame Seeds.",
+        "price": "$17.50",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Carnitas Ramen",
+        "description": "Spicy Tonkotsu Pork Bone broth, Egg noodles, housemade Carnitas, ½ Ramen Egg, Red Radish, Cilantro, diced Onions, Lime, and dried Oregano.",
+        "price": "$18",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Chicken Ramen",
+        "description": "Chicken Bone Broth, Egg Noodles, Chicken Chashu, 1/2 Ramen Egg, Braised Takenoko, Baby Bok Choy, Green Onions, and Sesame Seeds.",
+        "price": "$17.50",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Extra Noodles",
+        "description": "",
+        "price": "$3.50",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Extra Broth",
+        "description": "",
+        "price": "$5.50",
+        "section": "Ramens - Ramen"
+      },
+      {
+        "name": "Salmon Poke",
+        "description": "Salmon with sweet Shoyu sauce, Avocado, Seaweed Salad, Wonton crunch, and Furikake over steamed Rice.",
+        "price": "$16.50",
+        "section": "Rice dishes"
+      },
+      {
+        "name": "Pork Chashu Fried Rice",
+        "description": "Pork Chashu, Rice, Egg, Mixed Veggies, Sesame Seeds, and grilled Baby Bok Choy with Fried Chili Oil on the side.",
+        "price": "$14.50",
+        "section": "Rice dishes"
+      },
+      {
+        "name": "Chicken Chashu Fried Rice",
+        "description": "Chicken Chashu, Rice, Egg, Green Peas, Carrots, Onions, Corn, and Baby Bok Choy with Fried Chili Oil on the side.",
+        "price": "$14",
+        "section": "Rice dishes"
+      },
+      {
+        "name": "Vegetarian Fried Rice",
+        "description": "Grilled Tofu, Rice, Egg, Green Peas, Carrots, Onions, Napa Cabbage, Chives, Shiitake Mushrooms and Baby Bok Chow, and Fried Chili Oil on the side.",
+        "price": "$13.50",
+        "section": "Rice dishes"
+      },
+      {
+        "name": "Pork Chashu Bowl",
+        "description": "Sliced Pork Chashu Bowl with Sweet Sauce, Green Onions, and Sesame seeds on top of White Rice.",
+        "price": "$7",
+        "section": "Rice dishes"
+      },
+      {
+        "name": "Steam Rice",
+        "description": "",
+        "price": "$3",
+        "section": "Rice dishes"
+      },
+      {
+        "name": "Sushi Rice",
+        "description": "",
+        "price": "$3.50",
+        "section": "Rice dishes"
+      },
+      {
+        "name": "Cinnamon Churros",
+        "description": "Churros dusted with a cinnamon and sugar coating.",
+        "price": "$5",
+        "section": "Dessert"
+      },
+      {
+        "name": "Matcha Panna Cotta",
+        "description": "Creamy Gelatin matcha pudding topped with mixed Berries.",
+        "price": "$6",
+        "section": "Dessert"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7110",
+    "name": "FryYay",
+    "blocked": "needs-browser: fry-yay.com is a custom Next.js ordering site (own domain, single location \"FryYay Belmont\" -- confirmed same restaurant, Belmont Park sits on Mission Blvd) whose menu is rendered by a lazily-loaded client component (\"MobileMenu\", chunk app/m/[brandSlug]/[locationSlug]/page-*.js). The server HTML (both / and /m/fryyay/fryyay-belmont) contains zero priced items and no discoverable same-origin API path -- the apparent '$1'/'$2' matches in the raw HTML are React RSC placeholder tokens, not prices (confirmed by reading the surrounding text, not a raw grep).",
+    "notes": "Only one location found; schema.org Restaurant block confirms hours and that it accepts payment, but hasMenu just points back at the homepage with no items. No known ordering platform (Toast/Clover/etc) linked from the page.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5714",
+    "name": "Shogun Restaurant",
+    "sourceUrl": "https://www.restaurantshogun.com/menu/",
+    "confidence": "medium",
+    "notes": "Restaurant's own site, 8-location chain (Pasadena, La Verne, Rancho Cucamonga, Corona, Temecula, San Marcos, San Diego, Palm Desert). This San Diego location's page (/locations/san-diego/, address 5451 Kearny Villa Rd, confirmed) links the same shared menu pages the whole chain uses (/menu/teppan/, /sushi/, /dining/, /drinks/, /happy-hour/, /kids/ -- /menu/seasonal/ carried no priced items); the site itself states 'These menus are shared by our 8 Shogun-branded locations. Some items and prices may vary by location.' Extracted from the schema.org Menu JSON-LD embedded on each page (hasMenuSection/hasMenuItem/offers/price), which is more complete than the visible HTML for this site (e.g. Happy Hour's page only prints one headline price per group visually but the JSON-LD carries every item's own offer). Sushi and steak size-variants (Sushi 2pcs vs Sashimi 4pcs; Regular vs Sumo Cut) are recorded as separate rows via a '(variant)' suffix on the name. Prices cluster on .00/.50 (2 items end .80) with no markup pattern and are plausible for a 2026 premium teppanyaki/sushi restaurant (entrees $17-65, premium bottles up to $250). Held to medium rather than high because of the shared-menu/price-may-vary disclaimer -- this is the chain's own published pricing for this location's page, not a location-specific PDF or POS export.",
+    "dishes": [
+      {
+        "name": "with Chicken",
+        "description": "",
+        "price": "$28.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$28.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Samurai Shrimp",
+        "description": "",
+        "price": "$29.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Scallops",
+        "description": "",
+        "price": "$32",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Colossal Shrimp",
+        "description": "",
+        "price": "$31.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Chicken",
+        "description": "",
+        "price": "$26.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$27.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Samurai Shrimp",
+        "description": "",
+        "price": "$28.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Scallops",
+        "description": "",
+        "price": "$32",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Colossal Shrimp",
+        "description": "",
+        "price": "$32",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Chicken",
+        "description": "",
+        "price": "$28.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$28.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Samurai Shrimp",
+        "description": "",
+        "price": "$29.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Scallops",
+        "description": "",
+        "price": "$32",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Colossal Shrimp",
+        "description": "",
+        "price": "$31.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Chicken (choice of sauce)",
+        "description": "",
+        "price": "$44.80",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$49.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Samurai Shrimp",
+        "description": "",
+        "price": "$50.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Scallops",
+        "description": "",
+        "price": "$51.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Colossal Shrimp",
+        "description": "",
+        "price": "$50.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$26",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Samurai Shrimp",
+        "description": "",
+        "price": "$26.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Hibachi Scallops",
+        "description": "",
+        "price": "$27.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Colossal Shrimp",
+        "description": "",
+        "price": "$28",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$29.50",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "with Hibachi Scallops",
+        "description": "",
+        "price": "$30",
+        "section": "Teppanyaki - Lunch Combinations"
+      },
+      {
+        "name": "New York Steak",
+        "description": "Finely marbled New York steak grilled to your specification.",
+        "price": "$24.50",
+        "section": "Teppanyaki - Lunch Steak"
+      },
+      {
+        "name": "Rib Eye Steak",
+        "description": "Finely marbled Certified Angus Beef grilled to your specification.",
+        "price": "$27",
+        "section": "Teppanyaki - Lunch Steak"
+      },
+      {
+        "name": "Filet Mignon",
+        "description": "Succulent tenderloin steak grilled to your specification.",
+        "price": "$27",
+        "section": "Teppanyaki - Lunch Steak"
+      },
+      {
+        "name": "Premium Tajima Wagyu",
+        "description": "",
+        "price": "$41.50",
+        "section": "Teppanyaki - Lunch Steak"
+      },
+      {
+        "name": "Teriyaki",
+        "description": "Tender chicken breast grilled with sweet and savory signature teriyaki sauce.",
+        "price": "$22",
+        "section": "Teppanyaki - Lunch Chicken"
+      },
+      {
+        "name": "Spicy",
+        "description": "Tender chicken breast seasoned with Shogun signature spicy sauce.",
+        "price": "$22",
+        "section": "Teppanyaki - Lunch Chicken"
+      },
+      {
+        "name": "Creamy Wasabi",
+        "description": "Tender chicken breast grilled and seasoned with creamy wasabi sauce.",
+        "price": "$22",
+        "section": "Teppanyaki - Lunch Chicken"
+      },
+      {
+        "name": "Yuzu and Chili Pepper",
+        "description": "Tender chicken breast grilled and finished with yuzu and chili pepper sauce.",
+        "price": "$22",
+        "section": "Teppanyaki - Lunch Chicken"
+      },
+      {
+        "name": "Samurai Shrimp",
+        "description": "Succulent shrimp grilled to perfection, seasoned with fresh squeezed lemon.",
+        "price": "$23",
+        "section": "Teppanyaki - Lunch Seafood"
+      },
+      {
+        "name": "Colossal Shrimp",
+        "description": "Grilled colossal shrimp lightly seasoned with fresh squeezed lemon.",
+        "price": "$25.50",
+        "section": "Teppanyaki - Lunch Seafood"
+      },
+      {
+        "name": "Fillet of Salmon",
+        "description": "Perfectly grilled fillet of salmon seasoned with your choice of flavor: teriyaki, miso or lemon.",
+        "price": "$23",
+        "section": "Teppanyaki - Lunch Seafood"
+      },
+      {
+        "name": "Calamari Steak",
+        "description": "Premium juicy calamari steak, seasoned with fresh squeezed lemon.",
+        "price": "$22",
+        "section": "Teppanyaki - Lunch Seafood"
+      },
+      {
+        "name": "Hibachi Scallops",
+        "description": "Sweet sea scallops grilled to perfection, seasoned with fresh squeezed lemon.",
+        "price": "$26.50",
+        "section": "Teppanyaki - Lunch Seafood"
+      },
+      {
+        "name": "Seafood Combination",
+        "description": "Shrimp, scallops, calamari and salmon. (No substitutions.)",
+        "price": "$29.50",
+        "section": "Teppanyaki - Lunch Seafood"
+      },
+      {
+        "name": "Twin Lobster Tails",
+        "description": "Twin lobster tails grilled hibachi style, seasoned with garlic butter and fresh squeezed lemon.",
+        "price": "$59",
+        "section": "Teppanyaki - Lunch Seafood"
+      },
+      {
+        "name": "Add Lobster to any meal",
+        "description": "",
+        "price": "$24.50",
+        "section": "Teppanyaki - Lunch Seafood"
+      },
+      {
+        "name": "Tofu Delight",
+        "description": "Choice of miso, teriyaki or spicy.",
+        "price": "$18.50",
+        "section": "Teppanyaki - Lunch Tofu & Noodles"
+      },
+      {
+        "name": "Vegetable Yakisoba",
+        "description": "",
+        "price": "$18",
+        "section": "Teppanyaki - Lunch Tofu & Noodles"
+      },
+      {
+        "name": "Chicken Yakisoba",
+        "description": "",
+        "price": "$20.50",
+        "section": "Teppanyaki - Lunch Tofu & Noodles"
+      },
+      {
+        "name": "Shrimp Yakisoba",
+        "description": "",
+        "price": "$22",
+        "section": "Teppanyaki - Lunch Tofu & Noodles"
+      },
+      {
+        "name": "Steak Yakisoba",
+        "description": "",
+        "price": "$25",
+        "section": "Teppanyaki - Lunch Tofu & Noodles"
+      },
+      {
+        "name": "with Chicken (a choice of sauce)",
+        "description": "",
+        "price": "$45.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$46.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Colossal Shrimp",
+        "description": "",
+        "price": "$49.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Hibachi Scallops",
+        "description": "",
+        "price": "$51",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Chicken",
+        "description": "",
+        "price": "$40",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$41",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Colossal Shrimp",
+        "description": "",
+        "price": "$45.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Hibachi Scallops",
+        "description": "",
+        "price": "$46.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Chicken",
+        "description": "",
+        "price": "$45.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$46.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Colossal Shrimp",
+        "description": "",
+        "price": "$49.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Hibachi Scallops",
+        "description": "",
+        "price": "$51",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Chicken (choice of sauce)",
+        "description": "",
+        "price": "$49.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$55",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Colossal Shrimp",
+        "description": "",
+        "price": "$56",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Hibachi Scallops",
+        "description": "",
+        "price": "$57",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$40",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Colossal Shrimp",
+        "description": "",
+        "price": "$43",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Hibachi Scallops",
+        "description": "",
+        "price": "$44.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Calamari Steak",
+        "description": "",
+        "price": "$40",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "with Hibachi Scallops",
+        "description": "",
+        "price": "$44.50",
+        "section": "Teppanyaki - Dinner Combinations"
+      },
+      {
+        "name": "Takumi",
+        "description": "New York steak, samurai shrimp, and hibachi scallops.",
+        "price": "$53",
+        "section": "Teppanyaki - Chef's Recommendations — Dinner"
+      },
+      {
+        "name": "Shogun Special",
+        "description": "Premium Tajima Wagyu, lobster tail, samurai shrimp, and hibachi scallops.",
+        "price": "$80",
+        "section": "Teppanyaki - Chef's Recommendations — Dinner"
+      },
+      {
+        "name": "Samurai",
+        "description": "Succulent filet mignon, and lobster tail.",
+        "price": "$63.50",
+        "section": "Teppanyaki - Chef's Recommendations — Dinner"
+      },
+      {
+        "name": "Seafood Trio",
+        "description": "Lobster tail, samurai shrimp, and hibachi scallops.",
+        "price": "$59.50",
+        "section": "Teppanyaki - Chef's Recommendations — Dinner"
+      },
+      {
+        "name": "New York Steak (Regular 7 oz)",
+        "description": "Finely marbled New York steak grilled to your specification.",
+        "price": "$36.50",
+        "section": "Teppanyaki - Dinner Steak"
+      },
+      {
+        "name": "New York Steak (Sumo Cut 12 oz)",
+        "description": "Finely marbled New York steak grilled to your specification.",
+        "price": "$45",
+        "section": "Teppanyaki - Dinner Steak"
+      },
+      {
+        "name": "Teriyaki Steak (Regular 7 oz)",
+        "description": "New York strip steak grilled in sweet and savory signature teriyaki sauce.",
+        "price": "$36.50",
+        "section": "Teppanyaki - Dinner Steak"
+      },
+      {
+        "name": "Teriyaki Steak (Sumo Cut 12 oz)",
+        "description": "New York strip steak grilled in sweet and savory signature teriyaki sauce.",
+        "price": "$45",
+        "section": "Teppanyaki - Dinner Steak"
+      },
+      {
+        "name": "Filet Mignon (Regular 7 oz)",
+        "description": "Succulent tenderloin steak grilled to your specification.",
+        "price": "$42",
+        "section": "Teppanyaki - Dinner Steak"
+      },
+      {
+        "name": "Filet Mignon (Sumo Cut 9 oz)",
+        "description": "Succulent tenderloin steak grilled to your specification.",
+        "price": "$49.50",
+        "section": "Teppanyaki - Dinner Steak"
+      },
+      {
+        "name": "Rib Eye Steak (Regular 8 oz)",
+        "description": "Finely marbled Certified Angus Beef grilled to your specification.",
+        "price": "$42",
+        "section": "Teppanyaki - Dinner Steak"
+      },
+      {
+        "name": "Rib Eye Steak (Sumo Cut 12 oz)",
+        "description": "Finely marbled Certified Angus Beef grilled to your specification.",
+        "price": "$49.50",
+        "section": "Teppanyaki - Dinner Steak"
+      },
+      {
+        "name": "Premium Tajima Wagyu (Regular 6 oz)",
+        "description": "",
+        "price": "$46",
+        "section": "Teppanyaki - Dinner Steak"
+      },
+      {
+        "name": "Premium Tajima Wagyu (Sumo Cut 12 oz)",
+        "description": "",
+        "price": "$64",
+        "section": "Teppanyaki - Dinner Steak"
+      },
+      {
+        "name": "Teriyaki (Regular 7 oz)",
+        "description": "Tender chicken breast grilled with sweet and savory signature teriyaki sauce.",
+        "price": "$32.50",
+        "section": "Teppanyaki - Dinner Chicken"
+      },
+      {
+        "name": "Teriyaki (Sumo Cut 12 oz)",
+        "description": "Tender chicken breast grilled with sweet and savory signature teriyaki sauce.",
+        "price": "$41",
+        "section": "Teppanyaki - Dinner Chicken"
+      },
+      {
+        "name": "Spicy (Regular 7 oz)",
+        "description": "Tender chicken breast seasoned with Shogun signature spicy sauce.",
+        "price": "$32.50",
+        "section": "Teppanyaki - Dinner Chicken"
+      },
+      {
+        "name": "Spicy (Sumo Cut 12 oz)",
+        "description": "Tender chicken breast seasoned with Shogun signature spicy sauce.",
+        "price": "$41",
+        "section": "Teppanyaki - Dinner Chicken"
+      },
+      {
+        "name": "Creamy Wasabi (Regular 7 oz)",
+        "description": "Tender chicken breast grilled and seasoned with creamy wasabi sauce.",
+        "price": "$32.50",
+        "section": "Teppanyaki - Dinner Chicken"
+      },
+      {
+        "name": "Creamy Wasabi (Sumo Cut 12 oz)",
+        "description": "Tender chicken breast grilled and seasoned with creamy wasabi sauce.",
+        "price": "$41",
+        "section": "Teppanyaki - Dinner Chicken"
+      },
+      {
+        "name": "Yuzu and Chili Pepper (Regular 7 oz)",
+        "description": "Tender chicken breast grilled and finished with yuzu and chili pepper sauce.",
+        "price": "$32.50",
+        "section": "Teppanyaki - Dinner Chicken"
+      },
+      {
+        "name": "Yuzu and Chili Pepper (Sumo Cut 12 oz)",
+        "description": "Tender chicken breast grilled and finished with yuzu and chili pepper sauce.",
+        "price": "$41",
+        "section": "Teppanyaki - Dinner Chicken"
+      },
+      {
+        "name": "Samurai Shrimp (12 pieces)",
+        "description": "Succulent shrimp grilled to perfection, seasoned with fresh squeezed lemon.",
+        "price": "$27.50",
+        "section": "Teppanyaki - Dinner Seafood"
+      },
+      {
+        "name": "Samurai Shrimp (18 pieces)",
+        "description": "Succulent shrimp grilled to perfection, seasoned with fresh squeezed lemon.",
+        "price": "$35",
+        "section": "Teppanyaki - Dinner Seafood"
+      },
+      {
+        "name": "Colossal Shrimp (6 pieces)",
+        "description": "Grilled colossal shrimp lightly seasoned with fresh squeezed lemon.",
+        "price": "$37",
+        "section": "Teppanyaki - Dinner Seafood"
+      },
+      {
+        "name": "Colossal Shrimp (10 pieces)",
+        "description": "Grilled colossal shrimp lightly seasoned with fresh squeezed lemon.",
+        "price": "$44",
+        "section": "Teppanyaki - Dinner Seafood"
+      },
+      {
+        "name": "Fillet of Salmon",
+        "description": "Perfectly grilled fillet of salmon seasoned with your choice of flavor: teriyaki, miso or lemon.",
+        "price": "$37.50",
+        "section": "Teppanyaki - Dinner Seafood"
+      },
+      {
+        "name": "Calamari Steak",
+        "description": "Premium juicy calamari steak, seasoned with fresh squeezed lemon.",
+        "price": "$32.50",
+        "section": "Teppanyaki - Dinner Seafood"
+      },
+      {
+        "name": "Hibachi Scallops",
+        "description": "Scallops grilled to perfection, seasoned with fresh squeezed lemon.",
+        "price": "$42",
+        "section": "Teppanyaki - Dinner Seafood"
+      },
+      {
+        "name": "Seafood Combination",
+        "description": "Shrimp, scallops, calamari and salmon. (No substitutions.)",
+        "price": "$46",
+        "section": "Teppanyaki - Dinner Seafood"
+      },
+      {
+        "name": "Twin Lobster Tail",
+        "description": "Twin lobster tails grilled hibachi style, seasoned with garlic butter and fresh squeezed lemon.",
+        "price": "$64.50",
+        "section": "Teppanyaki - Dinner Seafood"
+      },
+      {
+        "name": "Add Lobster to any meal",
+        "description": "",
+        "price": "$24.50",
+        "section": "Teppanyaki - Dinner Seafood"
+      },
+      {
+        "name": "Tofu Delight",
+        "description": "",
+        "price": "$28",
+        "section": "Teppanyaki - Dinner Tofu & Noodles"
+      },
+      {
+        "name": "Vegetable Yakisoba",
+        "description": "",
+        "price": "$21",
+        "section": "Teppanyaki - Dinner Tofu & Noodles"
+      },
+      {
+        "name": "Chicken Yakisoba",
+        "description": "",
+        "price": "$25",
+        "section": "Teppanyaki - Dinner Tofu & Noodles"
+      },
+      {
+        "name": "Shrimp Yakisoba",
+        "description": "",
+        "price": "$28",
+        "section": "Teppanyaki - Dinner Tofu & Noodles"
+      },
+      {
+        "name": "Steak Yakisoba",
+        "description": "",
+        "price": "$35.50",
+        "section": "Teppanyaki - Dinner Tofu & Noodles"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$9",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "Samurai Shrimp",
+        "description": "",
+        "price": "$9.50",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "Calamari Steak",
+        "description": "",
+        "price": "$10",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "Colossal Shrimp",
+        "description": "",
+        "price": "$13",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "Fillet of Salmon",
+        "description": "",
+        "price": "$13.50",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "Scallops",
+        "description": "",
+        "price": "$19",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "New York Steak",
+        "description": "",
+        "price": "$20",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "Lobster Tail",
+        "description": "",
+        "price": "$24.50",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "Filet Mignon",
+        "description": "",
+        "price": "$26",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "Rib Eye Steak",
+        "description": "",
+        "price": "$26",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "Premium Tajima Wagyu",
+        "description": "",
+        "price": "$38",
+        "section": "Teppanyaki - Add to Any Entrée — Dinner"
+      },
+      {
+        "name": "Tamago (Sushi (2 pcs))",
+        "description": "",
+        "price": "$5.50",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Inari (Sushi (2 pcs))",
+        "description": "",
+        "price": "$5.50",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Mackerel (Sushi (2 pcs))",
+        "description": "",
+        "price": "$6",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Mackerel (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$11",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Salmon (Sushi (2 pcs))",
+        "description": "",
+        "price": "$6.50",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Salmon (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$12",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Surf Clam (Sushi (2 pcs))",
+        "description": "",
+        "price": "$6.50",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Surf Clam (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$12",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Tuna (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Tuna (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$13",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Shrimp (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Shrimp (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$13",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Yellowtail (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Yellowtail (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$13",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Albacore (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Albacore (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$13",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Squid (Ika) (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Squid (Ika) (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$13",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Octopus (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Octopus (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$13",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Eel (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Eel (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$13",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Bay Scallop (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Spicy Scallop (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Peppered Salmon (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Smelt Egg (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Cajun Tuna (Sushi (2 pcs))",
+        "description": "",
+        "price": "$7.50",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Escolar (Sushi (2 pcs))",
+        "description": "",
+        "price": "$8",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Halibut (Sushi (2 pcs))",
+        "description": "",
+        "price": "$8",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Red Snapper (Sushi (2 pcs))",
+        "description": "",
+        "price": "$9",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Salmon Roe (Sushi (2 pcs))",
+        "description": "",
+        "price": "$10",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Japan Scallops (Sushi (2 pcs))",
+        "description": "",
+        "price": "$12",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Japan Scallops (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$16",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Bluefin (Sushi (2 pcs))",
+        "description": "",
+        "price": "$12",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Bluefin (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$20",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Sweet Shrimp (Sushi (2 pcs))",
+        "description": "",
+        "price": "$12",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Sweet Shrimp (Sashimi (4 pcs))",
+        "description": "",
+        "price": "$20",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Assortment (Small) (Sushi)",
+        "description": "",
+        "price": "$18",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Assortment (Small) (Sashimi)",
+        "description": "",
+        "price": "$18",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Assortment (Large) (Sushi)",
+        "description": "",
+        "price": "$35.80",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Assortment (Large) (Sashimi)",
+        "description": "",
+        "price": "$29",
+        "section": "Sushi - Nigiri & Sashimi"
+      },
+      {
+        "name": "Cucumber",
+        "description": "",
+        "price": "$6",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "Avocado",
+        "description": "",
+        "price": "$6.50",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "California",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "Scallop",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "Eel",
+        "description": "",
+        "price": "$7",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "Spicy Tuna",
+        "description": "",
+        "price": "$7.50",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "Tuna",
+        "description": "",
+        "price": "$8",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "Salmon",
+        "description": "",
+        "price": "$8",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "Spicy Salmon",
+        "description": "",
+        "price": "$8",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "Albacore",
+        "description": "",
+        "price": "$8",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "Yellowtail",
+        "description": "",
+        "price": "$8",
+        "section": "Sushi - Cut Roll & Hand Roll"
+      },
+      {
+        "name": "Crunchy Roll (Half roll)",
+        "description": "Shrimp tempura, kani-kama crab, and avocado inside. Topped with eel sauce and crispy tempura flakes.",
+        "price": "$9",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Crunchy Roll (Full roll)",
+        "description": "Shrimp tempura, kani-kama crab, and avocado inside. Topped with eel sauce and crispy tempura flakes.",
+        "price": "$16",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Crunchy Dragon Roll (Half roll)",
+        "description": "Crunchy roll topped with spicy tuna and crispy tempura flakes, drizzled with eel sauce and spicy mayo.",
+        "price": "$10.50",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Crunchy Dragon Roll (Full roll)",
+        "description": "Crunchy roll topped with spicy tuna and crispy tempura flakes, drizzled with eel sauce and spicy mayo.",
+        "price": "$18",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Crazy Boy Roll (Half roll)",
+        "description": "Tempura style California roll, drizzled with eel sauce and creamy sesame.",
+        "price": "$9",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Crazy Boy Roll (Full roll)",
+        "description": "Tempura style California roll, drizzled with eel sauce and creamy sesame.",
+        "price": "$16",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Alaskan Roll (Half roll)",
+        "description": "Spicy tuna and cucumber inside. Covered with salmon.",
+        "price": "$10",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Alaskan Roll (Full roll)",
+        "description": "Spicy tuna and cucumber inside. Covered with salmon.",
+        "price": "$17",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Seared Salmon Roll (Half roll)",
+        "description": "Cream cheese and avocado roll covered with seared salmon. Topped with eel sauce and sesame sauce.",
+        "price": "$9.50",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Seared Salmon Roll (Full roll)",
+        "description": "Cream cheese and avocado roll covered with seared salmon. Topped with eel sauce and sesame sauce.",
+        "price": "$17",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Double Shrimp Roll (Half roll)",
+        "description": "Shrimp tempura, kani-kama crab and avocado inside. Topped with fresh shrimp and thinly sliced lemon.",
+        "price": "$10",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Double Shrimp Roll (Full roll)",
+        "description": "Shrimp tempura, kani-kama crab and avocado inside. Topped with fresh shrimp and thinly sliced lemon.",
+        "price": "$17",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Mexican Roll (Half roll)",
+        "description": "Spicy kani-kama crab and cucumber inside. Covered with avocado and topped with sriracha sauce.",
+        "price": "$9",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Mexican Roll (Full roll)",
+        "description": "Spicy kani-kama crab and cucumber inside. Covered with avocado and topped with sriracha sauce.",
+        "price": "$16",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "BSC Roll (Half roll)",
+        "description": "Baked scallops on top of a California roll, covered with dynamite sauce and a drizzle of eel sauce.",
+        "price": "$10",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "BSC Roll (Full roll)",
+        "description": "Baked scallops on top of a California roll, covered with dynamite sauce and a drizzle of eel sauce.",
+        "price": "$17",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Kamikaze Roll (Half roll)",
+        "description": "Spicy tuna and cucumber inside. Covered with avocado, and finished half and half with red dragon sauce and eel sauce.",
+        "price": "$9",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Kamikaze Roll (Full roll)",
+        "description": "Spicy tuna and cucumber inside. Covered with avocado, and finished half and half with red dragon sauce and eel sauce.",
+        "price": "$16",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Red Dragon Roll (Half roll)",
+        "description": "Zucchini and avocado, topped with sliced tuna and spicy red dragon sauce.",
+        "price": "$10.50",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Red Dragon Roll (Full roll)",
+        "description": "Zucchini and avocado, topped with sliced tuna and spicy red dragon sauce.",
+        "price": "$18",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Caliente Roll (Half roll)",
+        "description": "Tempura style spicy tuna roll with jalapeños and cream cheese inside. Topped with eel sauce and spicy mayo.",
+        "price": "$9.50",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Caliente Roll (Full roll)",
+        "description": "Tempura style spicy tuna roll with jalapeños and cream cheese inside. Topped with eel sauce and spicy mayo.",
+        "price": "$16",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Las Vegas Roll (Half roll)",
+        "description": "",
+        "price": "$9.50",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Las Vegas Roll (Full roll)",
+        "description": "",
+        "price": "$17",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Albacore Delight Roll (Half roll)",
+        "description": "",
+        "price": "$10",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Albacore Delight Roll (Full roll)",
+        "description": "",
+        "price": "$18",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "N'Sane Roll (Half roll)",
+        "description": "Shrimp tempura, kani-kama crab, spicy tuna, and asparagus wrapped in soy paper. Topped with cajun tuna, avocado, masago and crunchy tempura flakes. Drizzled with eel sauce and creamy sesame sauce.",
+        "price": "$10.50",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "N'Sane Roll (Full roll)",
+        "description": "Shrimp tempura, kani-kama crab, spicy tuna, and asparagus wrapped in soy paper. Topped with cajun tuna, avocado, masago and crunchy tempura flakes. Drizzled with eel sauce and creamy sesame sauce.",
+        "price": "$18.50",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Super Mexican Roll (Half roll)",
+        "description": "Shrimp tempura, spicy crab, cucumber and avocado inside. Topped with albacore, serrano peppers and spicy mayo. Finished with garlic ponzu sauce.",
+        "price": "$11",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Super Mexican Roll (Full roll)",
+        "description": "Shrimp tempura, spicy crab, cucumber and avocado inside. Topped with albacore, serrano peppers and spicy mayo. Finished with garlic ponzu sauce.",
+        "price": "$19",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Choose any 2 half rolls listed",
+        "description": "",
+        "price": "$18",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Choose any 3 half rolls listed",
+        "description": "",
+        "price": "$27",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Rainbow Roll",
+        "description": "Fresh slices of tuna, salmon, yellowtail, albacore and avocado on top of a California roll.",
+        "price": "$18",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Spicy Vegetable Roll",
+        "description": "",
+        "price": "$16",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Vegetable Roll",
+        "description": "",
+        "price": "$15",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "New York Roll",
+        "description": "",
+        "price": "$20",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Shogun Roll",
+        "description": "",
+        "price": "$18",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Spicy Lobster Roll",
+        "description": "",
+        "price": "$21",
+        "section": "Sushi - Shogun Sushi Rolls"
+      },
+      {
+        "name": "Avocado Tofu with “Wasabi Sauce”",
+        "description": "",
+        "price": "$10",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Shishito Peppers",
+        "description": "Flash fried Japanese shishito peppers, tossed in garlic sauce. Garnished with bonito flakes.",
+        "price": "$13",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Cucumber Bites",
+        "description": "Japanese style pickled cucumbers, finished with chili oil.",
+        "price": "$12",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Edamame",
+        "description": "Boiled soybeans seasoned with sea salt.",
+        "price": "$8",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Spicy Garlic Edamame",
+        "description": "Boiled and sautéed with Japanese 7-spice chili mix, soy sauce and chili oil (very spicy!) and garlic.",
+        "price": "$9",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Vegetable Tempura",
+        "description": "Assorted vegetables, lightly battered and deep fried. Served with tempura dipping sauce.",
+        "price": "$11.50",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Takoyaki (8 pcs)",
+        "description": "",
+        "price": "$15",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Shogun Fries",
+        "description": "",
+        "price": "$7.50",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Shogun Fries Nori Shio",
+        "description": "",
+        "price": "$7.50",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Chicken Karaage",
+        "description": "Japanese style fried chicken served with teriyaki and seafood dipping sauce.",
+        "price": "$14",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Gyoza (Pot Stickers) — Pork or Chicken",
+        "description": "Pan fried or deep fried, served with ponzu ginger sauce.",
+        "price": "$12",
+        "section": "Dining - Appetizers"
+      },
+      {
+        "name": "Shogun Carpaccio",
+        "description": "",
+        "price": "$17",
+        "section": "Dining - Seafood"
+      },
+      {
+        "name": "Baked Mussels",
+        "description": "",
+        "price": "$16",
+        "section": "Dining - Seafood"
+      },
+      {
+        "name": "Crispy Nest Shrimp",
+        "description": "",
+        "price": "$18",
+        "section": "Dining - Seafood"
+      },
+      {
+        "name": "Calamari Rings",
+        "description": "",
+        "price": "$13",
+        "section": "Dining - Seafood"
+      },
+      {
+        "name": "Shrimp & Vegetable Tempura",
+        "description": "",
+        "price": "$14.50",
+        "section": "Dining - Seafood"
+      },
+      {
+        "name": "Crispy Rice",
+        "description": "",
+        "price": "$14.50",
+        "section": "Dining - Seafood"
+      },
+      {
+        "name": "Black Cod with Saikyo Miso",
+        "description": "",
+        "price": "$22",
+        "section": "Dining - Seafood"
+      },
+      {
+        "name": "“Tuna Tataki” Salad with Sesame Dressing",
+        "description": "",
+        "price": "$19",
+        "section": "Dining - Salads"
+      },
+      {
+        "name": "Tokyo Chicken Salad with Sesame Dressing",
+        "description": "",
+        "price": "$19",
+        "section": "Dining - Salads"
+      },
+      {
+        "name": "Sashimi Salad",
+        "description": "",
+        "price": "$20.50",
+        "section": "Dining - Salads"
+      },
+      {
+        "name": "Chicken Teriyaki",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Steak Teriyaki",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Salmon Teriyaki",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Chicken Karaage",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Vegetable Tempura",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Shrimp & Vegetable Tempura",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Chicken Katsu",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Gyoza (Pork) — pan fried or deep fried",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Gyoza (Chicken) — pan fried or deep fried",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "California Roll",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Spicy Tuna Roll",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Sashimi Assortment (6 pcs) — $1 extra",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Nigiri Assortment (5 pcs) — $1 extra",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Vegetable Tempura",
+        "description": "",
+        "price": "$18",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Chicken Karaage",
+        "description": "",
+        "price": "$19.50",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Chicken Teriyaki",
+        "description": "",
+        "price": "$19.50",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Chicken Katsu",
+        "description": "",
+        "price": "$20.50",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Shrimp & Vegetable Tempura",
+        "description": "",
+        "price": "$20.50",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Salmon Teriyaki",
+        "description": "",
+        "price": "$20.50",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Steak Teriyaki",
+        "description": "",
+        "price": "$23.50",
+        "section": "Dining - Bento Style Combination — Lunch"
+      },
+      {
+        "name": "Chicken Teriyaki",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Steak Teriyaki",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Salmon Teriyaki",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Chicken Karaage",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Vegetable Tempura",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Shrimp & Vegetable Tempura",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Chicken Katsu",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Gyoza (Pork) — pan fried or deep fried",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Gyoza (Chicken) — pan fried or deep fried",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "California Roll",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Spicy Tuna Roll",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Sashimi Assortment (6 pcs) — $1 extra",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Nigiri Assortment (5 pcs) — $1 extra",
+        "description": "",
+        "price": "$29",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Vegetable Tempura",
+        "description": "",
+        "price": "$22",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Chicken Karaage",
+        "description": "",
+        "price": "$26.50",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Shrimp & Vegetable Tempura",
+        "description": "",
+        "price": "$26.50",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Chicken Katsu",
+        "description": "",
+        "price": "$27.50",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Chicken Teriyaki",
+        "description": "",
+        "price": "$27.50",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Salmon Teriyaki",
+        "description": "",
+        "price": "$28.50",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "Steak Teriyaki",
+        "description": "",
+        "price": "$30.50",
+        "section": "Dining - Bento Style Combination — Dinner"
+      },
+      {
+        "name": "with Vegetable",
+        "description": "",
+        "price": "$19.50",
+        "section": "Dining - Fried Rice & Ramen"
+      },
+      {
+        "name": "with Chicken",
+        "description": "",
+        "price": "$22",
+        "section": "Dining - Fried Rice & Ramen"
+      },
+      {
+        "name": "with Shrimp",
+        "description": "",
+        "price": "$23",
+        "section": "Dining - Fried Rice & Ramen"
+      },
+      {
+        "name": "with Steak",
+        "description": "",
+        "price": "$24",
+        "section": "Dining - Fried Rice & Ramen"
+      },
+      {
+        "name": "with all of the above",
+        "description": "",
+        "price": "$28",
+        "section": "Dining - Fried Rice & Ramen"
+      },
+      {
+        "name": "Tonkotsu Ramen",
+        "description": "",
+        "price": "$19.50",
+        "section": "Dining - Fried Rice & Ramen"
+      },
+      {
+        "name": "Miso Ramen",
+        "description": "",
+        "price": "$19.50",
+        "section": "Dining - Fried Rice & Ramen"
+      },
+      {
+        "name": "Spicy Miso Ramen",
+        "description": "",
+        "price": "$20",
+        "section": "Dining - Fried Rice & Ramen"
+      },
+      {
+        "name": "“Yukimi Daifuku”",
+        "description": "Japanese mochi ice cream. Choice of vanilla, green tea, or mango flavor.",
+        "price": "$6",
+        "section": "Dining - Desserts"
+      },
+      {
+        "name": "Ice Cream",
+        "description": "Vanilla, rainbow sherbet, or green tea.",
+        "price": "$6",
+        "section": "Dining - Desserts"
+      },
+      {
+        "name": "Matcha Mont Blanc Cake",
+        "description": "",
+        "price": "$8",
+        "section": "Dining - Desserts"
+      },
+      {
+        "name": "Soda",
+        "description": "",
+        "price": "$5",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Red Bull",
+        "description": "",
+        "price": "$5",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$5",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Lemonade",
+        "description": "",
+        "price": "$6",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Juice",
+        "description": "",
+        "price": "$5",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Hot Green Tea",
+        "description": "",
+        "price": "$5",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Smoothie",
+        "description": "",
+        "price": "$8.50",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Bottled Water (Fiji)",
+        "description": "",
+        "price": "$6",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "San Pellegrino",
+        "description": "",
+        "price": "$6",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Kentucky Mule",
+        "description": "",
+        "price": "$8.50",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Garibaldi",
+        "description": "",
+        "price": "$8.50",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Aperitivo Spritz",
+        "description": "",
+        "price": "$8.50",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Any drink in Shogun’s Lucky Cat mug",
+        "description": "Added to the price of the drink. Take the mug home as a souvenir.",
+        "price": "$6",
+        "section": "Drinks - Non-Alcoholic"
+      },
+      {
+        "name": "Sapporo",
+        "description": "",
+        "price": "$6",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Modelo",
+        "description": "",
+        "price": "$8",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Sculpin IPA",
+        "description": "",
+        "price": "$10",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Asahi",
+        "description": "",
+        "price": "$7",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Asahi (Large)",
+        "description": "",
+        "price": "$11",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Sapporo",
+        "description": "",
+        "price": "$7",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Sapporo (Large)",
+        "description": "",
+        "price": "$11",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Corona",
+        "description": "",
+        "price": "$7",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Coors Light",
+        "description": "",
+        "price": "$6",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Bud Light",
+        "description": "",
+        "price": "$6",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Heineken Zero",
+        "description": "",
+        "price": "$6",
+        "section": "Drinks - Beer"
+      },
+      {
+        "name": "Shogun Cosmo",
+        "description": "Vodka, triple sec and cranberry juice.",
+        "price": "$15",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Lemon Drop",
+        "description": "Vodka, triple sec, sweet and sour, fresh squeezed lemon, and simple syrup.",
+        "price": "$15",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Shogun Iced Tea",
+        "description": "Vodka, tequila, Malibu original rum, gin, Midori, sweet and sour, and Sprite.",
+        "price": "$17",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Royal Hawaiian",
+        "description": "Vodka, raspberry liqueur, guava juice, pineapple juice, and sweet and sour. Poured into a freshly carved pineapple.",
+        "price": "$26",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Samurai",
+        "description": "Malibu original rum, Midori, sweet and sour, and pineapple juice.",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Shogun Mai Tai",
+        "description": "White and dark rum, orange juice, pineapple juice, sweet and sour, and a Myer’s rum float.",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Karate Punch",
+        "description": "White rum, triple sec, orgeat syrup, pineapple juice, grenadine, and sweet and sour.",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Lychee Martini",
+        "description": "Tequila blanco, lychee liqueur, ginger syrup, simple syrup and lemon juice.",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Espresso Martini",
+        "description": "Tequila reposado, coffee, Kahlúa, and Baileys.",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Tokyo Greyhound",
+        "description": "Haiken lychee vodka, grapefruit juice, falernum syrup, and lime juice.",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Shiso Fix",
+        "description": "Grey Goose vodka, St Germain, grapefruit juice, and lime juice.",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Sesame Buck",
+        "description": "Grey Goose vodka, prickly pear syrup, lime juice, and ginger beer.",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Late Night Pickup",
+        "description": "Maker’s Mark, Cynar, ginger syrup, and lemon juice.",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Awayuki Strawberry Spritz",
+        "description": "Awayuki strawberry gin, Aperol, sparkling wine, and soda.",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Traditional Highball",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Pina Colada",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "The Knockout “Katana”",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Matcha Martini",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Manhattan",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Cucumber Margarita",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Yuzu Margarita",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Strawberry Margarita",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Mango Margarita",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Coconut Margarita",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Melon Margarita",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Wasabi Cucumber Margarita",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Strawberry Mojito",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Mango Mojito",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Coconut Mojito",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Water Melon Mojito",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Cocktails"
+      },
+      {
+        "name": "Jack Daniel",
+        "description": "",
+        "price": "$10.50",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Maker’s Mark",
+        "description": "",
+        "price": "$10.50",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Westland Single Malt Whiskey",
+        "description": "",
+        "price": "$12.50",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Glenlivet 14 year",
+        "description": "",
+        "price": "$17",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Johnnie Walker Blue Label",
+        "description": "",
+        "price": "$44",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "The Macallan 18 year",
+        "description": "",
+        "price": "$65",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Suntory Toki",
+        "description": "",
+        "price": "$12",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Suntory Hibiki",
+        "description": "",
+        "price": "$23",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Suntory Yamazaki",
+        "description": "",
+        "price": "$25",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Suntory Hakushu",
+        "description": "",
+        "price": "$30",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Bacardi Black",
+        "description": "",
+        "price": "$9",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Denizen White",
+        "description": "",
+        "price": "$9",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Bacardi White",
+        "description": "",
+        "price": "$12",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Gray Whale",
+        "description": "",
+        "price": "$10",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Suntory Roku",
+        "description": "",
+        "price": "$14",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Patrón Silver",
+        "description": "",
+        "price": "$14",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Patrón Reposado",
+        "description": "",
+        "price": "$15",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Casamigos Reposado",
+        "description": "",
+        "price": "$15",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Patrón Añejo",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Patrón Cristalino",
+        "description": "",
+        "price": "$18",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Don Julio 1942",
+        "description": "",
+        "price": "$30",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Patrón Tequila Flight Board",
+        "description": "A one-ounce serving of each expression: Añejo, Silver, Reposado and Cristalino. No substitutions.",
+        "price": "$40",
+        "section": "Drinks - Spirits"
+      },
+      {
+        "name": "Shogun Hot Sake",
+        "description": "",
+        "price": "$14",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Hakutsuru Junmai Draft",
+        "description": "",
+        "price": "$14",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Fruit Flavored Sake (12.5 oz)",
+        "description": "",
+        "price": "$28",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Ozeki Nigori (375 ml)",
+        "description": "Lightly filtered, creamy and sweet, with flavors of coconut and melon.",
+        "price": "$23",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Ozeki Nigori (750 ml)",
+        "description": "Lightly filtered, creamy and sweet, with flavors of coconut and melon.",
+        "price": "$42",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Sawasawa Sparkling Sake (250 ml)",
+        "description": "",
+        "price": "$33",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Hana Awaka Sparkling Yuzu",
+        "description": "",
+        "price": "$33",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Yuzushu",
+        "description": "Japanese citrus sake.",
+        "price": "$15",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Umeshu",
+        "description": "Japanese plum wine.",
+        "price": "$15",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Kikusui Junmai Ginjo (300 ml)",
+        "description": "",
+        "price": "$29",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Kikusui Junmai Ginjo (720 ml)",
+        "description": "",
+        "price": "$54",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Suigei Tokubetsu Junmai (300 ml)",
+        "description": "",
+        "price": "$34",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Suigei Tokubetsu Junmai (720 ml)",
+        "description": "",
+        "price": "$60",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Dassai 45 (300 ml)",
+        "description": "Yamaguchi, Japan. A richly structured sake that is full of flavor with elegant notes of rice and exotic fruits.",
+        "price": "$36",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Dassai 45 (720 ml)",
+        "description": "Yamaguchi, Japan. A richly structured sake that is full of flavor with elegant notes of rice and exotic fruits.",
+        "price": "$88",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Dassai Blue 35 (375 ml)",
+        "description": "Made in the USA.",
+        "price": "$55",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Dassai Blue 35 (720 ml)",
+        "description": "Made in the USA.",
+        "price": "$105",
+        "section": "Drinks - Sake"
+      },
+      {
+        "name": "Ruffino (187 ml) (Bottle)",
+        "description": "",
+        "price": "$16",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Sparkling Pinot Grigio — South Coast Winery (Bottle)",
+        "description": "",
+        "price": "$58.50",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Shogun Chardonnay (Glass)",
+        "description": "",
+        "price": "$15",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Shogun Chardonnay (Bottle)",
+        "description": "",
+        "price": "$58.50",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Unshackled Chardonnay (Glass)",
+        "description": "",
+        "price": "$15",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Unshackled Chardonnay (Bottle)",
+        "description": "",
+        "price": "$58.50",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Pinot Grigio — Santa Cristina (Glass)",
+        "description": "",
+        "price": "$15",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Pinot Grigio — Santa Cristina (Bottle)",
+        "description": "",
+        "price": "$58.50",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Sauvignon Blanc — Ferrari Carano Fumé Blanc (Glass)",
+        "description": "",
+        "price": "$17.50",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Sauvignon Blanc — Ferrari Carano Fumé Blanc (Bottle)",
+        "description": "",
+        "price": "$67",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Sauvignon Blanc — Wairau River (Bottle)",
+        "description": "",
+        "price": "$65",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Kenzo Estate Asatsuyu (Bottle)",
+        "description": "",
+        "price": "$200",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Shogun Red Cabernet Sauvignon (Glass)",
+        "description": "",
+        "price": "$15",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Shogun Red Cabernet Sauvignon (Bottle)",
+        "description": "",
+        "price": "$58.50",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Unshackled Cabernet Sauvignon (Glass)",
+        "description": "",
+        "price": "$17.50",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Unshackled Cabernet Sauvignon (Bottle)",
+        "description": "",
+        "price": "$67",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Pinot Noir — Cherry Pie (Glass)",
+        "description": "",
+        "price": "$12",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Pinot Noir — Cherry Pie (Bottle)",
+        "description": "",
+        "price": "$45",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Pinot Noir — Chalk Hill (Glass)",
+        "description": "",
+        "price": "$15",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Pinot Noir — Chalk Hill (Bottle)",
+        "description": "",
+        "price": "$58.50",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Carter Malbec — South Coast Winery (Glass)",
+        "description": "",
+        "price": "$20",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Carter Malbec — South Coast Winery (Bottle)",
+        "description": "",
+        "price": "$75",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "Kenzo Estate Rindo (Bottle)",
+        "description": "",
+        "price": "$250",
+        "section": "Drinks - Wine"
+      },
+      {
+        "name": "House Salad",
+        "description": "",
+        "price": "$4",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Cucumber Bites",
+        "description": "",
+        "price": "$4",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Edamame",
+        "description": "",
+        "price": "$4",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Edamame Garlic / Spicy",
+        "description": "",
+        "price": "$4",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Shogun Fries",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Chicken Karaage",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Gyoza (Pot Stickers)",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Shrimp & Vegetable Tempura",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Shishito Peppers",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Calamari Rings",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Spicy Tuna Crispy Rice",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Appetizers"
+      },
+      {
+        "name": "Salmon",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Peppered Salmon",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Tuna",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Cajun Tuna",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Shrimp",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Surf Clam",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Octopus",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Crunchy Roll",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Crunchy Dragon Roll",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Spicy Tuna Roll",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Alaskan Roll",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Kamikaze Roll",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Mexican Roll",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Shogun Sushi"
+      },
+      {
+        "name": "Draft Beer Sapporo",
+        "description": "",
+        "price": "$4",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Draft Modelo",
+        "description": "",
+        "price": "$4",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Sapporo 12 oz",
+        "description": "",
+        "price": "$4",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Modelo Especial 12 oz",
+        "description": "",
+        "price": "$4",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Sapporo 21 oz",
+        "description": "",
+        "price": "$6",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Sparkling Pinot Grigio",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Chardonnay",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Cabernet Sauvignon",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Shogun Hot Sake",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Karate Punch",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Mai Tai",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Well Martinis",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Classic Vodka",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Lemon Drop",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Apple",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Cosmopolitan",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Pomegranate",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Classic Gin",
+        "description": "",
+        "price": "$9",
+        "section": "Happy Hour - Drinks"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$20",
+        "section": "Kids - Kids"
+      },
+      {
+        "name": "Shrimp",
+        "description": "",
+        "price": "$20",
+        "section": "Kids - Kids"
+      },
+      {
+        "name": "Steak",
+        "description": "",
+        "price": "$21",
+        "section": "Kids - Kids"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6021",
+    "name": "Sonic Drive-In",
+    "blocked": "needs-browser: this store's own page (sonicdrivein.com/locations/us/ca/santee/10515-mission-gorge-road/store-5995) and the brand's generic /menu page are both a Contentful-driven marketing shell -- product slugs and promo titles (e.g. \"$7 Big Deal Meal\") are present but there is no \"price\" field anywhere in either page's HTML, and no same-origin ordering API endpoint is discoverable from the served markup. Real per-item prices are set per store and only surface once a store is selected client-side in the ordering flow (a known chain-SPA pattern); a browser is needed to drive that selection and read the resulting menu.",
+    "notes": "Not marking not_found: unlike Starbucks/McDonald's (which the playbook confirms publish no prices anywhere and are permanently retired), Sonic's own ordering flow clearly prices items per store once selected -- this is a temporary access gap, not an absent menu.",
+    "dishes": []
+  }
+]

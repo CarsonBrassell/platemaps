@@ -1,0 +1,2297 @@
+[
+  {
+    "restaurantId": "7479",
+    "name": "Al Toque | Peruvian Kitchen",
+    "sourceUrl": "https://www.ubereats.com/store/al-toque-peruvian-kitchen-oceanside/8G-v8nW6WYmRY_i8PX2nUw",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site (altoquepk.co) publishes no prices at all, only links out to DoorDash/Grubhub/UberEats/Postmates. UberEats JSON-LD gives 95 items but 94/95 divide cleanly by 1.05 onto round dollars (e.g. Salchipapa $15.75/1.05=$15.00, Calamari $18.90/1.05=$18.00) — a uniform delivery-channel markup, not the wall price. Never divided out; needs a fee-free source (dine-in menu, own ordering widget, or a different platform without the 1.05 uplift)."
+  },
+  {
+    "restaurantId": "7486",
+    "name": "ThirsTea - Boba, Rolled Ice Cream",
+    "sourceUrl": "https://www.ubereats.com/store/thirstea/DNOlA67xTLaaqoCA5LJGtg",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Two independent marketplaces disagree on the same items: DoorDash (doordash.com/store/27706922) runs $0.25-$0.50 higher than UberEats across whole categories (Milk Tea $5.75 vs $5.50 on all 11 flavors, Slushies $6.00 vs $5.50 on all 14, Chai Latte $6.00 vs $5.75, Tea-Presso $6.00 vs $5.75, Iced Tea $5.25 vs $5.00), while Smoothies and Milk Shakes match exactly. Neither can be trusted as the wall price and none was merged or averaged. The chain's own corporate site (thirstea.com/menu) links a 2-page PDF menu; page 2 (toppings/extras, read as image) carries no per-item prices for the base drinks, and page 1 (the page most likely to carry the base flavor prices) is a corrupted JPEG — unsupported marker 0x2e, unreadable by this machine's tools and by PowerShell System.Drawing. Needs either a browser to render thirstea.com/menu directly or a working extraction of PDF page 1."
+  },
+  {
+    "restaurantId": "7488",
+    "name": "LA MALCRIADA BIRRIERIA",
+    "sourceUrl": "https://www.ubereats.com/store/la-malcriada-birrieria/56cr0YR7TS2S4RaDFyjqnw",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "No own website (confirmed via Google Maps search - no website listed). Yelp (yelp.com/biz/la-malcriada-national-city) and a scraped aggregator (wheree.com) both bot-wall plain curl (Yelp 403, wheree.com serves a Cloudflare 'Just a moment' challenge). UberEats shows this exact address (1604 E 18th St, National City) but the store itself: 'Closed on Uber Eats as of Jul 7, 2025'. The only DoorDash listing found for the name is a different address (130 S 30th St, San Diego) - a same-brand different location, not this restaurant. Restaurant is clearly still operating (4.8 rating, 402 Google reviews, posted hours). Needs a browser to get past Yelp/wheree.com, or a direct Instagram/Facebook photo search."
+  },
+  {
+    "restaurantId": "7489",
+    "name": "TNT Pizza",
+    "sourceUrl": "https://www.toasttab.com/tnt-pizza-chula-vista/order",
+    "confidence": "high",
+    "notes": "Read from the restaurant's own Toast storefront (toast.app/r/tnt-pizza-chula-vista/order, redirects to toasttab.com). Address on page confirmed as 221 3rd Avenue, 102, Chula Vista, CA 91910, matching the work list. Dropped the 3-item 'Featured Items' carousel - all 3 duplicate items already present in the NEW YORK 18\" / DETROIT 10\"x14\" categories. All prices are round dollars, no markup pattern.",
+    "dishes": [
+      {
+        "section": "SALAD",
+        "name": "Psychedelic Sink",
+        "description": "Mixed Greens, Pickled Beets and Onions, Candied Walnut, Pear, Gorgonzola. Large portion sharing size!",
+        "price": "$12.00"
+      },
+      {
+        "section": "SALAD",
+        "name": "House Salad",
+        "description": "Mixed Greens, Cherry Tomato, Red Onion, Cucumber, Kalamata, Parmesan.  Large portion sharing size!",
+        "price": "$8.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Build Yr Own 18\" NY",
+        "description": "48 -72 hr dough, 4 Cheese (Grande) House Blend, Milled Tomato Sauce",
+        "price": "$22.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Large Marge NY",
+        "description": "Sliced Tomato, Cherry Tomato, Roasted Garlic, EVOO, Basil (No Sauce)",
+        "price": "$27.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "House Classic NY",
+        "description": "Pinched Fennel Sausage, Roasted Peppers, Onion, Pepperoncini, Bianco DiNapoli Organic Milled Sauce. If ordered vegan, all ingredients subbed for vegan counterparts!",
+        "price": "$28.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Chicago NY",
+        "description": "Pinched Fennel Sausage, Giardiniera, Bianco DiNapoli Organic Milled Sauce, Stracciatella: If ordered vegan, all ingredients subbed for vegan counterparts!",
+        "price": "$28.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Hot Sop NY",
+        "description": "Soppressata, Date, Ricotta, Hot Honey, Balsamic Reduction (No Sauce). If ordered Vegan, Soppressata subbed for Vegan Pepperoni. We use real honey so order accordingly!",
+        "price": "$30.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Buffalo Gal NY",
+        "description": "Buttermilk Chicken (or house vegan chicken), Pepperoncini, Buffalo Sauce, House Ranch, Green Onion. If ordered vegan, all ingredients subbed for vegan counterparts!",
+        "price": "$30.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Barbie Q NY",
+        "description": "Buttermilk Chicken (or house vegan chicken), Onion, House BBQ Sauce, Cilantro",
+        "price": "$28.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "The Bellucci NY",
+        "description": "Ezzo Cupping Pepperoni, House Vodka Sauce, Cracked Pepper. If ordered vegan, all ingredients subbed for vegan counterparts",
+        "price": "$27.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Trifecta NY",
+        "description": "Pesto, Organic Vodka Sauce, Bianco DiNapoli Organic Milled Sauce. If ordered vegan, all ingredients subbed for vegan counterparts! ALLERGEN WARNING: Our VEGAN vodka sauce contains cashews",
+        "price": "$26.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Blippi's Demise NY",
+        "description": "Ezzo Pepperoni, Ricotta, House Pesto",
+        "price": "$28.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Summer Yet? NY",
+        "description": "Spinach, Sliced Tomato, Mushroom, Olive, Garlic, Bianco DiNapoli Organic Milled Tomato Sauce. If ordered vegan, all ingredients subbed for vegan counterparts!",
+        "price": "$28.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Pickle Pie NY",
+        "description": "House pickles, ranch, everything seasoning, dill, garlic. If ordered vegan, all ingredients subbed for vegan counterparts! ALLERGEN WARNING: Everything seasoning contains all-o-that stuff (but is nut and gluten free)",
+        "price": "$28.00"
+      },
+      {
+        "section": "NEW YORK 18\"",
+        "name": "Green Dream NY",
+        "description": "White Pie (no red sauce). Spinach, Mushroom, Ricotta, Roasted garlic EVOO",
+        "price": "$28.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Build Yr Own Detroit",
+        "description": "Organic Dough, Mozz/Brick/Provolone Blend, Bianco DiNapoli Organic Detroit Tomato Sauce",
+        "price": "$22.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Large Marge Detroit",
+        "description": "Sliced Tomato, Cherry Tomato, Roasted Garlic, EVOO, Basil (No Sauce)",
+        "price": "$26.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "House Classic Detroit",
+        "description": "Pinched Fennel Sausage, Roasted Peppers, Onion, Pepperoncini, Bianco DiNapoli Organic Detroit Sauce. If ordered vegan, all ingredients subbed for vegan counterparts!",
+        "price": "$28.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Chicago Detroit",
+        "description": "Pinched Fennel Sausage, Giardiniera, Stracciatella, Bianco DiNapoli Organic Detroit Sauce. If ordered vegan, all ingredients subbed for vegan counterparts!",
+        "price": "$28.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Trifecta Detroit",
+        "description": "Pesto, Organic Vodka Sauce, Bianco DiNapoli Organic Detroit Sauce",
+        "price": "$26.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Hot Sop Detroit",
+        "description": "Sopressata, Date, Ricotta, Hot Honey, Balsamic Reduction (No Sauce). If ordered Vegan, Soppressata subbed for Vegan Pepperoni. We use real honey so order accordingly!",
+        "price": "$30.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Buffalo Gal Detroit",
+        "description": "Buttermilk Chicken (or house vegan chicken), Pepperoncini, Buffalo Sauce, House Ranch, Green Onion. If ordered vegan, all ingredients subbed for vegan counterparts!",
+        "price": "$30.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Barbie Q Detroit",
+        "description": "Buttermilk Chicken (or house vegan chicken), Onion, House BBQ Sauce, Cilantro. If ordered vegan, all ingredients subbed for vegan counterparts!",
+        "price": "$28.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "The Bellucci Detroit",
+        "description": "Ezzo Cupping Pepperoni, House Vodka Sauce, Cracked Pepper.  If ordered vegan, all ingredients subbed for vegan counterparts",
+        "price": "$27.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Blippi's Demise Detroit",
+        "description": "Ezzo Cupping Pepperoni, Ricotta, House Pesto (No Tomato Sauce)",
+        "price": "$28.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Summer Yet? Detroit",
+        "description": "Spinach, Sliced Tomato, Mushroom, Olive, Artichoke, Garlic, Bianco DiNapoli Organic Tomato Sauce. If ordered vegan, all ingredients subbed for vegan counterparts!",
+        "price": "$28.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Pickle Detroit",
+        "description": "House pickles, ranch, everything seasoning, dill, garlic. ALLERGEN WARNING: Everything seasoning contains all-o-that stuff (but is nut and gluten free)",
+        "price": "$28.00"
+      },
+      {
+        "section": "DETROIT 10\" x 14\"",
+        "name": "Green Dream Detroit",
+        "description": "White Pie (no red sauce). Spinach, Mushroom, Ricotta, Roasted garlic EVOO",
+        "price": "$28.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Build Yr Own 8\" x 10\" Gluten Free",
+        "description": "Gluten Free Dough, Mozz/Brick Cheese Blend, Bianco DiNapoli Organic Detroit Sauce",
+        "price": "$18.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Large Marge GF",
+        "description": "Sliced Tomato, Cherry Tomato, Roasted Garlic, EVOO, Basil (No Sauce)",
+        "price": "$22.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "House Classic GF",
+        "description": "Fennel Sausage, Roasted Peppers, Onion, Pepperoncini \r\n*OUR VEGAN SAUSAGE IS NOT GLUTEN FREE* please request a substitute",
+        "price": "$22.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Chicago GF",
+        "description": "Milled Tomato, Pinched Fennel Sausage, Giardiniera, Stracciatella *OUR VEGAN SAUSAGE IS NOT GLUTEN FREE* please request a substitute",
+        "price": "$23.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Hot Sop GF",
+        "description": "Sopressata, Date, Ricotta, Hot Honey, Balsamic Reduction (No Sauce) (Not available Vegan)",
+        "price": "$23.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Buffalo Gal GF",
+        "description": "Buttermilk Chicken (or house vegan chicken), Pepperoncini, Buffalo Sauce, House Ranch, Green Onion",
+        "price": "$23.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Barbie Q GF",
+        "description": "Buttermilk Chicken (or house make vegan chicken), Onion, House BBQ Sauce, Cilantro",
+        "price": "$21.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Belucci GF",
+        "description": "Ezzo Cupping Pepperoni, House Vodka Sauce *Not available vegan*",
+        "price": "$21.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Trifecta GF",
+        "description": "Pesto, Organic Vodka Sauce, Bianco DiNapoli Organic Milled Sauce",
+        "price": "$21.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Blippi's Demise GF",
+        "description": "Ezzo Pepperoni, Ricotta, House Pesto\r\n*Not Available Vegan",
+        "price": "$22.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Summer Yet? GF",
+        "description": "Spinach, Sliced Tomato, Mushroom, Olive,  Garlic, Bianco DiNapoli Organic Milled Tomato Sauce",
+        "price": "$23.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Green Dream GF",
+        "description": "White Pie (no red sauce). Spinach, Mushroom, Ricotta, Roasted garlic EVOO",
+        "price": "$22.00"
+      },
+      {
+        "section": "GLUTEN FREE DETROIT 8\" x 10\"",
+        "name": "Pickle Pie GF",
+        "description": "House pickles, ranch, everything seasoning, dill, garlic. If ordered vegan, all ingredients subbed for vegan counterparts! ALLERGEN WARNING: Everything seasoning contains all-o-that stuff (but is nut and gluten free)",
+        "price": "$23.00"
+      },
+      {
+        "section": "SIDES",
+        "name": "Side House Ranch",
+        "description": "",
+        "price": "$0.75"
+      },
+      {
+        "section": "SIDES",
+        "name": "Side NY Sauce",
+        "description": "",
+        "price": "$0.75"
+      },
+      {
+        "section": "SIDES",
+        "name": "Side House Vegan Ranch",
+        "description": "",
+        "price": "$1.00"
+      },
+      {
+        "section": "SIDES",
+        "name": "Side BBQ Sauce",
+        "description": "",
+        "price": "$0.75"
+      },
+      {
+        "section": "SIDES",
+        "name": "Side Hot Honey",
+        "description": "",
+        "price": "$0.50"
+      },
+      {
+        "section": "SIDES",
+        "name": "Side Detroit Sauce",
+        "description": "",
+        "price": "$0.75"
+      },
+      {
+        "section": "SIDES",
+        "name": "Rosi's hot oil",
+        "description": "",
+        "price": "$14.00"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1903",
+    "name": "Diego's Taco Shop",
+    "sourceUrl": "https://dondiegostacoshop.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "No address given in the work list. The assigned website (dondiegostacoshop.com) is confirmed to belong to an unrelated restaurant of the same name in Houston, TX (13111 FM-529) - a different state entirely, not this San Diego County restaurant. Searched for a California 'Diego's Taco Shop' but found only same-named businesses that read as CLOSED on Yelp: one in Alpine, CA (1140 Tavern Rd - absent from current Google Maps search results, an Instagram account for it appears dormant) and a separate generic 'Diego's Taco Shop - CLOSED' San Diego Yelp listing with no address given. With no source address to disambiguate among multiple same-named San Diego County locations and no confirmed currently-operating match, this cannot be filed or safely marked not_found (closure was never confirmed AT A SPECIFIC ADDRESS since none was provided). Needs a browser/Google Maps lookup to establish which physical location, if any, PlateMaps intends."
+  },
+  {
+    "restaurantId": "7483",
+    "name": "Coyote Cafe vista village",
+    "sourceUrl": "https://api.chownow.com/api/restaurant/30684/menu/202609050615",
+    "confidence": "high",
+    "notes": "Own site (coyotecafeca.com) links directly to its ChowNow ordering page (direct.chownow.com/order/21205/locations/30684). Address confirmed exact match via ChowNow's restaurant API ('1450 N. Santa Fe Ave Ste. Y, Vista CA 92083') including the 'Y' suite the work list carries. Used the documented ChowNow two-step API (api.chownow.com/api/restaurant/30684 for the next_available_time stamp, then /menu/<stamp>) since the obvious /menu endpoint alone returns {}. This is the restaurant's own direct-ordering channel (no delivery marketplace), all prices are clean dollars-and-cents with no scattered-cent markup pattern.",
+    "dishes": [
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "1/2 Lb. Charbroiled Angus Burger Patty & Eggs",
+        "price": "$18.49",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "12 oz. Ribeye Steak & Eggs",
+        "price": "$27.49",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "8 oz. Top Sirloin Steak & Eggs",
+        "price": "$20.49",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "Bacon & Eggs",
+        "price": "$16.49",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "Corned Beef Hash & Eggs",
+        "price": "$17.99",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "Country Fried Steak & Eggs",
+        "price": "$18.49",
+        "description": "Served with homemade sausage gravy. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "Ham Steak & Eggs",
+        "price": "$19.49",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "Polish Sausage & Eggs",
+        "price": "$16.49",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "Pork Chop & Eggs",
+        "price": "$19.49",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "Sausage & Eggs",
+        "price": "$16.49",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Classic Favorites",
+        "name": "Smoked Ham & Eggs",
+        "price": "$17.49",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "ABC Omelet",
+        "price": "$17.99",
+        "description": "Avocado, bacon and Pepper Jack cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Burger Lover Omelet",
+        "price": "$18.99",
+        "description": "Hamburger, red onions, tomatoes and American cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "California Omelet",
+        "price": "$18.99",
+        "description": "Oven-roasted turkey breast, avocado, broccoli, mushrooms and Pepper Jack cheese. Topped with hollandaise sauce. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Cobb Omelet",
+        "price": "$18.99",
+        "description": "Bacon, oven-roasted turkey, tomatoes, chives, avocado and Pepper Jack cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Denver Omelet",
+        "price": "$17.99",
+        "description": "Smoked ham, bell peppers, red onions and Cheddar cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Greek Omelet",
+        "price": "$17.99",
+        "description": "Spinach, fresh garlic, tomatoes, black olives, bell peppers and feta cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Meat Lovers Omelet",
+        "price": "$18.49",
+        "description": "Smoked ham, sausage, mushrooms, chives and Pepper Jack cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Polish Omelet",
+        "price": "$17.99",
+        "description": "Polish sausage, bell peppers, spinach and Pepper Jack cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Santa Fe Omelet",
+        "price": "$18.49",
+        "description": "Smoked ham, Ortega chiles, avocado and Pepper Jack cheese. Topped with homemade Spanish sauce. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Spanish Omelet",
+        "price": "$16.99",
+        "description": "Avocado, Cheddar cheese, side of jalapenos and sour cream. Topped with homemade Spanish sauce. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Spicy Omelet",
+        "price": "$16.99",
+        "description": "Jalapenos, fresh garlic, avocado and Pepper Jack cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Sunshine Garden Omelet",
+        "price": "$17.99",
+        "description": "Mushrooms, avocado, tomatoes, spinach, chives, artichokes, broccoli and Pepper Jack cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Texas Omelet",
+        "price": "$16.99",
+        "description": "Homemade chili, red onions, Cheddar cheese and sour cream. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Omelets",
+        "name": "Vista Omelet",
+        "price": "$17.49",
+        "description": "Bacon, spinach, mushrooms, chives and Pepper Jack cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Scrambles",
+        "name": "\"The Avo\" Scramble",
+        "price": "$17.49",
+        "description": "Bacon, red onions, spinach, avocado and Cheddar cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Scrambles",
+        "name": "A.S.C. Scramble",
+        "price": "$16.99",
+        "description": "Avocado, sausage and Cheddar cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Scrambles",
+        "name": "Baja Scramble",
+        "price": "$18.99",
+        "description": "Shrimp, cilantro, avocado and Pepper Jack cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Scrambles",
+        "name": "Chive Scramble",
+        "price": "$15.49",
+        "description": "Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Scrambles",
+        "name": "Country Scramble",
+        "price": "$17.49",
+        "description": "Ham, ortega chiles, chives, tomatoes, bell pepper, jalapenos and sour cream. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Scrambles",
+        "name": "Garden Scramble",
+        "price": "$16.49",
+        "description": "Broccoli, tomatoes, spinach, mushrooms, chives, avocado and Pepper Jack cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Scrambles",
+        "name": "Italian Scramble",
+        "price": "$17.99",
+        "description": "Italian sausage, chives, spinach, olives, tomatoes, bell peppers and Mozzarella cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Scrambles",
+        "name": "Mediterranean Scramble",
+        "price": "$16.99",
+        "description": "Bell peppers, mushrooms, olives, fresh garlic, crushed red pepper and feta cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Scrambles",
+        "name": "Mexicali Scramble",
+        "price": "$17.99",
+        "description": "Chorizo, chives, jalapenos, avocado and Cheddar cheese. Hash browns, home fries, cottage cheese or fruit. White, wheat, sourdough, raisin toast, english muffin, homemade biscuits or a pancake."
+      },
+      {
+        "section": "Breakfast | Benedicts",
+        "name": "California Benedict",
+        "price": "$16.49",
+        "description": "Avocado. Served on english muffin with poached eggs and Hollandaise sauce."
+      },
+      {
+        "section": "Breakfast | Benedicts",
+        "name": "Corned Beef Hash Florentine Benedict",
+        "price": "$17.99",
+        "description": "Homemade corned beef and sauteed spinach. Served on english muffin with poached eggs and Hollandaise sauce."
+      },
+      {
+        "section": "Breakfast | Benedicts",
+        "name": "Crab Cakes Benedict",
+        "price": "$19.99",
+        "description": "Served on english muffin with poached eggs and Hollandaise sauce."
+      },
+      {
+        "section": "Breakfast | Benedicts",
+        "name": "Hearts Benedict",
+        "price": "$18.99",
+        "description": "Artichoke hearts, sauteed spinach, red onions, mushrooms. Served on english muffin with poached eggs and Hollandaise sauce."
+      },
+      {
+        "section": "Breakfast | Benedicts",
+        "name": "Morning Glory Benedict",
+        "price": "$17.99",
+        "description": "Bacon, sauteed tomatoes and spinach. Served on english muffin with poached eggs and Hollandaise sauce."
+      },
+      {
+        "section": "Breakfast | Benedicts",
+        "name": "Original Benedict",
+        "price": "$17.49",
+        "description": "Smoked ham. Served on english muffin with poached eggs and Hollandaise sauce."
+      },
+      {
+        "section": "Breakfast | Benedicts",
+        "name": "Vista Sunrise Benedict",
+        "price": "$18.99",
+        "description": "Oven-roasted turkey, sauteed tomatoes, avocad and spinach. Served on english muffin with poached eggs and Hollandaise sauce."
+      },
+      {
+        "section": "Breakfast | Sweets",
+        "name": "1 Belgian Waffle",
+        "price": "$12.99",
+        "description": "Add fresh bananas, blueberries or strawberries for 3.99. Whipped cream for 1.99. Walnuts or pecans for 3.99. Make it a combo with 2 eggs, 2 bacon strips and 2 sausage links for 4.49."
+      },
+      {
+        "section": "Breakfast | Sweets",
+        "name": "2 Buttermilk Pancakes",
+        "price": "$12.99",
+        "description": "Add fresh bananas, blueberries or strawberries for 3.99. Whipped cream for 1.99. Walnuts or pecans for 3.99. Make it a combo with 2 eggs, 2 bacon strips and 2 sausage links for 4.49."
+      },
+      {
+        "section": "Breakfast | Sweets",
+        "name": "2 Chocolate Chip Buttermilk Pancakes",
+        "price": "$13.99",
+        "description": "Add fresh bananas, blueberries or strawberries for 3.99. Whipped cream for 1.99. Walnuts or pecans for 3.99. Make it a combo with 2 eggs, 2 bacon strips and 2 sausage links for 4.49."
+      },
+      {
+        "section": "Breakfast | Sweets",
+        "name": "2 Slices of French Toast",
+        "price": "$12.99",
+        "description": "Add fresh bananas, blueberries or strawberries for 3.99. Whipped cream for 1.99. Walnuts or pecans for 3.99. Make it a combo with 2 eggs, 2 bacon strips and 2 sausage links for 4.49."
+      },
+      {
+        "section": "Breakfast | Sweets",
+        "name": "3 Buttermilk Pancakes",
+        "price": "$14.99",
+        "description": "Add fresh bananas, blueberries or strawberries for 3.99. Whipped cream for 1.99. Walnuts or pecans for 3.99. Make it a combo with 2 eggs, 2 bacon strips and 2 sausage links for 4.49."
+      },
+      {
+        "section": "Breakfast | Sweets",
+        "name": "Coconut Banana Belgian Waffle",
+        "price": "$15.99",
+        "description": "Add fresh bananas, blueberries or strawberries for 3.99. Whipped cream for 1.99. Walnuts or pecans for 3.99. Make it a combo with 2 eggs, 2 bacon strips and 2 sausage links for 4.49."
+      },
+      {
+        "section": "Breakfast | Sweets",
+        "name": "Creamy Strawberry Crepes",
+        "price": "$15.99",
+        "description": "Add fresh bananas, blueberries or strawberries for 3.99. Whipped cream for 1.99. Walnuts or pecans for 3.99. Make it a combo with 2 eggs, 2 bacon strips and 2 sausage links for 4.49."
+      },
+      {
+        "section": "Breakfast | Sweets",
+        "name": "Crunchy French Toast",
+        "price": "$16.49",
+        "description": "Topped with granola and seasonal berries. Add fresh bananas, blueberries or strawberries for 3.99. Whipped cream for 1.99. Walnuts or pecans for 3.99. Make it a combo with 2 eggs, 2 bacon strips and 2 sausage links for 4.49."
+      },
+      {
+        "section": "Breakfast | Sweets",
+        "name": "Nutella Banana Crepes",
+        "price": "$15.99",
+        "description": "Add fresh bananas, blueberries or strawberries for 3.99. Whipped cream for 1.99. Walnuts or pecans for 3.99. Make it a combo with 2 eggs, 2 bacon strips and 2 sausage links for 4.49."
+      },
+      {
+        "section": "Breakfast | Sweets",
+        "name": "Peanut Butter & Banana French Toast",
+        "price": "$15.99",
+        "description": "Add fresh bananas, blueberries or strawberries for 3.99. Whipped cream for 1.99. Walnuts or pecans for 3.99. Make it a combo with 2 eggs, 2 bacon strips and 2 sausage links for 5.99."
+      },
+      {
+        "section": "Breakfast | Goin South",
+        "name": "Breakfast Burrito",
+        "price": "$17.99",
+        "description": "Scrambled eggs, cheese, side of sour cream and avocado. Choice of bacon, sausage, polish sausage, ham or chorizo. Served with rice and refried beans or potatoes."
+      },
+      {
+        "section": "Breakfast | Goin South",
+        "name": "Breakfast Quesadilla",
+        "price": "$17.99",
+        "description": "Scrambled eggs with chorizo, bacon, chives, avocado and Cheddar cheese. Served with rice and refried beans."
+      },
+      {
+        "section": "Breakfast | Goin South",
+        "name": "California Quesadilla",
+        "price": "$17.99",
+        "description": "Pepper Jack and Cheddar cheese, bacon, diced tomato, avocado, jalapenos and side of sour cream and salsa fresca. Served with rice and refried beans."
+      },
+      {
+        "section": "Breakfast | Goin South",
+        "name": "Chorizo Killer",
+        "price": "$17.49",
+        "description": "Scrambled eggs with chorizo, jalapenos, avocado and Cheddar cheese. Served with rice, refried beans and choice of corn or flour tortillas."
+      },
+      {
+        "section": "Breakfast | Goin South",
+        "name": "Huevos Rancheros",
+        "price": "$16.99",
+        "description": "Eggs any style with homemade Spanish sauce, avocado and melted Cheddar cheese. Served with rice, refried beans and choice of corn or flour tortillas."
+      },
+      {
+        "section": "Breakfast | Bagels & More",
+        "name": "Bagel Breakfast",
+        "price": "$16.99",
+        "description": "Toasted bagel with cream cheese, side of eggs and choice of bacon, sausage, ham or turkey. Served with hash browns, home fries, cottage cheese or fruit."
+      },
+      {
+        "section": "Breakfast | Bagels & More",
+        "name": "Bagel Delight",
+        "price": "$15.99",
+        "description": "Toasted bagel with cream cheese, cucumbers, tomatoes, red onions and avocado. Served with hash browns, home fries, cottage cheese or fruit."
+      },
+      {
+        "section": "Breakfast | Bagels & More",
+        "name": "Bagel Sandwich",
+        "price": "$16.49",
+        "description": "Toasted bagel with cream cheese and scrambled eggs and chives. Served with hash browns, home fries, cottage cheese or fruit."
+      },
+      {
+        "section": "Breakfast | Bagels & More",
+        "name": "Biscuits & Gravy Combo",
+        "price": "$16.99",
+        "description": "Two biscuits topped with homemade country gravy, two eggs and potatoes. Served with hash browns, home fries, cottage cheese or fruit."
+      },
+      {
+        "section": "Breakfast | Bagels & More",
+        "name": "California Egg Sandwich",
+        "price": "$16.99",
+        "description": "Eggs cooked over-medium, bacon, avocado, tomatoes, mayonnaise and American cheese. Served on your choice of bread. Served with hash browns, home fries, cottage cheese or fruit."
+      },
+      {
+        "section": "Breakfast | Senior Menu",
+        "name": "2 Eggs",
+        "price": "$12.99",
+        "description": "Choice of bacon, sausage or ham. Choice of hash browns, home fries or fruit and toast."
+      },
+      {
+        "section": "Breakfast | Senior Menu",
+        "name": "Cheese Omelet",
+        "price": "$12.99",
+        "description": "Choice of hash browns, home fries or fruit and toast."
+      },
+      {
+        "section": "Breakfast | Senior Menu",
+        "name": "Half Waffle w/ 2 Eggs & Bacon or Sausage",
+        "price": "$12.99"
+      },
+      {
+        "section": "Cereals & Seasonal Fruit",
+        "name": "Breakfast Parfait",
+        "price": "$12.49",
+        "description": "Granola and vanilla yogurt topped with fresh berries and bananas."
+      },
+      {
+        "section": "Cereals & Seasonal Fruit",
+        "name": "Fruit (Cup)",
+        "price": "$6.49"
+      },
+      {
+        "section": "Cereals & Seasonal Fruit",
+        "name": "Fruit (Bowl)",
+        "price": "$8.99"
+      },
+      {
+        "section": "Cereals & Seasonal Fruit",
+        "name": "Oatmeal (Cup)",
+        "price": "$7.99",
+        "description": "Served with milk, brown sugar and raisins."
+      },
+      {
+        "section": "Cereals & Seasonal Fruit",
+        "name": "Oatmeal (Bowl)",
+        "price": "$8.99",
+        "description": "Served with milk, brown sugar and raisins."
+      },
+      {
+        "section": "Cereals & Seasonal Fruit",
+        "name": "Oatmeal Sundae",
+        "price": "$13.99",
+        "description": "Topped with fresh berries, bananas and nuts. Served with milk, brown sugar and raisins. Side of raisin toast."
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "1 Buttermilk Pancakes",
+        "price": "$7.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "1/2 Char- Broiled Angus Burger Patty",
+        "price": "$12.99"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "12 oz. Ribeye Steak",
+        "price": "$18.99"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "2 Homemade Biscuits",
+        "price": "$4.99"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "2 Pork Chops",
+        "price": "$12.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "8 oz. Top Sirloin Steak",
+        "price": "$12.99"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Avocado Slices",
+        "price": "$6.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Bacon",
+        "price": "$8.99"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Bagel w/ Cream Cheese",
+        "price": "$5.99"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Biscuits & Gravy (1 Biscuit)",
+        "price": "$7.99"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Biscuits & Gravy (2 Biscuit)",
+        "price": "$10.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Cottage Cheese",
+        "price": "$5.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Country Fried Steak",
+        "price": "$10.49",
+        "description": "Served with homemade sausage gravy."
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Eggs (1 Egg)",
+        "price": "$4.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Eggs (2 Eggs)",
+        "price": "$5.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Ham Steak",
+        "price": "$11.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Hash Browns",
+        "price": "$6.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Home Fries",
+        "price": "$6.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Homemade Corned Beef Hash",
+        "price": "$10.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Polish Sausage",
+        "price": "$9.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Sausage",
+        "price": "$8.99"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Smoked Ham",
+        "price": "$9.49"
+      },
+      {
+        "section": "Breakfast | Sides",
+        "name": "Toast",
+        "price": "$4.75"
+      },
+      {
+        "section": "Starters",
+        "name": "5 Chicken Tenders",
+        "price": "$14.99"
+      },
+      {
+        "section": "Starters",
+        "name": "Baked Potato",
+        "price": "$8.99",
+        "description": "Topped with bacon, Cheddar cheese and chives with butter and sour cream on the side."
+      },
+      {
+        "section": "Starters",
+        "name": "Big Fish Taco",
+        "price": "$13.99",
+        "description": "Lightly seasoned grilled or fried mahi in a soft flour or corn tortilla filled with cabbage, diced tomatoes, cilantro, Cheddar cheese and a side of sour cream, avocado and salsa fresca."
+      },
+      {
+        "section": "Starters",
+        "name": "Buffalo Wings",
+        "price": "$15.99",
+        "description": "8 chicken wings tossed in Frank's Red Hot. Served with carrots, celery sticks and a creamy homemade ranch dressing."
+      },
+      {
+        "section": "Starters",
+        "name": "California Quesadilla",
+        "price": "$13.99",
+        "description": "Flour tortilla filled with Pepper Jack and Cheddar cheese, diced tomatoes, avocado, jalapenos, sour cream and salsa fresca."
+      },
+      {
+        "section": "Starters",
+        "name": "Chicken Taco",
+        "price": "$12.99",
+        "description": "Lightly seasoned grilled chicken in a soft flour or corn tortilla filled with cabbage, diced tomatoes, cilantro, Cheddar cheese and a side of sour cream, avocado and salsa fresca."
+      },
+      {
+        "section": "Starters",
+        "name": "Chili Cheese Fries",
+        "price": "$9.99"
+      },
+      {
+        "section": "Starters",
+        "name": "French Fries",
+        "price": "$7.99"
+      },
+      {
+        "section": "Starters",
+        "name": "Grilled Veggie Taco",
+        "price": "$11.99",
+        "description": "Flour tortillas filled with sauteed onions, peppers, mushrooms and a side of sour cream, avocado and salsa fresca."
+      },
+      {
+        "section": "Starters",
+        "name": "Homemade Mashed Potatoes & Gravy",
+        "price": "$7.49"
+      },
+      {
+        "section": "Starters",
+        "name": "Italian Nachos",
+        "price": "$15.99",
+        "description": "Topped with Italian sausage, black olives, diced tomatoes, avocado, onions, jalapenos, Mozzarella cheese, sour cream and salsa fresca."
+      },
+      {
+        "section": "Starters",
+        "name": "Mozzarella Cheese Sticks",
+        "price": "$13.99",
+        "description": "8 Pieces lightly fried and served with marinara sauce."
+      },
+      {
+        "section": "Starters",
+        "name": "Nachos Platter",
+        "price": "$14.99",
+        "description": "Topped with refried beans, Cheddar cheese, diced tomatoes, avocado, sour cream and salsa fresca. Add grilled chicken for 3."
+      },
+      {
+        "section": "Starters",
+        "name": "Onion Rings",
+        "price": "$9.99"
+      },
+      {
+        "section": "Starters",
+        "name": "Seasoned Curly Fries",
+        "price": "$8.49"
+      },
+      {
+        "section": "Starters",
+        "name": "Sweet Potato Fries",
+        "price": "$8.99"
+      },
+      {
+        "section": "Soups",
+        "name": "Bowl of Homemade Chili",
+        "price": "$9.49",
+        "description": "Delicious homemade soups made fresh daily. Includes biscuits or crackers."
+      },
+      {
+        "section": "Soups",
+        "name": "Bowl of Homemade Soup",
+        "price": "$8.99",
+        "description": "Delicious homemade soups made fresh daily. Includes biscuits or crackers."
+      },
+      {
+        "section": "Soups",
+        "name": "Cup of Homemade Chili",
+        "price": "$7.99",
+        "description": "Delicious homemade soups made fresh daily."
+      },
+      {
+        "section": "Soups",
+        "name": "Cup of Homemade Soup",
+        "price": "$7.49",
+        "description": "Delicious homemade soups made fresh daily."
+      },
+      {
+        "section": "Salads",
+        "name": "Cajun Shrimp Caesar Salad",
+        "price": "$20.99",
+        "description": "Traditional tossed Caesar salad with cajun seasoned shrimp. Made with the freshest ingredients and served with garlic bread."
+      },
+      {
+        "section": "Salads",
+        "name": "Calorie Heaven Salad",
+        "price": "$17.49",
+        "description": "1/2 lb. charbroiled burger patty or grilled chicken breast, bell peppers, red onions, avocado, tomato, hard-boiled egg, cottage cheese, peaches and a side of raisin toast. Made with the freshest ingredients and served with garlic bread."
+      },
+      {
+        "section": "Salads",
+        "name": "Club House Salad",
+        "price": "$17.49",
+        "description": "Mixed greens with oven-roasted turkey, bacon, tomatoes, black olives, red onions, cucumber, bell peppers, avocado and a hard boiled egg. Made with the freshest ingredients and served with garlic bread."
+      },
+      {
+        "section": "Salads",
+        "name": "Garden Salad",
+        "price": "$14.99",
+        "description": "Mixed greens with tomatoes, avocado, cucumbers, red onions, bell peppers, black olives and a hard boiled egg. Made with the freshest ingredients and served with garlic bread."
+      },
+      {
+        "section": "Salads",
+        "name": "Grilled Chicken Breast Salad",
+        "price": "$17.49",
+        "description": "Mixed greens with tomatoes, red onions, cucumber, black olives, bell peppers, avocado, hard boiled egg and Parmesan cheese. Made with the freshest ingredients and served with garlic bread."
+      },
+      {
+        "section": "Salads",
+        "name": "Mediterranean Salad",
+        "price": "$16.99",
+        "description": "Tomato wedges, cucumbers, red onions tossed in a light olive oil and topped with feta cheese. Made with the freshest ingredients and served with garlic bread."
+      },
+      {
+        "section": "Salads",
+        "name": "Spinach Salad",
+        "price": "$16.99",
+        "description": "Served with bacon, bell peppers, sliced mushrooms, black olives, avocado, red onions, tomatoes, hard boiled egg and Parmesan cheese. Add grilled chicken for 3. Made with the freshest ingredients and served with garlic bread."
+      },
+      {
+        "section": "Salads",
+        "name": "Stuffed Tomato or Avocado Salad",
+        "price": "$16.99",
+        "description": "Choice of chicken, tuna, ham or egg salad. Mixed greens with tomatoes, avocado, cucumbers, red onions, bell peppers, black olives and a hard boiled egg. Made with the freshest ingredients and served with garlic bread."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "American Grilled Cheese",
+        "price": "$13.99",
+        "description": "American cheese on sourdough. Add ham for 2.99. Served with a side of au jus for dipping. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Avo Wrap",
+        "price": "$16.49",
+        "description": "Crisp bacon, romaine lettuce, tomatoes and avocado wrapped in flour tortilla. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Beefeater",
+        "price": "$17.49",
+        "description": "Roast beef, tomatoes, onions, Ortega chiles and Swiss grilled together on sourdough. Served with a side of au jus for dipping. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "BLT",
+        "price": "$16.49",
+        "description": "Bacon, lettuce, tomato and mayo on your choice of bread. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "California Chicken Melt",
+        "price": "$17.99",
+        "description": "Grilled chicken, Swiss cheese, avocado and Ortega chile melted together on a grilled sourdough bread. Add bacon 3.49. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Classic Ham & Cheese",
+        "price": "$15.99",
+        "description": "With lettuce, tomatoes, onions, mayo and Cheddar cheese. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Cold Tuna or Chicken Salad",
+        "price": "$16.49",
+        "description": "With lettuce, tomato and mayo on your choice of bread. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Egg Salad",
+        "price": "$15.49",
+        "description": "Hard boiled eggs, pickles, onions, lettuce and tomatoes served on whole wheat bread with mayo. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "French Dip",
+        "price": "$17.49",
+        "description": "Roast beef on a toasted French roll smothered with Swiss cheese. Served with a side of au jus for dipping. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Grilled Chicken Breast Club",
+        "price": "$18.49",
+        "description": "Grilled chicken, crisp bacon, American cheese, lettuce, tomatoes and mayo on 3 slices of toast. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Grilled Mahi",
+        "price": "$19.99",
+        "description": "Seasoned and grilled on a bun with lettuce, tomatoes and tartar sauce on the side. Cajun mahi served on request. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Grilled Mozzi Mozzarella",
+        "price": "$15.99",
+        "description": "Mozzarella cheese with sauteed onions, peppers and tomatoes on grilled sourdough. Add grilled chicken for 3. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Hot Tuna Melt",
+        "price": "$16.49",
+        "description": "American cheese on grilled sourdough. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Jalapeno Popper Grilled Cheese",
+        "price": "$15.99",
+        "description": "Cream cheese, crisp bacon and chopped jalapenos on sourdough. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Monte Cristo",
+        "price": "$17.49",
+        "description": "Grilled ham, turkey and Swiss cheese between French toast. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Ortega Melt",
+        "price": "$15.49",
+        "description": "Swiss cheese, Ortega chile, avocado on grilled sourdough. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Philly Cheese Steak",
+        "price": "$19.99",
+        "description": "Grilled sirloin steak, peppers, onions and melted American cheese on a toasted roll. Served with a side of au jus for dipping. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Reuben",
+        "price": "$17.49",
+        "description": "Hot corned beef, Swiss cheese and sauerkraut on grilled rye. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Turkey Caliente",
+        "price": "$16.49",
+        "description": "Oven roasted turkey breast jalapenos and Cheddar cheese on grilled sourdough. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Turkey Club",
+        "price": "$18.49",
+        "description": "Oven roasted turkey breast, crisp bacon, lettuce, tomato and mayo on 3 slices of toast. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Signature Sandwiches",
+        "name": "Veggie Sandwich",
+        "price": "$15.99",
+        "description": "Avocado, lettuce, spinach, tomatoes, red onions, cucumber, pepperoni and Pepper Jack cheese. Served with your choice of regular fries, sweet potato fries, seasoned curly fries, coleslaw, cottage cheese or fruit. Add a cup of soup or side salad for 3.99."
+      },
+      {
+        "section": "Burgers",
+        "name": "ABC Burger",
+        "price": "$17.99",
+        "description": "Avocado, bacon and cheese. Charbroiled angus burger served with lettuce, tomato, red onions, pickles and mayo on a sesame seed bun. Choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, fruit or cottage cheese. Add soup or salad for 2.99. Add bacon for 1.99."
+      },
+      {
+        "section": "Burgers",
+        "name": "Cheeseburger",
+        "price": "$16.49",
+        "description": "Charbroiled angus burger served with lettuce, tomato, red onions, pickles and mayo on a sesame seed bun. Choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, fruit or cottage cheese. Add soup or salad for 2.99. Add bacon for 1.99."
+      },
+      {
+        "section": "Burgers",
+        "name": "Chili Burger",
+        "price": "$17.99",
+        "description": "Homemade chili, onions and Cheddar cheese. Charbroiled angus burger served with lettuce, tomato, red onions, pickles and mayo on a sesame seed bun. Choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, fruit or cottage cheese. Add soup or salad for 2.99. Add bacon for 1.99."
+      },
+      {
+        "section": "Burgers",
+        "name": "Deluxe Burger",
+        "price": "$19.99",
+        "description": "Bacon, avocado, grilled onions, sauteed mushrooms and Pepper Jack cheese. Charbroiled angus burger served with lettuce, tomato, red onions, pickles and mayo on a sesame seed bun. Choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, fruit or cottage cheese. Add soup or salad for 2.99. Add bacon for 1.99."
+      },
+      {
+        "section": "Burgers",
+        "name": "Garden Burger Melt",
+        "price": "$16.99",
+        "description": "Grilled veggie burger with Pepper Jack cheese, avocado, grilled tomatoes and onions on grilled rye bread. Charbroiled angus burger served with lettuce, tomato, red onions, pickles and mayo on a sesame seed bun. Choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, fruit or cottage cheese. Add soup or salad for 2.99. Add bacon for 1.99."
+      },
+      {
+        "section": "Burgers",
+        "name": "Hamburger",
+        "price": "$15.99",
+        "description": "Charbroiled angus burger served with lettuce, tomato, red onions, pickles and mayo on a sesame seed bun. Choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, fruit or cottage cheese. Add soup or salad for 2.99. Add bacon for 1.99."
+      },
+      {
+        "section": "Burgers",
+        "name": "MBC Burger",
+        "price": "$17.99",
+        "description": "Mushrooms, bacon and cheese. Charbroiled angus burger served with lettuce, tomato, red onions, pickles and mayo on a sesame seed bun. Choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, fruit or cottage cheese. Add soup or salad for 2.99. Add bacon for 1.99."
+      },
+      {
+        "section": "Burgers",
+        "name": "Patty Melt",
+        "price": "$16.99",
+        "description": "American grilled cheese and grilled onions on grilled rye bread. Charbroiled angus burger served with lettuce, tomato, red onions, pickles and mayo on a sesame seed bun. Choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, fruit or cottage cheese. Add soup or salad for 2.99. Add bacon for 1.99."
+      },
+      {
+        "section": "Pastas",
+        "name": "Almost Chicken Cacciatore",
+        "price": "$19.49",
+        "description": "Sauteed chicken breast with peppers, onions, mushrooms tossed with marinara sauce over penne pasta. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Artichoke Chicken & Rice",
+        "price": "$19.99",
+        "description": "Sauteed chicken breast with artichokes and mushrooms. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Cajun Chicken Pasta",
+        "price": "$19.99",
+        "description": "Cajun chicken served over linguini tossed in our Parmesan garlic cream sauce. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Chicken Carbonara",
+        "price": "$19.99",
+        "description": "Chicken, bacon, mushrooms tossed in a Parmesan and garlic cream sauce. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Chicken Corleone",
+        "price": "$18.99",
+        "description": "Sauteed chicken breast, garlic, artichokes, sun dried tomatoes tossed with Parmesan cream sauce over penne pasta. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Chicken Linguini Alfredo",
+        "price": "$18.99",
+        "description": "Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "I Love Mushrooms",
+        "price": "$18.99",
+        "description": "Penne pasta and lots of mushrooms in a delicious Parmesan mushroom cream sauce. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Lasagna",
+        "price": "$18.99",
+        "description": "Homemade meat lasagna. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Mediterranean Pasta",
+        "price": "$19.99",
+        "description": "Linguini, artichoke hearts, sun dried tomatoes, garlic and light olive oil tossed together with feta cheese. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Sante Fe Chicken Pasta",
+        "price": "$19.99",
+        "description": "Penne pasta sauteed with fresh jalapenos, diced tomatoes and cilantro in our Parmesan garlic cream sauce topped with Cajun chicken. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Sausage Pasta",
+        "price": "$19.99",
+        "description": "Sauteed Italian sausage crumbles, peppers, onions, mushrooms and marinara sauce over penne pasta. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Shrimp Scampi",
+        "price": "$21.99",
+        "description": "Shrimp sauteed in chopped garlic butter, parsley and white wine served with linguini pasta. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Pastas",
+        "name": "Spicy Shrimp Pasta",
+        "price": "$21.99",
+        "description": "Sauteed shrimp and freshly chopped jalapenos over linguini and tossed with marinara sauce. Served with garlic toast and choice of soup or salad."
+      },
+      {
+        "section": "Lunch Combo",
+        "name": "Lunch Combo",
+        "price": "$16.99",
+        "description": "Half tuna salad or chicken salad sandwich, cup of soup or side salad and a slice of pie."
+      },
+      {
+        "section": "Kid's Menu | 10 & Under",
+        "name": "Eggs in a nest",
+        "price": "$8.00"
+      },
+      {
+        "section": "Kid's Menu | 10 & Under",
+        "name": "Bacon, Sausage, & Egg",
+        "price": "$8.00",
+        "description": "With toast and hash browns."
+      },
+      {
+        "section": "Kid's Menu | 10 & Under",
+        "name": "French Toast",
+        "price": "$8.00"
+      },
+      {
+        "section": "Kid's Menu | 10 & Under",
+        "name": "Silver Dollar Pancakes",
+        "price": "$8.00"
+      },
+      {
+        "section": "Kid's Menu | 10 & Under",
+        "name": "Half Waffle",
+        "price": "$8.00"
+      },
+      {
+        "section": "Kid's Menu | 10 & Under",
+        "name": "Chix Strips & Fries",
+        "price": "$8.00"
+      },
+      {
+        "section": "Kid's Menu | 10 & Under",
+        "name": "Grilled Cheese & Fruit",
+        "price": "$8.00"
+      },
+      {
+        "section": "Kid's Menu | 10 & Under",
+        "name": "Cheeseburger & Fries",
+        "price": "$8.00"
+      },
+      {
+        "section": "Senior Menu",
+        "name": "1/2 Lb. Charbroiled Angus Burger Patty",
+        "price": "$15.99",
+        "description": "With grilled onions."
+      },
+      {
+        "section": "Senior Menu",
+        "name": "Country Fried Steak",
+        "price": "$15.99"
+      },
+      {
+        "section": "Senior Menu",
+        "name": "Fish & Chips",
+        "price": "$15.99"
+      },
+      {
+        "section": "Senior Menu",
+        "name": "Liver & Onions",
+        "price": "$15.99"
+      },
+      {
+        "section": "Plates",
+        "name": "1/2 Lb. Charbroiled Angus Burger Patty",
+        "price": "$18.49",
+        "description": "With sauteed onions. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "12 Oz. Ribeye Steak",
+        "price": "$28.49",
+        "description": "Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "8 oz. Top Sirloin Steak",
+        "price": "$20.99",
+        "description": "Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Baby Beef Liver",
+        "price": "$17.99",
+        "description": "With sauteed onions. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Beer Battered Fish & Chips",
+        "price": "$22.99",
+        "description": "Crispy golden brown pieces of sea bass served with homemade tartar sauce.. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Country Fried Steak",
+        "price": "$18.49",
+        "description": "Topped with country gravy or brown gravy. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Fish Taco Plate",
+        "price": "$20.99",
+        "description": "Lightly seasoned grilled or fried mahi in a soft tortilla filled with cabbage, diced tomatoes, onions, cilantro, Cheddar cheese, avocado and salsa fresca. Served with Spanish rice and refried beans. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Grilled Mahi Plate",
+        "price": "$22.99",
+        "description": "Grilled cajun style or garlic butter upon request. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Grilled Salmon Plate",
+        "price": "$22.99",
+        "description": "Grilled cajun style or garlic butter upon request. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Grilled Sea Bass",
+        "price": "$21.99",
+        "description": "Grilled cajun style or garlic butter upon request. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Half Fried Chicken",
+        "price": "$20.99",
+        "description": "Crispy golden brown with homemade seasonings. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Hot Roast Beef Sandwich",
+        "price": "$17.99",
+        "description": "House roasted beef open-faced, topped with homemade gravy on white bread. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Jumbo Shrimp",
+        "price": "$21.49",
+        "description": "6 pieces fried crispy golden brown. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Pork Chops",
+        "price": "$19.49",
+        "description": "2 charbroiled or breaded pork chops with our homemade seasonings. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Shrimp Fajitas",
+        "price": "$21.99",
+        "description": "Shrimp, sauteed onions, peppers and side of avocado, salsa fresca and sour cream. Served with Spanish rice and refried beans. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Veal Cutlet",
+        "price": "$18.49",
+        "description": "With sauteed mushrooms and brown gravy. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Plates",
+        "name": "Veggie Taco Plate",
+        "price": "$18.99",
+        "description": "Soft flour tortillas filled with sauteed onions, peppers mushrooms, avocado and Cheddar cheese. Served with Spanish rice and refried beans. Served with a side salad or homemade cup of soup, steamed vegetables and choice of regular fries, seasoned curly fries, sweet potato fries, coleslaw, mashed potatoes and gravy or a baked potato."
+      },
+      {
+        "section": "Desserts",
+        "name": "1 Scoop of Vanilla Ice Cream",
+        "price": "$3.99"
+      },
+      {
+        "section": "Desserts",
+        "name": "Cream Pies",
+        "price": "$6.49"
+      },
+      {
+        "section": "Desserts",
+        "name": "Fruit Pies",
+        "price": "$5.99"
+      },
+      {
+        "section": "Desserts",
+        "name": "Fruit Pies a la Mode",
+        "price": "$7.49",
+        "description": "Warm fruit pie with vanilla ice cream."
+      },
+      {
+        "section": "Desserts",
+        "name": "Lemon Meringue",
+        "price": "$6.49"
+      },
+      {
+        "section": "Desserts",
+        "name": "Milk Shakes",
+        "price": "$6.99",
+        "description": "Chocolate, Nutella, strawberry or vanilla."
+      },
+      {
+        "section": "Desserts",
+        "name": "Root Beer Float",
+        "price": "$5.99",
+        "description": "Chocolate or strawberry."
+      },
+      {
+        "section": "Desserts",
+        "name": "Sundaes",
+        "price": "$6.99",
+        "description": "Chocolate or strawberry."
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Chocolate Milk (Small)",
+        "price": "$3.75"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Chocolate Milk (Medium)",
+        "price": "$4.25"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Chocolate Milk (Large)",
+        "price": "$4.75"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Coffee",
+        "price": "$4.49"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Herbal & Black Teas",
+        "price": "$4.49"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Hot Chocolate",
+        "price": "$4.75"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Juice (Small)",
+        "price": "$2.75"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Juice (Medium)",
+        "price": "$3.75"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Juice (Large)",
+        "price": "$4.75"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Juice (Small Carafe)",
+        "price": "$8.99"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Juice (Large Carafe)",
+        "price": "$10.99"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Milk (Small)",
+        "price": "$2.99"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Milk (Medium)",
+        "price": "$3.49"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Milk (Large)",
+        "price": "$3.99"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Soda",
+        "price": "$4.49"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Unsweetened Black Iced Tea",
+        "price": "$4.49"
+      },
+      {
+        "section": "Drinks & Juices",
+        "name": "Unsweetened Peach Iced Tea",
+        "price": "$4.49"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7493",
+    "name": "Golden Spoon Frozen Yogurt",
+    "sourceUrl": "https://www.doordash.com/store/golden-spoon-oceanside-29447666/",
+    "confidence": "medium",
+    "notes": "No own-site prices found (this location's own site was not locatable separately from other Golden Spoon franchisees). Address confirmed exact match via DoorDash's schema.org JSON-LD ('4121 Oceanside Boulevard'). Only 7 priced items, but this is a legitimate complete count for a self-serve frozen-yogurt shop (cup sizes: mini/regular/large/quart, plus regular/mini toppings and a water bottle) - not a truncated capture. Confidence marked medium rather than high only because DoorDash is a delivery marketplace and no fee-free sibling (own site, in-store menu) was found to cross-check against.",
+    "dishes": [
+      {
+        "section": "Most Ordered",
+        "name": "Quart Frozen Yogurt",
+        "description": "Choose from over 15 flavors including original tart, coffee, peanut butter, and more. Option for regular or large. Spoons available upon request.",
+        "price": "$13.00"
+      },
+      {
+        "section": "Most Ordered",
+        "name": "Large Frozen Yogurt",
+        "description": "Large Frozen Yogurt - Your choice of flavors ranging from Original Tart to Georgia Peach and Mountain Blackberry. Opt for or without a spoon.",
+        "price": "$7.50"
+      },
+      {
+        "section": "Most Ordered",
+        "name": "Regular Frozen Yogurt",
+        "description": "Frozen yogurt offered in regular or large with diverse flavors from Original Tart to Mountain Blackberry. Option to include a spoon.",
+        "price": "$6.50"
+      },
+      {
+        "section": "Most Ordered",
+        "name": "Mini Frozen Yogurt",
+        "description": "Mini frozen yogurt available in various flavors including peanut butter, multiple chocolate varieties, fruit-infused tarts, vanilla twists, and coffee-infused gelato. Choice of spoon.",
+        "price": "$5.15"
+      },
+      {
+        "section": "Featured Item",
+        "name": "Regular Topping",
+        "description": "Choose from a vast selection of toppings including nuts, chocolates, candies, sprinkles, and exotic additions like mango boba and mochi to enhance your dessert.",
+        "price": "$2.00"
+      },
+      {
+        "section": "Featured Item",
+        "name": "Mini Topping",
+        "description": "Assorted mini toppings including sweets like caramel cups, nuts such as almonds, and unique options like mango boba and mochi. Over 25 varieties for dessert customization.",
+        "price": "$1.50"
+      },
+      {
+        "section": "Featured Item",
+        "name": "Water Bottle",
+        "description": "",
+        "price": "$2.00"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7193",
+    "name": "Tacos el Niño Santana",
+    "sourceUrl": "https://themenustar2.com/webspace/functions/restaurant.php (code=ordertacoselninosantana.com, restaurant_id=30381)",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Own site (ordertacoselninosantana.com) embeds a MenuStar ordering widget (139 items across 21 categories, address 7287 El Cajon Blvd confirmed on page). Prices are heavily scattered-cent ($3.64, $4.11, $16.90, $19.76, etc.) with no round-dollar pattern in the raw payload. A divisor sweep found 84% (129/153) of prices resolve to round numbers when divided by 1.04, suggesting a baked-in ~4% fee - but a direct item-level cross-check against a Grubhub listing at the same address is inconsistent with a single uniform fee: 'Orden De Tamales' matches exactly ($5.00 = $5.00, no markup) while 'Carne Asadas Fries' does not (MenuStar $16.90 vs Grubhub $15.25, matching description 'Guacamole, crema y queso', a ~10.8% gap). Since neither the uniform-fee theory nor a trustworthy single source holds up under direct comparison, this is blocked rather than filed with either scattered or divided prices. Needs a browser to read Grubhub's or Yelp's full rendered menu (both are JS-rendered shells to a plain curl) for a clean cross-check, or a dine-in/photo menu."
+  },
+  {
+    "restaurantId": "7478",
+    "name": "Saigon Star Restaurant",
+    "sourceUrl": "https://menupages.com/saigon-star/10450-friars-rd-ste-e-san-diego",
+    "confidence": "medium",
+    "notes": "The work list's website (saigonstar.top) is confirmed as an unusable farm page: its /menu subpage carries prices but they turn out to be a scrape of UberEats' own rendered menu (its HTML literally reuses UberEats' obfuscated CSS class names and aria-label price markup) with an ADDITIONAL markup layer on top - e.g. 'Saigon Star House Special Fried Rice' is $18.95 there vs $13.95 on MenuPages, a ~36% gap. Used MenuPages instead (menupages.com), whose schema.org JSON-LD carries the exact address ('10450 Friars Rd Ste E, San Diego, CA 92120-2311') and 106 priced items with a clean, ordinary cent distribution (.00/.25/.45/.50/.75/.95, no scattered-cent or single-divisor signature). Confidence marked medium rather than high because MenuPages is a third-party aggregator (not the restaurant's own site or a verified first-party ordering platform), though its prices are visibly lower than every delivery-marketplace listing found (Grubhub, UberEats, saigonstar.top), consistent with being closer to a genuine dine-in price than a marked-up one.",
+    "dishes": [
+      {
+        "section": "Appetizers",
+        "name": "Crispy Egg Rolls (6)",
+        "description": "6 crispy egg rolls served with fresh lettuce and mint.",
+        "price": "$9.25"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Salt and Pepper Calamari",
+        "description": "Crispy calamari tossed with scallions and browned garlic.",
+        "price": "$12.50"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Salt and Pepper Wings",
+        "description": "Crispy chicken wings lightly tossed in our special spice mix.",
+        "price": "$12.00"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Salt and Pepper Shrimp",
+        "description": "Lightly battered shrimps tossed in our special spice mix.",
+        "price": "$12.50"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Crispy Seasoned Tofu Pieces",
+        "description": "Lightly battered tofu served with a red vinegar soy sauce.",
+        "price": "$9.75"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Crispy Wonton",
+        "description": "Savory mixture of pork and chicken.",
+        "price": "$11.50"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Vegetable Egg Rolls",
+        "description": "6 crispy egg rolls served with fresh lettuce and mint.",
+        "price": "$9.25"
+      },
+      {
+        "section": "Spring Roll",
+        "name": "Traditional Spring Rolls (2)",
+        "description": "Poached shrimp and pork.",
+        "price": "$7.75"
+      },
+      {
+        "section": "Spring Roll",
+        "name": "Saigon Star's Double Delight Rolls (2)",
+        "description": "Crispy egg rolls wrapped in spring rolls.",
+        "price": "$7.95"
+      },
+      {
+        "section": "Spring Roll",
+        "name": "Grilled Pork Sausage Spring Rolls (2)",
+        "description": "",
+        "price": "$7.95"
+      },
+      {
+        "section": "Spring Roll",
+        "name": "Grilled Fish and Ginger Spring Rolls (2)",
+        "description": "White fillets, purple mint and browned shallot.",
+        "price": "$7.95"
+      },
+      {
+        "section": "Spring Roll",
+        "name": "Shrimp Spring Rolls (2)",
+        "description": "Poached shrimp.",
+        "price": "$7.75"
+      },
+      {
+        "section": "Spring Roll",
+        "name": "Tofu Spring Rolls (2)",
+        "description": "Fried tofu, jicama and carrots.",
+        "price": "$7.75"
+      },
+      {
+        "section": "Spring Roll",
+        "name": "Char Grilled Rib Eye Beef Spring Rolls (2)",
+        "description": "Marinated rib eye beef.",
+        "price": "$7.75"
+      },
+      {
+        "section": "Spring Roll",
+        "name": "Grilled Sugarcane Shrimp Spring Rolls (2)",
+        "description": "Ground shrimp wrapped around sugarcane and grilled.",
+        "price": "$7.95"
+      },
+      {
+        "section": "Spring Roll",
+        "name": "Char Grilled Chicken Spring Rolls (2)",
+        "description": "Marinated chicken.",
+        "price": "$7.75"
+      },
+      {
+        "section": "Spring Roll",
+        "name": "Char Grilled Pork Spring Rolls (2)",
+        "description": "Marinated pork.",
+        "price": "$7.75"
+      },
+      {
+        "section": "Soups and Salads",
+        "name": "Wonton Soup",
+        "description": "Savory mixture of ground pork, chicken in our homemade chicken broth.",
+        "price": "$7.75"
+      },
+      {
+        "section": "Soups and Salads",
+        "name": "Hot and Sour Soup",
+        "description": "Chicken, tofu and mushrooms in our homemade chicken broth.",
+        "price": "$7.75"
+      },
+      {
+        "section": "Soups and Salads",
+        "name": "Spicy and Sour Shrimp Pineapple Soup",
+        "description": "With tomatoes, bean sprouts, mushrooms and taro root. Spicy.",
+        "price": "$8.75"
+      },
+      {
+        "section": "Soups and Salads",
+        "name": "Green Papaya Salad with Beef Jerky",
+        "description": "Shredded green papaya blends in a sweet tangy red vinegar soy sauce topped with purple basil.",
+        "price": "$10.95"
+      },
+      {
+        "section": "Soups and Salads",
+        "name": "Green Papaya Salad with Shrimp",
+        "description": "Shredded green papaya blends in a sweet tangy red vinegar soy sauce topped with purple basil.",
+        "price": "$10.95"
+      },
+      {
+        "section": "Soups and Salads",
+        "name": "Teriyaki Black Sesame Salmon Salad",
+        "description": "With tangy fruil sauce dressing with spring salad.",
+        "price": "$16.00"
+      },
+      {
+        "section": "Fried Rice",
+        "name": "Saigon Star House Special Fried Rice",
+        "description": "Shrimp, char sieu pork and Chinese sausage.",
+        "price": "$13.95"
+      },
+      {
+        "section": "Fried Rice",
+        "name": "Seafood Fried Rice",
+        "description": "",
+        "price": "$13.95"
+      },
+      {
+        "section": "Fried Rice",
+        "name": "BBQ Char Sieu Pork Fried Rice",
+        "description": "",
+        "price": "$12.50"
+      },
+      {
+        "section": "Fried Rice",
+        "name": "Chicken Fried Rice",
+        "description": "",
+        "price": "$12.50"
+      },
+      {
+        "section": "Fried Rice",
+        "name": "Shrimp Fried Rice",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Fried Rice",
+        "name": "Tofu and Vegetables Fried Rice",
+        "description": "",
+        "price": "$12.50"
+      },
+      {
+        "section": "Saigon Star's Specialties",
+        "name": "Sizzling Steak Filet Mignon ",
+        "description": "Served with jasmine rice and a bed of spring mix salad",
+        "price": "$17.50"
+      },
+      {
+        "section": "Saigon Star's Specialties",
+        "name": "Saigon Star Chicken Spicy",
+        "description": "",
+        "price": "$14.50"
+      },
+      {
+        "section": "Saigon Star's Specialties",
+        "name": "Vietnamese Chicken Curry",
+        "description": "Served with your choice of rice, vermicelli noodles or baguette. Spicy.",
+        "price": "$14.50"
+      },
+      {
+        "section": "Saigon Star's Specialties",
+        "name": "Steamed Fish Fillet with Ginger and Onions",
+        "description": "Served in a lite sesame soy sauce with jasmine rice.",
+        "price": "$17.50"
+      },
+      {
+        "section": "Saigon Star's Specialties",
+        "name": "Kung Pao Chicken",
+        "description": "",
+        "price": "$14.50"
+      },
+      {
+        "section": "Saigon Star's Specialties",
+        "name": "Beef Curry",
+        "description": "",
+        "price": "$14.50"
+      },
+      {
+        "section": "Saigon Star's Specialties",
+        "name": "Vegetarian Curry",
+        "description": "",
+        "price": "$14.50"
+      },
+      {
+        "section": "Saigon Star's Specialties",
+        "name": "Shrimp Curry",
+        "description": "",
+        "price": "$14.50"
+      },
+      {
+        "section": "Pho",
+        "name": "Large Combo Noodle Soup",
+        "description": "With rare steak, well done steak, flank, brisket, tendon and tripe.",
+        "price": "$12.95"
+      },
+      {
+        "section": "Pho",
+        "name": "Rare Steak Noodle Soup",
+        "description": "",
+        "price": "$11.50"
+      },
+      {
+        "section": "Pho",
+        "name": "Well Done Steak Noodle Soup",
+        "description": "",
+        "price": "$11.50"
+      },
+      {
+        "section": "Pho",
+        "name": "Rare Steak and Well Done Steak Noodle Soup",
+        "description": "",
+        "price": "$11.50"
+      },
+      {
+        "section": "Pho",
+        "name": "Meatball Noodle Soup",
+        "description": "",
+        "price": "$11.50"
+      },
+      {
+        "section": "Pho",
+        "name": "Chicken Noodle Soup",
+        "description": "",
+        "price": "$10.45"
+      },
+      {
+        "section": "Pho",
+        "name": "Shrimp Noodle Soup",
+        "description": "",
+        "price": "$12.00"
+      },
+      {
+        "section": "Pho",
+        "name": "Large Combo Seafood Noodle Soup",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Pho",
+        "name": "Vegetables and Tofu Noodle Soup",
+        "description": "Don't forget to ask for Veggie Broth",
+        "price": "$11.50"
+      },
+      {
+        "section": "Pho",
+        "name": "Hue Style",
+        "description": "With large round vermicelli, tender beef flank, mild hot and flavorful lemon grass broth.",
+        "price": "$8.95"
+      },
+      {
+        "section": "Pho",
+        "name": "Wonton Noodle Soup",
+        "description": "",
+        "price": "$12.00"
+      },
+      {
+        "section": "Sandwiches",
+        "name": "Char Grilled Pork Sandwich",
+        "description": "",
+        "price": "$7.50"
+      },
+      {
+        "section": "Sandwiches",
+        "name": "Chicken Sandwich",
+        "description": "",
+        "price": "$7.50"
+      },
+      {
+        "section": "Sandwiches",
+        "name": "Fried Tofu Sandwich",
+        "description": "",
+        "price": "$7.00"
+      },
+      {
+        "section": "Sandwiches",
+        "name": "Char Grilled Rib Eye Beef Sandwich",
+        "description": "",
+        "price": "$7.95"
+      },
+      {
+        "section": "Stir Fried Plates",
+        "name": "House Special Combination Stir Fried Delight Plate",
+        "description": "",
+        "price": "$14.50"
+      },
+      {
+        "section": "Stir Fried Plates",
+        "name": "Spicy Lemon Grass Chicken Plate",
+        "description": "Spicy.",
+        "price": "$13.95"
+      },
+      {
+        "section": "Stir Fried Plates",
+        "name": "Spicy Lemon Grass Beef Plate",
+        "description": "Spicy.",
+        "price": "$13.95"
+      },
+      {
+        "section": "Stir Fried Plates",
+        "name": "Vegetable Stir Fried Delight Plate",
+        "description": "Veggie. With your choice of chicken, beef, shrimp or tofu.",
+        "price": "$13.95"
+      },
+      {
+        "section": "Stir Fried Plates",
+        "name": "Beef and Broccoli Plate",
+        "description": "",
+        "price": "$13.95"
+      },
+      {
+        "section": "Stir Fried Noodles",
+        "name": "Saigon Star House Special Combo Stir Fried Noodles",
+        "description": "Choice of soft or crispy egg noodles or pan fried rice noodles.",
+        "price": "$14.95"
+      },
+      {
+        "section": "Stir Fried Noodles",
+        "name": "Seafood Combo Stir Fried Noodles",
+        "description": "Choice of soft or crispy egg noodles or pan fried rice noodles.",
+        "price": "$14.95"
+      },
+      {
+        "section": "Stir Fried Noodles",
+        "name": "Chicken Stir Fried Noodles",
+        "description": "Choice of soft or crispy egg noodles or pan fried rice noodles.",
+        "price": "$13.25"
+      },
+      {
+        "section": "Stir Fried Noodles",
+        "name": "Beef Stir Fried Noodles",
+        "description": "Choice of soft or crispy egg noodles or pan fried rice noodles.",
+        "price": "$13.25"
+      },
+      {
+        "section": "Stir Fried Noodles",
+        "name": "Shrimp Stir Fried Noodles",
+        "description": "Choice of soft or crispy egg noodles or pan fried rice noodles.",
+        "price": "$13.25"
+      },
+      {
+        "section": "Stir Fried Noodles",
+        "name": "Vegetable and Tofu Stir Fried Noodles",
+        "description": "Choice of soft or crispy egg noodles or pan fried rice noodles. Veggie.",
+        "price": "$13.25"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Saigon Star's House Special Combo Rice Plate",
+        "description": "Grilled BBQ shrimp, chicken, pork, egg and meatloaf.",
+        "price": "$14.50"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Sugarcane Shrimp and Char Grilled Pork Rice Plate",
+        "description": "",
+        "price": "$13.50"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Sugarcane Shrimp and Char Grilled Chicken Rice Plate",
+        "description": "",
+        "price": "$13.50"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Sugarcane Shrimp and Char Grilled Rib Eye Beef Rice Plate",
+        "description": "",
+        "price": "$13.50"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Vietnamese Style Meatloaf Rice Plate",
+        "description": "Char grilled pork and ground shrimp wrapped in tofu skin.",
+        "price": "$13.95"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Char Grilled Pork Rice Plate",
+        "description": "",
+        "price": "$12.50"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Char Grilled Chicken Rice Plate",
+        "description": "",
+        "price": "$12.50"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Char Grilled Shrimp and Pork Rice Plate",
+        "description": "",
+        "price": "$13.50"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Char Grilled Shrimp and Chicken Rice Plate",
+        "description": "",
+        "price": "$13.50"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Char Grilled Shrimp and Rib Eye Beef Rice Plate",
+        "description": "",
+        "price": "$13.50"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Char Grilled Shrimp Rice Plate",
+        "description": "",
+        "price": "$13.25"
+      },
+      {
+        "section": "Rice Plates",
+        "name": "Char Grilled Rib Eye Beef Rice Plate",
+        "description": "",
+        "price": "$13.25"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Saigon Star's Vermicelli Combo",
+        "description": "Char grilled shrimp, chicken, pork and crispy egg rolls.",
+        "price": "$14.50"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Vietnamese Grilled Pork Sausage Vermicelli ",
+        "description": "",
+        "price": "$12.25"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Spicy Lemongrass Chicken Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Spicy Lemongrass Beef Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Char Grilled Rib Eye Beef Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Char Grilled Shrimp Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Crispy Egg Rolls Vermicelli",
+        "description": "",
+        "price": "$12.25"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Char Grilled Pork Vermicelli",
+        "description": "",
+        "price": "$12.25"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Char Grilled Chicken Vermicelli",
+        "description": "",
+        "price": "$12.25"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Crispy Egg Rolls and Char Grilled Pork Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Crispy Egg Rolls and Char Grilled Chicken Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Char Grilled Shrimp and Pork Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Char Grilled Shrimp and Chicken Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Char Grilled Shrimp and Rib Eye Beef Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Crispy Egg Rolls and Char Grilled Shrimp Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Crispy Egg Rolls and Char Grilled Rib Eye Beef Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Char Grilled Sugarcane Shrimp and Pork Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Char Grilled Sugarcane Shrimp and Chicken Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Rice Vermicelli",
+        "name": "Char Grilled Sugarcane Shrimp and Rib Eye Beef Vermicelli",
+        "description": "",
+        "price": "$12.95"
+      },
+      {
+        "section": "Beverages",
+        "name": "Vietnamese Iced Coffee with Condensed Milk",
+        "description": "",
+        "price": "$5.25"
+      },
+      {
+        "section": "Beverages",
+        "name": "Thai Iced Tea Boba",
+        "description": "",
+        "price": "$5.45"
+      },
+      {
+        "section": "Beverages",
+        "name": "Fresh Young Coconut Juice",
+        "description": "",
+        "price": "$5.45"
+      },
+      {
+        "section": "Beverages",
+        "name": "Fresh Squeeze Orange Juice",
+        "description": "",
+        "price": "$5.45"
+      },
+      {
+        "section": "Beverages",
+        "name": "Fresh Squeeze Lemonade",
+        "description": "",
+        "price": "$5.45"
+      },
+      {
+        "section": "Beverages",
+        "name": "Iced Tea Lemonade",
+        "description": "",
+        "price": "$4.95"
+      },
+      {
+        "section": "Beverages",
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$2.25"
+      },
+      {
+        "section": "Beverages",
+        "name": "Soda",
+        "description": "",
+        "price": "$1.85"
+      },
+      {
+        "section": "Beverages",
+        "name": "Smoothie with Boba",
+        "description": "",
+        "price": "$5.45"
+      },
+      {
+        "section": "Beverages",
+        "name": "Strawberry Lemonade",
+        "description": "",
+        "price": "$5.45"
+      },
+      {
+        "section": "Beverages",
+        "name": "Kiwi Lemonade",
+        "description": "",
+        "price": "$5.45"
+      },
+      {
+        "section": "Alcohol (Must be 21 to Purchase)",
+        "name": "Beers (Must be 21 to purchase)",
+        "description": "Please choose 1 of these: Heineken, TsingTao, Lucky Buddha, Tiger, Sapporo, Singha. Must be 21 to purchase.",
+        "price": "$5.50"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7485",
+    "name": "Wings mix",
+    "sourceUrl": "https://newyorkbuffalowings.netwaiter.com/san-diego/menu/GetMenu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "The work list's website (a NetWaiter storefront under the restaurant's old 'New York Buffalo Wings' branding) returns a genuine empty menu ({\"Groups\":[],\"ExternalType\":null}), consistent with the documented NetWaiter About-page-only pattern (CanOrder:false) rather than a fetch failure. The restaurant now operates at the same address (2940 El Cajon Blvd, San Diego, CA 92104) under the name 'Wings Mix Mexican Food' (confirmed via Yelp, MapQuest 'Also at this address', and Instagram) and appears to still be open (Yelp reviews current through September 2026, active Instagram, positive Reddit mentions) - so this is NOT a closed/not_found case. UberEats' listing for 'Wings Mix' shows 'Closed on Uber Eats as of Dec 5, 2025' (platform-closed, not confirmation the business itself closed). Sirved.com has a menu page for this restaurant but it is photo/image-only (no text prices, no OCR attempted). No working DoorDash or Grubhub listing was found. Needs a browser to read Yelp's own menu tab or to OCR the Sirved menu photos."
+  }
+]

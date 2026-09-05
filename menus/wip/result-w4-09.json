@@ -1,0 +1,94 @@
+[
+  {
+    "restaurantId": "2810",
+    "name": "Cibao Cafe",
+    "sourceUrl": "https://www.mapquest.com/us/california/cibao-cafe-371251261",
+    "confidence": "high",
+    "notes": "MapQuest lists it explicitly 'Cibao Cafe - CLOSED, 9449 Balboa Ave, San Diego, CA 92123'. A direct Google Maps business search on the exact address returns no restaurant at all - only offices (chiropractic, psychotherapy, ATF field office, sports rehab, dealer services) - confirming the space has been repurposed. Yelp's own listing also carries a CLOSED tag. Permanently closed, no food successor at the address.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2858",
+    "name": "Border X Brewing",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "own domain borderxbrewing.com is hijacked - now serves a 'Best California Sports Betting Sites' offshore-betting affiliate page, no restaurant content at all (confirmed via page title/favicon/og:tags). Every other hit is a tier-5 aggregator (restaurantji, menupix, zmenu, restaurantguru, restaurantmenuprice, checkle) and they disagree on address (2181 Logan Ave vs checkle's 1983 Julian Ave, possibly a sister brewery/Mujeres Brew House). OpenTable has a listing but the fetch timed out (no router cache hit either). No priced first-party or platform source reached.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3202",
+    "name": "Noodles",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "needs-browser: chain (Noodles & Company, noodles.com). The San Diego location page (locations.noodles.com/ca/san-diego/3650-rosecrans-street) and the per-location menu (noodles.com/location/noodles-sports-arena/menu) both render item photos/names client-side through an Olo storefront with zero prices in the static HTML - no JSON-LD, no __NEXT_DATA__, no reachable API endpoint found by curl.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3203",
+    "name": "Wolftown",
+    "sourceUrl": "https://hdh-web.ucsd.edu/dining/apps/diningservices/Restaurants/Venue_V3?locId=37&subLoc=01&locDetID=25&dayNum=1",
+    "confidence": "low",
+    "blocked": "Wolftown is a UCSD Sixth College dining-hall taco station (Restaurants at Sixth). It is a la carte, not all-you-can-eat - a NACUFS PDF calls it 'street food prices' and Reddit reviewers cite specific per-item costs ($8, $15) - but the HDH menu app that lists its dishes (Nachos, Burritos, Tacos, Plates) publishes zero prices anywhere in the page. No POS/ordering API found.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4269",
+    "name": "Urban Kitchen Market",
+    "sourceUrl": "https://www.theshell.org/media/hrpg0uht/shl2026_urbank-02.pdf",
+    "confidence": "high",
+    "notes": "Urban Kitchen Market is a food stand at the Rady Shell at Jacobs Park (San Diego Symphony's outdoor venue), 200 Marina Park Way. Read from the venue's own 2026-season PDF menu (linked from theshell.org/plan-your-visit/food-and-drink/) via pdftotext -layout; small full menu, no truncation, no markup pattern (mix of .50/.95 and flat-dollar prices, consistent with a printed concession menu). 'A Potato Bar' is a distinct sub-menu, prefixed in section.",
+    "dishes": [
+      { "name": "Wagyu Beef Burger", "description": "balsamic onion, provolone, arugula, pickle aioli, brioche bun", "price": "$19.95", "section": "Urban Kitchen Market" },
+      { "name": "Veggie Burger", "description": "balsamic onion, provolone, arugula, pickle aioli, brioche bun (V)", "price": "$19.50", "section": "Urban Kitchen Market" },
+      { "name": "Fried Chicken Tenders", "description": "fries, hot honey, ranch", "price": "$22.95", "section": "Urban Kitchen Market" },
+      { "name": "Ahi Poke Bowl", "description": "sushi rice, carrot, cucumber, radish, scallion, cashew, furikake, tamari dressing, sriracha aioli - contains nuts (GF)", "price": "$24.95", "section": "Urban Kitchen Market" },
+      { "name": "Tofu Poke Bowl", "description": "sushi rice, carrot, cucumber, radish, scallion, cashew, furikake, tamari dressing, sriracha aioli - contains nuts (GF/VE)", "price": "$23.95", "section": "Urban Kitchen Market" },
+      { "name": "French Fries", "description": "(V)", "price": "$12.50", "section": "Urban Kitchen Market" },
+      { "name": "Hot Dog", "description": "", "price": "$10.50", "section": "Urban Kitchen Market" },
+      { "name": "The Basic", "description": "garlic butter, sour cream, scallion", "price": "$11.00", "section": "Urban Kitchen Market / A Potato Bar" },
+      { "name": "Turkey Bean Chili", "description": "cheddar, sour cream, scallion", "price": "$18.00", "section": "Urban Kitchen Market / A Potato Bar" },
+      { "name": "House Smoked BBQ Brisket", "description": "bbq sauce, sour cream, crispy onion", "price": "$20.00", "section": "Urban Kitchen Market / A Potato Bar" },
+      { "name": "Build Your Own", "description": "garlic butter, broccoli, cheddar, bacon bits, crispy onion, scallion, sour cream, sriracha aioli, bbq sauce, hot sauce, salsa verde", "price": "$17.00", "section": "Urban Kitchen Market / A Potato Bar" }
+    ]
+  },
+  {
+    "restaurantId": "2489",
+    "name": "Taco Villa",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "the work-list website tacovilla.net is the WRONG restaurant entirely - confirmed a Texas/New Mexico chain since 1968 (Amarillo, Midland, Odessa, Lubbock, Hobbs NM etc, per Wikipedia and the site's own About/Locations pages), zero California locations. The actual San Diego-area Taco Villa (La Jolla, San Diego, Del Mar) is at tacovillasd.com, a live first-party site, but the work list carries no address and the chain has at least 3 branches with separate DoorDash/UberEats listings - cannot tell which branch this restaurantId is without an address. Needs an address to disambiguate before filing.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3323",
+    "name": "Las Pinches Tortas",
+    "sourceUrl": "https://www.yelp.com/biz/las-pinches-tortas-el-cajon",
+    "confidence": "high",
+    "notes": "www.laspinches.com is fully dead (DNS does not resolve, not just a broken page). Yelp's own listing states plainly 'Yelpers report this location has closed' at the exact address (558 Jamacha Rd, El Cajon). UberEats/Grubhub/Postmates listings are stale marketplace pages (UberEats shows 'Not accepting orders'). Treating as permanently closed for this restaurantId.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3454",
+    "name": "Tlaxcala Hectoir's Taco Shop",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "no address or website in the work list, reviewCount 0. Targeted search for the exact name returns nothing; closest name matches (Hector's Taco Shop & Fruteria, Spring Valley) are unrelated businesses at different addresses. No way to confirm identity or locate any source.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3532",
+    "name": "Cluckin' Bell",
+    "sourceUrl": "https://rockstarintel.com/we-visited-the-real-life-cluckin-bell-from-gta/",
+    "confidence": "high",
+    "notes": "This was a GTA-themed pop-up (by Smokin J's BBQ) at 751 4th Ave, San Diego. Take-Two Interactive issued a cease-and-desist over the trademark and the pop-up was permanently rebranded to 'Don't Cluckin' Tell' in 2023 (confirmed by rockstarintel.com and pcgamer.com). Cluckin' Bell no longer exists as a business name at any address - not-found for this record, not permission to borrow the successor's menu under this id.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5041",
+    "name": "The Market",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "The Market is LEGOLAND California's in-park coffee-shop/grab-and-go stand at 1 Legoland Dr, Carlsbad, matching the work-list address exactly. LEGOLAND's own dining page names it and its categories (coffee, snacks, salads, sandwiches) but publishes no per-item prices - the only dollar figures on the page are park ticket prices. Only tier-5 aggregators (checkle, restaurantji, restaurantguru) carry menu numbers and none were cross-checked; not filing on aggregator-only evidence.",
+    "dishes": []
+  }
+]

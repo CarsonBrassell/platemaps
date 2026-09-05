@@ -62,10 +62,20 @@
  *
  * Every insert is `listed = false`, like the OSM import before it, and nothing
  * reaches Discover, the facets or the map until `scripts/publish-check.mjs`
- * confirms a sourced rating and a real menu. The field mask on the resolve step
- * is the free Pro SKU, which carries no rating - so nothing written here can
- * pass the gate yet, by construction. That is intended: the row has to exist
- * before a menu can be keyed to it.
+ * confirms a sourced rating and a real menu. The field mask on the Google resolve
+ * step is the free Pro SKU, which carries no rating - so a Google-resolved entry
+ * cannot pass the gate yet, by construction. That is intended: the row has to
+ * exist before a menu can be keyed to it.
+ *
+ * An entry resolved via `resolve-places.mjs --via serper` is different: Serper's
+ * `/maps` response carries a rating in the same call, so its resolved entry
+ * holds a `serper{}` and this importer writes `rating`, `review_count` and
+ * `website` straight onto the new row - see `serperFields()` below. The same
+ * MIN_REVIEWS floor every other rating-writing script in this repo uses decides
+ * whether that rating is trusted or left null; `enrich-places.mjs` is then only
+ * needed for the photo. There is no `phone` column on `restaurants` today, so a
+ * `serper.phone` is read off the resolved entry but never written - adding one
+ * is out of scope here (see the brief: don't add columns).
  *
  * ## --dry is the default
  *
@@ -94,6 +104,28 @@ const MATCH_METRES = 150;
  * "Julian Beer Company" - two real, different Julian businesses.
  */
 const NAME_CONFIDENT = 0.8;
+
+/**
+ * Matches `MIN_REVIEWS` in blend-ratings.mjs, enrich-google.mjs and
+ * enrich-places.mjs: below this many reviews a rating is too thin to publish
+ * on, so `rating` and `review_count` are written together or not at all - the
+ * same "they move together" rule enrich-places.mjs's header explains for the
+ * Google Place Details column pair. A resolved entry's `serper{}` that fails
+ * this floor writes exactly what a Google-resolved row with no enrichment
+ * yet already gets: `rating` NULL, `review_count` 0.
+ */
+const MIN_REVIEWS = 20;
+
+/** `serper{}` off a resolved entry -> the three fields import-deh writes. */
+function serperFields(entry) {
+  const s = entry.serper;
+  const ok = s && s.rating != null && Number.isFinite(s.reviewCount) && s.reviewCount >= MIN_REVIEWS;
+  return {
+    rating: ok ? s.rating : null,
+    reviewCount: ok ? s.reviewCount : 0,
+    website: s?.website || null,
+  };
+}
 
 function strFlag(name, fallback) {
   const i = process.argv.indexOf(`--${name}`);
@@ -300,6 +332,10 @@ for (const r of buckets.import.slice(0, LIMIT === Infinity ? undefined : LIMIT))
          * one. */
         holdReason: null,
         ...cuisineFrom(p),
+        /* Only entries resolved via `resolve-places.mjs --via serper` carry a
+         * `serper{}`; a Google-resolved entry has none and gets the same
+         * null/0/null this row would have gotten before Serper existed. */
+        ...serperFields(r),
       },
       allocate,
     ),
@@ -355,6 +391,15 @@ if (collisions.length) {
 
 const noCuisine = inserts.filter((r) => !r.cuisine).length;
 console.log(`\ncuisine resolved for ${inserts.length - noCuisine} of ${inserts.length}; ${noCuisine} would be null`);
+
+const withRating = inserts.filter((r) => r.rating != null).length;
+const withWebsite = inserts.filter((r) => r.website != null).length;
+if (withRating || withWebsite) {
+  console.log(
+    `serper carried in: ${withRating} with a rating/review_count (>= ${MIN_REVIEWS} reviews), ` +
+      `${withWebsite} with a website`,
+  );
+}
 
 /*
  * The unmatched pile is the next piece of work, not a failure to hide. The plan

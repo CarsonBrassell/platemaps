@@ -1,0 +1,1754 @@
+[
+  {
+    "restaurantId": "2577",
+    "name": "Surf Side Deli",
+    "sourceUrl": "https://surf-side-deli-san-diego.cloveronline.com/menu/all",
+    "confidence": "high",
+    "notes": "Router's original Clover slug (surf-side-deli-san-diego-2) screened out for a 1.0417x fee (43/64 prices dividing onto round dollars). Found a second Clover COLO2 slug for the same store (surf-side-deli-san-diego, no '-2') via the clover.com redirect endpoint - same address (1912 Rosecrans St, confirmed in payload) and same 'SURF SIDE DELI' merchant name, same 17 numbered sandwiches as the restaurant's own homepage list. This slug's prices pass the markup test clean: cents end .99/.00/.50/.75/.25 (36 items), and no divisor 1.04-1.3 produces more than 5/36 round hits. Filed from this sibling instead of the screened-out one, per the 'fee belongs to the ordering channel' rule. Sandwich descriptions merged in from the restaurant's own homepage (surfsidedelisd.com/#menu), which lists the same 17 sandwiches by name/number with no prices. None inferred, merged (beyond matching name/description pairs), divided or truncated.",
+    "dishes": [
+      {
+        "name": "#1 Uss Nimitz Sandwich",
+        "description": "Oven Roasted Turkey, Applewood Smoked Bacon, Lettuce, Tomato, Onion, Cheddar, Avocado and Herb Mayo on an Artisan Baguette",
+        "price": "$14.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#2 Uss Midway Sandwich",
+        "description": "Peppercorn Crusted Roast Beef, Provolone, Herb Mayo, Lettuce, Tomato, and Crispy Onions on an Artisan Baguette",
+        "price": "$14.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#3 Rockslides Sandwich",
+        "description": "Cotto Salami, Mortadella, Hard Salami, Provolone, Lettuce, Tomato, Onion, Herb Mayo and Oil and Vinegar on an Artisan Baguette",
+        "price": "$14.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#4 South Side Sandwich",
+        "description": "Black Forrest Ham, Swiss Cheese and Herb Mayo, Lettuce, Tomato, Onion, on an Artisan Baguette",
+        "price": "$13.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#5 Indicator Sandwich",
+        "description": "American Tuna, Avocado, Herb Mayo, Cheddar Cheese, Lettuce, Tomato, Onion, and Green Pea Shoots on a Honey Wheat Roll",
+        "price": "$14.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#6 The Admiral'S Avocado Delight Sandwich",
+        "description": "Avocado, Cheddar Cheese, Bean Sprouts, Raisins, Sunflower Seeds, Lettuce, Tomato, Onion and Herb Mayo on a Honey Wheat Roll",
+        "price": "$12.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#7 The Pl Pointer Sandwich",
+        "description": "Oven Roasted Turkey, Cheddar, Cranberry Dijon Mustard, Tomato, Onion, Herb Mayo and Baby Spinach on a Honey Wheat Roll",
+        "price": "$13.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#8 Slightly Stoopid Sandwich",
+        "description": "Black Forrest Ham, Oven Roasted Turkey, Applewood Smoked Bacon, Lettuce, Tomato, Onion, Cheddar Cheese and Herb Mayo on an Artisan Baguette",
+        "price": "$15.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#9 Ob Longhorn Sandwich",
+        "description": "Traeger Smoked Pulled Pork, House Made BBQ Sauce, Crispy Onions, Provolone Cheese and Herb Mayo on an Artisan Baguette",
+        "price": "$14.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#10 Boomer'S Blt Sandwich",
+        "description": "Applewood Smoked Bacon, Cheddar, Lettuce, Tomato and Herb Mayo on an Artisan Baguette",
+        "price": "$13.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#11 Just The Tip Sandwich",
+        "description": "Traeger Smoked Tri-Tip, BBQ Sauce, Herb Mayo, Lettuce, Tomato, Jalapeno Crispies and Provolone Cheese on an Artisan Baguette",
+        "price": "$15.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#12 Forgetaboutit Sandwich",
+        "description": "Pastrami, Stone-Ground Mustard, Swiss Cheese, Lettuce, Tomato, Herb Mayo and Pepperoncinis on an Artisan Baguette",
+        "price": "$15.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#13 Feel The Thunder Sandwich",
+        "description": "Traeger Smoked Brisket, Herb Mayo, Provolone Cheese, Onion Jam and BBQ Sauce, Lettuce, and Tomato on an Artisan Baguette",
+        "price": "$15.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#14 Dominator Sandwich",
+        "description": "Hand-spanked Meatballs, Roasted Garlic Butter, Homemade Marinara Sauce, Provolone Cheese and Pepperoncinis on an Artisan Baguette",
+        "price": "$14.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#15 Golden State Greens Sandwich",
+        "description": "Avocado, Pea Shoots, Cucumbers, Carrots, Spinach, Lettuce, Tomatoes, Onions and Vegan Dressing on a Honey Wheat Roll",
+        "price": "$12.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Cali Sub",
+        "description": "Traeger Smoked Tri-Tip, Pepper Jack Cheese, Green Chile, Avocado, Crispy Jalepenos, Chipotle Mayo, Lettuce and Tomato on an Artisan Baguette",
+        "price": "$16.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "#17 Birds the Word",
+        "description": "Oven roasted Turkey, BBQ Sauce, Onion Jam, Pepper Jack Cheese, Jalepenos, Herb Mayo, Lettuce and Tomato on an Artisan Baguette",
+        "price": "$14.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Spicy Tip",
+        "description": "",
+        "price": "$15.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Kids Turkey Cheddar",
+        "description": "",
+        "price": "$6.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Kids Ham Cheddar",
+        "description": "",
+        "price": "$6.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "House Salad",
+        "description": "",
+        "price": "$10.00",
+        "section": "Surf Side Salads"
+      },
+      {
+        "name": "Small Water",
+        "description": "",
+        "price": "$2.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can Soda",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Lemonade",
+        "description": "",
+        "price": "$4.25",
+        "section": "Drinks"
+      },
+      {
+        "name": "Herbe Matte",
+        "description": "",
+        "price": "$4.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coconut Water",
+        "description": "",
+        "price": "$4.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Potato Salad",
+        "description": "",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Mac Salad",
+        "description": "",
+        "price": "$4.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Avocado",
+        "description": "",
+        "price": "$2.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Bacon",
+        "description": "",
+        "price": "$3.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Side Tuna",
+        "description": "",
+        "price": "$8.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Cookies",
+        "description": "",
+        "price": "$3.00",
+        "section": "Sweets"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$2.75",
+        "section": "Chips"
+      },
+      {
+        "name": "8lb. Bag Ice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Ice"
+      },
+      {
+        "name": "Combo Meal",
+        "description": "",
+        "price": "$4.99",
+        "section": "Combo"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5866",
+    "name": "Francisco's Mexican Deli",
+    "sourceUrl": "https://www.doordash.com/store/franciscos-mexican-deli-vista-26110253/",
+    "confidence": "medium",
+    "notes": "Own site (franciscosmexicandelica.com) is a one-page shell with no prices; its 'Order Online' button goes to fromtherestaurant.com/franciscos-mexican-deli/locations/, a small 25KB page that needs a browser to render further - not pursued given a clean DoorDash source was in reach. Address confirmed in DoorDash JSON-LD (821 North Santa Fe Avenue, Vista). A web-search summary had quoted noticeably lower prices for overlapping items (e.g. Menudo $9.45) than DoorDash's current $13.50 - treated as a stale aggregator snapshot per house rule and discarded in favor of the page fetched directly. 'Most Ordered' section (12 items) exactly duplicated 12 of the other 39 rows - dropped. Cent endings on the 39 unique rows: .50 (22), .00 (14), .99 (3) - entirely conventional, no scattered tail. Three Sides rows (Salsa, Arroz, Frijoles) were listed as '$4.50+' etc. (a base/add-on price) - recorded the base figure and noted it as a starting price.",
+    "dishes": [
+      {
+        "name": "Menudo",
+        "description": "¡Menudo ardiente que calienta el alma! Sopa de pancita sabrosa, con opción de pata jugosa o con grano para un toque rústico. ¡Pide el tuyo y déjate apapachar! \nFiery menudo that warms the soul! Savory tripe soup, with juicy pata or rustic con grano options. Order yours and feel the love!",
+        "price": "$13.50",
+        "section": "Soups"
+      },
+      {
+        "name": "Caldo De Res",
+        "description": "¡Caldo de res que revive el espíritu! Caldo robusto con carne jugosa, verduras frescas y un toque casero. ¡Puro amor en cada cucharada! \nHearty beef caldo that lifts the soul! Robust broth with juicy meat, fresh veggies, and a homestyle touch. Pure love in every spoonful!",
+        "price": "$15.50",
+        "section": "Soups"
+      },
+      {
+        "name": "Birria Soup",
+        "description": "¡Birria ardiente que despierta los sentidos! Caldo especiado con chivo tierno o res jugosa, lleno de sabor tradicional. ¡Una explosión de gusto en cada sorbo! \nFiery birria soup that ignites your senses! Spiced broth with tender goat or juicy beef, bursting with traditional flavor. A taste explosion in every sip!",
+        "price": "$12.50",
+        "section": "Soups"
+      },
+      {
+        "name": "Caldo De Pollo",
+        "description": "¡Caldo de pollo que abraza el corazón! Caldo dorado con pollo tierno y verduras frescas, puro consuelo casero. ¡Sabor que reconforta en cada cucharada! \nGolden chicken caldo that warms the heart! Tender chicken and fresh veggies in a comforting broth. Soul-soothing flavor in every spoonful!",
+        "price": "$15.00",
+        "section": "Soups"
+      },
+      {
+        "name": "Consomé",
+        "description": "¡Consomé puro que acaricia el alma! Caldo claro y sabroso, sazonado con amor para un deleite ligero. ¡Sencillo, pero inolvidable! \nPure consomé that soothes the soul! Clear, flavorful broth seasoned with love for a light delight. Simple, yet unforgettable!",
+        "price": "$2.00",
+        "section": "Soups"
+      },
+      {
+        "name": "Plato de Birria",
+        "description": "",
+        "price": "$18.50",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Plato de Lengua",
+        "description": "Beef tongue typically cooked with guajillo chili sauce and chipotle peppers, accompanied by refried beans, Spanish rice, and two homemade flour tortillas.",
+        "price": "$19.50",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Plato de Bistek C/ Papa En Salsa Verde",
+        "description": "Steak and potatoes cooked in mild green tomatillo sauce, typically featuring jalapeño and cilantro.",
+        "price": "$19.50",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Plato de Chille Rellenos",
+        "description": "Poblano pepper typically stuffed with cheese, coated in egg batter, and fried.",
+        "price": "$18.50",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Plato de Salmon",
+        "description": "Grilled salmon typically served with rice, beans, and a tangy salsa, offering a classic Mexican plate experience.",
+        "price": "$22.00",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Plato De Quesabirrias",
+        "description": "Plato de Quesabirrias (2–4 piezas)\n¡Puro antojo hecho festín! Elige entre 2, 3 o 4 quesabirrias doraditas, rebosadas de queso derretido y birria jugosa, servidas con arroz mexicano esponjoso y frijoles bien sazonados. Acompáñalas con su consomé calientito y disfruta de un plato lleno de sabor, textura y puro gusto en cada mordida.\n\nQuesabirria Plate (2–4 pieces)\nA full-on flavor feast! Choose 2, 3, or 4 crispy quesabirrias packed with melty cheese and tender birria, served with fluffy Mexican rice and perfectly seasoned beans. Dip them in warm consommé and enjoy a plate loaded with bold flavor, rich texture, and total satisfaction.",
+        "price": "$15.99",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Plato de Carnitas",
+        "description": "¡Platillo de carnitas que hace agua la boca! Cerdo jugoso y dorado, servido con arroz, frijoles, cebolla, cilantro, salsa y cuatro tortillas de maíz calientes. ¡Un festín mexicano inolvidable! \nMouthwatering carnitas plate! Juicy, golden pork served with rice, beans, onion, cilantro, salsa, and four warm corn tortillas. An unforgettable Mexican feast!",
+        "price": "$18.50",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Plato de Costillas De Puerco En Salsa Roja",
+        "description": "Pork ribs simmered in a red chili sauce, offering a traditional Mexican flavor experience.",
+        "price": "$18.50",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Mole",
+        "description": "Mole Rojo con Arroz y Frijoles\n¡Un clásico que abraza el alma! Mole rojo sedoso cubriendo tu carne favorita, acompañado de arroz mexicano esponjoso y frijoles cocidos con paciencia y cariño. Cada cucharada mezcla lo ahumado, lo dulce y lo reconfortante en un plato que simplemente sabe a hogar.\n\nRed Mole with Rice and Beans\nComfort on a plate. Smooth, rich red mole poured over your choice of meat, paired with fluffy Mexican rice and slow-cooked beans. Every bite blends smoky, sweet, and savory flavors into a warm, satisfying meal that feels like home.",
+        "price": "$17.50",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Tamales Plate",
+        "description": "¡Dos tamales que despiertan el antojo! Elige pollo, puerco jugoso o rajas picantes, envueltos en masa suave. ¡Puro deleite mexicano! \nTwo tamales that spark your craving! Pick chicken, juicy pork, or spicy rajas, wrapped in fluffy masa. Pure Mexican delight!",
+        "price": "$15.50",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Plato de Pollo",
+        "description": "Grilled chicken typically seasoned and prepared with a variety of spices, often accompanied by fresh onions, tomatoes, and jalapeño peppers.",
+        "price": "$14.50",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Plato de Barbacoa",
+        "description": "¡Platillo de barbacoa que conquista el paladar! Carne tierna y jugosa, con arroz, frijoles, cebolla, cilantro, salsa, tortillas y un lado de consomé calentito. ¡Sabor tradicional que enamora! \nBarbacoa plate that captivates your tastebuds! Tender, juicy meat with rice, beans, onion, cilantro, salsa, tortillas, and a side of warm consomé. Traditional flavor that steals your heart!",
+        "price": "$18.50",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "¡Huevos al Gusto!",
+        "description": "Huevos preparados al gusto tipos Jamón , Chorizo, Revueltos, Estrellados, A la mexicana … acompañados con arroz y frijol y tortillas hechas a mano.",
+        "price": "$13.99",
+        "section": "Platos / Plates"
+      },
+      {
+        "name": "Marinated (Adobada) (1 Lb)",
+        "description": "¡Adobada de una libra que enciende el paladar! Carne marinada jugosa, sazonada con especias audaces, acompañada de cebolla, cilantro y salsa picante. ¡Sabor mexicano que hipnotiza! \nOne-pound adobada that sets your tastebuds ablaze! Juicy marinated meat, seasoned with bold spices, served with onion, cilantro, and spicy salsa. Mexican flavor that mesmerizes!",
+        "price": "$18.00",
+        "section": "Meats"
+      },
+      {
+        "name": "Butche (1 Lb)",
+        "description": "¡Buche de una libra que deleita el alma! Crujiente y sabroso, con cebolla, cilantro y salsa picante. ¡Un manjar mexicano que te sorprenderá! \nOne-pound buche that delights the soul! Crispy and flavorful, served with onion, cilantro, and spicy salsa. A Mexican treat that surprises!",
+        "price": "$18.00",
+        "section": "Meats"
+      },
+      {
+        "name": "Lengua (1 Lb)",
+        "description": "¡Lengua de una libra que derrite el paladar! Carne suave y jugosa, con cebolla, cilantro y salsa picante. ¡Un deleite mexicano que no puedes resistir! \nOne-pound lengua that melts in your mouth! Tender, juicy meat with onion, cilantro, and spicy salsa. A Mexican delight you can’t resist!",
+        "price": "$21.00",
+        "section": "Meats"
+      },
+      {
+        "name": "Cabeza (1 Lb)",
+        "description": "¡Cabeza de una libra que cautiva los sentidos! Carne tierna y sabrosa, con cebolla, cilantro y salsa picante. ¡Puro placer mexicano en cada bocado! \nOne-pound cabeza that captivates your senses! Tender, flavorful meat with onion, cilantro, and spicy salsa. Pure Mexican pleasure in every bite!",
+        "price": "$21.00",
+        "section": "Meats"
+      },
+      {
+        "name": "Barbacoa ( 1/2 Lb or 1 Lb)",
+        "description": "¡Barbacoa jugosa que despierta los sentidos! Elige media libra o una libra de carne tierna, con cebolla, cilantro y salsa picante. ¡Puro sabor mexicano en cada bocado! \nJuicy barbacoa that ignites your senses! Choose half-pound or one-pound of tender meat, with onion, cilantro, and spicy salsa. Pure Mexican flavor in every bite!",
+        "price": "$9.00",
+        "section": "Meats"
+      },
+      {
+        "name": "Birria (1 Lb)",
+        "description": "¡Birria de una libra que despierta el antojo! Elige chivo tierno o res jugosa, con cebolla, cilantro y salsa vibrante. ¡Sabor mexicano que te envuelve!\n One-pound birria that sparks your craving! Choose tender goat or juicy beef, served with onion, cilantro, and vibrant salsa. Mexican flavor that envelops you!",
+        "price": "$20.00",
+        "section": "Meats"
+      },
+      {
+        "name": "Asada (1 Lb)",
+        "description": "¡Asada de una libra que te hace suspirar! Carne jugosa y sazonada, con cebolla, cilantro y salsa vibrante. ¡Un festín mexicano que no olvidarás! \nOne-pound asada that makes you swoon! Juicy, seasoned steak with onion, cilantro, and vibrant salsa. A Mexican feast you won’t forget!",
+        "price": "$18.00",
+        "section": "Meats"
+      },
+      {
+        "name": "Tamales (1 Dz)",
+        "description": "¡Docena de tamales que roba el corazón! Elige pollo, puerco jugoso o rajas picantes, envueltos en masa suave, con salsa verde fresca y picante o roja audaz y ardiente. ¡Un festín mexicano para compartir!\n Dozen tamales that steal your heart! Choose chicken, juicy pork, or spicy rajas, wrapped in fluffy masa, with green fresh and spicy or red bold and fiery salsa. A Mexican feast to share!",
+        "price": "$37.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Burrito",
+        "description": "Burrito Regular\n¡Pura sabrosura envuelta en una tortilla calientita! Elige tu carne favorita y disfrútala con arroz mexicano esponjoso, frijoles cocidos con amor, cebolla crujiente y cilantro fresco. ¡Una explosión de sabor en cada bocado!\n\nRegular Burrito\nAll the flavor, wrapped and ready to go! Pick your favorite meat and enjoy it with fluffy Mexican rice, slow-simmered beans, crisp onions, and fresh cilantro—all tucked into a warm, soft tortilla. Every bite bursts with bold, delicious flavor!",
+        "price": "$15.50",
+        "section": "Entrées"
+      },
+      {
+        "name": "Regular Tacos",
+        "description": "¡Tacos regulares que despiertan el hambre! Elige birria de chivo, birria de res, carnitas, barbacoa, asada, adobada, cabeza, lengua, buche o pollo, servidos con cebolla, cilantro y limones frescos. ¡Sabor mexicano auténtico en cada mordida!\n Regular tacos that ignite your hunger! Choose goat birria, beef birria, carnitas, barbacoa, asada, adobada, cabeza, lengua, buche, or chicken, served with onion, cilantro, and fresh limes. Authentic Mexican flavor in every bite!",
+        "price": "$4.99",
+        "section": "Entrées"
+      },
+      {
+        "name": "Burrito with Beans, Cheese & Rice",
+        "description": "¡Burrito jugoso que satisface el antojo! Relleno de frijoles, queso y arroz, servido con salsas y opción de cebolla y cilantro. ¡Un abrazo mexicano en cada bocado! \nJuicy burrito that hits the spot! Stuffed with beans, cheese, and rice, served with salsas and a choice of onion and cilantro. A Mexican hug in every bite!",
+        "price": "$9.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Tamale",
+        "description": "¡Tamal irresistible que te enamora! Elige pollo, puerco jugoso o rajas picantes, envuelto en masa suave, con salsa vibrante. ¡Un pedacito de México en cada mordida! \nIrresistible tamale that wins your heart! Choose chicken, juicy pork, or spicy rajas, wrapped in fluffy masa, with vibrant salsa. A bite of Mexico in every piece!",
+        "price": "$4.50",
+        "section": "Entrées"
+      },
+      {
+        "name": "Burrito with Beans & Cheese",
+        "description": "¡Burrito sabroso que llena el corazón! Repleto de frijoles y queso derretido, servido con salsas y opción de cebolla y cilantro. ¡Puro confort mexicano! \nSavory burrito that fills your heart! Packed with beans and melted cheese, served with salsas and a choice of onion and cilantro. Pure Mexican comfort!",
+        "price": "$6.50",
+        "section": "Entrées"
+      },
+      {
+        "name": "Mini Tacos",
+        "description": "¡Mini tacos que explotan de sabor! Elige birria de chivo, birria de res, carnitas, barbacoa, asada, adobada, cabeza, lengua, buche o pollo, con cebolla, cilantro y limones frescos. ¡Pequeños, pero llenos de magia mexicana! \nMini tacos bursting with flavor! Choose goat birria, beef birria, carnitas, barbacoa, asada, adobada, cabeza, lengua, buche, or chicken, with onion, cilantro, and fresh limes. Small, but packed with Mexican magic!",
+        "price": "$3.00",
+        "section": "Entrées"
+      },
+      {
+        "name": "Flour Quesadilla / Quesadilla De Harina",
+        "description": "¡Quesadilla de tortilla de harina que deleita! Queso fundido en una tortilla suave, servida con salsas y opción de cebolla y cilantro. ¡Un placer mexicano que no puedes perderte! \nFlour tortilla quesadilla that delights! Gooey cheese in a soft tortilla, served with salsas and a choice of onion and cilantro. A Mexican treat you can’t miss!",
+        "price": "$7.50",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Corn Quesadilla / Quesadilla Maiz",
+        "description": "¡Quesadilla de tortilla de maíz que derrite el paladar! Queso fundido en una tortilla dorada, servida con salsas y opción de cebolla y cilantro. ¡Un clásico mexicano irresistible! \nCorn tortilla quesadilla that melts in your mouth! Gooey cheese in a golden tortilla, served with salsas and a choice of onion and cilantro. An irresistible Mexican classic!",
+        "price": "$3.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Salsa",
+        "description": "¡Salsas que encienden tu paladar! Elige verde, fresca y picante, o roja, audaz y ardiente. ¡El toque perfecto para tu comida mexicana!\n Salsas that ignite your tastebuds! Choose green, fresh and spicy, or red, bold and fiery. The perfect kick for your Mexican meal!",
+        "price": "$4.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Arroz / Rice",
+        "description": "¡Arroz mexicano que despierta el apetito! Granos esponjosos sazonados con tomate, especias y un toque casero. ¡El acompañante perfecto para tu platillo! \nMexican rice that sparks your appetite! Fluffy grains seasoned with tomato, spices, and a homestyle touch. The perfect side for your dish!",
+        "price": "$3.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Frijoles/ Beans",
+        "description": "¡Frijoles que reconfortan el alma! Suaves y sabrosos, cocidos con amor y un toque de tradición. ¡El complemento ideal para tu comida mexicana! \nBeans that comfort the soul! Soft and flavorful, cooked with love and a touch of tradition. The ideal complement to your Mexican meal!",
+        "price": "$3.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Soda (1/2 Liter)",
+        "description": "¡Refresco de medio litro que alegra el momento! Elige Coca-Cola, clásica y burbujeante, o Fanta Naranja, dulce y cítrica. ¡El toque perfecto para tu comida! \nHalf-liter soda that brightens the moment! Choose Coca-Cola, classic and fizzy, or Orange Fanta, sweet and citrusy. The perfect pairing for your meal!",
+        "price": "$4.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Flavored Water / Agua De Sabor",
+        "description": "¡Aguas de sabor que refrescan el día! Elige jamaica, ácida y vibrante, horchata, dulce y cremosa, o tamarindo, exótico y refrescante. ¡Un sorbo de felicidad mexicana! \nFlavored waters that refresh your day! Choose hibiscus, tart and vibrant, horchata, sweet and creamy, or tamarind, exotic and refreshing. A sip of Mexican happiness!",
+        "price": "$3.50",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6012",
+    "name": "Hane Sushi",
+    "sourceUrl": "http://www.hane-sushi.net/media/1594/1.jpg (and 6 sibling full-res photos linked from the #menu section of the same page)",
+    "confidence": "high",
+    "notes": "Own site's #menu section links 7 full-resolution photos of the restaurant's actual printed/laminated menu (not a delivery listing) - read as images per the PDF/image-reading technique. Covers Soup, Salad, Appetizer, Kitchen, a two-column Entree/Appetizer-size teriyaki-and-tempura table (recorded both sizes as separate rows), Ice Cream, Dinner Combos (sashimi dinner, sushi/chirashi combos, don), 20 Rolls, and Sashimi Combos - all core sections for a sushi restaurant present and priced. One gap: the Nigiri/Sashimi a-la-carte price table's photo (image 6 of 7) is visibly cropped at the top edge, so it only captured 16 items alphabetically from 'Salmon Belly' onward (through 'Yellowtail Belly') plus 4 combo rows - items that would sort earlier (Albacore, Eel/Unagi, Escolar, Halibut, Mackerel, Octopus, Red Snapper, Squid, plain Salmon, etc.) were not photographed and are not in this capture. Recorded each captured nigiri/sashimi row as two dishes (nigiri single-piece price, sashimi 2pc price) since they're two genuinely different priced items, not one. Monkfish Liver has no nigiri price on the menu ('---') - only its sashimi price was recorded. Kitchen section's 6 items appear a second time verbatim atop the Dinner Combos photo - not double counted. None of the 103 prices were inferred, divided, or averaged; all read directly off the printed menu.",
+    "dishes": [
+      {
+        "name": "Miso",
+        "description": "",
+        "price": "$2.00",
+        "section": "Soup"
+      },
+      {
+        "name": "Asari Miso",
+        "description": "Manila Clam | Miso",
+        "price": "$4.50",
+        "section": "Soup"
+      },
+      {
+        "name": "Akadashi",
+        "description": "Red Miso | Enoki Mushroom",
+        "price": "$4.50",
+        "section": "Soup"
+      },
+      {
+        "name": "Tempura Udon",
+        "description": "",
+        "price": "$10.00",
+        "section": "Soup"
+      },
+      {
+        "name": "Green Salad",
+        "description": "Ginger Dressing",
+        "price": "$5.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Mizuna Salad",
+        "description": "Hamachi | Salmon | Mizuna Greens | Walnut",
+        "price": "$17.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Mushroom Salad",
+        "description": "Enoki | Shiitake | Seaweed | Shishito Pepper",
+        "price": "$10.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Seaweed Salad",
+        "description": "Mixed seaweed with Vinaigrette",
+        "price": "$8.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Seared Toro",
+        "description": "Mushroom Salad | Seared Toro | Spicy Radish Sauce",
+        "price": "$22.00",
+        "section": "Salad"
+      },
+      {
+        "name": "Asparagus Sticks",
+        "description": "Asparagus | Kaki no Tane (Rice Crackers)",
+        "price": "$9.50",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Chamame",
+        "description": "Brown Edamame | Lime | Ichimi Sea Salt",
+        "price": "$5.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Cucumber Sunomono",
+        "description": "Cucumber | Seaweed | Vinaigrette",
+        "price": "$5.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Fried Calamari",
+        "description": "Ponzu Sauce",
+        "price": "$10.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Honeymoon Special",
+        "description": "Oyster | Uni | Masago | Quail Egg on a Half Shell (per piece)",
+        "price": "$10.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "King Crab",
+        "description": "Pan sauteed Alaskan King Crab",
+        "price": "$32.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Kobe Beef Sashimi",
+        "description": "Garlic Ponzu | Spicy Radish | Green Onion",
+        "price": "$16.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Kumamoto Oyster 1/2 Shell",
+        "description": "Ponzu | Spicy Radish | Green Onion (per piece)",
+        "price": "$3.50",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Ohitashi",
+        "description": "Steamed Spinach | Bonito Flakes",
+        "price": "$5.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Oyster 1/2 Shell",
+        "description": "Ponzu | Spicy Radish | Green Onion (per piece)",
+        "price": "$4.50",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Seafood Sunomono",
+        "description": "Shrimp | Octopus | Surf Clam | White Fish",
+        "price": "$18.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Tuna Tartar",
+        "description": "Tuna | Spear Squid | Poached Quail Egg",
+        "price": "$16.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Tuna Poke",
+        "description": "Diced Tuna | Seaweed | Sesame Oil",
+        "price": "$17.00",
+        "section": "Appetizer"
+      },
+      {
+        "name": "Chawan-Mushi",
+        "description": "Savory Egg Custard",
+        "price": "$8.50",
+        "section": "Kitchen"
+      },
+      {
+        "name": "Hamachi Kama",
+        "description": "Yellowtail Collar",
+        "price": "$12.00",
+        "section": "Kitchen"
+      },
+      {
+        "name": "Salmon Kama",
+        "description": "Salmon Collar",
+        "price": "$9.00",
+        "section": "Kitchen"
+      },
+      {
+        "name": "Miso Chilean Seabass",
+        "description": "",
+        "price": "$13.00",
+        "section": "Kitchen"
+      },
+      {
+        "name": "Scallop Deluxe",
+        "description": "Scallop | Krab | Dynamite Sauce",
+        "price": "$10.00",
+        "section": "Kitchen"
+      },
+      {
+        "name": "Salmon Roll (Kitchen)",
+        "description": "Salmon | Smoked Salmon | Avocado, lightly battered with Panko and fried",
+        "price": "$14.00",
+        "section": "Kitchen"
+      },
+      {
+        "name": "Beef Teriyaki (Entree)",
+        "description": "Served with soup and rice or fried rice",
+        "price": "$20.00",
+        "section": "Entree"
+      },
+      {
+        "name": "Beef Teriyaki (Appetizer)",
+        "description": "",
+        "price": "$15.00",
+        "section": "Entree"
+      },
+      {
+        "name": "Chicken Teriyaki (Entree)",
+        "description": "Served with soup and rice or fried rice",
+        "price": "$14.00",
+        "section": "Entree"
+      },
+      {
+        "name": "Chicken Teriyaki (Appetizer)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Entree"
+      },
+      {
+        "name": "Salmon Teriyaki (Entree)",
+        "description": "Served with soup and rice or fried rice",
+        "price": "$20.00",
+        "section": "Entree"
+      },
+      {
+        "name": "Salmon Teriyaki (Appetizer)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Entree"
+      },
+      {
+        "name": "Mix Tempura (Entree)",
+        "description": "Served with soup and rice or fried rice",
+        "price": "$18.00",
+        "section": "Entree"
+      },
+      {
+        "name": "Mix Tempura (Appetizer)",
+        "description": "",
+        "price": "$13.00",
+        "section": "Entree"
+      },
+      {
+        "name": "Vegetable Tempura (Entree)",
+        "description": "Served with soup and rice or fried rice",
+        "price": "$13.00",
+        "section": "Entree"
+      },
+      {
+        "name": "Vegetable Tempura (Appetizer)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Entree"
+      },
+      {
+        "name": "Ice Cream",
+        "description": "Green Tea, Red Bean, Plum Wine, Vanilla or Black Sesame",
+        "price": "$3.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Mochi Ice",
+        "description": "Green Tea, Mango, Strawberry, Vanilla or Chocolate",
+        "price": "$2.50",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Sashimi Dinner",
+        "description": "Served with soup and steamed rice. Tuna | Yellowtail | Salmon | Albacore",
+        "price": "$21.00",
+        "section": "Dinner Combos"
+      },
+      {
+        "name": "Sushi Combo Regular",
+        "description": "Served with soup. Tuna | Yellowtail | Salmon | White Fish | Albacore | Shrimp | Eel | California Roll",
+        "price": "$24.00",
+        "section": "Dinner Combos"
+      },
+      {
+        "name": "Sushi Combo Special",
+        "description": "Served with soup. Toro | Spanish Mackerel | Yellowtail | Salmon | Squid | Red Snapper | Surf Clam | Ikura | Uni | Eel | Chopped Toro Roll | Ume Shiso Yamaimo Roll",
+        "price": "$34.00",
+        "section": "Dinner Combos"
+      },
+      {
+        "name": "Chirashi Regular",
+        "description": "Served with soup. Fish over sushi rice: 3 Tuna | 2 Yellowtail | Salmon | White Fish | Shrimp | Octopus | Surf Clam | Squid | Eel",
+        "price": "$25.00",
+        "section": "Dinner Combos"
+      },
+      {
+        "name": "Chirashi Special",
+        "description": "Served with soup. 2 Toro | 2 Yellowtail | Salmon | White Fish | Shrimp | Octopus | Surf Clam | Squid | Uni | Eel",
+        "price": "$34.00",
+        "section": "Dinner Combos"
+      },
+      {
+        "name": "Tekka Don",
+        "description": "Served with soup. Tuna over sushi rice",
+        "price": "$27.00",
+        "section": "Dinner Combos"
+      },
+      {
+        "name": "Unagi Don",
+        "description": "Served with soup. Eel over steamed rice",
+        "price": "$24.00",
+        "section": "Dinner Combos"
+      },
+      {
+        "name": "Albacore Roll",
+        "description": "IN: California (Avocado | Cucumber | Krab); TOP: Albacore with spicy radish sauce",
+        "price": "$17.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Battera",
+        "description": "Box sushi made with Mackerel on top",
+        "price": "$13.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Crab California",
+        "description": "Snow Crab | Avocado | Cucumber",
+        "price": "$13.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Caterpillar",
+        "description": "IN: Eel | Krab | Cucumber; TOP: Avocado | Eel Sauce",
+        "price": "$15.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Crunchy Tempura",
+        "description": "IN: Shrimp Tempura | Krab | Avocado | Cucumber; TOP: Tempura Flakes | Eel Sauce",
+        "price": "$12.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Crunchy Salmon",
+        "description": "IN: Shrimp Tempura | Salmon; TOP: Spicy Salmon | Tempura Flakes | Eel Sauce",
+        "price": "$19.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Del Mar",
+        "description": "IN: Scallop | Crab | Shrimp | Asparagus all Panko Fried; TOP: Australian Kobe Beef",
+        "price": "$25.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Diego",
+        "description": "IN: Spicy Tuna | Cilantro; TOP: Chopped Serrano Peppers",
+        "price": "$14.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Double Double",
+        "description": "Choice of Spicy Tuna, Yellowtail or Salmon. IN: your choice | Green Onion; TOP: more to top the roll, then seared | Eel Sauce",
+        "price": "$16.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Futomaki",
+        "description": "IN: Egg | Shiitake Mushroom | Gourd | Krab | Cucumber | Gobo | Smelt Roe | Pickled Radish",
+        "price": "$10.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Kitchen Sink",
+        "description": "IN: Spicy Scallop; TOP: Salmon | Avocado. Mix of Tuna | Octopus | Cucumber | Mushroom | Peppers in a Miso Sauce",
+        "price": "$22.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Pizza",
+        "description": "California Roll topped with Spicy Mayo and Baked",
+        "price": "$10.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Philadelphia",
+        "description": "IN: Smoked Salmon | Cream Cheese | Cucumber",
+        "price": "$12.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Rainbow",
+        "description": "IN: Krab California Roll; TOP: Tuna | Albacore | Salmon | Octopus | Shrimp | Halibut",
+        "price": "$16.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Salmon Skin",
+        "description": "IN: Salmon Skin | Bonito Flakes | Cucumber | Gobo | Green Onion",
+        "price": "$11.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Shrimp Tempura",
+        "description": "IN: Shrimp Tempura | Krab | Avocado | Cucumber | Mayo | Smelt Egg",
+        "price": "$12.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Softshell Crab",
+        "description": "IN: Soft Shell Crab | Krab | Avocado | Cucumber | Mayo | Smelt Egg",
+        "price": "$12.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Special Softshell Crab",
+        "description": "IN: Soft Shell Crab | Avocado | Gobo | Mayo | Smelt Egg; TOP: Tuna | Scallion Ponzu Sauce",
+        "price": "$21.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Spicy Tuna, or Yellowtail, or Salmon",
+        "description": "Chopped and mixed with Spicy Mayo",
+        "price": "$12.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Threesome",
+        "description": "IN: Shrimp Tempura | Spicy Tuna | Avocado; TOP: Eel | Spicy Tuna | Avocado Relish",
+        "price": "$21.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Vegetable Roll",
+        "description": "IN: Avocado | Cucumber | Gobo",
+        "price": "$9.00",
+        "section": "Rolls"
+      },
+      {
+        "name": "Salmon Belly (sake harami) - Nigiri",
+        "description": "",
+        "price": "$6.50",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Salmon Belly (sake harami) - Sashimi (2pc)",
+        "description": "",
+        "price": "$18.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Salmon Roe (ikura) - Nigiri",
+        "description": "",
+        "price": "$6.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Salmon Roe (ikura) - Sashimi (2pc)",
+        "description": "",
+        "price": "$15.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Scallop (hotate) - Nigiri",
+        "description": "",
+        "price": "$6.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Scallop (hotate) - Sashimi (2pc)",
+        "description": "",
+        "price": "$17.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Sea Urchin (uni) - Nigiri",
+        "description": "",
+        "price": "$9.50",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Sea Urchin (uni) - Sashimi (2pc)",
+        "description": "",
+        "price": "$23.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Shrimp (ebi) - Nigiri",
+        "description": "",
+        "price": "$5.50",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Shrimp (ebi) - Sashimi (2pc)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Sweet Shrimp (amaebi) - Nigiri",
+        "description": "",
+        "price": "$16.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Sweet Shrimp (amaebi) - Sashimi (2pc)",
+        "description": "",
+        "price": "$20.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Smelt Roe (masago) - Nigiri",
+        "description": "",
+        "price": "$6.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Smelt Roe (masago) - Sashimi (2pc)",
+        "description": "",
+        "price": "$15.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Surf Clam (hokki gai) - Nigiri",
+        "description": "",
+        "price": "$5.50",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Surf Clam (hokki gai) - Sashimi (2pc)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Spear Squid (yari ika) - Nigiri",
+        "description": "",
+        "price": "$6.50",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Spear Squid (yari ika) - Sashimi (2pc)",
+        "description": "",
+        "price": "$17.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Striped Jack (shima aji) - Nigiri",
+        "description": "",
+        "price": "$8.50",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Striped Jack (shima aji) - Sashimi (2pc)",
+        "description": "",
+        "price": "$22.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Medium Toro (chu toro) - Nigiri",
+        "description": "",
+        "price": "$13.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Medium Toro (chu toro) - Sashimi (2pc)",
+        "description": "",
+        "price": "$13.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Fatty Toro (o toro) - Nigiri",
+        "description": "",
+        "price": "$14.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Fatty Toro (o toro) - Sashimi (2pc)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Monkfish Liver (ankimo) - Sashimi",
+        "description": "not sold as nigiri",
+        "price": "$8.50",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Tuna (maguro) - Nigiri",
+        "description": "",
+        "price": "$6.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Tuna (maguro) - Sashimi (2pc)",
+        "description": "",
+        "price": "$15.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Yellowtail (hamachi) - Nigiri",
+        "description": "",
+        "price": "$6.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Yellowtail (hamachi) - Sashimi (2pc)",
+        "description": "",
+        "price": "$15.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Yellowtail Belly (hamachi harami) - Nigiri",
+        "description": "",
+        "price": "$6.50",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Yellowtail Belly (hamachi harami) - Sashimi (2pc)",
+        "description": "",
+        "price": "$18.00",
+        "section": "Nigiri / Sashimi"
+      },
+      {
+        "name": "Chef's Choice",
+        "description": "",
+        "price": "$42.00",
+        "section": "Sashimi Combos"
+      },
+      {
+        "name": "TY",
+        "description": "3 Tuna | 3 Yellowtail",
+        "price": "$17.00",
+        "section": "Sashimi Combos"
+      },
+      {
+        "name": "TYS",
+        "description": "2 Tuna | 2 Yellowtail | 2 Salmon",
+        "price": "$17.00",
+        "section": "Sashimi Combos"
+      },
+      {
+        "name": "Very Belly Belly",
+        "description": "2 Toro | 3 Yellowtail Belly | 3 Salmon Belly",
+        "price": "$32.00",
+        "section": "Sashimi Combos"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5782",
+    "name": "Dragon Express / Pho Vietnam Express",
+    "sourceUrl": "https://www.ubereats.com/store/dragon-express/dorfZsSISYOavco9SI7eYw",
+    "confidence": "medium",
+    "notes": "Work list had no website/router hit. The one 'own site' result found by search (dragonexpresschulavista.mybistro.online) is a third-party listing aggregator, not the restaurant's site, and its menu tab reads 'Oops! Our menu is under update' with no prices - not used. Read from the schema.org Restaurant/hasMenu JSON-LD on the Uber Eats store page (fetched with navigation headers, 200); address confirmed exactly (678 E St, Chula Vista, CA 91910). All 17 menu sections present (Appetizers, Lo Mein, Soups, Vegetables, Chinese Rice, Fish, Beef, Chicken, Pork, Shrimp, Vermicelli Noodle Dish, Pho Noodle Soups, Hu Tieu Noodle Soups, Stir Fry, Rice Dishes, Banh Mi, Beverages) with no 'Most Ordered' duplicate section this time - all 108 items kept. Cent endings: .95 (101 of 108), .75 (5), .00 (2) - a single tight conventional cluster, no divisor 1.04-1.3 producing more than 5/108 round hits, and the three Banh Mi sandwiches all land on the same clean $9.95 - no odd-cent tell. None inferred, merged, divided or truncated.",
+    "dishes": [
+      {
+        "name": "Chicken Wings (Eight Pieces)",
+        "description": "Crispy chicken wings with scallions and dried chilies. 8 pieces.",
+        "price": "$13.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Spring Rolls (Two Pieces)",
+        "description": "With shrimp and chicken  and with peanut sauce",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Cream Cheese Wontons",
+        "description": "Crisp wontons filled with a tangy cream cheese filling.",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Large Egg Roll (One Piece)",
+        "description": "Crispy roll filled with egg and vegetables.",
+        "price": "$2.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Pork Egg Rolls (6)",
+        "description": "Crispy rolls filled with pork and egg.",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Vietnamese Pork Egg Rolls",
+        "description": "Served with lettuce, and fish sauce.",
+        "price": "$7.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Wonton (Eight Pieces)",
+        "description": "Meat",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Shrimp Tempura (Eight Pieces)",
+        "description": "Crispy shrimp pieces served in a delicate batter.",
+        "price": "$10.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried chicken",
+        "description": "6 pieces",
+        "price": "$13.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Lo Mein",
+        "description": "Stir-fried noodles with chicken and vegetables.",
+        "price": "$17.95",
+        "section": "Lo Mein"
+      },
+      {
+        "name": "Beef Lo Mein",
+        "description": "Stir-fried noodles with beef and vegetables.",
+        "price": "$17.95",
+        "section": "Lo Mein"
+      },
+      {
+        "name": "Shrimp Lo Mein",
+        "description": "Stir-fried noodles with shrimp and vegetables.",
+        "price": "$17.95",
+        "section": "Lo Mein"
+      },
+      {
+        "name": "Dragon House Lo Mein",
+        "description": "With chicken, beef and shrimp",
+        "price": "$18.95",
+        "section": "Lo Mein"
+      },
+      {
+        "name": "Vegetable Lo Mein",
+        "description": "Stir-fried noodles with mixed vegetables.",
+        "price": "$17.95",
+        "section": "Lo Mein"
+      },
+      {
+        "name": "Pork Lo Mein",
+        "description": "Stir-fried noodles with pork and vegetables.",
+        "price": "$17.95",
+        "section": "Lo Mein"
+      },
+      {
+        "name": "Small Egg Drop Soup",
+        "description": "Rich and savory soup with egg drops.",
+        "price": "$2.95",
+        "section": "Soups"
+      },
+      {
+        "name": "Wonton Noodle soup",
+        "description": "With egg noodle.",
+        "price": "$17.95",
+        "section": "Soups"
+      },
+      {
+        "name": "Small Wonton Soup",
+        "description": "Delicate dumplings in a savory broth.",
+        "price": "$3.95",
+        "section": "Soups"
+      },
+      {
+        "name": "Large egg drop soup",
+        "description": "Rich and savory soup with egg drops.",
+        "price": "$8.95",
+        "section": "Soups"
+      },
+      {
+        "name": "Seafood And vegetables soup",
+        "description": "With vegetables.",
+        "price": "$17.95",
+        "section": "Soups"
+      },
+      {
+        "name": "Small Hot and Sour Soup",
+        "description": "Savoury soup with a balance of spicy and tangy flavors.",
+        "price": "$2.95",
+        "section": "Soups"
+      },
+      {
+        "name": "Large hot and sour soup",
+        "description": "Savoury soup with a balance of spicy and tangy flavors.",
+        "price": "$8.95",
+        "section": "Soups"
+      },
+      {
+        "name": "Mixed Vegetables Delight",
+        "description": "Chop suey. Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Eggplant Tofu",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Sweet and Sour Tofu",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Dragon House Fried Rice",
+        "description": "With Chicken, beef and shrimp",
+        "price": "$18.95",
+        "section": "Chinese Rice"
+      },
+      {
+        "name": "Chicken Fried Rice",
+        "description": "Stir-fried rice with chicken, egg, peas, and carrots.",
+        "price": "$16.95",
+        "section": "Chinese Rice"
+      },
+      {
+        "name": "Shrimp Fried Rice",
+        "description": "Stir-fried rice with shrimp, egg, peas, and carrots.",
+        "price": "$17.95",
+        "section": "Chinese Rice"
+      },
+      {
+        "name": "Beef Fried Rice",
+        "description": "Stir-fried rice with beef, egg, peas, and carrots.",
+        "price": "$16.95",
+        "section": "Chinese Rice"
+      },
+      {
+        "name": "Pork fried Rice",
+        "description": "Savory rice dish featuring pork.",
+        "price": "$16.95",
+        "section": "Chinese Rice"
+      },
+      {
+        "name": "Vegetable Fried Rice",
+        "description": "Mixed vegetables cooked with rice.",
+        "price": "$16.95",
+        "section": "Chinese Rice"
+      },
+      {
+        "name": "Steamed Rice",
+        "description": "Plain steamed rice, ideal as a side.",
+        "price": "$4.00",
+        "section": "Chinese Rice"
+      },
+      {
+        "name": "Seafood fried rice",
+        "description": "Chinese-style stir-fried rice with assorted seafood, seasoned to a savory finish.",
+        "price": "$18.95",
+        "section": "Chinese Rice"
+      },
+      {
+        "name": "Fried Fish tilapia",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Fish"
+      },
+      {
+        "name": "Fish Fillet with black bean sauce",
+        "description": "With black bean sauce, and steamed rice.",
+        "price": "$18.95",
+        "section": "Fish"
+      },
+      {
+        "name": "Sweet and Sour Fish Fillet",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Fish"
+      },
+      {
+        "name": "Curry Beef",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "Broccoli Beef",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "Beef with Cashew",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "Spicy Beef",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "Kung Pao Beef",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "Bell Pepper Beef",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "Beef with Vegetables",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Beef"
+      },
+      {
+        "name": "Sweet and Sour Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Curry Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Kung Pao Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Orange Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Garlic Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Chicken With Broccoli",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Szechwan Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Chicken with Cashew Nuts",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Pineapple Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Spicy Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Lemon Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Lemon Grass Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Black Pepper Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "Almond Chicken",
+        "description": "Served with steamed rice.",
+        "price": "$17.95",
+        "section": "Chicken"
+      },
+      {
+        "name": "BBQ Pork with Steam rice",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "Szechuan Pork",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "Pork with Vegetables",
+        "description": "Served with steamed rice.",
+        "price": "$18.95",
+        "section": "Pork"
+      },
+      {
+        "name": "Kung Pao Shrimp",
+        "description": "Served with steamed rice.",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Sweet and Sour Shrimp",
+        "description": "Served with steamed rice.",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Garlic Shrimp",
+        "description": "Served with steamed rice.",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Fried Salted Shrimp",
+        "description": "Served with steamed rice.",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Shrimp with Broccoli",
+        "description": "Served with steamed rice.",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Shrimp with Vegetables",
+        "description": "Served with steamed rice.",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Spicy Shrimp",
+        "description": "Served with steamed rice.",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Curry Shrimp",
+        "description": "Served with steamed rice.",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Shrimp with Cashew Nuts",
+        "description": "Served with steamed rice.",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Szechuan Shrimp",
+        "description": "Served with steamed rice.",
+        "price": "$20.95",
+        "section": "Shrimp"
+      },
+      {
+        "name": "Curry Chicken vermicelli",
+        "description": "Served in a large bowl with rice noodles, bean sprouts, green options, and fish sauce.",
+        "price": "$17.95",
+        "section": "Vermicelli Noodle Dish"
+      },
+      {
+        "name": "Grilled Pork and Egg Roll vermicelli",
+        "description": "Served in a large bowl with rice noodles, bean sprouts, green options, and fish sauce.",
+        "price": "$18.95",
+        "section": "Vermicelli Noodle Dish"
+      },
+      {
+        "name": "Grilled Chicken and Egg Roll vermicelli",
+        "description": "Served in a large bowl with rice noodles, bean sprouts, green options, and fish sauce.",
+        "price": "$18.95",
+        "section": "Vermicelli Noodle Dish"
+      },
+      {
+        "name": "Grilled Pork vermicelli",
+        "description": "Served in a large bowl with rice noodles, bean sprouts, green options, and fish sauce.",
+        "price": "$16.95",
+        "section": "Vermicelli Noodle Dish"
+      },
+      {
+        "name": "Grilled Chicken vermicelli",
+        "description": "Served in a large bowl with rice noodles, bean sprouts, green options, and fish sauce and peanuts",
+        "price": "$16.95",
+        "section": "Vermicelli Noodle Dish"
+      },
+      {
+        "name": "Grilled Shrimp and Egg Roll Vermicelli",
+        "description": "Served in a large bowl with rice noodles, bean sprouts, green options, and fish sauce.",
+        "price": "$19.95",
+        "section": "Vermicelli Noodle Dish"
+      },
+      {
+        "name": "Stir Fried Beef vermicelli",
+        "description": "Served in a large bowl with rice noodles, bean sprouts, green options, and fish sauce.",
+        "price": "$17.95",
+        "section": "Vermicelli Noodle Dish"
+      },
+      {
+        "name": "Vermicelli Egg Roll",
+        "description": "Served in a large bowl with rice noodles, bean sprouts, green options, and fish sauce.",
+        "price": "$16.95",
+        "section": "Vermicelli Noodle Dish"
+      },
+      {
+        "name": "Vermicelli Grilled Shrimp",
+        "description": "Served in a large bowl with rice noodles, bean sprouts, green options, and fish sauce.",
+        "price": "$17.95",
+        "section": "Vermicelli Noodle Dish"
+      },
+      {
+        "name": "Stir Fried Beef and Egg Roll",
+        "description": "Served in a large bowl with rice noodles, bean sprouts, green options, and fish sauce.",
+        "price": "$19.95",
+        "section": "Vermicelli Noodle Dish"
+      },
+      {
+        "name": "Chicken Noodle Soup",
+        "description": "Beef broth.",
+        "price": "$17.95",
+        "section": "Pho Noodle Soups"
+      },
+      {
+        "name": "Seafood Noodle Soup",
+        "description": "Beef broth.",
+        "price": "$19.95",
+        "section": "Pho Noodle Soups"
+      },
+      {
+        "name": "Combo Beef",
+        "description": "Tendon, tripe, brisket, flank and steak",
+        "price": "$18.95",
+        "section": "Pho Noodle Soups"
+      },
+      {
+        "name": "Rare Steak",
+        "description": "Beef broth.",
+        "price": "$17.95",
+        "section": "Pho Noodle Soups"
+      },
+      {
+        "name": "Mixed Vegetable Noodle Soup",
+        "description": "Beef broth.",
+        "price": "$17.95",
+        "section": "Pho Noodle Soups"
+      },
+      {
+        "name": "Shrimp Noodle Soup",
+        "description": "Beef broth.",
+        "price": "$18.95",
+        "section": "Pho Noodle Soups"
+      },
+      {
+        "name": "Beef Meatball Noodle Soup",
+        "description": "Beef broth.",
+        "price": "$17.95",
+        "section": "Pho Noodle Soups"
+      },
+      {
+        "name": "Vegetables noodle soup (chicken broth)",
+        "description": "Chicken broth.",
+        "price": "$17.95",
+        "section": "Hu Tieu Noodle Soups"
+      },
+      {
+        "name": "Chicken noodle soup with chicken broth",
+        "description": "Chicken broth.",
+        "price": "$17.95",
+        "section": "Hu Tieu Noodle Soups"
+      },
+      {
+        "name": "Shrimp noodle soup with chicken broth",
+        "description": "Chicken broth.",
+        "price": "$18.95",
+        "section": "Hu Tieu Noodle Soups"
+      },
+      {
+        "name": "Dragon House Stir Fry",
+        "description": "With mixed vegetables.",
+        "price": "$18.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "Seafood Stir Fry",
+        "description": "With mixed vegetables.",
+        "price": "$18.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "Shrimp Stir Fry",
+        "description": "With mixed vegetables.",
+        "price": "$18.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "Pork Stir Fry",
+        "description": "With mixed vegetables.",
+        "price": "$17.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "Chicken Stir Fry",
+        "description": "With mixed vegetables.",
+        "price": "$17.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "Beef Stir Fry",
+        "description": "With mixed vegetables.",
+        "price": "$17.95",
+        "section": "Stir Fry"
+      },
+      {
+        "name": "Grilled Chicken with rice",
+        "description": "Served with steamed rice, lettuce, tomato, cucumber, green onions, and fish sauce.",
+        "price": "$16.95",
+        "section": "Rice Dishes"
+      },
+      {
+        "name": "Grilled Pork Chop",
+        "description": "Served with steamed rice, lettuce, tomato, cucumber, green onions, and fish sauce.",
+        "price": "$16.95",
+        "section": "Rice Dishes"
+      },
+      {
+        "name": "Grilled Pork with rice",
+        "description": "Served with steamed rice, lettuce, tomato, cucumber, green onions, and fish sauce.",
+        "price": "$16.95",
+        "section": "Rice Dishes"
+      },
+      {
+        "name": "SWP Grilled Pork Sandwich",
+        "description": "Served on a slightly toasted hoagie with mayonnaise, lettuce, cucumber, cilantro, and jalapeno peppers.",
+        "price": "$9.95",
+        "section": "Banh Mi"
+      },
+      {
+        "name": "SWC Grilled Chicken Sandwich",
+        "description": "Served on a slightly toasted hoagie with mayonnaise, lettuce, cucumber, cilantro, and jalapeno peppers.",
+        "price": "$9.95",
+        "section": "Banh Mi"
+      },
+      {
+        "name": "SWT Tofu Sandwich",
+        "description": "Served on a slightly toasted hoagie with mayonnaise, lettuce, cucumber, cilantro, and jalapeno peppers.",
+        "price": "$9.95",
+        "section": "Banh Mi"
+      },
+      {
+        "name": "Coke bottle (16.9 FL oz)",
+        "description": "",
+        "price": "$2.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Sprite Bottle (16.9 FL oz)",
+        "description": "",
+        "price": "$2.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Diet Coke bottle (16.9 FL oz)",
+        "description": "",
+        "price": "$2.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Arizona Green Tea ( Ginseng &amp; Honey)",
+        "description": "",
+        "price": "$2.75",
+        "section": "Beverages"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "With boba and whip cream",
+        "price": "$5.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Crush Orange Bottle (16.9 FL oz)",
+        "description": "",
+        "price": "$2.75",
+        "section": "Beverages"
+      }
+    ]
+  }
+]

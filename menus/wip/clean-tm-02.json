@@ -1,0 +1,3499 @@
+[
+  {
+    "restaurantId": "5222",
+    "name": "Sabertooth Mexican Grill",
+    "sourceUrl": "https://sandiegozoowildlifealliance.org/sites/default/files/2026-05/04-01-26-sabertooth-grill-web-menu.pdf",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "This is a San Diego Zoo concession stand (Elephant Odyssey). Read the zoo's own official menu PDF (linked from sdzwa.org/dining/sabertooth/menu) via extract_pdf_images.js - 3 fully legible pages, full item list (burritos, tacos, specialties, desserts, beverages) but NOT ONE item carries a price anywhere on the menu; page footer says 'prices subject to change'. Zoo concession pricing is not published. No priced source found on tier-5 aggregators either (zmenu 403'd). Publishes no per-item prices anywhere - not-found."
+  },
+  {
+    "restaurantId": "5996",
+    "name": "Bombay Cafe",
+    "sourceUrl": "https://www.doordash.com/store/bombay-cafe-vista-84834",
+    "confidence": "medium",
+    "notes": "Restaurant's own NetWaiter storefront (bombaycafe.netwaiter.com) returns an empty GetMenu payload (About-page-only, as the router found). Read instead from DoorDash marketplace JSON-LD (schema.org Menu block, 3rd of 4 ld+json blocks on the page - iterated by @type). 37 items, 7 sections (Appetizers, Chicken Curry, Samundari Seafood, Vegetable Curry, Entree, Desserts, Side). Cents mostly .99/.50/.49/.95/.00 - conventional printed-menu pattern, no markup divisor found, so treated as the restaurant's real prices at medium (marketplace) confidence.",
+    "dishes": [
+      {
+        "section": "Appetizers",
+        "name": "Chef's Assorted Appetizers",
+        "description": "Assortment of various appetizers.",
+        "price": "$9.99"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Fish Pakora",
+        "description": "Fish pieces marinated in Indian spices and deep fried.",
+        "price": "$9.99"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Chicken Pakoras",
+        "description": "Tender pieces of chicken delicately spiced and deep fried.",
+        "price": "$8.99"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Vegetable Pakoras",
+        "description": "Fresh assorted vegetable fritters.",
+        "price": "$3.99"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Veggie Samosa",
+        "description": "",
+        "price": "$4.50"
+      },
+      {
+        "section": "Appetizers",
+        "name": "Papadam",
+        "description": "Thin crispy lentil wafers.",
+        "price": "$2.99"
+      },
+      {
+        "section": "Chicken Curry",
+        "name": "Chicken Vindaloo",
+        "description": "Chunks of chicken cooked in a specially hot and spicy sauce.",
+        "price": "$14.10"
+      },
+      {
+        "section": "Chicken Curry",
+        "name": "Chicken Tikka Masala",
+        "description": "",
+        "price": "$12.99"
+      },
+      {
+        "section": "Chicken Curry",
+        "name": "Chicken Korma",
+        "description": "Tender, juicy pieces of chicken, cooked in a creamy sauce with delicate spices.",
+        "price": "$11.99"
+      },
+      {
+        "section": "Chicken Curry",
+        "name": "Chicken Masala",
+        "description": "Delicately spiced boneless chicken cooked with fresh herbs and spices.",
+        "price": "$11.99"
+      },
+      {
+        "section": "Chicken Curry",
+        "name": "Chicken Kashmiri",
+        "description": "Boneless chicken cooked in cream sauce with apple grating and mild spices.",
+        "price": "$11.99"
+      },
+      {
+        "section": "Samundari Seafood",
+        "name": "Bombay Fish Masala",
+        "description": "Fillet of red snapper cooked in a spicy brown sauce with onions, tomatoes and spices.",
+        "price": "$16.99"
+      },
+      {
+        "section": "Samundari Seafood",
+        "name": "Shrimp Vindaloo",
+        "description": "Large shrimp cooked specially hot and spicy, served in tangy sauce.",
+        "price": "$16.99"
+      },
+      {
+        "section": "Samundari Seafood",
+        "name": "Fish Jalfrazie",
+        "description": "Fish marinated in fresh ground spices and sauteed with tomato, onions, capsicum (green pepper) and mushrooms.",
+        "price": "$16.99"
+      },
+      {
+        "section": "Samundari Seafood",
+        "name": "Shrimp Masala",
+        "description": "Jumbo shrimp cooked in an exotic garlic based sauce with herbs.",
+        "price": "$16.99"
+      },
+      {
+        "section": "Samundari Seafood",
+        "name": "Shrimp Saag",
+        "description": "Large shrimps sauteed with spinach lightly seasoned with herbs and spices.",
+        "price": "$16.99"
+      },
+      {
+        "section": "Vegetable Curry",
+        "name": "Palak Paneer",
+        "description": "Homemade cheese and spinach delicately seasoned and flavored with fresh herbs and spices.",
+        "price": "$11.99"
+      },
+      {
+        "section": "Vegetable Curry",
+        "name": "Paneer Masala",
+        "description": "Cubes of home made cottage cheese cooked in our sauce.",
+        "price": "$11.99"
+      },
+      {
+        "section": "Vegetable Curry",
+        "name": "Navratan Korma",
+        "description": "Vegetables cooked in a cream sauce with exotic blend of nuts.",
+        "price": "$11.99"
+      },
+      {
+        "section": "Vegetable Curry",
+        "name": "Matter Paneer",
+        "description": "Green peas and home made cheese in a special blend of spiced sauce.",
+        "price": "$11.99"
+      },
+      {
+        "section": "Vegetable Curry",
+        "name": "Baingan Bharta",
+        "description": "Charbroiled eggplant cooked with tomatoes and onions.",
+        "price": "$10.99"
+      },
+      {
+        "section": "Entrée",
+        "name": "Biryani",
+        "description": "",
+        "price": "$17.99"
+      },
+      {
+        "section": "Entrée",
+        "name": "Chicken Tandoori",
+        "description": "",
+        "price": "$14.99"
+      },
+      {
+        "section": "Entrée",
+        "name": "Lamb Tikka Masala",
+        "description": "",
+        "price": "$14.99"
+      },
+      {
+        "section": "Entrée",
+        "name": "Lamb Korma",
+        "description": "",
+        "price": "$13.99"
+      },
+      {
+        "section": "Entrée",
+        "name": "Malai Kofta",
+        "description": "",
+        "price": "$11.99"
+      },
+      {
+        "section": "Entrée",
+        "name": "Chana aloo",
+        "description": "",
+        "price": "$10.95"
+      },
+      {
+        "section": "Entrée",
+        "name": "Aloo Gobi",
+        "description": "",
+        "price": "$10.99"
+      },
+      {
+        "section": "Desserts",
+        "name": "Gulab Jammun",
+        "description": "A north indian desserts made from special dough, fried golden brown and served in a sweet sauce.",
+        "price": "$5.99"
+      },
+      {
+        "section": "Desserts",
+        "name": "Mango Lasi",
+        "description": "",
+        "price": "$4.50"
+      },
+      {
+        "section": "Desserts",
+        "name": "Rasmalai",
+        "description": "Sponge of homemade cheese in reduced milk, almonds and nuts.",
+        "price": "$3.50"
+      },
+      {
+        "section": "Desserts",
+        "name": "Kheer",
+        "description": "Rice pudding garnished with raisins, nuts and silver leaf.",
+        "price": "$3.50"
+      },
+      {
+        "section": "Side",
+        "name": "Garlic Naan (per Pieces)",
+        "description": "",
+        "price": "$5.99"
+      },
+      {
+        "section": "Side",
+        "name": "Coconut Naan",
+        "description": "",
+        "price": "$6.00"
+      },
+      {
+        "section": "Side",
+        "name": "Rice",
+        "description": "",
+        "price": "$3.99"
+      },
+      {
+        "section": "Side",
+        "name": "Regular Naan",
+        "description": "",
+        "price": "$3.99"
+      },
+      {
+        "section": "Side",
+        "name": "Ratart",
+        "description": "",
+        "price": "$3.49"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6035",
+    "name": "El Dorado | Authentic Mexican Food",
+    "sourceUrl": "https://www.doordash.com/store/el-dorado-mexican-food---311-palomar-st-chula-vista-34825491/",
+    "confidence": "medium",
+    "notes": "No first-party ordering platform found (own site eldoradomexicanfood.com has no menu). Read from DoorDash marketplace JSON-LD Menu block (address on page confirms 'Chula Vista', matching our record). Cent distribution is scattered (86% end in .18/.38/.58/.78/.98, not conventional .00/.25/.50/.75/.95/.99) - ran the subtraction test: the same $1.20 protein-tier delta recurs independently in two categories (Quesadilla: plain-protein $15.58 -> premium carne asada/adobada $16.78 -> shrimp $17.98, each +$1.20), which reads as a real tiered-protein pricing structure rather than a computed markup, so filed rather than blocked. 'Most Ordered' carousel (12 items) was diffed against the categorized menu; 6 duplicates dropped, 6 items kept as unique ('Most Ordered (unique)' section): Mexican Coca-Cola, Tilapia (Whole) Fish, Shrimp Ceviche Tostada, Shrimp Cocktail, Mix Cocktail, Aguas Frescas.",
+    "dishes": [
+      {
+        "section": "Breakfast Burrito",
+        "name": "Carne Asada Egg and Cheese",
+        "description": "Carne asada, scrambled eggs, and cheese wrapped in a flour tortilla.",
+        "price": "$16.78"
+      },
+      {
+        "section": "Breakfast Burrito",
+        "name": "Eggs, Bacon, Ham , Sausage, Beans,  Potatoes and Cheese",
+        "description": "Flour tortilla filled with eggs, cheese, beans, potatoes, bacon, ham, and sausage.",
+        "price": "$16.78"
+      },
+      {
+        "section": "Breakfast Burrito",
+        "name": "Chorizo and Eggs",
+        "description": "Mexican sausage, scrambled eggs, refried beans, rice, and cheese in a flour tortilla.",
+        "price": "$14.38"
+      },
+      {
+        "section": "Breakfast Burrito",
+        "name": "Egg Cheese with Bacon, Ham, or Sausage",
+        "description": "Egg cheese with choice of bacon, ham, or sausage wrapped in a breakfast burrito.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Breakfast Burrito",
+        "name": "Machaca and Eggs",
+        "description": "Shredded beef with eggs, bell peppers and onions.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Breakfast Burrito",
+        "name": "Huevos a la Mexicana",
+        "description": "Scrambled eggs with bell peppers, onions, tomatoes and cheese. ",
+        "price": "$15.58"
+      },
+      {
+        "section": "Breakfast Burrito",
+        "name": "Egg Cheese Beans Potatoes",
+        "description": "Scrambled eggs, melted cheese, beans, and potatoes wrapped in a flour tortilla.",
+        "price": "$14.38"
+      },
+      {
+        "section": "Breakfast Burrito",
+        "name": "Egg Cheese",
+        "description": "Scrambled eggs and melted cheese wrapped in a flour tortilla.",
+        "price": "$11.98"
+      },
+      {
+        "section": "Breakfast Plates",
+        "name": "12. Red or Green Chilaquiles Rice and Beans",
+        "description": "Crispy tortilla chips, choice of red or green sauce, served with rice and beans.",
+        "price": "$16.78"
+      },
+      {
+        "section": "Breakfast Plates",
+        "name": "3. Carne Asada Ranchero Rice, Beans and Corn or Flour Tortillas",
+        "description": "Carne asada, ranchero rice, beans. Choice of corn or flour tortillas.",
+        "price": "$19.18"
+      },
+      {
+        "section": "Breakfast Plates",
+        "name": "4. Machaca w/ egg  Rice Beans and Corn or Flour Tortillas",
+        "description": "Scrambled eggs with shredded beef, served with rice, beans, and your choice of corn or flour tortillas.",
+        "price": "$19.18"
+      },
+      {
+        "section": "Breakfast Plates",
+        "name": "10. Chorizo with Eggs Rice and Beans Choice of Corn or Flour Tortillas",
+        "description": "Chorizo and eggs served with rice, beans, and choice of corn or flour tortillas.",
+        "price": "$19.18"
+      },
+      {
+        "section": "Breakfast Plates",
+        "name": "8. Huevos Rancheros Rice and Beans Your Choice of Corn or Flour Tortillas",
+        "description": "Huevos Rancheros. Served with rice and beans, choice of corn or flour tortillas.",
+        "price": "$16.78"
+      },
+      {
+        "section": "Breakfast Plates",
+        "name": "9. Enchiladas Rancheras Rice and Beans",
+        "description": "2 Cheese Enchiladas topped with Ranchero sauce, rice and beans. ",
+        "price": "$16.78"
+      },
+      {
+        "section": "Breakfast Plates",
+        "name": "11. Huevos a la Mexicana Rice and Beans Choice of Corn or Flour Tortillas",
+        "description": "Scrambled eggs with bell peppers onions and tomatoes. ",
+        "price": "$16.78"
+      },
+      {
+        "section": "Soups",
+        "name": "Menudo",
+        "description": "Comes with a side of onion, cilantro, red peppers, and your choice of corn or flour tortillas.",
+        "price": "$19.18"
+      },
+      {
+        "section": "Soups",
+        "name": "7 Seas Soup",
+        "description": "With rice, beans, small salad, avocado, and your choice of corn or flour tortilla.",
+        "price": "$22.78"
+      },
+      {
+        "section": "Soups",
+        "name": "Caldo de Camaron (Shrimp Soup)",
+        "description": "Comes with a side of, onion, cilantro, red peppers, and your choice of corn or flour tortillas.",
+        "price": "$21.58"
+      },
+      {
+        "section": "Soups",
+        "name": "Albóndigas (Meatball Soup)",
+        "description": "Comes with side of rice, onion, cilantro, red peppers, and your choice of corn or flour tortillas.",
+        "price": "$19.18"
+      },
+      {
+        "section": "Soups",
+        "name": "Fish",
+        "description": "Comes with a side of onion, cilantro, red peppers, and your choice of corn or flour tortillas.",
+        "price": "$20.38"
+      },
+      {
+        "section": "Soups",
+        "name": "Caldo de pollo (Chicken Soup)",
+        "description": "Comes with side of rice, onion, cilantro, red peppers, and your choice of corn or flour tortillas.",
+        "price": "$19.18"
+      },
+      {
+        "section": "Soups",
+        "name": "Caldo de Res (Beef Soup)",
+        "description": "Comes with side of rice, onion, cilantro, red peppers, and your choice of corn or flour tortillas.",
+        "price": "$19.18"
+      },
+      {
+        "section": "Chimichangas",
+        "name": "Beef Chimichanga",
+        "description": "Comes with guacamole, sour cream, and cheese.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Chimichangas",
+        "name": "Chicken Chimichanga",
+        "description": "Comes with guacamole, sour cream, and cheese.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Chimichangas",
+        "name": "Mix Chimichanga (Beef or Chicken Beans)",
+        "description": "Comes with guacamole, sour cream, and cheese.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Burritos",
+        "name": "Carne Asada Ranchero",
+        "description": "Grilled steak, guacamole, pico de gallo, beans, rice, and cheese wrapped in a flour tortilla.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Burritos",
+        "name": "Shrimp",
+        "description": "Shrimp with choice of spicy sauce, garlic, or Ranchero sauce, served with rice and cheese.",
+        "price": "$15.38"
+      },
+      {
+        "section": "Burritos",
+        "name": "California",
+        "description": "French fries, carne asada, cheese.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Burritos",
+        "name": "Fajitas",
+        "description": "Your choice of chicken or beef fajitas w/tomatoes, onion, and green bell pepper.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Burritos",
+        "name": "Carne Asada",
+        "description": "With guacamole, tomatoes, onion, and cilantro.",
+        "price": "$15.38"
+      },
+      {
+        "section": "Burritos",
+        "name": "Chile Rojo",
+        "description": "Steak with spicy red sauce and  beans. ",
+        "price": "$15.58"
+      },
+      {
+        "section": "Burritos",
+        "name": "Fish",
+        "description": "Battered and deep fried fish with white sauce, cabbage, and pico de gallo.",
+        "price": "$14.38"
+      },
+      {
+        "section": "Burritos",
+        "name": "Shredded Beef ",
+        "description": "With shredded beef and ranchero sauce.",
+        "price": "$14.38"
+      },
+      {
+        "section": "Burritos",
+        "name": "Mixed with Beans (Beef or Chicken)",
+        "description": "Your choice of shredded beef or chicken and ranchero sauce.",
+        "price": "$14.38"
+      },
+      {
+        "section": "Burritos",
+        "name": "Carnitas",
+        "description": "With guacamole ",
+        "price": "$15.58"
+      },
+      {
+        "section": "Burritos",
+        "name": "Adobada",
+        "description": "With cilantro and onion.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Burritos",
+        "name": "Chile Verde",
+        "description": "Pork with green mild green sauce and  beans.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Burritos",
+        "name": "Pollo Asado",
+        "description": "With guacamole cilantro, onion, and tomatoes.",
+        "price": "$14.38"
+      },
+      {
+        "section": "Burritos",
+        "name": "Chile Relleno",
+        "description": "Anaheim pepper stuffed with cheese, beans, and red enchilada sauce.",
+        "price": "$14.38"
+      },
+      {
+        "section": "Burritos",
+        "name": "Chicken",
+        "description": "With shredded chicken and ranchero sauce.",
+        "price": "$14.38"
+      },
+      {
+        "section": "Burritos",
+        "name": "Supreme (veggie)",
+        "description": "With beans, cheese, lettuce, sour cream and tomatoes.",
+        "price": "$13.18"
+      },
+      {
+        "section": "Burritos",
+        "name": "Bean, Rice & Cheese",
+        "description": "Refried beans, rice, and cheese wrapped in a flour tortilla.",
+        "price": "$13.18"
+      },
+      {
+        "section": "Burritos",
+        "name": "Bean and Cheese",
+        "description": "Refried beans and Monterey Jack cheese wrapped in a flour tortilla.",
+        "price": "$8.38"
+      },
+      {
+        "section": "Tacos",
+        "name": "3 TJ Mini Tacos",
+        "description": "Pollo asado, carne asada, adobada or carnitas.",
+        "price": "$10.78"
+      },
+      {
+        "section": "Tacos",
+        "name": "Fish",
+        "description": "With white sauce, cabbage, and mexican salsa.",
+        "price": "$5.98"
+      },
+      {
+        "section": "Tacos",
+        "name": "5  Shredded Beef Rolled Tacos",
+        "description": "Shredded beef tacos topped with lettuce, guacamole, tomatoes, and cheese.",
+        "price": "$11.98"
+      },
+      {
+        "section": "Tacos",
+        "name": "3  Shredded Beef Rolled Tacos",
+        "description": "With lettuce, guacamole tomatoes, and cheese.",
+        "price": "$8.38"
+      },
+      {
+        "section": "Tacos",
+        "name": "Shrimp",
+        "description": "Crispy shrimp, white sauce, cabbage, pico de gallo.",
+        "price": "$8.38"
+      },
+      {
+        "section": "Tacos",
+        "name": "Carnitas",
+        "description": "With guacamole, tomatoes, onion and cilantro.",
+        "price": "$6.30"
+      },
+      {
+        "section": "Tacos",
+        "name": "Adobada",
+        "description": "With cilantro and onion.",
+        "price": "$6.30"
+      },
+      {
+        "section": "Tacos",
+        "name": "Beef",
+        "description": "Hard shell shredded beef taco,with lettuce tomatoes and cheese.",
+        "price": "$5.98"
+      },
+      {
+        "section": "Tacos",
+        "name": "Pollo Asado",
+        "description": "With guacamole.",
+        "price": "$5.98"
+      },
+      {
+        "section": "Tacos",
+        "name": "Carne Asada",
+        "description": "With guacamole. ",
+        "price": "$6.30"
+      },
+      {
+        "section": "Tacos",
+        "name": "Chicken",
+        "description": "Shredded chicken, lettuce, tomatoes, and cheese.",
+        "price": "$5.10"
+      },
+      {
+        "section": "Tortas",
+        "name": "Carne Asada",
+        "description": "With beans, lettuce, tomatoes, cheese, and guacamole.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Tortas",
+        "name": "Chorizo with  egg",
+        "description": "With beans, lettuce, tomatoes, cheese, and guacamole.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Tortas",
+        "name": "Machaca w/ Egg",
+        "description": "With beans, lettuce, tomatoes, cheese, guacamole, bell pepper, onion, and shredded beef.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Tortas",
+        "name": "Carnitas",
+        "description": "With beans, lettuce, tomatoes, cheese, and guacamole.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Tortas",
+        "name": "Pollo Asado",
+        "description": "With beans, lettuce, tomatoes, cheese, and guacamole.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Tortas",
+        "name": "Adobada",
+        "description": "With beans, lettuce, tomatoes, cheese, and guacamole.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Tortas",
+        "name": "Jamón / Ham",
+        "description": "With beans, lettuce, tomatoes, cheese, and guacamole.",
+        "price": "$14.38"
+      },
+      {
+        "section": "Quesadilla",
+        "name": "Shrimp",
+        "description": "Succulent shrimp with your choice of spicy seasoning, garlic infusion, or ranchero flavor, melted cheese, and a crisp tortilla.",
+        "price": "$17.98"
+      },
+      {
+        "section": "Quesadilla",
+        "name": "Carne Asada",
+        "description": "With guacamole.",
+        "price": "$16.78"
+      },
+      {
+        "section": "Quesadilla",
+        "name": "Adobada",
+        "description": "With onion and cilantro.",
+        "price": "$16.78"
+      },
+      {
+        "section": "Quesadilla",
+        "name": "Supreme ",
+        "description": "With cheese, beans, sour cream, lettuce, and tomatoes. ",
+        "price": "$15.58"
+      },
+      {
+        "section": "Quesadilla",
+        "name": "Pollo Asado",
+        "description": "With guacamole. ",
+        "price": "$15.58"
+      },
+      {
+        "section": "Quesadilla",
+        "name": "Shredded Beef or Chicken",
+        "description": "Shredded beef or chicken with melted cheese in a warm tortilla. Protein choice: Beef or Chicken.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Quesadilla",
+        "name": "Quesadilla (Plain)",
+        "description": "Flour tortilla filled with melted cheese.",
+        "price": "$9.58"
+      },
+      {
+        "section": "2 Enchiladas",
+        "name": "2 cheese enchiladas ",
+        "description": "Covered in melted cheese and rich red sauce, served with shredded lettuce, diced tomatoes, and a dollop of sour cream.",
+        "price": "$10.78"
+      },
+      {
+        "section": "2 Enchiladas",
+        "name": "2 beef or chicken enchiladas ",
+        "description": "2 beed enchiladas or shredded chicken enchiladas with lettuce tomatoes and sour cream.",
+        "price": "$11.98"
+      },
+      {
+        "section": "Sides Orders & À La Carte",
+        "name": "3 Sopes (Beef or Chicken)",
+        "description": "With beans, lettuce, tomatoes, sour cream, and cheese.",
+        "price": "$15.58"
+      },
+      {
+        "section": "Sides Orders & À La Carte",
+        "name": "Carne Asada Fries",
+        "description": "With beans, sour cream, guacamole, carne asada, and cheese.",
+        "price": "$19.18"
+      },
+      {
+        "section": "Sides Orders & À La Carte",
+        "name": "Super Nachos",
+        "description": "Crunchy tortilla chips topped with beans, sour cream, guacamole, carne asada, and cheese.",
+        "price": "$19.18"
+      },
+      {
+        "section": "Sides Orders & À La Carte",
+        "name": "Chile Relleno",
+        "description": "Anaheim pepper stuffed with cheese, topped with enchilada sauce, served with lettuce, tomatoes, and sour cream.",
+        "price": "$10.78"
+      },
+      {
+        "section": "Sides Orders & À La Carte",
+        "name": "Guacamole  and chips",
+        "description": "Mashed avocados with lime juice, salt, onions, cilantro, and tomatoes.",
+        "price": "$7.99"
+      },
+      {
+        "section": "Sides Orders & À La Carte",
+        "name": "Rice (8oz)",
+        "description": "Mexican-style rice typically cooked with tomatoes, onions, garlic, and seasonings.",
+        "price": "$3.50"
+      },
+      {
+        "section": "Sides Orders & À La Carte",
+        "name": "Beans (8oz)",
+        "description": "Refried pinto beans topped with cheese. ",
+        "price": "$3.50"
+      },
+      {
+        "section": "Sides Orders & À La Carte",
+        "name": "Hot Carrots",
+        "description": "",
+        "price": "$1.99"
+      },
+      {
+        "section": "Combination Plates",
+        "name": "#11. Chile Verde, Rice, Beans & Tortillas",
+        "description": "Chunks of pork simmered in green salsa, served with rice, beans, and tortillas.",
+        "price": "$19.18"
+      },
+      {
+        "section": "Most Ordered (unique)",
+        "name": "Mexican Coca-Cola",
+        "description": "The same great taste made with only pure cane sugar and served in a bottle.",
+        "price": "$4.25"
+      },
+      {
+        "section": "Most Ordered (unique)",
+        "name": "Tilapia (Whole) Fish",
+        "description": "Whole fish deep fried, rice, beans, small salad, avocado, and your choice of corn or flour tortilla.",
+        "price": "$20.38"
+      },
+      {
+        "section": "Most Ordered (unique)",
+        "name": "Shrimp Ceviche Tostada",
+        "description": "Fresh shrimp ceviche with diced tomatoes, onions, cilantro, and avocado slices on a crispy tostada.",
+        "price": "$7.25"
+      },
+      {
+        "section": "Most Ordered (unique)",
+        "name": "Shrimp Cocktail",
+        "description": "Juicy shrimp served with tangy cocktail sauce for dipping.",
+        "price": "$21.58"
+      },
+      {
+        "section": "Most Ordered (unique)",
+        "name": "Mix Cocktail (Shrimp and Octopus)",
+        "description": "Shrimp and octopus with diced cucumber  avocado, tomatoes,  onions , and cilantro.",
+        "price": "$22.78"
+      },
+      {
+        "section": "Most Ordered (unique)",
+        "name": "AGUAS FRESCAS",
+        "description": "Limon, jamaica, horchata.",
+        "price": "$4.25"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5984",
+    "name": "Gualberto's Mexican Food",
+    "sourceUrl": "https://www.doordash.com/store/gualberto's-taco-shop-1-san-diego-106205/",
+    "confidence": "medium",
+    "notes": "Restaurant's own NetWaiter storefront returns an empty GetMenu payload (as the router found). Read from DoorDash marketplace JSON-LD Menu block instead; page address confirms University Ave, San Diego, matching our record. 91 items across 13 sections (Super Quesadilla, Tortas, Tacos, Tostadas, Burritos, Enchiladas, Hamburgers, Seafood, Chimichangas, Special 5 Taquitos, Sides, Desserts, Drinks). Cents: 61% conventional (.25/.75/.99), remainder mostly .05/.10 which is common tax-table nickel pricing at San Diego taco shops, not a markup - no divisor improved the conventional-hit rate over the raw prices, so filed at medium (marketplace) confidence.",
+    "dishes": [
+      {
+        "section": "Super Quesadilla",
+        "name": "Ham",
+        "description": "Served w/ sour cream, guacamole & beans.",
+        "price": "$10.75"
+      },
+      {
+        "section": "Super Quesadilla",
+        "name": "Shredded Beef or Chicken",
+        "description": "Served w/ sour cream, guacamole & beans.",
+        "price": "$10.75"
+      },
+      {
+        "section": "Super Quesadilla",
+        "name": "Carnitas",
+        "description": "Served w/ sour cream, guacamole & beans.",
+        "price": "$10.75"
+      },
+      {
+        "section": "Super Quesadilla",
+        "name": "Carne Asada Fries",
+        "description": "Guacamole, sour cream, cheese & pico de gallo.",
+        "price": "$10.75"
+      },
+      {
+        "section": "Super Quesadilla",
+        "name": "Carne Asada",
+        "description": "Served w/ sour cream, guacamole & beans.",
+        "price": "$10.75"
+      },
+      {
+        "section": "Super Quesadilla",
+        "name": "Grill Chicken",
+        "description": "Served w/ sour cream, guacamole & beans.",
+        "price": "$10.75"
+      },
+      {
+        "section": "Tortas",
+        "name": "Beef",
+        "description": "",
+        "price": "$8.25"
+      },
+      {
+        "section": "Tortas",
+        "name": "Ham",
+        "description": "Served w/ sour cream, guacamole & beans.",
+        "price": "$8.25"
+      },
+      {
+        "section": "Tortas",
+        "name": "Chicken",
+        "description": "",
+        "price": "$8.25"
+      },
+      {
+        "section": "Tortas",
+        "name": "Machaca",
+        "description": "",
+        "price": "$8.25"
+      },
+      {
+        "section": "Tortas",
+        "name": "Chorizo",
+        "description": "",
+        "price": "$8.25"
+      },
+      {
+        "section": "Tortas",
+        "name": "Milanesa",
+        "description": "",
+        "price": "$8.25"
+      },
+      {
+        "section": "Tortas",
+        "name": "Carne Asada",
+        "description": "",
+        "price": "$8.25"
+      },
+      {
+        "section": "Tortas",
+        "name": "Carnitas",
+        "description": "",
+        "price": "$8.25"
+      },
+      {
+        "section": "Tacos",
+        "name": "Shrimps",
+        "description": "W/ rice & vegetables.",
+        "price": "$4.10"
+      },
+      {
+        "section": "Tacos",
+        "name": "taco de papa",
+        "description": "W/letucce, pico de gallo and cheese",
+        "price": "$2.99"
+      },
+      {
+        "section": "Tacos",
+        "name": "Cabeza",
+        "description": "W/onion & cilantro.",
+        "price": "$4.10"
+      },
+      {
+        "section": "Tacos",
+        "name": "Guacamole",
+        "description": "Crispy w/ cheese, lettuce & pico de gallo.",
+        "price": "$3.70"
+      },
+      {
+        "section": "Tacos",
+        "name": "Carnitas",
+        "description": "W/ guacamole, onion & cilantro.",
+        "price": "$4.10"
+      },
+      {
+        "section": "Tacos",
+        "name": "Shredded Beef or Chicken",
+        "description": "W/ cheese, lettuce & pico de gallo.",
+        "price": "$3.70"
+      },
+      {
+        "section": "Tacos",
+        "name": "Grill chicken",
+        "description": "W/ guacamole & pico de gallo.",
+        "price": "$4.10"
+      },
+      {
+        "section": "Tacos",
+        "name": "Carne Asada",
+        "description": "W/ guacamole, onion & cilantro.",
+        "price": "$4.10"
+      },
+      {
+        "section": "Tacos",
+        "name": "Pastor",
+        "description": "With guacamole, cilantro & onion.",
+        "price": "$4.10"
+      },
+      {
+        "section": "Tacos",
+        "name": "Fish Taco",
+        "description": "W/ tartar sauce, pico de gallo & lettuce.",
+        "price": "$4.10"
+      },
+      {
+        "section": "Tacos",
+        "name": "3 Rolled Plain",
+        "description": "Add for free lettuce & pico de gallo.",
+        "price": "$3.99"
+      },
+      {
+        "section": "Tacos",
+        "name": "3 Rolled W/ Guacamole & Cheese",
+        "description": "Add for free lettuce & pico de gallo.",
+        "price": "$4.99"
+      },
+      {
+        "section": "Tacos",
+        "name": "2 Fish Tacos",
+        "description": "W/ rice & beans.",
+        "price": "$8.50"
+      },
+      {
+        "section": "Tacos",
+        "name": "5 Roll Tacos",
+        "description": "W/ guacamole & cheese. Add for free lettuce & pico de gallo.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Tostadas",
+        "name": "Flying Saucer (Beef or Chicken)",
+        "description": "W/ guacamole, sour cream, beans, lettuce, pico de gallo & cheese.",
+        "price": "$7.99"
+      },
+      {
+        "section": "Tostadas",
+        "name": "Flying Saucer (Asada or Chicken)",
+        "description": "W/ guacamole, sour cream, beans, lettuce, pico de gallo & cheese.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Tostadas",
+        "name": "Suprema (Any Meat)",
+        "description": "W/guacamole, sour cream, beans, cheese, lettuce & pico de gallo.",
+        "price": "$7.80"
+      },
+      {
+        "section": "Tostadas",
+        "name": "Suprema Carne Asada",
+        "description": "",
+        "price": "$7.80"
+      },
+      {
+        "section": "Tostadas",
+        "name": "Bean",
+        "description": "W/ lettuce, pico de gallo & cheese.",
+        "price": "$4.25"
+      },
+      {
+        "section": "Tostadas",
+        "name": "Carne Asada",
+        "description": "W/ beans, lettuce, pico de gallo & cheese.",
+        "price": "$6.25"
+      },
+      {
+        "section": "Tostadas",
+        "name": "Carnitas",
+        "description": "W/beans, lettuce, pico de gallo & cheese.",
+        "price": "$6.25"
+      },
+      {
+        "section": "Tostadas",
+        "name": "Ceviche",
+        "description": "",
+        "price": "$4.80"
+      },
+      {
+        "section": "Tostadas",
+        "name": "Beef",
+        "description": "W/ beans, lettuce, pico de gallo & cheese.",
+        "price": "$6.25"
+      },
+      {
+        "section": "Tostadas",
+        "name": "Chicken",
+        "description": "W/beans, lettuce, pico de gallo & cheese.",
+        "price": "$6.25"
+      },
+      {
+        "section": "Burritos",
+        "name": "Pastor",
+        "description": "Guacamole & pico de gallo.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Pollo Asado",
+        "description": "Guacamole & pico de gallo.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Fish",
+        "description": "Tartara sauce, lettuce & pico de gallo.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Bean & Cheese",
+        "description": "",
+        "price": "$4.99"
+      },
+      {
+        "section": "Burritos",
+        "name": "Beef",
+        "description": "Bell pepper, onion & tomato.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Mix",
+        "description": "Shredded beef, beans, bell pepper, onion & tomato.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Chicken",
+        "description": "Bell pepper, onion & tomato.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Chorizo",
+        "description": "3 eggs & beef chorizo.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Machaca",
+        "description": "3 eggs, bell pepper, onion & tomato.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Carne Asada",
+        "description": "Guacamole & Pico De Gallo.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Chile Relleno",
+        "description": "Rice & Beans.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Shrimp",
+        "description": "Bell Pepper, Onion, Tomato, Rice & Sour Cream.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "California (Any Meat)",
+        "description": "Regular Potato, Cheese & Pico De Gallo.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Chile Verde",
+        "description": "Puerco en salsa verde, rice & beans.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Mulitas (Any Meat)",
+        "description": "Cheese, Onion, Cilantro & Guacamole, Two Regular Tortillas.",
+        "price": "$5.25"
+      },
+      {
+        "section": "Burritos",
+        "name": "Carnitas",
+        "description": "Guacamole & Pico De Gallo.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Burritos",
+        "name": "Ranchero",
+        "description": "Tomato, onion, serrano Chile & guacamole.",
+        "price": "$8.05"
+      },
+      {
+        "section": "Enchiladas",
+        "name": "Two Chicken",
+        "description": "",
+        "price": "$6.99"
+      },
+      {
+        "section": "Enchiladas",
+        "name": "Two Mixed ",
+        "description": "Beef & Beans.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Enchiladas",
+        "name": "Two Cheese",
+        "description": "",
+        "price": "$6.99"
+      },
+      {
+        "section": "Enchiladas",
+        "name": "Two Beef",
+        "description": "",
+        "price": "$6.99"
+      },
+      {
+        "section": "Hamburgers",
+        "name": "Cheese Burger & Fries",
+        "description": "Mayonnaise cheese tomato lettuce & fries",
+        "price": "$7.97"
+      },
+      {
+        "section": "Hamburgers",
+        "name": "Regular Hamburger",
+        "description": "",
+        "price": "$5.25"
+      },
+      {
+        "section": "Hamburgers",
+        "name": "French Fries",
+        "description": "",
+        "price": "$3.05"
+      },
+      {
+        "section": "Hamburgers",
+        "name": "Jumbo - Double Meat,  Ham &  Cheese",
+        "description": "",
+        "price": "$7.99"
+      },
+      {
+        "section": "Hamburgers",
+        "name": "Cheese Burger",
+        "description": "Mayonnaise cheese lettuce tomato",
+        "price": "$5.75"
+      },
+      {
+        "section": "Seafood",
+        "name": "Fish Fillet",
+        "description": "Served w/ tartar sauce, lettuce. Pico de gallo, rice & beans.",
+        "price": "$13.25"
+      },
+      {
+        "section": "Seafood",
+        "name": "Shrimps A La Diabla",
+        "description": "W/ rice & beans (spicy).",
+        "price": "$13.25"
+      },
+      {
+        "section": "Seafood",
+        "name": "Shrimps Rancheros",
+        "description": "Bell pepper, onion, tomato. Rice & beans.",
+        "price": "$13.25"
+      },
+      {
+        "section": "Seafood",
+        "name": "Shrimps In Garlic Sauce",
+        "description": "Served w/ lettuce, pico de gallo, tartar sauce, rice & beans.",
+        "price": "$13.25"
+      },
+      {
+        "section": "Chimichangas (Any Meat)",
+        "name": "Beef",
+        "description": "W/ shredded beef, bell pepper, onion & tomato.",
+        "price": "$10.75"
+      },
+      {
+        "section": "Chimichangas (Any Meat)",
+        "name": "Chicken",
+        "description": "",
+        "price": "$10.75"
+      },
+      {
+        "section": "Chimichangas (Any Meat)",
+        "name": "Carne Asada",
+        "description": "",
+        "price": "$10.75"
+      },
+      {
+        "section": "Special 5 Taquitos",
+        "name": "5 Pastor Taquitos",
+        "description": "W/ guacamole, onion & cilantro.",
+        "price": "$9.25"
+      },
+      {
+        "section": "Special 5 Taquitos",
+        "name": "5 Cabeza Taquitos",
+        "description": "W/ cilantro & onion.",
+        "price": "$9.25"
+      },
+      {
+        "section": "Special 5 Taquitos",
+        "name": "5 Carne Asada Taquitos",
+        "description": "W/ guacamole, onion & cilantro.",
+        "price": "$9.25"
+      },
+      {
+        "section": "Sides",
+        "name": "Rice Small (10 oz)",
+        "description": "",
+        "price": "$2.75"
+      },
+      {
+        "section": "Sides",
+        "name": "Rice Regular (14 oz)",
+        "description": "",
+        "price": "$3.75"
+      },
+      {
+        "section": "Sides",
+        "name": "Beans Small (10 oz)",
+        "description": "",
+        "price": "$2.75"
+      },
+      {
+        "section": "Sides",
+        "name": "Beans Regular (14 oz)",
+        "description": "",
+        "price": "$3.75"
+      },
+      {
+        "section": "Sides",
+        "name": "Tamal",
+        "description": "Beef.",
+        "price": "$3.75"
+      },
+      {
+        "section": "Sides",
+        "name": "Chile Relleno",
+        "description": "",
+        "price": "$3.99"
+      },
+      {
+        "section": "Sides",
+        "name": "Half Pint of Guacamole (10 oz)",
+        "description": "",
+        "price": "$4.99"
+      },
+      {
+        "section": "Desserts",
+        "name": "Buñuelos",
+        "description": "Buñuelos",
+        "price": "$1.60"
+      },
+      {
+        "section": "Desserts",
+        "name": "Churros",
+        "description": "2 churros",
+        "price": "$2.30"
+      },
+      {
+        "section": "Desserts",
+        "name": "Flan",
+        "description": "",
+        "price": "$1.95"
+      },
+      {
+        "section": "Drinks",
+        "name": "Coffee",
+        "description": "",
+        "price": "$1.35"
+      },
+      {
+        "section": "Drinks",
+        "name": "Campurrado",
+        "description": "Solo por temporada.",
+        "price": "$1.99"
+      },
+      {
+        "section": "Drinks",
+        "name": "Can Juice",
+        "description": "Mango, Guayaba or Peach.",
+        "price": "$1.35"
+      },
+      {
+        "section": "Drinks",
+        "name": "Water 1000 ml",
+        "description": "",
+        "price": "$2.25"
+      },
+      {
+        "section": "Drinks",
+        "name": "Agua Fresca (Medium)",
+        "description": "Horchata, Jamaica or tamarindo.",
+        "price": "$2.25"
+      },
+      {
+        "section": "Drinks",
+        "name": "Agua Fresca (Large)",
+        "description": "Horchata, Jamaica or tamarindo.",
+        "price": "$3.20"
+      },
+      {
+        "section": "Drinks",
+        "name": "Gatorade",
+        "description": "",
+        "price": "$2.25"
+      }
+    ]
+  },
+  {
+    "restaurantId": "782",
+    "name": "Song Huong Food to Go",
+    "sourceUrl": "https://www.ubereats.com/store/song-huong-food-to-go/bV8fGBziRqae69x37jTpWg",
+    "confidence": "medium",
+    "notes": "Listed website (ordersonghuongfoodtogo.com) redirects to a parked cPanel default page - dead. Read from Uber Eats catalogSectionsMap (unescaped %5C ->  then \" -> \" per the known technique); address on page confirms 4650 El Cajon Blvd, San Diego, matching our record. 87 dishes across 11 categories after dropping the 'Catering' section (party trays/large-format, adjunct) and de-duplicating the 'Featured items' carousel against the categorized list (all 5 were exact duplicates, 0 unique). Cents 92% end in .99 - conventional printed-menu pattern.",
+    "dishes": [
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Pepsi soft drinks",
+        "description": "Refreshing soft drink with a crisp, sweet taste.",
+        "price": "$2.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Rau Ma Dau Xanh",
+        "description": "Pennywort and mung bean shake.",
+        "price": "$5.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Red Bull energy drink",
+        "description": "",
+        "price": "$3.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Milk tea -Tra Sua",
+        "description": "Jasmine milk tea",
+        "price": "$5.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Ca Phe Sua Da",
+        "description": "Condensed-milk coffee.",
+        "price": "$4.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Thai tea boba",
+        "description": "Thai tea with boba.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Durian shake Sinh to Sau Rieng",
+        "description": "Durian shake.",
+        "price": "$5.25"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Rau Ma penniworth juice",
+        "description": "Pennywort juice.",
+        "price": "$4.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Avocado shake Sinh to Bo",
+        "description": "Avocado shake.",
+        "price": "$4.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Coconut shake Sinh to Dua",
+        "description": "Coconut shake.",
+        "price": "$5.25"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Cam Vat",
+        "description": "Fresh orange juice.",
+        "price": "$4.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Strawberry smoothie Sinh to Dau",
+        "description": "Strawberry smoothie",
+        "price": "$5.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Taro shake boba Khoai Mon Tran Chau",
+        "description": "Taro shake with boba.",
+        "price": "$4.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Strawberry banana smoothie Sinh to Dau Chuoi",
+        "description": "Strawberry banana shake.",
+        "price": "$5.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Cherimoya shake Sinh to Mang Cau",
+        "description": "Cherimoya shake.",
+        "price": "$5.25"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Mango smoothie Sinh to Xoai",
+        "description": "Mango shake.",
+        "price": "$4.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Mango smoothie Sinh to Xoai",
+        "description": "Mango shake.",
+        "price": "$4.25"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Sinh to Dau Xanh",
+        "description": "Mung bean shake.",
+        "price": "$5.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Mocha frappe Sinh to Mocha",
+        "description": "Mocha shake.",
+        "price": "$4.25"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Sinh to Carrot",
+        "description": "Carrot shake.",
+        "price": "$4.25"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Water bottle",
+        "description": "",
+        "price": "$1.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Cola cola coke",
+        "description": "Coke",
+        "price": "$2.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Iced tea tra da",
+        "description": "Iced tea",
+        "price": "$3.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Snapple lemon tea",
+        "description": "Bottle Snapple lemon tea",
+        "price": "$2.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Taro milk tea",
+        "description": "Taro milk tea",
+        "price": "$5.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Chocolate milk tea",
+        "description": "Brewed tea mixed with milk and chocolate.",
+        "price": "$5.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Matcha latte",
+        "description": "Finely ground green tea powder with milk.",
+        "price": "$3.99"
+      },
+      {
+        "section": "Drinks, Beverages-Giai Khat",
+        "name": "Hot chocolate",
+        "description": "Hot chocolate drink made with cocoa.",
+        "price": "$3.00"
+      },
+      {
+        "section": "Appetizers-Khai Vi",
+        "name": "Spring rolls Goi Cuon",
+        "description": "spring rolls.",
+        "price": "$7.99"
+      },
+      {
+        "section": "Appetizers-Khai Vi",
+        "name": "Egg rolls Cha Gio",
+        "description": "Egg rolls.",
+        "price": "$9.99"
+      },
+      {
+        "section": "Appetizers-Khai Vi",
+        "name": "Banh Beo",
+        "description": "Rice pancake with shrimp.",
+        "price": "$8.99"
+      },
+      {
+        "section": "Appetizers-Khai Vi",
+        "name": "Banh bot loc",
+        "description": "Tapioca dumplings with shrimp and pork.",
+        "price": "$7.99"
+      },
+      {
+        "section": "Appetizers-Khai Vi",
+        "name": "Banh Mi Op la",
+        "description": "2 eggs sandwich",
+        "price": "$6.99"
+      },
+      {
+        "section": "Appetizers-Khai Vi",
+        "name": "Banh Mi Xiu Mai",
+        "description": "Meatballs with bread.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Noode Soups - Bun, Hu Tieu, Mi Nuoc, and Kho",
+        "name": "Bun Bo Hue Soup",
+        "description": "Spicy beef noodle soup. Spicy.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Noode Soups - Bun, Hu Tieu, Mi Nuoc, and Kho",
+        "name": "Hu Tieu My Tho Nuoc soup",
+        "description": "Pork and seafood rice noodle soup.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Noode Soups - Bun, Hu Tieu, Mi Nuoc, and Kho",
+        "name": "Bun Rieu Soup",
+        "description": "Crab paste and tofu noodle soup.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Noode Soups - Bun, Hu Tieu, Mi Nuoc, and Kho",
+        "name": "Hu Tieu Bo Kho Soup",
+        "description": "Stew beef rice noodle soup.",
+        "price": "$15.99"
+      },
+      {
+        "section": "Noode Soups - Bun, Hu Tieu, Mi Nuoc, and Kho",
+        "name": "Mien Ga Soup",
+        "description": "Clear noodle chicken soup.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Noode Soups - Bun, Hu Tieu, Mi Nuoc, and Kho",
+        "name": "Chicken noodle Pho Ga Soup",
+        "description": "Pho chicken noodle soup.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Noode Soups - Bun, Hu Tieu, Mi Nuoc, and Kho",
+        "name": "Banh Canh Gio Heo Soup",
+        "description": "Udon with pork hock.",
+        "price": "$15.99"
+      },
+      {
+        "section": "Noode Soups - Bun, Hu Tieu, Mi Nuoc, and Kho",
+        "name": "Stew beef with French bread Banh Mi Bo Kho Soup",
+        "description": "Stew beef with French bread.",
+        "price": "$15.99"
+      },
+      {
+        "section": "Noode Soups - Bun, Hu Tieu, Mi Nuoc, and Kho",
+        "name": "Hu tiu Long Heo pork organs noodle Soup",
+        "description": "Rice noodle with pork organs.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Noode Soups - Bun, Hu Tieu, Mi Nuoc, and Kho",
+        "name": "Mi bo kho egg noodle stew beef soup",
+        "description": "Stew beef and egg noodles soup",
+        "price": "$14.99"
+      },
+      {
+        "section": "Porridge-Chao",
+        "name": "Chao Long",
+        "description": "Pork organs soup.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Porridge-Chao",
+        "name": "Chao Ga",
+        "description": "Chicken soup.",
+        "price": "$12.99"
+      },
+      {
+        "section": "Porridge-Chao",
+        "name": "Chao Thit Bam",
+        "description": "Ground pork soup.",
+        "price": "$12.99"
+      },
+      {
+        "section": "Banh Mi",
+        "name": "Dac Biet Sandwich",
+        "description": "Special combo sandwich.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Banh Mi",
+        "name": "Thit Nuong Sandwich",
+        "description": "Grilled pork sandwich.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Banh Mi",
+        "name": "Ba Chi Sandwich",
+        "description": "Pork belly sandwich.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Banh Mi",
+        "name": "Pate Thit Nguoi Sandwich",
+        "description": "Cold meat sandwich.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Banh Mi",
+        "name": "Ga Nuong Sandwich",
+        "description": "Grilled chicken sandwich.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Banh Mi",
+        "name": "Trung and Cha Lua Sandwich",
+        "description": "Eggs and meat loaf sandwich.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Banh Mi",
+        "name": "Pate Cha Lua Sandwich",
+        "description": "Meat loaf sandwich.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Banh Mi",
+        "name": "Bi Sandwich",
+        "description": "Shredded pork and skin sandwich.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Banh Mi",
+        "name": "Xiu Mai Sandwich",
+        "description": "Meatballs sandwich.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Banh Mi",
+        "name": "Ca Moi -sardines Sandwich",
+        "description": "Sardine sandwich on a Vietnamese baguette.",
+        "price": "$6.99"
+      },
+      {
+        "section": "Cac mon nhau-Wings etc.",
+        "name": "Chicken wings canh ga chien nuoc mam",
+        "description": "Fried chicken wings with fish sauce",
+        "price": "$14.99"
+      },
+      {
+        "section": "Cac mon nhau-Wings etc.",
+        "name": "Tom Rang Muoi",
+        "description": "Salt and pepper shrimp.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Cac mon nhau-Wings etc.",
+        "name": "Long Heo",
+        "description": "Pork organs.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Vegetarian-Cac Mon Chay",
+        "name": "Mien Xao Chay",
+        "description": "Vegetarian stir fry clear rice noodle. Vegetarian.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Vegetarian-Cac Mon Chay",
+        "name": "Mi Xao Chay",
+        "description": "Vegetarian chow mein. Vegetarian.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Vegetarian-Cac Mon Chay",
+        "name": "Hu Tieu Ap Chao Chay",
+        "description": "Vegetarian pan fried. Vegetarian.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Rice Plates-Com Dia",
+        "name": "Suon, lap xuong, tom, Cha, Trung",
+        "description": "Pork chop, egg, steamed egg cake, Chinese sausage, shrimps over rice",
+        "price": "$18.99"
+      },
+      {
+        "section": "Rice Plates-Com Dia",
+        "name": "Cube steak shaken beef over rice",
+        "description": "Cơm bò lúc lắc",
+        "price": "$17.99"
+      },
+      {
+        "section": "Rice Plates-Com Dia",
+        "name": "Com Suon trứng, lạp xưởng",
+        "description": "Steam rice with Pork chop, fried egg and Chinese sausage.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Rice Plates-Com Dia",
+        "name": "Com Ga Nuong",
+        "description": "Steam rice with BBQ chicken.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Rice Plates-Com Dia",
+        "name": "Ga and Tom Nuong",
+        "description": "BBQ chicken and shrimp over rice",
+        "price": "$14.99"
+      },
+      {
+        "section": "Rice Plates-Com Dia",
+        "name": "Tom Xao Rau Cai",
+        "description": "Shrimp and broccoli over rice",
+        "price": "$12.99"
+      },
+      {
+        "section": "Rice Plates-Com Dia",
+        "name": "Com Thit nuong",
+        "description": "BBQ pork  over rice",
+        "price": "$14.99"
+      },
+      {
+        "section": "Rice Plates-Com Dia",
+        "name": "Com Tom Rim",
+        "description": "Sauteed shrimp.",
+        "price": "$12.99"
+      },
+      {
+        "section": "Stir fry, fried rice-Cac Mon Xao - Com Chien",
+        "name": "Banh Xeo",
+        "description": "Crispy crepe with pork and shrimp.",
+        "price": "$12.99"
+      },
+      {
+        "section": "Stir fry, fried rice-Cac Mon Xao - Com Chien",
+        "name": "Com Chien Duong Chau",
+        "description": "Combination fried rice.",
+        "price": "$13.99"
+      },
+      {
+        "section": "Stir fry, fried rice-Cac Mon Xao - Com Chien",
+        "name": "Hu Tieu Xao Gia He Tom Thit",
+        "description": "Stir fry rice noodle with pork and shrimp.",
+        "price": "$13.99"
+      },
+      {
+        "section": "Stir fry, fried rice-Cac Mon Xao - Com Chien",
+        "name": "Mi Xao Thap Cam",
+        "description": "Chow mein with pork \\u0026 seafood combo",
+        "price": "$13.99"
+      },
+      {
+        "section": "Stir fry, fried rice-Cac Mon Xao - Com Chien",
+        "name": "Mien Xao Thap Cam",
+        "description": "Combo stir fry clear noodle.",
+        "price": "$13.99"
+      },
+      {
+        "section": "Stir fry, fried rice-Cac Mon Xao - Com Chien",
+        "name": "Com Chien Tom",
+        "description": "Shrimp fried rice.",
+        "price": "$13.99"
+      },
+      {
+        "section": "House specials Steam rolls- Banh Cuon",
+        "name": "Banh Cuon Uot Dac Biet Roll",
+        "description": "House special steam rolls and wet cake.",
+        "price": "$14.99"
+      },
+      {
+        "section": "House specials Steam rolls- Banh Cuon",
+        "name": "Combo steamed rice rolls- Banh cuon dac biet",
+        "description": "Steamed rice rolls filled with various ingredients.",
+        "price": "$14.99"
+      },
+      {
+        "section": "House specials Steam rolls- Banh Cuon",
+        "name": "Banh Cuon Cha Lua, Que, and Nem Roll",
+        "description": "Steam rolls meat loaf and sour pork.",
+        "price": "$13.99"
+      },
+      {
+        "section": "House specials Steam rolls- Banh Cuon",
+        "name": "Banh Uot Cha Lua Roll",
+        "description": "Wet cake and lean meat loaf.",
+        "price": "$13.99"
+      },
+      {
+        "section": "House specials Steam rolls- Banh Cuon",
+        "name": "Wet cake combo- banh uot dac biet",
+        "description": "Steamed rice noodle sheets with assorted house combo toppings.",
+        "price": "$13.99"
+      },
+      {
+        "section": "Dry Vermicelli noodle bowls-Bun",
+        "name": "Bun Cha Gio Thit Nuong Bowl",
+        "description": "Vermicell Noodles with BBQ pork and egg rolls.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Dry Vermicelli noodle bowls-Bun",
+        "name": "Bun Tom and Thit Nuong Bowl",
+        "description": "Noodles with Shrimp and BBQ pork.",
+        "price": "$14.99"
+      },
+      {
+        "section": "Dry Vermicelli noodle bowls-Bun",
+        "name": "Bun Thit Nuong Bowl",
+        "description": "Vermicelli noodles bowl with bbq pork",
+        "price": "$12.99"
+      },
+      {
+        "section": "Dry Vermicelli noodle bowls-Bun",
+        "name": "Bun Cha Gio and Tom Nuong  Bowl",
+        "description": "Egg rolls and shrimp dry noodle",
+        "price": "$13.99"
+      },
+      {
+        "section": "Combination fried rice",
+        "name": "Combination fried rice-Com Chien",
+        "description": "Savory fried rice with a combination of ingredients.",
+        "price": "$14.99"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6246",
+    "name": "Extraordinary Fruits",
+    "sourceUrl": "https://www.doordash.com/en/store/extraordinary-fruits-spring-valley-83901/",
+    "confidence": "medium",
+    "notes": "Own site (extraordinaryfruit.com) has no platform/menu. Read from DoorDash marketplace JSON-LD Menu block; address confirms Sweetwater Springs Blvd, Spring Valley, matching our record. 83 dishes across 13 categories (Aguas Frescas, Sandwiches, Tortas, Natural Juices, Smoothies, Fruit Salad, Cravings, Breakfast, Wraps, Quesadillas, Ceviche, Energy Bowls, Vegan Menu) after de-duplicating the 'Most Ordered' carousel (12 items, 2 unique kept: Gorditas de pollo, Quesabirria Taco Combo). Cents are 100% conventional (.00/.25/.50/.75), no markup pattern.",
+    "dishes": [
+      {
+        "section": "Aguas Frescas ",
+        "name": "Aguas Frescas  24oz or 32oz ",
+        "description": "Choose a flavor from: mago, pineapple,. watermelon/strawberry ",
+        "price": "$5.50"
+      },
+      {
+        "section": "Sandwiches ",
+        "name": "Pesto chicken",
+        "description": "Sourdough bread mozzarella, tomatoes, spinach, pesto sauce, chicken",
+        "price": "$13.25"
+      },
+      {
+        "section": "Sandwiches ",
+        "name": "Tuna Sandwich",
+        "description": "Wheat bread, tuna, avocado,  tomatoes, jalapenos, lettuce, onions,  chipotle sauce and side of salad",
+        "price": "$13.25"
+      },
+      {
+        "section": "Sandwiches ",
+        "name": "Turkey Sandwich ",
+        "description": "Turkey with avocado, cheese, tomatoes, jalapenos, lettuce, onions and chipotle sauce",
+        "price": "$13.25"
+      },
+      {
+        "section": "Sandwiches ",
+        "name": "Chicken Sandwich ",
+        "description": "Choice of Sourdough or wheat bread chicken breast, avocado, cheese, tomatoes, jalapenos, lettuce, onions , chipotle sauce with side of mix salad",
+        "price": "$13.25"
+      },
+      {
+        "section": "Sandwiches ",
+        "name": "Ham Sandwich ",
+        "description": "Wheat bread, ham, avocado, queso fresco , tomatoes, jalapenos, lettuce, onions and chipotle sauce with side of salad. ",
+        "price": "$13.25"
+      },
+      {
+        "section": "Sandwiches ",
+        "name": "NEW!! Classic Burger",
+        "description": " Beef Angus Classic Burger! Featuring juicy beef patty topped with melted American cheese and fresh vegetables, served  with a portion of crispy fries. A delicious combination that will satisfy your burger cravings. ",
+        "price": "$13.00"
+      },
+      {
+        "section": "Sandwiches ",
+        "name": "NEW!! Breakfast burger ",
+        "description": "Angus Breakfast Burger - A delectable combination of juicy Angus beef patty, bacon, American cheese, fried egg, mayonnaise and warm bun. Served with a side of crispy seasoned fries. The ultimate breakfast indulgence to start your day right!",
+        "price": "$13.00"
+      },
+      {
+        "section": "Sandwiches ",
+        "name": "Veggie Sandwich",
+        "description": "Sourdough or wheat bread cucumber, avocado, cheese, tomatoes, jalapenos, spinach, onions and chipotle sauce. side of salad",
+        "price": "$12.50"
+      },
+      {
+        "section": "Tortas",
+        "name": "Torta De Milanesa",
+        "description": "Beef milanesa, lettuce, avocado, cheese, tomatoes, jalapenos, onions, chipotle",
+        "price": "$15.00"
+      },
+      {
+        "section": "Tortas",
+        "name": "Turkey Torta",
+        "description": "Turkey torta with avocado, cheese, tomato, onion, jalapeno, lettuce and chipotle sauce",
+        "price": "$14.50"
+      },
+      {
+        "section": "Tortas",
+        "name": "Chicken Torta",
+        "description": "Chicken breast with avocado, cheese, tomato, onion, jalapeno, lettuce and chipotle sauce",
+        "price": "$14.50"
+      },
+      {
+        "section": "Tortas",
+        "name": "Philly Cheese Steak",
+        "description": "Fine beef, mozzarella, avocado, bell peppers, chipotle sauce",
+        "price": "$15.00"
+      },
+      {
+        "section": "Tortas",
+        "name": "Torta De Lomo",
+        "description": "Shredded pork avocado, cheese, tomato, onion, jalapeno, lettuce and chipotle sauce",
+        "price": "$15.00"
+      },
+      {
+        "section": "Tortas",
+        "name": "Ham Torta",
+        "description": "Ham with avocado, cheese, tomato, onion, jalapeno, lettuce and chipotle sauce",
+        "price": "$14.50"
+      },
+      {
+        "section": "Tortas",
+        "name": "Veggie Torta",
+        "description": "Spinach, cucumber, avocado, onions, tomatoes, cheese, chipotle sauce. ",
+        "price": "$13.00"
+      },
+      {
+        "section": "Tortas",
+        "name": "Tuna Torta",
+        "description": "Tuna, , avocado, tomatoes, lettuce, onions, jalapeno, chipotle sauce",
+        "price": "$14.50"
+      },
+      {
+        "section": "Natural Juices",
+        "name": "Vitamin ABC (vampiro)",
+        "description": "Beets, Orange, Carrots, Celery, Ginger.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Natural Juices",
+        "name": "Visionary",
+        "description": "Carrots, ginger, orange",
+        "price": "$9.00"
+      },
+      {
+        "section": "Natural Juices",
+        "name": "Green Juice",
+        "description": "Pineapple, Orange, Spinach, Celery Cucumber.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Natural Juices",
+        "name": "Detox Juice",
+        "description": "Pineapple, Celery, Cucumber, Orange, Lime, Ginger.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Natural Juices",
+        "name": "Orange",
+        "description": "Freshly squeezed orange juice. Available in 16 oz or 24 oz.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Natural Juices",
+        "name": "Immunity shot ",
+        "description": "Cold pressed for maximun nutrition. turmeric, orange, ginger, lemon ",
+        "price": "$5.50"
+      },
+      {
+        "section": "Natural Juices",
+        "name": "Ginger Shot",
+        "description": "A potent blend of fresh ginger juice, offering a zesty and invigorating boost.",
+        "price": "$4.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "Coffee Lover",
+        "description": "Blended with Mocha, Banana & Milk.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "Pitaya (Dragon Fruit)",
+        "description": "Dragon fruit, Blended with Strawberries, Mango, Pineapple, Orange Juice.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "Strawberry Banana",
+        "description": "Blended with Milk.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "Peanut Butter",
+        "description": "Blended with Banana & Milk.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "Choco-Banana",
+        "description": "Blended with Banana & Milk.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "Mango",
+        "description": "Mango smoothie, available in 16 oz or 24 oz.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "Tropical",
+        "description": "Banana, Pineapple, Mango.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "Acai Smoothie ",
+        "description": "Organic acai. Blended with Strawberry, Blueberry & Banana & Milk. ",
+        "price": "$9.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "True Fruit",
+        "description": "Pineapple, Mango, Melon with Orange Juice.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "Very Berry",
+        "description": "Strawberries, Blueberries, Bananas, Juice.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Extraordinary Smoothies",
+        "name": "Chocolate Coconut",
+        "description": "Banana, Coconut, Milk.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Fruit Salad",
+        "name": "Strawberries with cream ",
+        "description": "w/ Cream.",
+        "price": "$11.50"
+      },
+      {
+        "section": "Fruit Salad",
+        "name": "Fruit Salad",
+        "description": "Mix of fresh fruits with cottage cheese,granola and honey.",
+        "price": "$11.50"
+      },
+      {
+        "section": "Fruit Salad",
+        "name": "Pico De Gallo",
+        "description": "With tajin and limon.",
+        "price": "$11.00"
+      },
+      {
+        "section": "Fruit Salad",
+        "name": "Escamocha",
+        "description": "",
+        "price": "$10.50"
+      },
+      {
+        "section": "Cravings",
+        "name": "Chamango",
+        "description": "A vibrant blend of chamoy and mango, available in large.",
+        "price": "$9.75"
+      },
+      {
+        "section": "Cravings",
+        "name": "Corn Cup",
+        "description": "Layers of sweet corn, creamy cheese, and a sprinkle of chili powder.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Cravings",
+        "name": "Tostilocos",
+        "description": "Tostitos, cucumber, jicama, lime, pork skin, peanuts, tajin, chamoy, chile",
+        "price": "$11.00"
+      },
+      {
+        "section": "Breakfast",
+        "name": "NEW!! Chilaquiles de la casa ",
+        "description": "Our Extraordinary customer love our homemade salsa. So we decide to create a chilaquiles plate  with a unique and tasty flavor: Must try! Crunchy chilaquiles topped with our delicious salsa, egg, sour cream, cheese, onions, cilantro and avocado.",
+        "price": "$15.75"
+      },
+      {
+        "section": "Breakfast",
+        "name": " Chilaquiles verdes",
+        "description": "Corn tortilla dipped  in delicious green salsa with two over easy eggs, avocado, cheese, pepper. ",
+        "price": "$16.00"
+      },
+      {
+        "section": "Breakfast",
+        "name": "Protein Breakfast Burrito",
+        "description": "",
+        "price": "$13.50"
+      },
+      {
+        "section": "Breakfast",
+        "name": "NEW!! Chilaquiles con birria",
+        "description": "Now serving our delicious  chilaquiles with  juicy and tender beef barria topped with mozzarella cheese, onion, cilantro and radishes. ",
+        "price": "$16.50"
+      },
+      {
+        "section": "Breakfast",
+        "name": "Bacon and egg burrito",
+        "description": "Bacon, potatoes, egg, bacon, chipotle sauce ",
+        "price": "$13.50"
+      },
+      {
+        "section": "Breakfast",
+        "name": "Chilaquiles",
+        "description": "Corn tortillas, salsa-soaked, topped with eggs, crema, and cheese. A breakfast delight.",
+        "price": "$16.00"
+      },
+      {
+        "section": "Breakfast",
+        "name": "Breakfast Tortas",
+        "description": " Diced potatoes, soyrizo, avocado, jalapenos, chipotle sauce",
+        "price": "$12.50"
+      },
+      {
+        "section": "Breakfast",
+        "name": "NEW!! Breakfast burger",
+        "description": "Angus Breakfast Burger - A delectable combination of juicy Angus beef patty, bacon, American cheese, fried egg, mayonnaise and warm bun. Served with a side of crispy seasoned fries. The ultimate breakfast indulgence to start your day right!",
+        "price": "$13.00"
+      },
+      {
+        "section": "Breakfast",
+        "name": "Avocado Toast",
+        "description": "Sourdough bread, avocado, egg, cilantro, salt, pepper ",
+        "price": "$9.00"
+      },
+      {
+        "section": "Breakfast",
+        "name": "Breakfast Croissant",
+        "description": "Egg,Bacon, Ham, American Cheese, Chipotle.",
+        "price": "$9.00"
+      },
+      {
+        "section": "Breakfast",
+        "name": "Veggie Omelet",
+        "description": "Packed with fresh vegetables, this omelet features mushrooms, spinach, and topped with avocado slices, served alongside crispy fries and toasted bread.",
+        "price": "$13.50"
+      },
+      {
+        "section": "Breakfast",
+        "name": "French Toast",
+        "description": "w/ Strawberry, Banana.",
+        "price": "$10.50"
+      },
+      {
+        "section": "Breakfast",
+        "name": "Oatmeal ",
+        "description": "Fresh Strawberry & Banana.",
+        "price": "$9.50"
+      },
+      {
+        "section": "Breakfast",
+        "name": "Chocolate Pancakes",
+        "description": "Banana & chocolate chips ",
+        "price": "$10.50"
+      },
+      {
+        "section": "Breakfast",
+        "name": "Strawberry/Banana Pancakes",
+        "description": "Fresh strawberries and banana slices ",
+        "price": "$10.50"
+      },
+      {
+        "section": "Wraps",
+        "name": "Caesar Wrap",
+        "description": "Chicken, Lettuce, Tomatoes, Onions, Cucumber, Croutons, Cheese & Caesar Dressing.",
+        "price": "$13.00"
+      },
+      {
+        "section": "Wraps",
+        "name": "Shrimp Wrap",
+        "description": "Shrimp, Spinach, Quinoa, Cheese, Bell Peppers.",
+        "price": "$14.50"
+      },
+      {
+        "section": "Wraps",
+        "name": "Mushroom Veggie Wrap",
+        "description": "",
+        "price": "$13.00"
+      },
+      {
+        "section": "Quesadillas",
+        "name": "Chicken quesadillas",
+        "description": "Grilled chicken breast, avocado and chipotle sauce",
+        "price": "$12.00"
+      },
+      {
+        "section": "Quesadillas",
+        "name": "Mushroom quesadilla",
+        "description": "Grilled mushroom, cheese, avocado",
+        "price": "$12.00"
+      },
+      {
+        "section": "Quesadillas",
+        "name": "Steak quesadilla",
+        "description": "Steak, cheese, avocado, chipotle sauce",
+        "price": "$12.00"
+      },
+      {
+        "section": "Quesadillas",
+        "name": "Cheese quesadilla",
+        "description": "Melted Cheese in a Crispy Tortilla Fold",
+        "price": "$6.00"
+      },
+      {
+        "section": "Quesadillas",
+        "name": "Shrimp quesadilla",
+        "description": "Grilled shrimp, cheese, avocado, chipotle sauce",
+        "price": "$12.00"
+      },
+      {
+        "section": "Ceviche",
+        "name": "Shrimp Tacos (3)",
+        "description": "Grilled shrimp with avocado slices, fresh greens, and sautéed vegetables in soft corn tortillas.",
+        "price": "$14.50"
+      },
+      {
+        "section": "Ceviche",
+        "name": "Shrimp ceviche ",
+        "description": "Delicious fresh shrimp ceviche + tostadas and avocado",
+        "price": "$13.50"
+      },
+      {
+        "section": "Ceviche",
+        "name": "Aguachiles",
+        "description": "Fresh raw shrimp, marinated with lime, salt, pepper, traditional spicy green salsa, cucumber, avocado, red onions and tostadas.",
+        "price": "$17.50"
+      },
+      {
+        "section": "Ceviche",
+        "name": "Shrimp Cocktail",
+        "description": "A refreshing blend of shrimp, diced vegetables, and zesty tomato sauce, garnished with cilantro and cucumber slices.",
+        "price": "$16.00"
+      },
+      {
+        "section": "Energy Bowls",
+        "name": "Lg Super Açai Bowl",
+        "description": "Dark Chocolate & Almonds.",
+        "price": "$14.50"
+      },
+      {
+        "section": "Energy Bowls",
+        "name": "Lg Pitaya Bowl",
+        "description": "Dragon Fruit, Mango, Banana, Coconut, Strawberry.",
+        "price": "$14.50"
+      },
+      {
+        "section": "Energy Bowls",
+        "name": "Açai Bowl",
+        "description": "Organic Açai, Strawberries, Bananas, Coconut, Granola.",
+        "price": "$13.00"
+      },
+      {
+        "section": "Energy Bowls",
+        "name": "Lg Tropical Açai Bowl",
+        "description": "Organic Açai, Mango, Blueberry, Strawberries, Bananas, Coconut, Granola.",
+        "price": "$14.50"
+      },
+      {
+        "section": "Vegan Menu",
+        "name": "Vegan Chilaquiles",
+        "description": "Mexican Style dish consisting of cut corn tortilla lightly fried, dipped in red sauce not spicy. Served with a mix of  soyrizo and potatoes, avocado, onions, dairy free cheese and sour cream. ",
+        "price": "$14.00"
+      },
+      {
+        "section": "Vegan Menu",
+        "name": "Soyrizo Burrito",
+        "description": "Soyrizo, Avocado, Spinach and Chipotle.",
+        "price": "$13.50"
+      },
+      {
+        "section": "Vegan Menu",
+        "name": "Soyrizo & Potato Torta",
+        "description": "Soyrizo, Vegenaise Chipotle Sauce, Avocado, Jalapeño.",
+        "price": "$13.50"
+      },
+      {
+        "section": "Vegan Menu",
+        "name": "Vegan Enchiladas",
+        "description": "Home made mix potato with soyrizo. Topped with , lettuce, vegan sour cream , cheese, onions, tomatoes ",
+        "price": "$13.00"
+      },
+      {
+        "section": "Vegan Menu",
+        "name": "Vegan Bowl",
+        "description": "Garbanzo, Quinoa, Green mixed, Cucumber, Avocado, Tomato, Cranberries & balsamic.",
+        "price": "$13.50"
+      },
+      {
+        "section": "Vegan Menu",
+        "name": "Vegan Breakfast Bowl",
+        "description": "Potato mixed with soyrizo over a bed of spinach, + avocado, vegan cheese, grill mushroom,  tomatoes and onions",
+        "price": "$12.50"
+      },
+      {
+        "section": "Most Ordered (unique)",
+        "name": "Gorditas de pollo",
+        "description": "Shedder chicken in a corn gordita with cheese, lettuce, tomatoes, sour cream. onions",
+        "price": "$12.50"
+      },
+      {
+        "section": "Most Ordered (unique)",
+        "name": "Quesabirria Taco Combo with 24oz Agua Fresca Included",
+        "description": "Beef quesadilla tacos: Made with quality beef meat  and delicious homade salsa. (3 quesabirrias per order)\n\nChoose your agua Fresca: Watermelon, Pineaple, Horchata if available",
+        "price": "$15.50"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6053",
+    "name": "Pho Convoy Noodle House",
+    "sourceUrl": "https://www.phoconvoyca.com/menu",
+    "confidence": "high",
+    "notes": "Own site (Owner.com-style, Next.js) /menu page renders no visible text but ships the full catalog in its RSC flight payload as an escaped JSON string (unescape literal \\\" -> \" then locate/parse the 'menuCategories' array). 162 dishes across 12 sections (Pho, Appetizers, Curry, Banh Mi, Specialist, Com Tam, Bun, Banh Hoi, Com Dia, Mi Ap Chao, Vegetarian, Beverages); size variants (Reg./Lg.) expanded into separate rows. Address on the JSON-LD confirms 945 Otay Lakes Rd, Chula Vista, matching our record. Cents 96% conventional (.50/.75/.95/.00/.25), no markup pattern - first-party site, filed high confidence.",
+    "dishes": [
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tái, Nạm, Gầu, Gân, Sách (Reg.)",
+        "description": "Rare steak, flank, brisket, tendon and tripe.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tái, Nạm, Gầu, Gân, Sách (Lg.)",
+        "description": "Rare steak, flank, brisket, tendon and tripe.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Chín, Nạm, Gầu, Gân, Sách (Reg.)",
+        "description": "Well done steak, flank, brisket, tendon and tripe.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Chín, Nạm, Gầu, Gân, Sách (Lg.)",
+        "description": "Well done steak, flank, brisket, tendon and tripe.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Chín Nạm (Reg.)",
+        "description": "Well done brisket and flank.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Chín Nạm (Lg.)",
+        "description": "Well done brisket and flank.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tái (Reg.)",
+        "description": "Rare steak.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tái (Lg.)",
+        "description": "Rare steak.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tái Nạm (Reg.)",
+        "description": "Rare steak and flank.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tái Nạm (Lg.)",
+        "description": "Rare steak and flank.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tái Sách (Reg.)",
+        "description": "Rare steak and tripe.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tái Sách (Lg.)",
+        "description": "Rare steak and tripe.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tái Gân (Reg.)",
+        "description": "Rare steak and tendon.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tái Gân (Lg.)",
+        "description": "Rare steak and tendon.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Gà (Reg.)",
+        "description": "Chicken strips. White meat add $1.35.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Gà (Lg.)",
+        "description": "Chicken strips. White meat add $1.35.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Bò Viên (Reg.)",
+        "description": "Beef ball.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Bò Viên (Lg.)",
+        "description": "Beef ball.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Cá Viên (Reg.)",
+        "description": "Fish balls.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Cá Viên (Lg.)",
+        "description": "Fish balls.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Rau Cải Tofu (Reg.)",
+        "description": "Mix vegetables with tofu.",
+        "price": "$16.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Rau Cải Tofu (Lg.)",
+        "description": "Mix vegetables with tofu.",
+        "price": "$17.75"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Cá (Reg.)",
+        "description": "Sole fish.",
+        "price": "$17.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Cá (Lg.)",
+        "description": "Sole fish.",
+        "price": "$18.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Hoành Thánh Mì (Reg.)",
+        "description": "Shrimp and pork wonton (with rice or egg noodle).",
+        "price": "$17.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Hoành Thánh Mì (Lg.)",
+        "description": "Shrimp and pork wonton (with rice or egg noodle).",
+        "price": "$18.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tôm (Reg.)",
+        "description": "Shrimp.",
+        "price": "$17.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Phở Tôm (Lg.)",
+        "description": "Shrimp.",
+        "price": "$18.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Bún Bò Huế (Reg.)",
+        "description": "Brisket, beef balls, tendon soup HOT",
+        "price": "$17.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Bún Bò Huế (Lg.)",
+        "description": "Brisket, beef balls, tendon soup HOT",
+        "price": "$18.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "House Special Satay Pho (Reg.)",
+        "description": "Brisket, flank, beef ball and lemongrass.",
+        "price": "$17.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "House Special Satay Pho (Lg.)",
+        "description": "Brisket, flank, beef ball and lemongrass.",
+        "price": "$18.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Beef Stew (Reg.)",
+        "description": "Choice of egg or rice noodle.",
+        "price": "$17.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Beef Stew (Lg.)",
+        "description": "Choice of egg or rice noodle.",
+        "price": "$18.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Noodle Soup Only (Sm.)",
+        "description": "",
+        "price": "$6.10"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Noodle Soup Only (Reg.)",
+        "description": "",
+        "price": "$10.45"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Noodle Soup Only (Lg.)",
+        "description": "",
+        "price": "$11.45"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Hủ Tiếu hoặc Mì Đặc Biệt (Reg.)",
+        "description": "House special combo: BBQ pork, shrimp, fish balls, (choice of egg or rice noodle).",
+        "price": "$17.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Hủ Tiếu hoặc Mì Đặc Biệt (Lg.)",
+        "description": "House special combo: BBQ pork, shrimp, fish balls, (choice of egg or rice noodle).",
+        "price": "$18.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Hủ Tiếu hoặc Mì Đồ Biển (Reg.)",
+        "description": "Seafood (choice of egg or rice noodle).",
+        "price": "$17.50"
+      },
+      {
+        "section": "Pho (Noodle Soup) 湯 粉",
+        "name": "Hủ Tiếu hoặc Mì Đồ Biển (Lg.)",
+        "description": "Seafood (choice of egg or rice noodle).",
+        "price": "$18.50"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Chả Giò (6 Cuốn)",
+        "description": "Vietnamese pork fried egg rolls (6 rolls).",
+        "price": "$11.25"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Vegetable Fried Egg Rolls",
+        "description": "",
+        "price": "$11.25"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Chả Giò Saté Bò (6 Cuốn)",
+        "description": "Satay beef fried egg rolls (6 rolls) hot.",
+        "price": "$11.25"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Organic Fried Tofu",
+        "description": "",
+        "price": "$8.95"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Gỏi Cuốn (2 Cuốn)",
+        "description": "Shrimp and pork spring rolls (2 rolls).",
+        "price": "$8.25"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Gỏi Cuốn Tôm (2 Cu ốn)",
+        "description": "Shrimp spring rolls (2 rolls).",
+        "price": "$8.50"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Gỏi Cuốn Gà (2 Cuốn)",
+        "description": "BBQ chicken salad rolls (2 rolls).",
+        "price": "$9.50"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Gỏi Cuốn Saté Bò (2 Cuốn)",
+        "description": "Satay beef salad rolls, non-fried (2 rolls) hot.",
+        "price": "$9.50"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Nem Nướng Cuốn (2 Cuốn)",
+        "description": "Vietnamese char-broiler meat rolls (2 rolls).",
+        "price": "$9.50"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Chạo Tôm Cuốn (2 Cuốn)",
+        "description": "Shrimp paste on sugarcane rolls (2 rolls).",
+        "price": "$9.50"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Tôm Lụi (2 Xâu)",
+        "description": "Special marinated grilled shrimp (2 sticks).",
+        "price": "$11.50"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Wrapped Shrimp",
+        "description": "",
+        "price": "$11.50"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Chem Chép (5 Pcs)",
+        "description": "Green mussel. 5 pieces",
+        "price": "$11.50"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Garlic Eggplant",
+        "description": "",
+        "price": "$8.95"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Spicy Lemongrass Chicken Wing",
+        "description": "",
+        "price": "$13.10"
+      },
+      {
+        "section": "Khai Vi (Appetizer) 頭 臺",
+        "name": "Garlic Chicken Wing",
+        "description": "",
+        "price": "$13.10"
+      },
+      {
+        "section": "Curry 咖 喱",
+        "name": "Cà Ri Hải Sản",
+        "description": "Seafood curry (shrimp, fish balls, squid, mussel, sole fish).",
+        "price": "$28.00"
+      },
+      {
+        "section": "Curry 咖 喱",
+        "name": "Cà Ri Tôm",
+        "description": "Shrimp curry.",
+        "price": "$16.25"
+      },
+      {
+        "section": "Curry 咖 喱",
+        "name": "Cà Ri Cá",
+        "description": "Fish curry (with your choice of grilled or steamed or crispy).",
+        "price": "$19.95"
+      },
+      {
+        "section": "Curry 咖 喱",
+        "name": "Cà Ri Chem chép",
+        "description": "Mussel curry.",
+        "price": "$19.95"
+      },
+      {
+        "section": "Curry 咖 喱",
+        "name": "Cà Ri Cá Viên",
+        "description": "Fish ball curry.",
+        "price": "$16.20"
+      },
+      {
+        "section": "Curry 咖 喱",
+        "name": "Cà Ri Bò Viên",
+        "description": "Beef ball curry.",
+        "price": "$16.20"
+      },
+      {
+        "section": "Curry 咖 喱",
+        "name": "Cà Ri Bò Kho",
+        "description": "Beef stew curry.",
+        "price": "$16.95"
+      },
+      {
+        "section": "Curry 咖 喱",
+        "name": "Cà Ri Gà",
+        "description": "Chicken curry (white meat add $1.35).",
+        "price": "$16.95"
+      },
+      {
+        "section": "Curry 咖 喱",
+        "name": "Cà Ri Chay",
+        "description": "Vegetarian curry (with above ingredients, broccoli and crispy or steam organic tofu).",
+        "price": "$17.95"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Thịt Nướng",
+        "description": "Charbroiled pork.",
+        "price": "$10.95"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Sườn Nướng",
+        "description": "Sandwich pork chop.",
+        "price": "$10.95"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Gà Nướ ng",
+        "description": "BBQ chicken.",
+        "price": "$10.95"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Bò Kho",
+        "description": "Beef stew.",
+        "price": "$16.95"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Saté Bò",
+        "description": "Satay beef.",
+        "price": "$11.25"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Saté Gà",
+        "description": "Satay chicken.",
+        "price": "$11.25"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Nem Nướng",
+        "description": "Vietnamese char-broiler meat.",
+        "price": "$11.25"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Tofu",
+        "description": "Crispy organic tofu.",
+        "price": "$10.95"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Cá",
+        "description": "Sole fish.",
+        "price": "$13.25"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Tôm Nướng",
+        "description": "Shrimp (grilled or crispy).",
+        "price": "$13.25"
+      },
+      {
+        "section": "Banh Mi (Baguette) 麵 飽",
+        "name": "Bánh Mì Bò",
+        "description": "BBQ beef",
+        "price": "$13.50"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Honey Chicken",
+        "description": "",
+        "price": "$19.95"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Honey Chicken Wing",
+        "description": "",
+        "price": "$20.95"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Crispy Orange Chicken with Basil",
+        "description": "",
+        "price": "$19.95"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Salted Pepper Fried Squid with Lemon Grass",
+        "description": "",
+        "price": "$20.95"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Salted Pepper Fried Chicken with Lemon Grass",
+        "description": "",
+        "price": "$20.95"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Salted Pepper Fried Crispy Shrimp with Lemon Grass",
+        "description": "",
+        "price": "$22.95"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Salted Pepper Fried Crispy Fish with Lemon Grass",
+        "description": "",
+        "price": "$22.95"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Mixed Vegetable with Organic Fried Tofu Spicy Lemon Grass",
+        "description": "",
+        "price": "$20.50"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Crispy Sole Fish with Vermicelli",
+        "description": "",
+        "price": "$21.95"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Cast Iron Pan (Shrimp, Fish)",
+        "description": "With your choice of sauce: house special lemongrass or garlic with basil.",
+        "price": "$24.00"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Crispy Chicken Wing with Fried Rice or Steam Rice",
+        "description": "Option your flavor: Spicy Lemongrass, Salty with Garlic, Salty pepper with scallion, Cajun.",
+        "price": "$21.95"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Hong Kong Style Steam Fish",
+        "description": "Your Option : Spicy or No spicy",
+        "price": "$21.95"
+      },
+      {
+        "section": "Specialist 特別精選",
+        "name": "Broiled Sole Fillet",
+        "description": "With your choice of sauce: spicy lemongrass (hot), butter sauce, garlic butter sauce.",
+        "price": "$21.95"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm 7 Món",
+        "description": "Seven courses of broken rice.(Pork Chop, Shrimp Paste on Sugarcane, Wrapped Shrimp, Char-Broiler Meat, Char-Broiler Chicken, Baked Egg, Bean Curd Sheet with Shrimp Paste",
+        "price": "$23.00"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm Hải Sản",
+        "description": "Seafood broken rice. (Shrimp Paste on Sugar Cane, Bean Curd Sheet, Char-Broiler Shrimp, Green Mussel, Sole Fish)",
+        "price": "$26.95"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Cá",
+        "description": "Sole fish broken rice.",
+        "price": "$19.50"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Saté Bò",
+        "description": "Spicy satay beef.",
+        "price": "$16.95"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm Gà Nướng",
+        "description": "Char-broiler chicken. White meat add $1.65.",
+        "price": "$16.95"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm Sườn Nướng",
+        "description": "Pork chop.",
+        "price": "$16.95"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm Sườn Đại Hàn",
+        "description": "Short ribs.",
+        "price": "$21.95"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm Thịt Nướng , Sườn Đại Hàn",
+        "description": "Charbroiled pork, short ribs.",
+        "price": "$21.95"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm Thịt Nướng, Đậu Hủ Ky",
+        "description": "Charbroiled pork, bean curd sheet with shrimp paste.",
+        "price": "$17.75"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm Chả, Thịt Nướng",
+        "description": "Baked egg, char-broiler pork.",
+        "price": "$17.75"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm Chả, Sườn Nướng",
+        "description": "Baked egg, pork chop.",
+        "price": "$17.75"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm Tôm Nướng, Sườn Nướng",
+        "description": "Char-broiler shrimp, pork chop.",
+        "price": "$17.75"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Tấm Thịt Nướng, Nem Nướng",
+        "description": "Char broiler pork, char broiler meat.",
+        "price": "$17.75"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Thịt Nướng",
+        "description": "Char broiler pork with rice.",
+        "price": "$17.75"
+      },
+      {
+        "section": "CƠM TẤM (Broken Rice) 碎 米 飯",
+        "name": "Cơm Bò Nướng",
+        "description": "Char broiler beef.",
+        "price": "$19.50"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún 7 Món",
+        "description": "Seven courses.(Char-broiler Pork, Shrimp paste on sugar cane, Wrapped Shrimp, Char-broiler meat, Char-broiler chicken, Char-broiler shrimp, Fried Spring rolls)",
+        "price": "$24.00"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Chả Giò",
+        "description": "Fried spring rolls.",
+        "price": "$16.95"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Hải Sản",
+        "description": "Seafood. (Shrimp paste on sugar cane, Bean curd sheet with shrimp paste, Char-broiler shrimp, Green mussel, Sole fish)",
+        "price": "$27.00"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Thịt Nướng",
+        "description": "Charbroiled pork.",
+        "price": "$17.95"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Saté Bò",
+        "description": "Spicy satay beef.Hot",
+        "price": "$17.95"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Gà Nướng",
+        "description": "Char-broiler chicken. White meat add $1.65.",
+        "price": "$17.95"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Sườn Đại Hàn",
+        "description": "Short ribs.",
+        "price": "$22.95"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Bò Xào",
+        "description": "Stir fried beef with lemongrass and sweet onions.",
+        "price": "$19.95"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Chạo Tôm",
+        "description": "Shrimp paste on sugarcane.",
+        "price": "$17.95"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Ðậu Hủ Ky",
+        "description": "Bean curd sheet with shrimp paste.",
+        "price": "$17.95"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Tôm Nướng Chả Giò",
+        "description": "Char-broiler shrimp, egg rolls.",
+        "price": "$18.95"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Nem Nướng",
+        "description": "Char-broiler meat (pork).",
+        "price": "$17.95"
+      },
+      {
+        "section": "Bun (Vermicelli) 檬",
+        "name": "Bún Bò Nướng.",
+        "description": "Char-broiler beef.",
+        "price": "$20.50"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi 7 Món",
+        "description": "Seven course of assorted meat. Char-broiler shrimp, Shrimp paste on sugar-cane, Char-broiler chicken, Fried egg rolls, Char-broiler meat, Bean curd sheet with Shrimp paste, Char-broiler pork.",
+        "price": "$31.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi Hải Sản",
+        "description": "Seafood. Shrimp paste on sugar-cane, Bean curd sheet with shrimp paste, Char Broiler Shrimp, Green Mussel, Sole Fish",
+        "price": "$34.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Crispy Sole Fish Wrapped with Rice Paper",
+        "description": "",
+        "price": "$24.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi Đậu Hủ",
+        "description": "Crispy organic tofu.",
+        "price": "$22.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi Saté Bò",
+        "description": "Spicy satay beef.",
+        "price": "$22.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi Nem Nướng",
+        "description": "Char-broiler meat.",
+        "price": "$22.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi Thịt Nướng",
+        "description": "Char-broiler pork.",
+        "price": "$22.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi Tôm Nướng",
+        "description": "Char-broiler shrimp.",
+        "price": "$24.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi Gà Nướng",
+        "description": "Char-broiler chicken. White meat add $1.65.",
+        "price": "$22.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi Tôm, Chạo, Đậu Hủ Ky",
+        "description": "Shrimp paste on sugarcane, bean curd sheet, char broiler shrimp.",
+        "price": "$25.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi Chạo Tôm",
+        "description": "Shrimp paste on sugarcane.",
+        "price": "$24.00"
+      },
+      {
+        "section": "Banh Hoi (Thin Rice Vermicelli) 濱 海",
+        "name": "Bánh Hỏi Đậu Hủ Ky",
+        "description": "Bean curd sheet with shrimp paste.",
+        "price": "$24.00"
+      },
+      {
+        "section": "Com Dia (Rice Dishes) 燴 飯",
+        "name": "Cơm Chiên Saté Xá Xíu",
+        "description": "Spicy satay fried rice with BBQ pork. Regular rice or broken rice.",
+        "price": "$19.50"
+      },
+      {
+        "section": "Com Dia (Rice Dishes) 燴 飯",
+        "name": "Cơm Bò Kho",
+        "description": "Beef stew with white rice.",
+        "price": "$19.50"
+      },
+      {
+        "section": "Com Dia (Rice Dishes) 燴 飯",
+        "name": "Cơm Chiên Gà Cay",
+        "description": "House special chicken fried rice with basil. White meat add $1.65. Regular rice or broken rice.",
+        "price": "$19.50"
+      },
+      {
+        "section": "Com Dia (Rice Dishes) 燴 飯",
+        "name": "Cơm Chiên Thập Cẩm",
+        "description": "House special satay fried rice with BBQ pork, shrimp, chicken. Regular rice or broken rice.",
+        "price": "$19.50"
+      },
+      {
+        "section": "Com Dia (Rice Dishes) 燴 飯",
+        "name": "Cơm Bò Xào Rau Cải",
+        "description": "Beef stir fried with assorted vegetables with white rice.",
+        "price": "$19.50"
+      },
+      {
+        "section": "Com Dia (Rice Dishes) 燴 飯",
+        "name": "Cơm Chiên Saté Tôm",
+        "description": "Spicy satay fried rice with shrimp. Regular rice or broken rice.",
+        "price": "$19.50"
+      },
+      {
+        "section": "Com Dia (Rice Dishes) 燴 飯",
+        "name": "Cơm Chiên Saté Bò",
+        "description": "Spicy hot satay beef fried rice. Regular rice or broken rice.",
+        "price": "$19.50"
+      },
+      {
+        "section": "Mi Ap Chao (Stir Fried Egg Noodle) 炒 麵",
+        "name": "Mì Áp Chảo Đồ Biển",
+        "description": "Satay pan fried seafood with assorted vegetables egg noodle. Hot",
+        "price": "$20.50"
+      },
+      {
+        "section": "Mi Ap Chao (Stir Fried Egg Noodle) 炒 麵",
+        "name": "Mì Áp Chảo Tôm",
+        "description": "Satay pan fried shrimp with assorted vegetables and egg noodle.",
+        "price": "$20.50"
+      },
+      {
+        "section": "Mi Ap Chao (Stir Fried Egg Noodle) 炒 麵",
+        "name": "Mì Áp Chảo Gà (hoặc Bò)",
+        "description": "Hot pan fried chicken or beef with assorted vegetables and egg noodle. White chicken meat add $1.65.",
+        "price": "$20.50"
+      },
+      {
+        "section": "Mi Ap Chao (Stir Fried Egg Noodle) 炒 麵",
+        "name": "Mì Áp Chảo Saté Bò",
+        "description": "Hot fried spicy satay beef with assorted vegetables and egg noodle.",
+        "price": "$20.50"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Đậu Hủ Cuốn (2 cuốn)",
+        "description": "Crispy organic tofu rolls (2 rolls).",
+        "price": "$11.25"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Bún Đậu Hủ",
+        "description": "Crispy tofu with vermicelli.",
+        "price": "$18.95"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Mì Áp Chảo Chay",
+        "description": "Stir fried assorted vegetables, crispy organic tofu (egg noodle).",
+        "price": "$19.95"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Cơm Xào Rau Cải Tofu",
+        "description": "Stir assorted vegetables and fried organic tofu over rice.",
+        "price": "$19.50"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Vegetable Fried Rice with Organic Tofu",
+        "description": "",
+        "price": "$19.50"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Organic Fried Tofu",
+        "description": "",
+        "price": "$8.95"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Garlic Eggplant",
+        "description": "",
+        "price": "$8.95"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Cà Ri Chay",
+        "description": "Vegetarian curry. With above ingredients, broccoli and crispy or steamed organic tofu.",
+        "price": "$17.95"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Bánh Mì Tofu",
+        "description": "Crispy organic tofu with sandwich.",
+        "price": "$10.95"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Stir Fried Eggplant and Crispy Organic Tofu with Black Bean Sauce",
+        "description": "",
+        "price": "$20.50"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Mixed Vegetable with Organic Tofu Spicy Lemon Grass",
+        "description": "",
+        "price": "$20.50"
+      },
+      {
+        "section": "Mon Chay (Vegetarian) 素 食",
+        "name": "Vegetable Fried Egg Rolls",
+        "description": "",
+        "price": "$11.25"
+      },
+      {
+        "section": "Nuoc Ngot (Beverages) 飲 品",
+        "name": "Café",
+        "description": "Coffee.",
+        "price": "$6.95"
+      },
+      {
+        "section": "Nuoc Ngot (Beverages) 飲 品",
+        "name": "Trà Đá hoặc Nóng",
+        "description": "Ice or hot tea. Per person.",
+        "price": "$3.75"
+      },
+      {
+        "section": "Nuoc Ngot (Beverages) 飲 品",
+        "name": "Trà Thái",
+        "description": "Thai tea with tapioca and cream.",
+        "price": "$5.95"
+      },
+      {
+        "section": "Nuoc Ngot (Beverages) 飲 品",
+        "name": "Nước Ngọt",
+        "description": "Soda. Coke, diet coke, sprite.",
+        "price": "$4.75"
+      },
+      {
+        "section": "Nuoc Ngot (Beverages) 飲 品",
+        "name": "Soda Chanh, Chanh Muối",
+        "description": "Fresh lemonade, salted lemonade",
+        "price": "$6.50"
+      },
+      {
+        "section": "Nuoc Ngot (Beverages) 飲 品",
+        "name": "Chè Đậu Đỏ",
+        "description": "Red bean, coconut milk with shave ice.",
+        "price": "$6.95"
+      },
+      {
+        "section": "Nuoc Ngot (Beverages) 飲 品",
+        "name": "Chè Ba Màu",
+        "description": "Red bean, mung bean, jelly, coconut milk with shave ice.",
+        "price": "$6.95"
+      },
+      {
+        "section": "Nuoc Ngot (Beverages) 飲 品",
+        "name": "Sinh Tố Sầu Riêng",
+        "description": "Durian shake.",
+        "price": "$13.50"
+      },
+      {
+        "section": "Nuoc Ngot (Beverages) 飲 品",
+        "name": "All Smoothies",
+        "description": "",
+        "price": "$7.95"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6472",
+    "name": "Harry's taco club",
+    "sourceUrl": "https://order.toasttab.com/online/cass-street-bar-and-grill-harrys-tacos-pacific-beach-4612-cass-st",
+    "confidence": "high",
+    "notes": "Router's earlier Toast hit was the WRONG branch (payload address 1446 Camino Del Mar). Found the correct Cass St / Pacific Beach branch's own Toast ordering page directly ('cass-street-bar-and-grill-harrys-tacos-pacific-beach-4612-cass-st' - page text confirms 'Cass St' and one item is literally named 'Cass St. - French Fries'). 28 dishes across 6 sections (Harrys Burritos, Harrys Tacos, Harrys Specials, Harrys Sides, Soda & More, Harry's Agua Frescas) after dropping the 'Featured Items' carousel, all 3 of which were exact duplicates. Restaurant's own first-party ordering platform, filed high confidence.",
+    "dishes": [
+      {
+        "section": "Harrys Burritos",
+        "name": "California Burrito",
+        "description": "Steak, Fries, Sour Cream, Guacamole, Jack Cheese, Tomato, Onion, Cilantro",
+        "price": "$16.99"
+      },
+      {
+        "section": "Harrys Burritos",
+        "name": "Steak & Shrimp California",
+        "description": "Steak, Shrimp, Fries, Sour Cream, Guacamole, Jack Cheese, Tomato, Onion, Cilantro",
+        "price": "$19.19"
+      },
+      {
+        "section": "Harrys Burritos",
+        "name": "Carne Asada Burrito",
+        "description": "Carne Asada, Guacamole, Jack Cheese, Tomato, Onion, Cilantro",
+        "price": "$14.99"
+      },
+      {
+        "section": "Harrys Burritos",
+        "name": "Bean and Cheese Burrito",
+        "description": "No veggies, Bean and Cheese",
+        "price": "$7.99"
+      },
+      {
+        "section": "Harrys Burritos",
+        "name": "Breakfast Burrito",
+        "description": "Steak or Bacon, Eggs, Fries, Guacamole",
+        "price": "$16.99"
+      },
+      {
+        "section": "Harrys Burritos",
+        "name": "Veggie Burrito",
+        "description": "Beans, Cabbage, Guacamole",
+        "price": "$13.14"
+      },
+      {
+        "section": "Harrys Tacos",
+        "name": "Battered Fish Taco",
+        "description": "Cabbage, Onion, Tomato, Cilantro",
+        "price": "$4.99"
+      },
+      {
+        "section": "Harrys Tacos",
+        "name": "Grilled Fish Taco",
+        "description": "Cabbage, Onion, Tomato, Cilantro, Avocado",
+        "price": "$6.99"
+      },
+      {
+        "section": "Harrys Tacos",
+        "name": "Spicy Shrimp Taco",
+        "description": "Jack Cheese, Cabbage, Onion, Tomato, Cilantro, Avocado",
+        "price": "$6.99"
+      },
+      {
+        "section": "Harrys Tacos",
+        "name": "Northern TJ Taco",
+        "description": "Steak, Beans, Cheese, Onions, Tomato, Cilantro, Avocado",
+        "price": "$6.99"
+      },
+      {
+        "section": "Harrys Tacos",
+        "name": "Scallop Taco",
+        "description": "Jack Cheese, Cabbage, Onion, Tomato, Cilantro, Avocado",
+        "price": "$8.99"
+      },
+      {
+        "section": "Harrys Tacos",
+        "name": "Steak & Shrimp Taco",
+        "description": "Jack Cheese, Cabbage, Onion, Tomato, Cilantro, Avocado",
+        "price": "$6.99"
+      },
+      {
+        "section": "Harrys Tacos",
+        "name": "Steak Taco",
+        "description": "Jack Cheese, Cabbage, Onion, Tomato, Cilantro, Avocado",
+        "price": "$6.79"
+      },
+      {
+        "section": "Harrys Tacos",
+        "name": "Trifecta Taco",
+        "description": "Spicy Grilled Shrimp, Fish, Scallops, Jack Cheese, Cabbage, Onion, Tomato, Cilantro, Avocado",
+        "price": "$7.99"
+      },
+      {
+        "section": "Harrys Tacos",
+        "name": "Veggie Taco",
+        "description": "Jack Cheese, Cabbage, Onion, Tomato, Cilantro, Avocado, Beans",
+        "price": "$5.59"
+      },
+      {
+        "section": "Harrys Specials",
+        "name": "Carne Asada Fries",
+        "description": "Jack Cheese, Sour Cream, Tomato, Onion, Cilantro, Guacamole",
+        "price": "$16.99"
+      },
+      {
+        "section": "Harrys Specials",
+        "name": "Ceviche",
+        "description": "Shrimp or Fish, Avocado, Tostada Chips",
+        "price": "$14.99"
+      },
+      {
+        "section": "Harrys Sides",
+        "name": "Chips and Guacamole",
+        "description": "",
+        "price": "$7.19"
+      },
+      {
+        "section": "Harrys Sides",
+        "name": "Cass St. -  French Fries",
+        "description": "",
+        "price": "$5.99"
+      },
+      {
+        "section": "Harrys Sides",
+        "name": "Beans",
+        "description": "",
+        "price": "$3.59"
+      },
+      {
+        "section": "Harrys Sides",
+        "name": "Rice",
+        "description": "",
+        "price": "$3.00"
+      },
+      {
+        "section": "Harrys Sides",
+        "name": "Quesadilla",
+        "description": "",
+        "price": "$4.99"
+      },
+      {
+        "section": "Soda & More",
+        "name": "Mexican Coke",
+        "description": "Coca-Cola Original Taste — the crisp, refreshing taste you know and love",
+        "price": "$4.99"
+      },
+      {
+        "section": "Soda & More",
+        "name": "Mexican Squirt",
+        "description": "",
+        "price": "$4.99"
+      },
+      {
+        "section": "Soda & More",
+        "name": "Mineragua",
+        "description": "",
+        "price": "$4.99"
+      },
+      {
+        "section": "Soda & More",
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$5.99"
+      },
+      {
+        "section": "Harry's Agua Frescas",
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$4.99"
+      },
+      {
+        "section": "Harry's Agua Frescas",
+        "name": "Rocket Fuel",
+        "description": "",
+        "price": "$6.99"
+      }
+    ]
+  }
+]

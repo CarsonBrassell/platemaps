@@ -1,0 +1,1010 @@
+[
+  {
+    "restaurantId": "5074",
+    "name": "ESB Coffee",
+    "sourceUrl": "https://pp.allmenus.com/ca/encinitas/1021747-esb-cafe/menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "only one tier-5 aggregator (allmenus, address-confirmed 325 Encinitas Blvd) is reachable; no DoorDash/Uber Eats presence found and no first-party site; a tier-5 source needs a second independent corroborating source before filing"
+  },
+  {
+    "restaurantId": "6669",
+    "name": "Route 6 Coffee & Smoothies",
+    "sourceUrl": "http://www.balboatennis.com/wordpress/3185-2/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site 404s (per router); no DoorDash/Uber Eats listing found; only directory/aggregator pages (atly, joe.coffee, findaloco, restaurantji) with no itemized prices"
+  },
+  {
+    "restaurantId": "5697",
+    "name": "Birria el Chavita",
+    "sourceUrl": "https://www.facebook.com/p/Birria-El-Chavita-100040970355242/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "weekend-only front-yard operation (Sat/Sun 8am-12pm per search results); Facebook profile fetch returns HTTP 400 (per router); no DoorDash/Uber Eats presence found; no priced menu reachable anywhere"
+  },
+  {
+    "restaurantId": "6527",
+    "name": "KD`S Donuts",
+    "sourceUrl": "https://restaurantguru.com/KD-Donuts-San-Diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no DoorDash/Uber Eats presence found; restaurantguru (tier-5) gives only a $10-$20/person range, no itemized prices; menupix (tier-5) unreachable (HTTP 402); k-d-s-donuts.wsite.top is a barred .top domain and was not used"
+  },
+  {
+    "restaurantId": "6151",
+    "name": "Ocean's Ice Cream",
+    "sourceUrl": "https://www.ubereats.com/store/oceans-ice-cream/a2XQ6We3SJOwQoGcrjs6HQ",
+    "confidence": "medium",
+    "notes": "read from Uber Eats catalogSectionsMap/catalogItems inline structure (no schema.org hasMenu present); address-confirmed 707 Reed Ave, San Diego",
+    "dishes": [
+      {
+        "name": "Shakes",
+        "description": "",
+        "price": "$7.00",
+        "section": "Mains"
+      },
+      {
+        "name": "Smoothies",
+        "description": "",
+        "price": "$7.00",
+        "section": "Mains"
+      },
+      {
+        "name": "Pitaya Bowl",
+        "description": "",
+        "price": "$9.00",
+        "section": "Delights"
+      },
+      {
+        "name": "Fruit Bowl Delight",
+        "description": "",
+        "price": "$7.00",
+        "section": "Delights"
+      },
+      {
+        "name": "Acai Bowl",
+        "description": "",
+        "price": "$9.00",
+        "section": "Delights"
+      },
+      {
+        "name": "Hot Dog",
+        "description": "",
+        "price": "$5.00",
+        "section": "Hot Dogs"
+      },
+      {
+        "name": "Chili Cheese Dog",
+        "description": "",
+        "price": "$6.00",
+        "section": "Hot Dogs"
+      },
+      {
+        "name": "Corn Dog",
+        "description": "",
+        "price": "$4.50",
+        "section": "Hot Dogs"
+      },
+      {
+        "name": "Chili Dog",
+        "description": "",
+        "price": "$6.00",
+        "section": "Hot Dogs"
+      },
+      {
+        "name": "Cheese Pizza",
+        "description": "",
+        "price": "$10.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Pepperoni Pizza",
+        "description": "",
+        "price": "$11.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Bottled Soda",
+        "description": "",
+        "price": "$3.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Water",
+        "description": "",
+        "price": "$4.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Iced Coffee",
+        "description": "",
+        "price": "$4.00",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6106",
+    "name": "Balboa Bakery",
+    "sourceUrl": "https://cakeybakey.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "site now redirects/rebrands to \"Cakey Bakey\" at the same 5921 Balboa Ave address; identity/successor status is unclear (rebrand vs new occupant) and AGENT-BRIEF's not_found whitelist does not cover rebrands, so treating as temporarily blocked rather than retiring"
+  },
+  {
+    "restaurantId": "6967",
+    "name": "La Michoacana Sonmex",
+    "sourceUrl": "https://www.doordash.com/store/la-michoacana-sonmex---1530-main-st-ramona-43243855/",
+    "confidence": "medium",
+    "notes": "read from DoorDash schema.org JSON-LD (duplicate Menu blocks deduped by name+price); \"Most Ordered\" carousel section dropped; address-confirmed 1530 Main St, Ramona",
+    "dishes": [
+      {
+        "name": "Tosti Elote",
+        "description": "",
+        "price": "$12.50",
+        "section": "Tostilocos"
+      },
+      {
+        "name": "Tosti Polin",
+        "description": "",
+        "price": "$12.50",
+        "section": "Tostilocos"
+      },
+      {
+        "name": "Tostilocos",
+        "description": "",
+        "price": "$9.00",
+        "section": "Tostilocos"
+      },
+      {
+        "name": "Tosti Nachos",
+        "description": "",
+        "price": "$7.50",
+        "section": "Tostilocos"
+      },
+      {
+        "name": "Mix Tostito",
+        "description": "",
+        "price": "$9.00",
+        "section": "Tostilocos"
+      },
+      {
+        "name": "Corn in a Cup",
+        "description": "",
+        "price": "$7.50",
+        "section": "Corn Items"
+      },
+      {
+        "name": "Chicharron Preparado",
+        "description": "",
+        "price": "$9.25",
+        "section": "Chicharron"
+      },
+      {
+        "name": "Aguas Frescas",
+        "description": "",
+        "price": "$5.00",
+        "section": "Aguas Frescas"
+      },
+      {
+        "name": "Mix Sandia",
+        "description": "",
+        "price": "$16.00",
+        "section": "Sandia Loca"
+      },
+      {
+        "name": "Sandia Loca",
+        "description": "",
+        "price": "$18.50",
+        "section": "Sandia Loca"
+      },
+      {
+        "name": "Son Mex Piña",
+        "description": "",
+        "price": "$15.00",
+        "section": "Tosti Piña"
+      },
+      {
+        "name": "Piña Loca",
+        "description": "",
+        "price": "$17.00",
+        "section": "Tosti Piña"
+      },
+      {
+        "name": "Piña Pineapple",
+        "description": "",
+        "price": "$15.00",
+        "section": "Tosti Piña"
+      },
+      {
+        "name": "Mix Piña",
+        "description": "",
+        "price": "$15.00",
+        "section": "Tosti Piña"
+      },
+      {
+        "name": "Clamato Sonmez",
+        "description": "",
+        "price": "$17.00",
+        "section": "Snacks"
+      },
+      {
+        "name": "Tosti Sandia",
+        "description": "",
+        "price": "$16.00",
+        "section": "Snacks"
+      },
+      {
+        "name": "Shrimp Clamato",
+        "description": "",
+        "price": "$16.00",
+        "section": "Snacks"
+      },
+      {
+        "name": "Clamatozos",
+        "description": "",
+        "price": "$13.00",
+        "section": "Snacks"
+      },
+      {
+        "name": "Coco Loco",
+        "description": "",
+        "price": "$18.00",
+        "section": "Coco Creations"
+      },
+      {
+        "name": "Mix Coco",
+        "description": "",
+        "price": "$17.00",
+        "section": "Coco Creations"
+      },
+      {
+        "name": "Shrimp Coco",
+        "description": "",
+        "price": "$15.50",
+        "section": "Coco Creations"
+      },
+      {
+        "name": "Mix Fruit",
+        "description": "",
+        "price": "$10.50",
+        "section": "Fruit Salads"
+      },
+      {
+        "name": "Pico Fruit Salad",
+        "description": "",
+        "price": "$10.00",
+        "section": "Fruit Salads"
+      },
+      {
+        "name": "Biónico",
+        "description": "",
+        "price": "$10.50",
+        "section": "Fruit Salads"
+      },
+      {
+        "name": "Sandwich",
+        "description": "",
+        "price": "$9.50",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Torta",
+        "description": "",
+        "price": "$9.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Strawberry Supreme",
+        "description": "",
+        "price": "$10.50",
+        "section": "Ice Cream/ Desserts"
+      },
+      {
+        "name": "Strawberry with Cream",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ice Cream/ Desserts"
+      },
+      {
+        "name": "Churros and Ice Cream",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ice Cream/ Desserts"
+      },
+      {
+        "name": "Banana Split",
+        "description": "",
+        "price": "$9.50",
+        "section": "Ice Cream/ Desserts"
+      },
+      {
+        "name": "Paletas Locas",
+        "description": "",
+        "price": "$5.99",
+        "section": "Ice Cream/ Desserts"
+      },
+      {
+        "name": "Paletas",
+        "description": "",
+        "price": "$3.25",
+        "section": "Ice Cream/ Desserts"
+      },
+      {
+        "name": "Churros Plain",
+        "description": "",
+        "price": "$2.99",
+        "section": "Ice Cream/ Desserts"
+      },
+      {
+        "name": "Homemade Ice Cream",
+        "description": "",
+        "price": "$3.25",
+        "section": "Ice Cream/ Desserts"
+      },
+      {
+        "name": "Waffle Cone",
+        "description": "",
+        "price": "$1.25",
+        "section": "Ice Cream/ Desserts"
+      },
+      {
+        "name": "Smoothies",
+        "description": "",
+        "price": "$6.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Natural Juices",
+        "description": "",
+        "price": "$6.99",
+        "section": "Natural Juices"
+      },
+      {
+        "name": "Raspados",
+        "description": "",
+        "price": "$6.25",
+        "section": "Raspados"
+      },
+      {
+        "name": "Mangonadas",
+        "description": "",
+        "price": "$7.25",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Tosti Ceviche",
+        "description": "",
+        "price": "$14.50",
+        "section": "Weekend Specials"
+      },
+      {
+        "name": "Plate Ceviche",
+        "description": "",
+        "price": "$10.50",
+        "section": "Weekend Specials"
+      },
+      {
+        "name": "Tostada Ceviche",
+        "description": "",
+        "price": "$8.50",
+        "section": "Weekend Specials"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6903",
+    "name": "Mom's Deli Mart",
+    "sourceUrl": "https://www.doordash.com/store/moms-deli-mart-san-diego-22950442/",
+    "confidence": "medium",
+    "notes": "read from DoorDash schema.org JSON-LD (2 duplicate Menu blocks deduped by name+price); \"Most Ordered\" carousel section dropped; address-confirmed 3914 Murphy Canyon Rd #A116",
+    "dishes": [
+      {
+        "name": "Turkey Sandwich",
+        "description": "",
+        "price": "$17.49",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Tuna Salad Sandwich",
+        "description": "",
+        "price": "$16.49",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Veggie Sandwich",
+        "description": "",
+        "price": "$14.29",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Pastrami Sandwich",
+        "description": "",
+        "price": "$18.49",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Roast Beef Sandwich",
+        "description": "",
+        "price": "$18.49",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Egg Salad Sandwich",
+        "description": "",
+        "price": "$15.49",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Ham Sandwich",
+        "description": "",
+        "price": "$17.49",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Club Sandwich",
+        "description": "",
+        "price": "$17.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Italian Sandwich",
+        "description": "",
+        "price": "$17.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Cheese Steak Sandwich",
+        "description": "",
+        "price": "$18.49",
+        "section": "Hot Sandwiches"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "",
+        "price": "$10.49",
+        "section": "Hot Sandwiches"
+      },
+      {
+        "name": "BLT Sandwich",
+        "description": "",
+        "price": "$18.49",
+        "section": "Hot Sandwiches"
+      },
+      {
+        "name": "Reuben Sandwich",
+        "description": "",
+        "price": "$18.49",
+        "section": "Hot Sandwiches"
+      },
+      {
+        "name": "Cream Cheese Bagel",
+        "description": "",
+        "price": "$6.49",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Egg And Cheese",
+        "description": "",
+        "price": "$9.49",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bacon, Egg, And Cheese",
+        "description": "",
+        "price": "$10.49",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Sausage, Egg, And Cheese",
+        "description": "",
+        "price": "$10.49",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Chicken Poblano",
+        "description": "",
+        "price": "$8.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Vanilla Parfait",
+        "description": "",
+        "price": "$6.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Mac Salad",
+        "description": "",
+        "price": "$7.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Strawberry Parfait",
+        "description": "",
+        "price": "$6.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Potato Salad",
+        "description": "",
+        "price": "$7.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Egg Salad",
+        "description": "",
+        "price": "$7.49",
+        "section": "Sides"
+      },
+      {
+        "name": "Dirty Potato Chips Salt And Vinegar",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Kettle Backyard BBQ",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Dirty Potato Chips Maui Onion",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Fritos Original",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Kettle Jalapeno",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Dirty Potato Chips Sour Cream And Onion",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Kettle Sea Salt",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Kettle Sea Salt And Vinegar",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Dirty Potato Chips Funky Fusion",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Kettle Honey Dijon",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Lays Classic",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Ruffles Queso",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Kettle Dill Pickle",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Kettle Habanero Lime",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Kettle Salt And Pepper",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Takis",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Doritos Nacho Cheese",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Doritos Cool Ranch",
+        "description": "",
+        "price": "$3.69",
+        "section": "Chips"
+      },
+      {
+        "name": "Coke 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Diet Coke 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Dr Pepper 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Pepsi Zero 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "A&W Zero 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Pepsi 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "7 Up",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "A&W 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Pure Life Water 16oz",
+        "description": "",
+        "price": "$1.79",
+        "section": "Drinks"
+      },
+      {
+        "name": "Redbull Sugar Free 12oz",
+        "description": "",
+        "price": "$4.29",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coke Zero 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Diet Dr Pepper 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Diet Pepsi 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Redbull 12oz",
+        "description": "",
+        "price": "$4.29",
+        "section": "Drinks"
+      },
+      {
+        "name": "Schwepps Ginger Ale 20oz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Aquafina 1L",
+        "description": "",
+        "price": "$2.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Evian 1L",
+        "description": "",
+        "price": "$4.29",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6698",
+    "name": "J & J's Mexican Food",
+    "sourceUrl": "https://www.doordash.com/store/j-js-mexican-food-spring-valley-27839572/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "truncated capture: JSON-LD yields 79 dishes but the page's own MenuBookCategory nav metadata claims 85 non-carousel items (97 incl. Most Ordered's 12); the gap is entirely in the LAST section, Sides (JSON-LD has 4: Salsa 2oz/Cheese 4oz/Medium Chips/French Fries, book claims 10) and the JSON-LD block ends immediately after that section, so it stopped mid-category. Router's own netwaiter attempt found 0 priced items. Do not file until a complete Sides section is confirmed."
+  },
+  {
+    "restaurantId": "4103",
+    "name": "Coco Bomb",
+    "sourceUrl": "https://cocobombusa.com/menu/cocobomb-convoy-4690-convoy-street-suite-b103",
+    "confidence": "high",
+    "notes": "router flagged wrong-branch (payload showed a Memphis address); found the correct Convoy-branch Toast ordering sub-page directly on the restaurant's own multi-location site and address-confirmed (Suite B103 = #103); read from window.__OO_STATE__ (Toast Apollo cache), 4 groups, all items priced",
+    "dishes": [
+      {
+        "name": "Iced Americano",
+        "description": "",
+        "price": "$5.25",
+        "section": "COFFEE"
+      },
+      {
+        "name": "Iced Latte",
+        "description": "",
+        "price": "$5.75",
+        "section": "COFFEE"
+      },
+      {
+        "name": "Iced Caramel Macchiato",
+        "description": "",
+        "price": "$5.75",
+        "section": "COFFEE"
+      },
+      {
+        "name": "Iced Mocha",
+        "description": "",
+        "price": "$6.00",
+        "section": "COFFEE"
+      },
+      {
+        "name": "Coconut Coffee",
+        "description": "",
+        "price": "$7.50",
+        "section": "COFFEE"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$4.25",
+        "section": "COFFEE"
+      },
+      {
+        "name": "Hot Americano",
+        "description": "",
+        "price": "$4.75",
+        "section": "COFFEE"
+      },
+      {
+        "name": "Hot Latte",
+        "description": "",
+        "price": "$5.25",
+        "section": "COFFEE"
+      },
+      {
+        "name": "Hot Caramel Macchiato",
+        "description": "",
+        "price": "$5.25",
+        "section": "COFFEE"
+      },
+      {
+        "name": "Hot Mocha",
+        "description": "",
+        "price": "$5.50",
+        "section": "COFFEE"
+      },
+      {
+        "name": "Coconut Water",
+        "description": "",
+        "price": "$7.00",
+        "section": "SPECIAL DRINKS"
+      },
+      {
+        "name": "Coconut Milk Smoothie",
+        "description": "",
+        "price": "$8.00",
+        "section": "SPECIAL DRINKS"
+      },
+      {
+        "name": "Fresh Young Coconut",
+        "description": "",
+        "price": "$8.00",
+        "section": "SPECIAL DRINKS"
+      },
+      {
+        "name": "Iced Cocoa",
+        "description": "",
+        "price": "$6.50",
+        "section": "SPECIAL DRINKS"
+      },
+      {
+        "name": "Iced Matcha Latte",
+        "description": "",
+        "price": "$7.50",
+        "section": "SPECIAL DRINKS"
+      },
+      {
+        "name": "Matcha Coconut Water",
+        "description": "",
+        "price": "$8.50",
+        "section": "SPECIAL DRINKS"
+      },
+      {
+        "name": "Pink Drink",
+        "description": "",
+        "price": "$6.00",
+        "section": "SPECIAL DRINKS"
+      },
+      {
+        "name": "Thai Iced Tea",
+        "description": "",
+        "price": "$6.00",
+        "section": "SPECIAL DRINKS"
+      },
+      {
+        "name": "1 Scoop",
+        "description": "",
+        "price": "$4.00",
+        "section": "ICE CREAM"
+      },
+      {
+        "name": "2 Scoops",
+        "description": "",
+        "price": "$7.00",
+        "section": "ICE CREAM"
+      },
+      {
+        "name": "3 Scoops",
+        "description": "",
+        "price": "$9.00",
+        "section": "ICE CREAM"
+      },
+      {
+        "name": "Coconut Sundae",
+        "description": "",
+        "price": "$11.00",
+        "section": "ICE CREAM"
+      },
+      {
+        "name": "Bread Bomb",
+        "description": "",
+        "price": "$7.00",
+        "section": "ICE CREAM"
+      },
+      {
+        "name": "4oz Ice Cream Cup",
+        "description": "",
+        "price": "$4.00",
+        "section": "ICE CREAM"
+      },
+      {
+        "name": "12oz Ice Cream Cup",
+        "description": "",
+        "price": "$9.00",
+        "section": "ICE CREAM"
+      },
+      {
+        "name": "16oz Ice Cream Cup",
+        "description": "",
+        "price": "$12.00",
+        "section": "ICE CREAM"
+      },
+      {
+        "name": "Coconut Cake",
+        "description": "",
+        "price": "$11.50",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Thai Coconut Jelly",
+        "description": "",
+        "price": "$6.00",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Mango with Sticky Rice",
+        "description": "",
+        "price": "$11.00",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Pandan Coconut Cream Pudding",
+        "description": "",
+        "price": "$6.00",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Lot Chong",
+        "description": "",
+        "price": "$9.00",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Ruam Mit",
+        "description": "",
+        "price": "$9.00",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Bar Bin",
+        "description": "",
+        "price": "$7.50",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Bua Loy",
+        "description": "",
+        "price": "$7.50",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Coconut Pudding",
+        "description": "",
+        "price": "$6.00",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Thai Tea Pudding",
+        "description": "",
+        "price": "$6.00",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Soft-Bake Coconut Pie",
+        "description": "",
+        "price": "$7.00",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "Steam - Sticky Rice With Banana",
+        "description": "",
+        "price": "$6.50",
+        "section": "THAI DESSERTS"
+      },
+      {
+        "name": "B.B.Q. Sweet Rice With Banana",
+        "description": "",
+        "price": "$4.50",
+        "section": "THAI DESSERTS"
+      }
+    ]
+  }
+]

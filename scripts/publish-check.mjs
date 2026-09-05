@@ -21,12 +21,18 @@
  *
  * Everything the card and detail page *render*, and nothing else:
  *
- *   rating + review_count   `.toFixed(1)` is called on rating in seven
- *                           components with no null branch, so an unrated row
- *                           is not a degraded listing, it is a thrown error
- *                           that takes the whole search page with it
+ * A rating came off the list on 5 Sep 2026. Every card, header and map tip
+ * guards the blend on `rating != null` and prints nothing when it is absent,
+ * and Calvin decided a real restaurant belongs on the site whether or not
+ * anyone has rated it yet. The no-rating count below is a report line only.
+ *
  *   lat + lng               the map places every restaurant it is given
- *   photo                   a card with no image is an empty rectangle
+ *
+ * A photo came off the list on 4 Sep 2026. `RestaurantPhoto` renders the
+ * warm tone block DESIGN.md prescribes when `photo` is null, so a row without
+ * one renders correctly, and Calvin decided photos are not worth a Google
+ * Place Photo call per restaurant. The no-photo count below stays as a
+ * report line only.
  *
  * Hours were on that list and came off it (21 Aug 2026). They were there
  * because "Hours vary" passed the Open-now filter, so rows without hours
@@ -64,10 +70,7 @@ if (!process.env.DATABASE_URL) {
  */
 const READY = sql`
   hold_reason IS NULL
-  AND rating IS NOT NULL
-  AND review_count IS NOT NULL
   AND lat IS NOT NULL AND lng IS NOT NULL
-  AND photo IS NOT NULL AND photo <> ''
 `;
 
 const before = await sql`SELECT count(*) FILTER (WHERE listed)::int AS n, count(*)::int AS total FROM restaurants`;

@@ -527,6 +527,64 @@ h3 {
     0 0 24px rgba(126, 214, 255, 0.45);
 }
 
+/* The pulse: a ring leaving the dot on a slow beat, so a live fix reads as
+   something the map is still receiving rather than a sticker stuck on the
+   glass. It is the only moving part of the marker when there is no compass —
+   the cone stays hidden without a heading, and a dot that never moves and
+   never blinks was reading as decoration.
+
+   It rides on ::after rather than a fourth child element because `.map-me > *`
+   is what centres the marker's parts, and a pseudo-element inside the core is
+   already centred on it — nothing for MyLocation.tsx to build or tear down.
+
+   Blue only. The note on .map-me above about never drifting toward #e8875a
+   governs every part of this marker, this one included: a warm pulse would
+   read as a restaurant announcing itself.
+
+   It expands past the halo's minimum radius on purpose. On a tight fix the
+   halo is 13px, and a beat contained inside it is invisible; the ring is a
+   moving edge that fades to nothing rather than a second boundary, so crossing
+   the accuracy circle claims nothing about accuracy. */
+.map-me-core::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid rgba(126, 214, 255, 0.85);
+  pointer-events: none;
+  animation: map-me-pulse 2.4s cubic-bezier(0.15, 0.6, 0.35, 1) infinite;
+}
+
+/* A remembered dot does not pulse, for the same reason it does not wear a
+   cone: a beat says "still arriving", and the stale dot is the one thing on
+   this map that is not. See MyLocation.tsx. */
+.map-me[data-stale="on"] .map-me-core::after {
+  display: none;
+}
+
+@keyframes map-me-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  70% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+/* No beat, and no substitute ring: a static circle sitting at the pulse's
+   radius would be a second accuracy boundary that means nothing. */
+@media (prefers-reduced-motion: reduce) {
+  .map-me-core::after {
+    display: none;
+  }
+}
+
 /* Neon signage: how the night map says a restaurant's name. One voice, two
    uses — .map-name-tip is the single floating element the GPU pin layer
    places over a hovered ember (pins are paint now, so there is no per-pin

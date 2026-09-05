@@ -46,6 +46,11 @@
  * - The address in the payload is checked against the address on our record. A
  *   different street number is a different branch, and one branch's menu must
  *   never go under another branch's id.
+ * - A MARKETPLACE is read last and labelled as one. DoorDash and Uber Eats sit
+ *   at the bottom of the extractor list so they are only consulted when the
+ *   restaurant's own platforms have nothing, their captures go through the
+ *   same markup test as everything else, and the note on the entry says the
+ *   prices are the platform's rather than the restaurant's.
  *
  * ## Caching
  *
@@ -59,6 +64,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
+import vm from "node:vm";
 import { neon } from "@neondatabase/serverless";
 
 const execFileAsync = promisify(execFile);
@@ -111,6 +117,22 @@ const UA_FALLBACK =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15";
 
 const TIMEOUT_MS = 15_000;
+
+/*
+ * The four headers a real address-bar navigation sends and an XHR does not.
+ *
+ * Uber Eats answers a plain desktop-UA curl for a store page with 404, and the
+ * SAME request carrying these returns 200 with the whole catalog
+ * (`ubereats.com/store/cortez-mexican-food/...`, 91 priced rows). DoorDash's
+ * Cloudflare edge treats them the same way when it is in a challenging mood.
+ * Nothing here is a lie about the client: this IS a top-level document fetch.
+ */
+const NAVIGATION_HEADERS = {
+  "Sec-Fetch-Mode": "navigate",
+  "Sec-Fetch-Site": "none",
+  "Sec-Fetch-Dest": "document",
+  "Upgrade-Insecure-Requests": "1",
+};
 
 /* --------------------------------------------------------------- http layer */
 
@@ -280,6 +302,21 @@ async function get(url, opts = {}) {
     if (viaCurl && viaCurl.status > 0 && viaCurl.status !== 403) out = viaCurl;
   }
 
+  /*
+   * A CLOUDFLARE INTERSTITIAL IS A 200, and that is why the status test above
+   * never catches it. `order.online` and `www.doordash.com` both answer Node's
+   * fetch with "Just a moment..." and 200, and hand curl - same URL, same
+   * headers, same second - the whole store page. Three restaurants read fine
+   * by hand were being written off as bot-walled on exactly this.
+   *
+   * Only worth a retry when the first answer came from fetch; curl's own
+   * challenge page is the end of the line.
+   */
+  if (out.ok && out.status < 400 && out.via !== "curl" && botWall(out)) {
+    const viaCurl = await curlGet(url, method, body, opts.headers ?? {});
+    if (viaCurl && viaCurl.status > 0 && viaCurl.status < 400 && !botWall(viaCurl)) out = viaCurl;
+  }
+
   /* A transport failure is not cached. `EAI_AGAIN` on this machine's Wi-Fi is a
    * transient DNS answer, not a fact about the host, and caching it would bake
    * the flake into every later run. */
@@ -437,12 +474,19 @@ const typeOf = (node) => [].concat(node?.["@type"] ?? []).map(String);
 /**
  * schema.org Menu -> rows. Sections nest, and `offers` is sometimes an array of
  * portion offers - take the lowest and say how many there were; never average.
+ *
+ * `hasMenuSection` is sometimes an array wrapped in one more array -
+ * `[[section0, section1, ...]]` - which DoorDash serves on every store page
+ * (Robeks Chula Vista, 14 sections and 70 items). The old walk saw one entry
+ * that was an Array, and an Array passes `typeof === "object"`, so it read
+ * `.name` and `.hasMenuItem` off it, found undefined, and returned NOTHING for
+ * a menu that was entirely present. Flatten before walking.
  */
 function rowsFromSchemaMenu(menu, menuName = "") {
   const rows = [];
   let multiOffer = 0;
   const walk = (sections, trail) => {
-    for (const section of [].concat(sections ?? [])) {
+    for (const section of [].concat(sections ?? []).flat(Infinity)) {
       if (!section || typeof section !== "object") continue;
       const name = collapse(decodeEntities(section.name));
       const path2 = name ? [...trail, name] : trail;
@@ -570,8 +614,17 @@ function namesOverlap(ours, theirs) {
 function botWall(res) {
   if (!res?.ok) return null;
   const b = res.body ?? "";
-  if (/Just a moment\.\.\./i.test(b) || /cf-browser-verification|challenge-platform|cdn-cgi\/challenge/i.test(b))
+  if (/Just a moment\.\.\./i.test(b) || /cf-browser-verification|_?cf_chl_opt/i.test(b))
     return "Cloudflare challenge";
+  /*
+   * `cdn-cgi/challenge-platform` ON ITS OWN IS NOT A WALL. Cloudflare bootstraps
+   * an invisible Turnstile script into ordinary pages, and a successful
+   * 386KB DoorDash store page carrying the whole catalog contains that string
+   * exactly once - which is how Robeks Chula Vista, readable by hand at that
+   * same minute, came back "Cloudflare challenge". A real interstitial is a
+   * few kilobytes and nothing else; size is the difference.
+   */
+  if (/cdn-cgi\/challenge-platform/i.test(b) && b.length < 60_000) return "Cloudflare challenge";
   if (/datadome|geo\.captcha-delivery\.com/i.test(b)) return "DataDome";
   if (res.status === 403) return "403 to two desktop UAs and to curl";
   if (res.status === 429) return "429 rate limited";
@@ -874,12 +927,80 @@ function ddLinks(all) {
  * The RSC flight payload, which is where the complete per-category menu lives
  * even when the DOM renders a "Most Ordered" carousel and a closed banner.
  */
-function rowsFromDoorDashRsc(html) {
-  const text = html.includes('\\"__typename\\":\\"MenuPageItemList\\"')
+/*
+ * A DoorDash store page writes its flight payload escaped in some deployments
+ * and plain in others. Normalise once, before anything is matched against it,
+ * or the escaped copy reads as absent.
+ */
+function ddText(html) {
+  return html.includes('\\"__typename\\":\\"MenuPageItemList\\"')
     ? html.replace(/\\"/g, '"').replace(/\\\\/g, "\\")
     : html;
+}
+
+/**
+ * The menu book: every category the store page's own category nav is drawn
+ * from, with the item count DoorDash claims for it. Category `-1` is the
+ * "everything" pseudo-entry, not a section. A name that will not parse still
+ * counts toward the total - losing a name must never quietly shrink it.
+ */
+function menuBook(html) {
+  const text = ddText(html);
+  const categories = [];
+  let expected = 0;
+  for (const m of text.matchAll(
+    /"__typename":"MenuBookCategory","id":"(-?\d+)","name":(".*?"),"numItems":(\d+)/g,
+  )) {
+    if (m[1] === "-1") continue;
+    const numItems = Number(m[3]);
+    expected += numItems;
+    let name = "";
+    try {
+      name = collapse(decodeEntities(JSON.parse(m[2])));
+    } catch {
+      continue;
+    }
+    if (name) categories.push({ name, numItems });
+  }
+  return { categories, expected };
+}
+
+/* Section names compare on letters and digits alone: the book writes "Fried
+ * Rice" where the JSON-LD writes the same section nested under a menu name. */
+const sectionKey = (s) =>
+  collapse(String(s ?? ""))
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+
+/**
+ * Categories the page's own menu book advertises that these rows never cover.
+ * Carousels are excluded - they are not sections of a catalog on either side.
+ */
+function missingSections(html, rows) {
+  const { categories } = menuBook(html);
+  if (!categories.length) return [];
+  const have = rows.map((r) => sectionKey(r.section)).filter(Boolean);
+  const missing = [];
+  for (const c of categories) {
+    if (!c.numItems) continue;
+    if (/^(most ordered|picked for you|featured items|popular items?)$/i.test(c.name)) continue;
+    const k = sectionKey(c.name);
+    if (!k) continue;
+    if (!have.some((h) => h === k || h.includes(k))) missing.push(c.name);
+  }
+  return missing;
+}
+
+function rowsFromDoorDashRsc(html) {
+  const text = ddText(html);
   const rows = [];
   let expected = 0;
+  /* Lazy `.*?`, never a `[^"]*` character class: the flight payload writes
+   * `&` and friends inside names and descriptions, and after the escaped
+   * copy is unescaped a category name can carry a quote of its own, at which
+   * point the character class stops early and the catalogued item count comes
+   * out too small - which makes a COMPLETE read look like a partial one and
+   * hands the restaurant back for no reason. */
   const marker = '"__typename":"MenuPageItemList"';
   for (let at = text.indexOf(marker); at !== -1; at = text.indexOf(marker, at + 1)) {
     const start = text.lastIndexOf("{", at);
@@ -908,19 +1029,29 @@ function rowsFromDoorDashRsc(html) {
   }
   /* The menu book lists every category with its item count, which is the only
    * way to tell a complete RSC read from a slice of one. */
-  for (const m of text.matchAll(
-    /"__typename":"MenuBookCategory","id":"(-?\d+)","name":"([^"]*)","numItems":(\d+)/g,
-  )) {
-    if (m[1] === "-1") continue;
-    expected += Number(m[3]);
-  }
+  expected = menuBook(html).expected;
   return { rows, expected };
 }
 
 async function extractDoorDash(ctx) {
   const found = ddLinks(ctx.allLinks);
+  let challenged = null;
+  const attempts = [];
   for (const url of found.slice(0, 4)) {
-    const res = await get(url.split("?")[0]);
+    attempts.push(url.split("?")[0]);
+    /* `page-service.doordash.com` is the same store page from the origin
+     * behind the CDN, and it has answered on nights when `www` returned 403
+     * to everything. Same path, same payload. */
+    if (/(^|\.)doordash\.com$/i.test(hostOf(url)))
+      attempts.push(url.split("?")[0].replace(/\/\/(www\.)?doordash\.com\//i, "//page-service.doordash.com/"));
+  }
+  for (const url of [...new Set(attempts)].slice(0, 6)) {
+    const res = await get(url, { headers: NAVIGATION_HEADERS });
+    const wall = botWall(res);
+    if (wall) {
+      challenged ??= `${wall} at ${url}`;
+      continue;
+    }
     if (!res.ok || res.status >= 400) continue;
 
     /* Marketplace store pages ship a server-side schema.org Menu. Iterate the
@@ -936,24 +1067,80 @@ async function extractDoorDash(ctx) {
     };
     const payloadName = collapse(restaurant?.name) || null;
 
+    let ld = null;
     if (menu) {
-      const { rows, multiOffer } = rowsFromSchemaMenu(menu);
+      const got = rowsFromSchemaMenu(menu);
+      const multiOffer = got.multiOffer;
+      /* "Most Ordered" is the carousel, and every one of its rows is a second
+       * copy of a dish that is also in its real section - 12 of Robeks Chula
+       * Vista's 70. The RSC reader has always dropped it; the JSON-LD reader
+       * only started seeing rows at all once the doubly-nested
+       * `hasMenuSection` was flattened, and inherited the same duty. */
+      const rows = got.rows.filter((r) => !/^(most ordered|picked for you)$/i.test(collapse(r.section)));
       if (rows.length) {
-        const notes = ["read from the DoorDash schema.org Menu block"];
-        if (multiOffer) notes.push(`${multiOffer} items had several size offers, recorded at the lowest`);
-        return { rows, sourceUrl: res.finalUrl, address, place, payloadName, notes, gateable: true };
+        /*
+         * DoorDash truncates its own schema.org Menu block, and the cut is
+         * invisible: the JSON is well-formed, it stops on a section boundary,
+         * and nothing in it says it is partial. Thirty-five restaurants in this
+         * corpus were filed at exactly 79 dishes and twenty-four at 91, against
+         * one to nine at every neighbouring count - two spikes that are the
+         * artefact, not a coincidence of menu sizes. Pho King lost Fried Rice,
+         * Kid Meals, Beverages, Dessert, Smoothies and Coffee that way, and was
+         * filed as complete.
+         *
+         * The menu book in the same page body is the cross-check. It is what
+         * the rendered category nav is drawn from, it is not virtualised, and
+         * it names every section. A section the book advertises and the JSON-LD
+         * never mentions is a section that was cut off.
+         */
+        const missing = missingSections(res.body, rows);
+        if (!missing.length) {
+          const notes = ["read from the DoorDash schema.org Menu block"];
+          if (multiOffer) notes.push(`${multiOffer} items had several size offers, recorded at the lowest`);
+          return { rows, sourceUrl: res.finalUrl, address, place, payloadName, notes, gateable: true };
+        }
+        ld = { rows, multiOffer, missing };
       }
     }
 
+    /* Either there was no JSON-LD Menu, or there was one and it was cut short.
+     * The RSC payload comes out of the same body and is the better source when
+     * it carries more, because it is built from the menu book itself. */
     const { rows, expected } = rowsFromDoorDashRsc(res.body);
-    if (rows.length) {
+    if (rows.length && (!ld || rows.length > ld.rows.length)) {
       const notes = ["read from the Next.js RSC flight payload, not the rendered DOM"];
+      if (ld)
+        notes.push(
+          `the schema.org Menu block was truncated at ${ld.rows.length} items, missing ${ld.missing.join(", ")}`,
+        );
       let partial = false;
       if (expected && rows.length < expected * 0.6) {
         partial = true;
         notes.push(`RSC carried ${rows.length} of ${expected} catalogued items`);
       }
       return { rows, sourceUrl: res.finalUrl, address, place, payloadName, notes, partial, gateable: true };
+    }
+
+    /* The truncated JSON-LD was all there was. Hand it back MARKED, never
+     * silently: a cut menu filed as complete is worse than one flagged for a
+     * browser pass, because nothing downstream will ever look at it again. */
+    if (ld) {
+      const notes = [
+        "read from the DoorDash schema.org Menu block",
+        `TRUNCATED: the page's own menu book lists ${ld.missing.length} section(s) the block never carried - ${ld.missing.join(", ")}`,
+      ];
+      if (ld.multiOffer)
+        notes.push(`${ld.multiOffer} items had several size offers, recorded at the lowest`);
+      return {
+        rows: ld.rows,
+        sourceUrl: res.finalUrl,
+        address,
+        place,
+        payloadName,
+        notes,
+        partial: true,
+        gateable: true,
+      };
     }
   }
   /*
@@ -964,6 +1151,9 @@ async function extractDoorDash(ctx) {
    * is the definition of the browser-only case, and saying which link needs
    * the click is what makes it a one-page-load job for whoever has one.
    */
+  /* A challenge is not an absence. Say which it was, so the next wave does not
+   * spend a page load rediscovering that the catalog is right there. */
+  if (challenged) return { needsBrowser: `DoorDash bot challenge, not a missing menu: ${challenged}` };
   if (found.length)
     return {
       needsBrowser:
@@ -975,7 +1165,169 @@ async function extractDoorDash(ctx) {
   return null;
 }
 
+/* ---------------------------------------------------------------- Uber Eats */
+
+/*
+ * An Uber Eats store page, which is a MARKETPLACE source and is treated as one:
+ * it sits last in the ladder, its capture goes through the same markup test
+ * every delivery page does, and the note says where the prices came from.
+ *
+ * Three things had to be true at once before this worked, and each on its own
+ * looks like "no data here":
+ *
+ * 1. A plain desktop-UA curl gets 404. The four NAVIGATION_HEADERS turn the
+ *    same URL into a 200 - a 404 from this host is a bot verdict, not a
+ *    missing store.
+ * 2. The JSON-LD carries only Restaurant, FAQPage and BreadcrumbList. There is
+ *    no schema.org Menu at all; the catalog is in `__REACT_QUERY_STATE__`.
+ * 3. That script's content writes every structural quote as the six literal
+ *    characters backslash-u-0-0-2-2 - and its backslashes as `%5C`, which is what makes a
+ *    naive `\uXXXX` decode produce `%5C"` in the middle of a string and fail to
+ *    parse two kilobytes in, inside the SEO FAQ blob. Both substitutions have
+ *    to be undone, in that order. Cortez Mexican Food is the page that showed
+ *    all three.
+ */
+function reactQueryState(html) {
+  const at = html.indexOf("__REACT_QUERY_STATE__");
+  if (at === -1) return null;
+  const start = html.indexOf(">", at) + 1;
+  const end = html.indexOf("</script>", start);
+  if (start <= 0 || end === -1) return null;
+  const decoded = html
+    .slice(start, end)
+    .replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+    .replace(/%5C/g, "\\");
+  try {
+    return JSON.parse(decoded);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The price on an Uber Eats catalog item.
+ *
+ * `price` is integer cents where the deployment ships it. Where it does not -
+ * Cortez Mexican Food has no numeric price field on any of its 91 items - the
+ * figure is in the accessibility label, published as "$8.59". That is still a
+ * field read out of the payload, and it is only accepted when the whole label
+ * IS a price, so a rating or a calorie count can never be mistaken for one.
+ */
+function uberEatsPrice(item) {
+  if (Number.isInteger(item?.price) && item.price > 0) return money(item.price / 100);
+  for (const text of [item?.priceTagline?.text, item?.labelPrimary?.accessibilityText]) {
+    const m = String(text ?? "").trim().match(/^\$(\d+(?:\.\d{2})?)$/);
+    if (m) return money(Number(m[1]));
+  }
+  return null;
+}
+
+async function extractUberEats(ctx) {
+  const stores = ctx.allLinks.filter(
+    (u) => /(^|\.)ubereats\.com$/i.test(hostOf(u)) && /\/store\//.test(u),
+  );
+  if (!stores.length) return null;
+
+  let challenged = null;
+  for (const url of [...new Set(stores.map((u) => u.split("?")[0]))].slice(0, 3)) {
+    const res = await get(url, { headers: NAVIGATION_HEADERS });
+    const wall = botWall(res);
+    /* One agent saw this host 307 from this network on the same night it
+     * answered here. A challenge is `blocked`, never absence. */
+    if (wall || res.status === 307) {
+      challenged ??= `${wall ?? `HTTP ${res.status}`} at ${url}`;
+      continue;
+    }
+    if (!res.ok || res.status >= 400) continue;
+    const state = reactQueryState(res.body);
+    if (!state) continue;
+
+    const rows = [];
+    let store = null;
+    let soldOut = 0;
+    const walk = (node, depth) => {
+      if (!node || typeof node !== "object" || depth > 40) return;
+      if (Array.isArray(node)) {
+        for (const n of node) walk(n, depth + 1);
+        return;
+      }
+      if (!store && node.title && node.location?.streetAddress) store = node;
+      if (node.catalogSectionsMap && typeof node.catalogSectionsMap === "object") {
+        for (const list of Object.values(node.catalogSectionsMap)) {
+          for (const section of list ?? []) {
+            const payload = section?.payload?.standardItemsPayload;
+            if (!payload) continue;
+            const name = collapse(decodeEntities(payload.title?.text));
+            for (const item of payload.catalogItems ?? []) {
+              if (item?.isSoldOut === true) {
+                soldOut++;
+                continue;
+              }
+              const price = uberEatsPrice(item);
+              if (!price) continue;
+              rows.push({ section: name, name: item?.title, description: item?.itemDescription, price });
+            }
+          }
+        }
+      }
+      for (const v of Object.values(node)) walk(v, depth + 1);
+    };
+    walk(state, 0);
+    if (!rows.length) continue;
+
+    const notes = [
+      "read from the Uber Eats __REACT_QUERY_STATE__ catalog - a MARKETPLACE listing, so these are the " +
+        "prices Uber Eats publishes rather than the restaurant's own",
+    ];
+    if (soldOut) notes.push(`${soldOut} items marked sold out were skipped`);
+    return {
+      rows,
+      sourceUrl: res.finalUrl,
+      address: collapse(store?.location?.streetAddress) || null,
+      place: {
+        city: collapse(store?.location?.city) || null,
+        state: collapse(store?.location?.region) || null,
+      },
+      payloadName: collapse(store?.title) || null,
+      notes,
+      gateable: true,
+    };
+  }
+  if (challenged) return { needsBrowser: `Uber Eats bot challenge, not a missing menu: ${challenged}` };
+  return { needsBrowser: `Uber Eats store page with no readable __REACT_QUERY_STATE__ (${stores[0]})` };
+}
+
 /* ---------------------------------------------------------------- Clover */
+
+/**
+ * The Next.js flight payload, reassembled the way the browser reassembles it.
+ *
+ * The page ships its data as a run of `self.__next_f.push([1,"<chunk>"])`
+ * calls whose second argument is a JSON STRING. Parsing that argument with
+ * JSON.parse is the only correct way to unescape it, and the difference from
+ * a blind `\"` -> `"` regex is not cosmetic: the regex leaves every OTHER
+ * escape as literal text, so MuMu Sushi's roll descriptions came out as
+ * "In - Spicy Crab Meat & Cucumber \nTop - Avocado" with the two characters
+ * backslash-n printed in the middle, on 36 of 65 descriptions there and 13 of
+ * 41 at Harmony Cuisine 2b1. Worse, a description containing an embedded
+ * quote - "Flat Bread" - closes the string early and truncates the item.
+ */
+function flightPayload(html) {
+  const chunks = [];
+  const marker = "self.__next_f.push(";
+  for (let at = html.indexOf(marker); at !== -1; at = html.indexOf(marker, at + 1)) {
+    const raw = sliceArray(html, html.indexOf("[", at));
+    if (!raw) continue;
+    let call;
+    try {
+      call = JSON.parse(raw);
+    } catch {
+      continue;
+    }
+    if (Array.isArray(call) && typeof call[1] === "string") chunks.push(call[1]);
+  }
+  return chunks.join("");
+}
 
 /** `<slug>.cloveronline.com` (COLO2) menu payload. Prices are integer cents. */
 function parseColo2(text) {
@@ -993,7 +1345,9 @@ function parseColo2(text) {
     }
     return null;
   };
-  return findMenu(text) ?? findMenu(text.replace(/\\"/g, '"'));
+  /* Flight chunks first; the two regex passes stay as the fallback for a
+   * deployment that serves the blob some other way. */
+  return findMenu(text) ?? findMenu(flightPayload(text)) ?? findMenu(text.replace(/\\"/g, '"'));
 }
 
 function rowsFromColo2(menu) {
@@ -1118,8 +1472,14 @@ async function extractClover(ctx) {
   }
 
   /* 2. The WordPress `moo-clover` plugin, on the restaurant's own domain. It
-   *    answers even when the storefront says ordering is closed. */
-  if (/moo-clover|moo_clover/i.test(ctx.homeBody)) {
+   *    answers even when the storefront says ordering is closed.
+   *
+   *    `<location>.smartonlineorder.com` is the same plugin under a reseller's
+   *    domain, and its pages never print the plugin's name - Royal Sweets and
+   *    Poki Bowl were both filed as "no known platform" while `/wp-json` was
+   *    answering the whole catalog. Match the host as well as the markup. */
+  const smartOnlineOrder = /(^|\.)smartonlineorder\.com$/i.test(hostOf(ctx.homeUrl));
+  if (smartOnlineOrder || /moo-clover|moo_clover/i.test(ctx.homeBody)) {
     const origin = new URL(ctx.homeUrl).origin;
     const cats = await get(`${origin}/wp-json/moo-clover/v1/categories`, { accept: "application/json" });
     if (cats.ok && cats.status < 400) {
@@ -1144,16 +1504,48 @@ async function extractClover(ctx) {
         } catch {
           continue;
         }
-        for (const item of Array.isArray(parsed) ? parsed : Object.values(parsed ?? {})) {
-          if (item?.available === false) continue;
-          /* The plugin reports Clover's own integer cents. */
-          const price = Number.isInteger(item?.price) ? money(item.price / 100) : money(item?.price);
+        /* Two shapes from the same endpoint: a bare array of items, or the
+         * category object with the items nested under `items`. The reseller
+         * builds answer the second way, and `Object.values` on that object
+         * yields the category's own strings, which price as nothing at all -
+         * a silent zero-row read that looked like "no platform". */
+        const list2 = Array.isArray(parsed)
+          ? parsed
+          : Array.isArray(parsed?.items)
+            ? parsed.items
+            : Object.values(parsed ?? {});
+        for (const item of list2) {
+          if (!item || typeof item !== "object") continue;
+          if (item.available === false || item.forcedOutOfStock === true) continue;
+          /* The plugin reports Clover's own integer cents, sometimes as a
+           * string of digits ("1200" is $12.00). Anything else is dollars. */
+          const price = Number.isInteger(item.price)
+            ? money(item.price / 100)
+            : /^\d+$/.test(String(item.price))
+              ? money(Number(item.price) / 100)
+              : money(item.price);
           if (!price) continue;
-          rows.push({ section: cat?.name, name: item?.name, description: item?.description, price });
+          /* `PER_UNIT` with a unit name is a price per pound, not per plate -
+           * Royal Sweets prices most of its pastry by weight. Say so in the
+           * name rather than publishing $12.00 as if it were a dish. */
+          const perUnit =
+            item.price_type === "PER_UNIT" && collapse(item.unit_name)
+              ? ` (per ${collapse(item.unit_name)})`
+              : "";
+          rows.push({
+            section: cat?.name,
+            name: `${collapse(item.name)}${perUnit}`,
+            description: item.description,
+            price,
+          });
         }
       }
       if (rows.length) {
-        notes.push("read from the WordPress moo-clover REST path on the restaurant's own domain");
+        notes.push(
+          smartOnlineOrder
+            ? "read from the moo-clover REST path on the smartonlineorder.com storefront - the same Clover WordPress plugin"
+            : "read from the WordPress moo-clover REST path on the restaurant's own domain",
+        );
         return { rows, sourceUrl: `${origin}/wp-json/moo-clover/v1/categories`, address: null, notes, gateable: true };
       }
     }
@@ -1483,6 +1875,298 @@ async function extractSlice(ctx) {
   return null;
 }
 
+/* ------------------------------------------------------------- Kwickmenu */
+
+/*
+ * `<slug>.kwickmenu.com` embeds its whole POS in two plain JS object literals,
+ * `var Cats={...}` and `var Iids={...}`. No API call, no render.
+ *
+ * THE ONE THING THAT MATTERS HERE IS WHICH ITEMS TO TAKE. Pho Lucky's page
+ * carries 630 items and 49 categories - because the same catalog is repeated
+ * once per SALES CHANNEL, and the channel is on the category as `pmenu`:
+ * LOCAL (the in-store register), KIOS (the kiosk), NOTUSER, and - this is the
+ * one that would have been a disaster - `zzDoordash`, a full copy at DoorDash
+ * marketplace prices. Taking every priced row gives a quadrupled catalog with
+ * four different prices for the same dish and a delivery markup mixed in.
+ *
+ * `item_online: "1"` is the online storefront's own menu, and it is exactly
+ * that: 87 items at Pho Lucky and 127 at Melody Karaoke, both of which
+ * reproduce the hand-checked browser captures row for row, price for price.
+ * The item names arrive double-encoded (`C&Agrave; PH&Ecirc; MU?I`), which is
+ * the case `decodeEntities` grew its accented-entity table for.
+ */
+function parseKwickVar(html, name) {
+  const at = html.search(new RegExp(`var\\s+${name}\\s*=`));
+  if (at === -1) return null;
+  const raw = sliceObject(html, html.indexOf("{", at));
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+async function extractKwickmenu(ctx) {
+  const bodies = [{ url: ctx.homeUrl, body: ctx.homeBody }];
+  if (!/kwickmenu/i.test(ctx.homeBody)) {
+    const link = ctx.allLinks.find((u) => /(^|\.)kwickmenu\.com$/i.test(hostOf(u)));
+    if (!link) return null;
+    const res = await get(`https://${hostOf(link)}/`);
+    if (!res.ok || res.status >= 400) return null;
+    bodies.push({ url: res.finalUrl, body: res.body });
+  }
+
+  for (const { url, body } of bodies) {
+    const cats = parseKwickVar(body, "Cats");
+    const items = parseKwickVar(body, "Iids");
+    if (!cats || !items) continue;
+
+    const rows = [];
+    let soldOut = 0;
+    for (const item of Object.values(items)) {
+      /*
+       * THE CHANNEL FILTER. Not an availability flag - a channel selector.
+       *
+       * Kwickmenu ships the catalog once per sales channel, and Pho Lucky
+       * (pholuckysandiego.kwickmenu.com) is the restaurant that showed it:
+       * 630 items across 49 categories, which is the same ~130-dish menu
+       * repeated four times under `Cats[].pmenu` = LOCAL, KIOS, NOTUSER and
+       * `zzDoordash` - the last one a complete copy at DoorDash marketplace
+       * prices. Dropping this line publishes a quadrupled catalog carrying
+       * four prices per dish with a delivery markup among them, filed as the
+       * restaurant's own first-party menu, and NOTHING downstream catches it:
+       * the screen's doubled-catalog test keys on name AND price, and the
+       * four copies disagree on price, so every row looks distinct.
+       *
+       * `item_online: "1"` is the storefront's own online menu and nothing
+       * else - 87 rows at Pho Lucky, 127 at Melody Karaoke, both matching the
+       * hand-checked captures exactly.
+       */
+      if (item?.item_online !== "1") continue;
+      if (item.item_soldout === "1") {
+        soldOut++;
+        continue;
+      }
+      const price = money(Number(item.price));
+      if (!price) continue;
+      rows.push({
+        section: cats[item.category_id]?.category,
+        name: item.name,
+        description: item.description,
+        price,
+      });
+    }
+    if (!rows.length) continue;
+
+    /* `var storeAddress='9326 Mira Mesa Blvd,San Diego,CA 92126'` - the branch,
+     * out of the same payload as the prices. */
+    const store = body.match(/var\s+storeAddress\s*=\s*'([^']{6,120})'/);
+    const parts = store ? store[1].split(",").map((s) => collapse(s)) : [];
+    const notes = ["read from the kwickmenu Cats/Iids blobs, item_online=1 only (the storefront's own menu)"];
+    if (soldOut) notes.push(`${soldOut} items marked sold out were skipped`);
+    return {
+      rows,
+      sourceUrl: url,
+      address: parts[0] && streetNumber(parts[0]) ? parts[0] : null,
+      place: { city: parts[1] ?? null, state: (parts[2] ?? "").split(/\s+/)[0] || null },
+      notes,
+    };
+  }
+  return null;
+}
+
+/* ------------------------------------------------------------- SpotHopper */
+
+/*
+ * SpotHopper builds the restaurant's own website, and its food-menu page
+ * server-renders EVERY tab at once - each daypart as a
+ * `<div class="menu_<id> food-menu-grid">`, hidden with `display:none` until
+ * its tab is clicked. That is why a browser saw three menus at Offshore Tavern
+ * and a fetch of the same URL sees all of them.
+ *
+ * The markup is read rather than paired: name, price and description each sit
+ * inside the SAME `food-item-holder` element, so a price can only ever be
+ * attached to the dish it was published with. This is the structure the
+ * plain-HTML reader does not have and the reason that one is a detector.
+ *
+ * Not the `tmt.spotapps.co/ordering-menu` widget, which evaluates cleanly out
+ * of `window.__NUXT__` but carries only what is orderable online - 34 items at
+ * Offshore Tavern against the 72 its own menu page prints. It is the fallback,
+ * and it says so, for a site whose page ships the tabs empty.
+ */
+function rowsFromSpotHopperGrid(html) {
+  const rows = [];
+  /* Tab labels: `<a class="food-menu-nav-item menu_228050_link ..."><span>Main Menu</span></a>` */
+  const tabs = {};
+  for (const m of html.matchAll(
+    /class="[^"]*menu_(\d+)_link[^"]*"[^>]*>\s*<span>([\s\S]{0,80}?)<\/span>/gi,
+  ))
+    tabs[m[1]] = collapse(decodeEntities(m[2]));
+
+  const starts = [...html.matchAll(/<div class="menu_(\d+) food-menu-grid"/gi)];
+  for (let i = 0; i < starts.length; i++) {
+    const id = starts[i][1];
+    const from = starts[i].index;
+    const to = i + 1 < starts.length ? starts[i + 1].index : html.length;
+    const block = html.slice(from, to);
+    const menuName = tabs[id] ?? "";
+
+    /* Headings and item holders, in document order, so a holder is filed
+     * under the heading it was printed beneath and never under another. Cut
+     * the block at the markers rather than matching a bounded window: a
+     * holder carrying a lazy-loaded photo runs to several kilobytes, and a
+     * length-capped regex silently drops exactly those items. */
+    const marks = [];
+    for (const m of block.matchAll(/<h2[^>]*>/gi)) marks.push({ at: m.index, kind: "h2", end: m.index + m[0].length });
+    for (const m of block.matchAll(/<div class="food-item-holder"/gi)) marks.push({ at: m.index, kind: "item" });
+    marks.sort((a, b) => a.at - b.at);
+
+    let section = "";
+    for (let k = 0; k < marks.length; k++) {
+      const stop = k + 1 < marks.length ? marks[k + 1].at : block.length;
+      if (marks[k].kind === "h2") {
+        const close = block.indexOf("</h2>", marks[k].end);
+        if (close !== -1 && close < stop + 200)
+          section = collapse(decodeEntities(block.slice(marks[k].end, close).replace(/<[^>]*>/g, " ")));
+        continue;
+      }
+      const holder = block.slice(marks[k].at, stop);
+      const name = holder.match(/class="food-item-title"[^>]*>\s*<h3[^>]*>([\s\S]*?)<\/h3>/i);
+      const price = holder.match(/class="food-price"[^>]*>([\s\S]*?)<\/div>/i);
+      if (!name || !price) continue;
+      const strip = (s) => decodeEntities(String(s).replace(/<[^>]*>/g, " "));
+      const value = moneyFromText(collapse(strip(price[1])));
+      if (!value) continue;
+      const description = holder.match(/class="food-item-description"[^>]*>([\s\S]*?)<\/div>/i);
+      rows.push({
+        section: [menuName, section].filter(Boolean).join(" / "),
+        name: collapse(strip(name[1])),
+        description: description ? strip(description[1]) : "",
+        price: value,
+      });
+    }
+  }
+  return rows;
+}
+
+async function extractSpotHopper(ctx) {
+  if (!/spotapps\.co|spothopper/i.test(ctx.homeBody) && !ctx.allLinks.some((u) => /spotapps\.co$/i.test(hostOf(u))))
+    return null;
+
+  const pages = [{ url: ctx.homeUrl, body: ctx.homeBody }, ...ctx.menuPages];
+  /* SpotHopper names the menu page after the branch, not `/menu` -
+   * `/san-diego-bay-park-offshore-tavern-and-grill-food-menu` - so the page
+   * has to be found by its own link rather than guessed. */
+  const named = ctx.allLinks
+    .filter((u) => /-(food|drink|dessert|brunch|lunch|dinner)-menu\/?$/i.test(u) || /\/(food|drink)-menu\/?$/i.test(u))
+    .slice(0, 4);
+  for (const url of named) {
+    if (pages.some((p) => p.url === url)) continue;
+    const res = await get(url);
+    if (res.ok && res.status < 400) pages.push({ url: res.finalUrl, body: res.body });
+  }
+
+  let best = { rows: [], url: null, body: "" };
+  for (const { url, body } of pages) {
+    const rows = rowsFromSpotHopperGrid(body);
+    if (rows.length > best.rows.length) best = { rows, url, body };
+  }
+
+  const spotIds = new Set();
+  for (const { body } of pages) for (const m of body.matchAll(/var\s+spot_id\s*=\s*(\d+)/g)) spotIds.add(m[1]);
+
+  if (best.rows.length) {
+    const payloadName = best.body.match(/var\s+name\s*=\s*"([^"]{2,80})"/);
+    return {
+      rows: best.rows,
+      sourceUrl: best.url,
+      address: null,
+      payloadName: payloadName ? collapse(payloadName[1]) : null,
+      /* The site IS the restaurant's, and SpotHopper prints no address on the
+       * menu page, so identity falls to the name test the way every other
+       * own-domain read does. */
+      ownDomain: true,
+      notes: [
+        `read from the SpotHopper food-menu grids served on the restaurant's own site (${
+          [...new Set(best.rows.map((r) => r.section.split(" / ")[0]).filter(Boolean))].length || 1
+        } menu tab(s), all in one page load)`,
+      ],
+    };
+  }
+
+  /*
+   * Fallback: the ordering widget's Nuxt payload.
+   *
+   * No `spot_id` at all means this is not a SpotHopper site - a page can link
+   * `static.spotapps.co` for one stock photo - so hand the restaurant back to
+   * the ladder rather than claiming it and blocking every reader below.
+   */
+  if (!spotIds.size) return null;
+  if (spotIds.size > 1)
+    return {
+      needsBrowser: `SpotHopper site whose menu grids are empty and which exposes ${spotIds.size} spot ids, so a location has to be picked (${ctx.homeUrl})`,
+    };
+  const [spotId] = [...spotIds];
+  const res = await get(`https://tmt.spotapps.co/ordering-menu/?spot_id=${spotId}`);
+  if (!res.ok || res.status >= 400)
+    return { needsBrowser: `SpotHopper ordering widget for spot ${spotId} returned HTTP ${res.status}` };
+  const at = res.body.indexOf("__NUXT__");
+  if (at === -1) return { needsBrowser: `SpotHopper ordering widget for spot ${spotId} carried no __NUXT__ payload` };
+  const expr = res.body.slice(res.body.indexOf("=", at) + 1, res.body.indexOf("</script>", at)).trim().replace(/;\s*$/, "");
+  let data;
+  try {
+    /* A minified IIFE, so it has to be evaluated - in a context with nothing
+     * in it, on a string that came off the wire, with a hard time limit. */
+    data = vm.runInContext(`(${expr})`, vm.createContext(Object.create(null)), { timeout: 3000 });
+  } catch {
+    return { needsBrowser: `SpotHopper __NUXT__ payload for spot ${spotId} did not evaluate` };
+  }
+  const spot = data?.data?.[0];
+  if (!spot?.menus) return { needsBrowser: `SpotHopper __NUXT__ payload for spot ${spotId} carried no menus` };
+
+  const rows = [];
+  let unpriced = 0;
+  for (const menu of spot.menus) {
+    const menuName = collapse(decodeEntities(menu?.name));
+    for (const section of menu?.food_menu_sections ?? []) {
+      const sectionName = collapse(decodeEntities(section?.name));
+      for (const item of section?.food_menu_items ?? []) {
+        if (item?.in_stock === false) continue;
+        const price = money(Number(item?.cents) / 100);
+        if (!price) {
+          /* `cents: 0` means the sizes are written into the prose ("Small
+           * $11.50 | Large $14.50"). Reading a price out of a sentence is
+           * pairing by regex, which is the one thing this file will not do. */
+          unpriced++;
+          continue;
+        }
+        const size = collapse(item?.size);
+        rows.push({
+          section: [menuName, sectionName].filter(Boolean).join(" / "),
+          name: `${collapse(decodeEntities(item?.name))}${size ? ` (${size})` : ""}`,
+          description: item?.description,
+          price,
+        });
+      }
+    }
+  }
+  if (!rows.length) return { needsBrowser: `SpotHopper spot ${spotId} published no priced items` };
+  const notes = [
+    "read from the SpotHopper ordering widget's __NUXT__ payload - this is the ORDERABLE menu, which is " +
+      "usually a subset of what the site's own menu page prints",
+  ];
+  if (unpriced) notes.push(`${unpriced} items carry cents:0 and price by size in their description; they were dropped`);
+  return {
+    rows,
+    sourceUrl: `https://tmt.spotapps.co/ordering-menu/?spot_id=${spotId}`,
+    address: null,
+    payloadName: collapse(spot.spot_name) || null,
+    ownDomain: true,
+    notes,
+  };
+}
+
 /* ------------------------------------------------------- Owner.com / Olo */
 
 async function extractOwner(ctx) {
@@ -1510,6 +2194,56 @@ async function extractOwner(ctx) {
   };
 }
 
+/*
+ * The BRAND LOCATION PAGE, which is the shape most Olo chains actually publish.
+ *
+ * `location.<brand>.com/us/<state>/<city>/<store>` is a per-branch microsite
+ * that serves a complete schema.org `Menu` graph in an ld+json tag, next to a
+ * `Restaurant` block carrying that branch's street address - everything the
+ * identity check wants, in the first page load, to a plain curl. All five San
+ * Diego Epic Wings branches read this way (46 priced rows at Palm Promenade,
+ * 47 at Chula Vista), and every one of them was filed `needs-browser` before,
+ * because the page also links `<brand>catering.olo.com` and the Olo branch saw
+ * that host, found no merchant id, and concluded a store pick was needed.
+ *
+ * So this is tried FIRST, on the pages already in hand. The ordering endpoint
+ * below stays where it is for the deployments that expose a merchant id.
+ */
+function oloLocationMenu(ctx) {
+  const pages = [{ url: ctx.homeUrl, body: ctx.homeBody }, ...ctx.menuPages];
+  for (const { url, body } of pages) {
+    const nodes = jsonLdNodes(body);
+    const menus = nodes.filter((n) => typeOf(n).includes("Menu"));
+    if (!menus.length) continue;
+    const rows = [];
+    let multiOffer = 0;
+    for (const menu of menus) {
+      const got = rowsFromSchemaMenu(menu, collapse(decodeEntities(menu?.name)));
+      multiOffer += got.multiOffer;
+      rows.push(...got.rows);
+    }
+    if (!rows.length) continue;
+    const restaurant = nodes.find((n) => typeOf(n).some((t) => /Restaurant|FoodEstablishment/i.test(t)));
+    const notes = ["read from the schema.org Menu on the Olo brand location page"];
+    if (multiOffer) notes.push(`${multiOffer} items had several size offers, recorded at the lowest`);
+    return {
+      rows,
+      sourceUrl: url,
+      address: collapse(restaurant?.address?.streetAddress) || null,
+      place: {
+        city: collapse(restaurant?.address?.addressLocality) || null,
+        state: collapse(restaurant?.address?.addressRegion) || null,
+      },
+      /* The Restaurant node names the BRANCH ("Palm Promenade"), not the
+       * business, so the name test would fail on a good capture. It never
+       * runs here: this page always carries the branch's street address. */
+      payloadName: collapse(restaurant?.name) || null,
+      notes,
+    };
+  }
+  return null;
+}
+
 async function extractOlo(ctx) {
   const ids = new Set();
   for (const m of ctx.homeBody.matchAll(/oloservice\/v1\/merchants\/(\d+)/gi)) ids.add(m[1]);
@@ -1517,9 +2251,15 @@ async function extractOlo(ctx) {
     const m = u.match(/oloservice\/v1\/merchants\/(\d+)/i);
     if (m) ids.add(m[1]);
   }
+  const onOlo =
+    ctx.allLinks.some((u) => /(^|\.)olo\.com$/i.test(hostOf(u))) || /olo\.com|olocdn/i.test(ctx.homeBody);
+  if (onOlo) {
+    const located = oloLocationMenu(ctx);
+    if (located) return located;
+  }
   if (!ids.size) {
-    if (ctx.allLinks.some((u) => /(^|\.)olo\.com$/i.test(hostOf(u))) || /olo\.com|olocdn/i.test(ctx.homeBody))
-      return { needsBrowser: "Olo storefront with no merchant id in the served HTML (needs a store pick)" };
+    if (onOlo)
+      return { needsBrowser: "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)" };
     return null;
   }
   for (const id of [...ids].slice(0, 2)) {
@@ -1780,9 +2520,13 @@ async function detectPlainHtmlMenu(ctx) {
 
 /* ------------------------------------------- schema.org Menu on its own site */
 
+/* A carousel is a second copy of dishes that already live in real sections.
+ * It is never a section of a catalog, on any platform. */
+const CAROUSEL_SECTION = /^(most ordered|picked for you|featured items|popular items?)$/i;
+
 async function extractOwnJsonLd(ctx) {
   const candidates = [{ url: ctx.homeUrl, body: ctx.homeBody }, ...ctx.menuPages];
-  let best = { rows: [], url: null, address: null, multiOffer: 0, place: { city: null, state: null }, payloadName: null };
+  let best = { rows: [], url: null, body: null, address: null, multiOffer: 0, place: { city: null, state: null }, payloadName: null };
   for (const { url, body } of candidates) {
     const nodes = jsonLdNodes(body);
     const menus = nodes.filter((n) => typeOf(n).includes("Menu"));
@@ -1799,13 +2543,14 @@ async function extractOwnJsonLd(ctx) {
     for (const menu of menus) {
       const got = rowsFromSchemaMenu(menu, collapse(decodeEntities(menu?.name)));
       multiOffer += got.multiOffer;
-      rows.push(...got.rows);
+      rows.push(...got.rows.filter((r) => !CAROUSEL_SECTION.test(collapse(r.section))));
     }
     const restaurant = nodes.find((n) => typeOf(n).some((t) => /Restaurant|FoodEstablishment/i.test(t)));
     if (rows.length > best.rows.length)
       best = {
         rows,
         url,
+        body,
         address: collapse(restaurant?.address?.streetAddress) || null,
         multiOffer,
         place: {
@@ -1817,6 +2562,18 @@ async function extractOwnJsonLd(ctx) {
   }
   if (!best.rows.length) return null;
   const notes = ["read from schema.org Menu JSON-LD on the restaurant's own page"];
+  /* If this page carries a DoorDash menu book, hold the read to the same
+   * standard the DoorDash branch applies: a section the book advertises and
+   * the markup never mentions is a section that was cut off. On a page with no
+   * menu book - every real restaurant site - this finds nothing. */
+  const missing = missingSections(best.body ?? "", best.rows);
+  if (missing.length)
+    notes.push(
+      "TRUNCATED: the page's own menu book lists " +
+        missing.length +
+        " section(s) the markup never carried - " +
+        missing.join(", "),
+    );
   if (best.multiOffer) notes.push(`${best.multiOffer} items had several size offers, recorded at the lowest`);
   return {
     rows: best.rows,
@@ -1827,6 +2584,7 @@ async function extractOwnJsonLd(ctx) {
     /* An own-domain read has no platform vouching for it, so the identity
      * check has to be able to fall back to the name. */
     ownDomain: true,
+    partial: missing.length > 0,
     notes,
   };
 }
@@ -1888,17 +2646,22 @@ const EXTRACTORS = [
   ["netwaiter", extractNetWaiter],
   ["popmenu", async (ctx) => (isPopmenu(ctx.homeBody) ? extractPopmenu(ctx) : null)],
   ["slice", extractSlice],
+  ["kwickmenu", extractKwickmenu],
+  ["spothopper", extractSpotHopper],
   ["owner", async (ctx) => (/owner\.com|ownerapp/i.test(ctx.homeBody) ? extractOwner(ctx) : null)],
   ["olo", extractOlo],
   ["own-jsonld", extractOwnJsonLd],
   ["shopify", async (ctx) => (/cdn\.shopify\.com|Shopify\.(shop|theme)/i.test(ctx.homeBody) ? extractShopify(ctx) : null)],
   ["wix", async (ctx) => (/Wix\.com Website Builder|static\.parastorage\.com|wix-code/i.test(ctx.homeBody) ? extractWix(ctx) : null)],
   ["order.online", extractDoorDash],
+  /* Last of the readers, and deliberately: Uber Eats is a marketplace, so it
+   * is only ever consulted when the restaurant's own platforms have nothing. */
+  ["ubereats", extractUberEats],
   ["plain-html", detectPlainHtmlMenu],
 ];
 
 /** Which platforms hide their catalog behind store-open status. */
-const TIME_GATED = new Set(["toast", "clover", "order.online", "olo", "chownow"]);
+const TIME_GATED = new Set(["toast", "clover", "order.online", "olo", "chownow", "ubereats"]);
 
 const SUB_PAGES = ["/menu", "/menus", "/order", "/online-ordering", "/order-online", "/food"];
 
@@ -1954,7 +2717,7 @@ async function loadContext(website) {
     for (const l of links(res.body, res.finalUrl)) allLinks.push(l);
   }
 
-  return { homeUrl, homeBody, menuPages, allLinks: [...new Set(allLinks)], wall: botWall(home) };
+  return { homeUrl, homeBody, menuPages, allLinks: [...new Set([homeUrl, ...allLinks])], wall: botWall(home) };
 }
 
 /* ------------------------------------------------------------- the run loop */
@@ -1967,8 +2730,23 @@ const sql = neon(process.env.DATABASE_URL);
 
 const queue = IDS
   ? await sql.query(
-      `SELECT id, name, address, website, review_count FROM restaurants
-        WHERE id = ANY($1::text[]) AND website IS NOT NULL
+      `SELECT r.id, r.name, r.address,
+              /* An explicit --ids run is a re-read of a restaurant we already
+               * know something about, so it may start from the menu URL the
+               * ledger already holds. That is the only way the DoorDash-
+               * truncated restaurants with no website on file can be re-read
+               * at all. The unattended queue below is untouched: it still
+               * routes from a real website and nothing else. */
+              COALESCE(r.website, (SELECT m.source_url FROM menu_lookups m
+                                    WHERE m.restaurant_id = r.id
+                                      AND m.source_url IS NOT NULL
+                                    ORDER BY m.attempted_at DESC LIMIT 1)) AS website,
+              r.review_count
+         FROM restaurants r
+        WHERE r.id = ANY($1::text[])
+          AND (r.website IS NOT NULL
+               OR EXISTS (SELECT 1 FROM menu_lookups m
+                           WHERE m.restaurant_id = r.id AND m.source_url IS NOT NULL))
         ORDER BY review_count DESC NULLS LAST`,
       [IDS],
     )

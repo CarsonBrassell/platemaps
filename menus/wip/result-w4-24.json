@@ -1,0 +1,666 @@
+[
+  {
+    "restaurantId": "7530",
+    "name": "Isabela’s Mexican food",
+    "sourceUrl": "https://www.doordash.com/store/isabela%E2%80%99s-mexican-food-san-diego-30842100/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "markup baked in: DoorDash is the only reachable source (no restaurant website found via Serper Maps) and its full 134-item catalog (recovered via the escaped RSC MenuPageItem payload after the schema.org JSON-LD stopped at 91) fails the markup test cleanly — 123/134 prices (92%) divide evenly onto conventional endings (.00/.25/.49/.50/.75/.95/.98/.99) at divisor 1.20, a flat 20% platform markup. Not filed and not divided out per standing rule."
+  },
+  {
+    "restaurantId": "7534",
+    "name": "2N1 Korean BBQ",
+    "sourceUrl": "https://www.2n1kbbq.com/menu",
+    "confidence": "high",
+    "dishes": [],
+    "blocked": "core offering unpriced: read the restaurant's own scanned menu photos (2N1 BBQ food menu pages 1-2, address confirmed 401 Vista Village Dr #401-A, Vista matching the work list). The core BBQ is entirely all-you-can-eat per-person packages with no per-item prices: Lunch $24.99, Regular $33.99, Premium B $42.99, Premium A $52.99 (limited), covering ~35 meat items and ~30 unlimited sides with none individually priced. A separate drink menu (2 pages) carries real itemized prices (Soju Bomb $4, Sapporo bottle $8, etc.) but that is drinks/adjunct only, not the core food. Parallel to the Hanu Korean BBQ precedent in the playbook."
+  },
+  {
+    "restaurantId": "7536",
+    "name": "Cafe 88",
+    "sourceUrl": "https://postmates.com/store/cafe88-5401-linda-vista-rd-409/h7h7KZX3U6aTRjvI4PY49g",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "markup baked in: no restaurant website (batch website field null). Serper turned up an Uber Eats \"Cafe 88\" that JSON-LD address-checked to the WRONG branch (737 Jamacha Road, El Cajon) and was discarded; the Postmates listing's JSON-LD address (5401 Linda Vista Rd, 409, San Diego, CA 92110-2402) matches the batch exactly and is the only correctly-identified reachable source. Its 45-item schema.org menu fails the markup test: raw prices are already 24/45 (53%) conventional, but dividing by 1.04 lifts that to 30/45 (67%), the single dominant divisor by a wide margin over every other value 1.00-1.35 tested — consistent with a flat ~4% online-ordering fee baked into every displayed price (e.g. 8 Smoothies all $8.31 -> $7.99, 4 Shakes all $9.35 -> $8.99, 5 Bowls $12.99 -> $12.49, Build Your Bowl/Waffles/Burrito $11.43 -> $10.99). Not filed and not divided out per standing rule; not not_found since the business is clearly open and real."
+  },
+  {
+    "restaurantId": "7538",
+    "name": "LA MICHOACANA SON MEX OF POWAY",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no confirmable priced source: no restaurant website (batch website field null). \"La Michoacana\" is an extremely common independent-shop name across CA; every delivery-platform hit Serper returned for the name (DoorDash business/store pages, Grubhub, Uber Eats) address-checked or title-checked to OTHER branches (Los Angeles, Upland, a generic \"La Michoacana Premium\" business page with zero embedded address/zip/city anywhere in its HTML) rather than 13522 Poway Rd, Poway, CA 92064. Facebook and Instagram pages exist for the Poway location but Facebook blocks the fetch (HTTP 400 bot wall) and Instagram is not fetchable as plain text; neither is a price source anyway. No identity-confirmed source with prices found. Blocked as no-web-presence-for-this-branch, not not_found, per standing rule."
+  },
+  {
+    "restaurantId": "7533",
+    "name": "Kona Craft Cafe",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "site unreachable: konacraft.com and konacraft.com/menu are indexed by Google (Serper site: search shows a live-looking /menu snippet, \"Hours Open today 07:00 am - 02:00 pm\") but every direct fetch attempt timed out — curl over https and http both failed to connect (both resolved IPs, 13.248.243.5 and 76.223.105.230, refused the connection after ~20s; a control fetch of example.com/google.com succeeded immediately, so this is the target site, not local network trouble), and WebFetch also returned no content for both the homepage and /menu. No delivery-platform listing exists for this restaurant (the only DoorDash hit for \"Carlsbad\" + these terms was Naked Cafe, a different restaurant, discarded). The Carlsbad Village Association directory page (carlsbad-village.com/go/kona-craft-cafe) confirms the address (3001 Carlsbad Blvd Suite A) and that the business is open, but carries no prices. Blocked as temporarily unreachable, not not_found — re-queue to retry the site fetch."
+  },
+  {
+    "restaurantId": "7535",
+    "name": "Banzai Bowls",
+    "sourceUrl": "https://order.banzaibowls.com/r/banzaibowlspacificbeach.html",
+    "confidence": "high",
+    "dishes": [
+      {
+        "name": "THE OG BOWL",
+        "description": "Blend: Apple Juice or Hemp Milk, Acai, Bananas, Strawberries | Top: Granola, Fresh Strawberries, Bananas, Honey (Small $12.75 / Large $14.75)",
+        "price": "$12.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "SHARKS COVE",
+        "description": "Blend: Apple Juice or Hemp Milk, Acai, Bananas, Strawberries | Top: Granola, Bananas, Strawberries, Blueberries, Goji Berries, Honey (Small $13.75 / Large $15.75)",
+        "price": "$13.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "MAUI SUNRISE",
+        "description": "Blend: Coconut Milk, Pineapple Juice, Acai, Bananas, Strawberries, Mango | Top: Granola, Bananas, Strawberries, Blueberries, Coconut Shreds, Honey (Small $13.75 / Large $15.75)",
+        "price": "$13.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "DIAMOND HEAD",
+        "description": "Blend: Apple Juice or Hemp Milk, Acai, Bananas, Blueberries, Celery, Spinach | Top: Granola, Bananas, Strawberries, Blueberries, Honey (Small $13.75 / Large $15.75)",
+        "price": "$13.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "OFF THE WALL",
+        "description": "Blend: Guava Juice, Acai, Bananas, Strawberries, Dark Chocolate | Top: Granola, Bananas, Kiwi, Coconut Shreds, Honey (Small $13.75 / Large $15.75)",
+        "price": "$13.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "DA KINE",
+        "description": "Blend: Chocolate Almond Milk, Acai, Bananas, Strawberries, Peanut Butter | Top: Granola, Bananas, Almond Slices, Honey (Small $13.75 / Large $15.75)",
+        "price": "$13.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "BANZAI BOWL",
+        "description": "Blend: Apple Juice or Hemp Milk, Acai, Bananas, Strawberries, Papaya | Top: Granola, Banana, Strawberries, Blueberries, Kiwi, Bee Pollan, Coconut Shreds, Honey (Small $14.75 / Large $16.75)",
+        "price": "$14.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "SHOYOBOWL",
+        "description": "Blend: Apple Juice, Acai | Top: Granola, Bananas, Honey (Small $13.75 / Large $15.00)",
+        "price": "$13.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "LOG CABINS",
+        "description": "Blend: Apple Juice Or Pineapple Juice, Pitaya, Banana, Strawberries | Top: Granola, Fresh Strawberries, Bananas, Honey (Small $12.75 / Large $14.75)",
+        "price": "$12.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "THREE TABLES",
+        "description": "Blend: Apple Juice or Hemp Milk, Pitaya, Banana, Blueberries, Spinach | Top: Granola, Bananas, Strawberries, Kiwi, Honey (Small $13.75 / Large $15.75)",
+        "price": "$13.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "V-LAND",
+        "description": "Blend: Coconut Milk, Pineapple Juice, Pitaya, Bananas, Strawberries, Mango | Top: Granola, Bananas, Strawberries, Pineapple Chunks, Honey (Small $13.75 / Large $15.75)",
+        "price": "$13.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "ROCKY POINT",
+        "description": "Blend: Apple Juice, Pitaya, Bananas, Papaya | Top: Granola, Bananas, Strawberries, Coconut Shreds, Honey (Small $13.75 / Large $15.75)",
+        "price": "$13.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "ALA MOANA",
+        "description": "Blend: Chocolate Hemp Milk, Pitaya, Bananas, Strawberries, Almond Butter | Top: Granola, Bananas, Cacao Nibs, Hemp Seeds, Honey (Small $13.75 / Large $15.75)",
+        "price": "$13.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "MAKAHA",
+        "description": "Blend: Apple Juice Or Guava Juice, Pitaya, Bananas, Chia Seeds | Top: Granola, Mango, Raspberries, Kiwi, Honey (Small $14.25 / Large $16.25)",
+        "price": "$14.25",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "PUPUKEA",
+        "description": "Blend: Apple Juice Or Hemp Milk, Pitaya, Bananas, Strawberries, Papaya | Top: Granola, Bananas, Strawberries, Raspberries, Kiwi, Bee Pollen, Coconut Shreds, Honey (Small $14.75 / Large $16.75)",
+        "price": "$14.75",
+        "section": "Acai & Pitaya Bowls"
+      },
+      {
+        "name": "ACAI",
+        "description": "Apple Juice or Hemp Milk, Acai, Bananas, Strawberries (Small $8.50 / Large $11.00)",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "EL CAPITAN",
+        "description": "Chocolate Almond Milk, Acai, Bananas, Strawberries, Peanut Butter (Small $9.00 / Large $12.00)",
+        "price": "$9.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "RINCON",
+        "description": "Apple Juice or Almond Milk, Acai, Bananas, Blueberries, Spinach, Kale (Small $9.00 / Large $12.00)",
+        "price": "$9.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "SEA SIDE",
+        "description": "Coconut Milk, Pineapple Juice, Pitaya, Bananas, Papaya, Coconut Shreds (Small $8.50 / Large $11.00)",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "BROOKS STREET",
+        "description": "Apple Juice, Pitaya, Bananas, Strawberries, Mango (Small $8.50 / Large $11.00)",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "BLACKS BEACH",
+        "description": "Chocolate Hemp Milk, Pitaya, Bananas, Dark Chocolate (Small $8.50 / Large $11.00)",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "SAN O",
+        "description": "Apple Juice, Bananas, Strawberries, Mango (Small $8.50 / Large $11.00)",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "LOWERS",
+        "description": "Pineapple Juice or Almond Milk, Bananas, Strawberries, Blueberries (Small $8.50 / Large $11.00)",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "THE WEDGE",
+        "description": "Hemp Milk, Bananas, Peanut Butter, Dark Chocolate (Small $8.50 / Large $11.00)",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "WIND N SEA",
+        "description": "Pineapple Juice, Bananas, Mango, Papaya, Coconut Shreds (Small $8.50 / Large $11.00)",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Coconut Water",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coffee Can",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Hawaiian Sun",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$2.75",
+        "section": "Drinks"
+      },
+      {
+        "name": "La Croix",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Poppi",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Yerba Mate",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      }
+    ],
+    "notes": "first-party ordering platform (gimmegrub, restaurantId 4209), reached via banzaibowls.com/our-locations/ -> /order/ -> location-picker-page.html; identity confirmed by matching \"910 Grand\" / \"Pacific Beach\" text on the page against the batch address. 32 real priced items (15 acai/pitaya bowls, 10 smoothies, 7 canned/bottled drinks) read directly per-item, excluding 4 gift-card denominations and 8 loyalty-points redemption rows (no dollar price) which are not menu dishes. Most bowls/smoothies are size-priced (small/large); price recorded is the small size read for that specific item (never inferred from a pattern), with both sizes given in the description per item -- deltas are mostly a flat +$2.00 (bowls) or +$2.50/+$3.00 (smoothies) but SHOYOBOWL is +$1.25, confirming each was read individually rather than assumed."
+  },
+  {
+    "restaurantId": "7537",
+    "name": "Little Victory Wine Bar",
+    "sourceUrl": "https://www.littlevictorywine.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no prices published: the restaurant's own Squarespace site (littlevictorywine.com) has a single nav item, \"Wine Bar\", which links back to the homepage itself -- there is no separate menu page, and the full homepage HTML contains zero dollar signs. Tried /menu, /food-menu, /wine-list, /wine-menu, /drinks, /food, /our-menu on the same domain -- all 404. No ordering-platform or delivery listing exists (this is a reservation-only wine bar; OpenTable page timed out on fetch). Yelp and Instagram both independently describe the menu as changing daily/regularly based on inventory (\"the menu changes regularly, their wine menu changes every few days\"), consistent with there being no stable published price list anywhere online to capture. A TripAdvisor review quotes some historical prices (olives $8, bread and butter $9, cheese platter $18, beef tartare $25) but that is a dated reviewer anecdote, not a menu source, and was not filed. Blocked as no-prices-published, not not_found."
+  },
+  {
+    "restaurantId": "7540",
+    "name": "Mission Baja Tacos",
+    "sourceUrl": "https://missionbajatacos.com",
+    "confidence": "high",
+    "dishes": [
+      {
+        "name": "Carne Asada / Beef Steak",
+        "description": "Cilantro, onion, guacamole",
+        "price": "$5.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Al Pastor / Adobo Pork",
+        "description": "Cilantro, onion, guacamole",
+        "price": "$4.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo Asado / Grilled Chicken",
+        "description": "Cilantro, onion, guacamole",
+        "price": "$4.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carnitas / Shredded Pork",
+        "description": "Cilantro, onion, guacamole",
+        "price": "$4.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Birria / Beef Stew",
+        "description": "Cilantro, onion",
+        "price": "$4.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pescado / Battered Fish",
+        "description": "Pico, cabbage, chipotle cream",
+        "price": "$4.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pescado / Grilled Fish",
+        "description": "Pico, cabbage, chipotle cream",
+        "price": "$5.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Camaron / Battered Shrimp",
+        "description": "Pico, cabbage, chipotle cream",
+        "price": "$5.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Camaron / Grilled Shrimp",
+        "description": "Pico, cabbage, chipotle cream",
+        "price": "$5.75",
+        "section": "Tacos"
+      },
+      {
+        "name": "Hard Shell Beef Taco",
+        "description": "Shredded beef, lettuce, sour cream, cheese",
+        "price": "$4.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada / Beef Steak",
+        "description": "Pico, guacamole",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Al Pastor / Adobo Pork",
+        "description": "Cilantro, onion, guacamole",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asado / Grilled Chicken",
+        "description": "Pico, guacamole",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas / Shredded Pork",
+        "description": "Pico, guacamole",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Machaca / Shredded Beef",
+        "description": "Bell pepper, onion, guacamole",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pescado / Fish",
+        "description": "Pico, cabbage, chipotle cream",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Camaron / Shrimp",
+        "description": "Pico, cabbage, chipotle cream",
+        "price": "$17.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Surf & Turf",
+        "description": "Steak, shrimp, pico, chipotle cream, guacamole",
+        "price": "$18.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "Beef steak, fries, sour cream, cheese",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chimichanga",
+        "description": "Ask for details",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bacon Breakfast Burrito",
+        "description": "Eggs, potatoes, cheese",
+        "price": "$14.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Ham Breakfast Burrito",
+        "description": "Eggs, potatoes, cheese",
+        "price": "$14.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Sausage Breakfast Burrito",
+        "description": "Eggs, potatoes, cheese",
+        "price": "$14.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Chorizo Breakfast Burrito",
+        "description": "Eggs, potatoes, cheese",
+        "price": "$14.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Machaca Breakfast Burrito",
+        "description": "Shredded beef, eggs, onion, bell pepper, cheese",
+        "price": "$16.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Carne Asada / Beef Steak",
+        "description": "Lettuce, pico, guacamole",
+        "price": "$17.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Pollo / Chicken",
+        "description": "Lettuce, pico, guacamole",
+        "price": "$16.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Al Pastor / Adobo Pork",
+        "description": "Lettuce, pico, guacamole",
+        "price": "$16.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Camaron / Spicy Shrimp",
+        "description": "Lettuce, pico, guacamole",
+        "price": "$18.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Gobernador / Veggies & Shrimp",
+        "description": "Lettuce, pico, guacamole",
+        "price": "$18.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Enchiladas",
+        "description": "3 chicken or beef, rice, beans",
+        "price": "$16.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Chile Relleno",
+        "description": "2 chiles, rice, beans",
+        "price": "$17.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Carne Asada Plate",
+        "description": "Beef steak, rice, beans, pico, guacamole",
+        "price": "$17.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Carnitas Plate",
+        "description": "Shredded pork, rice, beans, pico, guacamole",
+        "price": "$17.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Chile Verde",
+        "description": "Green salsa pork, rice, beans",
+        "price": "$17.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Ranchero Steak",
+        "description": "Beef steak, rice, beans",
+        "price": "$17.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Ranchero Shrimp",
+        "description": "Red salsa, rice, beans",
+        "price": "$18.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Birria Plate",
+        "description": "Beef stew, rice, beans",
+        "price": "$17.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Carne Asada Fries or Chips",
+        "description": "Jack cheese, pico, guacamole, sour cream",
+        "price": "$17.99",
+        "section": "Favorites"
+      },
+      {
+        "name": "Al Pastor Fries or Chips",
+        "description": "Jack cheese, pico, guacamole, sour cream",
+        "price": "$17.99",
+        "section": "Favorites"
+      },
+      {
+        "name": "Surf & Turf Fries or Chips",
+        "description": "Jack cheese, pico, guacamole, sour cream",
+        "price": "$17.99",
+        "section": "Favorites"
+      },
+      {
+        "name": "Torta",
+        "description": "Choice of carne asada, pollo, carnitas, or al pastor · beans, lettuce, tomatoes, avocado",
+        "price": "$14.99",
+        "section": "Favorites"
+      },
+      {
+        "name": "Taco Salad Bowl",
+        "description": "Fresh mixed greens base, choice of protein",
+        "price": "$19.99",
+        "section": "Favorites"
+      },
+      {
+        "name": "Fajitas Taco",
+        "description": "Sauteed veggies, cheese",
+        "price": "$5.50",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Veggie Taco",
+        "description": "Rice, beans, lettuce, pico, guacamole, sour cream, cheese",
+        "price": "$4.99",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Veggie Burrito",
+        "description": "Rice, beans, lettuce, pico, guacamole, sour cream, cheese",
+        "price": "$15.50",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "Rice, lettuce, red salsa",
+        "price": "$16.99",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Green Mix Salad Bowl",
+        "description": "Fresh salad base",
+        "price": "$13.99",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Fish Ceviche — Tostada",
+        "description": "Lime marinated fish",
+        "price": "$12.99",
+        "section": "Ceviche"
+      },
+      {
+        "name": "Fish Ceviche — 32oz Tub",
+        "description": "Lime marinated fish",
+        "price": "$21.99",
+        "section": "Ceviche"
+      },
+      {
+        "name": "Shrimp Ceviche — Tostada",
+        "description": "Lime marinated shrimp",
+        "price": "$15.99",
+        "section": "Ceviche"
+      },
+      {
+        "name": "Shrimp Ceviche — 32oz Tub",
+        "description": "Lime marinated shrimp",
+        "price": "$24.99",
+        "section": "Ceviche"
+      },
+      {
+        "name": "Shrimp Cocktail — 24oz Tub",
+        "description": "Classic shrimp cocktail",
+        "price": "$20.99",
+        "section": "Ceviche"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "Kids portion",
+        "price": "$9.99",
+        "section": "Kids"
+      },
+      {
+        "name": "Fish & Fries",
+        "description": "Kids portion",
+        "price": "$10.99",
+        "section": "Kids"
+      },
+      {
+        "name": "Chicken Tenders & Fries",
+        "description": "Kids portion",
+        "price": "$10.99",
+        "section": "Kids"
+      },
+      {
+        "name": "Plain Fish Taco",
+        "description": "With rice or beans",
+        "price": "$7.99",
+        "section": "Kids"
+      },
+      {
+        "name": "Plain Carne Asada Taco",
+        "description": "With rice or beans",
+        "price": "$7.99",
+        "section": "Kids"
+      },
+      {
+        "name": "8oz Rice",
+        "description": "",
+        "price": "$4.99",
+        "section": "Sides & Drinks"
+      },
+      {
+        "name": "8oz Beans",
+        "description": "",
+        "price": "$4.99",
+        "section": "Sides & Drinks"
+      },
+      {
+        "name": "8oz Sour Cream",
+        "description": "",
+        "price": "$5.99",
+        "section": "Sides & Drinks"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$6.99",
+        "section": "Sides & Drinks"
+      },
+      {
+        "name": "8oz Guacamole",
+        "description": "",
+        "price": "$6.99",
+        "section": "Sides & Drinks"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$9.99",
+        "section": "Sides & Drinks"
+      },
+      {
+        "name": "3 Corn Handmade Tortillas",
+        "description": "",
+        "price": "$2.50",
+        "section": "Sides & Drinks"
+      },
+      {
+        "name": "Aguas Frescas",
+        "description": "House made",
+        "price": "$5.99",
+        "section": "Sides & Drinks"
+      },
+      {
+        "name": "Can Sodas",
+        "description": "",
+        "price": "$2.99",
+        "section": "Sides & Drinks"
+      },
+      {
+        "name": "Bottle Sodas",
+        "description": "",
+        "price": "$3.99",
+        "section": "Sides & Drinks"
+      }
+    ],
+    "notes": "router pre-screened the Clover COLO2 storefront (missionbajatacos.cloveronline.com/menu/all) out for a markup: 109/138 prices divide cleanly by 1.0400 onto round dollars, a ~4% fee. Went to the restaurant's own site instead (top of the source ladder) rather than dividing that out. missionbajatacos.com is a Next.js single page whose schema.org Restaurant/hasMenu JSON-LD carries the full 68-item, 10-section menu (Tacos, Burritos, Breakfast, Quesadillas, Plates, Favorites, Vegetarian, Ceviche, Kids, Sides & Drinks); address in the JSON-LD (3819 Mission Blvd, San Diego, CA 92109) matches the batch exactly. Cross-checked several JSON-LD prices against the same items rendered directly on the page (Carne Asada taco $5.25, Al Pastor $4.99, grilled fish $5.50, grilled shrimp $5.75) -- all matched, and the page explicitly labels these \"Cash prices shown. Card accepted.\" The site itself also advertises \"Order Direct - Commission-free. No extra fees added\" as an alternative to the marked-up delivery/Clover path, confirming this is the fee-free sibling. All 68 prices are clean conventional endings (.99/.50/.25/.75), consistent with a genuine printed menu."
+  }
+]

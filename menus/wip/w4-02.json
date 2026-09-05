@@ -1,0 +1,106 @@
+[
+  {
+    "restaurantId": "5710",
+    "name": "Aiberto's Taco Shop",
+    "address": "3894 41st St, San Diego, CA 92105",
+    "website": "https://rolbertostacoshop.netwaiter.com/san-diego/about/",
+    "reviewCount": 493,
+    "router": {
+      "platform": "netwaiter",
+      "outcome": "too-few",
+      "detail": "0 priced items from https://rolbertostacoshop.netwaiter.com/san-diego/menu/GetMenu"
+    }
+  },
+  {
+    "restaurantId": "5800",
+    "name": "Kojack's Restaurant",
+    "address": "714 Ventura Pl, San Diego, CA 92109",
+    "website": null,
+    "reviewCount": 483,
+    "router": null
+  },
+  {
+    "restaurantId": "5807",
+    "name": "Franks Mexican Grill",
+    "address": "122 W California Ave, Vista, CA 92083",
+    "website": null,
+    "reviewCount": 479,
+    "router": null
+  },
+  {
+    "restaurantId": "5837",
+    "name": "Leucadia Donut Shoppe",
+    "address": "1604 N Coast Hwy 101, Encinitas, CA 92024",
+    "website": "https://m.facebook.com/LeucadiaDonuts/#!/LeucadiaDonuts/",
+    "reviewCount": 477,
+    "router": {
+      "platform": null,
+      "outcome": "fetch-failed",
+      "detail": "HTTP 400 (https://m.facebook.com/LeucadiaDonuts/#!/LeucadiaDonuts/)"
+    }
+  },
+  {
+    "restaurantId": "6957",
+    "name": "Birrieria y menuderia Guadalajara",
+    "address": "2945 Main St Ste 175, Chula Vista, CA 91911",
+    "website": null,
+    "reviewCount": 463,
+    "router": null
+  },
+  {
+    "restaurantId": "6676",
+    "name": "Camel's Bar and Grill",
+    "address": "10330 Friars Rd #106, San Diego, CA 92120",
+    "website": "http://www.camelsbarandgrill.com/",
+    "reviewCount": 461,
+    "router": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://camelsbarandgrill.com/"
+    }
+  },
+  {
+    "restaurantId": "7058",
+    "name": "SOMISOMI",
+    "address": "9168 Mira Mesa Blvd, San Diego, CA 92126",
+    "website": "https://www.somisomi.com/locations",
+    "reviewCount": 453,
+    "router": {
+      "platform": null,
+      "outcome": "no-platform",
+      "detail": "no known platform on https://somisomi.com/locations"
+    }
+  },
+  {
+    "restaurantId": "5709",
+    "name": "Plaza Donuts",
+    "address": "1548 Highland Ave, National City, CA 91950",
+    "website": null,
+    "reviewCount": 450,
+    "router": null
+  },
+  {
+    "restaurantId": "6159",
+    "name": "Hanna Garden",
+    "address": "7160 Miramar Rd C-124, San Diego, CA 92121",
+    "website": "https://hannagarden.com/?utm_source=google",
+    "reviewCount": 297,
+    "router": {
+      "platform": "own-jsonld",
+      "outcome": "screened-out",
+      "detail": "markup or platform fee: 38/48 prices divide by 1.2500 onto round dollars - https://hannagarden.com/menu"
+    }
+  },
+  {
+    "restaurantId": "4506",
+    "name": "El Viejon",
+    "address": "9837 Mira Mesa Boulevard",
+    "website": "https://elviejonseafood.com/",
+    "reviewCount": 95,
+    "router": {
+      "platform": "toast",
+      "outcome": "wrong-branch",
+      "detail": "payload address \"6406 N IH 35 Frontage RD #1100\" vs our \"9837 Mira Mesa Boulevard\""
+    }
+  }
+]

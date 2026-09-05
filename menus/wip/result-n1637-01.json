@@ -1,0 +1,170 @@
+[
+  {
+    "restaurantId": "8050",
+    "name": "The Morning Grove",
+    "sourceUrl": "https://www.themorninggrove.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: menu page renders on a client-side site builder (multiscreensite.com/cdn-website.com stack), no prices or menu-item markup present in the raw HTML"
+  },
+  {
+    "restaurantId": "3073",
+    "name": "11th Marines Chow Hall",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "military dining facility at Camp Pendleton restricted to base personnel; no public-facing menu or prices published anywhere found"
+  },
+  {
+    "restaurantId": "1610",
+    "name": "Hacienda De Vega",
+    "sourceUrl": "https://haciendadevega.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "domain hijacked: haciendadevega.com now serves an unrelated Alibaba/Taobao e-commerce product page, not the restaurant; no other website found"
+  },
+  {
+    "restaurantId": "1614",
+    "name": "Dieberto's",
+    "sourceUrl": "https://www.doordash.com/store/deibertos-mexican-food-2501487/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash catalog (address matches, 3371 Mission Ave, Oceanside) has scattered cents across nearly every value (.34 x11, .40 x9, .75 x5, .83 x5, .04, .06, .91, etc.) with no dominant fee divisor and implausibly high prices for the cuisine tier (Caldo De Pollo $23.20, Coctel De Camaron $25.54) - looks like a computed/corrupted price field, not a genuine menu; not filing or dividing out"
+  },
+  {
+    "restaurantId": "5236",
+    "name": "College Sub Shop",
+    "sourceUrl": "https://www.doordash.com/store/college-sub-shop-san-diego-83809/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Yelp lists this location as CLOSED; the DoorDash catalog under this store name mixes classic sub-shop items with Vietnamese egg coffee, Thai tea and egg rolls, inconsistent with a sub-shop identity, and all 17 full subs share one flat $15.45 regardless of filling (all 17 halves $10.65) - looks like a different/merged tenant catalog, not confirmed as this restaurant's own menu"
+  },
+  {
+    "restaurantId": "1081",
+    "name": "Island Sports and Spirits",
+    "sourceUrl": "https://www.yelp.com/biz/island-sports-and-spirits-coronado",
+    "confidence": "high",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1024",
+    "name": "Jts Clubhouse Pub and Grill",
+    "sourceUrl": "https://jts-tavern.res-menu.net/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: now operating as 'JT's Tavern' at 5821 Mission Gorge Rd; its res-menu.net site returns an empty 0-byte body (client-rendered), and the only other sources found are tier-5 aggregators (Zmenu, Restaurantji) plus cheap-TLD lookalike domains (wheree.com, wa-cafe.com, webzum.com) that were not trusted as first-party"
+  },
+  {
+    "restaurantId": "1102",
+    "name": "Mickies Suds Room",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no address or website in worklist; no matching business found by name search"
+  },
+  {
+    "restaurantId": "1757",
+    "name": "Lush Lounge",
+    "sourceUrl": "https://www.yelp.com/biz/lush-lounge-vista",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Yelp lists Lush Lounge CLOSED at 324 Main St, Vista, but Grubhub shows an active 'Lush Coffee & Tea' (mylushcoffee.com) at the same address - likely the same operator continuing under an adjusted name rather than a genuine closure; not confirmed either way so not filing as not_found"
+  },
+  {
+    "restaurantId": "1791",
+    "name": "Taco King",
+    "sourceUrl": "https://www.ubereats.com/store/taco-kings/eyBCXZe1VM62XN8rJKjxOw",
+    "confidence": "medium",
+    "notes": "router matched wrong website kingtaco.com (LA chain, unrelated); real restaurant is 'Taco Kings' at 6358 Del Cerro Blvd, San Diego CA 92120, confirmed via Uber Eats JSON-LD address match; single marketplace source, no first-party site found; deduped against 'Most Ordered' carousel; none inferred/merged/divided",
+    "dishes": [
+      {"name": "Egg & Cheese", "description": "", "price": "$7.25", "section": "Breakfast Burritos"},
+      {"name": "Bean, Egg, & Cheese", "description": "", "price": "$7.75", "section": "Breakfast Burritos"},
+      {"name": "Chorizo, Potato, & Egg", "description": "", "price": "$8.99", "section": "Breakfast Burritos"},
+      {"name": "King Breakfast Burrito", "description": "", "price": "$10.75", "section": "Breakfast Burritos"},
+      {"name": "Egg, Ham, & Cheese", "description": "", "price": "$7.99", "section": "Breakfast Burritos"},
+      {"name": "Potato, Egg, & Cheese", "description": "", "price": "$8.25", "section": "Breakfast Burritos"},
+      {"name": "Carne Asada, Egg, & Cheese", "description": "", "price": "$10.50", "section": "Breakfast Burritos"},
+      {"name": "Machaca", "description": "", "price": "$8.99", "section": "Breakfast Burritos"},
+      {"name": "Grilled Beef (Carne Asada) Burrito", "description": "", "price": "$10.50", "section": "Burritos"},
+      {"name": "California Burrito", "description": "", "price": "$10.99", "section": "Burritos"}
+    ]
+  },
+  {
+    "restaurantId": "1819",
+    "name": "Wellspring Tea Room",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no address or website in worklist; no matching business found by name search"
+  },
+  {
+    "restaurantId": "2011",
+    "name": "Valencia Mexican Food",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "identified at 1728 W Drescher St #101, San Diego via business directory, but no priced menu source located yet"
+  },
+  {
+    "restaurantId": "6866",
+    "name": "All Better Products Commissary Kitchen",
+    "sourceUrl": "https://allbetterproducts.com/commissary-kitchen",
+    "confidence": "high",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6970",
+    "name": "Dalat Cafe",
+    "sourceUrl": "https://www.yelp.com/biz/dalat-cafe-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Yelp lists this exact address (4738 University Ave Ste H) as CLOSED, but a separately-listed 'Da Lat Cafe' at 4786 University Ave (a few doors down) appears active - possible relocation of the same business, not confirmed as a genuine closure"
+  },
+  {
+    "restaurantId": "3875",
+    "name": "Risers Pizza",
+    "sourceUrl": "https://www.doordash.com/store/rizers-pizza-san-diego-27796260",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "actual business is 'Rizers Pizza', 1459 Garnet Ave San Diego (address confirmed via DoorDash JSON-LD); all 68 deduped prices divide cleanly by 1.15 to round dollar amounts (e.g. Calzone $18.40/1.15=$16.00, Large 16in Pizza $25.30/1.15=$22.00) - fee-inflated catalog, not filing and not dividing out"
+  },
+  {
+    "restaurantId": "1505",
+    "name": "Thai Basil",
+    "sourceUrl": "https://thaibasils.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: site is an empty React SPA shell (896 bytes, react-router-dom app div), no server-rendered content or API found"
+  },
+  {
+    "restaurantId": "2887",
+    "name": "GIHON Ethiopian Kitchen",
+    "sourceUrl": "https://gihonkitchen.com/menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "menu page (spelled 'Ghion Kitchen' on-site, address 7313 Carroll Rd matches) is an Elementor photo gallery of plated dishes with no prices or dish names as text anywhere on the page - partial/no-price capture, core offering unpriced"
+  },
+  {
+    "restaurantId": "2172",
+    "name": "old town's gourmet cafe",
+    "sourceUrl": "https://www.yelp.com/biz/old-towns-gourmet-cafe-san-diego",
+    "confidence": "high",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2246",
+    "name": "The Dining Room",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no address or website in worklist; name too generic to identify a specific business by search"
+  },
+  {
+    "restaurantId": "2290",
+    "name": "I Love Pho",
+    "sourceUrl": "https://ilovepho.info/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "identity mismatch: ilovepho.info is a Mississauga, Ontario (Canada) restaurant, not a San Diego County business; wrong site, no matching San Diego source found"
+  }
+]

@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="en"><head><script type="text/javascript">
+    var Olo = {
+        channelSlug: "cornerbakery",
+        clientTrackerGuid: "9bf30b74-a469-47a3-887c-c7fc4c4cce34"
+    };
+</script><meta charSet="utf-8" data-next-head=""/><meta name="viewport" content="width=device-width, initial-scale=1" data-next-head=""/><meta name="version" content="0.0.1607"/><meta name="asset-prefix" content="https://serve-next.olo.com"/><link rel="preload" href="https://serve-next.olo.com/_next/static/css/d50b9782c0c692ac.css" as="style" crossorigin="anonymous"/><link rel="preload" href="https://serve-next.olo.com/_next/static/css/2ed34037e08243f7.css" as="style" crossorigin="anonymous"/><script type="text/javascript">
+          !function(a,b,c,d,e,f,g,h){a.RaygunObject=e,a[e]=a[e]||function(){
+          (a[e].o=a[e].o||[]).push(arguments)},f=b.createElement(c),g=b.getElementsByTagName(c)[0],
+          f.async=1,f.src=d,g.parentNode.insertBefore(f,g),h=a.onerror,a.onerror=function(b,c,d,f,g){
+          h&&h(b,c,d,f,g),g||(g=new Error(b)),a[e].q=a[e].q||[],a[e].q.push({
+          e:g})}}(window,document,"script","//cdn.raygun.io/raygun4js/3.1.0/raygun.min.js","rg4js");
+
+          rg4js('apiKey', "57ZYavvIYsno7jQ/7lACDg==");
+          rg4js('enableCrashReporting', true);
+          rg4js('enableRealUserMonitoring', true);
+          rg4js('options', {
+            // "GSA" means we're in a web view within the Google Search App.
+            // It has terrible performance and skews our RUM numbers.
+            disablePulse: navigator.userAgent.includes('GSA/'),
+            ignore3rdPartyErrors: true,
+          });
+          rg4js('onBeforeSend', function (payload) {
+            const IGNORE_PATTERNS = [/__firefox__/];
+
+            const error = payload.details?.error;
+            if (typeof error?.message === 'string' && IGNORE_PATTERNS.some(pattern => pattern.test(error.message))) {
+              return false;
+            }
+
+            // Readiness beacon: an uncaught error that fires before the app became
+            // interactive AND left the root element blank is a pre-interactive
+            // blank-screen crash. Such errors reach Raygun via window.onerror and
+            // bypass the React error boundary, so this is the only place to tag them
+            // 'AppCrash'. The blank-root check (below) is what makes this precise —
+            // without it, any early uncaught error (third-party script, etc.) that
+            // the app recovered from would be mislabeled a crash.
+            // (A true blank screen that throws NO error — hydration bail, silent
+            // chunk failure — is handled separately by the white-screen watchdog in
+            // src/setup/white-screen-watchdog.ts.)
+            // This block only ADDS a tag and never returns false, so a wrong
+            // payload-casing guess can only fail to tag — never drop an error.
+            // See JIRA OLO-137256.
+            try {
+              if (typeof window !== 'undefined' && !window.__APP_READY__) {
+                // raygun4js typings use PascalCase Details.Tags, but the filter above
+                // reads lowercase payload.details. Handle both; create Tags if a very
+                // early window.onerror payload predates the withTags config.
+                var details = payload.Details || payload.details;
+                if (details) {
+                  if (!Array.isArray(details.Tags)) {
+                    details.Tags = [];
+                  }
+                  // Tag 'AppCrash' only for a pre-ready error that ALSO left the
+                  // screen blank. __APP_READY__ alone is unreliable: it's set in a
+                  // post-router.isReady effect that commits after the initial
+                  // render/suspense phase, so it's still false during normal early
+                  // errors when the app actually rendered fine. To make AppCrash
+                  // mean "the user saw a broken/blank app", require BOTH:
+                  //   1. the app never became interactive (!__APP_READY__), and
+                  //   2. the root (#__next) rendered no content — same white-screen
+                  //      test as the watchdog (src/setup/white-screen-watchdog.ts).
+                  //      A slow-but-healthy load shows the LoadingMainLayout spinner
+                  //      (non-empty textContent), so it is correctly NOT flagged.
+                  // Plus exclude errors that aren't front-end crashes regardless:
+                  //   - handled errors (analytics) — literal must match
+                  //     ANALYTICS_ERROR_TAG in src/lib/raygun.ts
+                  //   - Serve API errors ("API Error: ..." — the ApiError shape from
+                  //     src/lib/error.ts) — backend 4xx/5xx have their own monitoring.
+                  // See JIRA OLO-137256.
+                  var msg = (details.Error && details.Error.Message) ||
+                    (payload.details && payload.details.error && payload.details.error.message) || '';
+                  var isHandled = details.Tags.indexOf('HandledAnalyticsError') !== -1;
+                  var isApiError = typeof msg === 'string' && msg.indexOf('API Error:') !== -1;
+                  var rootEl = typeof document !== 'undefined' && document.getElementById('__next');
+                  var rootIsEmpty = !!rootEl && (rootEl.textContent || '').trim().length === 0;
+                  if (rootIsEmpty && !isHandled && !isApiError && details.Tags.indexOf('AppCrash') === -1) {
+                    details.Tags.push('AppCrash');
+                  }
+                }
+              }
+            } catch (e) {
+              // Never let SOS tagging interfere with sending the error.
+            }
+
+            return payload;
+          });
+          rg4js('onBeforeSendRUM', function (payload) {
+            payload.eventData.forEach(e => {
+              if (Array.isArray(e.data)) {
+                e.data.forEach(d => {
+                  // RUM grouping docs: https://raygun.com/docs/pulse/path-segment-rules
+                  // According to the docs, the following rules should have been OK:
+                  //     /menu/*
+                  //     */menu/*
+                  //     https://*/menu/*
+                  // But I tried all of them, and they didn't work.
+                  // In the end, I had to resort to this manual approach.
+                  if (d.url.includes('/menu')) {
+                    d.url = d.url.replace(/\/menu\/[^/]+/g, '/menu/*');
+                  }
+                  // We can't use the grouping rules here because
+                  // we specifically want to keep vendors/regions and vendors/search separate,
+                  // but we want to group vendors/{vendor-slug}
+                  if (
+                    d.url.includes('/api/vendors') &&
+                    !d.url.endsWith('/api/vendors/regions') &&
+                    !d.url.endsWith('/api/vendors/search')
+                  ) {
+                    d.url = d.url.replace(/\/api\/vendors\/[^/]+/g, '/api/vendors/*');
+                  }
+
+                  if (d.url.includes('/api/bootstrapData/')) {
+                    d.url = d.url.replace(/\/api\/bootstrapData\/[^/]+/g, '/api/bootstrapData/*');
+                  }
+                });
+              }
+            });
+            return payload;
+          });
+          // Platform / OS tags so crashes are filterable by hybrid-vs-web and iOS-vs-Android.
+          // This config is an inline script string, so it can't import from @/lib/device —
+          // these regexes are copied verbatim from src/lib/device/meta.ts (the source of truth).
+          // Wrapped in an IIFE so the locals don't leak onto window.
+          (function () {
+            var ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
+            var platform = /ServeApp.*(Android|iOS)/.test(ua) ? 'hybrid' : 'web';
+            var os = /iPad|iPhone|iPod/.test(ua) ? 'ios' : /android/i.test(ua) ? 'android' : 'other';
+            rg4js('withTags', (window.Olo?.channelSlug ? [window.Olo.channelSlug, 'blackbird'] : ['blackbird']).concat([platform, os]));
+          })();
+          if (window.Olo?.clientTrackerGuid) {
+            rg4js('setUser', {
+              identifier: window.Olo.clientTrackerGuid
+            });
+          }
+          rg4js('setVersion', "0.0.1607");
+          rg4js('saveIfOffline', true);
+          rg4js('whitelistCrossOriginDomains', [
+            'serve-next',
+          ]);
+          rg4js('groupingKey', (payload) => {
+            if (payload.Details.Error.Message.includes('API Error:')) {
+              return payload.Details.Error.Message;
+            }
+          });
+          // Capture chunk-load / dynamic-import failures. These reject a promise
+          // (not caught by window.onerror or React error boundaries) and commonly
+          // white-screen the app after a deploy when an old client requests a chunk
+          // that no longer exists. We forward ONLY this class — not all rejections —
+          // to avoid flooding Raygun with benign aborted-fetch rejections.
+          // See JIRA OLO-137256.
+          window.addEventListener('unhandledrejection', function (event) {
+            var reason = event && event.reason;
+            var message = (reason && (reason.message || reason.name)) || String(reason || '');
+            var CHUNK_LOAD_PATTERNS = [
+              /ChunkLoadError/,
+              /Loading chunk [\d]+ failed/,
+              /Loading CSS chunk/,
+              /Failed to fetch dynamically imported module/,
+              /error loading dynamically imported module/,
+            ];
+            if (CHUNK_LOAD_PATTERNS.some(function (pattern) { return pattern.test(message); })) {
+              rg4js('send', {
+                error: reason instanceof Error ? reason : new Error(message),
+                tags: ['ChunkLoadError'],
+              });
+            }
+          });
+          </script><script>
+              // Store original asset prefix for i18n and other uses
+              window.__OLO_ASSET_PREFIX_ORIGINAL__ = document.querySelector('meta[name="asset-prefix"]')?.content || '';
+
+              // Capacitor asset loading logic:
+              // - For remote URLs (local dev/testing): KEEP assetPrefix so chunks load from server
+              // - For production builds: CLEAR assetPrefix so chunks load from filesystem
+              // This MUST run before __NEXT_DATA__ is read by the router
+              (function() {
+                const isCapacitor = /ServeApp.*(Android|iOS)/.test(navigator.userAgent);
+                if (isCapacitor) {
+                  // Add viewport-fit=cover immediately for iOS so env(safe-area-inset-top)
+                  // has the correct value from the first CSS evaluation. Without this, the
+                  // viewport meta is added later by React (IosMetaViewport inside ClientOnly),
+                  // which is too late — content renders behind the status bar.
+                  if (/ServeApp.*iOS/.test(navigator.userAgent)) {
+                    var meta = document.createElement('meta');
+                    meta.name = 'viewport';
+                    meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover';
+                    document.head.appendChild(meta);
+                  }
+
+                  // Check if using a remote URL (like localtunnel for local testing)
+                  // If so, keep the asset prefix - only clear for production capacitor builds
+                  const assetPrefix = document.querySelector('meta[name="asset-prefix"]')?.content || '';
+                  const isRemoteUrl = assetPrefix.startsWith('http://') || assetPrefix.startsWith('https://');
+
+                  if (!isRemoteUrl) {
+                    // Override __NEXT_DATA__ assetPrefix immediately
+                    Object.defineProperty(window, '__NEXT_DATA__', {
+                      configurable: true,
+                      get: function() { return this._nextData; },
+                      set: function(data) {
+                        if (data && data.assetPrefix) {
+                          data.assetPrefix = '';
+                        }
+                        this._nextData = data;
+                      }
+                    });
+                  }
+                }
+              })();
+            </script><link rel="stylesheet" href="https://serve-next.olo.com/_next/static/css/d50b9782c0c692ac.css" crossorigin="anonymous" data-n-g=""/><link rel="stylesheet" href="https://serve-next.olo.com/_next/static/css/2ed34037e08243f7.css" crossorigin="anonymous" data-n-p=""/><noscript data-n-css=""></noscript><script defer="" crossorigin="anonymous" noModule="" src="https://serve-next.olo.com/_next/static/chunks/polyfills-42372ed130431b0a.js"></script><script src="https://serve-next.olo.com/_next/static/chunks/webpack-ce6c41b2cb6629e7.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/framework-7fe72c50ec75479c.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/main-51a6773958e10efb.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/pages/_app-ea9c0375bc39c730.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/2427-fd485975c6f54109.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/4040-58ad568bb294abe3.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/7419-bed899feb58d40ee.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/2293-584c01e3b4bd1001.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/9209-d908d6e56a794d44.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/4489-4b5fa7bbb851feef.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/5482-c98bf6b142d5b976.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/chunks/pages/menu/%5B...params%5D-c8f814cbfcbb20f8.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/w5xmpmzz0onyRl4R2lzIs/_buildManifest.js" defer="" crossorigin="anonymous"></script><script src="https://serve-next.olo.com/_next/static/w5xmpmzz0onyRl4R2lzIs/_ssgManifest.js" defer="" crossorigin="anonymous"></script><title>Corner Bakery Cafe UTC - Order Online</title><meta name="robots" content="all" /><link rel="canonical" href="https://order.cornerbakerycafe.com/menu/corner-bakery-cafe-utc/" /><link rel="shortcut icon" type="image/x-icon" href="https://olo-images-live.imgix.net/53/53cd22efb2a44260a9c420e54a3228a1.png?auto=format%2Ccompress&amp;q=60&amp;cs=tinysrgb&amp;w=1501&amp;h=1501&amp;fit=crop&amp;s=665899e0600d59bd8c16ed4f25a94ec4" /><link rel="apple-touch-icon" href="https://olo-images-live.imgix.net/53/53cd22efb2a44260a9c420e54a3228a1.png?auto=format%2Ccompress&amp;q=60&amp;cs=tinysrgb&amp;w=1501&amp;h=1501&amp;fit=crop&amp;s=665899e0600d59bd8c16ed4f25a94ec4" /><meta name="description" content="Order Online at Corner Bakery Cafe UTC, San Diego. Pay Ahead. Skip the Line&#174;." /><meta property="og:title" content="Corner Bakery Cafe UTC - Order Online" /><meta property="og:type" content="restaurant" /><meta property="og:image" content="https://olo-images-live.imgix.net/53/53cd22efb2a44260a9c420e54a3228a1.png?auto=format%2Ccompress&amp;q=60&amp;cs=tinysrgb&amp;w=1501&amp;h=1501&amp;fit=crop&amp;s=665899e0600d59bd8c16ed4f25a94ec4" /><meta property="og:url" content="https://order.cornerbakerycafe.com/menu/corner-bakery-cafe-utc/" /><meta property="og:description" content="Order Online at Corner Bakery Cafe UTC, San Diego. Pay Ahead. Skip the Line&#174;." /><meta property="og:locale:alternate" content="en_US" /><meta property="og:site_name" content="Corner Bakery Cafe" /><meta property="og:image:alt" content="corner bakery cafe." /></head><body><div id="__next"><div><header class="header-layout_root__8qNGv"><div><div class="shimmer_root__H6B5q loading-header_iconButton__aXgt7"></div></div><div class="header-layout_middle__k4GIh"><div class="shimmer_root__H6B5q loading-header_logo__H3Fko"></div></div><div class="header-layout_right__6h9sB"><div class="shimmer_root__H6B5q loading-header_iconButton__aXgt7"></div><div class="shimmer_root__H6B5q loading-header_iconButton__aXgt7"></div></div></header><span data-testid="presentation"><span class="presentation_alt__5Tgcb">Loading</span></span></div></div><script id="__NEXT_DATA__" type="application/json" crossorigin="anonymous">{"assetPrefix":"https://serve-next.olo.com","props":{"pageProps":{}},"page":"/menu/[...params]","query":{},"buildId":"w5xmpmzz0onyRl4R2lzIs","nextExport":true,"autoExport":true,"isFallback":false,"scriptLoader":[]}</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a316474dbe8ea155',t:'MTc4Nzc4MzQwMA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>

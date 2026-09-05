@@ -1,0 +1,774 @@
+[
+  {
+    "restaurantId": "6031",
+    "name": "Pastalini",
+    "platform": "slice",
+    "outcome": "screened-out",
+    "detail": "catalog looks doubled: 112 of 232 rows repeat by name and price across differently-named sections - https://slicelife.com/restaurants/ca/san-diego/92121/pastalini/menu; followed the branch link https://slicelife.com/restaurants/ca/san-diego/92121/pastalini/menu",
+    "menuResponses": [
+      "https://slicelife.com/restaurants/ca/san-diego/92121/pastalini/menu"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6653",
+    "name": "Dumplings N More",
+    "platform": "MealKeyWay",
+    "outcome": "screened-out",
+    "detail": "catalog looks doubled: 53 of 79 rows repeat by name and price across differently-named sections - https://order.mealkeyway.com/customer/release/index?mid=52306b32444f4d7a3271503954463364696b5a7352413d3d#/main; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2482",
+    "name": "Serrano's Mexican Food",
+    "platform": "Square Online (own domain)",
+    "outcome": "filed",
+    "detail": "7 dishes from https://www.serranosencinitas.com/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://www.serranosencinitas.com/; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 0/6 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "6017",
+    "name": "Pho Hiep & Grill",
+    "platform": "chownow",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.phohiepgrill.com/linda-vista-menu after 23 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4501",
+    "name": "Donut Stop",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://donutstopmiramesa.wordpress.com/menu/ after 39 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5799",
+    "name": "Brigantine Seafood",
+    "platform": "chownow",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.brigantine.com/ after 31 JSON responses; store searched by ZIP; typed ZIP 92025 into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6545",
+    "name": "Wayfarer Bread & Pastry",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.wayfarerbread.com/ after 57 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5859",
+    "name": "Tom's Famous Family Restaurant 24",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://order.online/business/~309363 that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5907",
+    "name": "En Fuego Cantina & Grill",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "445 dishes from https://order.toasttab.com/online/en-fuego-cantina-grill; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://order.toasttab.com/online/en-fuego-cantina-grill; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 403"
+  },
+  {
+    "restaurantId": "5723",
+    "name": "Golden Egg Omelet House",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/egiftcards after 24 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5817",
+    "name": "TOM's Famous Family Restaurant 22",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://order.online/business/~309363 that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5725",
+    "name": "Por Favor El Cajon",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://porfavorrestaurants.com/food/ after 21 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6584",
+    "name": "Parakeet Cafe - Little Italy",
+    "platform": "chownow",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.parakeetcafe.com/location/little-italy/: page.goto: Page crashed\nCall log:\n\u001b[2m  - navigating to \"https://www.parakeetcafe.com/location/little-italy/\", waiting u",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5875",
+    "name": "MooTime Creamery",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6331",
+    "name": "Papas & Tacos Mexican Food",
+    "platform": "plain-html",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5785",
+    "name": "That Mexican Place",
+    "platform": "GloriaFood widget",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6718",
+    "name": "Panini Kabob Grill - Mission Valley",
+    "platform": "olo",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6750",
+    "name": "The Asian Bistro",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5933",
+    "name": "Lanna Thai Cuisine",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6258",
+    "name": "skybound coffee + dessert lounge",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6470",
+    "name": "Up2You Cafe",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6212",
+    "name": "Stake Chophouse & Bar",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6738",
+    "name": "Nick's Del Mar",
+    "platform": "plain-html",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6617",
+    "name": "Better Buzz Coffee Pacific Beach Grand",
+    "platform": "olo",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5825",
+    "name": "Beyer Deli",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6402",
+    "name": "Pancho's Mexican Restaurant",
+    "platform": "plain-html",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3517",
+    "name": "Portal Coffee",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6570",
+    "name": "Nado Republic",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5852",
+    "name": "Robertito's Mexican Food",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5847",
+    "name": "Honey's Bistro & Bakery",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7288",
+    "name": "The Remy",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6362",
+    "name": "Barrio Donas",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6650",
+    "name": "Penelopes Mexican Food",
+    "platform": "spothopper",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6022",
+    "name": "Curry & More - Indian Bistro",
+    "platform": "spothopper",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6558",
+    "name": "Clayton's Bakery & Bistro",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3592",
+    "name": "3N1 Sports Bar & Grill",
+    "platform": "spothopper",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5848",
+    "name": "Arizona Chinese Restaurant",
+    "platform": "chownow",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6502",
+    "name": "Scoops La Jolla",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6176",
+    "name": "Tabu Sushi Bar & Grill Santee",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6534",
+    "name": "Bay Park Coffee",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6876",
+    "name": "il Sogno Italiano",
+    "platform": "spothopper",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5897",
+    "name": "Sandwich Emporium",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6481",
+    "name": "Gelato Paradiso",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5780",
+    "name": "Italia Pizza",
+    "platform": "slice",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6336",
+    "name": "Valentina",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4371",
+    "name": "@Spacebar Cafe",
+    "platform": "plain-html",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7029",
+    "name": "Randy's Donuts",
+    "platform": "olo",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4869",
+    "name": "Surfing Crab Escondido",
+    "platform": "MealKeyWay",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2136",
+    "name": "Santos Coffee",
+    "platform": "spothopper",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3740",
+    "name": "Rosemonts Cafe",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6340",
+    "name": "San Diego Sandwich Co",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6654",
+    "name": "Marieta's Mexican Food",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6180",
+    "name": "Flippin' Pizza La Costa",
+    "platform": "HungerRush",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6118",
+    "name": "Crossroads Deli",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6310",
+    "name": "Elixir Espresso & Wine Bar",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6040",
+    "name": "The Naked Cafe",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6243",
+    "name": "Thyme for Lunch Cafe & Grill",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5777",
+    "name": "Phở Hòa Restaurant | Vietnamese",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4478",
+    "name": "Mesa Agricola",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2809",
+    "name": "Industrial Grind Coffee",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4059",
+    "name": "Banh Mi Blvd",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "728",
+    "name": "Dot Cafe",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2017",
+    "name": "BB's Deli",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6495",
+    "name": "Le Macaron French Pastries",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5271",
+    "name": "Seaview Restaurant",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2113",
+    "name": "Iron Wok",
+    "platform": "MealKeyWay",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4476",
+    "name": "Kalei's Kitchenette",
+    "platform": "SpotOn",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2694",
+    "name": "Lime in the Coconut",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4029",
+    "name": "Rock On Pizza",
+    "platform": "slice",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6561",
+    "name": "Aaharn Thai @ University City",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3993",
+    "name": "Sue's Korean Kitchen",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7100",
+    "name": "Gravity Heights Mission Valley",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4585",
+    "name": "Tacoman",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7342",
+    "name": "Blue Palm Mission Beach",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4562",
+    "name": "Fan-Fan",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3877",
+    "name": "Mr. Charlie's",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3817",
+    "name": "BenGong's Tea",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "browser pass threw: browserContext.newPage: Target crashed ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  }
+]

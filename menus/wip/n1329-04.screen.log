@@ -1,0 +1,16 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      8 entries (2 with menus, 6 confirmed not-found), 62 dishes
+quarantine: 12 entries, 0 dishes withheld
+
+  Steves Cabana (0 dishes) - blocked, not absent: no independent source confirms a food menu; only secondhand review summaries describe it as a drinks-only dive bar, insufficient to confirm not_found
+  Taqueria Revolución (0 dishes) - blocked, not absent: identity confirmed (2015 Birch Rd Ste 1201, Chula Vista matches work-list address), but DoorDash and UberEats both return 403 to automated fetch; only tier-5 aggregator pricing (allmenus/tastyfind) available for this location, which is insufficient alone
+  India Princess (0 dishes) - blocked, not absent: own domain (indiaprincess.com) is now a parked/for-sale placeholder page; no alternate operating source located
+  Brick & Bell Plus (0 dishes) - blocked, not absent: needs-browser: menu is client-side rendered (references a 'bb-menu-card' component); no item data present in the static HTML
+  Gilbeys Cocktail Lounge (0 dishes) - blocked, not absent: food menu (tacos, tamales, chile rellenos, enchiladas) is only described secondhand with no priced source found; only partial drink prices located, short of the 5-item minimum
+  Six Degrees (0 dishes) - blocked, not absent: no web presence found despite multiple targeted searches
+  Rds Log Cabin (0 dishes) - blocked, not absent: confirmed real business (has a Facebook page) but its hub.biz site has no prices; Facebook page could not be located/accessed for dated menu photos
+  Ball Three (0 dishes) - blocked, not absent: no web presence found despite multiple targeted searches
+  Village Inn (0 dishes) - blocked, not absent: chain locator shows zero active California locations; cannot confirm whether this work-list record refers to the chain or an unrelated independent restaurant of the same name
+  Recognize Cocktails (0 dishes) - blocked, not absent: no web presence found despite multiple targeted searches
+  Coral Market (0 dishes) - blocked, not absent: both seaworld.com/san-diego/dining/coral-market and thrill-data.com return 403 to automated fetch; no alternate source found for this specific concession's itemized pricing
+  Club Iguana (0 dishes) - blocked, not absent: no web presence found despite multiple targeted searches

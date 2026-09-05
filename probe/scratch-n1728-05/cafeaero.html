@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Expires" CONTENT="0">
+    <meta http-equiv="Cache-Control" CONTENT="no-cache">
+    <meta http-equiv="Pragma" CONTENT="no-cache">
+
+    <title>WebOrder</title>
+
+
+ 
+    <script>
+        document.cookie = 'safeCookie1=imu; SameSite=Lax;';
+        document.cookie = 'safeCookie1=imu;';
+        document.cookie = 'cross-site-cookie=Upsolution; SameSite=None; Secure';
+    </script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    
+    
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <link href="/Common/Css/_LayoutWebOrder.css" rel="stylesheet" />
+    
+
+    <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
+    <link rel="stylesheet" href="//kendo.cdn.telerik.com/2014.1.318/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="//kendo.cdn.telerik.com/2014.1.318/styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="//kendo.cdn.telerik.com/2014.1.318/styles/kendo.default.mobile.min.css" />
+    <script src="//kendo.cdn.telerik.com/2014.1.318/js/kendo.all.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2014.1.318/js/kendo.core.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2014.1.318/js/kendo.popup.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2014.1.318/js/kendo.timepicker.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2014.1.318/js/kendo.userevents.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2014.1.318/js/kendo.numerictextbox.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2014.1.318/js/kendo.datetimepicker.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2014.1.318/js/kendo.calendar.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2014.1.318/js/kendo.datepicker.min.js"></script>
+
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Common.js"></script>
+    
+    <link href="/Common/Css/WebOrder/WebOrder.css?t=20230300" rel="stylesheet" />
+    <link href="/Common/Css/WebOrder/Basket.css?v=20230300" rel="stylesheet" />
+    <link href="/Common/Css/WebOrder/AddMyMenu.css" rel="stylesheet" />
+
+
+    <link href="/Common/Css/CakeFactory/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Common/Css/WebOrder/Common.css?v=20230211" rel="stylesheet" />   
+</head>
+<body>
+    <div id="loading" class="load">
+        <div style="margin:0 auto;">
+            <img src="/Common/Images/WebOrder/loader.gif" />
+        </div>
+    </div>
+        <div id="popUpView"></div>
+    <table class="bodyTbl">
+        <tr>
+            <td class="bodyTblTD">
+                
+
+
+<input type="hidden" name="page" id="page" value="1" />
+<input type="hidden" name="maxPage" id="maxPage" value="1" />
+
+<div id="TopToBtnDivWrap" style="display: none;">
+    <button id="scrollToTop" style="background: url('/Common/Images/WebOrder/top.png') no-repeat scroll 0 0 transparent; width: 50px; height: 50px; border: 0px;" class="button"></button>
+</div>
+
+<div id="scheduleDivWrap" style="display:none">
+    <span id="scheduleDateSpan"></span>
+    <i class="fa-solid fa-xmark"></i>
+</div>
+
+<div class="headerMenu">
+
+<script>
+
+
+    $(window).resize(function(){
+        if ($(window).width() < 1024) {
+                
+            $(".head_title").css("max-width", $(window).width() - 190);
+                
+        } else {
+            $(".head_title").css("max-width", "810px");
+        }
+    });
+
+    $(document).ready(function () {
+        if ($(window).width() < 1024) {
+                
+            $(".head_title").css("max-width", $(window).width() - 190);
+                
+        } else {
+            $(".head_title").css("max-width", "810px");
+        }
+
+        $("#timepopClose").click(function () {
+            $(".time_popup").css("display", "none");
+        });
+
+        $("#timepopShow").click(function () {
+            if ($(".time_popup").css("display") == "block") {
+                $("#timepopClose").click();
+            } else {
+                $(".time_popup").css("display", "block");
+            }
+        });
+
+        $("#historypopShow").click(function () {
+            ajax.GetAjax("/the_cafe_aero/en/WebOrder/PV_Phone/", null, "html", function (result) {
+
+                $("#ModalOrderHistory").html(result);
+
+
+                $("#btnPopPhoneSearch").click(function () {
+
+                    var PHONE = $.trim($("#txtPhone").val());
+                    PHONE = PHONE.replace(/-/gi, '');
+                    location.href = "/the_cafe_aero/en/WebOrder/OrderHistory?Phone=" + PHONE;
+
+                });
+            });
+        });
+    });
+</script>
+
+<div class="headerSumMenuWrap">
+    <a href="/the_cafe_aero/en/WebOrder?STORE_CODE=MTAwMA==&table_num=MTAwMA==" id="h_title">
+        <div style="float:left;margin-left:10px;font-size: 25px;font-weight: bold;color: white;height:60px;" class="h_title">
+            
+            <span class="head_title h_title" style="height: 60px;vertical-align: middle;display: table-cell;">
+                
+                &nbsp;THE CAFE AERO</span>
+            
+        </div>
+    </a>
+    <div id="historypopShow" data-toggle="modal" data-backdrop="false" data-target="#ModalOrderHistory"><img id="historyImage" src="/Common/Images/WebOrder/history.png" /></div>
+    <div class="modal fade" id="ModalOrderHistory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false"></div>
+    <div style="float:right;width:30px;height:30px;margin:17px 0px 0px 0px;" onclick="showSearchInputDiv()" class="businessHours h_title">
+        <img src="/Common/Images/WebOrder/search.png" id="SearchInputDivView" />
+    </div>
+    <a href="/the_cafe_aero/en/WebOrder/Basket" class="basketLink h_title">
+        <div style="float:right;width:40px;height:40px;margin:12px 10px 0px 0px;">
+            <div class="countingDiv" style="position:relative;width:40px;height:40px;border:1px solid transparent;">
+                <div id="cartCountDiv" class="count">0</div>
+                <div class="img"><img src="/Common/Images/WebOrder/cart3.png" /></div>
+            </div>
+        </div>
+    </a>
+    <div id="timepopShow"><img id="hourImage" src="/Common/Images/WebOrder/Order_Hours.png" /></div>
+</div>
+
+
+
+</div>
+
+
+<div id="categoryViewDIV" class="headerCategory" style="">
+    <div id="categoryView">
+
+
+<script src="https://kit.fontawesome.com/071ba544cf.js" crossorigin="anonymous"></script>
+<style>    
+    .continer-mg .bx {
+        display: inline-block;
+        position: relative;
+        height: 100%;        
+        vertical-align: middle;
+        white-space: normal;        
+        box-sizing:border-box;       
+        margin-left:5px;
+        margin-top:10px
+    }
+
+    .continer-mg .bx-active {
+        width:100%;
+        margin-bottom: 0px;
+        box-sizing:border-box;        
+    }
+
+    .continer-mg .bx a {
+        display: table-cell;
+        vertical-align:middle;
+        position: relative;
+        height: 20px;
+        margin-left: 6px;
+        padding: 0 5px;
+        line-height: 12px;
+        font-weight: 900;
+        text-decoration:none;
+        color:#000;
+    }
+
+    .continer-mg .bx > a i {
+        font-size:18px;
+        display:inline-block;
+        
+        color:#000;
+    }
+
+    .continer-mg .bx a:focus {
+        outline:0;
+    }
+
+    .continer-mg .bx > a > span {
+        font-size:14px;
+    }
+
+    .bx-select > a > span, .bx-select > a > i {
+        color:red !important;        
+    }
+            
+    .continer-mg {
+        margin:0px;
+        padding:0px;
+    }
+
+    .continer-mg .mg {
+        height:100%;
+        float:left;
+        width:calc(100% - 50px);
+        overflow: hidden;
+        overflow-x: auto;
+    }
+
+    .continer-mg .mg-active{
+        width:100% !important;
+    }
+
+    .continer-mg .mg .ul {
+        position: relative;
+        height: 100%;
+        font-family: sans-serif;
+        font-size: 0;
+        line-height: 0;
+        white-space: nowrap;
+        text-align:center;
+    }    
+
+    .continer-mg .mg .ul-active {
+        white-space: normal;
+        text-align:left;
+    }
+
+    .continer-mg .mg .bt-close{
+        text-align:right;
+        font-weight: bolder;
+        color: #6e6e6e;
+        display:none;
+    }
+
+    .continer-mg .mg .bt-close-active{        
+        display:block;
+    }
+
+    .continer-mg .more {
+        height:100%;
+        float:left;
+        width:40px;
+        text-align:right;
+        line-height:30px;
+        padding-top:7px;
+    }
+
+    .continer-mg .more-active {
+        display:none;
+    }
+
+    .continer-mg .more i {
+        font-size: 25px;
+        font-weight:600;
+        cursor:pointer;
+    }
+
+    .bt_tabsch {
+        position: relative;
+        height: 24px;
+        padding: 0 12px 0 12px;
+        border: 0;
+        font-size: 1.4rem;        
+        background: 0 0;
+    }
+
+    @media only screen and (min-width : 480px) {
+        html {scrollbar-3dLight-Color: #efefef; scrollbar-arrow-color: #dfdfdf; scrollbar-base-color: #efefef; scrollbar-Face-Color: #dfdfdf; scrollbar-Track-Color: #efefef; scrollbar-DarkShadow-Color: #efefef; scrollbar-Highlight-Color: #efefef; scrollbar-Shadow-Color: #efefef}
+/* Chrome, Safari용 스크롤 바 */
+::-webkit-scrollbar {width: 8px; height: 8px; border: 3px solid #fff; }
+::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {display: block; height: 0px; }
+::-webkit-scrollbar-track {background: #efefef; -webkit-border-radius: 10px; border-radius:10px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.2)}
+::-webkit-scrollbar-thumb {height: 10px; width: 50px; background: rgba(0,0,0,.2); -webkit-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1)}
+::-webkit-scrollbar { -webkit-appearance: none; width: 7px; height: 7px; -webkit-overflow-scrolling: touch; }
+    }
+</style>
+
+<div class="continer-mg">
+    <div class="mg">
+        <div class="bt-close">
+            <button type="button" class="bt_tabsch" onclick="menuGroupMoreToggle();" >Close</button>
+        </div>
+        <div>
+            <ul id="mglist" class="ul">
+                <li class="bx">
+                    <a href="#" onclick="getMenuGroupItemList('ALL','')" name="" id="menuGroup_">
+                        <span class="m">ALL</span>
+                    </a>                
+                </li>
+
+
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10003"  onclick='getMenuGroupItemList("BREAKFAST","10003")' name="10003">
+                            <span class="m">BREAKFAST</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10005"  onclick='getMenuGroupItemList("CLASSIC SANDWICHES","10005")' name="10005">
+                            <span class="m">CLASSIC SANDWICHES</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10044"  onclick='getMenuGroupItemList("BOBA TEAS","10044")' name="10044">
+                            <span class="m">BOBA TEAS</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10000"  onclick='getMenuGroupItemList("ESPRESSO DRINKS","10000")' name="10000">
+                            <span class="m">ESPRESSO DRINKS</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10006"  onclick='getMenuGroupItemList("HOT SANDWICHES","10006")' name="10006">
+                            <span class="m">HOT SANDWICHES</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10007"  onclick='getMenuGroupItemList("DAILY SPECIAL","10007")' name="10007">
+                            <span class="m">DAILY SPECIAL</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10048"  onclick='getMenuGroupItemList("CONDIMENTS","10048")' name="10048">
+                            <span class="m">CONDIMENTS</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10001"  onclick='getMenuGroupItemList("SALADS","10001")' name="10001">
+                            <span class="m">SALADS</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10004"  onclick='getMenuGroupItemList("SUPER SANDWICHES","10004")' name="10004">
+                            <span class="m">SUPER SANDWICHES</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10042"  onclick='getMenuGroupItemList("QUESADILLAS","10042")' name="10042">
+                            <span class="m">QUESADILLAS</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10045"  onclick='getMenuGroupItemList("SMOOTHIES","10045")' name="10045">
+                            <span class="m">SMOOTHIES</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10039"  onclick='getMenuGroupItemList("SNACKS","10039")' name="10039">
+                            <span class="m">SNACKS</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10040"  onclick='getMenuGroupItemList("SOFT DRINKS","10040")' name="10040">
+                            <span class="m">SOFT DRINKS</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10002"  onclick='getMenuGroupItemList("WRAPS","10002")' name="10002">
+                            <span class="m">WRAPS</span>
+                        </a>
+                    </li>
+                    <li class="bx">
+                        <a href="#" id="menuGroup_10041"  onclick='getMenuGroupItemList("SOUPS","10041")' name="10041">
+                            <span class="m">SOUPS</span>
+                        </a>
+                    </li>
+            </ul>
+        </div>        
+    </div>
+    <div id="menugroup-more" class="continer-mg more" onclick="menuGroupMoreToggle();">
+        <a><i id="moreicon" class="fa-solid fa-angle-down"></i></a>
+    </div>
+</div>
+
+<script>
+    function menuGroupMoreToggle() {
+        $(".continer-mg .bx").toggleClass("bx-active");
+        $(".continer-mg .mg .ul").toggleClass("ul-active");
+        $(".continer-mg .mg").toggleClass("mg-active");
+        $(".continer-mg .more").toggleClass("more-active");
+        $(".continer-mg .mg .bt-close").toggleClass("bt-close-active");
+    }
+
+    function menuGroupMoreClose() {
+        
+        if ($(".continer-mg .bx").hasClass("bx-active")) {            
+            $(".continer-mg .mg .ul").toggleClass("ul-active");
+            $(".continer-mg .bx").toggleClass("bx-active");            
+            $(".continer-mg .mg").toggleClass("mg-active");
+            $(".continer-mg .more").toggleClass("more-active");
+            $(".continer-mg .mg .bt-close").toggleClass("bt-close-active");            
+
+            var groupCode = $('#groupCode').val();
+            if (groupCode != '') {
+                var offset = $("#menuGroup_" + groupCode).offset();
+                console.log(offset);
+                $(".continer-mg .mg").animate({ scrollLeft: offset.left }, 0);
+            }
+        }
+    }    
+</script>
+    </div>
+</div>
+
+<table id="MainBodyTbl" class="MainBodyWrap" style="">
+    <tr class="headerInsteadSpace" style="">
+        <td></td>
+    </tr>
+    <tr class="MainContentsWrap" style="">
+        <td>
+            <input type="hidden" name="groupCode" id="groupCode" value="" />
+            <div id="searchDivWrap">
+                <div style="float: left; width: Calc(100% - 68px); margin-left: 3px;">
+                    <input class="form-control" style="" placeholder="Search Name" name="searchingStr" id="searchingStr" type="text">
+                </div>
+                <div style="float: left; margin-left: 4px;">
+                    <button class="btn btn-default" id="ItemListBtn" style="font-size: 12px; padding: 7px;">Search</button>
+                </div>
+            </div>
+            <div class="MainContentsDivWrap">
+                <div class="MainListTitle" style="">
+                    <div style="float: left;">
+                        ITEM
+                    </div>
+                    <div id="totalCountDiv" style="">
+                        Total : 0
+                    </div>
+                </div>
+                <div>
+                    <button data-toggle="modal" data-target="#myModal" id="btnSelectOrdertype" onclick="doQueryDeliveryList();" style="display:none;"></button>
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+                </div>
+                <div style="width: 100%; margin-top:5px">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width: 100%;">
+                                <div id="OrderItemListView" style="width: 100%;">
+
+<style>
+    .spicys {
+        position:absolute;
+        display: contents;
+    }
+    .spicy:first-child {
+        margin-left: 0px;
+    }
+    .spicy {
+        display: inline;
+        margin-left: -3px;
+        vertical-align: top;
+    }
+
+    .spicys_ {
+        position:absolute;
+        display: contents;
+    }
+    .spicy_:first-child {
+        margin-left: 0px;
+    }
+    .spicy_ {
+        display: inline;
+        margin-left: -3px;
+        vertical-align: top;
+    }
+
+    .list-price-right {
+        text-align:right;
+    }
+</style>
+<script>
+    $('#maxPage').val(5);
+    $('#totalCountDiv').text("Total : 116");
+</script>
+
+                <div class="itemGridListTitleDiv" style="height:auto; min-height: 60px;border-bottom: 1px solid #c8c9ca;border-top: 1px solid #c8c9ca;margin-bottom: 10px;display: table;">
+                    <div class="truncateEllipsis h_MenuGroup" style="text-align:center;font-size:15px;height: 50px; vertical-align: middle; display: table-cell;font-weight: bold;background:#e3e3e3">
+                       BREAKFAST
+                    </div>
+                </div>   
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100030','E', '10003')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Mixed Bagels.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100030','E', '10003')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">BAGEL WITH CREAM CHEESE</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100030','E', '10003')">
+                            <span class="spicys">
+                            </span>
+4.99                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100030','E', '10003')" style="margin-left:5px;text-align:left">
+                            Toasted Bagel of your Choice (Plain, Everything, Jalapeno)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100145','E', '10003')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Breakfast_ Avocado Toast.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100145','E', '10003')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">AVOCADO TOAST</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100145','E', '10003')">
+                            <span class="spicys">
+                            </span>
+5.99                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100145','E', '10003')" style="margin-left:5px;text-align:left">
+                            Toasted Bread (white, wheat, sourdough, rye) Shmear of Avocado, Toasted bagel (Plain, Everything, Jalapeno) with Salt and Black Pepper
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100033','E', '10003')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Breakfast_Breakfast Burrito.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100033','E', '10003')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">BREAKFAST BURRITO</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100033','E', '10003')">
+                            <span class="spicys">
+                            </span>
+8.99                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100033','E', '10003')" style="margin-left:5px;text-align:left">
+                            Potato, eggs, cheese and salsa with your choice of ham, turkey, bacon or sausage in a flour tortilla.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100031','E', '10003')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Breakfast_Breakfast Croissant.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100031','E', '10003')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">BREAKFAST CROISSANT</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100031','E', '10003')">
+                            <span class="spicys">
+                            </span>
+6.99                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100031','E', '10003')" style="margin-left:5px;text-align:left">
+                            Ham, Turkey, Bacon or Sausage with Egg and cheese on a croissant
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100034','E', '10003')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Breakfast_Sunrise Bagel.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100034','E', '10003')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">SUNRISE BAGEL</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100034','E', '10003')">
+                            <span class="spicys">
+                            </span>
+6.99                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100034','E', '10003')" style="margin-left:5px;text-align:left">
+                            Ham, Turkey, Bacon or Sausage with Egg and cheese on a toasted bagel
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100032','E', '10003')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Breakfast_Sunrise Sandwich.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100032','E', '10003')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">SUNRISE SANDWICH</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100032','E', '10003')">
+                            <span class="spicys">
+                            </span>
+5.49                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100032','E', '10003')" style="margin-left:5px;text-align:left">
+                            Ham, Turkey, Bacon, or Sausage with Egg and cheese on a toasted English Muffin
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100162','E', '10003')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Breakfast_Urban Bagel .jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100162','E', '10003')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">URBAN BAGEL</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100162','E', '10003')">
+                            <span class="spicys">
+                            </span>
+6.99                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100162','E', '10003')" style="margin-left:5px;text-align:left">
+                            Egg, Cream Cheese &amp; Avocado on a Bagel (Plain, Everything, Jalapeno)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <div class="itemGridListTitleDiv" style="height:auto; min-height: 60px;border-bottom: 1px solid #c8c9ca;border-top: 1px solid #c8c9ca;margin-bottom: 10px;display: table;">
+                    <div class="truncateEllipsis h_MenuGroup" style="text-align:center;font-size:15px;height: 50px; vertical-align: middle; display: table-cell;font-weight: bold;background:#e3e3e3">
+                       CLASSIC SANDWICHES
+                    </div>
+                </div>   
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100046','E', '10005')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Sandwich_BLT.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100046','E', '10005')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">BLT</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100046','E', '10005')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100046','E', '10005')" style="margin-left:5px;text-align:left">
+                            Bacon, Lettuce, Tomato
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100040','E', '10005')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Classic Sandwich_Chicken Salad .jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100040','E', '10005')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">CHICKEN SALAD SANDWICH</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100040','E', '10005')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100040','E', '10005')" style="margin-left:5px;text-align:left">
+                            Chicken Salad, Lettuce, Tomato
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100044','E', '10005')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Classic Sandwich_Egg Salad .jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100044','E', '10005')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">EGG SALAD SANDWICH</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100044','E', '10005')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100044','E', '10005')" style="margin-left:5px;text-align:left">
+                            Egg Salad, Lettuce, Tomato
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100043','E', '10005')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Classic Sandwich_Honey Ham .jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100043','E', '10005')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">HAM SANDWICH</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100043','E', '10005')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100043','E', '10005')" style="margin-left:5px;text-align:left">
+                            Freshly Sliced Ham, American Cheese, Lettuce, Tomato
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100042','E', '10005')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Classic Sandwich_Roast Beef.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100042','E', '10005')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">ROAST BEEF</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100042','E', '10005')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100042','E', '10005')" style="margin-left:5px;text-align:left">
+                            Freshly Sliced Roast Beef, American Cheese, Lettuce, Tomato
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100179','E', '10005')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Screenshot 2026-05-14 140046.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100179','E', '10005')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">PEANUT BUTTER AND JELLY</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100179','E', '10005')">
+                            <span class="spicys">
+                            </span>
+4.99                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100179','E', '10005')" style="margin-left:5px;text-align:left">
+                            Creamy Peanut Butter, Strawberry Jelly
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100041','E', '10005')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Sandwich_Tuna Salad.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100041','E', '10005')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">TUNA SALAD SANDWICH</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100041','E', '10005')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100041','E', '10005')" style="margin-left:5px;text-align:left">
+                            Tuna Salad, Lettuce, Tomato
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100047','E', '10005')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Sandwich_Smoked Turkey.jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100047','E', '10005')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">TURKY BREAST</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100047','E', '10005')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100047','E', '10005')" style="margin-left:5px;text-align:left">
+                            Freshly Sliced Turkey Breast, American Cheese, Lettuce, Tomato
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+                    <div style="text-align:center;width:100px;display:table-cell" onclick="setOrderSelector('100045','E', '10005')">
+                    <img class="itemImageElement_3" src="https://uprwb.upsolutioncloud.com//PosImage/the_cafe_aero/1000/OnlineMenuItem/Classic Sandwich_Vegetarian .jpg" onerror="this.onerror = null; this.src = '/Common/Images/WebOrder/768.png';" />
+                </div>
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100045','E', '10005')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">VEGETARIAN</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100045','E', '10005')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemGridListDesDiv_3" style="display: inline-block;width: 95%;padding-top:5px;border-top: 1px solid #d7d9da;margin-left: 10px;margin-right: 10px;">
+                        
+                            <div class="truncateEllipsis" onclick="setOrderSelector('100045','E', '10005')" style="margin-left:5px;text-align:left">
+                            Swiss, Avocado, Lettuce, Tomato, Cucumber, Pepperoncinis
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <div class="itemGridListTitleDiv" style="height:auto; min-height: 60px;border-bottom: 1px solid #c8c9ca;border-top: 1px solid #c8c9ca;margin-bottom: 10px;display: table;">
+                    <div class="truncateEllipsis h_MenuGroup" style="text-align:center;font-size:15px;height: 50px; vertical-align: middle; display: table-cell;font-weight: bold;background:#e3e3e3">
+                       BOBA TEAS
+                    </div>
+                </div>   
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100160','E', '10044')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">BOBA TEAS</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100160','E', '10044')">
+                            <span class="spicys">
+                            </span>
+6.99                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <div class="itemGridListTitleDiv" style="height:auto; min-height: 60px;border-bottom: 1px solid #c8c9ca;border-top: 1px solid #c8c9ca;margin-bottom: 10px;display: table;">
+                    <div class="truncateEllipsis h_MenuGroup" style="text-align:center;font-size:15px;height: 50px; vertical-align: middle; display: table-cell;font-weight: bold;background:#e3e3e3">
+                       ESPRESSO DRINKS
+                    </div>
+                </div>   
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100005','E', '10000')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">AMERICANO</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100005','E', '10000')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100004','E', '10000')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">BREW COFFEE</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100004','E', '10000')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100008','E', '10000')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">CAPPACCINO</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100008','E', '10000')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100002','E', '10000')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">CARAMEL MACCHIATO</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100002','E', '10000')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100007','E', '10000')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">CHAI TEA LATTE</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100007','E', '10000')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100001','E', '10000')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">FRAPPE</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100001','E', '10000')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100010','E', '10000')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">HAMMER HEAD</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100010','E', '10000')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="itemGridWrap_3" >
+            
+            <div style="margin: 7px;">
+
+                <div class="itemGridListDesDiv" style="vertical-align:middle">
+                    <div class="itemGridListTitleDiv_3" style="display:table-cell;width:70%;vertical-align:middle">
+                        
+                            <div class="truncateEllipsis" style="text-align:center;font-size:13px;min-height: 40px;"  onclick="setOrderSelector('100003','E', '10000')">
+                                <span style="text-align: left;padding-left: 20px;font-size:14px;height: 100%;vertical-align: middle;">HOT CHOCOLATE</span>
+                        </div>
+                    </div>
+                    <div class="itemGridListPriceDiv" style="display:table-cell;width:30%;vertical-align:middle;height:30px;">
+                        
+                            <div class="truncateEllipsis list-price-right" onclick="setOrderSelector('100003','E', '10000')">
+                            <span class="spicys">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100%;">
+                                <div id="pageLoading" style="display: none; text-align: center; width: 100%;">
+                                    <img src="/Common/Images/WebOrder/loading.gif" style="width: 100px;" />
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr style="width: 100%; height: 60px; border-top: 1px solid #e1e1e1;">
+        <td class="footerTd" style="">
+            
+<style>
+.footer-copyright a {
+    color: #ed1b19;
+}
+</style>
+<div class="footer">
+	<div class="container">
+    	<!-- Copyright -->
+		<div class="footer-copyright">
+			<!-- Paragraph -->
+			<p>Copyright &copy; 2026 <span style="cursor:pointer" onclick="javascript:location.href='/';">Bluu </span>, Inc. All rights reserved.</p>
+            <p style="color: #ed1b19;"><a href="/the_cafe_aero/en/home/document_use">Terms of Use</a>  /  <a href="/the_cafe_aero/en/home/document_privacy"> Privacy Policy</a> / <a href="/the_cafe_aero/en/home/document_CAprivacy">CA Privacy Policy</a> / <a href="/the_cafe_aero/en/home/document_SMSprivacy">SMS Privacy Policy</a> / <a href="/the_cafe_aero/en/home/document_service">EULA</a></p>
+		</div>
+	</div>
+</div>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyD_A94O2INfi5CH5-H7Z30tasr9mifyCPA"></script>
+
+<script>
+    var user_lat;
+    var user_long;
+
+    var IsTemporayClose = "";
+    var TemporaryCloseMessage = "";
+    var scheduleDate2 = '';
+    
+    var storeInfoHQ = "8745 AERO DR ,SAN DIEGO,CA 92123  ";
+    var store_latlng;
+    var directionsService = new google.maps.DirectionsService();
+    var distanceInput;
+    var useOrderDistance = '0';
+    var orderDistance =  (0); //주문가능 거리 (10m)
+    var selectOrderType = "|Pickup|";
+
+    var lastActivityTime  =new Date().getTime();  // 마지막 활동 시간 초기화
+    var timeoutDuration = 30 * 60 * 1000; // 세션 설정시간만큼 비활성 기간
+
+    var isScheduleTimeOutside = "0" == "1" ? true : false;
+
+    if (typeof (Storage) != "undefined") {
+        var basketMenus = localStorage.getItem("basketMenus");
+        var companyID = "the_cafe_aero";
+        var storeCode = "1000";
+        var tableNum = "1000";
+
+        //강제로 카트를 클리어 할지 여부 값을 확인하여 적용.
+        var isClearCart = "0";
+        if(isClearCart == "1"){
+            localStorage.basketMenus = null;
+        }
+
+        //매장 연결정보가 바뀌었으면 카트 클리어
+        if (basketMenus != null && basketMenus != "null") {
+            if (companyID != "" && storeCode != "" && tableNum != "") {
+                basketMenus = JSON.parse(basketMenus);
+                if (basketMenus.ci != companyID || basketMenus.sc != storeCode || basketMenus.tc != tableNum) {
+                    localStorage.basketMenus = null;
+                }
+            }
+        }
+
+        var selOrderType = localStorage.getItem("ordertype");
+        if(selOrderType != null && selOrderType != "null"){
+            if (companyID != "" && storeCode != "" && tableNum != ""){
+                selOrderTypes = JSON.parse(selOrderType);
+                if(selOrderTypes.company_id != companyID || selOrderTypes.store_code != storeCode || selOrderTypes.table_num != tableNum){
+                    localStorage.ordertype = null;
+                }
+            }
+        }
+    }
+
+
+    $(document).ready(function () {
+        //showCategoryViewDiv();//최초카테고리 숨김처리 => 보이고 싶으면 삭제
+        
+        $(".continer-mg .mg .bx").first().addClass('bx-select');
+        
+
+        var scheduledates = localStorage.getItem("ordertype");
+
+        if(scheduledates != null && scheduledates != "null"){
+            sOrderTypes = JSON.parse(scheduledates);
+            if(sOrderTypes.is_schedule){
+                scheduleDate2 = kendo.toString(kendo.parseDate(sOrderTypes.scheduleTime), "yyyy-MM-dd HH:mm");
+            }
+        }
+
+        setStoreInfo();
+
+        //영업 시간 관련 설정(bluu order 영업시간이 online order 가 아닌 스토어 시간을 따르도록 변경) -2024.07.26
+        if('1000' != '1000'){
+            if('' != '1'){
+                CheckWeelyTime();
+            }
+        }
+        else{
+            CheckWeelyTime();
+        }
+
+        $(window).scroll(function (e) {
+            var iCurScrollPos = $(this).scrollTop();
+            if (iCurScrollPos == 0) {
+                $('#TopToBtnDivWrap').css('display', 'none');
+            } else {
+                $('#TopToBtnDivWrap').css('display', 'block');
+
+                var maxPage = $('#maxPage').val();
+                var page = $('#page').val();
+
+                var chkExist = document.getElementById('orderCount');//상품선택되었을때 스크롤페이징 안되게끔 확인
+                //alert(chkExist);
+                if (parseInt(maxPage) > parseInt(page) && chkExist == null) {
+                    var scrollHeight = $(document).height();
+                    var scrollPosition = $(window).height() + $(window).scrollTop()+300;
+                    if (scrollPosition >= scrollHeight) {
+                        $('#pageLoading').show();
+                        $('#loading').show();
+                        reLoadItems(page, 0);
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+
+        $('#scrollToTop').click(function (e) {
+            $('html, body').animate({ scrollTop: '0px' }, 150);
+        });
+
+        $("#ItemListBtn").click(function () {
+            reLoadItems(0, 1);
+        });
+
+        $('html, body').animate({ scrollTop: '0px' }, 0);
+
+        setBasketCounter();
+
+        if (tableNum != '1000' && orderDistance != 0) {
+            if(useOrderDistance == '1'){
+                getLatLangFromAddress(storeInfoHQ);
+            }
+        } else {
+            orderDistance = 0;
+        }
+
+        $("#scheduleDivWrap").click(function(){
+            clearSchedule();
+        });
+
+        if('1000' == '1000')    ///테이블 번호가 있는 주문일 경우 order type 선택 창이 뜨지 않도록 수정(2023.04.03)
+        {
+            doSelectOrderTypePopup();
+        }
+        displaySchedule();
+    });
+
+    var UPayPopUrl = "/the_cafe_aero/en/WebOrder/PV_SelectOrderType/";
+
+    function doSelectOrderTypePopup(){
+        //webOrder 설정에서 'SelectOrderType'사용을 선택하고 index페이지에서 ordertype을 선택하는 팝업창에서 ordertype을 선택하지 않았을 때 팝업창을 띄움
+        //$('#btnSelectOrdertype').click();
+        if ("" == '1' && (localStorage.getItem("ordertype") == "null" || localStorage.getItem("ordertype") == null || localStorage.getItem("ordertype") == "")) {
+            $('#btnSelectOrdertype').click();
+        }
+    }
+
+    function doQueryDeliveryList() {
+        var param = new Object();
+
+        param.STORE_CODE ="1000";
+
+        params = JSON.stringify(param);
+
+        console.log(params);
+
+        ajax.GetAjax(UPayPopUrl, params, "html", function (result) {
+            $("#myModal").html(result);
+        });
+
+    }
+
+    //index페이지에서 ordertype을 선택하는 팝업창에서 ordertype을 선택하면 localstorage에 저장
+    //type = 0 (delivery) / type = 3 (pick up)
+    function setSelectOrderType(type){
+        var isOtherDeliveryURL = "False";
+        var otherDeliveryURL = "";
+
+        //3rd Delivery URL 옵션 사용 여부 체크
+        if(type == 0 && isOtherDeliveryURL == "True"){
+            console.log(otherDeliveryURL);
+            if(0 == 0)
+            {
+                window.location.replace(otherDeliveryURL);
+            }
+            else if(0 == 1)   //3rd Delivery URL이 2개 이상일 경우 업체를 선택할 수 있는 페이지로 이동
+            {
+                window.location.replace("");
+            }
+            else
+            {
+                location.href = "/the_cafe_aero/en/WebOrder/DeliveryUrl";
+            }
+
+        return true;
+    }
+    else{
+
+        var schedule;
+        var isSchedule = $("#scheduleChk").prop('checked');
+        if(isSchedule){
+            try {
+                var scheduleDate = $("#scheduleDate").data("kendoDatePicker").value();
+                scheduleDate = kendo.toString(scheduleDate, "yyyy-MM-dd")
+                var scheduleTime = $("#scheduleTime").data("kendoTimePicker").value();
+                scheduleTime = kendo.toString(scheduleTime, "HH:mm:ss");
+                schedule = scheduleDate + " " + scheduleTime;
+                var tDate = Date.parse(schedule);
+                if(isNaN(tDate))
+                    throw new Error('Parameter is not a number!');
+            } catch (err) {
+                bootbox.alert("Please select to Schedule for later");
+                return false;
+            }
+        }
+
+        var otypes = {
+            "company_id": "the_cafe_aero",
+                "store_code": "1000",
+                "table_num": '1000',
+                "order_type": type,
+                "is_schedule": isSchedule,
+                "scheduleTime": schedule
+            }
+            localStorage.setItem("ordertype", JSON.stringify(otypes));
+            displaySchedule();
+            return true;
+        }
+    }
+
+    function setStoreInfo() {
+        var storeInfo = {
+            "company_id": "the_cafe_aero",
+            "store_code": "1000",
+            "table_num": '1000'
+        };
+        localStorage.setItem("storeInfo", JSON.stringify(storeInfo));
+    }
+
+    function getLocation() {
+        if (navigator.geolocation) { // GPS를 지원하면
+            try {
+                if (location.protocol.indexOf('https') >= 0) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        user_lat = position.coords.latitude;
+                        user_long = position.coords.longitude;
+
+                        //user_lat = 40.875167;
+                        //user_long = -74.065538;
+
+                        var start = new google.maps.LatLng(user_lat, user_long);
+                        var end = store_latlng;
+
+                        distanceInput = start.distanceFrom2(end);
+
+                    }, function (error) {
+                        distanceInput = 0;
+                        //console.error(error);
+                    }, {
+                        enableHighAccuracy: false,
+                        maximumAge: 0,
+                        timeout: Infinity
+                    });
+                } else {
+                    distanceInput = 0;
+                }
+            } catch (err) {
+                distanceInput = 0;
+                //console.error(err);
+            }
+        } else {
+            bootbox.alert("GPS Not Supported");
+        }
+    }
+
+    var user_addr = '';
+    function getLatLangFromAddress(address) {
+        var geocoder;
+        geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                store_latlng = results[0].geometry.location;
+                getLocation();
+            } else {
+                bootbox.alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+    }
+
+    function reLoadItems(page, type) {
+        var searchStr = $('#searchingStr').val();
+        var groupCode = $('#groupCode').val();
+        var storeCode = 1000;
+        //var scheduledates = localStorage.getItem("ordertype");
+        //if(scheduledates != null && scheduledates != "null"){
+        //    selOrderTypes = JSON.parse(scheduledates);
+        //    if(selOrderTypes.is_schedule){
+        //        scheduleDate2 = kendo.toString(kendo.parseDate(selOrderTypes.scheduleTime), "yyyy-MM-dd HH:mm");
+        //    }
+        //}
+
+        console.log("reLoadItems : " + groupCode);
+
+        //테이블 번호 유무에 따라 url을 나눔 (테이블 번호 없을 경우 1000)
+        var actionurl = "/the_cafe_aero/en/WebOrder/OrderItemList"
+        if(tableNum != '1000')
+        {
+            actionurl = "/the_cafe_aero/en/WebOrder/bluuOrderItemList"
+        }
+
+        var chkPage = parseInt(page) + 1;
+        if (chkPage == 1) {
+            $('html, body').animate({ scrollTop: '0px' }, 0);
+        }
+
+        // 사용자 활동을 추적하여 마지막 활동 시간을 업데이트함
+        $(document).on('mousemove keydown click', function() {
+            lastActivityTime = new Date().getTime(); // 현재 시간으로 업데이트
+        });
+
+        // 주기적으로 세션 타임아웃을 확인함
+        setInterval(function() {
+            var currentTime = new Date().getTime(); // 현재 시간 가져오기
+            if (currentTime - lastActivityTime > timeoutDuration) {
+                handleSessionTimeout(); // 타임아웃 처리 함수 호출
+            }
+        }, 1000); // 1초마다 체크
+
+        // 세션 타임아웃 처리 함수
+        function handleSessionTimeout() {
+            location.reload(); // index 페이지로 리디렉션
+        }
+
+        $('#page').val(chkPage);
+        $.ajax({
+            type: "GET",
+            cache: false,
+            async: false,
+            data: { page: chkPage, searchingStr: searchStr, groupCode: groupCode, storeCode: storeCode, scheduledate2: scheduleDate2 },
+            //data: { page: chkPage, searchingStr: searchStr, groupCode: groupCode, storeCode: storeCode },
+            url: actionurl,
+            success: function (str) {
+                var currentTime = new Date().getTime(); // 현재 시간 가져오기
+                if (type == 0) {
+                    //if(str.trim().indexOf('epipay') > 0 && localStorage.getItem('storeInfo').trim().indexOf('epipay') < 0)   //세션이 사라지면 refresh
+                    //{
+                    //    location.reload();
+                    //} else
+                    if (currentTime - lastActivityTime > timeoutDuration) {
+                        handleSessionTimeout(); // 타임아웃 처리 함수 호출
+                    }else
+                        $('#OrderItemListView').append(str);
+                } else {
+                    //if(str.trim().indexOf('epipay') > 0 && localStorage.getItem('storeInfo').trim().indexOf('epipay') < 0)
+                    //{
+                    //    location.reload();
+                    //} else
+                    //{
+                    if (currentTime - lastActivityTime > timeoutDuration) {
+                        handleSessionTimeout(); // 타임아웃 처리 함수 호출
+                    }else{
+                        $('#OrderItemListView').html(str);
+                        $('#page').val(1);
+                    }
+                    //}
+                }
+                $('#pageLoading').hide();
+                $('#loading').hide();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("An error occurred while changing. \nPlaease try again or refresh");
+                $('#pageLoading').hide();
+                $('#loading').hide();
+            }
+        });
+    }
+
+    function setPage() {
+        var chkDiv = $('.MainListTitle').css('display');
+        if (chkDiv == "none") {
+            $('.MainListTitle').css('display', 'block');
+        }
+        $('#page').val('1');
+    }
+
+    function showSearchInputDiv() {
+        var top = jQuery(document.getElementById('searchDivWrap')).offset().top;
+        var scrollTop = $(window).scrollTop();
+
+        if (parseInt(top) == parseInt(scrollTop)) {
+            $('#searchDivWrap').animate({ top: "60px" }, 150);
+        } else {
+            $('#searchDivWrap').animate({ top: "0px" }, 150);
+            $('#scrollToTop').click();
+            $('#searchingStr').val('');
+            $('#ItemListBtn').click();
+        }
+    }
+
+
+    function getMenuGroupItemList(menuGroupName, groupCode) {
+        $(".bx").removeClass('bx-select');
+        $("#menuGroup_" + groupCode).parent().addClass('bx-select');
+        $('#groupCode').val(groupCode);
+
+        reLoadItems(0, 1);
+        menuGroupMoreClose();
+    }
+
+    function setOrderSelector(itemCode, bsType, groupCode) {
+    //function setOrderSelector(itemCode, bsType, groupCode) {
+        var MenuGroupCode = $(".slick-select span").attr('name') == '' ? '0' : '1';
+        if(useOrderDistance == '1'){
+            if (distanceInput <= orderDistance || orderDistance == 0) {
+                location.href = "WebOrder/Order?itemCode=" + itemCode + "&bsType=" + bsType + "&groupCode=" + groupCode + "&mgc=" + MenuGroupCode + "&scheduledate2=" + scheduleDate2;
+                //location.href = "WebOrder/Order?itemCode=" + itemCode + "&bsType=" + bsType + "&groupCode=" + groupCode + "&mgc=" + MenuGroupCode;
+            } else {
+                bootbox.alert("Table orders cannot be placed outside the store or at other locations. : " + distanceInput + " ft. (store : " + store_latlng.lat() + ", " + store_latlng.lng() + " -- user : " + user_lat + ", "+ user_long + ")");
+            }
+        }else{
+            location.href = "WebOrder/Order?itemCode=" + itemCode + "&bsType=" + bsType + "&groupCode=" + groupCode + "&mgc=" + MenuGroupCode + "&scheduledate2=" + scheduleDate2;
+            //location.href = "WebOrder/Order?itemCode=" + itemCode + "&bsType=" + bsType + "&groupCode=" + groupCode + "&mgc=" + MenuGroupCode;
+        }
+    }
+
+    function setBasketCounter() {
+        var counter = 0;
+        if (typeof (Storage) !== "undefined") {
+            var basketMenus = localStorage.getItem("basketMenus");
+            if (basketMenus != null && basketMenus != "null") {
+                basketMenus = JSON.parse(basketMenus);
+                for (var i = 0; i < basketMenus.its.length; i++) {
+                    counter += basketMenus.its[i].oc;
+                }
+                //counter = basketMenus.its.length;
+            }
+        }
+        $('#cartCountDiv').text(counter);
+    }
+
+
+    function CheckWeelyTime() {
+        var date = scheduleDate2 != '' ? new Date(scheduleDate2) : new Date();
+        var params = new Object();
+        params.STORE_ID = "the_cafe_aero";
+        params.SUB_STORE_CODE = "1000"
+        params.WEEK_TYPE = date.getDay();
+        params = JSON.stringify(params);
+
+        $.ajax({
+            type: "POST",
+            url: "/the_cafe_aero/en/Order/GetWeeklyTime/",
+            timeout: 30000,
+            data: params,
+            cache: false,
+            async: false,
+            dataType: "Json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                if (result != null) {
+                    IsWork = result.HIDE;
+                    IsTemporayClose = result.TEMPORARY_CLOSE;
+                    TemporaryCloseMessage = result.TEMPORARY_CLOSE_MESSAGE;
+
+                    if (!isScheduleTimeOutside) {
+                         if(IsWork == "1")
+                         {
+                             if("" == '1' && "0" == "1"){
+                                 bootbox.alert("Orders cannot be placed outside of business hours. Currently schedule orders are available. Please check business hours.");
+                             } else
+                             {
+                                 bootbox.alert("Orders cannot be placed outside of business hours. Please check business hours.");
+                             }
+
+                         }  else if (IsTemporayClose == "0") {
+                             TemporaryCloseMessage = (TemporaryCloseMessage == null || TemporaryCloseMessage == '') ? 'Our Online Order is temporarily closed. Sorry for inconvenience' : TemporaryCloseMessage;
+                             bootbox.alert(TemporaryCloseMessage);
+                         } else {             //최종 주문까지 가기 전에 매장 운영 안하는 시간대라는 알림창이 뜨도록 요청(2024.04.22)
+                             if("" == '1' && "0" == "1"){
+                                 if(result.IS_NEXTDAY == "1"){
+                                     if((result.FR_TIME < Number(moment(date).format('HHmm')) && 2400 > Number(moment(date).format('HHmm'))) || (0 < Number(moment(date).format('HHmm')) && result.TO_TIME > Number(moment(date).format('HHmm')))){
+
+                                     } else{
+                                         bootbox.alert("Orders cannot be placed outside of business hours. Currently schedule orders are available. Please check business hours.");
+                                     }
+                                 }
+                                 else {
+                                     if(result.FR_TIME > Number(moment(date).format('HHmm')) || result.TO_TIME < Number(moment(date).format('HHmm'))){
+                                         bootbox.alert("Orders cannot be placed outside of business hours. Currently schedule orders are available. Please check business hours.");
+                                     }
+                                 }
+                             } else{
+                                 if(result.IS_NEXTDAY == "1"){
+                                     if((result.FR_TIME < Number(moment(date).format('HHmm')) && 2400 > Number(moment(date).format('HHmm'))) || (0 < Number(moment(date).format('HHmm')) && result.TO_TIME > Number(moment(date).format('HHmm')))){
+
+                                     } else{
+                                         bootbox.alert("Orders cannot be placed outside of business hours. Please check business hours.");
+                                     }
+                                 }
+                                 else {
+                                     if(result.FR_TIME > Number(moment(date).format('HHmm')) || result.TO_TIME < Number(moment(date).format('HHmm'))){
+                                         bootbox.alert("Orders cannot be placed outside of business hours. Please check business hours.");
+                                     }
+                                 }
+                             }
+                         }                   
+
+                    }
+                }
+            },
+            error: function (e) {
+                bootbox.alert('');
+                console.log(e);
+            },
+        });
+        }
+
+        function displaySchedule(){
+            var selOrderType = localStorage.getItem("ordertype");
+            if(selOrderType != null && selOrderType != "null"){
+                if (companyID != "" && storeCode != "" && tableNum != ""){
+                    selOrderTypes = JSON.parse(selOrderType);
+                    if(selOrderTypes.is_schedule){
+                        scheduleDate = kendo.toString(kendo.parseDate(selOrderTypes.scheduleTime), "MM/dd/yyyy HH:mm");
+                        $("#scheduleDivWrap").css("display", "block");
+                        $("#scheduleDateSpan").html("Schedule : " + scheduleDate);
+                    }
+                    else {
+                        $("#scheduleDivWrap").css("display", "none");
+                    }
+                }
+            }
+        }
+
+        function clearSchedule(){
+            bootbox.confirm("Do you cancel schedule order?", function (result) {
+                localStorage.removeItem("ordertype");
+
+                displaySchedule();
+
+                doSelectOrderTypePopup();
+            });
+        }
+</script>
+
+            </td>
+        </tr>
+    </table>
+    <div id="all_body" style="display:none;"></div>
+
+    <div id="dvLoading" style="position: fixed; left: 50%; top:50%; margin:-18px 0 0 -18px; display:none; z-index:20">
+        <img src="/Common/images/fileupload/loading.gif" />
+    </div>
+    <div class="time_popup" style="display:none">
+            <div class="time_close"> </div>
+            <div class="time_title" style="width:100%"> Business Hours</div>
+                                <div class="time_con" style="width:100%">
+	            <ul style="width:35%">
+	                <li > Sunday </li> 
+	                <li > Monday </li> 
+	                <li > Tuesday </li>
+	                <li > Wednesday </li>
+	                <li > Thursday </li>	
+	                <li class=time_day> Friday </li>	
+	                <li > Saturday </li>
+	            </ul>
+	            <ul style="width:65%">
+                    
+	                <li > Closed </li> 
+	                <li > 07:30 AM~02:30 PM </li> 
+	                <li > 07:30 AM~02:30 PM </li>  
+	                <li > 07:30 AM~02:30 PM </li>  
+	                <li > 07:30 AM~02:30 PM </li> 	
+	                <li class=time_day> 06:00 AM~11:00 PM </li>  	
+	                <li > Closed </li>  
+	            </ul>
+            </div>
+
+        <span class="time_close"><img src="/Common/images/CakeFactory/time_close.png" id="timepopClose" style="cursor:pointer" /></span>
+        </div>  
+</body>
+    
+</html>
+
+<script>
+    function layerCloseMain() {
+        $('#popUpView').html("");
+        $('#all_body').css("display", "none");
+        $("#dvLoading").css("display", "none")
+    }
+
+    function layOutView() {
+        var height = document.getElementsByTagName("HTML")[0].scrollHeight;
+        $('#all_body').css("display", "block");
+        $('#all_body').css("height", height);
+        $("#dvLoading").css("display", "block")
+    }
+
+    function getScheduleInfo() {
+        var rValue = new Object();
+        rValue.is_schedule = false;
+        rValue.scheduleTime = "";
+
+        var selOrderType = localStorage.getItem("ordertype");
+        if (selOrderType != null && selOrderType != "null") {            
+            selOrderTypes = JSON.parse(selOrderType);
+            if (selOrderTypes.is_schedule) {
+                rValue.is_schedule = selOrderTypes.is_schedule;
+                rValue.scheduleTime = selOrderTypes.scheduleTime;
+            }
+        }
+        return rValue;
+    }
+</script>

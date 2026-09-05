@@ -1,0 +1,131 @@
+[
+  {
+    "restaurantId": "7920",
+    "name": "Sizzling Saigon",
+    "sourceUrl": "https://www.doordash.com/store/sizzling-saigon-santee-36957016/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash JSON-LD Menu block undercounts vs the page's own menuBook category list (Appetizer 10/13, Steamed Broken Rice 8/9, Pho 7/11, Specialties 7/10, Fried Rice 6/7 - only 64 of 76 core items present; Most Ordered carousel of 12 excluded from both counts). Uber Eats sibling listing (ubereats.com/store/sizzling-saigon-llc/Qce6erylRCqimrwqimAYYw) has no JSON-LD Menu block and no catalogSectionsMap reachable by plain curl to cross the gap. Needs a browser to read the full rendered category list or the React Query catalog-map path."
+  },
+  {
+    "restaurantId": "7943",
+    "name": "CHINA CHEF 1",
+    "sourceUrl": "https://order.mealkeyway.com/customer/release/index?mid=6d38564b48582b73564376645669706b4e422b6b2b513d3d",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: MealKeyWay storefront renders its catalog client-side (0 prices in served HTML); restaurant's own site chinachef1ca.com has no prices in its HTML either, just dish-name copy"
+  },
+  {
+    "restaurantId": "8016",
+    "name": "Playa Kitchen at Torrey Pines Science Center",
+    "sourceUrl": "https://www.playakitchensd.com/menus/",
+    "confidence": "high",
+    "notes": "First-party BentoBox site, full breakfast/lunch cafe menu (hours 9am-2pm per lajolla.ca). Several drinks are printed as a small/large range (e.g. \"$4 - $4.50\"); recorded the low end and noted 'size range, low end recorded' in each such dish's description is omitted, applies to: Brewed Coffee, Cappuccino, Latte, Vanilla Latte, Brown Sugar Latte, Lavender Honey Latte, Mocha Hot Chocolate, Vanilla Chai Latte, Spiced Chai, Dirty Chai, Matcha Latte, Dirty Matcha, Lavender Matcha, Hot Tea. Salad/bowl protein add-ons (chicken +$8, salmon +$12, shrimp +$10) and a $0.50 coffee flavor add-on are general modifiers printed once for the section and were not filed as separate dish rows.",
+    "dishes": [
+      { "name": "Brewed Coffee", "description": "size range $2.50-$3, low end recorded", "price": "$2.50", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Double Espresso", "description": "", "price": "$2.50", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Macchiato", "description": "", "price": "$3.00", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Cortado", "description": "", "price": "$3.50", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Cappuccino", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Latte", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Americano", "description": "", "price": "$3.00", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Vanilla Latte", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Brown Sugar Latte", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Lavender Honey Latte", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Mocha Hot Chocolate", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Coffee & Espresso" },
+      { "name": "Vanilla Chai Latte", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Tea" },
+      { "name": "Spiced Chai", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Tea" },
+      { "name": "Dirty Chai", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Tea" },
+      { "name": "Matcha Latte", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Tea" },
+      { "name": "Dirty Matcha", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Tea" },
+      { "name": "Lavender Matcha", "description": "size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Tea" },
+      { "name": "Hot Tea", "description": "Green, English breakfast, earl grey; size range $4-$4.50, low end recorded", "price": "$4.00", "section": "Drinks / Tea" },
+      { "name": "The Activator", "description": "Banana, blueberries, olive oil, protein, almond milk", "price": "$10.00", "section": "Drinks / Smoothies" },
+      { "name": "Mocha Power", "description": "Banana, peanut butter, chocolate protein, raw cacao, almond milk", "price": "$12.00", "section": "Drinks / Smoothies" },
+      { "name": "Locally Green", "description": "Mango, blue spirulina, matcha powder, hydration powder, lemon, spinach, pineapple juice", "price": "$12.00", "section": "Drinks / Smoothies" },
+      { "name": "Pink Oasis", "description": "Banana, raspberry, dragon fruit, almond milk, pineapple juice", "price": "$10.00", "section": "Drinks / Smoothies" },
+      { "name": "Daily Greens Smoothie Add-On", "description": "", "price": "$2.00", "section": "Drinks / Add Ons" },
+      { "name": "Hydration & Antioxidant Add-On", "description": "", "price": "$2.00", "section": "Drinks / Add Ons" },
+      { "name": "Plant Protein Add-On (Vanilla & Chocolate)", "description": "", "price": "$2.00", "section": "Drinks / Add Ons" },
+      { "name": "Acai Bowl", "description": "Maple almond granola, banana, peanut butter, shredded organic coconut, mixed berries", "price": "$14.00", "section": "Food / Early Bird" },
+      { "name": "Avocado Toast", "description": "Sourdough toast with avocado, cherry tomatoes, alfalfa sprouts, feta, champagne vinaigrette", "price": "$13.00", "section": "Food / Early Bird" },
+      { "name": "Think Tank Bowl", "description": "Red potato hash, egg whites, caramelized onion, roasted mushroom, wilted spinach, cherry tomatoes, avocado, feta", "price": "$17.00", "section": "Food / Early Bird" },
+      { "name": "Ham Cheese & Egg Croissant", "description": "Scrambled egg, spicy aioli, ham & cheese croissant", "price": "$14.00", "section": "Food / Early Bird" },
+      { "name": "Breakfast Burrito", "description": "Chorizo potato hash, farm egg scramble, roasted salsa, avocado, cheddar cheese, flour tortilla", "price": "$14.00", "section": "Food / Early Bird" },
+      { "name": "Tomato Soup", "description": "Basil pesto, sourdough grilled cheese", "price": "$13.00", "section": "Food / Light Plates" },
+      { "name": "Playa Salad", "description": "Spring mix, shaved radish, cherry tomatoes, cucumber, toasted pistachio, champagne vinaigrette", "price": "$14.00", "section": "Food / Light Plates" },
+      { "name": "Caesar Salad", "description": "Romaine, Grana Padano, garlic bread crumb, Caesar dressing", "price": "$15.00", "section": "Food / Light Plates" },
+      { "name": "Roasted Chicken Salad", "description": "Romaine, cherry tomato, cucumber, avocado, pickled onion, herb-marinated chicken, toasted almonds, green goddess dressing", "price": "$19.00", "section": "Food / Light Plates" },
+      { "name": "Mediterranean Grilled Chicken Bowl", "description": "Harissa marinated chicken thighs, cucumber, feta, cherry tomato, garbanzo beans, brown rice, pepper romesco", "price": "$18.00", "section": "Food / Bowls" },
+      { "name": "Tuna Poke Bowl", "description": "Brown rice, spring mix, cucumbers, seaweed salad, edamame, confit garlic ponzu, spicy aioli", "price": "$18.00", "section": "Food / Bowls" },
+      { "name": "Green Goddess Market Veggie Bowl", "description": "Quinoa & brown rice, grilled asparagus, roasted vegetables, sesame-crusted avocado, cherry tomatoes, green goddess", "price": "$17.00", "section": "Food / Bowls" },
+      { "name": "Salmon Sucio", "description": "Wild isles salmon, steamed quinoa, roasted vegetables, soy sesame glaze, cilantro", "price": "$24.00", "section": "Food / Bowls" },
+      { "name": "Keto Shrimp Curry", "description": "Fair trade shrimp, cauliflower rice, wilted spinach, grilled asparagus, roasted mushrooms, toasted cashews, yellow curry, cilantro", "price": "$23.00", "section": "Food / Bowls" },
+      { "name": "Soba Noodle Salad", "description": "Chilled soba noodles, cabbage, carrots, beets, cucumber, edamame, crispy tofu, peanut sauce, green onion", "price": "$17.00", "section": "Food / Bowls" },
+      { "name": "Tuna Melt", "description": "House-made tuna salad, cornichon, whole grain mustard, aged cheddar, toasted sourdough", "price": "$17.00", "section": "Food / Wraps & Sandwiches" },
+      { "name": "Classic Club", "description": "Sliced turkey & ham, bacon, cheddar, Swiss, lettuce, tomato, red onion, garlic aioli, toasted grain bread", "price": "$18.00", "section": "Food / Wraps & Sandwiches" },
+      { "name": "Birria Burrito", "description": "Tender beef birria, brown rice, roasted salsa, avocado, flour tortilla", "price": "$17.00", "section": "Food / Wraps & Sandwiches" },
+      { "name": "On The Grind Burger", "description": "Sharp cheddar, beef steak tomatoes, romaine lettuce, caramelized onions, roasted garlic aioli, potato bun", "price": "$19.00", "section": "Food / Wraps & Sandwiches" },
+      { "name": "Roast Beef & Cheddar", "description": "Horseradish aioli, spinach, tomato, swirl rye", "price": "$17.00", "section": "Food / Wraps & Sandwiches" },
+      { "name": "Curry Chicken Wrap", "description": "Curry chicken salad, cabbage mix, cucumber, tomato, pickled red onion, whole wheat tortilla", "price": "$17.00", "section": "Food / Wraps & Sandwiches" },
+      { "name": "Avo Sprout Sandwich", "description": "Avocado, spinach, tomato, cucumber, beets, Vegenaise, multigrain", "price": "$16.00", "section": "Food / Wraps & Sandwiches" },
+      { "name": "Fish Tacos", "description": "Beer-battered cod, cabbage, chipotle cream, pickled onion, avocado", "price": "$17.00", "section": "Food / Wraps & Sandwiches" }
+    ]
+  },
+  {
+    "restaurantId": "5186",
+    "name": "Galley",
+    "sourceUrl": "https://www.bbb.org/us/ca/san-diego/profile/holding-company/the-galley-cart-group-llc-1126-1000114595",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "The exact address (845 15th St Ste 103, San Diego) matches 'The Galley Cart Group LLC' on Google Maps, BBB and Yellow Pages - every listing categorizes it as a holding company / catering-cart operator at a coworking building (Spaces Makers Quarter), not a public storefront. No website, 0 reviews, and no menu or ordering platform found under this name on any search. Could not confirm whether this is a walk-in restaurant with a public menu at all; needs a firmer identification before a verdict."
+  },
+  {
+    "restaurantId": "8046",
+    "name": "Tacos Locos Tasty Mexican Food",
+    "sourceUrl": "https://www.doordash.com/store/tacos-locos-tasty-mexican-food-main-st-san-diego-47451825/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash JSON-LD Menu block totals exactly 79 unique rows (the known truncation-signature count) and undercounts vs the page's own menuBook category list: SIDES 2/11, BEVERAGES 8/11, BREAKFAST PLATES 5/7, CRISPY TACOS 4/5, BURRITOS 10/11, LOCO BURRITOS 4/5, QUESADILLAS 2/3. Restaurant's own site tacoslocoss.com does not resolve (curl connection failure on both http and https). Needs a browser to read the full rendered category list."
+  },
+  {
+    "restaurantId": "5440",
+    "name": "Safari Coffee Outpost",
+    "sourceUrl": "https://www.sdzwa.org/dining/safari-coffee-outpost/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "The menu URL serves a first-party PDF (3 pages) with a full item list (coffee drinks, Dippin Dots, sippers, bagels/pastries) but NO prices printed anywhere on the readable pages - page 1 and page 2 are legible with zero $ figures, and page 3 (55643x46518px, likely the pricing panel) extracted as a corrupted JPEG (\"Unsupported marker type 0x78\", cannot be opened or resized). The PDF's own disclaimer text (\"prices subject to change\") implies pricing normally exists on this document. Not marking not_found because the evidence points to a pricing page that failed to extract, not to an operator who publishes no prices at all."
+  },
+  {
+    "restaurantId": "8075",
+    "name": "Pizza Guys",
+    "sourceUrl": "https://order.pizzaguys.com/?id=867ER",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: restaurant's own site redirects (via online-ordering-store-redirector.php?store=219) to a custom Olo-based storefront at order.pizzaguys.com (StoreID 9384765, hosted on adora-olo2-app.azurewebsites.net) that renders its menu client-side through oloBundle.js; plain curl of the landing page returns only 2 stray prices and no discoverable menu JSON endpoint."
+  },
+  {
+    "restaurantId": "2252",
+    "name": "Fairbanks Coffee Stand",
+    "sourceUrl": "https://blink.ucsd.edu/facilities/services/general/personal/dining.html",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Identified as a UCSD campus coffee kiosk (listed in blink.ucsd.edu's dining directory and as 'Fairbanks Coffee Cart' on UCSD's own campus map), but a same-named 'Fairbanks Coffee' Yelp listing in La Jolla is marked CLOSED and it's unclear if that is the same stand. No priced menu found under this name from UCSD dining, the BCB Cafe UCSD-kiosks page (which runs other campus coffee carts but does not mention Fairbanks and has no prices), or any delivery platform. No address was given in the work list to help confirm identity."
+  },
+  {
+    "restaurantId": "8104",
+    "name": "Izakaya En",
+    "sourceUrl": "https://www.instagram.com/izakayaensandiego/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Brand-new restaurant at 9823 Carroll Canyon Rd Ste J, successor to the closed 'Todo Sushi Japanese Restaurant' at the same address. Its Instagram (izakayaensandiego) reads 'Crafting Something Special (Late August)', i.e. very recently opened or not yet open. No website, no DoorDash/Uber Eats/Grubhub listing under the new name; the only delivery-platform pages at this address still belong to the old Todo Sushi. Too new to have a published menu anywhere yet."
+  },
+  {
+    "restaurantId": "8106",
+    "name": "Green Light Cafe & Deli",
+    "sourceUrl": "https://www.doordash.com/store/green-light-cafe-and-deli-san-diego-40073565/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash JSON-LD Menu block totals exactly 79 unique rows (the known truncation-signature count) and undercounts vs the page's own menuBook category list: Hot Sandwich 9/14, Soups And Burgers 2/4, Cool Delights 8/9, Beverages 19/21, Breakfast 9/11, Desserts 5/8. A SinglePlatform listing (places.singleplatform.com/green-light-cafe--deli/menu) also carries prices but is tier-5/stale and cannot corroborate a number the DoorDash capture is missing. Needs a browser to read the full rendered category list."
+  }
+]

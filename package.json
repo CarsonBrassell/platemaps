@@ -12,6 +12,7 @@
     "aspects:preview": "node scripts/preview-aspect-scores.mjs",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "db:seed": "node --env-file=.env.local scripts/seed-demo.mjs",
+    "db:stats": "node --env-file=.env.local scripts/db-stats.mjs",
     "notice:reset": "node --env-file=.env.local scripts/reset-photo-notice.mjs",
     "sim:activity": "node --env-file=.env.local scripts/simulate-activity.mjs",
     "restaurants:import": "node --env-file=.env.local scripts/import-restaurants.mjs",

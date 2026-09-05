@@ -1,0 +1,697 @@
+[
+  {
+    "restaurantId": "5977",
+    "name": "Nado Gelato Cafe",
+    "sourceUrl": "https://www.gelato101.com/gelato",
+    "confidence": "high",
+    "notes": "Squarespace site with full sitemap checked (gelato, our-coffee, catering, gift-cards, wholesale, locations, about, reviews, blog, careers) - no page anywhere carries an item price. Gelato is priced by scoop/size in-store, not itemized online; coffee page's only dollar figure ($6) is inside a customer review quote, not a menu. No ordering platform. Treated as not_found per gelateria-priced-by-size precedent.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5790",
+    "name": "Saigon Restaurant",
+    "sourceUrl": "https://www.yelp.com/biz/saigon-san-diego-2",
+    "confidence": "low",
+    "blocked": "needs-browser: no first-party website (worklist website is null; the router's only candidate, saigon-restaurant.mapsite.site, is a barred directory farm). Web search surfaced only farm-tier aggregators (goto-where.com, restaurants-world.net, restaurantguru.com, restaurantji.com) - none independent per the tier-5 ownership rule and none directly fetchable as a trustworthy payload. Yelp bot-walls a plain curl (403, even with navigation headers), so any dated menu photo on its listing is unreachable without a browser.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5861",
+    "name": "Downtown Cafe Bar & Grill",
+    "sourceUrl": "https://www.downtowncafe-ec.com/menu",
+    "confidence": "high",
+    "notes": "First-party Google Sites domain. The everyday Lunch/Dinner FOOD menu (Appetizers, Salads, Soups, Burgers, Sandwiches, Baskets, Flat-Breads, Pastas, Tacos, Fajitas, Wraps, House Specialties - ~50 item names) renders on /menu with NO price anywhere in the DOM for any item - not gated, not paginated, just absent from the markup - so those items are dropped per 'never write a dish without a real price'. What IS priced and filed: the Happy Hour board embedded on the same /menu page (2-5:30pm; two relative '$X off' lines dropped, only absolute prices kept); a Soups & Combos block on /menu; the dated '2026 DTC BRUNCH.pdf' (Sunday brunch, 10:30-1:30, full priced menu incl. drink specials and sides); and the dated '2026 DTC menudrinkew.pdf' bar menu (wine/cocktails/sangria/shakers/margaritas). The bar PDF is 2-column and pdftotext -layout initially scrambled Martinis pairing, so Martinis were dropped entirely (no reliable name-price pairing found even in -raw mode) rather than guessed; every other section's pairing was confirmed identical across -layout and -raw. Draft Beer/Bottles/Cans/High Noons/Bourbon&Rye brand lists carry no prices anywhere and are excluded as unpriced adjuncts, same as the Martinis. The homepage also links a '2026 BUFFET MENU.pdf' - excluded as a private-party catering package (25-person minimum, per-package price, tied to the site's separate /events/private-parties page), not the everyday menu. An older 'Drink Menu.png' embedded on the homepage/menu landing page shows different (lower) wine and shaker prices than the dated 2026 PDF; treated as a stale duplicate and not used. Shaker drinks and the Cadillac/house margaritas each carry two size tiers (e.g. glass/24oz shaker); the smaller tier is recorded as the price and the upsize noted in the description. No markup/fee signal found - this is static first-party informational content, not an ordering channel.",
+    "dishes": [
+      {
+        "name": "Cafe Omelet",
+        "description": "Three egg omelet with spinach, feta cheese, tomatoes, mushrooms and topped with avocado. Served with country potatoes and toast.",
+        "price": "$17.00",
+        "section": "Sunday Brunch"
+      },
+      {
+        "name": "Santa Fe Omelet",
+        "description": "Three egg omelet filled with cheese, ortega chile, salsa fresca and topped with avocado. Served with country potatoes and toast.",
+        "price": "$17.00",
+        "section": "Sunday Brunch"
+      },
+      {
+        "name": "Ham & Cheese Omelet",
+        "description": "Three egg omelet with smoked ham, onions, bell pepper, jack and cheddar cheese. Served with country potatoes and toast.",
+        "price": "$17.00",
+        "section": "Sunday Brunch"
+      },
+      {
+        "name": "Pancake Combo",
+        "description": "Three pancakes, two eggs, two pieces of smoked bacon and two sausage. Served with a side of seasoned country potatoes.",
+        "price": "$17.00",
+        "section": "Sunday Brunch"
+      },
+      {
+        "name": "Sunrise Wrap",
+        "description": "Scrambled eggs, sausage, bacon, onions, bell peppers, cheddar and jack cheeses all wrapped in a large flour tortilla. Served with fresh fruit.",
+        "price": "$15.00",
+        "section": "Sunday Brunch"
+      },
+      {
+        "name": "Flat-Iron Chilaquiles",
+        "description": "Two fried eggs on corn tortillas covered with spicy ranchero sauce. Topped with flat-iron steak, sour cream, onion and cilantro.",
+        "price": "$20.00",
+        "section": "Sunday Brunch"
+      },
+      {
+        "name": "Downtown Combo",
+        "description": "French toast, two eggs, two pieces of smoked bacon, and two sausage. Served with a side of seasoned country potatoes.",
+        "price": "$16.00",
+        "section": "Sunday Brunch"
+      },
+      {
+        "name": "Two Egg Combo",
+        "description": "Two eggs cooked your way, smoked bacon, sausage and seasoned country potatoes. Served with two slices of toast.",
+        "price": "$15.50",
+        "section": "Sunday Brunch"
+      },
+      {
+        "name": "Breakfast Sandwich",
+        "description": "Fried egg over easy topped with cheddar cheese and smoked bacon and ham on grilled sourdough bread. Served with country potatoes and a side of fruit.",
+        "price": "$16.00",
+        "section": "Sunday Brunch"
+      },
+      {
+        "name": "French Toast",
+        "description": "Seasoned with cinnamon and powdered sugar. Served with whipped butter, warm maple syrup and fresh fruit.",
+        "price": "$14.00",
+        "section": "Sunday Brunch"
+      },
+      {
+        "name": "Mimosa",
+        "description": "Sunday brunch drink special.",
+        "price": "$4.50",
+        "section": "Sunday Brunch / Drink Specials"
+      },
+      {
+        "name": "Bottomless Mimosa",
+        "description": "With the purchase of an entree.",
+        "price": "$12.00",
+        "section": "Sunday Brunch / Drink Specials"
+      },
+      {
+        "name": "Bloody Mary",
+        "description": "16 oz. Vodka, tomato juice, Tabasco, Worcestershire, pickle juice, celery bitters, horseradish, salt & pepper, olive & celery.",
+        "price": "$12.00",
+        "section": "Sunday Brunch / Drink Specials"
+      },
+      {
+        "name": "Michelada",
+        "description": "32 oz Mexican lager, tomato juice, hot sauce, Worcestershire sauce, lime juice, Tajin, salt rim.",
+        "price": "$12.00",
+        "section": "Sunday Brunch / Drink Specials"
+      },
+      {
+        "name": "Chelada",
+        "description": "32 oz Mexican lager, hot sauce, Worcestershire sauce, lime juice, Tajin, salt rim.",
+        "price": "$12.00",
+        "section": "Sunday Brunch / Drink Specials"
+      },
+      {
+        "name": "Country Sausage Links",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sunday Brunch / Sides"
+      },
+      {
+        "name": "Grilled Ham",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sunday Brunch / Sides"
+      },
+      {
+        "name": "Smoked Bacon",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sunday Brunch / Sides"
+      },
+      {
+        "name": "Side of Fruit",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sunday Brunch / Sides"
+      },
+      {
+        "name": "Two Pancakes",
+        "description": "",
+        "price": "$7.00",
+        "section": "Sunday Brunch / Sides"
+      },
+      {
+        "name": "Two French Toast",
+        "description": "",
+        "price": "$7.00",
+        "section": "Sunday Brunch / Sides"
+      },
+      {
+        "name": "One Egg",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sunday Brunch / Sides"
+      },
+      {
+        "name": "Toast",
+        "description": "Whole wheat or sourdough.",
+        "price": "$3.50",
+        "section": "Sunday Brunch / Sides"
+      },
+      {
+        "name": "Tacos",
+        "description": "Happy Hour, 2-5:30pm.",
+        "price": "$5.95",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Cheese Burgers",
+        "description": "Happy Hour, 2-5:30pm.",
+        "price": "$5.95",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Flat-Breads",
+        "description": "Happy Hour, 2-5:30pm.",
+        "price": "$8.95",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Domestic Drafts",
+        "description": "Happy Hour, 2-5:30pm.",
+        "price": "$5.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Well Drinks & House Wines",
+        "description": "Happy Hour, 2-5:30pm.",
+        "price": "$7.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Margaritas",
+        "description": "Happy Hour, 2-5:30pm.",
+        "price": "$7.95",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Long Island Iced Teas",
+        "description": "Happy Hour, 2-5:30pm.",
+        "price": "$9.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Soup of the Day (cup)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Soups & Combos"
+      },
+      {
+        "name": "Soup of the Day (bowl)",
+        "description": "",
+        "price": "$9.50",
+        "section": "Soups & Combos"
+      },
+      {
+        "name": "Soup & Salad Combo",
+        "description": "",
+        "price": "$12.95",
+        "section": "Soups & Combos"
+      },
+      {
+        "name": "Half Sandwich Combo",
+        "description": "Soup or salad with half sandwich (tuna, BLT, or turkey).",
+        "price": "$12.95",
+        "section": "Soups & Combos"
+      },
+      {
+        "name": "House Chardonnay",
+        "description": "Glass.",
+        "price": "$10.00",
+        "section": "Drink Menu / House Wines"
+      },
+      {
+        "name": "House Merlot",
+        "description": "Glass.",
+        "price": "$10.00",
+        "section": "Drink Menu / House Wines"
+      },
+      {
+        "name": "House Cabernet Sauvignon",
+        "description": "Glass.",
+        "price": "$10.00",
+        "section": "Drink Menu / House Wines"
+      },
+      {
+        "name": "Tiziano Pinot Grigio",
+        "description": "Italy. Glass; bottle $36.",
+        "price": "$12.00",
+        "section": "Drink Menu / White Wine"
+      },
+      {
+        "name": "Ferrari Carano Chardonnay",
+        "description": "Glass; bottle $48.",
+        "price": "$16.00",
+        "section": "Drink Menu / White Wine"
+      },
+      {
+        "name": "Hess Sauvignon Blanc",
+        "description": "Glass; bottle $42.",
+        "price": "$14.00",
+        "section": "Drink Menu / White Wine"
+      },
+      {
+        "name": "Josh Cabernet Sauvignon",
+        "description": "Glass; bottle $48.",
+        "price": "$16.00",
+        "section": "Drink Menu / Red Wine"
+      },
+      {
+        "name": "Angeline Pinot Noir",
+        "description": "Italy. Glass; bottle $45.",
+        "price": "$15.00",
+        "section": "Drink Menu / Red Wine"
+      },
+      {
+        "name": "Bogle Red Blend",
+        "description": "California. Glass; bottle $42.",
+        "price": "$14.00",
+        "section": "Drink Menu / Red Wine"
+      },
+      {
+        "name": "J Roget Extra Dry",
+        "description": "Split; bottle $22.",
+        "price": "$7.00",
+        "section": "Drink Menu / Sparkling Wine"
+      },
+      {
+        "name": "Bar Mimosa",
+        "description": "",
+        "price": "$7.00",
+        "section": "Drink Menu / Sparkling Wine"
+      },
+      {
+        "name": "Champagne Cocktail",
+        "description": "",
+        "price": "$7.00",
+        "section": "Drink Menu / Sparkling Wine"
+      },
+      {
+        "name": "Blackberry Sangria",
+        "description": "Cabernet, blackberry schnapps, cranberry juice, strawberry puree, lemon-lime soda.",
+        "price": "$12.00",
+        "section": "Drink Menu / Sangria & Spritz"
+      },
+      {
+        "name": "Peach Sangria",
+        "description": "Pinot Grigio, peach tree schnapps, triple sec, OJ, pineapple juice, mango puree, lemon-lime soda.",
+        "price": "$12.00",
+        "section": "Drink Menu / Sangria & Spritz"
+      },
+      {
+        "name": "Blueberry Sangria",
+        "description": "Chardonnay, blueberry, orange juice, Cointreau, lemon-lime soda.",
+        "price": "$12.00",
+        "section": "Drink Menu / Sangria & Spritz"
+      },
+      {
+        "name": "Aperol Spritz",
+        "description": "Aperol, Italian sparkling wine, orange slices.",
+        "price": "$12.00",
+        "section": "Drink Menu / Sangria & Spritz"
+      },
+      {
+        "name": "Limoncello Spritz",
+        "description": "Limoncello, Italian sparkling wine, lemon slices.",
+        "price": "$12.00",
+        "section": "Drink Menu / Sangria & Spritz"
+      },
+      {
+        "name": "Paloma",
+        "description": "El Jimador silver tequila, sugar cube & grapefruit muddled, topped with grapefruit soda.",
+        "price": "$14.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Mojito",
+        "description": "Bacardi Limon, fresh lime juice, sugar cube, fresh mint leaves, soda water.",
+        "price": "$14.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Old Fashioned",
+        "description": "Rye whiskey, sugar cube muddled with Angostura bitters, premium cherry.",
+        "price": "$14.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Whiskey Smash",
+        "description": "101 Wild Turkey, fresh lemon juice, mint, simple syrup.",
+        "price": "$14.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Blue Suede Shoes",
+        "description": "Bourbon, fresh lemon juice, blueberries, demerara syrup, club soda, bitters.",
+        "price": "$14.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Moscow Mule",
+        "description": "Tito's Handmade Vodka, fresh lime juice, ginger beer, dash Angostura bitters.",
+        "price": "$14.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Dark & Stormy",
+        "description": "Myers Rum, lime juice, ginger beer.",
+        "price": "$13.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Tom Collins",
+        "description": "London Dry Gin, fresh lemon juice, simple syrup, sliced lemon, cherry.",
+        "price": "$13.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Negroni",
+        "description": "Beefeater London Dry Gin, sweet vermouth, Campari.",
+        "price": "$14.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Cucumber Tonic",
+        "description": "Hendrick's Gin, fresh cucumbers muddled with fresh lime juice.",
+        "price": "$14.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Singapore Sling",
+        "description": "Beefeater Dry Gin, lemon juice, simple syrup, cherry brandy, Benedictine liqueur, dash Angostura bitters.",
+        "price": "$14.00",
+        "section": "Drink Menu / Cocktails"
+      },
+      {
+        "name": "Blue Hawaiian",
+        "description": "Malibu rum, vodka, blue curacao, sweet & sour, pineapple juice. Glass; 24oz shaker $19.",
+        "price": "$14.00",
+        "section": "Drink Menu / Shakers"
+      },
+      {
+        "name": "Mai-Tai",
+        "description": "Premium rum, orange juice, pineapple juice, Myer's rum, grenadine. Glass; 24oz shaker $19.",
+        "price": "$14.00",
+        "section": "Drink Menu / Shakers"
+      },
+      {
+        "name": "Long Island",
+        "description": "Rum, vodka, gin, triple sec, tequila, sweet & sour, cola. Glass; 24oz shaker $19.",
+        "price": "$14.00",
+        "section": "Drink Menu / Shakers"
+      },
+      {
+        "name": "Long Beach",
+        "description": "Rum, vodka, gin, triple sec, tequila, sweet & sour, cranberry juice, Sprite. Glass; 24oz shaker $19.",
+        "price": "$14.00",
+        "section": "Drink Menu / Shakers"
+      },
+      {
+        "name": "Tokyo Tea",
+        "description": "Rum, vodka, gin, triple sec, tequila, sweet & sour, Midori, Sprite. Glass; 24oz shaker $19.",
+        "price": "$14.00",
+        "section": "Drink Menu / Shakers"
+      },
+      {
+        "name": "Adios Tea",
+        "description": "Rum, vodka, gin, triple sec, tequila, sweet & sour, blue curacao, Sprite. Glass; 24oz shaker $19.",
+        "price": "$14.00",
+        "section": "Drink Menu / Shakers"
+      },
+      {
+        "name": "Texas Tea",
+        "description": "Rum, vodka, gin, triple sec, tequila, sweet & sour, whiskey, cola. Glass; 24oz shaker $19.",
+        "price": "$14.00",
+        "section": "Drink Menu / Shakers"
+      },
+      {
+        "name": "Cadillac Margarita",
+        "description": "Premium gold tequila, orange liqueur, sweet & sour. 16oz shaker; 24oz shaker $19.",
+        "price": "$14.00",
+        "section": "Drink Menu / Margaritas"
+      },
+      {
+        "name": "House Margarita (Por Favor Recipe)",
+        "description": "16oz regular; 32oz grande $17.",
+        "price": "$10.00",
+        "section": "Drink Menu / Margaritas"
+      },
+      {
+        "name": "Skinny Margarita",
+        "description": "Premium silver tequila, fresh limes, agave nectar.",
+        "price": "$14.00",
+        "section": "Drink Menu / Margaritas"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5730",
+    "name": "The Pancake House",
+    "sourceUrl": "https://places.singleplatform.com/the-pancake-house-restaurant/menu",
+    "confidence": "medium",
+    "notes": "The worklist domain (thepancakehousebirthdayclub.com) is a third-party eBirthdayClubs signup widget with no menu content of any kind - not the restaurant's own site. No ordering platform found. The only reachable priced source is this restaurant's SinglePlatform listing (tier 4, restaurant-submitted, undated), whose schema.org JSON-LD parses cleanly to 24 priced items across Hamburgers, Classic Clubs, Delightful Sandwiches, Traditional Favorites (steaks) and Special Rewards (desserts) - address on the listing matches the worklist exactly (1000 N 2nd St, El Cajon, CA 92021). This is a PARTIAL, not the whole menu: it carries no breakfast or pancake items at all, which is the core identity of a restaurant literally named 'The Pancake House' - that section was never reached because SinglePlatform simply does not have it, not because it was skipped. A WebSearch summary (atly.com) surfaced different, higher figures for some of the same dish names with irregular cents (Hamburger $6.70 vs a summarized $6.70 - actually matched; but Steak and Eggs $21.44, French Toast $17.93 with no counterpart on SinglePlatform) - not used, since it is a single uncorroborated aggregator snippet, not a page read directly. Cents distribution here (.99/.89/.69/.59/.49/.29/.19/.95) is broad and POS-like, no divisor artifact found - reads as genuine menu pricing, just possibly dated given SinglePlatform's known staleness. One clean size-variant pair found outside the JSON-LD block and included: Ice Cream 1 scoop $1.85 / 2 scoops $3.19. Modifier add-on lines embedded in descriptions ('add bacon $0.99', 'add cheese $0.89', 'Add Soup or Salad $0.99') were left as description text only, not filed as separate dishes.",
+    "dishes": [
+      {
+        "name": "The Bacon Cheeseburger",
+        "description": "American or swiss cheese and 2 chips of bacon.",
+        "price": "$7.59",
+        "section": "\"The American Classic\" Hamburgers"
+      },
+      {
+        "name": "The Classic Double",
+        "description": "2 patties, 2 slices american cheese.",
+        "price": "$8.69",
+        "section": "\"The American Classic\" Hamburgers"
+      },
+      {
+        "name": "The Cheeseburger",
+        "description": "American or swiss cheese.",
+        "price": "$7.19",
+        "section": "\"The American Classic\" Hamburgers"
+      },
+      {
+        "name": "The Chili Cheeseburger",
+        "description": "Topped with chili, beans and cheddar cheese.",
+        "price": "$7.69",
+        "section": "\"The American Classic\" Hamburgers"
+      },
+      {
+        "name": "The Hamburger",
+        "description": "A simple classic.",
+        "price": "$6.70",
+        "section": "\"The American Classic\" Hamburgers"
+      },
+      {
+        "name": "The \"Club\"",
+        "description": "Sliced turkey breast, crisp bacon, lettuce, tomato and mayonnaise.",
+        "price": "$8.49",
+        "section": "Classic Clubs"
+      },
+      {
+        "name": "The Hamburger Club",
+        "description": "Hamburger patty, crisp bacon, lettuce, tomato and mayonnaise.",
+        "price": "$8.59",
+        "section": "Classic Clubs"
+      },
+      {
+        "name": "The Roast Beef Club",
+        "description": "Tender sliced roast beef, crisp bacon, lettuce, tomato, and mayonnaise.",
+        "price": "$8.49",
+        "section": "Classic Clubs"
+      },
+      {
+        "name": "The Tuna Club",
+        "description": "Own tuna salad, crisp bacon, lettuce, tomato and mayonnaise.",
+        "price": "$8.49",
+        "section": "Classic Clubs"
+      },
+      {
+        "name": "Beef & Swiss",
+        "description": "Sliced roast beef and swiss cheese on grilled sourdough bread.",
+        "price": "$8.29",
+        "section": "Delightful Sandwiches"
+      },
+      {
+        "name": "Chicken Salad",
+        "description": "Own chicken salad with lettuce on choice of toasted bread.",
+        "price": "$6.99",
+        "section": "Delightful Sandwiches"
+      },
+      {
+        "name": "Ham & Swiss",
+        "description": "Sliced ham on grilled rye bread with swiss cheese.",
+        "price": "$7.95",
+        "section": "Delightful Sandwiches"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "Choice of cheese on grilled sourdough bread.",
+        "price": "$5.69",
+        "section": "Delightful Sandwiches"
+      },
+      {
+        "name": "Bacon - Lettuce - Tomato",
+        "description": "Strips of crisp bacon, lettuce, tomato, and mayonnaise on choice of toasted bread.",
+        "price": "$6.89",
+        "section": "Delightful Sandwiches"
+      },
+      {
+        "name": "Top Sirloin Steak",
+        "description": "8 oz. serving.",
+        "price": "$10.89",
+        "section": "Traditional Favorites"
+      },
+      {
+        "name": "Top Sirloin & Shrimp",
+        "description": "Choice steak and 3 golden fried shrimp.",
+        "price": "$11.99",
+        "section": "Traditional Favorites"
+      },
+      {
+        "name": "Ground Beef Steak",
+        "description": "1/2 lb. ground beef cooked your way, topped with sauteed onions.",
+        "price": "$8.59",
+        "section": "Traditional Favorites"
+      },
+      {
+        "name": "Steak And Chicken",
+        "description": "Choice of sirloin, grilled chicken breast.",
+        "price": "$10.99",
+        "section": "Traditional Favorites"
+      },
+      {
+        "name": "Country Fried Steak",
+        "description": "Lightly breaded and deep fried, topped with country gravy.",
+        "price": "$8.99",
+        "section": "Traditional Favorites"
+      },
+      {
+        "name": "Chocolate Tower",
+        "description": "Rich brownie topped with vanilla ice cream, chocolate syrup and whipped topping.",
+        "price": "$3.99",
+        "section": "Special Rewards (Desserts)"
+      },
+      {
+        "name": "Banana Nut Fudge Delight",
+        "description": "2 scoops of vanilla ice cream, sliced banana, hot fudge, chopped nuts and whipped topping.",
+        "price": "$3.99",
+        "section": "Special Rewards (Desserts)"
+      },
+      {
+        "name": "Apple Pie",
+        "description": "",
+        "price": "$3.19",
+        "section": "Special Rewards (Desserts)"
+      },
+      {
+        "name": "Hot Fudge Sundae",
+        "description": "2 scoops of vanilla ice cream topped with hot fudge, chopped nuts and whipped topping.",
+        "price": "$3.99",
+        "section": "Special Rewards (Desserts)"
+      },
+      {
+        "name": "Ice Cream (1 scoop)",
+        "description": "",
+        "price": "$1.85",
+        "section": "Special Rewards (Desserts)"
+      },
+      {
+        "name": "Ice Cream (2 scoops)",
+        "description": "",
+        "price": "$3.19",
+        "section": "Special Rewards (Desserts)"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6189",
+    "name": "Farmer & The Seahorse",
+    "sourceUrl": "https://www.farmerandtheseahorse.com/",
+    "confidence": "low",
+    "blocked": "needs-browser: the restaurant's own domain (and the router's cached copy) both return a bare Incapsula/Imperva bot-mitigation challenge page (_Incapsula_Resource script, 212 bytes, noindex) to a plain curl even with navigation headers - a JS challenge, not a data gap. No ordering platform found via search. Only other reachable sources are tier-5 aggregators (allmenus, restaurantguru, sirved) - barred/uncorroborated, not used.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6386",
+    "name": "It's Raw Poke Shop",
+    "sourceUrl": "https://itsrawpokeshop.com/#menu",
+    "confidence": "high",
+    "notes": "First-party WordPress single-page site (no separate menu URL, everything on the homepage). Address matches worklist exactly (4991 Newport Ave A, San Diego, CA 92107). This is the whole published menu: 5 daily Hawaiian plate lunches, all priced. The 'Poke Menu' block below it (Shoyu Ahi, Kimchi Ahi, Spicy Ahi, Wasabi Ahi, Furikake Ahi, Ahi w/Ginger Sauce, Furikake/Spicy Salmon, Spicy Crawfish Tails, Spicy Tako/Kimchi Tako, Kimchi Shrimp, Ahi w/Hawaiian Chili Pepper & Masago Egg) is a flavor-choice list with no per-flavor price - poke is sold through the priced 'Kalua Pig and Poke' ($22, 2 choices) and 'Poke' ($18, 2 choices) plate lines, not per flavor, so the flavor names are not filed as separate dishes (same pattern as a gelateria priced by scoop, not by flavor). No online ordering platform - 'Order Now!' near the phone number is plain text, not a link; phone-order only. Small format is genuine: a poke shop's whole published menu can legitimately be five items.",
+    "dishes": [
+      {
+        "name": "Kalua Pig",
+        "description": "Kalua pig, chicken longrice, haupia, rice.",
+        "price": "$15.00",
+        "section": "Plate Lunch"
+      },
+      {
+        "name": "Hawaiian Combo",
+        "description": "Kalua pig, lau lau, chicken longrice, haupia, rice.",
+        "price": "$28.00",
+        "section": "Plate Lunch"
+      },
+      {
+        "name": "Kalua Pig and Poke",
+        "description": "Kalua pig, poke (2 choices), rice.",
+        "price": "$22.00",
+        "section": "Plate Lunch"
+      },
+      {
+        "name": "Chicken Longrice",
+        "description": "Chicken longrice, haupia, rice.",
+        "price": "$12.00",
+        "section": "Plate Lunch"
+      },
+      {
+        "name": "Poke",
+        "description": "Poke (2 choices), rice.",
+        "price": "$18.00",
+        "section": "Plate Lunch"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5753",
+    "name": "Antonio's Mexican Food",
+    "sourceUrl": "https://antoniosmexicanfood.shop/menu",
+    "confidence": "low",
+    "blocked": "needs-browser: the worklist's own website (antoniosmexicanfood.shop) is a templated marketing microsite with an AI-written blurb and a long item-name list (Breakfast, Side Orders, Combination Plates, Tacos, Quesadillas, Tostadas, Kids Meals, Drinks, Tortas, Others - ~80 names) but zero prices anywhere on the domain; its own 'Full Menu' button links back to the same page (dead end). Address matches worklist (1755 E Valley Pkwy, Escondido, CA 92027). Every other reachable source is a barred/farm-tier aggregator with no independent corroboration - allmenus, zmenu, restaurantguru and checkle (checkle and zmenu are explicitly barred) - and their summarized prices ($4.18, $6.34) carry non-standard cents consistent with computed/estimated aggregator figures, not read menu prices. Yelp (163 reviews, ~90 photos, plausibly holding a dated menu photo) 403s a plain curl even with navigation headers. Not marking not_found: this is an active 24-hour drive-thru taqueria, not an AYCE or prix-fixe house, so a real itemized menu almost certainly exists - it just needs a browser to reach a Yelp photo or a platform this search did not surface.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6279",
+    "name": "Urban Crave",
+    "sourceUrl": "https://www.san.org/shop-dine/?Source=Dining&Id=60",
+    "confidence": "low",
+    "blocked": "needs-browser: this is an airport concession (Terminal 2, San Diego International) with no restaurant-owned website - the worklist URL resolves to the airport's generic 'Shop and Dine' landing page, a WordPress shell with no restaurant-specific content; the actual per-tenant detail (and any pricing) loads client-side through the airport's Fruition search widget (window.flyFruitionSearchConfig, apiUrl app.flyfruition.com/api/search/elasticsearch). Queried that API directly with the page's own apiKey (san_uMMJp6k6JWud-XxjZfbW) and airport=SAN/san - it 400/404'd ('Airport parameter required', then 'index_not_found_exception: no such index [san-production-v5]'), so the right index name or auth shape was not found by curl. Urban Crave is a multi-airport concession brand (Toronto Pearson, Houston IAH, Dulles, Vancouver, Ontario CA) with a different menu per location, so a same-name page from another airport cannot be used for this one. WebSearch turned up only prices quoted inside customer reviews (Yelp) - hearsay, not a menu page - plus tier-5 aggregators (zmenu, restaurantguru). No usable first-party source without a browser to drive the Fruition widget or reach Yelp's photo gallery.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6136",
+    "name": "Urban Crave",
+    "sourceUrl": "https://www.san.org/shop-dine/?Source=Dining&Id=60",
+    "confidence": "low",
+    "blocked": "needs-browser: this is an airport concession (Terminal 2, San Diego International) with no restaurant-owned website - the worklist URL resolves to the airport's generic 'Shop and Dine' landing page, a WordPress shell with no restaurant-specific content; the actual per-tenant detail (and any pricing) loads client-side through the airport's Fruition search widget (window.flyFruitionSearchConfig, apiUrl app.flyfruition.com/api/search/elasticsearch). Queried that API directly with the page's own apiKey (san_uMMJp6k6JWud-XxjZfbW) and airport=SAN/san - it 400/404'd ('Airport parameter required', then 'index_not_found_exception: no such index [san-production-v5]'), so the right index name or auth shape was not found by curl. Urban Crave is a multi-airport concession brand (Toronto Pearson, Houston IAH, Dulles, Vancouver, Ontario CA) with a different menu per location, so a same-name page from another airport cannot be used for this one. WebSearch turned up only prices quoted inside customer reviews (Yelp) - hearsay, not a menu page - plus tier-5 aggregators (zmenu, restaurantguru). No usable first-party source without a browser to drive the Fruition widget or reach Yelp's photo gallery.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5935",
+    "name": "Stoney's Bar & Grill",
+    "sourceUrl": "https://www.allmenus.com/ca/national-city/813930-stoneys-bar-grill/menu/",
+    "confidence": "low",
+    "blocked": "needs-browser: no website in the worklist and no first-party site found. The obvious Uber Eats hit for 'Stoney's Bar & Grill' (ubereats.com/store/stoneys-bar-%26-grill/H03sOGAIQNGZXyZlkY9BVA) was fetched and fully extracted (catalogSectionsMap, ~50 priced items) but its page title reads 'Order Stoney's Bar & Grill - Menu & Prices - Denver Delivery | Uber Eats' - it is the Denver, CO branch of a same-named chain, not the National City, CA one (worklist address 108 W 25th St Ste Q, National City, CA 91950), and a second search confirmed every DoorDash/Uber Eats hit for this name resolves to Denver, none to National City - so that capture was discarded per 'one branch's menu does not go under another branch's id'. allmenus lists a National City page for this restaurant but it renders zero prices to a plain curl (JS-gated). Every other reachable source (restaurantguru, checkle, menuweb.menu, wheree.com) is farm-tier with no independent corroboration - checkle is explicitly barred outright. A WebSearch summary attributed prices (Big Sampler $12.99, Chili Bowl $3.59, Quesadilla $4.79, Fish Sandwich $5.59, Fish & Chips $7.99, Super Club $8.99, Hot Pastrami $8.59) to one or more of these farm pages; not filed, since it is an unverified aggregator summary, not a page read directly, and no second independent priced source confirms it.",
+    "dishes": []
+  }
+]

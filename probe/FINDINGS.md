@@ -3149,3 +3149,167 @@ not a delivery marketplace. The ladder ranks first-party sources highly because
 they are authentic, and they are — authentically the price that storefront
 charges. This site promises the price on the wall. Those are not always the same
 number, and nothing about a domain tells you which one you are looking at.
+
+## Two marketplaces, merged, and why it was allowed (2026-09-03, Kanpai id 5950)
+
+The playbook forbids merging listings and warns that two ordering channels
+agreeing to the cent does NOT clear a markup — Pacific Pizza's own Slice
+storefront matched DoorDash exactly *because* both carried the same 20% uplift.
+An agent filed Kanpai anyway, at 273 dishes, from DoorDash and Uber Eats
+combined. Read against its file, the capture holds up, and the reason is worth
+recording because it is a test that settles this class of case in one line.
+
+**Every one of the 273 prices ends in `.00` or `.50`** — 149 and 124
+respectively, nothing else. A uniform multiplier cannot produce that. Applied
+to a menu priced in halves and wholes, ×1.20 lands on `.20 .40 .60 .80 .00`
+and ×1.25 on `.25 .75`; either way the two-value distribution shatters. So the
+ending distribution is independent evidence of no uplift, and it is evidence
+the "two channels agree" argument never supplies.
+
+Sequence of tests for a marketplace-sourced menu, cheapest first:
+
+1. **Cent distribution.** Collapsed onto `.00`/`.50`, or onto `.95`/`.99`? That
+   is a printed menu. Spread across `.20 .40 .60 .80`, or `.15 .30 .45`? That
+   is a fee, and the source is unusable — do not divide it out.
+2. **Divisor sweep.** Share of prices landing on a conventional ending after
+   dividing by 1.10 / 1.15 / 1.20 / 1.25 / 1.30. If some divisor beats 1.00,
+   suspect it. Kanpai: 100% at 1.00, best rival 41% at 1.20.
+3. Only then, whether two owners agree — which is corroboration of the LISTING,
+   never of the price level.
+
+The merge itself was safe because no price was constructed: each row was read
+verbatim from one of the two payloads, the 91 overlapping items matched to the
+cent, and the extra rows came from the fuller listing. What it does cost is
+provenance — the entry names one `sourceUrl` while most rows came from the
+other. Prefer the fuller single source when one exists; if you must combine,
+say so in `notes` as this agent did.
+
+Same session, same test, opposite direction: George Burgers (id 4972) had been
+held since 2026-08-29 because an agent divided a confirmed 1.20 DoorDash markup
+out and filed the quotients. Its 2026-09-03 Uber Eats capture reads 100%
+conventional endings undivided with no rival divisor, so the storefront is
+passing the restaurant's own prices through, and it was released. **The hold was
+about a derived number, not about the host** — worth checking which of the two
+any QUARANTINE_IDS entry actually means before assuming a restaurant is barred
+from a whole platform.
+
+## A platform is not trustworthy; a PAYLOAD is (2026-09-03)
+
+One agent read two restaurants off MenuStar in the same batch and got opposite
+answers. Lienzo Charro (`themenustar4.com`, restaurant_id 6405) came back with
+230 dishes whose cents sit overwhelmingly on `.99`/`.49` - a printed menu.
+Senor Taquero, the same platform on `themenustar.com`, returned 72 items
+scattered across more than fifteen cent endings with under 2% conventional, and
+a divisor sweep from 1.00 to 1.60 never got past 36%. Those are computed
+numbers, and the agent blocked them.
+
+Same vendor, same API shape, same day. So "MenuStar is readable" is not a fact
+about MenuStar, and neither is the reverse. The same thing happened earlier the
+same day on a custom white-label platform (Yingli, id 6577) and on DoorDash
+(Handel's Homemade Ice Cream, flat scatter across fourteen endings with zero
+conventional).
+
+**Run the cent distribution on every capture, including from a platform section
+9 already blesses.** It costs one pass over the prices you already have, and it
+is the only check that catches a computed field - the markup tests cannot,
+because there is no multiplier to find, and corroboration cannot, because a
+second reader of the same field agrees.
+
+The three shapes, in the order they are worth testing:
+
+| cents look like | verdict |
+|---|---|
+| collapsed on `.00`/`.50`, or `.95`/`.99`, or ending in 9 | printed menu, file it |
+| `.20 .40 .60 .80` or `.15 .30 .45`, or a divisor beats 1.00 | fee baked in, block, do NOT divide it out |
+| flat across many endings, under ~30% conventional | not prices at all, block |
+
+## Popmenu serves two menus, and the router screens the wrong one (2026-09-03)
+
+Ramon's Taco Shop (id 6493) was recorded `screened-out` by the router:
+161 of 178 prices divided cleanly by 1.04 onto round dollars, a textbook 4%
+online-ordering fee, correctly refused. An agent then found the same restaurant
+publishes BOTH shapes at sibling URLs on the same host:
+
+    ramonstacoshop.com/menus/main-menu?location=…        150 clean whole/half-dollar prices
+    ramonstacoshop.com/menus/main-menu-sync?location=…   the 4%-inflated copy
+
+The `-sync` variant is the one wired to online ordering. The plain page is the
+printed menu. The router follows whichever Popmenu link the site exposes, so
+which one it lands on is luck.
+
+Only one row in the whole corpus was affected, so this did not earn a router
+change — checked before acting rather than assuming. But it generalises, and
+the general form is worth carrying: **a 4% or 15% fee is a property of the
+ORDERING CHANNEL, not of the restaurant, and a restaurant often publishes its
+uninflated menu somewhere else on the same host.** Before accepting a
+`screened-out` verdict, look for a sibling URL without the ordering wiring —
+drop a `-sync`, `-online`, `-order` or `-delivery` suffix, or try the plain
+`/menus/<name>` path. That is cheaper than hunting a second source and it
+returns first-party prices rather than tier-3 ones.
+
+## The counter-case: odd cents that ARE real (2026-09-03, Kuma Cafe id 6399)
+
+Three captures the same day were blocked for scattered cents, so this one is
+worth recording because blocking it would have been wrong.
+
+Kuma Cafe filed 46 prices at only 31% conventional endings - below the floor
+agents are told to block under. The rows:
+
+    Ham, Egg & Cheese        $13.75      Croissant version   $15.65
+    Ham, Egg, Cheddar        $11.25      Croissant version   $13.15
+    Classic Avocado Toast     $9.60      Specialty            $10.70
+
+The odd endings are not noise. Every croissant row is its base plus exactly
+$1.90, applied to quarter-dollar bases: 13.75 + 1.90 = 15.65, 11.25 + 1.90 =
+13.15. The cafe prices in quarters and charges an odd-value modifier, and the
+modifier is what produces `.65` and `.15`. Source is the restaurant's own
+Squarespace page with no ordering flow attached, so there is no channel for a
+fee to live in either.
+
+**The discriminator is not the scatter, it is whether the scatter is
+EXPLAINABLE.** A computed field produces endings with no relationship to each
+other. A real menu with modifiers produces a base cluster plus a constant
+offset you can find by subtracting paired rows. So when a capture comes in
+under the threshold:
+
+1. Find two rows that are obviously variants of one dish. Subtract.
+2. Do the same for another pair. If the difference is the same number, the
+   odd cents are a modifier and the menu is real.
+3. If the differences are unrelated, it is a computed field - block.
+
+Compare Lucy's Bakery (id 5988), blocked the same hour: Torta de Milanesa
+$10.35, Torta de Chorizo $5.33, Torta Embarazada $13.92. Nothing subtracts to
+anything, and it sat beside a tight `.50` cluster of genuine prices. That is
+a mixed payload. Kuma is one coherent price list.
+
+## Sales tax is a divisor nobody was testing (2026-09-03, Orlando's Taco Shop id 6415)
+
+Every markup test in this project sweeps 1.04, 1.10, 1.15, 1.20, 1.25, 1.30 —
+the shapes of platform fees and delivery uplifts. An Uber Eats catalog for
+Orlando's Taco Shop passed all of them and looked like garbage on the cent
+test: only 3 of 112 prices on a conventional ending.
+
+Dividing by **1.0775** — California's sales tax — put 79 of 112 (70%) back on
+conventional endings. The storefront is quoting tax-inclusive prices.
+
+Two things follow:
+
+**Add 1.0775 to the sweep.** More generally, sweep finely rather than testing a
+handful of round multipliers; a fine sweep from 1.00 to 1.35 in small steps
+finds tax, fees, and combinations of the two without knowing in advance which
+you are looking at. Several captures blocked earlier this session as "computed
+field, no divisor found" were tested only against the round list and may be
+recoverable — worth a re-run before anyone re-extracts them by hand.
+
+**It is still not fileable.** A tax-inclusive price is not the price on the
+menu, and dividing it out is constructing a number nobody published — the same
+rule that bars dividing out a 20% delivery fee. Block it and look for the
+pre-tax source. The value of identifying the multiplier is that it tells you
+the payload is coherent rather than corrupt, which is a different follow-up:
+a coherent tax-inclusive catalog usually has a pre-tax sibling somewhere.
+
+Counter-case from the same batch, so the sweep does not become a false-positive
+machine: Senor Tequero's MenuStar catalog also failed the round sweep at 18%,
+but a subtraction test found the same $2.32 premium step recurring in three
+independent places. A repeating offset is a real modifier. A single multiplier
+that rescues the whole distribution is a fee or a tax.

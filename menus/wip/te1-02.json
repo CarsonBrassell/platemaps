@@ -1,0 +1,114 @@
+[
+  {
+    "restaurantId": "6378",
+    "name": "Royal Sweets",
+    "address": "110 S Mollison Ave, El Cajon, CA 92020",
+    "website": "https://royalsweets.smartonlineorder.com/",
+    "reviewCount": 500,
+    "router": {
+      "platform": "clover",
+      "outcome": "screened-out",
+      "detail": "markup or platform fee: 134/148 prices divide by 1.0400 onto round dollars - https://royalsweets.smartonlineorder.com/wp-json/moo-clover/v1/categories"
+    }
+  },
+  {
+    "restaurantId": "6877",
+    "name": "Achilles Coffee Roasters Gaslamp",
+    "address": "372 Fourth Ave Ste 101, San Diego, CA 92101",
+    "website": "https://achillescoffeeroasters.com/",
+    "reviewCount": 496,
+    "router": {
+      "platform": "toast",
+      "outcome": "wrong-branch",
+      "detail": "payload address \"100 Park Plaza\" vs our \"372 Fourth Ave Ste 101, San Diego, CA 92101\""
+    }
+  },
+  {
+    "restaurantId": "6667",
+    "name": "Lani Coffee",
+    "address": "101 Market St Unit 100, San Diego, CA 92101",
+    "website": null,
+    "reviewCount": 494,
+    "router": null
+  },
+  {
+    "restaurantId": "5901",
+    "name": "La Fuente Mexican Food",
+    "address": "34 3rd Ave, Chula Vista, CA 91910",
+    "website": "https://lafuentesd.com",
+    "reviewCount": 493,
+    "router": {
+      "platform": "toast",
+      "outcome": "wrong-branch",
+      "detail": "payload address \"8690 Aero Drive\" vs our \"34 3rd Ave, Chula Vista, CA 91910\""
+    }
+  },
+  {
+    "restaurantId": "5710",
+    "name": "Aiberto's Taco Shop",
+    "address": "3894 41st St, San Diego, CA 92105",
+    "website": "https://rolbertostacoshop.netwaiter.com/san-diego/about/",
+    "reviewCount": 493,
+    "router": {
+      "platform": "netwaiter",
+      "outcome": "too-few",
+      "detail": "0 priced items from https://rolbertostacoshop.netwaiter.com/san-diego/menu/GetMenu"
+    }
+  },
+  {
+    "restaurantId": "6423",
+    "name": "Sushi Nekosan",
+    "address": "1119 Wall St, La Jolla, CA 92037",
+    "website": "http://sushinekosan.com/",
+    "reviewCount": 490,
+    "router": {
+      "platform": "toast",
+      "outcome": "screened-out",
+      "detail": "markup or platform fee: 124/173 prices divide by 1.1500 onto round dollars - https://order.toasttab.com/online/sushi-nekosan-1119-wall-street"
+    }
+  },
+  {
+    "restaurantId": "6880",
+    "name": "Trident Coffee Coronado",
+    "address": "942 Orange Ave, Coronado, CA 92118",
+    "website": "http://www.tridentcoffee.com/",
+    "reviewCount": 485,
+    "router": {
+      "platform": "shopify",
+      "outcome": "screened-out",
+      "detail": "markup or platform fee: 76/126 prices divide by 1.2500 onto round dollars - https://tridentcoffee.com/products.json"
+    }
+  },
+  {
+    "restaurantId": "6417",
+    "name": "El Zarape Mexican Eatery",
+    "address": "3038 Adams Ave, San Diego, CA 92116",
+    "website": "http://elzarapeeatery.com/",
+    "reviewCount": 453,
+    "router": {
+      "platform": null,
+      "outcome": "fetch-failed",
+      "detail": "fetch failed (getaddrinfo ENOTFOUND elzarapeeatery.com) (http://elzarapeeatery.com/)"
+    }
+  },
+  {
+    "restaurantId": "6837",
+    "name": "Handel's Homemade Ice Cream",
+    "address": "4475 Mission Blvd, San Diego, CA 92109",
+    "website": "https://handelsicecream.com/store/pacific-beach/",
+    "reviewCount": 450,
+    "router": {
+      "platform": "chownow",
+      "outcome": "wrong-branch",
+      "detail": "payload city \"Long Beach\" is not a city in this corpus - a different branch of the same brand (https://api.chownow.com/api/restaurant/36247/menu/202609031130)"
+    }
+  },
+  {
+    "restaurantId": "5709",
+    "name": "Plaza Donuts",
+    "address": "1548 Highland Ave, National City, CA 91950",
+    "website": null,
+    "reviewCount": 450,
+    "router": null
+  }
+]

@@ -323,9 +323,12 @@ const DESC_KEYS = ["description", "desc", "itemDescription", "item_description",
 const SECTION_KEYS = ["name", "title", "categoryName", "category_name", "menuName", "menu_name", "groupName", "sectionName"];
 /* Keys whose value is a list of things that might be menu items. Only used to
  * carry a section name down; every object is inspected regardless. */
-const CHILD_KEYS = /^(items|entries|products|menuItems|menu_items|dishes|children|options|elements|foods|objects|data|list|results|records|variations|modifiers|categories|sections|groups|menus|itemGroups|item_groups|menuGroups|subCategories)$/i;
+const CHILD_KEYS = /^(items|entries|products|menuItems|menu_items|dishes|children|options|elements|foods|objects|data|list|results|records|variations|modifiers|categories|sections|groups|menus|itemGroups|item_groups|menuGroups|subCategories|hasMenuSection|hasMenuItem|hasMenuElement|menuSection)$/i;
 
-const PRICE_KEYS = /^(price|prices|basePrice|base_price|defaultPrice|default_price|unitPrice|unit_price|amount|value|cost|itemPrice|item_price|menuItemPrice|priceMoney|price_money|minPrice|min_price|startingPrice|priceRange|displayPrice|display_price|formattedPrice|formatted_price|priceText|price_text|priceInCents|price_in_cents|amountCents|amount_cents|priceCents|price_cents|amountMicros)$/i;
+/* `offers` and `priceSpecification` are schema.org: an Olo location page ships
+ * a full `Menu` graph in a ld+json tag, which is a priced catalog in the served
+ * HTML and therefore a router recipe rather than a browser one. */
+const PRICE_KEYS = /^(price|prices|basePrice|base_price|defaultPrice|default_price|unitPrice|unit_price|amount|value|cost|itemPrice|item_price|menuItemPrice|priceMoney|price_money|minPrice|min_price|startingPrice|priceRange|displayPrice|display_price|formattedPrice|formatted_price|priceText|price_text|priceInCents|price_in_cents|amountCents|amount_cents|priceCents|price_cents|amountMicros|offers|priceSpecification)$/i;
 
 const MINOR_KEY = /cents|micros|minor/i;
 const CURRENCY_KEY = /^(currency|currencyCode|currency_code|currencyUnit|iso_currency)$/i;
@@ -356,10 +359,21 @@ function priceIn(obj, pathPrefix) {
     if (typeof v === "number" && Number.isFinite(v) && v > 0) {
       return { unit: MINOR_KEY.test(k) ? "minor" : "num", value: v, pathKey };
     }
-    if (v && typeof v === "object" && !Array.isArray(v)) {
-      /* A money object: `{amount: 1250, currency: "USD"}`. The currency
-       * sibling is the payload declaring its own units. */
-      const inner = Object.entries(v);
+    if (v && typeof v === "object") {
+      /* A money object: `{amount: 1250, currency: "USD"}`, or schema.org's
+       * `offers: {price: "29.95", priceCurrency: "USD"}`. When the amount is
+       * written as a STRING the payload has already chosen a unit and printed
+       * it, so it is read verbatim; a numeric amount beside a currency field is
+       * the payload declaring minor units. */
+      const inner = Object.entries(Array.isArray(v) ? (v[0] ?? {}) : v);
+      const text = inner.find(([ik, iv]) => /^(amount|value|price|units)$/i.test(ik) && typeof iv === "string" && /\d/.test(iv));
+      if (text) {
+        /* A string with no decimal point has not chosen a unit after all
+         * ("1250" beside `currency` is cents) - hand it to `resolveUnits`. */
+        const bare = text[1].trim();
+        if (/^\d+$/.test(bare)) return { unit: "num", value: Number(bare), pathKey: `${pathKey}.${text[0]}` };
+        return { unit: "text", value: bare, pathKey: `${pathKey}.${text[0]}` };
+      }
       const amount = inner.find(([ik, iv]) => /^(amount|value|price|units)$/i.test(ik) && typeof iv === "number" && iv > 0);
       if (!amount) continue;
       const hasCurrency = inner.some(([ik]) => CURRENCY_KEY.test(ik));
@@ -609,6 +623,30 @@ async function pickStore(page, r, log) {
           return `clicked a branch matching street number ${num}`;
         } catch { /* covered by an overlay; fall through to the search box */ }
       }
+    }
+  }
+
+  /* 1b. A branch list rendered as links, where the street number is in the
+   * href rather than in the text. Matching on the number and nothing else is
+   * what keeps this from picking a neighbouring branch. */
+  if (num) {
+    let href = null;
+    try {
+      href = await page.evaluate(
+        (n) =>
+          [...document.querySelectorAll("a[href]")]
+            .map((a) => a.href)
+            .find((h) => new RegExp(`(^|[^0-9])${n}([^0-9]|$)`).test(h)) ?? null,
+        num,
+      );
+    } catch { /* no anchors to read */ }
+    if (href) {
+      try {
+        await page.goto(href, { waitUntil: "domcontentloaded", timeout: PAGE_MS });
+        await page.waitForTimeout(SETTLE_MS);
+        log(`store picked by street number ${num} in the link`);
+        return `opened the branch link carrying street number ${num}`;
+      } catch { /* fall through to the search box */ }
     }
   }
 
@@ -910,6 +948,9 @@ async function visit(r) {
   /* A store pick is tried when the page offers one, whether or not prices are
    * already visible - a brand landing page shows prices for no branch at all. */
   let pickNote = null;
+  /* Did we end up on a host the restaurant's own record never named? That is
+   * the case where an unverified read is dangerous rather than merely thin. */
+  let crossHost = false;
   if (gate.picker || gate.prices < 5) {
     try {
       pickNote = await pickStore(page, r, log);
@@ -950,6 +991,7 @@ async function visit(r) {
           } catch { /* the original is gone; carry on with what is loaded */ }
         } else {
           pickNote = followed;
+          crossHost = hostOf(page.url()) !== hostOf(from);
         }
       }
     }
@@ -1069,11 +1111,17 @@ async function visit(r) {
     pageText = await page.evaluate(() => (document.body ? document.body.innerText : "").slice(0, 60000));
   } catch { /* the page is gone; the printed-address test simply abstains */ }
   const printed = addressesInPageText(pageText);
+  const ourCity = collapse(r.city);
+  const cityOnPage = Boolean(
+    ourCity && new RegExp(`\\b${ourCity.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(pageText),
+  );
   let identityNote = payloadAddress ? `payload address "${payloadAddress}" matched` : "address unverified in payload";
+  let unverifiedCrossHost = crossHost && !payloadAddress ? "nothing on the page names an address" : null;
   if (printed.length) {
     const mine = ours && printed.some((p) => p.number === ours);
     if (mine) {
       identityNote = `street number ${ours} printed on the page`;
+      unverifiedCrossHost = null;
     } else {
       const states = new Set(printed.map((p) => p.state.toUpperCase()));
       const cities = printed.map((p) => p.city.toLowerCase());
@@ -1091,8 +1139,33 @@ async function visit(r) {
           { menuResponses },
         );
       identityNote = `page prints a corpus city (${[...new Set(cities)].filter((c) => KNOWN_CITIES.has(c)).join(", ")}); street number unconfirmed`;
+      if (crossHost) unverifiedCrossHost = "the page prints an address, but not this branch's street number";
     }
+  } else if (cityOnPage && !crossHost) {
+    identityNote = `no address on the page, but it names ${ourCity}`;
+  } else if (crossHost) {
+    unverifiedCrossHost = cityOnPage
+      ? `the page names ${ourCity}, but it names every other branch's city too - a location list is not an address`
+      : "nothing on the page names an address or this city";
   }
+
+  /*
+   * The dangerous shape, and the one that DID file a Pasadena menu under a San
+   * Diego record twice while this script was being built: a link took us onto
+   * another host, and nothing decisive on the page we landed on says which
+   * branch it is. `cvpasadena.square.site` passed a city test because Copa
+   * Vida's Square site lists all of its locations in a switcher, San Diego
+   * included. Only a street number or a payload address settles a cross-host
+   * read; a model agent can read the page and tell, so hand it back rather than
+   * guess. Never file on the strength of the link alone.
+   */
+  if (unverifiedCrossHost)
+    return finish(
+      "needs-browser",
+      `${dishes.length} priced items on ${page.url()}, reached by following a link off ${hostOf(r.target)}, but ` +
+        `${unverifiedCrossHost} - an agent must confirm this is ${r.name}, ${r.address}. Not filed`,
+      { menuResponses },
+    );
 
   if (dishes.length < MIN_DISHES)
     return finish(

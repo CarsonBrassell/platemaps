@@ -1,0 +1,5 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      1 entries (1 with menus, 0 confirmed not-found), 25 dishes
+quarantine: 1 entries, 0 dishes withheld
+
+  The Deli Stop (0 dishes) - blocked, not absent: needs-browser: own site menu page has dish names but zero prices; only pricing path is GrubHub (restaurant 392720), which is a pure client-rendered SPA (no JSON-LD, no preloaded state in curl'd HTML) and the public API returned 401

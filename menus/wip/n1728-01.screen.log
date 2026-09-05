@@ -1,0 +1,19 @@
+clean:      4 entries (4 with menus, 0 confirmed not-found), 300 dishes
+quarantine: 16 entries, 0 dishes withheld
+
+  Wood Ranch Mission Valley (0 dishes) - blocked, not absent: fee baked in: DoorDash prices - 12% of 78 conventional as published, 100% divide cleanly by 1.1500 onto round dollars (router-confirmed, address matches: 7510 Hazard Center Drive)
+  Mimi's Cafe (0 dishes) - blocked, not absent: site publishes full dish names/sections (breakfast, bakery, beverages, kids, lunch/starters/soups) but zero prices anywhere across all menu pages - core offering entirely unpriced
+  Taquería Imperial (0 dishes) - blocked, not absent: live site times out; wayback snapshot's only dollar figures ($5.99, $6.99) are quoted inside review prose, not an itemized menu - hearsay, not a source
+  VG Donut & Bakery (0 dishes) - blocked, not absent: own site publishes donut/pastry/cake menu pages with dish names but no prices anywhere (donut, pastry, bread, cookies-desserts, cakes pages all checked)
+  Public Square Coffee House (0 dishes) - blocked, not absent: Shopify storefront returns 402 'Store unavailable' - unclear if temporary deactivation or the cafe itself is gone; no other source found
+  Los Reyes Mexican Restaurant & Cantina (0 dishes) - blocked, not absent: needs-browser: Clover COLO2 storefront; redirect API resolves to los-reyes-mexican-food-san-diego.cloveronline.com but that host would not load; own domain losreyesfood.com times out
+  Loreto's Taco Shop (0 dishes) - blocked, not absent: domain serves the default nginx 'Welcome to nginx!' placeholder page - not configured, no content
+  El Puerto Taco Shop (0 dishes) - blocked, not absent: no website in worklist; the only address-matching site found (elpuertotacoshop.shop) is titled '...| Locallya' - Locallya is a barred farm domain, not first-party; facebook page unreachable (400); no other priced source found
+  Plazas Mexican Food (0 dishes) - blocked, not absent: facebook page unreachable (400, no login); only tier-5 aggregators (allmenus, zmenu, restaurantguru) and farm domains (cafes-guide, hey-restaurants, res-menu) found, no first-party or marketplace source
+  Red Fox Room and Steakhouse (0 dishes) - blocked, not absent: needs-browser: page is entirely a consentmanager.net JS consent wall in raw HTML, no menu link or content reachable via curl (tried plain and with navigation headers)
+  La Sierra Cafe (0 dishes) - blocked, not absent: no website in worklist; facebook page unreachable (400, no login); only tier-5 aggregators (zmenu, allmenus, menupix, restaurantji) found
+  Todo Sushi (0 dishes) - blocked, not absent: needs-browser: Wix Thunderbolt site, fully client-rendered, no dish/price data present in static HTML
+  El Real Mexican Food (0 dishes) - blocked, not absent: markup baked into displayed prices: MenuStar ordering site (restaurant_id=3903), 107 items across 15 categories (full core menu: combo plates, tacos, burritos, tortas, hamburgers, enchiladas etc). Divisor sweep: dividing every price by 1.25 lands 101/107 cleanly on round or quarter-dollar bases - $12.50/1.25=$10.00, $16.25/1.25=$13.00, $6.25/1.25=$5.00. This is a uniform 25% markup on round base prices, not genuine odd pricing. Do not divide out.
+  Grandma Tofu & BBQ (0 dishes) - blocked, not absent: markup or platform fee: 61/71 prices divide by 1.1000 onto round dollars (router-confirmed)
+  Hongyuan Kebab (0 dishes) - blocked, not absent: Squarespace site publishes only gallery/promo images (e.g. a '50% off signature dishes' promo graphic) and no priced menu; zero dollar amounts anywhere on site
+  Bobalicious (0 dishes) - blocked, not absent: domain no longer resolves (DNS failure, live and prior router attempts both fail); wayback snapshot exists but carries no prices

@@ -147,7 +147,7 @@ export function RestaurantHeader({
             credited and linked back to the business's own Yelp page. That link
             covers the photo, and sits in this same line. */}
         <p className="mt-3 font-mono text-[11px] text-zinc-500">
-          {SHOW_BLEND_STARS && <span className="text-zinc-400">{BLEND_DISCLOSURE}</span>}
+          {SHOW_BLEND_STARS && restaurant.rating != null && <span className="text-zinc-400">{BLEND_DISCLOSURE}</span>}
           {restaurant.yelpUrl && (
             <>
               {" · "}

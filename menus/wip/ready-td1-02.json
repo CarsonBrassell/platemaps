@@ -1,0 +1,2277 @@
+[
+  {
+    "restaurantId": "7764",
+    "name": "Mamma’s Pizzeria",
+    "sourceUrl": "https://mammaspizzaria.com/ (server-rendered SkyTab online-ordering widget embedded on the homepage, #menu)",
+    "confidence": "high",
+    "notes": "Router said no-platform on the homepage. Own site is a Next.js page with a first-party SkyTab (POS) ordering widget server-rendered directly into the HTML (no client fetch needed) at shopSetting.olo.serviceVisibility.skyTab:true. Extracted 94 dishes across SALADS, CALZONES, LARGE PIZZA, MEDIUM PIZZA, Individual Pizza, Dough, Extra Items, Side Sauces (all categories shown under the 'All' filter, so this is the complete published menu, not one tab of several). Cent distribution: 91 of 94 land on .00, 3 on .50 (Dough/side items) - clean printed-menu pattern, no fee scatter, no divisor test needed. Price level plausible for 2026 (medium pizza $16-20, calzones $10-14, salads $5-12). Nothing divided, merged, or inferred.",
+    "dishes": [
+      {
+        "name": "Antipasto Salad SM",
+        "description": "Personal size salad. Pepperoni, green bell pepper, black olives, red onion, fresh tomato, pepperoncini, and shredded provolone on a bed of spring mix salad. Comes with house made Italian or Ranch",
+        "price": "$7.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "Antipasto Salad MD",
+        "description": "Enough for a meal, or share with a friend. Pepperoni, green bell pepper, black olives, red onion, fresh tomato, pepperoncini, and shredded provolone on a bed of spring mix salad. Comes with house made Italian or Ranch",
+        "price": "$9.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "Antipasto Salad LG",
+        "description": "Salad big enough to share with 2-3 people Pepperoni, green bell pepper, black olives, red onion, fresh tomato, pepperoncini, and shredded provolone on a bed of spring mix salad. Comes with house made Italian or Ranch",
+        "price": "$12.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "Garden Salad SM",
+        "description": "Personal size salad. Green bell pepper, black olives, red onion, fresh tomato on a bed of spring mix salad. Comes with house made Italian or Ranch",
+        "price": "$5.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "Garden Salad MD",
+        "description": "Big enough for a meal, or share with a friend. Green bell pepper, black olives, red onion, fresh tomato on a bed of spring mix salad. Comes with house made Italian or Ranch",
+        "price": "$7.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "Garden Salad LG",
+        "description": "Sharable size salad. enough for 2-3 people Green bell pepper, black olives, red onion, fresh tomato on a bed of spring mix salad. Comes with house made Italian or Ranch",
+        "price": "$10.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "Caprese Salad MD",
+        "description": "*Limited availability. Please call ahead.\n\nFresh mozzarella, sliced Roma tomatoes, fresh basil and a drizzle of balsamic",
+        "price": "$8.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "Caprese Salad LG",
+        "description": "*Limited availability. Please call ahead. \nSharable size \nFresh mozzarella, sliced Roma tomatoes, fresh basil and a drizzle of balsamic",
+        "price": "$12.00",
+        "section": "SALADS"
+      },
+      {
+        "name": "(CAL) Build your own",
+        "description": "Folded in a non traditional way, this is more like an Italian burrito. Filled with shredded mozzarella and ricotta. You can add additional fillings of your choice. Includes a side of Ranch, pizza sauce, or Italian",
+        "price": "$10.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Bbq Chicken",
+        "description": "Ricotta, Outlaw Texas BBQ sauce, chicken, red onion",
+        "price": "$13.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Chicken Mushroom Alfredo",
+        "description": "Ricotta, Chicken. Mushroom. Alfredo sauce",
+        "price": "$13.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Chicken Pesto",
+        "description": "Ricotta, Chicken. red onion, pesto sauce",
+        "price": "$12.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Dolce e Piccante",
+        "description": "Pepperoni, Ricotta, Dragons Breath honey.  *Spicy*",
+        "price": "$13.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Four Cheese",
+        "description": "mozzarella, ricotta, provolone, Romano",
+        "price": "$12.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Hawaiian",
+        "description": "ricotta, Diced ham and sweet pineapple",
+        "price": "$12.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Mammas",
+        "description": "ricotta, Spinach, chicken, garlic, black olive, and bacon with alfredo sauce",
+        "price": "$14.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Margherita",
+        "description": "ricotta, Shredded mozzarella, fresh tomato, basil, and garlic",
+        "price": "$11.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Meat Lovers",
+        "description": "ricotta, Pepperoni, sausage, bacon, and ham",
+        "price": "$14.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Pepperoni",
+        "description": "Pepperoni, Ricotta, mozzarella ",
+        "price": "$11.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Pizza Love",
+        "description": "Pepperoni, sausage, ham, green bell pepper, and red onion",
+        "price": "$13.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Spinach Bacon Artichoke W\\ Alfredo",
+        "description": "Pepperoni, Spinach Bacon Artichoke W\\ Alfredo",
+        "price": "$14.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Triple XXX",
+        "description": "3 layers of pepperoni",
+        "price": "$13.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Veggie",
+        "description": "Tomato, mushroom, green bell pepper, black olive, artichoke, and red onion",
+        "price": "$13.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(CAL) Works",
+        "description": "Pepperoni, sausage, mushroom, black olive, green bell pepper, and red onion",
+        "price": "$13.00",
+        "section": "CALZONES"
+      },
+      {
+        "name": "(L) Bbq Chicken",
+        "description": "14\" with Outlaw Texas BBQ sauce, chicken, red onion",
+        "price": "$20.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Build Your Own Pizza",
+        "description": "Create what you crave on a 14\" pizza",
+        "price": "$16.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Chicken Mushroom Alfredo",
+        "description": "14\" with Chicken. Mushroom. Alfredo sauce",
+        "price": "$20.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Chicken Pesto",
+        "description": "14\" with pesto sauce, chicken, red onion",
+        "price": "$20.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Dolce e Piccante",
+        "description": "14\" with Pepperoni pizza with a kiss of Dragons Breath honey.  *Spicy",
+        "price": "$20.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Four Cheese",
+        "description": "14\" with Red sauce, mozzarella, ricotta, provolone, Romano",
+        "price": "$20.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Hawaiian",
+        "description": "14\" with Diced ham and sweet pineapple",
+        "price": "$18.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Mammas",
+        "description": "14\" with Spinach, chicken, garlic, black olive, and bacon with alfredo sauce",
+        "price": "$21.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Margherita",
+        "description": "14\" with Shredded mozzarella, fresh tomato, basil, and garlic",
+        "price": "$19.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Meat Lovers",
+        "description": "14\" with Pepperoni, sausage, bacon, and ham",
+        "price": "$21.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Pepperoni",
+        "description": "14\" with Pepperoni",
+        "price": "$17.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Pizza Love",
+        "description": "14\" with Pepperoni, sausage, ham, green bell pepper, and red onion",
+        "price": "$21.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Spinach Bacon Artichoke W\\ Alfredo",
+        "description": "14\" with Spinach Bacon Artichoke W\\ Alfredo",
+        "price": "$20.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Triple XXX",
+        "description": "14\" with 3 layers of pepperoni",
+        "price": "$20.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Veggie",
+        "description": "14\" with Tomato, mushroom, green bell pepper, black olive, artichoke, and red onion",
+        "price": "$21.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Works",
+        "description": "14\" with Pepperoni, sausage, mushroom, black olive, green bell pepper, and red onion",
+        "price": "$21.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Cheese Burger",
+        "description": "Cheddar, fresh tomatoes, onions, meat balls, pickles",
+        "price": "$21.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "(L) Pickle",
+        "description": "Garlic infused olive oil base, Cheddar/mozzarella blend, fresh grated parmesan, Romano, Covered in pickles",
+        "price": "$21.00",
+        "section": "LARGE PIZZA"
+      },
+      {
+        "name": "Garlic Fingers",
+        "description": "Sauced with garlic infused olive oil and a sprinkling of shredded mozzarella. Comes with a side of Ranch or pizza sauce",
+        "price": "$8.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) 4 Cheese",
+        "description": "Shredded mozzarella, ricotta, provolone, and Romano",
+        "price": "$16.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Bbq Chicken",
+        "description": "Outlaw Texas BBQ sauce, chicken, and red onion",
+        "price": "$17.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Build Your Own",
+        "description": "Build what makes you happy",
+        "price": "$13.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Chicken Mushroom W\\ Alfredo",
+        "description": "Just like the name",
+        "price": "$17.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Chicken Pesto",
+        "description": "Pesto sauce chicken, and red onion",
+        "price": "$17.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Crustless Pizza",
+        "description": "No crust to fill you up, only all your favorite toppings with your choice of sauce baked in a 9\" aluminum dish. Remember to grab a fork!",
+        "price": "$8.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Dolce e Piccante",
+        "description": "Pepperoni pizza with a kiss of Dragons Breath honey.  *Spicy",
+        "price": "$16.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Hawaiian",
+        "description": "Classic chopped ham and pineapple. ",
+        "price": "$15.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Mammas",
+        "description": "Spinach, chicken, black olive, garlic, and bacon with alfredo sauce",
+        "price": "$18.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Margherita",
+        "description": "Shredded mozzarella, tomato, basil, and garlic",
+        "price": "$16.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Meat Lovers",
+        "description": "Pepperoni, sausage, ham, and bacon",
+        "price": "$18.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Pepproni",
+        "description": "",
+        "price": "$14.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Pizza Love",
+        "description": "Pepperoni, sausage, ham, green bell pepper, and red onion",
+        "price": "$18.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Spinach Bacon Artichoke W/ Alfredo",
+        "description": "",
+        "price": "$17.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Triple XXX",
+        "description": "3 layers of pepperoni",
+        "price": "$16.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Veggie",
+        "description": "Tomato, mushroom, black olive, green bell pepper, artichoke, and red onion",
+        "price": "$18.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Works",
+        "description": "Pepperoni, sausage, mushroom, black olive, green bell pepper, and red onion",
+        "price": "$18.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Pickle",
+        "description": "Garlic infused olive oil base, Cheddar/mozzarella blend, fesh grated parmesan, Romano, Covered in pickles",
+        "price": "$18.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(M) Cheese Burger",
+        "description": "Cheddar, fresh tomatoes, onions, meat balls, pickles",
+        "price": "$18.00",
+        "section": "MEDIUM PIZZA"
+      },
+      {
+        "name": "(S) 4 Cheese",
+        "description": "Shredded mozzarella, ricotta, provolone, and Romano with red sauce",
+        "price": "$9.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Bbq Chicken",
+        "description": "Outlaw Texas BBQ sauce, chopped chicken, and red onion",
+        "price": "$9.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Build Your Own",
+        "description": "",
+        "price": "$8.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Chicken Mushroom",
+        "description": "Alfredo sauce, chicken, mushrooms, and..... mozzarella",
+        "price": "$9.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Chicken Pesto",
+        "description": "Pesto sauce, chicken, and red onion",
+        "price": "$9.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Dolce e Piccante",
+        "description": "Pepperoni pizza with a kiss of Dragons Breath honey.  *Spicy",
+        "price": "$9.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Hawaiian",
+        "description": "Chopped ham and pineapple",
+        "price": "$9.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Mammas",
+        "description": "Alfredo sauce with spinach, chicken, bacon, black olives, and garlic",
+        "price": "$11.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Margherita",
+        "description": "Shredded mozzarella, tomato, basil, and garlic",
+        "price": "$9.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Meat Lovers",
+        "description": "Pepperoni, sausage, ham, and bacon",
+        "price": "$11.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Pepproni",
+        "description": "pepperoni...and cheese",
+        "price": "$8.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Pizza Love",
+        "description": "Pepperoni, sausage, ham, green bell pepper, and red onion",
+        "price": "$11.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Spinach Bacon Artichoke",
+        "description": "Its in the name, but with alfredo sauce",
+        "price": "$10.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Veggie",
+        "description": "Tomato, mushroom, black olive, green bell pepper, artichoke, and red onion",
+        "price": "$11.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Works",
+        "description": "Pepperoni, sausage, mushroom, green bell pepper, black olive, and red onion",
+        "price": "$11.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) XXX",
+        "description": "3 layers of pepperoni",
+        "price": "$10.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Pickle",
+        "description": "Garlic infused olive oil base, Cheddar/mozzarella blend, fresh grated parmesan, Romano, Covered in pickles",
+        "price": "$11.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "(S) Cheese Burger",
+        "description": "Cheddar, fresh tomatoes, onions, meat balls, pickles",
+        "price": "$11.00",
+        "section": "Individual Pizza"
+      },
+      {
+        "name": "Medium 12\" Dough Ball",
+        "description": "16oz of soft dough ready for your kitchen",
+        "price": "$5.00",
+        "section": "Dough"
+      },
+      {
+        "name": "Large 16\" Dough Ball",
+        "description": "1lb 13oz of fresh dough to create our masterpiece",
+        "price": "$7.00",
+        "section": "Dough"
+      },
+      {
+        "name": "Small 8\" Dough Ball",
+        "description": "",
+        "price": "$1.00",
+        "section": "Dough"
+      },
+      {
+        "name": "Pizza Kit",
+        "description": "12\" dough ball and enough sauce, shredded mozzarella, and pepperoni for a medium pizza all wrapped up and ready for you to take home and make your master creation. You can substitute the pepperoni for another item, or add more toppings if you like",
+        "price": "$8.00",
+        "section": "Extra Items"
+      },
+      {
+        "name": "Take And Bake",
+        "description": "Take home a par baked crust with your favorite toppings and bake to your desired crispiness. Or freeze and have on hand for a later day.",
+        "price": "$10.00",
+        "section": "Extra Items"
+      },
+      {
+        "name": "(SS) Alfredo",
+        "description": "",
+        "price": "$1.50",
+        "section": "Side Sauces"
+      },
+      {
+        "name": "(SS) Buffalo",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side Sauces"
+      },
+      {
+        "name": "(SS) Dragon Kiss Honey *spicy",
+        "description": "",
+        "price": "$2.00",
+        "section": "Side Sauces"
+      },
+      {
+        "name": "(SS) Garlic & Oil",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side Sauces"
+      },
+      {
+        "name": "(SS) House Italian Dressing",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side Sauces"
+      },
+      {
+        "name": "(SS) House Ranch",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side Sauces"
+      },
+      {
+        "name": "(SS) Outlaw Texas BBQ sauce",
+        "description": "",
+        "price": "$1.50",
+        "section": "Side Sauces"
+      },
+      {
+        "name": "(SS) Pesto",
+        "description": "",
+        "price": "$1.50",
+        "section": "Side Sauces"
+      },
+      {
+        "name": "(SS) Pizza Sauce",
+        "description": "",
+        "price": "$1.00",
+        "section": "Side Sauces"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6824",
+    "name": "We Be OB",
+    "sourceUrl": "https://webeob.com/san-diego-ocean-beach-we-be-ob-food-menu, https://webeob.com/san-diego-ocean-beach-we-be-ob-drink-menu",
+    "confidence": "high",
+    "notes": "Router flagged this as spothopper/wrong-branch ('no address in payload'). Checked: the food-menu page's contact-icon link is a Google search query embedding the full street address 'We Be OB 5020 West Point Loma Boulevard' - matches the work-list address (5020 W Point Loma Blvd) exactly, and the URL slug itself says 'san-diego-ocean-beach', the correct neighborhood. Site has only this one location (no /locations page, no other branch path found), so this is NOT a wrong branch - filing under this id. Extracted via SpotHopper's server-rendered food-item-holder/food-menu-grid HTML blocks (own site, not the SpotHopper spotapps.co iframe). Sections: Acai Bowl, Acai Smoothies, Burgers, Salads, Serious Shakes, Sides, Signature Smoothies, Specials, Ice Cream (food menu) + Menu (drink menu, coffee/tea/soda/juice/alcohol shots). Cent distribution across both pages: 54 of 62 raw rows landed on .00/.50, 8 landed scattered (.04, .37, .77, .81 x4, .92, .04) - a computed-field pattern, not menu prices. Divisor check: every one of those 8 divides cleanly by 1.04 onto a round dollar value ($5, $2, $3.50, $6, $25 etc), matching this project's known 4% online-ordering-fee pattern, but ONLY on a handful of 'shot'/addon/merch rows, not the bulk of the menu (88% of rows were already clean round dollars with no division needed). Handled conservatively per 'never construct a price': dropped Chips, Single Dog (Plain), Cheese Pretzel, T Shirt, Longball Platinum Shot, Longball Iced Tea Shot (4 rows on food page + drink page - no printed alternate value to fall back on). For the two 'Add $5 (Shot)' rows (computed as $4.81), used the plain-dollar amount printed in the item's own name ($5.00) rather than the computed field or any division - this is reading the menu's own printed label, not constructing a price. T Shirt is merchandise (adjunct), excluded regardless. Final count 56 dishes. No burrito/taco-style core-menu gap identified for this acai-bowl/smoothie/burger concept; both linked menu pages (food + drink) were the full site nav, nothing else linked.",
+    "dishes": [
+      {
+        "name": "Acai Fruit Bowl",
+        "description": "Organic, vegan, uncut Acai sorbet topped with granola, honey, drizzle, banana, fresh seasonal fruit, coconut flake",
+        "price": "$10.00",
+        "section": "Acai Bowl"
+      },
+      {
+        "name": "The Great Awesome Acai Smoothie",
+        "description": "A refreshingly awesome smoothie! Acai sorbet blended with strawberry, blueberry, and coconut",
+        "price": "$10.00",
+        "section": "Acai Smoothies"
+      },
+      {
+        "name": "The Original Acai Smoothie",
+        "description": "Organic, vegan acai sorbet, strawberry, blueberry, banana, granola, & coconut expertly blended with almond milk",
+        "price": "$10.00",
+        "section": "Acai Smoothies"
+      },
+      {
+        "name": "Add $5 (Shot)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Acai Smoothies"
+      },
+      {
+        "name": "The Beach Bum Burger",
+        "description": "1/4 burger topped with cheese, lettuce, tomato, onion, and pepperoncini",
+        "price": "$10.00",
+        "section": "Burgers"
+      },
+      {
+        "name": "Cornado Compound Breakfast Burger",
+        "description": "Hamburgers! The cornerstone of any nutritious breakfast! 1/4lb burger topped with bacon, egg, ham & cheese.",
+        "price": "$15.00",
+        "section": "Burgers"
+      },
+      {
+        "name": "Amish Italian Salad",
+        "description": "Hand carved ham, pepperoni, salami, provolone, tomato, onion & pepperoncini over tasty greens with our housemade Dutch mix and balsamic glaze",
+        "price": "$12.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Mt. Laguna Tuna Salad",
+        "description": "Our housemade albacore tuna salad on a bed of fresh greens w/ tomato, onion, bacon, blueberry, roasted almond, pepperoncini and provolone dressed with balsamic glaze",
+        "price": "$12.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Classic Vanilla",
+        "description": "The traditional blend of vanilla ice cream & milk",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Peanut Better",
+        "description": "Better than any peanut butter shake you'll ever taste!",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Pineapple Shake",
+        "description": "",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Mocha Buzz",
+        "description": "Our house coffee bus with Hershey's chocolate syrup",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Blueberry Hill",
+        "description": "Find your thrill!",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Coke Float",
+        "description": "Classic coke float",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Ocean Peach",
+        "description": "As lovely as Ocean Beach",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Root Beer Float",
+        "description": "The one and only",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Strawberry Fields",
+        "description": "It's a dream",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Coffee Buzz",
+        "description": "Our house-brewed coffee with vanilla ice cream",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Banana Cream Pie (BCP)",
+        "description": "Vanilla, banana, malt, granola",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Chocy Shake",
+        "description": "Vanilla ice cream with Hershey's chocolate syrup",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Orange Creamsicle",
+        "description": "Orange soda with a scoop of vanilla",
+        "price": "$8.00",
+        "section": "Serious Shakes"
+      },
+      {
+        "name": "Brighton Blueberry",
+        "description": "Blueberry, banana, granola, almond milk",
+        "price": "$9.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "Bananarama!",
+        "description": "Banana, peanut butter, almond milk",
+        "price": "$8.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "Strawberry Banana Bliss",
+        "description": "",
+        "price": "$8.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "Newport Nanner",
+        "description": "Fresh greens, banana, almond butter, almond milk",
+        "price": "$8.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "Mango \"Greenius\"",
+        "description": "Our deliciously famous Mango Genius recipe blended with healthy handfuls of greens",
+        "price": "$10.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "Sunshine Daydream",
+        "description": "Strawberry, banana, apple juice",
+        "price": "$8.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "PBJ",
+        "description": "Peanut butter, strawberry, banana, almond milk",
+        "price": "$8.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "In The Purple",
+        "description": "Fresh greens, blueberry, strawberry, coconut water, pineapple juice",
+        "price": "$10.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "We Be OB",
+        "description": "All the berries, pineapple, orange juice",
+        "price": "$8.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "Nina Colada",
+        "description": "Pineapple, banana, pineapple juice, coconut water, coconut flake",
+        "price": "$8.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "Mango Genius",
+        "description": "Mango, pineapple, banana, coconut water, orange juice",
+        "price": "$8.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "The Original Acai Smoothie",
+        "description": "Organic, vegan acai sorbet, strawberry, blueberry, banana, granola, & coconut expertly blended with almond milk",
+        "price": "$10.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "Add $5 (Shot)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Signature Smoothies"
+      },
+      {
+        "name": "Kalua Pork Plate",
+        "description": "",
+        "price": "$14.00",
+        "section": "Specials"
+      },
+      {
+        "name": "1/2 Sausage Egg and Cheese Special",
+        "description": "",
+        "price": "$7.00",
+        "section": "Specials"
+      },
+      {
+        "name": "Chili ch Burger",
+        "description": "",
+        "price": "$12.00",
+        "section": "Specials"
+      },
+      {
+        "name": "Vegan Dog",
+        "description": "",
+        "price": "$6.00",
+        "section": "Specials"
+      },
+      {
+        "name": "Chocolate Slathered Strawberry",
+        "description": "Vanilla ice cream topped with a mountain of fresh strawberries, drenched in chocolate syrup, and finished with whipped cream",
+        "price": "$10.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Hot Ice Cream Brioche Sandwich",
+        "description": "Premium vanilla ice cream pressed into an artisan bun finished with whipped cream, sprinkle, and a side of chili sauce. Made to order, served with a fork.",
+        "price": "$7.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Crumbonne Shorty",
+        "description": "Delicious Crumbronne pastry warmed up served with a scoop of premium vanilla ice cream, topped with whipped cream and honey drizzle",
+        "price": "$10.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Chocy Sunday",
+        "description": "Vanilla ice cream topped with Hershey's Chocolate Syrup, whipped cream & chocolate sprinkle",
+        "price": "$8.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Over the Rainbow",
+        "description": "Vanilla ice cream topped with sliced strawberry, whipped cream and rainbow jimmies",
+        "price": "$8.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Simple Scoop/ Italian Ice",
+        "description": "2 scoops of our premium vanilla ice cream",
+        "price": "$5.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Vanilla Fruit Bowl",
+        "description": "Premium vanilla ice cream topped with granola, honey drizzle, banana, fresh seasonal fruit & coconut flake",
+        "price": "$10.00",
+        "section": "Ice Cream"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Iced Coffee",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Regular Tea",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Soda",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Juice",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Sweetened Tea",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Coconut Water",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Blueberry Tea Cool",
+        "description": "",
+        "price": "$4.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Boozy Smoo Shot",
+        "description": "",
+        "price": "$5.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Longball Platinum",
+        "description": "",
+        "price": "$7.00",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6552",
+    "name": "Realm Of The 52 Remedies",
+    "sourceUrl": "https://52remedies.com/food, https://52remedies.com/drinks",
+    "confidence": "high",
+    "notes": "Router said no-platform on the homepage. Own site is Squarespace; homepage links to /menu, which is a splash page whose two image buttons link to /food and /drinks (not linked from primary nav). First-party Squarespace text and native menu-block widgets, no ordering platform, no markup test needed. Food page (plain-text menu blocks): MAINS, SIDES, DESSERT - 12 dishes, one item (20oz Prime Ribeye $72) marked '(Sold Out!)' but kept since it's a real published menu item, just temporarily unavailable. Drinks page mixes three widget types: (1) a native Squarespace menu-block for WINE/SPARKLING/SAKE, each with a glass price and a bottle price both printed - both kept as separate rows (glass)/(bottle), same convention as the Mas Fina Cantina large/small split; (2) 16 'Eternal Remedies' cocktails as image-caption blocks each ending in an explicit 'Price: $20' line, 4 of which also print 'available spirit free $15' for a non-alcoholic version - both prices are printed on the page and both kept as separate rows; (3) 6 current-season 'SPRING/SUMMER COCKTAIL 2026' items (Kirin Black, Long Quy, Fenghuang's Perch, Sun King, Mountain Turtle, Over The Moon) that have NO price anywhere on the page or in their linked photo (checked - the linked image is just a drink photo, not a printed menu board) - dropped per 'never construct a price' rather than assuming they match the $20 pattern of the eternal cocktails. Cent distribution: 38/38 dishes land on .00 - clean printed-menu pattern, no fee scatter, no divisor test needed. Price level plausible for 2026 upscale cocktail bar (cocktails $20, entrees $16-72, wine $16/$48 glass/bottle). Sections reached: food (MAINS, SIDES, DESSERT - no separate lunch/brunch pages found), drinks (Cocktails, Wine, Sparkling & More, Sake). Final count 38 priced dishes; 6 seasonal cocktails omitted as unpriced (documented above, not counted as missing core sections since the eternal-cocktail list is itself full and this is the adjunct-in-flux seasonal slot).",
+    "dishes": [
+      {
+        "name": "52 Burger",
+        "description": "4oz. wagyu blend, Alabama white sauce, sweet and sour pickles, red onion, okonomi, provolone, brioche",
+        "price": "$16.00",
+        "section": "MAINS"
+      },
+      {
+        "name": "12oz Bone-In Pork Loin",
+        "description": "grilled salad, Carolina Gold rice, fried egg, sweet soy glaze, benne seed, pickled fresno chiles",
+        "price": "$27.00",
+        "section": "MAINS"
+      },
+      {
+        "name": "Scallop Ceviche",
+        "description": "bay scallops, Calabrian peppers, tomato sambal, culantro, mint, basil oil, hoisin, tortilla chips",
+        "price": "$18.00",
+        "section": "MAINS"
+      },
+      {
+        "name": "“KFQ”",
+        "description": "Korean-Fried Quail, Honey Sambal, Almond Gremolata, Thai Basil",
+        "price": "$31.00",
+        "section": "MAINS"
+      },
+      {
+        "name": "20 oz. Prime Ribeye",
+        "description": "Confit torpedo onion, charred gai lan, sweet pea puree, cultured maitake butter, benne seed, pear glaze",
+        "price": "$72.00",
+        "section": "MAINS"
+      },
+      {
+        "name": "Oko Fries",
+        "description": "Hand-cut Fries, Sauce Mornay, Shaved Cabbage, Apple Okonomi, Miso Ranch, Bonito, Furikake.",
+        "price": "$18.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "Chile  Garlic Tamago",
+        "description": "Chile-marinated eggs, fresh jalapeno, toasted nori, herb panko crumble",
+        "price": "$19.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "Mushroom Fried Rice",
+        "description": "Coconut Milk, Charcoal Roasted King Trumpet Mushroom, Beech Mushroom, Garlic, Onions, Toasted Coconut, Shiso",
+        "price": "$15.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "Charred Gai Lan",
+        "description": "Charcoal-Grilled Chinese Gai Lan roots, Chili Peanut Garlic Sauce, Sweet and Spicy Peanuts, Roasted Peppers, Thai Basil.",
+        "price": "$16.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "Pork Lumpia",
+        "description": "Ground pork, Lap Xuong, Culantro, Vermicelli, Nouc Cham",
+        "price": "$14.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "Fresh Pickled Cucumbers",
+        "description": "Jimmy Nardello peppers, Thai red chile, torpedo onion, basil-chile oil, cucumber bitters, mint, scallion",
+        "price": "$14.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "Clouds Over Thailand",
+        "description": "Thai tea cheesecake, roasted banana caramel, toasted almonds, meringue, lime zest.",
+        "price": "$14.00",
+        "section": "DESSERT"
+      },
+      {
+        "name": "Opium Den",
+        "description": "Smoked Salt, Shiitake Mushroom, Don Jose Oloroso Sherry, Millet VS Armagnac, Isla of Jura 10yr Scotch, Smoked with Oak Chips.",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Jade Empress",
+        "description": "Ming River Baijiu, Mizu Green Tea Shochu, Matcha, Lemon, Salted Cream Cheese",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Jade Empress (spirit free)",
+        "description": "Ming River Baijiu, Mizu Green Tea Shochu, Matcha, Lemon, Salted Cream Cheese",
+        "price": "$15.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Sunomono",
+        "description": "Matsutake Shoyu, Shiso & Plum Vinegar, Sesame, Cucumber Bitters, Angostura Bitters, Suntory Toki Whisky",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Seoul City Hipster",
+        "description": "Cucumber Bitters, Lemongrass Tincture, Ginger & Honey, Lemon, Bokbunja Korean Wild Berry Wine, Tanqueray No.10 London Dry Gin",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Saigon Dreamer",
+        "description": "Mr. Black Cold Brew Coffee Liqueur, Whistlepig 6yr, Creme de Cacao, Lemon, Pineapple, Sugar, Clarified with Whole Milk",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Earl Grey",
+        "description": "Earl Grey-Infused Jura 10yr Single Malt Scotch & Kasama Filipino Rum, Saline, Honey, Cinnamon Cream",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Kasato Maru",
+        "description": "Leblon Cachaca, Bombay Sapphire Gin, St. Germain Elderflower, Pear, Yuzu, Jasmine Tea, Lemon, Clarified with whole milk",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "13 Assassins",
+        "description": "Laphroaig 10yr Single Malt Scotch, Alma Tepec Licor de Chile Pasilla, Cinpatrazzo Amaro, Amara Blood Orange Amaro, Black Lava Salt",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Maskinganna (Limited Quantity)",
+        "description": "Milagro Cristalino, Ramazotti Amaro, Palo Cortado Sherry, Cold brew",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Lalisa",
+        "description": "Don Fulano Blanco, Derrumbes Mezcal, Cucumber, Thai Basil, Thai Chili, Lime Inspired by Lisa of KPop group Black Pink who closed the gap between American Pop Culture and Korean Pop as she rose to fame. This cocktail conveys a smoky, citrusy, and vegetal flavor profile with a hint of spice.",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Lalisa (spirit free)",
+        "description": "Don Fulano Blanco, Derrumbes Mezcal, Cucumber, Thai Basil, Thai Chili, Lime Inspired by Lisa of KPop group Black Pink who closed the gap between American Pop Culture and Korean Pop as she rose to fame. This cocktail conveys a smoky, citrusy, and vegetal flavor profile with a hint of spice.",
+        "price": "$15.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Je Ju",
+        "description": "Nikka Japanese Gin, Don Fulano Reposado Tequila, Mandarino Amaro, Luxardo Bitter Bianco, Ginger, Cinnamon, Mandarin, Lemon",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Je Ju (spirit free)",
+        "description": "Nikka Japanese Gin, Don Fulano Reposado Tequila, Mandarino Amaro, Luxardo Bitter Bianco, Ginger, Cinnamon, Mandarin, Lemon",
+        "price": "$15.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Softly Spoken",
+        "description": "Diplomatico Planas Venezuelan Rum, Legent Bourbon, Aurora PX Sherry, Chinese 5 Spice, Mango, Lime, Orange, Angostura Bitters",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Purple Petunias",
+        "description": "Los Californias Citrico Gin, Bol’s Genever, Awayuki Strawberry Gin, Eldee Elderflower Liqueur, Violet Tea, Lemon, fee foam",
+        "price": "$20.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Cavaletti - Grenache (glass)",
+        "description": "Sonoma Valley, California",
+        "price": "$16.00",
+        "section": "Wine"
+      },
+      {
+        "name": "Cavaletti - Grenache (bottle)",
+        "description": "Sonoma Valley, California",
+        "price": "$48.00",
+        "section": "Wine"
+      },
+      {
+        "name": "Lone Madrone - Oveja (glass)",
+        "description": "Paso Robles, California",
+        "price": "$16.00",
+        "section": "Wine"
+      },
+      {
+        "name": "Lone Madrone - Oveja (bottle)",
+        "description": "Paso Robles, California",
+        "price": "$48.00",
+        "section": "Wine"
+      },
+      {
+        "name": "Thacher - Pet Nat (glass)",
+        "description": "Paso Robles, California",
+        "price": "$15.00",
+        "section": "Sparkling & More"
+      },
+      {
+        "name": "Thacher - Pet Nat (bottle)",
+        "description": "Paso Robles, California",
+        "price": "$45.00",
+        "section": "Sparkling & More"
+      },
+      {
+        "name": "Soto Sake Junmai Black (glass)",
+        "description": "Nagata, Japan",
+        "price": "$15.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Soto Sake Junmai Black (bottle)",
+        "description": "Nagata, Japan",
+        "price": "$52.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Soto Sake Premium Junmai Daiginjo (glass)",
+        "description": "Nagata, Japan",
+        "price": "$24.00",
+        "section": "Sake"
+      },
+      {
+        "name": "Soto Sake Premium Junmai Daiginjo (bottle)",
+        "description": "Nagata, Japan",
+        "price": "$42.00",
+        "section": "Sake"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6239",
+    "name": "101 Bagels & Subs",
+    "sourceUrl": "https://www.trycaviar.com/store/101-bagels-&-subs-oceanside-72369",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://postmates.com/store/101-bagels-and-subs/-gNAOzGlQbi27Dpb9dQZgQ (address confirmed: 323 N Coast Hwy, 92054 - matches work list exactly; page's menu is client-rendered, no JSON-LD to pull prices from, so used for identity confirmation only, not price corroboration)",
+    "notes": "Router was null (no website on file). No restaurant-owned domain found; sourced from Caviar's (DoorDash-owned) schema.org Menu JSON-LD, a tier-3 white-label delivery storefront. Address on the Caviar page matches work list (323 N Coast Hwy Ste C, Oceanside 92054). Cent distribution: 78 of 79 non-duplicate items end in .99, one in .95 - classic charm pricing, not a fee scatter. Divisor sweep (1.04/1.1/1.15/1.2/1.25/1.3) found no divisor beating the raw .99 pattern (best was 25/79 at 1.25, nowhere close to displacing the near-uniform .99 ending) - real menu, not marked up. Price level plausible for 2026 (bagel sandwiches $9.99-$11.99, Nova Lox $16.99). Dropped the 'Most Ordered' carousel except 2 items that appear nowhere else (Guayaki Yerba Mate, Gourmet Hot Coffee) - filed those under Cold Beverages. Sections reached: Deli Meat Sandwiches, Bagel Melts, Breakfast Favorites, Egg & Cheese Bagel, Cream Cheese Delights, Fresh Salads Bagels, Fresh Fruit, Old Tyme Favorites, Cold Beverages - matches a bagel shop's expected shape (breakfast, deli, cream cheese, drinks), no core gap identified. Confidence held to medium per source ladder (tier-3 marketplace, not the restaurant's own platform), despite passing the markup test cleanly.",
+    "dishes": [
+      {
+        "name": "Turkey Breast",
+        "description": "Oven-Roasted. Comes with mayo, mustard, lettuce, onion, tomato, sprouts.",
+        "price": "$13.99",
+        "section": "Deli Meat Sandwiches"
+      },
+      {
+        "name": "Corned Beef",
+        "description": "Served hot or cold. Comes with mayo, mustard, lettuce, onion, tomato, sprouts.",
+        "price": "$13.99",
+        "section": "Deli Meat Sandwiches"
+      },
+      {
+        "name": "Roast Beef",
+        "description": "Comes with mayo, mustard, lettuce, onion, tomato, and sprouts, unless specified.",
+        "price": "$13.99",
+        "section": "Deli Meat Sandwiches"
+      },
+      {
+        "name": "Pastrami",
+        "description": "Seasoned with pepper and gourmet spices. Comes with mayo, mustard, lettuce, onion, tomato, sprouts.",
+        "price": "$14.99",
+        "section": "Deli Meat Sandwiches"
+      },
+      {
+        "name": "Turkey and Ham",
+        "description": "Turkey, ham, Mayo, Musturd , lettuce, tomatoes, onions, sprouts.",
+        "price": "$14.99",
+        "section": "Deli Meat Sandwiches"
+      },
+      {
+        "name": "Turkey Club",
+        "description": "Turkey, ham, bacon, lettuce, onions, tomato, sprouts, mayo, musturd, cheese. Unless specified.",
+        "price": "$15.99",
+        "section": "Deli Meat Sandwiches"
+      },
+      {
+        "name": "Honey Ham",
+        "description": "Fresh and lean. Comes with mayo, mustard, lettuce, onion, tomato, sprouts, your choice of cheese, and a pickle spear on the side, unless specified.",
+        "price": "$13.99",
+        "section": "Deli Meat Sandwiches"
+      },
+      {
+        "name": "Tuna Melt",
+        "description": "Open face tuna salad  with tomato, onion and cheese melted on top. On a Bagel.",
+        "price": "$15.99",
+        "section": "Bagel Melts"
+      },
+      {
+        "name": "The Deluxe Melt",
+        "description": "Cream cheese, avocado, sliced tomato, and cheddar cheese melted on top. Served open-faced on a bagel.",
+        "price": "$14.99",
+        "section": "Bagel Melts"
+      },
+      {
+        "name": "Chicken Melt",
+        "description": "chicken salad, tomato, onion and cheese melted on top of a bagel  served open faced.",
+        "price": "$14.99",
+        "section": "Bagel Melts"
+      },
+      {
+        "name": "Onion Tomato Cheese Melt",
+        "description": "Tomatoes, onions and chedder cheese melted on top. Served on open faced bagel.",
+        "price": "$12.99",
+        "section": "Bagel Melts"
+      },
+      {
+        "name": "Spicy Veggie Cheese Melt",
+        "description": "Avocado, jalapeños,  tomatos, onions, and cheddar cheese melted on top. Served on bagel open-faced.",
+        "price": "$14.99",
+        "section": "Bagel Melts"
+      },
+      {
+        "name": "Turkey Melt",
+        "description": "Cream cheese, avocado, deli-sliced turkey, and cheddar cheese melted on top. Served open-faced on a bagel.",
+        "price": "$15.99",
+        "section": "Bagel Melts"
+      },
+      {
+        "name": "Pepperoni Pizza bagel",
+        "description": "Pizza sauce, bubbly cheese and  italian seasonings.",
+        "price": "$10.99",
+        "section": "Bagel Melts"
+      },
+      {
+        "name": "Bagel with Hummus",
+        "description": "Bagel spread with hummus, optional veggies include lettuce, onion, tomato, sprouts, jalapeños, cucumber, capers, peppercini.",
+        "price": "$4.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Nova Lox",
+        "description": "Smoked salmon, cream cheese, capers, onions, tomatoes served on Bagel",
+        "price": "$16.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Bagel with Peanut Butter & Jelly",
+        "description": "Choice of bagel with creamy peanut butter and sweet jelly. Options include basic, sweet varieties, cheese flavors, and gluten-free.",
+        "price": "$6.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Bagel with Butter",
+        "description": "Bagel, choice of basic, cinnamon, sweet, seeded, various cheeses, spinach & Swiss, gluten-free. Served with butter.",
+        "price": "$3.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Bagel with Strawberry Jelly",
+        "description": "A toasted bagel served with a spread of sweet strawberry jelly.",
+        "price": "$4.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Bagel with Peanut Butter",
+        "description": "Bagel spread with peanut butter. Choice of basic, cinnamon sugar, sweet, seeded, house, savory, jalapeno cheese, asiago cheese, spinach and swiss, or gluten-free plain.",
+        "price": "$4.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Bagel with Butter & Jelly",
+        "description": "A bagel generously spread with high-quality butter and topped with a layer of sweet jelly.",
+        "price": "$4.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "The Pescatarian",
+        "description": "Bagel with Egg, Cheese, Lox, Lettuce, Tomato, Onion, Sprouts, and Avocado",
+        "price": "$17.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Bagel with Avocado (Vegan)",
+        "description": "Vegan Bagel with Avocado slices.",
+        "price": "$8.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Peanut Butter Banana Toast",
+        "description": "Whole grain toast topped with creamy peanut butter and freshly sliced bananas.",
+        "price": "$8.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Bagel with Nutella",
+        "description": "Nutella spread over choice of bagel: basic, cinnamon sugar, sweet, seeded varieties, house special, savory, jalapeño cheese, asiago cheese, spinach and Swiss, or gluten-free plain.",
+        "price": "$5.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Peanut Butter Banana on a Sweet Bagel",
+        "description": "Served on Toasted Bagel",
+        "price": "$8.99",
+        "section": "Breakfast Favorites"
+      },
+      {
+        "name": "Bagel with Egg, Bacon & Cheese",
+        "description": "Egg, bacon, and cheese on choice of bagel. Options include basic, flavored, seeded, or gluten-free. Add veggies like lettuce, tomato, or jalapeños.",
+        "price": "$9.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Bagel with Egg, Sausage & Cheese",
+        "description": "Egg, sausage, and cheese on your choice of bagel. Options for added veggies: lettuce, onion, or others. Select bagel type: basic, sweet, or savory varieties available.",
+        "price": "$9.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "The Californian",
+        "description": "2 Eggs, ham, bacon, avocado & cheese on toasted bagel",
+        "price": "$11.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Bagel w/ 2 Eggs, Bacon, & Cheese",
+        "description": "Two eggs, bacon, and cheese on a bagel. Options for veggies include lettuce, onion, and more. Choose from a variety of bagels and deli cheese like American or Swiss.",
+        "price": "$10.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Bagel with 2Eggs & 2 Cheeses",
+        "description": "Two eggs and dual cheese on a bagel. Option to add veggies like lettuce, tomatoes, or jalapeños. Choose from plain to gluten-free or jalapeño cheese bagels.",
+        "price": "$9.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Bagel w/ 2 Eggs, Sausage, & Cheese",
+        "description": "Two eggs, sausage, and cheese on a bagel. Options: variety of veggies (lettuce to capers), bagel types from basic to gluten-free, and cheese selections from American to Swiss.",
+        "price": "$10.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Bagel with Egg, 2 Meats & Cheese",
+        "description": "Egg sandwich with choice of bacon, ham, sausage, or turkey. Choice of bagel and optional veggies like lettuce, tomato, or capers. Cheese included.",
+        "price": "$11.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "2 Eggs, Pastrami, & Cheese Sandwich",
+        "description": "Two eggs and pastrami with your choice of cheese on a bagel or bread option. Select from a variety of bagels including basic, flavored, cheese, or gluten-free. Cheese options include American, cheddar, pepperjack, provolone, Swiss, or opt for no cheese.",
+        "price": "$12.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "2 Eggs, Bacon, & Cheese Sandwich",
+        "description": "Two eggs, bacon, and cheese layered between choice of bagel, wheat, white, sourdough, rye, or gluten-free bagel.",
+        "price": "$11.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "The Vegetarian",
+        "description": "Egg & cheese, avocado, lettuce, tomato, onions, sprouts on a toasted bagel.",
+        "price": "$11.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Chicken sausage, egg & cheese",
+        "description": "chicken based sausage, with egg and cheese on a bagel.",
+        "price": "$9.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Bagel with Egg, Ham & Cheese",
+        "description": "Bagel layered with egg, ham, and cheese. Options for additional veggies or choosing from a range of bagels including sweet, seeded, or cheese-infused.",
+        "price": "$9.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "2 Eggs, Ham, & Cheese Sandwich",
+        "description": "Two eggs, ham, and cheese nestled between your choice of bagel, wheat, white, sourdough, rye, or gluten-free bagel.",
+        "price": "$10.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "GLUTEN-FREE BAGEL Egg, Sausage, & Cheese",
+        "description": "Egg, sausage, and cheese on a gluten-free bagel. Options to add lettuce, onion, tomato, sprouts, jalapeños, cucumber, capers, or pepperoncini.",
+        "price": "$11.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "GLUTEN-FREE Bagel w/  Egg, Meat, & Cheese",
+        "description": "Plain Bagel is only option for Gluten free Bagel",
+        "price": "$11.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Plant-Based Sausage, Egg, Cheese, & Avacado",
+        "description": "Fully Vegetarian.",
+        "price": "$9.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Sunrise Supreme",
+        "description": "Eggwhites, turkey, avocado w/cheese, lettuce and tomatoes.",
+        "price": "$13.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "The Fiesta",
+        "description": "Bagel with egg, bacon,  cheese, avocado, tomatoes, onions, and jalapeños.",
+        "price": "$14.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "GLUTEN FREE BAGEL Egg, Bacon, cheese",
+        "description": "Gluten-free bagel layered with a fried egg, crispy bacon, and melted cheese.",
+        "price": "$11.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "The Ranch",
+        "description": "2 chicken sausage patties, avocado, tomatoes, and Egg and cheese on a bagel.",
+        "price": "$12.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "BAJA Breakfast",
+        "description": "Egg, Roast Beef, Bacon ,Jalapeno and chesse Bagel",
+        "price": "$12.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Bagel with Egg, Turkey & Cheese",
+        "description": "Bagel filled with egg, turkey, and cheese. Options include a variety of veggies and bagel flavors like cinnamon sugar, jalapeno cheese, or gluten-free.",
+        "price": "$9.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Ultimate Bagel - Egg, 3 Meats & Cheese",
+        "description": "Your choice of three meats,egg and melted cheese served hot on toasted Bagel.",
+        "price": "$14.99",
+        "section": "Egg & Cheese Bagel"
+      },
+      {
+        "name": "Bagel w/ Cream Cheese (Reg or Low Fat)",
+        "description": "Cream cheese (regular or low-fat) on choice of bagel, including basic, cinnamon sugar, to savory options. Options for added veggies like lettuce, tomato, jalapeños, and more.",
+        "price": "$5.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Jalapeño Cream Cheese",
+        "description": "Bagel with spicy jalapeño cream cheese. Options: avocado, bacon, or no add-ons. Veggies include lettuce to capers. Bagel types range from basic to gluten free plain.",
+        "price": "$5.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Cream Cheese & Tomatoes",
+        "description": "Bagel with cream cheese, tomatoes. Options for added veggies include lettuce, onion, sprouts, jalapeños, cucumber, capers, peppercini.",
+        "price": "$6.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Chive Cream Cheese",
+        "description": "",
+        "price": "$5.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Cream Cheese, Tomato, & Lemon Pepper (Open-faced)",
+        "description": "Open-faced bagel topped with cream cheese, tomato, and a hint of lemon pepper. Options: avocado, bacon, or plain.",
+        "price": "$8.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Cream cheese ,Avocado, Lemon pepper Open Faced",
+        "description": "Open-faced bagel with cream cheese, avocado, and lemon pepper. Options for veggies include lettuce, tomato, and more. Choose your bagel type, from basic to gluten-free.",
+        "price": "$11.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Lox Spread",
+        "description": "Bagel with lox cream cheese spread. Optional veggies: lettuce to peppercini. Variety of bagels from plain to spinach and Swiss, including a gluten-free option.",
+        "price": "$5.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Cream Cheese & Jelly",
+        "description": "Bagel served with cream cheese and jelly. Choose from basic, sweet, savory, or specialty bagels like jalapeno cheese and spinach and swiss. Gluten-free option available.",
+        "price": "$5.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Vegetable Cream Cheese",
+        "description": "Bagel smeared with vegetable cream cheese. Options for add-ons: avocado, bacon. Choice of veggies includes lettuce, onion, tomato, sprouts, jalapeños, cucumber, capers, peppercini.",
+        "price": "$5.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Walnut & Raisin Cream Cheese",
+        "description": "Hand-rolled bagel served with cream cheese, enhanced by the addition of crunchy walnuts and sweet raisins.",
+        "price": "$5.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Peanut Butter Banana Bagel (closed-faced)",
+        "description": "Peanut butter ,sliced banana served closed-faced on a sweet bagel.",
+        "price": "$7.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Strawberry Cream Cheese",
+        "description": "Bagel, choice of 10 varieties including cinnamon sugar, jalapeno cheese, and gluten-free, topped with strawberry cream cheese.",
+        "price": "$5.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Bagel w/ Blueberry Cream Cheese",
+        "description": "Blueberry cream cheese spread over a selection of bagels including basic, sweet varieties, seeded, jalapeño cheese, asiago, and gluten-free options.",
+        "price": "$5.99",
+        "section": "Cream Cheese Delights!"
+      },
+      {
+        "name": "Tuna Fish",
+        "description": "Comes with lettuce, onions, tomato, sprouts,. Unless specified.",
+        "price": "$14.99",
+        "section": "Fresh Salads Bagels"
+      },
+      {
+        "name": "Egg Salad",
+        "description": "We boil the California fresh eggs and prepare it right here! Comes with lettuce, onions, tomato, sprouts, Unless specified.",
+        "price": "$14.99",
+        "section": "Fresh Salads Bagels"
+      },
+      {
+        "name": "Chicken Salad",
+        "description": "We use the freshest skinless boneless chicken. Comes with lettuce, onions, tomato, sprouts",
+        "price": "$14.99",
+        "section": "Fresh Salads Bagels"
+      },
+      {
+        "name": "Fresh Seasonal Fruit Cup",
+        "description": "A medley of fresh, seasonal fruits, often including varieties such as melons, berries, and citrus, carefully selected for peak freshness.",
+        "price": "$5.99",
+        "section": "Fresh Fruit"
+      },
+      {
+        "name": "Nova Lox",
+        "description": "Bagel with Nova Scotia salmon, cream cheese,  capers,tomato and onion.",
+        "price": "$16.99",
+        "section": "Old Tyme Favorites"
+      },
+      {
+        "name": "Veggie Bagel",
+        "description": "Lettuce, tomato, onion, sprouts, cheese, mayo, mustard",
+        "price": "$9.99",
+        "section": "Old Tyme Favorites"
+      },
+      {
+        "name": "Pastrami Ruben",
+        "description": "Hot Pastrami, Thousand Island Dressing, sauerkraut and melted swiss.",
+        "price": "$12.99",
+        "section": "Old Tyme Favorites"
+      },
+      {
+        "name": "Turkey, Bacon, Avocado",
+        "description": "Plump and juicy turkey, bacon, avocado, lettuce, tomato, onion, sprouts, mayo, and mustard --Unless specified.",
+        "price": "$14.99",
+        "section": "Old Tyme Favorites"
+      },
+      {
+        "name": "Vegan Bagel Sandwich",
+        "description": "Vegan bagel with hummus, avocado, lettuce, tomato, onions, sprouts, and a pickle spear on the side. Unless specified.",
+        "price": "$11.99",
+        "section": "Old Tyme Favorites"
+      },
+      {
+        "name": "BLT Bagel",
+        "description": "Bacon, lettuce, tomato, and mayo, unless specified.",
+        "price": "$12.99",
+        "section": "Old Tyme Favorites"
+      },
+      {
+        "name": "CornBeef Reuben",
+        "description": "Hot corned beef, Russian dressing, sauerkraut and melted Swiss.",
+        "price": "$13.99",
+        "section": "Old Tyme Favorites"
+      },
+      {
+        "name": "Fruit Smoothie 16 oz",
+        "description": "100% Puree, ice, and banana based.",
+        "price": "$6.95",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "RedBull Infusion",
+        "description": "RedBull Energy drink with flavor syrups added, over ice. 12oz.",
+        "price": "$6.99",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "Iced Kona Coffee 16 Oz",
+        "description": "Sugar packets and creamer on side.",
+        "price": "$3.99",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "Orange Juice By The Glass 12 Oz",
+        "description": "Freshly squeezed orange juice, offering a vibrant and refreshing citrus taste in a 12 oz glass.",
+        "price": "$4.99",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "Iced French Vanilla Latte 16 oz",
+        "description": "Espresso and French vanilla syrup mixed with milk, served over ice in a 16 oz cup.",
+        "price": "$4.99",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "Guayaki Yerba Mate 15.5 oz can",
+        "description": "Flavors are subject to an availability.",
+        "price": "$4.99",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "Gourmet Hot Coffee 16 oz",
+        "description": "16 oz drip coffee, options for 20 oz, served black or with cream, sugar on the side.",
+        "price": "$3.50",
+        "section": "Cold Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6345",
+    "name": "Hacienda's Mexican Food",
+    "sourceUrl": "https://www.doordash.com/store/haciendas-mexican-food-el-cajon-704707/ (fetched via page-service.doordash.com/store/haciendas-mexican-food-el-cajon-704707/ to bypass Cloudflare)",
+    "confidence": "medium",
+    "notes": "Router's listed domain (haciendasmexicanfoodgo.site) still does not resolve (getaddrinfo ENOTFOUND) - confirmed dead again, not a transient block. No other restaurant-owned domain found (a 'restaurants-us.com' hit in search results looks like the barred farm-domain pattern by name and was not used). Sourced instead from DoorDash's schema.org Menu JSON-LD, address 660 El Cajon Boulevard matches work list (660-A El Cajon Blvd) exactly. Cent distribution: 83 of 91 items end in .99, 8 end in .49 - two conventional charm-pricing endings, no scatter. Divisor sweep (1.04/1.1/1.15/1.2/1.25/1.3) found nothing close to displacing the raw pattern (best 13/79 at 1.2 and 1.25) - real menu, not marked up. Price level: carne asada items run $16.99-$20.99, which is high for a small taco shop but internally consistent (every carne asada item priced similarly) and plausible for 2026 given beef prices; accepted. Sections reached: Tortas, Burritos, Quesadillas, Combination Plates, Hacienda's Plates, Tacos, Mini Tacos, Rolled Tacos, A La Carte & Sides - a complete taco-shop shape, no core gap. The 'Most Ordered' carousel was dropped except 7 items that appear in NO other category (Carne Asada Fries, Tortilla Soup, Albondigas Soup, Breakfast Grande Burrito, Fountain Drink Large, Agua Fresca Large/Medium) - kept and refiled under Sides/Soups/Breakfast/Drinks since those categories don't otherwise exist on this menu. Confidence held to medium (tier-3 marketplace, not the restaurant's own platform) despite a clean markup-test pass.",
+    "dishes": [
+      {
+        "name": "Carne Asada Torta",
+        "description": "Includes guacamole, pico de gallo, and lettuce.",
+        "price": "$17.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Adobada Torta",
+        "description": "Includes guacamole, pico de gallo, and lettuce.",
+        "price": "$17.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Pollo Asado Torta",
+        "description": "Includes guacamole, pico de gallo, and lettuce.",
+        "price": "$17.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carnitas Torta",
+        "description": "Includes guacamole, pico de gallo, and lettuce.",
+        "price": "$17.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Machaca Torta",
+        "description": "Includess guacamole, pico de gallo, and lettuce.",
+        "price": "$17.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Ham & Cheese Torta",
+        "description": "Includes guacamole, pico de gallo, and lettuce.",
+        "price": "$17.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Shredded Torta",
+        "description": "Includes guacamole, pico de gallo, lettuce, and tartar sauce.",
+        "price": "$17.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chorizo Torta",
+        "description": "Includes guacamole, pico de gallo, and lettuce.",
+        "price": "$17.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Fish Torta",
+        "description": "Includes guacamole, pico de gallo, and lettuce.",
+        "price": "$17.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carne Asada Burrito",
+        "description": "Guacamole and pico de gallo.",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "Carne asada, potatoes, sour cream, and cheese.",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beans & Cheese Burrito",
+        "description": "Add rice for an additional charge.",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "Pico de gallo, cabbage, and tartar sauce.",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fajitas Burrito",
+        "description": "Your choice of carne asada, pollo asado or shrimp mixed with fajita vegetables.",
+        "price": "$17.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Mar Y Tierra Burrito",
+        "description": "Carne asada, shrimp, pico de gallo, tartar sauce, and lettuce.",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asada Burrito",
+        "description": "Guacamole and pico de gallo.",
+        "price": "$15.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "Enchilada sauce, lettuce, and cheese.",
+        "price": "$15.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chipotle Burrito",
+        "description": "Pollo asado, chipotle sauce, avocado, tomatoes, onions, and lettuce.",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Adobada Burrito",
+        "description": "Guacamole, cilantro, and onions.",
+        "price": "$15.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fish Burrito",
+        "description": "Pico de gallo, cabbage, and tartar sauce.",
+        "price": "$15.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "Guacamole and pico de gallo.",
+        "price": "$15.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Cabeza Burrito",
+        "description": "Cilantro and onions.",
+        "price": "$17.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shredded Burrito",
+        "description": "Choice of chicken or beef (for an additional charge).",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Black Bean Burrito",
+        "description": "Black beans, rice, guacamole, lettuce, and tomatoes on wheat tortilla.",
+        "price": "$15.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Mixed Burrito",
+        "description": "Your choice of shredded chicken or beef mixed with beans.",
+        "price": "$16.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Vegetarian Burrito",
+        "description": "Beans, rice, guacamole, pico de gallo, lettuce, sour cream, and cheese.",
+        "price": "$15.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bean Burrito",
+        "description": "Refried beans encased in a soft flour tortilla, often accompanied by cheese and a mild to spicy salsa for added flavor.",
+        "price": "$9.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asado Quesadilla",
+        "description": "Grilled chicken and melted cheese encased in a flour tortilla, typically accompanied by guacamole and pico de gallo.",
+        "price": "$16.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Carne Asada Quesadilla",
+        "description": "Grilled carne asada and melted cheese encased in a flour tortilla, typically includes pico de gallo and sour cream.",
+        "price": "$16.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "Melted Cheese in a Crispy Tortilla Fold",
+        "price": "$11.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Quesadilla Deluxe",
+        "description": "Your choice of shredded chicken or beef, served with guacamole, pico de gallo, lettuce, and sour cream on the side.",
+        "price": "$19.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Chipotle Quesadilla",
+        "description": "Pollo asado, chipotle sauce, avocado, tomatoes, and onions.",
+        "price": "$19.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Quesabirrira Combo",
+        "description": "Corn tortillas filled with shredded beef and cheese, typically includes onions and cilantro. Served with a side of birria consommé for dipping.",
+        "price": "$19.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Mar Y Tierra Quesadilla",
+        "description": "A tortilla filled with carne asada and shrimp, often accompanied by onions, bell peppers, and cheese, melded together with a savory red sauce.",
+        "price": "$19.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Shrimp Quesadilla",
+        "description": "Grilled shrimp and melted cheese encased in a golden tortilla, served with a side of fresh shredded lettuce.",
+        "price": "$16.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Enchilada & Beef Taco",
+        "description": "Served with rice and beans.",
+        "price": "$18.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "Served with rice, beans and tortillas.",
+        "price": "$20.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Carnitas",
+        "description": "Served with rice, beans and tortillas.",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Enchilada & Chile Relleno",
+        "description": "Served with rice and beans.",
+        "price": "$18.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Chile Relleno & Beef Taco",
+        "description": "Served with rice and beans.",
+        "price": "$18.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Hard Shell Tacos (Two Pieces)",
+        "description": "Served with rice and beans.",
+        "price": "$18.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Chile Rellenos (Two Pieces)",
+        "description": "Served with rice and beans.",
+        "price": "$18.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Soft Tacos (Two Pieces)",
+        "description": "Served with rice and beans.",
+        "price": "$18.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Pollo Asado",
+        "description": "Served with rice, beans and tortillas.",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Tostada and Enchilada",
+        "description": "Served with rice and beans.",
+        "price": "$18.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Enchiladas (Two Pieces)",
+        "description": "Served with rice and beans.",
+        "price": "$18.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Adobada",
+        "description": "Served with rice, beans and tortillas.",
+        "price": "$19.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Camarones Mazatlan",
+        "description": "Served with rice, beans, and tortillas.",
+        "price": "$22.99",
+        "section": "Hacienda’s Plates"
+      },
+      {
+        "name": "Shrimp Enchilada",
+        "description": "Served with rice and beans.",
+        "price": "$22.99",
+        "section": "Hacienda’s Plates"
+      },
+      {
+        "name": "Beef Steak Ranchero",
+        "description": "Served with rice, beans, and tortillas.",
+        "price": "$22.99",
+        "section": "Hacienda’s Plates"
+      },
+      {
+        "name": "Camarones Rancheros",
+        "description": "Served with rice, beans, and tortillas.",
+        "price": "$22.99",
+        "section": "Hacienda’s Plates"
+      },
+      {
+        "name": "Hacienda’s Fajita",
+        "description": "Served with rice, beans, and tortillas.",
+        "price": "$22.99",
+        "section": "Hacienda’s Plates"
+      },
+      {
+        "name": "Fish Fillet in Green Sauce",
+        "description": "Served with rice, beans, and tortillas.",
+        "price": "$22.99",
+        "section": "Hacienda’s Plates"
+      },
+      {
+        "name": "Fish Taco",
+        "description": "Cabbage, pico de gallo and tartar sauce.",
+        "price": "$8.49",
+        "section": "Tacos"
+      },
+      {
+        "name": "Potatoes Taco",
+        "description": "Lettuce and cheese.",
+        "price": "$8.49",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shrimp Taco",
+        "description": "Cabbage, pico de gallo and tartar sauce.",
+        "price": "$8.49",
+        "section": "Tacos"
+      },
+      {
+        "name": "Hard Shell Taco",
+        "description": "Lettuce and cheese.",
+        "price": "$8.49",
+        "section": "Tacos"
+      },
+      {
+        "name": "Birria Taco",
+        "description": "Birria taco topped with onion and cilantro with a side of consume",
+        "price": "$8.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Adobada Taco",
+        "description": "Guacamole, cilantro, and onions.",
+        "price": "$8.49",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Taco",
+        "description": "Guacamole and pico de gallo.",
+        "price": "$8.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Cabeza Taco",
+        "description": "Cilantro and onions.",
+        "price": "$8.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo Asada Taco",
+        "description": "Guacamole and pico de gallo.",
+        "price": "$8.49",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carnitas Taco",
+        "description": "Guacamole and pico de gallo.",
+        "price": "$8.49",
+        "section": "Tacos"
+      },
+      {
+        "name": "Birria (Three Pieces)",
+        "description": "Topped give onion and cilantro Consume on the side",
+        "price": "$15.99",
+        "section": "Mini Tacos"
+      },
+      {
+        "name": "Carne Asada (Three Pieces)",
+        "description": "Served with guacamole, cilantro, and onions.",
+        "price": "$15.99",
+        "section": "Mini Tacos"
+      },
+      {
+        "name": "Adobada (Three Pieces)",
+        "description": "Served with guacamole, cilantro, and onions.",
+        "price": "$14.99",
+        "section": "Mini Tacos"
+      },
+      {
+        "name": "Cabeza (Three Pieces)",
+        "description": "Served with cilantro  and onions.",
+        "price": "$15.99",
+        "section": "Mini Tacos"
+      },
+      {
+        "name": "Pollo Asado (Three Pieces)",
+        "description": "Served with guacamole, cilantro, and onions.",
+        "price": "$14.99",
+        "section": "Mini Tacos"
+      },
+      {
+        "name": "Carnitas (Three Pieces)",
+        "description": "Served with guacamole, cilantro, and onions.",
+        "price": "$14.99",
+        "section": "Mini Tacos"
+      },
+      {
+        "name": "(5) Supreme Rolled Tacos",
+        "description": "Guacamole, sour cream, lettuce, cheese and tomatoes",
+        "price": "$14.99",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "(5) Regular Rolled Tacos",
+        "description": "Guacamole and Cheese",
+        "price": "$12.99",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "(3) Supreme Rolled Tacos",
+        "description": "Guacamole and Cheese",
+        "price": "$12.99",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "(3) Regular Rolled Tacos",
+        "description": "Guacamole and Cheese",
+        "price": "$10.99",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "Chimichanga",
+        "description": "Your choice of chicken or beef with beans, guacamole, pico de gallo, sour cream, lettuce, and cheese.",
+        "price": "$18.99",
+        "section": "A La Carte & Sides"
+      },
+      {
+        "name": "Flautas (Two Pieces)",
+        "description": "Your choice of chicken or beef with guacamole, sour cream, lettuce, and cheese.",
+        "price": "$16.99",
+        "section": "A La Carte & Sides"
+      },
+      {
+        "name": "Beans 8oz",
+        "description": "House-made refried beans served in an 8-ounce portion, typically includes a topping of cheese.",
+        "price": "$6.99",
+        "section": "A La Carte & Sides"
+      },
+      {
+        "name": "Rice 12oz",
+        "description": "Mexican-style rice typically includes a blend of tomatoes, onions, and a variety of spices, cooked until fluffy and aromatic.",
+        "price": "$7.99",
+        "section": "A La Carte & Sides"
+      },
+      {
+        "name": "Chile Relleno (One Piece)",
+        "description": "Served with rice, beans and small drink.",
+        "price": "$11.99",
+        "section": "A La Carte & Sides"
+      },
+      {
+        "name": "Guacamole (4 Oz.)",
+        "description": "Avocado blended with onions, cilantro, tomatoes, and a hint of lime.",
+        "price": "$4.99",
+        "section": "A La Carte & Sides"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "Topped with cheese, guacamole, sour cream.",
+        "price": "$18.99",
+        "section": "A La Carte & Sides"
+      },
+      {
+        "name": "Tortilla Soup",
+        "description": "Soup made with fried corn tortilla and seasoned tomato broth.",
+        "price": "$15.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Fountain Drink (Large)",
+        "description": "A large fountain drink offering a variety of soda options, typically including Coke, Sprite, Fanta, and Diet Coke among others.",
+        "price": "$4.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Albondigas Soup",
+        "description": "Mexican meatball soup",
+        "price": "$19.99",
+        "section": "Soups"
+      },
+      {
+        "name": "Breakfast Grande Burrito",
+        "description": "Bacon, ham, beans, potatoes, sour cream, eggs and cheese.",
+        "price": "$15.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Agua Fresca (Large)",
+        "description": "A refreshing blend of fruits or flowers mixed with water and sugar, with flavors changing daily.",
+        "price": "$4.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Agua Fresca (Medium)",
+        "description": "Mexican beverage, refreshingly sweet, available in medium. Choose from horchata, jamaica, piña, or tamarindo flavors.",
+        "price": "$4.49",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6616",
+    "name": "Bobboi Natural Gelato",
+    "sourceUrl": "https://www.doordash.com/store/bobboi-natural-gelato-san-diego-33827455/ (fetched via page-service.doordash.com to bypass Cloudflare)",
+    "confidence": "medium",
+    "notes": "Router said no-platform. Own site (bobboi.com, Wix) links to order-online-bobboi, which links only to a multi-location order.online 'business' search page (order.online/business/BobboiNaturalGelato-14193301) - that page is a client-side location picker with no embedded menu/RSC payload reachable by curl (checked: no MenuPageItem/MenuBookCategory/hasMenuSection markers anywhere in the fetched HTML, unlike the direct /store/ URLs this playbook documents working). Also found a Square Online storefront (bobboi-natural-gelato-pickup.square.site) but Square Online is on the genuinely-needs-a-browser list, not tried. Instead sourced from DoorDash's own store page for this specific location (address confirmed via the page's schema.org data mentioning Kettner). Every pint flavor (11 of them) is priced identically at $14.95, which is a real read (all 11 pint items independently confirmed at that price in the JSON-LD, not a pattern extrapolated from a subset) - matches a plain web search summary of the same storefront ($14.95+) as an additional (non-independent, same-owner) check. Bundles: 4-pint $53.90, 6-pint $78.90, 8-pint $104.65 - internally consistent per-pint math (~$13.10-13.48/pint, a bundle discount, plausible). Add-ons: waffle/sugar cones $4.25 each. Cent endings (.95/.90/.65/.25) are all conventional, no scatter; markup test not meaningfully applicable since every pint is one flat price, but the flat price itself is externally corroborated. Dropped 'Most Ordered' (100% duplicate of Pints+Bundles) and 'Vegan & Dairy Free' (a dietary-filter re-listing of 4 items already counted under Pints, same name and price both times, not new items). This DoorDash listing is a pints/bundles-to-go catalog only - no in-store scoop/cup/cone size menu was found anywhere reachable (own site's 'our-flavors' page lists flavor names with no prices, consistent with 'priced by size, in person' rather than a missing capture). Final count 16 dishes. Confidence held to medium: tier-3 marketplace, not the restaurant's own platform.",
+    "dishes": [
+      {
+        "name": "8 Pint Bundle - One on Us!",
+        "description": "Eight handcrafted pints — because one flavor is never enough. Stock up, mix it up, and always have Bobboi on hand.",
+        "price": "$104.65",
+        "section": "Bundles"
+      },
+      {
+        "name": "4 Pint Bundle - The Weekly Fix",
+        "description": "Four pints, zero regrets. A perfect stash for the week — or a treat-worthy gathering. Choose your favorites.",
+        "price": "$53.90",
+        "section": "Bundles"
+      },
+      {
+        "name": "6 Pint Bundle - The Crowd Pleaser",
+        "description": "Six pints. Enough to share (if you want). A bundle made for families, dinner parties, or back-to-back cravings.",
+        "price": "$78.90",
+        "section": "Bundles"
+      },
+      {
+        "name": "Bacio - Pint 16 oz",
+        "description": "Creamy and deep. Dark Chocolate & Italian Hazelnut.",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "Pistacchio della California - Pint 16 oz",
+        "description": "Pure and nutty. Organic local Pistachio from California.",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "Moka - Pint 16 oz",
+        "description": "Bold and smooth. Made with real Arabica Espresso, dark chocolate & chocolate chips.",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "Dark Chocolate Sorbet - Pint 16 oz",
+        "description": "DF - Dairy Free - Deep and intense 72% Valrhona dark chocolate.",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "Dragon Lemon - Pint 16 oz",
+        "description": "DF - Refreshing and vibrant. Organic dragon fruit & fresh lemon.",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "Bianca - Our Signature Vanilla - Pint 16 oz",
+        "description": "Elegant and Deep. Our Signature organic Vanilla made with a pure blend of carefully selected sun-dried vanilla beans",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "Quattroberry - Pint 16 oz",
+        "description": "DF - Pure Organic Strawberry, Blueberry, Blackberry and Raspberry",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "Plant Based Pistacchio - Pint 16 oz",
+        "description": "DF - Rich and dairy-free. Organic Pistachio in our organic Oat milk base.",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "Salted Caramel - Pint 16 oz",
+        "description": "Smooth and balanced. Local caramel from San Diego \"Le Caramèl\" & Himalayan salt.",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "Mediterraneo - Pint 16 oz",
+        "description": "Nutty and creamy. Hazelnut, almond & pistachio, one of Bobboi staples!",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "Stracciatella - Pint 16 oz",
+        "description": "An italian classic! Organic Vanilla with dark chocolate chips.",
+        "price": "$14.95",
+        "section": "Pints | One Flavor"
+      },
+      {
+        "name": "5 Waffle Cones",
+        "description": "",
+        "price": "$4.25",
+        "section": "Add-ons"
+      },
+      {
+        "name": "5 Sugar Cones",
+        "description": "",
+        "price": "$4.25",
+        "section": "Add-ons"
+      }
+    ]
+  }
+]

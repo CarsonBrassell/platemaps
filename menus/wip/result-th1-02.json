@@ -1,0 +1,925 @@
+[
+  {
+    "restaurantId": "5869",
+    "name": "Wahoo's Fish Taco",
+    "sourceUrl": "https://www.wahoos.com/order-online/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: food-menus page (https://www.wahoos.com/food-menus/) lists items with zero prices (WooCommerce only powers the merchandise/gift-card store); ordering runs through Olo behind a location picker that must be clicked to resolve a menu/price API. wahoos.olo.com redirects to parked.olo.com (not this chain's slug). No location-specific Olo/menu endpoint found without a browser."
+  },
+  {
+    "restaurantId": "3492",
+    "name": "Cafe Bella Drive Thru",
+    "sourceUrl": "https://cafebellaob.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site (cafebellaob.com, 10 pages checked: home, coffee-and-tea, breakfast-bites, bowls, blended-drinks, bites-treats, great-greens-smoothies, classic-smoothies, fruitastic-smoothies, other-drinks) publishes zero prices anywhere and links no ordering platform. A same-brand 'Cafe Bella' DoorDash/order.online listing exists (doordash.com/en/store/cafe-bella-san-diego-23565602) but its address is 2244 Bacon Street, San Diego - a different Ocean Beach branch from this record's 4984 Voltaire Street. Per branch-identity rule, that listing cannot be filed under this restaurant. No Voltaire-Street-specific ordering listing found within budget."
+  },
+  {
+    "restaurantId": "3055",
+    "name": "Cafe Hue",
+    "sourceUrl": "https://www.ubereats.com/store/cafe-hue/FuvMk6nQQTmUrGxfFxUrhA",
+    "confidence": "medium",
+    "notes": "Restaurant's own domain cafe-hue.com is a dead Vercel deployment (404 DEPLOYMENT_NOT_FOUND). Read from Uber Eats Restaurant JSON-LD hasMenu block; address confirmed 3860 Convoy St, San Diego matches worklist. Dropped the 'Most Popular' section (5 items, all duplicates of items already listed under their real category). Dropped 'Gelato: $0.00' - gelato is priced per flavor/size at order time, not a flat item; kept as a category the restaurant does not itemize online. 'Smoothie' has only one generic $7.75 entry on this listing (likely a base/from price); kept as read, not expanded. Cent distribution before drops: 14/36/7/8 across .00/.25/.50/.75 - no markup-divisor pattern.",
+    "dishes": [
+      {
+        "name": "Nutella Waffle",
+        "description": "",
+        "price": "$12.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Mixed Berries & Cream Waffle",
+        "description": "",
+        "price": "$13.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Cookie butter waffle",
+        "description": "",
+        "price": "$12.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Nutella & Mixed Nuts Waffle",
+        "description": "",
+        "price": "$12.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Cinnamon Caramel Waffle",
+        "description": "",
+        "price": "$11.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Plain Waffle",
+        "description": "",
+        "price": "$9.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Caramel Banana & Cream Waffle",
+        "description": "",
+        "price": "$13.00",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Cream Cheese Waffle",
+        "description": "",
+        "price": "$11.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Whipped Cream Waffle",
+        "description": "",
+        "price": "$11.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Chocolate Waffle",
+        "description": "",
+        "price": "$11.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Peanut Butter Waffle",
+        "description": "",
+        "price": "$11.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Peanut Butter & Mixed Nuts Waffle",
+        "description": "",
+        "price": "$12.00",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Red Bean & Cream Waffle",
+        "description": "",
+        "price": "$13.50",
+        "section": "Belgian Leige Waffles"
+      },
+      {
+        "name": "Nutella Strawberry Banana",
+        "description": "",
+        "price": "$15.00",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Oreo Cookies Crepe",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Nutella & Mixed Fruit Crepe",
+        "description": "",
+        "price": "$16.25",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Nutella Crepe",
+        "description": "",
+        "price": "$12.25",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Strawberry Cheesecake Crepe",
+        "description": "",
+        "price": "$16.25",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Peanut Butter and Banana Crepe",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Nutella & Fruit Crepe",
+        "description": "",
+        "price": "$14.75",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Very Berry Crepe",
+        "description": "",
+        "price": "$15.25",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Cookies butter Crepe",
+        "description": "",
+        "price": "$15.50",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Brown sugar butter",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Salted caramel banana Crepe",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Choco Banana Crepe",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Nutella S’more",
+        "description": "",
+        "price": "$15.25",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Cream Cheese, Strawberry & Jam Crepe",
+        "description": "",
+        "price": "$15.00",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Plain Crepe",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Whipped cream crepe",
+        "description": "",
+        "price": "$13.00",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Redbean & Whipped Cream Crepe",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Mixed Fruit Crepe",
+        "description": "",
+        "price": "$15.25",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Nutella & Mixed Nuts Crepe",
+        "description": "",
+        "price": "$14.50",
+        "section": "Sweet Crepe"
+      },
+      {
+        "name": "Spicy Crab Crepe",
+        "description": "",
+        "price": "$16.50",
+        "section": "Savory Crepe"
+      },
+      {
+        "name": "Turkey Breast Crepe",
+        "description": "",
+        "price": "$16.50",
+        "section": "Savory Crepe"
+      },
+      {
+        "name": "Ham, Egg, & Cheese Crepe",
+        "description": "",
+        "price": "$14.75",
+        "section": "Savory Crepe"
+      },
+      {
+        "name": "Bacon, Lettuce, & Guacamole Crepe",
+        "description": "",
+        "price": "$15.00",
+        "section": "Savory Crepe"
+      },
+      {
+        "name": "Bacon, egg and cheese Crepe",
+        "description": "",
+        "price": "$14.75",
+        "section": "Savory Crepe"
+      },
+      {
+        "name": "Pizza Crepes",
+        "description": "",
+        "price": "$14.75",
+        "section": "Savory Crepe"
+      },
+      {
+        "name": "Healthy Veggie Crepe",
+        "description": "",
+        "price": "$15.00",
+        "section": "Savory Crepe"
+      },
+      {
+        "name": "Milk Tea",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Flavored Latte",
+        "description": "",
+        "price": "$7.00",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Fresh Vietnamese coffee",
+        "description": "",
+        "price": "$7.75",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Flavored Tea",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Cafe Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Milk Tea Float",
+        "description": "",
+        "price": "$8.75",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Caramel Macchiato",
+        "description": "",
+        "price": "$7.00",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Frappe",
+        "description": "",
+        "price": "$7.75",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$5.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Thai Tea Frappe",
+        "description": "",
+        "price": "$8.00",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Affogato",
+        "description": "",
+        "price": "$8.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Cafe Mocha",
+        "description": "",
+        "price": "$7.00",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$5.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "",
+        "price": "$6.00",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Vietnamese coffee frappe",
+        "description": "",
+        "price": "$8.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Black Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Coffee/Tea"
+      },
+      {
+        "name": "Smoothie",
+        "description": "",
+        "price": "$7.75",
+        "section": "Smoothie"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7174",
+    "name": "Off The 8 Café",
+    "sourceUrl": "https://www.restaurantji.com/ca/alpine/francos-flapjacks-/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "listed website redirects to barred directory farm offtherails.top (per router). Located a real photo of the restaurant's current printed menu via restaurantji's gallery (business rebranded from 'Franco's Flapjacks' to 'Off The 8 Cafe'; address 1730 Alpine Blvd Ste 110 and phone match confirmed on the photo itself). Only a low-resolution composite thumbnail (d_off_the_8_cafe_menu.jpg, 1400x500, 4 panels) is reachable without a browser; the individual full-resolution panel photos are behind a JS gallery route (gallery/menu/#id=...) with no static or guessable API/CDN path found. At 4x upscale, section headers (Cold Sandwiches, Melts, Side Orders, Beverages, 3 Eggs and More, Waffles, French Toast, Benedicts, Pancakes, Crepes, Omelettes, Wraps, Salads, Breakfast Burritos, Breakfast Sandwiches, Classic Burgers, Kids Menu) and a handful of prices are legible but item names are not reliably readable - too high a risk of transcription error to file. A separate 'Weekly Specials' insert IS fully legible (Oreo Crepes $11.95, Off The 8 Skillet $15.50, Blueberry Waffle $14.95, Churro French Toast $13.95, Red Velvet Crepes $14.95, M&M Pancakes $13.95) but is an adjunct card, not the core menu, so filing just those would misrepresent the restaurant per the core-section-missing rule."
+  },
+  {
+    "restaurantId": "3495",
+    "name": "Veronica's Kitchen",
+    "sourceUrl": "https://restaurantguru.com/Veronicas-Kitchen-Descanso/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "NetWaiter storefront (veronicaskitchen2.netwaiter.com/descanso/) returns the documented empty pattern {\"Groups\":[],\"ExternalType\":null} - About-page-only, CanOrder false. SinglePlatform (places.singleplatform.com/veronicas-kitchen-1/menu) matches the known failure mode: full item list (Cheeseburger, Chicken Wings, Garden Salad, Quesadilla) with every price stripped server-side. A real printed-menu photo was found via restaurantguru (menu02.restaurantguru.com/m7/Veronicas-Kitchen-menu-qby.jpg) and confirms address 24680 Viejas Grade, Descanso, CA 91916 and phone (619) 445-3804, matching this record's street number - but the photo is titled 'DAILY SPECIALS' (7 named items, one 'Price Varies'), an adjunct card, not the core taqueria menu (burritos/tacos/tortas) which is known to exist (cited in older secondary sources) but not found priced on any reachable page. Missing the core section, so not filed as a partial."
+  },
+  {
+    "restaurantId": "1894",
+    "name": "Royal India Express",
+    "sourceUrl": "https://www.atly.com/location/RoyalIndiaExpress",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "listed website is a parked domain (hugedomains.com). No DoorDash/Uber Eats/Grubhub listing could be confirmed for this exact food-court unit (4545 La Jolla Village Dr Ste E-22, Westfield UTC) - searches surfaced only unrelated same-name businesses in other cities/countries and a different San Diego 'Royal India' (not 'Express') at a different address. Yelp (yelp.com/biz/royal-india-express-san-diego-3) 403s a plain curl, so any prices attributed to it in search summaries are unverified and not filed per the no-fabrication rule. atly.com carries no real per-item prices, only aggregate review-derived figures."
+  },
+  {
+    "restaurantId": "3127",
+    "name": "The Fire Spot",
+    "sourceUrl": "https://www.doordash.com/en-US/store/the-fire-spot-san-diego-1012051",
+    "confidence": "medium",
+    "notes": "Address on the DoorDash page (4646 Convoy Street) matches the worklist exactly. This DoorDash catalog is narrow (3 sections, 18 items - Mala Spicy Pot hot-pot-style dishes, rice, drinks) and does not include the dine-in all-you-can-eat Korean BBQ tabletop-grill concept the restaurant is known for elsewhere (that concept is priced per-person/AYCE, not itemized, so it would not belong in a dishes list regardless). Cent distribution is clean (.99 x12, .50 x1, .00 x5) with none of the divisor tests (1.04/1.10/1.15/1.20/1.25/1.30) producing a suspicious near-total hit rate, consistent with genuine printed pricing rather than a delivery markup.",
+    "dishes": [
+      {
+        "name": "Beef Brisket Spicy Pot香锅牛腩",
+        "description": "",
+        "price": "$17.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Beef Tripe Spicy Pot香锅牛肚",
+        "description": "",
+        "price": "$17.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Lamb Spicy Pot香锅羊肉",
+        "description": "",
+        "price": "$18.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Pork Rib Spicy Pot香锅排骨",
+        "description": "",
+        "price": "$17.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Shrimp Spicy Pot香锅对虾",
+        "description": "",
+        "price": "$17.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Marinaded Beef Pot香锅嫩牛肉",
+        "description": "",
+        "price": "$17.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Sliced Beef Pot香锅肥牛",
+        "description": "",
+        "price": "$17.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Frog Leg Spicy Pot香锅牛蛙",
+        "description": "",
+        "price": "$18.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Chicken Wings Pot香锅鸡翅",
+        "description": "",
+        "price": "$17.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Beef Tonge Spicy Pot香锅牛舌",
+        "description": "",
+        "price": "$18.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Squid Spicy Pot香锅鱿鱼",
+        "description": "",
+        "price": "$17.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Lamb Rib Spicy Pot香锅羊排",
+        "description": "",
+        "price": "$18.99",
+        "section": "Mala Spicy Pot"
+      },
+      {
+        "name": "Rice米饭",
+        "description": "",
+        "price": "$1.50",
+        "section": "Rice主食"
+      },
+      {
+        "name": "Chinese Herbal Drink王老吉",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drink饮品"
+      },
+      {
+        "name": "Mr Kong GreenTea康师傅绿茶",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drink饮品"
+      },
+      {
+        "name": "Mr Kong Pear Juice冰糖雪梨",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drink饮品"
+      },
+      {
+        "name": "Mr Kong Black Tea康师傅冰红茶",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drink饮品"
+      },
+      {
+        "name": "Tangerine Soda北冰洋",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drink饮品"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5732",
+    "name": "Arrieros",
+    "sourceUrl": "https://www.ubereats.com/store/arrieros-mexican-food/N75MIwioR-qMu-ihIKt7kA",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site arrierosca.com has a genuine broken TLS configuration (confirmed independently via curl -> schannel SEC_E_INVALID_TOKEN, WebFetch -> OPENSSL_internal WRONG_VERSION_NUMBER, and r.jina.ai proxy -> net::ERR_SSL_PROTOCOL_ERROR - three different clients agree the server itself is misconfigured, not a client-side quirk). Uber Eats store page (address confirmed 431 W. 13th Avenue, Escondido, matches worklist) has no static Restaurant.hasMenu JSON-LD and no catalogSectionsMap data server-rendered - client-fetched, needs a browser. allmenus page returned a near-empty 7KB response with no prices. zmenu 403'd."
+  },
+  {
+    "restaurantId": "2111",
+    "name": "Ginza Sushi",
+    "sourceUrl": "https://api.menufy.com/v1/locations/48900/categories/all",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "markup confirmed on every reachable ordering channel, not just the Menufy one already screened by the router: DoorDash (store 83987, address 16715 Bernardo Center Drive matches) and Uber Eats (address confirmed 16715 Bernardo Center Dr) both show 254/261 priced items landing on round dollars at divisor 1.04 (e.g. California Roll $6.24 -> $6.00, Lemon Roll $14.56 -> $14.00, Soda $2.60 -> $2.50) - every channel syndicates the same HungerRush/Menufy catalog with the same 4% fee baked in. Per the never-divide-out rule this cannot be filed from any of the three. No dine-in artefact (photo/PDF) found within budget."
+  },
+  {
+    "restaurantId": "5918",
+    "name": "Pho Sao Bien Vietnamese Restaurant",
+    "sourceUrl": "https://www.doordash.com/en-US/store/pho-sao-bien-san-diego-13582",
+    "confidence": "medium",
+    "notes": "Own site ieatpho.com/menu is a client-rendered shell with no dish data in the static HTML. Its ordering link (orderphosaobien.com) routes to a 'SimpleMenu' storefront (order.simplemenu.com/store/2464) that is also fully client-rendered with no embedded JSON and no guessable REST API; its photo gallery (via Cloudinary) turned out to be AVIF-encoded marketing food photography, not menu boards, once converted to a readable JPEG (appending .jpg to the Cloudinary URL forces format conversion - this environment's GDI+ cannot decode AVIF directly). Fell back to DoorDash, whose JSON-LD address (1958 Garnet Ave) matches the worklist exactly. Vietnamese diacritics in several dish names look like OCR/typing artifacts from the source menu itself and are transcribed exactly as DoorDash published them, not corrected. Cent distribution is only .50/.95 across all 63 items - no markup-divisor pattern.",
+    "dishes": [
+      {
+        "name": "Bánh Mì Gà Nướng. Thịt Nướng Hoặc Chạy",
+        "description": "",
+        "price": "$5.50",
+        "section": "Sao Bien (Special)"
+      },
+      {
+        "name": "Mì Xào Gà Hoặc Bò",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sao Bien (Special)"
+      },
+      {
+        "name": "Gã Carl Cơm, Bánh Mì Hoặc Bun",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sao Bien (Special)"
+      },
+      {
+        "name": "Gỏi Cuốn (4 Cuốn) Spring Rolls (4 Rolls)",
+        "description": "",
+        "price": "$9.50",
+        "section": "Khai Vi (Appetizers)"
+      },
+      {
+        "name": "Đậu hũ Chiên Đơn",
+        "description": "",
+        "price": "$4.95",
+        "section": "Khai Vi (Appetizers)"
+      },
+      {
+        "name": "Chả Giò (6 Cuốn) Fried Egg Rolls (6 Rolls)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Khai Vi (Appetizers)"
+      },
+      {
+        "name": "Cánh Gà Chian",
+        "description": "",
+        "price": "$7.95",
+        "section": "Khai Vi (Appetizers)"
+      },
+      {
+        "name": "Gỏi Cuốn Chay (4 Cuốn) Vegetable Spring Rolls (4 Rolls)",
+        "description": "",
+        "price": "$10.50",
+        "section": "Khai Vi (Appetizers)"
+      },
+      {
+        "name": "Cơm Thịt Nướng",
+        "description": "",
+        "price": "$9.50",
+        "section": "Com (Rice Dish)"
+      },
+      {
+        "name": "Cơm Suang Nuong",
+        "description": "",
+        "price": "$9.50",
+        "section": "Com (Rice Dish)"
+      },
+      {
+        "name": "Cầm Chiến (Fried Rice)",
+        "description": "",
+        "price": "$10.50",
+        "section": "Com (Rice Dish)"
+      },
+      {
+        "name": "Cơm Chiên Tôm (Shrimp Fired Rice)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Com (Rice Dish)"
+      },
+      {
+        "name": "Cơm Tôm Đậu Hũ Chiên",
+        "description": "",
+        "price": "$10.50",
+        "section": "Com (Rice Dish)"
+      },
+      {
+        "name": "Cơm Chiên Cá Hoặc Bỏ (Chicken or Beef Fried Rice)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Com (Rice Dish)"
+      },
+      {
+        "name": "Cơm Tôm",
+        "description": "",
+        "price": "$9.95",
+        "section": "Com (Rice Dish)"
+      },
+      {
+        "name": "Cơm Gà Chiên",
+        "description": "",
+        "price": "$9.50",
+        "section": "Com (Rice Dish)"
+      },
+      {
+        "name": "Cơm Bì Chả Thịt Nướng",
+        "description": "",
+        "price": "$9.95",
+        "section": "Com (Rice Dish)"
+      },
+      {
+        "name": "Cơm Bò Lúc Lắc",
+        "description": "",
+        "price": "$12.50",
+        "section": "Com (Rice Dish)"
+      },
+      {
+        "name": "Bún Thịt Nướng",
+        "description": "",
+        "price": "$10.95",
+        "section": "Bun (Rice Vermicelli)"
+      },
+      {
+        "name": "Bún Chả Giò",
+        "description": "",
+        "price": "$9.95",
+        "section": "Bun (Rice Vermicelli)"
+      },
+      {
+        "name": "Bún Tôm Nướng",
+        "description": "",
+        "price": "$9.95",
+        "section": "Bun (Rice Vermicelli)"
+      },
+      {
+        "name": "Bún Tôm Đậu Hũ Chiên",
+        "description": "",
+        "price": "$12.95",
+        "section": "Bun (Rice Vermicelli)"
+      },
+      {
+        "name": "Bún Bì Chả Giò Thịt Nướng",
+        "description": "",
+        "price": "$12.50",
+        "section": "Bun (Rice Vermicelli)"
+      },
+      {
+        "name": "Bún Đậu Hũ Chian",
+        "description": "",
+        "price": "$9.50",
+        "section": "Bun (Rice Vermicelli)"
+      },
+      {
+        "name": "Bún Bì Chả Giò Thịt Nướng & Tóm",
+        "description": "",
+        "price": "$10.50",
+        "section": "Bun (Rice Vermicelli)"
+      },
+      {
+        "name": "Bún Bò Hoặc Gà",
+        "description": "",
+        "price": "$9.50",
+        "section": "Bun (Rice Vermicelli)"
+      },
+      {
+        "name": "Đặc Biệt",
+        "description": "",
+        "price": "$11.95",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Đặc Biệt Xe Lửa",
+        "description": "",
+        "price": "$9.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Phở Gà",
+        "description": "",
+        "price": "$9.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tại, Năm, Gấu, Gạn, Sách",
+        "description": "",
+        "price": "$8.95",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Chín Năm, Gấu, Gạn Sạch",
+        "description": "",
+        "price": "$8.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tải",
+        "description": "",
+        "price": "$11.95",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tai Gấu",
+        "description": "",
+        "price": "$9.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Phổ Tai Tom",
+        "description": "",
+        "price": "$10.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tại, Năm, Gần, Sách",
+        "description": "",
+        "price": "$8.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Phở Tôm",
+        "description": "",
+        "price": "$9.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tại, Năm, Gần",
+        "description": "",
+        "price": "$8.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Phở Đậu Hũ",
+        "description": "",
+        "price": "$10.95",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tại, Năm, Sách",
+        "description": "",
+        "price": "$8.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Nam Về Đơn",
+        "description": "",
+        "price": "$10.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Pho Bo Vian",
+        "description": "",
+        "price": "$8.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Chín Năm Về Đơn",
+        "description": "",
+        "price": "$8.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tại Gần",
+        "description": "",
+        "price": "$8.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Phở Không Thịt",
+        "description": "",
+        "price": "$7.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tại Nam",
+        "description": "",
+        "price": "$10.95",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tái Chín",
+        "description": "",
+        "price": "$8.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tại, Chín, Gấu, Gần, Sách",
+        "description": "",
+        "price": "$8.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Tải Sách",
+        "description": "",
+        "price": "$8.50",
+        "section": "Pho (Special Vietnamese Noodle Soup)"
+      },
+      {
+        "name": "Cafe Đen (Black Espresso)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Cafe Đá (Iced Black Espresso)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Soda Chanh (Fresh Soda Lemonade)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Cafe Sữa (Espresso with Condensed Milk)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Trà Thái (Thai Iced Tea)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Cafe Sữa Đã (Iced Espresso with Condensed Milk)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Trà Đá (Iced Tea)",
+        "description": "",
+        "price": "$2.50",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Trà Đá Chanh (Iced Tea Lemon)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Đá Chanh (Fresh Lemonade)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Trà Thái Trân Châu (Thai Iced Tea with Tapioca Ball)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Nước Dừa (Coconut Drink)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Sinh Tố Mít (Jack Fruit Smoothie)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Trà Nóng (Hot Tea)",
+        "description": "",
+        "price": "$2.50",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Sữa Đậu Nành (Soy Bean Milk)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Giai Khat (Beverages)"
+      },
+      {
+        "name": "Các Loại Nước Ngọt (Sprite, Coke/Diet, Root Beer Sun Kist)",
+        "description": "",
+        "price": "$1.50",
+        "section": "Giai Khat (Beverages)"
+      }
+    ]
+  }
+]

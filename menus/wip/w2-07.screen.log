@@ -1,0 +1,18 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      6 entries (4 with menus, 2 confirmed not-found), 352 dishes
+quarantine: 14 entries, 0 dishes withheld
+
+  Sandwich Place (0 dishes) - blocked, not absent: NetWaiter online-ordering endpoint (GetMenu) returns a genuinely empty catalog (Groups:[], ExternalType:null); no PDF or alternate first-party menu found on the about page; no ordering-platform (DoorDash/UberEats) listing found for this address
+  1904 Street Dogs (0 dishes) - blocked, not absent: no website on file; web search surfaces only directory/aggregator listings with no itemised prices for this hot dog stand at 600 W Broadway
+  Suki Hana (0 dishes) - blocked, not absent: DoorDash (doordash.com/store/23649600) and Uber Eats disagree on entree prices by a flat ~$1.50-1.80 (e.g. Chicken Teriyaki $13.49 DD vs $11.99 UE) with no first-party site (only a Westfield UTC directory page); disagreement between two ordering channels is not corroboration, no price filed
+  Royal Pearl Tea (0 dishes) - blocked, not absent: royalpearltea.com is a parked/dead domain (serves an ad-block-detection redirect script, no real content); no DoorDash/Uber Eats listing found matching 6939 Federal Blvd within search
+  Forum Deli (0 dishes) - blocked, not absent: needs-browser: site is served through the EatStreet white-label ordering platform (CLIENT_CONFIG JS blob, eatstreet.com session cookies); the raw HTML shell carries no menu/price data, it is rendered client-side
+  Caffe Positano, Fairbanks (0 dishes) - blocked, not absent: no website on file; only directory/aggregator pages (Yelp, restaurantguru, zmenu) found, none carrying itemised prices; Facebook page located but not a priced source
+  Panadería González (0 dishes) - blocked, not absent: no website on file; only per-review anecdotal prices found (e.g. $1.00 each vs $1.25 each from different reviews) which is hearsay, not a source; no ordering-platform listing found
+  SIP Wine Bar (0 dishes) - blocked, not absent: airport Terminal 1 concession, no website on file; press coverage describes wine flights and snack offerings but no itemised prices found anywhere
+  Panadería El Trigal (0 dishes) - blocked, not absent: no website on file; only directory listings found (Yelp, zmenu, restaurantguru), none carrying itemised prices; a DoorDash listing under the same name is a different branch (Orange, NJ)
+  Test Kitchen (0 dishes) - blocked, not absent: needs-browser: Wix Thunderbolt site; raw HTML for both the homepage and /menu carries no data-hook price attributes and no visible dollar prices, content is rendered client-side from a warmupData blob not present in the fetched document
+  El Uno Bar (0 dishes) - blocked, not absent: no website on file, cash-only bar; only a beer-bucket deal price ($14) found via Groupon, not a menu; no itemised food/drink menu located
+  Super Express Chinese Food (0 dishes) - blocked, not absent: NetWaiter online-ordering endpoint (GetMenu) returns a genuinely empty catalog (Groups:[], ExternalType:null); only per-review anecdotal prices found elsewhere (hearsay, not a source)
+  Rancho Roasters (0 dishes) - blocked, not absent: the only DoorDash listing found for this name resolves to 1250 Prospect Street (La Jolla), not the target address 16950 Via De Santa Fe (Rancho Santa Fe) - wrong branch, not filed; no correct listing found within time budget
+  TG Cafe (0 dishes) - blocked, not absent: no website on file; only directory/aggregator pages found (Yelp, menustic, menupix), none carrying itemised prices; a per-order price range from an aggregator is not an itemised menu

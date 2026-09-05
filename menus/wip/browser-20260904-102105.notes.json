@@ -1,0 +1,1822 @@
+[
+  {
+    "restaurantId": "2452",
+    "name": "Copa Vida",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "55 priced items on https://cvpasadena.square.site/?location=11ea65641c8a0798b0d80cc47a2b63e4#3BN2GTIXHPJY76VR7K64NXSJ, reached by following a link off copa-vida.com, but nothing on the page names an address or this city - an agent must confirm this is Copa Vida, null. Not filed; followed the branch link https://cvpasadena.square.site/?location=11ea65641c8a0798b0d80cc47a2b63e4; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3565",
+    "name": "Deli Belly",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://order.online/business/deli-belly-163031 that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3452",
+    "name": "Copa Vida",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "55 priced items on https://cvpasadena.square.site/?location=11ea65641c8a0798b0d80cc47a2b63e4#3BN2GTIXHPJY76VR7K64NXSJ, reached by following a link off copa-vida.com, but the page names San Marcos, but it names every other branch's city too - a location list is not an address - an agent must confirm this is Copa Vida, 250 North City Drive #Suite 1. Not filed; followed the branch link https://cvpasadena.square.site/?location=11ea65641c8a0798b0d80cc47a2b63e4; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2482",
+    "name": "Serrano's Mexican Food",
+    "platform": "Square Online (own domain)",
+    "outcome": "filed",
+    "detail": "7 dishes from https://www.serranosencinitas.com/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://www.serranosencinitas.com/; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 0/6 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "6159",
+    "name": "Hanna Garden",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/place/Hanna+Garden/@32.8807934,-117.1596968,17z/data=!3m1!4b1!4m6!3m5!1s0x80dbff4d1dcf40ef:0x5d3a881e95be90a6!8m2!3d32.8807934!4d-117.1596968!16s%2Fg%2F11x9lrrck?entry=ttu&g_ep=EgoyMDI2MDkwMS4wIKXMDSoASAFQAw%3D%3D after 253 JSON responses; store picked by street number 7160 in the link; opened the branch link carrying street number 7160",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6017",
+    "name": "Pho Hiep & Grill",
+    "platform": "chownow",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.phohiepgrill.com/linda-vista-menu after 23 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4501",
+    "name": "Donut Stop",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://donutstopmiramesa.wordpress.com/menu/ after 40 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3508",
+    "name": "Mochinut",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.online/business-group/10844735 after 177 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4527",
+    "name": "Tree House",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/online after 25 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4465",
+    "name": "Cluck N Sip",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://bigphilssmokers.com/ after 2 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4388",
+    "name": "Suki Hana",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.sukihanaca.com/ after 14 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7767",
+    "name": "Agave Birrieria",
+    "platform": "spothopper",
+    "outcome": "needs-browser",
+    "detail": "158 priced items on https://order.toasttab.com/online/agave-birrieria-north-park-nro-6345-el-cajon-boulevard-suite-132?diningOption=takeout&rwg_token=AFd1xnExOKwSfqqoS6LsmpFm6WwOsQbIL90KaasgUym1Znw9h3I-47IJmxCjDDsV35hbrPEbZjDQa6eYSmrBB2LKUSKVJjzpvQ%3D%3D#, reached by following a link off agavebirrieriaelcajonblvd.com, but the page names San Diego, but it names every other branch's city too - a location list is not an address - an agent must confirm this is Agave Birrieria, 6353 El Cajon Blvd, San Diego, CA 92115. Not filed; followed the branch link https://order.toasttab.com/online/agave-birrieria-north-park-nro-6345-el-cajon-boulevard-suite-132?diningOption=takeout&rwg_token=AFd1xnExOKwSfqqoS6LsmpFm6WwOsQbIL90KaasgUym1Znw9h3I-47IJmxCjDDsV35hbrPEbZjDQa6eYSmrBB2LKUSKVJjzpvQ%3D%3D#; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7602",
+    "name": "Dumplings N More",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "53 priced items on https://order.mealkeyway.com/customer/release/index?mid=52306b32444f4d7a3271503954463364696b5a7352413d3d#/main, reached by following a link off dumplingsnmore.net, but the page prints an address, but not this branch's street number - an agent must confirm this is Dumplings N More, 1507 E Valley Pkwy, Escondido, CA 92027. Not filed; followed the branch link https://order.mealkeyway.com/customer/release/index?mid=52306b32444f4d7a3271503954463364696b5a7352413d3d",
+    "menuResponses": [
+      "https://siteassets.parastorage.com/pages/pages/thunderbolt?appDefinitionIdToSiteRevision=%7B%2214271d6f-ba62-d045-549b-ab972ae1f70e%22%3A%2225%22%7D&beckyExperiments=.DatePickerPortal%2C.DisableDocumentScrollWhenLightBoxOpen%2C.EnableCustomCSSVarsForLoginSocialBar%2C.FreemiumBannerOdeditor%2C.LoginBarEnableLoggingInStateInSSR%2C.TextInputAutoFillFix%2C.UseLoginSocialBarCustomMenu%2C.UseNestedLoginSocialBarMenuItems%2C.UseNewLoginBarDropdownMenuAlignment%2C.UseNewLoginSocialBarElementStructure%2C.UseNewLoginSocialBarMemberInitialsAvatar%2C.WixFreeSiteBannerDesktop%2C.WixFreeSiteBannerMobile%2C.a11yContrast%2C.allowWebpAvifTransforms%2C.builderBoxSizingBorderBox%2C.buttonUdp%2C.calculateCollapsibleTextLineHeightByFont%2C.dom_store%2C.dontApplyDacOverridesOnBoBApps%2C.dynamicPageLinkTarget%2C.dynamicSlots%2C.fiveGridLineStudioSkins%2C.fixRemappedFullNameCompType%2C.imageEncodingAVIF%2C.isClassNameToRootEnabled%2C.logVsmFeaturesModuleDiff%2C.motionTimeAnimationsCSS%2C.responsiveContainerRoleGroup%2C.sectionA11yProps%2C.shouldIgnoreWidgetsPageData%2C.shouldUseResponsiveImages%2C.splitSlotSelectors%2C.svgResolver_2%2C.updateRichTextSemanticClassNamesOnCorvid%2C.useClassnameInResponsiveAppWidget%2C.useFragmentHrefForTopBottomAnchor%2C.useImageAvifFormatInNativeProGallery%2C.useResponsiveImgClassicFixed%2C.useSvgLoaderFeature%2C.useSvgLoaderFeatureOnBuilderComps%2C.useWowImageInFastGallery%2C.vsmFeaturesModule&blocksBuilderManifestGeneratorVersion=1.129.0&contentType=application%2Fjson&deviceType=Desktop&dfCk=6&dfVersion=1.5593.0&disableStaticPagesUrlHierarchy=false&editorName=Unknown&experiments=dm_bgScrubToMotionFixer%2Cdm_migrateOldHoverBoxToNewFixer&externalBaseUrl=https%3A%2F%2Fwww.dumplingsnmore.net&fileId=b4c13d32.bundle.min&formFactor=desktop&hasTPAWorkerOnSite=false&hasUserDomainMedia=false&isBuilderComponentModel=false&isHttps=true&isInSeo=false&isMultilingualEnabled=false&isPremiumDomain=true&isTrackClicksAnalyticsEnabled=false&isUrlMigrated=true&isWixCodeOnPage=false&isWixCodeOnSite=false&language=en&languageResolutionMethod=QueryParam&metaSiteId=dd5fb74c-66ea-4b4f-8902-aa819ff67b9c&module=thunderbolt-features&originalLanguage=en&pageId=f60687_729455a0165b747386d14d0aa71dadf1_33.json&quickActionsMenuEnabled=false&registryLibrariesTopology=%5B%7B%22artifactId%22%3A%22editor-elements%22%2C%22namespace%22%3A%22wixui%22%2C%22url%22%3A%22https%3A%2F%2Fstatic.parastorage.com%2Fservices%2Feditor-elements%2F1.15474.0%22%7D%2C%7B%22artifactId%22%3A%22editor-elements%22%2C%22namespace%22%3A%22dsgnsys%22%2C%22url%22%3A%22https%3A%2F%2Fstatic.parastorage.com%2Fservices%2Feditor-elements%2F1.15474.0%22%7D%5D&remoteWidgetStructureBuilderVersion=1.251.0&siteId=fbf9849f-8b28-4760-9a3c-bf886fd646d6&siteRevision=33&staticHTMLComponentUrl=https%3A%2F%2Fwww-dumplingsnmore-net.filesusr.com%2F&useSandboxInHTMLComp=false&viewMode=desktop",
+      "https://siteassets.parastorage.com/pages/pages/thunderbolt?appDefinitionIdToSiteRevision=%7B%2214271d6f-ba62-d045-549b-ab972ae1f70e%22%3A%2225%22%7D&beckyExperiments=.DatePickerPortal%2C.DisableDocumentScrollWhenLightBoxOpen%2C.EnableCustomCSSVarsForLoginSocialBar%2C.FreemiumBannerOdeditor%2C.LoginBarEnableLoggingInStateInSSR%2C.TextInputAutoFillFix%2C.UseLoginSocialBarCustomMenu%2C.UseNestedLoginSocialBarMenuItems%2C.UseNewLoginBarDropdownMenuAlignment%2C.UseNewLoginSocialBarElementStructure%2C.UseNewLoginSocialBarMemberInitialsAvatar%2C.WixFreeSiteBannerDesktop%2C.WixFreeSiteBannerMobile%2C.a11yContrast%2C.allowWebpAvifTransforms%2C.builderBoxSizingBorderBox%2C.buttonUdp%2C.calculateCollapsibleTextLineHeightByFont%2C.dom_store%2C.dontApplyDacOverridesOnBoBApps%2C.dynamicPageLinkTarget%2C.dynamicSlots%2C.fiveGridLineStudioSkins%2C.fixRemappedFullNameCompType%2C.imageEncodingAVIF%2C.isClassNameToRootEnabled%2C.logVsmFeaturesModuleDiff%2C.motionTimeAnimationsCSS%2C.responsiveContainerRoleGroup%2C.sectionA11yProps%2C.shouldIgnoreWidgetsPageData%2C.shouldUseResponsiveImages%2C.splitSlotSelectors%2C.svgResolver_2%2C.updateRichTextSemanticClassNamesOnCorvid%2C.useClassnameInResponsiveAppWidget%2C.useFragmentHrefForTopBottomAnchor%2C.useImageAvifFormatInNativeProGallery%2C.useResponsiveImgClassicFixed%2C.useSvgLoaderFeature%2C.useSvgLoaderFeatureOnBuilderComps%2C.useWowImageInFastGallery%2C.vsmFeaturesModule&blocksBuilderManifestGeneratorVersion=1.129.0&contentType=application%2Fjson&deviceType=Desktop&dfCk=6&dfVersion=1.5593.0&disableStaticPagesUrlHierarchy=false&editorName=Unknown&experiments=dm_bgScrubToMotionFixer%2Cdm_migrateOldHoverBoxToNewFixer&externalBaseUrl=https%3A%2F%2Fwww.dumplingsnmore.net&fileId=b4c13d32.bundle.min&formFactor=desktop&hasTPAWorkerOnSite=false&hasUserDomainMedia=false&isBuilderComponentModel=false&isHttps=true&isInSeo=false&isMultilingualEnabled=false&isPremiumDomain=true&isTrackClicksAnalyticsEnabled=false&isUrlMigrated=true&isWixCodeOnPage=false&isWixCodeOnSite=false&language=en&languageResolutionMethod=QueryParam&metaSiteId=dd5fb74c-66ea-4b4f-8902-aa819ff67b9c&module=thunderbolt-features&originalLanguage=en&pageId=f60687_63447d0162464e703158ff138063dba5_33.json&quickActionsMenuEnabled=false&registryLibrariesTopology=%5B%7B%22artifactId%22%3A%22editor-elements%22%2C%22namespace%22%3A%22wixui%22%2C%22url%22%3A%22https%3A%2F%2Fstatic.parastorage.com%2Fservices%2Feditor-elements%2F1.15474.0%22%7D%2C%7B%22artifactId%22%3A%22editor-elements%22%2C%22namespace%22%3A%22dsgnsys%22%2C%22url%22%3A%22https%3A%2F%2Fstatic.parastorage.com%2Fservices%2Feditor-elements%2F1.15474.0%22%7D%5D&remoteWidgetStructureBuilderVersion=1.251.0&siteId=fbf9849f-8b28-4760-9a3c-bf886fd646d6&siteRevision=33&staticHTMLComponentUrl=https%3A%2F%2Fwww-dumplingsnmore-net.filesusr.com%2F&useSandboxInHTMLComp=false&viewMode=desktop"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7980",
+    "name": "Hanna Garden",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/place/Hanna+Garden/@32.8807934,-117.1596968,17z/data=!3m1!4b1!4m6!3m5!1s0x80dbff4d1dcf40ef:0x5d3a881e95be90a6!8m2!3d32.8807934!4d-117.1596968!16s%2Fg%2F11x9lrrck?entry=ttu&g_ep=EgoyMDI2MDkwMS4wIKXMDSoASAFQAw%3D%3D after 248 JSON responses; store picked by street number 7160 in the link; opened the branch link carrying street number 7160",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7988",
+    "name": "Pastalini",
+    "platform": "slice",
+    "outcome": "screened-out",
+    "detail": "catalog looks doubled: 112 of 232 rows repeat by name and price across differently-named sections - https://slicelife.com/restaurants/ca/san-diego/92121/pastalini/menu; followed the branch link https://slicelife.com/restaurants/ca/san-diego/92121/pastalini/menu",
+    "menuResponses": [
+      "https://slicelife.com/restaurants/ca/san-diego/92121/pastalini/menu"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8062",
+    "name": "Carnitas las Michoacanas",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "11 dishes from https://order.online/en-US/store/carnitas-las-michoacanas-palm-ave-41954005; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://order.online/en-US/store/carnitas-las-michoacanas-palm-ave-41954005; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 403"
+  },
+  {
+    "restaurantId": "8107",
+    "name": "Empanada Kitchen",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.empanada-kitchen.com/ after 55 JSON responses; followed the branch link http://empanada-kitchen.com/menu; the followed link had no more prices than https://www.empanada-kitchen.com/; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3104",
+    "name": "Slater's 50/50",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/slaters-50-50-san-diego after 31 JSON responses; store picked by street number 2750; clicked a branch matching street number 2750",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3774",
+    "name": "Empanada Kitchen",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://empanada-kitchen.com/ after 56 JSON responses; followed the branch link http://empanada-kitchen.com/menu; the followed link had no more prices than https://empanada-kitchen.com/; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6846",
+    "name": "Prager Brothers Artisan Breads",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.pragerbrothers.com/ after 41 JSON responses; store picked by street number 1252; clicked a branch matching street number 1252",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2605",
+    "name": "Lucha Libre Taco Shop",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/place/3016+University+Ave,+San+Diego,+CA+92104/@32.7486959,-117.1297798,17z/data=!3m1!4b1!4m6!3m5!1s0x80d954f686788bd1:0x9b33daf5cd2d9373!8m2!3d32.7486959!4d-117.1297798!16s%2Fg%2F11q2nd8r20?entry=ttu&g_ep=EgoyMDI2MDkwMS4wIKXMDSoASAFQAw%3D%3D after 51 JSON responses; store picked by street number 3016 in the link; opened the branch link carrying street number 3016",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2797",
+    "name": "BCB Coffee",
+    "platform": "Square Online (own domain)",
+    "outcome": "filed",
+    "detail": "5 dishes from https://www.bcbcoffee.com/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://www.bcbcoffee.com/; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 0/5 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "6295",
+    "name": "Burger Bench Escondido",
+    "platform": "chownow",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.burgerbench.com/escondido after 95 JSON responses; store picked by street number 237; clicked a branch matching street number 237",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5799",
+    "name": "Brigantine Seafood",
+    "platform": "chownow",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.brigantine.com/ after 31 JSON responses; store searched by ZIP; typed ZIP 92025 into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5907",
+    "name": "En Fuego Cantina & Grill",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "445 dishes from https://order.toasttab.com/online/en-fuego-cantina-grill; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": true,
+    "curlNote": "GET https://order.toasttab.com/online/en-fuego-cantina-grill; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "5859",
+    "name": "Tom's Famous Family Restaurant 24",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://order.online/business/~309363 that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6545",
+    "name": "Wayfarer Bread & Pastry",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.wayfarerbread.com/ after 57 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5723",
+    "name": "Golden Egg Omelet House",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/egiftcards after 24 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6153",
+    "name": "Yogurt Heaven",
+    "platform": null,
+    "outcome": "screened-out",
+    "detail": "prices are not shaped like a menu: 10% of 20 land on a conventional ending as published and 90% do after dividing by 1.2500 - a fee is baked into every price - https://order.online/en-US/store/Yogurt-Heaven-526899; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5780",
+    "name": "Italia Pizza",
+    "platform": "slice",
+    "outcome": "gated",
+    "detail": "only 3 priced items from https://api-gtm.grubhub.com/restaurants/5693824/menu_items/?menuItemIds=20399455383&menuItemIds=20395150338&menuItemIds=20393405338&menuItemIds=20396084033&menuItemIds=20395150010&menuItemIds=20395150052&menuItemIds=20393405378&menuItemIds=20393405394&menuItemIds=20948045957&menuItemIds=20395150297&menuItemIds=20393405311&menuItemIds=20395150035&menuItemIds=20393405374&menuItemIds=20393405433&menuItemIds=20393405404&menuItemIds=20948045941&menuItemIds=20395150044&menuItemIds=20960849635&menuItemIds=20960136391&menuItemIds=20395150316&menuItemIds=20395150048&menuItemIds=20948045935&menuItemIds=20396084040&menuItemIds=20395150013&menuItemIds=20399455386&menuItemIds=20393405340&menuItemIds=20395150320&menuItemIds=20396084041&menuItemIds=20395150318&orderType=standard&version=4 at 3:29:42 AM PT - a closed store looks exactly like a small menu, so re-run in daylight; store picked by street number 1438 in the link; opened the branch link carrying street number 1438",
+    "menuResponses": [
+      "https://api-gtm.grubhub.com/restaurants/5693824/menu_items/?menuItemIds=20399455383&menuItemIds=20395150338&menuItemIds=20393405338&menuItemIds=20396084033&menuItemIds=20395150010&menuItemIds=20395150052&menuItemIds=20393405378&menuItemIds=20393405394&menuItemIds=20948045957&menuItemIds=20395150297&menuItemIds=20393405311&menuItemIds=20395150035&menuItemIds=20393405374&menuItemIds=20393405433&menuItemIds=20393405404&menuItemIds=20948045941&menuItemIds=20395150044&menuItemIds=20960849635&menuItemIds=20960136391&menuItemIds=20395150316&menuItemIds=20395150048&menuItemIds=20948045935&menuItemIds=20396084040&menuItemIds=20395150013&menuItemIds=20399455386&menuItemIds=20393405340&menuItemIds=20395150320&menuItemIds=20396084041&menuItemIds=20395150318&orderType=standard&version=4"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "800",
+    "name": "Chicken Over Rice Co.",
+    "platform": "order.online",
+    "outcome": "filed",
+    "detail": "13 dishes from https://order.online/store/chicken-over-rice-co-san-diego-27754709/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://order.online/store/chicken-over-rice-co-san-diego-27754709/; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 403"
+  },
+  {
+    "restaurantId": "7029",
+    "name": "Randy's Donuts",
+    "platform": "olo",
+    "outcome": "filed",
+    "detail": "5 dishes from https://www.grubhub.com/restaurant/randys-donuts-3737-murphy-canyon-rd-san-diego/6334784; store picked by street number 3737 in the link; opened the branch link carrying street number 3737; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://www.grubhub.com/restaurant/randys-donuts-3737-murphy-canyon-rd-san-diego/6334784; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 0/5 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "6741",
+    "name": "Luna Grill Millenia",
+    "platform": "olo",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://locations.lunagrill.com/ that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6684",
+    "name": "The Breakfast Mug Oceanside",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "118 dishes from https://toast.app/r/breakfast-mug-1401-south-el-camino-real-ste-1108/order?utm_medium=redirect; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://toast.app/r/breakfast-mug-1401-south-el-camino-real-ste-1108/order; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 403"
+  },
+  {
+    "restaurantId": "6714",
+    "name": "Solana Sumptuous Cookies",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/dir/32.768,-117.0669568/150+Solana+Hills+Dr,+Solana+Beach,+CA+92075/@32.877633,-117.3266979,11z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x80dc0930211592c1:0xaa9c140be46af84a!2m2!1d-117.2575763!2d32.9949561?entry=ttu&g_ep=EgoyMDI2MDkwMS4wIKXMDSoASAFQAw%3D%3D after 187 JSON responses; store picked by street number 150 in the link; opened the branch link carrying street number 150",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4869",
+    "name": "Surfing Crab Escondido",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.surfingcrabca.com/ after 17 JSON responses; store picked by street number 202; clicked a branch matching street number 202",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2136",
+    "name": "Santos Coffee",
+    "platform": "spothopper",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/sorry/index?continue=https://www.google.rs/search%3Fq%3DSantos%2BCoffee%2BHouse%2B3191%2BThorn%2BStreet%2Breviews%26sca_esv%3D5e5568ccfe61287d%26sxsrf%3DADLYWILkfOLTUEYnJRv42hBqu4T0R4teOw%253A1726475896371%26source%3Dhp%26ei%3DeO7nZpayFImVxc8PrNq2-AY%26iflsig%3DAL9hbdgAAAAAZuf8iBy_SAh0e5oB5HLeOnL3yKSzsQJ7%26ved%3D0ahUKEwiWzo70h8eIAxWJSvEDHSytDW8Q4dUDCBY%26uact%3D5%26oq%3DSantos%2BCoffee%2BHouse%2B3191%2BThorn%2BStreet%2Breviews%26gs_lp%3DEgdnd3Mtd2l6Ii1TYW50b3MgQ29mZmVlIEhvdXNlIDMxOTEgVGhvcm4gU3RyZWV0IHJldmlld3MyBRAhGKABSJlVUABYhVBwAHgAkAEAmAHsAaABpg2qAQUwLjguMrgBA8gBAPgBAvgBAZgCCqACvQ3CAgcQABiABBgTwgIIEAAYExgWGB7CAggQABiABBiiBMICCBAAGIAEGMsBwgIGEAAYFhgewgIEECEYFcICBxAhGKABGAqYAwCSBwUwLjguMqAHtB0%26sclient%3Dgws-wiz%26sei%3D-p2aaqPWJpjNkPIPmLjb0Ak&q=EhAmAIgBmgjSADwZEAcFfGAsGPq76tQGIjDNsga4BkxdvRpO8SMMbUz1YkuLUS1ZKl3g0PN3SgcX85LRyBp1y_PECyqXDEsx0igyAVJaAUM#lrd=0x80d95461f48f44cd:0xd80ca2641ad74147,1,,,, after 39 JSON responses; store picked by street number 3191 in the link; opened the branch link carrying street number 3191",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6820",
+    "name": "Matcha Cafe Maiko - Escondido",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/dir/32.768,-117.0669568/1024+W+Valley+Pkwy,+Escondido,+CA+92025/@32.9379704,-117.273194,11z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x80dbf4923a1eb017:0xef06711750398af1!2m2!1d-117.097887!2d33.1174171?entry=ttu&g_ep=EgoyMDI2MDkwMS4wIKXMDSoASAFQAw%3D%3D after 123 JSON responses; store picked by street number 1024 in the link; opened the branch link carrying street number 1024",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6340",
+    "name": "San Diego Sandwich Co",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.online/store/63752?pickup=true&redirected=true after 133 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6654",
+    "name": "Marieta's Mexican Food",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://connecticuthomecare.org/ after 12 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6180",
+    "name": "Flippin' Pizza La Costa",
+    "platform": "HungerRush",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://flippinpizza.hungerrush.com/Order/Menu/17#groups after 30 JSON responses; store picked by street number 7662; clicked a branch matching street number 7662",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6118",
+    "name": "Crossroads Deli",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/dir/32.768,-117.0669568/9085+Judicial+Dr,+San+Diego,+CA+92122/@32.8151761,-117.2166313,12z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x80dc0734aa3f7c4d:0x2b1ac45bb4e71412!2m2!1d-117.2031787!2d32.8721398?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D after 130 JSON responses; store picked by street number 9085 in the link; opened the branch link carrying street number 9085",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6249",
+    "name": "Porky's Lechon Barbecue",
+    "platform": "SpotOn",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://porkyslechon.com/menu/ after 22 JSON responses; store picked by street number 1430; clicked a branch matching street number 1430",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6310",
+    "name": "Elixir Espresso & Wine Bar",
+    "platform": "Square Online (own domain)",
+    "outcome": "gated",
+    "detail": "only 4 priced items from https://www.elixirespressobar.com/shop at 3:33:40 AM PT - a closed store looks exactly like a small menu, so re-run in daylight; followed the branch link https://www.elixirespressobar.com/shop; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6061",
+    "name": "Fatte's Pizza Of Chula Vista",
+    "platform": "slice",
+    "outcome": "filed",
+    "detail": "37 dishes from https://fattespizzas.com/",
+    "menuResponses": [
+      "https://fattespizzas.com/"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://fattespizzas.com/; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "6429",
+    "name": "Luna Grill Encinitas",
+    "platform": "olo",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://locations.lunagrill.com/ that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6243",
+    "name": "Thyme for Lunch Cafe & Grill",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "36 priced items on https://thyme-for-lunch-cafe-and-grill.square.site/, reached by following a link off thyme4lunchcafe.com, but the page names San Diego, but it names every other branch's city too - a location list is not an address - an agent must confirm this is Thyme for Lunch Cafe & Grill, 8860 Kenamar Dr #310, San Diego, CA 92121. Not filed; followed the branch link https://thyme-for-lunch-cafe-and-grill.square.site/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5777",
+    "name": "Phở Hòa Restaurant | Vietnamese",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 1 priced items from https://expireddomains.com/domain/phohoalindavistago.site?utm_source=redi at 3:34:33 AM PT - a closed store looks exactly like a small menu, so re-run in daylight; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6579",
+    "name": "SoCal Sushi",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://expireddomains.com/domain/socalsushigo.site?utm_source=redi after 2 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4478",
+    "name": "Mesa Agricola",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://mesaagricola.com/ after 1 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2809",
+    "name": "Industrial Grind Coffee",
+    "platform": "Square Online (own domain)",
+    "outcome": "gated",
+    "detail": "only 1 priced items from https://www.industrialgrindcoffee.com/ at 3:35:11 AM PT - a closed store looks exactly like a small menu, so re-run in daylight; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6455",
+    "name": "Fat Joe’s O’side",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/place/424+S+Coast+Hwy,+Oceanside,+CA+92054/@33.1912247,-117.3777411,17z/data=!3m1!4b1!4m6!3m5!1s0x80dc6e3b65e29dc3:0x94e27284c0ad3ed0!8m2!3d33.1912247!4d-117.3751662!16s%2Fg%2F11b8vg2fg9?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D after 71 JSON responses; store picked by street number 424 in the link; opened the branch link carrying street number 424",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4059",
+    "name": "Banh Mi Blvd",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.banhmiblvd858.com/ after 1 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "728",
+    "name": "Dot Cafe",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.dottodotcafe.com/ after 188 JSON responses; followed the branch link https://www.dottodotcafe.com/menu; the followed link had no more prices than https://www.dottodotcafe.com/; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2017",
+    "name": "BB's Deli",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.online/en-GB/business/bbs-deli-40565 after 2 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5271",
+    "name": "Seaview Restaurant",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.hyatt.com/en-US/hotel/california/manchester-grand-hyatt-san-diego/sanrs/dining after 1 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6495",
+    "name": "Le Macaron French Pastries",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://order.online/en/business/le-macaron-french-pastries-61766 that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4476",
+    "name": "Kalei's Kitchenette",
+    "platform": "SpotOn",
+    "outcome": "screened-out",
+    "detail": "prices are not shaped like a menu: 4% of 50 land on a conventional ending as published and 98% do after dividing by 1.0400 - a fee is baked into every price - https://order.spoton.com/so-kaleis-kitchenette-12848/san-diego-ca/66f816dae3ae88cd476f5e9e; followed the branch link https://order.spoton.com/so-kaleis-kitchenette-12848/san-diego-ca/66f816dae3ae88cd476f5e9e",
+    "menuResponses": [
+      "https://order.spoton.com/so-kaleis-kitchenette-12848/san-diego-ca/66f816dae3ae88cd476f5e9e"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2113",
+    "name": "Iron Wok",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.ironwokrb.com/ after 18 JSON responses; store picked by street number 16769; clicked a branch matching street number 16769",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6561",
+    "name": "Aaharn Thai @ University City",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/privacy: page.goto: net::ERR_NAME_NOT_RESOLVED at https://order.toasttab.com/online/privacy\nCall log:\n\u001b[2m  - navigating to \"http",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4029",
+    "name": "Rock On Pizza",
+    "platform": "slice",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://rockonpizza.com/?utm_source=google: page.goto: net::ERR_CONNECTION_TIMED_OUT at https://rockonpizza.com/?utm_source=google\nCall log:\n\u001b[2m  - navigating to \"",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3993",
+    "name": "Sue's Korean Kitchen",
+    "platform": "Square Online storefront",
+    "outcome": "filed",
+    "detail": "5 dishes from https://sueskoreankitchen.square.site/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://sueskoreankitchen.square.site/; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 0/5 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "7342",
+    "name": "Blue Palm Mission Beach",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "202 dishes from https://toast.app/r/pura-vida-mission-beach-2912-mission-boulevard/order/item-acai-by-the-bay-smoothie_920390fe-faa9-42e5-b11d-404a6e1c13e3?utm_medium=redirect; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": true,
+    "curlNote": "GET https://toast.app/r/pura-vida-mission-beach-2912-mission-boulevard/order/item-acai-by-the-bay-smoothie_920390fe-faa9-42e5-b11d-404a6e1c13e3; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 5/6 sampled dish names"
+  },
+  {
+    "restaurantId": "7100",
+    "name": "Gravity Heights Mission Valley",
+    "platform": "toast",
+    "outcome": "filed",
+    "detail": "99 dishes from https://order.toasttab.com/online/gravity-heights-mission-valley-new-vxcgy; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": true,
+    "curlNote": "GET https://order.toasttab.com/online/gravity-heights-mission-valley-new-vxcgy; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "4585",
+    "name": "Tacoman",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "11 priced items on https://tacomanorderonline.square.site/, reached by following a link off tacomansd.com, but the page names National City, but it names every other branch's city too - a location list is not an address - an agent must confirm this is Tacoman, 2708 Highland Avenue. Not filed; followed the branch link http://tacomanorderonline.square.site/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4562",
+    "name": "Fan-Fan",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://fanfangroup.com/ after 57 JSON responses; store picked by street number 9625; clicked a branch matching street number 9625",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3877",
+    "name": "Mr. Charlie's",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/mr-charlies-la-new-acc-612-n-la-brea-ave after 25 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3817",
+    "name": "BenGong's Tea",
+    "platform": "clover",
+    "outcome": "filed",
+    "detail": "45 dishes from https://siteassets.parastorage.com/pages/pages/thunderbolt?appDefinitionIdToSiteRevision=%7B%2214271d6f-ba62-d045-549b-ab972ae1f70e%22%3A%2225%22%2C%2214bcded7-0066-7c35-14d7-466cb3f09103%22%3A%221335%22%7D&beckyExperiments=.DatePickerPortal%2C.DisableDocumentScrollWhenLightBoxOpen%2C.EnableCustomCSSVarsForLoginSocialBar%2C.FreemiumBannerOdeditor%2C.LoginBarEnableLoggingInStateInSSR%2C.TextInputAutoFillFix%2C.UseLoginSocialBarCustomMenu%2C.UseNestedLoginSocialBarMenuItems%2C.UseNewLoginBarDropdownMenuAlignment%2C.UseNewLoginSocialBarElementStructure%2C.UseNewLoginSocialBarMemberInitialsAvatar%2C.WixFreeSiteBannerDesktop%2C.WixFreeSiteBannerMobile%2C.a11yContrast%2C.addIdAsClassName%2C.allowWebpAvifTransforms%2C.builderBoxSizingBorderBox%2C.buttonUdp%2C.calculateCollapsibleTextLineHeightByFont%2C.dom_store%2C.dontApplyDacOverridesOnBoBApps%2C.dynamicPageLinkTarget%2C.dynamicSlots%2C.fiveGridLineStudioSkins%2C.fixDocumentLinkInPremiumPreview%2C.fixFirefoxLinkBarIntrinsicSizing%2C.fixRemappedFullNameCompType%2C.imageEncodingAVIF%2C.isClassNameToRootEnabled%2C.logVsmFeaturesModuleDiff%2C.motionTimeAnimationsCSS%2C.responsiveContainerRoleGroup%2C.sectionA11yProps%2C.shouldIgnoreWidgetsPageData%2C.shouldUseResponsiveImages%2C.splitSlotSelectors%2C.stopResolvingInnerSelectors_VAG%2C.svgResolver_2%2C.updateRichTextSemanticClassNamesOnCorvid%2C.useClassnameInResponsiveAppWidget%2C.useFragmentHrefForTopBottomAnchor%2C.useImageAvifFormatInNativeProGallery%2C.useResponsiveImgClassicFixed%2C.useSvgLoaderFeature%2C.useSvgLoaderFeatureOnBuilderComps%2C.useWowImageInFastGallery%2C.vsmFeaturesModule&blocksBuilderManifestGeneratorVersion=1.129.0&contentType=application%2Fjson&deviceType=Desktop&dfCk=6&dfVersion=1.5593.0&disableStaticPagesUrlHierarchy=false&editorName=Unknown&experiments=dm_bgScrubToMotionFixer%2Cdm_masterPageVariablesQueryFixer%2Cdm_migrateOldHoverBoxToNewFixer&externalBaseUrl=https%3A%2F%2Fwww.bengongstea.us&fileId=b4c13d32.bundle.min&formFactor=desktop&hasTPAWorkerOnSite=false&hasUserDomainMedia=false&isBuilderComponentModel=false&isHttps=true&isInSeo=false&isMultilingualEnabled=false&isPremiumDomain=true&isTrackClicksAnalyticsEnabled=false&isUrlMigrated=true&isWixCodeOnPage=false&isWixCodeOnSite=true&language=en&languageResolutionMethod=QueryParam&metaSiteId=58c89fa3-bfc8-4e7b-9765-e75a44171cd0&module=thunderbolt-features&originalLanguage=en&pageId=017fb2_24b29e3d0bc4f1bf20f3f9f3b78f76df_463.json&pilerExperiments=specs.piler.useEditorReactComponents&quickActionsMenuEnabled=false&registryLibrariesTopology=%5B%7B%22artifactId%22%3A%22editor-elements%22%2C%22namespace%22%3A%22wixui%22%2C%22url%22%3A%22https%3A%2F%2Fstatic.parastorage.com%2Fservices%2Feditor-elements%2F1.15474.0%22%7D%2C%7B%22artifactId%22%3A%22editor-elements%22%2C%22namespace%22%3A%22dsgnsys%22%2C%22url%22%3A%22https%3A%2F%2Fstatic.parastorage.com%2Fservices%2Feditor-elements%2F1.15474.0%22%7D%5D&remoteWidgetStructureBuilderVersion=1.251.0&siteId=99ad3c7c-2bc7-4add-b66c-ad093ce022db&siteRevision=463&staticHTMLComponentUrl=https%3A%2F%2Fwww-bengongstea-us.filesusr.com%2F&useSandboxInHTMLComp=false&viewMode=desktop",
+    "menuResponses": [
+      "https://siteassets.parastorage.com/pages/pages/thunderbolt?appDefinitionIdToSiteRevision=%7B%2214271d6f-ba62-d045-549b-ab972ae1f70e%22%3A%2225%22%2C%2214bcded7-0066-7c35-14d7-466cb3f09103%22%3A%221335%22%7D&beckyExperiments=.DatePickerPortal%2C.DisableDocumentScrollWhenLightBoxOpen%2C.EnableCustomCSSVarsForLoginSocialBar%2C.FreemiumBannerOdeditor%2C.LoginBarEnableLoggingInStateInSSR%2C.TextInputAutoFillFix%2C.UseLoginSocialBarCustomMenu%2C.UseNestedLoginSocialBarMenuItems%2C.UseNewLoginBarDropdownMenuAlignment%2C.UseNewLoginSocialBarElementStructure%2C.UseNewLoginSocialBarMemberInitialsAvatar%2C.WixFreeSiteBannerDesktop%2C.WixFreeSiteBannerMobile%2C.a11yContrast%2C.addIdAsClassName%2C.allowWebpAvifTransforms%2C.builderBoxSizingBorderBox%2C.buttonUdp%2C.calculateCollapsibleTextLineHeightByFont%2C.dom_store%2C.dontApplyDacOverridesOnBoBApps%2C.dynamicPageLinkTarget%2C.dynamicSlots%2C.fiveGridLineStudioSkins%2C.fixDocumentLinkInPremiumPreview%2C.fixFirefoxLinkBarIntrinsicSizing%2C.fixRemappedFullNameCompType%2C.imageEncodingAVIF%2C.isClassNameToRootEnabled%2C.logVsmFeaturesModuleDiff%2C.motionTimeAnimationsCSS%2C.responsiveContainerRoleGroup%2C.sectionA11yProps%2C.shouldIgnoreWidgetsPageData%2C.shouldUseResponsiveImages%2C.splitSlotSelectors%2C.stopResolvingInnerSelectors_VAG%2C.svgResolver_2%2C.updateRichTextSemanticClassNamesOnCorvid%2C.useClassnameInResponsiveAppWidget%2C.useFragmentHrefForTopBottomAnchor%2C.useImageAvifFormatInNativeProGallery%2C.useResponsiveImgClassicFixed%2C.useSvgLoaderFeature%2C.useSvgLoaderFeatureOnBuilderComps%2C.useWowImageInFastGallery%2C.vsmFeaturesModule&blocksBuilderManifestGeneratorVersion=1.129.0&contentType=application%2Fjson&deviceType=Desktop&dfCk=6&dfVersion=1.5593.0&disableStaticPagesUrlHierarchy=false&editorName=Unknown&experiments=dm_bgScrubToMotionFixer%2Cdm_masterPageVariablesQueryFixer%2Cdm_migrateOldHoverBoxToNewFixer&externalBaseUrl=https%3A%2F%2Fwww.bengongstea.us&fileId=b4c13d32.bundle.min&formFactor=desktop&hasTPAWorkerOnSite=false&hasUserDomainMedia=false&isBuilderComponentModel=false&isHttps=true&isInSeo=false&isMultilingualEnabled=false&isPremiumDomain=true&isTrackClicksAnalyticsEnabled=false&isUrlMigrated=true&isWixCodeOnPage=false&isWixCodeOnSite=true&language=en&languageResolutionMethod=QueryParam&metaSiteId=58c89fa3-bfc8-4e7b-9765-e75a44171cd0&module=thunderbolt-features&originalLanguage=en&pageId=017fb2_24b29e3d0bc4f1bf20f3f9f3b78f76df_463.json&pilerExperiments=specs.piler.useEditorReactComponents&quickActionsMenuEnabled=false&registryLibrariesTopology=%5B%7B%22artifactId%22%3A%22editor-elements%22%2C%22namespace%22%3A%22wixui%22%2C%22url%22%3A%22https%3A%2F%2Fstatic.parastorage.com%2Fservices%2Feditor-elements%2F1.15474.0%22%7D%2C%7B%22artifactId%22%3A%22editor-elements%22%2C%22namespace%22%3A%22dsgnsys%22%2C%22url%22%3A%22https%3A%2F%2Fstatic.parastorage.com%2Fservices%2Feditor-elements%2F1.15474.0%22%7D%5D&remoteWidgetStructureBuilderVersion=1.251.0&siteId=99ad3c7c-2bc7-4add-b66c-ad093ce022db&siteRevision=463&staticHTMLComponentUrl=https%3A%2F%2Fwww-bengongstea-us.filesusr.com%2F&useSandboxInHTMLComp=false&viewMode=desktop"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://siteassets.parastorage.com/pages/pages/thunderbolt; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 6/6 sampled dish names"
+  },
+  {
+    "restaurantId": "7016",
+    "name": "Pit Stop Pizza",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "75 dishes from https://pitstoppizza.toast.site/order; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": true,
+    "curlNote": "GET https://pitstoppizza.toast.site/order; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 3/6 sampled dish names"
+  },
+  {
+    "restaurantId": "4279",
+    "name": "D Wings & Ribs",
+    "platform": "SpotOn",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.dwingsusa.com/ after 3 JSON responses; store picked by street number 36; clicked a branch matching street number 36",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6344",
+    "name": "Panorama Bar & Grill",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.hilton.com/en/hotels/sanahhf-hilton-san-diego-airport-harbor-island/dining/?SEO_id=GMB--R-SANAHHF after 153 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3972",
+    "name": "Matoi",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/order after 78 JSON responses; followed the branch link https://pos.toasttab.com/privacy; the followed link had no more prices than https://order.toasttab.com/online/order; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7306",
+    "name": "The Crack Shack - Pacific Beach",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/egiftcards after 25 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5503",
+    "name": "Cargo Cafe",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "55 priced items on https://fusion-cargo-llc.square.site/?location=LTYBW63VQSP4T, reached by following a link off cargo-cafe.com, but nothing on the page names an address or this city - an agent must confirm this is Cargo Cafe, 4435 Eastgate Mall. Not filed; followed the branch link https://fusion-cargo-llc.square.site/?location=LTYBW63VQSP4T; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6531",
+    "name": "Poki Poki - Encinitas",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://order.online/business/poki-poki-183018 that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3680",
+    "name": "Zhengxin Chicken Steak",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.zhengxinchickensteak.com/ after 18 JSON responses; store picked by street number 4609; clicked a branch matching street number 4609",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3881",
+    "name": "Elixir Espresso Bar",
+    "platform": "Square Online (own domain)",
+    "outcome": "gated",
+    "detail": "only 4 priced items from https://www.elixirespressobar.com/shop at 3:43:16 AM PT - a closed store looks exactly like a small menu, so re-run in daylight; followed the branch link https://www.elixirespressobar.com/shop; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3934",
+    "name": "Sul & Beans",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/place/4620+Convoy+St,+San+Diego,+CA+92111/@32.8243834,-117.1559482,17z/data=!3m1!4b1!4m6!3m5!1s0x80dbff94753a9379:0xc307d8951dc0439!8m2!3d32.8243834!4d-117.1559482!16s%2Fg%2F11yfzr5r7r?entry=ttu&g_ep=EgoyMDI2MDkwMS4wIKXMDSoASAFQAw%3D%3D after 75 JSON responses; store picked by street number 4620 in the link; opened the branch link carrying street number 4620",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2941",
+    "name": "Gor Gai Thai Eatery",
+    "platform": "chownow",
+    "outcome": "needs-browser",
+    "detail": "80 priced items on https://order.chownow.com/order/10965/locations/15107, reached by following a link off gorgaithaieatery.com, but nothing on the page names an address or this city - an agent must confirm this is Gor Gai Thai Eatery, 16490 Paseo del Sur #125. Not filed; followed the branch link https://order.chownow.com/order/10965/locations",
+    "menuResponses": [
+      "https://api.chownow.com/api/restaurant/15107/menu/202609041115"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4132",
+    "name": "ZzanG Hotdog & Chicken",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "30 priced items on https://nicericeutc.square.site/s/shop, reached by following a link off zzanghotdog.com, but nothing on the page names an address or this city - an agent must confirm this is ZzanG Hotdog & Chicken, 409 Mission Ave, Oceanside, CA 92054. Not filed; followed the branch link https://nicericeutc.square.site/s/shop; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5667",
+    "name": "Bonehead Burger Co.",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/privacy after 24 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3940",
+    "name": "Sweetfin",
+    "platform": "olo",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.sweetfin.com/ after 30 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3388",
+    "name": "Daniel's Taco Shop",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.online/en-GB/business/daniels-taco-shop-432350 after 2 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3844",
+    "name": "Ten Seconds Yunnan Rice Noodle",
+    "platform": "MealKeyWay",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.tensecondsricenoodles.com/ after 16 JSON responses; store picked by street number 7905; clicked a branch matching street number 7905",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "775",
+    "name": "The Craft Taco at The Nat",
+    "platform": "Square Online (own domain)",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://maps.apple.com/place?map=explore&place-id=I9B9E9DB97D8D8225&address=1788+El+Prado%2C+San+Diego%2C+CA+92101%2C+United+States&coordinate=32.732107%2C-117.147474&name=San+Diego+Natural+History+Museum&_provider=9902 after 145 JSON responses; store picked by street number 1788 in the link; opened the branch link carrying street number 1788",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4603",
+    "name": "Castelli & Pizarro Family Vineyards & Winery",
+    "platform": "Square Online (own domain)",
+    "outcome": "filed",
+    "detail": "7 dishes from https://www.cpfwinery.com/; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": false,
+    "curlNote": "GET https://www.cpfwinery.com/; the menu was read off the rendered DOM, so this asks whether the served HTML carries it. browser sent cookie=false auth=false. curl replay returned HTTP 200 but only 0/6 sampled dish names - the catalog is session-bound"
+  },
+  {
+    "restaurantId": "4018",
+    "name": "Papa's Pizza",
+    "platform": "slice",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.papaspizzasandiego.net/ after 28 JSON responses; store picked by street number 4388; clicked a branch matching street number 4388",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6597",
+    "name": "Rambler Coffee",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://toast.app/ after 44 JSON responses; store picked by street number 225; clicked a branch matching street number 225",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6628",
+    "name": "Grab & Go - Mission Hills",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/grab-go-convoy-street-7701-convoy-ct-suite-a after 80 JSON responses; followed the branch link https://pos.toasttab.com/privacy; the followed link had no more prices than https://order.toasttab.com/online/grab-go-convoy-street-7701-convoy-ct-suite-a; went back",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4263",
+    "name": "Modern Times Coffee",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://theinvigatorium.com/ after 7 JSON responses; store picked by street number 631; clicked a branch matching street number 631",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5702",
+    "name": "Del Cerro Pizza",
+    "platform": "slice",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://delcerropizzas.com/ after 21 JSON responses; store picked by street number 6358; clicked a branch matching street number 6358",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6674",
+    "name": "Tous les Jours",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.online/business/TousLesJours-58690?delivery=true&utm_source=sdk&store_id=31889381 after 174 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2083",
+    "name": "Go Greek Authentic Yogurteria",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/egiftcards after 24 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4034",
+    "name": "Sieu Sieu BBQ",
+    "platform": null,
+    "outcome": "gated",
+    "detail": "only 1 priced items from https://expireddomains.com/domain/sieusieubbqgo.site?utm_source=redi at 3:48:01 AM PT - a closed store looks exactly like a small menu, so re-run in daylight; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7298",
+    "name": "Oakberry Acai",
+    "platform": null,
+    "outcome": "filed",
+    "detail": "58 dishes from https://api.thanx.com/menu_categories?location_id=13779&handoff=pickup",
+    "menuResponses": [
+      "https://api.thanx.com/menu_categories?location_id=13779&handoff=pickup",
+      "https://api.thanx.com/menu_categories?location_id=13779&wanted_at=2026-09-04T14%3A30%3A00Z&handoff=pickup"
+    ],
+    "curlReproducible": false,
+    "curlNote": "GET https://api.thanx.com/menu_categories; browser sent cookie=false auth=false. curl replay returned HTTP 400"
+  },
+  {
+    "restaurantId": "3790",
+    "name": "Flour Atelier",
+    "platform": "Square Online storefront",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.flouratelier.com/ after 32 JSON responses; store searched by address; typed the record's street address into the store search",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4461",
+    "name": "Roppongi",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://roppongilajolla.com/menu/ after 2 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6492",
+    "name": "Pacific Fruit Bar",
+    "platform": "SpotOn",
+    "outcome": "filed",
+    "detail": "82 dishes from https://o.spoton.com/api/v1/locations/BL-F10A-BDA2-564B/menus/default/summary?datetime=2026-09-04T17%3A15%3A00.000Z",
+    "menuResponses": [
+      "https://o.spoton.com/api/v1/locations/BL-F10A-BDA2-564B/menus/default/summary?datetime=2026-09-04T17%3A15%3A00.000Z"
+    ],
+    "curlReproducible": true,
+    "curlNote": "GET https://o.spoton.com/api/v1/locations/BL-F10A-BDA2-564B/menus/default/summary; browser sent cookie=false auth=false. curl replay (no cookies, no auth) returned 4/6 sampled dish names"
+  },
+  {
+    "restaurantId": "4390",
+    "name": "Qin West",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://order.online/business/qin-west-noodle-416483 that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6305",
+    "name": "Taco Loco",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/place/Taco+Loco/@32.725312,-117.1713717,17z/data=!3m1!4b1!4m6!3m5!1s0x80d9550055998947:0x949206a88a20ce55!8m2!3d32.725312!4d-117.1687968!16s%2Fg%2F11xcw_pm6s?entry=ttu&g_ep=EgoyMDI2MDkwMS4wIKXMDSoASAFQAw%3D%3D after 58 JSON responses; store picked by street number 1971 in the link; opened the branch link carrying street number 1971",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6424",
+    "name": "Fruteria La Capirucha",
+    "platform": "SpotOn",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://o.spoton.com/BL-AACF-A060-96C5: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://o.spoton.com/BL-AACF-A060-96C5\", waiting u",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4387",
+    "name": "Poke One N Half",
+    "platform": "order.online",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://order.online/business/poki-one-n-half-58794 that this script could not drive",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5624",
+    "name": "Nomada",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://nomadadining.com/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://nomadadining.com/\nCall log:\n\u001b[2m  - navigating to \"https://nomadadi",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5631",
+    "name": "Cafe Pascale Grill & Deli",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.cafepascale.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.cafepascale.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.c",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6225",
+    "name": "Off the Vine Gardens Deli And Catering",
+    "platform": "chownow",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.offthevinegardens.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.offthevinegardens.com/\nCall log:\n\u001b[2m  - navigating to \"https:/",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3174",
+    "name": "Bean Box",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on http://thebeanboxca.com/: page.goto: net::ERR_INTERNET_DISCONNECTED at http://thebeanboxca.com/\nCall log:\n\u001b[2m  - navigating to \"http://thebeanbox",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4287",
+    "name": "Divina Matcha",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.toasttab.com/local/order/divina-matcha-216-3rd-ave/r-bde3abf4-d99a-45a9-8554-d265df6ac014: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.toasttab.com/local/order/divina-matcha-216-3rd-ave/r-bde3abf4-d",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4615",
+    "name": "Pure Squeeze",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://m.yelp.com/biz/pure-squeeze-juice-bar-san-diego: page.goto: net::ERR_INTERNET_DISCONNECTED at https://m.yelp.com/biz/pure-squeeze-juice-bar-san-diego\nCall log:\n\u001b[2m  - n",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5737",
+    "name": "Michele Coulon Dessertier",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/michele-coulon-dessertier-7556-fay-ave: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/michele-coulon-dessertier-7556-fay-ave\nCa",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4526",
+    "name": "The Poke Co.",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/store/-171377: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/store/-171377\nCall log:\n\u001b[2m  - navigating to \"https:/",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6662",
+    "name": "Local Krave PB/Bay Ho",
+    "platform": "plain-html",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://localkrave.com/menu/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://localkrave.com/menu/\nCall log:\n\u001b[2m  - navigating to \"https://local",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4149",
+    "name": "Montebello",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on http://www.montebellocafe.com/: page.goto: net::ERR_INTERNET_DISCONNECTED at http://www.montebellocafe.com/\nCall log:\n\u001b[2m  - navigating to \"http://www.",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7056",
+    "name": "Cargo Cafe - Paseo Del Mar",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on http://www.cargo-cafe.com/: page.goto: net::ERR_INTERNET_DISCONNECTED at http://www.cargo-cafe.com/\nCall log:\n\u001b[2m  - navigating to \"http://www.carg",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2511",
+    "name": "Pita Pit",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/terms-of-service: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/terms-of-service\nCall log:\n\u001b[2m  - naviga",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7737",
+    "name": "Boba Tea Spot",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/menus: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/menus\nCall log:\n\u001b[2m  - navigating to \"ht",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5672",
+    "name": "Ziggi's Coffee",
+    "platform": "Paytronix",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.ziggiscoffee.com/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.ziggiscoffee.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7266",
+    "name": "Seniore's Pizza",
+    "platform": "slice",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.seniorespizzasandiego.com/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.seniorespizzasandiego.com/\nCall log:\n\u001b[2m  - navigating to \"htt",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5868",
+    "name": "La Pizzeria Arrivederci",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.doordash.com/store/ristorante-arrivederci-san-diego-62547/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.doordash.com/store/ristorante-arrivederci-san-diego-62547/\nCall",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7586",
+    "name": "BRGR SHACK",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/store/brgr-shack-e-valley-pkwy-31083123: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/store/brgr-shack-e-valley-pkwy-31083123\nCall log:\n\u001b[2m",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7570",
+    "name": "Panini Kabob Grill - Park 12",
+    "platform": "olo",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://paninikabobgrill.com/locations/park-12/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://paninikabobgrill.com/locations/park-12/\nCall log:\n\u001b[2m  - navigatin",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7607",
+    "name": "QUICK BITES CAFE / Best Sandwiches",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/business/~14231131/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/business/~14231131/\nCall log:\n\u001b[2m  - navigating to \"h",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7601",
+    "name": "Eat Crispy Burger Oceanside",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/store/36236224: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/store/36236224\nCall log:\n\u001b[2m  - navigating to \"https:",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7627",
+    "name": "Mali's Deli",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.toasttab.com/local/order/malis-deli-mexican-food-9265-sky-park-court-105/r-ae53e489-7b6e-4012-98d5-71fc191dad5a/item-americas-finest-city-blt_42d13537-0b53-4aef-a036-9dddad4dcbb3: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.toasttab.com/local/order/malis-deli-mexican-food-9265-sky-park-",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7614",
+    "name": "Pop's Pizza",
+    "platform": "slice",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://popspizzasd.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://popspizzasd.com/\nCall log:\n\u001b[2m  - navigating to \"https://popspizza",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7753",
+    "name": "Breakers",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/invoice: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/invoice\nCall log:\n\u001b[2m  - navigating to \"",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7619",
+    "name": "CinKuni (Italian & Japanese Cuisine)",
+    "platform": "chownow",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://direct.chownow.com/order/41159/locations/62355: page.goto: net::ERR_INTERNET_DISCONNECTED at https://direct.chownow.com/order/41159/locations/62355\nCall log:\n\u001b[2m  - na",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7671",
+    "name": "iWok Chinese Kitchen",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://iwok-chinese-kitchen-105368.square.site: page.goto: net::ERR_INTERNET_DISCONNECTED at https://iwok-chinese-kitchen-105368.square.site/\nCall log:\n\u001b[2m  - navigati",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7668",
+    "name": "Little Sisters Pizza",
+    "platform": "slice",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://slicelife.com/restaurants/ca/san-diego/92104/little-sisters-pizza/menu: page.goto: net::ERR_INTERNET_DISCONNECTED at https://slicelife.com/restaurants/ca/san-diego/92104/little-sisters-pizza/m",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7684",
+    "name": "Better Blendz",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/store/better-blendz-30th-st-25618450: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/store/better-blendz-30th-st-25618450\nCall log:\n\u001b[2m  -",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7693",
+    "name": "Slurp",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.slurplpm.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.slurplpm.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.slur",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7700",
+    "name": "Charoen Krung Thai Cuisine",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.toasttab.com/local/order/charoenkrung-thai-new-4649-college-avenue/item-thai-no-sleep_ea3281e4-4314-4198-af1a-1d58c089fc18: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.toasttab.com/local/order/charoenkrung-thai-new-4649-college-ave",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7664",
+    "name": "Captain Sam's Fish & Chicken",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/store/-1715618: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/store/-1715618\nCall log:\n\u001b[2m  - navigating to \"https:",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7699",
+    "name": "Luigi's New York Giant Pizza",
+    "platform": "slice",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.luigisnewyorkpizza.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.luigisnewyorkpizza.com/\nCall log:\n\u001b[2m  - navigating to \"https:",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7706",
+    "name": "Brites Soft Serve",
+    "platform": "spothopper",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://britessoftserve.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://britessoftserve.com/\nCall log:\n\u001b[2m  - navigating to \"https://brite",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7750",
+    "name": "Halal Burger Co.",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.doordash.com/store/halal-burger-co.-san-diego-34159727/66735746/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.doordash.com/store/halal-burger-co.-san-diego-34159727/66735746",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7758",
+    "name": "Le Charcuterie Bar",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.lecharcuteriecheesebar.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.lecharcuteriecheesebar.com/\nCall log:\n\u001b[2m  - navigating to \"ht",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7740",
+    "name": "Little Kiki Katsu & More",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/littlekiki&quot;: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/littlekiki&quot;\nCall log:\n\u001b[2m  - naviga",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7774",
+    "name": "The Jetty",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.toasttab.com/local/order/the-jetty-4934-voltaire-st/item-hh-ob-jetty_e02a00f6-0bab-4555-a33c-9af8664f1793: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.toasttab.com/local/order/the-jetty-4934-voltaire-st/item-hh-ob-",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7748",
+    "name": "Between Us",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/privacy: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/privacy\nCall log:\n\u001b[2m  - navigating to \"",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5100",
+    "name": "Coffee Bean",
+    "platform": "olo",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.coffeebean.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.coffeebean.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.co",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7755",
+    "name": "Pop Pops Paleta",
+    "platform": "HungerRush",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.poppopspaleta.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.poppopspaleta.com/\nCall log:\n\u001b[2m  - navigating to \"https://www",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7793",
+    "name": "Mein St. Asian Kitchen",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.meinstreetkitchen.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.meinstreetkitchen.com/\nCall log:\n\u001b[2m  - navigating to \"https:/",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7789",
+    "name": "Beach City Smoothies - Oceanside",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.beachcitysmoothies.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.beachcitysmoothies.com/\nCall log:\n\u001b[2m  - navigating to \"https:",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7828",
+    "name": "Chef Budda Blasian Soul Food LLC",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.chefbuddablasiansoulfood.com/s/order: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.chefbuddablasiansoulfood.com/s/order\nCall log:\n\u001b[2m  - navigati",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7848",
+    "name": "Torta Time",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/business: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/business\nCall log:\n\u001b[2m  - navigating to \"https://orde",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7871",
+    "name": "NOIR Sushi and Sake Fusion Lounge",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/privacy: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/privacy\nCall log:\n\u001b[2m  - navigating to \"",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7874",
+    "name": "Dimassi's Mediterranean Buffet",
+    "platform": "olo",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.dimassis.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.dimassis.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.dima",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7899",
+    "name": "Habibi Mediterranean Grill",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/en-CA/store/habibi-mediterranean-grill-n-magnolia-ave-30840736: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/en-CA/store/habibi-mediterranean-grill-n-magnolia-ave-",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7820",
+    "name": "The Cakery Cafe",
+    "platform": "Square Online (own domain)",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.thecakerysd.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.thecakerysd.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.t",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7833",
+    "name": "Market St Pizzeria",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://marketstpizzeria.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://marketstpizzeria.com/\nCall log:\n\u001b[2m  - navigating to \"https://mark",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7937",
+    "name": "Crest Taco",
+    "platform": "SpotOn",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.cresttaco.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.cresttaco.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.cre",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7964",
+    "name": "Diego’s Street Tacos",
+    "platform": "SpotOn",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://o.spoton.com/BL-81B1-C648-0285: page.goto: net::ERR_INTERNET_DISCONNECTED at https://o.spoton.com/BL-81B1-C648-0285\nCall log:\n\u001b[2m  - navigating to \"htt",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7961",
+    "name": "Pompei Pizza",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/order: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/order\nCall log:\n\u001b[2m  - navigating to \"ht",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7981",
+    "name": "Pho Luu Escondido - Vietnamese Cuisine",
+    "platform": "MealKeyWay",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.pholuuescondido.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.pholuuescondido.com/\nCall log:\n\u001b[2m  - navigating to \"https://w",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7984",
+    "name": "Parakeet Cafe - Nautilus",
+    "platform": "chownow",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.parakeetcafe.com/location/nautilus/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.parakeetcafe.com/location/nautilus/\nCall log:\n\u001b[2m  - navigatin",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8066",
+    "name": "Green Fork",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/store/green-fork-mission-blvd-43240834: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/store/green-fork-mission-blvd-43240834\nCall log:\n\u001b[2m ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8083",
+    "name": "Saffron Pizza Kitchen",
+    "platform": "slice",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://saffronpizzakitchen.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://saffronpizzakitchen.com/\nCall log:\n\u001b[2m  - navigating to \"https://s",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8103",
+    "name": "Brown Cup Cafe & Lounge",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/brown-cup-cafe-2: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/brown-cup-cafe-2\nCall log:\n\u001b[2m  - naviga",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8096",
+    "name": "Grandson Steaks",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/egiftcards: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/egiftcards\nCall log:\n\u001b[2m  - navigating t",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8069",
+    "name": "Cala La Jolla Café",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/menus: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/menus\nCall log:\n\u001b[2m  - navigating to \"ht",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8119",
+    "name": "The Spot taco shop",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.toasttab.com/local/order/thespottacoshop/item-mild-red_ce4ae2df-090f-4838-85f5-d27c3d57c5b3: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.toasttab.com/local/order/thespottacoshop/item-mild-red_ce4ae2df",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8001",
+    "name": "Joyee Noodle House(UTC)",
+    "platform": "MenuSifu",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.joyeesdumpling.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.joyeesdumpling.com/\nCall log:\n\u001b[2m  - navigating to \"https://ww",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6937",
+    "name": "FurnSaj Bakery & Restaurant",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/store/FurnsajBakeryRestaurant-24681565: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/store/FurnsajBakeryRestaurant-24681565\nCall log:\n\u001b[2m ",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2514",
+    "name": "Fish Restaurant",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/store/46602423: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/store/46602423\nCall log:\n\u001b[2m  - navigating to \"https:",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2647",
+    "name": "ChickenHeadz",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/store/2097260: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/store/2097260\nCall log:\n\u001b[2m  - navigating to \"https:/",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4323",
+    "name": "Mirch Masala 2 Go",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.mirchmasala2go.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.mirchmasala2go.com/\nCall log:\n\u001b[2m  - navigating to \"https://ww",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2908",
+    "name": "Sammy's Woodfire Pizza and Grille",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://sammyspizza.com/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://sammyspizza.com/\nCall log:\n\u001b[2m  - navigating to \"https://sammyspiz",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "2956",
+    "name": "The Greenspot Salad Company",
+    "platform": "plain-html",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.greenspotsalad.com/menu/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.greenspotsalad.com/menu/\nCall log:\n\u001b[2m  - navigating to \"https",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3305",
+    "name": "Blue Water Grill",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/blue-water-grill-5180-northland-dr-ne: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/blue-water-grill-5180-northland-dr-ne\nCal",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4991",
+    "name": "The Coffee Spot",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/thecoffeespot: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/thecoffeespot\nCall log:\n\u001b[2m  - navigatin",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5519",
+    "name": "The Hamlett",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.thehamlett.com/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.thehamlett.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.th",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6831",
+    "name": "Massachusetts Mike's Pizzeria",
+    "platform": "slice",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://massmikes.com/our-menu/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://massmikes.com/our-menu/\nCall log:\n\u001b[2m  - navigating to \"https://ma",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7038",
+    "name": "Beeside Balcony La Jolla",
+    "platform": "chownow",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://api.chownow.com/api/restaurant/29529: page.goto: net::ERR_INTERNET_DISCONNECTED at https://api.chownow.com/api/restaurant/29529\nCall log:\n\u001b[2m  - navigating t",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "7378",
+    "name": "Sultan Baklava",
+    "platform": "toast",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.toasttab.com/online/online: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.toasttab.com/online/online\nCall log:\n\u001b[2m  - navigating to \"h",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8089",
+    "name": "Yogurt Lounge Serra Mesa",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/en-CA/store/yogurt-lounge-1258582: page.goto: net::ERR_INTERNET_DISCONNECTED at https://order.online/en-CA/store/yogurt-lounge-1258582\nCall log:\n\u001b[2m  - na",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "8121",
+    "name": "Taco Club",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.toasttab.com/local/order/taco-club-8614-troy-street/item-carnitas-taco_4b7b329f-e680-4ba6-ad6f-db8187c8c82d: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.toasttab.com/local/order/taco-club-8614-troy-street/item-carnit",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "3979",
+    "name": "Yonny Mini Hotpot",
+    "platform": "MealKeyWay",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.fishwithyousd.com: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.fishwithyousd.com/\nCall log:\n\u001b[2m  - navigating to \"https://www",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "4618",
+    "name": "Cafecito 1806",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://cafecito-1806.square.site/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://cafecito-1806.square.site/\nCall log:\n\u001b[2m  - navigating to \"https:/",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "778",
+    "name": "Casa de Freds",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://fredsoldtown.com/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://fredsoldtown.com/\nCall log:\n\u001b[2m  - navigating to \"https://fredsold",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6704",
+    "name": "Verde Kitchen & Bar",
+    "platform": null,
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://www.hilton.com/en/hotels/sanstgi-hilton-garden-inn-san-diego-mission-valley-stadium/dining/: page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.hilton.com/en/hotels/sanstgi-hilton-garden-inn-san-diego-missio",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  }
+]

@@ -1,0 +1,2025 @@
+[
+ {
+  "restaurantId": "6365",
+  "name": "Loreto's Taco Shop",
+  "confidence": "low",
+  "blocked": "Listed website (loretostacoshop.shop) is a parked/unconfigured domain - curl returns the default 'Welcome to nginx!' page (612 bytes) on three separate attempts, no restaurant content at all. Router already confirmed no ordering platform is linked. WebSearch surfaced only aggregator/farm listings (res-menu.com, checkle.com, wheree.com, restaurantji.com) - res-menu.com returned 0 bytes (blank, consistent with the playbook's known host-wide-outage behavior for that domain) and checkle.com 429-rate-limited on the one attempt allowed under the no-browser/no-retry-loop constraint. No independent first-party or ordering-platform source was reachable. Yelp biz page 403s both curl and WebFetch, so its menu-photo gallery could not be checked without a browser (which this batch disallows). Needs either the real current site or a Chrome-equipped pass at Yelp's photo gallery.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "6191",
+  "name": "Offshore Tavern & Grill",
+  "sourceUrl": "https://offshoretavern.com/san-diego-bay-park-offshore-tavern-and-grill-food-menu",
+  "confidence": "high",
+  "notes": "Restaurant's own site, plain server-rendered HTML (not the *.spotapps.co SpotHopper widget also linked from the homepage - the /food-menu page itself already carries every price as static text, so the widget fetch was unnecessary). Address on homepage matches work list (2253 Morena Boulevard). Page combines three tabs in one load: Main Menu (Appetizers, Salads & Soups, Burgers & Dogs, Sandwiches & Wraps, Entrees), Brunch Menu (Offshore Specialties + Ofshore Favorites, served Sat/Sun 11am-2pm), and Kid's Menu - all captured. Prices are plain round-dollar amounts ($8-$24, kids $9.99); no markup divisor test applies since this is the restaurant's own static page, not an ordering platform, and no divisor produced a suspicious round-number cluster regardless. Two items ('Loco Moco' and a 'Veggie Omelet'/'Cheesesteak Omelet' pair) appear once in the Main/Specialties section and again with a different price under Ofshore Favorites - both are real, distinctly priced rows on the page, so both are kept rather than treated as a duplicate. Two shared-size items (Caesar/House salad, chili, tortilla soup) are split into Cup/Bowl or Sm/Lg rows using the two prices printed on the page, not derived. The Drinks menu (bar/cocktail list) was not fetched - adjunct, not core. Reached categories: Appetizers, Salads & Soups, Burgers & Dogs, Sandwiches & Wraps, Entrees, Brunch/Specialties, Kids Menu. Not reached: Drinks/bar menu (adjunct), Catering (adjunct).",
+  "dishes": [
+   {
+    "name": "Chips 'n' Salsa",
+    "description": "House-made chipotle salsa, (add guacamole or beer cheese $4)",
+    "price": "$9.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Mussels Attianese",
+    "description": "Arrabiata sauce, lemon zest, garlic, basil, parmesan, & garlic bread",
+    "price": "$20.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Loaded Tots or Fries",
+    "description": "Topped with melted cheese, bacon, green onions, and sour cream",
+    "price": "$15.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Onion Rings",
+    "description": "Giant hand dipped beer-battered onion rings with ranch",
+    "price": "$12.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Quesadilla",
+    "description": "Guac & sour cream upon request; add chicken, carne asada, or carnitas +$5, add shrimp +$6",
+    "price": "$10.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Nachos/ Totchos / Frychos",
+    "description": "Add chicken, carne asada, carnitas, or chili +$5",
+    "price": "$15.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Chili Cheese Fries or Tots",
+    "description": "Ruben's family secret chili, cheese, onions, and sour cream",
+    "price": "$15.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Seared Yellowfin Tuna",
+    "description": "Sushi-grade seared tuna, scallions, cabbage, soy sauce, ginger & wasabi",
+    "price": "$20.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Poke",
+    "description": "Sushi-grade tuna in sesame-soy dressing, scallions, avocado, & wontons",
+    "price": "$20.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Hummus",
+    "description": "House-made hummus with pita bread and cucumber",
+    "price": "$14.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Chicken Lettuce Wraps",
+    "description": "Chicken, mushrooms, green onion, jalapenos & avocado with lettuce",
+    "price": "$18.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Bay Park's Best Tacos",
+    "description": "Choice of (2): chicken, carne asada, carnitas, grilled shrimp, fried shrimp, grilled mahi, fried mahi, surf n turf, fresh avocado, or fried avocado. Served with cheese, pico de gallo, house sauce, black beans, chips & guacamole.",
+    "price": "$19.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "All Natural Wings or Tenders",
+    "description": "Sweet chili, spicy BBQ, Sriracha, teriyaki, classic buffalo, or lemon pepper; choose Crispy Wings or Boneless Tenders",
+    "price": "$17.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Build Your Own Mac & Cheese",
+    "description": "Plain macaroni with homemade creamy cheese sauce; add-ins available",
+    "price": "$12.00",
+    "section": "Appetizers"
+   },
+   {
+    "name": "Cobb Salad",
+    "description": "Chicken, bacon, avocado, bleu cheese crumbles, tomato & hard boiled egg",
+    "price": "$18.00",
+    "section": "Salads & Soups"
+   },
+   {
+    "name": "Buffalo Chicken Salad",
+    "description": "Breaded buffalo tenders, tomato, celery & bleu cheese crumbles",
+    "price": "$18.00",
+    "section": "Salads & Soups"
+   },
+   {
+    "name": "Chopped Chicken Salad",
+    "description": "Romaine lettuce, tomato, Monterey jack, fresh basil, kalamata olives, and pepperoni; citrus garlic red pepper dressing",
+    "price": "$18.00",
+    "section": "Salads & Soups"
+   },
+   {
+    "name": "Grilled Steak Salad",
+    "description": "Flat iron steak grilled to order with tomato, onions, goat cheese & balsamic vinaigrette dressing",
+    "price": "$21.00",
+    "section": "Salads & Soups"
+   },
+   {
+    "name": "Classic Caesar or House Green Salad (Small)",
+    "description": "Add chicken +4, shrimp +6, tri-tip +7, or hummus +3",
+    "price": "$8.00",
+    "section": "Salads & Soups"
+   },
+   {
+    "name": "Classic Caesar or House Green Salad (Large)",
+    "description": "Add chicken +4, shrimp +6, tri-tip +7, or hummus +3",
+    "price": "$10.00",
+    "section": "Salads & Soups"
+   },
+   {
+    "name": "Ruben's Famous South of the Border Chili (Cup)",
+    "description": "Topped with cheese & onions",
+    "price": "$8.00",
+    "section": "Salads & Soups"
+   },
+   {
+    "name": "Ruben's Famous South of the Border Chili (Bowl)",
+    "description": "Topped with cheese & onions",
+    "price": "$12.00",
+    "section": "Salads & Soups"
+   },
+   {
+    "name": "Tortilla Soup (Cup)",
+    "description": "Chicken, veggies, spices, and tortilla strips",
+    "price": "$8.00",
+    "section": "Salads & Soups"
+   },
+   {
+    "name": "Tortilla Soup (Bowl)",
+    "description": "Chicken, veggies, spices, and tortilla strips",
+    "price": "$12.00",
+    "section": "Salads & Soups"
+   },
+   {
+    "name": "Build Your Own Burger",
+    "description": "",
+    "price": "$15.00",
+    "section": "Burgers & Dogs"
+   },
+   {
+    "name": "The Offshore",
+    "description": "Bacon, cheddar, lettuce, tomato, mayo, 1000 island, red onion & onion straws",
+    "price": "$20.00",
+    "section": "Burgers & Dogs"
+   },
+   {
+    "name": "Sliders",
+    "description": "Three mini burgers with cheddar, chipotle aioli & crispy onion straws",
+    "price": "$18.00",
+    "section": "Burgers & Dogs"
+   },
+   {
+    "name": "Cheeseburger Blues",
+    "description": "Bacon, bleu cheese crumbles, & lettuce",
+    "price": "$19.00",
+    "section": "Burgers & Dogs"
+   },
+   {
+    "name": "Chili Cheeseburger",
+    "description": "Ruben's special house-made chili, American cheese, & chopped onions",
+    "price": "$19.00",
+    "section": "Burgers & Dogs"
+   },
+   {
+    "name": "The Johnson",
+    "description": "Sometimes you just want a hot dog",
+    "price": "$12.00",
+    "section": "Burgers & Dogs"
+   },
+   {
+    "name": "Ruben's South of the Border Chili Cheese Dog",
+    "description": "Chili, cheese, white onions",
+    "price": "$14.00",
+    "section": "Burgers & Dogs"
+   },
+   {
+    "name": "Chicago Dog",
+    "description": "Yellow mustard, chopped white onions, sliced tomatoes, pickle, sweet pickle relish, pickled sport peppers & celery salt",
+    "price": "$14.00",
+    "section": "Burgers & Dogs"
+   },
+   {
+    "name": "The Ramy",
+    "description": "Deep-fried frank, cheddar beer cheese, fried onion straws, bacon bits, & pico de gallo",
+    "price": "$14.00",
+    "section": "Burgers & Dogs"
+   },
+   {
+    "name": "B.L.T.",
+    "description": "Crisp bacon, lettuce, tomato & chipotle aioli on sourdough",
+    "price": "$17.00",
+    "section": "Sandwiches & Wraps"
+   },
+   {
+    "name": "Arizona Chicken",
+    "description": "Blackened chicken, cheddar, lettuce, tomato & chipotle aioli on sourdough",
+    "price": "$17.00",
+    "section": "Sandwiches & Wraps"
+   },
+   {
+    "name": "Crispy Chicken Wrap",
+    "description": "Fried chicken, mixed greens, tomato, mixed cheese & ranch dressing",
+    "price": "$18.00",
+    "section": "Sandwiches & Wraps"
+   },
+   {
+    "name": "Buffalo Chicken Wrap",
+    "description": "Buffalo fried chicken, mixed greens, tomato, mixed cheese & ranch dressing",
+    "price": "$18.00",
+    "section": "Sandwiches & Wraps"
+   },
+   {
+    "name": "Cali Club Wrap",
+    "description": "Grilled chicken, bacon, lettuce, tomato, avocado, mixed cheese & ranch dressing",
+    "price": "$18.00",
+    "section": "Sandwiches & Wraps"
+   },
+   {
+    "name": "Fried Chicken Sandwich",
+    "description": "Choice of Buffalo, Spicy BBQ, Sweet Chili, Teriyaki, Sriracha, or Lemon Pepper; lettuce, tomato & pickles on a brioche bun",
+    "price": "$19.00",
+    "section": "Sandwiches & Wraps"
+   },
+   {
+    "name": "Shrimp Wrap",
+    "description": "Sautéed shrimp, avocado, cabbage, pico de gallo, mixed cheese & chipotle aioli",
+    "price": "$19.00",
+    "section": "Sandwiches & Wraps"
+   },
+   {
+    "name": "Tri-Tip Sandwich",
+    "description": "Sliced smoked tri-tip, red onions, and dill pickle chips with a side of horseradish on an Amoroso roll",
+    "price": "$19.00",
+    "section": "Sandwiches & Wraps"
+   },
+   {
+    "name": "S.D. Cheesesteak",
+    "description": "Smoked tri-tip, jalapenos, onions, and mushrooms smothered in spicy pepper jack sauce & guacamole on an Amoroso roll",
+    "price": "$20.00",
+    "section": "Sandwiches & Wraps"
+   },
+   {
+    "name": "Tuna Melt",
+    "description": "Albacore tuna salad with onion, celery & apple, served on sourdough with cheddar cheese, tomato, and lettuce",
+    "price": "$16.00",
+    "section": "Sandwiches & Wraps"
+   },
+   {
+    "name": "Poke Bowl",
+    "description": "Regular or spicy; sushi grade tuna, cucumber, carrots, ginger, & green onions over rice",
+    "price": "$20.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Fish and Chips",
+    "description": "Fish of the day, battered and fried golden crispy, served with housemade tartar, lemon, and choice of fries or tots",
+    "price": "$20.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Garlic Chicken Alfredo",
+    "description": "Garlic Alfredo sauce, fettucine, herbs, and grilled chicken served with garlic bread",
+    "price": "$20.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Garlic Shrimp Alfredo",
+    "description": "Garlic Alfredo sauce, fettucine, herbs, and grilled shrimp served with garlic bread",
+    "price": "$24.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Teriyaki Chicken Rice Bowl",
+    "description": "Teriyaki chicken, white rice, mushrooms, peppers, broccolini & carrots",
+    "price": "$22.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Loco Moco",
+    "description": "Burger patty cooked your way, fried egg, white rice & brown gravy",
+    "price": "$18.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Grilled Fish Plate",
+    "description": "Catch of the Day served over rice pilaf with broccolini",
+    "price": "$22.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Hawaiian Lunch Plate",
+    "description": "Choice of Chicken Katsu, Teriyaki Grilled Chicken, or Pulled Pork & Cabbage. Served with macaroni salad and white rice.",
+    "price": "$18.00",
+    "section": "Entrees"
+   },
+   {
+    "name": "Classic Eggs Benedict",
+    "description": "2 poached eggs, English muffin, Canadian bacon, house hollandaise",
+    "price": "$18.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Papas 'N' Huevos",
+    "description": "2 eggs, house carnitas, anaheim salsa, mixed cheese",
+    "price": "$18.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Rafa's Chilaquiles",
+    "description": "2 eggs, corn chips, red sauce, mixed cheese, and avocado; add carnitas, carne asada, or chicken +$3",
+    "price": "$17.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Baypark Breakfast Sando",
+    "description": "Sourdough, American cheese, fried egg, bacon, avocado, tomato, and choice of home fries, tots, or French fries",
+    "price": "$16.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Offshore Breakfast Burger",
+    "description": "Burger cooked your way, cheddar, fried egg, bacon, lettuce, tomato, onion, thousand island, mayo, crispy onion straws, and choice of home fries, tots, or French fries",
+    "price": "$21.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Loco Moco (Brunch)",
+    "description": "Burger cooked your way, 2 eggs, white rice, brown gravy",
+    "price": "$18.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Buttermilk Pancake Stack",
+    "description": "3 fluffy pancakes served with berries and maple syrup; add 2 eggs +$5, add bacon +$4",
+    "price": "$12.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Ribeye & Eggs",
+    "description": "Steak cooked to order, 2 eggs, sides",
+    "price": "$22.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Cheesesteak Omelet",
+    "description": "Smoked tri-tip, jalapenos, onion, mushroom, pepper jack cheese, sides",
+    "price": "$18.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Veggie Omelet",
+    "description": "Tomato, onion, bell peppers, mushroom, goat cheese, avocado, sides",
+    "price": "$17.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "The Classic Breakfast",
+    "description": "2 eggs, bacon, sides",
+    "price": "$14.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "The Classic",
+    "description": "2 eggs your way, bacon; served with two items of choice: home fries, fresh fruit, toast, or English muffin",
+    "price": "$12.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Cheese Steak Omelet",
+    "description": "Smoked tri-tip, jalapenos, caramelized onions, sautéed mushrooms, pepper jack cheese",
+    "price": "$17.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Steak & Eggs",
+    "description": "Steak of the day cooked to temp, 2 eggs any style",
+    "price": "$20.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Veggie Omelet (Favorites)",
+    "description": "Tomato, arugula, spinach, mushroom, artichoke, goat cheese, sliced avocado",
+    "price": "$16.00",
+    "section": "Brunch"
+   },
+   {
+    "name": "Mac 'n Cheese",
+    "description": "The classic, but kid's size",
+    "price": "$9.99",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Grilled Cheese",
+    "description": "Melty American cheese on toasted sourdough",
+    "price": "$9.99",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Chicken Tenders",
+    "description": "Two large juicy tenders, breaded and fried golden",
+    "price": "$9.99",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Hamburgers",
+    "description": "Two plain slider burgers, no fancy greens or cheeses or sauces",
+    "price": "$9.99",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Cheeseburgers",
+    "description": "Same as Hamburgers, but with cheese",
+    "price": "$9.99",
+    "section": "Kids Menu"
+   },
+   {
+    "name": "Quesadillas",
+    "description": "Flour tortillas with melted cheddar cheese",
+    "price": "$9.99",
+    "section": "Kids Menu"
+   }
+  ]
+ },
+ {
+  "restaurantId": "5940",
+  "name": "Gus's Subs & Pizza Place",
+  "confidence": "low",
+  "blocked": "needs-browser: The only ordering platform found (gusssubspizza.netwaiter.com) answers {\"Groups\":[],\"ExternalType\":null} to the documented GetMenu POST, and its /about/ page confirms CanOrder:false in the embedded JSON - this matches the playbook's documented dead-end signature for a NetWaiter storefront that never enabled online ordering (an About page only), not a bug. The listed website (Facebook page) returns HTTP 400 to curl - a Cloudflare/Facebook bot check that needs a browser, so its photo gallery (which could hold a dated dine-in menu photo) could not be checked under this batch's no-browser rule. WebSearch found no other ordering platform or independent website; remaining sources are barred aggregators (menucuisine.com, zmenu.com, sirved.com, restaurant.com, restaurantji.com) with no independent priced cross-check.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "6183",
+  "name": "El Puerto Taco Shop",
+  "confidence": "low",
+  "blocked": "No website on record and none found by search beyond a look-alike '.shop' domain (elpuertotacoshop.shop) that redirects straight to el-puerto-taco-shop.locallya.com - locallya.com is on the playbook's explicit barred directory-farm list, so this is not a genuine restaurant site despite the restaurant-branded name. No ordering platform (Toast/DoorDash/UberEats/etc.) was found for this address by name search. Remaining reachable listings are barred aggregators (allmenus, zmenu, menupix, restaurantguru, restaurantji, checkle) with no independent priced cross-check from a different owner, so none can be filed per the aggregator rule. Needs either a real first-party site/ordering platform to surface, or a Chrome-equipped pass at Yelp's menu-photo gallery.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "6494",
+  "name": "Casa de Maria Restaurant",
+  "sourceUrl": "https://casademariarestaurant.com/san-diego-old-town-casa-de-maria-restaurant-food-menu",
+  "confidence": "high",
+  "notes": "Restaurant's own site (same SpotHopper-vendor template as Offshore Tavern & Grill, but the /food-menu page itself is plain static HTML with prices, not the *.spotapps.co widget). Address on homepage/contact matches work list (Old Town San Diego). Single 'Menu' tab covers Tacos, Burritos, Ensaladas/Sopas, Para Empezar (starters), Enchiladas, Especiales de la Casa, Combination Specials, A la Carta, Para Los Pequenos (kids), Sides, and Postre (dessert) - full core section list for a sit-down Mexican restaurant, nothing missing. Prices are plain (.69/.95/.99/.50-cent endings typical of dine-in, not a delivery markup) and no ordering platform is involved. Reached categories: all listed above. Not reached: Drinks menu and Catering (both adjunct, separate pages not fetched).",
+  "dishes": [
+   {
+    "name": "Taco Plate",
+    "description": "Two tacos on a corn tortilla (flour upon request) topped with lettuce, pico, and cheese. Served with rice and beans. Mix and match.",
+    "price": "$20.99",
+    "section": "Tacos"
+   },
+   {
+    "name": "Grilled Fish Tacos",
+    "description": "Two tacos with grilled white fish topped with cabbage, pico de gallo, sour cream, and cheese. Served with rice and beans.",
+    "price": "$21.99",
+    "section": "Tacos"
+   },
+   {
+    "name": "Baja Fish Tacos",
+    "description": "Battered white fish fried to perfection topped with cabbage, pico de gallo, sour cream & cheese. Served with rice & beans.",
+    "price": "$20.99",
+    "section": "Tacos"
+   },
+   {
+    "name": "Crispy Tacos",
+    "description": "Two crunchy corn tortillas filled with your choice of shredded beef or chicken, topped with lettuce, pico de gallo, and cheese. Served with rice and beans.",
+    "price": "$19.99",
+    "section": "Tacos"
+   },
+   {
+    "name": "California Burrito",
+    "description": "Stuffed with grilled steak, fries, pico de gallo, shredded cheese and guac.",
+    "price": "$20.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Polo Asado Burrito",
+    "description": "Stuffed with grilled chicken, guacamole, beans, rice, and pico de gallo.",
+    "price": "$20.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Carnitas Burrito",
+    "description": "Stuffed with tender shredded pork, cabbage, guacamole, beans, rice and pico.",
+    "price": "$20.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Carne Asada Burrito",
+    "description": "Stuffed with grilled steak, guacamole, beans, rice and pico.",
+    "price": "$20.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Veggie Burrito",
+    "description": "Stuffed with bell peppers, corn, cheese, guacamole, beans, rice and pico.",
+    "price": "$20.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Ensalada Verde",
+    "description": "Mixed lettuce, fresh tomatoes, cucumbers, cheese, and tortilla strips. Choice of ranch or vinaigrette dressing.",
+    "price": "$15.99",
+    "section": "Ensaladas / Sopas"
+   },
+   {
+    "name": "Ensalada Caesar",
+    "description": "Romaine, Caesar dressing, parmesan and croutons.",
+    "price": "$15.99",
+    "section": "Ensaladas / Sopas"
+   },
+   {
+    "name": "Ensalada En Concha",
+    "description": "A crisp flour shell filled with mixed greens, chicken breast, black beans, olives, pico de gallo, avocado, and sour cream.",
+    "price": "$18.99",
+    "section": "Ensaladas / Sopas"
+   },
+   {
+    "name": "Guacamole Fresco To Share",
+    "description": "In a large crisp flour shell.",
+    "price": "$12.99",
+    "section": "Para Empezar"
+   },
+   {
+    "name": "Nachos Supremos",
+    "description": "Tortilla chips covered with cheese, black beans, fresh salsa, sour cream, and jalapenos.",
+    "price": "$18.99",
+    "section": "Para Empezar"
+   },
+   {
+    "name": "Taquitos Dorados",
+    "description": "Shredded beef or chicken rolled tacos topped with melted cheese, lettuce, pico, and avocado sauce.",
+    "price": "$15.95",
+    "section": "Para Empezar"
+   },
+   {
+    "name": "Cheese Quesadilla",
+    "description": "Served with guacamole and sour cream.",
+    "price": "$14.99",
+    "section": "Para Empezar"
+   },
+   {
+    "name": "Enchiladas Suizas",
+    "description": "Shredded chicken enchiladas in a green creamy tomatillo sauce, and melted jack cheese.",
+    "price": "$21.99",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "Enchiladas Vegetarianas",
+    "description": "Bell peppers and cheese enchiladas in a green creamy tomatillo sauce.",
+    "price": "$19.99",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "Enchiladas Rojas",
+    "description": "Shredded beef red enchiladas, melted cheese.",
+    "price": "$20.99",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "Cheese Enchiladas",
+    "description": "Topped with red sauce and melted cheese.",
+    "price": "$19.99",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "Fajitas",
+    "description": "Sauteed onions, bell peppers, and tomato tossed on a hot grill. Served with rice, beans, sour cream, guacamole, and corn tortillas (flour upon request).",
+    "price": "$26.95",
+    "section": "Especiales de la Casa"
+   },
+   {
+    "name": "Molcajete De Maria",
+    "description": "Serves two. Carne asada, chicken, shrimp, and sausage served in a heated molcajete with sauce, queso fresco, avocado, jalapenos, and corn or flour tortillas.",
+    "price": "$47.99",
+    "section": "Especiales de la Casa"
+   },
+   {
+    "name": "Tampiquena",
+    "description": "Grilled steak, a cheese enchilada, guacamole, rice & beans.",
+    "price": "$25.95",
+    "section": "Especiales de la Casa"
+   },
+   {
+    "name": "Flautas",
+    "description": "Four rolled crispy flour tortillas stuffed with chicken and served with guacamole, sour cream, and salsa. Accompanied with rice and beans.",
+    "price": "$19.99",
+    "section": "Especiales de la Casa"
+   },
+   {
+    "name": "Camarones Al Mojo De Ajo",
+    "description": "Served with tortillas, guacamole, rice, and beans.",
+    "price": "$26.99",
+    "section": "Especiales de la Casa"
+   },
+   {
+    "name": "Carnitas Plate",
+    "description": "Served with tortillas, guacamole, rice, and beans.",
+    "price": "$25.95",
+    "section": "Especiales de la Casa"
+   },
+   {
+    "name": "Special Burger, Fries & A Cup Of Salad",
+    "description": "A savory burger accompanied by crispy fries and a fresh cup of salad.",
+    "price": "$18.99",
+    "section": "Combination Specials"
+   },
+   {
+    "name": "Beef Taco",
+    "description": "Seasoned beef, flavorful toppings, and a warm, crispy tortilla.",
+    "price": "$8.69",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Chicken Taco",
+    "description": "Grilled chicken, shredded lettuce, diced tomatoes, and cheese on a tortilla, served with a side of salsa.",
+    "price": "$8.69",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Carne Asada Taco",
+    "description": "Grilled steak served on a corn tortilla, includes cilantro, onions, and a touch of guajillo salsa.",
+    "price": "$8.69",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Carnitas Taco",
+    "description": "Juicy slow-cooked pork in a soft corn tortilla, garnished with fresh cilantro and onions.",
+    "price": "$8.69",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Fish Taco Battered",
+    "description": "Battered fish encased in a soft tortilla with cabbage, pico de gallo, and a tangy white sauce.",
+    "price": "$8.99",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Fish Taco Grilled",
+    "description": "Grilled fish taco on a corn tortilla with cabbage, pico de gallo, and a hint of chipotle aioli.",
+    "price": "$8.99",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Enchilada Cheese",
+    "description": "Corn tortilla filled with cheese and covered with traditional red enchilada sauce.",
+    "price": "$8.69",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Enchilada Beef",
+    "description": "Corn tortilla rolled with beef, enchilada sauce, topped with cheese.",
+    "price": "$8.99",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Enchilada Chicken",
+    "description": "Corn tortilla filled with shredded chicken, red enchilada sauce and melted cheese on top.",
+    "price": "$8.99",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Rice",
+    "description": "",
+    "price": "$4.99",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Beans",
+    "description": "",
+    "price": "$4.99",
+    "section": "A la Carta"
+   },
+   {
+    "name": "Grilled Chicken Quesadilla",
+    "description": "In flour tortilla, served with rice and beans.",
+    "price": "$11.99",
+    "section": "Para Los Pequenos"
+   },
+   {
+    "name": "Cheese Quesadilla (Kids)",
+    "description": "In flour tortilla, served with rice and beans.",
+    "price": "$10.99",
+    "section": "Para Los Pequenos"
+   },
+   {
+    "name": "Grilled Chicken Taco (Kids)",
+    "description": "In a corn tortilla topped with lettuce and cheese, served with rice & beans.",
+    "price": "$10.99",
+    "section": "Para Los Pequenos"
+   },
+   {
+    "name": "Grilled Steak Taco (Kids)",
+    "description": "In a corn tortilla topped with lettuce and cheese, served with rice & beans.",
+    "price": "$10.99",
+    "section": "Para Los Pequenos"
+   },
+   {
+    "name": "Bean & Cheese Burrito (Kids)",
+    "description": "In a flour tortilla with cheese and beans, served with rice.",
+    "price": "$10.99",
+    "section": "Para Los Pequenos"
+   },
+   {
+    "name": "Guacamole",
+    "description": "Fresh, creamy avocado dip, seasoned with lime and cilantro.",
+    "price": "$4.50",
+    "section": "Sides"
+   },
+   {
+    "name": "Side Salad",
+    "description": "Fresh green salad.",
+    "price": "$6.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Sour Cream",
+    "description": "",
+    "price": "$2.95",
+    "section": "Sides"
+   },
+   {
+    "name": "Cheese",
+    "description": "Blend of traditional Mexican cheeses.",
+    "price": "$1.95",
+    "section": "Sides"
+   },
+   {
+    "name": "Tortillas (2) Corn",
+    "description": "",
+    "price": "$0.99",
+    "section": "Sides"
+   },
+   {
+    "name": "Tortillas (2) Flour",
+    "description": "",
+    "price": "$0.99",
+    "section": "Sides"
+   },
+   {
+    "name": "French Fries",
+    "description": "Crispy golden strips.",
+    "price": "$9.99",
+    "section": "Sides"
+   },
+   {
+    "name": "2 Churros With Chocolate Sauce",
+    "description": "Crispy churros dusted with cinnamon sugar, paired with rich chocolate sauce for dipping.",
+    "price": "$9.99",
+    "section": "Postre"
+   }
+  ]
+ },
+ {
+  "restaurantId": "5873",
+  "name": "Mi Ranchito Mexican Restaurant",
+  "sourceUrl": "http://places.singleplatform.com/mi-ranchito-mexican-restaurant-9/menu",
+  "confidence": "medium",
+  "crossCheckedAgainst": "https://www.doordash.com/store/mi-ranchito-mexican-food-san-diego-39749344/ (via WebSearch summary only - the page itself is behind a Cloudflare challenge wall to curl, both desktop and Safari UA, so it could not be fetched directly)",
+  "notes": "Restaurant's own website (miranchito.us) is behind an sgcaptcha bot wall on every request (desktop and mobile UA both redirect to /.well-known/sgcaptcha/), matching the playbook's 'genuinely needs a browser' pattern, which this batch disallows. DoorDash's marketplace store page is a Cloudflare 'Just a moment...' challenge to curl. SinglePlatform (tier 4, restaurant-submitted, address-confirmed exactly: 12812 Rancho Penasquitos Blvd) is the only source reachable by curl and is comprehensive (Breakfast, Tacos, Burritos, Enchiladas, Healthy Ranch Burritos, Quesadillas, Chimichangas, Tortas, Tostadas, Salads & Bowls, Combos, Nachos/Fries/More, Kid's Menu, Side Orders, Drinks, Desserts, Daily Specials - every core Mexican-restaurant section present). Per playbook this tier is treated as stale until proven otherwise, so it was checked against the two prices the DoorDash WebSearch summary happened to report: California Burrito $17.99 (DoorDash, per search summary) vs $15.99 here, and Burrito Supreme $16.99 (DoorDash) vs $14.99 here - both roughly a consistent ~13% higher on DoorDash, the expected direction and magnitude for an online-ordering markup over a dine-in submitted price, not a sign the SinglePlatform figures are stale or wrong. Price level throughout ($2 sodas, $5-7 tacos, $9-18 burritos/combos) reads as plausible for 2026. Filed at medium confidence per the tier-4 ceiling, not lower, given the address match, section completeness, and the markup-direction cross-check. Because the DoorDash page itself was never actually read (only its WebSearch summary, which is a claim not a verified read per the playbook), it is cited above as context/support rather than as a verifying crossCheckedAgainst source in the strict sense - flagging this explicitly rather than treating it as a full clearance. Confidence would rise to high if a browser-equipped pass reads the DoorDash schema.org Menu JSON-LD directly. Reached: all listed categories above. Not reached: none apparent - SinglePlatform page had no additional categories beyond what's listed.",
+  "dishes": [
+   {
+    "name": "Breakfast Burrito",
+    "description": "Eggs, cheese & salsa fresca",
+    "price": "$10.99",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Breakfast Burrito Supreme",
+    "description": "Eggs, ham or bacon, potato, cheese & salsa fresca",
+    "price": "$11.99",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Chilaquiles",
+    "description": "Red or Green salsa, eggs and chicken w/rice & beans",
+    "price": "$15.49",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Huevos a la Mexicana",
+    "description": "Served with 3 soft tortillas, rice & beans",
+    "price": "$14.99",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Chorizo con Huevo",
+    "description": "Served with 3 soft tortillas, rice & beans",
+    "price": "$15.99",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Machaca con Huevo",
+    "description": "Served with 3 soft tortillas, rice & beans",
+    "price": "$16.99",
+    "section": "Breakfast"
+   },
+   {
+    "name": "Texas Burrito",
+    "description": "Bacon, carne asada with 2 eggs, guacamole & cheese",
+    "price": "$14.99",
+    "section": "Breakfast"
+   },
+   {
+    "name": "4 Rolled Tacos",
+    "description": "Beef, chicken or potato with lettuce & cheese",
+    "price": "$7.99",
+    "section": "Tacos"
+   },
+   {
+    "name": "Shredded Chicken Taco",
+    "description": "Homemade w/ lettuce, salsa fresca & cheese",
+    "price": "$6.49",
+    "section": "Tacos"
+   },
+   {
+    "name": "Carne Asada Taco",
+    "description": "Tender grilled steak with salsa fresca & guacamole",
+    "price": "$6.49",
+    "section": "Tacos"
+   },
+   {
+    "name": "Shredded Beef Taco",
+    "description": "Homemade beef with lettuce, salsa fresca & cheese",
+    "price": "$6.49",
+    "section": "Tacos"
+   },
+   {
+    "name": "Grilled Chicken Taco",
+    "description": "With lettuce, salsa fresca & cheese",
+    "price": "$6.49",
+    "section": "Tacos"
+   },
+   {
+    "name": "Potato Taco",
+    "description": "Chopped seasoned potatoes w/ lettuce, salsa fresca, cheese & sour cream",
+    "price": "$5.99",
+    "section": "Tacos"
+   },
+   {
+    "name": "Carnitas Taco",
+    "description": "Shredded pork, salsa fresca & guacamole",
+    "price": "$6.49",
+    "section": "Tacos"
+   },
+   {
+    "name": "Fish Taco",
+    "description": "Tempura battered w/ cabbage, salsa fresca & chili chipotle cream sauce",
+    "price": "$5.79",
+    "section": "Tacos"
+   },
+   {
+    "name": "Fresh Fish of the Day Taco",
+    "description": "With cabbage, salsa fresca & chili chipotle cream sauce",
+    "price": "$6.79",
+    "section": "Tacos"
+   },
+   {
+    "name": "Shrimp Taco",
+    "description": "Sautéed shrimp, salsa fresca, cabbage, cheese & chili chipotle cream sauce",
+    "price": "$6.49",
+    "section": "Tacos"
+   },
+   {
+    "name": "Scallop Taco",
+    "description": "Sautéed scallop, salsa fresca, cheese, w/ cabbage & chili chipotle cream sauce",
+    "price": "$6.49",
+    "section": "Tacos"
+   },
+   {
+    "name": "Lobster Taco",
+    "description": "Sautéed real lobster, salsa fresca, cabbage, cheese & chili chipotle cream sauce",
+    "price": "$6.99",
+    "section": "Tacos"
+   },
+   {
+    "name": "Mexico City Taco",
+    "description": "Adovada pork cooked over fire with guacamole, onions & cilantro",
+    "price": "$5.99",
+    "section": "Tacos"
+   },
+   {
+    "name": "Bean & Cheese Burrito",
+    "description": "",
+    "price": "$8.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Machaca with Cheese Burrito",
+    "description": "",
+    "price": "$13.49",
+    "section": "Burritos"
+   },
+   {
+    "name": "Chorizo & Cheese Burrito",
+    "description": "",
+    "price": "$12.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Shredded Beef or Chicken Burrito",
+    "description": "w/ cheese",
+    "price": "$12.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Mixed Chicken or Beef Burrito",
+    "description": "Beans with beef or chicken",
+    "price": "$13.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Carnitas Burrito",
+    "description": "Shredded pork, salsa fresca & guacamole",
+    "price": "$13.49",
+    "section": "Burritos"
+   },
+   {
+    "name": "Carne Asada Burrito",
+    "description": "Grilled steak, salsa fresca & guacamole",
+    "price": "$13.49",
+    "section": "Burritos"
+   },
+   {
+    "name": "California Burrito",
+    "description": "Grilled steak, salsa fresca, cheese, french fries & guacamole",
+    "price": "$15.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Calamari Burrito",
+    "description": "Beer-battered calamari steak, lettuce, fresh tomatoes, cheese, guacamole & chili chipotle cream sauce",
+    "price": "$14.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Grilled Chicken or Steak Fajitas Burrito",
+    "description": "With grilled onions, grilled bell peppers, tomatoes, cheese & fajita sauce",
+    "price": "$14.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Burrito Supreme",
+    "description": "Choice of one meat (grilled chicken, steak, shredded beef, carnitas or chicken) with rice, beans, salsa fresca, guacamole & cheese",
+    "price": "$14.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "BBQ Chicken Burrito",
+    "description": "Grilled chicken, grilled onions with tomatoes, cheese & BBQ sauce",
+    "price": "$13.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Grilled Chicken Burrito",
+    "description": "With salsa fresca & cheese",
+    "price": "$13.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "House Burrito",
+    "description": "Shredded chicken, rice, beans & homemade mole sauce",
+    "price": "$12.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Hawaiian Burrito",
+    "description": "Grilled steak, grilled onions, ham, pineapple, cheese & teriyaki glaze",
+    "price": "$14.49",
+    "section": "Burritos"
+   },
+   {
+    "name": "Chile Relleno Burrito",
+    "description": "With rice, beans, enchilada sauce & sour cream",
+    "price": "$13.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Grilled Fresh Fish of the Day Burrito",
+    "description": "With guacamole, pineapple, chili chipotle cream sauce, salsa fresca, cabbage & cheese",
+    "price": "$15.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Scallop Burrito",
+    "description": "Sautéed scallop, lettuce, salsa fresca, cheese, chili chipotle cream sauce, cabbage & cheese",
+    "price": "$15.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Shrimp & Fish Burrito",
+    "description": "Sautéed shrimp, tempura battered fish, cabbage, salsa fresca, guacamole & chili chipotle cream sauce",
+    "price": "$15.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Fish Burrito",
+    "description": "Tempura battered fish, guacamole, cabbage, salsa fresca & chili chipotle cream sauce",
+    "price": "$13.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Lobster Burrito",
+    "description": "Sautéed lobster, salsa fresca, cabbage, cheese & chili chipotle cream sauce",
+    "price": "$16.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Shrimp Burrito",
+    "description": "Sautéed shrimp, salsa fresca, cabbage, cheese & chili chipotle cream sauce",
+    "price": "$15.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Mexico City Burrito",
+    "description": "Adovada pork with guacamole, onions, pineapple & cilantro",
+    "price": "$13.49",
+    "section": "Burritos"
+   },
+   {
+    "name": "Seafood Burrito",
+    "description": "Crab, scallops, shrimp in cajun sauce w/ salsa fresca, cabbage, guacamole, chili chipotle cream sauce, bacon & cheese",
+    "price": "$17.70",
+    "section": "Burritos"
+   },
+   {
+    "name": "Goofy Shrimp Burrito",
+    "description": "Shrimp in Acote Habañero sauce, rice, cabbage, pineapple, salsa fresca, chili chipotle cream sauce & cheese",
+    "price": "$15.99",
+    "section": "Burritos"
+   },
+   {
+    "name": "Surf & Turf Burrito",
+    "description": "Shrimp and carne asada w/ guacamole, cabbage, chili chipotle cream sauce, cheese & salsa fresca",
+    "price": "$17.70",
+    "section": "Burritos"
+   },
+   {
+    "name": "2 Chicken, Beef or Cheese Enchiladas",
+    "description": "",
+    "price": "$12.99",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "2 Shrimp Enchiladas",
+    "description": "",
+    "price": "$14.99",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "2 Scallop Enchiladas",
+    "description": "",
+    "price": "$15.99",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "2 Lobster Enchiladas",
+    "description": "",
+    "price": "$16.49",
+    "section": "Enchiladas"
+   },
+   {
+    "name": "Veggie Supreme Burrito",
+    "description": "Rice, beans, chopped potatoes, lettuce, salsa fresca, guacamole, sour cream & cheese",
+    "price": "$12.99",
+    "section": "Healthy Ranch Burritos"
+   },
+   {
+    "name": "Veggie Burrito",
+    "description": "Beans, lettuce, salsa fresca, guacamole, sour cream & cheese",
+    "price": "$11.99",
+    "section": "Healthy Ranch Burritos"
+   },
+   {
+    "name": "Low-Fat Veggie Burrito",
+    "description": "Black beans, rice, lettuce, salsa fresca on whole wheat tortilla",
+    "price": "$11.99",
+    "section": "Healthy Ranch Burritos"
+   },
+   {
+    "name": "Potato Burrito",
+    "description": "Chopped seasoned potatoes, lettuce, salsa fresca, cheese & sour cream",
+    "price": "$11.99",
+    "section": "Healthy Ranch Burritos"
+   },
+   {
+    "name": "Black Bean Burrito",
+    "description": "Black beans & cheese on whole wheat tortilla",
+    "price": "$9.69",
+    "section": "Healthy Ranch Burritos"
+   },
+   {
+    "name": "Cheese Quesadilla",
+    "description": "",
+    "price": "$7.49",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Grilled Chicken or Carne Asada Quesadilla",
+    "description": "With salsa fresca",
+    "price": "$15.49",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Shrimp Quesadilla",
+    "description": "With salsa fresca",
+    "price": "$16.49",
+    "section": "Quesadillas"
+   },
+   {
+    "name": "Chicken or Beef Chimichanga",
+    "description": "Topped with guacamole, sour cream, lettuce, salsa fresca & cheese",
+    "price": "$15.49",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Fish Chimichanga",
+    "description": "Topped with guacamole, sour cream, lettuce, salsa fresca & cheese",
+    "price": "$15.49",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Shrimp Chimichanga",
+    "description": "Topped with guacamole, sour cream, lettuce, salsa fresca & cheese",
+    "price": "$16.99",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Lobster Chimichanga",
+    "description": "Topped with guacamole, sour cream, lettuce, salsa fresca & cheese",
+    "price": "$17.49",
+    "section": "Chimichangas"
+   },
+   {
+    "name": "Carne Asada, Grilled Chicken, or Carnitas Torta",
+    "description": "On a Mexican roll w/ guacamole, sour cream, lettuce, salsa fresca & cheese",
+    "price": "$15.99",
+    "section": "Tortas"
+   },
+   {
+    "name": "Machaca Torta",
+    "description": "On a Mexican roll w/ guacamole, sour cream, lettuce, salsa fresca & cheese",
+    "price": "$15.99",
+    "section": "Tortas"
+   },
+   {
+    "name": "Shredded Beef or Shredded Chicken Torta",
+    "description": "On a Mexican roll w/ guacamole, sour cream, lettuce, salsa fresca & cheese",
+    "price": "$15.99",
+    "section": "Tortas"
+   },
+   {
+    "name": "Shredded Beef or Chicken Tostada",
+    "description": "Hard shell corn tortilla with beans, lettuce, salsa fresca & cheese",
+    "price": "$12.99",
+    "section": "Tostadas"
+   },
+   {
+    "name": "Bean Tostada",
+    "description": "",
+    "price": "$10.99",
+    "section": "Tostadas"
+   },
+   {
+    "name": "Fajita Tostada Salad - Steak or Chicken",
+    "description": "Choice of meat, black beans, romaine lettuce, salsa fresca, cheese & choice of ranch or balsamic dressing",
+    "price": "$16.49",
+    "section": "Salads & Bowls"
+   },
+   {
+    "name": "Fajita Tostada Salad - Fresh Fish",
+    "description": "Choice of meat, black beans, romaine lettuce, salsa fresca, cheese & choice of ranch or balsamic dressing",
+    "price": "$16.49",
+    "section": "Salads & Bowls"
+   },
+   {
+    "name": "Fajita Tostada Salad - Shrimp",
+    "description": "Choice of meat, black beans, romaine lettuce, salsa fresca, cheese & choice of ranch or balsamic dressing",
+    "price": "$16.99",
+    "section": "Salads & Bowls"
+   },
+   {
+    "name": "Fajita Tostada Salad - Lobster",
+    "description": "Choice of meat, black beans, romaine lettuce, salsa fresca, cheese & choice of ranch or balsamic dressing",
+    "price": "$17.49",
+    "section": "Salads & Bowls"
+   },
+   {
+    "name": "House Salad",
+    "description": "Romaine lettuce, salsa fresca, cheese & house dressing",
+    "price": "$6.99",
+    "section": "Salads & Bowls"
+   },
+   {
+    "name": "Bowl",
+    "description": "Rice, whole beans, cabbage, cheese, lettuce, salsa fresca, avocado, chili chipotle cream sauce with any choice of meat or fish",
+    "price": "$16.99",
+    "section": "Salads & Bowls"
+   },
+   {
+    "name": "Lobster Enchilada & Fish Taco Combo",
+    "description": "Served with rice & beans",
+    "price": "$18.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Shrimp Burrito & Fish Taco Combo",
+    "description": "Served with rice & beans",
+    "price": "$18.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Lobster Burrito & Fish Taco Combo",
+    "description": "Served with rice & beans",
+    "price": "$19.49",
+    "section": "Combos"
+   },
+   {
+    "name": "Two Grilled Fish Tacos Combo",
+    "description": "Choice of fresh catch of the day. Served with rice & beans",
+    "price": "$17.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Four Rolled Tacos Combo",
+    "description": "Beef, chicken or potato with guacamole & cheese. Served with rice & beans",
+    "price": "$15.49",
+    "section": "Combos"
+   },
+   {
+    "name": "Burrito & Taco Combo",
+    "description": "Chicken, beef, or carnitas. Served with rice & beans",
+    "price": "$17.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Two Tacos Combo",
+    "description": "Chicken, beef, carnitas or carne asada. Served with rice & beans",
+    "price": "$17.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Two Enchiladas Combo",
+    "description": "Chicken, beef or cheese. Served with rice & beans",
+    "price": "$16.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Grilled Chicken or Steak Fajitas Combo",
+    "description": "Served with rice & beans",
+    "price": "$17.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Pork Chile Verde Combo",
+    "description": "Served with 3 soft tortillas, rice & beans",
+    "price": "$16.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Pork Chile Colorado Combo",
+    "description": "Served with 3 soft tortillas, rice & beans",
+    "price": "$15.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Machaca Platter Combo",
+    "description": "Served with 3 soft tortillas, rice & beans",
+    "price": "$16.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Carnitas Platter Combo",
+    "description": "Served with 3 soft tortillas, rice & beans",
+    "price": "$16.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Carne Asada Platter Combo",
+    "description": "Served with 3 soft tortillas, rice & beans",
+    "price": "$16.99",
+    "section": "Combos"
+   },
+   {
+    "name": "Scallop Burrito & Fish Taco Combo",
+    "description": "Served with rice & beans",
+    "price": "$17.49",
+    "section": "Combos"
+   },
+   {
+    "name": "Nachos with Cheese",
+    "description": "",
+    "price": "$8.49",
+    "section": "Nachos, Fries, & More"
+   },
+   {
+    "name": "Nachos with Guacamole",
+    "description": "",
+    "price": "$9.99",
+    "section": "Nachos, Fries, & More"
+   },
+   {
+    "name": "Nachos Supreme",
+    "description": "Nacho cheese, shredded cheese, guacamole, beans, sour cream, salsa fresca & choice of beef, chicken, or carne asada",
+    "price": "$14.99",
+    "section": "Nachos, Fries, & More"
+   },
+   {
+    "name": "Sopes",
+    "description": "Beef, chicken or potato, topped with beans, lettuce, salsa fresca, cheese & sour cream",
+    "price": "$12.99",
+    "section": "Nachos, Fries, & More"
+   },
+   {
+    "name": "Carne or Pollo Asada Fries",
+    "description": "",
+    "price": "$14.99",
+    "section": "Nachos, Fries, & More"
+   },
+   {
+    "name": "Chile Relleno",
+    "description": "Fresh mild chile, with cheese, enchilada sauce & sour cream",
+    "price": "$8.99",
+    "section": "Nachos, Fries, & More"
+   },
+   {
+    "name": "2 Rolled Tacos (Kids)",
+    "description": "Chicken, beef or potato. 11 & under - served with rice or beans & soft drink",
+    "price": "$7.99",
+    "section": "Kid's Menu"
+   },
+   {
+    "name": "Cheese Quesadilla (Kids)",
+    "description": "11 & under - served with rice or beans & soft drink",
+    "price": "$7.99",
+    "section": "Kid's Menu"
+   },
+   {
+    "name": "Bean & Cheese Burrito (Kids)",
+    "description": "11 & under - served with rice or beans & soft drink",
+    "price": "$7.99",
+    "section": "Kid's Menu"
+   },
+   {
+    "name": "Half Pint Rice or Beans",
+    "description": "",
+    "price": "$3.50",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Half Pint Black Beans",
+    "description": "",
+    "price": "$3.50",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Pint Rice or Beans",
+    "description": "",
+    "price": "$4.75",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Guacamole",
+    "description": "",
+    "price": "$4.99",
+    "section": "Side Orders"
+   },
+   {
+    "name": "French Fries",
+    "description": "",
+    "price": "$4.99",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Chips",
+    "description": "",
+    "price": "$3.99",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Extra Sour Cream, Cheese, or Guacamole",
+    "description": "On any item",
+    "price": "$1.50",
+    "section": "Side Orders"
+   },
+   {
+    "name": "Soft Drinks",
+    "description": "",
+    "price": "$2.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Sparkling Water",
+    "description": "",
+    "price": "$2.00",
+    "section": "Drinks"
+   },
+   {
+    "name": "Bunelos",
+    "description": "Lightly fried flour tortilla coated with sugar & cinnamon, drizzled with carmel sauce & non dairy whipped cream",
+    "price": "$3.99",
+    "section": "Desserts"
+   },
+   {
+    "name": "Churro",
+    "description": "",
+    "price": "$2.49",
+    "section": "Desserts"
+   },
+   {
+    "name": "Two Fish Taco Combo",
+    "description": "Daily special. Combo includes rice, beans & regular size drink",
+    "price": "$15.99",
+    "section": "Daily Specials"
+   },
+   {
+    "name": "Chile Relleno Combo",
+    "description": "Daily special. Combo includes rice, beans & regular size drink",
+    "price": "$15.99",
+    "section": "Daily Specials"
+   },
+   {
+    "name": "Carne Asada Burrito Combo",
+    "description": "Daily special. Combo includes rice, beans & regular size drink",
+    "price": "$15.99",
+    "section": "Daily Specials"
+   },
+   {
+    "name": "Sope & Enchilada Combo",
+    "description": "Daily special. Combo includes rice, beans & regular size drink",
+    "price": "$16.49",
+    "section": "Daily Specials"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6500",
+  "name": "Pizza e Birra",
+  "sourceUrl": "https://slicelife.com/restaurants/ca/san-diego/92103/pizza-e-birra/menu",
+  "confidence": "high",
+  "notes": "Restaurant's own domain (pizzaebirrasandiego.com) is behind an sgcaptcha bot wall on every request (same signature as Mi Ranchito - both redirect to /.well-known/sgcaptcha/ - likely shared hosting/security vendor), so the Slice storefront linked from search results was used instead. Address in the page's schema.org Restaurant JSON-LD matches work list exactly (3625 India St). No Menu JSON-LD was present (only Restaurant + BreadcrumbList), so the menu itself came from the __SLICE_REDUX_STATE__ blob, parsed by balancing braces from the 'window.__SLICE_REDUX_STATE__=' assignment (not regex-matched to a closing tag, per the __OO_STATE__ lesson) - menus.menus[key].value.categories[].groupedProducts[].productTypes[] gives per-size prices. Ran the markup test on the full non-catering menu (89 items): checked 1.04/1.1/1.15/1.2/1.25/0.96 - the highest hit rate (1.25, 33.7%) traced to a coincidental cluster of unrelated pizzas sharing the common $23.75 Small / $28.75 Large base price points, not a uniform divisor - only 22 of 51 pizza rows landed exactly on a round number under that divisor and the rest (mostly the very same 'Large' size at $26.75) did not, which is the opposite of the 'near-zero exceptions' signature the playbook flags as a real fee. No divisor cleared with the required near-total hit rate, so treated as ordinary independent per-item pricing, not a markup. A 'Top Five Items' section duplicated 6 items already listed under their real categories (Wings, Calabrese Pizza, Lasagna, Poached Pear Salad, Meat Lovers Calzone) - 3 of the 6 carried a slightly different price there (e.g. Lasagna $17.50 in Pastas vs $18.25 in Top Five Items, Poached Pear Salad $13.50 vs $16.25) with no consistent ratio between the two, so rather than guessing which is canonical, the section was dropped entirely and only the category-listed price was kept for each - noting the discrepancy here rather than filing a second row. Catering trays (Salads Catering, Pastas Catering) excluded as adjunct. Reached categories: Shareables, Salads, Pizza, Artisan Pizza, Baked Sandwiches, Pastas, Desserts, Calzones, Beverages. Not reached/excluded: Top Five Items (duplicate carousel, see above), Salads Catering, Pastas Catering (adjunct).",
+  "dishes": [
+   {
+    "name": "Meatballs",
+    "description": "Marinara sauce & fresh mozzarella cheese.",
+    "price": "$15.00",
+    "section": "Shareables"
+   },
+   {
+    "name": "Wings (8 Wings)",
+    "description": "Jumbo chicken wings lightly seasoned, fried & tossed in your choice of buffalo, honey sriracha, mango habanero, garlic parmesan, BBQ, lemon pepper, honey stingin' garlic.",
+    "price": "$16.75",
+    "section": "Shareables"
+   },
+   {
+    "name": "Wings (16 Wings)",
+    "description": "Jumbo chicken wings lightly seasoned, fried & tossed in your choice of buffalo, honey sriracha, mango habanero, garlic parmesan, BBQ, lemon pepper, honey stingin' garlic.",
+    "price": "$24.75",
+    "section": "Shareables"
+   },
+   {
+    "name": "Bruschetta",
+    "description": "Tomatoes, garlic, fresh basil, extra virgin olive oil, Pizza E Birra signature dressing.",
+    "price": "$14.50",
+    "section": "Shareables"
+   },
+   {
+    "name": "Fried Goat Cheese",
+    "description": "Hand sliced, breaded goat cheese & marinara sauce.",
+    "price": "$14.95",
+    "section": "Shareables"
+   },
+   {
+    "name": "Pizza Fries",
+    "description": "Fries. Pizza sauce. Shredded mozzarella cheese. A glorious mashup of the world's best foods.",
+    "price": "$15.25",
+    "section": "Shareables"
+   },
+   {
+    "name": "Cheesy Garlic Bread",
+    "description": "Hand tossed & stretched dough, baked then topped with melted mozzarella & herbs.",
+    "price": "$14.95",
+    "section": "Shareables"
+   },
+   {
+    "name": "Buffalo Fries",
+    "description": "crispy fries, grilled chicken smothered in mozzarella cheese, drizzled with ranch & buffalo sauce",
+    "price": "$16.25",
+    "section": "Shareables"
+   },
+   {
+    "name": "Pizza e Birra House Salad",
+    "description": "Mixed greens, cherry tomatoes, roasted red peppers, shredded carrots, pepperoncini, parmesan & Pizza e Birra signature dressing.",
+    "price": "$14.25",
+    "section": "Salads"
+   },
+   {
+    "name": "Caprese Salad",
+    "description": "Fresh mozzarella cheese, tomatoes, roasted red peppers, basil, E.V.O.O & balsamic glaze dressing.",
+    "price": "$16.25",
+    "section": "Salads"
+   },
+   {
+    "name": "Gourmet Grilled Artichoke",
+    "description": "Mixed greens, grilled artichokes, cherry tomatoes, roasted red peppers, sun dried tomatoes, parmesan cheese & pizza e birra italian dressing.",
+    "price": "$14.00",
+    "section": "Salads"
+   },
+   {
+    "name": "Caesar Salad",
+    "description": "Romaine lettuce, cherry tomatoes, shredded parmesan cheese & crouton crumbles.",
+    "price": "$15.75",
+    "section": "Salads"
+   },
+   {
+    "name": "Poached Pear Salad",
+    "description": "Mixed greens, red wine poached pears, caramelized walnuts, raspberry vinaigrette dressing & balsamic glaze dressing.",
+    "price": "$13.50",
+    "section": "Salads"
+   },
+   {
+    "name": "Strawberry Summer Salad",
+    "description": "Mixed greens, caramelized walnuts, sliced strawberries, gorgonzola,  balsamic glaze, raspberry dressing.",
+    "price": "$17.00",
+    "section": "Salads"
+   },
+   {
+    "name": "BBQ Chicken Salad",
+    "description": "Romaine lettuce, tomato, roasted red peppers, cilantro, BBQ chicken, BBQ  sauce drizzle, ranch drizzle.",
+    "price": "$17.00",
+    "section": "Salads"
+   },
+   {
+    "name": "Lemon Arugula Salad",
+    "description": "arugula, cherry tomato, pine nuts, shredded parmesan, proscuitto, lemon wedge, champagne vinaigrette dressing",
+    "price": "$17.75",
+    "section": "Salads"
+   },
+   {
+    "name": "Buffa-Leo (Small 12\")",
+    "description": "buffalo sauce base, mozzarella cheese, garlic, grilled chicken, buffalo & ranch drizzle",
+    "price": "$23.75",
+    "section": "Pizza"
+   },
+   {
+    "name": "Buffa-Leo (Large 16')",
+    "description": "buffalo sauce base, mozzarella cheese, garlic, grilled chicken, buffalo & ranch drizzle",
+    "price": "$25.50",
+    "section": "Pizza"
+   },
+   {
+    "name": "Meatball Marinara (Small 12\")",
+    "description": "marinara sauce base, heaty meatball slices, provolone, oregano, olive oil",
+    "price": "$25.75",
+    "section": "Pizza"
+   },
+   {
+    "name": "Meatball Marinara (Large 16\")",
+    "description": "marinara sauce base, heaty meatball slices, provolone, oregano, olive oil",
+    "price": "$28.75",
+    "section": "Pizza"
+   },
+   {
+    "name": "Margherita Pizza (Small 12\")",
+    "description": "Fresh mozzarella| basil | extra virgin olive oil.",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Margherita Pizza (Large 16\")",
+    "description": "Fresh mozzarella| basil | extra virgin olive oil.",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Cheese Pizza (Small 12\")",
+    "description": "Classic cheese or create your own pizza.",
+    "price": "$20.50",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Cheese Pizza (Large 16\")",
+    "description": "Classic cheese or create your own pizza.",
+    "price": "$23.50",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Calabrese Pizza (Small 12\")",
+    "description": "Mozzarella cheese, spicy Italian sopressata, fresh basil & extra virgin olive oil. Spicy.",
+    "price": "$22.00",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Calabrese Pizza (Large 16\")",
+    "description": "Mozzarella cheese, spicy Italian sopressata, fresh basil & extra virgin olive oil. Spicy.",
+    "price": "$25.00",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Philly Cheesesteak Pizza (Small)",
+    "description": "Alfredo sauce base, mozzarella, seasoned Philly steak, onions, roasted red peppers, mushrooms, spicy mayo drizzle.",
+    "price": "$25.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Philly Cheesesteak Pizza (Large)",
+    "description": "Alfredo sauce base, mozzarella, seasoned Philly steak, onions, roasted red peppers, mushrooms, spicy mayo drizzle.",
+    "price": "$28.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Quattro Stagioni Pizza (Small 12\")",
+    "description": "Mozzarella cheese, ham, mushrooms, black olives, artichokes, basil & extra virgin olive oil.",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Quattro Stagioni Pizza (Large 16\")",
+    "description": "Mozzarella cheese, ham, mushrooms, black olives, artichokes, basil & extra virgin olive oil.",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Torino Pizza (Small 12\")",
+    "description": "Mozzarella cheese, ham, mushrooms, basil & extra virgin olive oil.",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Torino Pizza (Large 16\")",
+    "description": "Mozzarella cheese, ham, mushrooms, basil & extra virgin olive oil.",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Pugliese Pizza (Small 12\")",
+    "description": "Mozzarella cheese, Italian sausage, onions, basil & extra virgin olive oil.",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Pugliese Pizza (Large 16\")",
+    "description": "Mozzarella cheese, Italian sausage, onions, basil & extra virgin olive oil.",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Genovese Pizza (Small 12\")",
+    "description": "Pesto sauce base, mozzarella cheese, chicken, oven roasted potatoes, pine nuts, basil, garlic & extra virgin olive oil.",
+    "price": "$25.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Genovese Pizza (Large 16\")",
+    "description": "Pesto sauce base, mozzarella cheese, chicken, oven roasted potatoes, pine nuts, basil, garlic & extra virgin olive oil.",
+    "price": "$28.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Boscaiola Pizza (Small 12\")",
+    "description": "Mozzarella cheese, mushrooms, Italian sausage, ham, spinach, basil & truffle oil.",
+    "price": "$25.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Boscaiola Pizza (Large 16\")",
+    "description": "Mozzarella cheese, mushrooms, Italian sausage, ham, spinach, basil & truffle oil.",
+    "price": "$28.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Veggie Pizza (Small 12\")",
+    "description": "Mozzarella cheese, breaded eggplant, roasted red peppers, artichokes, mushrooms, fresh basil & extra virgin olive oil.",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Veggie Pizza (Large 16\")",
+    "description": "Mozzarella cheese, breaded eggplant, roasted red peppers, artichokes, mushrooms, fresh basil & extra virgin olive oil.",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Contadina Pizza (Small 12\")",
+    "description": "Mozzarella cheese, Italian sausage, gorgonzola cheese, black olives, onions & extra virgin olive oil.",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Contadina Pizza (Large 16\")",
+    "description": "Mozzarella cheese, Italian sausage, gorgonzola cheese, black olives, onions & extra virgin olive oil.",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Siciliana Pizza (Small 12\")",
+    "description": "Garlic, eggplant, ricotta cheese, basil & extra virgin olive oil.",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Siciliana Pizza (Large 16\")",
+    "description": "Garlic, eggplant, ricotta cheese, basil & extra virgin olive oil.",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Pear e Gorgonzola Pizza (Small 12\")",
+    "description": "Mozzarella cheese, poached pears, gorgonzola cheese & balsamic glaze dressing.",
+    "price": "$25.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Pear e Gorgonzola Pizza (Large 16\")",
+    "description": "Mozzarella cheese, poached pears, gorgonzola cheese & balsamic glaze dressing.",
+    "price": "$28.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Always Double Pepperoni Pizza (Small 12\")",
+    "description": "Mozzarella cheese & double pepperoni. Put your own flare on it by adding additional toppings!",
+    "price": "$21.00",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Always Double Pepperoni Pizza (Large 16\")",
+    "description": "Mozzarella cheese & double pepperoni. Put your own flare on it by adding additional toppings!",
+    "price": "$23.00",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Meat Lovers Pizza (Small 12\")",
+    "description": "Mozzarella cheese, pepperoni, ham, bacon & sausage.",
+    "price": "$25.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Meat Lovers Pizza (Large 16\")",
+    "description": "Mozzarella cheese, pepperoni, ham, bacon & sausage.",
+    "price": "$28.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "White Margarita Pizza (Small 12\")",
+    "description": "Garlic olive oil sauce, mozzarella,  fresh tomatoes, fresh basil.",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "White Margarita Pizza (Large 16\")",
+    "description": "Garlic olive oil sauce, mozzarella,  fresh tomatoes, fresh basil.",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Mushroom Truffle Pizza (Small 12\")",
+    "description": "Mozzarella cheese & mushrooms, white truffle oil.",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Mushroom Truffle Pizza (Large 16\")",
+    "description": "Mozzarella cheese & mushrooms, white truffle oil.",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "BBQ Pizza (Small 12\")",
+    "description": "BBQ sauce, mozzarella cheese, grilled chicken, onions & cilantro.",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "BBQ Pizza (Large 16\")",
+    "description": "BBQ sauce, mozzarella cheese, grilled chicken, onions & cilantro.",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Hawaiian Pizza (Small 12\")",
+    "description": "Mozzarella cheese, ham, pineapple",
+    "price": "$23.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Hawaiian Pizza (Large 16\")",
+    "description": "Mozzarella cheese, ham, pineapple",
+    "price": "$26.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "San Diego Pizza",
+    "description": "Double pepperoni, mozzarella cheese, mozzarella stick bites, 14 wing crust tossed in your choice of sauce. Served with marinara & ranch.",
+    "price": "$45.00",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "B.L.T. Pizza (Small 12\" Pizza)",
+    "description": "garlic & olive oil sauce, bacon, tomato, mozzarella cheese, romaine lettuce, ranch drizzle, EVOO",
+    "price": "$21.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "B.L.T. Pizza (Large 16\" Pizza)",
+    "description": "garlic & olive oil sauce, bacon, tomato, mozzarella cheese, romaine lettuce, ranch drizzle, EVOO",
+    "price": "$23.50",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Bollente Pizza- Kick of Spice! (Small 12\" Pizza)",
+    "description": "Sopressata (spicy salami), pepperoni, fresh jalapenos, pepperoncini",
+    "price": "$25.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Bollente Pizza- Kick of Spice! (Large 16\" Pizza)",
+    "description": "Sopressata (spicy salami), pepperoni, fresh jalapenos, pepperoncini",
+    "price": "$28.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Caprese Pizza (Small 12\")",
+    "description": "pesto base, fresh mozzarella, tomato, basil, garlic, balsamic glaze",
+    "price": "$25.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Caprese Pizza (Large 16\")",
+    "description": "pesto base, fresh mozzarella, tomato, basil, garlic, balsamic glaze",
+    "price": "$28.75",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Tropicana Pizza (Small 12\" Pizza)",
+    "description": "mango habanero sauce + bbq sauce base- pepperoni- bacon crumbles- pineapple- ricotta cheese",
+    "price": "$23.50",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Tropicana Pizza (Large 16\" Pizza)",
+    "description": "mango habanero sauce + bbq sauce base- pepperoni- bacon crumbles- pineapple- ricotta cheese",
+    "price": "$25.50",
+    "section": "Artisan Pizza"
+   },
+   {
+    "name": "Meatball Marinara Sandwich",
+    "description": "meatballs, marinara sauce, parmesan cheese & mozzarella cheese.",
+    "price": "$17.75",
+    "section": "Baked Sandwiches"
+   },
+   {
+    "name": "II Centro Chicken Sandwich",
+    "description": "Mozzarella cheese, grilled chicken breast, mixed greens, tomatoes & spicy mayo.",
+    "price": "$18.00",
+    "section": "Baked Sandwiches"
+   },
+   {
+    "name": "Notorious P.I.G Sandwich",
+    "description": "Mozzarella cheese, sopressata, pepperoni, ham, Italian sausage, bacon, mixed greens, tomatoes, onions & spicy mayo.",
+    "price": "$18.75",
+    "section": "Baked Sandwiches"
+   },
+   {
+    "name": "Speciale Sandwich",
+    "description": "Fresh mozzarella cheese, breaded eggplant, roasted red peppers, mushrooms, onions, tomatoes, mixed greens, Pizza e Birra signature dressing & parmesan cheese.",
+    "price": "$16.75",
+    "section": "Baked Sandwiches"
+   },
+   {
+    "name": "Caprese Sandwich",
+    "description": "Fresh mozzarella cheese, tomatoes, basil, balsamic glaze dressing & extra virgin olive oil.",
+    "price": "$17.00",
+    "section": "Baked Sandwiches"
+   },
+   {
+    "name": "The Henry Philly Cheese Steak Sandwich",
+    "description": "Philly steak, shredded mozzarella, roasted red peppers, black pepper onions, mushrooms, and spicy mayo.",
+    "price": "$18.75",
+    "section": "Baked Sandwiches"
+   },
+   {
+    "name": "Spaghetti & Meatballs",
+    "description": "Spaghetti & meatballs with your choice of marinara or bolognese sauce.",
+    "price": "$19.00",
+    "section": "Pastas"
+   },
+   {
+    "name": "Lasagna",
+    "description": "Bolognese sauce, fresh mozzarella cheese, shredded mozzarella cheese, ricotta cheese & parmesan cheese.",
+    "price": "$17.50",
+    "section": "Pastas"
+   },
+   {
+    "name": "Eggplant Parmigiana",
+    "description": "Breaded eggplant, spaghetti, marinara sauce & shaved parmesan cheese.",
+    "price": "$17.00",
+    "section": "Pastas"
+   },
+   {
+    "name": "Penne alla Vodka",
+    "description": "Chicken, roasted red peppers, roasted tomatoes, bacon, parmesan, vodka blush sauce.",
+    "price": "$20.50",
+    "section": "Pastas"
+   },
+   {
+    "name": "Fettucine Alfredo",
+    "description": "Fettuccine pasta & creamy Alfredo sauce.",
+    "price": "$18.75",
+    "section": "Pastas"
+   },
+   {
+    "name": "Penne Pesto",
+    "description": "Penne, pesto sauce, tomatoes, basil, parmesan cheese, chicken.",
+    "price": "$21.50",
+    "section": "Pastas"
+   },
+   {
+    "name": "Penne al Limone",
+    "description": "sauteed spinach, sun dried tomatoes, garlic, garlic lemon sauce",
+    "price": "$16.50",
+    "section": "Pastas"
+   },
+   {
+    "name": "Nutella Dessert Pizza (Sliced Strawberries)",
+    "description": "All dessert pizzas are size small and include Nutella spread, chocolate drizzle & powdered sugar. Choose your topping: Sliced strawberries or Oreo Crumbles",
+    "price": "$13.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Nutella Dessert Pizza (Oreo Crumbles)",
+    "description": "All dessert pizzas are size small and include Nutella spread, chocolate drizzle & powdered sugar. Choose your topping: Sliced strawberries or Oreo Crumbles",
+    "price": "$13.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Tiramisu",
+    "description": "A delicious coffee-flavored Italian dessert. Ladyfingers dipped in coffee, layered with a whipped mixture of eggs, sugar & Mascarpone cheese, flavored with cocoa.",
+    "price": "$11.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Cannoli",
+    "description": "Delicious tube of fried dough, filled with a sweet, creamy ricotta filling.",
+    "price": "$7.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "New York Style Cheesecake",
+    "description": "graham cracker crust | vanilla chantilly cream | raspberry",
+    "price": "$11.75",
+    "section": "Desserts"
+   },
+   {
+    "name": "Cheese Calzone",
+    "description": "Mozzarella cheese, ricotta cheese & parmesan cheese.",
+    "price": "$16.00",
+    "section": "Calzones"
+   },
+   {
+    "name": "Meat Lovers Calzone",
+    "description": "Mozzarella, ricotta cheese, ham, sausage, pepperoni & meatballs.",
+    "price": "$19.00",
+    "section": "Calzones"
+   },
+   {
+    "name": "Vegetarian Calzone",
+    "description": "Ricotta cheese, onions, olives, mushrooms, tomatoes, garlic & roasted red peppers.",
+    "price": "$18.75",
+    "section": "Calzones"
+   },
+   {
+    "name": "Soda",
+    "description": "Please type in one of the following options: Coke, Diet Coke, Sprite",
+    "price": "$4.50",
+    "section": "Beverages"
+   }
+  ]
+ },
+ {
+  "restaurantId": "6566",
+  "name": "Salt & Straw",
+  "confidence": "low",
+  "blocked": "Router already screened out the site's Shopify /products.json as a retail catalog, not the counter menu. Followed up on both delivery marketplaces for this exact branch (One Paseo, 3705 Caminito Ct Ste 0580 - address-confirmed on both): Uber Eats store page (schema.org Menu JSON-LD + React Query state, both address-matched) and DoorDash store page (schema.org Menu JSON-LD, address-matched). Both confirm the same finding as the router: neither marketplace carries the core scoop/cup/cone menu at all (no Scoops section, no single/double-scoop or size pricing anywhere) - both sell only packaged takeaway items (Ice Cream Pints all at $14.75, The Cake $93.25, House Made Waffle Cone $1.95, bottled water, and 'The Tacolate'), which for an ice-cream counter is the adjunct retail line, not the core walk-up menu; filing only these would misrepresent the shop as selling only pints and cakes. On top of that, the one item that isn't a plain pint ('The Tacolate') disagrees between the two marketplaces with no promo explanation on either side: Uber Eats shows $7.52, DoorDash shows $9.40, both plain (no strikethrough/discounted-from marker on either page) for the identical name and description - an unexplained ~20% disagreement between two different owners on the same item, which per the playbook means what's visible is unreliable rather than a small true sample. Uber Eats also runs a live 'Save on Select Items' promo on several pints (e.g. Coffee and Love Nuts shown at $11.80 with an explicit '$11.80, discounted from $14.75' accessibility string) - a snapshot of a temporary discount, not the standing price, which is one more reason not to trust that page's numbers at face value. Needs either a Chrome-equipped pass at the physical menu board/Yelp photos for the actual scoop pricing, or a dine-in artefact.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "6575",
+  "name": "Red Fox Room and Steakhouse",
+  "confidence": "low",
+  "blocked": "Restaurant is closed, not merely gated. redfoxsd.com serves almost no content to curl (46 characters of text - only a cookie-consent notice - plus a tracking/ad beacon script to l.cdn-fileserver.com), consistent with a dark domain rather than an active site. News coverage (FOX5 San Diego, CBS8, Yahoo, NBC San Diego, SanDiegoVille) confirms: the restaurant abruptly closed May 12, 2025 after all staff were let go without notice; an initially announced September 2025 reopening never materialized; and SanDiegoVille reporting from February 2026 says the entire package - brand, restaurant assets, the Type 47 liquor license, and the real estate itself - is now being marketed for sale, framed as an opportunity for a new owner rather than a reopening date for the current one. Filing blocked rather than not_found because the brand and assets are being sold as a going concern (a buyer could resume operating under the same name), so this may still resolve rather than being gone for good - but there is no indication of current operation or a menu in force today. No further blocked/hours detail applies since this is a full closure, not a daypart or online-ordering gate.",
+  "dishes": []
+ },
+ {
+  "restaurantId": "6482",
+  "name": "Plazas Mexican Food",
+  "confidence": "low",
+  "blocked": "Listed website is a Facebook page that returns HTTP 400 to curl (confirmed on both the bare URL and with -sIL following redirects) - a bot check that needs a browser, so its photo gallery could not be checked under this batch's no-browser rule. WebSearch found no ordering platform (Toast/DoorDash/UberEats/Grubhub) by name search for this restaurant. Note: WebSearch results also list the suite as 'Ste A' at 1550 Broadway, while the work list has 'suite C' at the same street address - a discrepancy worth flagging rather than resolving by guesswork, in case there are two adjacent businesses in that complex. Remaining reachable listings are all farm/aggregator sites - allmenus (barred by name), sagemenu (barred by name), checkle.com, restaurantji.com, hey-restaurants.com, res-menu.net and wheree.com - the last three share the same templated-listing pattern already identified as a content-farm network in this batch (seen wrapping Loreto's Taco Shop and El Puerto Taco Shop's look-alike '.shop' domains), so none were treated as independent or genuine. No independent priced cross-check from a different owner is available, so nothing can be filed. Needs either a real first-party site/ordering platform to surface, or a Chrome-equipped pass at Yelp/Facebook photos - and the suite letter should be re-confirmed at that point.",
+  "dishes": []
+ }
+]

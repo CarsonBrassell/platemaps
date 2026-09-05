@@ -1,0 +1,19 @@
+clean:      4 entries (4 with menus, 0 confirmed not-found), 128 dishes
+quarantine: 16 entries, 0 dishes withheld
+
+  Super Donuts #2 (0 dishes) - blocked, not absent: no-platform: no own site, no marketplace/ordering page found; only Yelp/directory listings with no itemized prices
+  Oceanside Donut (0 dishes) - blocked, not absent: no-platform: no own site, no marketplace/ordering page found; only Yelp/directory listings with no itemized prices
+  Donut star (0 dishes) - blocked, not absent: tier-5 aggregator only (allmenus.com); no first-party site or marketplace page found, single tier-5 source is not usable alone
+  China Fun (0 dishes) - blocked, not absent: own site's /menu page is a client-side redirect stub (SPA hash router) with no static prices; no marketplace page found
+  Colima's Mexican Foods (0 dishes) - blocked, not absent: DoorDash JSON-LD Menu present (74 deduped items) but pricing shows a mixed/scattered cent-ending pattern with no divisor (1.00-1.35 sweep) fitting cleanly and no conventional printed-menu cent pattern either; cannot confirm real vs. inflated marketplace pricing
+  Fresh Donuts (0 dishes) - blocked, not absent: Uber Eats page fetched but the react-query payload contained no catalogSectionsMap/catalogItems after unescaping; no priced menu recoverable
+  DJ's Pizza Express (0 dishes) - blocked, not absent: only source found was goto-where.com, a barred farm domain; no first-party site or marketplace page found
+  La michoacana Plus San Diego #2 (0 dishes) - blocked, not absent: site's menu page carries CSS classes ai-menu/aigenblock with implausible scattered pricing, consistent with AI-generated placeholder content rather than a real restaurant menu; order.online router also flagged this as the wrong branch address
+  K & K Orient Valley Food Center (0 dishes) - blocked, not absent: NetWaiter platform returns 0 priced items from both the API and the rendered /menu page; genuinely empty listing, not a fetch failure
+  Kim's Bar-B-Que (0 dishes) - blocked, not absent: NetWaiter platform returns 0 priced items from both the API and the rendered /menu page; genuinely empty listing, not a fetch failure
+  La Nueva Mexican Bakery (0 dishes) - blocked, not absent: Uber Eats catalog successfully parsed but contains only 4 priced items (Mexican cookies, puff pastries, fruit-filled turnovers, Tres Leches) across 2 sections; below the 5-item minimum for a usable menu
+  PB Oriental (0 dishes) - blocked, not absent: needs-browser: own site's schema.org Restaurant record points menu to /order/, a FoodTec Solutions client-side ordering widget with no static prices in the served HTML
+  Landshark Bar & Grill (0 dishes) - blocked, not absent: own site has no priced menu (no Menu JSON-LD, essentially no dollar prices in the HTML); DoorDash fetch returned no Menu JSON-LD either
+  PKI Sushi (0 dishes) - blocked, not absent: needs-browser: old domain (genkisushisd.com) is parked (GoDaddy LANDER_SYSTEM), but found the real current site pkisushi.com; its /menu redirects to a SkyTab Online client-side ordering widget with no static prices in the served HTML
+  La Cocina De Anita (0 dishes) - blocked, not absent: tier-5 aggregator only (allmenus.com); no first-party site or marketplace page found, single tier-5 source is not usable alone
+  Leucadia Pizza (0 dishes) - blocked, not absent: needs-browser: own site's ordering link is a FoodTec Solutions client-side ordering widget (fts-root web component) with no static prices in the served HTML

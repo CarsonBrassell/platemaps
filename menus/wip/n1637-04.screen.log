@@ -1,0 +1,15 @@
+clean:      6 entries (5 with menus, 1 confirmed not-found), 308 dishes
+quarantine: 12 entries, 0 dishes withheld
+
+  Crave (0 dishes) - blocked, not absent: wrong-business: worklist website https://www.crave.ca resolves to Bell Media's Canadian streaming service (Crave TV), not a restaurant; no San Diego-area restaurant named Crave found at this domain
+  Pei Wei (0 dishes) - blocked, not absent: insufficient identifying info: worklist gives no address; both San Diego-area Pei Wei locations found are Yelp-confirmed closed, but chain identity cannot be confirmed as fully absent without an address to disambiguate a possible surviving location -- blocked rather than not_found per brief's caution that a wrong not_found is far costlier
+  Fugu (0 dishes) - blocked, not absent: needs-browser: site is a client-side loader page with ad-block-detection redirect script, no menu content in raw HTML; no marketplace listing (DoorDash/UberEats/Grubhub) found; only tier-5 aggregator results returned by search
+  Raymundo's Taco Shop (0 dishes) - blocked, not absent: needs-browser: first-party ordering domain (res-menu.com) returns HTTP 200 with 0 bytes; DoorDash and UberEats listings exist but returned no usable content on fetch; Yelp has no structured menu tab
+  Paris Baguette (0 dishes) - blocked, not absent: needs-browser: Olo-powered ordering widget renders prices client-side only; 0 dollar-sign matches in raw HTML fetch of both the location page and the order subpage
+  664 TJ Birrieria (0 dishes) - blocked, not absent: needs-browser: UberEats listing redirects (HTTP 307) to a bot-detection challenge page (def.uber.com/en/challenge); not bypassed per hard rules; no DoorDash listing found
+  Rare Society (0 dishes) - blocked, not absent: partial/no-price menu: official site (root and /solana-beach) has no menu link in nav and 0 dollar-sign matches; only tier-5 aggregators (menupix/zmenu-style) carry any pricing information
+  Oaks Bar Grill (0 dishes) - blocked, not absent: partial menu: Wayback Machine snapshot of the official page shows only 3 stray priced items with the core food offering unpriced -- fewer than 5 priced items, not a filable menu
+  Fairbanks (0 dishes) - blocked, not absent: needs-login: club dining page sits behind a members-only login-gated portal; per hard rules, never log in or submit credentials
+  Bovino (0 dishes) - blocked, not absent: not a menu: only 2 priced food items found across the winery site and an events subpage (Olive Medley $8.00, Curated Cheese Platter $25.00); fewer than 5 priced items
+  El Cotixan Taco Shop (0 dishes) - blocked, not absent: insufficient identifying info: multiple identically-named El Cotixan Taco Shop locations exist in San Diego and the worklist provides no address to disambiguate which one this entry refers to
+  Home Coffee (0 dishes) - blocked, not absent: needs-browser: joe.coffee ordering listing only exposes price CSS classes with no values (client-rendered); the first-party domain linked from its own JSON-LD is a bare Google Sites brochure page with no menu content at all

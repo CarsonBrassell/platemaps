@@ -2656,8 +2656,8 @@ function rowToRestaurantView(row: Record<string, unknown>): RestaurantView {
     hours: (row.hours as Hours) ?? null,
     lat: row.lat as number,
     lng: row.lng as number,
-    rating: row.rating as number,
-    reviewCount: row.review_count as number,
+    rating: (row.rating as number | null) ?? null,
+    reviewCount: (row.review_count as number | null) ?? null,
     trending: (row.trending as boolean) ?? false,
     photo: (row.photo as string | null) ?? undefined,
     photoAlt: (row.photo_alt as string | null) ?? undefined,
@@ -2714,7 +2714,7 @@ export async function getRestaurantIndex(): Promise<RestaurantIndexRow[]> {
     distance: row.distance as string,
     lat: row.lat as number,
     lng: row.lng as number,
-    rating: row.rating as number,
+    rating: (row.rating as number | null) ?? null,
   }));
 }
 
@@ -2789,7 +2789,7 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
     name: row.name as string,
     lat: row.lat as number,
     lng: row.lng as number,
-    rating: row.rating as number,
+    rating: (row.rating as number | null) ?? null,
     hours: (row.hours as Hours) ?? null,
   }));
 }
@@ -2854,6 +2854,8 @@ export async function getRestaurantMapRows(): Promise<RestaurantMapRow[]> {
  */
 export async function searchRestaurants(term: string, limit = 60): Promise<RestaurantView[]> {
   const needle = `%${term}%`;
+  // Apostrophe-blind twin of `needle` - see foldSearchText in lib/discoverFilters.ts.
+  const folded = `%${term.replace(/['’`´]/g, "")}%`;
   const rows = await sql`
     WITH dish_match AS (
       SELECT DISTINCT ON (d.restaurant_id)
@@ -2875,6 +2877,11 @@ export async function searchRestaurants(term: string, limit = 60): Promise<Resta
           coalesce(r.name, '') || ' ' || coalesce(r.cuisine, '') || ' ' ||
           coalesce(r.cuisine_tags, '') || ' ' || coalesce(r.neighborhood, '')
         ) ILIKE ${needle}
+        OR translate(
+          coalesce(r.name, '') || ' ' || coalesce(r.cuisine, '') || ' ' ||
+          coalesce(r.cuisine_tags, '') || ' ' || coalesce(r.neighborhood, ''),
+          '''’\x60´', ''
+        ) ILIKE ${folded}
       )
     ORDER BY r.sort_order, r.id
     LIMIT ${limit}

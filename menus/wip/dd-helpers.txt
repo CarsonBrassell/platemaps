@@ -1,0 +1,64 @@
+/*
+ * A DoorDash store page writes its flight payload escaped in some deployments
+ * and plain in others. Normalise once, before anything is matched against it,
+ * or the escaped copy reads as absent.
+ */
+function ddText(html) {
+  return html.includes('\\"__typename\\":\\"MenuPageItemList\\"')
+    ? html.replace(/\\"/g, '"').replace(/\\\\/g, "\\")
+    : html;
+}
+
+/**
+ * The menu book: every category the store page's own category nav is drawn
+ * from, with the item count DoorDash claims for it. Category `-1` is the
+ * "everything" pseudo-entry, not a section. A name that will not parse still
+ * counts toward the total - losing a name must never quietly shrink it.
+ */
+function menuBook(html) {
+  const text = ddText(html);
+  const categories = [];
+  let expected = 0;
+  for (const m of text.matchAll(
+    /"__typename":"MenuBookCategory","id":"(-?\d+)","name":(".*?"),"numItems":(\d+)/g,
+  )) {
+    if (m[1] === "-1") continue;
+    const numItems = Number(m[3]);
+    expected += numItems;
+    let name = "";
+    try {
+      name = collapse(decodeEntities(JSON.parse(m[2])));
+    } catch {
+      continue;
+    }
+    if (name) categories.push({ name, numItems });
+  }
+  return { categories, expected };
+}
+
+/* Section names compare on letters and digits alone: the book writes "Fried
+ * Rice" where the JSON-LD writes the same section nested under a menu name. */
+const sectionKey = (s) =>
+  collapse(String(s ?? ""))
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+
+/**
+ * Categories the page's own menu book advertises that these rows never cover.
+ * Carousels are excluded - they are not sections of a catalog on either side.
+ */
+function missingSections(html, rows) {
+  const { categories } = menuBook(html);
+  if (!categories.length) return [];
+  const have = rows.map((r) => sectionKey(r.section)).filter(Boolean);
+  const missing = [];
+  for (const c of categories) {
+    if (!c.numItems) continue;
+    if (/^(most ordered|picked for you|featured items|popular items?)$/i.test(c.name)) continue;
+    const k = sectionKey(c.name);
+    if (!k) continue;
+    if (!have.some((h) => h === k || h.includes(k))) missing.push(c.name);
+  }
+  return missing;
+}
+

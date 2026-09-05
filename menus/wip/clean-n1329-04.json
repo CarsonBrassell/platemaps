@@ -1,0 +1,434 @@
+[
+  {
+    "restaurantId": "5579",
+    "name": "Eats on the Street",
+    "confidence": "low",
+    "notes": "Sesame Place San Diego walk-up concession stand; no itemized menu or prices published on the park site or anywhere else found; matches the park-concession not_found precedent.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5580",
+    "name": "Oscar's Grouchy Grub",
+    "confidence": "low",
+    "notes": "Sesame Place San Diego walk-up concession stand; no itemized menu or prices published anywhere found; matches the park-concession not_found precedent.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5699",
+    "name": "Oasis Pool Bar",
+    "sourceUrl": "https://halfmooninn.com/dining/the-oasis-pool-bar/",
+    "confidence": "high",
+    "notes": "First-party page for the Oasis Pool Bar at Half Moon Inn (San Diego). Prices are stored as bare integers inside <span class=\"price\"> with the $ added by CSS, not in the text itself; confirmed by direct HTML inspection. Full Food, Children's Menu, Craft/Skinny/Frozen Cocktails, Non-Alcoholic, Beer Draft and Wine sections captured (52 items). A 'Beer Can' section exists on the page but its markup did not match the extraction pattern and was dropped rather than guessed at.",
+    "dishes": [
+      {
+        "name": "Margherita Flatbread",
+        "description": "Plum Tomatoes | Fresh Oregano | Crushed Tomatoes | Mozzarella",
+        "price": "$17",
+        "section": "Food"
+      },
+      {
+        "name": "Thai Basil Rock Shrimp Ceviche",
+        "description": "jalepeno | cashews | taro root chips",
+        "price": "$18",
+        "section": "Food"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Romaine | Garlic Croutons | Shaved Parmesan Add: Chicken 9 Steak 13 Salmon 14 Shrimp 14",
+        "price": "$16",
+        "section": "Food"
+      },
+      {
+        "name": "Ahi Poke Nachos",
+        "description": "Ginger-Soy | Onion Crisps | Avocado | Wasabi Cream | Korean Ketchup",
+        "price": "$20",
+        "section": "Food"
+      },
+      {
+        "name": "Lemon Pepper Wings",
+        "description": "chipotle dipping sauce | cilantro | green onions",
+        "price": "$18",
+        "section": "Food"
+      },
+      {
+        "name": "Fried Calamari Rings",
+        "description": "sweet chili aioli &nbsp;",
+        "price": "$17",
+        "section": "Food"
+      },
+      {
+        "name": "Mochiko Wrapped Shrimp",
+        "description": "mango sweet &amp; sour dipping sauce &nbsp;",
+        "price": "$16",
+        "section": "Food"
+      },
+      {
+        "name": "Shrimp Tacos",
+        "description": "Citrus Slaw| Avocado Cream | Pickled Onions",
+        "price": "$18",
+        "section": "Food"
+      },
+      {
+        "name": "Teriyaki Chicken",
+        "description": "steamed rice | broccoli &nbsp;",
+        "price": "$18",
+        "section": "Food"
+      },
+      {
+        "name": "Wagyu Sliders",
+        "description": "Swiss Cheese| Caramelized Onions | Truffle Aioli",
+        "price": "$20",
+        "section": "Food"
+      },
+      {
+        "name": "All American Wagyu Burger",
+        "description": "Tomato | Shaved Greens | Cheddar | Fries | Humphreys Sauce | Brioche Bun Add Bacon 4",
+        "price": "$22",
+        "section": "Food"
+      },
+      {
+        "name": "Pollo Asado Quesadilla",
+        "description": "Pickled Red Onions | Guacamole | Salsa Roja",
+        "price": "$18",
+        "section": "Food"
+      },
+      {
+        "name": "Turkey Avocado Club",
+        "description": "Bacon | Tomato | Provolone | Multigrain | Fries",
+        "price": "$17",
+        "section": "Food"
+      },
+      {
+        "name": "Large Plate of Fries",
+        "description": "Add Truffle Oil &amp; Parmesan 4",
+        "price": "$8",
+        "section": "Food"
+      },
+      {
+        "name": "Chips | Salsa & Guacamole",
+        "description": "",
+        "price": "$15",
+        "section": "Food"
+      },
+      {
+        "name": "Wagyu Sliders",
+        "description": "Swiss Cheese | French Fries",
+        "price": "$11",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Hot Dog or Corn Dog",
+        "description": "All Beef Hot Dog | French Fries",
+        "price": "$11",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Personal Pizza",
+        "description": "Pepperoni Or Cheese",
+        "price": "$11",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Chicken Fingers",
+        "description": "Breaded Chicken Strips | Ranch Dressing | French Fries",
+        "price": "$11",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Frozen Coconut Colada",
+        "description": "Coconut | Pineapple",
+        "price": "$7",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Frozen Strawberry Lemonade",
+        "description": "Lemonade | Strawberry Puree",
+        "price": "$7",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Humphreys Mai Tai",
+        "description": "Planteray Rum | Grand Marnier | Orgeat | Lime Juice | Cane Syrup | Cutwater Bali Hai Dark Rum",
+        "price": "$14",
+        "section": "Craft Cocktails"
+      },
+      {
+        "name": "Saturn",
+        "description": "Bombay gin | passion fruit purée | orgeat | lemon juice",
+        "price": "$14",
+        "section": "Craft Cocktails"
+      },
+      {
+        "name": "Whiskey River",
+        "description": "Four Roses Bourbon | Ginger Beer | Lime Sour | Bitters",
+        "price": "$14",
+        "section": "Craft Cocktails"
+      },
+      {
+        "name": "Purple Rain",
+        "description": "Illegal Mezcal | Cointreau | lime juice | blueberry purée",
+        "price": "$14",
+        "section": "Craft Cocktails"
+      },
+      {
+        "name": "Oye Cómo Va",
+        "description": "Teremana Blanco| St Germain | lime juice | watermelon purée",
+        "price": "$14",
+        "section": "Craft Cocktails"
+      },
+      {
+        "name": "Young & Beautiful",
+        "description": "Grey Goose | Chambord | lemonade",
+        "price": "$14",
+        "section": "Craft Cocktails"
+      },
+      {
+        "name": "Lime in the Coconut",
+        "description": "Cuervo 1800 Coconut Tequila | Lime Juice | Agave Nectar | Triple Sec",
+        "price": "$14",
+        "section": "Craft Cocktails"
+      },
+      {
+        "name": "Painkiller",
+        "description": "Pusser’s rum | orange juice | pineapple juice | coco real",
+        "price": "$14",
+        "section": "Craft Cocktails"
+      },
+      {
+        "name": "Blue Hawaii Bliss",
+        "description": "Bacardi |Coconut Rum | Cream Of Coconut | Pineapple Juice | Blue Curacao",
+        "price": "$14",
+        "section": "Craft Cocktails"
+      },
+      {
+        "name": "Red Red Wine Sangria",
+        "description": "red wine | brandy | triple sec | apple cider | fresh fruit",
+        "price": "$10",
+        "section": "Craft Cocktails"
+      },
+      {
+        "name": "Cosmopolitan",
+        "description": "Grey Goose Vodka | Above Board Orange Liqueur | Cranberry Juice | Lime Juice",
+        "price": "$14",
+        "section": "Skinny Craft Cocktails"
+      },
+      {
+        "name": "Margaritaville Rebellion",
+        "description": "Teremana Blanco | Above Board Orange Liqueur | Lime Juice",
+        "price": "$14",
+        "section": "Skinny Craft Cocktails"
+      },
+      {
+        "name": "The Revolver",
+        "description": "Four Roses Bourbon | Above Board Coffee Liqueur | Orange Bitters",
+        "price": "$14",
+        "section": "Skinny Craft Cocktails"
+      },
+      {
+        "name": "Kiwi Lemonade",
+        "description": "Grey Goose Vodka | Kiwi Puree | Lemonade",
+        "price": "$14",
+        "section": "Frozen Craft Cocktails"
+      },
+      {
+        "name": "Margaritaville",
+        "description": "Teremana Tequila | Lime Sour | Grand Marnier Float",
+        "price": "$14",
+        "section": "Frozen Craft Cocktails"
+      },
+      {
+        "name": "Ocean Song",
+        "description": "Malibu Rum | Blue Curacao | Midori | Pineapple |Coconut",
+        "price": "$14",
+        "section": "Frozen Craft Cocktails"
+      },
+      {
+        "name": "Pina Colada",
+        "description": "Bacardi Rum | Coconut | Pineapple | Cutwater Bali Hai Dark Rum Float",
+        "price": "$14",
+        "section": "Frozen Craft Cocktails"
+      },
+      {
+        "name": "Strawberry Daiquiri",
+        "description": "Bacardi Rum | Strawberry Purée | Lime Sour",
+        "price": "$14",
+        "section": "Frozen Craft Cocktails"
+      },
+      {
+        "name": "Blueberry Lemonade",
+        "description": "lemonade | blueberry purée | soda water",
+        "price": "$8",
+        "section": "Non-Alcoholic Drinks"
+      },
+      {
+        "name": "Soda Amore",
+        "description": "Kiwi Purée | Lime Juice | Soda Water",
+        "price": "$8",
+        "section": "Non-Alcoholic Drinks"
+      },
+      {
+        "name": "Alesmith .394 San Diego Pale",
+        "description": "",
+        "price": "$7",
+        "section": "Beer Draft"
+      },
+      {
+        "name": "Coors Light",
+        "description": "",
+        "price": "$6",
+        "section": "Beer Draft"
+      },
+      {
+        "name": "Corona",
+        "description": "",
+        "price": "$7",
+        "section": "Beer Draft"
+      },
+      {
+        "name": "Heineken 0.0 Non-Alcoholic",
+        "description": "",
+        "price": "$6",
+        "section": "Beer Draft"
+      },
+      {
+        "name": "Michelob Ultra",
+        "description": "",
+        "price": "$6",
+        "section": "Beer Draft"
+      },
+      {
+        "name": "White Claw",
+        "description": "",
+        "price": "$6",
+        "section": "Beer Draft"
+      },
+      {
+        "name": "Cannonball Cabernet",
+        "description": "",
+        "price": "$14",
+        "section": "Wine"
+      },
+      {
+        "name": "La Crema Chardonnay",
+        "description": "",
+        "price": "$12",
+        "section": "Wine"
+      },
+      {
+        "name": "La Crema Pinot Noir",
+        "description": "",
+        "price": "$14",
+        "section": "Wine"
+      },
+      {
+        "name": "Sofia Blanc De Blancs Sparkling Wine",
+        "description": "",
+        "price": "$12",
+        "section": "Wine"
+      },
+      {
+        "name": "The Champion Sauvignon Blanc",
+        "description": "",
+        "price": "$12",
+        "section": "Wine"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1913",
+    "name": "isa.bella",
+    "confidence": "low",
+    "notes": "Yelp shows CLOSED consistently across multiple 2026 snapshots with no reopening date announced. Its own domain (isabellapizzeria.com) has been hijacked and now serves unrelated gambling spam content -- noted per brief, not used as a source.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4398",
+    "name": "Colimas Mexican Grull",
+    "sourceUrl": "https://colimasnorthpark.com/?page_id=138",
+    "confidence": "high",
+    "notes": "Address on page (2302 University Ave, San Diego, CA 92104) matches the work-list address exactly. Page captured is the breakfast-plates menu; a separate lunch/dinner menu page was searched for (page_id=142, 163) but those turned out to be Testimonial/Contact pages, not menu pages, so this capture is breakfast-section only.",
+    "dishes": [
+      {
+        "name": "HUEVOS RANCHEROS",
+        "description": "",
+        "price": "$9.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "HUEVOS A LA MEXICANA",
+        "description": "",
+        "price": "$9.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "HUEVOS VERDES",
+        "description": "",
+        "price": "$9.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "HUEVOS CON JAMON",
+        "description": "",
+        "price": "$9.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "MACHACA PLATE",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "MY BREAKFAST",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "HAM OMELETTE",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "NOPAL Y HUEVOS",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "CHILAQUILES",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "SHRIMP OMELETTE",
+        "description": "",
+        "price": "$13.99",
+        "section": "Breakfast"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2018",
+    "name": "Gandolfo's New York Deli",
+    "confidence": "low",
+    "notes": "Confirmed permanently closed on Yelp at the work-list address (3617 Ocean Ranch Boulevard); no successor business found at this address.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2521",
+    "name": "Bravo Carne Asada",
+    "confidence": "low",
+    "notes": "Confirmed permanently closed on Yelp at the work-list address (531 Broadway), closed since 2017 with no reopening found at this address.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5220",
+    "name": "Arctic Snacks",
+    "confidence": "low",
+    "notes": "Confirmed to be a San Diego Zoo (Balboa Park) snack stand, not the Safari Park as an earlier summary suggested (address 2920 Zoo Dr / 92101 matches the Zoo, and no Arctic Snacks listing exists on the Safari Park dining page). No itemized prices published anywhere for this stand; matches the park-concession not_found precedent.",
+    "dishes": []
+  }
+]

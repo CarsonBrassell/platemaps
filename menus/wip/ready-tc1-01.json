@@ -1,0 +1,155 @@
+[
+  {
+    "restaurantId": "6566",
+    "name": "Salt & Straw",
+    "sourceUrl": "https://www.doordash.com/store/salt-&-straw-craft-made-ice-cream-san-diego-774536/",
+    "confidence": "medium",
+    "notes": "Router already screened out saltandstraw.com's Shopify /products.json (88 products, 31% merchandise) as a shipped-nationwide retail catalog, not what the counter serves. Found this location's own DoorDash storefront instead; address confirmed exact match (3705 Caminito Court, San Diego). schema.org Menu JSON-LD gave 6 sections. Dropped 'Most Ordered' (12 items) as a duplicate carousel - every flavor and price in it is identical to the 'Ice Cream Pints' section. Cent distribution across the 6 remaining distinct prices ($14.75 pint, $9.40 Tacolate, $1.95 waffle cone, $93.25 cake, $4.15/$2.40 water) is not testable by a divisor sweep (too few distinct values), but $14.75/pint is in line with Salt & Straw's publicly known pint pricing nationally, so it does not read as a delivery-marketplace markup. This is DoorDash's delivery catalog and appears to be packaged pints only - no by-the-scoop/by-the-cone walk-in pricing was found (scoops likely don't travel for delivery), so this is a partial capture: the pint/pack retail line, not the primary in-person scoop menu. Filed as-is per house rules (small-menu allowance) with this gap stated explicitly.",
+    "dishes": [
+      {
+        "name": "Salted, Malted, Chocolate Chip Cookie Dough",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Chocolate Gooey Brownie",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Sea Salt with Caramel Ribbons",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Coffee and Love Nuts",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Freckled Mint Chocolate Chip (v)",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Hazelnut Cookies and Cream (v)",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Honey Lavender",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Double Fold Vanilla",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Cinnamon Snickerdoodle",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Strawberry Honey Balsamic with Black Pepper",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Arbequina Olive Oil",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Strawberry Coconut Water Sherbet (v)",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Apple Cider Donuts",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Apple and Cheddar Cinnamon Rolls",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Vanilla Apple Custard Tart",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Pear and Blue Cheese",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Hoppy Apple Cider Sorbet (v)",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Wildflower Honey & Lemon Chess Pie",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "Gruyère & Tomato Custard Tart",
+        "description": "",
+        "price": "$14.75",
+        "section": "ICE CREAM PINTS"
+      },
+      {
+        "name": "The Tacolate",
+        "description": "Cinnamon-ancho ice cream in a hand-pressed waffle cone taco",
+        "price": "$9.40",
+        "section": "THE TACOLATE"
+      },
+      {
+        "name": "House Made Waffle Cone (on the side)",
+        "description": "",
+        "price": "$1.95",
+        "section": "WAFFLE CONES & MORE"
+      },
+      {
+        "name": "The Cake",
+        "description": "",
+        "price": "$93.25",
+        "section": "ICE CREAM CAKES"
+      },
+      {
+        "name": "Open Water Sparkling",
+        "description": "",
+        "price": "$4.15",
+        "section": "BEVERAGES"
+      },
+      {
+        "name": "Open Water Still",
+        "description": "",
+        "price": "$2.40",
+        "section": "BEVERAGES"
+      }
+    ]
+  }
+]

@@ -1,0 +1,3954 @@
+[
+ {
+  "restaurantId": "1011",
+  "name": "Petes Place",
+  "website": "http://www.petesplacelamesa.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on http://www.petesplacelamesa.com/"
+ },
+ {
+  "restaurantId": "3074",
+  "name": "The Goods",
+  "website": "https://www.thegoodsdoughnuts.com/",
+  "platform": "clover",
+  "outcome": "gated",
+  "detail": "only 3 priced items from https://the-goods-carlsbad.cloveronline.com/menu/all at 4:37:33 PM PT - possible time gate, re-run in daylight"
+ },
+ {
+  "restaurantId": "3517",
+  "name": "Portal Coffee",
+  "website": "https://www.portalcoffeesd.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3592",
+  "name": "3N1 Sports Bar & Grill",
+  "website": "https://3n1sportsbarandgrill.com/",
+  "platform": "spothopper",
+  "outcome": "needs-browser",
+  "detail": "SpotHopper spot 69263 published no priced items"
+ },
+ {
+  "restaurantId": "3997",
+  "name": "Toasted",
+  "website": "http://toasted.net/",
+  "platform": "Paytronix",
+  "outcome": "needs-browser",
+  "detail": "Paytronix detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4371",
+  "name": "@Spacebar Cafe",
+  "website": "http://www.atspacebar.com/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://atspacebar.com/menu (~18 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "4869",
+  "name": "Surfing Crab Escondido",
+  "website": "https://www.surfingcrabca.com/",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2482",
+  "name": "Serrano's Mexican Food",
+  "website": "http://serranosencinitas.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3740",
+  "name": "Rosemonts Cafe",
+  "website": "https://Rosemontscafe.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/rosemonts-cafe-6830-la-jolla-blvd-101)"
+ },
+ {
+  "restaurantId": "2136",
+  "name": "Santos Coffee",
+  "website": "http://www.santoscoffeehousenp.com/",
+  "platform": "spothopper",
+  "outcome": "needs-browser",
+  "detail": "SpotHopper ordering widget for spot 29012 returned HTTP 404"
+ },
+ {
+  "restaurantId": "1855",
+  "name": "Silverlake Ramen",
+  "website": "https://silverlakeramen.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/silverlake-ramen-210807/)"
+ },
+ {
+  "restaurantId": "4085",
+  "name": "Em Coffee House",
+  "website": "https://www.emcoffeehouse.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4478",
+  "name": "Mesa Agricola",
+  "website": "https://mesaagricola.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2809",
+  "name": "Industrial Grind Coffee",
+  "website": "http://industrialgrindcoffee.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4059",
+  "name": "Banh Mi Blvd",
+  "website": "https://www.banhmiblvd858.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "403 to two desktop UAs and to curl on https://www.banhmiblvd858.com/"
+ },
+ {
+  "restaurantId": "728",
+  "name": "Dot Cafe",
+  "website": "https://www.dottodotcafe.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2017",
+  "name": "BB's Deli",
+  "website": "https://order.online/business/bbs-deli-40565",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/en-GB/business/bbs-deli-40565"
+ },
+ {
+  "restaurantId": "4572",
+  "name": "Milk Organics",
+  "website": "https://www.milkorganics.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5271",
+  "name": "Seaview Restaurant",
+  "website": "https://www.hyatt.com/en-US/hotel/california/manchester-grand-hyatt-san-diego/sanrs/dining",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "429 rate limited on https://www.hyatt.com/en-US/hotel/california/manchester-grand-hyatt-san-diego/sanrs/dining"
+ },
+ {
+  "restaurantId": "4476",
+  "name": "Kalei's Kitchenette",
+  "website": "http://www.kaleiskitchenette.com/",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2113",
+  "name": "Iron Wok",
+  "website": "https://ironwokrb.com/",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2694",
+  "name": "Lime in the Coconut",
+  "website": "https://limexcoconut.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "4142",
+  "name": "Communion",
+  "website": "https://www.dinecommunionsd.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "499 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/communion-mission-hills-901-west-washington-street"
+ },
+ {
+  "restaurantId": "4029",
+  "name": "Rock On Pizza",
+  "website": "https://rockonpizza.com/?utm_source=google",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "3993",
+  "name": "Sue's Korean Kitchen",
+  "website": "https://sueskoreankitchen.square.site/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2720",
+  "name": "Talitha Coffee Roasters",
+  "website": "https://talithacoffee.square.site",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4585",
+  "name": "Tacoman",
+  "website": "https://tacomansd.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2727",
+  "name": "Rose Donuts",
+  "website": "https://order.online/store/-800591?hideModal=true",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/-800591?hideModal=true"
+ },
+ {
+  "restaurantId": "3584",
+  "name": "San Elijo Vine & Tap",
+  "website": "http://www.sevineandtap.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "38 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/vine&tap"
+ },
+ {
+  "restaurantId": "2552",
+  "name": "Thai Fresh",
+  "website": "https://thaifreshsd.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5692",
+  "name": "Franca's Italian Kitchen & Bar",
+  "website": "https://francas-italian.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://francas-italian.com/"
+ },
+ {
+  "restaurantId": "4562",
+  "name": "Fan-Fan",
+  "website": "http://www.fanfangroup.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2110",
+  "name": "Giant Pizza NY Style Halal Food",
+  "website": "https://www.giantpizzanystyle.com",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "4005",
+  "name": "Craft House",
+  "website": "https://crafthouseskydeck.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "216 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/craft-house-del-mar-skydeck-12841-el-camino-real-suite-202"
+ },
+ {
+  "restaurantId": "3877",
+  "name": "Mr. Charlie's",
+  "website": "https://mrcharlies.co/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/mr-charlies-la-new-acc-612-n-la-brea-ave)"
+ },
+ {
+  "restaurantId": "3817",
+  "name": "BenGong's Tea",
+  "website": "https://www.bengongstea.us/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/ben-gongs-tea-ellicott-city-10045-baltimore-national-pike-ste-a10)"
+ },
+ {
+  "restaurantId": "3946",
+  "name": "Acento Coffee Roasters",
+  "website": "http://acentocoffeeroasters.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4501",
+  "name": "Donut Stop",
+  "website": "http://donutstopmiramesa.wordpress.com/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://donutstopmiramesa.wordpress.com/menu/ (~24 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "4279",
+  "name": "D Wings & Ribs",
+  "website": "http://dwingsusa.com/",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4052",
+  "name": "Eat Crispy Burger",
+  "website": "https://www.eatcrispyburger.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/store/23629659"
+ },
+ {
+  "restaurantId": "2631",
+  "name": "The Barista Botanist",
+  "website": "https://www.baristabotanist.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4504",
+  "name": "N.Y. Giant Pizza",
+  "website": "http://nygpsd.com/",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "5667",
+  "name": "Bonehead Burger Co.",
+  "website": "https://www.boneheadburgers.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "3972",
+  "name": "Matoi",
+  "website": "https://www.matoisandiego.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/menus)"
+ },
+ {
+  "restaurantId": "5503",
+  "name": "Cargo Cafe",
+  "website": "https://www.cargo-cafe.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3680",
+  "name": "Zhengxin Chicken Steak",
+  "website": "http://www.zhengxinchickensteak.com/",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3881",
+  "name": "Elixir Espresso Bar",
+  "website": "http://elixirespressobar.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3934",
+  "name": "Sul & Beans",
+  "website": "https://www.sulandbeans.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2941",
+  "name": "Gor Gai Thai Eatery",
+  "website": "http://www.gorgaithaieatery.com/",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "4132",
+  "name": "ZzanG Hotdog & Chicken",
+  "website": "http://zzanghotdog.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3940",
+  "name": "Sweetfin",
+  "website": "https://www.sweetfin.com/",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "3191",
+  "name": "Roots Bowls",
+  "website": "https://rootsbowls.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/roots-bowls-296772)"
+ },
+ {
+  "restaurantId": "3388",
+  "name": "Daniel's Taco Shop",
+  "website": "https://order.online/business/daniels-taco-shop-432350",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/en-GB/business/daniels-taco-shop-432350"
+ },
+ {
+  "restaurantId": "3964",
+  "name": "Szechuan Chef Chinese Cuisine",
+  "website": "https://www.szechuanchefca.com/",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4703",
+  "name": "Tulum Seafood",
+  "website": "https://www.tulumfresh.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "429 rate limited on https://www.tulumfresh.com"
+ },
+ {
+  "restaurantId": "4369",
+  "name": "Invita Cafe",
+  "website": "https://www.invitacafe.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4594",
+  "name": "Upper East",
+  "website": "https://uppereastongrand.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/sites-api)"
+ },
+ {
+  "restaurantId": "5234",
+  "name": "Sushi Roka Bar & Grill",
+  "website": "https://www.sushirokasd.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "196 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://sushiroka.toast.site/order"
+ },
+ {
+  "restaurantId": "817",
+  "name": "Kinchana",
+  "website": "https://kinchana.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "978",
+  "name": "San Marcos Deli",
+  "website": "https://www.sanmarcosdeliandcatering.com",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "213 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/san-marcos-deli-and-catering"
+ },
+ {
+  "restaurantId": "4320",
+  "name": "Mosa Tea",
+  "website": "https://www.mosa-tea.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3992",
+  "name": "Taste of Thai",
+  "website": "https://tasteofthai4sranch.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/taste-of-thai-(craftsman-way)-san-diego-24382391/17732356/?preview=1"
+ },
+ {
+  "restaurantId": "3547",
+  "name": "Spoon Thai",
+  "website": "https://spoonthaikitchen.com/?utm_source=google",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://spoonthaikitchen.com/?utm_source=google"
+ },
+ {
+  "restaurantId": "4395",
+  "name": "Dora",
+  "website": "https://www.doralajolla.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "2069",
+  "name": "Super Dumpling",
+  "website": "https://superdumplingcafe.com/",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "976",
+  "name": "Goli",
+  "website": "http://www.golisd.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4147",
+  "name": "Thai Ladle",
+  "website": "https://thailadle.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/sites-api)"
+ },
+ {
+  "restaurantId": "3727",
+  "name": "Leos Kitchen",
+  "website": "https://leoskitchen.net/",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "4622",
+  "name": "Junction Bar & Grill",
+  "website": "https://junctionbars.com/junctionbarandgrillsandiego?utm_source=google",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+ },
+ {
+  "restaurantId": "4536",
+  "name": "El Puerto Street Tacos",
+  "website": "https://www.elpuertocarlsbad.net/windmill",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3666",
+  "name": "Deli Belly",
+  "website": "https://delibellyusa.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/deli-belly-163031)"
+ },
+ {
+  "restaurantId": "4217",
+  "name": "Candor",
+  "website": "https://dinecandor.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "40 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/candor"
+ },
+ {
+  "restaurantId": "3551",
+  "name": "Boba Joy",
+  "website": "https://www.bobajoy.org/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/store/boba-joy-santee-1747215/"
+ },
+ {
+  "restaurantId": "3475",
+  "name": "Ma's House",
+  "website": "http://www.mashouse.com/",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4484",
+  "name": "Daffodil Cafe",
+  "website": "https://www.eatatdaffodil.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "226 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/daffodil-cafe-4747-executive-drive"
+ },
+ {
+  "restaurantId": "4898",
+  "name": "The Villa on Grand",
+  "website": "https://order.toasttab.com/online/villaco-117-w-grand-ave",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "166 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/villaco-117-w-grand-ave"
+ },
+ {
+  "restaurantId": "4014",
+  "name": "La Banana Fruits - Fruteria",
+  "website": "https://mylabananafruits.com",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3767",
+  "name": "Angry Petes Pizza Point Loma",
+  "website": "https://www.angrypetespizza.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.angrypetespizza.com/"
+ },
+ {
+  "restaurantId": "2943",
+  "name": "Sushi Ren",
+  "website": "https://sushirensd.com/?utm_source=google",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://sushirensd.com/?utm_source=google"
+ },
+ {
+  "restaurantId": "4658",
+  "name": "Lark and Owl",
+  "website": "https://www.larkowlmenu.com/",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "4146",
+  "name": "Rad Habits Juice",
+  "website": "http://www.radhabitsjuice.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4243",
+  "name": "Spicy Noodle",
+  "website": "https://www.spicynoodlesd.com",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2495",
+  "name": "Roberto's Taco Shop RB",
+  "website": "https://robertostacoshopsd.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://robertostacoshopsd.com/"
+ },
+ {
+  "restaurantId": "4117",
+  "name": "Snack Shack",
+  "website": "http://www.sisterssnackshack.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "4486",
+  "name": "Uncle Joey's Pizza & Grill",
+  "website": "https://www.unclejoeyspizzagrill.com/",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "3502",
+  "name": "Robeks",
+  "website": "https://robeks.com/locations/ca/chula-vista/374-east-h-st?utm_source=google&utm_medium=organic&utm_campaign=gbp&utm_content=website",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/robeks-chula-vista-88971/1410885/"
+ },
+ {
+  "restaurantId": "3423",
+  "name": "Dog Leg Brewing",
+  "website": "https://www.doglegbrewingco.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4542",
+  "name": "A Louest",
+  "website": "https://alouestsd.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "4458",
+  "name": "Thai Test Kitchen",
+  "website": "https://order.toasttab.com/online/thai-test-kitchen-10184-telesis-ct",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.toasttab.com/online/thai-test-kitchen-10184-telesis-ct"
+ },
+ {
+  "restaurantId": "775",
+  "name": "The Craft Taco at The Nat",
+  "website": "https://www.thecrafttaconat.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3844",
+  "name": "Ten Seconds Yunnan Rice Noodle",
+  "website": "https://www.tensecondsricenoodles.com/",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3752",
+  "name": "Fallbrook Froyoi",
+  "website": "http://www.fallbrookfroyo.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/store/fallbrook-froyo-1065246"
+ },
+ {
+  "restaurantId": "4204",
+  "name": "Eat Crispy Burger",
+  "website": "https://www.eatcrispyburger.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/store/23629659"
+ },
+ {
+  "restaurantId": "4603",
+  "name": "Castelli & Pizarro Family Vineyards & Winery",
+  "website": "https://www.cpfwinery.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4018",
+  "name": "Papa's Pizza",
+  "website": "http://www.papaspizzasandiego.net/",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "4089",
+  "name": "Epic Wings",
+  "website": "https://location.epicwings.com/us/ca/san-diego/palm-promenade",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id in the served HTML (needs a store pick)"
+ },
+ {
+  "restaurantId": "4263",
+  "name": "Modern Times Coffee",
+  "website": "https://theinvigatorium.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "429 rate limited on https://theinvigatorium.com/"
+ },
+ {
+  "restaurantId": "2083",
+  "name": "Go Greek Authentic Yogurteria",
+  "website": "https://www.gogreekyogurt.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "4072",
+  "name": "Yogurtland",
+  "website": "https://www.yogurtland.com/locations/view/1245",
+  "platform": "Paytronix",
+  "outcome": "needs-browser",
+  "detail": "Paytronix detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4506",
+  "name": "El Viejon",
+  "website": "https://elviejonseafood.com/",
+  "platform": "spothopper",
+  "outcome": "needs-browser",
+  "detail": "SpotHopper spot 117109 published no priced items"
+ },
+ {
+  "restaurantId": "3790",
+  "name": "Flour Atelier",
+  "website": "https://www.flouratelier.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4046",
+  "name": "Tora Tora Sushi Specialist",
+  "website": "https://www.toratorasushi.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/tora-tora-8155-mira-mesa-blvd-3&quot;,)"
+ },
+ {
+  "restaurantId": "4461",
+  "name": "Roppongi",
+  "website": "https://roppongiusa.net/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://roppongilajolla.com/menu/ (~83 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "4390",
+  "name": "Qin West",
+  "website": "https://qinwestnoodle.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/qin-west-noodle-416483)"
+ },
+ {
+  "restaurantId": "3508",
+  "name": "Mochinut",
+  "website": "https://www.mochinut.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://order.online/online-ordering/business-group/10844735"
+ },
+ {
+  "restaurantId": "3782",
+  "name": "Caffe Di Talya",
+  "website": "https://caffeditalya.com",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://caffeditalya.com/menu/ (~9 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "3424",
+  "name": "BobaPOP Tea Bar",
+  "website": "http://bobapop-tea-bar.square.site/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4387",
+  "name": "Poke One N Half",
+  "website": "http://onenhalf.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/poki-one-n-half-58794)"
+ },
+ {
+  "restaurantId": "5624",
+  "name": "Nomada",
+  "website": "https://nomadadining.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "5631",
+  "name": "Cafe Pascale Grill & Deli",
+  "website": "https://www.cafepascale.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3174",
+  "name": "Bean Box",
+  "website": "http://thebeanboxca.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4465",
+  "name": "Cluck N Sip",
+  "website": "https://www.clucknsip.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "403 to two desktop UAs and to curl on https://www.clucknsip.com"
+ },
+ {
+  "restaurantId": "4615",
+  "name": "Pure Squeeze",
+  "website": "https://m.yelp.com/biz/pure-squeeze-juice-bar-san-diego",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "DataDome on https://m.yelp.com/biz/pure-squeeze-juice-bar-san-diego"
+ },
+ {
+  "restaurantId": "2024",
+  "name": "Cork & Stem",
+  "website": "http://www.corkandstemsd.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "3956",
+  "name": "56 Thai Cafe",
+  "website": "http://www.56thaicafe.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "4602",
+  "name": "The Hangout",
+  "website": "https://www.thehangoutrestaurantandbar.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "126 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/the-hangout-restaurant-and-bar-2736-adams-ave"
+ },
+ {
+  "restaurantId": "4526",
+  "name": "The Poke Co.",
+  "website": "https://thepokeco.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/store/-171377"
+ },
+ {
+  "restaurantId": "3496",
+  "name": "Warner Springs Golf Shop & Grill",
+  "website": "https://warnerspringsranchresort.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "429 rate limited on https://warnerspringsranchresort.com/"
+ },
+ {
+  "restaurantId": "4149",
+  "name": "Montebello",
+  "website": "http://www.montebellocafe.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2511",
+  "name": "Pita Pit",
+  "website": "http://pitagrillsd.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/order-online)"
+ },
+ {
+  "restaurantId": "4388",
+  "name": "Suki Hana",
+  "website": "https://www.sukihanaca.com/",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5672",
+  "name": "Ziggi's Coffee",
+  "website": "https://www.ziggiscoffee.com/",
+  "platform": "Paytronix",
+  "outcome": "needs-browser",
+  "detail": "Paytronix detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4490",
+  "name": "Grab & Go",
+  "website": "https://www.grabngosubs.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+ },
+ {
+  "restaurantId": "4205",
+  "name": "La Jolla Boba",
+  "website": "https://www.lajollaboba.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "429 rate limited on https://www.lajollaboba.com"
+ },
+ {
+  "restaurantId": "4160",
+  "name": "Zest Wine Bistro",
+  "website": "https://www.zestwinebistro.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "3975",
+  "name": "Yuki Yuki",
+  "website": "https://www.yukiyukisd.com/",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4190",
+  "name": "Tapas Bar",
+  "website": "https://romescomexmed.com/page/tapas-bar",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://romescomexmed.com/page/tapas-bar"
+ },
+ {
+  "restaurantId": "5270",
+  "name": "Market One",
+  "website": "https://www.hyatt.com/en-US/hotel/california/manchester-grand-hyatt-san-diego/sanrs/dining",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "429 rate limited on https://www.hyatt.com/en-US/hotel/california/manchester-grand-hyatt-san-diego/sanrs/dining"
+ },
+ {
+  "restaurantId": "4154",
+  "name": "WUHU TEA & DELI",
+  "website": "https://order.online/business/wuhu-tea-and-deli-11791011",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/en-GB/business/wuhu-tea-and-deli-11791011"
+ },
+ {
+  "restaurantId": "4139",
+  "name": "Oriste Fairway Cafe",
+  "website": "http://oriste-fairway-cafe-tavern2.website.spoton.com/",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3238",
+  "name": "Shawii Kitchen",
+  "website": "https://shawiikitchen.com/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://www.shawiikitchen.com/menu/ (~72 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "4563",
+  "name": "Copa Vida",
+  "website": "https://copa-vida.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3866",
+  "name": "Joe & The Juice",
+  "website": "https://www.joejuice.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "429 rate limited on https://www.joejuice.com/"
+ },
+ {
+  "restaurantId": "3560",
+  "name": "Kahumbo",
+  "website": "https://kahumbo.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/store/37309049"
+ },
+ {
+  "restaurantId": "3979",
+  "name": "Yonny Mini Hotpot",
+  "website": "https://www.fishwithyousd.com",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4825",
+  "name": "Corbin's Q",
+  "website": "https://corbinsq.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/invoice)"
+ },
+ {
+  "restaurantId": "1756",
+  "name": "Souplantation",
+  "website": "https://www.souplantation.com/",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "4649",
+  "name": "Paradise Kabob",
+  "website": "https://paradisekabob.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://www.doordash.com/store/paradise-kabob-san-diego-26085530/62364152"
+ },
+ {
+  "restaurantId": "2513",
+  "name": "BCB Coffee Company",
+  "website": "http://www.bcbcafesd.com/location/sdsu-coffee-carts/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "2605",
+  "name": "Lucha Libre Taco Shop",
+  "website": "https://luchalibretacoshop.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5519",
+  "name": "The Hamlett",
+  "website": "https://www.thehamlett.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "403 to two desktop UAs and to curl on https://www.thehamlett.com/"
+ },
+ {
+  "restaurantId": "3565",
+  "name": "Deli Belly",
+  "website": "https://delibellyusa.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/deli-belly-163031)"
+ },
+ {
+  "restaurantId": "4618",
+  "name": "Cafecito 1806",
+  "website": "https://cafecito-1806.square.site/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5973",
+  "name": "Broken Yolk Cafe",
+  "website": "https://www.thebrokenyolkcafe.com/location/broken-yolk-cafe-eastlake/",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id in the served HTML (needs a store pick)"
+ },
+ {
+  "restaurantId": "6548",
+  "name": "Vincenzo Cucina and Lounge",
+  "website": "http://vincenzosd.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "114 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/vincenzo-cucina-lounge"
+ },
+ {
+  "restaurantId": "6210",
+  "name": "Fish 101",
+  "website": "http://www.fish101restaurant.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5799",
+  "name": "Brigantine Seafood",
+  "website": "http://www.brigantine.com/",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "5883",
+  "name": "McGregor's Bar and Grill",
+  "website": "http://mcgregorssandiego.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "66 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/mcgregors-grill-ale-house"
+ },
+ {
+  "restaurantId": "5906",
+  "name": "Roberto's Taco Shop #1",
+  "website": "https://order.spoton.com/so-robertos-taco-shop-national-city-28164/national-city-ca/69efcb51df1d294378d00e77",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5907",
+  "name": "En Fuego Cantina & Grill",
+  "website": "http://enfuegocantina.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "480 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/en-fuego-cantina-grill"
+ },
+ {
+  "restaurantId": "5875",
+  "name": "MooTime Creamery",
+  "website": "https://mootimecreamerysd.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/mootime-creamery-1025-orange-ave)"
+ },
+ {
+  "restaurantId": "5910",
+  "name": "Epic Wings",
+  "website": "https://location.epicwings.com/us/ca/chula-vista/chula-vista",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id in the served HTML (needs a store pick)"
+ },
+ {
+  "restaurantId": "5859",
+  "name": "Tom's Famous Family Restaurant 24",
+  "website": "http://www.tomsfamous.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/~309363)"
+ },
+ {
+  "restaurantId": "6545",
+  "name": "Wayfarer Bread & Pastry",
+  "website": "http://www.wayfarerbread.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6094",
+  "name": "Roberto's Taco Shop Bay Park",
+  "website": "https://robertostacoshopsd.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://robertostacoshopsd.com/"
+ },
+ {
+  "restaurantId": "5846",
+  "name": "Antonelli's Deli",
+  "website": "https://www.antonellisfamilydeli.com/",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5723",
+  "name": "Golden Egg Omelet House",
+  "website": "http://thegoldeneggomelethouse.net/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "5817",
+  "name": "TOM's Famous Family Restaurant 22",
+  "website": "https://tomsfamous.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/~309363)"
+ },
+ {
+  "restaurantId": "5725",
+  "name": "Por Favor El Cajon",
+  "website": "https://www.porfavorrestaurants.com/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://porfavorrestaurants.com/food/ (~69 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "6331",
+  "name": "Papas & Tacos Mexican Food",
+  "website": "http://www.mypapastacos.com/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://mypapastacos.com/menu/ (~121 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "6584",
+  "name": "Parakeet Cafe - Little Italy",
+  "website": "https://www.parakeetcafe.com/location/little-italy/",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "5785",
+  "name": "That Mexican Place",
+  "website": "https://www.thatmexicanplace.net/",
+  "platform": "GloriaFood widget",
+  "outcome": "needs-browser",
+  "detail": "GloriaFood widget detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5933",
+  "name": "Lanna Thai Cuisine",
+  "website": "https://lannathaicuisine.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "5908",
+  "name": "Epic Wings",
+  "website": "https://location.epicwings.com/us/ca/national-city/national-city",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id in the served HTML (needs a store pick)"
+ },
+ {
+  "restaurantId": "6031",
+  "name": "Pastalini",
+  "website": "https://pastalini.com/",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "6718",
+  "name": "Panini Kabob Grill - Mission Valley",
+  "website": "https://paninikabobgrill.com/locations/mission-valley/",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "6750",
+  "name": "The Asian Bistro",
+  "website": "https://www.theasianbistro.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "6258",
+  "name": "skybound coffee + dessert lounge",
+  "website": "https://skyboundmelrose.square.site/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6375",
+  "name": "Boba Bar and Desserts",
+  "website": "https://www.bobabarsd.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6470",
+  "name": "Up2You Cafe",
+  "website": "http://up2youcafe.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6738",
+  "name": "Nick's Del Mar",
+  "website": "https://nicksrestaurants.com/nicks/del-mar/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://nicksrestaurants.com/nicks/laguna-beach/menu/ (~79 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "6212",
+  "name": "Stake Chophouse & Bar",
+  "website": "https://stakechophousesd.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/stake-chophouse-bar-1309-orange-ave)"
+ },
+ {
+  "restaurantId": "6617",
+  "name": "Better Buzz Coffee Pacific Beach Grand",
+  "website": "http://www.betterbuzzcoffee.com/",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "6402",
+  "name": "Pancho's Mexican Restaurant",
+  "website": "http://www.panchosatelcajon.com/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://www.panchosatelcajon.com/menus/appetizers/ (~8 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "5775",
+  "name": "Bernini's Bistro",
+  "website": "https://www.berninisbistro.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "55 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/berninis-bistro-7550-fay-ave"
+ },
+ {
+  "restaurantId": "5813",
+  "name": "El Rinconcito Fine Mexican and Seafood",
+  "website": "http://elrinconcitovistaca.com/",
+  "platform": "spothopper",
+  "outcome": "needs-browser",
+  "detail": "SpotHopper spot 70501 published no priced items"
+ },
+ {
+  "restaurantId": "6897",
+  "name": "Don Tommy's Mexican Food",
+  "website": "https://dontommys.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5852",
+  "name": "Robertito's Mexican Food",
+  "website": "https://www.robertitostacoshops.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/-134842)"
+ },
+ {
+  "restaurantId": "6570",
+  "name": "Nado Republic",
+  "website": "https://www.nadorep.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/nado-republic-1007-c-ave)"
+ },
+ {
+  "restaurantId": "5825",
+  "name": "Beyer Deli",
+  "website": "http://www.yelp.com/biz/beyer-deli-san-diego",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "DataDome on http://www.yelp.com/biz/beyer-deli-san-diego"
+ },
+ {
+  "restaurantId": "5847",
+  "name": "Honey's Bistro & Bakery",
+  "website": "https://www.honeysbistroencinitas.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "6070",
+  "name": "Burger Lounge",
+  "website": "https://www.burgerlounge.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "6653",
+  "name": "Dumplings N More",
+  "website": "https://order.mealkeyway.com/customer/release/index?mid=52306b32444f4d7a3271503954463364696b5a7352413d3d",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6678",
+  "name": "Huntress",
+  "website": "https://huntresssteak.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "30 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/huntress"
+ },
+ {
+  "restaurantId": "6650",
+  "name": "Penelopes Mexican Food",
+  "website": "http://www.penelopesmexfood.com/",
+  "platform": "spothopper",
+  "outcome": "needs-browser",
+  "detail": "SpotHopper spot 70518 published no priced items"
+ },
+ {
+  "restaurantId": "7288",
+  "name": "The Remy",
+  "website": "https://www.theremysd.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "5858",
+  "name": "Garden Center Cafe and Grill",
+  "website": "http://www.gardencentercafeandgrill.com/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://www.gardencentercafeandgrill.com/menus/dinner/ (~22 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "5836",
+  "name": "Trattoria I Trulli",
+  "website": "https://www.trattoriaitrullisd.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.trattoriaitrullisd.com/"
+ },
+ {
+  "restaurantId": "6362",
+  "name": "Barrio Donas",
+  "website": "https://barriodonas.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6558",
+  "name": "Clayton's Bakery & Bistro",
+  "website": "https://www.claytonsbakeryandbistro.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "6022",
+  "name": "Curry & More - Indian Bistro",
+  "website": "http://www.curryandmore.com/",
+  "platform": "spothopper",
+  "outcome": "needs-browser",
+  "detail": "SpotHopper spot 80371 published no priced items"
+ },
+ {
+  "restaurantId": "6502",
+  "name": "Scoops La Jolla",
+  "website": "http://www.scoopslajolla.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/scoops-la-jolla-san-diego-886526/"
+ },
+ {
+  "restaurantId": "6284",
+  "name": "Tasty Pizza",
+  "website": "http://tastypizzaofsandiego.com/",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "5848",
+  "name": "Arizona Chinese Restaurant",
+  "website": "https://arizonachineserestaurantcv.com/",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "6137",
+  "name": "Asada Mexican Restaurant & Chango Mango",
+  "website": "https://order.online/store/AsadaMexicanRestaurant-1717864/en-US/?hideModal=true&pickup=true",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/store/AsadaMexicanRestaurant-1717864"
+ },
+ {
+  "restaurantId": "6659",
+  "name": "Tony's Giant Pizzeria",
+  "website": "https://www.tonysgiantpizza.com/?utm_source=gbp",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "6534",
+  "name": "Bay Park Coffee",
+  "website": "https://bayparkcoffeesd.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6586",
+  "name": "Bahn Thai",
+  "website": "http://www.bahnthai.net/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/bahn-thai-10544)"
+ },
+ {
+  "restaurantId": "6663",
+  "name": "Starbucks",
+  "website": "https://www.starbucks.com/store-locator/store/1027074",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/~1133/)"
+ },
+ {
+  "restaurantId": "5926",
+  "name": "Epic Wings",
+  "website": "https://location.epicwings.com/us/ca/escondido/escondido-el-norte",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id in the served HTML (needs a store pick)"
+ },
+ {
+  "restaurantId": "5897",
+  "name": "Sandwich Emporium",
+  "website": "http://www.sandwichemporium.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6876",
+  "name": "il Sogno Italiano",
+  "website": "http://www.ilsognoitaliano.com/",
+  "platform": "spothopper",
+  "outcome": "needs-browser",
+  "detail": "SpotHopper spot 72109 published no priced items"
+ },
+ {
+  "restaurantId": "6751",
+  "name": "Thyme In the Ranch",
+  "website": "http://www.thymeintheranch.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "72 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/thymeintheranch"
+ },
+ {
+  "restaurantId": "6481",
+  "name": "Gelato Paradiso",
+  "website": "https://gelatoparadiso.com/location-coronado/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/gelato-paradiso-coronado-28093958/34937152"
+ },
+ {
+  "restaurantId": "6336",
+  "name": "Valentina",
+  "website": "https://restaurantvalentina.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/valentina-810-n-coast-hwy-101)"
+ },
+ {
+  "restaurantId": "6594",
+  "name": "Starbucks Coffee Company",
+  "website": "https://www.starbucks.com/store-locator/store/1024431",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/~1133/)"
+ },
+ {
+  "restaurantId": "5739",
+  "name": "Epic Wings",
+  "website": "https://location.epicwings.com/us/ca/oceanside/oceanside",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id in the served HTML (needs a store pick)"
+ },
+ {
+  "restaurantId": "5780",
+  "name": "Italia Pizza",
+  "website": "https://www.italiapizzaelcajon.com/",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "5758",
+  "name": "Papagayos Grill and Cantina",
+  "website": "http://papagayoseastlake.com/home/2562441",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://www.papagayoseastlake.com/menu/ (~314 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "7029",
+  "name": "Randy's Donuts",
+  "website": "https://randysdonuts.com/locations/san-diego/",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "6518",
+  "name": "Poké Chop",
+  "website": "https://pokechopsd.com/hillcrest?utm_source=google",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://pokechopsd.com/hillcrest?utm_source=google"
+ },
+ {
+  "restaurantId": "6340",
+  "name": "San Diego Sandwich Co",
+  "website": "http://www.sandiegosandwich.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/san-diego-sandwich-co-40821)"
+ },
+ {
+  "restaurantId": "6334",
+  "name": "Tak Grill Fresh Mediterranean Food",
+  "website": "http://www.takgrill.us/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "429 rate limited on http://www.takgrill.us/"
+ },
+ {
+  "restaurantId": "6180",
+  "name": "Flippin' Pizza La Costa",
+  "website": "https://flippinpizza.hungerrush.com/Order/Menu/17#groups",
+  "platform": "HungerRush",
+  "outcome": "needs-browser",
+  "detail": "HungerRush detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6654",
+  "name": "Marieta's Mexican Food",
+  "website": "https://marietasmexicanfood.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://marietasmexicanfood.com/"
+ },
+ {
+  "restaurantId": "6706",
+  "name": "Starbucks",
+  "website": "https://www.starbucks.com/store-locator/store/1028253",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/~1133/)"
+ },
+ {
+  "restaurantId": "7032",
+  "name": "California English",
+  "website": "https://www.californiaenglishsd.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "30 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/cs-hospitality-new-location-9276-scranton-road"
+ },
+ {
+  "restaurantId": "6118",
+  "name": "Crossroads Deli",
+  "website": "http://www.crossroadsdeli.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6310",
+  "name": "Elixir Espresso & Wine Bar",
+  "website": "http://www.elixirespressobar.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6372",
+  "name": "Nick & G's Restaurant",
+  "website": "https://www.nickandgs.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "104 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/nick-and-g-s-restaurant"
+ },
+ {
+  "restaurantId": "6040",
+  "name": "The Naked Cafe",
+  "website": "https://www.thenakedcafe.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/naked-cafe-solanabeach)"
+ },
+ {
+  "restaurantId": "6306",
+  "name": "Olive Baking Company",
+  "website": "http://olivebakingcompany.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "429 rate limited on http://olivebakingcompany.com/"
+ },
+ {
+  "restaurantId": "6139",
+  "name": "Don Pollo Grilled Chicken",
+  "website": "http://donpollo.net/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5931",
+  "name": "Colima's Mexican Food",
+  "website": "https://colimasmexican.com/",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6784",
+  "name": "Starbucks",
+  "website": "https://www.starbucks.com/store-locator/store/1028313",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/~1133/)"
+ },
+ {
+  "restaurantId": "6694",
+  "name": "Roberto’s Taco Shop - Pacific Beach",
+  "website": "https://robertostacoshopsd.com/robertospb?utm_source=google",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://robertostacoshopsd.com/robertospb?utm_source=google"
+ },
+ {
+  "restaurantId": "6243",
+  "name": "Thyme for Lunch Cafe & Grill",
+  "website": "http://www.thyme4lunchcafe.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6017",
+  "name": "Pho Hiep & Grill",
+  "website": "http://phohiepgrill.com/linda-vista-menu",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "6495",
+  "name": "Le Macaron French Pastries",
+  "website": "https://lemacaron-us.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/le-macaron-french-pastries-61766/)"
+ },
+ {
+  "restaurantId": "6033",
+  "name": "Bistro Pazzo",
+  "website": "http://www.bistropazzo.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "429 rate limited on http://www.bistropazzo.com/"
+ },
+ {
+  "restaurantId": "6561",
+  "name": "Aaharn Thai @ University City",
+  "website": "https://www.aaharnthaiucsd.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "6514",
+  "name": "Tanuki",
+  "website": "http://www.tanukisakebar.com/",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "78 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/tanuki-sake-bar-4191-adams-ave"
+ },
+ {
+  "restaurantId": "6917",
+  "name": "Starbucks",
+  "website": "https://www.starbucks.com/store-locator/store/1031776/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/~1133/)"
+ },
+ {
+  "restaurantId": "7016",
+  "name": "Pit Stop Pizza",
+  "website": "https://order.toasttab.com/online/pizzastop-3076-clairemont-drive",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.toasttab.com/online/pizzastop-3076-clairemont-drive"
+ },
+ {
+  "restaurantId": "6344",
+  "name": "Panorama Bar & Grill",
+  "website": "https://www.hilton.com/en/hotels/sanahhf-hilton-san-diego-airport-harbor-island/dining/?SEO_id=GMB--R-SANAHHF",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "403 to two desktop UAs and to curl on https://www.hilton.com/en/hotels/sanahhf-hilton-san-diego-airport-harbor-island/dining/?SEO_id=GMB--R-SANAHHF"
+ },
+ {
+  "restaurantId": "6564",
+  "name": "Hot or Not Thai",
+  "website": "https://www.hotornotthai.com/",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6058",
+  "name": "Flippin Pizza Encinitas",
+  "website": "http://www.flippinpizza.com/",
+  "platform": "HungerRush",
+  "outcome": "needs-browser",
+  "detail": "HungerRush detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6491",
+  "name": "Mad Munch Grilled Cheezer Co.",
+  "website": "http://www.madmunchcheezers.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5952",
+  "name": "JNC Pinoy Foodmart",
+  "website": "https://jncpinoyfood.com/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://jncpinoyfood.com/menu/ (~47 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "6260",
+  "name": "Juice Kaboose",
+  "website": "http://www.juicekaboose.com/",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "5920",
+  "name": "Juice Caboose",
+  "website": "https://juicecaboosesd.com/",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "6456",
+  "name": "Mariscos y Miches El Patron",
+  "website": "https://www.mariscosymicheselpatron.com/",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7025",
+  "name": "Ramona Country Bakery",
+  "website": "http://www.ramonabakery.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/store/-45361048"
+ },
+ {
+  "restaurantId": "6628",
+  "name": "Grab & Go - Mission Hills",
+  "website": "https://grabngosubs.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://grabngosubs.com/"
+ },
+ {
+  "restaurantId": "6674",
+  "name": "Tous les Jours",
+  "website": "https://www.tljus.com/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/TousLesJours-58690?delivery=true&utm_source=sdk&store_id=31889381)"
+ },
+ {
+  "restaurantId": "7298",
+  "name": "Oakberry Acai",
+  "website": "https://order.thanx.com/oakberry?location=13779",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.thanx.com/oakberry?location=13779"
+ },
+ {
+  "restaurantId": "8009",
+  "name": "Alpine Pho & Grill",
+  "website": "https://alpinepho.com/?utm_source=google",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://alpinepho.com/?utm_source=google"
+ },
+ {
+  "restaurantId": "6305",
+  "name": "Taco Loco",
+  "website": "http://tacolocosd.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/tacolocolittleitaly)"
+ },
+ {
+  "restaurantId": "7527",
+  "name": "POKE OKA",
+  "website": "http://www.pokeoka.com/",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5737",
+  "name": "Michele Coulon Dessertier",
+  "website": "https://dessertier.com/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/michele-coulon-dessertier-7556-fay-ave_link)"
+ },
+ {
+  "restaurantId": "6662",
+  "name": "Local Krave PB/Bay Ho",
+  "website": "http://localkrave.com/",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://localkrave.com/menu/ (~14 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "7056",
+  "name": "Cargo Cafe - Paseo Del Mar",
+  "website": "http://www.cargo-cafe.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7266",
+  "name": "Seniore's Pizza",
+  "website": "https://www.seniorespizzasandiego.com/",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "5868",
+  "name": "La Pizzeria Arrivederci",
+  "website": "http://arrivederciristorante.com/pizzeria-arrivederci/home",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/ristorante-arrivederci-san-diego-62547/"
+ },
+ {
+  "restaurantId": "6589",
+  "name": "Matisse Bistro",
+  "website": "http://matissesd.com/",
+  "platform": "GloriaFood widget",
+  "outcome": "needs-browser",
+  "detail": "GloriaFood widget detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5812",
+  "name": "Fresca Deli .",
+  "website": "https://www.yelp.com/biz/la-fresca-deli-national-city",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "DataDome on https://www.yelp.com/biz/la-fresca-deli-national-city"
+ },
+ {
+  "restaurantId": "6646",
+  "name": "The Bean Box 701",
+  "website": "http://www.thebeanboxca.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7003",
+  "name": "Cargo Cafe - Wateridge",
+  "website": "http://www.cargo-cafe.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6723",
+  "name": "Cargo Cafe - Gateway",
+  "website": "http://cargo-cafe.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6704",
+  "name": "Verde Kitchen & Bar",
+  "website": "https://www.hilton.com/en/hotels/sanstgi-hilton-garden-inn-san-diego-mission-valley-stadium/dining/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "403 to two desktop UAs and to curl on https://www.hilton.com/en/hotels/sanstgi-hilton-garden-inn-san-diego-mission-valley-stadium/dining/"
+ },
+ {
+  "restaurantId": "6668",
+  "name": "Bom Dia Café",
+  "website": "https://bom-dia-cafe.square.site/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6397",
+  "name": "Starbucks (Ralph's)",
+  "website": "https://www.ralphs.com/q/starbucks",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "403 to two desktop UAs and to curl on https://www.ralphs.com/q/starbucks"
+ },
+ {
+  "restaurantId": "6443",
+  "name": "Tony's Fresh Mexican Food",
+  "website": "https://order.online/store/tony's-fresh-mexican-food-san-diego-937318",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/tony's-fresh-mexican-food-san-diego-937318"
+ },
+ {
+  "restaurantId": "5928",
+  "name": "El Cotixan Mexican Food",
+  "website": "https://order.online/store/el-cotixan-mexican-food-2130288",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/el-cotixan-mexican-food-2130288"
+ },
+ {
+  "restaurantId": "6153",
+  "name": "Yogurt Heaven",
+  "website": "https://order.online/en-US/store/Yogurt-Heaven-526899",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/en-US/store/Yogurt-Heaven-526899"
+ },
+ {
+  "restaurantId": "5702",
+  "name": "Del Cerro Pizza",
+  "website": "https://delcerropizzas.com/",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "3774",
+  "name": "Empanada Kitchen",
+  "website": "https://empanada-kitchen.com/",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2908",
+  "name": "Sammy's Woodfire Pizza and Grille",
+  "website": "https://sammyspizza.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://sammyspizza.com/"
+ },
+ {
+  "restaurantId": "3452",
+  "name": "Copa Vida",
+  "website": "https://copa-vida.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "778",
+  "name": "Casa de Freds",
+  "website": "https://fredsoldtown.com/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://fredsoldtown.com/"
+ },
+ {
+  "restaurantId": "7342",
+  "name": "Blue Palm Mission Beach",
+  "website": "https://www.toasttab.com/local/order/pura-vida-mission-beach-2912-mission-boulevard/item-acai-by-the-bay-smoothie_920390fe-faa9-42e5-b11d-404a6e1c13e3",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/pura-vida-mission-beach-2912-mission-boulevard/item-acai-by-the-bay-smoothie_920390fe-faa9-42e5-b11d-404a6e1c13e3"
+ },
+ {
+  "restaurantId": "3001",
+  "name": "GK Grill",
+  "website": "https://order.online/en-CA/store/gk-grill-mongolian-taste-1061382",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/en-CA/store/gk-grill-mongolian-taste-1061382"
+ },
+ {
+  "restaurantId": "5964",
+  "name": "Teriyaki House",
+  "website": "https://order.online/store/24934615",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/24934615"
+ },
+ {
+  "restaurantId": "5481",
+  "name": "El Cotixan Mexican Food",
+  "website": "https://order.online/business/-895743",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/en-GB/business/-895743"
+ },
+ {
+  "restaurantId": "3898",
+  "name": "Los Dos Pedros",
+  "website": "https://order.online/en-US/store/los-dos-pedros-24675235",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/en-US/store/los-dos-pedros-24675235"
+ },
+ {
+  "restaurantId": "6625",
+  "name": "DaYung's Tea",
+  "website": "https://order.online/en-US/business/dayung's-tea-175765",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/)"
+ },
+ {
+  "restaurantId": "6286",
+  "name": "Elsa's Kitchen",
+  "website": "https://order.online/business/-55813",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/en-GB/business/-55813"
+ },
+ {
+  "restaurantId": "7078",
+  "name": "Pina Smoothies",
+  "website": "https://order.online/store/pina-smoothies-24436816",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/pina-smoothies-24436816"
+ },
+ {
+  "restaurantId": "4287",
+  "name": "Divina Matcha",
+  "website": "https://www.toasttab.com/local/order/divina-matcha-216-3rd-ave/r-bde3abf4-d99a-45a9-8554-d265df6ac014",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/divina-matcha-216-3rd-ave/r-bde3abf4-d99a-45a9-8554-d265df6ac014"
+ },
+ {
+  "restaurantId": "4321",
+  "name": "Ramen Station",
+  "website": "https://ramenstationsd.square.site",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "8066",
+  "name": "Green Fork",
+  "website": "https://order.online/store/green-fork-mission-blvd-43240834",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/green-fork-mission-blvd-43240834"
+ },
+ {
+  "restaurantId": "8064",
+  "name": "Surf Bowl Co.",
+  "website": "https://www.surfbowlco.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5394",
+  "name": "Ichiban Sando",
+  "website": "https://www.ichibansando.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "8042",
+  "name": "Double Standard",
+  "website": "https://www.doublestandard-sd.com",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "64 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/double-standard-1202-orange-avenue"
+ },
+ {
+  "restaurantId": "8022",
+  "name": "SD giant pizza",
+  "website": "https://sdgiantspizza.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://sdgiantspizza.com"
+ },
+ {
+  "restaurantId": "8038",
+  "name": "Okama Ramen and Grill",
+  "website": "https://okamaramen.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/menu)"
+ },
+ {
+  "restaurantId": "7988",
+  "name": "Pastalini",
+  "website": "https://pastalini.com",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "7984",
+  "name": "Parakeet Cafe - Nautilus",
+  "website": "https://www.parakeetcafe.com/location/nautilus/",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "7981",
+  "name": "Pho Luu Escondido - Vietnamese Cuisine",
+  "website": "https://www.pholuuescondido.com",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7965",
+  "name": "Colosseo Cucina Italiana",
+  "website": "https://www.colosseosd.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "7964",
+  "name": "Diego’s Street Tacos",
+  "website": "https://o.spoton.com/BL-81B1-C648-0285",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7961",
+  "name": "Pompei Pizza",
+  "website": "https://pompeipizzasd.com/order/pompei-pizza-433-e-street/item-mozzarella-sticks-12_68296e19-1115-4b77-9b6f-6df6d189b7e5",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://pompeipizzasd.com/order/pompei-pizza-433-e-street/item-mozzarella-sticks-12_68296e19-1115-4b77-9b6f-6df6d189b7e5"
+ },
+ {
+  "restaurantId": "7937",
+  "name": "Crest Taco",
+  "website": "https://www.cresttaco.com",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7820",
+  "name": "The Cakery Cafe",
+  "website": "https://www.thecakerysd.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7833",
+  "name": "Market St Pizzeria",
+  "website": "https://marketstpizzeria.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "7907",
+  "name": "La Jollita",
+  "website": "https://jollita.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "7899",
+  "name": "Habibi Mediterranean Grill",
+  "website": "https://order.online/en-CA/store/habibi-mediterranean-grill-n-magnolia-ave-30840736",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/en-CA/store/habibi-mediterranean-grill-n-magnolia-ave-30840736"
+ },
+ {
+  "restaurantId": "6061",
+  "name": "Fatte's Pizza Of Chula Vista",
+  "website": "https://fattespizzas.com",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "7893",
+  "name": "Bakehouse by CoCo Playa",
+  "website": "https://bakehousebycocoplaya.square.site",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7874",
+  "name": "Dimassi's Mediterranean Buffet",
+  "website": "https://www.dimassis.com",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "7871",
+  "name": "NOIR Sushi and Sake Fusion Lounge",
+  "website": "https://www.noirsushi.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "7859",
+  "name": "Good Measure",
+  "website": "https://order.toasttab.com/online/good-measure-brunch-north-park-3519-30th-street",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.toasttab.com/online/good-measure-brunch-north-park-3519-30th-street"
+ },
+ {
+  "restaurantId": "7848",
+  "name": "Torta Time",
+  "website": "https://torta-time.square.site",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://order.online/business"
+ },
+ {
+  "restaurantId": "7602",
+  "name": "Dumplings N More",
+  "website": "https://www.dumplingsnmore.net",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7828",
+  "name": "Chef Budda Blasian Soul Food LLC",
+  "website": "https://www.chefbuddablasiansoulfood.com/s/order",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7806",
+  "name": "Falafel California",
+  "website": "https://falafelcalifornia.co",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://falafelcalifornia.co"
+ },
+ {
+  "restaurantId": "7793",
+  "name": "Mein St. Asian Kitchen",
+  "website": "https://www.meinstreetkitchen.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7789",
+  "name": "Beach City Smoothies - Oceanside",
+  "website": "https://www.beachcitysmoothies.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "5100",
+  "name": "Coffee Bean",
+  "website": "https://www.coffeebean.com",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "7755",
+  "name": "Pop Pops Paleta",
+  "website": "https://www.poppopspaleta.com",
+  "platform": "HungerRush",
+  "outcome": "needs-browser",
+  "detail": "HungerRush detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7774",
+  "name": "The Jetty",
+  "website": "https://www.toasttab.com/local/order/the-jetty-4934-voltaire-st/item-hh-ob-jetty_e02a00f6-0bab-4555-a33c-9af8664f1793",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/the-jetty-4934-voltaire-st/item-hh-ob-jetty_e02a00f6-0bab-4555-a33c-9af8664f1793"
+ },
+ {
+  "restaurantId": "6831",
+  "name": "Massachusetts Mike's Pizzeria",
+  "website": "https://massmikes.com/our-menu/",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "7768",
+  "name": "Café Alessie",
+  "website": "https://www.toasttab.com/local/order/cafe-alessie-2-470-15th-street/item-strawberry-matcha_7e57e31d-079e-4c52-9da2-322312ec4144",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/cafe-alessie-2-470-15th-street/item-strawberry-matcha_7e57e31d-079e-4c52-9da2-322312ec4144"
+ },
+ {
+  "restaurantId": "7740",
+  "name": "Little Kiki Katsu & More",
+  "website": "https://www.littlekikisd.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/littlekiki&quot;,)"
+ },
+ {
+  "restaurantId": "7758",
+  "name": "Le Charcuterie Bar",
+  "website": "https://www.lecharcuteriecheesebar.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7748",
+  "name": "Between Us",
+  "website": "https://betweenus-kotdj9rl.toast.site",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://betweenus-kotdj9rl.toast.site"
+ },
+ {
+  "restaurantId": "7750",
+  "name": "Halal Burger Co.",
+  "website": "https://halalburgerco.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/halal-burger-co.-san-diego-34159727/66735746/"
+ },
+ {
+  "restaurantId": "7741",
+  "name": "Chin's Szechwan - Point Loma",
+  "website": "https://www.govisitchins.com/locations/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/mobile-app-unified-link?integration_id=19441&integration_type=business)"
+ },
+ {
+  "restaurantId": "7706",
+  "name": "Brites Soft Serve",
+  "website": "https://britessoftserve.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "7699",
+  "name": "Luigi's New York Giant Pizza",
+  "website": "https://www.luigisnewyorkpizza.com",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "7452",
+  "name": "Cafe Amor",
+  "website": "https://order.online/store/cafe-amor-spring-valley-23518377",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/cafe-amor-spring-valley-23518377"
+ },
+ {
+  "restaurantId": "6550",
+  "name": "Tamarind Thai Restaurant",
+  "website": "https://tamarindthai.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "7693",
+  "name": "Slurp",
+  "website": "https://www.slurplpm.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7688",
+  "name": "Taverna Mediterranean Grill",
+  "website": "https://tavernamediterranean.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://tavernamediterranean.com"
+ },
+ {
+  "restaurantId": "7684",
+  "name": "Better Blendz",
+  "website": "https://order.online/store/better-blendz-30th-st-25618450",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/better-blendz-30th-st-25618450"
+ },
+ {
+  "restaurantId": "6846",
+  "name": "Prager Brothers Artisan Breads",
+  "website": "https://www.pragerbrothers.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7671",
+  "name": "iWok Chinese Kitchen",
+  "website": "https://iwok-chinese-kitchen-105368.square.site",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7683",
+  "name": "Jolie",
+  "website": "https://joliecoronado.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/jolie-126-orange-ave-unit-b)"
+ },
+ {
+  "restaurantId": "7668",
+  "name": "Little Sisters Pizza",
+  "website": "https://slicelife.com/restaurants/ca/san-diego/92104/little-sisters-pizza/menu",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "7640",
+  "name": "Campland Cantina",
+  "website": "https://www.campland.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.campland.com"
+ },
+ {
+  "restaurantId": "7753",
+  "name": "Breakers",
+  "website": "https://breakersencinitas.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/invoice)"
+ },
+ {
+  "restaurantId": "7601",
+  "name": "Eat Crispy Burger Oceanside",
+  "website": "https://order.online/store/36236224",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/36236224"
+ },
+ {
+  "restaurantId": "7619",
+  "name": "CinKuni (Italian & Japanese Cuisine)",
+  "website": "https://direct.chownow.com/order/41159/locations/62355",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "7627",
+  "name": "Mali's Deli",
+  "website": "https://www.toasttab.com/local/order/malis-deli-mexican-food-9265-sky-park-court-105/r-ae53e489-7b6e-4012-98d5-71fc191dad5a/item-americas-finest-city-blt_42d13537-0b53-4aef-a036-9dddad4dcbb3",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/sites-api)"
+ },
+ {
+  "restaurantId": "7378",
+  "name": "Sultan Baklava",
+  "website": "https://sultanbaklava.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+ },
+ {
+  "restaurantId": "7614",
+  "name": "Pop's Pizza",
+  "website": "https://popspizzasd.com",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "7593",
+  "name": "Paik's noodle national city",
+  "website": "https://www.chownow.com/order/41637/locations/64492",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "7480",
+  "name": "Pho & Sushi - Asian Fusion",
+  "website": "https://phosushi.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://phosushi.com"
+ },
+ {
+  "restaurantId": "7590",
+  "name": "Grandpa Tao Kitchen",
+  "website": "https://grandpa-tao-kitchen.square.site",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7607",
+  "name": "QUICK BITES CAFE / Best Sandwiches",
+  "website": "https://quickbitescafe.info",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "7597",
+  "name": "The Halal Guys",
+  "website": "https://order.thehalalguys.com/menu/halal-guys-san-diego",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "7586",
+  "name": "BRGR SHACK",
+  "website": "https://order.online/store/brgr-shack-e-valley-pkwy-31083123",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/brgr-shack-e-valley-pkwy-31083123"
+ },
+ {
+  "restaurantId": "7570",
+  "name": "Panini Kabob Grill - Park 12",
+  "website": "https://paninikabobgrill.com/locations/park-12/",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "7563",
+  "name": "West Coast Pizza Company",
+  "website": "https://www.westcoastpizzacompany.com",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "7556",
+  "name": "LA MALQUERIDA BY DOLCHE",
+  "website": "https://www.toasttab.com/local/order/la-malquerida-nueva-firma-national-city-1524-mckinley-avenue/item-pina-para-la-nia_0ccb4663-72d9-410f-99b5-34921d009325",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/la-malquerida-nueva-firma-national-city-1524-mckinley-avenue/item-pina-para-la-nia_0ccb4663-72d9-410f-99b5-34921d009325"
+ },
+ {
+  "restaurantId": "7553",
+  "name": "Scoops Ocean Beach",
+  "website": "https://www.scoopslajolla.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - no JSON-LD Menu and no RSC payload at https://www.doordash.com/store/scoops-la-jolla-san-diego-886526/"
+ },
+ {
+  "restaurantId": "7544",
+  "name": "Fleurette",
+  "website": "https://www.fleurettesd.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "7800",
+  "name": "JOE & THE JUICE",
+  "website": "https://order.online/store/joe-the-juice-925-camino-de-la-reina-41487147",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/joe-the-juice-925-camino-de-la-reina-41487147"
+ },
+ {
+  "restaurantId": "7532",
+  "name": "The Grove at Governor Pointe",
+  "website": "https://www.thegroveatgovernorpointe.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+ },
+ {
+  "restaurantId": "7524",
+  "name": "The Sizzling Pizza",
+  "website": "https://thesizzlingpizza.com",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "7233",
+  "name": "EsKiNiTa",
+  "website": "https://order.online/business/eskinita-12878253/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/en-GB/business/eskinita-12878253"
+ },
+ {
+  "restaurantId": "7507",
+  "name": "Burger Bench Vista",
+  "website": "https://www.burgerbench.com",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "7506",
+  "name": "Lana",
+  "website": "https://lanasb.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "7484",
+  "name": "Honeybees",
+  "website": "https://order.toasttab.com/online/honeybees-1341-garnet-avenue",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.toasttab.com/online/honeybees-1341-garnet-avenue"
+ },
+ {
+  "restaurantId": "7481",
+  "name": "Pho Tan",
+  "website": "https://photan-poway.com",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7476",
+  "name": "Burrito Leo's Mexican Food",
+  "website": "https://order.online/en/store/burrito-leo-s-mexican-food-main-st-23580793",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/)"
+ },
+ {
+  "restaurantId": "7469",
+  "name": "Morena Provisions",
+  "website": "https://order.toasttab.com/online/morena-provisions-1112-morena-blvd",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.toasttab.com/online/morena-provisions-1112-morena-blvd"
+ },
+ {
+  "restaurantId": "7439",
+  "name": "Beach City Smoothies",
+  "website": "https://www.beachcitysmoothies.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7415",
+  "name": "Baikohken Ramen",
+  "website": "https://order.toasttab.com/online/stix-food-hall-san-diego-690-university-ave",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.toasttab.com/online/stix-food-hall-san-diego-690-university-ave"
+ },
+ {
+  "restaurantId": "7429",
+  "name": "Ocean Buffet",
+  "website": "https://www.oceanbuffetca.com",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "8089",
+  "name": "Yogurt Lounge Serra Mesa",
+  "website": "https://order.online/en-CA/store/yogurt-lounge-1258582",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/en-CA/store/yogurt-lounge-1258582"
+ },
+ {
+  "restaurantId": "7421",
+  "name": "Leu Leu",
+  "website": "https://www.leuleuleucadia.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/leu-leu-466-north-coast-highway-101)"
+ },
+ {
+  "restaurantId": "7437",
+  "name": "Chef’s Wok & Dumplings",
+  "website": "https://www.chefswokdumplings.com",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://www.chefswokdumplings.com/menu/ (~97 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "7402",
+  "name": "Sorianos Pizzeria",
+  "website": "https://sorianospizzeria.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://sorianospizzeria.com"
+ },
+ {
+  "restaurantId": "8121",
+  "name": "Taco Club",
+  "website": "https://www.toasttab.com/local/order/taco-club-8614-troy-street/item-carnitas-taco_4b7b329f-e680-4ba6-ad6f-db8187c8c82d",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/taco-club-8614-troy-street/item-carnitas-taco_4b7b329f-e680-4ba6-ad6f-db8187c8c82d"
+ },
+ {
+  "restaurantId": "7394",
+  "name": "Players Sports Grill",
+  "website": "https://www.playerssportsbar.com",
+  "platform": "spothopper",
+  "outcome": "needs-browser",
+  "detail": "SpotHopper spot 288288 published no priced items"
+ },
+ {
+  "restaurantId": "7388",
+  "name": "Corner Pizza",
+  "website": "https://order.toasttab.com/online/corner-pizza-bressi-ranch",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.toasttab.com/online/corner-pizza-bressi-ranch"
+ },
+ {
+  "restaurantId": "1843",
+  "name": "El Ranchero",
+  "website": "https://elrancheros.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/~666231)"
+ },
+ {
+  "restaurantId": "7383",
+  "name": "Oh My Pho!",
+  "website": "https://order.online/store/oh-my-pho!-oceanside-26202184",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/oh-my-pho!-oceanside-26202184"
+ },
+ {
+  "restaurantId": "7363",
+  "name": "PB Poke House Oceanside",
+  "website": "https://www.pbpokehouseoceanside.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7356",
+  "name": "Hi!Dumplings",
+  "website": "https://www.hidumplings2023.com",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7347",
+  "name": "Baked Thicc",
+  "website": "https://order.online/en-CA/store/acai-carioca-point-loma-inside-baked-thicc-24501305",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/en-CA/store/acai-carioca-point-loma-inside-baked-thicc-24501305"
+ },
+ {
+  "restaurantId": "7344",
+  "name": "Docent Brewing",
+  "website": "https://docentbrewing.com/menu/menu-carlsbad/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/docent-brewing)"
+ },
+ {
+  "restaurantId": "7037",
+  "name": "Lee's Sandwiches",
+  "website": "https://leesandwiches.olo.com/menu/lees-sandwiches-san-diego",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "7320",
+  "name": "Tengu Ramen",
+  "website": "https://www.tenguramenescondido.com",
+  "platform": "MealKeyWay",
+  "outcome": "needs-browser",
+  "detail": "MealKeyWay detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7307",
+  "name": "Silverlake Ramen Fashion Valley",
+  "website": "https://order.online/store/silverlake-ramen-san-diego-1876421",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/silverlake-ramen-san-diego-1876421"
+ },
+ {
+  "restaurantId": "7310",
+  "name": "Finney's Crafthouse",
+  "website": "https://www.finneyscrafthouse.com",
+  "platform": "chownow",
+  "outcome": "gated",
+  "detail": "only 0 priced items from https://api.chownow.com/api/restaurant/55815 at 11:57:01 AM PT - possible time gate, re-run in daylight"
+ },
+ {
+  "restaurantId": "7311",
+  "name": "Sukho Thai Extraordinaire",
+  "website": "https://order.online/store/%5B%5Bdnu%5D-%5Bcoo%5D%5D-sukho-thai-extraordinaire-san-diego-63481",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/)"
+ },
+ {
+  "restaurantId": "7274",
+  "name": "Carnitas Quiroga",
+  "website": "https://order.online/store/carnitas-quiroga-national-city-25108817",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/carnitas-quiroga-national-city-25108817"
+ },
+ {
+  "restaurantId": "7314",
+  "name": "Smokin J's BBQ & Taphouse",
+  "website": "https://smokinjsrealbbq.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/sites-web)"
+ },
+ {
+  "restaurantId": "7282",
+  "name": "Falafel Heights",
+  "website": "https://www.falafelheights.com",
+  "platform": "toast",
+  "outcome": "gated",
+  "detail": "42 priced items, but the payload is daypart-filtered (respectAvailability) - this is one serving period of several, not the whole menu. Re-read inside the other windows. https://order.toasttab.com/online/falafel-heights-4118-30th-street"
+ },
+ {
+  "restaurantId": "7279",
+  "name": "Ryan Bros Coffee City Heights",
+  "website": "https://ryanbroscoffee.com",
+  "platform": "clover",
+  "outcome": "needs-browser",
+  "detail": "Clover COLO1 (ryan-brothers-coffee--barrio-logan-san-diego) - the older app has no server-rendered payload"
+ },
+ {
+  "restaurantId": "1943",
+  "name": "Naked Pizza",
+  "website": "https://www.toasttab.com/local/order/dirty-pepperoni-149-linden-ave-unit-c/item-lg-the-naked-pizza_57328e7b-fd89-4227-9aeb-6de4f5a53ae3",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/dirty-pepperoni-149-linden-ave-unit-c/item-lg-the-naked-pizza_57328e7b-fd89-4227-9aeb-6de4f5a53ae3"
+ },
+ {
+  "restaurantId": "7264",
+  "name": "Allen's New York Pizza",
+  "website": "https://www.allensnewyorkpizza.net",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "7259",
+  "name": "Awash Ethiopian Restaurant",
+  "website": "https://order.online/store/63443",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/63443"
+ },
+ {
+  "restaurantId": "7256",
+  "name": "The Handmade Chef Meal Prep Co.",
+  "website": "https://www.toasttab.com/local/order/the-handmade-chef-555-west-c-street/r-ff7e43ad-b89c-41ad-ba9c-627c0e62d1ef",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/the-handmade-chef-555-west-c-street/r-ff7e43ad-b89c-41ad-ba9c-627c0e62d1ef"
+ },
+ {
+  "restaurantId": "7240",
+  "name": "HillCrust Pizza",
+  "website": "https://hillcrustpizzamenu.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://hillcrustpizzamenu.com"
+ },
+ {
+  "restaurantId": "7250",
+  "name": "Himalayan Bistro Oceanside",
+  "website": "https://www.himalayanbistrooceanside.com",
+  "platform": "clover",
+  "outcome": "needs-browser",
+  "detail": "Clover COLO1 (himalayan-bistro-oceanside',) - the older app has no server-rendered payload"
+ },
+ {
+  "restaurantId": "7225",
+  "name": "Tacos Don Paco",
+  "website": "https://order.toasttab.com/online/tacos-don-paco-oceanside",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.toasttab.com/online/tacos-don-paco-oceanside"
+ },
+ {
+  "restaurantId": "2797",
+  "name": "BCB Coffee",
+  "website": "https://www.bcbcoffee.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6911",
+  "name": "Parakeet Juicery - La Jolla",
+  "website": "https://www.parakeetcafe.com/location/la-jolla-juicery/",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "7220",
+  "name": "The Honey Baked Ham Company",
+  "website": "https://order.online/es-US/store/the-honey-baked-ham-company-encinitas-1064842",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/es-US/store/the-honey-baked-ham-company-encinitas-1064842"
+ },
+ {
+  "restaurantId": "7222",
+  "name": "Angry Chickz - Oceanside",
+  "website": "https://order.angrychickz.com/order/angry-chickz-oceanside-612-mission-avenue/item-pink-lemonade_5565fd41-dc01-405a-8fd2-69907f1929ff",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/sites-web)"
+ },
+ {
+  "restaurantId": "7184",
+  "name": "NuYo Frozen Yogurt Telegraph Canyon",
+  "website": "https://order.online/store/nuyo-frozen-yogurt-telegraph-canyon-road-24193416",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/nuyo-frozen-yogurt-telegraph-canyon-road-24193416"
+ },
+ {
+  "restaurantId": "7180",
+  "name": "Sabores Colombianos",
+  "website": "https://order.online/store/sabores-colombianos-23573592",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/sabores-colombianos-23573592"
+ },
+ {
+  "restaurantId": "7179",
+  "name": "Pizza On Tap (P.O.T)",
+  "website": "https://pizzaontap.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://pizzaontap.com"
+ },
+ {
+  "restaurantId": "6842",
+  "name": "I QUE BBQ",
+  "website": "https://order.online/store/i-que-bbq-la-mesa-1815347",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/i-que-bbq-la-mesa-1815347"
+ },
+ {
+  "restaurantId": "7141",
+  "name": "House of Pho",
+  "website": "https://houseofpho.square.site",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7127",
+  "name": "Garden State Bagels",
+  "website": "https://order.online/store/garden-state-bagels-23662909/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/garden-state-bagels-23662909/"
+ },
+ {
+  "restaurantId": "7134",
+  "name": "HomeState",
+  "website": "https://www.myhomestate.com",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://www.myhomestate.com/menu (~41 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "6777",
+  "name": "Tutti Frutti Frozen Yogurt",
+  "website": "https://order.online/store/tutti-frutti-frozen-yogurt-1695241",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/tutti-frutti-frozen-yogurt-1695241"
+ },
+ {
+  "restaurantId": "7088",
+  "name": "Cork N Brew",
+  "website": "https://www.corknbrewsd.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.corknbrewsd.com"
+ },
+ {
+  "restaurantId": "7104",
+  "name": "Buonasera New York Pizzeria",
+  "website": "https://buonaserapizza.com",
+  "platform": "HungerRush",
+  "outcome": "needs-browser",
+  "detail": "HungerRush detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7116",
+  "name": "Madeleine",
+  "website": "https://madeleinesd.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://madeleinesd.com"
+ },
+ {
+  "restaurantId": "6741",
+  "name": "Luna Grill Millenia",
+  "website": "https://locations.lunagrill.com",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "6732",
+  "name": "China Fusion- La Costa",
+  "website": "https://order.online/store/china-fusion-carlsbad-937165/",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/china-fusion-carlsbad-937165/"
+ },
+ {
+  "restaurantId": "6727",
+  "name": "disFRUTA",
+  "website": "https://order.online/store/disfruta-oceanside-872864",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/disfruta-oceanside-872864"
+ },
+ {
+  "restaurantId": "6708",
+  "name": "Tasty Pizza Escondido LLC",
+  "website": "https://tastypizzaescondido.square.site/s/order",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7055",
+  "name": "Balsamico Italian Kitchen",
+  "website": "https://www.balsamicokitchen.com",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7054",
+  "name": "Riverwalk Grill",
+  "website": "https://riverwalk-grill.square.site",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7046",
+  "name": "Taqueria El Kabron Jr.",
+  "website": "https://order.online/en-CA/store/taqueria-el-kabron-jr-paradise-valley-rd-2692772",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/en-CA/store/taqueria-el-kabron-jr-paradise-valley-rd-2692772"
+ },
+ {
+  "restaurantId": "7045",
+  "name": "Tacaliente Mexican Grill",
+  "website": "https://www.toasttab.com/local/tacaliente-mexican-grill-1266-university-avenue/r-c42a7982-ba84-4a9a-a608-ef0b17b487d7",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/tacaliente-mexican-grill-1266-university-avenue/r-c42a7982-ba84-4a9a-a608-ef0b17b487d7"
+ },
+ {
+  "restaurantId": "7031",
+  "name": "El Rinconcito Fruteria",
+  "website": "https://order.online/business/el-rinconcito-fruteria-904864",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/en-GB/business/el-rinconcito-fruteria-904864"
+ },
+ {
+  "restaurantId": "7028",
+  "name": "Village Roots Deli & Taproom",
+  "website": "https://www.toasttab.com/local/order/village-roots-deli-taproom-new-ownership-oct-2025-new/r-cd720cde-4fba-4c6c-b37e-98850743b14e",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/village-roots-deli-taproom-new-ownership-oct-2025-new/r-cd720cde-4fba-4c6c-b37e-98850743b14e"
+ },
+ {
+  "restaurantId": "7013",
+  "name": "Trebol Mexican Restaurant",
+  "website": "https://order.online/store/trebol-mexican-restaurant-escondido-24653057",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/trebol-mexican-restaurant-escondido-24653057"
+ },
+ {
+  "restaurantId": "7012",
+  "name": "Tasty Pho",
+  "website": "https://order.spoton.com/so-tasty-pho-vista-1591/vista-ca/615f75489adef37aee700784",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7063",
+  "name": "Higher Grounds Coffee + Café",
+  "website": "https://highergroundscoffeecafe.toast.site/order/higher-grounds-coffee+cafe-5887-copley-drive",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/sites-web)"
+ },
+ {
+  "restaurantId": "3700",
+  "name": "bcb Cafe",
+  "website": "https://www.bcbcafesd.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "7001",
+  "name": "Chin's Szechwan - Del Mar",
+  "website": "https://www.govisitchins.com/locations/",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/mobile-app-unified-link?integration_id=19441&integration_type=business)"
+ },
+ {
+  "restaurantId": "6997",
+  "name": "Eat Crispy Burger Encinitas",
+  "website": "https://order.online/store/eat-crispy-burger-encinitas-23629659",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/eat-crispy-burger-encinitas-23629659"
+ },
+ {
+  "restaurantId": "6996",
+  "name": "Donburi Rice Bowls",
+  "website": "https://www.donburiricebowls.com",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "6990",
+  "name": "Tita's Taco Shop",
+  "website": "https://titastacoshop.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/privacy)"
+ },
+ {
+  "restaurantId": "6574",
+  "name": "La Michoacana Fallbrook",
+  "website": "https://order.online/store/la-michoacana-fallbrook-2834443",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/la-michoacana-fallbrook-2834443"
+ },
+ {
+  "restaurantId": "6467",
+  "name": "Tacos Don Paco",
+  "website": "https://order.toasttab.com/online/tacos-don-paco-800-civic-center-drive-suite-f",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.toasttab.com/online/tacos-don-paco-800-civic-center-drive-suite-f"
+ },
+ {
+  "restaurantId": "6884",
+  "name": "Board & Brew - Escondido",
+  "website": "https://order.online/en-AU/store/board-brew-escondido-2-24813970",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/en-AU/store/board-brew-escondido-2-24813970"
+ },
+ {
+  "restaurantId": "6875",
+  "name": "Ding Tea Oceanside",
+  "website": "https://order.online/store/ding-tea-oceanside-1746238",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/ding-tea-oceanside-1746238"
+ },
+ {
+  "restaurantId": "6445",
+  "name": "Poki Poki & Boba Tea - Vista",
+  "website": "https://order.online/store/poki-poki-vista-418172",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/poki-poki-vista-418172"
+ },
+ {
+  "restaurantId": "6867",
+  "name": "Handel’s Homemade Ice Cream San Marcos",
+  "website": "https://order.online/en-CA/store/handel-s-homemade-ice-cream-san-marcos-1512800",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/en-CA/store/handel-s-homemade-ice-cream-san-marcos-1512800"
+ },
+ {
+  "restaurantId": "6858",
+  "name": "Paradisaea",
+  "website": "https://www.paradisaea.com/menu-dinner",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "6859",
+  "name": "Four Tunas Fish & Bar",
+  "website": "https://fourtunasfishbar.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/four-tunas-oceanside-41-douglas-dr-suit-100)"
+ },
+ {
+  "restaurantId": "6850",
+  "name": "Nick's on State",
+  "website": "https://nicksrestaurants.com",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://nicksrestaurants.com/nicks/laguna-beach/menu/ (~79 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "6830",
+  "name": "Cuscatlan Salvadorean Food",
+  "website": "https://order.online/store/cuscatlan-salvadorean-food-mesa-college-dr-23141399",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/cuscatlan-salvadorean-food-mesa-college-dr-23141399"
+ },
+ {
+  "restaurantId": "6843",
+  "name": "Purl Tea San Marcos",
+  "website": "https://www.shareteasm.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6825",
+  "name": "Golden Spoon Carlsbad Plaza",
+  "website": "https://order.online/store/golden-spoon-carlsbad-892924",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/golden-spoon-carlsbad-892924"
+ },
+ {
+  "restaurantId": "6821",
+  "name": "Purl Tea National City",
+  "website": "https://purlteanc.square.site",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6820",
+  "name": "Matcha Cafe Maiko - Escondido",
+  "website": "https://www.matchasd.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6817",
+  "name": "Pink Rose Cafe",
+  "website": "https://www.pinkrosecafe.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6761",
+  "name": "Pho Ca Dao Vietnamese Kitchen",
+  "website": "https://order.online/fr-CA/store/pho-ca-dao-&-grill-san-diego-899440",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/fr-CA/store/pho-ca-dao-&-grill-san-diego-899440"
+ },
+ {
+  "restaurantId": "6249",
+  "name": "Porky's Lechon Barbecue",
+  "website": "https://porkyslechon.com/menu/",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6714",
+  "name": "Solana Sumptuous Cookies",
+  "website": "https://www.sumptuouscookies.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6150",
+  "name": "Los Panchos Mexican Grill & Seafood",
+  "website": "https://lospanchosmexicangrill.com",
+  "platform": "spothopper",
+  "outcome": "needs-browser",
+  "detail": "SpotHopper spot 351549 published no priced items"
+ },
+ {
+  "restaurantId": "6684",
+  "name": "The Breakfast Mug Oceanside",
+  "website": "https://www.toasttab.com/local/order/breakfast-mug-1401-south-el-camino-real-ste-1108",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/breakfast-mug-1401-south-el-camino-real-ste-1108"
+ },
+ {
+  "restaurantId": "6688",
+  "name": "Sancho's Tacos",
+  "website": "https://sanchostacos.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/-2518)"
+ },
+ {
+  "restaurantId": "7312",
+  "name": "Stella Jean's Ice Cream Kensington",
+  "website": "https://www.toasttab.com/local/stellajeanskensington/r-ce22a442-d0a0-462d-b21d-7dda85ba7a14",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/stellajeanskensington/r-ce22a442-d0a0-462d-b21d-7dda85ba7a14"
+ },
+ {
+  "restaurantId": "6666",
+  "name": "Turmeric Hut - Indian Restaurant",
+  "website": "https://turmerichut.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://turmerichut.com"
+ },
+ {
+  "restaurantId": "6661",
+  "name": "Coya Peruvian Secret",
+  "website": "https://www.toasttab.com/local/coya-peruvian-secret/r-150bca3a-4458-400e-a953-75e8c6992cda",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/coya-peruvian-secret/r-150bca3a-4458-400e-a953-75e8c6992cda"
+ },
+ {
+  "restaurantId": "7251",
+  "name": "Lola Happy Bistro",
+  "website": "https://www.toasttab.com/local/order/lola-happy-bistro-3421-e-plaza-blvd/item-medium_6fdbd9cb-10f5-4e7b-8198-0d312dca1215",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/lola-happy-bistro-3421-e-plaza-blvd/item-medium_6fdbd9cb-10f5-4e7b-8198-0d312dca1215"
+ },
+ {
+  "restaurantId": "6642",
+  "name": "Chicks Natural",
+  "website": "https://www.chicksnaturalencinitas.org",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6655",
+  "name": "Donut Bros",
+  "website": "https://order.online/en-US/business/donut-bros-215148",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/)"
+ },
+ {
+  "restaurantId": "6630",
+  "name": "Camp Coffee Company",
+  "website": "https://www.campcoffeecompany.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6597",
+  "name": "Rambler Coffee",
+  "website": "https://www.toasttab.com/local/order/the-rambler-225-bay-blvd/item-peeps-latte_661df5b3-9976-4e8f-b5cf-7e186a140032",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/the-rambler-225-bay-blvd/item-peeps-latte_661df5b3-9976-4e8f-b5cf-7e186a140032"
+ },
+ {
+  "restaurantId": "7701",
+  "name": "Akhis Authentic Shawarma & Kebab",
+  "website": "https://akhisshawarma.com/menu",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://akhisshawarma.com/menu"
+ },
+ {
+  "restaurantId": "6554",
+  "name": "CITRINA BERRY FRESH",
+  "website": "https://thecitrinaberryfresh.com/menu/",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6530",
+  "name": "La Familia Callejas mexican food",
+  "website": "https://callejasrestaurant.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://callejasrestaurant.com"
+ },
+ {
+  "restaurantId": "6531",
+  "name": "Poki Poki - Encinitas",
+  "website": "https://www.pokipokico.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/poki-poki-183018)"
+ },
+ {
+  "restaurantId": "6510",
+  "name": "Perfectsubs",
+  "website": "https://www.perfectsubs.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.perfectsubs.com"
+ },
+ {
+  "restaurantId": "6492",
+  "name": "Pacific Fruit Bar",
+  "website": "https://o.spoton.com/BL-F10A-BDA2-564B",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "7413",
+  "name": "Trattoria da Sofia",
+  "website": "https://www.trattoriadasofia.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/trattoria-da-sofia-4055-adams-avenue)"
+ },
+ {
+  "restaurantId": "6424",
+  "name": "Fruteria La Capirucha",
+  "website": "https://o.spoton.com/BL-AACF-A060-96C5",
+  "platform": "SpotOn",
+  "outcome": "needs-browser",
+  "detail": "SpotOn detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6439",
+  "name": "Portinos Restaurant",
+  "website": "https://www.portinosrestaurant.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6429",
+  "name": "Luna Grill Encinitas",
+  "website": "https://locations.lunagrill.com",
+  "platform": "olo",
+  "outcome": "needs-browser",
+  "detail": "Olo storefront with no merchant id and no location-page menu graph (needs a store pick)"
+ },
+ {
+  "restaurantId": "3689",
+  "name": "Johnny WAHOO! Golf Bar",
+  "website": "https://order.online/store/johnny-wahoo-golf-bar-24453550",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/johnny-wahoo-golf-bar-24453550"
+ },
+ {
+  "restaurantId": "3104",
+  "name": "Slater's 50/50",
+  "website": "https://slaters5050.com/locations/san-diego/",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/slaters-50-50-san-diego)"
+ },
+ {
+  "restaurantId": "2978",
+  "name": "Red House Pizza",
+  "website": "https://order.online/business/red-house-pizza-31889",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash bot challenge, not a missing menu: Cloudflare challenge at https://order.online/en-GB/business/red-house-pizza-31889"
+ },
+ {
+  "restaurantId": "2956",
+  "name": "The Greenspot Salad Company",
+  "website": "https://www.greenspotsalad.com",
+  "platform": "plain-html",
+  "outcome": "needs-browser",
+  "detail": "priced menu printed as plain HTML at https://www.greenspotsalad.com/menu/ (~13 priced lines) - no machine-readable payload, so names and prices must be paired by a reader, not by a regex"
+ },
+ {
+  "restaurantId": "2647",
+  "name": "ChickenHeadz",
+  "website": "https://order.online/store/2097260",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/2097260"
+ },
+ {
+  "restaurantId": "2452",
+  "name": "Copa Vida",
+  "website": "https://copa-vida.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2441",
+  "name": "Roberto's Mexican Food",
+  "website": "https://robertos-sd.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://robertos-sd.com"
+ },
+ {
+  "restaurantId": "8045",
+  "name": "Mon Cheri Cafe & Bistro",
+  "website": "https://moncheriencinitas.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/online)"
+ },
+ {
+  "restaurantId": "8001",
+  "name": "Joyee Noodle House(UTC)",
+  "website": "https://www.joyeesdumpling.com",
+  "platform": "MenuSifu",
+  "outcome": "needs-browser",
+  "detail": "MenuSifu detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "8119",
+  "name": "The Spot taco shop",
+  "website": "https://www.toasttab.com/local/order/thespottacoshop/item-mild-red_ce4ae2df-090f-4838-85f5-d27c3d57c5b3",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/thespottacoshop/item-mild-red_ce4ae2df-090f-4838-85f5-d27c3d57c5b3"
+ },
+ {
+  "restaurantId": "8107",
+  "name": "Empanada Kitchen",
+  "website": "https://www.empanada-kitchen.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "8103",
+  "name": "Brown Cup Cafe & Lounge",
+  "website": "https://order.toasttab.com/online/brown-cup-cafe-2",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.toasttab.com/online/brown-cup-cafe-2"
+ },
+ {
+  "restaurantId": "8097",
+  "name": "One of Us",
+  "website": "https://www.oneofusbar.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "8083",
+  "name": "Saffron Pizza Kitchen",
+  "website": "https://saffronpizzakitchen.com",
+  "platform": "slice",
+  "outcome": "needs-browser",
+  "detail": "Slice storefront with neither __SLICE_REDUX_STATE__, a menuRequest blob nor JSON-LD"
+ },
+ {
+  "restaurantId": "8096",
+  "name": "Grandson Steaks",
+  "website": "https://grandsonsteaks.com",
+  "platform": "toast",
+  "outcome": "needs-browser",
+  "detail": "Toast storefront whose __OO_STATE__ carries restaurant metadata only - the catalog is fetched client-side on this deployment (https://order.toasttab.com/online/egiftcards)"
+ },
+ {
+  "restaurantId": "8076",
+  "name": "Lucca Italian Sandwich Shop",
+  "website": "https://www.eatlucca.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "1837",
+  "name": "Zia's",
+  "website": "https://ziasdeli.square.site",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "3197",
+  "name": "Poki Poki",
+  "website": "https://www.pokipokico.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/poki-poki-183018)"
+ },
+ {
+  "restaurantId": "7997",
+  "name": "Juice Caboose",
+  "website": "https://juicecaboosesd.com/location",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "3070",
+  "name": "Swami's",
+  "website": "https://order.online/store/swami's-cafe-encinitas-63295",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/swami's-cafe-encinitas-63295"
+ },
+ {
+  "restaurantId": "6366",
+  "name": "Lil Alex BBQ",
+  "website": "https://lilalexbbq.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://lilalexbbq.com"
+ },
+ {
+  "restaurantId": "6428",
+  "name": "Korean Kitchen Tofu & Galbi",
+  "website": "https://www.toasttab.com/local/order/koreankitchen/item-egg-sunny-side_8cf1ed72-63c9-4428-9ba8-efae615b55f2",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/koreankitchen/item-egg-sunny-side_8cf1ed72-63c9-4428-9ba8-efae615b55f2"
+ },
+ {
+  "restaurantId": "6339",
+  "name": "Prager Brothers Artisan Breads",
+  "website": "https://www.pragerbrothers.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6329",
+  "name": "Su Pan Bakery",
+  "website": "https://supanbakery.com/en/locations",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "6326",
+  "name": "Chicken Lisa's and Your Mexican Favorites",
+  "website": "https://chickenlisa.com",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://chickenlisa.com"
+ },
+ {
+  "restaurantId": "6314",
+  "name": "Tu Taco Taco Shop",
+  "website": "https://order.online/store/tu-taco-taco-shop-hilltop-dr-243645",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://order.online/store/tu-taco-taco-shop-hilltop-dr-243645"
+ },
+ {
+  "restaurantId": "6295",
+  "name": "Burger Bench Escondido",
+  "website": "https://www.burgerbench.com",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "6225",
+  "name": "Off the Vine Gardens Deli And Catering",
+  "website": "https://www.offthevinegardens.com",
+  "platform": "chownow",
+  "outcome": "needs-browser",
+  "detail": "ChowNow embed without a direct.chownow.com location id"
+ },
+ {
+  "restaurantId": "6088",
+  "name": "Maan's Mediterranean Grill",
+  "website": "https://www.maansmg.com",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "6852",
+  "name": "Larry's Beach Club",
+  "website": "https://www.toasttab.com/local/order/larrys-beach-club-1145-s-tremont-st-oceanside-ca-92054-usa/item-pineapple-ham-12-inch_d1be924f-d1cb-4877-a926-deffd4652b5d",
+  "platform": null,
+  "outcome": "needs-browser",
+  "detail": "Cloudflare challenge on https://www.toasttab.com/local/order/larrys-beach-club-1145-s-tremont-st-oceanside-ca-92054-usa/item-pineapple-ham-12-inch_d1be924f-d1cb-4877-a926-deffd4652b5d"
+ },
+ {
+  "restaurantId": "2888",
+  "name": "Hummus Mediterranean Kitchen",
+  "website": "https://www.eatathummus.com",
+  "platform": "order.online",
+  "outcome": "needs-browser",
+  "detail": "DoorDash/order.online link with no server-rendered catalog - a multi-location business landing page needing a store pick (https://order.online/business/hummus-mediterranean-kitchen-555)"
+ },
+ {
+  "restaurantId": "2179",
+  "name": "Crepes",
+  "website": "https://www.crepesbonaparte.com",
+  "platform": "Square Online (own domain)",
+  "outcome": "needs-browser",
+  "detail": "Square Online (own domain) detected; no fetchable payload"
+ },
+ {
+  "restaurantId": "2143",
+  "name": "Sushi Freak",
+  "website": "https://www.sushifreak.me",
+  "platform": "Square Online storefront",
+  "outcome": "needs-browser",
+  "detail": "Square Online storefront detected; no fetchable payload"
+ }
+]

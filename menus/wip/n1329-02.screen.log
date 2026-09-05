@@ -1,0 +1,19 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      4 entries (4 with menus, 0 confirmed not-found), 279 dishes
+quarantine: 15 entries, 0 dishes withheld
+
+  Chin's Gourmet (0 dishes) - blocked, not absent: needs-browser: BeyondMenu white-label ordering widget renders catalog client-side; JSON-LD on own site is Restaurant-type only (no prices), no server-side API path found
+  China Express (0 dishes) - blocked, not absent: needs-browser: same BeyondMenu white-label template/imagekit bucket signature as Chin's Gourmet (id 2772); catalog renders client-side, no prices in static HTML
+  Parkys (0 dishes) - blocked, not absent: no menu content found on own site; needs further check for a platform/PDF menu
+  Roots Bowls (0 dishes) - blocked, not absent: host times out on direct fetch (router cache HIT used for homepage only); order.online white-label page has no MenuPageItem/MenuBookCategory RSC flight markers, appears to be a marketing shell rather than a live catalog
+  Kinchana (0 dishes) - blocked, not absent: needs-browser: Square Online storefront renders catalog client-side; no server-side API path found
+  P B Pub (0 dishes) - blocked, not absent: TLS cert altname mismatch (Bluehost shared cert) blocks normal fetch; -k bypass on www lands on a 404 page, non-www gives an ambiguous 302; needs browser or manual verification of the real menu path
+  Sorianas Mexican Food (0 dishes) - blocked, not absent: no-website: router found no website for this listing; nothing to fetch
+  Shanghai Cuisine (0 dishes) - blocked, not absent: needs-browser: only an Instagram profile listed as website; Instagram requires login/JS and posts no priced menu accessible via curl
+  Topside Terrace Kitchen & Bar (0 dishes) - blocked, not absent: listed dining subpage 404s; hotel root also blocks with HTTP 403 (bot protection), no alternate path found without a browser
+  TJ Birrieria 664 (0 dishes) - blocked, not absent: no-website: router found no website for this listing; nothing to fetch
+  Chinatown Express (0 dishes) - blocked, not absent: no-website: router found no website for this listing; nothing to fetch
+  Pho Olala (0 dishes) - blocked, not absent: host-down: phoolala.com fails DNS resolution on repeated manual lookup ("Server failed"), consistent with router's ENOTFOUND/EAI_AGAIN
+  Marvelous Muffins (0 dishes) - blocked, not absent: no-website: router found no website for this listing; nothing to fetch
+  The Peruvian Spot (0 dishes) - blocked, not absent: needs-browser/app: WordPress/Elementor marketing site with "Order Now"/"View Menu" buttons pointing only to native iOS/Android ordering apps (smarterswipe.com platform) and a stackstaging preview link; no web-accessible priced menu found
+  The Lean Machine Meal Prep (0 dishes) - blocked, not absent: host serves a SiteGround bot-challenge redirect (/.well-known/sgcaptcha/) on every request; needs browser to pass the challenge

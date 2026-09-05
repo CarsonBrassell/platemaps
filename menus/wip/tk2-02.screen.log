@@ -1,0 +1,15 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      9 entries (7 with menus, 2 confirmed not-found), 317 dishes
+quarantine: 11 entries, 0 dishes withheld
+
+  Prince Hookah Cafe (0 dishes) - blocked, not absent: needs-browser: only listed presence is a Facebook page; fetch returned HTTP 400 and Facebook pages are not readable via curl
+  Red Ribbon Bakeshop (0 dishes) - blocked, not absent: needs-browser: chain locator page shows only 2 promo value-meal prices ($10 each), no itemized bakery menu; redribbonbakeshop.us/menu returned 404
+  Mother's Kitchen (0 dishes) - blocked, not absent: needs-browser: page is Wix with repeater-rendered menu items; two core sections (Salads, Mexican Dishes) render as empty headers with no items in the static fetch, so the menu is incomplete without JS
+  Thai Style (0 dishes) - blocked, not absent: needs-browser: food-hall vendor page carries no prices; no separate ordering platform found for this vendor
+  Brown Bag Deli (0 dishes) - blocked, not absent: needs-browser: listed website (brownbagsandiego.com) is a dead/parked domain (router.parklogic.com redirect script); business is confirmed still open via aggregators, and a NetWaiter ordering site (brownbagii.netwaiter.com) exists for it, but its menu renders no items in a static fetch
+  Aztec Food Hub (0 dishes) - blocked, not absent: needs-browser: site is a pure client-side CloudKitchens single-spa SPA (window._fiberGraphJSONUrls, api.cloudkitchens.com) with zero server-rendered content
+  The Halal Shack (0 dishes) - blocked, not absent: needs-browser: build-your-own item pages (rice bowl, salad bowl, fries bowl, naanarito, pita wrap, naanadilla) show only calorie counts, never a price, in the static fetch; pricing is likely assembled client-side by an ordering widget
+  Wings Mix (0 dishes) - blocked, not absent: needs-browser: no first-party website; DoorDash store page returns HTTP 403 to a plain curl fetch, and a third-party menuweb.menu PDF lists only category/ingredient names with no prices at all
+  Corner Cafe | Chinese (0 dishes) - blocked, not absent: needs-browser: Grubhub restaurant page is a client-rendered shell (~13KB, no embedded price data) in a static fetch
+  Crispy Chicken n' Tomato (0 dishes) - blocked, not absent: needs-browser: homepage carries only a '10% off orders over $50' promo, no menu prices; /products.json (Shopify catalog probe) returned 404, so the ordering catalog is not exposed statically
+  Taco Time Food Truck (0 dishes) - blocked, not absent: needs-browser: listed website redirects to the barred directory-farm domain edan.io; a tacotime.lovable.app site exists but is an unofficial AI-app-builder demo page with no menu content; the truck's Facebook page (FoodTruckTacoTime) may carry a photo menu but requires a browser

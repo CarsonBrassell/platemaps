@@ -1,0 +1,36 @@
+file:///C:/Users/Calvin%20%20Lensink/Documents/platemaps/node_modules/@neondatabase/serverless/index.mjs:1292
+ye=await(W??fetch)(We,{method:"POST",body:JSON.stringify(J),headers:fe,...X})}catch(ee){let M=new be(
+                                                                                              ^
+
+NeonDbError: Error connecting to database: TypeError: fetch failed
+    at dr.execute (file:///C:/Users/Calvin%20%20Lensink/Documents/platemaps/node_modules/@neondatabase/serverless/index.mjs:1292:95)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///C:/Users/Calvin%20%20Lensink/Documents/platemaps/scripts/load-menus.mjs:118:4 {
+  severity: undefined,
+  code: undefined,
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: undefined,
+  line: undefined,
+  routine: undefined,
+  sourceError: [TypeError: fetch failed] {
+    [cause]: Error: getaddrinfo ENOTFOUND api.c-10.us-east-1.aws.neon.tech
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:122:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'api.c-10.us-east-1.aws.neon.tech'
+    }
+  }
+}
+
+Node.js v24.18.1

@@ -64,6 +64,12 @@ import { pathToFileURL } from "node:url";
 export const RESOURCE = "1c4c99de-5825-4c4b-81a3-3fb05c498106";
 export const CACHE = "data/deh-facilities.json";
 export const QUEUE_PATH = "data/deh-queue.json";
+/* Chains we hold off the site (data/excluded-chains.json, same regex form as
+ * scripts/exclude-chains.mjs). A chain permit is not a coverage gap. */
+export const CHAIN_PATTERNS = await readFile("data/excluded-chains.json", "utf8")
+  .then((t) => Object.entries(JSON.parse(t)).filter(([k]) => !k.startsWith("_")).flatMap(([, list]) => list.map((p) => new RegExp(`(^|[^a-z0-9])(?:${p})(?![a-z0-9])`, "i"))))
+  .catch(() => []);
+export const isChainName = (name) => CHAIN_PATTERNS.some((re) => re.test(String(name || "")));
 
 /* Permit types that describe somewhere a person eats. Excludes warehouses,
  * vending machines, school auxiliaries and commissaries. */
@@ -200,6 +206,7 @@ export function nameTokens(raw) {
     String(raw || "")
       .toUpperCase()
       .replace(/&/g, " AND ")
+      .replace(/['’]/g, "") /* McDonald's -> MCDONALDS, so the county's MCDONALDS matches */
       .replace(/#\s*\d+/g, " ")
       .replace(/\b\d{1,4}\b/g, " ")
       .replace(/[^A-Z0-9ÑÁÉÍÓÚ]+/g, " ")
@@ -218,7 +225,10 @@ export function nameScore(a, b) {
 
 /** "1234 N Torrey Pines Rd Ste 5" -> { num: "1234", street: "TORREYPINES" } */
 export function address(addr) {
-  const s = String(addr || "").toUpperCase().replace(/[.,#]/g, " ");
+  /* Only the street line: our rows carry ", San Diego, CA 92120" and the
+   * city used to leak into the street key, so Google-formatted addresses
+   * never matched their permit. */
+  const s = String(addr || "").split(",")[0].toUpperCase().replace(/[.#]/g, " ");
   const num = (s.match(/\b(\d{1,6})\b/) || [])[1] ?? null;
   const street = s
     .replace(/\b(STE|SUITE|UNIT|APT|BLDG|SPC|SPACE)\s*[\w-]+/g, " ")
@@ -292,6 +302,8 @@ export function profileMissing(missing) {
       excluded.push({ ...p, why: `status ${p.permitStatus}` });
     } else if (INSTITUTIONAL_EXCLUDED.test(String(p.name))) {
       excluded.push({ ...p, why: "institutional (clear-cut)" });
+    } else if (isChainName(p.name)) {
+      excluded.push({ ...p, why: "chain (excluded-chains.json)" });
     } else {
       live.push(p);
     }
@@ -405,9 +417,18 @@ async function main() {
   const claimed = new Set();
 
   for (const r of ours) {
-    /* 1. Same street number and street -> verified, whatever the name says. */
+    /* 1. Same street number and street -> verified, whatever the name says.
+     * A held row (closed, chain, ...) only claims permits that also match its
+     * name: a new restaurant in a closed one's space is a permit we are
+     * missing, not one we cover (The Duke behind the closed Longhorn Cafe). */
     if (r.num && r.street) {
-      const hits = byAddr.get(`${r.num}|${r.street}`) ?? [];
+      const held = r.hold_reason != null;
+      /* A live row needs at least one shared name word too: a strip mall or a
+       * hotel has one street number and several kitchens, and a previous
+       * tenant's row used to swallow the new tenant's permit (Taste of
+       * Denmark behind Creme De La Crepe). Zero overlap goes to Google, which
+       * marks true renames as duplicates of the place id we already hold. */
+      const hits = (byAddr.get(`${r.num}|${r.street}`) ?? []).filter((p) => nameScore(r.tokens, p.tokens) >= (held ? NAME_STRONG : 1e-9));
       if (hits.length) {
         buckets.VERIFIED.push(r);
         for (const h of hits) claimed.add(h);

@@ -1,0 +1,1550 @@
+[
+  {
+    "restaurantId": "6232",
+    "name": "Union Kitchen and Tap Gaslamp",
+    "sourceUrl": "https://order.toasttab.com/online/union-kitchen-tap-gaslamp-333-fifth-ave",
+    "confidence": "high",
+    "notes": "Router said no-platform on the homepage (site is behind a site-wide sgcaptcha wall, confirmed on / and /menu). Located the restaurant own Toast ordering page via web search (also linked from toasttab.com/local/...). Address in payload (333 Fifth Ave) matches work-list address exactly. Read the full catalog from the embedded __OO_STATE__ Apollo cache (brace-balanced, string-aware) rather than the fragile rendered-HTML regex: the DINNER Menu object groups[].items[] carry every item with a numeric prices[0] and outOfStock flag, matching the group itemCount metadata exactly (SHARE PLATES 15, FLATBREADS 4, SALADS 8, ENTREES 15, DESSERT 6, KIDS FOOD 7, SIDES 33, SPECIALS 2, Xtra Sauces 7, CONCERT DRINKS 5 = 102 total). 4 items are currently outOfStock (Chocolate Scoop, Vanilla Scoop, Fried Okra, Brisket Plate) but carry real prices and were kept. Cent-ending distribution: 76/102 (75%) end .95, 8/102 .00, 7/102 .25, 7/102 .50, 2/102 .20, 2/102 .45 - a printed-menu distribution. Divisor sweep (1.04/1.1/1.15/1.2/1.25/1.3) produced no cleaner two-value landing than the raw distribution - nothing divided out. Price level plausible for 2026 (share plates $11-24, entrees $18-36, sides mostly $5-9). Kept Xtra Sauces (condiment upcharges, $0.25-0.50) and CONCERT DRINKS (a small drink-specials section) as real orderable items, not adjuncts. PADRES and EMP FOOD menus in the payload are empty (itemCount 0) - genuinely empty, not unread. Sections reached: SHARE PLATES, FLATBREADS, SALADS, ENTREES, DESSERT, KIDS FOOD, SIDES, SPECIALS, Xtra Sauces, CONCERT DRINKS - no daypart gating observed, this is the full DINNER catalog plus the concert-drinks addendum.",
+    "dishes": [
+      {
+        "name": "ANGRY PRAWNS",
+        "description": "",
+        "price": "$21.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "BACON MAC & CHEESE **",
+        "description": "Fresh rigatoni, NY cheddar, cherrywood bacon, Cajun breadcrumbs",
+        "price": "$17.25",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "BURRATA & HEIRLOOM TOMATO",
+        "description": "",
+        "price": "$15.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "CRAB CAKES",
+        "description": "",
+        "price": "$24.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "FARMHOUSE MEATBALLS",
+        "description": "3 housemade meatballs, stewed tomato broth, basil pesto, ricotta, shaved parmesan, garlic bread",
+        "price": "$19.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "Sesame Seared Ahi Tuna",
+        "description": "Fresh ahi tuna, daikon, carrot & bell pepper slaw, scallions, spicy ponzu",
+        "price": "$22.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "Short Rib Loaded Fries",
+        "description": "",
+        "price": "$19.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "SKILLET CORNBREAD",
+        "description": "Jalapeño, aged white cheddar, burnt honey & maple butter, chives",
+        "price": "$10.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "SPICY CUCUMBER",
+        "description": "",
+        "price": "$12.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "STEAMED MUSSELS",
+        "description": "",
+        "price": "$18.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "UNION DRY RUBBED WINGS",
+        "description": "Served with house ranch & celery. Buffalo | Sriracha Maple | Union BBQ",
+        "price": "$20.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "BASKET OF FRITES",
+        "description": "Served with roasted garlic aioli",
+        "price": "$8.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "SWEETS",
+        "description": "",
+        "price": "$10.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "TRUFFLE FRIES",
+        "description": "Black truffle aioli, truffle oil, truffle salt, parsley, shaved parmesan",
+        "price": "$14.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "NUESKE'S BACON SLAB",
+        "description": "",
+        "price": "$16.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "BBQ CHICKEN FLATBREAD",
+        "description": "Union BBQ Sauce, smoked chicken, shaved onion, bacon, mozzarella, EVOO, smoked salt, cilantro",
+        "price": "$18.95",
+        "section": "FLATBREADS"
+      },
+      {
+        "name": "HONEY ROASTED FIG FLATBREAD",
+        "description": "",
+        "price": "$18.95",
+        "section": "FLATBREADS"
+      },
+      {
+        "name": "PROSCIUTTO FLATBREAD",
+        "description": "Sunny farm egg, burrata, arugula, shaved parmesan, EVOO",
+        "price": "$19.45",
+        "section": "FLATBREADS"
+      },
+      {
+        "name": "ROASTED MUSHROOM FLATBREAD",
+        "description": "Bechamel, fried sage, garlic chips, mozzarella, arugula, truffle salt, EVOO",
+        "price": "$20.95",
+        "section": "FLATBREADS"
+      },
+      {
+        "name": "ANCIENT GRAIN BOWL",
+        "description": "",
+        "price": "$18.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "BABY GEM CAESAR",
+        "description": "Red & green baby romaine, spiced croutons, chili oil drizzle, shaved parmesan, fried capers, chives, House Caesar dressing",
+        "price": "$16.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "CHOPPED KALE SALAD",
+        "description": "",
+        "price": "$15.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "COBB SALAD",
+        "description": "Rosemary chicken, bacon, tomato, avocado, cucumber, soft boiled egg, maytag blue, honey dijon vinaigrette",
+        "price": "$20.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "Moroccan Quinoa Bowl",
+        "description": "Blackened shrimp, quinoa mint pilaf, rocket arugula, roasted sweet potato, harissa aioli, roasted mushrooms, crispy garbanzos, pickled red onions, lemon vinaigrette",
+        "price": "$22.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "ORGANIC LOCAL GREENS",
+        "description": "Crispy egg, Laura Chenel goat cheese, spiced pecan, cucumber, heirloom cherry tomato, sherry shallot vinaigrette",
+        "price": "$17.45",
+        "section": "SALADS"
+      },
+      {
+        "name": "STRAWBERRY SALAD",
+        "description": "",
+        "price": "$16.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "HOUSE SALAD",
+        "description": "",
+        "price": "$7.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "12oz  NEW YORK STRIP",
+        "description": "",
+        "price": "$49.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "18 oz. RIBEYE",
+        "description": "",
+        "price": "$69.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "7oz Filet",
+        "description": "",
+        "price": "$44.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "STEAK FRITES",
+        "description": "7oz Wagyu top sirloin, arugula fennel salad, lemon, chimmichurri",
+        "price": "$34.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "SHRIMP & GRITS",
+        "description": "Andouille, roasted tomato, aged white cheddar, Anson Mills grits, chives",
+        "price": "$30.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "BRAISED SHORT RIB",
+        "description": "Tasso grits, swiss chard, crispy onions, braising gravy",
+        "price": "$35.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "EXECUTIVE BURGER",
+        "description": "8oz Brandt beef patty, St. André triple cream brie, smoked cowboy bacon, black garlic aioli, apple chutney, butter lettuce, heirloom tomato, house-made pickles",
+        "price": "$26.20",
+        "section": "ENTREES"
+      },
+      {
+        "name": "FISHERMAN'S STEW",
+        "description": "",
+        "price": "$28.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "GUMBO",
+        "description": "Andouille, smoked chicken, okra, jasmine rice, scallions",
+        "price": "$24.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "PAN ROASTED HALF CHICKEN",
+        "description": "Roasted carrots, potato puree, natural jus, smoked onion jam",
+        "price": "$33.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "Pan Seared SALMON",
+        "description": "Parsnip puree, apple kale slaw, chermoula",
+        "price": "$28.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "ROASTED SPAGHETTI SQUASH",
+        "description": "",
+        "price": "$24.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "SHORT RIB RAGU",
+        "description": "",
+        "price": "$27.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "UNION BURGER",
+        "description": "Aged white cheddar, cherrywood bacon, iceberg lettuce, garlic aioli, house pickles, brioche bun",
+        "price": "$22.20",
+        "section": "ENTREES"
+      },
+      {
+        "name": "VEGAN BURGER",
+        "description": "Black bean & quinoa Impossible patty, arugula, roasted mushrooms, avocado",
+        "price": "$21.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "Butterscotch Bread Pudding",
+        "description": "",
+        "price": "$12.95",
+        "section": "DESSERT"
+      },
+      {
+        "name": "Cheesecake",
+        "description": "",
+        "price": "$13.95",
+        "section": "DESSERT"
+      },
+      {
+        "name": "Chocolate Creme Brulee",
+        "description": "",
+        "price": "$12.95",
+        "section": "DESSERT"
+      },
+      {
+        "name": "PEANUT BUTTER PIE",
+        "description": "",
+        "price": "$12.95",
+        "section": "DESSERT"
+      },
+      {
+        "name": "Chocolate Scoop",
+        "description": "",
+        "price": "$5.00",
+        "section": "DESSERT"
+      },
+      {
+        "name": "Vanilla Scoop",
+        "description": "",
+        "price": "$5.00",
+        "section": "DESSERT"
+      },
+      {
+        "name": "JR. UNION BURGER & FRIES",
+        "description": "",
+        "price": "$14.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS CHEESE PIZZA",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS  VEGGIES & CHK",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS CHICKEN TENDERS & FRIES",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS LOCAL",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS MAC & CHEESE",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS WAFFLE, BACON AND FRUIT",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "BASKET OF FRITES",
+        "description": "",
+        "price": "$9.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "SWEETS",
+        "description": "",
+        "price": "$10.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "TRUFFLE FRIES",
+        "description": "",
+        "price": "$14.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Bacon Mac & Cheese",
+        "description": "",
+        "price": "$17.25",
+        "section": "SIDES"
+      },
+      {
+        "name": "CHARRED BROCCOLINI",
+        "description": "",
+        "price": "$9.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "FRIED OKRA",
+        "description": "",
+        "price": "$9.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "ROASTED BRUSSEL SPROUTS",
+        "description": "",
+        "price": "$14.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Mashed Potatoes",
+        "description": "",
+        "price": "$8.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "CREAMED CORN",
+        "description": "",
+        "price": "$12.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "CREAMED SPINACH",
+        "description": "",
+        "price": "$11.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Toast",
+        "description": "",
+        "price": "$3.50",
+        "section": "SIDES"
+      },
+      {
+        "name": "Garlic Toast",
+        "description": "",
+        "price": "$3.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Crostini",
+        "description": "",
+        "price": "$2.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "Avocado",
+        "description": "",
+        "price": "$2.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Ahi Tuna",
+        "description": "",
+        "price": "$13.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Blackened Chicken Breast",
+        "description": "",
+        "price": "$8.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Blackened Salmon",
+        "description": "",
+        "price": "$13.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Blackened Shrimp",
+        "description": "",
+        "price": "$10.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Blackened Ahi Tuna",
+        "description": "Furikake rice, avocado mousse, ginger butter",
+        "price": "$13.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Grilled Chicken Breast",
+        "description": "",
+        "price": "$8.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Grilled Salmon",
+        "description": "",
+        "price": "$12.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Grilled Shrimp",
+        "description": "",
+        "price": "$10.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Steak",
+        "description": "",
+        "price": "$18.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Burger Patty",
+        "description": "",
+        "price": "$9.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Vegan Patty",
+        "description": "",
+        "price": "$5.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "HOUSE SALAD",
+        "description": "",
+        "price": "$6.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Rice",
+        "description": "",
+        "price": "$2.50",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Bacon (5)",
+        "description": "",
+        "price": "$7.50",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Eggs (2)",
+        "description": "",
+        "price": "$4.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Veggies",
+        "description": "",
+        "price": "$6.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "White Cheddar Grits",
+        "description": "",
+        "price": "$9.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Focaccia",
+        "description": "",
+        "price": "$3.50",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Bread for Burrata",
+        "description": "",
+        "price": "$3.50",
+        "section": "SIDES"
+      },
+      {
+        "name": "BBQ Ribs",
+        "description": "",
+        "price": "$29.95",
+        "section": "SPECIALS"
+      },
+      {
+        "name": "Brisket Plate",
+        "description": "",
+        "price": "$25.95",
+        "section": "SPECIALS"
+      },
+      {
+        "name": "Ranch",
+        "description": "",
+        "price": "$0.25",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Blue Cheese",
+        "description": "",
+        "price": "$0.25",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Garlic Aioli",
+        "description": "",
+        "price": "$0.50",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Truffle Aioli",
+        "description": "",
+        "price": "$0.50",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "BBQ Sauce",
+        "description": "",
+        "price": "$0.25",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Buffalo",
+        "description": "",
+        "price": "$0.25",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Sriracha Maple",
+        "description": "",
+        "price": "$0.25",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Truly Bucket",
+        "description": "",
+        "price": "$25.00",
+        "section": "CONCERT DRINKS"
+      },
+      {
+        "name": "Alehouse Mexican Lager",
+        "description": "",
+        "price": "$6.00",
+        "section": "CONCERT DRINKS"
+      },
+      {
+        "name": "858 (Ale House)",
+        "description": "",
+        "price": "$6.00",
+        "section": "CONCERT DRINKS"
+      },
+      {
+        "name": "Alehouse Light Lager",
+        "description": "",
+        "price": "$6.00",
+        "section": "CONCERT DRINKS"
+      },
+      {
+        "name": "Watermelon Slushies",
+        "description": "",
+        "price": "$10.00",
+        "section": "CONCERT DRINKS"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5722",
+    "name": "Volare Italian Restaurant",
+    "sourceUrl": "https://volareitalianrestaurantsd.com/ (dine-in PDF: img1.wsimg.com/.../Copy of Volare, Dine-In, Single Sheets (1).pdf)",
+    "confidence": "high",
+    "notes": "Router said no-platform - correct, this is a printed-menu PDF restaurant, not an ordering platform, so no markup test applies. Two first-party PDFs are linked from the homepage: a Dine-In sheet and a Take-out menu; the take-out PDF confirms the address (3528 Barnett Avenue, San Diego, CA 92110) matches the work-list address exactly. pdftotext -layout paired most sections cleanly on single lines; -raw made pairing worse (separated all names from all prices into disjoint blocks) so -layout was used throughout. No embedded JPEGs in either PDF (checked with extract_pdf_images.js), so this is a text-layer PDF, not image-only. Both PDFs have real, unfixable multi-column scrambling in specific spots, and rather than guess a pairing every ambiguous row was DROPPED: (1) the PASTA section right-hand column on the dine-in dinner page (Capellini Puttanesca, Fettuccini Carbonara, Fettuccine Mediterraneo, Lobster Ravioli, Tortellini Volare, Gnocchi Romano, Rotini Alla Siciliana, Linguine Pescatore, Linguine Clams, Pappadella, Rotini Broccoli, Penne) shows 2+ stacked prices per item from wrapped descriptions bleeding into neighboring rows - none of these were filed; (2) in Chicken and Eggplant, Grilled Chicken and Chicken Piccata show two orphan prices ($17.95, $19.95) floating above the section with no name attached and the two items themselves show no price on their own line - both dropped; (3) in Carne, Bistecca di Ribeye has no visible price - dropped; (4) in Baked Pasta, \"Lasagna\" shows two competing prices ($14.95/$16.95) with no way to tell which belongs to it - dropped, but Lasagna with Eggplant ($16.95) and other single-priced rows in the same table were kept; (5) the take-out PDF Appetizers/Salads/Bread column was discarded entirely after Garlic Bread showed $12.95 there vs a clean $2.95 on the dine-in PDF for the same item - proof that column is misaligned; the dine-in Antipasti page numbers were used instead and cross-validate internally (Fried Zucchini $12.95 lunch-page name matches Zucchini Fritti $12.95 dinner-page name, etc). The take-out PDF has its own Sandwiches and Pasta price lists that differ slightly (generally $0-3 lower on some items, e.g. Spaghetti Marinara $13.95 dine-in vs Spaghetti w/Marinara Sauce $16.95 take-out - actually higher there) from the dine-in versions for overlapping dishes; rather than merge two documents into one row, ALL Sandwiches and Pasta prices filed here are from the dine-in PDF only, and the take-out PDF variant was not filed (a future pass could add it as a separate \"(Take-Out)\" section). Sections reached: Lunch Specials, Sandwiches, Antipasti/Salads/Sides, Pasta, Baked Pasta, Seafood, Chicken and Eggplant, Carne, Children's Menu, Pizza (by size 8\"/12\"/15\"/20\"/28\", each style/size as one row), Beverages (beer/wine/soft drinks), Desserts. Cent distribution: 149/153 (97%) end .95, 4/153 end .50 (Coffee/Milk/Tea/Soft Drinks) - an unambiguous printed-menu distribution, no divisor test needed since this is not a marketplace/ordering platform. Price level plausible for 2026 (entrees $17-29, pasta $13-17, pizza $9-51 by size).",
+    "dishes": [
+      {
+        "name": "Chicken Breast Parmigiana",
+        "description": "",
+        "price": "$13.95",
+        "section": "Lunch Specials"
+      },
+      {
+        "name": "Chicken Piccata",
+        "description": "",
+        "price": "$13.95",
+        "section": "Lunch Specials"
+      },
+      {
+        "name": "Scaloppini Vino Blanco",
+        "description": "",
+        "price": "$14.95",
+        "section": "Lunch Specials"
+      },
+      {
+        "name": "Eggplant Parmigiana",
+        "description": "",
+        "price": "$13.95",
+        "section": "Lunch Specials"
+      },
+      {
+        "name": "Cioppino Lunch",
+        "description": "",
+        "price": "$14.95",
+        "section": "Lunch Specials"
+      },
+      {
+        "name": "Meatball & Bell Pepper Baked Casserole",
+        "description": "",
+        "price": "$12.95",
+        "section": "Lunch Specials"
+      },
+      {
+        "name": "Pork Tenderloin alla Milanese",
+        "description": "",
+        "price": "$13.95",
+        "section": "Lunch Specials"
+      },
+      {
+        "name": "Veal Parmigiana",
+        "description": "",
+        "price": "$13.95",
+        "section": "Lunch Specials"
+      },
+      {
+        "name": "Torpedo with Cheese (6\" Jr.)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Torpedo with Cheese (9\" Lg.)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Roast Beef with Cheese (6\" Jr.)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Roast Beef with Cheese (9\" Lg.)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Pastrami with Cheese (6\" Jr.)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Pastrami with Cheese (9\" Lg.)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Ham with Cheese (6\" Jr.)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Ham with Cheese (9\" Lg.)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Turkey with Cheese (6\" Jr.)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Turkey with Cheese (9\" Lg.)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Veal Parmigiana Sandwich (6\" Jr.)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Veal Parmigiana Sandwich (9\" Lg.)",
+        "description": "",
+        "price": "$12.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Capicolla Spicy Italian Ham (6\" Jr.)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Capicolla Spicy Italian Ham (9\" Lg.)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Salami with Cheese (6\" Jr.)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Salami with Cheese (9\" Lg.)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Sausage Mozzarella Cheese (6\" Jr.)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Sausage Mozzarella Cheese (9\" Lg.)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Meatball Mozzarella Cheese (6\" Jr.)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Meatball Mozzarella Cheese (9\" Lg.)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Chicken Parmigiana Sandwich (9\")",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Eggplant Parmigiana Sandwich (9\")",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Grilled Chicken Sandwich (9\")",
+        "description": "",
+        "price": "$9.95",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Green Salad (Small)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Green Salad (Large)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Antipasto Salad (Small)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Antipasto Salad (Large)",
+        "description": "",
+        "price": "$16.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Caprese Salad",
+        "description": "",
+        "price": "$12.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Garlic Cheese Bread",
+        "description": "",
+        "price": "$6.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Side Meatball or Sausage",
+        "description": "",
+        "price": "$4.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Mussels Alla Siciliana",
+        "description": "",
+        "price": "$13.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Stuffed Artichoke Hearts",
+        "description": "",
+        "price": "$13.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Clams al Aglio e Olio",
+        "description": "",
+        "price": "$13.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Zucchini Fritti",
+        "description": "",
+        "price": "$12.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Shrimp Fritti",
+        "description": "",
+        "price": "$14.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Calamari Fritti",
+        "description": "",
+        "price": "$13.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Broccoli al Aglio e Olio",
+        "description": "",
+        "price": "$12.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Minestrone Soup (Cup)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Minestrone Soup (Bowl)",
+        "description": "",
+        "price": "$4.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Caesar Salad (Small)",
+        "description": "",
+        "price": "$3.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Caesar Salad (Large)",
+        "description": "",
+        "price": "$8.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Caesar Salad w/Shrimp or Chicken",
+        "description": "",
+        "price": "$13.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Garlic Bread",
+        "description": "",
+        "price": "$2.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Cheese Bread",
+        "description": "",
+        "price": "$6.95",
+        "section": "Antipasti, Salads, and Sides"
+      },
+      {
+        "name": "Spaghetti al Aglio e Olio",
+        "description": "",
+        "price": "$13.95",
+        "section": "Pasta"
+      },
+      {
+        "name": "Spaghetti Meat Sauce",
+        "description": "",
+        "price": "$13.95",
+        "section": "Pasta"
+      },
+      {
+        "name": "Spaghetti Marinara",
+        "description": "",
+        "price": "$13.95",
+        "section": "Pasta"
+      },
+      {
+        "name": "Spaghetti Mushroom",
+        "description": "",
+        "price": "$14.95",
+        "section": "Pasta"
+      },
+      {
+        "name": "Beef, Cheese or Spinach Ravioli",
+        "description": "",
+        "price": "$15.95",
+        "section": "Pasta"
+      },
+      {
+        "name": "Pesto Pasta",
+        "description": "",
+        "price": "$14.95",
+        "section": "Pasta"
+      },
+      {
+        "name": "Fettucine Alfredo or Gorgonzola",
+        "description": "",
+        "price": "$14.95",
+        "section": "Pasta"
+      },
+      {
+        "name": "Spaghetti and Lasagna Combo",
+        "description": "",
+        "price": "$16.95",
+        "section": "Pasta"
+      },
+      {
+        "name": "Spaghetti and Ravioli (Beef or Cheese)",
+        "description": "",
+        "price": "$16.95",
+        "section": "Pasta"
+      },
+      {
+        "name": "Manicotti Mariana or Meat Sauce",
+        "description": "",
+        "price": "$14.95",
+        "section": "Baked Pasta"
+      },
+      {
+        "name": "Cannelloni Meat Sauce",
+        "description": "",
+        "price": "$14.95",
+        "section": "Baked Pasta"
+      },
+      {
+        "name": "Cannelloni and Manicotti",
+        "description": "",
+        "price": "$15.95",
+        "section": "Baked Pasta"
+      },
+      {
+        "name": "Ravioli Topped with Mushrooms",
+        "description": "",
+        "price": "$15.95",
+        "section": "Baked Pasta"
+      },
+      {
+        "name": "Lasagna with Eggplant",
+        "description": "",
+        "price": "$16.95",
+        "section": "Baked Pasta"
+      },
+      {
+        "name": "Pasta al Forno",
+        "description": "Baked penne with peas topped with cheese",
+        "price": "$14.95",
+        "section": "Baked Pasta"
+      },
+      {
+        "name": "Grilled Calamari",
+        "description": "Steak, Shrimp and Scallops breadcrumb coated and grilled",
+        "price": "$25.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "Fried Seafood Combo",
+        "description": "Fried Shrimp, Calamari, Scallops, and Mussels",
+        "price": "$25.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "Cioppino",
+        "description": "Mussels, Clams, Shrimp, Scallops, and Calamari served on bed of Spaghetti",
+        "price": "$26.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "Grilled Jumbo Shrimp",
+        "description": "Marinated with fresh Garlic, Olive Oil, and Spices",
+        "price": "$24.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp Volare",
+        "description": "Battered and sauteed with Wine, Butter, Mushroom, and fresh Garlic",
+        "price": "$24.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "Cozze Alla Pomodoro",
+        "description": "Large green mussels sauteed in house tomato sauce",
+        "price": "$23.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "Salmon Mediterraneo",
+        "description": "Pan seared served with mixed vegetables topped with pesto",
+        "price": "$25.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "Tilapia alla Nonna",
+        "description": "Oven baked with tomato, onion, and potato. Served with spaghetti aglio olio",
+        "price": "$25.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "Spaghetti alle Vongole",
+        "description": "Shelled clams sauteed in garlic oil served over spaghetti",
+        "price": "$23.95",
+        "section": "Seafood"
+      },
+      {
+        "name": "Chicken Cacciatore",
+        "description": "Half chicken sauteed with Mushrooms and Green and Black Olives in a Red Sicilian Sauce",
+        "price": "$18.95",
+        "section": "Chicken and Eggplant"
+      },
+      {
+        "name": "Chicken Parmigiana",
+        "description": "",
+        "price": "$18.95",
+        "section": "Chicken and Eggplant"
+      },
+      {
+        "name": "Eggplant Parmigiana",
+        "description": "",
+        "price": "$17.95",
+        "section": "Chicken and Eggplant"
+      },
+      {
+        "name": "Veal Parmigiana",
+        "description": "",
+        "price": "$21.95",
+        "section": "Carne"
+      },
+      {
+        "name": "Scaloppini Romano",
+        "description": "Veal Sauteed in Pink Cream and Mushroom Sauce",
+        "price": "$23.95",
+        "section": "Carne"
+      },
+      {
+        "name": "Scaloppini Vino Blanco",
+        "description": "Veal Sauteed with Wine, Butter, and Mushrooms",
+        "price": "$23.95",
+        "section": "Carne"
+      },
+      {
+        "name": "Scaloppini Piccata",
+        "description": "Veal Sauteed with Lemon, Butter, Capers, and Mushrooms",
+        "price": "$23.95",
+        "section": "Carne"
+      },
+      {
+        "name": "Pork Ossobuco",
+        "description": "Tender pork shank in a red wine and vegetable reduction. Served on a bed of creamy saffron risotto",
+        "price": "$28.95",
+        "section": "Carne"
+      },
+      {
+        "name": "Lasagna",
+        "description": "",
+        "price": "$9.95",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Manicotti",
+        "description": "",
+        "price": "$8.95",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Cannelloni",
+        "description": "",
+        "price": "$8.95",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Ravioli",
+        "description": "",
+        "price": "$8.95",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Chicken Strips",
+        "description": "",
+        "price": "$11.95",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Spaghetti or Penne",
+        "description": "",
+        "price": "$8.95",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Cheese Pizza (8\")",
+        "description": "",
+        "price": "$8.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza (12\")",
+        "description": "",
+        "price": "$11.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza (15\")",
+        "description": "",
+        "price": "$14.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza (20\")",
+        "description": "",
+        "price": "$20.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Cheese Pizza (28\")",
+        "description": "",
+        "price": "$36.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "1 Topping Pizza (8\")",
+        "description": "",
+        "price": "$9.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "1 Topping Pizza (12\")",
+        "description": "",
+        "price": "$12.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "1 Topping Pizza (15\")",
+        "description": "",
+        "price": "$15.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "1 Topping Pizza (20\")",
+        "description": "",
+        "price": "$23.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "1 Topping Pizza (28\")",
+        "description": "",
+        "price": "$39.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "2 Toppings Pizza (8\")",
+        "description": "",
+        "price": "$10.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "2 Toppings Pizza (12\")",
+        "description": "",
+        "price": "$14.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "2 Toppings Pizza (15\")",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "2 Toppings Pizza (20\")",
+        "description": "",
+        "price": "$26.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "2 Toppings Pizza (28\")",
+        "description": "",
+        "price": "$42.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "3 Toppings Pizza (8\")",
+        "description": "",
+        "price": "$11.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "3 Toppings Pizza (12\")",
+        "description": "",
+        "price": "$16.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "3 Toppings Pizza (15\")",
+        "description": "",
+        "price": "$20.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "3 Toppings Pizza (20\")",
+        "description": "",
+        "price": "$29.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "3 Toppings Pizza (28\")",
+        "description": "",
+        "price": "$45.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Calzone Pizza (8\")",
+        "description": "",
+        "price": "$11.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Calzone Pizza (12\")",
+        "description": "",
+        "price": "$16.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Calzone Pizza (15\")",
+        "description": "",
+        "price": "$20.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Calzone Pizza (20\")",
+        "description": "",
+        "price": "$29.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "The Works Pizza (8\")",
+        "description": "",
+        "price": "$12.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "The Works Pizza (12\")",
+        "description": "",
+        "price": "$17.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "The Works Pizza (15\")",
+        "description": "",
+        "price": "$22.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "The Works Pizza (20\")",
+        "description": "",
+        "price": "$30.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "The Works Pizza (28\")",
+        "description": "",
+        "price": "$48.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Veggies Pizza (8\")",
+        "description": "",
+        "price": "$12.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Veggies Pizza (12\")",
+        "description": "",
+        "price": "$17.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Veggies Pizza (15\")",
+        "description": "",
+        "price": "$22.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Veggies Pizza (20\")",
+        "description": "",
+        "price": "$30.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Veggies Pizza (28\")",
+        "description": "",
+        "price": "$48.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Pesto (Garlic, Shrimp, Tomato) Pizza (8\")",
+        "description": "",
+        "price": "$13.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Pesto (Garlic, Shrimp, Tomato) Pizza (12\")",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Pesto (Garlic, Shrimp, Tomato) Pizza (15\")",
+        "description": "",
+        "price": "$25.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Pesto (Garlic, Shrimp, Tomato) Pizza (20\")",
+        "description": "",
+        "price": "$35.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Volare Special Pizza (8\")",
+        "description": "",
+        "price": "$13.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Volare Special Pizza (12\")",
+        "description": "",
+        "price": "$18.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Volare Special Pizza (15\")",
+        "description": "",
+        "price": "$25.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Volare Special Pizza (20\")",
+        "description": "",
+        "price": "$34.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Volare Special Pizza (28\")",
+        "description": "",
+        "price": "$49.95",
+        "section": "Pizza"
+      },
+      {
+        "name": "Amberbock on Tap (Glass)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Amberbock on Tap (Pitcher)",
+        "description": "",
+        "price": "$15.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Milk",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Tea (Iced or Hot)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Soft Drinks",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Mineral Water",
+        "description": "",
+        "price": "$4.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Budweiser/Bud Light",
+        "description": "",
+        "price": "$6.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Michelob Ultra",
+        "description": "",
+        "price": "$6.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Stella",
+        "description": "",
+        "price": "$7.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Peroni",
+        "description": "",
+        "price": "$7.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Elysian Space Dust IPA",
+        "description": "",
+        "price": "$7.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Non-Alcoholic Becks",
+        "description": "",
+        "price": "$7.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "House Wine (Glass)",
+        "description": "Burgundy, Rose, White, or Chianti",
+        "price": "$7.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "House Wine (1/2 Liter)",
+        "description": "Burgundy, Rose, White, or Chianti",
+        "price": "$16.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "House Wine (Liter)",
+        "description": "Burgundy, Rose, White, or Chianti",
+        "price": "$21.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Cannoli",
+        "description": "",
+        "price": "$5.95",
+        "section": "Desserts"
+      },
+      {
+        "name": "Spumoni",
+        "description": "",
+        "price": "$6.95",
+        "section": "Desserts"
+      },
+      {
+        "name": "Tiramisu",
+        "description": "",
+        "price": "$5.95",
+        "section": "Desserts"
+      },
+      {
+        "name": "Cheesecake",
+        "description": "",
+        "price": "$6.95",
+        "section": "Desserts"
+      }
+    ]
+  }
+]

@@ -1,0 +1,623 @@
+[
+  {
+    "restaurantId": "6232",
+    "name": "Union Kitchen and Tap Gaslamp",
+    "sourceUrl": "https://order.toasttab.com/online/union-kitchen-tap-gaslamp-333-fifth-ave",
+    "confidence": "high",
+    "notes": "Router said no-platform on the homepage (site is behind a site-wide sgcaptcha wall, confirmed on / and /menu). Located the restaurant own Toast ordering page via web search (also linked from toasttab.com/local/...). Address in payload (333 Fifth Ave) matches work-list address exactly. Read the full catalog from the embedded __OO_STATE__ Apollo cache (brace-balanced, string-aware) rather than the fragile rendered-HTML regex: the DINNER Menu object groups[].items[] carry every item with a numeric prices[0] and outOfStock flag, matching the group itemCount metadata exactly (SHARE PLATES 15, FLATBREADS 4, SALADS 8, ENTREES 15, DESSERT 6, KIDS FOOD 7, SIDES 33, SPECIALS 2, Xtra Sauces 7, CONCERT DRINKS 5 = 102 total). 4 items are currently outOfStock (Chocolate Scoop, Vanilla Scoop, Fried Okra, Brisket Plate) but carry real prices and were kept. Cent-ending distribution: 76/102 (75%) end .95, 8/102 .00, 7/102 .25, 7/102 .50, 2/102 .20, 2/102 .45 - a printed-menu distribution. Divisor sweep (1.04/1.1/1.15/1.2/1.25/1.3) produced no cleaner two-value landing than the raw distribution - nothing divided out. Price level plausible for 2026 (share plates $11-24, entrees $18-36, sides mostly $5-9). Kept Xtra Sauces (condiment upcharges, $0.25-0.50) and CONCERT DRINKS (a small drink-specials section) as real orderable items, not adjuncts. PADRES and EMP FOOD menus in the payload are empty (itemCount 0) - genuinely empty, not unread. Sections reached: SHARE PLATES, FLATBREADS, SALADS, ENTREES, DESSERT, KIDS FOOD, SIDES, SPECIALS, Xtra Sauces, CONCERT DRINKS - no daypart gating observed, this is the full DINNER catalog plus the concert-drinks addendum.",
+    "dishes": [
+      {
+        "name": "ANGRY PRAWNS",
+        "description": "",
+        "price": "$21.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "BACON MAC & CHEESE **",
+        "description": "Fresh rigatoni, NY cheddar, cherrywood bacon, Cajun breadcrumbs",
+        "price": "$17.25",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "BURRATA & HEIRLOOM TOMATO",
+        "description": "",
+        "price": "$15.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "CRAB CAKES",
+        "description": "",
+        "price": "$24.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "FARMHOUSE MEATBALLS",
+        "description": "3 housemade meatballs, stewed tomato broth, basil pesto, ricotta, shaved parmesan, garlic bread",
+        "price": "$19.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "Sesame Seared Ahi Tuna",
+        "description": "Fresh ahi tuna, daikon, carrot & bell pepper slaw, scallions, spicy ponzu",
+        "price": "$22.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "Short Rib Loaded Fries",
+        "description": "",
+        "price": "$19.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "SKILLET CORNBREAD",
+        "description": "Jalapeño, aged white cheddar, burnt honey & maple butter, chives",
+        "price": "$10.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "SPICY CUCUMBER",
+        "description": "",
+        "price": "$12.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "STEAMED MUSSELS",
+        "description": "",
+        "price": "$18.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "UNION DRY RUBBED WINGS",
+        "description": "Served with house ranch & celery. Buffalo | Sriracha Maple | Union BBQ",
+        "price": "$20.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "BASKET OF FRITES",
+        "description": "Served with roasted garlic aioli",
+        "price": "$8.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "SWEETS",
+        "description": "",
+        "price": "$10.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "TRUFFLE FRIES",
+        "description": "Black truffle aioli, truffle oil, truffle salt, parsley, shaved parmesan",
+        "price": "$14.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "NUESKE'S BACON SLAB",
+        "description": "",
+        "price": "$16.95",
+        "section": "SHARE PLATES"
+      },
+      {
+        "name": "BBQ CHICKEN FLATBREAD",
+        "description": "Union BBQ Sauce, smoked chicken, shaved onion, bacon, mozzarella, EVOO, smoked salt, cilantro",
+        "price": "$18.95",
+        "section": "FLATBREADS"
+      },
+      {
+        "name": "HONEY ROASTED FIG FLATBREAD",
+        "description": "",
+        "price": "$18.95",
+        "section": "FLATBREADS"
+      },
+      {
+        "name": "PROSCIUTTO FLATBREAD",
+        "description": "Sunny farm egg, burrata, arugula, shaved parmesan, EVOO",
+        "price": "$19.45",
+        "section": "FLATBREADS"
+      },
+      {
+        "name": "ROASTED MUSHROOM FLATBREAD",
+        "description": "Bechamel, fried sage, garlic chips, mozzarella, arugula, truffle salt, EVOO",
+        "price": "$20.95",
+        "section": "FLATBREADS"
+      },
+      {
+        "name": "ANCIENT GRAIN BOWL",
+        "description": "",
+        "price": "$18.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "BABY GEM CAESAR",
+        "description": "Red & green baby romaine, spiced croutons, chili oil drizzle, shaved parmesan, fried capers, chives, House Caesar dressing",
+        "price": "$16.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "CHOPPED KALE SALAD",
+        "description": "",
+        "price": "$15.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "COBB SALAD",
+        "description": "Rosemary chicken, bacon, tomato, avocado, cucumber, soft boiled egg, maytag blue, honey dijon vinaigrette",
+        "price": "$20.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "Moroccan Quinoa Bowl",
+        "description": "Blackened shrimp, quinoa mint pilaf, rocket arugula, roasted sweet potato, harissa aioli, roasted mushrooms, crispy garbanzos, pickled red onions, lemon vinaigrette",
+        "price": "$22.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "ORGANIC LOCAL GREENS",
+        "description": "Crispy egg, Laura Chenel goat cheese, spiced pecan, cucumber, heirloom cherry tomato, sherry shallot vinaigrette",
+        "price": "$17.45",
+        "section": "SALADS"
+      },
+      {
+        "name": "STRAWBERRY SALAD",
+        "description": "",
+        "price": "$16.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "HOUSE SALAD",
+        "description": "",
+        "price": "$7.95",
+        "section": "SALADS"
+      },
+      {
+        "name": "12oz  NEW YORK STRIP",
+        "description": "",
+        "price": "$49.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "18 oz. RIBEYE",
+        "description": "",
+        "price": "$69.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "7oz Filet",
+        "description": "",
+        "price": "$44.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "STEAK FRITES",
+        "description": "7oz Wagyu top sirloin, arugula fennel salad, lemon, chimmichurri",
+        "price": "$34.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "SHRIMP & GRITS",
+        "description": "Andouille, roasted tomato, aged white cheddar, Anson Mills grits, chives",
+        "price": "$30.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "BRAISED SHORT RIB",
+        "description": "Tasso grits, swiss chard, crispy onions, braising gravy",
+        "price": "$35.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "EXECUTIVE BURGER",
+        "description": "8oz Brandt beef patty, St. André triple cream brie, smoked cowboy bacon, black garlic aioli, apple chutney, butter lettuce, heirloom tomato, house-made pickles",
+        "price": "$26.20",
+        "section": "ENTREES"
+      },
+      {
+        "name": "FISHERMAN'S STEW",
+        "description": "",
+        "price": "$28.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "GUMBO",
+        "description": "Andouille, smoked chicken, okra, jasmine rice, scallions",
+        "price": "$24.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "PAN ROASTED HALF CHICKEN",
+        "description": "Roasted carrots, potato puree, natural jus, smoked onion jam",
+        "price": "$33.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "Pan Seared SALMON",
+        "description": "Parsnip puree, apple kale slaw, chermoula",
+        "price": "$28.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "ROASTED SPAGHETTI SQUASH",
+        "description": "",
+        "price": "$24.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "SHORT RIB RAGU",
+        "description": "",
+        "price": "$27.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "UNION BURGER",
+        "description": "Aged white cheddar, cherrywood bacon, iceberg lettuce, garlic aioli, house pickles, brioche bun",
+        "price": "$22.20",
+        "section": "ENTREES"
+      },
+      {
+        "name": "VEGAN BURGER",
+        "description": "Black bean & quinoa Impossible patty, arugula, roasted mushrooms, avocado",
+        "price": "$21.95",
+        "section": "ENTREES"
+      },
+      {
+        "name": "Butterscotch Bread Pudding",
+        "description": "",
+        "price": "$12.95",
+        "section": "DESSERT"
+      },
+      {
+        "name": "Cheesecake",
+        "description": "",
+        "price": "$13.95",
+        "section": "DESSERT"
+      },
+      {
+        "name": "Chocolate Creme Brulee",
+        "description": "",
+        "price": "$12.95",
+        "section": "DESSERT"
+      },
+      {
+        "name": "PEANUT BUTTER PIE",
+        "description": "",
+        "price": "$12.95",
+        "section": "DESSERT"
+      },
+      {
+        "name": "Chocolate Scoop",
+        "description": "",
+        "price": "$5.00",
+        "section": "DESSERT"
+      },
+      {
+        "name": "Vanilla Scoop",
+        "description": "",
+        "price": "$5.00",
+        "section": "DESSERT"
+      },
+      {
+        "name": "JR. UNION BURGER & FRIES",
+        "description": "",
+        "price": "$14.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS CHEESE PIZZA",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS  VEGGIES & CHK",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS CHICKEN TENDERS & FRIES",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS LOCAL",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS MAC & CHEESE",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "KIDS WAFFLE, BACON AND FRUIT",
+        "description": "",
+        "price": "$13.95",
+        "section": "KIDS FOOD"
+      },
+      {
+        "name": "BASKET OF FRITES",
+        "description": "",
+        "price": "$9.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "SWEETS",
+        "description": "",
+        "price": "$10.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "TRUFFLE FRIES",
+        "description": "",
+        "price": "$14.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Bacon Mac & Cheese",
+        "description": "",
+        "price": "$17.25",
+        "section": "SIDES"
+      },
+      {
+        "name": "CHARRED BROCCOLINI",
+        "description": "",
+        "price": "$9.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "FRIED OKRA",
+        "description": "",
+        "price": "$9.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "ROASTED BRUSSEL SPROUTS",
+        "description": "",
+        "price": "$14.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Mashed Potatoes",
+        "description": "",
+        "price": "$8.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "CREAMED CORN",
+        "description": "",
+        "price": "$12.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "CREAMED SPINACH",
+        "description": "",
+        "price": "$11.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Toast",
+        "description": "",
+        "price": "$3.50",
+        "section": "SIDES"
+      },
+      {
+        "name": "Garlic Toast",
+        "description": "",
+        "price": "$3.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Crostini",
+        "description": "",
+        "price": "$2.00",
+        "section": "SIDES"
+      },
+      {
+        "name": "Avocado",
+        "description": "",
+        "price": "$2.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Ahi Tuna",
+        "description": "",
+        "price": "$13.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Blackened Chicken Breast",
+        "description": "",
+        "price": "$8.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Blackened Salmon",
+        "description": "",
+        "price": "$13.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Blackened Shrimp",
+        "description": "",
+        "price": "$10.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Blackened Ahi Tuna",
+        "description": "Furikake rice, avocado mousse, ginger butter",
+        "price": "$13.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Grilled Chicken Breast",
+        "description": "",
+        "price": "$8.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Grilled Salmon",
+        "description": "",
+        "price": "$12.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Grilled Shrimp",
+        "description": "",
+        "price": "$10.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Steak",
+        "description": "",
+        "price": "$18.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Burger Patty",
+        "description": "",
+        "price": "$9.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Vegan Patty",
+        "description": "",
+        "price": "$5.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "HOUSE SALAD",
+        "description": "",
+        "price": "$6.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Rice",
+        "description": "",
+        "price": "$2.50",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Bacon (5)",
+        "description": "",
+        "price": "$7.50",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Eggs (2)",
+        "description": "",
+        "price": "$4.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Veggies",
+        "description": "",
+        "price": "$6.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "White Cheddar Grits",
+        "description": "",
+        "price": "$9.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Focaccia",
+        "description": "",
+        "price": "$3.50",
+        "section": "SIDES"
+      },
+      {
+        "name": "Side Bread for Burrata",
+        "description": "",
+        "price": "$3.50",
+        "section": "SIDES"
+      },
+      {
+        "name": "BBQ Ribs",
+        "description": "",
+        "price": "$29.95",
+        "section": "SPECIALS"
+      },
+      {
+        "name": "Brisket Plate",
+        "description": "",
+        "price": "$25.95",
+        "section": "SPECIALS"
+      },
+      {
+        "name": "Ranch",
+        "description": "",
+        "price": "$0.25",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Blue Cheese",
+        "description": "",
+        "price": "$0.25",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Garlic Aioli",
+        "description": "",
+        "price": "$0.50",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Truffle Aioli",
+        "description": "",
+        "price": "$0.50",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "BBQ Sauce",
+        "description": "",
+        "price": "$0.25",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Buffalo",
+        "description": "",
+        "price": "$0.25",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Sriracha Maple",
+        "description": "",
+        "price": "$0.25",
+        "section": "Xtra Sauces"
+      },
+      {
+        "name": "Truly Bucket",
+        "description": "",
+        "price": "$25.00",
+        "section": "CONCERT DRINKS"
+      },
+      {
+        "name": "Alehouse Mexican Lager",
+        "description": "",
+        "price": "$6.00",
+        "section": "CONCERT DRINKS"
+      },
+      {
+        "name": "858 (Ale House)",
+        "description": "",
+        "price": "$6.00",
+        "section": "CONCERT DRINKS"
+      },
+      {
+        "name": "Alehouse Light Lager",
+        "description": "",
+        "price": "$6.00",
+        "section": "CONCERT DRINKS"
+      },
+      {
+        "name": "Watermelon Slushies",
+        "description": "",
+        "price": "$10.00",
+        "section": "CONCERT DRINKS"
+      }
+    ]
+  }
+]

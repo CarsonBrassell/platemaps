@@ -1,0 +1,166 @@
+[
+  {
+    "restaurantId": "6585",
+    "name": "Handel’s Homemade Ice Cream",
+    "platform": "chownow",
+    "outcome": "wrong-branch",
+    "detail": "the page prints long beach, none of which is a city in this corpus - a different branch of the same brand (https://api.chownow.com/api/restaurant/36247) - not filed",
+    "menuResponses": [
+      "https://api.chownow.com/api/restaurant/36247"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6031",
+    "name": "Pastalini",
+    "platform": "slice",
+    "outcome": "screened-out",
+    "detail": "catalog looks doubled: 112 of 232 rows repeat by name and price across differently-named sections - https://slicelife.com/restaurants/ca/san-diego/92121/pastalini/menu; followed the branch link https://slicelife.com/restaurants/ca/san-diego/92121/pastalini/menu",
+    "menuResponses": [
+      "https://slicelife.com/restaurants/ca/san-diego/92121/pastalini/menu"
+    ],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6295",
+    "name": "Burger Bench Escondido",
+    "platform": "chownow",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.burgerbench.com/escondido after 95 JSON responses; store picked by street number 237; clicked a branch matching street number 237",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5799",
+    "name": "Brigantine Seafood",
+    "platform": "chownow",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on http://www.brigantine.com/: page.goto: net::ERR_NAME_NOT_RESOLVED at http://www.brigantine.com/\nCall log:\n\u001b[2m  - navigating to \"http://www.briganti",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6545",
+    "name": "Wayfarer Bread & Pastry",
+    "platform": "Square Online storefront",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on http://www.wayfarerbread.com/: page.goto: net::ERR_NAME_NOT_RESOLVED at http://www.wayfarerbread.com/\nCall log:\n\u001b[2m  - navigating to \"http://www.wayfa",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5859",
+    "name": "Tom's Famous Family Restaurant 24",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/business/~309363: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://order.online/business/~309363\", waiting un",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5817",
+    "name": "TOM's Famous Family Restaurant 22",
+    "platform": "order.online",
+    "outcome": "fetch-failed",
+    "detail": "page.goto failed on https://order.online/business/~309363: page.goto: net::ERR_NETWORK_CHANGED at https://order.online/business/~309363\nCall log:\n\u001b[2m  - navigating to \"https://or",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5725",
+    "name": "Por Favor El Cajon",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://porfavorrestaurants.com/food/ after 21 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6331",
+    "name": "Papas & Tacos Mexican Food",
+    "platform": "plain-html",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://mypapastacos.com/menu/ after 30 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6584",
+    "name": "Parakeet Cafe - Little Italy",
+    "platform": "chownow",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.parakeetcafe.com/location/little-italy/ after 16 JSON responses; store picked by street number 1680; clicked a branch matching street number 1680",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6661",
+    "name": "Coya Peruvian Secret",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://www.google.com/maps/place/Parking+lot,+1140+Camino+Del+Mar,+Del+Mar,+CA+92014/@32.9559372,-117.2666883,17z/data=!3m1!4b1!4m6!3m5!1s0x80dc08b39afdc43b:0xc17aa467e3b984e7!8m2!3d32.9559373!4d-117.2640982!16s%2Fg%2F11c3q4rvlj?entry=ttu&g_ep=EgoyMDI2MDkwMS4wIKXMDSoASAFQAw%3D%3D after 71 JSON responses; store picked by street number 1140 in the link; opened the branch link carrying street number 1140",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5785",
+    "name": "That Mexican Place",
+    "platform": "GloriaFood widget",
+    "outcome": "needs-browser",
+    "detail": "store picker on https://www.thatmexicanplace.net/escondido/ that this script could not drive (tried: clicked a branch matching street number 200); store picked by street number 200; clicked a branch matching street number 200",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6750",
+    "name": "The Asian Bistro",
+    "platform": null,
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://theasianbistro.com/ after 50 JSON responses; store picked by street number 414; clicked a branch matching street number 414",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "5933",
+    "name": "Lanna Thai Cuisine",
+    "platform": "toast",
+    "outcome": "needs-browser",
+    "detail": "no priced payload and no priced DOM on https://order.toasttab.com/online/terms-of-service after 24 JSON responses",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6718",
+    "name": "Panini Kabob Grill - Mission Valley",
+    "platform": "olo",
+    "outcome": "needs-browser",
+    "detail": "118 priced items on https://paninikabobgrill.olo.com/menu/panini-kabob-grill-san-diego-utc, reached by following a link off paninikabobgrill.com, but the page names San Diego, but it names every other branch's city too - a location list is not an address - an agent must confirm this is Panini Kabob Grill - Mission Valley, 891 Camino De La Reina, San Diego, CA 92108. Not filed; followed the branch link https://paninikabobgrill.olo.com/menu/panini-kabob-grill-san-diego-utc; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  },
+  {
+    "restaurantId": "6258",
+    "name": "skybound coffee + dessert lounge",
+    "platform": "Square Online storefront",
+    "outcome": "gated",
+    "detail": "only 2 priced items from https://skyboundmelrose.square.site/ at 11:52:56 AM PT - a closed store looks exactly like a small menu, so re-run in daylight; read off the rendered DOM - no response carried a priced catalog",
+    "menuResponses": [],
+    "curlReproducible": "unknown",
+    "curlNote": ""
+  }
+]

@@ -1,0 +1,2191 @@
+[
+  {
+    "restaurantId": "6816",
+    "name": "Raspados Shave Ice",
+    "sourceUrl": "https://www.raspadosshaveice.com/menu",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "Own site is a Wix Restaurant Menu widget; SSR warmup data contains item names/descriptions but every priceInfo/formattedPrice value in the payload is a literal $0.00 placeholder (4 occurrences, all $0.00, no real prices anywhere in the page). Homepage has zero price-like text either. Searched DoorDash/UberEats/Grubhub for this address (2168 Logan Ave) - no listing found. No price is published anywhere; not_found."
+  },
+  {
+    "restaurantId": "1924",
+    "name": "French Cafe And Bakery",
+    "sourceUrl": "https://www.carlsbadfrenchpastrycafe.com/menus/breakfast",
+    "confidence": "high",
+    "notes": "Own site (carlsbadfrenchpastrycafe.com), Popmenu platform; read via schema.org JSON-LD across 4 distinct dayparts: /menus/breakfast, /menus/drinks, /menus/lunch, /menus/our-menu (a 5th page, /menus/cakes, returned byte-identical JSON-LD to our-menu - not a distinct menu, skipped as duplicate). 'Sides' repeats identically on the breakfast and lunch pages and was deduped to one entry per item.",
+    "dishes": [
+      {
+        "name": "California Chicken & Avocado",
+        "description": "Grilled chicken breast, avocado, sautéed bell pepper and cheddar cheese",
+        "price": "$16.99",
+        "section": "Breakfast / Les Omelettes"
+      },
+      {
+        "name": "Ham & Cheese",
+        "description": "Black Forest ham, Swiss cheese",
+        "price": "$15.99",
+        "section": "Breakfast / Les Omelettes"
+      },
+      {
+        "name": "Mediterranean",
+        "description": "Tomatoes, feta cheese, basil",
+        "price": "$14.99",
+        "section": "Breakfast / Les Omelettes"
+      },
+      {
+        "name": "Cajun Shrimp",
+        "description": "Sautéed shrimp, tomatoes, garlic, onions, bell peppers, and mushrooms",
+        "price": "$16.99",
+        "section": "Breakfast / Les Omelettes"
+      },
+      {
+        "name": "Mushroom",
+        "description": "Sautéed fresh mushrooms, garlic, Swiss cheese",
+        "price": "$14.99",
+        "section": "Breakfast / Les Omelettes"
+      },
+      {
+        "name": "Vegetable",
+        "description": "Sautéed bell pepper, onion, mushroom, tomatoes, and garlic",
+        "price": "$14.99",
+        "section": "Breakfast / Les Omelettes"
+      },
+      {
+        "name": "Eggs Benedict",
+        "description": "English muffin, Canadian bacon, poached eggs, Hollandaise sauce",
+        "price": "$16.99",
+        "section": "Breakfast / Breakfast Entrées"
+      },
+      {
+        "name": "Breakfast Croissant",
+        "description": "Choice of Black Forest ham, bacon, or sausage, eggs, Swiss cheese",
+        "price": "$15.99",
+        "section": "Breakfast / Breakfast Entrées"
+      },
+      {
+        "name": "Choice of Eggs",
+        "description": "Two eggs, Black Forest ham, bacon, or sausage, served with fresh baguette",
+        "price": "$12.99",
+        "section": "Breakfast / Breakfast Entrées"
+      },
+      {
+        "name": "Orange Grand Marnier Crêpes",
+        "description": "Three crêpes, vanilla custard, Grand Marnier, orange sauce",
+        "price": "$13.99",
+        "section": "Breakfast / Sweet Crêpes"
+      },
+      {
+        "name": "Strawberry Crêpes",
+        "description": "Two crêpes, fresh sliced strawberries, vanilla custard",
+        "price": "$13.99",
+        "section": "Breakfast / Sweet Crêpes"
+      },
+      {
+        "name": "Banana Nutella Crêpes",
+        "description": "Two crêpes with Nutella. Choose from sliced strawberries or bananas",
+        "price": "$13.99",
+        "section": "Breakfast / Sweet Crêpes"
+      },
+      {
+        "name": "Apple & Cinnamon Crêpes",
+        "description": "Sweet caramelized apples and cinnamon",
+        "price": "$13.99",
+        "section": "Breakfast / Sweet Crêpes"
+      },
+      {
+        "name": "Breakfast Crêpe",
+        "description": "Béchamel, ham, mushrooms, topped with cheese and over easy egg",
+        "price": "$14.99",
+        "section": "Breakfast / Savory Crêpes"
+      },
+      {
+        "name": "Chicken Florentine Crêpe",
+        "description": "Béchamel, chicken, spinach and feta cheese",
+        "price": "$14.99",
+        "section": "Breakfast / Savory Crêpes"
+      },
+      {
+        "name": "Chicken Mushroom Crêpe",
+        "description": "Béchamel, chicken, bell peppers, mushrooms and garlic",
+        "price": "$14.99",
+        "section": "Breakfast / Savory Crêpes"
+      },
+      {
+        "name": "Shrimp Crêpe",
+        "description": "Bell pepper, onion, tomatoes, mushroom, Béchamel sauce",
+        "price": "$14.99",
+        "section": "Breakfast / Savory Crêpes"
+      },
+      {
+        "name": "Pasta Salad",
+        "description": "",
+        "price": "$3.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Fresh Fruit",
+        "description": "",
+        "price": "$3.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Tater Tots",
+        "description": "",
+        "price": "$3.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Two Eggs",
+        "description": "",
+        "price": "$3.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Black Forest Ham (side)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Chicken (side)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Sausage (side)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Bacon (side)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Avocado (side)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Tertre Bousquet Sauternes",
+        "description": "Bottle",
+        "price": "$36.00",
+        "section": "Drinks / Wine"
+      },
+      {
+        "name": "Single Espresso",
+        "description": "",
+        "price": "$2.80",
+        "section": "Drinks / Coffee"
+      },
+      {
+        "name": "Double Espresso",
+        "description": "",
+        "price": "$3.15",
+        "section": "Drinks / Coffee"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$5.25",
+        "section": "Drinks / Coffee"
+      },
+      {
+        "name": "Whip (add-on)",
+        "description": "",
+        "price": "$0.75",
+        "section": "Drinks / Add-Ons"
+      },
+      {
+        "name": "Flavors (add-on)",
+        "description": "",
+        "price": "$0.50",
+        "section": "Drinks / Add-Ons"
+      },
+      {
+        "name": "Add a Shot",
+        "description": "",
+        "price": "$1.00",
+        "section": "Drinks / Add-Ons"
+      },
+      {
+        "name": "Small Green Salad",
+        "description": "Spring mix tossed in a French vinaigrette",
+        "price": "$9.99",
+        "section": "Lunch / Les Salades"
+      },
+      {
+        "name": "French Onion Soup",
+        "description": "",
+        "price": "$9.99",
+        "section": "Lunch / Les Soups"
+      },
+      {
+        "name": "Soup Du Jour",
+        "description": "Ask about our soup of the day",
+        "price": "$9.99",
+        "section": "Lunch / Les Soups"
+      },
+      {
+        "name": "Roast Beef Panini",
+        "description": "Roast beef, sautéed onion, tomatoes, basil, Swiss cheese, French mustard",
+        "price": "$14.99",
+        "section": "Lunch / Paninis"
+      },
+      {
+        "name": "Pastrami Panini",
+        "description": "Pastrami, hard boiled eggs, tomatoes, basil, Swiss cheese, mayonnaise",
+        "price": "$14.99",
+        "section": "Lunch / Paninis"
+      },
+      {
+        "name": "Chicken Panini",
+        "description": "Grilled chicken breast, sautéed mushroom and garlic, tomatoes, basil, Swiss cheese",
+        "price": "$14.99",
+        "section": "Lunch / Paninis"
+      },
+      {
+        "name": "Ham & Pineapple Panini",
+        "description": "Black Forest ham, pineapple, basil, tomatoes, Swiss cheese",
+        "price": "$14.99",
+        "section": "Lunch / Paninis"
+      },
+      {
+        "name": "Brie Panini",
+        "description": "Brie cheese, tomatoes, basil, choice of turkey, Black Forest ham or roast beef",
+        "price": "$15.99",
+        "section": "Lunch / Paninis"
+      },
+      {
+        "name": "Cajun Shrimp Panini",
+        "description": "Green bell peppers, onion, tomatoes, mushroom",
+        "price": "$14.99",
+        "section": "Lunch / Paninis"
+      },
+      {
+        "name": "Spinach & Cheese Quiche",
+        "description": "",
+        "price": "$13.99",
+        "section": "Lunch / Les Quiches"
+      },
+      {
+        "name": "Ham & Cheese Quiche",
+        "description": "",
+        "price": "$13.99",
+        "section": "Lunch / Les Quiches"
+      },
+      {
+        "name": "Ham or Turkey Croissant",
+        "description": "Black Forest ham or turkey, Swiss cheese, tomatoes, spring mix, mayonnaise, Dijon mustard",
+        "price": "$14.99",
+        "section": "Lunch / Les Sandwiches"
+      },
+      {
+        "name": "Cajun Tuna Sandwich",
+        "description": "Seared tuna, olives, bell pepper, tomatoes, spring mix, mayonnaise",
+        "price": "$14.99",
+        "section": "Lunch / Les Sandwiches"
+      },
+      {
+        "name": "Le Parisien",
+        "description": "Black Forest ham or turkey, tomatoes, Brie Cheese, spring mix",
+        "price": "$13.99",
+        "section": "Lunch / Les Sandwiches"
+      },
+      {
+        "name": "Croque Madame",
+        "description": "Toasted bread, Black Forest ham and Swiss cheese, béchamel sauce, one egg over easy",
+        "price": "$15.99",
+        "section": "Lunch / Les Sandwiches"
+      },
+      {
+        "name": "Croque Monsieur",
+        "description": "Toasted bread, Black Forest ham and Swiss cheese, béchamel sauce",
+        "price": "$15.99",
+        "section": "Lunch / Les Sandwiches"
+      },
+      {
+        "name": "Turkey & Avocado Sandwich",
+        "description": "Turkey, avocado, cheddar cheese, tomatoes, spring mix, mayonnaise, Dijon mustard",
+        "price": "$15.99",
+        "section": "Lunch / Les Sandwiches"
+      },
+      {
+        "name": "Le Vegetarian",
+        "description": "Sautéed mushrooms, onions, bell pepper, tomatoes, olives, basil, spring mix, Dijon mustard",
+        "price": "$13.99",
+        "section": "Lunch / Les Sandwiches"
+      },
+      {
+        "name": "Bordelais",
+        "description": "Turkey, hard-boiled egg, grapes, Swiss cheese, spring mix, tomatoes, mayonnaise",
+        "price": "$14.99",
+        "section": "Lunch / Les Sandwiches"
+      },
+      {
+        "name": "MultiGrain Loaf",
+        "description": "",
+        "price": "$5.00",
+        "section": "Bread"
+      },
+      {
+        "name": "Baguette",
+        "description": "",
+        "price": "$2.75",
+        "section": "Bread"
+      },
+      {
+        "name": "Sourdough Loaf",
+        "description": "",
+        "price": "$4.25",
+        "section": "Bread"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3884",
+    "name": "The Collective",
+    "sourceUrl": "https://www.collective-sd.com/food",
+    "confidence": "high",
+    "notes": "Own site (collective-sd.com), Squarespace, static priced menu (no $ sign printed on page, plain numbers e.g. '11.95' - normalized to $11.95 format here). 3-size pizzas rendered as 3 separate dish entries (Small/Medium/Large). Page footer shows 'Copyright © 2024' so pricing may be ~1-2 years stale, but it is still the only priced source found and is first-party.",
+    "dishes": [
+      {
+        "name": "Chicken Tortilla Soup",
+        "description": "Topped w/ corn tortilla strips, cheddar, avocado, cilantro. Add sour cream. (Bowl)",
+        "price": "$7.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Chips + Guacamole",
+        "description": "Housemade chips + daily fresh guac",
+        "price": "$12.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Wings (8-piece)",
+        "description": "Award-winning beer-brined wings, baked & lightly fried. Choice of spicy buffalo, Hickory BBQ, Buffalo BBQ, Sesame Teriyaki, or TRuffalo sauce. Served w/ carrots, celery, blue cheese or ranch",
+        "price": "$16.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Ballpark Pretzel",
+        "description": "Giant ballpark-style pretzel served w/ beer cheese, spicy mustard & sriracha aioli",
+        "price": "$12.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Jalapeño Poppers",
+        "description": "Bacon wrapped jalapeños stuffed with cheddar, topped with parmesan, served with sriracha aioli",
+        "price": "$13.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Hummus Plate",
+        "description": "Signature hummus, cucumbers, green olives, served w/ focaccia bread, veggies or tortilla chips",
+        "price": "$12.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Beer Soakers",
+        "description": "Fresh pizza dough topped w/ parmesan, oregano, mozzarella & garlic; served w/ marinara & ranch",
+        "price": "$11.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Caprese Salad",
+        "description": "Fresh mozzarella, tomatoes, fresh basil, drizzled with balsamic reduction glaze & extra virgin olive oil",
+        "price": "$11.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Beer-Brined Fries",
+        "description": "",
+        "price": "$8.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Sweet Potato Fries",
+        "description": "Served w/ our special sauce",
+        "price": "$9.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Truffle Fries",
+        "description": "Tossed w/ pure imported white truffle oil, parmesan, side of garlic aioli",
+        "price": "$10.95",
+        "section": "Starters"
+      },
+      {
+        "name": "Cobb Salad",
+        "description": "Grilled free range marinated chicken, romaine, tomatoes, bacon, avocado, pickled onions, egg, blue cheese crumbles, ranch",
+        "price": "$18.95",
+        "section": "Fresh Greens"
+      },
+      {
+        "name": "Apple Walnut Salad",
+        "description": "Mixed greens, crisp apples, glazed walnuts, dried cranberries, shaved parmesan, blush-vinaigrette",
+        "price": "$13.95",
+        "section": "Fresh Greens"
+      },
+      {
+        "name": "Seared Ahi Salad",
+        "description": "Sesame seared yellowfin tuna drizzled w/ sriracha aioli, organic mixed greens, carrots, green onions, cilantro, wontons, avocado, ginger-sesame dressing",
+        "price": "$18.95",
+        "section": "Fresh Greens"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Romaine, parmesan, croutons, lemon wedge, tossed w/ caesar",
+        "price": "$12.95",
+        "section": "Fresh Greens"
+      },
+      {
+        "name": "Organic Mixed Greens",
+        "description": "Tomatoes, cucumbers, pickled onions, croutons, parmesan, choice of dressing",
+        "price": "$11.95",
+        "section": "Fresh Greens"
+      },
+      {
+        "name": "BBQ Chicken Salad",
+        "description": "Grilled free range chicken glazed w/ hickory BBQ sauce, romaine, black beans, cheddar, corn, tomatoes, avocado, pickled onions, tortilla strips, cilantro, BBQ ranch dressing",
+        "price": "$17.95",
+        "section": "Fresh Greens"
+      },
+      {
+        "name": "Side Salad",
+        "description": "Mixed greens or caesar",
+        "price": "$4.00",
+        "section": "Fresh Greens"
+      },
+      {
+        "name": "Cheese Pizza (Small 10\")",
+        "description": "Mozzarella, tomato sauce",
+        "price": "$11.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Cheese Pizza (Medium 14\")",
+        "description": "Mozzarella, tomato sauce",
+        "price": "$16.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Cheese Pizza (Large 18\")",
+        "description": "Mozzarella, tomato sauce",
+        "price": "$23.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "White Stone Pizza (Small 10\")",
+        "description": "Roasted garlic, mozzarella, ricotta (no tomato sauce)",
+        "price": "$12.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "White Stone Pizza (Medium 14\")",
+        "description": "Roasted garlic, mozzarella, ricotta (no tomato sauce)",
+        "price": "$17.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "White Stone Pizza (Large 18\")",
+        "description": "Roasted garlic, mozzarella, ricotta (no tomato sauce)",
+        "price": "$24.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Tomato Basil Pizza (Small 10\")",
+        "description": "Tomatoes, mozzarella, parmesan, ricotta, roasted garlic, fresh basil (no tomato sauce)",
+        "price": "$13.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Tomato Basil Pizza (Medium 14\")",
+        "description": "Tomatoes, mozzarella, parmesan, ricotta, roasted garlic, fresh basil (no tomato sauce)",
+        "price": "$18.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Tomato Basil Pizza (Large 18\")",
+        "description": "Tomatoes, mozzarella, parmesan, ricotta, roasted garlic, fresh basil (no tomato sauce)",
+        "price": "$25.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "BBQ Chicken Pizza (Small 10\")",
+        "description": "Grilled chicken, red onions, gouda, BBQ sauce, mozzarella, cilantro",
+        "price": "$16.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "BBQ Chicken Pizza (Medium 14\")",
+        "description": "Grilled chicken, red onions, gouda, BBQ sauce, mozzarella, cilantro",
+        "price": "$21.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "BBQ Chicken Pizza (Large 18\")",
+        "description": "Grilled chicken, red onions, gouda, BBQ sauce, mozzarella, cilantro",
+        "price": "$29.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Goat Cheese Pizza (Small 10\")",
+        "description": "Bacon, onions, bell peppers, tomatoes, goat cheese, mozzarella, olive oil (no tomato sauce)",
+        "price": "$16.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Goat Cheese Pizza (Medium 14\")",
+        "description": "Bacon, onions, bell peppers, tomatoes, goat cheese, mozzarella, olive oil (no tomato sauce)",
+        "price": "$21.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Goat Cheese Pizza (Large 18\")",
+        "description": "Bacon, onions, bell peppers, tomatoes, goat cheese, mozzarella, olive oil (no tomato sauce)",
+        "price": "$29.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Veggie Pizza (Small 10\")",
+        "description": "Mushrooms, bell peppers, onions, olives, mozzarella",
+        "price": "$16.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Veggie Pizza (Medium 14\")",
+        "description": "Mushrooms, bell peppers, onions, olives, mozzarella",
+        "price": "$21.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Veggie Pizza (Large 18\")",
+        "description": "Mushrooms, bell peppers, onions, olives, mozzarella",
+        "price": "$29.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Insalata (Salad) Pizza (Small 10\")",
+        "description": "Mozzarella, parmesan, oregano, pepperoni, canadian bacon, onions, topped w/ mixed greens, tomatoes, Italian dressing",
+        "price": "$16.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Insalata (Salad) Pizza (Medium 14\")",
+        "description": "Mozzarella, parmesan, oregano, pepperoni, canadian bacon, onions, topped w/ mixed greens, tomatoes, Italian dressing",
+        "price": "$21.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Insalata (Salad) Pizza (Large 18\")",
+        "description": "Mozzarella, parmesan, oregano, pepperoni, canadian bacon, onions, topped w/ mixed greens, tomatoes, Italian dressing",
+        "price": "$29.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Deluxe Pizza (Small 10\")",
+        "description": "Pepperoni, sausage, black olives, bells, onions, mushrooms, mozzarella",
+        "price": "$16.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Deluxe Pizza (Medium 14\")",
+        "description": "Pepperoni, sausage, black olives, bells, onions, mushrooms, mozzarella",
+        "price": "$21.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Deluxe Pizza (Large 18\")",
+        "description": "Pepperoni, sausage, black olives, bells, onions, mushrooms, mozzarella",
+        "price": "$29.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Mashed Potato + Bacon Pie (Small 10\")",
+        "description": "Mashed potatoes, mozzarella, cheddar, green onion, bacon",
+        "price": "$16.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Mashed Potato + Bacon Pie (Medium 14\")",
+        "description": "Mashed potatoes, mozzarella, cheddar, green onion, bacon",
+        "price": "$21.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Mashed Potato + Bacon Pie (Large 18\")",
+        "description": "Mashed potatoes, mozzarella, cheddar, green onion, bacon",
+        "price": "$29.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Chicken Pesto Pizza (Small 10\")",
+        "description": "Pesto sauce, marinated grilled chicken, artichoke hearts, tomatoes, mozzarella (no tomato sauce)",
+        "price": "$16.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Chicken Pesto Pizza (Medium 14\")",
+        "description": "Pesto sauce, marinated grilled chicken, artichoke hearts, tomatoes, mozzarella (no tomato sauce)",
+        "price": "$21.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Chicken Pesto Pizza (Large 18\")",
+        "description": "Pesto sauce, marinated grilled chicken, artichoke hearts, tomatoes, mozzarella (no tomato sauce)",
+        "price": "$29.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Buffalo Sriracha Chicken Pizza (Small 10\")",
+        "description": "Grilled chicken, blue cheese crumbles, mozzarella, cheddar, green onions, Buffalo & Sriracha sauce",
+        "price": "$16.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Buffalo Sriracha Chicken Pizza (Medium 14\")",
+        "description": "Grilled chicken, blue cheese crumbles, mozzarella, cheddar, green onions, Buffalo & Sriracha sauce",
+        "price": "$21.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Buffalo Sriracha Chicken Pizza (Large 18\")",
+        "description": "Grilled chicken, blue cheese crumbles, mozzarella, cheddar, green onions, Buffalo & Sriracha sauce",
+        "price": "$29.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Meat Combo Pie (Small 10\")",
+        "description": "Pepperoni, sausage, Canadian bacon, bacon, mozzarella",
+        "price": "$16.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Meat Combo Pie (Medium 14\")",
+        "description": "Pepperoni, sausage, Canadian bacon, bacon, mozzarella",
+        "price": "$21.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "Meat Combo Pie (Large 18\")",
+        "description": "Pepperoni, sausage, Canadian bacon, bacon, mozzarella",
+        "price": "$29.95",
+        "section": "Hand-Tossed Pizzas"
+      },
+      {
+        "name": "The Burger",
+        "description": "American Kobe beef topped w/ lettuce, tomato, onions, & burger sauce on toasted brioche bun",
+        "price": "$17.95",
+        "section": "Burgers & Fries"
+      },
+      {
+        "name": "Mushroom Swiss Burger",
+        "description": "American Kobe beef w/ sautéed mushrooms, swiss cheese, sautéed onions, garlic-aioli, on a toasted Brioche bun",
+        "price": "$17.95",
+        "section": "Burgers & Fries"
+      },
+      {
+        "name": "Cobb Burger",
+        "description": "American Kobe beef, bacon, blue cheese crumbles, lettuce, tomato, onion, avocado, burger sauce; on a toasted Brioche bun",
+        "price": "$18.95",
+        "section": "Burgers & Fries"
+      },
+      {
+        "name": "Black Bean Chipotle Burger",
+        "description": "Black bean patty, avocado, lettuce, tomatoes, onions, chipotle aioli, on a toasted Brioche bun",
+        "price": "$17.95",
+        "section": "Burgers & Fries"
+      },
+      {
+        "name": "Grilled Fish Tacos",
+        "description": "Two grilled fish tacos topped w/ chipotle aioli, shredded cabbage, cilantro, sliced avocado, served w/ housemade chips. Corn or Flour tortillas",
+        "price": "$15.95",
+        "section": "Plates"
+      },
+      {
+        "name": "Strips & Fries",
+        "description": "House-made panko crusted chicken breasts lightly fried & served w/ choice of 2 sauces",
+        "price": "$15.95",
+        "section": "Plates"
+      },
+      {
+        "name": "Philly Sub",
+        "description": "Sliced ribeye, sautéed onions, bell peppers, provolone, mozzarella",
+        "price": "$17.99",
+        "section": "Subs"
+      },
+      {
+        "name": "Santa Fe Chicken Sub",
+        "description": "Spicy santa fe sauce sautéed w/ chicken breast, bell peppers & onions; topped w/ fresh cilantro & provolone",
+        "price": "$16.99",
+        "section": "Subs"
+      },
+      {
+        "name": "Chicken Parmesan Sub",
+        "description": "Lightly fried & baked w/ marinara & provolone",
+        "price": "$15.99",
+        "section": "Subs"
+      },
+      {
+        "name": "Cali Chicken Sandwich",
+        "description": "Grilled chicken breast, lettuce, tomato, onion, avocado, chipotle aioli on a toasted brioche bun",
+        "price": "$16.99",
+        "section": "Subs"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "Cheddar, swiss, american, fresh basil, tomato, on parmesan-crusted sourdough",
+        "price": "$15.99",
+        "section": "Subs"
+      },
+      {
+        "name": "Spicy Turkey Melt",
+        "description": "Sliced free-range turkey breast, provolone, avocado & spicy sauce on grilled Sourdough",
+        "price": "$16.99",
+        "section": "Subs"
+      },
+      {
+        "name": "Buffalo Chicken Caesar Wrap",
+        "description": "Romaine, parmesan, croutons, grilled buffalo chicken, housemade caesar dressing",
+        "price": "$16.99",
+        "section": "Subs"
+      },
+      {
+        "name": "Santa Fe Chicken Pasta",
+        "description": "Cavatappi pasta tossed in our spicy santa-fe cream sauce, grilled chicken, bell peppers, onions, cilantro",
+        "price": "$17.95",
+        "section": "Pastas"
+      },
+      {
+        "name": "Vodka Penne",
+        "description": "Light tomato-prosciutto cream sauce served over fresh penne pasta",
+        "price": "$15.95",
+        "section": "Pastas"
+      },
+      {
+        "name": "Chicken Parmesan Pasta",
+        "description": "Chicken breasts lightly breaded, fried, then baked w/ our marinara sauce & mozzarella; served over fresh penne",
+        "price": "$17.95",
+        "section": "Pastas"
+      },
+      {
+        "name": "Fettuccine Alfredo",
+        "description": "Fettuccine tossed in a creamy parmesan-garlic alfredo sauce",
+        "price": "$15.95",
+        "section": "Pastas"
+      },
+      {
+        "name": "Beer Mac & Cheese",
+        "description": "Macaroni in housemade beer cheese sauce sautéed with garlic, topped with mozzarella, bacon, and bread crumbs",
+        "price": "$15.95",
+        "section": "Pastas"
+      },
+      {
+        "name": "Lobster Mac & Cheese",
+        "description": "Signature brandy cream sauce, garlic, lobster, tomatoes, mozzarella, bread crumbs. Served with garlic bread",
+        "price": "$17.95",
+        "section": "Pastas"
+      },
+      {
+        "name": "Chocolate Chip Cookies",
+        "description": "Baked fresh daily, served warm on a plate or in a box to go",
+        "price": "$6.99",
+        "section": "Desserts"
+      },
+      {
+        "name": "Pizza Cookie",
+        "description": "Salted caramel walnut or Classic Chocolate; freshly baked chocolate chip cookie topped w/ vanilla bean ice cream",
+        "price": "$8.95",
+        "section": "Desserts"
+      },
+      {
+        "name": "Kids Mac & Cheese",
+        "description": "Celentani with cheese sauce",
+        "price": "$7.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kids Chicken Strips",
+        "description": "Panko crusted chicken strips served with fries",
+        "price": "$7.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kids Grilled Cheese",
+        "description": "Cheddar cheese on grilled Sourdough served with fries",
+        "price": "$7.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Kids Noodles & Butter",
+        "description": "Penne with butter and parmesan",
+        "price": "$7.00",
+        "section": "Kids Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2939",
+    "name": "Choice Juicery",
+    "sourceUrl": "https://www.choicejuicery.com/entire-menu",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://choicejuicerydelsur.smartonlineorder.com",
+    "notes": "Own site (choicejuicery.com), a single 'entire menu' shared across all Choice locations. Identity/address verified via the location-specific ordering subdomain (choicejuicerydelsur.smartonlineorder.com), which shows '17135 Camino Del Sur San Diego CA 92127' - matching our worklist address exactly. Smoothies & Bowls carry dual cup/bowl pricing (🥤/🥣 emoji) and were split into two dish entries each. High-dollar multi-day cleanse packages ($45-$215) seen on the homepage were excluded as bundled programs, not single dishes. Nut butter jars and bulk elixirs are retail items also sold on this same menu page and were kept since they carry real per-unit prices.",
+    "dishes": [
+      {
+        "name": "Warrior (Cup)",
+        "description": "",
+        "price": "$14",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Warrior (Bowl)",
+        "description": "",
+        "price": "$17",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Strawberry Zen (Cup)",
+        "description": "",
+        "price": "$12",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Strawberry Zen (Bowl)",
+        "description": "",
+        "price": "$15",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Spicy Amor (Cup)",
+        "description": "",
+        "price": "$12",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Spicy Amor (Bowl)",
+        "description": "",
+        "price": "$15",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Superhero Vanilla (Cup)",
+        "description": "chocolate +1",
+        "price": "$11",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Superhero Vanilla (Bowl)",
+        "description": "chocolate +1",
+        "price": "$14",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "PB&J (Cup)",
+        "description": "",
+        "price": "$13",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "PB&J (Bowl)",
+        "description": "",
+        "price": "$16",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Orange Dreamsicle (Cup)",
+        "description": "",
+        "price": "$12",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Orange Dreamsicle (Bowl)",
+        "description": "",
+        "price": "$15",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Mint Chip (Cup)",
+        "description": "",
+        "price": "$13",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Mint Chip (Bowl)",
+        "description": "",
+        "price": "$16",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Coffee Buzz (Cup)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Cold Pressed Coffee, Almond Butter & Cinnamon",
+        "price": "$12",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Coffee Buzz (Bowl)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Cold Pressed Coffee, Almond Butter & Cinnamon",
+        "price": "$15",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Acai Vitality (Cup)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Strawberry, & Açai",
+        "price": "$12",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Acai Vitality (Bowl)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Strawberry, & Açai",
+        "price": "$15",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Spring Fling (Cup)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Blueberries, Lavender, & Cake Batter Almond Butter",
+        "price": "$12",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Spring Fling (Bowl)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Blueberries, Lavender, & Cake Batter Almond Butter",
+        "price": "$15",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Newtella (Cup)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, & Choice Chocolate Hazelnut Spread",
+        "price": "$13",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Newtella (Bowl)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, & Choice Chocolate Hazelnut Spread",
+        "price": "$16",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Alpha Chai (smoothie) (Cup)",
+        "description": "House Made Oat Milk, Alpha Chai Elixir, Date, Superfood Protein, Banana, & Almond Butter",
+        "price": "$12",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Alpha Chai (smoothie) (Bowl)",
+        "description": "House Made Oat Milk, Alpha Chai Elixir, Date, Superfood Protein, Banana, & Almond Butter",
+        "price": "$15",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Mystical Matcha (smoothie) (Cup)",
+        "description": "House Made Plant-Based Milk, Mystical Matcha Elixir, Date, Superfood Protein, Banana & Liquid Chlorophyll",
+        "price": "$12",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Mystical Matcha (smoothie) (Bowl)",
+        "description": "House Made Plant-Based Milk, Mystical Matcha Elixir, Date, Superfood Protein, Banana & Liquid Chlorophyll",
+        "price": "$15",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Salted Caramel (Cup)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Cold Pressed Coffee, House Made Almond Butter, Mesquite, Himalayan Salt, & House Made Coconut Caramel",
+        "price": "$13",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Salted Caramel (Bowl)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Cold Pressed Coffee, House Made Almond Butter, Mesquite, Himalayan Salt, & House Made Coconut Caramel",
+        "price": "$16",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Unicorn (Cup)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Strawberry, Cake Batter Cashew Almond Butter & E3Live Blue Majik",
+        "price": "$14",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Unicorn (Bowl)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Strawberry, Cake Batter Cashew Almond Butter & E3Live Blue Majik",
+        "price": "$17",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Avatar (Cup)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Orange, Pineapple, Spinach, & E3Live Blue Majik",
+        "price": "$13",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Avatar (Bowl)",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Orange, Pineapple, Spinach, & E3Live Blue Majik",
+        "price": "$16",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Skinny Greens",
+        "description": "Cucumber, Apple, Spinach, Kale, Jalapeño, & Lime",
+        "price": "$13",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Straight Up Celery",
+        "description": "Celery",
+        "price": "$9",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Truly Madly Green",
+        "description": "Cucumber, Celery, Spinach, Broccoli, Lemon & Ginger",
+        "price": "$14",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Beauty Melon",
+        "description": "Watermelon, Orange, Lime, & Mint",
+        "price": "$10",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Hot Sunrise",
+        "description": "Pineapple, Orange, Ginger, Lime, Coconut Water, & Cayenne Pepper",
+        "price": "$12",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Ginger Bae",
+        "description": "Apple, Lemon, & Ginger",
+        "price": "$10",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Dawn Patrol",
+        "description": "Carrot, Orange, Ginger, & Turmeric",
+        "price": "$12",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Citrulicious",
+        "description": "Cucumber, Kale, Apple, Orange, Grapefruit, & Lime",
+        "price": "$13",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Choice Greens",
+        "description": "Cucumber, Celery, Apple, Spinach, Kale, Lemon, & Ginger",
+        "price": "$13",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Beet Chia",
+        "description": "Beet, Apple, Grapefruit, Ginger, Lemon, Chia Seeds, & Mint",
+        "price": "$12",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Strawberry Almond Milk",
+        "description": "Sprouted Vanilla Almond Milk, Strawberry, Date",
+        "price": "$10",
+        "section": "Craft Milks"
+      },
+      {
+        "name": "Chocolate Almond Milk",
+        "description": "Sprouted Vanilla Almond Milk, Cacao, Date, Cinnamon",
+        "price": "$11",
+        "section": "Craft Milks"
+      },
+      {
+        "name": "Protein Power Milk",
+        "description": "Sprouted Vanilla Almond Milk, Superfood Protein, Date. Contains 19 grams of Protein",
+        "price": "$12",
+        "section": "Craft Milks"
+      },
+      {
+        "name": "Cold Pressed Coffee Almond Latte",
+        "description": "Sprouted Vanilla Almond Milk, Cold Pressed Coffee, Date, Cinnamon",
+        "price": "$10",
+        "section": "Craft Milks"
+      },
+      {
+        "name": "Mystical Matcha Almond Milk",
+        "description": "Sprouted Vanilla Almond Milk, Mystical Matcha Elixir, Chlorophyll",
+        "price": "$11",
+        "section": "Craft Milks"
+      },
+      {
+        "name": "Thai Kelp Noodle",
+        "description": "Marinated Kelp Noodles, Baby Arugula, Almond Thai Dressing, Candied Almonds, Cabbage, Carrots, Bell Pepper, Mint, Basil, & Cilantro",
+        "price": "$15",
+        "section": "Entrees"
+      },
+      {
+        "name": "Mediterranean Power Bowl",
+        "description": "Quinoa, Spinach, Kalamata Olives, Cherry Tomato, Cucumber, Basil, Oregano, Black Pepper, & House Made Lemon Vinaigrette",
+        "price": "$11",
+        "section": "Entrees"
+      },
+      {
+        "name": "Coconut \"Bakon\" Cobb Salad",
+        "description": "Romaine Lettuce, Cherry Tomatoes, Quinoa, Coconut \"Bakon\", House Made Ranch Dressing, Avocado, & Marinated Hearts of Palm",
+        "price": "$13",
+        "section": "Entrees"
+      },
+      {
+        "name": "Ultimate Caesar Salad",
+        "description": "Romaine Lettuce, Kale, House Made Chickpea Croutons, House Made Parmesan \"Cheese\", House Made Coconut \"Bakon\", & House Made Caesar Dressing",
+        "price": "$13",
+        "section": "Entrees"
+      },
+      {
+        "name": "Macho Taco Salad",
+        "description": "Romaine Lettuce, House Made Walnut \"Taco Meat\", Roma Tomatoes, Bell Pepper, Red Cabbage, Cilantro, & House Made Chipotle Dressing",
+        "price": "$13",
+        "section": "Entrees"
+      },
+      {
+        "name": "Eco \"Suntuna\" Sushi Roll",
+        "description": "Spicy \"Suntuna\" Pâté, Avocado, Cucumber, Bell Pepper, Spinach, Red Cabbage, Cilantro, Quinoa, Nori, Miso Ginger Dressing, GF Tamari, & Jalapeño Slices",
+        "price": "$11",
+        "section": "Entrees"
+      },
+      {
+        "name": "Carrot Cake Cookies",
+        "description": "Carrots, Apples, Raisins, Pecans, Superfood Protein, Almond Butter, & Spices",
+        "price": "$4.50",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "\"Ranch\" Kale Chips",
+        "description": "Kale & House Made Ranch Dressing",
+        "price": "$8",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "Superfood Power Pack",
+        "description": "Almonds, Cashews, Mulberries, Coconut Chips, & Goji Berries",
+        "price": "$8",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "Superfood Banana Bread",
+        "description": "House Made Sprouted Almond Flour, Banana, Buckwheat Flour, Superfood Protein, Coconut Sugar, Vanilla Extract",
+        "price": "$4.50",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "Peanut Butter Protein Bites",
+        "description": "Peanut Butter, Superfood Protein, Shredded Coconut, Oats, Cinnamon, Flax, Chia, Coconut Oil, Maple Syrup, Agave",
+        "price": "$8",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "Protein Brownies",
+        "description": "House Made Sprouted Almond Flour, House Made Almond Butter, Dates, Applesauce, Coconut Oil, Vanilla Extract, Superfood Protein",
+        "price": "$4.50",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "House Made Super Loaf, Roasted Garlic Hummus, Avocado, Brazil Nut Parmesan \"Cheese\", Served with Mixed Greens & Cherry Tomatoes",
+        "price": "$13",
+        "section": "Toast (Gluten-Free)"
+      },
+      {
+        "name": "Chunky Monkey Toast",
+        "description": "House Made Super Loaf, Almond Butter, Banana, Coconut Caramel, & Hemp Seeds",
+        "price": "$12",
+        "section": "Toast (Gluten-Free)"
+      },
+      {
+        "name": "Super Loaf",
+        "description": "Rolled Oats, Polenta, Chickpea Flour, Coconut Sugar, Chia Seeds, Flax Seeds, Olive Oil, Agave, Himalayan Salt, Instant Yeast",
+        "price": "$14",
+        "section": "Toast (Gluten-Free)"
+      },
+      {
+        "name": "Majik Lemonade",
+        "description": "House Made Lemonade with E3LIVE Blue Majik",
+        "price": "$9",
+        "section": "Lemonades and Elixirs"
+      },
+      {
+        "name": "Charcoal Lemonade",
+        "description": "House Made Lemonade with Activated Coconut Charcoal",
+        "price": "$9",
+        "section": "Lemonades and Elixirs"
+      },
+      {
+        "name": "Electrolyte Superade",
+        "description": "Hibiscus Tea, Coconut Water, Pineapple & Lime",
+        "price": "$10",
+        "section": "Lemonades and Elixirs"
+      },
+      {
+        "name": "Chlorophyll Water",
+        "description": "Filtered Water & Liquid Chlorophyll",
+        "price": "$4",
+        "section": "Lemonades and Elixirs"
+      },
+      {
+        "name": "Filtered Water",
+        "description": "Filtered Water served in a 16 oz glass bottle",
+        "price": "$2",
+        "section": "Lemonades and Elixirs"
+      },
+      {
+        "name": "Brain Surge",
+        "description": "E3live Brain On, Gotu Kola, Grapefruit, & Chlorophyll",
+        "price": "$4.50",
+        "section": "Surges"
+      },
+      {
+        "name": "Immunity Surge",
+        "description": "Oregano Oil, Baobab, Orange, Lemon, Ginger, Turmeric, & Cayenne",
+        "price": "$5",
+        "section": "Surges"
+      },
+      {
+        "name": "Chill Pill Surge",
+        "description": "Coconut Water, Pineapple, Lime, Blue Majik, Ashwagandha, & Luo Han Guo",
+        "price": "$4.50",
+        "section": "Surges"
+      },
+      {
+        "name": "\"Newtella\" Latte",
+        "description": "Chocolate Hazelnut & Almond Milk",
+        "price": "$8",
+        "section": "Hot Beverages"
+      },
+      {
+        "name": "Chai Latte",
+        "description": "Alpha Chai Elixir, Almond Milk, & Agave",
+        "price": "$8",
+        "section": "Hot Beverages"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "Mystical Matcha Elixir, Almond Milk, & Agave",
+        "price": "$8",
+        "section": "Hot Beverages"
+      },
+      {
+        "name": "Alpha Chai Elixir (bulk)",
+        "description": "Black Tea Powder, Cordyceps Mushroom, Lucuma, Clove, Cardamom, Nutmeg, Cinnamon, House Made Ginger Powder, Turmeric, & Black Pepper",
+        "price": "$28",
+        "section": "Elixirs (Retail)"
+      },
+      {
+        "name": "Mystical Matcha Elixir (bulk)",
+        "description": "Reishi Mushroom, Chaga Mushroom, Lion's Mane Mushroom, Matcha, Luo Han Guo, & Coconut Sugar",
+        "price": "$18",
+        "section": "Elixirs (Retail)"
+      },
+      {
+        "name": "Chocolate Chip Cookie Cashew Butter",
+        "description": "Cashews, Chocolate Chips, Coconut Sugar, Agave, Vanilla Extract, & Himalayan Salt",
+        "price": "$15",
+        "section": "Nut Butters (Retail)"
+      },
+      {
+        "name": "Traditional Almond Butter",
+        "description": "Almonds, & Himalayan Salt",
+        "price": "$12.50",
+        "section": "Nut Butters (Retail)"
+      },
+      {
+        "name": "Chocolate Hazelnut Butter",
+        "description": "Hazelnuts, Coconut Sugar, Cacao Powder, Avocado Oil, Vanilla, & Himalayan Salt",
+        "price": "$16",
+        "section": "Nut Butters (Retail)"
+      },
+      {
+        "name": "Cake Batter Cashew Almond Butter",
+        "description": "Almonds, Cashews, Coconut Sugar, Vanilla Extract, Himalayan Salt, Lemon Juice, Lucuma Powder, & Agave",
+        "price": "$15",
+        "section": "Nut Butters (Retail)"
+      },
+      {
+        "name": "Buddha Breakfast Bowl",
+        "description": "Quinoa, Almond Milk, Choice Superfood Protein, Coconut Sugar, Coconut Butter, topped with Granola, Banana, & Raspberry Chia Jam",
+        "price": "$9",
+        "section": "Seasonal Hot Items"
+      },
+      {
+        "name": "Seasonal Soup",
+        "description": "Ask about seasonal selection",
+        "price": "$11",
+        "section": "Seasonal Hot Items"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3648",
+    "name": "Urban Matcha",
+    "sourceUrl": "https://www.doordash.com/store/urban-matcha-san-diego-46738768/",
+    "confidence": "medium",
+    "notes": "DoorDash schema.org JSON-LD Menu block. Address on the DD page (4698 Convoy St, 92111) matches worklist. 'Most Ordered' duplicate carousel (12 items) excluded - every item in it also appears under its real category section, so nothing unique was lost. Price-ending distribution is conventional printed-menu style (.49/.99 endings across the board), not fee-inflated.",
+    "dishes": [
+      {
+        "name": "Banana Pudding Matcha",
+        "description": "Layer of creamy banana pudding blended with the unique taste of matcha",
+        "price": "$9.49",
+        "section": "Banana Pudding"
+      },
+      {
+        "name": "Matcha Cheese Latte",
+        "description": "Kyoto-sourced matcha latte topped with a rich, homemade cream cheese layer",
+        "price": "$8.99",
+        "section": "Cheese Cap"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "A sweetened matcha latte made with Kyoto-sourced matcha, blended with steamed milk (hot) or cold milk",
+        "price": "$7.49",
+        "section": "Latte"
+      },
+      {
+        "name": "Sea Salt Double Matcha",
+        "description": "A vibrant blend of premium matcha featuring a delicate hint of sea salt",
+        "price": "$9.49",
+        "section": "Banana Pudding"
+      },
+      {
+        "name": "Coconut Water Collection",
+        "description": "Fresh coconut water; can be topped with signature creamy cloud and toasted coconut flakes",
+        "price": "$10.49",
+        "section": "Banana Pudding"
+      },
+      {
+        "name": "Matcha Cheese Tea",
+        "description": "Kyoto-sourced matcha tea topped with a rich, homemade cream cheese layer",
+        "price": "$7.99",
+        "section": "Cheese Cap"
+      },
+      {
+        "name": "Japanese Egg Salad Sandwich",
+        "description": "Creamy egg salad with sliced boiled egg, made with Japanese mayonnaise, served on soft, milk bread",
+        "price": "$8.99",
+        "section": "Sandwich"
+      },
+      {
+        "name": "Zesty Tuna Salad Sandwich",
+        "description": "A flavorful tuna salad with a tangy kick, served between soft, milk bread",
+        "price": "$8.99",
+        "section": "Sandwich"
+      },
+      {
+        "name": "Matcha Tea",
+        "description": "Kyoto-sourced matcha, whisked with water and a hint of sweetness",
+        "price": "$6.49",
+        "section": "Tea"
+      },
+      {
+        "name": "Matcha Mille Crepe Cake",
+        "description": "Thin layers of crêpes stacked with matcha-flavored pastry cream, dusted with Japanese powdered green tea",
+        "price": "$14.49",
+        "section": "Cake"
+      },
+      {
+        "name": "Yuzu Soda (One Size)",
+        "description": "A refreshing soda made with zesty yuzu citrus",
+        "price": "$7.49",
+        "section": "Yuzu"
+      },
+      {
+        "name": "Black Sesame Cheesecake",
+        "description": "Rich and creamy cheesecake infused with ground black sesame seeds",
+        "price": "$6.99",
+        "section": "Cake"
+      },
+      {
+        "name": "New York Style Cheesecake",
+        "description": "Rich, creamy cheesecake with a smooth texture and a slightly tangy flavor, topped with a light sweet glaze",
+        "price": "$6.99",
+        "section": "Cake"
+      },
+      {
+        "name": "Mocha Cheesecake",
+        "description": "Rich mocha-flavored cheesecake topped with a layer of smooth chocolate ganache",
+        "price": "$6.99",
+        "section": "Cake"
+      },
+      {
+        "name": "Hojicha Mille Crepe Cake",
+        "description": "Layers of delicate crepes with roasted hojicha cream filling",
+        "price": "$14.49",
+        "section": "Cake"
+      },
+      {
+        "name": "Butter Croissant",
+        "description": "Flaky and buttery croissant",
+        "price": "$4.49",
+        "section": "Sandwich"
+      },
+      {
+        "name": "Matcha Lemon",
+        "description": "Kyoto-sourced matcha tea blended with fresh lemon juice",
+        "price": "$6.99",
+        "section": "Tea"
+      },
+      {
+        "name": "Yuzu Panna Cotta",
+        "description": "A creamy panna cotta topped with a layer of tangy yuzu jelly, orange zest, and a slice of tangerine",
+        "price": "$7.99",
+        "section": "Panna Cotta"
+      },
+      {
+        "name": "Matcha Panna Cotta",
+        "description": "A creamy panna cotta with rich matcha flavor, topped with whipped cream and sweet adzuki bean",
+        "price": "$7.99",
+        "section": "Panna Cotta"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2419",
+    "name": "Lemongrass",
+    "sourceUrl": "http://www.lemongrassplates.com/menu",
+    "confidence": "medium",
+    "notes": "Own static site (lemongrassplates.com), full menu captured in one page, no ambiguity in item/price pairing. Prices are notably low for 2026 (a grilled plate w/ rice at $7.50) - this reads as a campus grab-and-go grill cart (address is UCSD, 9700 Gilman Dr) rather than a sit-down restaurant, which is consistent with the low price point, but flagging the plausibility note per instructions since it is unusually cheap. No delivery-platform listing was checked to corroborate, so confidence is medium rather than high despite being first-party.",
+    "dishes": [
+      {
+        "name": "Grilled Plate (Chicken/Tofu)",
+        "description": "Served with rice and grilled zucchinis",
+        "price": "$7.50",
+        "section": "Freshly Grilled / Grilled Plate"
+      },
+      {
+        "name": "Grilled Plate (Beef/Pork)",
+        "description": "Served with rice and grilled zucchinis",
+        "price": "$7.75",
+        "section": "Freshly Grilled / Grilled Plate"
+      },
+      {
+        "name": "Grilled Plate (Salmon)",
+        "description": "Served with rice and grilled zucchinis",
+        "price": "$9.50",
+        "section": "Freshly Grilled / Grilled Plate"
+      },
+      {
+        "name": "Sandwich (Chicken/Tofu)",
+        "description": "Toasted French Roll, Lettuce, Onions, & Grilled Veggies",
+        "price": "$6.50",
+        "section": "Freshly Grilled / Sandwich"
+      },
+      {
+        "name": "Sandwich (Beef/Pork)",
+        "description": "Toasted French Roll, Lettuce, Onions, & Grilled Veggies",
+        "price": "$7.50",
+        "section": "Freshly Grilled / Sandwich"
+      },
+      {
+        "name": "Sandwich (Salmon)",
+        "description": "Toasted French Roll, Lettuce, Onions, & Grilled Veggies",
+        "price": "$9.50",
+        "section": "Freshly Grilled / Sandwich"
+      },
+      {
+        "name": "Wrap (Chicken/Tofu)",
+        "description": "Warmed Tortilla, Lettuce, Onions, & Grilled Veggies",
+        "price": "$7.75",
+        "section": "Freshly Grilled / Wrap"
+      },
+      {
+        "name": "Wrap (Beef/Pork)",
+        "description": "Warmed Tortilla, Lettuce, Onions, & Grilled Veggies",
+        "price": "$8.00",
+        "section": "Freshly Grilled / Wrap"
+      },
+      {
+        "name": "Wrap (Salmon)",
+        "description": "Warmed Tortilla, Lettuce, Onions, & Grilled Veggies",
+        "price": "$9.50",
+        "section": "Freshly Grilled / Wrap"
+      },
+      {
+        "name": "Salad (Chicken/Tofu)",
+        "description": "Fresh Assorted Greens, Carrots, Red Onion",
+        "price": "$7.75",
+        "section": "Freshly Grilled / Salad"
+      },
+      {
+        "name": "Salad (Beef/Pork)",
+        "description": "Fresh Assorted Greens, Carrots, Red Onion",
+        "price": "$8.00",
+        "section": "Freshly Grilled / Salad"
+      },
+      {
+        "name": "Salad (Salmon)",
+        "description": "Fresh Assorted Greens, Carrots, Red Onion",
+        "price": "$9.50",
+        "section": "Freshly Grilled / Salad"
+      },
+      {
+        "name": "Extra Peanut/Teriyaki Sauce",
+        "description": "",
+        "price": "$0.75",
+        "section": "Freshly Grilled / Protein Add-ons"
+      },
+      {
+        "name": "Chicken Red Curry",
+        "description": "Chicken Breast, Red & Green Peppers, Carrots, Onions & Basil, slow cooked with Coconut Milk & served with Rice",
+        "price": "$7.50",
+        "section": "Signature Plates & Specialty Salads"
+      },
+      {
+        "name": "Chicken Pad Thai",
+        "description": "Rice Noodles with Chicken Breast, Tofu, Eggs, Green Onions, Bean Sprouts & Crushed Peanuts",
+        "price": "$7.75",
+        "section": "Signature Plates & Specialty Salads"
+      },
+      {
+        "name": "Fried Egg",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sides/Sauces"
+      },
+      {
+        "name": "Steamed Rice",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sides/Sauces"
+      },
+      {
+        "name": "Peanut Sauce",
+        "description": "",
+        "price": "$0.75",
+        "section": "Sides/Sauces"
+      },
+      {
+        "name": "Teriyaki Sauce",
+        "description": "",
+        "price": "$0.75",
+        "section": "Sides/Sauces"
+      },
+      {
+        "name": "Fresh Brewed Green Tea",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Thai Iced Tea",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Fresh Strawberry Lemonade",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Fresh Lemonade",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Ginger Soy Milk",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Fresh Ginger Lemon",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6394",
+    "name": "Frugo's Yogurt",
+    "sourceUrl": "https://frugosyogurt.com",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "frugosyogurt.com does not resolve (DNS failure, not a timeout - domain does not exist). No DoorDash/UberEats/Grubhub listing found in search. This is a self-serve frozen yogurt shop priced by weight at the register (per multiple review sites), which is inherently not an itemized menu. No price is published anywhere; not_found."
+  },
+  {
+    "restaurantId": "4438",
+    "name": "Tandoori Guys",
+    "sourceUrl": "https://sanmarcos.tandooriguyssd.com/menu",
+    "confidence": "high",
+    "notes": "Own per-branch static site (San Marcos storefront subdomain of tandooriguyssd.com; platform is iMenu4u, not 'Olo' - an earlier substring grep of 'olo' matched only unrelated words like 'dolore'). Every section parsed cleanly from plain text except 'Meat Lover': that section's dish-card prices were wrapped in HTML comments (stale/placeholder $8.00 values, e.g. <!-- <div class=\"...price\">$8.00</div> -->) and were NOT used. Instead its own visible header text states the real current pricing directly: 'Chicken-17, Lamb-19, Fish/Shrimp-19' applied per protein choice across the section's 8 dish styles (Butter, Karahi, Korma, Tikka Masala, Curry, Saag, Vindaloo, Rogan Josh) - 24 dish entries. Two Goat-based dish names in that section (Goat Curry, Goat Pepper Fry) had no applicable price anywhere and were dropped rather than guessed.",
+    "dishes": [
+      {
+        "name": "Veg Samosa (2pc)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mysore Boonda",
+        "description": "",
+        "price": "$7.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Aloo Tikki 4pc",
+        "description": "",
+        "price": "$9.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Gobi Manchurian",
+        "description": "",
+        "price": "$12.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Dahi Kabab",
+        "description": "",
+        "price": "$7.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Veg Hakka Noodles",
+        "description": "",
+        "price": "$12.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chole Bhature",
+        "description": "",
+        "price": "$12.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Hakka Noodles",
+        "description": "",
+        "price": "$14.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Cocktail Idli",
+        "description": "",
+        "price": "$7.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Vepudu",
+        "description": "",
+        "price": "$12.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Medu Wada",
+        "description": "",
+        "price": "$7.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Apollo Fish",
+        "description": "",
+        "price": "$14.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Idli Sambhar",
+        "description": "",
+        "price": "$7.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Amritsari Fish",
+        "description": "",
+        "price": "$14.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken 65",
+        "description": "",
+        "price": "$12.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Coconut Shrimp",
+        "description": "",
+        "price": "$14.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chaat Pani Puri",
+        "description": "",
+        "price": "$8.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Sev Dahi Puri",
+        "description": "",
+        "price": "$8.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Delhi Chaat",
+        "description": "",
+        "price": "$8.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Deconstructed Samosa/Tikki",
+        "description": "",
+        "price": "$10.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Dahi Balla",
+        "description": "",
+        "price": "$8.00",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Butter (Chicken)",
+        "description": "Served with basmati rice",
+        "price": "$17.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Butter (Lamb)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Butter (Fish/Shrimp)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Karahi (Chicken)",
+        "description": "Served with basmati rice",
+        "price": "$17.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Karahi (Lamb)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Karahi (Fish/Shrimp)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Korma (Chicken)",
+        "description": "Served with basmati rice",
+        "price": "$17.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Korma (Lamb)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Korma (Fish/Shrimp)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Tikka Masala (Chicken)",
+        "description": "Served with basmati rice",
+        "price": "$17.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Tikka Masala (Lamb)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Tikka Masala (Fish/Shrimp)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Curry (Chicken)",
+        "description": "Served with basmati rice",
+        "price": "$17.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Curry (Lamb)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Curry (Fish/Shrimp)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Saag (Chicken)",
+        "description": "Served with basmati rice",
+        "price": "$17.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Saag (Lamb)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Saag (Fish/Shrimp)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Vindaloo (Chicken)",
+        "description": "Served with basmati rice",
+        "price": "$17.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Vindaloo (Lamb)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Vindaloo (Fish/Shrimp)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Rogan Josh (Chicken)",
+        "description": "Served with basmati rice",
+        "price": "$17.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Rogan Josh (Lamb)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Rogan Josh (Fish/Shrimp)",
+        "description": "Served with basmati rice",
+        "price": "$19.00",
+        "section": "Meat Lover"
+      },
+      {
+        "name": "Saag Paneer",
+        "description": "Served with basmati rice",
+        "price": "$16.00",
+        "section": "Veg Curries"
+      },
+      {
+        "name": "Veg. Korma",
+        "description": "Served with basmati rice",
+        "price": "$16.00",
+        "section": "Veg Curries"
+      },
+      {
+        "name": "Malai Kofta",
+        "description": "Served with basmati rice",
+        "price": "$16.00",
+        "section": "Veg Curries"
+      },
+      {
+        "name": "Paneer Tikka Masala",
+        "description": "Served with basmati rice",
+        "price": "$16.00",
+        "section": "Veg Curries"
+      },
+      {
+        "name": "Kadhai Paneer",
+        "description": "Served with basmati rice",
+        "price": "$16.00",
+        "section": "Veg Curries"
+      },
+      {
+        "name": "Chana Masala",
+        "description": "Served with basmati rice",
+        "price": "$16.00",
+        "section": "Veg Curries"
+      },
+      {
+        "name": "Mushroom Masala",
+        "description": "Served with basmati rice",
+        "price": "$16.00",
+        "section": "Veg Curries"
+      },
+      {
+        "name": "Yellow Daal",
+        "description": "Served with basmati rice",
+        "price": "$16.00",
+        "section": "Veg Curries"
+      },
+      {
+        "name": "Daal Makhni",
+        "description": "Served with basmati rice",
+        "price": "$16.00",
+        "section": "Veg Curries"
+      },
+      {
+        "name": "Aloo Gobi",
+        "description": "Served with basmati rice",
+        "price": "$16.00",
+        "section": "Veg Curries"
+      },
+      {
+        "name": "Plain Rice",
+        "description": "",
+        "price": "$5.00",
+        "section": "Rice/Biryani"
+      },
+      {
+        "name": "Veg. Biryani",
+        "description": "",
+        "price": "$15.00",
+        "section": "Rice/Biryani"
+      },
+      {
+        "name": "Chicken Biryani",
+        "description": "",
+        "price": "$17.00",
+        "section": "Rice/Biryani"
+      },
+      {
+        "name": "Lamb Biryani",
+        "description": "",
+        "price": "$19.00",
+        "section": "Rice/Biryani"
+      },
+      {
+        "name": "Veg Pulao",
+        "description": "",
+        "price": "$8.00",
+        "section": "Rice/Biryani"
+      },
+      {
+        "name": "Chicken Tikka Dry",
+        "description": "",
+        "price": "$17.00",
+        "section": "Kababs"
+      },
+      {
+        "name": "Tandoori Chicken",
+        "description": "",
+        "price": "$17.00",
+        "section": "Kababs"
+      },
+      {
+        "name": "Lamb Seekh Kabab",
+        "description": "",
+        "price": "$17.00",
+        "section": "Kababs"
+      },
+      {
+        "name": "Tandoori Fish",
+        "description": "",
+        "price": "$19.00",
+        "section": "Kababs"
+      },
+      {
+        "name": "Butter Naan",
+        "description": "",
+        "price": "$3.00",
+        "section": "Indian Breads"
+      },
+      {
+        "name": "Roti",
+        "description": "",
+        "price": "$3.00",
+        "section": "Indian Breads"
+      },
+      {
+        "name": "Garlic Naan",
+        "description": "",
+        "price": "$4.00",
+        "section": "Indian Breads"
+      },
+      {
+        "name": "Cheese Naan",
+        "description": "",
+        "price": "$6.00",
+        "section": "Indian Breads"
+      },
+      {
+        "name": "Bullet Naan",
+        "description": "",
+        "price": "$6.00",
+        "section": "Indian Breads"
+      },
+      {
+        "name": "Amritsari Kulcha",
+        "description": "",
+        "price": "$6.00",
+        "section": "Indian Breads"
+      },
+      {
+        "name": "Naan Basket (Plain/Cheese/Butter)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Indian Breads"
+      },
+      {
+        "name": "Raita",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Papad",
+        "description": "",
+        "price": "$3.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Onion Chili Salad",
+        "description": "",
+        "price": "$3.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Coconut Chutney (8oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Tomato Chutney (8oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Gulab Jamun",
+        "description": "",
+        "price": "$6.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Ras Malai",
+        "description": "",
+        "price": "$6.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Moong Daal Halwa",
+        "description": "",
+        "price": "$6.00",
+        "section": "Desserts"
+      },
+      {
+        "name": "Mango Lassi",
+        "description": "",
+        "price": "$5.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Salt Lassi",
+        "description": "",
+        "price": "$4.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Tea",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Soda Can",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Plain Dosa",
+        "description": "",
+        "price": "$13.00",
+        "section": "Dosa"
+      },
+      {
+        "name": "Masala Dosa",
+        "description": "",
+        "price": "$13.00",
+        "section": "Dosa"
+      },
+      {
+        "name": "Mysore Masala Dosa",
+        "description": "",
+        "price": "$14.00",
+        "section": "Dosa"
+      },
+      {
+        "name": "Rava Masala Dosa",
+        "description": "",
+        "price": "$14.00",
+        "section": "Dosa"
+      },
+      {
+        "name": "Podi Dosa",
+        "description": "",
+        "price": "$14.00",
+        "section": "Dosa"
+      },
+      {
+        "name": "Butter/Ghee Dosa",
+        "description": "",
+        "price": "$14.00",
+        "section": "Dosa"
+      },
+      {
+        "name": "Cheese Dosa",
+        "description": "",
+        "price": "$14.00",
+        "section": "Dosa"
+      },
+      {
+        "name": "Chef's Special Dosa",
+        "description": "",
+        "price": "$14.00",
+        "section": "Dosa"
+      },
+      {
+        "name": "Cheese Uthappam",
+        "description": "",
+        "price": "$13.00",
+        "section": "Uthappam"
+      },
+      {
+        "name": "Onion Chilli Uthappam",
+        "description": "",
+        "price": "$13.00",
+        "section": "Uthappam"
+      },
+      {
+        "name": "Mix Veg Uthappam",
+        "description": "",
+        "price": "$13.00",
+        "section": "Uthappam"
+      }
+    ]
+  }
+]

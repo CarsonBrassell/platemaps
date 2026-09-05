@@ -184,13 +184,114 @@ async function routerNotes() {
   return byId;
 }
 
+/*
+ * Restaurants an agent BLOCKED recently.
+ *
+ * `blocked` deliberately writes no `menu_lookups` row so the restaurant
+ * re-queues and gets another chance - that is the right design, because most
+ * obstacles are temporary. But the in-flight window in `spokenFor` is only
+ * three hours, so on 2026-09-03 a restaurant blocked at 02:00 was back in a
+ * batch by 07:00 and blocked again for the identical reason. Two consecutive
+ * batches came back 2-of-10 and 1-of-10 for exactly this: the agents were
+ * re-deriving conclusions another agent had already written down that morning.
+ *
+ * A block is worth retrying tomorrow, not in the same session. 24 hours is the
+ * default; `--blocked-window <hours>` tunes it, and 0 restores the old
+ * behaviour. `defer-blocked.mjs` still handles the permanent cases separately -
+ * this only stops same-day churn.
+ */
+const BLOCKED_WINDOW_HOURS = Number(
+  args.includes("--blocked-window") ? args[args.indexOf("--blocked-window") + 1] : 24,
+);
+
+async function recentlyBlocked() {
+  const ids = new Set();
+  if (!BLOCKED_WINDOW_HOURS) return ids;
+  let raw = "";
+  try {
+    raw = await readFile("menus/blocked-log.jsonl", "utf8");
+  } catch {
+    return ids;
+  }
+  const cutoff = Date.now() - BLOCKED_WINDOW_HOURS * 3600_000;
+  for (const line of raw.split("\n")) {
+    if (!line.trim()) continue;
+    try {
+      const e = JSON.parse(line);
+      if (e?.restaurantId != null && new Date(e.at).getTime() > cutoff) {
+        ids.add(String(e.restaurantId));
+      }
+    } catch {
+      /* a partial line at the tail of the log is not worth failing a cut over */
+    }
+  }
+  return ids;
+}
+
+/*
+ * Restaurants an agent FILED recently that the screen then withheld.
+ *
+ * A quarantined capture writes no `menu_lookups` row, so the restaurant
+ * re-queues - correctly, because the point is to get a BETTER source. But
+ * within the same day, with the same techniques, the next agent finds the same
+ * source and produces the same quarantine. We Olive & Wine Bar was worked
+ * twice in one evening by two agents, both recovering the same 2024 Wayback
+ * PDF, both withheld. Nine restaurants were in that state when this was
+ * written.
+ *
+ * The signal is: an agent filed dishes for it in a recent result file, and the
+ * database still has none. That is exactly "the screen said no", without
+ * needing a quarantine log the screen does not keep.
+ *
+ * Same 24-hour window as `recentlyBlocked`, same `--blocked-window` flag.
+ */
+async function recentlyQuarantined() {
+  const ids = new Set();
+  if (!BLOCKED_WINDOW_HOURS) return ids;
+  const cutoff = Date.now() - BLOCKED_WINDOW_HOURS * 3600_000;
+  let files = [];
+  try {
+    files = await readdir(WIP);
+  } catch {
+    return ids;
+  }
+  const filed = new Set();
+  for (const f of files) {
+    if (!/^result-.*\.json$/.test(f)) continue;
+    try {
+      const info = await stat(`${WIP}/${f}`);
+      if (info.mtimeMs < cutoff) continue;
+      for (const e of JSON.parse(await readFile(`${WIP}/${f}`, "utf8"))) {
+        if (e?.restaurantId != null && e?.dishes?.length) filed.add(String(e.restaurantId));
+      }
+    } catch {
+      continue;
+    }
+  }
+  if (!filed.size) return ids;
+  /* Anything filed recently that still has no dishes was withheld. */
+  const loaded = await sql`
+    SELECT DISTINCT restaurant_id FROM dishes WHERE restaurant_id = ANY(${[...filed]})`;
+  const have = new Set(loaded.map((r) => String(r.restaurant_id)));
+  for (const id of filed) if (!have.has(id)) ids.add(id);
+  return ids;
+}
+
+const blockedRecently = await recentlyBlocked();
+const quarantinedRecently = await recentlyQuarantined();
+for (const id of quarantinedRecently) blockedRecently.add(id);
 const notes = await routerNotes();
 
 const fresh = rows.filter((r) => {
   if (excluded.has(String(r.id))) return false;
+  if (blockedRecently.has(String(r.id))) return false;
   const note = notes.get(String(r.id));
   return !(note && SKIP_OUTCOMES.has(note.outcome));
 });
+
+const skippedBlocked = rows.filter(
+  (r) => !excluded.has(String(r.id)) && blockedRecently.has(String(r.id)),
+).length;
 
 const skippedByOutcome = rows.filter((r) => {
   const note = notes.get(String(r.id));
@@ -198,7 +299,9 @@ const skippedByOutcome = rows.filter((r) => {
 }).length;
 
 console.log(
-  `queue ${rows.length}, already spoken for ${rows.length - fresh.length - skippedByOutcome}, ` +
+  `queue ${rows.length}, ` +
+    `already spoken for ${rows.length - fresh.length - skippedByOutcome - skippedBlocked}, ` +
+    `blocked in the last ${BLOCKED_WINDOW_HOURS}h ${skippedBlocked}, ` +
     `skipped by router outcome (${[...SKIP_OUTCOMES].join(",")}) ${skippedByOutcome}, ` +
     `router notes for ${rows.filter((r) => notes.has(String(r.id))).length}, cutting from ${fresh.length}`,
 );

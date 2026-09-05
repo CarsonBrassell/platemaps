@@ -1,0 +1,1496 @@
+[
+  {
+    "restaurantId": "1043",
+    "name": "Golden Tee Lounge",
+    "sourceUrl": "https://voiceofsandiego.org/2024/12/03/when-the-old-haunts-get-bulldozed-for-much-needed-housing/",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://thecoastnews.com/carlsbad-village-plaza-project-advances-over-local-objections/",
+    "notes": "Identified as 'Golden Tee Cocktail Lounge', 1065 Carlsbad Village Dr Unit F, Carlsbad, CA 92008. Two independent local-news sources (Voice of San Diego, The Coast News) confirm the entire Carlsbad Village Plaza -- including this bar -- is being demolished for an apartment redevelopment project; Yelp also tags it CLOSED. No menu was ever reachable; verdict is permanent closure, not a menu-access failure.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1154",
+    "name": "Eds Cocktail Lounge",
+    "sourceUrl": null,
+    "confidence": "low",
+    "notes": "no-web-presence: extensive search finds only one real business called 'Ed's Cocktail Lounge' anywhere -- in Twain Harte, CA (Tuolumne County), ~250mi from San Diego, currently open with recent live-music posts. No distinct San Diego-area business under this name could be located (web, Maps, or Yelp). Cannot confirm the work-list entry's identity, so this is a search/identity failure, not a confirmed closure -- must not be not_found.",
+    "dishes": [],
+    "blocked": "no-web-presence: no San Diego-area business matching this name found; only match nationwide is an unrelated open bar in a different county"
+  },
+  {
+    "restaurantId": "1172",
+    "name": "Gaffneys Wine Bar",
+    "sourceUrl": "https://www.mapquest.com/us/california/gaffneys-wine-bar-11210659",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://www.yelp.com/biz/gaffneys-wine-bar-encinitas-2",
+    "notes": "166 N El Camino Real, Encinitas, CA 92024. Mapquest ('Permanently closed') and Yelp (CLOSED tag) both confirm at the matching address; historical sources confirm it was a real, long-operating wine bar (opened 1992) before closing. No menu ever reachable.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "8091",
+    "name": "La Takiza - Escondido",
+    "sourceUrl": "https://latakizasd.com/",
+    "confidence": "high",
+    "notes": "Read from first-party site's full menu page. Page contained overlapping/duplicate content blocks (a time-gated Breakfast daypart menu plus the same items repeated inside the general 'Our Menu' listing) with 5 exact name+price duplicates; deduplicated by keeping one instance of each, preferring the more granular chilaquiles naming (split into Verdes/Rojos/con Carne) from the second block while retaining unique first-block-only items (Birria de Chivo, Menudo Small/Large). Split combined 'SM/LG' Menudo pricing into two dish entries. 63 dishes filed across Breakfast, Mulitas, Huaraches, Gorditas, Quesadillas, Extras, Tacos, Burritos, Tortas, Combination Plates, Sope.",
+    "dishes": [
+      {
+        "name": "Chilaquiles Rojos",
+        "description": "",
+        "price": "$9.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Chilaquiles Verdes",
+        "description": "",
+        "price": "$9.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Chilaquiles con Carne",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Huevos Rancheros",
+        "description": "Two fried eggs served over a corn tortilla topped with ranchero sauce",
+        "price": "$9.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Huevos con Chorizo",
+        "description": "Two scrambled eggs & chorizo",
+        "price": "$9.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Huevos a la Mexicana",
+        "description": "2 eggs, tomato, onion & green peppers",
+        "price": "$9.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Huevos con Jamon",
+        "description": "Two scrambled eggs and ham",
+        "price": "$9.50",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Burritos",
+        "description": "Flour tortilla with eggs, beans, cheese & choice of chorizo, ham or bacon",
+        "price": "$8.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Birria de Chivo",
+        "description": "",
+        "price": "$12.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Menudo (Small)",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Menudo (Large)",
+        "description": "",
+        "price": "$12.99",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Maiz Mulita",
+        "description": "",
+        "price": "$5.99",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Mulita Lengua, Buche, Tripa or Fish",
+        "description": "",
+        "price": "$6.50",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Mulita de Harina",
+        "description": "Flour tortilla with meat of your choice",
+        "price": "$8.99",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Huarache",
+        "description": "",
+        "price": "$6.99",
+        "section": "Huaraches"
+      },
+      {
+        "name": "Huarache Lengua, Buche, Tripa or Fish",
+        "description": "",
+        "price": "$8.00",
+        "section": "Huaraches"
+      },
+      {
+        "name": "Gordita Meat Of Your Choice",
+        "description": "",
+        "price": "$6.99",
+        "section": "Gorditas"
+      },
+      {
+        "name": "Gordita Lengua, Buche, Tripa or Fish",
+        "description": "",
+        "price": "$7.99",
+        "section": "Gorditas"
+      },
+      {
+        "name": "Maiz Quesadilla",
+        "description": "Corn tortilla with cheese",
+        "price": "$1.75",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Maiz Quesadilla con Carne",
+        "description": "Corn tortilla with meat of your choice",
+        "price": "$3.55",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Quesadilla de Harina",
+        "description": "Flour tortilla quesadilla",
+        "price": "$3.50",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Quesadilla de Harina con Carne",
+        "description": "Flour tortilla with meat of your choice",
+        "price": "$5.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Quesadilla Grande",
+        "description": "Large flour quesadilla",
+        "price": "$12.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Quesadilla Grande con Carne",
+        "description": "Flour tortilla with meat of your choice",
+        "price": "$12.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "1/2 Pinta de Frijoles",
+        "description": "",
+        "price": "$3.99",
+        "section": "Extras"
+      },
+      {
+        "name": "1/2 Pinta de Guacamole",
+        "description": "",
+        "price": "$3.75",
+        "section": "Extras"
+      },
+      {
+        "name": "1/2 Pinta de Arroz",
+        "description": "",
+        "price": "$3.99",
+        "section": "Extras"
+      },
+      {
+        "name": "Chiles Toreados",
+        "description": "",
+        "price": "$1.25",
+        "section": "Extras"
+      },
+      {
+        "name": "Cebollas Fritas",
+        "description": "",
+        "price": "$1.50",
+        "section": "Extras"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$1.50",
+        "section": "Extras"
+      },
+      {
+        "name": "Taco Asada",
+        "description": "Beef",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Al Pastor",
+        "description": "Spicy marinated pork",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Adobada",
+        "description": "Marinated pork meat",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Cabeza",
+        "description": "Head",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Carnitas",
+        "description": "Fried pork",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Barbacoa",
+        "description": "Head stew",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Chorizo",
+        "description": "Mexican sausage",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Pollo",
+        "description": "Chicken",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Campechanos",
+        "description": "Chorizo & carne asada",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Cochinita Pibil",
+        "description": "Slow roasted pork",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Tripa",
+        "description": "Tripe",
+        "price": "$3.29",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Buche",
+        "description": "Pork stomach",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Pescado",
+        "description": "Fish",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Lengua",
+        "description": "Tongue",
+        "price": "$3.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco Chicharron en Salsa Verde",
+        "description": "",
+        "price": "$3.29",
+        "section": "Tacos"
+      },
+      {
+        "name": "Burrito",
+        "description": "Meat of your choice",
+        "price": "$9.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "",
+        "price": "$10.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Lengua Burrito",
+        "description": "",
+        "price": "$11.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Torta Meat of Your Choice",
+        "description": "",
+        "price": "$9.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta Jamon",
+        "description": "Ham",
+        "price": "$7.99",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta Lengua, Buche, Tripa, or Fish",
+        "description": "",
+        "price": "$10.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Any Meat Plate",
+        "description": "Choice of meat, white rice, beans, and an order of tortillas",
+        "price": "$12.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Dos Huaraches Plate",
+        "description": "2 huaraches, choice of meat with rice & beans",
+        "price": "$12.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Dos Gorditas Plate",
+        "description": "2 gorditas, choice of meat with rice & beans",
+        "price": "$12.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "Fried with carne asada, cheese, sour cream & guacamole",
+        "price": "$12.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Nachos",
+        "description": "Nacho chips with cheese, beans, sour cream, guacamole & choice of meat",
+        "price": "$10.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Alambre",
+        "description": "Carne asada, bell pepper, bacon, grilled onion, franks, melted cheese with 5 handmade tortillas",
+        "price": "$12.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Enchiladas",
+        "description": "",
+        "price": "$9.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Choriqueso",
+        "description": "",
+        "price": "$7.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Fried Rolled Tacos",
+        "description": "4 pieces",
+        "price": "$8.99",
+        "section": "Combination Plates"
+      },
+      {
+        "name": "Tostada",
+        "description": "",
+        "price": "$3.80",
+        "section": "Sope"
+      },
+      {
+        "name": "Arroz Y Frijol",
+        "description": "",
+        "price": "$3.99",
+        "section": "Sope"
+      },
+      {
+        "name": "Tortillas",
+        "description": "5 pieces",
+        "price": "$1.50",
+        "section": "Sope"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$4.50",
+        "section": "Sope"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1221",
+    "name": "Oconnells Sports Lounge",
+    "sourceUrl": "https://www.sandiegoreader.com/places/oconnolls-pub-and-nightclub/",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://www.mapquest.com/us/california/oconnells-pub-nightclub-437948939",
+    "notes": "1310 Morena Blvd, San Diego, CA 92110 (distinct from the still-open 'O'Connell's Sports Pub & Grille' chain locations in Huntington Beach/Newport Beach -- confirmed different city/address, correctly not conflated). San Diego Reader ('Permanently Closed'), Mapquest (CLOSED), and Yelp (CLOSED) all agree; the address is now occupied by a different, currently-operating business (Sidecar Bar), confirming replacement. No menu ever reachable.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1061",
+    "name": "Ettas Place",
+    "sourceUrl": "https://www.yelp.com/biz/ettas-place-san-diego",
+    "confidence": "low",
+    "notes": "6179 University Ave, San Diego, CA 92115 (per linked Facebook page). Yelp tags it 'CLOSED in San Diego'; historical sources (San Diego Reader 2003, harp-l.org 2004 mailing list) confirm it was once a real live-music dive bar at that address. However this is only a single primary aggregator (Yelp) with no independent second confirmation (no news article, no Mapquest 'permanently closed' tag found, Facebook page itself does not state closure) -- insufficient corroboration for a permanent not_found verdict per house rules, so blocked pending stronger evidence.",
+    "dishes": [],
+    "blocked": "closure-unconfirmed: Yelp CLOSED tag only; no independent second source found; no menu ever located"
+  },
+  {
+    "restaurantId": "1063",
+    "name": "Bonitas Bar and Grill",
+    "sourceUrl": null,
+    "confidence": "low",
+    "notes": "no-web-presence: searched Maps and web for 'Bonita's Bar and Grill' in San Diego/Bonita, CA; no matching business found (only an unrelated 'Bonita's' bar and grill in Palm Springs, CA). Absence of search results is a statement about the search, not proof the restaurant is closed.",
+    "dishes": [],
+    "blocked": "no-web-presence: no matching San Diego/Bonita-area business found under this name"
+  },
+  {
+    "restaurantId": "1066",
+    "name": "El Cajon Grand Cocktail Lounge",
+    "sourceUrl": null,
+    "confidence": "low",
+    "notes": "Contradictory signals prevent a confident verdict: Yelp tags 'THE GRAND - CLOSED' at 351 W Main St, El Cajon (which reviews refer to as 'El Cajon Grand'), and Google Maps' current top match for that address is now 'The Grand' (a different-sounding listing); but an Instagram business location page lists 'El Cajon Grand Cocktail Lounge' as open ('Open until 11:59 PM') at a different address, 437 E Main St, El Cajon. BBB profile lists yet another matching address (351 West Main Street). Cannot resolve whether this is one relocated/renamed business, two different addresses for the same place, or a closed original replaced by a similarly-named new venue. Not enough to confirm closure independently.",
+    "dishes": [],
+    "blocked": "identity-unconfirmed: conflicting open/closed signals and conflicting addresses (351 W Main St vs 437 E Main St, El Cajon) across sources"
+  },
+  {
+    "restaurantId": "3032",
+    "name": "Basic",
+    "sourceUrl": "https://www.barbasic.com/wp-content/uploads/menu.pdf",
+    "confidence": "high",
+    "notes": "First-party PDF menu, extracted with pdftotext -raw (not -layout, which scrambled the 3-column Pizza/Wine/Cocktails layout into garbled name/price pairs -- e.g. 'Moscow Mules $4E9ac.h00'). PDF confirms address 410 Tenth Avenue, San Diego, CA 92101 and hours 11:30am-12:00am EVERYDAY; the homepage's 'coming soon to Park 12' banner refers to a separate additional location, not a relocation of this one. All Pizza (base pies, classic pies, build-your-own cheese/meat/veggie toppings) and Salads split into (Small)/(Large) entries; all Wine split into (Glass)/(Bottle) entries. Deliberately DROPPED an ambiguous Beer Pitchers subsection (Stone/Ashland/Harland, Golden Road/Four Peaks, Bud/Basic Blonde pitchers) where names could not be reliably paired to specific prices even in -raw mode -- never constructed a guessed price. 170 dishes filed.",
+    "dishes": [
+      {
+        "name": "Red Pie (mozzarella, parmesan) (Small)",
+        "description": "",
+        "price": "$15.00",
+        "section": "Pizza / Base Pies"
+      },
+      {
+        "name": "Red Pie (mozzarella, parmesan) (Large)",
+        "description": "",
+        "price": "$19.00",
+        "section": "Pizza / Base Pies"
+      },
+      {
+        "name": "White Pie (mozzarella, parmesan, garlic) (Small)",
+        "description": "",
+        "price": "$15.00",
+        "section": "Pizza / Base Pies"
+      },
+      {
+        "name": "White Pie (mozzarella, parmesan, garlic) (Large)",
+        "description": "",
+        "price": "$19.00",
+        "section": "Pizza / Base Pies"
+      },
+      {
+        "name": "Gluten-Free Crust Add-On (Small only)",
+        "description": "Not recommended for those with Celiac Disease",
+        "price": "$5.00",
+        "section": "Pizza / Base Pies"
+      },
+      {
+        "name": "Mashed (Small)",
+        "description": "",
+        "price": "$22.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "Mashed (Large)",
+        "description": "",
+        "price": "$30.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "Veggie (Small)",
+        "description": "",
+        "price": "$24.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "Veggie (Large)",
+        "description": "",
+        "price": "$35.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "Marg (Small)",
+        "description": "",
+        "price": "$22.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "Marg (Large)",
+        "description": "",
+        "price": "$30.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "So Meaty (Small)",
+        "description": "",
+        "price": "$28.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "So Meaty (Large)",
+        "description": "",
+        "price": "$40.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "4-Maggio (Small)",
+        "description": "",
+        "price": "$22.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "4-Maggio (Large)",
+        "description": "",
+        "price": "$30.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "East Village (Small)",
+        "description": "",
+        "price": "$24.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "East Village (Large)",
+        "description": "",
+        "price": "$37.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "J Street (Small)",
+        "description": "",
+        "price": "$28.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "J Street (Large)",
+        "description": "",
+        "price": "$40.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "Pepper (Small)",
+        "description": "",
+        "price": "$23.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "Pepper (Large)",
+        "description": "",
+        "price": "$33.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "BBQ Chicken (Small)",
+        "description": "",
+        "price": "$23.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "BBQ Chicken (Large)",
+        "description": "",
+        "price": "$33.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "Clam (Small only)",
+        "description": "The Original & Legendary New Haven Style Clam Pizza",
+        "price": "$25.00",
+        "section": "Pizza / Classic Pies"
+      },
+      {
+        "name": "Extra Traditional Mozzarella Topping (Small)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Pizza / Build Your Own - Cheese"
+      },
+      {
+        "name": "Extra Traditional Mozzarella Topping (Large)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pizza / Build Your Own - Cheese"
+      },
+      {
+        "name": "Fresh Mozzarella Topping (Small)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pizza / Build Your Own - Cheese"
+      },
+      {
+        "name": "Fresh Mozzarella Topping (Large)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Pizza / Build Your Own - Cheese"
+      },
+      {
+        "name": "Gorgonzola Topping (Small)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Pizza / Build Your Own - Cheese"
+      },
+      {
+        "name": "Gorgonzola Topping (Large)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pizza / Build Your Own - Cheese"
+      },
+      {
+        "name": "Ricotta Topping (Small)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Pizza / Build Your Own - Cheese"
+      },
+      {
+        "name": "Ricotta Topping (Large)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pizza / Build Your Own - Cheese"
+      },
+      {
+        "name": "Pepperoni Topping (Small)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Pepperoni Topping (Large)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Sausage Topping (Small)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Sausage Topping (Large)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Bacon Topping (Small)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Bacon Topping (Large)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Meatball Topping (Small)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Meatball Topping (Large)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Chicken Topping (Small)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Chicken Topping (Large)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Anchovies Topping (Small)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Anchovies Topping (Large)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Little Neck Clams Topping",
+        "description": "",
+        "price": "$10.00",
+        "section": "Pizza / Build Your Own - Meat"
+      },
+      {
+        "name": "Mushroom Topping (Small)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Mushroom Topping (Large)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "White Onion Topping (Small)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "White Onion Topping (Large)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Green Pepper Topping (Small)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Green Pepper Topping (Large)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Cherry Pepper Topping (Small)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Cherry Pepper Topping (Large)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Roasted Red Pepper Topping (Small)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Roasted Red Pepper Topping (Large)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Broccoli Topping (Small)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Broccoli Topping (Large)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Spinach Topping (Small)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Spinach Topping (Large)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Fresh Tomato Topping (Small)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Fresh Tomato Topping (Large)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Sun-Dried Tomato Topping (Small)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Sun-Dried Tomato Topping (Large)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Stewed Tomato Topping (Small)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Stewed Tomato Topping (Large)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Black Olive Topping (Small)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Black Olive Topping (Large)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Artichoke Hearts Topping (Small)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Artichoke Hearts Topping (Large)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Fried Eggplant Topping (Small)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Fried Eggplant Topping (Large)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Mashed Potato Topping (Small)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Mashed Potato Topping (Large)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Jalapenos Topping (Small)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Jalapenos Topping (Large)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Fresh Garlic Topping (Small)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Fresh Garlic Topping (Large)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Fresh Basil Topping (Small)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Fresh Basil Topping (Large)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Pesto Topping (Small)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Pesto Topping (Large)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pizza / Build Your Own - Veggie"
+      },
+      {
+        "name": "Basic Salad (mixed greens, sliced pears, candied walnuts, crumbled gorgonzola, light vinaigrette) (Small)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Basic Salad (mixed greens, sliced pears, candied walnuts, crumbled gorgonzola, light vinaigrette) (Large)",
+        "description": "",
+        "price": "$17.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Caesar Salad (romaine, croutons, caesar dressing, parmesan) (Small)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Caesar Salad (romaine, croutons, caesar dressing, parmesan) (Large)",
+        "description": "",
+        "price": "$17.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Add Chicken or Bacon to Salad (Small)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Add Chicken or Bacon to Salad (Large)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Golden Road Mango Cart",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Four Peaks Amber Ale",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Stone Delicious IPA",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Harland Hazy IPA",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Ballast Point Swingin Friar's Pale Ale",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Ashland Seltzer (Seasonal Flavor)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Bud Light",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "BASIC Blonde",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Stone Hazy IPA",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Ballast Point Sculpin IPA",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Modelo Especial",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Mother Earth Cali Creamin",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Stone Buenaveza Salt & Lime Lager",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Bivouac Blackberry Cider",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Victory Golden Monkey Belgian",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Oskar Blues Mama's Little Yalla Pil",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Modern Times FruitLands Gose",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Modern Times Orderville Hazy-Mosaic IPA",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Juneshine 16oz",
+        "description": "",
+        "price": "$11.00",
+        "section": "Beer - Draft"
+      },
+      {
+        "name": "Corona Extra",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer - Bottles"
+      },
+      {
+        "name": "Stella Artois",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer - Bottles"
+      },
+      {
+        "name": "Coors Light",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer - Bottles"
+      },
+      {
+        "name": "Firestone Walker 805",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Bottles"
+      },
+      {
+        "name": "Breckenridge Vanilla Porter",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Bottles"
+      },
+      {
+        "name": "Michelob Ultra",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer - Bottles"
+      },
+      {
+        "name": "Estrella Jalisco Cerveza",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer - Bottles"
+      },
+      {
+        "name": "Pacifico Clara Cerveza",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer - Bottles"
+      },
+      {
+        "name": "Foxon Park Soda",
+        "description": "East Haven, CT - Root Beer, Cream, Iron Brew, Lemon Lime, Grape, Orange, Cherry, Strawberry, White Birch",
+        "price": "$4.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Urbn Iced Tea or Lemonade (16oz can)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Red Bull (Regular or Sugar Free)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Proud Source Sparkling Water (16oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Proud Source Still Water (16oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Modern Times Cold Brew Nitro Coffee (12oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Non-Alcoholic Beverages"
+      },
+      {
+        "name": "Basic Dirty Martini",
+        "description": "Vodka (Ketel One) or Gin (Tanqueray) with blue cheese stuffed olives",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic Mule",
+        "description": "Ginger beer, bitters, lime; choice of Vodka Titos, Gin Beefeater, Whiskey Jack Daniels, or Tequila Cazadores Blanco",
+        "price": "$13.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic Paloma",
+        "description": "Herradura Silver Tequila, grapefruit juice, agave nectar, fresh lime",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic \"Scratch\" Margarita",
+        "description": "100% Agave Tequila, fresh lime, agave nectar; choice of Altos, Xicaru Mezcal, or Altos Spicy; add shot of Grand Marnier +$4",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic Old Fashioned",
+        "description": "Simple syrup, angostura bitters, orange twist; choice of Buffalo Trace Whiskey, Sailor Jerry Rum, or Cali Fino Reposado Tequila",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic Manhattan",
+        "description": "Old Forester Rye, sweet vermouth, bitters, brandied cherry",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "URBN Hard Iced Tea",
+        "description": "Deep Eddy Sweet Tea Vodka, lemonade, fresh lemon",
+        "price": "$13.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic Mai Tai",
+        "description": "Zaya aged Rum, Ron Rio Rum, agave nectar, lime juice, orgeat, mint sprig, topped with Black Magic Spiced Rum",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic Bloody Mary",
+        "description": "Cutwater Vodka and spicy bloody mary mix, Tajin, cherry peppers, blue cheese stuffed olives",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic Mojito",
+        "description": "Ron Rio Rum, fresh mint, fresh lime, raw sugar, sparkling water",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Espresso Martini",
+        "description": "Mr. Black Liqueur, Ketel One Vodka, cold brew coffee, agave",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic Negroni",
+        "description": "Hendrick's Gin, Campari, sweet vermouth, orange twist",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic Michelada",
+        "description": "Jugo Maggi, Clamato, Tajin & Lime featuring Estrella Jalisco Cerveza",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Basic Pitcher - Paloma",
+        "description": "featuring El Jimador Tequila",
+        "price": "$49.00",
+        "section": "Cocktails / Pitchers"
+      },
+      {
+        "name": "Basic Pitcher - Moscow Mule",
+        "description": "featuring Hideout Vodka",
+        "price": "$49.00",
+        "section": "Cocktails / Pitchers"
+      },
+      {
+        "name": "Basic Pitcher - Margarita",
+        "description": "featuring El Jimador Tequila",
+        "price": "$49.00",
+        "section": "Cocktails / Pitchers"
+      },
+      {
+        "name": "Mezzacorona Pinot Grigio - Italy (Glass)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Mezzacorona Pinot Grigio - Italy (Bottle)",
+        "description": "",
+        "price": "$40.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Joel Gott Sauvignon Blanc - California (Glass)",
+        "description": "",
+        "price": "$11.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Joel Gott Sauvignon Blanc - California (Bottle)",
+        "description": "",
+        "price": "$44.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Kim Crawford Sauvignon Blanc - New Zealand (Glass)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Kim Crawford Sauvignon Blanc - New Zealand (Bottle)",
+        "description": "",
+        "price": "$56.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Hess Chardonnay - Monterey, CA (Glass)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Hess Chardonnay - Monterey, CA (Bottle)",
+        "description": "",
+        "price": "$48.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Chateau Ste. Michelle Mimi Chardonnay - H3 CA (Glass)",
+        "description": "",
+        "price": "$13.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Chateau Ste. Michelle Mimi Chardonnay - H3 CA (Bottle)",
+        "description": "",
+        "price": "$52.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Gerard Bertrand Gris Blanc Rose - France (Glass)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Gerard Bertrand Gris Blanc Rose - France (Bottle)",
+        "description": "",
+        "price": "$48.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Chateau Ste. Michelle Riesling - Columbia Valley, WA (Glass)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Chateau Ste. Michelle Riesling - Columbia Valley, WA (Bottle)",
+        "description": "",
+        "price": "$40.00",
+        "section": "Wine - White"
+      },
+      {
+        "name": "Castle Rock Pinot Noir - Mendocino County, CA (Glass)",
+        "description": "",
+        "price": "$11.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "Castle Rock Pinot Noir - Mendocino County, CA (Bottle)",
+        "description": "",
+        "price": "$44.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "14 Hands Merlot - Columbia Valley, WA (Glass)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "14 Hands Merlot - Columbia Valley, WA (Bottle)",
+        "description": "",
+        "price": "$40.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "Firestone Cabernet Sauvignon - CA (Glass)",
+        "description": "",
+        "price": "$13.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "Firestone Cabernet Sauvignon - CA (Bottle)",
+        "description": "",
+        "price": "$52.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "1895 Malbec - Argentina (Glass)",
+        "description": "",
+        "price": "$11.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "1895 Malbec - Argentina (Bottle)",
+        "description": "",
+        "price": "$44.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "Horse Heaven Hills H3 Cabernet Sauvignon - WA (Glass)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "Horse Heaven Hills H3 Cabernet Sauvignon - WA (Bottle)",
+        "description": "",
+        "price": "$56.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "Conundrum Red Wine Blend - California (Glass)",
+        "description": "",
+        "price": "$13.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "Conundrum Red Wine Blend - California (Bottle)",
+        "description": "",
+        "price": "$52.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "Michael David Syrah - Lodi, California (Glass)",
+        "description": "",
+        "price": "$13.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "Michael David Syrah - Lodi, California (Bottle)",
+        "description": "",
+        "price": "$52.00",
+        "section": "Wine - Red"
+      },
+      {
+        "name": "Poema Cava Brut (Glass)",
+        "description": "",
+        "price": "$11.00",
+        "section": "Wine - Bubbles"
+      },
+      {
+        "name": "Poema Cava Brut (Bottle)",
+        "description": "",
+        "price": "$44.00",
+        "section": "Wine - Bubbles"
+      },
+      {
+        "name": "Avissi Prosecco (Glass)",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine - Bubbles"
+      },
+      {
+        "name": "Avissi Prosecco (Bottle)",
+        "description": "",
+        "price": "$48.00",
+        "section": "Wine - Bubbles"
+      },
+      {
+        "name": "Grande Courtage Chardonnay/Chenin/Ugni Blanc - Split (Glass)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Wine - Bubbles"
+      },
+      {
+        "name": "Veuve Cliquot Yellow Label (Bottle)",
+        "description": "",
+        "price": "$150.00",
+        "section": "Wine - Bubbles"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1099",
+    "name": "Coin Toss",
+    "sourceUrl": "https://www.yelp.com/biz/coin-toss-bar-chula-vista",
+    "confidence": "low",
+    "notes": "312 Broadway, Chula Vista, CA 91910. The work-list website (flipacoin.ca) is unrelated -- a coin-flip decision web tool, not this business; a router data-quality error, not evidence about the restaurant. Yelp tags 'COIN-TOSS BAR - CLOSED'; a Facebook nostalgia thread about long-gone Chula Vista bars ('Does anyone remember Blue Haven, Ball 3, or Formosa Club?') names Coin Toss alongside other remembered-as-defunct venues. However other directory listings (Mapquest, pos.do, barandclub.com) describe it in present tense with no explicit closed tag, and none is a primary news source -- corroboration is suggestive but not independently confirmed, so blocked rather than not_found.",
+    "dishes": [],
+    "blocked": "closure-unconfirmed: Yelp CLOSED tag plus secondhand community recollection only; no independent primary source; given website on file is unrelated"
+  }
+]

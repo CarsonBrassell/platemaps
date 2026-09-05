@@ -1,0 +1,935 @@
+[
+  {
+    "restaurantId": "3985",
+    "name": "Karami Ramen",
+    "sourceUrl": "https://www.karamiramen.com/menu",
+    "confidence": "high",
+    "notes": "Own Wix site menu page; all 56 items carry literal price value \"0\" (data-hook=\"item.price\" never appears in the rendered HTML, only \"item.name\" does, 15x on the single active tab, more behind ?menu= tabs but same zero-price pattern confirmed via the page's embedded item JSON). No PDF, no photo, no ordering-platform link anywhere on the site (no Toast/Square/Clover/ChowNow/DoorDash href). Restaurant genuinely publishes item names with no prices.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6294",
+    "name": "Bistro du Marché by Tapenade",
+    "sourceUrl": "https://bistrodumarche.net/wp-content/uploads/2026/08/MENU-2026-aug.pdf",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://bistrodumarche.net/wp-content/uploads/2025/10/DESSERT-2025.pdf",
+    "notes": "Own site (WordPress), reached via /wp-json/wp/v2/pages listing /menus/eat/ and /menus/drink/; the eat page links two dated PDFs, dinner (Aug 2026) and dessert (Oct 2025), both current. pdftotext -raw paired names to prices cleanly (two-column dinner menu verified against -layout too). 'Les Fromages' is a tiered a-la-carte cheese selection (Select One/Two/Three), filed as three rows. 'Coffee Drinks' and 'Desserts by Estefania' are section headers that state one flat price for every item below them on the printed menu itself (18 and 18) — not an inferred pattern, the price is printed once at the section level exactly as the restaurant wrote it. Drink page (wine/cocktail list) not fetched — out of time budget; dinner+dessert page is the core food menu and is complete.",
+    "dishes": [
+      {
+        "name": "Salade Avec Plein de Légumes du Marché",
+        "description": "Organic Baby Greens, Tomatoes, Peas, Haricots Verts, Beets, Citrus",
+        "price": "$22.00",
+        "section": "Dinner / Pour Commencer - Appetizers"
+      },
+      {
+        "name": "Escargots de Bourgogne, Beurre d'Ail & Herbes Potagères",
+        "description": "Burgundy Escargots, Fresh Herbs & Garlic Butter",
+        "price": "$26.00",
+        "section": "Dinner / Pour Commencer - Appetizers"
+      },
+      {
+        "name": "Pâté de Campagne fait Maison \"Grand Mère\"",
+        "description": "Country Pâté, Pickled Vegetables, Baby Green",
+        "price": "$24.00",
+        "section": "Dinner / Pour Commencer - Appetizers"
+      },
+      {
+        "name": "Poulpe Grillé, Salade de Haricots \"Cannellini\" aux Agrumes",
+        "description": "Grilled Mediterranean Octopus, Fresh Herbs & Citrus Olive Oil, Cannellini Beans Salad",
+        "price": "$34.00",
+        "section": "Dinner / Pour Commencer - Appetizers"
+      },
+      {
+        "name": "Figues de Californie Rôties, Gorgonzola, Roquette & Lard Fumé",
+        "description": "Roasted California Figs, Gorgonzola Cheese, Arugula Salad, Bacon",
+        "price": "$30.00",
+        "section": "Dinner / Pour Commencer - Appetizers"
+      },
+      {
+        "name": "Ravioli aux Champignons, Sauce Porto, Parmesan Reggiano",
+        "description": "Wild Mushroom Ravioli, Port Sauce, Parmigiano Reggiano",
+        "price": "$32.00",
+        "section": "Dinner / Pour Commencer - Appetizers"
+      },
+      {
+        "name": "Salade De Tomate \"Heirlooms\", Burrata Crémeuse, Basilic",
+        "description": "Heirlooms Tomato Salad, Burrata, Basil, Arugula",
+        "price": "$30.00",
+        "section": "Dinner / Pour Commencer - Appetizers"
+      },
+      {
+        "name": "Salade de Crabe & Mangue, Lait de Coco au Citron Vert",
+        "description": "Blue Crab & Mango Salad, Coconut Milk & Lime Emulsion",
+        "price": "$34.00",
+        "section": "Dinner / Pour Commencer - Appetizers"
+      },
+      {
+        "name": "Caviar \"Sevruga\", Condiments, Blinis, Toast Point",
+        "description": "Caviar Sevruga, Condiments, Blinis, Toast Points",
+        "price": "$80.00",
+        "section": "Dinner / Pour Commencer - Appetizers"
+      },
+      {
+        "name": "Tarte Fine a la Tomate & Basilic, Fromage de Chèvre",
+        "description": "California Tomatoes & Basil Tart, Goat Cheese Whipped Cream",
+        "price": "$30.00",
+        "section": "Dinner / Pour Commencer - Appetizers"
+      },
+      {
+        "name": "Saumon des Iles \"Faroe\", Pousses d'Épinard, Sauce Simple",
+        "description": "Faroes Island Salmon, Creamy Baby Spinach, Fingering Potato, Fresh Herbs",
+        "price": "$40.00",
+        "section": "Dinner / Plats Principaux - Entrées"
+      },
+      {
+        "name": "Loup De Mediterranée, Ecailles de Pomme de terre",
+        "description": "Mediterranean Branzino, Under Potato Scales, Sweet Corn, Sea Beans, Cauliflower, Citrus Beurre Blanc",
+        "price": "$42.00",
+        "section": "Dinner / Plats Principaux - Entrées"
+      },
+      {
+        "name": "Saint Jacques Du Japon, Risotto au Petits Pois, Asperges",
+        "description": "Hokkaido Scallops, English Peas Risotto, Asparagus, Citrus Beurre Blanc",
+        "price": "$44.00",
+        "section": "Dinner / Plats Principaux - Entrées"
+      },
+      {
+        "name": "Filet De Boeuf, Sauce au Poivre, Pommes Frites",
+        "description": "Aged Beef Tenderloin, Sauce Au Poivre, French Fries, Green Salad",
+        "price": "$58.00",
+        "section": "Dinner / Plats Principaux - Entrées"
+      },
+      {
+        "name": "Carré d'Agneau, Jus Simple a l'ail, Garniture Provençale",
+        "description": "Roasted Rack of Lamb, Simple Garlic Jus, Ratatouille & Panisses",
+        "price": "$58.00",
+        "section": "Dinner / Plats Principaux - Entrées"
+      },
+      {
+        "name": "Lapin Farci de Pleins de Bonnes Choses, Sauce à la Moutarde",
+        "description": "Organic Rabbit Stuffed Porchetta Style, Du Puy Lentils, Cauliflower, Dijon Mustard Sauce",
+        "price": "$48.00",
+        "section": "Dinner / Plats Principaux - Entrées"
+      },
+      {
+        "name": "Cote de Porc \"Bien Epaisse\", Sauce Gastrique aux Agrumes",
+        "description": "Organic Thick Pork Chop, Mashed Potato, White Corn, Petty Pan, California Citrus Au Jus",
+        "price": "$52.00",
+        "section": "Dinner / Plats Principaux - Entrées"
+      },
+      {
+        "name": "Confit de Canard \"Comme dans Les Landes\"",
+        "description": "Duck Leg Confit, Port Wine Sauce, Mashed Potato, Haricots Verts",
+        "price": "$48.00",
+        "section": "Dinner / Plats Principaux - Entrées"
+      },
+      {
+        "name": "Coq au Vin \"Ivre de Bourgogne\"",
+        "description": "Organic Chicken Leg Braised in Burgundy Red Wine Sauce, Mashed Potato, Carrot, Mushrooms",
+        "price": "$36.00",
+        "section": "Dinner / Plats Principaux - Entrées"
+      },
+      {
+        "name": "Pappardelle, Gratons de Canard Confit, Sauce au Poivre Vert",
+        "description": "Pappardelle, Shredded Duck Confit, Green Peppercorn Sauce",
+        "price": "$35.00",
+        "section": "Dinner / Plats Principaux - Entrées"
+      },
+      {
+        "name": "Crevettes \"Cocktail\"",
+        "description": "Shrimp Grilled, French Cocktail Sauce",
+        "price": "$28.00",
+        "section": "Dinner / Hors d'Oeuvres - For the Table"
+      },
+      {
+        "name": "Gougères au Comté",
+        "description": "Swiss Cheese Puffs",
+        "price": "$12.00",
+        "section": "Dinner / Hors d'Oeuvres - For the Table"
+      },
+      {
+        "name": "Vraie Tapenade",
+        "description": "Our Classic Tapenade",
+        "price": "$12.00",
+        "section": "Dinner / Hors d'Oeuvres - For the Table"
+      },
+      {
+        "name": "Saumon Fumé",
+        "description": "Smoked Salmon, Onion, Cucumber, Toast Points",
+        "price": "$26.00",
+        "section": "Dinner / Hors d'Oeuvres - For the Table"
+      },
+      {
+        "name": "Les Fromages - Select One",
+        "description": "Selection of French Cheeses, changing daily",
+        "price": "$7.00",
+        "section": "Dinner / Les Fromages"
+      },
+      {
+        "name": "Les Fromages - Select Two",
+        "description": "Selection of French Cheeses, changing daily",
+        "price": "$12.00",
+        "section": "Dinner / Les Fromages"
+      },
+      {
+        "name": "Les Fromages - Select Three",
+        "description": "Selection of French Cheeses, changing daily",
+        "price": "$18.00",
+        "section": "Dinner / Les Fromages"
+      },
+      {
+        "name": "Purée de Pomme de Terre",
+        "description": "Yukon Gold Mashed Potatoes",
+        "price": "$12.00",
+        "section": "Dinner / Les Garnitures - Side Orders"
+      },
+      {
+        "name": "Pommes Frites",
+        "description": "French Fries",
+        "price": "$12.00",
+        "section": "Dinner / Les Garnitures - Side Orders"
+      },
+      {
+        "name": "Epinard à la Crème",
+        "description": "Creamy Baby Spinach",
+        "price": "$12.00",
+        "section": "Dinner / Les Garnitures - Side Orders"
+      },
+      {
+        "name": "Ratatouille",
+        "description": "Provençal Vegetables",
+        "price": "$12.00",
+        "section": "Dinner / Les Garnitures - Side Orders"
+      },
+      {
+        "name": "Haricots Verts",
+        "description": "French Green Beans",
+        "price": "$12.00",
+        "section": "Dinner / Les Garnitures - Side Orders"
+      },
+      {
+        "name": "Moules Frites",
+        "description": "Rendez-Vous Parisien, Tuesday",
+        "price": "$35.00",
+        "section": "Dinner / Rendez-Vous Parisien"
+      },
+      {
+        "name": "Steak Frites or Steak Tartar",
+        "description": "Rendez-Vous Parisien, Wednesday",
+        "price": "$44.00",
+        "section": "Dinner / Rendez-Vous Parisien"
+      },
+      {
+        "name": "Real Dover Sole",
+        "description": "Rendez-Vous Parisien, Thursday",
+        "price": "$72.00",
+        "section": "Dinner / Rendez-Vous Parisien"
+      },
+      {
+        "name": "V.S.O.P. D'ussé",
+        "description": "Cognac",
+        "price": "$16.00",
+        "section": "Dessert / After Dinner Drinks"
+      },
+      {
+        "name": "V.S.O.P. Remy Martin",
+        "description": "Cognac",
+        "price": "$16.00",
+        "section": "Dessert / After Dinner Drinks"
+      },
+      {
+        "name": "X.O. Remy Martin",
+        "description": "Cognac",
+        "price": "$32.00",
+        "section": "Dessert / After Dinner Drinks"
+      },
+      {
+        "name": "Calvados Daron, France",
+        "description": "Calvados",
+        "price": "$18.00",
+        "section": "Dessert / After Dinner Drinks"
+      },
+      {
+        "name": "Bas Armagnac Delod \"Napoleon\", France",
+        "description": "Armagnac",
+        "price": "$18.00",
+        "section": "Dessert / After Dinner Drinks"
+      },
+      {
+        "name": "Meyers Poire William, France",
+        "description": "Eau de vie",
+        "price": "$16.00",
+        "section": "Dessert / After Dinner Drinks"
+      },
+      {
+        "name": "Rum Zacapa \"23\"",
+        "description": "Rum",
+        "price": "$16.00",
+        "section": "Dessert / After Dinner Drinks"
+      },
+      {
+        "name": "Mezcal \"El Silencio\"",
+        "description": "Mezcal",
+        "price": "$16.00",
+        "section": "Dessert / After Dinner Drinks"
+      },
+      {
+        "name": "Don Julio Tequila \"1942\"",
+        "description": "Tequila",
+        "price": "$45.00",
+        "section": "Dessert / After Dinner Drinks"
+      },
+      {
+        "name": "Graham's Ruby Port",
+        "description": "Port",
+        "price": "$12.00",
+        "section": "Dessert / Ports & Dessert Wines"
+      },
+      {
+        "name": "Noval 10 Yr. Tawny",
+        "description": "Port",
+        "price": "$14.00",
+        "section": "Dessert / Ports & Dessert Wines"
+      },
+      {
+        "name": "Sandeman 20 Yr. Tawny",
+        "description": "Port",
+        "price": "$20.00",
+        "section": "Dessert / Ports & Dessert Wines"
+      },
+      {
+        "name": "Sauternes Ch. Tertre du Bosquet, Bordeaux '19",
+        "description": "Dessert wine",
+        "price": "$12.00",
+        "section": "Dessert / Ports & Dessert Wines"
+      },
+      {
+        "name": "Glenfiddich 12Yr.",
+        "description": "Single Malt Scotch",
+        "price": "$16.00",
+        "section": "Dessert / Single Malt Scotch"
+      },
+      {
+        "name": "Glenlivet 12 Yr.",
+        "description": "Single Malt Scotch",
+        "price": "$16.00",
+        "section": "Dessert / Single Malt Scotch"
+      },
+      {
+        "name": "Macallan 12 Yr.",
+        "description": "Single Malt Scotch",
+        "price": "$20.00",
+        "section": "Dessert / Single Malt Scotch"
+      },
+      {
+        "name": "Dalmore 12 Yr.",
+        "description": "Single Malt Scotch",
+        "price": "$18.00",
+        "section": "Dessert / Single Malt Scotch"
+      },
+      {
+        "name": "Dalmore 18 Yr.",
+        "description": "Single Malt Scotch",
+        "price": "$44.00",
+        "section": "Dessert / Single Malt Scotch"
+      },
+      {
+        "name": "Laphroaig 10 Yr.",
+        "description": "Single Malt Scotch",
+        "price": "$18.00",
+        "section": "Dessert / Single Malt Scotch"
+      },
+      {
+        "name": "Dalmore 15 Yr",
+        "description": "Single Malt Scotch",
+        "price": "$22.00",
+        "section": "Dessert / Single Malt Scotch"
+      },
+      {
+        "name": "Hot Nutty Irish Man",
+        "description": "Frangelico, Bailey's coffee drink",
+        "price": "$18.00",
+        "section": "Dessert / Coffee Drinks"
+      },
+      {
+        "name": "Kioki Coffee",
+        "description": "Brandy, Kahlúa coffee drink",
+        "price": "$18.00",
+        "section": "Dessert / Coffee Drinks"
+      },
+      {
+        "name": "Carajillo",
+        "description": "Espresso, Licor 43 coffee drink",
+        "price": "$18.00",
+        "section": "Dessert / Coffee Drinks"
+      },
+      {
+        "name": "Espresso Martini",
+        "description": "Espresso, Vodka, Kahlua",
+        "price": "$18.00",
+        "section": "Dessert / Coffee Drinks"
+      },
+      {
+        "name": "Dessert Special \"du Soir\" - Tarte Tatin aux Pommes de Julian",
+        "description": "Warm Julian Apple Tart Tatin",
+        "price": "$18.00",
+        "section": "Dessert / Desserts by Estefania"
+      },
+      {
+        "name": "Île Flottante",
+        "description": "Meringue, Caramel Sauce, Crème Anglaise, Toasted Almonds",
+        "price": "$18.00",
+        "section": "Dessert / Desserts by Estefania"
+      },
+      {
+        "name": "Profiteroles",
+        "description": "Choux filled with Grand Marnier Ice Cream, Warm Chocolate Sauce, Almonds",
+        "price": "$18.00",
+        "section": "Dessert / Desserts by Estefania"
+      },
+      {
+        "name": "Fondant au Chocolat",
+        "description": "Chocolate Fondant, Vanilla Ice Cream, Mixed Berry Coulis",
+        "price": "$18.00",
+        "section": "Dessert / Desserts by Estefania"
+      },
+      {
+        "name": "Crème Brûlée",
+        "description": "Vanilla Crème Brûlée, Seasonal Berries",
+        "price": "$18.00",
+        "section": "Dessert / Desserts by Estefania"
+      },
+      {
+        "name": "Tartelette au Citron \"Meyers\"",
+        "description": "Meyer's Lemon Tart, Mixed Red Berries",
+        "price": "$18.00",
+        "section": "Dessert / Desserts by Estefania"
+      },
+      {
+        "name": "Croissant",
+        "description": "Sunday Morning viennoiserie, 9am-12:30pm, pre-order",
+        "price": "$4.00",
+        "section": "Dessert / Sunday Morning Viennoiseries"
+      },
+      {
+        "name": "Lyonnaise Waffle",
+        "description": "Sunday Morning viennoiserie, 9am-12:30pm, pre-order",
+        "price": "$4.00",
+        "section": "Dessert / Sunday Morning Viennoiseries"
+      },
+      {
+        "name": "Pain au Chocolat",
+        "description": "Sunday Morning viennoiserie, 9am-12:30pm, pre-order",
+        "price": "$5.00",
+        "section": "Dessert / Sunday Morning Viennoiseries"
+      },
+      {
+        "name": "Apple Turnover",
+        "description": "Sunday Morning viennoiserie, 9am-12:30pm, pre-order",
+        "price": "$5.00",
+        "section": "Dessert / Sunday Morning Viennoiseries"
+      },
+      {
+        "name": "Almond Croissant",
+        "description": "Sunday Morning viennoiserie, 9am-12:30pm, pre-order",
+        "price": "$6.00",
+        "section": "Dessert / Sunday Morning Viennoiseries"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6245",
+    "name": "Choice Juicery",
+    "sourceUrl": "https://www.choicejuicery.com/entire-menu",
+    "confidence": "high",
+    "notes": "Own Squarespace site, /entire-menu page, plain server-rendered HTML, no JS needed. A multi-location chain (Carlsbad Village Dr location matches the work-list address); menu is shared across locations per the site's own nav. Smoothies each list two sizes (cup emoji = smoothie, bowl emoji = smoothie bowl with granola + fruit); both filed as separate rows. 'Secret Menu' nav link exists but its items were not on this page and were not fetched (out of scope, adjunct). Everything else on the nav (juices, milks, entrees, snacks, toast, lemonades, surges, hot drinks, elixirs, nut butters, seasonal) appeared on this one page and is included.",
+    "dishes": [
+      {
+        "name": "Warrior",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, House Made Almond Butter, Spirulina, & Spinach — smoothie",
+        "price": "$14.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Warrior Bowl",
+        "description": "Same as Warrior smoothie, served as a bowl with granola, banana or seasonal fruit",
+        "price": "$17.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Strawberry Zen",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, & Strawberry — smoothie",
+        "price": "$12.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Strawberry Zen Bowl",
+        "description": "Same as Strawberry Zen smoothie, served as a bowl",
+        "price": "$15.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Spicy Amor",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Maca, Cinnamon, Nutmeg, Cayenne Pepper, Almond Butter, & Cacao Powder — smoothie",
+        "price": "$12.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Spicy Amor Bowl",
+        "description": "Same as Spicy Amor smoothie, served as a bowl",
+        "price": "$15.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Superhero Vanilla",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Almond Butter & Cinnamon — smoothie; chocolate version +$1",
+        "price": "$11.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Superhero Vanilla Bowl",
+        "description": "Same as Superhero Vanilla smoothie, served as a bowl; chocolate version +$1",
+        "price": "$14.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "PB&J",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, House Made Peanut Butter, & Choice Raspberry Chia Jam — smoothie",
+        "price": "$13.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "PB&J Bowl",
+        "description": "Same as PB&J smoothie, served as a bowl",
+        "price": "$16.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Orange Dreamsicle",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Orange, & Pineapple — smoothie",
+        "price": "$12.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Orange Dreamsicle Bowl",
+        "description": "Same as Orange Dreamsicle smoothie, served as a bowl",
+        "price": "$15.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Mint Chip",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Mint Extract, Spinach, Almond Butter & Cacao Nibs — smoothie",
+        "price": "$13.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Mint Chip Bowl",
+        "description": "Same as Mint Chip smoothie, served as a bowl",
+        "price": "$16.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Coffee Buzz",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Cold Pressed Coffee, Almond Butter & Cinnamon — smoothie",
+        "price": "$12.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Coffee Buzz Bowl",
+        "description": "Same as Coffee Buzz smoothie, served as a bowl",
+        "price": "$15.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Acai Vitality",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Strawberry, & Açai — smoothie",
+        "price": "$12.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Acai Vitality Bowl",
+        "description": "Same as Acai Vitality smoothie, served as a bowl",
+        "price": "$15.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Spring Fling",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Blueberries, Lavender, & Cake Batter Almond Butter — smoothie",
+        "price": "$12.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Spring Fling Bowl",
+        "description": "Same as Spring Fling smoothie, served as a bowl",
+        "price": "$15.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Newtella",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, & Choice Chocolate Hazelnut Spread — smoothie",
+        "price": "$13.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Newtella Bowl",
+        "description": "Same as Newtella smoothie, served as a bowl",
+        "price": "$16.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Alpha Chai Smoothie",
+        "description": "House Made Oat Milk, Alpha Chai Elixir, Date, Superfood Protein, Banana, & Almond Butter — smoothie",
+        "price": "$12.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Alpha Chai Smoothie Bowl",
+        "description": "Same as Alpha Chai smoothie, served as a bowl",
+        "price": "$15.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Mystical Matcha Smoothie",
+        "description": "House Made Plant-Based Milk, Mystical Matcha Elixir, Date, Superfood Protein, Banana & Liquid Chlorophyll — smoothie",
+        "price": "$12.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Mystical Matcha Smoothie Bowl",
+        "description": "Same as Mystical Matcha smoothie, served as a bowl",
+        "price": "$15.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Salted Caramel",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Cold Pressed Coffee, Almond Butter, Mesquite, Himalayan Salt, & House Made Coconut Caramel — smoothie",
+        "price": "$13.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Salted Caramel Bowl",
+        "description": "Same as Salted Caramel smoothie, served as a bowl",
+        "price": "$16.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Unicorn",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Strawberry, Cake Batter Cashew Almond Butter & E3Live Blue Majik — smoothie",
+        "price": "$14.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Unicorn Bowl",
+        "description": "Same as Unicorn smoothie, served as a bowl",
+        "price": "$17.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Avatar",
+        "description": "House Made Plant-Based Milk, Date, Superfood Protein, Banana, Orange, Pineapple, Spinach, & E3Live Blue Majik — smoothie",
+        "price": "$13.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Avatar Bowl",
+        "description": "Same as Avatar smoothie, served as a bowl",
+        "price": "$16.00",
+        "section": "Smoothies & Bowls"
+      },
+      {
+        "name": "Skinny Greens",
+        "description": "Cucumber, Apple, Spinach, Kale, Jalapeño, & Lime",
+        "price": "$13.00",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Straight Up Celery",
+        "description": "Celery",
+        "price": "$9.00",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Truly Madly Green",
+        "description": "Cucumber, Celery, Spinach, Broccoli, Lemon & Ginger",
+        "price": "$14.00",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Beauty Melon",
+        "description": "Watermelon, Orange, Lime, & Mint",
+        "price": "$10.00",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Hot Sunrise",
+        "description": "Pineapple, Orange, Ginger, Lime, Coconut Water, & Cayenne Pepper",
+        "price": "$12.00",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Ginger Bae",
+        "description": "Apple, Lemon, & Ginger",
+        "price": "$10.00",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Dawn Patrol",
+        "description": "Carrot, Orange, Ginger, & Turmeric",
+        "price": "$12.00",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Citrulicious",
+        "description": "Cucumber, Kale, Apple, Orange, Grapefruit, & Lime",
+        "price": "$13.00",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Choice Greens",
+        "description": "Cucumber, Celery, Apple, Spinach, Kale, Lemon, & Ginger",
+        "price": "$13.00",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Beet Chia",
+        "description": "Beet, Apple, Grapefruit, Ginger, Lemon, Chia Seeds, & Mint",
+        "price": "$12.00",
+        "section": "Cold Pressed Juices"
+      },
+      {
+        "name": "Strawberry Almond Milk",
+        "description": "Sprouted Vanilla Almond Milk, Strawberry, Date",
+        "price": "$10.00",
+        "section": "Craft Milks"
+      },
+      {
+        "name": "Chocolate Almond Milk",
+        "description": "Sprouted Vanilla Almond Milk, Cacao, Date, Cinnamon",
+        "price": "$11.00",
+        "section": "Craft Milks"
+      },
+      {
+        "name": "Protein Power Milk",
+        "description": "Sprouted Vanilla Almond Milk, Superfood Protein, Date. 19g protein",
+        "price": "$12.00",
+        "section": "Craft Milks"
+      },
+      {
+        "name": "Cold Pressed Coffee Almond Latte",
+        "description": "Sprouted Vanilla Almond Milk, Cold Pressed Coffee, Date, Cinnamon",
+        "price": "$10.00",
+        "section": "Craft Milks"
+      },
+      {
+        "name": "Mystical Matcha Almond Milk",
+        "description": "Sprouted Vanilla Almond Milk, Mystical Matcha Elixir, Chlorophyll",
+        "price": "$11.00",
+        "section": "Craft Milks"
+      },
+      {
+        "name": "Thai Kelp Noodle",
+        "description": "Marinated Kelp Noodles, Baby Arugula, Almond Thai Dressing, Candied Almonds, Cabbage, Carrots, Bell Pepper, Mint, Basil, & Cilantro",
+        "price": "$15.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Mediterranean Power Bowl",
+        "description": "Quinoa, Spinach, Kalamata Olives, Cherry Tomato, Cucumber, Basil, Oregano, Black Pepper, & House Made Lemon Vinaigrette",
+        "price": "$11.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Coconut \"Bakon\" Cobb Salad",
+        "description": "Romaine Lettuce, Cherry Tomatoes, Quinoa, Coconut Bakon, House Made Ranch Dressing, Avocado, & Marinated Hearts of Palm",
+        "price": "$13.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Ultimate Caesar Salad",
+        "description": "Romaine Lettuce, Kale, House Made Chickpea Croutons, House Made Parmesan Cheese, House Made Coconut Bakon, & House Made Caesar Dressing",
+        "price": "$13.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Macho Taco Salad",
+        "description": "Romaine Lettuce, House Made Walnut Taco Meat, Roma Tomatoes, Bell Pepper, Red Cabbage, Cilantro, & House Made Chipotle Dressing",
+        "price": "$13.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Eco \"Suntuna\" Sushi Roll",
+        "description": "Spicy Suntuna Pâté, Avocado, Cucumber, Bell Pepper, Spinach, Red Cabbage, Cilantro, Quinoa, Nori, Miso Ginger Dressing, GF Tamari, & Jalapeño Slices",
+        "price": "$11.00",
+        "section": "Entrees"
+      },
+      {
+        "name": "Carrot Cake Cookies",
+        "description": "Carrots, Apples, Raisins, Pecans, Superfood Protein, Almond Butter, & Spices",
+        "price": "$4.50",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "\"Ranch\" Kale Chips",
+        "description": "Kale & House Made Ranch Dressing",
+        "price": "$8.00",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "Superfood Power Pack",
+        "description": "Almonds, Cashews, Mulberries, Coconut Chips, & Goji Berries",
+        "price": "$8.00",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "Superfood Banana Bread",
+        "description": "Sprouted Almond Flour, Banana, Buckwheat Flour, Superfood Protein, Coconut Sugar, & more",
+        "price": "$4.50",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "Peanut Butter Protein Bites",
+        "description": "Peanut Butter, Superfood Protein, Shredded Coconut, Oats, Cinnamon, Flax, Chia, Coconut Oil, Maple Syrup, Agave, Chocolate Chips, & Himalayan Salt",
+        "price": "$8.00",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "Protein Brownies",
+        "description": "Sprouted Almond Flour, Almond Butter, Dates, Applesauce, Coconut Oil, Superfood Protein, Coconut Flour, Cacao Powder, Coconut Sugar, Chocolate Chips, Himalayan Salt, & Zucchini",
+        "price": "$4.50",
+        "section": "Superfood Snacks"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "Super Loaf, Roasted Garlic Hummus, Avocado, Brazil Nut Parmesan Cheese, with Mixed Greens & Cherry Tomatoes in Lemon Vinaigrette",
+        "price": "$13.00",
+        "section": "Toast (Gluten-Free)"
+      },
+      {
+        "name": "Chunky Monkey Toast",
+        "description": "Super Loaf, Almond Butter, Banana, Coconut Caramel, & Hemp Seeds",
+        "price": "$12.00",
+        "section": "Toast (Gluten-Free)"
+      },
+      {
+        "name": "Super Loaf",
+        "description": "Rolled Oats, Polenta, Chickpea Flour, Coconut Sugar, Chia Seeds, Flax Seeds, Olive Oil, Agave, Himalayan Salt, Instant Yeast, & Filtered Water",
+        "price": "$14.00",
+        "section": "Toast (Gluten-Free)"
+      },
+      {
+        "name": "Majik Lemonade",
+        "description": "House Made Lemonade with E3LIVE Blue Majik",
+        "price": "$9.00",
+        "section": "Lemonades and Elixirs"
+      },
+      {
+        "name": "Charcoal Lemonade",
+        "description": "House Made Lemonade with Activated Coconut Charcoal",
+        "price": "$9.00",
+        "section": "Lemonades and Elixirs"
+      },
+      {
+        "name": "Electrolyte Superade",
+        "description": "Hibiscus Tea, Coconut Water, Pineapple & Lime",
+        "price": "$10.00",
+        "section": "Lemonades and Elixirs"
+      },
+      {
+        "name": "Chlorophyll Water",
+        "description": "Filtered Water & Liquid Chlorophyll",
+        "price": "$4.00",
+        "section": "Lemonades and Elixirs"
+      },
+      {
+        "name": "Filtered Water",
+        "description": "Filtered Water served in a 16 oz glass bottle",
+        "price": "$2.00",
+        "section": "Lemonades and Elixirs"
+      },
+      {
+        "name": "Brain",
+        "description": "E3live Brain On, Gotu Kola, Grapefruit, & Chlorophyll",
+        "price": "$4.50",
+        "section": "Surges"
+      },
+      {
+        "name": "Immunity",
+        "description": "Oregano Oil, Baobab, Orange, Lemon, Ginger, Turmeric, & Cayenne",
+        "price": "$5.00",
+        "section": "Surges"
+      },
+      {
+        "name": "Chill Pill",
+        "description": "Coconut Water, Pineapple, Lime, Blue Majik, Ashwagandha, & Luo Han Guo",
+        "price": "$4.50",
+        "section": "Surges"
+      },
+      {
+        "name": "\"Newtella\" Latte",
+        "description": "Chocolate Hazelnut & Almond Milk",
+        "price": "$8.00",
+        "section": "Hot Beverages"
+      },
+      {
+        "name": "Chai Latte",
+        "description": "Alpha Chai Elixir, Almond Milk, & Agave",
+        "price": "$8.00",
+        "section": "Hot Beverages"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "Mystical Matcha Elixir, Almond Milk, & Agave",
+        "price": "$8.00",
+        "section": "Hot Beverages"
+      },
+      {
+        "name": "Alpha Chai Elixir",
+        "description": "Black Tea Powder, Cordyceps Mushroom, Lucuma, Clove, Cardamom, Nutmeg, Cinnamon, Ginger Powder, Turmeric, & Black Pepper — bottled elixir",
+        "price": "$28.00",
+        "section": "Elixirs"
+      },
+      {
+        "name": "Mystical Matcha Elixir",
+        "description": "Reishi Mushroom, Chaga Mushroom, Lion's Mane Mushroom, Matcha, Luo Han Guo, & Coconut Sugar — bottled elixir",
+        "price": "$18.00",
+        "section": "Elixirs"
+      },
+      {
+        "name": "Chocolate Chip Cookie Cashew Butter",
+        "description": "Cashews, Chocolate Chips, Coconut Sugar, Agave, Vanilla Extract, & Himalayan Salt",
+        "price": "$15.00",
+        "section": "Nut Butters"
+      },
+      {
+        "name": "Traditional Almond Butter",
+        "description": "Almonds, & Himalayan Salt",
+        "price": "$12.50",
+        "section": "Nut Butters"
+      },
+      {
+        "name": "Chocolate Hazelnut Butter",
+        "description": "Hazelnuts, Coconut Sugar, Cacao Powder, Avocado Oil, Vanilla, & Himalayan Salt",
+        "price": "$16.00",
+        "section": "Nut Butters"
+      },
+      {
+        "name": "Cake Batter Cashew Almond Butter",
+        "description": "Almonds, Cashews, Coconut Sugar, Vanilla Extract, Himalayan Salt, Lemon Juice, Lucuma Powder, & Agave",
+        "price": "$15.00",
+        "section": "Nut Butters"
+      },
+      {
+        "name": "Buddha Breakfast Bowl",
+        "description": "Quinoa, Almond Milk, Choice Superfood Protein, Coconut Sugar, Coconut Butter, topped with Granola, Banana, & Raspberry Chia Jam",
+        "price": "$9.00",
+        "section": "Seasonal Hot Items"
+      },
+      {
+        "name": "Seasonal Soup",
+        "description": "Ask about seasonal selection",
+        "price": "$11.00",
+        "section": "Seasonal Hot Items"
+      }
+    ]
+  }
+]

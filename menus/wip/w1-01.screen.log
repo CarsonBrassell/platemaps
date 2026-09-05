@@ -1,0 +1,6 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      4 entries (4 with menus, 0 confirmed not-found), 166 dishes
+quarantine: 2 entries, 0 dishes withheld
+
+  Taco Bar (0 dishes) - blocked, not absent: marketplace-markup: DoorDash JSON-LD carries 79 priced items, but a divisor sweep (1.00-1.35 in fine steps) shows divisor 1.30 lands 77/79 prices on conventional endings (.00/.50/.95/.99/.25/.75) vs near-zero hits at 1.00 - strong evidence of a baked-in ~30% marketplace fee. Cent distribution at raw prices is scattered ($20.79, $15.59, $9.10, $5.53, $5.85...), not printed-menu endings. Per standing rule, not dividing it out; no other platform or first-party menu found for this address
+  Umai Sushi (0 dishes) - blocked, not absent: needs-browser: online-ordering is a foodbooking.com Angular SPA (fbgcdn.com/ordering/*.js bundles); catalog renders client-side, no server-rendered prices in the HTML. Tried candidate JSON endpoints /ordering/api/v1/restaurants/<uid> (404) and /api/v1/restaurants/<uid>/menu (400) - no working public API found within budget.

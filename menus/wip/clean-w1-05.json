@@ -1,0 +1,2102 @@
+[
+  {
+    "restaurantId": "6555",
+    "name": "Alhamdani Sweets and Dessert",
+    "sourceUrl": "https://www.ubereats.com/store/al-hamdani-sweets/HDVOqtBxWsC5TAejSvE3Tg",
+    "confidence": "medium",
+    "notes": "No first-party site found (WebSearch turned up only marketplaces/directories). Uber Eats JSON-LD, address confirmed 3515 Sweetwater Springs Boulevard matches work list exactly. 17 priced items, all whole-dollar (.00), a normal convention for a Middle Eastern bakery/sweets shop - no scattered cents to run the subtraction test on, no divisor test applicable since every price already lands on a round dollar. Single-aggregator source (Postmates is same Uber Eats ownership, not independent); no first-party site to cross-check against.",
+    "dishes": [
+      {
+        "name": "Lady Wrist (0.5 lb)",
+        "description": "Sweet pastry wrist-shaped dessert.",
+        "price": "$9.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Znood Alhamdani (1 lb)",
+        "description": "Traditional Middle Eastern sweet pastry.",
+        "price": "$17.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Cream Knafeh",
+        "description": "Sweet, creamy pastry filled with shredded phyllo dough.",
+        "price": "$10.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "5 Stars Baklava (4 pcs)",
+        "description": "Layered pastry filled with nuts.",
+        "price": "$12.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Zalabya (1 lb)",
+        "description": "Sweet, deep-fried dough balls drizzled with syrup.",
+        "price": "$16.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Cheese Knafeh",
+        "description": "Sweet pastry filled with cheese.",
+        "price": "$10.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Creamy Baklava (3 pcs) (Large)",
+        "description": "Rich, sweet pastry layers filled with nuts.",
+        "price": "$10.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Turkish Baklava (Large)",
+        "description": "Layered pastry filled with nuts.",
+        "price": "$8.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Pistachio Tacos (4 pcs)",
+        "description": "Crunchy tacos filled with pistachio.",
+        "price": "$12.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Pistachio Bird Nest (4 pcs)",
+        "description": "Crunchy pastry nests filled with pistachio.",
+        "price": "$12.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Turkish Delight Mix 1 (4 pcs) (Large)",
+        "description": "Assortment of four Turkish Delight pieces, each with a unique flavor.",
+        "price": "$4.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Cheese Knafeh (Lager) - 4 people",
+        "description": "Rich, creamy cheese dessert served with a sweet and crispy pastry, perfect for sharing with 4 people.",
+        "price": "$25.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Nuts Mix (4 pcs) (Large)",
+        "description": "Large four-piece assortment of nut-studded sweets with mixed nut varieties.",
+        "price": "$12.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Nutella Baklava (1 lb)",
+        "description": "Crunchy phyllo baklava drizzled with Nutella and sprinkled with pistachio. 1 lb.",
+        "price": "$20.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Nutella Pistachio Baklava (4 pcs) (Large)",
+        "description": "Crunchy phyllo pastry layers filled with Nutella and pistachio.",
+        "price": "$12.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Cheese Knafeh (Lager) - 6+ people",
+        "description": "Rich, sweet pastry filled with melted cheese, perfect for sharing with 6 or more people.",
+        "price": "$30.00",
+        "section": "Alhamdani Sweets Menu"
+      },
+      {
+        "name": "Cheese Sweet (1 lb)",
+        "description": "Sweet and creamy cheese treat.",
+        "price": "$17.00",
+        "section": "Alhamdani Sweets Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6754",
+    "name": "Ding Tea Escondido",
+    "sourceUrl": "https://ding-tea-escondido.cloveronline.com/menu/all",
+    "confidence": "high",
+    "notes": "Restaurant's own Clover COLO2 storefront (clover.com/online-ordering link redirects here via coloV2Enabled). Address in payload matches work list (1815 E VALLEY PKWY). Storefront showed serviceHoursState CLOSED but the RSC flight payload still carried the full catalog - the closed-store gate is a front-end decision, not a data restriction. Payload was double-escaped (embedded once for the RSC string, then again for the outer script string) which broke the standard extract_clover_colo2.js brace-balancer on a description containing a literal quote; decoded the JSON-string layer properly first (JSON.parse('\"'+chunk+'\"')) before brace-balancing, rather than the naive global backslash-quote replace. 110 priced items across 11 categories (Coffee, Flavored Tea, Fresh Tea, Fruit Juice, Hot Drinks, Latte, Macaron, Milk Tea, Shake, Yakult, Yogurt) - full boba-shop section spread, no core section obviously missing. Prices land on conventional .00/.25/.50/.75 endings throughout, no markup pattern (checked 1.04/1.10/1.15/1.20).",
+    "dishes": [
+      {
+        "name": "Chocolate Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Hazelnut Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Hokkaido Black Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Jasmine Green Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Lychee Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Matcha Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Peach Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Signature Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Taro Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Vanilla Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Wintermelon Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Wintermelon Green Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Coffee Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Guava Milk Tea",
+        "description": "",
+        "price": "$5.75",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Taro mash green milk tea",
+        "description": "",
+        "price": "$5.75",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Taro mash boba green milk tea",
+        "description": "COMES WITH GOLDEN BOBA",
+        "price": "$6.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Taro mash burnt cream milk tea",
+        "description": "Has Golden Boba And Cheese Foam",
+        "price": "$7.75",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Strawberry Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Mango Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Brown Sugar Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Passion Fruit Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Blueberry Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Hokkaido Oolong Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Oolong Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Thai Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Milk Tea"
+      },
+      {
+        "name": "Grapefruit Black Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Grapefruit Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Honey Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Kiwi Black Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Kiwi Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Kumquat Lemon Ice Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Kumquat Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Lychee Black Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Lychee Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Peach Black Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Peach Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Pineapple Black Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Pineapple Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Wintermelon Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Wintermelon Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Guava Green Tea",
+        "description": "",
+        "price": "$5.25",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Strawberry Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Mango Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Mango Black Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Passion Fruit Black Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Passion Fruit Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Mulberry Crystal Boba Iced Tea",
+        "description": "Has Crystal Boba",
+        "price": "$7.00",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Strawberry Black Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Blueberry Green Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Blueberry Black Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Flavored Tea"
+      },
+      {
+        "name": "Hokkaido Coffee Slush",
+        "description": "",
+        "price": "$6.30",
+        "section": "Shake"
+      },
+      {
+        "name": "Signature Boba Milk Tea Slush",
+        "description": "COMES WITH GOLDEN BOBA",
+        "price": "$6.00",
+        "section": "Shake"
+      },
+      {
+        "name": "Taro Slush",
+        "description": "",
+        "price": "$5.75",
+        "section": "Shake"
+      },
+      {
+        "name": "Matcha Slush",
+        "description": "",
+        "price": "$6.75",
+        "section": "Shake"
+      },
+      {
+        "name": "Taro Slush LARGE",
+        "description": "",
+        "price": "$6.75",
+        "section": "Shake"
+      },
+      {
+        "name": "Hokkaido Coffee Slush LARGE",
+        "description": "",
+        "price": "$7.25",
+        "section": "Shake"
+      },
+      {
+        "name": "Strawberry Slush",
+        "description": "",
+        "price": "$5.80",
+        "section": "Shake"
+      },
+      {
+        "name": "Mango Slush",
+        "description": "",
+        "price": "$5.80",
+        "section": "Shake"
+      },
+      {
+        "name": "Strawberry Yakult Slush",
+        "description": "",
+        "price": "$6.25",
+        "section": "Shake"
+      },
+      {
+        "name": "Strawberry Yakult Slush LARGE",
+        "description": "",
+        "price": "$7.25",
+        "section": "Shake"
+      },
+      {
+        "name": "Passion Fruit",
+        "description": "",
+        "price": "$5.80",
+        "section": "Shake"
+      },
+      {
+        "name": "Chocolate Slush",
+        "description": "",
+        "price": "$5.80",
+        "section": "Shake"
+      },
+      {
+        "name": "Chocolate Slush LARGE",
+        "description": "",
+        "price": "$6.80",
+        "section": "Shake"
+      },
+      {
+        "name": "Thai Tea Slush",
+        "description": "",
+        "price": "$5.75",
+        "section": "Shake"
+      },
+      {
+        "name": "Thai Tea Slush LARGE",
+        "description": "",
+        "price": "$6.75",
+        "section": "Shake"
+      },
+      {
+        "name": "Aloe Vera Kiwi Juice",
+        "description": "COMES WITH ALOE PIECES",
+        "price": "$5.45",
+        "section": "Fruit Juice"
+      },
+      {
+        "name": "Aloe Vera Honey Juice",
+        "description": "COMES WITH ALOE PIECES",
+        "price": "$5.45",
+        "section": "Fruit Juice"
+      },
+      {
+        "name": "Aloe Vera Lychee Juice",
+        "description": "COMES WITH ALOE PIECES",
+        "price": "$5.45",
+        "section": "Fruit Juice"
+      },
+      {
+        "name": "Aloe Vera Grapefruit Juice",
+        "description": "COMES WITH ALOE PIECES",
+        "price": "$5.45",
+        "section": "Fruit Juice"
+      },
+      {
+        "name": "Aloe Vera Peach Juice",
+        "description": "COMES WITH ALOE PIECES",
+        "price": "$5.45",
+        "section": "Fruit Juice"
+      },
+      {
+        "name": "Kiwi Honey Sweet",
+        "description": "COMES WITH LYCHEE JELLY",
+        "price": "$6.25",
+        "section": "Fruit Juice"
+      },
+      {
+        "name": "Strawberry Honey Sweet",
+        "description": "COMES WITH LYCHEE JELLY",
+        "price": "$6.25",
+        "section": "Fruit Juice"
+      },
+      {
+        "name": "Aloe Vera Passion Fruit Juice",
+        "description": "COMES WITH ALOE PIECES",
+        "price": "$5.45",
+        "section": "Fruit Juice"
+      },
+      {
+        "name": "Passion Fruit Honey Sweet",
+        "description": "COMES WITH LYCHEE JELLY",
+        "price": "$6.25",
+        "section": "Fruit Juice"
+      },
+      {
+        "name": "Aloe Vera Mango Juice",
+        "description": "COMES WITH ALOE PIECES",
+        "price": "$5.45",
+        "section": "Fruit Juice"
+      },
+      {
+        "name": "Black Tea Latte",
+        "description": "",
+        "price": "$5.85",
+        "section": "Latte"
+      },
+      {
+        "name": "Jasmine Green Tea Latte",
+        "description": "",
+        "price": "$5.85",
+        "section": "Latte"
+      },
+      {
+        "name": "Matcha Latte",
+        "description": "",
+        "price": "$5.85",
+        "section": "Latte"
+      },
+      {
+        "name": "Monster Bobo Latte",
+        "description": "COMES WITH BROWN SUGAR BOBA AND CHEESEFOAM",
+        "price": "$7.00",
+        "section": "Latte"
+      },
+      {
+        "name": "Taro Latte",
+        "description": "",
+        "price": "$5.85",
+        "section": "Latte"
+      },
+      {
+        "name": "Oolong Latte",
+        "description": "",
+        "price": "$5.85",
+        "section": "Latte"
+      },
+      {
+        "name": "Green Tea Yakult",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yakult"
+      },
+      {
+        "name": "Lychee Yakult",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yakult"
+      },
+      {
+        "name": "Peach Yakult",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yakult"
+      },
+      {
+        "name": "Grapefruit Yakult",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yakult"
+      },
+      {
+        "name": "Mango Yakult",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yakult"
+      },
+      {
+        "name": "Strawberry Yakult",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yakult"
+      },
+      {
+        "name": "Passion Fruit Yakult",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yakult"
+      },
+      {
+        "name": "Grapefruit Yogurt",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yogurt"
+      },
+      {
+        "name": "Green Tea Yogurt",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yogurt"
+      },
+      {
+        "name": "Lychee Yogurt",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yogurt"
+      },
+      {
+        "name": "Peach Yogurt",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yogurt"
+      },
+      {
+        "name": "Mango Yogurt",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yogurt"
+      },
+      {
+        "name": "Strawberry Yogurt",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yogurt"
+      },
+      {
+        "name": "Passion Fruit Yogurt",
+        "description": "",
+        "price": "$5.75",
+        "section": "Yogurt"
+      },
+      {
+        "name": "Assam Black Tea",
+        "description": "",
+        "price": "$4.95",
+        "section": "Fresh Tea"
+      },
+      {
+        "name": "Green Tea",
+        "description": "",
+        "price": "$4.95",
+        "section": "Fresh Tea"
+      },
+      {
+        "name": "Oolong Tea",
+        "description": "",
+        "price": "$4.95",
+        "section": "Fresh Tea"
+      },
+      {
+        "name": "Hokkaido Coffee",
+        "description": "",
+        "price": "$5.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Coffee Milk Tea",
+        "description": "",
+        "price": "$5.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hazelnut Coffee",
+        "description": "",
+        "price": "$5.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Vanilla Coffee",
+        "description": "",
+        "price": "$5.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Dalgona Coffee Milk Tea",
+        "description": "",
+        "price": "$6.25",
+        "section": "Coffee"
+      },
+      {
+        "name": "Brown Sugar Coffee",
+        "description": "",
+        "price": "$5.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Ginger Tea",
+        "description": "",
+        "price": "$5.25",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Longan Tea",
+        "description": "",
+        "price": "$5.25",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Ginger Longan Tea",
+        "description": "",
+        "price": "$5.25",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Ginger Milk Tea",
+        "description": "",
+        "price": "$5.25",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Longan Milk Tea",
+        "description": "",
+        "price": "$5.25",
+        "section": "Hot Drinks"
+      },
+      {
+        "name": "Ice Cream Cup",
+        "description": "",
+        "price": "$2.00",
+        "section": "Macaron"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6408",
+    "name": "Pala Mesa Pizza",
+    "sourceUrl": "https://www.doordash.com/store/pala-mesa-pizza-fallbrook-601436/",
+    "confidence": "medium",
+    "notes": "No first-party site found. DoorDash JSON-LD, address confirmed (Old Highway 395, Fallbrook). 21 items, 86% conventional raw (.00/.25/.50/.75/.95), no markup divisor found (1.00 is already the best fit) - not a computed/fee-inflated catalog. Sections: Salads, Specialty Pizzas, Build Your Own Pizza (priced by topping count only, no small/medium/large size ladder shown - may be this restaurant's actual single-size delivery menu, or DoorDash may only list one size), Pastas, Sides. Matches independently-summarized prices from a general web search of other directory copies (zmenu/sirved/restaurantguru), though those are the same tier and not treated as a separate cross-check.",
+    "dishes": [
+      {
+        "name": "Anti Pasta Salad",
+        "description": "Salami, ham, olives tomatoes, mushrooms, mozzarella cheese.",
+        "price": "$11.95",
+        "section": "Salads"
+      },
+      {
+        "name": "BBQ Chicken Salad",
+        "description": "Red onions, cilantro, bacon.",
+        "price": "$11.95",
+        "section": "Salads"
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "description": "Chicken, croutons Parmesan.",
+        "price": "$10.95",
+        "section": "Salads"
+      },
+      {
+        "name": "Greek Salad",
+        "description": "Pepperoni red onions, olives, tomato, cucumber, and feta.",
+        "price": "$8.95",
+        "section": "Salads"
+      },
+      {
+        "name": "Build Your Own",
+        "description": "Choose from toppings. With cucumber, tomatoes and feta.",
+        "price": "$8.95",
+        "section": "Salads"
+      },
+      {
+        "name": "Pesto Chicken Pizza",
+        "description": "Basil pesto, red peppers, artichoke hearts.",
+        "price": "$9.50",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Chicken Alfredo Pizza",
+        "description": "White sauce, chicken, mushroom, garlic.",
+        "price": "$9.25",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "BBQ Chicken Pizza",
+        "description": "BBQ chicken, red onions, cilantro, bacon.",
+        "price": "$9.00",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "Veggie Pizza",
+        "description": "Red pepper., red onions, spinach, mushrooms, olives.",
+        "price": "$9.00",
+        "section": "Specialty Pizzas"
+      },
+      {
+        "name": "3 Topping Pizza",
+        "description": "",
+        "price": "$9.25",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "2 Topping Pizza",
+        "description": "",
+        "price": "$8.50",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "1 Topping Pizza",
+        "description": "",
+        "price": "$7.75",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "Cheese Pizza",
+        "description": "",
+        "price": "$7.00",
+        "section": "Build Your Own Pizza"
+      },
+      {
+        "name": "Spaghetti",
+        "description": "Meat sauce, mushrooms.",
+        "price": "$10.00",
+        "section": "Pastas"
+      },
+      {
+        "name": "Build Your Own Pasta",
+        "description": "",
+        "price": "$8.00",
+        "section": "Pastas"
+      },
+      {
+        "name": "Coconut Shrimp",
+        "description": "",
+        "price": "$12.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Jalapeño Peppers",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Hot Legs",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Sampler Platters",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Garlic Parmesan Sticks",
+        "description": "",
+        "price": "$8.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Mozzarella Stickes",
+        "description": "",
+        "price": "$8.00",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6755",
+    "name": "MOE COFFEE-NORTH PARK",
+    "sourceUrl": "https://www.toasttab.com/moe-coffee-kanas-st-4195-suite-104-kanas-st",
+    "confidence": "high",
+    "notes": "First-party Toast page, address confirmed (4195 Kansas St). Page embeds two parallel price fields per item in __OO_STATE__ (Apollo cache): a clean/round price and a second, higher price on the same MenuItem-named object under the same section (ratios ranged ~1.03-1.34, not a constant fee, e.g. Americano $5.00 vs $6.65, Stash Tea $4.50 vs $4.66). Cross-checked against the rendered HTML (extract_toast3.js output, 21 items) and every one of those matched the LOWER price exactly, including an odd non-round outlier (Traditional Macchiato $6.03) confirming the lower value is what Toast actually displays/charges - so the higher duplicate was treated as a second, non-displayed internal price tier and dropped, not averaged or derived. New technique: __OO_STATE__ items are nested several levels deep inside Menu:<guid>.groups[].items[], not at top level - required a recursive tree walk (collect __typename:MenuItem, track nearest enclosing Menu/MenuGroup name for section) rather than a flat key scan. 71 final deduplicated dishes across 9 sections (Coffee, Smoothies, Other Drinks, Clara's Kitchen Breakfast Sandwiches, Moe's Pastries, Canned Beer, Wine/ Mimosa, 1/2 lbs Coffee, Chips).",
+    "dishes": [
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Latte",
+        "description": "",
+        "price": "$6.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Chai Latte",
+        "description": "*Does not contain espresso",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$6.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$4.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Flat White",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Double Espresso Shot",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Drip Coffee",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Macchiato",
+        "description": "",
+        "price": "$4.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Matcha Tea Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Mocha",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Golden Boy",
+        "description": "*Does not contain espresso",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Honey Lavender Latte",
+        "description": "",
+        "price": "$7.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Horchata Oat Milk Chai",
+        "description": "",
+        "price": "$7.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Churro White Mocha",
+        "description": "",
+        "price": "$7.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Vanilla Bean Frappé",
+        "description": "Frappé coffee is a Greek iced coffee drink made from coffee, milk and sugar. We use our cold brew in the base of all of our frappé drinks with your choice of milk or milk alternative .Customize your favorite flavors and make it your own or try one of our local recipes. Top it with our non dairy whip cream for extra indulgence.",
+        "price": "$7.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Affogato",
+        "description": "",
+        "price": "$6.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Power Fuel",
+        "description": "Protein powder, flaxseed, Banana, Mango",
+        "price": "$11.99",
+        "section": "Smoothies"
+      },
+      {
+        "name": "IHT factor Elevate",
+        "description": "Banana, Spinach, Mango, Sweet Matcha & Apple Juice.",
+        "price": "$11.99",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Golden Bliss",
+        "description": "Mango, Pineapple, Banana, & Coconut Milk.",
+        "price": "$9.99",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Green Sunrise",
+        "description": "",
+        "price": "$9.99",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry Sunrise",
+        "description": "",
+        "price": "$9.99",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Moe's Homemade Lemonade",
+        "description": "~Fresh Muddled Mint ~Lavender Basil ~Strawberry~Original",
+        "price": "$5.50",
+        "section": "Other Drinks"
+      },
+      {
+        "name": "Stash Tea",
+        "description": "Our Teas are brought to you by Stash Tea Company located in Portland, Oregon .\r\n\r\nWe source only GMO-free ingredients and materials, ensuring a safe and healthy product for you and the environment.\r\n\r\nOur concern goes beyond our main ingredients. While tea, herbs, and spices are not genetically modified plants, some of the other ingredients we use in our blends, like natural flavors, have sub-ingredients derived from potentially GMO sources. You can sip easy knowing that every component is free of GMOs.\r\n\r\nPopular tea packaging is often composed of plastic that originates from GMO-corn. Our tea bags are free of plastics and made from sustainable, unbleached natural fiber and GMO-free cotton string.",
+        "price": "$4.50",
+        "section": "Other Drinks"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "Our hot chocolate, also known as drinking chocolate, is a heated drink consisting of cacao powder, heated milk and sweetened with vanilla. You can top it with our house made whipped cream! Our cacao powder is dairy free. Substitute milk with plant based alternative to get vegan hot chocolate.",
+        "price": "$4.00",
+        "section": "Other Drinks"
+      },
+      {
+        "name": "Steamers ( Hot Milk)",
+        "description": "A steamer is a drink made with creamy steamed milk (or milk substitute), topped with a sweet shot of specially branded flavoured syrup to make a coffee, espresso free latte. Not only is it great tasting but it is also caffeine-free!",
+        "price": "$3.55",
+        "section": "Other Drinks"
+      },
+      {
+        "name": "H2O",
+        "description": "",
+        "price": "$4.00",
+        "section": "Other Drinks"
+      },
+      {
+        "name": "Jarritos",
+        "description": "",
+        "price": "$3.50",
+        "section": "Other Drinks"
+      },
+      {
+        "name": "Sprite",
+        "description": "",
+        "price": "$3.00",
+        "section": "Other Drinks"
+      },
+      {
+        "name": "Bacon Breakfast Sandwich",
+        "description": "",
+        "price": "$7.00",
+        "section": "Clara's Kitchen Breakfast Sandwiches"
+      },
+      {
+        "name": "Pesto Provolone Breakfast Sandwich",
+        "description": "",
+        "price": "$7.00",
+        "section": "Clara's Kitchen Breakfast Sandwiches"
+      },
+      {
+        "name": "Pork Sausage Breakfast Sandwich",
+        "description": "",
+        "price": "$7.00",
+        "section": "Clara's Kitchen Breakfast Sandwiches"
+      },
+      {
+        "name": "Almond Croissant",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Nutella Croissant",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Vegan Almond Croissant",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Vegan Chocolate Croissant",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Plain Croissant",
+        "description": "",
+        "price": "$5.00",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Nutella Cookie",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Oreo Cookie",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Red Velvet/Cheesecake Cookie",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Original Cinnamon Bun",
+        "description": "",
+        "price": "$9.99",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Pistachio Cinnamon Bun",
+        "description": "",
+        "price": "$9.99",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "French Vanilla Eclair",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Chocolate Eclair",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Pistachio Eclair",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Donut Plain",
+        "description": "",
+        "price": "$2.00",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Donut Cinnamon",
+        "description": "",
+        "price": "$2.00",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Donut Crunch",
+        "description": "",
+        "price": "$2.00",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "3 Donuts $5",
+        "description": "",
+        "price": "$5.00",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "M&M Cookie",
+        "description": "",
+        "price": "$6.50",
+        "section": "Moe's Pastries"
+      },
+      {
+        "name": "Canned Beer",
+        "description": "",
+        "price": "$5.00",
+        "section": "Canned Beer"
+      },
+      {
+        "name": "Wine Full bottle",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine/ Mimosa"
+      },
+      {
+        "name": "Mimosa Bottomless",
+        "description": "",
+        "price": "$18.00",
+        "section": "Wine/ Mimosa"
+      },
+      {
+        "name": "Mimosa Single Glass 16oz",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine/ Mimosa"
+      },
+      {
+        "name": "Wine Single Glass 5oz",
+        "description": "",
+        "price": "$7.00",
+        "section": "Wine/ Mimosa"
+      },
+      {
+        "name": "Champagne Single Glass 5oz",
+        "description": "",
+        "price": "$7.00",
+        "section": "Wine/ Mimosa"
+      },
+      {
+        "name": "Strawberry Wine 16oz",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine/ Mimosa"
+      },
+      {
+        "name": "Espresso Wine 16oz",
+        "description": "",
+        "price": "$12.00",
+        "section": "Wine/ Mimosa"
+      },
+      {
+        "name": "1/2 Coffee Bean",
+        "description": "",
+        "price": "$12.00",
+        "section": "1/2 lbs Coffee"
+      },
+      {
+        "name": "Pottery ( Small)",
+        "description": "",
+        "price": "$20.00",
+        "section": "1/2 lbs Coffee"
+      },
+      {
+        "name": "Pottery (Large)",
+        "description": "",
+        "price": "$40.00",
+        "section": "1/2 lbs Coffee"
+      },
+      {
+        "name": "Hot Cheetos Lime",
+        "description": "",
+        "price": "$4.50",
+        "section": "Chips"
+      },
+      {
+        "name": "Jalapeno",
+        "description": "",
+        "price": "$4.50",
+        "section": "Chips"
+      },
+      {
+        "name": "Salt and Vinegar",
+        "description": "",
+        "price": "$4.50",
+        "section": "Chips"
+      },
+      {
+        "name": "Dill Pickle",
+        "description": "",
+        "price": "$4.50",
+        "section": "Chips"
+      },
+      {
+        "name": "Cheddar and Black pepper",
+        "description": "",
+        "price": "$4.50",
+        "section": "Chips"
+      },
+      {
+        "name": "Drip Coffee (until 12pm)",
+        "description": "",
+        "price": "$4.02",
+        "section": "Coffee"
+      },
+      {
+        "name": "Traditional Macchiato",
+        "description": "",
+        "price": "$6.03",
+        "section": "Coffee"
+      },
+      {
+        "name": "IHT Factor Elevate",
+        "description": "",
+        "price": "$18.60",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Steamers ( Hot Milk/Alternative)",
+        "description": "A steamer is a drink made with creamy steamed milk (or milk substitute), topped with a sweet shot of specially branded flavoured syrup to make a coffee, espresso free latte. Not only is it great tasting but it is also caffeine-free!",
+        "price": "$4.76",
+        "section": "Other Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6779",
+    "name": "Pupusas Express y Mexican Food",
+    "sourceUrl": "https://themenustar6.com/webspace/menus.php?code=orderpupusasexpressymexicanfood.com",
+    "confidence": "high",
+    "notes": "First-party ordering site (own domain, MenuStar white-label platform), address confirmed (1207 E Main St, El Cajon). Menu items load via client-side AJAX (POST to webspace/functions/restaurant.php with function=get_items&id=<categoryId>) rather than being embedded in the initial page - fetched all 15 category ids directly. 56 items across 15 sections, raw conventional-ending rate 89.3% at divisor 1.00 (no better divisor found), no fee/markup detected.",
+    "dishes": [
+      {
+        "name": "Papa con Espanica",
+        "description": "",
+        "price": "$6.50",
+        "section": "100% VEGAN PUPUSAS"
+      },
+      {
+        "name": "Papa con Nopal",
+        "description": "",
+        "price": "$6.50",
+        "section": "100% VEGAN PUPUSAS"
+      },
+      {
+        "name": "Papa con Jalapeno",
+        "description": "",
+        "price": "$6.50",
+        "section": "100% VEGAN PUPUSAS"
+      },
+      {
+        "name": "Crazy Pupasa",
+        "description": "Pork, beans, cheese, and spinach.",
+        "price": "$9.00",
+        "section": "CRAZY PUPUSAS"
+      },
+      {
+        "name": "Pepperoni con Queso",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Chicharron con Queso",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Pollo con Queso",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Frijol con Queso",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Lorocco con Queso",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Jalapeno con Queso",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Espinaca con Queso",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Papa con Queso",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Calabaza con Queso",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Veggie Revueltas",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Queso Revueltas",
+        "description": "",
+        "price": "$5.99",
+        "section": "REVULETAS PUPUSAS"
+      },
+      {
+        "name": "Salvi Breakfast",
+        "description": "1 pupusa, 2 eggs, beans and sour cream.",
+        "price": "$13.99",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "Platanos Fritos",
+        "description": "Fried plantains, beans, and sour cream.",
+        "price": "$12.50",
+        "section": "BREAKFAST"
+      },
+      {
+        "name": "Bistec Salvadoreno Plate",
+        "description": "Rice, beans, salad, and hand made tortillas.",
+        "price": "$16.99",
+        "section": "PLATES"
+      },
+      {
+        "name": "Carne Guisada Plate",
+        "description": "Rice, beans. Salad. and hand made tortillas.",
+        "price": "$16.99",
+        "section": "PLATES"
+      },
+      {
+        "name": "2 Pupusas Plate",
+        "description": "Rice and beans.",
+        "price": "$12.99",
+        "section": "PLATES"
+      },
+      {
+        "name": "Sopa de Pata",
+        "description": "",
+        "price": "$15.99",
+        "section": "SOUPS"
+      },
+      {
+        "name": "Sopa de Res",
+        "description": "Savory soup made from cow meat.",
+        "price": "$15.99",
+        "section": "SOUPS"
+      },
+      {
+        "name": "Sopa de Pollo",
+        "description": "Savory soup with a poultry base.",
+        "price": "$15.99",
+        "section": "SOUPS"
+      },
+      {
+        "name": "Hand made tortillas",
+        "description": "",
+        "price": "$2.00",
+        "section": "SOUPS"
+      },
+      {
+        "name": "Regular tortillas",
+        "description": "",
+        "price": "$1.00",
+        "section": "SOUPS"
+      },
+      {
+        "name": "Yuca Frita con Chicharron",
+        "description": "",
+        "price": "$12.99",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Empanadas de Platano",
+        "description": "Crescent shaped turnover.",
+        "price": "$10.50",
+        "section": "APPETIZERS"
+      },
+      {
+        "name": "Kids Mini Cheese Pupusa",
+        "description": "Includes Fries and Can Soda.",
+        "price": "$8.99",
+        "section": "KIDS MEALS"
+      },
+      {
+        "name": "Breakfast Burritos",
+        "description": "Eggs, potatoes, and cheese.",
+        "price": "$13.99",
+        "section": "BREAKFAST BURRITOS"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "Guacamole and pico.",
+        "price": "$14.99",
+        "section": "BURRITOS"
+      },
+      {
+        "name": "Pollo Asada",
+        "description": "Guacamole and pico.",
+        "price": "$14.99",
+        "section": "BURRITOS"
+      },
+      {
+        "name": "California",
+        "description": "Fries, cheese, and pico.",
+        "price": "$14.99",
+        "section": "BURRITOS"
+      },
+      {
+        "name": "Veggie",
+        "description": "Rice, beans, lettuce, guacamole, and pico.",
+        "price": "$9.99",
+        "section": "BURRITOS"
+      },
+      {
+        "name": "Bean and Cheese",
+        "description": "",
+        "price": "$6.50",
+        "section": "BURRITOS"
+      },
+      {
+        "name": "Asada Tacos",
+        "description": "",
+        "price": "$5.74",
+        "section": "TACOS"
+      },
+      {
+        "name": "Chicken Tacos",
+        "description": "",
+        "price": "$5.74",
+        "section": "TACOS"
+      },
+      {
+        "name": "3 Beef Rolled Tacos",
+        "description": "Guacamole and cheese.",
+        "price": "$7.50",
+        "section": "TACOS"
+      },
+      {
+        "name": "6 Beef Rolled Tacos",
+        "description": "Guacamole, lettuce, cheese, and pico.",
+        "price": "$11.99",
+        "section": "TACOS"
+      },
+      {
+        "name": "3 Mini Tacos",
+        "description": "Asada or chicken.",
+        "price": "$10.99",
+        "section": "TACOS"
+      },
+      {
+        "name": "Asada Quesadilla",
+        "description": "",
+        "price": "$13.99",
+        "section": "QUESADILLAS"
+      },
+      {
+        "name": "Chicken Quesadilla",
+        "description": "",
+        "price": "$13.99",
+        "section": "QUESADILLAS"
+      },
+      {
+        "name": "Plain Quesadilla",
+        "description": "",
+        "price": "$7.00",
+        "section": "QUESADILLAS"
+      },
+      {
+        "name": "Agua Fresca",
+        "description": "",
+        "price": "$4.25",
+        "section": "DRINKS"
+      },
+      {
+        "name": "Can Soda",
+        "description": "",
+        "price": "$2.00",
+        "section": "DRINKS"
+      },
+      {
+        "name": "Plastic Bottle",
+        "description": "",
+        "price": "$3.50",
+        "section": "DRINKS"
+      },
+      {
+        "name": "Glass Soda",
+        "description": "",
+        "price": "$4.50",
+        "section": "DRINKS"
+      },
+      {
+        "name": "Water",
+        "description": "",
+        "price": "$2.29",
+        "section": "DRINKS"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$2.29",
+        "section": "DRINKS"
+      },
+      {
+        "name": "Sour Cream",
+        "description": "",
+        "price": "$2.88",
+        "section": "SIDE ORDERS"
+      },
+      {
+        "name": "Extra Tortilla",
+        "description": "",
+        "price": "$1.50",
+        "section": "SIDE ORDERS"
+      },
+      {
+        "name": "Beans",
+        "description": "",
+        "price": "$3.75",
+        "section": "SIDE ORDERS"
+      },
+      {
+        "name": "Extra Curtido",
+        "description": "",
+        "price": "$3.99",
+        "section": "SIDE ORDERS"
+      },
+      {
+        "name": "Fries",
+        "description": "",
+        "price": "$3.75",
+        "section": "SIDE ORDERS"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$15.99",
+        "section": "OTHER DISHES"
+      },
+      {
+        "name": "Platanos con Lechera",
+        "description": "",
+        "price": "$8.50",
+        "section": "OTHER DISHES"
+      },
+      {
+        "name": "Tamales",
+        "description": "Tamales En Hoja de Platano",
+        "price": "$5.99",
+        "section": "OTHER DISHES"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6356",
+    "name": "El Paisa Mexican Food",
+    "sourceUrl": "https://el-paisa-mexican-food.hey-restaurants.com/menu",
+    "confidence": "medium",
+    "notes": "Restaurant's own listed website (elpaisamexicanfoodca.com) is dead - it now resolves (HTTP only, TLS handshake fails) to an unrelated generic app-download landing page, not the restaurant's content, so it was not used. Found the actual current first-party ordering site on hey-restaurants.com (owner-run micro-site platform) via web search; address confirmed (250 Woodward Ave, Escondido, 92025). 98.5% conventional-ending rate at divisor 1.00, no markup. IMPORTANT GAP: the source page lists 133 named dishes total but 67 of them (mostly protein-choice items like Asada/Adobada/Carnitas/Chicken variants across Burritos, Tacos, Tortas, Breakfast Burritos, Soups, Specialties, Kids Menu, Drinks) show a bare '$' with no number in the raw HTML - a genuine gap in the source's own data, not a parsing truncation. Those 67 were skipped per the no-price rule rather than guessed. Filed the 66 dishes that do have real listed prices.",
+    "dishes": [
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Relleno",
+        "description": "",
+        "price": "$13.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Lengua",
+        "description": "",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Cabeza",
+        "description": "",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bistec Ranchero",
+        "description": "",
+        "price": "$11.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas",
+        "description": "",
+        "price": "$13.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shredded Beef",
+        "description": "",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chimichanga",
+        "description": "",
+        "price": "$6.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Wet Burrito",
+        "description": "",
+        "price": "$7.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bean & Cheese",
+        "description": "",
+        "price": "$9.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Rice, Bean & Cheese",
+        "description": "",
+        "price": "$13.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Veggie",
+        "description": "",
+        "price": "$13.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Emperador",
+        "description": "",
+        "price": "$13.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "Scrambled Eggs W/ Ham",
+        "description": "",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chorizo W/ Eggs",
+        "description": "",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Machaca",
+        "description": "",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Huevos Rancheros / Or A La Mexicana",
+        "description": "",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "",
+        "price": "$14.99",
+        "section": "Breakfast Plate"
+      },
+      {
+        "name": "Birria",
+        "description": "",
+        "price": "$15.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Carnitas",
+        "description": "",
+        "price": "$14.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Bistec Ranchero",
+        "description": "",
+        "price": "$15.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Enchiladas",
+        "description": "",
+        "price": "$14.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Chile Relleno",
+        "description": "",
+        "price": "$14.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Carne En Su Jugo",
+        "description": "",
+        "price": "$15.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Fajitas",
+        "description": "",
+        "price": "$15.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Carne Asada / Or Pollo Asado",
+        "description": "",
+        "price": "$14.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Green Pork Chile",
+        "description": "",
+        "price": "$15.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Milanesa",
+        "description": "",
+        "price": "$15.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Adobada",
+        "description": "",
+        "price": "$13.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Shrimp Rancheros",
+        "description": "",
+        "price": "$17.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Shrimp A La Diabla",
+        "description": "",
+        "price": "$17.99",
+        "section": "Combinations"
+      },
+      {
+        "name": "Asada",
+        "description": "",
+        "price": "$3.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Chorizo",
+        "description": "",
+        "price": "$3.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Birria",
+        "description": "",
+        "price": "$3.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Lengua",
+        "description": "",
+        "price": "$3.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Longaniza",
+        "description": "",
+        "price": "$3.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Buche",
+        "description": "",
+        "price": "$3.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shrimp",
+        "description": "",
+        "price": "$3.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$14.99",
+        "section": "Specialties/Especialidades"
+      },
+      {
+        "name": "Longaniza",
+        "description": "",
+        "price": "$3.99",
+        "section": "Specialties/Especialidades"
+      },
+      {
+        "name": "Buche",
+        "description": "",
+        "price": "$3.99",
+        "section": "Specialties/Especialidades"
+      },
+      {
+        "name": "Shrimp",
+        "description": "",
+        "price": "$3.99",
+        "section": "Specialties/Especialidades"
+      },
+      {
+        "name": "Steak",
+        "description": "",
+        "price": "$14.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Shrimp",
+        "description": "",
+        "price": "$14.99",
+        "section": "Salads"
+      },
+      {
+        "name": "Asada",
+        "description": "",
+        "price": "$5.99",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Adobada",
+        "description": "",
+        "price": "$5.99",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$5.99",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Choriqueso",
+        "description": "",
+        "price": "$5.99",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Chicharron",
+        "description": "",
+        "price": "$5.99",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Adobada",
+        "description": "",
+        "price": "$12.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$12.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Plain",
+        "description": "",
+        "price": "$12.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Lengua",
+        "description": "",
+        "price": "$12.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Birria",
+        "description": "",
+        "price": "$13.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Cabeza",
+        "description": "",
+        "price": "$13.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Supreme",
+        "description": "",
+        "price": "$13.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Shrimp",
+        "description": "",
+        "price": "$4.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$14.99",
+        "section": "Specialties"
+      },
+      {
+        "name": "Chicken Taco",
+        "description": "",
+        "price": "$4.99",
+        "section": "Specialties"
+      },
+      {
+        "name": "Chicken Tostada",
+        "description": "",
+        "price": "$7.99",
+        "section": "Specialties"
+      },
+      {
+        "name": "Shredded Beef Tostada",
+        "description": "",
+        "price": "$7.99",
+        "section": "Specialties"
+      },
+      {
+        "name": "Breakfast Burrito",
+        "description": "",
+        "price": "$11.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Breadded Shrimp",
+        "description": "",
+        "price": "$17.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Chicken",
+        "description": "",
+        "price": "$13.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Jamon",
+        "description": "",
+        "price": "$13.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Carnitas",
+        "description": "",
+        "price": "$13.99",
+        "section": "Breakfast Burritos"
+      }
+    ]
+  }
+]

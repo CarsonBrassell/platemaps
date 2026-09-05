@@ -1,0 +1,1312 @@
+[
+  {
+    "restaurantId": "5890",
+    "name": "Hilberto's Mexican Food",
+    "sourceUrl": "http://places.singleplatform.com/hilbertos-mexican-food-4/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "SinglePlatform (address confirmed 836 Euclid Ave, National City) lists only 16 items across 5 breakfast/torta sections (Breakfast Burritos, Breakfast Combos, Breakfast Tortas, Tortas Mexican Sandwich, TJ Street Tacos) - no lunch/dinner plates, regular tacos/burritos, or drinks, so it is a partial not the menu. Postmates redirects to a store page that 404s; the matching Uber Eats store URL also 404s. No own website. Needs a browser or working delivery link to find the rest."
+  },
+  {
+    "restaurantId": "5951",
+    "name": "Mi Ranchito Taco Shop",
+    "sourceUrl": "https://www.doordash.com/en-US/store/mi-ranchito-taco-shop-ramona-29648214/37351149/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash JSON-LD (53 items, cents scattered .05-.95, no clean divisor) has no Tacos or plain Burrito section at all, and prices disagree sharply with an independent listing found in search (e.g. Chorizo Burrito $5.35 here vs $10.99 for the equivalent breakfast burrito elsewhere, Nachos $5.05 vs $8.99) - a 2x gap that reads as a stale DoorDash snapshot, not a fee. Facebook page (the listed website) 400s. Needs a current source to resolve the price level and the missing core sections."
+  },
+  {
+    "restaurantId": "6696",
+    "name": "Superbloom Coffee & Juice",
+    "sourceUrl": "https://joe.coffee/locations/ca/san-diego/superbloom-coffee-and-juice-san-diego-7b0c762f-4e03-4b63-9045-53f17af48323/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: joe.coffee ordering page (their listed ordering platform) ships no prices in server HTML or any JSON payload - client-side app. Own site missionbaybeachclub.com has no menu page/link in its HTML. Search snippets suggest juices ~$9, bowls ~$13 but unverified on any page."
+  },
+  {
+    "restaurantId": "2051",
+    "name": "Kaffee Meister",
+    "sourceUrl": "https://www.kaffeemeister.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: own site returns an sgcaptcha bot-check redirect (168-byte meta-refresh to /.well-known/sgcaptcha/), no plain curl path through it. Only reachable mention elsewhere is restaurantguru (a barred tier-5 aggregator, alone, unusable)."
+  },
+  {
+    "restaurantId": "6359",
+    "name": "Hilda's Mexican Bakery",
+    "sourceUrl": "https://restaurantguru.com/Hildas-Mexican-Bakery-San-Diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: no website, no ordering platform. Only reachable listings are restaurantguru and sagemenu, two tier-5 aggregators (rejected alone) with no per-item prices anyway - a cash-only pan-dulce bakery, per review mentions ('conchitas 60 cents', 'about $13 for a box') that are hearsay, not a menu. Yelp 403s curl."
+  },
+  {
+    "restaurantId": "4496",
+    "name": "Barra Oliva",
+    "sourceUrl": "https://barraoliba.com/menu",
+    "confidence": "high",
+    "dishes": [
+      {
+        "name": "Tasting de Jeréz",
+        "description": "somm selection of three 1.5oz glasses of sherry",
+        "price": "$15.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Estrella Damm Lager",
+        "description": "Beer",
+        "price": "$5.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Jamón serrano reserva 20 months",
+        "description": "1 oz plate",
+        "price": "$12.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Confit ajillo squid",
+        "description": "garlic, pimentón, bread",
+        "price": "$12.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "House sangría",
+        "description": "red or white",
+        "price": "$10.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Patatas bravas",
+        "description": "spicy brava sauce, aioli",
+        "price": "$8.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Wine “omakase”",
+        "description": "somm selection of three 3 oz glasses of wine",
+        "price": "$20.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Pintxo de txistorra a la sidra",
+        "description": "apple cider cooked chistorra, toast",
+        "price": "$12.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Soft sourdough bread",
+        "description": "Soft sourdough bread & extra virgin olive oiL",
+        "price": "$6.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "NY hamburger toast",
+        "description": "heirloom tomato, cheese sauce, crispy ham - 4oz patty",
+        "price": "$18.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Mini martini",
+        "description": "odka, vermouth, olive brine, gordal olive",
+        "price": "$10.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Jamón serrano grilled sandwich",
+        "description": "manchego cheese, brava sauce",
+        "price": "$16.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Galicia spritz",
+        "description": "gin, vermouth, cava, orange zest",
+        "price": "$10.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Tuna and boquerón gilda",
+        "description": "skewer, olive, piparra",
+        "price": "$9.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Basque chorizo sandwich",
+        "description": "spicy ajillo, aioli, pepper vinaigrette",
+        "price": "$14.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Cava selection",
+        "description": "750 ml",
+        "price": "$39.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Mini pan tomàquet con boquerón",
+        "description": "heirloom tomato sauce",
+        "price": "$12.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Red & white weekly discovery",
+        "description": "- 4oz pour",
+        "price": "$8.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Tuna and jamón serrano crudo",
+        "description": "citronette, chives",
+        "price": "$15.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Galician style EVOO potato chips",
+        "description": "pimentón, champagne vinegar",
+        "price": "$7.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Red Wine",
+        "description": "750 ml",
+        "price": "$45.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "White or Orange Wine",
+        "description": "750 ml",
+        "price": "$45.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Croquetas of the day",
+        "description": "house made aioli - 2pcs",
+        "price": "$8.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Pintxo de tortilla de patatas",
+        "description": "toast, aioli - 2 pcs",
+        "price": "$10.00",
+        "section": "Happy Hour"
+      },
+      {
+        "name": "Anchovy & boquerón",
+        "description": "PX vinegar, EVOO",
+        "price": "$12.00",
+        "section": "Gildas"
+      },
+      {
+        "name": "Tuna & boquerón",
+        "description": "PX vinegar, EVOO",
+        "price": "$12.00",
+        "section": "Gildas"
+      },
+      {
+        "name": "Tuna tasting",
+        "description": "O Toro, Akami & Chutoro -gf",
+        "price": "$13.00",
+        "section": "Gildas"
+      },
+      {
+        "name": "Octopus “A feira”",
+        "description": "Pimentón, EVOO",
+        "price": "$13.00",
+        "section": "Gildas"
+      },
+      {
+        "name": "Jamón Serrano",
+        "description": "Reserva Redondo Iglesias - 1oz.",
+        "price": "$18.00",
+        "section": "Charcutería & Cheeses"
+      },
+      {
+        "name": "Paleta Ibérica",
+        "description": "Paleta Ibérica, Cinco Jotas - 1oz.",
+        "price": "$24.00",
+        "section": "Charcutería & Cheeses"
+      },
+      {
+        "name": "Jamón Ibérico",
+        "description": "Jamón Ibérico, Cinco Jotas - 1oz",
+        "price": "$34.00",
+        "section": "Charcutería & Cheeses"
+      },
+      {
+        "name": "Embutidos Ibéricos de bellota - 3oz",
+        "description": "toasted bread, house pickles charcuterie assortment.",
+        "price": "$44.00",
+        "section": "Charcutería & Cheeses"
+      },
+      {
+        "name": "Spanish cheese",
+        "description": "assortment, honeycomb, quince",
+        "price": "$25.00",
+        "section": "Charcutería & Cheeses"
+      },
+      {
+        "name": "Pan tomàquet",
+        "description": "Heirloom tomato sauce, bread - 2pcs.",
+        "price": "$12.00",
+        "section": "Tapas Frías"
+      },
+      {
+        "name": "Mini pan tomàquet & boquerones",
+        "description": "Heirloom tomato sauce, bread.",
+        "price": "$12.00",
+        "section": "Tapas Frías"
+      },
+      {
+        "name": "Matrimonio",
+        "description": "anchovy and boquerón toast, pepper vinaigrette",
+        "price": "$18.00",
+        "section": "Tapas Frías"
+      },
+      {
+        "name": "Tuna, uni & paleta ibérica toast",
+        "description": "Tuna, uni & paleta ibérica toast, aioli.",
+        "price": "$24.00",
+        "section": "Tapas Frías"
+      },
+      {
+        "name": "NY beef tartare toast",
+        "description": "NY beef tartare, tuna mojama, yolk emulsion.",
+        "price": "$25.00",
+        "section": "Tapas Frías"
+      },
+      {
+        "name": "Tortilla de patatas",
+        "description": "Egg, potato, onion, chorizo, aioli.",
+        "price": "$17.00",
+        "section": "Hot Tapas"
+      },
+      {
+        "name": "Croquetas",
+        "description": "Selection of the day – 3pcs.",
+        "price": "$13.00",
+        "section": "Hot Tapas"
+      },
+      {
+        "name": "Pintxo de chorizo",
+        "description": "wine infused chorizo, aioli toast - 2 pcs.",
+        "price": "$15.00",
+        "section": "Hot Tapas"
+      },
+      {
+        "name": "Pintxo de txistorra a la sidra",
+        "description": "Apple cider infused txistorra, aioli , toast - 2pcs.",
+        "price": "$14.00",
+        "section": "Hot Tapas"
+      },
+      {
+        "name": "Wagyu beef cheek & parmentier",
+        "description": "Potato puree, jus, garlic & parsley oil",
+        "price": "$15.00",
+        "section": "Hot Tapas"
+      },
+      {
+        "name": "Mushrooms",
+        "description": "Garlic, parsley, yollk, idiazábal, bread.",
+        "price": "$16.00",
+        "section": "Hot Tapas"
+      },
+      {
+        "name": "Ajillo squid",
+        "description": "Ajillo squid, bread - 2pcs.",
+        "price": "$16.00",
+        "section": "Hot Tapas"
+      },
+      {
+        "name": "Patatas bravas",
+        "description": "House brava sauce and aioli.",
+        "price": "$13.00",
+        "section": "Hot Tapas"
+      },
+      {
+        "name": "Oishi oysters (WA)",
+        "description": "House mignonette (2pcs / 6pcs).",
+        "price": "$12.00",
+        "section": "Raw Seafood"
+      },
+      {
+        "name": "Kanpachi crudo",
+        "description": "Piparra leche de tigre, trout roe.",
+        "price": "$24.00",
+        "section": "Raw Seafood"
+      },
+      {
+        "name": "Tuna carpaccio",
+        "description": "Garlic oil, ponzu, sherry vinegar.",
+        "price": "$22.00",
+        "section": "Raw Seafood"
+      },
+      {
+        "name": "Tuna tartare",
+        "description": "Cured egg yolk, beet chips.",
+        "price": "$26.00",
+        "section": "Raw Seafood"
+      },
+      {
+        "name": "Sashimi",
+        "description": "Of the day, chef´s raw fish selection.",
+        "price": "$26.00",
+        "section": "Raw Seafood"
+      },
+      {
+        "name": "Ajillo prawns",
+        "description": "Garlic & dried pepper oil, bread -3 pcs – 3pcs.",
+        "price": "$25.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Huevos rotos",
+        "description": "Low temperature eggs, potatoes, paleta ibérica, piparra.",
+        "price": "$29.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Asparragus & romesco sauce",
+        "description": "Marcona almonds, grated idiazabal cheese.",
+        "price": "$17.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Heirloom tomato salad",
+        "description": "PX vinegar, boquerones.",
+        "price": "$18.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Confit artichoke",
+        "description": "Ibérico ham bits, ajillo, bell pepper.",
+        "price": "$19.00",
+        "section": "Starters"
+      },
+      {
+        "name": "Black rice",
+        "description": "Squid ink, aioli, seasonal fish.",
+        "price": "$30.00",
+        "section": "Rice Dishes"
+      },
+      {
+        "name": "Seafood paella",
+        "description": "Prawns, mussels, saffron, chorizo.",
+        "price": "$44.00",
+        "section": "Rice Dishes"
+      },
+      {
+        "name": "Wagyu meloso",
+        "description": "Braised wagyu cheek, tongue, ajillo, jus.",
+        "price": "$35.00",
+        "section": "Rice Dishes"
+      },
+      {
+        "name": "Grassfed NY Steak Rice",
+        "description": "Padrón peppers, ajillo.",
+        "price": "$39.00",
+        "section": "Rice Dishes"
+      },
+      {
+        "name": "“A feira” Octopus",
+        "description": "EVOO, pimentón, potatoes",
+        "price": "$25.00",
+        "section": "Meat & Fish"
+      },
+      {
+        "name": "Seasonal fish meuniere",
+        "description": "Sherry, capers, trout roe. 6 oz filet.",
+        "price": "$34.00",
+        "section": "Meat & Fish"
+      },
+      {
+        "name": "Ibérico pork chop",
+        "description": "Romesco sauce, leeks. 16 oz double chop.",
+        "price": "$59.00",
+        "section": "Meat & Fish"
+      },
+      {
+        "name": "Roasted leeks",
+        "description": "",
+        "price": "$10.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Patatas a lo pobre",
+        "description": "Roasted potatoes, ajillo.",
+        "price": "$8.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Purée parmentier",
+        "description": "Creamy potato purée.",
+        "price": "$8.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Pimientos del padrón",
+        "description": "Roasted green peppers.",
+        "price": "$7.00",
+        "section": "Sides"
+      }
+    ],
+    "notes": "Own-site schema.org JSON-LD (68 items, 2 blocks); dropped Chuletón de vaca (listed price 2.95 is a per-oz market price for a 25-45oz steak, not a flat price). Address on homepage confirms 1980 Kettner Blvd #30, San Diego 92101 despite worklist site being barraoliba.com (b) vs listed name Barra Oliva (v) - same business, spelling variant. Prices are whole dollars throughout, no fee pattern."
+  },
+  {
+    "restaurantId": "6016",
+    "name": "Trevi Ristorante & Pizzeria",
+    "sourceUrl": "https://www.doordash.com/store/trevi-ristorante-san-diego-312135/",
+    "confidence": "medium",
+    "dishes": [
+      {
+        "name": "1 Topping 14\" Pizza",
+        "description": "14\" pizza with choice of one topping: sausage, Canadian bacon, pepperoni, vegetables, or jalapeño & pineapple mix.",
+        "price": "$13.99",
+        "section": "Pizza  Build Your Own"
+      },
+      {
+        "name": "1 Topping 16\" Pizza",
+        "description": "16\" pizza with choice of one topping from sausage, Canadian bacon, pepperoni, various vegetables, or jalapeño & pineapple mix.",
+        "price": "$15.99",
+        "section": "Pizza  Build Your Own"
+      },
+      {
+        "name": "2 Toppings  12'' Pizza",
+        "description": "12'' pizza with choice of two toppings from sausage, Canadian bacon, veggies, or jalapeño & pineapple combo.",
+        "price": "$15.99",
+        "section": "Pizza  Build Your Own"
+      },
+      {
+        "name": "2 Toppings  14\". Pizza",
+        "description": "14\" pizza with two toppings of choice. Options include meats: sausage, Canadian bacon, pepperoni, and various vegetables like artichoke hearts, black olives, or green peppers.",
+        "price": "$16.99",
+        "section": "Pizza  Build Your Own"
+      },
+      {
+        "name": "3 Toppings 12\" Pizza",
+        "description": "12\" pizza with choice of three toppings: meats like sausage, pepperoni, Canadian bacon, or veggies including artichoke hearts, black olives; includes spicy and sweet option with jalapeño & pineapple.",
+        "price": "$17.99",
+        "section": "Pizza  Build Your Own"
+      },
+      {
+        "name": "3 Toppings 14\" Pizza",
+        "description": "14\" pizza with choice of 3 toppings. Options include meats (sausage, Canadian bacon, pepperoni) and vegetables (artichoke hearts, black olives, tomatoes, onions, mushrooms, green peppers, jalapeño & pineapple).",
+        "price": "$16.99",
+        "section": "Pizza  Build Your Own"
+      },
+      {
+        "name": "3 Toppings 16\" Pizza",
+        "description": "16\" pizza with choice of 3 toppings including meats like sausage, pepperoni, and Canadian bacon, or veggies like mushrooms, artichokes, and jalapeño & pineapple.",
+        "price": "$22.99",
+        "section": "Pizza  Build Your Own"
+      },
+      {
+        "name": "1 Topping  12\" Pizza",
+        "description": "12\" pizza with choice of one topping: sausage, Canadian bacon, pepperoni, or assorted vegetables and fruits including artichoke hearts and jalapeño & pineapple.",
+        "price": "$12.99",
+        "section": "Pizza  Build Your Own"
+      },
+      {
+        "name": "2 Toppings  16\" Pizza",
+        "description": "16\" pizza with choice of 2 toppings: variety of meats, veggies, or jalapeño & pineapple mix.",
+        "price": "$19.99",
+        "section": "Pizza  Build Your Own"
+      },
+      {
+        "name": "Calzone Genovese",
+        "description": "Stuffed with mozzarella cheese and pesto basil sauce.",
+        "price": "$12.99",
+        "section": "Calzones"
+      },
+      {
+        "name": "Calzone Valdostana",
+        "description": "Stuffed with mozzarella cheese and cooked ham.",
+        "price": "$13.99",
+        "section": "Calzones"
+      },
+      {
+        "name": "Bruschetta",
+        "description": "Chopped tomatoes with fresh basil, fresh garlic, and pesto sauce on Italian bread",
+        "price": "$10.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Mozzarella Ala Carroza",
+        "description": "Homemade Italian bread filled with melted mozzarella cheese served in cream sauce with a touch of marinara sauce.",
+        "price": "$10.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Wings",
+        "description": "10 pieces.  Hot,  Mild, or BBQ. Add Ranch for an additional charge.",
+        "price": "$16.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Steak, Meatball or Chicken",
+        "description": "Sandwiches with choice of steak, meatball, or chicken filling, served Italian style.",
+        "price": "$13.99",
+        "section": "Sandwiches"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Hearts of romaine lettuces herbs. croutons shaved parmesan cheese with our homemade caesar dressing.",
+        "price": "$9.99",
+        "section": "Insalatas"
+      },
+      {
+        "name": "Mixed Salad",
+        "description": "Baby spring mixed salad, avocado, tomatoes, mushrooms, red onion & roasted almonds with raspberry vinaigrette.",
+        "price": "$9.99",
+        "section": "Insalatas"
+      },
+      {
+        "name": "Cheese Cake",
+        "description": "Creamy cheesecake with a smooth texture, featuring a graham cracker crust and a hint of vanilla.",
+        "price": "$7.99",
+        "section": "Dessert"
+      },
+      {
+        "name": "Chocolate Cake",
+        "description": "Decadent chocolate delight, lavished with rich frosting and served with a dollop of indulgence.",
+        "price": "$7.99",
+        "section": "Dessert"
+      },
+      {
+        "name": "Tiramisu",
+        "description": "Layers of coffee-soaked ladyfingers and mascarpone cheese, topped with cocoa powder and fresh strawberry slices.",
+        "price": "$8.99",
+        "section": "Dessert"
+      },
+      {
+        "name": "Fettuccini Alfredo",
+        "description": "Long flat pasta tossed with tomatoes, and traditional alfredo sauce.",
+        "price": "$13.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Chicken & Shrimp Carbonara",
+        "description": "Rigatoni pasta served with chicken, shrimp on a creamy Alfredo sauce.",
+        "price": "$17.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Chicken Parmigiana",
+        "description": "Traditional chicken Parmesan served with spaghetti with our homemade marinara sauce.",
+        "price": "$17.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Spaghetti Meatballs",
+        "description": "Spaghetti with meatballs & homemade marinara sauce.",
+        "price": "$14.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Lasagna Il Forno",
+        "description": "Layered with meat, ricotta cheese in a light marinara sauce.",
+        "price": "$15.99",
+        "section": "Pasta"
+      },
+      {
+        "name": "Philly Cheesesteak",
+        "description": "Flank steak, Alfredo sauce, bell peppers topped with cheese.",
+        "price": "$13.99",
+        "section": "Trevi's Own Creation 16'"
+      },
+      {
+        "name": "Chicken Alfredo",
+        "description": "Grilled chicken, Alfredo cheese and our homemade creamy sauce.",
+        "price": "$20.99",
+        "section": "Trevi's Own Creation 16'"
+      },
+      {
+        "name": "Mexican",
+        "description": "Beans, chorizo, onions, jalapeño, and ham.",
+        "price": "$23.99",
+        "section": "Trevi's Own Creation 16'"
+      },
+      {
+        "name": "Combo",
+        "description": "A superb blend of pepperoni, Canadian bacon Italian sausage, mushrooms, onions, and mozzarella cheese.",
+        "price": "$23.99",
+        "section": "Trevi's Own Creation 16'"
+      },
+      {
+        "name": "Hawaiian",
+        "description": "Slices of ham, onions, and juicy pineapple.",
+        "price": "$17.99",
+        "section": "Trevi's Own Creation 16'"
+      },
+      {
+        "name": "Veggie",
+        "description": "Fresh mushrooms, bell peppers, onions, and artichoke hearts all topped with mozzarella cheese.",
+        "price": "$18.99",
+        "section": "Trevi's Own Creation 16'"
+      },
+      {
+        "name": "12'' Pizza & Soda",
+        "description": "With one topping and one can soda.",
+        "price": "$16.99",
+        "section": "Specials"
+      },
+      {
+        "name": "12'' Pizza & Wings",
+        "description": "With two-toppings and five pieces of wings and one can soda.",
+        "price": "$25.99",
+        "section": "Specials"
+      },
+      {
+        "name": "Family pack",
+        "description": "16” pizza With two toppings,  7 chicken wings( hot or BBQ) Caesar salad, and  (one 2 liter soda & bread.",
+        "price": "$31.99",
+        "section": "Specials"
+      },
+      {
+        "name": "Combo Special",
+        "description": "One Large 16\" pizza with two toppings, one lasagna, a  mixed salad (one 2 liter) soda & bread.",
+        "price": "$33.99",
+        "section": "Specials"
+      },
+      {
+        "name": "Double Deal",
+        "description": "Two Large 16\" pizzas with  two  toppings each . Two Caesar salads.",
+        "price": "$37.99",
+        "section": "Specials"
+      },
+      {
+        "name": "Super Special",
+        "description": "Three large  16\" pizzas with two  toppings each and two Caesar salads.",
+        "price": "$51.99",
+        "section": "Specials"
+      },
+      {
+        "name": "Deal Special",
+        "description": "One large 16\" pizza with two  toppings,  spaghetti meatballs & bread.",
+        "price": "$27.99",
+        "section": "Specials"
+      },
+      {
+        "name": "Pasta Special",
+        "description": "One order of cheese and spinach ravioli on a creamy tomato sauce,  one of  fettuccini Alfredo with carrots and broccoli and a mixed   salad & bread.",
+        "price": "$28.99",
+        "section": "Specials"
+      },
+      {
+        "name": "Single Special",
+        "description": "One medium 12\" pizza with  two toppings,  Caesar salad and one can soda. ",
+        "price": "$20.99",
+        "section": "Specials"
+      }
+    ],
+    "notes": "DoorDash schema.org JSON-LD, 40 items, address confirmed 4703 Federal Blvd San Diego 92102. All prices end .99 - printed-menu shape, no fee scatter. Own listed domains are dead: treviristorantemenu.com now resolves to an unrelated gambling/slot-site (hijacked domain, avoided), treviitaliansandiegoca.com does not resolve at all."
+  },
+  {
+    "restaurantId": "4110",
+    "name": "Swan Bar",
+    "sourceUrl": "https://www.zmenu.com/the-swan-tavern-and-still-san-diego-online-menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: also known as The Swan Tavern and Still. Its own domain swantavernandstill.com does not resolve. No ordering platform found. Only priced-adjacent mention is zmenu, a single tier-5 aggregator (rejected alone); review text mentions burgers 'starting at $9' and chili cheese fries '~$13' but that is hearsay, not a menu."
+  },
+  {
+    "restaurantId": "6240",
+    "name": "Babycakes Imperial Beach",
+    "sourceUrl": "https://www.doordash.com/store/babycakes-imperial-beach-289489/",
+    "confidence": "medium",
+    "dishes": [
+      {
+        "name": "Chocolate Peanut Butter",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Salted Caramel",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Carrot",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Dulce de Leche",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Boston Cream",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Lemon Bavarian",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "German Chocolate",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Oreo",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Black Bottom",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Blood Orange",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Strawberries and Cream Tres Leches",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Classic Vanilla",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Sprinkle",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Tres Leches",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Vegan/Gluten Free Red Velvet",
+        "description": "",
+        "price": "$7.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Vegan/Gluten Free Chocolate",
+        "description": "",
+        "price": "$7.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Vegan/Gluten Free Salted Caramel",
+        "description": "",
+        "price": "$7.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Babycake",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      },
+      {
+        "name": "Chocolate Fudge",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cake & Cupcakes"
+      }
+    ],
+    "notes": "DoorDash JSON-LD for the Imperial Beach branch specifically (address confirms Seacoast Drive), not the separate Hillcrest storefront linked from the same WordPress site. Single 'Cake & Cupcakes' section, 19 individually priced flavors at a flat .00 (vegan/GF variants .00) - a small dessert shop, this is plausibly the whole per-item menu. Dropped the 'Most Ordered' carousel - every one of its 12 items duplicates a name already in Cake & Cupcakes, no unique items."
+  },
+  {
+    "restaurantId": "4253",
+    "name": "Miền Trung",
+    "sourceUrl": "https://mientrungrestaurant.netwaiter.com/san-diego/menu/GetMenu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: NetWaiter storefront (mientrungrestaurant.netwaiter.com) returns {\"Groups\":[],\"ExternalType\":null} - About page only, no menu ever populated there. Other hits are all tier-5 aggregators (zmenu, restaurantguru, allmenus, goto-where) which the screen rejects even in agreement. No own website; Facebook page not scraped."
+  },
+  {
+    "restaurantId": "1107",
+    "name": "The Leucadian",
+    "sourceUrl": "https://www.theleucadianbar.com/specials",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: own Squarespace site has only Home/Private Events/Contact/Specials/Photos - Specials page prices only 3 happy-hour drink specials ($4-5), no food menu page exists on the site. Search snippets say food is 'pub food under $15' and mention a separate taco vendor on the patio, but no priced page for it was found; other hits are tier-5 aggregators only (restaurantguru, sirved, checkle)."
+  },
+  {
+    "restaurantId": "5685",
+    "name": "Mis Cuates Taco Shop",
+    "sourceUrl": "https://www.ubereats.com/store/cuates-taco-shops/uhzTR5I6QsmQ4aZciyE_sg",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Address mismatch trap: worklist address is 11194 Pala Mission Road #A, but the only 'Cuates Taco Shop' hits on Uber Eats/Postmates/search carry 1777 Pala Mission Rd or, per the Uber Eats payload itself, 2515 Colorado Street - none matching. That storefront is a different branch/business, not used. No website found. restaurantguru and bestcafes.online (a barred farm) are the only other hits, both unusable. Needs a browser to confirm the actual location's own listing."
+  },
+  {
+    "restaurantId": "3227",
+    "name": "Beach + Taco Shack",
+    "sourceUrl": "https://sanqq.buy-ondemand.com/streamlinedmenu/0e48725f-e058-4cff-9628-a45854b43dcd/3596",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Hotel Del Coronado's menu link goes to a buy-ondemand.com streamlined-menu app - a 10KB client-rendered shell protected by DataDome (js.datadome.co/tags.js), no prices in server HTML or any static JSON. No other ordering platform found for this specific outlet."
+  },
+  {
+    "restaurantId": "1177",
+    "name": "One More Thats It",
+    "sourceUrl": "https://www.zmenu.com/one-more-thats-it-pub-oceanside-online-menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: dive bar, cash only, no website or ordering platform found. All hits are tier-5 aggregators (zmenu, restaurantguru, checkle) or the barred farm restaurants-world.net. No priced first-party source reachable."
+  },
+  {
+    "restaurantId": "6119",
+    "name": "Nothing Bundt Cakes",
+    "sourceUrl": "https://www.nothingbundtcakes.com/find-a-bakery/ca/sandiego/bakery-42.html",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: bakery-42 (San Diego, Mission Center Rd) location page shows only a 'Shop Our Most Popular Cakes' promo carousel - 5 named bundles ($22.85-$79.45) - not the core standard lineup (8\"/10\" cakes, Bundtlets, Bundtinis by the dozen, tiered, gluten-free) that the nav itself lists as separate categories. The /cakes/ catalog (Magento) is 1.1MB but ships no prices in static HTML - client-side pricing fetch. A partial, not a menu."
+  },
+  {
+    "restaurantId": "3223",
+    "name": "ENO Market & Pizzeria",
+    "sourceUrl": "https://hoteldel.com/dine/eno-market-pizzeria/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: same Hotel Del Coronado F&B system as Beach + Taco Shack - links only to sanqq.buy-ondemand.com root, a DataDome-protected (js.datadome.co) client-rendered ordering app with no static prices reachable by curl."
+  },
+  {
+    "restaurantId": "5777",
+    "name": "Phở Hòa Restaurant | Vietnamese",
+    "sourceUrl": "https://expireddomains.com/domain/phohoalindavistago.site?utm_source=redi",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Own listed domain phohoalindavistago.site is expired, 301s to expireddomains.com's own marketplace page - dead. Also listed as 'Pho Hoa-Huong' at the same address on restaurant.com. Every other hit is a tier-5 aggregator (restaurantguru, sagemenu) or a directory-farm-styled cafes-world.com. No priced first-party page found."
+  },
+  {
+    "restaurantId": "3795",
+    "name": "IB Thai",
+    "sourceUrl": "https://api.menufy.com/v1/locations/51937/categories/all",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Router already screened this out: Menufy API prices divide cleanly by 1.0400 onto conventional endings (73% of 147 items) vs 1% raw - a baked-in ordering-channel fee, confirmed, not filed. Own site ibthaica.com links only to checkout.menufy.com, no fee-free sibling page (no separate own-menu, no Toast/Clover/etc.). Needs a genuinely fee-free source."
+  },
+  {
+    "restaurantId": "6849",
+    "name": "Arandas Cafe",
+    "sourceUrl": "https://www.arandascafe.com/wp-content/uploads/2026/08/MENU-COMPLETO-1-791x1024.jpg (5-page menu, pages 2-5)",
+    "confidence": "high",
+    "dishes": [
+      {
+        "name": "Açai",
+        "description": "Granola, Fresh Berries, Bananas, Shredded Coconut, Honey",
+        "price": "$13.95",
+        "section": "Fruit & Grains"
+      },
+      {
+        "name": "Sunrise Bowl",
+        "description": "Açai, Peanut Butter, Flax Seeds, Strawberries, Shredded Coconut",
+        "price": "$12.95",
+        "section": "Fruit & Grains"
+      },
+      {
+        "name": "Greek Yogurt Parfait",
+        "description": "Berries, Granola, Honey",
+        "price": "$9.75",
+        "section": "Fruit & Grains"
+      },
+      {
+        "name": "Fruit Bowl",
+        "description": "Seasonal Fruit, Granola, Honey",
+        "price": "$8.25",
+        "section": "Fruit & Grains"
+      },
+      {
+        "name": "Oatmeal",
+        "description": "Assorted Nuts, Dried Fruit, Honey",
+        "price": "$7.75",
+        "section": "Fruit & Grains"
+      },
+      {
+        "name": "Fried Chicken & Waffle",
+        "description": "Maple Syrup",
+        "price": "$16.45",
+        "section": "Waffles"
+      },
+      {
+        "name": "Deluxe Chicken & Waffle",
+        "description": "Bacon, Cheddar Cheese, Guacamole, Two Fried Eggs, Maple Syrup, Honey Mustard, Paprika",
+        "price": "$23.50",
+        "section": "Waffles"
+      },
+      {
+        "name": "Classic Belgian",
+        "description": "",
+        "price": "$9.25",
+        "section": "Waffles"
+      },
+      {
+        "name": "Scrambler",
+        "description": "Scrambled Eggs, Toast, Bacon or Sausage, side of seasonal fruit",
+        "price": "$10.75",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Mini Pancakes",
+        "description": "Buttermilk or Chocolate Chip, side of seasonal fruit",
+        "price": "$10.75",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "French Toast (Kids)",
+        "description": "Scrambled Eggs, Bacon or Sausage, side of seasonal fruit",
+        "price": "$10.75",
+        "section": "Children's Menu"
+      },
+      {
+        "name": "Berry Bliss",
+        "description": "Vanilla Mascarpone, Berries, Cinnamon, Powdered Sugar",
+        "price": "$14.95",
+        "section": "French Toast"
+      },
+      {
+        "name": "Stuffed Nutella",
+        "description": "Strawberries, Blueberries, Bananas, Nutella, Powdered Sugar",
+        "price": "$13.95",
+        "section": "French Toast"
+      },
+      {
+        "name": "Lemon French Toast",
+        "description": "Ricotta, Lemon Glaze, Green Apples",
+        "price": "$11.95",
+        "section": "French Toast"
+      },
+      {
+        "name": "Classic Brioche",
+        "description": "Dusted with Powdered Sugar",
+        "price": "$10.95",
+        "section": "French Toast"
+      },
+      {
+        "name": "Breakfast Crepe",
+        "description": "Roasted Turkey, Egg, Mozzarella Cheese, Béchamel Sauce, Avocado, Microgreens",
+        "price": "$13.25",
+        "section": "Crepes"
+      },
+      {
+        "name": "Monte Cristo",
+        "description": "Ham, Turkey, Swiss Cheese, Strawberry Coulis, Powdered Sugar",
+        "price": "$13.95",
+        "section": "Crepes"
+      },
+      {
+        "name": "Nutella Crepe",
+        "description": "Strawberries, Banana, Caramel, Whipped Cream, Powdered Sugar",
+        "price": "$12.25",
+        "section": "Crepes"
+      },
+      {
+        "name": "Berry Crepe",
+        "description": "Seasonal Berries, Strawberry Coulis, Whipped Cream, Powdered Sugar",
+        "price": "$12.75",
+        "section": "Crepes"
+      },
+      {
+        "name": "Buttermilk Pancakes",
+        "description": "2 pancakes",
+        "price": "$6.75",
+        "section": "Pancakes"
+      },
+      {
+        "name": "Chocolate Chip Pancakes",
+        "description": "2 pancakes",
+        "price": "$7.95",
+        "section": "Pancakes"
+      },
+      {
+        "name": "Berry Crème Pancakes",
+        "description": "3 pancakes, Seasonal Berries, Mascarpone Whip, Maple Syrup",
+        "price": "$12.95",
+        "section": "Pancakes"
+      },
+      {
+        "name": "Two Eggs & Two Pancakes",
+        "description": "Two Eggs Any Style, Choice of Bacon or Sausage Links, served with breakfast potatoes",
+        "price": "$15.95",
+        "section": "Sunrise Specialties"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "Fried Egg, Roasted Tomato Sauce, Crema, Pickled Red Onions, Cilantro, Queso Fresco, served with breakfast potatoes",
+        "price": "$17.95",
+        "section": "Sunrise Specialties"
+      },
+      {
+        "name": "Morning Portobello",
+        "description": "Spinach, Quinoa, Fried Egg, Focaccia, served with breakfast potatoes",
+        "price": "$16.95",
+        "section": "Sunrise Specialties"
+      },
+      {
+        "name": "Croque Madame",
+        "description": "Fried Egg, Ham, Gruyère Cheese, Creamy Béchamel Sauce, Side Of Mixed Greens, served with breakfast potatoes",
+        "price": "$17.95",
+        "section": "Sunrise Specialties"
+      },
+      {
+        "name": "Benedict & Hot Chicken",
+        "description": "Fried Chicken Breast, Two Poached Eggs on Focaccia, Spicy Hollandaise Sauce, Side Of Mixed Greens, served with breakfast potatoes",
+        "price": "$19.95",
+        "section": "Sunrise Specialties"
+      },
+      {
+        "name": "Florentine Benedict on Focaccia",
+        "description": "2 Poached Eggs, Sautéed Baby Spinach & Cream Hollandaise Sauce, Side Of Mixed Greens, served with breakfast potatoes",
+        "price": "$17.95",
+        "section": "Sunrise Specialties"
+      },
+      {
+        "name": "Steak & Eggs",
+        "description": "2 Eggs Any Style, New York Steak, Chimichurri, Focaccia, served with breakfast potatoes",
+        "price": "$24.95",
+        "section": "Sunrise Specialties"
+      },
+      {
+        "name": "Turkey & Gruyere Omelette",
+        "description": "3 Eggs, Turkey, Spinach, Gruyere Cheese, Shallots, Focaccia, Side Of Mixed Greens, served with breakfast potatoes",
+        "price": "$16.95",
+        "section": "Sunrise Specialties"
+      },
+      {
+        "name": "Veggie Scrambler",
+        "description": "2 Eggs, Spinach, Cherry Tomatoes, Yellow Squash, Zucchini, Cremini Mushrooms, Gruyere Cheese, Focaccia, Side Of Mixed Greens, served with breakfast potatoes",
+        "price": "$16.95",
+        "section": "Sunrise Specialties"
+      },
+      {
+        "name": "BLT Sandwich",
+        "description": "Scrambled Egg, Bacon, White Cheddar, Lettuce, Tomato, Black Pepper Aioli, served with breakfast potatoes",
+        "price": "$15.25",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Breakfast Croissant",
+        "description": "Scrambled Eggs, Turkey, Bacon, Avocado, Cheddar Cheese, Chipotle Aioli, served with breakfast potatoes",
+        "price": "$16.25",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Bacon & Cheddar Croissant",
+        "description": "Scrambled Egg, Bacon, Cheddar Cheese, served with breakfast potatoes",
+        "price": "$13.95",
+        "section": "Breakfast Sandwiches"
+      },
+      {
+        "name": "Avocado Toast",
+        "description": "Cucumber, Watermelon Radish, Sesame, Chia & Hemp Seed, Crushed Peppers",
+        "price": "$12.75",
+        "section": "Toast"
+      },
+      {
+        "name": "Feta Avocado Toast",
+        "description": "Crumbled Feta, Cherry Tomatoes, Balsamic Glaze",
+        "price": "$12.75",
+        "section": "Toast"
+      },
+      {
+        "name": "Fried Egg Avocado Toast",
+        "description": "2 Fried Eggs, Sliced Avocado, Spring Mix, Crushed Peppers, Olive Oil, Lemon Juice",
+        "price": "$15.25",
+        "section": "Toast"
+      },
+      {
+        "name": "Smoked Salmon Toast",
+        "description": "Whipped Cream Cheese, Everything Bagel Seasoning, Fried Capers, Tomato, Red Onions",
+        "price": "$16.75",
+        "section": "Toast"
+      },
+      {
+        "name": "Lox Bagel",
+        "description": "Smoked Salmon, Whipped Cream Cheese, Tomato, Onion, Cucumber, Lemon, Capers, Pepper, Side of Mixed Greens",
+        "price": "$18.95",
+        "section": "Bagels"
+      },
+      {
+        "name": "Ultimate Bagel",
+        "description": "Scrambled Eggs, Whipped Cream Cheese, Avocado, Bacon, Tomato, Side of Mixed Greens",
+        "price": "$15.50",
+        "section": "Bagels"
+      },
+      {
+        "name": "Toasted Bagel",
+        "description": "Whipped Cream Cheese",
+        "price": "$6.75",
+        "section": "Bagels"
+      },
+      {
+        "name": "Toast",
+        "description": "",
+        "price": "$2.75",
+        "section": "Sides"
+      },
+      {
+        "name": "Sausage Links",
+        "description": "2 links",
+        "price": "$3.75",
+        "section": "Sides"
+      },
+      {
+        "name": "Eggs",
+        "description": "2 eggs",
+        "price": "$3.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Applewood Smoked Bacon",
+        "description": "2 pieces",
+        "price": "$2.95",
+        "section": "Sides"
+      },
+      {
+        "name": "Breakfast Potatoes",
+        "description": "",
+        "price": "$4.25",
+        "section": "Sides"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$4.25",
+        "section": "Sides"
+      },
+      {
+        "name": "Sweet Potato Fries",
+        "description": "",
+        "price": "$4.75",
+        "section": "Sides"
+      },
+      {
+        "name": "Garlic Parmesan Fries",
+        "description": "",
+        "price": "$5.25",
+        "section": "Sides"
+      },
+      {
+        "name": "Truffle Fries",
+        "description": "",
+        "price": "$5.75",
+        "section": "Sides"
+      },
+      {
+        "name": "Turkey Pesto",
+        "description": "Creamy Burrata, Roasted Peppers, Tomato, Arugula, Aioli, Olive Oil, Balsamic Glaze, Focaccia",
+        "price": "$16.25",
+        "section": "Lunch Menu / Signature Sandwiches"
+      },
+      {
+        "name": "Chicken Club",
+        "description": "Grilled Chicken Breast, Avocado, Applewood Bacon, White Cheddar, Butter Lettuce, Sundried Tomato Aioli",
+        "price": "$15.75",
+        "section": "Lunch Menu / Signature Sandwiches"
+      },
+      {
+        "name": "Roast Beef",
+        "description": "Creamy Burrata, Arugula, Tomato, Caramelized Onion, Garlic Horseradish Aioli, Balsamic Glaze, Focaccia",
+        "price": "$16.95",
+        "section": "Lunch Menu / Signature Sandwiches"
+      },
+      {
+        "name": "Roasted Portobello",
+        "description": "Marinated Roasted Portobello Mushrooms, Roasted Peppers, Butter Lettuce, Sundried Tomato Aioli",
+        "price": "$14.50",
+        "section": "Lunch Menu / Signature Sandwiches"
+      },
+      {
+        "name": "Signature Trio",
+        "description": "Salami, Mortadella, Capicola, Creamy Burrata, Roasted Peppers, Tomato Aioli, Arugula, Pepperoncini, Basil Pesto, Balsamic Glaze, Focaccia",
+        "price": "$16.95",
+        "section": "Lunch Menu / Signature Sandwiches"
+      },
+      {
+        "name": "Tomato & Mozzarella",
+        "description": "Fresh Mozzarella, Plum Tomatoes, Sweet Roasted Peppers, Basil, Field Greens, Balsamic Glaze",
+        "price": "$14.25",
+        "section": "Lunch Menu / Signature Sandwiches"
+      },
+      {
+        "name": "Roasted Turkey Avocado",
+        "description": "Turkey, Applewood Smoked Bacon, Avocado, Lettuce, Tomatoes, Peppercorn Aioli",
+        "price": "$14.25",
+        "section": "Lunch Menu / Signature Sandwiches"
+      },
+      {
+        "name": "Wagyu Cheeseburger & Fries",
+        "description": "Lettuce, Tomato, Charred Onions, White & Sharp Cheddar, Pickles, Roasted Garlic Aioli",
+        "price": "$21.25",
+        "section": "Lunch Menu / Burgers"
+      },
+      {
+        "name": "Fried Chicken Burger",
+        "description": "Fried Chicken Breast, Tomato, White Cheddar, Red Onions, Lettuce, Roasted Garlic Aioli",
+        "price": "$17.95",
+        "section": "Lunch Menu / Burgers"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "Ham, Bacon, Tomato, White & Sharp Cheddar Cheese",
+        "price": "$13.25",
+        "section": "Lunch Menu / Panini"
+      },
+      {
+        "name": "Warm Roasted Veggie Salad",
+        "description": "Field Greens, Romaine Hearts, Roasted Artichoke Hearts, Asparagus, Eggplant, Peppers, Roasted Corn, Sun Dried Tomatoes, Avocado, Burrata, Balsamic & Raspberry Vinaigrette",
+        "price": "$15.75",
+        "section": "Lunch Menu / Salads"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Romaine Hearts, Housemade Croutons, Parmesan Cheese",
+        "price": "$11.95",
+        "section": "Lunch Menu / Salads"
+      },
+      {
+        "name": "Parmesan Cream Fettuccine",
+        "description": "Parmesan Cream Sauce",
+        "price": "$16.95",
+        "section": "Lunch Menu / Pasta"
+      },
+      {
+        "name": "Rigatoni Pomodoro",
+        "description": "San Marzano Tomato Basil Sauce, Parmesan, Basil",
+        "price": "$16.95",
+        "section": "Lunch Menu / Pasta"
+      },
+      {
+        "name": "Pesto Pasta",
+        "description": "Cremini Mushrooms, Sun Dried Tomatoes, Artichoke",
+        "price": "$16.95",
+        "section": "Lunch Menu / Pasta"
+      }
+    ],
+    "notes": "Read from a 5-page dated (Aug 2026) designed menu image set linked off the site's /menu/ page - full Brunch (Fruit & Grains, Waffles, Children's Menu, French Toast, Crepes, Pancakes, Sunrise Specialties, Breakfast Sandwiches, Toast, Bagels, Sides) plus Lunch Menu (Signature Sandwiches, Burgers, Panini, Salads, Pasta). All prices printed .XX conventional endings, no fee pattern. Site nav also lists a 'Coffee' menu tab not covered by this image set - drinks/coffee prices not captured, noted as the one gap. Cover page states a table-side 3.5% credit card fee and 18% auto-gratuity for parties of 6+ - these are payment surcharges, not menu prices, and are excluded."
+  },
+  {
+    "restaurantId": "4017",
+    "name": "Ko-Li Bar",
+    "sourceUrl": "https://ko-li.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Ko-Li Bar (Japanese kakigori/shaved ice, a USA Yakyudori Inc. sub-brand) has no menu page on either sandiegoyakyudori.com/page/ko-li-bar or its own ko-li.com - both are just About/Contact/What's New. No ordering platform found. Only priced mentions are tier-5 aggregators (sagemenu, menupix, restaurantji) plus unverified review text ('flavors ~$12, specialty bowls $15') that is hearsay, not a read menu."
+  }
+]

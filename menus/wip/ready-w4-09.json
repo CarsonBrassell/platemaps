@@ -1,0 +1,101 @@
+[
+  {
+    "restaurantId": "2810",
+    "name": "Cibao Cafe",
+    "sourceUrl": "https://www.mapquest.com/us/california/cibao-cafe-371251261",
+    "confidence": "high",
+    "notes": "MapQuest lists it explicitly 'Cibao Cafe - CLOSED, 9449 Balboa Ave, San Diego, CA 92123'. A direct Google Maps business search on the exact address returns no restaurant at all - only offices (chiropractic, psychotherapy, ATF field office, sports rehab, dealer services) - confirming the space has been repurposed. Yelp's own listing also carries a CLOSED tag. Permanently closed, no food successor at the address.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4269",
+    "name": "Urban Kitchen Market",
+    "sourceUrl": "https://www.theshell.org/media/hrpg0uht/shl2026_urbank-02.pdf",
+    "confidence": "high",
+    "notes": "Urban Kitchen Market is a food stand at the Rady Shell at Jacobs Park (San Diego Symphony's outdoor venue), 200 Marina Park Way. Read from the venue's own 2026-season PDF menu (linked from theshell.org/plan-your-visit/food-and-drink/) via pdftotext -layout; small full menu, no truncation, no markup pattern (mix of .50/.95 and flat-dollar prices, consistent with a printed concession menu). 'A Potato Bar' is a distinct sub-menu, prefixed in section.",
+    "dishes": [
+      {
+        "name": "Wagyu Beef Burger",
+        "description": "balsamic onion, provolone, arugula, pickle aioli, brioche bun",
+        "price": "$19.95",
+        "section": "Urban Kitchen Market"
+      },
+      {
+        "name": "Veggie Burger",
+        "description": "balsamic onion, provolone, arugula, pickle aioli, brioche bun (V)",
+        "price": "$19.50",
+        "section": "Urban Kitchen Market"
+      },
+      {
+        "name": "Fried Chicken Tenders",
+        "description": "fries, hot honey, ranch",
+        "price": "$22.95",
+        "section": "Urban Kitchen Market"
+      },
+      {
+        "name": "Ahi Poke Bowl",
+        "description": "sushi rice, carrot, cucumber, radish, scallion, cashew, furikake, tamari dressing, sriracha aioli - contains nuts (GF)",
+        "price": "$24.95",
+        "section": "Urban Kitchen Market"
+      },
+      {
+        "name": "Tofu Poke Bowl",
+        "description": "sushi rice, carrot, cucumber, radish, scallion, cashew, furikake, tamari dressing, sriracha aioli - contains nuts (GF/VE)",
+        "price": "$23.95",
+        "section": "Urban Kitchen Market"
+      },
+      {
+        "name": "French Fries",
+        "description": "(V)",
+        "price": "$12.50",
+        "section": "Urban Kitchen Market"
+      },
+      {
+        "name": "Hot Dog",
+        "description": "",
+        "price": "$10.50",
+        "section": "Urban Kitchen Market"
+      },
+      {
+        "name": "The Basic",
+        "description": "garlic butter, sour cream, scallion",
+        "price": "$11.00",
+        "section": "Urban Kitchen Market / A Potato Bar"
+      },
+      {
+        "name": "Turkey Bean Chili",
+        "description": "cheddar, sour cream, scallion",
+        "price": "$18.00",
+        "section": "Urban Kitchen Market / A Potato Bar"
+      },
+      {
+        "name": "House Smoked BBQ Brisket",
+        "description": "bbq sauce, sour cream, crispy onion",
+        "price": "$20.00",
+        "section": "Urban Kitchen Market / A Potato Bar"
+      },
+      {
+        "name": "Build Your Own",
+        "description": "garlic butter, broccoli, cheddar, bacon bits, crispy onion, scallion, sour cream, sriracha aioli, bbq sauce, hot sauce, salsa verde",
+        "price": "$17.00",
+        "section": "Urban Kitchen Market / A Potato Bar"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3323",
+    "name": "Las Pinches Tortas",
+    "sourceUrl": "https://www.yelp.com/biz/las-pinches-tortas-el-cajon",
+    "confidence": "high",
+    "notes": "www.laspinches.com is fully dead (DNS does not resolve, not just a broken page). Yelp's own listing states plainly 'Yelpers report this location has closed' at the exact address (558 Jamacha Rd, El Cajon). UberEats/Grubhub/Postmates listings are stale marketplace pages (UberEats shows 'Not accepting orders'). Treating as permanently closed for this restaurantId.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "3532",
+    "name": "Cluckin' Bell",
+    "sourceUrl": "https://rockstarintel.com/we-visited-the-real-life-cluckin-bell-from-gta/",
+    "confidence": "high",
+    "notes": "This was a GTA-themed pop-up (by Smokin J's BBQ) at 751 4th Ave, San Diego. Take-Two Interactive issued a cease-and-desist over the trademark and the pop-up was permanently rebranded to 'Don't Cluckin' Tell' in 2023 (confirmed by rockstarintel.com and pcgamer.com). Cluckin' Bell no longer exists as a business name at any address - not-found for this record, not permission to borrow the successor's menu under this id.",
+    "dishes": []
+  }
+]

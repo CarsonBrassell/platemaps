@@ -1,0 +1,4835 @@
+[
+  {
+    "restaurantId": "6938",
+    "name": "Flor and Seed Coffee Roasters",
+    "sourceUrl": "https://florandseedcoffee.com/products.json",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the shopify payload. read from the Shopify /products.json catalog - this is what the site sells online; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Catrina BLEND (Whole Bean)",
+        "description": "CATRINA, BLEND Farmer: Oaxaca/Guerrero",
+        "price": "$19.00",
+        "section": "Single Bag"
+      },
+      {
+        "name": "Catrina BLEND (Ground Bean)",
+        "description": "CATRINA, BLEND Farmer: Oaxaca/Guerrero",
+        "price": "$19.00",
+        "section": "Single Bag"
+      },
+      {
+        "name": "Lucha BLEND (Whole Bean)",
+        "description": "LUCHA , BLEND Farmer: Oaxaca/Chiapas",
+        "price": "$19.00",
+        "section": "Single Bag"
+      },
+      {
+        "name": "Lucha BLEND (Ground Bean)",
+        "description": "LUCHA , BLEND Farmer: Oaxaca/Chiapas",
+        "price": "$19.00",
+        "section": "Single Bag"
+      },
+      {
+        "name": "Chiapas Familia Meza (Whole Bean)",
+        "description": "CHIAPAS, Tenejapa Farmer Finca: Familia Meza",
+        "price": "$19.00",
+        "section": "Single Bag"
+      },
+      {
+        "name": "Chiapas Familia Meza (Ground Bean)",
+        "description": "CHIAPAS, Tenejapa Farmer Finca: Familia Meza",
+        "price": "$19.00",
+        "section": "Single Bag"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6306",
+    "name": "Olive Baking Company",
+    "sourceUrl": "https://order.toasttab.com/online/the-olive-baking-company-735-a-santa-clara-place",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the toast payload. 10 Toast items marked out of stock were skipped; Toast served this catalog with respectAvailability=true at 9/4/2026, 12:12:22 AM PT, so it holds only what was being served then",
+    "dishes": [
+      {
+        "name": "Almond Croissant",
+        "description": "",
+        "price": "$5.25",
+        "section": "FOOD / Pastries"
+      },
+      {
+        "name": "Chocolate Croissant",
+        "description": "",
+        "price": "$4.95",
+        "section": "FOOD / Pastries"
+      },
+      {
+        "name": "Cinnamon Roll",
+        "description": "",
+        "price": "$4.95",
+        "section": "FOOD / Pastries"
+      },
+      {
+        "name": "Croissant",
+        "description": "",
+        "price": "$4.65",
+        "section": "FOOD / Pastries"
+      },
+      {
+        "name": "Lemon Loaf Gf",
+        "description": "Please note that we cannot guarantee that",
+        "price": "$4.50",
+        "section": "FOOD / Pastries"
+      },
+      {
+        "name": "Sticky Bun",
+        "description": "",
+        "price": "$4.95",
+        "section": "FOOD / Pastries"
+      },
+      {
+        "name": "Stroopwafel",
+        "description": "",
+        "price": "$2.50",
+        "section": "FOOD / Pastries"
+      },
+      {
+        "name": "Sourdough Boule",
+        "description": "",
+        "price": "$7.75",
+        "section": "FOOD / Bread"
+      },
+      {
+        "name": "Bubble Gum",
+        "description": "",
+        "price": "$0.25",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Ghost Pepper Hot Honey",
+        "description": "",
+        "price": "$12.00",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Honey Large",
+        "description": "",
+        "price": "$12.00",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Honey Small",
+        "description": "",
+        "price": "$5.00",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Jackies Jam",
+        "description": "Jackie’s Jams crafts jams and jellies the",
+        "price": "$8.00",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "K Cup pods",
+        "description": "",
+        "price": "$1.95",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Maple Hot Honey",
+        "description": "",
+        "price": "$12.00",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Olive Blend Coffee 1 lb Bag",
+        "description": "Whole beans. Need it ground? Ask an employee",
+        "price": "$16.00",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Olive Jar",
+        "description": "",
+        "price": "$12.00",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Olive Spread",
+        "description": "",
+        "price": "$11.00",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Olives Basil & Garlic",
+        "description": "",
+        "price": "$1.89",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Olives Chili & Garlic",
+        "description": "",
+        "price": "$1.89",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Perfect Bar",
+        "description": "",
+        "price": "$3.99",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Pistachios",
+        "description": "",
+        "price": "$1.75",
+        "section": "FOOD / Groceries"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$4.25",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Cafe Au Lait",
+        "description": "",
+        "price": "$3.25",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$4.50",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "",
+        "price": "$5.05",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Chocolate Milk",
+        "description": "",
+        "price": "$4.50",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "Organic cold brew coffee from our local",
+        "price": "$6.10",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Double Espresso",
+        "description": "Organic coffee roasted locally by our vendor",
+        "price": "$4.00",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Flavor",
+        "description": "",
+        "price": "$1.00",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Hammerhead",
+        "description": "House coffee and 2 espresso shots",
+        "price": "$5.00",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "Made with Ghirardelli chocolate",
+        "price": "$4.25",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "House Coffee",
+        "description": "Organic Coffee from local vendor DropKick",
+        "price": "$3.25",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "Black unsweetened brewed tea",
+        "price": "$3.75",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Italian Soda",
+        "description": "",
+        "price": "$4.50",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Latte",
+        "description": "2 espresso shots and your choice of milk",
+        "price": "$4.65",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Loose Leaf Tea",
+        "description": "",
+        "price": "$3.75",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Matcha",
+        "description": "",
+        "price": "$5.65",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Mexican Hot Chocolate",
+        "description": "Made in house using Ghirardelli chocolate",
+        "price": "$4.55",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Mexican Mocha",
+        "description": "House made with Ghirardelli chocolate powder",
+        "price": "$5.65",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Milk",
+        "description": "",
+        "price": "$3.55",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Mocha",
+        "description": "Made with Ghirardelli chocolate",
+        "price": "$5.35",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Refresher",
+        "description": "",
+        "price": "$5.50",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Spicy Strawberry Splash",
+        "description": "",
+        "price": "$5.50",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Steamer",
+        "description": "",
+        "price": "$3.45",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "White Hot Chocolate",
+        "description": "",
+        "price": "$4.55",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "White Mocha",
+        "description": "Made with Ghirardelli white chocolate powder",
+        "price": "$5.65",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$4.65",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Tea Latte",
+        "description": "Tea, flavor, and steamed milk",
+        "price": "$4.75",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "The Gabby",
+        "description": "1/2 sweet pumpkin spice latte with oat milk",
+        "price": "$6.90",
+        "section": "BEVERAGES / Beverages"
+      },
+      {
+        "name": "Bottled Apple Juice",
+        "description": "",
+        "price": "$3.70",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$3.00",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Can Soda",
+        "description": "",
+        "price": "$2.75",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Coconut Hydr8 Juice",
+        "description": "",
+        "price": "$9.24",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Cold Brew Can",
+        "description": "DropKick Brew",
+        "price": "$5.20",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Culture Pop Soda",
+        "description": "Black Cherry",
+        "price": "$3.50",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Gatorade",
+        "description": "",
+        "price": "$3.25",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Golden Girl Juice",
+        "description": "",
+        "price": "$9.24",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Immunity Shot Pure",
+        "description": "",
+        "price": "$4.75",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Immunity Shot Vive",
+        "description": "",
+        "price": "$4.00",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Kombucha",
+        "description": "",
+        "price": "$4.20",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Naked Juice",
+        "description": "",
+        "price": "$4.24",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Pellegrino Water",
+        "description": "",
+        "price": "$3.25",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Pure Greens Juice",
+        "description": "",
+        "price": "$9.24",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "San Pellegrino Can Blood Orange",
+        "description": "",
+        "price": "$3.25",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Soul Kick Juice",
+        "description": "",
+        "price": "$9.24",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Topo Chico",
+        "description": "",
+        "price": "$3.90",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Tropicana Bottled OJ",
+        "description": "12 oz",
+        "price": "$3.70",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Waterloo Sparkling",
+        "description": "",
+        "price": "$2.75",
+        "section": "BEVERAGES / Pepsi Cooler"
+      },
+      {
+        "name": "Apron Green Olive",
+        "description": "",
+        "price": "$24.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Beach Ornament",
+        "description": "",
+        "price": "$11.50",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Candle",
+        "description": "Small candle with lid",
+        "price": "$8.50",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Earrings Holiday",
+        "description": "",
+        "price": "$10.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Flour, Water, Salt Book",
+        "description": "",
+        "price": "$37.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "French Press",
+        "description": "Bodum brand french press",
+        "price": "$28.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Greeting Card",
+        "description": "",
+        "price": "$5.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Key Chain Mission Beach 92109",
+        "description": "",
+        "price": "$6.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Magnet San Diego license plate",
+        "description": "",
+        "price": "$10.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Mermaid Tote",
+        "description": "",
+        "price": "$15.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Map Bag",
+        "description": "",
+        "price": "$16.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Map Key Chain",
+        "description": "",
+        "price": "$12.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "MB History Book",
+        "description": "",
+        "price": "$20.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Mission Beach Key Chain, metal",
+        "description": "Metal Mission Beach San Diego key chain",
+        "price": "$15.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Mission Beach Street Map",
+        "description": "",
+        "price": "$20.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Olive Green Canvas Tote Bag",
+        "description": "",
+        "price": "$9.95",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "olive towel",
+        "description": "green olive you kitchen towel",
+        "price": "$14.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Pinwheel",
+        "description": "",
+        "price": "$3.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Playing Cards",
+        "description": "Deck of cards",
+        "price": "$5.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "postcards",
+        "description": "Drawn by local San Diego artist. Different",
+        "price": "$2.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "San Diego bottle opener key chain black",
+        "description": "",
+        "price": "$5.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Scrabble Tiles",
+        "description": "",
+        "price": "$10.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sourdough tote bag",
+        "description": "",
+        "price": "$16.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sourdough Towel",
+        "description": "Kitchen Towel",
+        "price": "$15.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sprinkle 3.2 oz",
+        "description": "",
+        "price": "$8.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sticker California",
+        "description": "",
+        "price": "$3.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sticker Coffee and Muffin",
+        "description": "",
+        "price": "$3.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sticker Cut it Out",
+        "description": "",
+        "price": "$3.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sticker Donut Give up",
+        "description": "",
+        "price": "$3.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sticker License Plate San Diego",
+        "description": "",
+        "price": "$3.50",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sticker Milk and Cookie",
+        "description": "",
+        "price": "$3.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sticker Roll with it",
+        "description": "",
+        "price": "$3.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sticker Smore",
+        "description": "",
+        "price": "$3.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Stress ball",
+        "description": "",
+        "price": "$3.50",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Sunglasses Red White and Blue",
+        "description": "",
+        "price": "$5.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Tea bags",
+        "description": "",
+        "price": "$5.50",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Beach Life Tote Bag",
+        "description": "Canvas tote bag- Beach life",
+        "price": "$12.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Cinnamon Kitchen Towel",
+        "description": "They see me rollin towel",
+        "price": "$14.00",
+        "section": "RETAIL / Not Olive Merch"
+      },
+      {
+        "name": "Bag Charm Olive Crochet",
+        "description": "",
+        "price": "$14.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Blue Speckled Ceramic Camper Mug",
+        "description": "",
+        "price": "$14.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Dad Hat Embroidered",
+        "description": "",
+        "price": "$32.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Mini Mug Ornament",
+        "description": "Comes in red, blue, or green",
+        "price": "$12.50",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "New! OU Zip-Up Sweatshirt",
+        "description": "",
+        "price": "$48.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Olive Ceramic Mug",
+        "description": "",
+        "price": "$12.50",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Olive Logo Apron",
+        "description": "",
+        "price": "$32.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Olive T Shirt",
+        "description": "",
+        "price": "$24.95",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Olive U Camper Mug",
+        "description": "Insulated camper mug - comes in olive green",
+        "price": "$25.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Olive You Metallic Pin",
+        "description": "",
+        "price": "$5.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Olive You Sign Black & White",
+        "description": "",
+        "price": "$12.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Sm Olive You Canvas Bag",
+        "description": "",
+        "price": "$14.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Stickers",
+        "description": "",
+        "price": "$3.50",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Trucker Hat",
+        "description": "",
+        "price": "$23.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Tumbler Cup Olive You",
+        "description": "16oz Tumbler with sip lid. Comes in black",
+        "price": "$28.00",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Watercolor ceramic mug",
+        "description": "",
+        "price": "$12.95",
+        "section": "RETAIL / Olive Merch"
+      },
+      {
+        "name": "Black Olive You Keychain",
+        "description": "",
+        "price": "$7.00",
+        "section": "RETAIL / Olive Merch"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6694",
+    "name": "Roberto’s Taco Shop - Pacific Beach",
+    "sourceUrl": "https://robertostacoshopsd.com/menu",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the own-jsonld payload. read from schema.org Menu JSON-LD on the restaurant's own page; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Salsa Fresca, Eggs, Cheese",
+        "description": "",
+        "price": "$8.00",
+        "section": "Ocean Beach - Menu / Breakfast Burritos"
+      },
+      {
+        "name": "Beans, Eggs, Cheese",
+        "description": "",
+        "price": "$8.00",
+        "section": "Ocean Beach - Menu / Breakfast Burritos"
+      },
+      {
+        "name": "Eggs, Papas, Cheese",
+        "description": "",
+        "price": "$8.00",
+        "section": "Ocean Beach - Menu / Breakfast Burritos"
+      },
+      {
+        "name": "Ham, Eggs, Papas, Cheese",
+        "description": "",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Breakfast Burritos"
+      },
+      {
+        "name": "Bacon, Eggs, Papas, Cheese",
+        "description": "",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Breakfast Burritos"
+      },
+      {
+        "name": "Sausage, Eggs, Papas, Cheese",
+        "description": "",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Breakfast Burritos"
+      },
+      {
+        "name": "Carne Asada, Eggs, Papas, Cheese",
+        "description": "",
+        "price": "$11.00",
+        "section": "Ocean Beach - Menu / Breakfast Burritos"
+      },
+      {
+        "name": "The Original Carne Asada Burrito",
+        "description": "Guacamole, salsa fresca",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Bean & Cheese Burrito",
+        "description": "",
+        "price": "$6.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Machaca Burrito",
+        "description": "Shredded beef mix with bell peppers onions",
+        "price": "$11.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Chorizo Burrito",
+        "description": "Chorizo and eggs",
+        "price": "$11.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Shredded Beef Burrito",
+        "description": "Lettuce, cheese, queso",
+        "price": "$9.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Shredded Chicken Burrito",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Mixed Beef & Bean Burrito",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Mixed Chicken & Bean Burrito",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "Carne asada, fries, cheese",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Pollo Asado Burrito",
+        "description": "",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Adobada Burrito",
+        "description": "Guacamole, salsa fresca",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Vegetarian Style Burrito",
+        "description": "Rice, beans, guacamole, salsa fresca, lettuce",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "Rice, lettuce, enchilada sauce, sour cream",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Fish - Battered Burrito",
+        "description": "Baja sauce, salsa fresca, cabbage, lime",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "Grilled Shrimp Burrito",
+        "description": "Salsa fresca, rice, cabbage, baja sauce",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Classic Burritos"
+      },
+      {
+        "name": "California Surf & Turf Burrito",
+        "description": "Carne asada, shrimp, fries, salsa fresca,",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "California Breakfast Burrito",
+        "description": "3 eggs, carne asada, bacon, fries, cheese,",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Supreme Breakfast Burrito",
+        "description": "Ham, bacon, sausage, eggs, papas, cheese",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Mexican Breakfast Burrito",
+        "description": "Beans, salsa fresca, eggs, papas, cheese",
+        "price": "$11.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Quesa-Rito Burrito",
+        "description": "Quesadilla - then wrapped with carne asada,",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Hawaiian Burro",
+        "description": "Carne asada (or any other meat), ham,",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "2 in 1 Burrito",
+        "description": "Carne asada, guacamole, cheese, queso",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Arizona Burrito",
+        "description": "Carne asada, fresh-cut papas, salsa fresca,",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Ranchero Burrito",
+        "description": "Carne asada, onions, tomato, bell pepper,",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "2 Mares Burrito",
+        "description": "Fish, shrimp, salsa fresca, rice, cabbage,",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Carne Asada Fries Burrito",
+        "description": "Carne asada, fries, guacamole, sour cream,",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Camarones a La Diabla Burrito",
+        "description": "Shrimp in a spicy red sauce, rice, beans",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Pork Chile Colorado Burrito",
+        "description": "Spicy pork guiso, rice",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Cielo, Mar Y Tierra",
+        "description": "Carne asada, pollo asado, shrimp, fries,",
+        "price": "$15.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Conga Burrito",
+        "description": "Carne asada, rice, beans",
+        "price": "$11.00",
+        "section": "Ocean Beach - Menu / Premium Burritos"
+      },
+      {
+        "name": "Shredded Beef Chimichangas",
+        "description": "",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Chimichangas"
+      },
+      {
+        "name": "Shredded Chicken Chimichangas",
+        "description": "",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Chimichangas"
+      },
+      {
+        "name": "Carne Asada Chimichangas",
+        "description": "",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Chimichangas"
+      },
+      {
+        "name": "Grilled Chicken Chimichangas",
+        "description": "",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Chimichangas"
+      },
+      {
+        "name": "Cheese Quesadillas",
+        "description": "Cheese crisp 👌",
+        "price": "$6.00",
+        "section": "Ocean Beach - Menu / Quesadillas"
+      },
+      {
+        "name": "Ham Quesadillas",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ocean Beach - Menu / Quesadillas"
+      },
+      {
+        "name": "Classic Chicken Quesadillas",
+        "description": "",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Quesadillas"
+      },
+      {
+        "name": "Carne Asada Quesadillas",
+        "description": "Cheese crisp with carne asada",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Quesadillas"
+      },
+      {
+        "name": "Grilled Chicken Quesadillas",
+        "description": "Guacamole, salsa fresca",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Quesadillas"
+      },
+      {
+        "name": "Grilled Shrimp Quesadillas",
+        "description": "Cheese, salsa fresca",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Quesadillas"
+      },
+      {
+        "name": "California Quesadillas",
+        "description": "Cheese, carne asada, fries, sour cream",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Quesadillas"
+      },
+      {
+        "name": "Ham Tortas",
+        "description": "",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Tortas"
+      },
+      {
+        "name": "Shredded Beef Tortas",
+        "description": "",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Tortas"
+      },
+      {
+        "name": "Shredded Chicken Tortas",
+        "description": "",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Tortas"
+      },
+      {
+        "name": "Machaca Tortas",
+        "description": "",
+        "price": "$11.00",
+        "section": "Ocean Beach - Menu / Tortas"
+      },
+      {
+        "name": "Chorizo Tortas",
+        "description": "",
+        "price": "$11.00",
+        "section": "Ocean Beach - Menu / Tortas"
+      },
+      {
+        "name": "Carnitas Tortas",
+        "description": "Salsa fresca",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Tortas"
+      },
+      {
+        "name": "Adobada Tortas",
+        "description": "Salsa fresca",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Tortas"
+      },
+      {
+        "name": "Carne Asada Tortas",
+        "description": "Salsa fresca",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Tortas"
+      },
+      {
+        "name": "Pollo Asado Tortas",
+        "description": "Salsa fresca",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Tortas"
+      },
+      {
+        "name": "1. Beef Taco, Cheese Enchilada",
+        "description": "",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "2. Bean Tostada, Cheese Enchilada",
+        "description": "",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "3. Two Cheese Enchiladas",
+        "description": "",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "4. Two Beef Tacos",
+        "description": "",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "5. Beef Burrito, Cheese Enchilada",
+        "description": "",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "6. Chicken Taco, Chicken Burrito",
+        "description": "",
+        "price": "$13.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "7. Carne Asada Plate",
+        "description": "Guacamole, salsa fresca and choice of",
+        "price": "$17.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "8. Machaca Plate",
+        "description": "Guacamole, salsa fresca and choice of",
+        "price": "$16.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "9. Chorizo Plate",
+        "description": "Guacamole salsa, fresca and choice of",
+        "price": "$16.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "10. Carnitas Plate",
+        "description": "Guacamole, salsa fresca and choice of",
+        "price": "$16.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "11. Three Rolled Guacamole",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "12. Two Fish Tacos",
+        "description": "",
+        "price": "$11.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "13. Carne Asada Burrito",
+        "description": "",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "14. Quesadilla",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "15. Chile Relleno, Beef Taco",
+        "description": "",
+        "price": "$15.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "16. Chile Relleno, Cheese Enchilada",
+        "description": "",
+        "price": "$15.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "#17. Camarones Rancheros Plate",
+        "description": "Tortillas of your choice",
+        "price": "$17.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "#18. Camarones a La Diabla Plate",
+        "description": "Tortillas of your choice",
+        "price": "$17.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "#19. Two Carne Asada Tacos",
+        "description": "Served with rice & beans",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "#20. Chile Relleno",
+        "description": "Served with rice & beans",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Combination Plates"
+      },
+      {
+        "name": "Shredded Beef Rice Bowls",
+        "description": "",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Rice Bowls"
+      },
+      {
+        "name": "Classic Chicken Rice Bowls",
+        "description": "",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Rice Bowls"
+      },
+      {
+        "name": "Carne Asada Rice Bowls",
+        "description": "",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Rice Bowls"
+      },
+      {
+        "name": "Grilled Chicken Rice Bowls",
+        "description": "",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Rice Bowls"
+      },
+      {
+        "name": "Grilled Shrimp Rice Bowls",
+        "description": "",
+        "price": "$12.00",
+        "section": "Ocean Beach - Menu / Rice Bowls"
+      },
+      {
+        "name": "Fish - Battered Soft Tacos",
+        "description": "Baja sauce, salsa fresca, cabbage, lime",
+        "price": "$6.00",
+        "section": "Ocean Beach - Menu / Soft Tacos"
+      },
+      {
+        "name": "Grilled Shrimp Soft Tacos",
+        "description": "Baja sauce, salsa fresca, cabbage, lime",
+        "price": "$6.00",
+        "section": "Ocean Beach - Menu / Soft Tacos"
+      },
+      {
+        "name": "Carnitas Soft Tacos",
+        "description": "Guacamole, salsa fresca",
+        "price": "$6.00",
+        "section": "Ocean Beach - Menu / Soft Tacos"
+      },
+      {
+        "name": "Adobada Soft Tacos",
+        "description": "Guacamole, salsa fresca",
+        "price": "$6.00",
+        "section": "Ocean Beach - Menu / Soft Tacos"
+      },
+      {
+        "name": "Carne Asada Soft Tacos",
+        "description": "Guacamole, salsa fresca",
+        "price": "$6.00",
+        "section": "Ocean Beach - Menu / Soft Tacos"
+      },
+      {
+        "name": "Grilled Chicken Soft Tacos",
+        "description": "Guacamole, salsa fresca",
+        "price": "$6.00",
+        "section": "Ocean Beach - Menu / Soft Tacos"
+      },
+      {
+        "name": "Shredded Beef Taco",
+        "description": "Lettuce, cheese, queso",
+        "price": "$5.00",
+        "section": "Ocean Beach - Menu / Crispy Tacos"
+      },
+      {
+        "name": "Chicken Taco",
+        "description": "Lettuce, cheese, queso",
+        "price": "$5.00",
+        "section": "Ocean Beach - Menu / Crispy Tacos"
+      },
+      {
+        "name": "Potato Taco",
+        "description": "Lettuce, cheese, queso",
+        "price": "$5.00",
+        "section": "Ocean Beach - Menu / Crispy Tacos"
+      },
+      {
+        "name": "Three Rolled Guacamole Tacos",
+        "description": "",
+        "price": "$6.00",
+        "section": "Ocean Beach - Menu / Rolled Tacos"
+      },
+      {
+        "name": "Five Rolled Guacamole Tacos",
+        "description": "",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Rolled Tacos"
+      },
+      {
+        "name": "Twelve Rolled Guacamole Tacos",
+        "description": "",
+        "price": "$20.00",
+        "section": "Ocean Beach - Menu / Rolled Tacos"
+      },
+      {
+        "name": "Super Rolled Tacos",
+        "description": "4 rolled tacos, guacamole, cheese, queso,",
+        "price": "$10.00",
+        "section": "Ocean Beach - Menu / Rolled Tacos"
+      },
+      {
+        "name": "Bean Tostadas",
+        "description": "",
+        "price": "$6.00",
+        "section": "Ocean Beach - Menu / Tostadas"
+      },
+      {
+        "name": "Shredded Beef Tostadas",
+        "description": "",
+        "price": "$7.00",
+        "section": "Ocean Beach - Menu / Tostadas"
+      },
+      {
+        "name": "Shredded Chicken Tostadas",
+        "description": "",
+        "price": "$7.00",
+        "section": "Ocean Beach - Menu / Tostadas"
+      },
+      {
+        "name": "Surf & Turf Nachos Chips",
+        "description": "Asada, shrimp, cheese, guacamole, sour",
+        "price": "$16.00",
+        "section": "Ocean Beach - Menu / Tortilla Chips"
+      },
+      {
+        "name": "Carne Asada Chips",
+        "description": "Cheese, guacamole, sour cream, salsa fresca,",
+        "price": "$15.00",
+        "section": "Ocean Beach - Menu / Tortilla Chips"
+      },
+      {
+        "name": "Guacamole Chips",
+        "description": "Cheese, queso",
+        "price": "$8.00",
+        "section": "Ocean Beach - Menu / Tortilla Chips"
+      },
+      {
+        "name": "Surf & Turf Fries",
+        "description": "Asada, shrimp, cheese, guacamole, sour",
+        "price": "$16.00",
+        "section": "Ocean Beach - Menu / French Fries"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "Cheese, guacamole, sour cream, queso",
+        "price": "$15.00",
+        "section": "Ocean Beach - Menu / French Fries"
+      },
+      {
+        "name": "Chile Verde Fries",
+        "description": "Cheese, carnitas, salsa verde, cilantro,",
+        "price": "$15.00",
+        "section": "Ocean Beach - Menu / French Fries"
+      },
+      {
+        "name": "Texas Fries",
+        "description": "Fries, cheese, sour cream, pollo asado,",
+        "price": "$14.00",
+        "section": "Ocean Beach - Menu / French Fries"
+      },
+      {
+        "name": "Enchilada Sauce Fries",
+        "description": "Cheese, queso",
+        "price": "$8.00",
+        "section": "Ocean Beach - Menu / French Fries"
+      },
+      {
+        "name": "Cheese Enchiladas",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ocean Beach - Menu / Two Enchiladas"
+      },
+      {
+        "name": "Beef Enchiladas",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ocean Beach - Menu / Two Enchiladas"
+      },
+      {
+        "name": "Chicken Enchiladas",
+        "description": "",
+        "price": "$9.00",
+        "section": "Ocean Beach - Menu / Two Enchiladas"
+      },
+      {
+        "name": "Two Grilled Shrimp Enchiladas",
+        "description": "",
+        "price": "$11.00",
+        "section": "Ocean Beach - Menu / Two Enchiladas"
+      },
+      {
+        "name": "Cheese",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Extras Per Item"
+      },
+      {
+        "name": "Guacamole",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Extras Per Item"
+      },
+      {
+        "name": "Sour Cream",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Extras Per Item"
+      },
+      {
+        "name": "Salsa Fresca",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Extras Per Item"
+      },
+      {
+        "name": "Rice",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Extras Per Item"
+      },
+      {
+        "name": "Beans",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Extras Per Item"
+      },
+      {
+        "name": "Enchilada Sauce",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Extras Per Item"
+      },
+      {
+        "name": "Queso Enchilado",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Extras Per Item"
+      },
+      {
+        "name": "Lettuce",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Extras Per Item"
+      },
+      {
+        "name": "Churros",
+        "description": "",
+        "price": "$3.00",
+        "section": "Ocean Beach - Menu / Churros"
+      },
+      {
+        "name": "One Chile Relleno",
+        "description": "Enchilada sauce, cheese, queso",
+        "price": "$7.00",
+        "section": "Ocean Beach - Menu / Side Orders"
+      },
+      {
+        "name": "Hot Carrots",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Side Orders"
+      },
+      {
+        "name": "1 Flour Tortilla",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Side Orders"
+      },
+      {
+        "name": "3 Corn Tortilla",
+        "description": "",
+        "price": "$1.50",
+        "section": "Ocean Beach - Menu / Side Orders"
+      },
+      {
+        "name": "8oz. Rice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Ocean Beach - Menu / Side Orders"
+      },
+      {
+        "name": "8oz. Bean with Cheese",
+        "description": "",
+        "price": "$4.00",
+        "section": "Ocean Beach - Menu / Side Orders"
+      },
+      {
+        "name": "8oz. Guacamole",
+        "description": "",
+        "price": "$5.00",
+        "section": "Ocean Beach - Menu / Side Orders"
+      },
+      {
+        "name": "8oz. Sour Cream",
+        "description": "",
+        "price": "$4.00",
+        "section": "Ocean Beach - Menu / Side Orders"
+      },
+      {
+        "name": "8oz. Salsa Fresca",
+        "description": "",
+        "price": "$4.00",
+        "section": "Ocean Beach - Menu / Side Orders"
+      },
+      {
+        "name": "12oz. Cans",
+        "description": "",
+        "price": "$2.00",
+        "section": "Ocean Beach - Menu / Drinks"
+      },
+      {
+        "name": "20oz. Bottles",
+        "description": "",
+        "price": "$3.00",
+        "section": "Ocean Beach - Menu / Drinks"
+      },
+      {
+        "name": "24oz. Aguas Frescas",
+        "description": "Horchata, Jamaica, Tamarindo, Mango, Coco,",
+        "price": "$4.00",
+        "section": "Ocean Beach - Menu / Drinks"
+      },
+      {
+        "name": "Mexican Coke",
+        "description": "Glass Bottle, Mexican Coke",
+        "price": "$4.00",
+        "section": "Ocean Beach - Menu / Drinks"
+      },
+      {
+        "name": "Jarritos",
+        "description": "",
+        "price": "$4.00",
+        "section": "Ocean Beach - Menu / Drinks"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$2.00",
+        "section": "Ocean Beach - Menu / Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4835",
+    "name": "Baja Rick's Cantina",
+    "sourceUrl": "https://order.toasttab.com/online/bajaricks",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the toast payload. Toast served this catalog with respectAvailability=true at 9/4/2026, 12:13:43 AM PT, so it holds only what was being served then",
+    "dishes": [
+      {
+        "name": "Guacamole & Chips",
+        "description": "",
+        "price": "$17.00",
+        "section": "Apps"
+      },
+      {
+        "name": "Hot Wings",
+        "description": "",
+        "price": "$21.00",
+        "section": "Apps"
+      },
+      {
+        "name": "Chicken Taquitos",
+        "description": "",
+        "price": "$14.00",
+        "section": "Apps"
+      },
+      {
+        "name": "Street Corn in a Cup",
+        "description": "",
+        "price": "$9.00",
+        "section": "Apps"
+      },
+      {
+        "name": "Fried Calamari & Shrimp",
+        "description": "",
+        "price": "$19.00",
+        "section": "Apps"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5957",
+    "name": "Goldilocks National City",
+    "sourceUrl": "https://goldilocks-nationalcity.com/menu",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the own-jsonld payload. read from schema.org Menu JSON-LD on the restaurant's own page; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Bansilog",
+        "description": "Bangus milkfish marinated in garlic and",
+        "price": "$15.99",
+        "section": "Goldilocks National City - Menu / Combo Meals"
+      },
+      {
+        "name": "Longsilog",
+        "description": "Tasty stir-fried pork sausage infused with",
+        "price": "$15.99",
+        "section": "Goldilocks National City - Menu / Combo Meals"
+      },
+      {
+        "name": "Tocilog",
+        "description": "Stir-fried, sweetened cured pork served with",
+        "price": "$15.99",
+        "section": "Goldilocks National City - Menu / Combo Meals"
+      },
+      {
+        "name": "Chicken Adobo Combo",
+        "description": "Chicken braised in vinegar, soy sauce,",
+        "price": "$15.99",
+        "section": "Goldilocks National City - Menu / Combo Meals"
+      },
+      {
+        "name": "Pork BBQ Combo",
+        "description": "2 pieces of our Filipino-style pork grilled",
+        "price": "$14.79",
+        "section": "Goldilocks National City - Menu / Combo Meals"
+      },
+      {
+        "name": "Inihaw Platter",
+        "description": "Serves 3 - 4. Combination of grilled whole",
+        "price": "$56.99",
+        "section": "Goldilocks National City - Menu / Combo Meals"
+      },
+      {
+        "name": "Pinoy Breakfast Platter",
+        "description": "Fried boneless milkfish, stir-fried beef",
+        "price": "$54.69",
+        "section": "Goldilocks National City - Menu / Combo Meals"
+      },
+      {
+        "name": "Goodle platter",
+        "description": "Serves 6 - 8. Daing na bangus, grilled pork",
+        "price": "$154.99",
+        "section": "Goldilocks National City - Menu / Combo Meals"
+      },
+      {
+        "name": "Appetizer Sampler",
+        "description": "Consist of fried pork & shrimp lumpia,",
+        "price": "$21.69",
+        "section": "Goldilocks National City - Menu / Appetizer"
+      },
+      {
+        "name": "Crispy Chicken Wings",
+        "description": "Marinated & seasoned crispy fried chicken",
+        "price": "$19.39",
+        "section": "Goldilocks National City - Menu / Appetizer"
+      },
+      {
+        "name": "Calamari",
+        "description": "Crispy fried squid served with our garlic",
+        "price": "$17.09",
+        "section": "Goldilocks National City - Menu / Appetizer"
+      },
+      {
+        "name": "Lumpia Shanghai",
+        "description": "Crispy mini spring roll filled with diced",
+        "price": "$17.09",
+        "section": "Goldilocks National City - Menu / Appetizer"
+      },
+      {
+        "name": "Siomai",
+        "description": "Juicy pork and shrimp dumplings steamed to",
+        "price": "$7.99",
+        "section": "Goldilocks National City - Menu / Appetizer"
+      },
+      {
+        "name": "Arroz Caldo",
+        "description": "Rice porridge with chicken strips topped",
+        "price": "$12.49",
+        "section": "Goldilocks National City - Menu / Soup"
+      },
+      {
+        "name": "Pork Sinigang Soup",
+        "description": "Pork spareribs with tamarind soup and",
+        "price": "$25.09",
+        "section": "Goldilocks National City - Menu / Soup"
+      },
+      {
+        "name": "Bulalo Soup",
+        "description": "Hearty beef shank soup with green beans,",
+        "price": "$27.39",
+        "section": "Goldilocks National City - Menu / Soup"
+      },
+      {
+        "name": "Pancit Sotanghon",
+        "description": "Glass noodles sauteed with minced pork,",
+        "price": "$23.89",
+        "section": "Goldilocks National City - Menu / Noodle"
+      },
+      {
+        "name": "Pancit Bihon",
+        "description": "Rice noodles sauteed with diced pork, shrimp",
+        "price": "$23.89",
+        "section": "Goldilocks National City - Menu / Noodle"
+      },
+      {
+        "name": "Pancit Canton",
+        "description": "Lo mein noodles sauteed with diced pork,",
+        "price": "$23.89",
+        "section": "Goldilocks National City - Menu / Noodle"
+      },
+      {
+        "name": "Pancit Palabok",
+        "description": "Rice noodles with shrimp and garlic sauce,",
+        "price": "$11.39",
+        "section": "Goldilocks National City - Menu / Noodle"
+      },
+      {
+        "name": "Goldilocks Spaghetti",
+        "description": "Filipino-style spaghetti with ground beef,",
+        "price": "$10.19",
+        "section": "Goldilocks National City - Menu / Noodle"
+      },
+      {
+        "name": "Bagoong Rice Medley",
+        "description": "Fried rice sauteed with shrimp paste and",
+        "price": "$28.49",
+        "section": "Goldilocks National City - Menu / Rice"
+      },
+      {
+        "name": "Adobo Rice Medley",
+        "description": "Fried rice sauteed with chicken adobo bits",
+        "price": "$28.49",
+        "section": "Goldilocks National City - Menu / Rice"
+      },
+      {
+        "name": "Bagoong Fried Rice",
+        "description": "Egg and rice wok-fried with bagoong (shrimp",
+        "price": "$17.09",
+        "section": "Goldilocks National City - Menu / Rice"
+      },
+      {
+        "name": "Adobo Fried Rice",
+        "description": "Egg and rice wok-fried with diced chicken",
+        "price": "$17.09",
+        "section": "Goldilocks National City - Menu / Rice"
+      },
+      {
+        "name": "Garlic Rice",
+        "description": "Garlic Fried Rice. Serves 3-4",
+        "price": "$13.69",
+        "section": "Goldilocks National City - Menu / Rice"
+      },
+      {
+        "name": "Steamed Rice",
+        "description": "Serving for one.",
+        "price": "$3.99",
+        "section": "Goldilocks National City - Menu / Rice"
+      },
+      {
+        "name": "Beef Kare Kare",
+        "description": "Beef meat, tripe & vegetables slow-cooked in",
+        "price": "$26.19",
+        "section": "Goldilocks National City - Menu / Beef Entrée"
+      },
+      {
+        "name": "Beef Kaldereta",
+        "description": "Classic Filipino beef stew cooked in tomato",
+        "price": "$20.49",
+        "section": "Goldilocks National City - Menu / Beef Entrée"
+      },
+      {
+        "name": "Kalderetang Kambing",
+        "description": "Mutton slow cooked in tomato sauce with bell",
+        "price": "$20.49",
+        "section": "Goldilocks National City - Menu / Beef Entrée"
+      },
+      {
+        "name": "Bistek Tagalog",
+        "description": "Tender slices of beef sirloin with special",
+        "price": "$25.09",
+        "section": "Goldilocks National City - Menu / Beef Entrée"
+      },
+      {
+        "name": "Chicken Adobo",
+        "description": "Chicken braised in vinegar, soy sauce,",
+        "price": "$18.19",
+        "section": "Goldilocks National City - Menu / Chicken Entree"
+      },
+      {
+        "name": "Golden Chicken",
+        "description": "Marinated and seasoned crispy fried chicken",
+        "price": "$20.49",
+        "section": "Goldilocks National City - Menu / Chicken Entree"
+      },
+      {
+        "name": "Crispy Binagoongan with Eggplant",
+        "description": "Scrumptious combination of cripy pork bits",
+        "price": "$21.69",
+        "section": "Goldilocks National City - Menu / Pork Entrée"
+      },
+      {
+        "name": "Crispy Pata",
+        "description": "Crispy-fried marinated pork hock served with",
+        "price": "$34.19",
+        "section": "Goldilocks National City - Menu / Pork Entrée"
+      },
+      {
+        "name": "Dinuguan",
+        "description": "A unique combination of pork meat and",
+        "price": "$17.09",
+        "section": "Goldilocks National City - Menu / Pork Entrée"
+      },
+      {
+        "name": "Lechon Kawali",
+        "description": "Crispy-fried pork belly served with our",
+        "price": "$21.69",
+        "section": "Goldilocks National City - Menu / Pork Entrée"
+      },
+      {
+        "name": "Lechon Kare-Kare",
+        "description": "Crispy pork belly smothered in a rich peanut",
+        "price": "$26.29",
+        "section": "Goldilocks National City - Menu / Pork Entrée"
+      },
+      {
+        "name": "Pork BBQ",
+        "description": "Grilled marinated pork glazed with our",
+        "price": "$20.49",
+        "section": "Goldilocks National City - Menu / Pork Entrée"
+      },
+      {
+        "name": "Paksiw na Lechon",
+        "description": "Sliced pork belly, simmered in a liver",
+        "price": "$18.19",
+        "section": "Goldilocks National City - Menu / Pork Entrée"
+      },
+      {
+        "name": "Sisig",
+        "description": "Minced pork meat, bell peppers mixed with",
+        "price": "$21.69",
+        "section": "Goldilocks National City - Menu / Pork Entrée"
+      },
+      {
+        "name": "Bangus a la pobre",
+        "description": "Boneless milkfish (whole) carefully baked",
+        "price": "$23.99",
+        "section": "Goldilocks National City - Menu / Seafood Entrée"
+      },
+      {
+        "name": "Daing na Bangus",
+        "description": "Deep-fried boneless milkfish marinated in",
+        "price": "$23.99",
+        "section": "Goldilocks National City - Menu / Seafood Entrée"
+      },
+      {
+        "name": "Chop Suey",
+        "description": "An assortment of vegetables, stir-fried with",
+        "price": "$22.79",
+        "section": "Goldilocks National City - Menu / Vegetable Entrée"
+      },
+      {
+        "name": "Pinakbet",
+        "description": "Mixed tropical vegetables sauteed with pork",
+        "price": "$22.79",
+        "section": "Goldilocks National City - Menu / Vegetable Entrée"
+      },
+      {
+        "name": "Fresh Lumpia",
+        "description": "Sauteed julienne cut vegetables wrapped in a",
+        "price": "$11.39",
+        "section": "Goldilocks National City - Menu / Vegetable Entrée"
+      },
+      {
+        "name": "25 pc. PT Chicken Wings",
+        "description": "25 pcs.",
+        "price": "$48.99",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "50 pc. PT Chicken Wings",
+        "description": "50 pcs.",
+        "price": "$95.79",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Chicken Empanada",
+        "description": "25-27 pcs.",
+        "price": "$42.19",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Medium PT Chicken Empanada",
+        "description": "50-54 pcs.",
+        "price": "$78.69",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "25 pc. PT Pork Siomai",
+        "description": "25 pcs.",
+        "price": "$39.89",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "50 pc. PT Pork Siomai",
+        "description": "50 pcs.",
+        "price": "$77.49",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Lumpia Shanghai Pork & Shrimp",
+        "description": "65 pcs.",
+        "price": "$46.69",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Medium PT Lumpia Shanghai Pork & Shrimp",
+        "description": "130 pcs.",
+        "price": "$86.59",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Spaghetti",
+        "description": "Serves 5 - 8.",
+        "price": "$43.29",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Pancit Canton",
+        "description": "Serves 5 - 8.",
+        "price": "$43.29",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Pancit Bihon",
+        "description": "Serves 5 - 8.",
+        "price": "$43.29",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Pancit Palabok",
+        "description": "Serves 5 - 8.",
+        "price": "$40.99",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Sotanghon Guisado",
+        "description": "Serves 5 - 8.",
+        "price": "$43.29",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "10 pc. PT Mini Fresh Lumpia",
+        "description": "10 pcs.",
+        "price": "$48.99",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "15 pc. PT Mini Fresh Lumpia",
+        "description": "15 pcs.",
+        "price": "$72.99",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Chop Suey",
+        "description": "Serves 5 - 8.",
+        "price": "$47.89",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Pinakbet",
+        "description": "Serves 5 - 8.",
+        "price": "$47.89",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Crispy Binagoongan",
+        "description": "Serves 5 - 8.",
+        "price": "$50.19",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Crispy Pata",
+        "description": "Serves 5 - 8.",
+        "price": "$61.59",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Dinuguan",
+        "description": "Serves 5 - 8.",
+        "price": "$51.29",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Pork Barbecue strips",
+        "description": "10 pcs.",
+        "price": "$55.89",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Medium PT Pork Barbecue strips",
+        "description": "20 pcs.",
+        "price": "$111.69",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Lechon Kawali",
+        "description": "Serves 5 - 8.",
+        "price": "$56.99",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Lechon Paksiw",
+        "description": "Serves 5 - 8.",
+        "price": "$56.99",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Chicken Adobo",
+        "description": "Serves 5 - 8.",
+        "price": "$48.99",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Kare-Kare",
+        "description": "Serves 5 - 8.",
+        "price": "$60.39",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Beef Kaldereta",
+        "description": "Serves 5 - 8.",
+        "price": "$56.99",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Kalderetang Kambing",
+        "description": "Serves 5 - 8.",
+        "price": "$56.99",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Bagoong Rice Medley",
+        "description": "Serves 5 - 10.",
+        "price": "$46.69",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Adobo Fried Rice",
+        "description": "Serves 5 - 10.",
+        "price": "$26.19",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Bagoong Fried Rice",
+        "description": "Serves 5 - 10.",
+        "price": "$26.19",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Garlic Fried Rice",
+        "description": "Serves 5 - 10.",
+        "price": "$22.79",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Small PT Steamed Rice",
+        "description": "Serves 5 - 8.",
+        "price": "$15.99",
+        "section": "Goldilocks National City - Menu / Party Platters"
+      },
+      {
+        "name": "Frozen Bopis 32 oz",
+        "description": "",
+        "price": "$27.39",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Dinuguan 32 oz",
+        "description": "32 oz.",
+        "price": "$28.39",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Spaghetti Sauce 32 oz",
+        "description": "",
+        "price": "$25.09",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Chicken Empanada",
+        "description": "2.5 lbs. Around 31-34 pcs.",
+        "price": "$22.59",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Lumpia Shanghai - Pork and Shrimp",
+        "description": "2.5 lbs. Around 64-66 pcs.",
+        "price": "$31.89",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Lumpia Shanghai - All Pork",
+        "description": "2.5 lbs. Around 54-58 pcs.",
+        "price": "$27.89",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Siomai - Sweet and Spicy",
+        "description": "1 lb.",
+        "price": "$12.49",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Siomai - All Pork",
+        "description": "1 lb",
+        "price": "$12.49",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Longanisa",
+        "description": "1 lb.",
+        "price": "$14.59",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Tocino",
+        "description": "1 lb.",
+        "price": "$15.19",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Siopao Select x7",
+        "description": "10 pcs.",
+        "price": "$14.79",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Chicken Siopao x4",
+        "description": "4 pcs.",
+        "price": "$13.69",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Frozen Pork Siopao x4",
+        "description": "4 pcs.",
+        "price": "$13.69",
+        "section": "Goldilocks National City - Menu / Frozen Entrees"
+      },
+      {
+        "name": "Halo-Halo Special",
+        "description": "A Filipino dessert made with mixed sweet",
+        "price": "$11.39",
+        "section": "Goldilocks National City - Menu / Thirst Quenchers"
+      },
+      {
+        "name": "Sago't Gulaman",
+        "description": "A refreshing Filipino beverage with tapioca",
+        "price": "$7.39",
+        "section": "Goldilocks National City - Menu / Thirst Quenchers"
+      },
+      {
+        "name": "Avocado Shake",
+        "description": "Freshly pureed avocados with tapioca pearls",
+        "price": "$8.49",
+        "section": "Goldilocks National City - Menu / Thirst Quenchers"
+      },
+      {
+        "name": "Taho",
+        "description": "Soy bean curd with tapioca pearls bathed in",
+        "price": "$7.99",
+        "section": "Goldilocks National City - Menu / Thirst Quenchers"
+      },
+      {
+        "name": "Mais con Queso",
+        "description": "A Filipino dessert made corn, crushed ice,",
+        "price": "$11.39",
+        "section": "Goldilocks National City - Menu / Thirst Quenchers"
+      },
+      {
+        "name": "Pork Siopao",
+        "description": "A steamed bun filled with sweet and savory",
+        "price": "$4.39",
+        "section": "Goldilocks National City - Menu / Steamed Buns"
+      },
+      {
+        "name": "Chicken Siopao",
+        "description": "A steamed bun filled with sweet and savory",
+        "price": "$4.39",
+        "section": "Goldilocks National City - Menu / Steamed Buns"
+      },
+      {
+        "name": "Pork Siopao Asado x6",
+        "description": "6 pcs of our steamed bun filled with sweet",
+        "price": "$26.34",
+        "section": "Goldilocks National City - Menu / Steamed Buns"
+      },
+      {
+        "name": "Chicken Siopao x6",
+        "description": "6 pcs of our steamed bun filled with sweet",
+        "price": "$26.34",
+        "section": "Goldilocks National City - Menu / Steamed Buns"
+      },
+      {
+        "name": "4pk Ensaymada Classic",
+        "description": "4 pieces. Filipino brioche topped with",
+        "price": "$17.49",
+        "section": "Goldilocks National City - Menu / Breads"
+      },
+      {
+        "name": "Pandeleche (16 rolls)",
+        "description": "Filipino sweet dinner roll.",
+        "price": "$9.09",
+        "section": "Goldilocks National City - Menu / Breads"
+      },
+      {
+        "name": "8 pk Ensaymada Delights",
+        "description": "8 pieces. Mini brioche.",
+        "price": "$20.19",
+        "section": "Goldilocks National City - Menu / Breads"
+      },
+      {
+        "name": "Pandesal",
+        "description": "12 pieces per bag. Filipino dinner roll.",
+        "price": "$7.99",
+        "section": "Goldilocks National City - Menu / Breads"
+      },
+      {
+        "name": "Ensaymada Hugs",
+        "description": "Mini bite-sized ensaymadas.",
+        "price": "$15.99",
+        "section": "Goldilocks National City - Menu / Breads"
+      },
+      {
+        "name": "4pk Asst Ensaymada",
+        "description": "4 pieces. Assorted flavored brioche. Two",
+        "price": "$21.09",
+        "section": "Goldilocks National City - Menu / Breads"
+      },
+      {
+        "name": "Sandwich Bread",
+        "description": "Sliced white bread.",
+        "price": "$6.79",
+        "section": "Goldilocks National City - Menu / Breads"
+      },
+      {
+        "name": "Ube Loaf",
+        "description": "Sweet bread loaf made with ube filling",
+        "price": "$8.49",
+        "section": "Goldilocks National City - Menu / Breads"
+      },
+      {
+        "name": "4pk Ubelicious Ensaymada",
+        "description": "Sweet butter bread made with ube (purple",
+        "price": "$20.89",
+        "section": "Goldilocks National City - Menu / Breads"
+      },
+      {
+        "name": "8pk Assorted Mamon",
+        "description": "8 pieces. Combination of Mamon Classic,",
+        "price": "$30.79",
+        "section": "Goldilocks National City - Menu / Snack Cakes"
+      },
+      {
+        "name": "8pk Mamon Classic",
+        "description": "8 pieces. Soft and buttery French sponge",
+        "price": "$29.59",
+        "section": "Goldilocks National City - Menu / Snack Cakes"
+      },
+      {
+        "name": "8pk Mamon Special",
+        "description": "8 pieces. Soft and fluffy French sponge cake",
+        "price": "$32.89",
+        "section": "Goldilocks National City - Menu / Snack Cakes"
+      },
+      {
+        "name": "8pk Caffe Mocha Mamon",
+        "description": "Soft and buttery French sponge cake made",
+        "price": "$32.89",
+        "section": "Goldilocks National City - Menu / Snack Cakes"
+      },
+      {
+        "name": "Atchara",
+        "description": "Sweet and sour mixed pickled vegetables.",
+        "price": "$10.79",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Cheese puffs x9",
+        "description": "Our own take on a traditional favorite.",
+        "price": "$12.49",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Chicharon",
+        "description": "Bite-sized fried pork rinds.",
+        "price": "$12.39",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Eggpie",
+        "description": "Pastry crust filled with creamy egg custard.",
+        "price": "$18.19",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Garlic Peanuts",
+        "description": "Spanish-style peanuts with fried garlic bits",
+        "price": "$7.99",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Black Bean Hopia",
+        "description": "Pastry filled with sweet black bean filling.",
+        "price": "$5.69",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Pork Hopia",
+        "description": "Pastry filled with sweet pork-flavored",
+        "price": "$5.69",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Yellow Bean Hopia",
+        "description": "Pastry filled with a sweet yellow bean",
+        "price": "$5.69",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Ube Hopia",
+        "description": "Pastry filled with ube (purple yam) filling.",
+        "price": "$5.69",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Assorted Polvoron x15",
+        "description": "15 pieces. Filipino shortbread.",
+        "price": "$14.79",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Polvoron Classic x15",
+        "description": "Creamy classic filipino shortbread cookies",
+        "price": "$14.79",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Polvoron Pinipig x15",
+        "description": "Sweet and creamy filipino shortbread cookies",
+        "price": "$14.79",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Polvoron Ube x15",
+        "description": "Sweet and creamy filipino shortbread cookies",
+        "price": "$14.79",
+        "section": "Goldilocks National City - Menu / Other goodies"
+      },
+      {
+        "name": "Brazo de Mercedes",
+        "description": "Filipino meringue roll filled with a rich",
+        "price": "$29.29",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Crema de Fruta",
+        "description": "Vanilla sponge cake filled and topped with",
+        "price": "$32.99",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Iced Chocolate Roll",
+        "description": "Chocolate sponge cake roll filled and iced",
+        "price": "$25.29",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Iced Mangolicious Roll",
+        "description": "Your favorite Mangolicious Cake now a",
+        "price": "$23.39",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Iced Mocha Roll",
+        "description": "Mocha sponge cake roll filled and iced with",
+        "price": "$23.39",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Iced Ube Roll",
+        "description": "Ube sponge cake roll filled and iced with",
+        "price": "$23.39",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Choco Mocha Crunch Cake",
+        "description": "Layers of chocolate and mocha chiffon cake",
+        "price": "$63.79",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Mangolicious Cake",
+        "description": "Vanilla chiffon cake filled and topped with",
+        "price": "$56.99",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Ultimate Ube Cake",
+        "description": "Ube chiffon cake filled with ube-flavored",
+        "price": "$49.79",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Chocolate Greeting Cake 8\"rd",
+        "description": "Chocolate chiffon cake filled and iced with",
+        "price": "$45.59",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Chocolate Greeting Cake 1/4 sheet",
+        "description": "Chocolate chiffon cake filled and iced with",
+        "price": "$58.09",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Mocha Greeting Cake 8\"rd",
+        "description": "Mocha chiffon cake filled and iced with",
+        "price": "$39.89",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Mocha Greeting Cake 1/4 sheet",
+        "description": "Mocha chiffon cake filled and iced with",
+        "price": "$56.99",
+        "section": "Goldilocks National City - Menu / Rolls, Cakes, and Desserts"
+      },
+      {
+        "name": "Puto / Cutchinta Sampler x18",
+        "description": "Combination of Puto Cups with cheese (4),",
+        "price": "$23.89",
+        "section": "Goldilocks National City - Menu / Native Snacks"
+      },
+      {
+        "name": "Buko Pandan large",
+        "description": "Filipino dessert with pandan jelly, young",
+        "price": "$21.69",
+        "section": "Goldilocks National City - Menu / Native Snacks"
+      },
+      {
+        "name": "Assorted Puto x6",
+        "description": "Steamed rice muffins (2 flavors - Shredded",
+        "price": "$11.39",
+        "section": "Goldilocks National City - Menu / Native Snacks"
+      },
+      {
+        "name": "Leche Flan large",
+        "description": "Creamy milk and egg custard with caramel",
+        "price": "$19.39",
+        "section": "Goldilocks National City - Menu / Native Snacks"
+      },
+      {
+        "name": "Buko pie",
+        "description": "Pastry crust filled with creamy custard",
+        "price": "$21.69",
+        "section": "Goldilocks National City - Menu / Native Snacks"
+      },
+      {
+        "name": "Buko Pandan small",
+        "description": "Filipino dessert with pandan jelly, young",
+        "price": "$12.49",
+        "section": "Goldilocks National City - Menu / Native Snacks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3001",
+    "name": "GK Grill",
+    "sourceUrl": "https://order.online/en-CA/store/gk-grill-mongolian-taste-1061382",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the order.online payload. read from the Next.js RSC flight payload, not the rendered DOM; address unverified in payload; city \"National City\" matched",
+    "dishes": [
+      {
+        "name": "Regular (Build Your Own Bowl)",
+        "description": "Classic build-your-own Mongolian BBQ",
+        "price": "$15.69",
+        "section": "Mongolian Bowls (Build Your Own Bowl)"
+      },
+      {
+        "name": "Vegetable (Build Your Own Bowl)",
+        "description": "Classic build-your-own Mongolian stir-fry,",
+        "price": "$14.69",
+        "section": "Mongolian Bowls (Build Your Own Bowl)"
+      },
+      {
+        "name": "White Rice",
+        "description": "One serving of steamed white rice.",
+        "price": "$3.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Noodle Only Bowl",
+        "description": "Includes noodle and sauces ONLY. Two regular",
+        "price": "$7.99",
+        "section": "Sides"
+      },
+      {
+        "name": "EXTRA Noodles (on side)",
+        "description": "A single serving of noodles in a separate",
+        "price": "$4.69",
+        "section": "Sides"
+      },
+      {
+        "name": "Pepsi",
+        "description": "The bold, refreshing, robust cola",
+        "price": "$2.49",
+        "section": "Fountain Drinks"
+      },
+      {
+        "name": "Diet Pepsi",
+        "description": "A crisp tasting, refreshing pop of sweet,",
+        "price": "$2.49",
+        "section": "Fountain Drinks"
+      },
+      {
+        "name": "Brisk Raspberry Iced Tea",
+        "description": "Raspberry iced tea with brisk flavor. Choice",
+        "price": "$2.49",
+        "section": "Fountain Drinks"
+      },
+      {
+        "name": "Dr. Pepper",
+        "description": "Choice of medium or large. Classic Dr Pepper.",
+        "price": "$2.49",
+        "section": "Fountain Drinks"
+      },
+      {
+        "name": "Mist Twist",
+        "description": "Mist Twist Soda Choice of Medium or Large.",
+        "price": "$2.49",
+        "section": "Fountain Drinks"
+      },
+      {
+        "name": "Manzanita Sol",
+        "description": "An authentically Mexican apple flavored soda",
+        "price": "$2.49",
+        "section": "Fountain Drinks"
+      },
+      {
+        "name": "Orange Crush",
+        "description": "Refreshing orange soda. Choice of medium or",
+        "price": "$2.49",
+        "section": "Fountain Drinks"
+      },
+      {
+        "name": "Tropicana Lemonade",
+        "description": "Refreshing lemonade with tropical flavors.",
+        "price": "$2.49",
+        "section": "Fountain Drinks"
+      },
+      {
+        "name": "Bottled Water (Aquafina, Assorted)",
+        "description": "Pure water for a perfect taste. Add a",
+        "price": "$2.49",
+        "section": "Fountain Drinks"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5692",
+    "name": "Franca's Italian Kitchen & Bar",
+    "sourceUrl": "https://francas-italian.com/menu",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the own-jsonld payload. read from schema.org Menu JSON-LD on the restaurant's own page; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Half Tray Penne w/ Meat Sauce",
+        "description": "",
+        "price": "$50.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Nonna's Feed a Family"
+      },
+      {
+        "name": "Half Tray Penne w/ Alfredo Sauce",
+        "description": "",
+        "price": "$50.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Nonna's Feed a Family"
+      },
+      {
+        "name": "Half Tray Baked Rigatoni",
+        "description": "",
+        "price": "$50.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Nonna's Feed a Family"
+      },
+      {
+        "name": "Half Tray Penne Ala Vodka",
+        "description": "",
+        "price": "$50.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Nonna's Feed a Family"
+      },
+      {
+        "name": "Bruschetta",
+        "description": "Fresh chopped tomatoes, garlic, extra virgin",
+        "price": "$11.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Appetizers"
+      },
+      {
+        "name": "Caprese",
+        "description": "Fresh mozzarella, tomatoes, extra virgin",
+        "price": "$14.90",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Appetizers"
+      },
+      {
+        "name": "Garlic Bread",
+        "description": "Toasted French bread baked with garlic",
+        "price": "$8.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Appetizers"
+      },
+      {
+        "name": "Appetizer Meatballs",
+        "description": "Baked with pomodoro sauce",
+        "price": "$12.90",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Appetizers"
+      },
+      {
+        "name": "Mozzarella Fritti",
+        "description": "Crispy on the outside. Melted mozzarella on",
+        "price": "$13.90",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Appetizers"
+      },
+      {
+        "name": "Appetizer Sausage",
+        "description": "Baked with Pomodoro sauce",
+        "price": "$12.90",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Appetizers"
+      },
+      {
+        "name": "Zucchini Fritti",
+        "description": "Fried and served with pomodoro sauce",
+        "price": "$14.90",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Appetizers"
+      },
+      {
+        "name": "Spicy Mussels",
+        "description": "",
+        "price": "$16.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Appetizers"
+      },
+      {
+        "name": "Steamed Mussels and Clams",
+        "description": "",
+        "price": "$17.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Appetizers"
+      },
+      {
+        "name": "Burrata Caprese",
+        "description": "Fresh, elegant, and effortlessly Italian. A",
+        "price": "$15.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Appetizers"
+      },
+      {
+        "name": "Dinner Ranch salad",
+        "description": "",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Soups & Salads"
+      },
+      {
+        "name": "Dinner Blue Cheese Salad",
+        "description": "Crisp romaine, red cabbage, cucumbers,",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Soups & Salads"
+      },
+      {
+        "name": "Dinner Italian Salad",
+        "description": "Fresh, vibrant, and generously loaded. Our",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Soups & Salads"
+      },
+      {
+        "name": "Dinner Caesar",
+        "description": "Crisp romaine, golden croutons, and generous",
+        "price": "$5.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Soups & Salads"
+      },
+      {
+        "name": "Arugula Salad",
+        "description": "",
+        "price": "$10.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Soups & Salads"
+      },
+      {
+        "name": "Asiago Gnocchi",
+        "description": "Walnut creamy pesto with sun-dried tomatoes",
+        "price": "$21.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Chicken Penne Pesto",
+        "description": "Fettuccine pasta, romano cheese, and pepper",
+        "price": "$23.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Cavatelli",
+        "description": "Ricotta pasta with sausage and peas in a",
+        "price": "$18.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Cheese Ravioli",
+        "description": "Made with pomodoro cream sauce",
+        "price": "$18.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Fettuccine Alfredo",
+        "description": "Fettuccini pasta cooked with a romano cheese",
+        "price": "$18.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Gnocchi Al Forno",
+        "description": "Gnocchi pasta baked with bolognese and",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Penne ala Vodka",
+        "description": "Penne pasta in vodka rosso sauce",
+        "price": "$19.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Short Rib Ravioli",
+        "description": "Slow braised short rib stuffed inside house",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Spaghetti Bolognese",
+        "description": "Spaghetti pasta housemade bolognese sauce",
+        "price": "$17.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Tortelloni Sici",
+        "description": "Pancetta, peas, and green onions in a herb",
+        "price": "$22.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Baked Rigitoni",
+        "description": "",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Tortelloni Gorgonzola",
+        "description": "Rich, creamy, and deeply satisfying. Our",
+        "price": "$22.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Spaghetti Pomodori",
+        "description": "",
+        "price": "$18.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Pasta"
+      },
+      {
+        "name": "Chicken Cutlets",
+        "description": "Pan-fried breaded chicken served with penne",
+        "price": "$21.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Specialties"
+      },
+      {
+        "name": "Chicken Parm",
+        "description": "Pan-fried breaded chicken with pomodoro",
+        "price": "$25.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Specialties"
+      },
+      {
+        "name": "Lasagna",
+        "description": "Pasta layered with beef, sausage, asiago,",
+        "price": "$21.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Specialties"
+      },
+      {
+        "name": "Manicotti",
+        "description": "Three cheeses. One unforgettable dish. Our",
+        "price": "$18.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Specialties"
+      },
+      {
+        "name": "Rigatoni Diavolo",
+        "description": "Rigatoni pasta with sausage, olives, white",
+        "price": "$22.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Specialties"
+      },
+      {
+        "name": "Seafood Pomodoro",
+        "description": "",
+        "price": "$31.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Specialties"
+      },
+      {
+        "name": "Shrimp Scampi",
+        "description": "",
+        "price": "$29.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Specialties"
+      },
+      {
+        "name": "Spaghetti and Clams",
+        "description": "",
+        "price": "$25.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Specialties"
+      },
+      {
+        "name": "Gluten Free Tortelloni",
+        "description": "",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Gluten free"
+      },
+      {
+        "name": "12\" Cheese",
+        "description": "",
+        "price": "$15.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 12'' Pizza"
+      },
+      {
+        "name": "12\" Pepperoni",
+        "description": "",
+        "price": "$17.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 12'' Pizza"
+      },
+      {
+        "name": "12\" Deluxe",
+        "description": "Mushrooms, pepperoni, sausage, onions, bell",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 12'' Pizza"
+      },
+      {
+        "name": "12\" BBQ Chicken",
+        "description": "BBQ sauce, chicken, mozzarella, red onions,",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 12'' Pizza"
+      },
+      {
+        "name": "12\" Roasted Garlic Chicken",
+        "description": "Herb butter, chicken, mozzarella, roasted",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 12'' Pizza"
+      },
+      {
+        "name": "12\" Veggie",
+        "description": "Mushrooms, black olives, onions, bell peppers",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 12'' Pizza"
+      },
+      {
+        "name": "12\" Hawaiian",
+        "description": "Canadian bacon and pineapple",
+        "price": "$18.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 12'' Pizza"
+      },
+      {
+        "name": "12\" Margarita",
+        "description": "Extra virgin olive oil, mozzarella,",
+        "price": "$17.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 12'' Pizza"
+      },
+      {
+        "name": "12\" Meat Lovers",
+        "description": "Meat balls, Canadian bacon, sausage, and",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 12'' Pizza"
+      },
+      {
+        "name": "12\" Fra Diavlo",
+        "description": "",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 12'' Pizza"
+      },
+      {
+        "name": "16'' Cheese",
+        "description": "",
+        "price": "$18.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 16'' pizza"
+      },
+      {
+        "name": "16'' Pepperoni",
+        "description": "",
+        "price": "$20.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 16'' pizza"
+      },
+      {
+        "name": "16'' Deluxe",
+        "description": "",
+        "price": "$23.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 16'' pizza"
+      },
+      {
+        "name": "16'' BBQ Chicken",
+        "description": "A classic done right. Our 16\" BBQ Chicken",
+        "price": "$24.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 16'' pizza"
+      },
+      {
+        "name": "16'' Roasted Garlic Chicken",
+        "description": "",
+        "price": "$24.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 16'' pizza"
+      },
+      {
+        "name": "16'' Veggie",
+        "description": "",
+        "price": "$23.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 16'' pizza"
+      },
+      {
+        "name": "16'' Hawaiian",
+        "description": "",
+        "price": "$21.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 16'' pizza"
+      },
+      {
+        "name": "16'' Margarita",
+        "description": "",
+        "price": "$20.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 16'' pizza"
+      },
+      {
+        "name": "16'' Meat Lovers",
+        "description": "For those who don't compromise. Our 16\" Meat",
+        "price": "$23.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 16'' pizza"
+      },
+      {
+        "name": "16\" Fra Diavolo",
+        "description": "Fra Diavolo means Brother Devil — and this",
+        "price": "$23.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / 16'' pizza"
+      },
+      {
+        "name": "Chicken Calzone",
+        "description": "Chicken, mixed with ricotta, mozzarella,",
+        "price": "$25.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Calzone"
+      },
+      {
+        "name": "Pepperoni Calzone",
+        "description": "Golden on the outside, incredible on the",
+        "price": "$25.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Calzone"
+      },
+      {
+        "name": "Sausage Calzone",
+        "description": "Sausage, bell peppers, mixed with ricotta,",
+        "price": "$25.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Calzone"
+      },
+      {
+        "name": "Chicken Parm sandwich",
+        "description": "Pan-fried breaded chicken with pomodoro sauce",
+        "price": "$15.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sandwiches"
+      },
+      {
+        "name": "Meatball sandwich",
+        "description": "",
+        "price": "$15.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sandwiches"
+      },
+      {
+        "name": "Sausage & Cheese sandwich",
+        "description": "",
+        "price": "$15.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sandwiches"
+      },
+      {
+        "name": "Torpedo",
+        "description": "Ham, provolone, salami, mortadella, lettuce,",
+        "price": "$15.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sandwiches"
+      },
+      {
+        "name": "Kids Chicken Cutlets",
+        "description": "served with pasta",
+        "price": "$10.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Kids Menu"
+      },
+      {
+        "name": "Kids Fettuccine Alfredo",
+        "description": "Creamy, comforting, and made just for them.",
+        "price": "$9.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Kids Menu"
+      },
+      {
+        "name": "Kids Pasta",
+        "description": "Because little ones have big opinions too.",
+        "price": "$8.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Kids Menu"
+      },
+      {
+        "name": "Kids Cheese Pizza 8\"",
+        "description": "",
+        "price": "$8.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Kids Menu"
+      },
+      {
+        "name": "Kids Pep Pizza 8\"",
+        "description": "",
+        "price": "$9.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Kids Menu"
+      },
+      {
+        "name": "Kids Cheese Ravioli",
+        "description": "",
+        "price": "$9.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Kids Menu"
+      },
+      {
+        "name": "Cheesecake",
+        "description": "",
+        "price": "$11.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Desserts"
+      },
+      {
+        "name": "Tiramisu",
+        "description": "Ladyfingers, mascarpone, espresso ice cream",
+        "price": "$10.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Desserts"
+      },
+      {
+        "name": "Cannoli",
+        "description": "Creamy sweet ricotta, chocolate, and",
+        "price": "$10.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Desserts"
+      },
+      {
+        "name": "Spumoni",
+        "description": "",
+        "price": "$8.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Desserts"
+      },
+      {
+        "name": "Vanilla Ice Cream",
+        "description": "",
+        "price": "$5.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Desserts"
+      },
+      {
+        "name": "Mud Pie",
+        "description": "",
+        "price": "$13.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Desserts"
+      },
+      {
+        "name": "Side of Meatballs",
+        "description": "",
+        "price": "$9.90",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Side of Sausage",
+        "description": "",
+        "price": "$9.90",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Side Bolognese",
+        "description": "",
+        "price": "$3.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Side Pomodoro",
+        "description": "",
+        "price": "$3.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Side of Anchovies",
+        "description": "",
+        "price": "$3.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Side of Caesar",
+        "description": "",
+        "price": "$3.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Side of Vodka",
+        "description": "",
+        "price": "$4.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Focaccia Bread",
+        "description": "",
+        "price": "$4.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Side of Pepperoncini",
+        "description": "",
+        "price": "$2.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Side Chicken Cutlet",
+        "description": "",
+        "price": "$10.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Side Grilled Chicken",
+        "description": "",
+        "price": "$8.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Side of Shrimp",
+        "description": "",
+        "price": "$12.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / Sides"
+      },
+      {
+        "name": "Pepsi",
+        "description": "",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Diet Pepsi",
+        "description": "",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Dr. Pepper",
+        "description": "",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Starry",
+        "description": "",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Lemonade",
+        "description": "",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Shirley Temple",
+        "description": "Starry lemon-lime soda, a splash of",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Arnold Palmer",
+        "description": "Perfect blend of iced tea and lemonade.",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Kids Milk",
+        "description": "",
+        "price": "$3.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Kids Chocolate Milk",
+        "description": "",
+        "price": "$3.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$3.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Double Espresso",
+        "description": "",
+        "price": "$4.75",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$3.75",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Cranberry Juice",
+        "description": "",
+        "price": "$4.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Pellegrino",
+        "description": "",
+        "price": "$5.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Soda water",
+        "description": "",
+        "price": "$3.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "",
+        "price": "$3.50",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "2 Shots of Espresso with a bit of steamed",
+        "price": "$4.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$3.00",
+        "section": "Franca's Italian Kitchen and Bar - Menu / NA Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5964",
+    "name": "Teriyaki House",
+    "sourceUrl": "https://order.online/store/24934615",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the order.online payload. read from the Next.js RSC flight payload, not the rendered DOM",
+    "dishes": [
+      {
+        "name": "48. Moon Dance Roll",
+        "description": "In: Spicy tuna, cucumber. Out: Salmon, ponzu",
+        "price": "$16.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "Rainbow Roll",
+        "description": "In: Crabmeat, cucumber, avocado. Out:",
+        "price": "$16.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "Musubi",
+        "description": "For 3 grilled spam.",
+        "price": "$10.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "57. Pink Roll",
+        "description": "In: crabmeat, cucumber, avocado. Out:",
+        "price": "$16.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "56. Crazy Crab Roll",
+        "description": "In: crabmeat, cucumber, avocado. Out: spicy",
+        "price": "$16.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "55. Dream Roll",
+        "description": "In: spicy tuna, cucumber, avocado. Out:",
+        "price": "$16.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "54. Red Caterpillar Roll",
+        "description": "In: salmon, cream cheese, avocado. Out:",
+        "price": "$16.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "53. Energy Roll",
+        "description": "In: eel, cream cheese, shrimp tempura. Out:",
+        "price": "$16.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "52. Green Tiger Roll",
+        "description": "In: spicy tuna, shrimp tempura. Out:",
+        "price": "$16.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "50. Three of a Kind Roll",
+        "description": "In: crabmeat, shrimp tempura. Out: salmon,",
+        "price": "$16.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "49. Sunset Roll",
+        "description": "In: crabmeat, shrimp tempura. Out: spicy",
+        "price": "$16.99",
+        "section": "Rolls"
+      },
+      {
+        "name": "Tofu Teriyaki",
+        "description": "Vegetarian. 5 pieces.",
+        "price": "$12.49",
+        "section": "Vegetarian Menu"
+      },
+      {
+        "name": "58. Veggie Tempura Roll",
+        "description": "Vegetarian. In: avocado, cucumber, sweet",
+        "price": "$14.49",
+        "section": "Vegetarian Menu"
+      },
+      {
+        "name": "Jalapeño Tempura",
+        "description": "Vegetarian. 8 pieces.",
+        "price": "$14.40",
+        "section": "Vegetarian Menu"
+      },
+      {
+        "name": "59. Jalapeño Tempura Roll",
+        "description": "Vegetarian. In: avocado, cream cheese,",
+        "price": "$16.99",
+        "section": "Vegetarian Menu"
+      },
+      {
+        "name": "14. Chicken Teriyaki Bento Box",
+        "description": "Chicken teriyaki bento box typically",
+        "price": "$15.99",
+        "section": "Bento & Deluxe"
+      },
+      {
+        "name": "15. Beef Teriyaki Bento Box",
+        "description": "Pan-seared beef in teriyaki sauce, typically",
+        "price": "$16.49",
+        "section": "Bento & Deluxe"
+      },
+      {
+        "name": "16. Salmon Teriyaki Bento Box",
+        "description": "Grilled salmon with teriyaki sauce,",
+        "price": "$16.99",
+        "section": "Bento & Deluxe"
+      },
+      {
+        "name": "17. Chicken Katsu Bento Box",
+        "description": "Chicken katsu bento box typically includes a",
+        "price": "$16.49",
+        "section": "Bento & Deluxe"
+      },
+      {
+        "name": "18. Potstickers Bento Box",
+        "description": "Potstickers bento box typically includes",
+        "price": "$15.99",
+        "section": "Bento & Deluxe"
+      },
+      {
+        "name": "19. Chicken Curry Bento Box",
+        "description": "Chicken curry served in a bento box,",
+        "price": "$15.99",
+        "section": "Bento & Deluxe"
+      },
+      {
+        "name": "Ramen Soup spicy or mild",
+        "description": "Regular or spicy. With egg or not egg",
+        "price": "$11.99",
+        "section": "Ramen"
+      },
+      {
+        "name": "California Bowl",
+        "description": "Sushi rolls with crab, avocado, and",
+        "price": "$14.49",
+        "section": "Bowls"
+      },
+      {
+        "name": "10. Chicken Bowl",
+        "description": "Tender grilled chicken slices with steamed",
+        "price": "$12.99",
+        "section": "Bowls"
+      },
+      {
+        "name": "10. Beef Bowl",
+        "description": "Thinly sliced beef over steamed white rice,",
+        "price": "$13.99",
+        "section": "Bowls"
+      },
+      {
+        "name": "Avocado Bowl",
+        "description": "Tender chicken slices, fresh avocado,",
+        "price": "$14.99",
+        "section": "Bowls"
+      },
+      {
+        "name": "11. Veggie Bowl",
+        "description": "Assorted vegetables typically including",
+        "price": "$11.49",
+        "section": "Bowls"
+      },
+      {
+        "name": "Chicken Gyoza Bowl",
+        "description": "Pan-fried chicken dumplings served over",
+        "price": "$15.49",
+        "section": "Bowls"
+      },
+      {
+        "name": "Unagi Bowl",
+        "description": "Grilled freshwater eel over steamed rice,",
+        "price": "$15.49",
+        "section": "Bowls"
+      },
+      {
+        "name": "5. Udon",
+        "description": "Japanese wheat flour noodle soup typically",
+        "price": "$11.49",
+        "section": "Udon"
+      },
+      {
+        "name": "51. Chicken Udon",
+        "description": "Chicken udon consists of thick wheat",
+        "price": "$13.48",
+        "section": "Udon"
+      },
+      {
+        "name": "51. Beef Udon",
+        "description": "Udon noodles served in a savory broth,",
+        "price": "$13.99",
+        "section": "Udon"
+      },
+      {
+        "name": "6. Shrimp Tempura Udon",
+        "description": "Udon noodles in a savory broth, typically",
+        "price": "$13.99",
+        "section": "Udon"
+      },
+      {
+        "name": "7. California Roll and Tempura Udon",
+        "description": "4 pieces.",
+        "price": "$15.99",
+        "section": "Udon"
+      },
+      {
+        "name": "8. Spicy Tuna Roll and Tempura Udon",
+        "description": "Spicy. 4 pieces.",
+        "price": "$16.99",
+        "section": "Udon"
+      },
+      {
+        "name": "20. Chicken Teriyaki",
+        "description": "Chicken teriyaki typically includes grilled",
+        "price": "$14.99",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "21. Beef Teriyaki",
+        "description": "Grilled beef, typically marinated in a sweet",
+        "price": "$15.49",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "22. Chicken & Beef Combo",
+        "description": "Grilled chicken and beef served with a",
+        "price": "$17.49",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "Chicken Katsu",
+        "description": "Crispy breaded chicken cutlets served with",
+        "price": "$16.99",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "Chicken Sticks",
+        "description": "Chicken skewered, Teriyaki's Specials.",
+        "price": "$15.99",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "Shrimp Sticks",
+        "description": "Skewered shrimp, lightly battered and",
+        "price": "$15.99",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "Salmon Teriyaki",
+        "description": "Grilled Salmon in a Sweet-Savory Teriyaki",
+        "price": "$16.99",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "46. Caterpillar Roll",
+        "description": "In: fresh water eel, crab meat, cucumber.",
+        "price": "$16.99",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "Shrimp Tempura Plate",
+        "description": "Lightly battered shrimp tempura, typically",
+        "price": "$13.49",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "Mixed Tempura Plate",
+        "description": "Assorted shrimp and vegetables, lightly",
+        "price": "$13.49",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "Chicken Curry",
+        "description": "Tender chicken simmered in a rich,",
+        "price": "$13.99",
+        "section": "Teriyaki's Specials"
+      },
+      {
+        "name": "30. California Roll",
+        "description": "Crab meat, avocado, cucumber.",
+        "price": "$10.49",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "31. Spicy Tuna Roll",
+        "description": "Spicy. Fresh tuna, cucumber.",
+        "price": "$11.99",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "32. Crunch Roll",
+        "description": "Crab meat, avocado, cucumber.",
+        "price": "$11.99",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "33. Salmon Tempura Roll",
+        "description": "10 pieces. Salmon tempura, crab meat,",
+        "price": "$12.99",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "34. Shrimp Tempura Roll",
+        "description": "Shrimp tempura, vegetable, avocado.",
+        "price": "$14.25",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "35. Spicy Tuna Tempura Roll",
+        "description": "Spicy.",
+        "price": "$13.99",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "36. California Tempura Roll",
+        "description": "Crabmeat, avocado, and cucumber in a roll,",
+        "price": "$12.49",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "37. Chicken Teriyaki Roll",
+        "description": "Chicken, cucumber, avocado.",
+        "price": "$11.99",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "38. Beef Teriyaki Roll",
+        "description": "Beef, cucumber, avocado.",
+        "price": "$12.49",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "39. Vegetable Roll",
+        "description": "Asparagus, cucumber, avocado, and oshinko",
+        "price": "$10.99",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "40. Cucumber Roll",
+        "description": "Sliced cucumber wrapped around a blend of",
+        "price": "$9.99",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "41. Avocado Roll",
+        "description": "Sushi rice and creamy avocado wrapped in",
+        "price": "$10.75",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "42. Philadelphia Roll",
+        "description": "Salmon, avocado, and cream cheese, commonly",
+        "price": "$12.99",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "43. Eel & Avocado Roll",
+        "description": "Grilled eel and avocado, wrapped in seaweed",
+        "price": "$13.25",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "44. Salmon Roll",
+        "description": "Salmon, wrapped with sushi rice and",
+        "price": "$12.25",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "45. Green Dragon Roll",
+        "description": "In: crab meat, avocado, cucumber. Out: fresh",
+        "price": "$16.99",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "1. Tofu Salad",
+        "description": "Silken tofu, crisp greens, selection of",
+        "price": "$7.25",
+        "section": "Salads"
+      },
+      {
+        "name": "2. Sumi Salad",
+        "description": "Sumi Salad: Crisp greens, multiple sizes",
+        "price": "$6.49",
+        "section": "Salads"
+      },
+      {
+        "name": "3. Chicken Salad",
+        "description": "Grilled chicken over mixed greens, available",
+        "price": "$7.49",
+        "section": "Salads"
+      },
+      {
+        "name": "4. Edamame",
+        "description": "Steamed young soybeans in the pod, typically",
+        "price": "$7.49",
+        "section": "Salads"
+      }
+    ]
+  },
+  {
+    "restaurantId": "4439",
+    "name": "Sankalp: The Taste of India",
+    "sourceUrl": "https://sankalpsandiego.com/menu",
+    "confidence": "high",
+    "notes": "read deterministically by scripts/route-menus.mjs from the own-jsonld payload. read from schema.org Menu JSON-LD on the restaurant's own page; address unverified in payload",
+    "dishes": [
+      {
+        "name": "Masala Boondi",
+        "description": "Fried lentil balls with onion, tomatoes and",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Gobi 65",
+        "description": "Cauliflower 65 is a popular South Indian",
+        "price": "$14.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Hara Bhara Kebab",
+        "description": "Deep fried kebabs made of vegetables, Paneer",
+        "price": "$14.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Paneer Tikka Tiranga",
+        "description": "Chunks of cottage cheese, marinated in",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Paneer 65",
+        "description": "(spicy) paneer 65 is a popular South Indian",
+        "price": "$14.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Veg Momos Fried",
+        "description": "Fried dumplings stuffed with slightly spiced",
+        "price": "$14.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Chili Momos Fried",
+        "description": "Crispy fried dumplings tossed in a spicy",
+        "price": "$14.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Chicken 65",
+        "description": "(spicy) chicken 65 is a popular South Indian",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Kozhi Sukka",
+        "description": "(spicy) pepper tempered chicken in semi-dry",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Chicken Tikka",
+        "description": "Succulent pieces of boneless chicken",
+        "price": "$20.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Chicken Malai Tikka",
+        "description": "Succulent pieces of creamy flavor barbecue",
+        "price": "$21.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Tandoori Chicken",
+        "description": "Traditional tandoori chicken marinated in",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Fish Amritsari",
+        "description": "A batter-dipped fish in amritsari style",
+        "price": "$23.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Salmon Tikka",
+        "description": "Chunks of fish marinated in yogurt, ajwain,",
+        "price": "$24.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Lamb Seekh Kebab",
+        "description": "Seekh kebab is a mughlai delicacy prepared",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Spring Roll",
+        "description": "",
+        "price": "$8.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Lamb Seekh Kabab",
+        "description": "Spiced minced lamb shaped on skewers and",
+        "price": "$23.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Tandoori Shrimp",
+        "description": "",
+        "price": "$23.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Paneer Pakoda",
+        "description": "Crispy gram flour coated cottage cheese",
+        "price": "$10.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Lamb Pepper Dry",
+        "description": "Tender lamb pieces tossed with crushed black",
+        "price": "$20.99",
+        "section": "Carlsbad - Menu / Appetizers"
+      },
+      {
+        "name": "Assorted Vegetable Barbeque Sizzler",
+        "description": "An assortment of barbecued hara bhara",
+        "price": "$25.99",
+        "section": "Carlsbad - Menu / Surprising Sizzlers"
+      },
+      {
+        "name": "Veg Indi-Chini Sizzler",
+        "description": "Assortment of noodles, fried rice, chilli",
+        "price": "$25.99",
+        "section": "Carlsbad - Menu / Surprising Sizzlers"
+      },
+      {
+        "name": "Sizzler 65",
+        "description": "A sizzling plate of paneer, gobi and",
+        "price": "$25.99",
+        "section": "Carlsbad - Menu / Surprising Sizzlers"
+      },
+      {
+        "name": "Non-Veg Indi-Chini Sizzler",
+        "description": "An assortment of indo-Chinese dishes:",
+        "price": "$28.99",
+        "section": "Carlsbad - Menu / Surprising Sizzlers"
+      },
+      {
+        "name": "Mix Grill Sizzler Non-Veg",
+        "description": "Chef special assortment of chicken malai",
+        "price": "$40.99",
+        "section": "Carlsbad - Menu / Surprising Sizzlers"
+      },
+      {
+        "name": "Bombay Bhel",
+        "description": "Slightly sweet spicy & sour tasting snack",
+        "price": "$10.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Dahi Sev Puri",
+        "description": "Crispy-fried puffed balls are filled with",
+        "price": "$11.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Samosa Chaat",
+        "description": "2 pcs samosa topped with a curd, different",
+        "price": "$11.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Aloo Tikki Chaat",
+        "description": "2 pcs potato Patty with curd, different",
+        "price": "$11.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Masala French Fries",
+        "description": "Crispy french fries tossed with Indian",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Pav Bhaji",
+        "description": "Indian spicy tangy delicacy",
+        "price": "$14.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Chole Bhature",
+        "description": "Chickpeas in Indian style with fried Indian",
+        "price": "$15.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Mumbai Vada Pav",
+        "description": "1 pc special Indian burger",
+        "price": "$9.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Mumbai Vada Pav Grill Cheese",
+        "description": "A tantalizing fusion of the iconic Mumbai",
+        "price": "$10.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Veg Samosa (2 Pcs)",
+        "description": "2 pcs Indian savory",
+        "price": "$8.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Veg Paneer Tikka Frankie",
+        "description": "Indian wrap with paneer tikka filling",
+        "price": "$13.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Bombay Veg Frankie",
+        "description": "A popular Mumbai street food wrap filled",
+        "price": "$10.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Chinese Bhel",
+        "description": "An enticing fusion of indo-Chinese flavors",
+        "price": "$12.99",
+        "section": "Carlsbad - Menu / Chaat"
+      },
+      {
+        "name": "Veg Manchurian (Dry/Gravy)",
+        "description": "A tasty indo-Chinese dish of fried veggie",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Indo Chinese Veg"
+      },
+      {
+        "name": "Gobi Manchurian",
+        "description": "Crispy cauliflower florets tossed in a",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Indo Chinese Veg"
+      },
+      {
+        "name": "Paneer Chilli (Dry/Gravy)",
+        "description": "(spicy) crispy fried cottage cheese topped",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Indo Chinese Veg"
+      },
+      {
+        "name": "Veg Hakka Noodles",
+        "description": "Noodles tossed in Indo-Chinese style with",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Indo Chinese Veg"
+      },
+      {
+        "name": "Veg Schezwan Noodles",
+        "description": "Spicy & tangy stir-fried noodles packed with",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Indo Chinese Veg"
+      },
+      {
+        "name": "Veg Fried Rice",
+        "description": "Fried rice with added veggies",
+        "price": "$15.99",
+        "section": "Carlsbad - Menu / Indo Chinese Veg"
+      },
+      {
+        "name": "Veg Schezwan Fried Rice",
+        "description": "Fried rice with schezwan Sauce & Vegetables",
+        "price": "$15.99",
+        "section": "Carlsbad - Menu / Indo Chinese Veg"
+      },
+      {
+        "name": "Triple Schezwan Rice",
+        "description": "(spicy) paneer with bell peppers and onions",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Indo Chinese Veg"
+      },
+      {
+        "name": "Chicken Fried Rice",
+        "description": "Fried rice mixed with diced chicken and",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Indo Chinese Non-Veg"
+      },
+      {
+        "name": "Chicken Chilli (Dry/Gravy)",
+        "description": "(spicy) chicken with bell peppers and onions",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Indo Chinese Non-Veg"
+      },
+      {
+        "name": "Chicken Hakka Noodles",
+        "description": "Chicken with bell peppers and onions",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Indo Chinese Non-Veg"
+      },
+      {
+        "name": "Chicken Lollipop",
+        "description": "Popular Indian fried chicken appetizer",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Indo Chinese Non-Veg"
+      },
+      {
+        "name": "Grilled Shrimp",
+        "description": "Juicy shrimp marinated in Indian spices and",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Indo Chinese Non-Veg"
+      },
+      {
+        "name": "Triple Schezwan Chicken Fried Rice",
+        "description": "Schezwan fried rice with chicken, noodles",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Indo Chinese Non-Veg"
+      },
+      {
+        "name": "Schezwan Chicken Chilli",
+        "description": "(spicy) chicken with bell peppers and onions",
+        "price": "$15.99",
+        "section": "Carlsbad - Menu / Indo Chinese Non-Veg"
+      },
+      {
+        "name": "Idli Littles (8 Pcs)",
+        "description": "8 pcs mini idlis",
+        "price": "$9.99",
+        "section": "Carlsbad - Menu / Idli / Vada"
+      },
+      {
+        "name": "Rasam Idli",
+        "description": "Pieces of idlis dipped in rasam",
+        "price": "$10.99",
+        "section": "Carlsbad - Menu / Idli / Vada"
+      },
+      {
+        "name": "Vaghar Idli",
+        "description": "(spicy) little idlis tossed in a special",
+        "price": "$10.99",
+        "section": "Carlsbad - Menu / Idli / Vada"
+      },
+      {
+        "name": "Jumbo Idli Sambhar (2 Pieces)",
+        "description": "2 pcs big-sized idlis dipped in sambhar",
+        "price": "$9.99",
+        "section": "Carlsbad - Menu / Idli / Vada"
+      },
+      {
+        "name": "Plain Dosa",
+        "description": "Soft dosa",
+        "price": "$14.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Golden Crisp (Cone Dosa)",
+        "description": "Crispy dosa folded in a cone shape",
+        "price": "$15.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Traditional Masala Dosa",
+        "description": "Classic crispy dosa filled with spiced",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Mysore Masala/Chatpata Dosa",
+        "description": "Spicy dosa with Mysore and garlic chutney",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Onion Chilli Masala Dosa",
+        "description": "Onion dosa with Chillies & Garlic chutney",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Ghee Dosa",
+        "description": "Crispy dosa generously drizzled with",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Kid's M & M/Chocolate Dosa",
+        "description": "A fun dosa filled with melted chocolate and",
+        "price": "$15.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Spring Vegetable Dosa",
+        "description": "Dosa loaded with spring vegetables",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Cheese Dosa Plain",
+        "description": "Dosa with a generous helping of amul cheese",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Kara Mura/Podi/Gun Powder Dosa",
+        "description": "Butter paper dosa with a spread of milagai",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Special Indian Bhaji Dosa",
+        "description": "Dosa with a filling of Mumbai pav bhaji",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Dashing Dosa"
+      },
+      {
+        "name": "Onion Rava Masala Dosa",
+        "description": "Rava dosa with onions",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Ravishing Rava & Amazing Uthappam"
+      },
+      {
+        "name": "Onion Chilli Garlic Rava Masala Dosa",
+        "description": "(spicy) rava dosa with onions, green",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Ravishing Rava & Amazing Uthappam"
+      },
+      {
+        "name": "Crisp N Crunchy Rava Masala Dosa",
+        "description": "Dosa made from semolina flour",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Ravishing Rava & Amazing Uthappam"
+      },
+      {
+        "name": "Double Roast Uthappam Plain",
+        "description": "Thick, savory rice and lentil pancake,",
+        "price": "$14.99",
+        "section": "Carlsbad - Menu / Ravishing Rava & Amazing Uthappam"
+      },
+      {
+        "name": "Onion Tomato Chilli Uthappam",
+        "description": "Thick rice and lentil pancake topped with",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Ravishing Rava & Amazing Uthappam"
+      },
+      {
+        "name": "Tomato Corn Uthappam",
+        "description": "Thick rice and lentil pancake topped with",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Ravishing Rava & Amazing Uthappam"
+      },
+      {
+        "name": "Double Roast Uthappam Plain",
+        "description": "Thick, savory rice and lentil pancake,",
+        "price": "$14.99",
+        "section": "Carlsbad - Menu / Amazing Uthappam"
+      },
+      {
+        "name": "Onion Tomato Chilli Uthappam",
+        "description": "Thick rice and lentil pancake topped with",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Amazing Uthappam"
+      },
+      {
+        "name": "Tomato Corn Uthappam",
+        "description": "Thick rice and lentil pancake topped with",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Amazing Uthappam"
+      },
+      {
+        "name": "Veg Jaipuri",
+        "description": "Mixed vegetables simmered in brown gravy and",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Veg Jalfrezi",
+        "description": "Tangy vegetable curry with Julienne bell",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Navratan Korma",
+        "description": "Ideal combination of vegetables, fruits &",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Malai Kofta",
+        "description": "(sweet) delicious dumplings of paneer in",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Veg Diwani Handi",
+        "description": "Mixed seasonal vegetables simmered in brown",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Veg Makhanwala",
+        "description": "Cubes of fresh vegetables and shredded",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Chana Masala",
+        "description": "Chickpeas simmered in a spicy and flavorful",
+        "price": "$16.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Corn Methi Malai",
+        "description": "(sweet) an exotic combination of fenugreek",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Paneer Butter Masala",
+        "description": "Paneer tossed in tomato gravy, our specialty",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Paneer Tikka Masala",
+        "description": "Marinated paneer pieces barbecued and cooked",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Kadai Paneer",
+        "description": "Stir-fried paneer cubes in spicy and",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Paneer Handi",
+        "description": "Cubes of cottage cheese, onions and bell",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Paneer Afghani Bhurji",
+        "description": "Semi-dry preparation of cottage cheese",
+        "price": "$20.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Paneer Methi Garlic",
+        "description": "Cottage cheese delicacy cooked in rich",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Paneer Balti",
+        "description": "A special two layered tomato and brown gravy",
+        "price": "$20.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Palak Paneer",
+        "description": "Mildly spiced cottage cheese preparation in",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Kaju Curry",
+        "description": "Cashew nuts cooked in spicy enriched creamy",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Matar Methi Malai",
+        "description": "(sweet) a delightful blend of green peas and",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Rajma Masala (with Jeera Rice)",
+        "description": "A hearty and flavorful North Indian dish",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Veg Indian Curries"
+      },
+      {
+        "name": "Butter Chicken",
+        "description": "Traditional butter chicken - boneless pieces",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Chicken Tikka Masala",
+        "description": "Succulent pieces of boneless chicken,",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Madras Chicken Masala",
+        "description": "(spicy) chicken with Indian spices - South",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Chicken Chettinad",
+        "description": "(spicy) a special spiced chicken preparation",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Chicken Curry",
+        "description": "Boneless pieces of chicken with cubes of",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Kadai Chicken",
+        "description": "Succulent pieces of chicken, simmered in",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Chicken Kali Mirch",
+        "description": "(spicy) boneless pieces of chicken simmered",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Saag Chicken",
+        "description": "Succulent pieces of chicken cooked in",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Chicken Korma",
+        "description": "Juicy chicken simmered in a luscious, creamy",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Andhra Chicken Curry",
+        "description": "(spicy) a fiery South Indian chicken curry",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Chicken Vindaloo",
+        "description": "Simmered chicken in the spicy and flavorful",
+        "price": "$18.99",
+        "section": "Carlsbad - Menu / Chicken/Egg Indian Curries"
+      },
+      {
+        "name": "Goat Curry",
+        "description": "(spicy) a delicacy made using goat with",
+        "price": "$23.99",
+        "section": "Carlsbad - Menu / Lamb/Goat/Fish Curries"
+      },
+      {
+        "name": "Goat Roganjosh",
+        "description": "(spicy) a traditional Kashmiri goat delicacy",
+        "price": "$22.99",
+        "section": "Carlsbad - Menu / Lamb/Goat/Fish Curries"
+      },
+      {
+        "name": "Lamb Korma",
+        "description": "Tender lamb simmered in a rich and creamy",
+        "price": "$21.99",
+        "section": "Carlsbad - Menu / Lamb/Goat/Fish Curries"
+      },
+      {
+        "name": "Andhra Goat Curry",
+        "description": "(spicy) a flavorful mutton curry cooked in",
+        "price": "$23.99",
+        "section": "Carlsbad - Menu / Lamb/Goat/Fish Curries"
+      },
+      {
+        "name": "Andhra Fish Curry",
+        "description": "(spicy) a spicy and tangy South Indian",
+        "price": "$22.99",
+        "section": "Carlsbad - Menu / Lamb/Goat/Fish Curries"
+      },
+      {
+        "name": "Goan Shrimp Curry",
+        "description": "Succulent shrimp simmered in a tangy",
+        "price": "$23.99",
+        "section": "Carlsbad - Menu / Lamb/Goat/Fish Curries"
+      },
+      {
+        "name": "Steamed Rice",
+        "description": "",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Biryanis/Basmati Khazana"
+      },
+      {
+        "name": "Jeera Rice",
+        "description": "Seasoned boiled rice tossed in Butter &",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Biryanis/Basmati Khazana"
+      },
+      {
+        "name": "Special Vegetable Pulao",
+        "description": "Fresh vegetable pulao prepared with Indian",
+        "price": "$15.99",
+        "section": "Carlsbad - Menu / Biryanis/Basmati Khazana"
+      },
+      {
+        "name": "Hyderabadi Dum Boneless Chicken Biryani",
+        "description": "(spicy) a special style of minty flavored",
+        "price": "$22.99",
+        "section": "Carlsbad - Menu / Biryanis/Basmati Khazana"
+      },
+      {
+        "name": "Goat Biryani",
+        "description": "(spicy) an authentic dum styled goat biryani",
+        "price": "$26.99",
+        "section": "Carlsbad - Menu / Biryanis/Basmati Khazana"
+      },
+      {
+        "name": "Lamb Biryani",
+        "description": "(spicy) an authentic dum styled lamb biryani",
+        "price": "$26.99",
+        "section": "Carlsbad - Menu / Biryanis/Basmati Khazana"
+      },
+      {
+        "name": "Hyderabadi Veg Dum Biryani",
+        "description": "A special style of minty flavored rice with",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Biryanis/Basmati Khazana"
+      },
+      {
+        "name": "Hyderabadi Dum Paneer Biryani",
+        "description": "A special style of minty flavored rice with",
+        "price": "$20.99",
+        "section": "Carlsbad - Menu / Biryanis/Basmati Khazana"
+      },
+      {
+        "name": "Chicken Sofiyani Biryani",
+        "description": "Sufi recipe of chicken biryani served with",
+        "price": "$20.99",
+        "section": "Carlsbad - Menu / Biryanis/Basmati Khazana"
+      },
+      {
+        "name": "Dal Tadka",
+        "description": "Yellow toor dal cooked to perfection",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Choice of Dal"
+      },
+      {
+        "name": "Dal Bukhara",
+        "description": "Urad dal and kidney beans, simmered on slow",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Choice of Dal"
+      },
+      {
+        "name": "Rajma Masala with Rice",
+        "description": "Hearty red kidney beans cooked in a rich and",
+        "price": "$19.99",
+        "section": "Carlsbad - Menu / Choice of Dal"
+      },
+      {
+        "name": "Hyderabadi Dal",
+        "description": "A tangy and spiced lentil preparation in the",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Choice of Dal"
+      },
+      {
+        "name": "Black Dal",
+        "description": "Slow-cooked black lentils simmered overnight",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Choice of Dal"
+      },
+      {
+        "name": "Dal Makhani",
+        "description": "",
+        "price": "$17.99",
+        "section": "Carlsbad - Menu / Choice of Dal"
+      },
+      {
+        "name": "Tandoori Roti",
+        "description": "Whole wheat Indian bread",
+        "price": "$4.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Bullet Roti",
+        "description": "(spicy) whole wheat Indian bread with",
+        "price": "$5.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Naan",
+        "description": "All purpose flour Indian bread",
+        "price": "$5.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Garlic Naan",
+        "description": "All purpose flour Indian bread with garlic",
+        "price": "$5.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Cheese Naan",
+        "description": "All purpose flour with stuffed cheese",
+        "price": "$6.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Bullet Naan",
+        "description": "(spicy) all purpose flour with green/red",
+        "price": "$6.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Lachcha Paratha",
+        "description": "Flaky, layered whole wheat bread with a",
+        "price": "$6.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Onion Kulcha",
+        "description": "Flatbread with caramelized onions and spices",
+        "price": "$6.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Cheese Garlic Naan",
+        "description": "All purpose flour with garlic and stuffed",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Cheese Chilli Naan",
+        "description": "All purpose flour bread with green/red",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Cheese Chilli Garlic Naan",
+        "description": "All purpose flour with garlic, green/red",
+        "price": "$8.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Fulka Roti",
+        "description": "",
+        "price": "$4.99",
+        "section": "Carlsbad - Menu / Breads"
+      },
+      {
+        "name": "Rasam Soup",
+        "description": "(spicy) a spicy South Indian soupy drink",
+        "price": "$6.99",
+        "section": "Carlsbad - Menu / Soups"
+      },
+      {
+        "name": "Creamy Tomato Soup",
+        "description": "A soup made from ripe red tomatoes served",
+        "price": "$6.99",
+        "section": "Carlsbad - Menu / Soups"
+      },
+      {
+        "name": "Veg Sweet Corn Soup",
+        "description": "Corn soup with vegetables",
+        "price": "$6.99",
+        "section": "Carlsbad - Menu / Soups"
+      },
+      {
+        "name": "Veg Hot n Sour Soup",
+        "description": "(spicy) a dark brown Chinese soup with",
+        "price": "$6.99",
+        "section": "Carlsbad - Menu / Soups"
+      },
+      {
+        "name": "Veg Manchow Soup",
+        "description": "(spicy) Indo-Chinese style soup with fried",
+        "price": "$6.99",
+        "section": "Carlsbad - Menu / Soups"
+      },
+      {
+        "name": "Chicken Sweet Corn Soup",
+        "description": "Indo-Chinese style sweet corn soup with",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Soups"
+      },
+      {
+        "name": "Chicken Hot n Sour Soup",
+        "description": "(spicy) a dark brown Chinese soup with",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Soups"
+      },
+      {
+        "name": "Chicken Manchow Soup",
+        "description": "(spicy) Indo-Chinese style chicken soup with",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Soups"
+      },
+      {
+        "name": "Ras Malai (2 Pieces)",
+        "description": "The sugary balls of chenna soaked in rich",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Dessert"
+      },
+      {
+        "name": "Gulab Jamun (2 Pieces)",
+        "description": "Soft, melt-in-your-mouth, fried dumplings",
+        "price": "$5.99",
+        "section": "Carlsbad - Menu / Dessert"
+      },
+      {
+        "name": "Sizzling Brownie",
+        "description": "Chocolate brownie with vanilla ice cream on",
+        "price": "$14.99",
+        "section": "Carlsbad - Menu / Dessert"
+      },
+      {
+        "name": "Gajar Halwa",
+        "description": "A warm and rich carrot dessert slow-cooked",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Dessert"
+      },
+      {
+        "name": "Moong Dal Halwa",
+        "description": "Moong dal lentil sweet made with various",
+        "price": "$9.99",
+        "section": "Carlsbad - Menu / Dessert"
+      },
+      {
+        "name": "Ice Cream (Sitafal/Anjeer/Kaju Draksh)",
+        "description": "Authentic Indian ice cream in your choice of",
+        "price": "$8.99",
+        "section": "Carlsbad - Menu / Dessert"
+      },
+      {
+        "name": "Seasonal Kulfi",
+        "description": "Traditional Indian frozen dessert made with",
+        "price": "$8.99",
+        "section": "Carlsbad - Menu / Dessert"
+      },
+      {
+        "name": "Falooda",
+        "description": "A classic Indian dessert drink with rose",
+        "price": "$11.99",
+        "section": "Carlsbad - Menu / Dessert"
+      },
+      {
+        "name": "Brownie with Ice Cream",
+        "description": "A warm chocolate brownie served with a scoop",
+        "price": "$9.99",
+        "section": "Carlsbad - Menu / Dessert"
+      },
+      {
+        "name": "Brownie",
+        "description": "A rich and fudgy chocolate brownie baked",
+        "price": "$7.99",
+        "section": "Carlsbad - Menu / Dessert"
+      },
+      {
+        "name": "Extra Bhature",
+        "description": "",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Accompaniments"
+      },
+      {
+        "name": "Extra Pav Double",
+        "description": "",
+        "price": "$5.99",
+        "section": "Carlsbad - Menu / Accompaniments"
+      },
+      {
+        "name": "Raita Boondi",
+        "description": "Cool yogurt mixed with crispy boondi pearls,",
+        "price": "$4.99",
+        "section": "Carlsbad - Menu / Accompaniments"
+      },
+      {
+        "name": "Curd",
+        "description": "Fresh, creamy homestyle yogurt",
+        "price": "$4.99",
+        "section": "Carlsbad - Menu / Accompaniments"
+      },
+      {
+        "name": "Amul Cheese",
+        "description": "A side of classic Amul processed cheese",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Accompaniments"
+      },
+      {
+        "name": "Extra Aloo Bhaaji for Dosa",
+        "description": "",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Accompaniments"
+      },
+      {
+        "name": "Onion Lemon Chilli Big Bowl",
+        "description": "A generous bowl of fresh onion rings with",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Accompaniments"
+      },
+      {
+        "name": "Masala Papad",
+        "description": "",
+        "price": "$5.99",
+        "section": "Carlsbad - Menu / Accompaniments"
+      },
+      {
+        "name": "Pickle",
+        "description": "",
+        "price": "$1.99",
+        "section": "Carlsbad - Menu / Accompaniments"
+      },
+      {
+        "name": "Coke",
+        "description": "",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Limca",
+        "description": "",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Thums Up",
+        "description": "",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Lemon Soda",
+        "description": "A refreshing fizzy drink made with fresh",
+        "price": "$4.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Masala Tea",
+        "description": "Traditional Indian chai brewed with aromatic",
+        "price": "$4.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Filter Coffee",
+        "description": "Authentic South Indian coffee brewed with a",
+        "price": "$4.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "",
+        "price": "$1.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Neermor Chaas",
+        "description": "A light and refreshing South Indian spiced",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Mango Lassi",
+        "description": "A creamy yogurt drink blended with sweet",
+        "price": "$5.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Sweet Lassi",
+        "description": "A refreshing yogurt-based drink blended with",
+        "price": "$5.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Sprite",
+        "description": "",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Jeera Kashmiri Soda",
+        "description": "A fizzy and refreshing cumin-flavored soda,",
+        "price": "$4.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Sparkling Water",
+        "description": "",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Nescafe Coffee",
+        "description": "",
+        "price": "$4.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Salty Lassi",
+        "description": "A refreshing yogurt drink seasoned with salt",
+        "price": "$5.99",
+        "section": "Carlsbad - Menu / Beverages"
+      },
+      {
+        "name": "Fanta",
+        "description": "",
+        "price": "$3.99",
+        "section": "Carlsbad - Menu / Beverages"
+      }
+    ]
+  }
+]

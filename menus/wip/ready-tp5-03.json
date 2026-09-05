@@ -1,0 +1,5438 @@
+[
+  {
+    "restaurantId": "5717",
+    "name": "Lourdes Mexican Food",
+    "sourceUrl": "https://order.online/store/lourdes-mexican-food-escondido-84959",
+    "confidence": "medium",
+    "notes": "Router flagged a different order.online store as wrong-branch; the site links four branches (Escondido, Escondido Express-to-go, Carlsbad, San Marcos) plus Cardiff — the 'lourdes-mexican-food-escondido-84959' store's escaped RSC payload address (650 S Escondido Blvd, Escondido, CA 92025) matches the work-list address exactly. Extracted from the escaped Next.js flight payload (MenuPageItemList blocks), same technique as the order.online RSC trick, not the rendered DOM. Ran the markup test (divide by 1.04/1.1/1.15/1.2/1.25/1.3/0.96): no divisor produced a clean round-number cluster (best was 4.3%); cents scatter across nearly every 5-cent increment with no single dominant divisor, matching the playbook's 'POS-style odd cents with no consistent divisor passes' case, so filed rather than blocked for markup. No dine-in cross-check available (restaurant's own site /menu page embeds the same widget with no static prices). No dedicated 'Burritos' section was found (only Breakfast Burritos) — noted in case that's a real gap; two 'Rolled Tacos' items ($9.49+) are base/from prices for a multi-taco item, price recorded without the '+' suffix. Most Ordered carousel was a pure duplicate of items in the real categories and was dropped.",
+    "dishes": [
+      {
+        "name": "24oz Caldo de Pollo",
+        "description": "Served With Rice, Onion, Cilantro, and Avocado. Your Choice of Flour or Corn Tortillas",
+        "price": "$16.25",
+        "section": "CALDO DE POLLO"
+      },
+      {
+        "name": "32oz Caldo de Pollo",
+        "description": "Served With Rice, Onion, Cilantro, and Avocado. Your Choice of Flour or Corn Tortillas",
+        "price": "$18.85",
+        "section": "CALDO DE POLLO"
+      },
+      {
+        "name": "Chicken Broth 32 Oz",
+        "description": "",
+        "price": "$9.75",
+        "section": "CALDO DE POLLO"
+      },
+      {
+        "name": "Quesadilla Grilled Chicken",
+        "description": "",
+        "price": "$16.25",
+        "section": "QUESADILLAS"
+      },
+      {
+        "name": "Quesadilla Shredded Chicken",
+        "description": "",
+        "price": "$16.25",
+        "section": "QUESADILLAS"
+      },
+      {
+        "name": "Quesadilla Supreme",
+        "description": "Carne Asada or Shredded Chicken or Grilled Chicken, Beans, Guacamole, and Sour Cream",
+        "price": "$19.25",
+        "section": "QUESADILLAS"
+      },
+      {
+        "name": "Quesadilla de Asada",
+        "description": "",
+        "price": "$16.50",
+        "section": "QUESADILLAS"
+      },
+      {
+        "name": "Quesadilla de Queso",
+        "description": "",
+        "price": "$11.45",
+        "section": "QUESADILLAS"
+      },
+      {
+        "name": "Asada Torta",
+        "description": "",
+        "price": "$15.85",
+        "section": "TORTAS"
+      },
+      {
+        "name": "Carnitas Torta",
+        "description": "",
+        "price": "$15.85",
+        "section": "TORTAS"
+      },
+      {
+        "name": "Chicken Torta",
+        "description": "",
+        "price": "$15.85",
+        "section": "TORTAS"
+      },
+      {
+        "name": "Chorizo Torta",
+        "description": "",
+        "price": "$16.89",
+        "section": "TORTAS"
+      },
+      {
+        "name": "Ham and Cheese Torta",
+        "description": "",
+        "price": "$16.15",
+        "section": "TORTAS"
+      },
+      {
+        "name": "Machaca Torta",
+        "description": "",
+        "price": "$16.89",
+        "section": "TORTAS"
+      },
+      {
+        "name": "Beef Tostada",
+        "description": "Beans, Lettuce, Sour Cream, Salsa Mexicana, Cheese",
+        "price": "$15.35",
+        "section": "TOSTADAS"
+      },
+      {
+        "name": "Carne Asada Tostada",
+        "description": "Beans, Lettuce, Guacamole, Sour Cream, Salsa Mexicana, Cheese",
+        "price": "$15.59",
+        "section": "TOSTADAS"
+      },
+      {
+        "name": "Carnitas Tostada",
+        "description": "Beans, Lettuce, Guacamole, Sour Cream, Salsa Mexicana, Cheese",
+        "price": "$15.59",
+        "section": "TOSTADAS"
+      },
+      {
+        "name": "Chicken Tostada",
+        "description": "Beans, Lettuce, Sour Cream, Salsa Mexicana, Cheese",
+        "price": "$15.35",
+        "section": "TOSTADAS"
+      },
+      {
+        "name": "Flying Saucer",
+        "description": "",
+        "price": "$16.79",
+        "section": "TOSTADAS"
+      },
+      {
+        "name": "Veggie Tostada",
+        "description": "Beans, Lettuce, Salsa Mexicana, Sour Cream, Cheese",
+        "price": "$14.29",
+        "section": "TOSTADAS"
+      },
+      {
+        "name": "#1 Combo Taco And Enchilada",
+        "description": "Your Choice: Carne asada, Carnitas, Fish, Shredded Beef or Shredded Chicken Enchilada: Cheese or Chicken. Includes Rice & Beans.",
+        "price": "$18.85",
+        "section": "COMBINATIONS"
+      },
+      {
+        "name": "#2 Combo Two Enchiladas",
+        "description": "Your Choice: Beef, Chicken, or Cheese. Includes Rice & Beans.",
+        "price": "$18.85",
+        "section": "COMBINATIONS"
+      },
+      {
+        "name": "#3 Combo Dos Tacos",
+        "description": "Your Choice: Carne Asada, Carnitas, Fish, Shredded Beef, or Chicken. Includes Rice & Beans.",
+        "price": "$20.55",
+        "section": "COMBINATIONS"
+      },
+      {
+        "name": "#4 Combo Chile Relleno With  Taco Or Enchilada",
+        "description": "Your Choice: Flour or Corn Tortilla\\ One Taco or Enchilada\\ Taco Protein Choice: Carne Asada, Carnitas, Fish, Shredded Beef, or Chicken\\ Enchilada Choice: Chicken or Cheese\\ Includes Rice & Beans",
+        "price": "$24.19",
+        "section": "COMBINATIONS"
+      },
+      {
+        "name": "#5 Carne Or Carnitas Plate",
+        "description": "Your Choice: Flour or Corn Tortilla\\ Guacamole, Salsa Mexicana. Includes Rice & Beans.",
+        "price": "$22.65",
+        "section": "COMBINATIONS"
+      },
+      {
+        "name": "#6 Combo Steak Ranchero",
+        "description": "Carne Asada, Salsa Ranchera. Includes Rice & Beans.",
+        "price": "$23.39",
+        "section": "COMBINATIONS"
+      },
+      {
+        "name": "#7 Combo Chimichanga",
+        "description": "Your Choice: Carne Asada, Carnitas, Shredded Beef, or Chicken. Includes Rice & Beans.",
+        "price": "$22.09",
+        "section": "COMBINATIONS"
+      },
+      {
+        "name": "#8 Combo Chilaquiles Con Pollo",
+        "description": "Your Choice: Salsa Roja or Verde\\ Chicken, Cheese, Sour Cream, and Onion. Includes Rice & Beans.",
+        "price": "$22.75",
+        "section": "COMBINATIONS"
+      },
+      {
+        "name": "Combo Grilled Chicken Plate",
+        "description": "Includes Rice & Beans.",
+        "price": "$22.75",
+        "section": "COMBINATIONS"
+      },
+      {
+        "name": "Mole Plate",
+        "description": "Includes Rice & Beans.",
+        "price": "$18.85",
+        "section": "COMBINATIONS"
+      },
+      {
+        "name": "Carne Asada Taco",
+        "description": "Guacamole, Salsa Mexicana",
+        "price": "$8.99",
+        "section": "TACOS"
+      },
+      {
+        "name": "Carnitas Taco",
+        "description": "Guacamole, Salsa Mexicana",
+        "price": "$8.99",
+        "section": "TACOS"
+      },
+      {
+        "name": "Fish Taco",
+        "description": "Cod W/Sour Cream, Mayo, Mexican Salsa, and Lettuce",
+        "price": "$9.35",
+        "section": "TACOS"
+      },
+      {
+        "name": "Grilled Chicken Taco",
+        "description": "Chipotle Dressing, Salsa Mexicana, and Cheese",
+        "price": "$9.35",
+        "section": "TACOS"
+      },
+      {
+        "name": "Grilled Shrimp Taco",
+        "description": "Grilled Shrimp, Mild Spicy Sauce, Cheese, Lettuce, Onion & Cilantro",
+        "price": "$10.00",
+        "section": "TACOS"
+      },
+      {
+        "name": "Shredded Beef Hard Taco",
+        "description": "Lettuce, Mexican Salsa, Cheese",
+        "price": "$8.70",
+        "section": "TACOS"
+      },
+      {
+        "name": "Shredded Chicken Hard Taco",
+        "description": "Lettuce, Mexican Salsa, Cheese",
+        "price": "$9.09",
+        "section": "TACOS"
+      },
+      {
+        "name": "Beef Rolled Tacos",
+        "description": "Corn Tortilla, Guacamole, and Cheese",
+        "price": "$9.49",
+        "section": "ROLLED TACOS"
+      },
+      {
+        "name": "Chicken Rolled Tacos",
+        "description": "Corn Tortilla, Guacamole, and Cheese",
+        "price": "$9.49",
+        "section": "ROLLED TACOS"
+      },
+      {
+        "name": "Ckn Flautas 3",
+        "description": "Flour Tortilla, Guacamole, Cheese, and Sour Cream",
+        "price": "$13.79",
+        "section": "ROLLED TACOS"
+      },
+      {
+        "name": "Ckn Flautas 5",
+        "description": "Flour Tortilla, Guacamole, Cheese, and Sour Cream",
+        "price": "$18.09",
+        "section": "ROLLED TACOS"
+      },
+      {
+        "name": "#1 Kids Cheese Quesadilla",
+        "description": "W/Side of Rice or Beans. Includes Soft drink & Apple Juice. ",
+        "price": "$14.29",
+        "section": "KIDS MENU"
+      },
+      {
+        "name": "#2 Kids 2 Rolled Tacos w/Rice",
+        "description": "Cheese & Sour Cream W/Side of Rice or Beans. Includes Soft drink & Apple Juice. ",
+        "price": "$12.99",
+        "section": "KIDS MENU"
+      },
+      {
+        "name": "#3 Kids 1 Bean & Cheese Burrito",
+        "description": "W/Side of Rice or Beans. Includes Soft drink & Apple Juice. ",
+        "price": "$13.65",
+        "section": "KIDS MENU"
+      },
+      {
+        "name": "#4 Kids 1 Cheese Enchilada",
+        "description": "W/Side of Rice or Beans. Includes Soft drink & Apple Juice. ",
+        "price": "$13.65",
+        "section": "KIDS MENU"
+      },
+      {
+        "name": "#1 -Egg w/Beans & Cheese",
+        "description": "",
+        "price": "$13.39",
+        "section": "BREAKFAST BURRITOS"
+      },
+      {
+        "name": "#2- Eggs w/Cheese & Avocado",
+        "description": "",
+        "price": "$14.95",
+        "section": "BREAKFAST BURRITOS"
+      },
+      {
+        "name": "#3- Eggs Ham Bacon Burrito",
+        "description": "",
+        "price": "$14.69",
+        "section": "BREAKFAST BURRITOS"
+      },
+      {
+        "name": "#4-  Eggs w/Veggies & Cheese",
+        "description": "",
+        "price": "$14.29",
+        "section": "BREAKFAST BURRITOS"
+      },
+      {
+        "name": "#5- Eggs Breakfast Burrito",
+        "description": "",
+        "price": "$15.99",
+        "section": "BREAKFAST BURRITOS"
+      },
+      {
+        "name": "Huevos Rancheros",
+        "description": "A Grilled Corn Tortila Topped With Two Over Easy Eggs and Salsa Ranchera. Served with Your Choice of Flour or Corn Tortillas W/Rice & Beans",
+        "price": "$20.15",
+        "section": "BREAKFAST PLATES"
+      },
+      {
+        "name": "Huevos a la Mexicana",
+        "description": "Two Scrambled Eggs with Chopped Onions, Tomatoes, Bell Peppers, and Cilantro. Served with Your Choice of Flour or Corn Tortillas W/Rice & Beans",
+        "price": "$18.75",
+        "section": "BREAKFAST PLATES"
+      },
+      {
+        "name": "Huevos con Chorizo Plato",
+        "description": "Chorizo Sausage Cooked into Two Scrambled Eggs. Served with Your Choice of Flour or Corn Tortillas W/Rice & Beans",
+        "price": "$20.69",
+        "section": "BREAKFAST PLATES"
+      },
+      {
+        "name": "Huevos con Machaca Plato",
+        "description": "Shredded Beef Mixed W/Bell Peppers and Onion Cooked Into Two Scrambled Eggs. Served with Your Choice of Flour or Corn Tortillas W/Rice & Beans",
+        "price": "$20.69",
+        "section": "BREAKFAST PLATES"
+      },
+      {
+        "name": "#  1 Daily Special 1 Taco",
+        "description": "Your choice of one taco: Shredded Beef, Shredded Chicken or Fish Served with Rice and Beans and 16 oz soft drink. ",
+        "price": "$17.29",
+        "section": "DAILY SPECIALS"
+      },
+      {
+        "name": "#2 Daily Special Cheese Quesadilla",
+        "description": "Served With Rice, Beans, and a 16oz Soft drink",
+        "price": "$15.99",
+        "section": "DAILY SPECIALS"
+      },
+      {
+        "name": "#3 Daily Special 3 Beef Rolled Tacos",
+        "description": "Topped  with Guacamole & Cheese. Served With Rice, Beans, and a 16oz Soft drink",
+        "price": "$17.29",
+        "section": "DAILY SPECIALS"
+      },
+      {
+        "name": "#4 Daily Special One Enchilada",
+        "description": "Choice of Cheese or Chicken.  Served With Rice, Beans, and a 16oz Soft drink",
+        "price": "$16.89",
+        "section": "DAILY SPECIALS"
+      },
+      {
+        "name": "#5 Daily Special One Burrito",
+        "description": "Your Choice of Shredded Beef, Shredded Chicken, or Asada. Served with Rice, Beans, and a 16oz Soft Drink",
+        "price": "$20.79",
+        "section": "DAILY SPECIALS"
+      },
+      {
+        "name": "16 Oz Soda/ Agua Fresca",
+        "description": "",
+        "price": "$5.75",
+        "section": "BEVERAGES"
+      },
+      {
+        "name": "32 Oz Soda /Agua Fresca",
+        "description": "",
+        "price": "$6.39",
+        "section": "BEVERAGES"
+      },
+      {
+        "name": "Jarritos",
+        "description": "Lemon, Toronja, Strawberry, Manzana, Sangria, or Mandarina",
+        "price": "$7.15",
+        "section": "BEVERAGES"
+      },
+      {
+        "name": "Kids Apple Juice",
+        "description": "",
+        "price": "$4.55",
+        "section": "BEVERAGES"
+      },
+      {
+        "name": "Kids Chocolate Milk",
+        "description": "",
+        "price": "$4.55",
+        "section": "BEVERAGES"
+      },
+      {
+        "name": "Water Bottles",
+        "description": "",
+        "price": "$3.15",
+        "section": "BEVERAGES"
+      },
+      {
+        "name": "32 0z De Guacamole",
+        "description": "",
+        "price": "$44.19",
+        "section": "SIDES"
+      },
+      {
+        "name": "32 Oz Beans",
+        "description": "",
+        "price": "$24.69",
+        "section": "SIDES"
+      },
+      {
+        "name": "32 Oz Mexican Salsa",
+        "description": "",
+        "price": "$28.59",
+        "section": "SIDES"
+      },
+      {
+        "name": "32 Oz Rice",
+        "description": "",
+        "price": "$20.79",
+        "section": "SIDES"
+      },
+      {
+        "name": "4 Oz Chile Picado",
+        "description": "",
+        "price": "$2.45",
+        "section": "SIDES"
+      },
+      {
+        "name": "8 Oz  Rice",
+        "description": "",
+        "price": "$6.89",
+        "section": "SIDES"
+      },
+      {
+        "name": "8 Oz Beans",
+        "description": "",
+        "price": "$8.05",
+        "section": "SIDES"
+      },
+      {
+        "name": "8 Oz Mexican Salsa",
+        "description": "",
+        "price": "$8.45",
+        "section": "SIDES"
+      },
+      {
+        "name": "8 Oz Side Guacamole",
+        "description": "",
+        "price": "$12.99",
+        "section": "SIDES"
+      },
+      {
+        "name": "8 Oz Side Of Asada",
+        "description": "",
+        "price": "$13.55",
+        "section": "SIDES"
+      },
+      {
+        "name": "8 oz Avocado",
+        "description": "",
+        "price": "$12.60",
+        "section": "SIDES"
+      },
+      {
+        "name": "Carne Asada Chips",
+        "description": "",
+        "price": "$17.80",
+        "section": "SIDES"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$18.85",
+        "section": "SIDES"
+      },
+      {
+        "name": "Chile Toreados",
+        "description": "",
+        "price": "$2.45",
+        "section": "SIDES"
+      },
+      {
+        "name": "Corn Tortilla",
+        "description": "",
+        "price": "$1.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "Flour Tortillas",
+        "description": "",
+        "price": "$1.95",
+        "section": "SIDES"
+      },
+      {
+        "name": "4 OZ Onion",
+        "description": "",
+        "price": "$2.15",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "4 OZ Sour Cream",
+        "description": "",
+        "price": "$2.89",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "4 Oz Avocado",
+        "description": "",
+        "price": "$4.35",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "4 Oz Cheese",
+        "description": "",
+        "price": "$3.45",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "4 Oz Cilantro",
+        "description": "",
+        "price": "$2.15",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "4 Oz Enchilada Sauce",
+        "description": "",
+        "price": "$4.35",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "4 Oz Guacamole",
+        "description": "",
+        "price": "$4.35",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "4 Oz Lettuce",
+        "description": "",
+        "price": "$1.65",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "4 Oz Mexican Salsa",
+        "description": "",
+        "price": "$2.59",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "4 Oz Mole Sauce",
+        "description": "",
+        "price": "$3.55",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "4 Oz White Sauce",
+        "description": "",
+        "price": "$2.15",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "Carrots",
+        "description": "",
+        "price": "$0.65",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "Rice Beans Plate",
+        "description": "",
+        "price": "$7.05",
+        "section": "EXTRAS 4oz"
+      },
+      {
+        "name": "Caldo De 7 Mares",
+        "description": "Served W/Rice & Beans. Your Choice of Flour or Corn Tortillas",
+        "price": "$29.65",
+        "section": "Mariscos Soups and Plates"
+      },
+      {
+        "name": "Caldo De Camaron",
+        "description": "Served W/Rice & Beans. Your Choice of Flour or Corn Tortillas",
+        "price": "$25.35",
+        "section": "Mariscos Soups and Plates"
+      },
+      {
+        "name": "Caldo De Pescado",
+        "description": "Served W/Rice & Beans. Your Choice of Flour or Corn Tortillas",
+        "price": "$25.35",
+        "section": "Mariscos Soups and Plates"
+      },
+      {
+        "name": "Camaron Empanizado",
+        "description": "Served W/Rice & Beans. Your Choice of Flour or Corn Tortillas",
+        "price": "$28.35",
+        "section": "Mariscos Soups and Plates"
+      },
+      {
+        "name": "Camaron Ranchero",
+        "description": "Served W/Rice & Beans. Your Choice of Flour or Corn Tortillas",
+        "price": "$26.39",
+        "section": "Mariscos Soups and Plates"
+      },
+      {
+        "name": "Camaron al Mojo de Ajo",
+        "description": "Served W/Rice & Beans. Your Choice of Flour or Corn Tortillas",
+        "price": "$28.35",
+        "section": "Mariscos Soups and Plates"
+      },
+      {
+        "name": "Camarones a la Diabla",
+        "description": "Served W/Rice & Beans. Your Choice of Flour or Corn Tortillas",
+        "price": "$26.39",
+        "section": "Mariscos Soups and Plates"
+      },
+      {
+        "name": "Shrimp & Octopus Cocktail",
+        "description": "Served W/Ketchup, Lime, Mexican Salsa, Cucumber, And Avocado",
+        "price": "$29.25",
+        "section": "Mariscos Tostadas Y Cocktails"
+      },
+      {
+        "name": "Shrimp Cocktail",
+        "description": "Served W/Ketchup, Lime, Mexican Salsa, Cucumber, And Avocado",
+        "price": "$25.99",
+        "section": "Mariscos Tostadas Y Cocktails"
+      },
+      {
+        "name": "Tostada De Ceviche Camaron",
+        "description": "Served W/Ketchup, Lime, Mexican Salsa, Cucumber, And Avocado",
+        "price": "$13.65",
+        "section": "Mariscos Tostadas Y Cocktails"
+      },
+      {
+        "name": "Vuelve A La Vida Cocktail",
+        "description": "Served W/Ketchup, Lime, Mexican Salsa, Cucumber, And Avocado",
+        "price": "$31.85",
+        "section": "Mariscos Tostadas Y Cocktails"
+      },
+      {
+        "name": "1 Enchilada",
+        "description": "",
+        "price": "$7.79",
+        "section": "A la Carte"
+      },
+      {
+        "name": "2 Enchiladas",
+        "description": "",
+        "price": "$15.59",
+        "section": "A la Carte"
+      },
+      {
+        "name": "Asada Chips",
+        "description": "",
+        "price": "$17.80",
+        "section": "A la Carte"
+      },
+      {
+        "name": "Bag Of Chips",
+        "description": "",
+        "price": "$3.25",
+        "section": "A la Carte"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$18.85",
+        "section": "A la Carte"
+      },
+      {
+        "name": "Chile Relleno",
+        "description": "",
+        "price": "$14.29",
+        "section": "A la Carte"
+      },
+      {
+        "name": "Chimichanga",
+        "description": "",
+        "price": "$16.79",
+        "section": "A la Carte"
+      },
+      {
+        "name": "Chips Cheese and Guacamole",
+        "description": "",
+        "price": "$11.59",
+        "section": "A la Carte"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$6.49",
+        "section": "A la Carte"
+      },
+      {
+        "name": "Grilled Chicken Fries",
+        "description": "",
+        "price": "$18.85",
+        "section": "A la Carte"
+      },
+      {
+        "name": "Water Bottles",
+        "description": "",
+        "price": "$3.15",
+        "section": "BEVERAGES TO GO"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6847",
+    "name": "Golden Island",
+    "sourceUrl": "https://goldenisland.kwickmenu.com/index.php",
+    "confidence": "high",
+    "notes": "Restaurant's own Kwickmenu online-ordering platform (linked from goldenislanddimsum.com), address-confirmed 10660 Camino Ruiz, San Diego, CA 92126. Parsed the page's embedded 'Cats' (categories) and 'Iids' (items) JS objects directly (not the rendered DOM, which showed 'Browse-only mode'). 513 priced dishes across ~38 real menu sections (Appetizers, Roast Dishes, Live Seafood, Seafood, Chicken, Beef/Lamb, Pork, Tofu, Fried Rice, Noodles, Rice Rolls, Pan-fried, Soup, Baked, Dessert, Vegetables, Hot Pot, Lettuce Wrap, dim sum letter-tiers A-E, AYCE Dimsum, Golden Hours Menu, wine/beer/cocktail/soda lists, etc). Markup test run on the full non-adjunct set: no divisor (1.04-1.25) produced a meaningful round-number cluster; the dominant cent endings are .00/.88/.99/.38, consistent with normal Chinese-restaurant 'lucky number 8' pricing convention, not a fee. Excluded as adjuncts: 'Party Tray' (45 items, catering), 'Banquet' (6 items, fixed $788-$1388 set menus for parties of 10), and the single $310 'Special Event Combo' entry. Items with price $0.00 (modifier placeholders) and item_live='0' entries were dropped.",
+    "dishes": [
+      {
+        "name": "#2 Spicy Chili Dumpling(8)",
+        "description": "",
+        "price": "$14.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "#3 Salt&Pepper Chicken Wings(6)",
+        "description": "",
+        "price": "$12.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "#4 Salt N Pepper Shrimp In Shell",
+        "description": "",
+        "price": "$15.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "#15 Peking Duck",
+        "description": "",
+        "price": "$53.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "#16 Roasted Pork Belly",
+        "description": "",
+        "price": "$21.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "#18 Bbq Pork",
+        "description": "",
+        "price": "$18.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "#24 Live Lobster 3-4 lbs. (market Price)",
+        "description": "",
+        "price": "$38.88",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "#25 Live Dungeness Crab(market P",
+        "description": "",
+        "price": "$28.99",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "#29 Sautéed Rock Cod Filet W/veg",
+        "description": "",
+        "price": "$22.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#30 Honey Walnut Shrimp",
+        "description": "",
+        "price": "$28.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#32 Kung Pao Shrimp",
+        "description": "",
+        "price": "$23.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#33 Sautéed Shrimp",
+        "description": "",
+        "price": "$24.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#34 Sautéed Jumbo Shrimp In Lobs",
+        "description": "",
+        "price": "$23.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#35 Sautéed Shrimp N Fish Filet",
+        "description": "",
+        "price": "$23.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#36 Sautéed Rock Cod Filet",
+        "description": "",
+        "price": "$22.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#37 Salt N Pepper Fish Filet",
+        "description": "",
+        "price": "$22.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#47 Orange Peel Chicken",
+        "description": "",
+        "price": "$20.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "#48 Kung Pao Chicken",
+        "description": "",
+        "price": "$20.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "#49 Chicken W/ Black Bean Sauce",
+        "description": "",
+        "price": "$21.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "#50 Sweet & Sour Chicken",
+        "description": "",
+        "price": "$20.99",
+        "section": "Chicken"
+      },
+      {
+        "name": "#52 American Broccoli Beef w/Oyster Sauce",
+        "description": "",
+        "price": "$22.99",
+        "section": "Beef/ Lamb"
+      },
+      {
+        "name": "#53 Diced Steak In BlackPepper Sauce",
+        "description": "",
+        "price": "$30.99",
+        "section": "Beef/ Lamb"
+      },
+      {
+        "name": "#54 Mongolian Beef",
+        "description": "",
+        "price": "$22.99",
+        "section": "Beef/ Lamb"
+      },
+      {
+        "name": "#55 Beef w/BlackBean Sauce",
+        "description": "",
+        "price": "$22.99",
+        "section": "Beef/ Lamb"
+      },
+      {
+        "name": "#59 Sweet & Sour Pork",
+        "description": "",
+        "price": "$21.99",
+        "section": "Pork"
+      },
+      {
+        "name": "#60 Salt & Pepper Pork Chop",
+        "description": "",
+        "price": "$22.99",
+        "section": "Pork"
+      },
+      {
+        "name": "#61 Sauteed Roasted Pork Belly",
+        "description": "",
+        "price": "$23.99",
+        "section": "Pork"
+      },
+      {
+        "name": "#62 Pork Chop In Peking Sauce",
+        "description": "",
+        "price": "$22.99",
+        "section": "Pork"
+      },
+      {
+        "name": "#72 Braised Tofu W/ Mushroom",
+        "description": "",
+        "price": "$20.99",
+        "section": "Tofu"
+      },
+      {
+        "name": "#73 Braised Tofu W/ Minced Pork",
+        "description": "",
+        "price": "$20.99",
+        "section": "Tofu"
+      },
+      {
+        "name": "#74 Fried Crispy Tofu",
+        "description": "",
+        "price": "$17.99",
+        "section": "Tofu"
+      },
+      {
+        "name": "#75 Braised Tofu W/ Vegetable",
+        "description": "",
+        "price": "$19.99",
+        "section": "Tofu"
+      },
+      {
+        "name": "#76 Mapo Tofu W/ Minced Pork",
+        "description": "",
+        "price": "$21.99",
+        "section": "Tofu"
+      },
+      {
+        "name": "*vegetable Fried Rice",
+        "description": "",
+        "price": "$19.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "#84 Seafood Fried Rice W/garlic",
+        "description": "",
+        "price": "$24.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "#85 Beef Fried Rice",
+        "description": "",
+        "price": "$19.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "#86 Young Chow Fried Rice",
+        "description": "",
+        "price": "$22.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "#87 Steamed Rice(bowl)",
+        "description": "",
+        "price": "$2.49",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "#88 Singapore Curry Rice Noodle",
+        "description": "",
+        "price": "$22.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#89 Chicken Pan-fried Noodle",
+        "description": "",
+        "price": "$20.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#90 Seafood Pan-fried Noodle",
+        "description": "",
+        "price": "$24.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#91 House Special",
+        "description": "",
+        "price": "$24.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#92 Shredded Pork Lo Mein",
+        "description": "",
+        "price": "$20.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#93 Soy Sauce Chow Fun(dry)",
+        "description": "",
+        "price": "$20.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#94 Chicken Chow Fun",
+        "description": "",
+        "price": "$20.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#95 Beef Pan-fried Noodle",
+        "description": "",
+        "price": "$21.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Plan-Rice Rolls",
+        "description": "",
+        "price": "$7.88",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "D. Stuffed Eggplant In Teriyaki",
+        "description": "",
+        "price": "$10.88",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "B. Deep-fried Meat Dumpling",
+        "description": "",
+        "price": "$8.38",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "B. Pan-fried Taro Cake",
+        "description": "",
+        "price": "$8.38",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "A. Spring Rolls",
+        "description": "",
+        "price": "$6.88",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "C. Pan-fried Meat Bun",
+        "description": "",
+        "price": "$9.38",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "D. Pan-fried Potstickers",
+        "description": "",
+        "price": "$10.88",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "D. Seaweed Shrimp Rolls",
+        "description": "",
+        "price": "$10.88",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "D. Deep Fried Shrimp Balls",
+        "description": "",
+        "price": "$10.88",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "D. Pan-fried Shrimp & Chives Cak",
+        "description": "",
+        "price": "$10.88",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "B. Pan-fried Turnip Cake",
+        "description": "",
+        "price": "$8.38",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "D. Shrimp Egg Rolls",
+        "description": "",
+        "price": "$10.88",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "Crab Meat W/imitation Sharkfin(",
+        "description": "",
+        "price": "$32.99",
+        "section": "Soup"
+      },
+      {
+        "name": "C. BBQ Pork Rice Rolls",
+        "description": "",
+        "price": "$9.38",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "D. Shrimp Rice Rolls",
+        "description": "",
+        "price": "$10.88",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "C. Breadstick Rice Rolls",
+        "description": "",
+        "price": "$9.38",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "B. Vegetarian Rice Rolls",
+        "description": "",
+        "price": "$8.38",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "B. Baked Bbq Pork Croissan",
+        "description": "",
+        "price": "$8.38",
+        "section": "Baked"
+      },
+      {
+        "name": "B. Creamy Egg Yolk Bun",
+        "description": "",
+        "price": "$8.38",
+        "section": "Baked"
+      },
+      {
+        "name": "B. Egg Tart",
+        "description": "",
+        "price": "$8.38",
+        "section": "Baked"
+      },
+      {
+        "name": "A. Sweet Rice Cake",
+        "description": "",
+        "price": "$6.88",
+        "section": "Dessert"
+      },
+      {
+        "name": "A. Mango Pudding",
+        "description": "",
+        "price": "$6.88",
+        "section": "Dessert"
+      },
+      {
+        "name": "A. Gui Hua Cake",
+        "description": "",
+        "price": "$6.88",
+        "section": "Dessert"
+      },
+      {
+        "name": "Charles Krug Cabernet Sauvignon.",
+        "description": "",
+        "price": "$58.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Robert Mondavi Merlot. Napa Vall",
+        "description": "",
+        "price": "$48.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Duckhorn Merlot 750ml. Napa Vall",
+        "description": "",
+        "price": "$120.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Caymus Cabernet Sauvignon 2017.",
+        "description": "",
+        "price": "$380.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Caymus Cab 2021 1 Liter",
+        "description": "",
+        "price": "$200.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Chateau Montelena Chardonnay. Na",
+        "description": "",
+        "price": "$99.00",
+        "section": "White Wines"
+      },
+      {
+        "name": "Zipang. Carbonated Sake",
+        "description": "",
+        "price": "$16.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Hana Awaka. Sparkling Flavored S",
+        "description": "Mixed Berry, Flower, and Yuzu Lemon",
+        "price": "$16.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Soda",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Coors",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Corona",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Modelo",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Heineken",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Pacifico",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Asahi",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Tsingtao",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Singha",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Truly. Flavored Hard Seltzer Man",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Ice Tea",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "A Dim Sum",
+        "description": "",
+        "price": "$6.88",
+        "section": "Ticket"
+      },
+      {
+        "name": "B Dim Sum",
+        "description": "",
+        "price": "$8.38",
+        "section": "Ticket"
+      },
+      {
+        "name": "C Dim Sum",
+        "description": "",
+        "price": "$9.38",
+        "section": "Ticket"
+      },
+      {
+        "name": "D Dim Sum",
+        "description": "",
+        "price": "$10.88",
+        "section": "Ticket"
+      },
+      {
+        "name": "Sweet And Sour Fried Fish",
+        "description": "",
+        "price": "$49.99",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "House Special Sauce Fried Fish",
+        "description": "",
+        "price": "$44.99",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "*salted Fish Fried Rice",
+        "description": "",
+        "price": "$24.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "#5 House Special Crispy Fried Sq",
+        "description": "",
+        "price": "$22.88",
+        "section": "Appetizers"
+      },
+      {
+        "name": "E Chef Dim Sum",
+        "description": "",
+        "price": "$12.88",
+        "section": "Ticket"
+      },
+      {
+        "name": "Supreme Dim Sum",
+        "description": "",
+        "price": "$14.88",
+        "section": "Ticket"
+      },
+      {
+        "name": "Kitchen",
+        "description": "",
+        "price": "$15.88",
+        "section": "Ticket"
+      },
+      {
+        "name": "#85b Chicken Fried Rice",
+        "description": "",
+        "price": "$19.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Chateau Montelena Chardonnay. Na",
+        "description": "",
+        "price": "$99.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Corkage Fee Wine",
+        "description": "",
+        "price": "$25.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Corkage Fee Bottle",
+        "description": "",
+        "price": "$50.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "A. Chinese Donut",
+        "description": "",
+        "price": "$6.88",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "Soys Noodle",
+        "description": "",
+        "price": "$16.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#7 Deep-fried Pig Intestine",
+        "description": "",
+        "price": "$21.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "#6 Harbor Style Soft Shell Crab",
+        "description": "",
+        "price": "$11.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "#8 Salt & Pepper Chicken Feet",
+        "description": "",
+        "price": "$22.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "#31 Golden Sand Fried Shrimp",
+        "description": "",
+        "price": "$28.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#39 French Style Black Pepper Fi",
+        "description": "",
+        "price": "$23.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#40 Harbor Style Fried Oyster",
+        "description": "",
+        "price": "$28.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#41 Oyster W/ginger & Scallion",
+        "description": "",
+        "price": "$27.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "#42 Whole Jumbo Abalone",
+        "description": "",
+        "price": "$28.99",
+        "section": "Sea-cucumber Abalone"
+      },
+      {
+        "name": "#43 Braised Abalone W/green(10pc",
+        "description": "",
+        "price": "$88.99",
+        "section": "Sea-cucumber Abalone"
+      },
+      {
+        "name": "#44 Braised Abalone & Sea Cucumb",
+        "description": "",
+        "price": "$88.99",
+        "section": "Sea-cucumber Abalone"
+      },
+      {
+        "name": "#45 Braised Sea Cucumber W/veget",
+        "description": "",
+        "price": "$48.99",
+        "section": "Sea-cucumber Abalone"
+      },
+      {
+        "name": "#46 Braised Abalone & Black Mush",
+        "description": "",
+        "price": "$88.99",
+        "section": "Sea-cucumber Abalone"
+      },
+      {
+        "name": "#51 Lamb Chop In BlackPepper Sauce",
+        "description": "",
+        "price": "$39.99",
+        "section": "Beef/ Lamb"
+      },
+      {
+        "name": "#56 Sautéed Beef Tendon w/Ginger&G-Onion",
+        "description": "",
+        "price": "$22.99",
+        "section": "Beef/ Lamb"
+      },
+      {
+        "name": "#57 French Style BlackPepper Steak",
+        "description": "",
+        "price": "$30.99",
+        "section": "Beef/ Lamb"
+      },
+      {
+        "name": "#58 Sautéed Angus Beef w/Assorted Mushrooms",
+        "description": "",
+        "price": "$24.99",
+        "section": "Beef/ Lamb"
+      },
+      {
+        "name": "#63 Honey & Garlic Pork Ribs",
+        "description": "",
+        "price": "$23.99",
+        "section": "Pork"
+      },
+      {
+        "name": "#64 Stewed Lamb W/dry Bean Curd",
+        "description": "",
+        "price": "$26.99",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "#65 Beef Stew W/supreme Soup In",
+        "description": "",
+        "price": "$26.99",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "#66 Assorted Seafood W/bean Curd",
+        "description": "",
+        "price": "$25.99",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "#67 Pork Belly & Oyster W/ginger",
+        "description": "",
+        "price": "$28.99",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "#68 Salty Fish W/chicken & Tofu",
+        "description": "",
+        "price": "$23.99",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "#69 Salty Fish W/chicken & Eggpl",
+        "description": "",
+        "price": "$23.99",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "#70 Spicy Satay Beef W/vermicell",
+        "description": "",
+        "price": "$23.99",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "#71 Beef Short Ribs & Eggplant W",
+        "description": "",
+        "price": "$28.99",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "#77 Crab Meat & Egg Tofu In Pump",
+        "description": "",
+        "price": "$22.99",
+        "section": "Tofu"
+      },
+      {
+        "name": "#96 Crab Meat W/long Life Noodle",
+        "description": "",
+        "price": "$23.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#97 Rice Noodle W/seafood. Pork",
+        "description": "",
+        "price": "$24.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Salt & Pepper Calamari",
+        "description": "",
+        "price": "$16.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "#78 Sautéed Vegetable W/garlic",
+        "description": "",
+        "price": "$23.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "#79 Sautéed Cabbage In Hot Sauce",
+        "description": "",
+        "price": "$18.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "#80 Sautéed Seasonal Vegetables",
+        "description": "",
+        "price": "$19.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "#81 Braised Pea Pod Leaves W/ Eg",
+        "description": "",
+        "price": "$28.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Dimsum Gai Lan",
+        "description": "",
+        "price": "$14.89",
+        "section": "Vegetables"
+      },
+      {
+        "name": "#82 Sautéed Ong Choy W/bean Curd",
+        "description": "",
+        "price": "$23.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "B. Durian Croissant",
+        "description": "",
+        "price": "$8.38",
+        "section": "Baked"
+      },
+      {
+        "name": "E. Shrimp Wonton",
+        "description": "",
+        "price": "$12.88",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "Coco Pineapple",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Island Mojito",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Island Colada",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Island Bloody Mary",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Island Sunrise",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Truly 120z",
+        "description": "",
+        "price": "$6.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Truly 24oz",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Sparkling Zipang",
+        "description": "",
+        "price": "$16.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Sparkling Hana",
+        "description": "",
+        "price": "$16.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "White Claw Flavored Hard Seltzer",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Quilt Cabernet Sauvignon.napa Va",
+        "description": "",
+        "price": "$160.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Bv Rutherford Cabernet Sauvignon",
+        "description": "",
+        "price": "$180.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Mimosa(orange Juice &brut Champa",
+        "description": "",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Flavored Mimosa( Mango.Strawberry)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Saketini Rasberry",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "HotTea",
+        "description": "",
+        "price": "$2.88",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Juice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Can",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Perrier",
+        "description": "",
+        "price": "$4.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Robert Mondavi Cabernet Sauvigno",
+        "description": "",
+        "price": "$110.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Plum Wine",
+        "description": "",
+        "price": "$12.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Salt & Pepper Peking Duck Bone",
+        "description": "",
+        "price": "$10.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Plain Buns",
+        "description": "",
+        "price": "$10.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Conch And Dry Scallop Soup(xlar",
+        "description": "",
+        "price": "$49.98",
+        "section": "Soup"
+      },
+      {
+        "name": "#38 Chilean Seabass Let Steamed",
+        "description": "",
+        "price": "$49.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Braised Abalone&black Mushroom W",
+        "description": "",
+        "price": "$99.88",
+        "section": "Sea-cucumber Abalone"
+      },
+      {
+        "name": "Long Life Noodle",
+        "description": "",
+        "price": "$10.99",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "Conch And Dry Scallop Soup(for4",
+        "description": "",
+        "price": "$32.99",
+        "section": "Soup"
+      },
+      {
+        "name": "Crab Meat W/ Imitation Sharkfin",
+        "description": "",
+        "price": "$49.98",
+        "section": "Soup"
+      },
+      {
+        "name": "Corkage Fee",
+        "description": "",
+        "price": "$20.00",
+        "section": "White Wines"
+      },
+      {
+        "name": "Corkage Fee",
+        "description": "",
+        "price": "$30.00",
+        "section": "White Wines"
+      },
+      {
+        "name": "B. Taro Ball",
+        "description": "",
+        "price": "$8.38",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "Sangria",
+        "description": "",
+        "price": "$12.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Jinro",
+        "description": "",
+        "price": "$16.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Manila Clam Black Bean Sauce",
+        "description": "",
+        "price": "$24.99",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shrimp Wonton",
+        "description": "",
+        "price": "$12.88",
+        "section": "Soup"
+      },
+      {
+        "name": "C. Beef Rice Rolls",
+        "description": "",
+        "price": "$9.38",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "Braised Aged Pork W/preserved Ve",
+        "description": "",
+        "price": "$25.88",
+        "section": "Pork"
+      },
+      {
+        "name": "Stir-fried Green Bean",
+        "description": "",
+        "price": "$24.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Gai Lan",
+        "description": "",
+        "price": "$23.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Sauteed Ong Choy W/garlic",
+        "description": "",
+        "price": "$23.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Shrimp Egg Fu Young",
+        "description": "",
+        "price": "$28.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Pan Fried Dry Fish W/ Gai Lan",
+        "description": "",
+        "price": "$26.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Fresh Chili",
+        "description": "",
+        "price": "$2.99",
+        "section": "Ticket"
+      },
+      {
+        "name": "BYOTea-Hot Water/person",
+        "description": "",
+        "price": "$1.88",
+        "section": "Ticket"
+      },
+      {
+        "name": "Salted Egg York Chicken Wings(6p",
+        "description": "",
+        "price": "$14.88",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Bitter Melon-Beef w/BlackBean Sauce",
+        "description": "",
+        "price": "$24.88",
+        "section": "Beef/ Lamb"
+      },
+      {
+        "name": "Kung Pao Trio Beef-Chicken-Shrimp",
+        "description": "",
+        "price": "$29.88",
+        "section": "Beef/ Lamb"
+      },
+      {
+        "name": "Spareribs In Black-bean Sauce Ch",
+        "description": "",
+        "price": "$28.88",
+        "section": "Noodles"
+      },
+      {
+        "name": "Salt & Pepper Squid Tentacles",
+        "description": "",
+        "price": "$15.88",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Soy Sauce Beef Chow Fun(dry) -",
+        "description": "",
+        "price": "$28.88",
+        "section": "Noodles"
+      },
+      {
+        "name": "Sesame Ball",
+        "description": "",
+        "price": "$18.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Sweet Rice Cake",
+        "description": "",
+        "price": "$18.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Sponge Cake",
+        "description": "",
+        "price": "$18.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Turnip Cake",
+        "description": "",
+        "price": "$18.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Poon Choy ",
+        "description": "",
+        "price": "$298.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Steamed Tofu W/seafood",
+        "description": "",
+        "price": "$28.88",
+        "section": "Tofu"
+      },
+      {
+        "name": "Maggi Sauce Shrimp",
+        "description": "",
+        "price": "$29.88",
+        "section": "Seafood"
+      },
+      {
+        "name": "B. Beef Ball",
+        "description": "",
+        "price": "$8.38",
+        "section": "Steamed"
+      },
+      {
+        "name": "C. Bean Curd Roll w/ Abalone Sau",
+        "description": "",
+        "price": "$9.38",
+        "section": "Steamed"
+      },
+      {
+        "name": "B. Chicken Feet",
+        "description": "",
+        "price": "$8.38",
+        "section": "Steamed"
+      },
+      {
+        "name": "B. Spareribs In Black Bean Sauce",
+        "description": "",
+        "price": "$8.38",
+        "section": "Steamed"
+      },
+      {
+        "name": "B. Shanghai Pork Bun(Xiao Long Bao)",
+        "description": "",
+        "price": "$8.38",
+        "section": "Steamed"
+      },
+      {
+        "name": "D. Beef Short Ribs w/BlK Pepper",
+        "description": "",
+        "price": "$10.88",
+        "section": "Steamed"
+      },
+      {
+        "name": "A. Steamed Bbq Pork Bun",
+        "description": "",
+        "price": "$6.88",
+        "section": "Steamed"
+      },
+      {
+        "name": "D. Ginger Scallion Beef Tripe",
+        "description": "",
+        "price": "$10.88",
+        "section": "Steamed"
+      },
+      {
+        "name": "D. Sticky Rice Wrap",
+        "description": "",
+        "price": "$10.88",
+        "section": "Steamed"
+      },
+      {
+        "name": "C. Pork & Shrimp Siu Mai",
+        "description": "",
+        "price": "$9.38",
+        "section": "Steamed"
+      },
+      {
+        "name": "A. Steamed Sweet Cream Bun",
+        "description": "",
+        "price": "$6.88",
+        "section": "Steamed"
+      },
+      {
+        "name": "E. Stewed Beef Tripe",
+        "description": "",
+        "price": "$12.88",
+        "section": "Steamed"
+      },
+      {
+        "name": "C. Shrimp & Chives Dumpling",
+        "description": "",
+        "price": "$9.38",
+        "section": "Steamed"
+      },
+      {
+        "name": "C. Scallop & Shrimp Dumpling",
+        "description": "",
+        "price": "$9.38",
+        "section": "Steamed"
+      },
+      {
+        "name": "D. Shrimp Har Gow",
+        "description": "",
+        "price": "$10.88",
+        "section": "Steamed"
+      },
+      {
+        "name": "D. Shrimp Siu Mai",
+        "description": "",
+        "price": "$10.88",
+        "section": "Steamed"
+      },
+      {
+        "name": "C. Pea Pod Leaves Dumpling",
+        "description": "",
+        "price": "$9.38",
+        "section": "Steamed"
+      },
+      {
+        "name": "A. Bake Cream Bun",
+        "description": "",
+        "price": "$6.88",
+        "section": "Baked"
+      },
+      {
+        "name": "*shrimp Fried-rice",
+        "description": "",
+        "price": "$23.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Soy Sauce Beef Brisket Rice Roll",
+        "description": "",
+        "price": "$23.88",
+        "section": "Noodles"
+      },
+      {
+        "name": "Shrimp Lomein",
+        "description": "",
+        "price": "$24.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Chicken Lomein",
+        "description": "",
+        "price": "$21.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Beef Lomein",
+        "description": "",
+        "price": "$21.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Seafood Lomein",
+        "description": "",
+        "price": "$24.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Oyster W/ Pork Belly Pot",
+        "description": "",
+        "price": "$29.88",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "*bbq Pork Fried Rice",
+        "description": "",
+        "price": "$22.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Vegetable Chow Fun",
+        "description": "",
+        "price": "$20.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Vegetable Lo Mein",
+        "description": "",
+        "price": "$20.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "Dimsum Soy Sauce Noodle",
+        "description": "",
+        "price": "$12.89",
+        "section": "Noodles"
+      },
+      {
+        "name": "Rock Crab",
+        "description": "",
+        "price": "$14.88",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "Yuki(nigori)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "#83 Dry Scallop Egg White Fried",
+        "description": "",
+        "price": "$23.99",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Saketini Lychee",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "A. Sesame Ball W/red Bean",
+        "description": "",
+        "price": "$6.88",
+        "section": "Pan-fried"
+      },
+      {
+        "name": "Wonton Noodle",
+        "description": "",
+        "price": "$18.88",
+        "section": "Soup"
+      },
+      {
+        "name": "Seafood Crispy Rice Noodle",
+        "description": "",
+        "price": "$28.88",
+        "section": "Noodles"
+      },
+      {
+        "name": "Beef Crispy Rice Noodle",
+        "description": "",
+        "price": "$24.88",
+        "section": "Noodles"
+      },
+      {
+        "name": "Chicken Crispy Rice Noodle",
+        "description": "",
+        "price": "$24.88",
+        "section": "Noodles"
+      },
+      {
+        "name": "Cook For You",
+        "description": "",
+        "price": "$25.00",
+        "section": "Seafood"
+      },
+      {
+        "name": "Hongyun Dangtou (Braised Crab Meat &amp; Fish Maw)",
+        "description": "",
+        "price": "$32.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Family Joy (western Juice Walnut",
+        "description": "",
+        "price": "$32.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Good Market to Make a Fortune(Ma",
+        "description": "",
+        "price": "$28.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "X.O. Sauce",
+        "description": "",
+        "price": "$9.88",
+        "section": "Ticket"
+      },
+      {
+        "name": "Coffee/ Boba Coffee",
+        "description": "",
+        "price": "$5.99",
+        "section": "Ticket"
+      },
+      {
+        "name": "B. Portuguese Egg Tart",
+        "description": "",
+        "price": "$8.38",
+        "section": "Baked"
+      },
+      {
+        "name": "E. Fish Filet Cilantro Rice Rolls",
+        "description": "",
+        "price": "$12.88",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "B. Black Gold Egg York Bun",
+        "description": "",
+        "price": "$8.38",
+        "section": "Steamed"
+      },
+      {
+        "name": "B. Baked BBQ Pork Bun",
+        "description": "",
+        "price": "$8.38",
+        "section": "Baked"
+      },
+      {
+        "name": "Premium Tea/ Person",
+        "description": "",
+        "price": "$2.88",
+        "section": "Ticket"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "",
+        "price": "$4.00",
+        "section": "Ticket"
+      },
+      {
+        "name": "Golden Rum",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Tofu With Vermicelli Casserole",
+        "description": "",
+        "price": "$23.99",
+        "section": "Hot Pot"
+      },
+      {
+        "name": "Bottle",
+        "description": "",
+        "price": "$4.00",
+        "section": "Beer Special"
+      },
+      {
+        "name": "Cup",
+        "description": "",
+        "price": "$4.00",
+        "section": "Beer Special"
+      },
+      {
+        "name": "B. Pineapple Bun",
+        "description": "",
+        "price": "$8.38",
+        "section": "Baked"
+      },
+      {
+        "name": "Chinese Sausages Fried-rice",
+        "description": "",
+        "price": "$22.88",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Stir-fried Pork Intestine W/pick",
+        "description": "",
+        "price": "$25.88",
+        "section": "Pork"
+      },
+      {
+        "name": "Golden Salted Egg Yolk Or S&P Ch",
+        "description": "",
+        "price": "$11.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Sautéed Chinese Broccoli W/ Drie",
+        "description": "",
+        "price": "$19.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Golden Island Spare Ribs",
+        "description": "",
+        "price": "$21.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Stir-fried Pig Intestine With Pi",
+        "description": "",
+        "price": "$21.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Steamed Pork Patty With Salted F",
+        "description": "",
+        "price": "$21.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Stir-fried Rice Noodles With Xo",
+        "description": "",
+        "price": "$19.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Deep-fried Fish Cake",
+        "description": "",
+        "price": "$22.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Stir-fried Rice Vermicelli With",
+        "description": "",
+        "price": "$22.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Beef Brisket In Clear Broth",
+        "description": "",
+        "price": "$25.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Stir-fried Yam And Pumpkin(vege",
+        "description": "",
+        "price": "$19.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Stir-fried Clams With Basils",
+        "description": "",
+        "price": "$23.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Stir-fried Fish Filet With Basil",
+        "description": "",
+        "price": "$20.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Watercress Soup With Fish Balls",
+        "description": "",
+        "price": "$21.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Salt And Pepper Crab",
+        "description": "",
+        "price": "$25.00",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Ginger Scallion Or Superior Brot",
+        "description": "",
+        "price": "$48.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Chinese Style Beef Filet-mignon",
+        "description": "",
+        "price": "$30.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Golden Fried Oysters With Salted",
+        "description": "",
+        "price": "$27.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Braised Choy Sum Or Bok Choy W/",
+        "description": "",
+        "price": "$19.88",
+        "section": "Chef's recommendations"
+      },
+      {
+        "name": "Celsius",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Black & Gold Sake",
+        "description": "",
+        "price": "$48.88",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Soys Chow-fun",
+        "description": "",
+        "price": "$16.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "A. Coconut Cake",
+        "description": "",
+        "price": "$6.88",
+        "section": "Dessert"
+      },
+      {
+        "name": "E. Soy Sauce Chow-mein",
+        "description": "",
+        "price": "$12.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "E. Rice Roll Xo Sauce",
+        "description": "",
+        "price": "$12.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "E. Sautéed String Beans",
+        "description": "",
+        "price": "$12.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "E. Salt & Pepper Tofu",
+        "description": "",
+        "price": "$12.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "E. Cold Jelly Fish",
+        "description": "",
+        "price": "$12.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "E. Salt & Peeper Chicken Wings",
+        "description": "",
+        "price": "$12.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "K. Chinese Broccoli W/oyster Sau",
+        "description": "",
+        "price": "$15.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "K. Roasted Duck",
+        "description": "",
+        "price": "$15.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "K. Roasted Pork Belly",
+        "description": "",
+        "price": "$15.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "K. Bbq Pork Char-siu",
+        "description": "",
+        "price": "$15.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "K. Empress Chicken",
+        "description": "",
+        "price": "$15.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "K. Salt & Pepper Shrimps",
+        "description": "",
+        "price": "$15.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "K. Salt & Pepper Squid Tentacles",
+        "description": "",
+        "price": "$15.88",
+        "section": "Weekend/holidays Dimsum"
+      },
+      {
+        "name": "Steamed Pork Cake W/salted Fish",
+        "description": "",
+        "price": "$26.88",
+        "section": "Pork"
+      },
+      {
+        "name": "Peking Duck Lettuce Wrap",
+        "description": "",
+        "price": "$15.00",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Pan Fried Pork Cake W/salted Fis",
+        "description": "",
+        "price": "$29.88",
+        "section": "Pork"
+      },
+      {
+        "name": "Lettuce Wrap",
+        "description": "",
+        "price": "$19.88",
+        "section": "Lettuce Wrap"
+      },
+      {
+        "name": "Suckling Pig",
+        "description": "",
+        "price": "$328.88",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Gi Mule",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Cran Vodka",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Old Fashion",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "Thanksgiving Turkey Special",
+        "description": "",
+        "price": "$118.88",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Golden Chef Seafood Bird Nest",
+        "description": "",
+        "price": "$38.88",
+        "section": "Seafood"
+      },
+      {
+        "name": "Pitcher Special",
+        "description": "",
+        "price": "$15.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Chicken Shredded Winter Osmanthu",
+        "description": "",
+        "price": "$28.88",
+        "section": "Noodles"
+      },
+      {
+        "name": "Chef 's Special Fried Rice",
+        "description": "",
+        "price": "$28.88",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Spicy Dry Fried Salted Chicken Wings (8)",
+        "description": "",
+        "price": "$16.89",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Chicken Wings ( 6 )",
+        "description": "",
+        "price": "$12.89",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Spicy Dry Fried Salted Squid ",
+        "description": "",
+        "price": "$18.89",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Golden Fried Shrimp (6)",
+        "description": "",
+        "price": "$12.89",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Vegetable Egg Rolls (3)",
+        "description": "",
+        "price": "$6.88",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Golden Beer Pitcher",
+        "description": "",
+        "price": "$15.00",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Golden IPA Pitcher",
+        "description": "",
+        "price": "$20.00",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Pan-Fried Potsticker ",
+        "description": "",
+        "price": "$8.89",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Deep Fried Shrimp Ball (3)",
+        "description": "",
+        "price": "$10.88",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Pan Fried Meat Bun (3)",
+        "description": "",
+        "price": "$8.89",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Golden Shrimp Egg Rolls (3)",
+        "description": "",
+        "price": "$9.89",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Salt & Pepper Tofu",
+        "description": "",
+        "price": "$16.89",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Salt &Pepper Shrimp (8)",
+        "description": "",
+        "price": "$16.89",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "G- Deep Fried S/P Chicken Feet",
+        "description": "",
+        "price": "$22.89",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Golden Soup Dumplings (12)",
+        "description": "",
+        "price": "$18.00",
+        "section": "Golden Hours Menu"
+      },
+      {
+        "name": "Strong&amp;Strong (Black Pepper Beef Fillet)",
+        "description": "",
+        "price": "$33.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "$$ All Over The Ground (Gingzhi Mushroom and Pea Sprouts)",
+        "description": "",
+        "price": "$26.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Baizi Qiansun (Hong Kong-Style Fried Pork Ribs)",
+        "description": "",
+        "price": "$23.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "More Than Enough (Steamed Fish)",
+        "description": "",
+        "price": "$16.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Joyful (Yangzhou Fried Rice)",
+        "description": "",
+        "price": "$23.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Grain Harvest (Fried Rice w/ Egg White)",
+        "description": "",
+        "price": "$26.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Golden Fried Chicken Good News (Garlic Chicken)",
+        "description": "",
+        "price": "$33.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Golden Steamed Chicken Good News (Signature Noble Concubine Chic",
+        "description": "",
+        "price": "$33.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "2X Sweet (Red bean Soup w/Rice Balls)",
+        "description": "",
+        "price": "$19.88",
+        "section": "New Year Dishes"
+      },
+      {
+        "name": "Poppi Prebiotic Soda",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Omezza",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Baby Bok Choy w/Mushroom",
+        "description": "",
+        "price": "$21.88",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Sweet&Sour Tofu",
+        "description": "",
+        "price": "$21.88",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Szechwan String Beans",
+        "description": "",
+        "price": "$21.88",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Szechwan Garlic Eggplant",
+        "description": "",
+        "price": "$21.88",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Country Style Tofu",
+        "description": "",
+        "price": "$21.88",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Deep Fried Crispy Tofu",
+        "description": "",
+        "price": "$18.88",
+        "section": "Vegetables"
+      },
+      {
+        "name": "#87 Steamed Rice Bowl",
+        "description": "",
+        "price": "$2.49",
+        "section": "Ticket"
+      },
+      {
+        "name": "Soda",
+        "description": "",
+        "price": "$4.00",
+        "section": "Ticket"
+      },
+      {
+        "name": "AYCE",
+        "description": "",
+        "price": "$34.78",
+        "section": "AYCE DIMSUM"
+      },
+      {
+        "name": "AYCE KID ",
+        "description": "",
+        "price": "$17.39",
+        "section": "AYCE DIMSUM"
+      },
+      {
+        "name": "AYCE Weekend",
+        "description": "",
+        "price": "$36.78",
+        "section": "AYCE DIMSUM"
+      },
+      {
+        "name": "AYCE KID Weekend",
+        "description": "",
+        "price": "$18.39",
+        "section": "AYCE DIMSUM"
+      },
+      {
+        "name": "Perrier",
+        "description": "",
+        "price": "$4.99",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Bottle Water",
+        "description": "",
+        "price": "$2.99",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Celsius",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Poppi Prebiotic Soda",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Omezza",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Open Table",
+        "description": "",
+        "price": "$0.01",
+        "section": "Ticket"
+      },
+      {
+        "name": "#4 Salt N Pepper Shrimp In Shell",
+        "description": "",
+        "price": "$15.99",
+        "section": "Appetizers PROD"
+      },
+      {
+        "name": "#8 Salt & Pepper Chicken Feet",
+        "description": "",
+        "price": "$22.99",
+        "section": "Appetizers PROD"
+      },
+      {
+        "name": "Salt & Pepper Calamari",
+        "description": "",
+        "price": "$16.99",
+        "section": "Appetizers PROD"
+      },
+      {
+        "name": "Salted Egg York Chicken Wings(6p",
+        "description": "",
+        "price": "$14.88",
+        "section": "Appetizers PROD"
+      },
+      {
+        "name": "Sweet & Sour Fish Filet",
+        "description": "",
+        "price": "$24.88",
+        "section": "Seafood"
+      },
+      {
+        "name": "Shortspine Thornyhead",
+        "description": "",
+        "price": "$14.88",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "Palomar",
+        "description": "",
+        "price": "$11.00",
+        "section": "Cocktails"
+      },
+      {
+        "name": "(sm) #9 Crab Meat W/ Fish Maw Soup",
+        "description": "",
+        "price": "$9.89",
+        "section": "Soup"
+      },
+      {
+        "name": "(lg) #9 Crab Meat W/ Fish Maw Soup",
+        "description": "",
+        "price": "$27.99",
+        "section": "Soup"
+      },
+      {
+        "name": "(sm) #10 Supreme Seafood W/ Bean Curd",
+        "description": "",
+        "price": "$8.99",
+        "section": "Soup"
+      },
+      {
+        "name": "(lg) #10 Supreme Seafood W/ Bean Curd",
+        "description": "",
+        "price": "$23.99",
+        "section": "Soup"
+      },
+      {
+        "name": "(sm) #11 Minced Beef W/ Egg White Sou",
+        "description": "",
+        "price": "$6.99",
+        "section": "Soup"
+      },
+      {
+        "name": "(lg) #11 Minced Beef W/ Egg White Sou",
+        "description": "",
+        "price": "$21.99",
+        "section": "Soup"
+      },
+      {
+        "name": "(sm) #12 Wonton Soup",
+        "description": "",
+        "price": "$6.99",
+        "section": "Soup"
+      },
+      {
+        "name": "(lg) #12 Wonton Soup",
+        "description": "",
+        "price": "$21.99",
+        "section": "Soup"
+      },
+      {
+        "name": "(sm) #13 Hot N Sour Soup(no Meat)",
+        "description": "",
+        "price": "$6.39",
+        "section": "Soup"
+      },
+      {
+        "name": "(lg) #13 Hot N Sour Soup(no Meat)",
+        "description": "",
+        "price": "$18.99",
+        "section": "Soup"
+      },
+      {
+        "name": "(sm) #14 Egg Drop Soup",
+        "description": "",
+        "price": "$6.39",
+        "section": "Soup"
+      },
+      {
+        "name": "(lg) #14 Egg Drop Soup",
+        "description": "",
+        "price": "$18.99",
+        "section": "Soup"
+      },
+      {
+        "name": "Half #17 Imperial Cold Chicken",
+        "description": "",
+        "price": "$18.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Whole #17 Imperial Cold Chicken",
+        "description": "",
+        "price": "$33.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Half #19 Roasted Duck",
+        "description": "",
+        "price": "$19.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Whole #19 Roasted Duck",
+        "description": "",
+        "price": "$36.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Half #20 Soy Sauce Chicken",
+        "description": "",
+        "price": "$18.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Whole #20 Soy Sauce Chicken",
+        "description": "",
+        "price": "$33.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Half #21 HouseSpecial Roasted Chicken",
+        "description": "",
+        "price": "$18.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Whole #21 HouseSpecial Roasted Chicken",
+        "description": "",
+        "price": "$33.99",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "#27 Steamed Whole Fish Flounder",
+        "description": "",
+        "price": "$39.99",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "#27 Steamed Whole Fish Barramundi",
+        "description": "",
+        "price": "$48.88",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "#74 Fried Crispy Tofu Spicy",
+        "description": "",
+        "price": "$17.99",
+        "section": "Tofu"
+      },
+      {
+        "name": "#74 Fried Crispy Tofu Not Spicy",
+        "description": "",
+        "price": "$17.99",
+        "section": "Tofu"
+      },
+      {
+        "name": "#91 House Special Chow Mein",
+        "description": "",
+        "price": "$24.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#91 House Special Chow Fun",
+        "description": "",
+        "price": "$24.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#91 House Special Lo Mein",
+        "description": "",
+        "price": "$24.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#93 Soy Sauce Chow Fun(dry) Beef",
+        "description": "",
+        "price": "$20.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#93 Soy Sauce Chow Fun(dry) Chicken",
+        "description": "",
+        "price": "$20.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "#93 Soy Sauce Chow Fun(dry) Seafood",
+        "description": "",
+        "price": "$26.99",
+        "section": "Noodles"
+      },
+      {
+        "name": "(gl) Robert Mondavi. Private Select",
+        "description": "Cabernet Sauvignon, Merlot, and Chardonnay",
+        "price": "$14.00",
+        "section": "White Wines"
+      },
+      {
+        "name": "(btl) Robert Mondavi. Private Select",
+        "description": "Cabernet Sauvignon, Merlot, and Chardonnay",
+        "price": "$37.00",
+        "section": "White Wines"
+      },
+      {
+        "name": "(gl) Charles Krug Merlot. Napa Valley",
+        "description": "",
+        "price": "$14.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "(btl) Charles Krug Merlot. Napa Valley",
+        "description": "",
+        "price": "$45.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "(gl) Justin Cabernet Sauvigno. Paso R",
+        "description": "",
+        "price": "$14.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "(btl) Justin Cabernet Sauvigno. Paso R",
+        "description": "",
+        "price": "$52.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "(gl) Charles Krug Chardonnay. Napa Va",
+        "description": "",
+        "price": "$14.00",
+        "section": "White Wines"
+      },
+      {
+        "name": "(btl) Charles Krug Chardonnay. Napa Va",
+        "description": "",
+        "price": "$44.00",
+        "section": "White Wines"
+      },
+      {
+        "name": "(gl) Round Hill Chardonnay. Napa Vall",
+        "description": "",
+        "price": "$12.00",
+        "section": "White Wines"
+      },
+      {
+        "name": "(btl) Round Hill Chardonnay. Napa Vall",
+        "description": "",
+        "price": "$37.00",
+        "section": "White Wines"
+      },
+      {
+        "name": "(sm) Chandon Brut. California",
+        "description": "",
+        "price": "$12.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "(L) Chandon Brut. California",
+        "description": "",
+        "price": "$38.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "(Sm) Sho Chiku Bai. Clear",
+        "description": "",
+        "price": "$8.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "(Lrg) Sho Chiku Bai. Clear",
+        "description": "",
+        "price": "$12.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Bottle Sho Chiku Bai. Clear",
+        "description": "",
+        "price": "$28.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Pepsi Soda",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Diet Soda",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Starry Soda",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Ginger Ale Soda",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Root Beer Soda",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Zero Soda",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Glass Asahi",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "(prt) Asahi",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Tower Asahi",
+        "description": "",
+        "price": "$48.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Glass Sierra Nevada Little Thing Ipa",
+        "description": "",
+        "price": "$10.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Pitcher Sierra Nevada Little Thing Ipa",
+        "description": "",
+        "price": "$40.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "(gl) Sculpin GrapeFruit Ipa",
+        "description": "",
+        "price": "$10.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "(ptr) Sculpin GrapeFruit Ipa",
+        "description": "",
+        "price": "$40.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Glass Lagunitas Ipa",
+        "description": "",
+        "price": "$10.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "(ptr) Lagunitas Ipa",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Glass Modelo Black",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Pitcher Modelo Black",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Glass Sapporo",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Pitcher Sapporo",
+        "description": "",
+        "price": "$19.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Lrg Sapporo",
+        "description": "",
+        "price": "$9.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Sm Sapporo",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beer Bottles $5"
+      },
+      {
+        "name": "Raspberry Ice Tea",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Unsweet Ice Tea",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Arnold Palmer Ice Tea",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Sweet Ice Tea",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Fried Fish Flounder",
+        "description": "",
+        "price": "$39.99",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "daily catch 'whole Fried Fish",
+        "description": "",
+        "price": "$58.88",
+        "section": "Live Seafood"
+      },
+      {
+        "name": "(gl) Robert Mondavi. Private Select",
+        "description": "",
+        "price": "$12.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "(btl) Robert Mondavi. Private Select",
+        "description": "",
+        "price": "$37.00",
+        "section": "Red Wines"
+      },
+      {
+        "name": "Hot Water",
+        "description": "",
+        "price": "$1.88",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Iced Water",
+        "description": "",
+        "price": "$0.01",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "(Sm) Hot Sake",
+        "description": "Mixed Berry, Flower, and Yuzu Lemon",
+        "price": "$8.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "(L) Hot Sake",
+        "description": "Mixed Berry, Flower, and Yuzu Lemon",
+        "price": "$12.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "(Sm) Cold Sake",
+        "description": "Mixed Berry, Flower, and Yuzu Lemon",
+        "price": "$8.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "(L) Cold Sake",
+        "description": "Mixed Berry, Flower, and Yuzu Lemon",
+        "price": "$12.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Pea Pod Leaves #78 Sautéed Vegetable W/garlic",
+        "description": "",
+        "price": "$23.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "Water Spinach #78 Sautéed Vegetable W/garlic",
+        "description": "",
+        "price": "$23.99",
+        "section": "Vegetables"
+      },
+      {
+        "name": "(sm) Chandon Brut. California",
+        "description": "",
+        "price": "$12.00",
+        "section": "Sparkling Wine"
+      },
+      {
+        "name": "(lg) Chandon Brut. California",
+        "description": "",
+        "price": "$37.00",
+        "section": "Sparkling Wine"
+      },
+      {
+        "name": "Sm Blt Nigori. Unifiltered",
+        "description": "",
+        "price": "$8.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Lrg Btl Nigori. Unifiltered",
+        "description": "",
+        "price": "$12.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Chamomile Flower HotTea",
+        "description": "",
+        "price": "$2.88",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Jasmine HotTea",
+        "description": "",
+        "price": "$2.88",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Green Oolong HotTea",
+        "description": "",
+        "price": "$2.88",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Black Pu'er HotTea",
+        "description": "",
+        "price": "$2.88",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "(gl) Mike Hess Ipa",
+        "description": "",
+        "price": "$10.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "(ptr) Mike Hess Ipa",
+        "description": "",
+        "price": "$40.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Glass Pacifico",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Pitcher Pacifico",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Glass Sculpin Ipa",
+        "description": "",
+        "price": "$10.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Pitcher Sculpin Ipa",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Lemonade Juice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Apple Juice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Orange Juice",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Fresh Orange Juice",
+        "description": "",
+        "price": "$6.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Pepsi Can",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Diet Can",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Starry Can",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Ginger Ale Can",
+        "description": "",
+        "price": "$4.00",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Fiji Bottle Water",
+        "description": "",
+        "price": "$2.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Pure Life Bottle Water",
+        "description": "",
+        "price": "$1.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Gl House Red",
+        "description": "",
+        "price": "$12.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Btl House Red",
+        "description": "",
+        "price": "$37.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Gl Private Select",
+        "description": "",
+        "price": "$12.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Btl Private Select",
+        "description": "",
+        "price": "$37.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Gl Red Cabernet Sauvignon",
+        "description": "",
+        "price": "$12.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Btl Red Cabernet Sauvignon",
+        "description": "",
+        "price": "$37.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Gl Red Merlot",
+        "description": "",
+        "price": "$12.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Btl Red Merlot",
+        "description": "",
+        "price": "$37.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Gl Red Pinot Noir",
+        "description": "",
+        "price": "$12.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Btl Red Pinot Noir",
+        "description": "",
+        "price": "$37.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Gl White Chardonnay",
+        "description": "",
+        "price": "$12.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Btl White Chardonnay",
+        "description": "",
+        "price": "$37.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Gl White Pinot Grigio",
+        "description": "",
+        "price": "$12.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Btl White Pinot Grigio",
+        "description": "",
+        "price": "$37.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Gl White Sauvignon Blanc",
+        "description": "",
+        "price": "$12.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Btl White Sauvignon Blanc",
+        "description": "",
+        "price": "$37.00",
+        "section": "House Wines"
+      },
+      {
+        "name": "Glass Blood Orange",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Pitcher Blood Orange",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Iced Coffee",
+        "description": "",
+        "price": "$4.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Flavor Coffee",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Coffee Coffee",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Espresso 2 Shots Coffee",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Combo 2 Duck-Empress Chicken Bbq Combination Platter",
+        "description": "",
+        "price": "$32.88",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Combo 3 Duck-BBQ Pork-E.Chicken Bbq Combination Platter",
+        "description": "",
+        "price": "$49.88",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Combo 4 Duck-BBQ Pork-E.Chicken-Soy Chicken Bbq Combination Platter",
+        "description": "",
+        "price": "$63.88",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Combo Deluxe Duck-BBQ Pork-E.Chicken-Soy Chicken-Pork Belly Bbq Combination Platter",
+        "description": "",
+        "price": "$79.88",
+        "section": "Roast Dishes"
+      },
+      {
+        "name": "Sm B. Porridge",
+        "description": "",
+        "price": "$8.38",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "Lg B. Porridge",
+        "description": "",
+        "price": "$23.99",
+        "section": "Rice Rolls"
+      },
+      {
+        "name": "Duck Lettuce Wrap",
+        "description": "",
+        "price": "$19.88",
+        "section": "Lettuce Wrap"
+      },
+      {
+        "name": "Chicken Lettuce Wrap",
+        "description": "",
+        "price": "$19.88",
+        "section": "Lettuce Wrap"
+      },
+      {
+        "name": "Beef Lettuce Wrap",
+        "description": "",
+        "price": "$19.88",
+        "section": "Lettuce Wrap"
+      },
+      {
+        "name": "Shrimp Lettuce Wrap",
+        "description": "",
+        "price": "$24.76",
+        "section": "Lettuce Wrap"
+      },
+      {
+        "name": "Strawberry Lemon Poppi Prebiotic Soda",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Raspberry Rose Poppi Prebiotic Soda",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Omezza Peach",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Omezza Straw-Kiwi",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Original Omezza",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks"
+      },
+      {
+        "name": "Glass 805 Blonde",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Pitcher 805 Blonde",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Fiji Bottle Water",
+        "description": "",
+        "price": "$3.98",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Pure Life Bottle Water",
+        "description": "",
+        "price": "$2.99",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Strawberry Lemon Poppi Prebiotic Soda",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Raspberry Rose Poppi Prebiotic Soda",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Omezza Peach",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Omezza Straw-Kiwi",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "Original Omezza",
+        "description": "",
+        "price": "$3.99",
+        "section": "Soda- Non Alcohol Drinks AYCE"
+      },
+      {
+        "name": "375 ml. Nigori SM(bottled)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "750 ml. Nigori SM(bottled)",
+        "description": "",
+        "price": "$28.00",
+        "section": "Champagne- Sake"
+      },
+      {
+        "name": "Glass Kirin Ichiban",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beer Ontap"
+      },
+      {
+        "name": "Pitcher Kirin Ichiban",
+        "description": "",
+        "price": "$32.00",
+        "section": "Beer Ontap"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5975",
+    "name": "El Comal North Park",
+    "sourceUrl": "https://el-comal-san-diego.cloveronline.com/menu/all",
+    "confidence": "high",
+    "notes": "Restaurant's own Clover COLO2 storefront (linked from elcomalsd.com), address-confirmed 3946 Illinois Street. The rendered DOM and a naive backslash-quote unescape of the raw HTML both fail (the naive approach corrupts on descriptions that contain literal embedded quotes, e.g. Veggie Huarache's 'Flat Bread'); the fix was to locate the specific self.__next_f.push([id,\"...\"]) RSC call carrying the menu and JSON.parse its string argument properly (which handles nested escaping correctly), then re-run probe/extract_clover_colo2.js against that cleanly-unescaped payload. 133 priced dishes across 18 sections (Antojitos/Appetizers, Breakfast House Specialties, Burritos, Caldos, Enchiladas, Especialidades De La Casa, From The Grill, Kids Menu, Mariscos/Seafood, Postres, Salads, Sides, Tacos, Vegetarian, Beer, Beverages, Breakfast Sides, Specials/Off Menu). 15 of those (mostly Caldos/soups and a la carte rice/beans) had no base list price and were priced at the cheapest REQUIRED single-choice size option via --with-required-modifiers, labeled '(Half)' or '(6oz)' in the name as a from-price; 3 items with no list price and no required single-choice group were dropped. Markup test: every price is a whole or half dollar (.00 or .50 only across all 133), no divisor produced a meaningful cluster — clean.",
+    "dishes": [
+      {
+        "name": "Chips & Salsas",
+        "description": "",
+        "price": "$6.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Guacamole with Chips",
+        "description": "",
+        "price": "$11.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Pico de Gallo with Chips",
+        "description": "Tomato, onion, and cilantro.",
+        "price": "$8.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Chicharrones",
+        "description": "Freshly Fried Pork Skins Served with Guacamole, Pico D Gallo and pickled onions.",
+        "price": "$10.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Queso Fundido",
+        "description": "Melted Mozzarella Cheese Served with Handmade Corn Tortillas. Add: Rajas n Onions +$3/Mushrooms +$3/Pork Chorizo +$4",
+        "price": "$10.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Oaxaca Style Tamales",
+        "description": "Wrapped in banana leaves and steamed. Choice of Chicken or Pork",
+        "price": "$6.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Sope",
+        "description": "Homemade Corn Masa Shell Topped with Shredded Lettuce, Cotija Cheese and Mexican Crema. Choice of: Shredded Chicken, Shredded Beef, Carne Asada, or Veggie (Cactus,Mushroom, and Potatoe)",
+        "price": "$10.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Gordita Cheese and Pepper",
+        "description": "Topped with cotija cheese and crema",
+        "price": "$8.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Gordita Con Carne",
+        "description": "Choice of Shredded Chicken, Shredded Beef, Carne Asada, Pork Chorizo.",
+        "price": "$10.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Quesadilla",
+        "description": "Large flour tortilla with melted mozzarella inside served with mexican crema & guacamole on the side.",
+        "price": "$10.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Huarache Con Carne",
+        "description": "",
+        "price": "$14.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Rice/ Arroz (6oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Side of beans (6oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Huarache Azteca",
+        "description": "",
+        "price": "$14.00",
+        "section": "Antojitos/Appetizers"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "Crispy fried tortillas sauteed with onion. Choice of Green Or Red Salsa. Topped with Mexican crema and cotija cheese. Accompanied by beans. Add 2 Eggs + $3/ Add Grilled Chicken +$5/ Add Carne Asada +$5. *Available until 2:00pm.",
+        "price": "$13.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Chorizo con Papas",
+        "description": "Spiced Ground Chorizo (pork) Hash Cooked On The Flat Top With Crispy Tender Potatoes with Onions, Garlic and Oregano Topped with Cilantro, Queso Fresco, Avocado Slices, Mexican Cream, and Pickled Jalapenos, Served With Beans. Add 2 Eggs $3",
+        "price": "$19.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Poblano Omelette",
+        "description": "3 Egg Omelette With Rajas, Corn, Mozzarella Cheese, Topped With Ranchero Sauce, And Served With Beans And Comal Potatoes.",
+        "price": "$19.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Revueltos A La Mexicana",
+        "description": "2 Eggs Scrambled with Onion, Tomato, and Serrano Peppers. Accompanied with Rice, Beans, and Handmade Corn Tortillas.",
+        "price": "$15.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Revueltos with Nopales",
+        "description": "2 Eggs Scrambled with Nopales (Cactus), Onion, Cilantro, and Tomato. Accompanied with Rice, Beans, and Handmade Corn Tortillas",
+        "price": "$15.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Revueltos con Chorizo",
+        "description": "2 Scrambled Eggs with Chorizo (Spiced Pork). Accompanied with Rice, Beans, and Handmade Corn Tortillas.",
+        "price": "$16.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Revueltos with Ham",
+        "description": "2 Eggs Scrambled with Ham. Accompanied with Rice, Beans, and 3 Handmade Corn Tortillas.",
+        "price": "$15.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Revueltos con Bacon",
+        "description": "2 Eggs Scrambled with Bacon. Accompanied with Rice, Beans, and Handmade Corn Tortillas.",
+        "price": "$16.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Huevos Racheros",
+        "description": "2 Fried Eggs On Top Of Crispy Tortillas, Topped With Ranchero Salsa, Cotija Cheese. Accompanied with Rice and Beans.",
+        "price": "$15.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Machaca Con Huevos",
+        "description": "Shredded Beef with Peppers, Onions, and Tomato, Scrambled with Eggs. Cooked On The Flat Top. Accompanied with Rice, Beans, and 3 Handmade Corn Tortillas.",
+        "price": "$18.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Milanesa Con Huevos",
+        "description": "Breaded Steak Served with 2 Eggs, Pico D Gallo, and Guacamole. Accompanied with Beans, Comal Potatoes, and Handmade Corn Tortillas.",
+        "price": "$21.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Carne Asada Con Huevos",
+        "description": "Griiled Steak with 2 Eggs, Served with Pico D Gallo, and Guacamole. Accompanied with Beans, Comal Potatoes, and 3 Handmade Corn Tortillas.",
+        "price": "$21.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Chuletas Ahumadas Con Huevos",
+        "description": "Smoked and Grilled Pork Chops, Served with 2 Eggs and Pico D Gallo. Accompanied with Beans, Comal Potatoes, and 3 Handmade Corn Tortillas.",
+        "price": "$21.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Breakfast House Specialties"
+      },
+      {
+        "name": "Side Of Bacon",
+        "description": "",
+        "price": "$5.00",
+        "section": "Breakfast Sides/ Off Menu"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Breakfast Sides/ Off Menu"
+      },
+      {
+        "name": "Rice/ Arroz (6oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Breakfast Sides/ Off Menu"
+      },
+      {
+        "name": "Side of beans (6oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Breakfast Sides/ Off Menu"
+      },
+      {
+        "name": "Carne Asada Side",
+        "description": "",
+        "price": "$8.00",
+        "section": "Breakfast Sides/ Off Menu"
+      },
+      {
+        "name": "Caldo Tlalpeño/ Tlalpeño Soup (Half)",
+        "description": "Chicken, garbanzos, julienne carrots and squash, avocado, and chipotle in a chicken broth. Served with a side of rice and handmade corn tortillas.",
+        "price": "$16.00",
+        "section": "Caldos"
+      },
+      {
+        "name": "Menudo Soup (Half)",
+        "description": "Beef tripe in red broth with hominy served with onions, limes, cilantro, oregano and red pepper flakes (On The Side) and Handmade Corn Tortillas.",
+        "price": "$16.00",
+        "section": "Caldos"
+      },
+      {
+        "name": "Caldo De Albondigas/ Albondiga Soup (Half)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Caldos"
+      },
+      {
+        "name": "Caldo De Pollo /homestyle Chicken Soup (Half)",
+        "description": "Homestyle Chicken Soup",
+        "price": "$16.00",
+        "section": "Caldos"
+      },
+      {
+        "name": "Caldo De Res/ Beef Soup (Half)",
+        "description": "",
+        "price": "$16.00",
+        "section": "Caldos"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Caldos"
+      },
+      {
+        "name": "Taco Suave Style",
+        "description": "Fresh pressed soft corn tortilla topped with onion and cilantro. Choice of Carne Asada/ Adovada/ Shredded Chicken",
+        "price": "$6.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Smoked Marlin Taco",
+        "description": "Smoked and shredded marlin, cooked on the comal with garlic, onions, celery, bell pepper, and tomato, served on a tortilla with melted cheese",
+        "price": "$8.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pork Carnitas Taco",
+        "description": "Carnitas, pico de gallo, and guacamole, served on a fresh-pressed tortilla",
+        "price": "$8.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Octopus Taco/ Taco De Pulpo",
+        "description": "Chipotle Garlic Aioli Marinated Octopus Served With Avocado Pico And Chicharron",
+        "price": "$10.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Cochinita Pibil Taco/ Pork On Pib Style Taco",
+        "description": "",
+        "price": "$7.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Dorados De Papa/ Hardshell Potato Tacos",
+        "description": "3 Crispy Fried Mashed Potatoe (Seasoned) Tacos, Topped with Thinly Shredded Cabbage, Mexican Crema, Cotija Cheese, and Diced Tomato. Accompanied with Rice and Beans.",
+        "price": "$15.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Barbacoa Taco",
+        "description": "",
+        "price": "$7.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Add Soy Chorizo",
+        "description": "Add soy chorizo to your veggie burrito",
+        "price": "$4.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Taco De Nopal",
+        "description": "Cactus Taco Served With Queso Cotija, Pico De Gallo And Guacamole",
+        "price": "$7.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Rolled Tacos/ Corn Flautas",
+        "description": "5 Crispy Corn Flautas Topped With Lettuce, Guacamole, Crema, Queso Cotija",
+        "price": "$9.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Baja Fish Taco/ Taco De Pescado",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Rice/ Arroz (6oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Side of beans (6oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Bean & Cheese Burrito",
+        "description": "",
+        "price": "$8.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bistek Ranchero Burrito",
+        "description": "Bistek ranchero, rice, beans avocado, crema, and cotija cheese",
+        "price": "$14.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Classic Style Burritos",
+        "description": "Choice of Meat (Carne Asada, Adobada, Shredded Chicken, Shredded Beef) with Guacamole, Pico D Gallo, Mexican Crema, and Cheese.",
+        "price": "$13.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "Carnitas Burrito Served With Pico De Gallo, Guacamole And Crema",
+        "price": "$13.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "Carne Asada Burrito with French Fries, Guacamole, Pico D Gallo, Mexican Crema, and Mozzarella Cheese.",
+        "price": "$14.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asado Burrito",
+        "description": "Grilled Chicken with Guacamole, Pico D Gallo, Mexican Crema, and Mozzarella Cheese",
+        "price": "$14.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Veggie Burrito",
+        "description": "",
+        "price": "$13.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Mole con Pollo",
+        "description": "Choice: Red or Green. Choice of Protein: chicken breast, shredded chicken, or bone-in leg and thigh. Served with rice, beans, and handmade corn tortillas.",
+        "price": "$22.00",
+        "section": "Especialidades De La Casa"
+      },
+      {
+        "name": "Cochinita Pibil",
+        "description": "Marinated in achiote and other Yucatan spices and braised until tender accompanied with pickled red onions",
+        "price": "$22.00",
+        "section": "Especialidades De La Casa"
+      },
+      {
+        "name": "Pork Ribs In Chile Verde Sauce",
+        "description": "",
+        "price": "$22.00",
+        "section": "Especialidades De La Casa"
+      },
+      {
+        "name": "Bistek Ranchero",
+        "description": "Diced steak sautéed with onions, cilantro, tomatoes, jalapeños and garlic in a light ranchero sauce. Served with rice, beans, and tortillas",
+        "price": "$22.00",
+        "section": "Especialidades De La Casa"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Especialidades De La Casa"
+      },
+      {
+        "name": "Huarache Azteca",
+        "description": "",
+        "price": "$14.00",
+        "section": "Especialidades De La Casa"
+      },
+      {
+        "name": "Carne Asada Plate",
+        "description": "",
+        "price": "$23.00",
+        "section": "Especialidades De La Casa"
+      },
+      {
+        "name": "Chile Relleno",
+        "description": "",
+        "price": "$22.00",
+        "section": "Especialidades De La Casa"
+      },
+      {
+        "name": "Barbacoa De Chivo",
+        "description": "",
+        "price": "$22.50",
+        "section": "Especialidades De La Casa"
+      },
+      {
+        "name": "Tampiqueña",
+        "description": "",
+        "price": "$28.00",
+        "section": "From The Grill"
+      },
+      {
+        "name": "Zarape Costeño",
+        "description": "",
+        "price": "$22.00",
+        "section": "From The Grill"
+      },
+      {
+        "name": "Pechuga de Pollo",
+        "description": "",
+        "price": "$21.00",
+        "section": "From The Grill"
+      },
+      {
+        "name": "Chuletas Ahumadas",
+        "description": "",
+        "price": "$22.00",
+        "section": "From The Grill"
+      },
+      {
+        "name": "Parillada",
+        "description": "",
+        "price": "$65.00",
+        "section": "From The Grill"
+      },
+      {
+        "name": "Milanesa Dinner Plate",
+        "description": "",
+        "price": "$22.00",
+        "section": "From The Grill"
+      },
+      {
+        "name": "Carnitas Plate",
+        "description": "",
+        "price": "$23.50",
+        "section": "From The Grill"
+      },
+      {
+        "name": "Chicken Breast (side)",
+        "description": "",
+        "price": "$8.00",
+        "section": "From The Grill"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "From The Grill"
+      },
+      {
+        "name": "Carne Asada Plate",
+        "description": "",
+        "price": "$23.00",
+        "section": "From The Grill"
+      },
+      {
+        "name": "Enchiladas",
+        "description": "Topped with lettuce, tomato, cotija cheese, and crema, and served with rice and beans. 2 enchiladas, includes rice and beans",
+        "price": "$19.50",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Enmoladas",
+        "description": "",
+        "price": "$21.00",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Enchiladas"
+      },
+      {
+        "name": "Filete de Pescado",
+        "description": "Served with rice beans and tortillas and salad. Omit salad for Veracruzano style",
+        "price": "$22.00",
+        "section": "Mariscos/ Seafood"
+      },
+      {
+        "name": "Octopus Taco/ Taco De Pulpo",
+        "description": "Chipotle Garlic Aioli Marinated Octopus Served With Avocado Pico And Chicharron",
+        "price": "$10.00",
+        "section": "Mariscos/ Seafood"
+      },
+      {
+        "name": "Smoked Marlin Taco",
+        "description": "Smoked and shredded marlin, cooked on the comal with garlic, onions, celery, bell pepper, and tomato, served on a tortilla with melted cheese",
+        "price": "$8.00",
+        "section": "Mariscos/ Seafood"
+      },
+      {
+        "name": "Camarones",
+        "description": "",
+        "price": "$22.00",
+        "section": "Mariscos/ Seafood"
+      },
+      {
+        "name": "Soy Chorizo Hash",
+        "description": "Soy Chorizo with Potatoes, Peppers, and Onion. Topped with Mexican Crema, Queso Fresco, Avocado, and Pickled Jalapenos. Accompanied with Beans and 3 Handmade Corn Tortillas. * Only Available Until 2:00pm",
+        "price": "$19.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Dorados De Papa/ Hardshell Potato Tacos",
+        "description": "3 Crispy Fried Mashed Potatoe (Seasoned) Tacos, Topped with Thinly Shredded Cabbage, Mexican Crema, Cotija Cheese, and Diced Tomato. Accompanied with Rice and Beans.",
+        "price": "$15.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Veggie Huarache",
+        "description": "Corn Masa \"Flat Bread\" Cooked On Flat Top, Layered with Beans, Mushrooms, Potatoe, and Cactus (Nopal) and Topped with Thinly Shredded Lettuce, and Cotija Cheese. Add Soy Chorizo +$5.",
+        "price": "$14.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Soy Chorizo Plate",
+        "description": "",
+        "price": "$17.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Veggie Burrito",
+        "description": "",
+        "price": "$13.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Sope",
+        "description": "Homemade Corn Masa Shell Topped with Shredded Lettuce, Cotija Cheese and Mexican Crema. Choice of: Shredded Chicken, Shredded Beef, Carne Asada, or Veggie (Cactus,Mushroom, and Potatoe)",
+        "price": "$10.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Gordita Cheese and Pepper",
+        "description": "Topped with cotija cheese and crema",
+        "price": "$8.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Taco De Nopal",
+        "description": "Cactus Taco Served With Queso Cotija, Pico De Gallo And Guacamole",
+        "price": "$7.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Queso Fundido",
+        "description": "Melted Mozzarella Cheese Served with Handmade Corn Tortillas. Add: Rajas n Onions +$3/Mushrooms +$3/Pork Chorizo +$4",
+        "price": "$10.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "Pico de Gallo with Chips",
+        "description": "Tomato, onion, and cilantro.",
+        "price": "$8.00",
+        "section": "Vegetarian"
+      },
+      {
+        "name": "House Mixed Salad",
+        "description": "Chopped romaine, cucumbers, purple cabbage, tomatoes, carrots, and avocado. * Choice of Dressings: Ranch/ Chipotle Ranch/ Vinegarette. Add Grilled Chicken +$6/ Add Grilled Shrimp +$9",
+        "price": "$11.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Small House Salad",
+        "description": "Chopped Romaine, Carrots, Cucumber, Tomatoes, Sliced Radishes, Sliced Avocado, and Cruchy Tortilla Strips. * Choice of Dressing: Ranch/ Chipotle Ranch/ Vinegarette. Add Grilled Chicken +$6/ Add Grilled Shrimp +$9",
+        "price": "$7.00",
+        "section": "Salads"
+      },
+      {
+        "name": "Nopales Salad Large",
+        "description": "Grilled cactus, tomato, onion, cilantro, cotija cheese, balsamic, and olive oil topped with cilantro and avocado. Add Grilled Chicken $6/ Add Grilled Shrimp $9",
+        "price": "$13.00",
+        "section": "Salads"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$6.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Chile Relleno Al a Carte",
+        "description": "",
+        "price": "$12.50",
+        "section": "Sides"
+      },
+      {
+        "name": "Guacamole Sm Side",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Rice/ Arroz (6oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Chicken Breast (side)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Side of beans (6oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Mole Side",
+        "description": "",
+        "price": "$8.00",
+        "section": "Sides"
+      },
+      {
+        "name": "Grandma's Chicken Soup",
+        "description": "",
+        "price": "$6.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Surf and Turf/ Mar y Tierra",
+        "description": "",
+        "price": "$32.00",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "Huarache Azteca",
+        "description": "",
+        "price": "$14.00",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "Milanesa Dinner Plate",
+        "description": "",
+        "price": "$22.00",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "Carnitas Plate",
+        "description": "",
+        "price": "$23.50",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "Arrachera Steak Plate",
+        "description": "",
+        "price": "$28.00",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "Combo (Side Of Rice & Beans)",
+        "description": "Side Of Rice And Beans",
+        "price": "$8.00",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "Side of beans (6oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "Rice/ Arroz (6oz)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "Chile Relleno Al a Carte",
+        "description": "",
+        "price": "$12.50",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$6.00",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "Arrachera Steak (Side)",
+        "description": "",
+        "price": "$14.00",
+        "section": "Specials/Off Menu Options"
+      },
+      {
+        "name": "Plátanos (Fried Plantain with Ice Cream)",
+        "description": "",
+        "price": "$10.00",
+        "section": "Postres"
+      },
+      {
+        "name": "Bunuelos con Helado",
+        "description": "",
+        "price": "$12.00",
+        "section": "Postres"
+      },
+      {
+        "name": "Café de Olla",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Mexican Coke Bottle",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Horchata",
+        "description": "Rice Milk",
+        "price": "$5.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Mexican Coke",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beverages"
+      },
+      {
+        "name": "Bohemia",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Modelo Especial",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Victoria",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer"
+      },
+      {
+        "name": "Negra Modelo",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beer"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6006",
+    "name": "Mariscos El Camarón",
+    "sourceUrl": "https://www.toasttab.com/local/order/el-camaron-193-broadway-chula-vista-ca-91910",
+    "confidence": "high",
+    "notes": "No website was on record for this restaurant; found via search. The restaurant's own Toast ordering page (redirects to toast.app) renders full priced HTML to a plain curl with a desktop UA, address-confirmed 193 Broadway, Chula Vista, CA 91910. 139 dishes across 16 sections (Botanas-Appetizers, Ostiones Y Almejas-Shells, Cocteles, Los Tacos, Las Tostadas, Pescados Y Filetes, Ensaladas/Salads, La Grande Quesadilla, Caldos, Carnes & Pollo, Fajitas, Camarones-Shrimp Entrees, Otros Mariscos, Sides, Kids Menu, Desserts). Markup test: 137 of 139 prices are whole dollars, 2 end in .50 — clean, no fee pattern. Cross-check: a WebSearch summary (sourced from Uber Eats/Postmates, one owner) quoted Camarones Revolcados at $30.42, vs $26.00 on this Toast page for the same dish — a ~17% delivery-marketplace markup, confirming Toast is the right source and Uber Eats/Postmates should not be used for this restaurant.",
+    "dishes": [
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Camarones Revolcados",
+        "description": "Semi-fried shrimp mixed with onion and jalapeño slices",
+        "price": "$26.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Aguachile (Verde)",
+        "description": "Raw shrimp marinated with lemon juice and green sauce, served as a cold appetizer",
+        "price": "$23.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Aguachile (Rojo)",
+        "description": "Raw shrimp marinated with lemon juice and red sauce, served as a cold appetizer",
+        "price": "$23.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Aguacates Locos",
+        "description": "Avocado (2 halfs) stuffed with a green shrimp ceviche",
+        "price": "$22.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Aguachile Chiltepin",
+        "description": "Raw shrimp marinated with lime and black sauces",
+        "price": "$26.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Aguachile Negro",
+        "description": "Raw shrimp in spicy black sauce",
+        "price": "$26.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Aguachiles en Molcajete (Rojo)",
+        "description": "Raw shrimp marinated with lemon and red sauce, option of shrimp with or without head, served as a cold appetizer",
+        "price": "$26.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Aguachiles en Molcajete (Verde)",
+        "description": "Raw shrimp marinated with lemon and green sauce, option of shrimp with or without head, served as a cold appetizer",
+        "price": "$26.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Botana Callo De Hacha",
+        "description": "Raw scallops marinated with lime juice, served as a cold appetizer",
+        "price": "$35.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Botana Camaron Con Mango",
+        "description": "Raw shrimp and mango slices, mixed with serrano and onion",
+        "price": "$27.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Botana De Calamar",
+        "description": "Fried calamari",
+        "price": "$22.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Botana De Los Dioses",
+        "description": "Seafood combination: raw shrimp, steamed cooked shrimp, octopus, raw scallop (seasonal item), 1/2 doz. Oysters and seashell",
+        "price": "$65.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Botana Mango Serrano",
+        "description": "Raw shrimp, cooked shrimp, octopus, along with mango, onion, avocado, cucumber, and serrano",
+        "price": "$28.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Botana Miguelito",
+        "description": "Raw shrimp, steamed cooked shrimp, octopus, seashell along with onion, cucumber, cilantro, marinated with special sauce served as a cold appetizer",
+        "price": "$27.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Botana Mixta",
+        "description": "Shrimp, octopus, seashell, served as a cold appetizer",
+        "price": "$25.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Botanita Costa Azul",
+        "description": "Pieces of shrimp stuffed with Monterrey jack cheese, and wrapped in bacon, served as a hot appetizer",
+        "price": "$21.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Camaron P/ Pelar",
+        "description": "Steamed cooked shrimp ready to peel",
+        "price": "$24.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Camaron Y Pulpo",
+        "description": "Steamed cooked shrimp and octopus, served as a cold appetizer",
+        "price": "$25.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Camaron, Pulpo Y Callo",
+        "description": "Steamed cooked shrimp and octopus, raw scallop (when available) served as a cold appetizer",
+        "price": "$32.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Camarones Cucaracha",
+        "description": "Deep fried shrimp with skin",
+        "price": "$26.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Camarones Roka",
+        "description": "Marinated breaded fried shrimp with fresh orange pieces and caramelized onions drizzled with chipotle sauce, served with a side of special cream sauce",
+        "price": "$25.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Ceviche Don Charly",
+        "description": "Raw shrimp cured with lime juice, mixed with cucumber, avocado, onions and seasoned with a spicy sauce, served as a cold appetizer",
+        "price": "$27.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Ceviche Primavera",
+        "description": "Raw shrimp, octopus marinated in lime olive oil. Mixed with onion, habanero and cilantro",
+        "price": "$27.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Chicharron De Pargo",
+        "description": "Small chunks of light fried fish fillet",
+        "price": "$22.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "El Eskeleto (Chicharron De Pescado)",
+        "description": "Thick fish chunks from a whole fish fried to perfection, along with its skeleton, served with a side of green hot aguachile sauce and ranch, along with cucumber, tomatoes, cilantro and purple onion",
+        "price": "$28.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Elotitos Con Camaron",
+        "description": "Slices of corn along with marinated shrimp, mixed with green peppers and onions",
+        "price": "$28.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "La Botanera",
+        "description": "Nayaritas shrimp and cucaracha shrimp",
+        "price": "$30.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Los Gueritos",
+        "description": "Yellow peppers stuffed with shrimp, marinated with lime juice and soy sauce, topped with onions",
+        "price": "$20.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Maricoco",
+        "description": "Coconut stuffed with steamed cooked shrimp, raw shrimp, octopus, and seashell mixed with lime juice, tomatoes, onion, cucumber and cilantro served fresh and cold",
+        "price": "$25.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Molcajete Mixto",
+        "description": "Seafood combination: raw and steamed cooked shrimp, octopus, seashell, and shrimp ready to peel in hot sauce, served cold",
+        "price": "$28.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Nayaritas",
+        "description": "Whole stir-fry marinated shrimp to peel, served along with cucumber, tomatoes and green hot sauce, get ready to get your hands dirty",
+        "price": "$26.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Tiradito De Atun",
+        "description": "Ahi tuna slices marinated with black sauces",
+        "price": "$26.00"
+      },
+      {
+        "section": "Botanas - Appetizers",
+        "name": "Torre De Mariscos",
+        "description": "Steamed cooked shrimp, raw shrimp, octopus, seashell, tomato, onion, cilantro. Marinated with lime juice and other sauces",
+        "price": "$30.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Completa/Full Almejas en Aguachile",
+        "description": "Raw clams with raw shrimp, onion, tomatoes, cucumber, cilantro and green hot sauce",
+        "price": "$36.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Completa/Full Almejas Lokas",
+        "description": "Raw clams with raw shrimp, octopus, avocado, cucumber, purple onion, cilantro and hot sauce",
+        "price": "$36.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Completa/Full Ostiones en Su Concha",
+        "description": "Raw oysters in its shell",
+        "price": "$26.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Completa/Full Ostiones Lokos",
+        "description": "Oyster with raw shrimp, octopus, avocado, cucumber, purple onion, cilantro and hot sauce",
+        "price": "$36.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Completa/Full Ostiones Miguel Especial",
+        "description": "Raw oyster in shell along with raw and cooked shrimp and served with a special hot sauce",
+        "price": "$38.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Completa/Full Shots De Ostion",
+        "description": "Fresh raw oisters in black sauces",
+        "price": "$30.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Media/Half Almejas en Aguachile",
+        "description": "Raw clams with raw shrimp, onion, tomatoes, cucumber, cilantro and green hot sauce",
+        "price": "$22.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Media/Half Almejas Lokas",
+        "description": "Raw clams with raw shrimp, octopus, avocado, cucumber, purple onion, cilantro and hot sauce",
+        "price": "$22.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Media/Half Ostiones en Su Concha",
+        "description": "Raw oysters in its shell",
+        "price": "$17.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Media/Half Ostiones Lokos",
+        "description": "Oyster with raw shrimp, octopus, avocado, cucumber, purple onion, cilantro and hot sauce",
+        "price": "$22.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Media/Half Ostiones Miguel Especial",
+        "description": "Raw oyster in shell along with raw and cooked shrimp and served with a special hot sauce",
+        "price": "$24.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "La Media/Half Shots De Ostion",
+        "description": "Fresh raw oisters in black sauces",
+        "price": "$20.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "Almejas en Concha 1/2 dz",
+        "description": "",
+        "price": "$17.00"
+      },
+      {
+        "section": "Ostiones Y Almejas - Shells",
+        "name": "Almejas en Concha 1dz",
+        "description": "",
+        "price": "$26.00"
+      },
+      {
+        "section": "Cocteles",
+        "name": "Coctel Campechana",
+        "description": "Raw and cooked shrimp, octopus, seashell, clam, and oyster cocktail. Served raw: consuming raw or undercooked meats, poultry, sea food, shellfish or eggs may increase your risk of foodborne illness",
+        "price": "$25.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "El Taco Combo",
+        "description": "2 tacos, rice and beans",
+        "price": "$16.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco Asada",
+        "description": "Carne asada with pico de gallo and avocado",
+        "price": "$8.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco Camaron",
+        "description": "One Breaded shrimp in a taco.",
+        "price": "$7.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco Camaron Chipotle",
+        "description": "Shrimp in chipotle sauce",
+        "price": "$9.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco Camaron Enchilado",
+        "description": "Spicy shrimp, Monterrey jack, cabbage, tomatoes, purple onion, avocado, cilantro and special sauce",
+        "price": "$9.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco Chicharron Pargo",
+        "description": "Small chunks of light fried fish fillet topped with purple onions, tomatoes and avocado",
+        "price": "$8.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco Costa Azul",
+        "description": "Shrimp stuffed with Monterrey jack cheese and wrapped with bacon topped with cabbage, tomatoes, purple onion, avocado and cilantro drizzled with special sauce",
+        "price": "$10.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco De Pescado",
+        "description": "Fish taco with cabbage, tomatoes, onion, cilantro and spicy sauce",
+        "price": "$6.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco Gobernador",
+        "description": "Shrimp, vegetables and Monterrey jack cheese",
+        "price": "$8.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco Grilled Chicken Taco",
+        "description": "Chicken asado with pico de gallo and avocado",
+        "price": "$8.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco Marlin",
+        "description": "Smoked tuna, Monterrey jack, cabbage, tomatoes, purple onion, avocado, cilantro and special sauce in a taco",
+        "price": "$9.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Taco Pulpo Enchilado",
+        "description": "Spicy octopus, Monterrey jack cheese, cabbage, tomatoes, purple onion, avocado, cilantro, topped with our special house sauce",
+        "price": "$10.00"
+      },
+      {
+        "section": "Los Tacos",
+        "name": "Tacos paseados",
+        "description": "",
+        "price": "$11.00"
+      },
+      {
+        "section": "Las Tostadas",
+        "name": "Ceviche Tostada",
+        "description": "",
+        "price": "$8.00"
+      },
+      {
+        "section": "Las Tostadas",
+        "name": "Tostada Ahi Tuna",
+        "description": "Chopped ahi tuna, purple onion, mayo sauce, avocado",
+        "price": "$12.00"
+      },
+      {
+        "section": "Las Tostadas",
+        "name": "Tostada Camaron Con Mango",
+        "description": "Raw shrimp and mango slices, mixed with serrano and onion",
+        "price": "$11.00"
+      },
+      {
+        "section": "Las Tostadas",
+        "name": "Tostada La Mazatlan",
+        "description": "Shrimp ceviche made to order in a tostada",
+        "price": "$11.00"
+      },
+      {
+        "section": "Las Tostadas",
+        "name": "Tostada La Mixta",
+        "description": "Tostada with raw shrimp, steamed cooked shrimp, octopus and seashell along with purple onion, tomatoes, cucumber, cilantro and a special spicy seasoning",
+        "price": "$11.00"
+      },
+      {
+        "section": "Las Tostadas",
+        "name": "Tostada Loka",
+        "description": "Fish and shrimp ceviche cured with lime, raw shrimp, steamed cooked shrimp and octopus along with purple onion, cucumber, and cilantro mixed in a mild (black sauce/salsa negra) accompanied with a fresh raw oyster",
+        "price": "$14.00"
+      },
+      {
+        "section": "Las Tostadas",
+        "name": "Tostada Pulpo a Las Brazas",
+        "description": "Grilled octopus with slices of avocado, tomato, onion and cilantro",
+        "price": "$14.00"
+      },
+      {
+        "section": "Las Tostadas",
+        "name": "Tostada Camaron Cocido",
+        "description": "",
+        "price": "$8.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Huachinango Frito",
+        "description": "",
+        "price": "$26.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Mojarra Frita",
+        "description": "Whole fried fish",
+        "price": "$21.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Filete Al Mojo",
+        "description": "Fish fillet in garlic sauce, served with rice, beans and salad",
+        "price": "$21.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Filete Al Vapor",
+        "description": "Fish fillet with onion, tomatoes, bell pepper, carrot and broccoli all steamed cooked with a touch of wine, served with rice and beans",
+        "price": "$21.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Filete Camaron Y Pulpo Al Ajillo",
+        "description": "Fish fillet with shrimp and octopus in garlic sauce along with onion, peppers and cilantro",
+        "price": "$27.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Filete Empanizado",
+        "description": "Breaded fish fillet fried to perfection. Served with rice, beans, salad and a side of tartar sauce",
+        "price": "$21.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Filete Plancha",
+        "description": "Fish fillet cooked on the grill, served with rice, beans and salad",
+        "price": "$21.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Filete Relleno De Mariscos",
+        "description": "Fish fillet stuffed with shrimp, octopus, and smoked marlin in Rockefeller sauce. Topped with melted Monterrey jack cheese",
+        "price": "$26.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Pescado a Las Brasas",
+        "description": "Whole marinated grilled fish, served with bean tacos, rice and beans, takes about 30 minutes... But its worth the wait",
+        "price": "$30.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Pescado Nayarita",
+        "description": "Whole red snapper fried and topped with a spicy sauce, served with rice, beans and salad",
+        "price": "$30.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Robalo Barbon",
+        "description": "",
+        "price": "$36.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Salmon Con Camaron",
+        "description": "Salmon filet topped with shrimp in garlic sauce",
+        "price": "$30.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Salmon Tropical a La Plancha",
+        "description": "Griddle salmon with authentic mango-papaya salsa as a tropical flavor served with rice and vegetables",
+        "price": "$26.00"
+      },
+      {
+        "section": "Pescados Y Filetes - Fish and Fillets",
+        "name": "Zarandeado Relleno",
+        "description": "",
+        "price": "$36.00"
+      },
+      {
+        "section": "Ensaladas/Salads",
+        "name": "Side Salad",
+        "description": "",
+        "price": "$6.00"
+      },
+      {
+        "section": "Ensaladas/Salads",
+        "name": "Full Salad",
+        "description": "",
+        "price": "$12.00"
+      },
+      {
+        "section": "Ensaladas/Salads",
+        "name": "Salmon Salad",
+        "description": "",
+        "price": "$26.00"
+      },
+      {
+        "section": "La Grande Quesadilla",
+        "name": "Quesadilla Carne Asada",
+        "description": "",
+        "price": "$22.00"
+      },
+      {
+        "section": "La Grande Quesadilla",
+        "name": "Quesadilla Chicken Asado",
+        "description": "",
+        "price": "$20.00"
+      },
+      {
+        "section": "Caldos",
+        "name": "Consome De Pescado",
+        "description": "Mini fish broth",
+        "price": "$9.00"
+      },
+      {
+        "section": "Caldos",
+        "name": "Consome De Camaron",
+        "description": "Mini shrimp broth",
+        "price": "$10.00"
+      },
+      {
+        "section": "Caldos",
+        "name": "Caldo Caldo El 7 Mares",
+        "description": "Seafood combination: shrimp with skin, octopus, fish, calamari, crab, mussels, and clams all in a soup",
+        "price": "$24.00"
+      },
+      {
+        "section": "Caldos",
+        "name": "Caldo De Pescado",
+        "description": "Fish soup",
+        "price": "$20.00"
+      },
+      {
+        "section": "Caldos",
+        "name": "Caldo De Camaron",
+        "description": "Shrimp soup",
+        "price": "$22.00"
+      },
+      {
+        "section": "Caldos",
+        "name": "Caldo De Camaron Y Pulpo",
+        "description": "Shrimp and octopus soup",
+        "price": "$22.00"
+      },
+      {
+        "section": "Carnes & Pollo",
+        "name": "Carne Asada",
+        "description": "Grilled chuck steak, served with avocado, pico de gallo, rice and beans",
+        "price": "$24.00"
+      },
+      {
+        "section": "Carnes & Pollo",
+        "name": "New York Steak",
+        "description": "Hearty and robust, a perfect balance of flavor, texture and tenderness, served with baked potato and vegetables",
+        "price": "$27.00"
+      },
+      {
+        "section": "Carnes & Pollo",
+        "name": "Pollo Asado",
+        "description": "Grilled chicken breast, served with avocado, pico de gallo rice and beans",
+        "price": "$21.00"
+      },
+      {
+        "section": "Carnes & Pollo",
+        "name": "Puños De Pollo",
+        "description": "Chunks of marinated grilled chicken on top of mixed vegetables (onion, mushrooms, jalapeño pepper) served with carrots, broccoli, rice, and beans",
+        "price": "$20.00"
+      },
+      {
+        "section": "Carnes & Pollo",
+        "name": "Trenzas De Res",
+        "description": "Meat and bacon wrapped together grilled to perfection served with sautéed mushroom, onions and jalapeños, topped with mozzarella cheese and served with a side of fries, rice and beans",
+        "price": "$26.00"
+      },
+      {
+        "section": "Fajitas",
+        "name": "Fajitas Camaron/Shrimp",
+        "description": "",
+        "price": "$24.00"
+      },
+      {
+        "section": "Fajitas",
+        "name": "Fajitas Mixtas/Asada, Chicken and Shrimp",
+        "description": "",
+        "price": "$24.00"
+      },
+      {
+        "section": "Fajitas",
+        "name": "Fajitas Pollo/Chicken",
+        "description": "",
+        "price": "$21.00"
+      },
+      {
+        "section": "Camarones-Shrimp Entrées",
+        "name": "Camarones  Chipotle",
+        "description": "Shrimp in chipotle sauce, topped with Monterrey jack, served with a side of rice",
+        "price": "$23.00"
+      },
+      {
+        "section": "Camarones-Shrimp Entrées",
+        "name": "Camarones a La Diabla",
+        "description": "Shrimp in a red hot sauce served with a side of rice",
+        "price": "$23.00"
+      },
+      {
+        "section": "Camarones-Shrimp Entrées",
+        "name": "Camarones Al Mojo",
+        "description": "Shrimp in garlic sauce served with rice beans and salad",
+        "price": "$23.00"
+      },
+      {
+        "section": "Camarones-Shrimp Entrées",
+        "name": "Camarones Costa Azul Rellenos De Queso",
+        "description": "Shrimp stuffed with Monterrey jack cheese and wrapped in bacon, served with a house salad, rice and beans",
+        "price": "$23.00"
+      },
+      {
+        "section": "Camarones-Shrimp Entrées",
+        "name": "Camarones Costa-Azul Chipotle",
+        "description": "Shrimp stuffed with smoked tuna and wrapped in bacon, topped with chipotle sauce and served with a house salad, rice and beans",
+        "price": "$25.00"
+      },
+      {
+        "section": "Camarones-Shrimp Entrées",
+        "name": "Camarones Empanizados",
+        "description": "Breaded fried shrimp, served with tartar sauce, rice, beans and salad",
+        "price": "$22.00"
+      },
+      {
+        "section": "Camarones-Shrimp Entrées",
+        "name": "Camarones Fili",
+        "description": "Fried shrimp stuffed with cream cheese and served with rice, beans and salad",
+        "price": "$23.00"
+      },
+      {
+        "section": "Camarones-Shrimp Entrées",
+        "name": "Camarones Sinaloa",
+        "description": "(Culichi) shrimp in a green special sauce, topped with Monterrey jack, served with a side of rice",
+        "price": "$23.00"
+      },
+      {
+        "section": "Camarones-Shrimp Entrées",
+        "name": "Camarones Vallarta",
+        "description": "Shrimp with mushrooms, onions, tomatoes, bell pepper seasoned with butter and wine, and topped with Monterrey jack. All steamed inside aluminum foil served with rice and beans.",
+        "price": "$23.00"
+      },
+      {
+        "section": "Camarones-Shrimp Entrées",
+        "name": "Camarones Zarandeados",
+        "description": "Grilled seasoned shrimp served along with rice and salad",
+        "price": "$26.00"
+      },
+      {
+        "section": "Otros Mariscos",
+        "name": "Chicharron De Pulpo",
+        "description": "Deep fried octopus chunks served to make tacos",
+        "price": "$30.00"
+      },
+      {
+        "section": "Otros Mariscos",
+        "name": "La Cubeta Del Patron",
+        "description": "Perfect to share: stuffed with grilled new York steak, baja style shrimp, grilled corn, grilled zucchini, grilled red bell pepper and topped with \"Camarones revolcados\" served with rice bean and tortillas",
+        "price": "$42.00"
+      },
+      {
+        "section": "Otros Mariscos",
+        "name": "Mar Y Tierra",
+        "description": "Grilled New York steak topped with shrimp \"Al ajillo\" served with fully baked potato, and sautéed vegetables",
+        "price": "$30.00"
+      },
+      {
+        "section": "Otros Mariscos",
+        "name": "Pulpo a Las Brazas",
+        "description": "Grilled octopus",
+        "price": "$32.00"
+      },
+      {
+        "section": "Otros Mariscos",
+        "name": "Volcano",
+        "description": "Seafood combination: shrimp ready to peel, peeled shrimp, octopus and fish in a special sauce. Topped with melted Monterrey jack cheese and served with rice and beans",
+        "price": "$30.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Aguacate",
+        "description": "",
+        "price": "$5.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Arroz",
+        "description": "",
+        "price": "$4.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Chiles Toreados",
+        "description": "",
+        "price": "$4.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Frijol",
+        "description": "",
+        "price": "$4.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Guacamole",
+        "description": "",
+        "price": "$10.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Orden Papas Fritas",
+        "description": "",
+        "price": "$8.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Pepinos",
+        "description": "",
+        "price": "$7.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Salsa Aguachile",
+        "description": "",
+        "price": "$3.50"
+      },
+      {
+        "section": "Sides",
+        "name": "Salsa Miguel Especial",
+        "description": "",
+        "price": "$3.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Tortilla de Harina",
+        "description": "",
+        "price": "$2.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Tortilla de Maiz",
+        "description": "",
+        "price": "$2.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Pico de Gallo",
+        "description": "",
+        "price": "$4.00"
+      },
+      {
+        "section": "Sides",
+        "name": "Side de Crema Tipo Ranch",
+        "description": "",
+        "price": "$2.50"
+      },
+      {
+        "section": "Sides",
+        "name": "Side Mayonesa",
+        "description": "",
+        "price": "$2.00"
+      },
+      {
+        "section": "KIDS MENU",
+        "name": "DEDITOS DE POLLO",
+        "description": "",
+        "price": "$11.00"
+      },
+      {
+        "section": "KIDS MENU",
+        "name": "MINI QUESADILLA",
+        "description": "",
+        "price": "$11.00"
+      },
+      {
+        "section": "KIDS MENU",
+        "name": "CAMARON EMPANIZADO",
+        "description": "",
+        "price": "$12.00"
+      },
+      {
+        "section": "KIDS MENU",
+        "name": "COCTELITO CAMARON",
+        "description": "",
+        "price": "$12.00"
+      },
+      {
+        "section": "KIDS MENU",
+        "name": "Trositos Pescado",
+        "description": "",
+        "price": "$11.00"
+      },
+      {
+        "section": "Desserts",
+        "name": "Flan",
+        "description": "",
+        "price": "$8.00"
+      },
+      {
+        "section": "Desserts",
+        "name": "Cheesecake",
+        "description": "",
+        "price": "$8.00"
+      },
+      {
+        "section": "Desserts",
+        "name": "Pan De Elote",
+        "description": "",
+        "price": "$9.00"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2144 @@
+[
+  {
+    "restaurantId": "5830",
+    "name": "La Concha Bakery",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "no-priced-first/second-party source: own domain 404s; Toast Sites deployment (laconchabakerychulavista.toast.site) has no menu page, only catering-form/email-signup/loyalty pages; Yelp menu tab/photos 403 to curl and no-browser rule blocks it; only one tier-5 source reachable (allmenus) with no independent second priced source to corroborate",
+    "notes": "Found via DDG search since own site 404s. Not filing a single uncorroborated tier-5 source per playbook rule 5.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5953",
+    "name": "Edelweiss Bakery",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "needs-browser/host-flaky: GoDaddy website-builder site (edelweissbakerysandiego.com) - fetched home, individual-cookies and store-items pages in full (100-200KB each), zero $ prices found on any after stripping tags, suggesting a JS-rendered pricing widget or a photo-gallery-only catalog; could not confirm across remaining category pages (breads, breakfast-items, danish, pound-cakes, tortes, tiered-cake-gallery) - repeated schannel TLS handshake failures against this host after the first 3 fetches, retried once per rule and still failing; Yelp biz page 403s curl and no-browser rule applies; no Toast/Square/Clover/allmenus/SinglePlatform storefront found via DDG search",
+    "notes": "Not marking not_found - have not exhausted all category pages or a dated Yelp/FB menu photo, so not sure no menu is published anywhere.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5822",
+    "name": "Lucy's Bakery",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "needs-browser: own homepage links to https://orderonlinemenu.com/LucysBakerySanDiego, a white-label front for the iMenu360 ordering platform (ordering.imenu360.com per Sentry trace target in page source) - the storefront is a pure client-rendered React SPA (<div id=\"root\">, no embedded JSON), and the backend host ordering.imenu360.com times out on connect (curl -v shows TCP connection timed out to 20.98.102.117:443, retried once) so no API path could be probed from here",
+    "notes": "New platform not yet in playbook: iMenu360 / orderonlinemenu.com. Own site (lucys-bakery.com) itself has no prices, only About/Gallery/Locations pages linking out to the ordering platform per location.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5808",
+    "name": "Mariscos El Titanic",
+    "sourceUrl": "https://mariscoseltitanic.shop/menu",
+    "confidence": "high",
+    "notes": "Router flagged no-platform (this is a .shop domain, checked per rule for farm tells: it does NOT redirect to another registrable domain, so per playbook it is treated as the restaurant's own site, not a farm). Address on page (3600 Fairmount Ave, San Diego, CA 92105) matches work list exactly. Site is a single-page-per-section builder (12 menu sections + Others). Dropped 11 unpriced rows (empty <span class=\"dish--price\"> - includes a set of unpriced novelty cocktail names Viagra/Masoquista/Matapasion/Dormilona/Torturadora/Locochona under \"Seafood\", Pescado Zarandeado, Shrimp Fajitas, Filete Dicaprio, and 7 items under \"Others\" that are just an index/repeat-list of dishes already priced elsewhere plus a 8 seafood-fountain platter). Cent distribution over 116 priced rows: .00 (52), .75 (23), .50 (22), .95 (11), .25 (8) - 100% conventional endings, no markup shape. Price level (tacos .75-4.75, botana platters 8-28, camarones entrees 4.95-18.50, fish fillets 8-23, 8 party fountain) is internally corroborated by an on-page customer review stating prices run \"around 4 a plate\", matching Filete Don Hector/Relleno De Mariscos/Huachinango all at 3. Homepage marketing copy reads as AI-generated SEO filler (noted per playbook farm-tell caution) but the menu page itself is clean structured first-party HTML (h3 dish--title / span dish--price pairs), distinct from the garbled-directory-farm pattern.",
+    "dishes": [
+      {
+        "name": "Ensalada De Camaron",
+        "description": "",
+        "price": "$18.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Botana Para Jefes",
+        "description": "",
+        "price": "$26.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Botana De Callo De Hacha",
+        "description": "",
+        "price": "$28.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Botana Dde Camaron",
+        "description": "",
+        "price": "$24.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Botana De Camaron Y Pulpo",
+        "description": "",
+        "price": "$25.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Chicharron De Pargo",
+        "description": "",
+        "price": "$22.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Camarones Para Pelar",
+        "description": "",
+        "price": "$26.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Camaron Huichol",
+        "description": "",
+        "price": "$26.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Camarones Cucarachas",
+        "description": "",
+        "price": "$26.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Molcajete Jr",
+        "description": "",
+        "price": "$27.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Botana Platito Loco",
+        "description": "",
+        "price": "$27.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Botana Charly",
+        "description": "",
+        "price": "$28.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Botana De Abulon",
+        "description": "",
+        "price": "$28.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Aguachiles Verdes",
+        "description": "",
+        "price": "$24.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Botana De Los Chacas",
+        "description": "",
+        "price": "$28.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Aguachiles Rojos",
+        "description": "",
+        "price": "$24.00",
+        "section": "Botanas Y Especialidades"
+      },
+      {
+        "name": "Cocos Con Camaron",
+        "description": "",
+        "price": "$18.50",
+        "section": "Cocos Con Camaron"
+      },
+      {
+        "name": "Coco Campechana",
+        "description": "",
+        "price": "$22.00",
+        "section": "Cocos Con Camaron"
+      },
+      {
+        "name": "Coco Del Patron",
+        "description": "",
+        "price": "$22.00",
+        "section": "Cocos Con Camaron"
+      },
+      {
+        "name": "Huachinango",
+        "description": "",
+        "price": "$23.00",
+        "section": "Pescado Entero"
+      },
+      {
+        "name": "Mojarra",
+        "description": "",
+        "price": "$15.00",
+        "section": "Pescado Entero"
+      },
+      {
+        "name": "Empanizado",
+        "description": "",
+        "price": "$18.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Al Mojo De Ajo",
+        "description": "",
+        "price": "$18.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Veracruzano",
+        "description": "",
+        "price": "$18.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Vallarta",
+        "description": "",
+        "price": "$18.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Acapulco",
+        "description": "",
+        "price": "$18.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Mazatlan",
+        "description": "",
+        "price": "$18.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Culichi",
+        "description": "",
+        "price": "$18.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Filete Don Hector",
+        "description": "",
+        "price": "$23.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "A La Diabla",
+        "description": "",
+        "price": "$18.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Relleno De Mariscos",
+        "description": "",
+        "price": "$23.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Al Chipotle",
+        "description": "",
+        "price": "$18.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Marlin Al Gusto",
+        "description": "",
+        "price": "$18.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Los Cabos",
+        "description": "",
+        "price": "$19.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Empapelado",
+        "description": "",
+        "price": "$21.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Salmon A La Parrilla",
+        "description": "",
+        "price": "$21.00",
+        "section": "Filetes"
+      },
+      {
+        "name": "Fish And Chips",
+        "description": "",
+        "price": "$8.50",
+        "section": "Platillos Para Ninos"
+      },
+      {
+        "name": "Chicken Strips & French Fries",
+        "description": "",
+        "price": "$8.50",
+        "section": "Platillos Para Ninos"
+      },
+      {
+        "name": "Fried Shrimp & French Fries",
+        "description": "",
+        "price": "$8.50",
+        "section": "Platillos Para Ninos"
+      },
+      {
+        "name": "Filetico Al Gusto",
+        "description": "",
+        "price": "$8.50",
+        "section": "Platillos Para Ninos"
+      },
+      {
+        "name": "Coctelito De Camaron",
+        "description": "",
+        "price": "$8.50",
+        "section": "Platillos Para Ninos"
+      },
+      {
+        "name": "Tostada De Camarón",
+        "description": "",
+        "price": "$4.25",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Tostada De Pescado",
+        "description": "",
+        "price": "$4.25",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Tostada De Jaiva",
+        "description": "",
+        "price": "$4.25",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Tostada Mariner",
+        "description": "",
+        "price": "$10.50",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Tostada A La Diabla",
+        "description": "",
+        "price": "$7.75",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Tostada De Caracol",
+        "description": "",
+        "price": "$6.25",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Camarón Cocido",
+        "description": "",
+        "price": "$7.75",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Aguachile",
+        "description": "",
+        "price": "$7.50",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Abulón",
+        "description": "",
+        "price": "$7.75",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Callo De Hacha",
+        "description": "",
+        "price": "$8.50",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Langostinos Al Gusto",
+        "description": "",
+        "price": "$17.00",
+        "section": "Camarones"
+      },
+      {
+        "name": "Rancheros",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "Al Mojo De Ajo",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "Empanizados",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "A La Diabla",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "Al Tequila",
+        "description": "",
+        "price": "$15.75",
+        "section": "Camarones"
+      },
+      {
+        "name": "Veracruz",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "Acapulco",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "Mazatlan",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "Al Chipotle",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "Camarones Princesa",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "Camarones Amorosos",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "Camarones Al Popeye",
+        "description": "",
+        "price": "$14.95",
+        "section": "Camarones"
+      },
+      {
+        "name": "Camarones Zarandeados",
+        "description": "",
+        "price": "$18.00",
+        "section": "Camarones"
+      },
+      {
+        "name": "Especialidad Titanic",
+        "description": "",
+        "price": "$18.50",
+        "section": "Camarones"
+      },
+      {
+        "name": "El Paraiso",
+        "description": "",
+        "price": "$22.00",
+        "section": "Camarones"
+      },
+      {
+        "name": "Pasta Arcoiris",
+        "description": "",
+        "price": "$15.50",
+        "section": "Camarones"
+      },
+      {
+        "name": "Pasta Con Mariscos",
+        "description": "",
+        "price": "$15.50",
+        "section": "Camarones"
+      },
+      {
+        "name": "Bistec Ranchero",
+        "description": "",
+        "price": "$13.50",
+        "section": "Platillos Mexicanos"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "",
+        "price": "$13.50",
+        "section": "Platillos Mexicanos"
+      },
+      {
+        "name": "Carne Asada Al Chipotle",
+        "description": "",
+        "price": "$13.50",
+        "section": "Platillos Mexicanos"
+      },
+      {
+        "name": "New York Steak With Three Shrimp",
+        "description": "",
+        "price": "$22.00",
+        "section": "Platillos Mexicanos"
+      },
+      {
+        "name": "Special Two Tacos",
+        "description": "",
+        "price": "$12.00",
+        "section": "Platillos Mexicanos"
+      },
+      {
+        "name": "Sizzling Fajitas De Pollo E De Res",
+        "description": "",
+        "price": "$14.75",
+        "section": "Platillos Mexicanos"
+      },
+      {
+        "name": "Sizzling Fajitas De Camarón",
+        "description": "",
+        "price": "$14.75",
+        "section": "Platillos Mexicanos"
+      },
+      {
+        "name": "Sizzling Fajitas Supremas",
+        "description": "",
+        "price": "$14.75",
+        "section": "Platillos Mexicanos"
+      },
+      {
+        "name": "Pechugas De Pollo",
+        "description": "",
+        "price": "$14.00",
+        "section": "Platillos Mexicanos"
+      },
+      {
+        "name": "Huevos Rancheros",
+        "description": "",
+        "price": "$8.75",
+        "section": "Desayunos/Breakfast"
+      },
+      {
+        "name": "Huevos Con Chorizo",
+        "description": "",
+        "price": "$8.75",
+        "section": "Desayunos/Breakfast"
+      },
+      {
+        "name": "Huevos Con Tocino",
+        "description": "",
+        "price": "$8.75",
+        "section": "Desayunos/Breakfast"
+      },
+      {
+        "name": "Huevos Con Salchicha",
+        "description": "",
+        "price": "$8.75",
+        "section": "Desayunos/Breakfast"
+      },
+      {
+        "name": "Machaca Con Huevo",
+        "description": "",
+        "price": "$8.75",
+        "section": "Desayunos/Breakfast"
+      },
+      {
+        "name": "Omelette Al Gusto",
+        "description": "",
+        "price": "$8.75",
+        "section": "Desayunos/Breakfast"
+      },
+      {
+        "name": "Chilaquiles Rojos O Verdes",
+        "description": "",
+        "price": "$8.75",
+        "section": "Desayunos/Breakfast"
+      },
+      {
+        "name": "Chilaquiles 2 Huevos",
+        "description": "",
+        "price": "$8.75",
+        "section": "Desayunos/Breakfast"
+      },
+      {
+        "name": "Taco Enchilado De Camarón",
+        "description": "",
+        "price": "$4.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Steak",
+        "description": "",
+        "price": "$3.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pescado El Pirata Campechano",
+        "description": "",
+        "price": "$4.75",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pescado Fish",
+        "description": "",
+        "price": "$2.75",
+        "section": "Tacos"
+      },
+      {
+        "name": "Gobernador",
+        "description": "",
+        "price": "$4.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Camarón Shrimp",
+        "description": "",
+        "price": "$4.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Beef",
+        "description": "",
+        "price": "$3.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo Chicken",
+        "description": "",
+        "price": "$3.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pulpo Octopus",
+        "description": "",
+        "price": "$4.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "Marlin",
+        "description": "",
+        "price": "$4.75",
+        "section": "Tacos"
+      },
+      {
+        "name": "Camarón Empanizado",
+        "description": "",
+        "price": "$4.75",
+        "section": "Tacos"
+      },
+      {
+        "name": "2 Tacos Special De Marlin Or Gobernador",
+        "description": "",
+        "price": "$10.75",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada Steak",
+        "description": "",
+        "price": "$8.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Pollo Chicken",
+        "description": "",
+        "price": "$8.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Camarón Shrimp",
+        "description": "",
+        "price": "$9.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Pescado Fish",
+        "description": "",
+        "price": "$8.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Pulpo",
+        "description": "",
+        "price": "$8.75",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Regular",
+        "description": "",
+        "price": "$6.50",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Super Nachos",
+        "description": "",
+        "price": "$9.25",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$9.25",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "3 Rolled Tacos W/ Guacamole & Cheese",
+        "description": "",
+        "price": "$4.75",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "5 Rolled Tacos W/ Guacamole & Cheese",
+        "description": "",
+        "price": "$6.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Carne Asada Steak",
+        "description": "",
+        "price": "$7.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Chicken",
+        "description": "",
+        "price": "$7.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Camarón Shrimp",
+        "description": "",
+        "price": "$8.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pescado",
+        "description": "",
+        "price": "$6.75",
+        "section": "Burritos"
+      },
+      {
+        "name": "Marlin",
+        "description": "",
+        "price": "$9.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pulpo",
+        "description": "",
+        "price": "$9.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chimichanga",
+        "description": "",
+        "price": "$10.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fuente De Mariscos",
+        "description": "",
+        "price": "$78.00",
+        "section": "Others"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5795",
+    "name": "Baci Restaurant | Italian",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "quarantined (held 2026-09-03 on stale 2012-level pricing + SinglePlatform/allmenus feed-echo, per screen-menus.mjs QUARANTINE_IDS) - re-checked own site (www.sandiegobaci.com/menu, Wix): it is server-rendered and CURRENT (lists Osso Buco, Filet Mignon, Rack of Lamb, Veal Chop Lamberti, Pesce Spada Oreganato - items absent from the old capture) but publishes ZERO prices anywhere on the page - full item/description list with no price markup at all. OpenTable listing connection failed (needs-browser). Every other reachable source (SinglePlatform, allmenus, restaurantguru, menupix, menuxp, zmenu, restaurantmenuprice) is the same directory-farm feed already rejected in the quarantine note - not re-filing it.",
+    "notes": "No genuinely first-party PRICED source found. Own site confirms the current section/dish list (Insalate, Paste, Vitello, Carne, Pesce, Pollo, Dessert) for a future pass, but has no prices to read.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5800",
+    "name": "Kojack's Restaurant",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "no-priced-source-reachable: no website listed on work item; kojacksrestaurant.com is a parked Squarespace \"Coming Soon\" page; DDG search (before hitting its anomaly/rate-limit wall) turned up only directory-farm listings (gotoeat.net - explicitly barred, localitybiz.com, ochef.com, sandiegoinsider.com, sandiegolineup.com, mapquest, tripadvisor) and sirved.com, whose own menu tab for this restaurant explicitly shows no_menu.png (no menu on file); no Toast/Square/Clover/Olo storefront found; Yelp biz page 403s curl and no-browser rule applies",
+    "notes": "Could not confirm any first-party ordering platform exists for this restaurant from what is reachable without a browser.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5807",
+    "name": "Franks Mexican Grill",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "no-priced-source-reachable: no website on work item; no DNS for franksmexicangrill.com/franksmexicangrillvista.com; Google and Bing searches return only unrelated Los Angeles \"Frank's\" restaurants and historical-Franks/Wikipedia results, no local Vista CA match; DuckDuckGo (html and lite) hit its own anomaly/rate-limit wall for the rest of this session and returned 202 on every retry; Yelp biz-page guess 403s curl; Facebook guess 400s",
+    "notes": "Search tooling (DDG) became rate-limited partway through this batch; a later pass with fresh search access may find this one quickly.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5837",
+    "name": "Leucadia Donut Shoppe",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "needs-browser: only known web presence is Facebook (m.facebook.com/LeucadiaDonuts, router already logged HTTP 400 on that mobile URL; www.facebook.com/LeucadiaDonuts/ also 400s to curl - Facebook requires JS/cookies, no-browser rule applies); no own domain resolves (leucadiadonuts.com, leucadiadonutshoppe.com both fail DNS); Bing searches for the business name and for its exact address (1604 N Coast Hwy 101) return zero relevant results, only generic \"Leucadia\" neighborhood pages",
+    "notes": "Small shop with essentially no indexed web presence beyond its Facebook page, which is unreachable without a browser.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5980",
+    "name": "Surf Brothers Teriyaki and Catering",
+    "sourceUrl": "",
+    "confidence": "low",
+    "blocked": "needs-browser: white-label ordering storefront on tryperdiem.com (\"Perdiem\" platform, Next.js) at surfbrothers.order.tryperdiem.com/order and /menu - both routes return a full page shell (42-51KB) with self.__next_f RSC push calls present but containing no \"price\" string, no rawMenus/MenuPageItemList payload and no catalog data at all, only the restaurant name; catalog is fetched client-side by JS after mount. Guessed common same-origin API paths (api/menu, api/menus, api/store, api/restaurant, api/catalog = 404; api/v1/menu, api/order/menu = 307 redirect back to /order) with no luck - likely a POST/GraphQL call not discoverable by GET guessing.",
+    "notes": "New platform for the playbook: tryperdiem.com (Perdiem). Purely client-rendered, no server-embedded catalog found.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6090",
+    "name": "Firefly Eatery & Bar",
+    "sourceUrl": "https://thedana.com/restaurants-in-mission-bay/firefly-eatery-bar/menu/",
+    "confidence": "high",
+    "notes": "Router said no-platform on the landing page; the actual priced menu is one page deeper at /menu/, a first-party WordPress page (not an ordering platform - no markup test needed) with all dayparts stacked in one page (Breakfast, Lunch, Dinner, Lightning Bug kids menu, Bar, Happy Hour, Dessert, Tropical Pool Bar, Five Days  Ways), each item as <div class=\"left\">Name</div><span class=\"price\">N</span>. Prices print as bare whole numbers (22, 21, 18...) with no $ or cents - converted to .00, nothing divided or averaged. All 39 distinct price values are whole dollars, no markup shape. Address 1710 W Mission Bay Dr confirmed on the hotel homepage. Dropped 2 rows with genuinely empty price spans (Heineken, Pacifico bottles under Bar - Bottles & Cans, no price printed anywhere for them). 4 sections (Happy Hour  Wine/ Drafts/2 Craft Cocktails, Five Days  Ways) print their flat price in the SECTION NAME itself rather than per item (every item's <span class=\"price\"> is empty) - used that printed flat price for each item in those sections (18 rows) rather than treating them as unpriced, since the number is directly on the page, not inferred. Price level (breakfast 6-22, lunch sandwiches 6-19, dinner entrees 4-42, cocktails 2-17, dessert -10) is plausible for a 2026 Mission Bay resort restaurant. Sections reached: all of the above; no dessert/catering-only adjunct pages included (Event Catering Menu excluded as an adjunct).",
+    "dishes": [
+      {
+        "name": "3 Egg Omelet",
+        "description": "Choose 3 Items: Cheddar or Jack Cheese | Bacon | Sausage | Diced Ham | Jalapeno | Mushroom | Bell Pepper | Onion | Spinach | Breakfast Tots or Fruit | Served with English Muffin Each additional item .75",
+        "price": "$22.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "American Breakfast",
+        "description": "2 Eggs Any Style | Bacon or Sausage | Breakfast Tots | Served with English Muffin",
+        "price": "$21.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Buttermilk Pancakes",
+        "description": "Short Stack | Bacon | Maple syrup | Powdered Sugar Add: Banana $4 | Blueberry $4 | Chocolate $4 &nbsp;",
+        "price": "$18.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Chilaquiles Rojas",
+        "description": "2 Eggs Over Easy | Cheddar & Jack Cheese | Avocado Crema | Breakfast Tots | Pico De Gallo | Pickled Onions | House Made Tortilla Chips | Salsa Roja Add: House smoked Carnitas $7 | Carne Asada $8 &nbsp;",
+        "price": "$19.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Classic Eggs Benedict",
+        "description": "Poached Eggs | Shaved Ham | House Made Chive Hollandaise | Breakfast Tots | English Muffin",
+        "price": "$22.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Continental Breakfast",
+        "description": "Croissant or English Muffin | Strawberry Preserve | Fresh Fruit Cup | Vanilla Yogurt",
+        "price": "$16.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Surfer Burrito",
+        "description": "Scrambled Eggs | Bacon | Pepper Jack | Breakfast Tots | Pico de Gallo | Avocado Crema | Flour Tortilla | Served with Roasted Salsa Roja Add: House smoked Carnitas $7 | Carne Asada $8 &nbsp;",
+        "price": "$19.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Avocado Smash on Croissant",
+        "description": "Feta | Marinated Cherry Tomatoes | Artichoke Hearts | Chimichurri Drizzle | Micro Cilantro Add Egg | 3.50",
+        "price": "$15.00",
+        "section": "Breakfast - The Lighter Side"
+      },
+      {
+        "name": "Fresh Fruit Plate",
+        "description": "Seasonal Melons & Berries | Vanilla Cream",
+        "price": "$12.00",
+        "section": "Breakfast - The Lighter Side"
+      },
+      {
+        "name": "Lox &amp; Everything Bagel",
+        "description": "House Cured Salmon | Shaved Red Onion | Tomato | Chive Cream Cheese | Capers",
+        "price": "$16.00",
+        "section": "Breakfast - The Lighter Side"
+      },
+      {
+        "name": "Steel Cut Oats",
+        "description": "Golden Raisins | Brown Sugar Add: Banana $4 | Berries $4 &nbsp;",
+        "price": "$12.00",
+        "section": "Breakfast - The Lighter Side"
+      },
+      {
+        "name": "Vanilla Bean Yogurt Parfait",
+        "description": "Granola | Fresh Berries | Honey Drizzle",
+        "price": "$15.00",
+        "section": "Breakfast - The Lighter Side"
+      },
+      {
+        "name": "Breakfast Quesadilla",
+        "description": "Scrambled Egg | Jack & Cheddar Cheese | Flour Tortilla",
+        "price": "$12.00",
+        "section": "Breakfast - Lightning Bug"
+      },
+      {
+        "name": "Cereal &amp; Milk",
+        "description": "See Server for Selections",
+        "price": "$10.00",
+        "section": "Breakfast - Lightning Bug"
+      },
+      {
+        "name": "Sand Dollar Pancakes",
+        "description": "6 Pancakes | Maple Syrup | Powdered Add: Banana $4 | Blueberry $4 | Chocolate $4 &nbsp;",
+        "price": "$12.00",
+        "section": "Breakfast - Lightning Bug"
+      },
+      {
+        "name": "Sliced French Toast",
+        "description": "Texas Toast | Maple Syrup | Powdered Sugar",
+        "price": "$12.00",
+        "section": "Breakfast - Lightning Bug"
+      },
+      {
+        "name": "1710 Americano",
+        "description": "Dark Roast 100% Arabica Espresso | Water",
+        "price": "$6.00",
+        "section": "Breakfast - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Bayside Cappuccino",
+        "description": "Dark Roast 100% Arabica Espresso | Crema",
+        "price": "$7.00",
+        "section": "Breakfast - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "“Modern Times” Nitro Cold Brew",
+        "price": "$8.00",
+        "section": "Breakfast - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Firefly Cafe Latte",
+        "description": "Dark Roast 100% Arabica Espresso Steamed Milk",
+        "price": "$7.00",
+        "section": "Breakfast - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Marina Matcha Latte",
+        "description": "Matcha | Steamed Milk | Honey",
+        "price": "$8.00",
+        "section": "Breakfast - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Oasis Espresso",
+        "description": "Dark Roast 100% Arabica Espresso",
+        "price": "$6.00",
+        "section": "Breakfast - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Pacific Chai Latte",
+        "description": "Dark Roast 100% Arabica Espresso | Chai Tea | Steamed Milk",
+        "price": "$9.00",
+        "section": "Breakfast - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Sunrise Caramel Macchiato",
+        "description": "Dark Roast 100% Arabica Espresso | Steamed Milk | Vanilla Syrup | Caramel Drizzle",
+        "price": "$8.00",
+        "section": "Breakfast - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Terrace Cafe Mocha",
+        "description": "Dark Roast 100% Arabica Espresso Steamed Milk | Chocolate Syrup",
+        "price": "$8.00",
+        "section": "Breakfast - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Tropical Chai Latte",
+        "description": "Chai Tea | Steamed Milk | Cinnamon",
+        "price": "$8.00",
+        "section": "Breakfast - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Aperol Spritz",
+        "description": "Aperol | Prosecco | Soda",
+        "price": "$14.00",
+        "section": "Breakfast - From The Bar"
+      },
+      {
+        "name": "Bloody Mary",
+        "description": "Seagram’s Vodka | Bloody Mary Mix",
+        "price": "$15.00",
+        "section": "Breakfast - From The Bar"
+      },
+      {
+        "name": "From the Tap",
+        "description": "See Beer Selection",
+        "price": "$10.00",
+        "section": "Breakfast - From The Bar"
+      },
+      {
+        "name": "Irish Coffee",
+        "description": "Irish Whiskey | Coffee | Whip Cream",
+        "price": "$14.00",
+        "section": "Breakfast - From The Bar"
+      },
+      {
+        "name": "Michelada",
+        "description": "Buenaveza Sea Salt Lager 5.0% | Bloody Mary Mix",
+        "price": "$10.00",
+        "section": "Breakfast - From The Bar"
+      },
+      {
+        "name": "Mimosa",
+        "description": "Brut Champagne | Fresh OJ",
+        "price": "$12.00",
+        "section": "Breakfast - From The Bar"
+      },
+      {
+        "name": "Four Leaf Vienna Roast Coffee",
+        "description": "Coffee & Decaf",
+        "price": "$5.00",
+        "section": "Breakfast - Beverages"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "Green | English Breakfast | Mint | Chamomile | Matcha",
+        "price": "$4.00",
+        "section": "Breakfast - Beverages"
+      },
+      {
+        "name": "Juices",
+        "description": "Orange | Apple | Cranberry | Pineapple",
+        "price": "$5.00",
+        "section": "Breakfast - Beverages"
+      },
+      {
+        "name": "Milk",
+        "description": "2% | Whole | Almond | Oat | Soy",
+        "price": "$5.00",
+        "section": "Breakfast - Beverages"
+      },
+      {
+        "name": "Soft Drinks",
+        "description": "Pepsi | Diet Pepsi | Starry",
+        "price": "$5.00",
+        "section": "Breakfast - Beverages"
+      },
+      {
+        "name": "Homemade Chips &amp; Salsa",
+        "description": "Roasted Salsa Roja & Salsa Verde Tomatillo Add Guacamole | 6",
+        "price": "$10.00",
+        "section": "Lunch - Starters"
+      },
+      {
+        "name": "Oven Baked Bavarian Pretzel",
+        "description": "Salted Pretzel | Poblano Cheese Sauce | Dijon Mustard &nbsp;",
+        "price": "$12.00",
+        "section": "Lunch - Starters"
+      },
+      {
+        "name": "Grilled Chicken Quesadilla",
+        "description": "Cheddar & Jack | Cilantro | Sour Cream | Pico de Gallo",
+        "price": "$17.00",
+        "section": "Lunch - Starters"
+      },
+      {
+        "name": "Calamari",
+        "description": "Arugula | Cilantro Lime Aioli",
+        "price": "$15.00",
+        "section": "Lunch - Starters"
+      },
+      {
+        "name": "Korean BBQ Wings",
+        "description": "Korean BBQ Sauce | Asian Slaw | Green Onions | Sliced Jalapeño | Toasted Sesame Seeds",
+        "price": "$16.00",
+        "section": "Lunch - Starters"
+      },
+      {
+        "name": "Smoked Stack Nachos",
+        "description": "House Smoked Carnitas | Cheddar & Jack | Nacho Cheese | Black Beans | Pico de Gallo | Guacamole | Sour Cream Choice of: Smoked Carnitas | Smoked Chicken &nbsp;",
+        "price": "$21.00",
+        "section": "Lunch - Starters"
+      },
+      {
+        "name": "\"Award Winning\" Clam Chowder",
+        "description": "Celery | Potato | Onion | Bacon | Charred Lime | Tabasco | Oyster Crackers",
+        "price": "$15.00",
+        "section": "Lunch - Soup & Salad"
+      },
+      {
+        "name": "Chicken Tortilla Soup",
+        "description": "Fire Roasted Chicken Breast | Tortilla Strips | Avocado | Cheddar & Jack | Crema | Cilantro",
+        "price": "$14.00",
+        "section": "Lunch - Soup & Salad"
+      },
+      {
+        "name": "Garden Green Salad",
+        "description": "Spring Mix | Red Onion | Cherry Tomato | Queso Fresco | Cucumber | Red Wine Vinaigrette Add Chicken $10 | Shrimp $13 | Salmon $15",
+        "price": "$14.00",
+        "section": "Lunch - Soup & Salad"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Whole Leaf Romaine | Parmesan | House Made Caesar Dressing | Garlic Croutons Add Chicken $10 | Salmon $15 | Shrimp $13",
+        "price": "$16.00",
+        "section": "Lunch - Soup & Salad"
+      },
+      {
+        "name": "Firefly Wedge",
+        "description": "Bacon Crumbles | Gorgonzola | Cherry Tomato | Pickled Red Onion | Cilantro Blue Cheese Dressing Add Chicken $10 | Shrimp $13 | Salmon $15",
+        "price": "$17.00",
+        "section": "Lunch - Soup & Salad"
+      },
+      {
+        "name": "SoCal Buddha Bowl",
+        "description": "Cous Cous | Black Beans | Cucumber | Avocado | Tomato | Onion | Serrano Mango Salsa | Queso Fresco | Creamy Citrus Vinaigrette Add: Chicken $10 | Shrimp $13 | Salmon $15",
+        "price": "$17.00",
+        "section": "Lunch - Soup & Salad"
+      },
+      {
+        "name": "Classic Baja Fish or Shrimp Tacos",
+        "description": "Blackened Halibut or Grilled Shrimp | Napa Cabbage Slaw | Pepper Jack | Avocado | Pico de Gallo | Corn Tortillas",
+        "price": "$24.00",
+        "section": "Lunch - Sandwiches & More"
+      },
+      {
+        "name": "Fried Chicken Sandwich",
+        "description": "Lettuce | Tomato | Pickles | House Honey Mustard | Sesame Seed Bun | French Fries",
+        "price": "$19.00",
+        "section": "Lunch - Sandwiches & More"
+      },
+      {
+        "name": "B.L.A.T",
+        "description": "Bacon | Pepper Jack | Lettuce | Avocado | Tomato |Sourdough | French Fries",
+        "price": "$17.00",
+        "section": "Lunch - Sandwiches & More"
+      },
+      {
+        "name": "California Burrito",
+        "description": "Carne Asada | French Fries | White Cheddar & Pepper Jack | Pico De Gallo | Guacamole | Chipotle Crema | Roasted Salsa | Queso Fresco | Flour Tortilla &nbsp;",
+        "price": "$22.00",
+        "section": "Lunch - Sandwiches & More"
+      },
+      {
+        "name": "Chipotle Cheesesteak",
+        "description": "Pepper Jack | Sautéed Peppers and Onions | Chipotle Aioli | Italian Roll | French Fries &nbsp;",
+        "price": "$19.00",
+        "section": "Lunch - Sandwiches & More"
+      },
+      {
+        "name": "SoCal Buddha Bowl",
+        "description": "Cous Cous | Black Beans | Cucumber | Avocado | Tomato | Onion | Serrano Mango Salsa | Queso Fresco | Creamy Citrus Vinaigrette Add: Chicken $10 | Shrimp $13 | Salmon $15",
+        "price": "$17.00",
+        "section": "Lunch - Sandwiches & More"
+      },
+      {
+        "name": "1/2 Pound CAB Bacon Burger",
+        "description": "White Cheddar | Bacon | Butter Lettuce | Tomato | Red Onion | Pickles | House Made Secret Sauce | Garlic Parmesan Fries",
+        "price": "$25.00",
+        "section": "Lunch - Sandwiches & More"
+      },
+      {
+        "name": "Ale Battered Fish & Chips",
+        "description": "Beer Battered Halibut | Napa Cabbage Coleslaw | French Fries | Malt Vinegar | Tartar Sauce | Charred lemon &nbsp;",
+        "price": "$25.00",
+        "section": "Lunch - Sandwiches & More"
+      },
+      {
+        "name": "Cheese",
+        "description": "Mozzarella | Marinara Sauce",
+        "price": "$15.00",
+        "section": "Lunch - Flatbreads"
+      },
+      {
+        "name": "BBQ Chicken",
+        "description": "Mozzarella | Cilantro | Red Onion | BBQ Sauce",
+        "price": "$17.00",
+        "section": "Lunch - Flatbreads"
+      },
+      {
+        "name": "Margarita",
+        "description": "Mozzarella | Olive Oil | Basil | Marinara Sauce",
+        "price": "$16.00",
+        "section": "Lunch - Flatbreads"
+      },
+      {
+        "name": "Pepperoni",
+        "description": "Mozzarella | Marinara Sauce",
+        "price": "$17.00",
+        "section": "Lunch - Flatbreads"
+      },
+      {
+        "name": "Vegetarian",
+        "description": "Mozzarella | Red Onion | Peppers | Mushrooms | Marinara Sauce",
+        "price": "$16.00",
+        "section": "Lunch - Flatbreads"
+      },
+      {
+        "name": "Crème Brûlée Cheesecake",
+        "description": "Strawberry Grand Marnier Compote",
+        "price": "$14.00",
+        "section": "Lunch - Desserts"
+      },
+      {
+        "name": "Warm Chocolate Chip Cookie",
+        "description": "Vanilla Ice Cream",
+        "price": "$14.00",
+        "section": "Lunch - Desserts"
+      },
+      {
+        "name": "Baked Apple Skillet",
+        "description": "With Cinnamon Ice Cream",
+        "price": "$14.00",
+        "section": "Lunch - Desserts"
+      },
+      {
+        "name": "Chocolate Lava Cake",
+        "description": "With Vanilla Ice Cream",
+        "price": "$14.00",
+        "section": "Lunch - Desserts"
+      },
+      {
+        "name": "Cream Filled Churros",
+        "description": "With Vanilla Ice Cream | Chocolate Sauce",
+        "price": "$14.00",
+        "section": "Lunch - Desserts"
+      },
+      {
+        "name": "Homemade Chips & Salsa",
+        "description": "Roasted Salsa Roja &#038; Salsa Verde Tomatillo Add Guacamole | 6",
+        "price": "$10.00",
+        "section": "Dinner - Starters"
+      },
+      {
+        "name": "Baked Lobster Mac N' Cheese",
+        "description": "Crispy Panko Bread Crumbs | Grana Padano | Mozzarella | Charred Jalapeno",
+        "price": "$19.00",
+        "section": "Dinner - Starters"
+      },
+      {
+        "name": "Grilled Chicken Quesadilla",
+        "description": "Cheddar & Jack | Cilantro | Sour Cream | Pico de Gallo",
+        "price": "$17.00",
+        "section": "Dinner - Starters"
+      },
+      {
+        "name": "Korean BBQ Wings",
+        "description": "Korean BBQ Sauce | Toasted Sesame Seeds | Green Onions",
+        "price": "$16.00",
+        "section": "Dinner - Starters"
+      },
+      {
+        "name": "Calamari",
+        "description": "Arugula | Cilantro Lime Aioli",
+        "price": "$16.00",
+        "section": "Dinner - Starters"
+      },
+      {
+        "name": "Smoke Stack Nachos",
+        "description": "Cheddar | Jack | Nacho Cheese | Black Beans | Pico de Gallo | Guacamole | Sour Cream Choice of Smoked Carnitas | Smoked Chicken",
+        "price": "$21.00",
+        "section": "Dinner - Starters"
+      },
+      {
+        "name": "\"Award Winning\" Clam Chowder",
+        "description": "Celery | Potato | Onion | Bacon | Charred Lime | Tabasco| Oyster Crackers &nbsp;",
+        "price": "$16.00",
+        "section": "Dinner - Soup & Salad"
+      },
+      {
+        "name": "Chicken Tortilla Soup",
+        "description": "Fire Roasted Chicken Breast | Tortilla Strips | Avocado | Cheddar & Jack | Crema | Cilantro",
+        "price": "$16.00",
+        "section": "Dinner - Soup & Salad"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Whole Leaf Romaine | Parmesan |Home Made Caesar Dressing | Garlic Croutons Add Chicken $10 | Shrimp $13 | Salmon $15",
+        "price": "$16.00",
+        "section": "Dinner - Soup & Salad"
+      },
+      {
+        "name": "Garden Green Salad",
+        "description": "Spring Mix | Red Onion | Queso Fresco | Cherry Tomato | Red Wine Vinaigrette Add Chicken $10 | Shrimp $13 | Salmon $15",
+        "price": "$15.00",
+        "section": "Dinner - Soup & Salad"
+      },
+      {
+        "name": "Firefly Wedge",
+        "description": "Bacon | Gorgonzola | Chery Tomato | Pickled Red Onion | Cilantro Blue Cheese Dressing Add Chicken $10 | Shrimp $13 | Salmon $15",
+        "price": "$17.00",
+        "section": "Dinner - Soup & Salad"
+      },
+      {
+        "name": "SoCal Buddha Bowl",
+        "description": "Cous Cous | Black Beans | Cucumber | Avocado | Tomato | Onion | Serrano Mango Salsa | Queso Fresco | Creamy Citrus Vinaigrette Add Chicken $10 | Shrimp $13 | Salmon $15",
+        "price": "$19.00",
+        "section": "Dinner - Soup & Salad"
+      },
+      {
+        "name": "Cheese",
+        "description": "Mozzarella | Marinara Sauce &nbsp;",
+        "price": "$14.00",
+        "section": "Dinner - Flatbreads"
+      },
+      {
+        "name": "Pepperoni",
+        "description": "Mozzarella | Marinara Sauce &nbsp;",
+        "price": "$15.00",
+        "section": "Dinner - Flatbreads"
+      },
+      {
+        "name": "BBQ Chicken",
+        "description": "Mozzarella | Cilantro | Red Onion | BBQ Sauce &nbsp;",
+        "price": "$17.00",
+        "section": "Dinner - Flatbreads"
+      },
+      {
+        "name": "Margarita",
+        "description": "Mozzarella | Olive Oil | Basil | Marinara Sauce &nbsp; &nbsp;",
+        "price": "$16.00",
+        "section": "Dinner - Flatbreads"
+      },
+      {
+        "name": "1855 Black Angus Filet Mignon",
+        "description": "Green Peppercorn | Garlic Dijon Cream | Spanish Demi Glace | Crispy Shallots | Mascarpone Mashed Potatoes | Garlic Blistered Asparagus & Carrots",
+        "price": "$42.00",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Ale Battered Fish &amp; Chips",
+        "description": "Beer Battered Haddock | Baja Pineapple Slaw |Chipotle-Dill Tartar Sauce | Charred Lemon | French Fries",
+        "price": "$28.00",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Classic Baja Fish Tacos",
+        "description": "Beer Battered Haddock | Pepper Jack | Napa Cabbage | Pico de Gallo | Avocado | Chipotle Crema served grilled upon request",
+        "price": "$25.00",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Prime Cut Beef Short Rib",
+        "description": "Slow Braised Short Rib of Beef | Mascarpone Mash Potato | Spanish Demi Glaze | Agave Buttered Baby Carrots & Squash | Fried Kale",
+        "price": "$42.00",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Salmon Del Sol",
+        "description": "Chipotle Honey Glaze | Serrano Mango Salsa | Asparagus | Coconut Rice",
+        "price": "$34.00",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Ancho Chile Crusted Sea Bass",
+        "description": "Tequila Lime Cilantro Sauce | Piquillo Pepper Puree | Agave Glazed Baby Carrots | Cilantro-Lime Rice",
+        "price": "$36.00",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Sonoran Citrus Chicken",
+        "description": "Breaded Oven Roasted Chicken Breast | Key Lime Caper Butter | Charred Poblano Pepper Crema | Blistered Garlic Asparagus | Cilantro-Lime Rice",
+        "price": "$29.00",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "California Burrito",
+        "description": "Carne Asada | White Cheddar Cheese | Pico De Gallo | Guacamole | Sour Cream | Flour Tortilla",
+        "price": "$24.00",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "The Dana's 1/2 Pound CAB Bacon Burger",
+        "description": "White Cheddar | Bacon | Butter Lettuce | Tomato | Caramelized Onion | Pickles | House Made Secret Sauce | Brioche Bun | Garlic Parmesan Fries",
+        "price": "$25.00",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Coastal Baja Mushroom Fettuccini",
+        "description": "Garlic | White Wine | Porcini & Cremini Mushrooms | Poblano Parmesan Cheese | Shallots | Chives | Parsley Add: Chicken $10 | Salmon $15 | Shrimp $13",
+        "price": "$28.00",
+        "section": "Dinner - Entrées"
+      },
+      {
+        "name": "Warm Chocolate Chip Cookie",
+        "description": "Vanilla Ice Cream",
+        "price": "$14.00",
+        "section": "Dinner - Desserts"
+      },
+      {
+        "name": "Chocolate Lava Cake",
+        "description": "Vanilla Ice Cream",
+        "price": "$14.00",
+        "section": "Dinner - Desserts"
+      },
+      {
+        "name": "Baked Apple Skillet",
+        "description": "Cinnamon Ice Cream",
+        "price": "$14.00",
+        "section": "Dinner - Desserts"
+      },
+      {
+        "name": "Cream Filled Churros",
+        "description": "With Vanilla Ice Cream | Chocolate Sauce",
+        "price": "$14.00",
+        "section": "Dinner - Desserts"
+      },
+      {
+        "name": "Crème Brûlée Cheesecake",
+        "description": "Strawberry Grand Marnier Compote",
+        "price": "$14.00",
+        "section": "Dinner - Desserts"
+      },
+      {
+        "name": "1/4 Lb. Cheeseburger",
+        "description": "French Fries",
+        "price": "$12.00",
+        "section": "Lightning Bug Menu"
+      },
+      {
+        "name": "Chicken Tenders",
+        "description": "French Fries",
+        "price": "$12.00",
+        "section": "Lightning Bug Menu"
+      },
+      {
+        "name": "Mini Corn Dogs",
+        "description": "French Fries",
+        "price": "$12.00",
+        "section": "Lightning Bug Menu"
+      },
+      {
+        "name": "Kids Pasta",
+        "description": "Butter Sauce or Marinara Parmesan Cheese",
+        "price": "$12.00",
+        "section": "Lightning Bug Menu"
+      },
+      {
+        "name": "Smoked Maple Old-fashioned",
+        "description": "Small Batch Bourbon | Black Walnut Bitters | Barrel Smoked Maple Syrup",
+        "price": "$17.00",
+        "section": "Bar - Modern Classics"
+      },
+      {
+        "name": "Michelada",
+        "description": "Stone Buenaveza | Mezcal | Habanero | Chamoy | Tajin",
+        "price": "$16.00",
+        "section": "Bar - Modern Classics"
+      },
+      {
+        "name": "Tamarindo Daisy",
+        "description": "Mezcal | Cointreau | Lemon | Tamarind | Cane Sugar",
+        "price": "$17.00",
+        "section": "Bar - Modern Classics"
+      },
+      {
+        "name": "Negroni",
+        "description": "London Dry Gin | Campari | Sweet Vermouth",
+        "price": "$16.00",
+        "section": "Bar - Traditional Cocktails"
+      },
+      {
+        "name": "Manhattan",
+        "description": "Rye Whiskey | Sweet Vermouth | Angostura",
+        "price": "$16.00",
+        "section": "Bar - Traditional Cocktails"
+      },
+      {
+        "name": "Old-fashioned",
+        "description": "Bourbon | Demerara Aromatic & Orange Bitters",
+        "price": "$16.00",
+        "section": "Bar - Traditional Cocktails"
+      },
+      {
+        "name": "Mai Tai",
+        "description": "Plantation 3-star Rum | Dry Curacao | Lime | House Made Orgeat",
+        "price": "$18.00",
+        "section": "Bar - Tropical Style"
+      },
+      {
+        "name": "Oaxacan Dead",
+        "description": "Mezcal | Barbados 5yr Aged Rum | Passionfruit | Pomegranate Pineapple | Lime",
+        "price": "$18.00",
+        "section": "Bar - Tropical Style"
+      },
+      {
+        "name": "Painkiller",
+        "description": "Plantation O.F.T.D. & 3-Star Rum | House Made Coconut Cream | Pineapple | Passionfruit | Nutmeg",
+        "price": "$18.00",
+        "section": "Bar - Tropical Style"
+      },
+      {
+        "name": "Watermelon Margarita",
+        "description": "Tequila Blanco | Watermelon | Lime | Chamoy | Tajin",
+        "price": "$18.00",
+        "section": "Bar - Tropical Style"
+      },
+      {
+        "name": "Chardonnay",
+        "description": "McIntyre | Central Coast",
+        "price": "$15.00",
+        "section": "Bar - White Wines by the Glass"
+      },
+      {
+        "name": "Chardonnay",
+        "description": "Sonoma-Cutter | California",
+        "price": "$17.00",
+        "section": "Bar - White Wines by the Glass"
+      },
+      {
+        "name": "Sauvignon Blanc",
+        "description": "The Better Half | New Zealand",
+        "price": "$15.00",
+        "section": "Bar - White Wines by the Glass"
+      },
+      {
+        "name": "Pinot Grigio",
+        "description": "Kris | Italy",
+        "price": "$14.00",
+        "section": "Bar - White Wines by the Glass"
+      },
+      {
+        "name": "Riesling",
+        "description": "White Rabbit | Germany",
+        "price": "$14.00",
+        "section": "Bar - White Wines by the Glass"
+      },
+      {
+        "name": "Prosecco",
+        "description": "Maschio | Italy",
+        "price": "$15.00",
+        "section": "Bar - White Wines by the Glass"
+      },
+      {
+        "name": "Rosé",
+        "description": "Lois Jadot | France",
+        "price": "$14.00",
+        "section": "Bar - White Wines by the Glass"
+      },
+      {
+        "name": "Cabernet",
+        "description": "Robert Hall “Artisan Collection”| Paso Robles, Ca &nbsp;",
+        "price": "$15.00",
+        "section": "Bar - Red Wines by the Glass"
+      },
+      {
+        "name": "Cabernet",
+        "description": "Daou | California",
+        "price": "$17.00",
+        "section": "Bar - Red Wines by the Glass"
+      },
+      {
+        "name": "Pinot Noir",
+        "description": "Row 503 | Willamette Valley, Oregon",
+        "price": "$15.00",
+        "section": "Bar - Red Wines by the Glass"
+      },
+      {
+        "name": "Zinfandel",
+        "description": "Terra d&#8217;Oro | Sierra Foothills",
+        "price": "$14.00",
+        "section": "Bar - Red Wines by the Glass"
+      },
+      {
+        "name": "Merlot",
+        "description": "Bogle | California",
+        "price": "$14.00",
+        "section": "Bar - Red Wines by the Glass"
+      },
+      {
+        "name": "Firefly IPA",
+        "description": "Burgeon | West Coast IPA 6.5% &nbsp;",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Pure West",
+        "description": "Pure Project | West Coast IPA 6.3% &nbsp;",
+        "price": "$12.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Diamond Dust",
+        "description": "Pure Project | Hazy IPA 6.7%",
+        "price": "$12.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Moonlit",
+        "description": "Burgeon | Hazy IPA 6.6%",
+        "price": "$12.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Carlsbad Crush",
+        "description": "Burgeon | Mosaic Pale Ale 5.8%",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Chronic Ale",
+        "description": "Pizza Port | American Amber Ale 5.0%",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Nighthawk",
+        "description": "Enegren | German-Style Black Lager 5.0%",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Moose Drool",
+        "description": "Big Sky Brewing | Brown Ale 5.0%",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Opaque Illusion",
+        "description": "Burgeon | Nitro American Stout 6.7% &nbsp;",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Easy Rider",
+        "description": "Easy Rider Brewing| American Light Lager 5.0%",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Destination Paradise",
+        "description": "Burgeon | Blonde Ale 5.0%",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Buenaveza",
+        "description": "Stone | Sea Salt & Lime Lager 5.0% &nbsp;",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Baja Orange Wit",
+        "description": "Insurgente | Belgian-Style Wit Bier 5.3% &nbsp;",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Plenty For All",
+        "description": "Fall Brewing | Pilsner 4.8%",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Japanese Lager",
+        "description": "P friem Brewing | Japanese-Style Lager 5.0% &nbsp;",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Jam Session",
+        "description": "Burgeon | Fruited Sour Ale 6.0% &nbsp;",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Guava Get Down",
+        "description": "2 Towns Cider Co | Guava Cider 5.3% &nbsp;",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Bikini Blond",
+        "description": "Ashland | Hard Seltzer 5.0%",
+        "price": "$10.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Desert Cooler",
+        "description": "June Shine | Hard Kombucha 8.0%",
+        "price": "$9.00",
+        "section": "Bar - Draft Beers"
+      },
+      {
+        "name": "Guinness",
+        "description": "16 oz",
+        "price": "$10.00",
+        "section": "Bar - Bottles & Cans"
+      },
+      {
+        "name": "Coors Light",
+        "description": "16 oz",
+        "price": "$10.00",
+        "section": "Bar - Bottles & Cans"
+      },
+      {
+        "name": "Miller Lite",
+        "description": "16 oz",
+        "price": "$10.00",
+        "section": "Bar - Bottles & Cans"
+      },
+      {
+        "name": "Espresso",
+        "description": "Dark Roast 100% Arabica Espresso",
+        "price": "$6.00",
+        "section": "Bar - Beverages (Non-Alocoholic)"
+      },
+      {
+        "name": "Americano",
+        "description": "Dark Roast 100% Arabica Espresso | Water",
+        "price": "$6.00",
+        "section": "Bar - Beverages (Non-Alocoholic)"
+      },
+      {
+        "name": "Café Latte",
+        "description": "Dark Roast 100% Arabica Espresso | Steamed Milk",
+        "price": "$7.00",
+        "section": "Bar - Beverages (Non-Alocoholic)"
+      },
+      {
+        "name": "Milk",
+        "description": "2% | Whole | Almond | Soy",
+        "price": "$5.00",
+        "section": "Bar - Beverages (Non-Alocoholic)"
+      },
+      {
+        "name": "Bayside Cappuccino",
+        "description": "Dark Roast 100% Arabica Espresso | Crema",
+        "price": "$7.00",
+        "section": "Bar - Beverages (Non-Alocoholic)"
+      },
+      {
+        "name": "Nitro Cold Brew",
+        "description": "Modern Times Nitro Cold Brew",
+        "price": "$8.00",
+        "section": "Bar - Beverages (Non-Alocoholic)"
+      },
+      {
+        "name": "Four Leaf Vienna Roast Drip",
+        "description": "Coffee & Decaf",
+        "price": "$5.00",
+        "section": "Bar - Beverages (Non-Alocoholic)"
+      },
+      {
+        "name": "Hot Tea",
+        "description": "Green | English Breakfast | Mint | Chamomile",
+        "price": "$5.00",
+        "section": "Bar - Beverages (Non-Alocoholic)"
+      },
+      {
+        "name": "Juices",
+        "description": "Orange | Apple | Cranberry | Pineapple",
+        "price": "$5.00",
+        "section": "Bar - Beverages (Non-Alocoholic)"
+      },
+      {
+        "name": "Soft Drinks",
+        "description": "Pepsi | Diet Pepsi | Starry",
+        "price": "$5.00",
+        "section": "Bar - Beverages (Non-Alocoholic)"
+      },
+      {
+        "name": "“Award Winning” Clam Chowder",
+        "description": "Celery | Potato | Onion",
+        "price": "$12.00",
+        "section": "Happy Hour - Food"
+      },
+      {
+        "name": "Chicken Tortilla Soup",
+        "description": "Tortilla Strips | Avocado | Cheddar & Jack | Crema | Cilantro",
+        "price": "$10.00",
+        "section": "Happy Hour - Food"
+      },
+      {
+        "name": "Homemade Chips &amp; Salsa",
+        "description": "Roasted Salsa Roja & Salsa Verde Tomatillo Add Guacamole $6",
+        "price": "$8.00",
+        "section": "Happy Hour - Food"
+      },
+      {
+        "name": "Korean BBQ Wings",
+        "description": "Korean BBQ Sauce | Green Onions | Toasted Sesame Seeds",
+        "price": "$12.00",
+        "section": "Happy Hour - Food"
+      },
+      {
+        "name": "Oven Baked Bavarian Pretzel",
+        "description": "Large Salted Pretzel | Beer Cheddar Cheese | Dijon Mustard",
+        "price": "$10.00",
+        "section": "Happy Hour - Food"
+      },
+      {
+        "name": "1/2 Pound Bacon CAB Burger",
+        "description": "White Cheddar | Bacon | Butter Lettuce | Tomato | Pickles | Caramelized Onions | House made Secret Sauce | Garlic Parmesan Fries",
+        "price": "$21.00",
+        "section": "Happy Hour - Food"
+      },
+      {
+        "name": "Classic Baja Fish Tacos",
+        "description": "Ale Battered Haddock| | Pepper Jack | Napa Cabbage Slaw | Chipotle Crema | Avocado | Pico de Gallo | Corn Tortillas &nbsp;",
+        "price": "$18.00",
+        "section": "Happy Hour - Food"
+      },
+      {
+        "name": "Smoke Stack Nachos",
+        "description": "House Smoke Carnitas | Cheddar & Jack | Nachos Cheese | Black Beans | Pico de Gallo | Guacamole | Sour Cream",
+        "price": "$17.00",
+        "section": "Happy Hour - Food"
+      },
+      {
+        "name": "Cabernet Sauvignon",
+        "description": "",
+        "price": "$6.00",
+        "section": "Happy Hour - $6 Wine"
+      },
+      {
+        "name": "Chardonnay",
+        "description": "",
+        "price": "$6.00",
+        "section": "Happy Hour - $6 Wine"
+      },
+      {
+        "name": "Pinot Grigio",
+        "description": "",
+        "price": "$6.00",
+        "section": "Happy Hour - $6 Wine"
+      },
+      {
+        "name": "Sparkling Rose",
+        "description": "",
+        "price": "$6.00",
+        "section": "Happy Hour - $6 Wine"
+      },
+      {
+        "name": "Chronic Ale",
+        "description": "Pizza Port | Amber Ale 5.0%",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Drafts"
+      },
+      {
+        "name": "Easy Rider",
+        "description": "American Light Lager 5.0%",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Drafts"
+      },
+      {
+        "name": "Firefly IPA",
+        "description": "West Coast IPA 6.5%",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Drafts"
+      },
+      {
+        "name": "Baja Orange Wit",
+        "description": "Insurgente | Belgian-Style Witbier 5.3%",
+        "price": "$7.00",
+        "section": "Happy Hour - $7 Drafts"
+      },
+      {
+        "name": "Mai Tai",
+        "description": "Plantation Rum | Dry Caracao | Lime | Orgeat",
+        "price": "$12.00",
+        "section": "Happy Hour - $12 Craft Cocktails"
+      },
+      {
+        "name": "Watermelon Margarita",
+        "description": "Tequila Blanco | Watermelon Lime | Chamoy | Tajin",
+        "price": "$12.00",
+        "section": "Happy Hour - $12 Craft Cocktails"
+      },
+      {
+        "name": "Painkiller",
+        "description": "Plantation O.F.T.D. & 3-Star Blend | House Made Coconut Cream",
+        "price": "$12.00",
+        "section": "Happy Hour - $12 Craft Cocktails"
+      },
+      {
+        "name": "Baked Apple Skillet",
+        "description": "Cinnamon Ice Cream",
+        "price": "$12.00",
+        "section": "Dessert - Desserts"
+      },
+      {
+        "name": "Creme Brulé Cheese Cake",
+        "description": "Strawberry Grand Marnier Compote",
+        "price": "$12.00",
+        "section": "Dessert - Desserts"
+      },
+      {
+        "name": "Hot Fudge Banana Split",
+        "description": "Vanilla Ice Cream | Maraschino Cherry",
+        "price": "$12.00",
+        "section": "Dessert - Desserts"
+      },
+      {
+        "name": "Lava Cake",
+        "description": "Vanilla Ice Cream",
+        "price": "$12.00",
+        "section": "Dessert - Desserts"
+      },
+      {
+        "name": "Warm Chocolate Chip Cookie",
+        "description": "Vanilla Ice Cream",
+        "price": "$12.00",
+        "section": "Dessert - Desserts"
+      },
+      {
+        "name": "1710 Americano",
+        "description": "Dark Roast 100% Arabica Espresso | Water",
+        "price": "$6.00",
+        "section": "Dessert - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Bayside Cappuccino",
+        "description": "Dark Roast 100% Arabica Espresso | Crema",
+        "price": "$8.00",
+        "section": "Dessert - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "“Modern Times” Nitro Cold Brew",
+        "price": "$8.00",
+        "section": "Dessert - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Firefly Cafe Latte",
+        "description": "Dark Roast 100% Arabica Espresso | Steamed Milk",
+        "price": "$8.00",
+        "section": "Dessert - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Marina Matcha Latte",
+        "description": "Matcha | Steamed Milk | Honey",
+        "price": "$8.00",
+        "section": "Dessert - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Oasis Espresso",
+        "description": "Dark Roast 100% Arabica Espresso",
+        "price": "$6.00",
+        "section": "Dessert - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Pacific Chai Latte",
+        "description": "Dark Roast 100% Arabica Espresso | Chai Tea | Steamed Milk",
+        "price": "$9.00",
+        "section": "Dessert - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Sunrise Caramel Macchiato",
+        "description": "Dark Roast 100% Arabica Espresso | Steamed Milk | Vanilla Syrup | Caramel Drizzle",
+        "price": "$8.00",
+        "section": "Dessert - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Terrace Cafe Mocha",
+        "description": "Dark Roast 100% Arabica Espresso | Steamed Milk | Chocolate Syrup",
+        "price": "$8.00",
+        "section": "Dessert - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Tropical Chai Latte",
+        "description": "Chai Tea | Steamed Milk | Cinnamon",
+        "price": "$8.00",
+        "section": "Dessert - Specialty Coffee & Tea"
+      },
+      {
+        "name": "Brandy Alexander",
+        "description": "Brandy | Dark Creme De Cacao Cream | Nutmeg",
+        "price": "$14.00",
+        "section": "Dessert - From The Bar"
+      },
+      {
+        "name": "Espresso Martini",
+        "description": "Vodka | Tia Maria | Chocolate Sauce Cream | Espresso Bean",
+        "price": "$14.00",
+        "section": "Dessert - From The Bar"
+      },
+      {
+        "name": "Hot Toddy",
+        "description": "Bourbon | Honey | Lemon Juice",
+        "price": "$12.00",
+        "section": "Dessert - From The Bar"
+      },
+      {
+        "name": "Irish Coffee",
+        "description": "Irish Whiskey | Coffee | Whip Cream",
+        "price": "$12.00",
+        "section": "Dessert - From The Bar"
+      },
+      {
+        "name": "Port Wine",
+        "description": "Graham’s 10 Yr. Tawney",
+        "price": "$12.00",
+        "section": "Dessert - From The Bar"
+      },
+      {
+        "name": "Spiked Hot Chocolate",
+        "description": "Whiskey | Whip Cream",
+        "price": "$12.00",
+        "section": "Dessert - From The Bar"
+      },
+      {
+        "name": "White Russian",
+        "description": "Vodka | Kahlua | Cream",
+        "price": "$14.00",
+        "section": "Dessert - From The Bar"
+      },
+      {
+        "name": "House Pina Colada",
+        "description": "White Rum | Pineapple Juice & Coconut Puree",
+        "price": "$15.00",
+        "section": "Tropical Pool Bar - Specialty Drinks"
+      },
+      {
+        "name": "Strawberry Daiquiri",
+        "description": "Don Q Rum | Strawberry Puree & Lime Juice",
+        "price": "$15.00",
+        "section": "Tropical Pool Bar - Specialty Drinks"
+      },
+      {
+        "name": "Moscow Mule",
+        "description": "Vodka | Lime Juice & Ginger Beer",
+        "price": "$12.00",
+        "section": "Tropical Pool Bar - Specialty Drinks"
+      },
+      {
+        "name": "Margarita",
+        "description": "Blanco Tequila | Triple Sec | Sweet & Sour & Orange Juice",
+        "price": "$14.00",
+        "section": "Tropical Pool Bar - Specialty Drinks"
+      },
+      {
+        "name": "Mai Tai",
+        "description": "White Rum | Pineapple Juice | Orange Juice | Grenadine & Myers Dark Rum Float",
+        "price": "$15.00",
+        "section": "Tropical Pool Bar - Specialty Drinks"
+      },
+      {
+        "name": "Blue Hawaiian",
+        "description": "White Rum | Blue Curacao | Coconut Puree | Sweet & Sour & Pineapple Juice",
+        "price": "$15.00",
+        "section": "Tropical Pool Bar - Specialty Drinks"
+      },
+      {
+        "name": "Corona",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - From the Brewery"
+      },
+      {
+        "name": "Modelo",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - From the Brewery"
+      },
+      {
+        "name": "Miller Lite 16oz",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tropical Pool Bar - From the Brewery"
+      },
+      {
+        "name": "Coors Light 16oz",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tropical Pool Bar - From the Brewery"
+      },
+      {
+        "name": "Bud Light 16oz",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tropical Pool Bar - From the Brewery"
+      },
+      {
+        "name": "Budweiser 16oz",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tropical Pool Bar - From the Brewery"
+      },
+      {
+        "name": "Ballast Point, Aloha Sculpin",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - Local Craft Spotlight"
+      },
+      {
+        "name": "Ballast Point, Friar's Ale",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - Local Craft Spotlight"
+      },
+      {
+        "name": "Stone Brewing Delicious IPA",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - Local Craft Spotlight"
+      },
+      {
+        "name": "Stone Brewing Buenaveza",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - Local Craft Spotlight"
+      },
+      {
+        "name": "High Noon",
+        "description": "",
+        "price": "$10.00",
+        "section": "Tropical Pool Bar - Hard Seltzer"
+      },
+      {
+        "name": "White Claw",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - Hard Seltzer"
+      },
+      {
+        "name": "Pinot Grigio",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - White Wine"
+      },
+      {
+        "name": "Chardonnay",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - White Wine"
+      },
+      {
+        "name": "Cabernet Sauvignon",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - Red Wine"
+      },
+      {
+        "name": "Merlot",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tropical Pool Bar - Red Wine"
+      },
+      {
+        "name": "Virgin Strawberry Daiquiri",
+        "description": "",
+        "price": "$6.00",
+        "section": "Tropical Pool Bar - Refreshing Mocktails"
+      },
+      {
+        "name": "Virgin Pina Colada",
+        "description": "",
+        "price": "$6.00",
+        "section": "Tropical Pool Bar - Refreshing Mocktails"
+      },
+      {
+        "name": "Mimosa Sunday",
+        "description": "House Champagne | Orange Juice",
+        "price": "$8.00",
+        "section": "Five Days, $8 Ways"
+      },
+      {
+        "name": "Margarita Monday",
+        "description": "House Margarita",
+        "price": "$8.00",
+        "section": "Five Days, $8 Ways"
+      },
+      {
+        "name": "Tiki Tuesday",
+        "description": "Rum | Pineapple",
+        "price": "$8.00",
+        "section": "Five Days, $8 Ways"
+      },
+      {
+        "name": "Wine Wednesday",
+        "description": "House Wine Varietals",
+        "price": "$8.00",
+        "section": "Five Days, $8 Ways"
+      },
+      {
+        "name": "Hoppy Thursday",
+        "description": "All Draft Beers",
+        "price": "$8.00",
+        "section": "Five Days, $8 Ways"
+      }
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      3 entries (0 with menus, 3 confirmed not-found), 0 dishes
+quarantine: 13 entries, 0 dishes withheld
+
+  Oscars Cocktail Bar (0 dishes) - blocked, not absent: no-website-found: no first-party site, marketplace listing, or priced source located for this name
+  Kava Lounge (0 dishes) - blocked, not absent: wrong-domain: router site kavaloungela.com is an unrelated LA business; actual SD venue (2812 Kettner Blvd) shows Yelp "CLOSED / Try Our New Menu" as of Sep 2026, no confirmed current first-party site or priced source
+  Deja Vu (0 dishes) - blocked, not absent: wrong-domain/unconfirmed-identity: router site deja-vu.band does not match any confirmed SD business; candidate "Deja Vu Showgirls" (Midway Dr) shows Yelp closed, address not confirmed against worklist, no priced source
+  Diamond Jims (0 dishes) - blocked, not absent: ambiguous-identity: multiple unrelated "Diamond Jim's" businesses found (Chula Vista nightclub via non-authoritative aggregator; a San Diego "Diamond Jim's Restaurant" only via barred farm domain restaurants-world.net); no address in worklist to disambiguate, no priced first-party source
+  Elbo Rest (0 dishes) - blocked, not absent: no-website-found: no matching business located under this name in San Diego
+  Kellys Pub (0 dishes) - blocked, not absent: wrong-domain: kellyspub.ca is a Canadian site unrelated to this business (also router fetch-failed/connect-timeout); no correct site located
+  Dumonts (0 dishes) - blocked, not absent: no-website-found: no matching business located under this name in San Diego
+  Jungle Cart (0 dishes) - blocked, not absent: identity-unconfirmed: Safari Park's official dining page lists 20 named venues and no "Jungle Cart" among them; cannot confirm which stand this is or that it publishes no menu
+  Veladora (0 dishes) - blocked, not absent: no-menu-found: resort dining page names The Pony Room and Rein but no restaurant called Veladora, and no prices are published anywhere on the site
+  The Cove (0 dishes) - blocked, not absent: no-priced-source: confirmed as The Cove cafe at Jacobs Medical Center (address/floor match) but no published price list located
+  Villa Fresh Italian Kitchen (0 dishes) - blocked, not absent: no-priced-source: chain site's menu page publishes calorie counts only, no dollar prices; no DoorDash/Uber Eats listing found for the San Ysidro (Camino De La Plaza) branch specifically
+  Embassy Room (0 dishes) - blocked, not absent: no-website-found: no standalone business under this name located (only unrelated Embassy Suites hotel restaurants found)
+  Luckyz Sports Pub (0 dishes) - blocked, not absent: no-website-found: no matching business located under this name in San Diego

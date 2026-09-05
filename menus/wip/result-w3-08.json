@@ -1,0 +1,1852 @@
+[
+  {
+    "restaurantId": "4900",
+    "name": "Escondido Joe's",
+    "sourceUrl": "https://www.yelp.com/biz/escondido-joes-escondido",
+    "confidence": "high",
+    "notes": "Confirmed permanently closed via Yelp (address matches 119 E Grand Ave); own domain (escondidojoes.com) no longer resolves.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4908",
+    "name": "El Nopal Mexican Restaurant",
+    "sourceUrl": "https://www.yelp.com/biz/el-nopal-escondido-mexican-restaurant-escondido",
+    "confidence": "high",
+    "notes": "Confirmed permanently closed via Yelp and Yellow Pages, address matches 126 S Kalmia St, Escondido (est. 1977, closed as of 2026).",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4923",
+    "name": "Vinz Wine Bar",
+    "sourceUrl": "https://www.yelp.com/biz/vinz-wine-bar-escondido-3",
+    "confidence": "high",
+    "notes": "Confirmed permanently closed via Yelp, marked CLOSED across multiple snapshot dates (Nov 2025 - Aug 2026); address matches 201 E Grand Ave.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4952",
+    "name": "Coco's Bakery",
+    "sourceUrl": "https://www.doordash.com/en/business/coco%27s-bakery-restaurant-5026/menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: own domain (cocosbakery.com) and the DoorDash business-aggregation page both render the catalog client-side with no embedded JSON-LD/RSC payload; no location-specific DoorDash store URL found for the Escondido address via search. Restaurant itself appears active (national chain, allmenus/yellowpages list current phone (760) 745-2513)."
+  },
+  {
+    "restaurantId": "5049",
+    "name": "Pizzicato",
+    "sourceUrl": "https://www.pizzicatopizza.com/find-a-location-2/encinitas/menu/",
+    "confidence": "high",
+    "notes": "Read from own Squarespace-style site markup. Pizzas and salads listed with 3 sizes (Small/Medium/Large) split into separate dish rows, each tagged with size in the name. 3 rows with no price (gluten-free crust add-on notes, an allergen footnote) were dropped. Menu is Pizzicato's chain-wide pricing page, not confirmed location-specific to the Encinitas #5 address, so treat as representative rather than address-verified.",
+    "dishes": [
+      {
+        "name": "Just Cheese (Small)",
+        "description": "For purists - mozzarella and tomato sauce",
+        "price": "$13.50",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Just Cheese (Medium)",
+        "description": "For purists - mozzarella and tomato sauce",
+        "price": "$16.50",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Just Cheese (Large)",
+        "description": "For purists - mozzarella and tomato sauce",
+        "price": "$23.00",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Margherita (Small)",
+        "description": "Fresh tomatoes, basil, mozzarella, on a garlic/olive oil base",
+        "price": "$15.75",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Margherita (Medium)",
+        "description": "Fresh tomatoes, basil, mozzarella, on a garlic/olive oil base",
+        "price": "$18.50",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Margherita (Large)",
+        "description": "Fresh tomatoes, basil, mozzarella, on a garlic/olive oil base",
+        "price": "$26.00",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Pepperoni (Small)",
+        "description": "Mildly spiced pepperoni, mozzarella, and tomato sauce",
+        "price": "$16.25",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Pepperoni (Medium)",
+        "description": "Mildly spiced pepperoni, mozzarella, and tomato sauce",
+        "price": "$20.00",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Pepperoni (Large)",
+        "description": "Mildly spiced pepperoni, mozzarella, and tomato sauce",
+        "price": "$28.00",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Canadian Bacon & Pineapple (Small)",
+        "description": "Canadian bacon, pineapple, mozzarella & tomato sauce",
+        "price": "$17.00",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Canadian Bacon & Pineapple (Medium)",
+        "description": "Canadian bacon, pineapple, mozzarella & tomato sauce",
+        "price": "$22.25",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Canadian Bacon & Pineapple (Large)",
+        "description": "Canadian bacon, pineapple, mozzarella & tomato sauce",
+        "price": "$30.00",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Puttanesca (Small)",
+        "description": "Tomatoes, artichoke hearts, kalamata olives and feta on a garlic & olive oil base",
+        "price": "$17.75",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Puttanesca (Medium)",
+        "description": "Tomatoes, artichoke hearts, kalamata olives and feta on a garlic & olive oil base",
+        "price": "$24.25",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Puttanesca (Large)",
+        "description": "Tomatoes, artichoke hearts, kalamata olives and feta on a garlic & olive oil base",
+        "price": "$32.00",
+        "section": "Pizzicato / classics"
+      },
+      {
+        "name": "Pepperoni Supreme (Small)",
+        "description": "With smoked mozzarella, mushrooms, tomatoes and pepperoncinis",
+        "price": "$17.75",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Pepperoni Supreme (Medium)",
+        "description": "With smoked mozzarella, mushrooms, tomatoes and pepperoncinis",
+        "price": "$24.25",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Pepperoni Supreme (Large)",
+        "description": "With smoked mozzarella, mushrooms, tomatoes and pepperoncinis",
+        "price": "$32.00",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Capicola + Hot Honey (Small)",
+        "description": "Capicola, roasted garlic & peppers, ricotta, Mozzarella and Calabrian Chile honey on tomato sauce",
+        "price": "$17.75",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Capicola + Hot Honey (Medium)",
+        "description": "Capicola, roasted garlic & peppers, ricotta, Mozzarella and Calabrian Chile honey on tomato sauce",
+        "price": "$24.25",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Capicola + Hot Honey (Large)",
+        "description": "Capicola, roasted garlic & peppers, ricotta, Mozzarella and Calabrian Chile honey on tomato sauce",
+        "price": "$32.00",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Quattro Formaggi (Small)",
+        "description": "Chevre, gorgonzola, mozzarella, and roasted garlic on garlic/olive oil base",
+        "price": "$17.25",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Quattro Formaggi (Medium)",
+        "description": "Chevre, gorgonzola, mozzarella, and roasted garlic on garlic/olive oil base",
+        "price": "$24.00",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Quattro Formaggi (Large)",
+        "description": "Chevre, gorgonzola, mozzarella, and roasted garlic on garlic/olive oil base",
+        "price": "$31.00",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Kale and Sausage (Small)",
+        "description": "With Mama Lil's Peppers on a garlic base topped with red pepper coulis",
+        "price": "$17.75",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Kale and Sausage (Medium)",
+        "description": "With Mama Lil's Peppers on a garlic base topped with red pepper coulis",
+        "price": "$24.25",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Kale and Sausage (Large)",
+        "description": "With Mama Lil's Peppers on a garlic base topped with red pepper coulis",
+        "price": "$32.00",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Squisita (Small)",
+        "description": "Lamb sausage, artichoke hearts, and feta on an arugula walnut pesto base",
+        "price": "$18.00",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Squisita (Medium)",
+        "description": "Lamb sausage, artichoke hearts, and feta on an arugula walnut pesto base",
+        "price": "$24.50",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Squisita (Large)",
+        "description": "Lamb sausage, artichoke hearts, and feta on an arugula walnut pesto base",
+        "price": "$34.00",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Thai Chicken (Small)",
+        "description": "With peanut sauce, green onions, roasted peppers, sesame seeds and chili flakes",
+        "price": "$17.75",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Thai Chicken (Medium)",
+        "description": "With peanut sauce, green onions, roasted peppers, sesame seeds and chili flakes",
+        "price": "$24.25",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Thai Chicken (Large)",
+        "description": "With peanut sauce, green onions, roasted peppers, sesame seeds and chili flakes",
+        "price": "$32.00",
+        "section": "Pizzicato / favorites"
+      },
+      {
+        "name": "Mezze (Small)",
+        "description": "Roasted red & yellow peppers, kalamata olives, cherry tomatoes & feta on a hummus base (Mozzarella upon request)",
+        "price": "$17.75",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Mezze (Medium)",
+        "description": "Roasted red & yellow peppers, kalamata olives, cherry tomatoes & feta on a hummus base (Mozzarella upon request)",
+        "price": "$24.25",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Mezze (Large)",
+        "description": "Roasted red & yellow peppers, kalamata olives, cherry tomatoes & feta on a hummus base (Mozzarella upon request)",
+        "price": "$32.00",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Very Veggie (Small)",
+        "description": "Roasted peppers, onions, black olives, artichoke hearts, mushrooms, Roma tomatoes on an arugula walnut pesto base",
+        "price": "$17.25",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Very Veggie (Medium)",
+        "description": "Roasted peppers, onions, black olives, artichoke hearts, mushrooms, Roma tomatoes on an arugula walnut pesto base",
+        "price": "$24.00",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Very Veggie (Large)",
+        "description": "Roasted peppers, onions, black olives, artichoke hearts, mushrooms, Roma tomatoes on an arugula walnut pesto base",
+        "price": "$31.00",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Genovese (Small)",
+        "description": "Fresh spinach, roasted garlic and peppers, sun-dried tomatoes and feta on an Arugula walnut pesto base",
+        "price": "$17.75",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Genovese (Medium)",
+        "description": "Fresh spinach, roasted garlic and peppers, sun-dried tomatoes and feta on an Arugula walnut pesto base",
+        "price": "$24.25",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Genovese (Large)",
+        "description": "Fresh spinach, roasted garlic and peppers, sun-dried tomatoes and feta on an Arugula walnut pesto base",
+        "price": "$32.00",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Wild Mushroom (Small)",
+        "description": "Wild mushrooms with chevre, red onions, roasted garlic, and peppers on garlic & olive oil base",
+        "price": "$17.75",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Wild Mushroom (Medium)",
+        "description": "Wild mushrooms with chevre, red onions, roasted garlic, and peppers on garlic & olive oil base",
+        "price": "$24.25",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Wild Mushroom (Large)",
+        "description": "Wild mushrooms with chevre, red onions, roasted garlic, and peppers on garlic & olive oil base",
+        "price": "$32.00",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Vegan Oasis (Small)",
+        "description": "Spinach, artichoke, sundried tomatoes, kalamata olives,  and vegan mozzarella on a garlic & olive oil base",
+        "price": "$17.75",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Vegan Oasis (Medium)",
+        "description": "Spinach, artichoke, sundried tomatoes, kalamata olives,  and vegan mozzarella on a garlic & olive oil base",
+        "price": "$24.25",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Vegan Oasis (Large)",
+        "description": "Spinach, artichoke, sundried tomatoes, kalamata olives,  and vegan mozzarella on a garlic & olive oil base",
+        "price": "$32.00",
+        "section": "Pizzicato / veggie"
+      },
+      {
+        "name": "Salsiccia Roma (Small)",
+        "description": "Fennel sausage, red onions, and roasted peppers",
+        "price": "$17.75",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Salsiccia Roma (Medium)",
+        "description": "Fennel sausage, red onions, and roasted peppers",
+        "price": "$24.25",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Salsiccia Roma (Large)",
+        "description": "Fennel sausage, red onions, and roasted peppers",
+        "price": "$32.00",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Molto Carne (Small)",
+        "description": "Pepperoni, Canadian bacon, fennel sausage, mushrooms, mozzarella, and olives",
+        "price": "$18.00",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Molto Carne (Medium)",
+        "description": "Pepperoni, Canadian bacon, fennel sausage, mushrooms, mozzarella, and olives",
+        "price": "$24.50",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Molto Carne (Large)",
+        "description": "Pepperoni, Canadian bacon, fennel sausage, mushrooms, mozzarella, and olives",
+        "price": "$34.00",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Sausage Combo (Small)",
+        "description": "Fennel sausage, mushrooms, black olives, and smoked mozzarella",
+        "price": "$17.75",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Sausage Combo (Medium)",
+        "description": "Fennel sausage, mushrooms, black olives, and smoked mozzarella",
+        "price": "$24.25",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Sausage Combo (Large)",
+        "description": "Fennel sausage, mushrooms, black olives, and smoked mozzarella",
+        "price": "$32.00",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Barbecue Chicken (Small)",
+        "description": "With roasted peppers, onions, and smoked mozzarella on a BBQ sauce base",
+        "price": "$17.75",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Barbecue Chicken (Medium)",
+        "description": "With roasted peppers, onions, and smoked mozzarella on a BBQ sauce base",
+        "price": "$24.25",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Barbecue Chicken (Large)",
+        "description": "With roasted peppers, onions, and smoked mozzarella on a BBQ sauce base",
+        "price": "$32.00",
+        "section": "Pizzicato / meat"
+      },
+      {
+        "name": "Pizzicato Breadsticks",
+        "description": "Like no other, baked fresh & filled w/ whole-milk mozzarella",
+        "price": "$6.75",
+        "section": "Pizzicato / apps"
+      },
+      {
+        "name": "Seasonal Hummus Dip",
+        "description": "Served with garlic flatbread",
+        "price": "$6.75",
+        "section": "Pizzicato / apps"
+      },
+      {
+        "name": "Seasonal Appetizer",
+        "description": "Ask about our featured appetizer",
+        "price": "$6.75",
+        "section": "Pizzicato / apps"
+      },
+      {
+        "name": "Chèvre & Spinach (Small)",
+        "description": "Dried Bing cherries, roasted walnuts, chèvre, spinach, red onion \u0003& champagne honey vinaigrette",
+        "price": "$8.25",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Chèvre & Spinach (Medium)",
+        "description": "Dried Bing cherries, roasted walnuts, chèvre, spinach, red onion \u0003& champagne honey vinaigrette",
+        "price": "$12.00",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Chèvre & Spinach (Large)",
+        "description": "Dried Bing cherries, roasted walnuts, chèvre, spinach, red onion \u0003& champagne honey vinaigrette",
+        "price": "$15.50",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Sesame Ginger Chop (Small)",
+        "description": "Red & green cabbage, romaine, carrots, green onions w/ crispy wontons, peanuts, sesame seeds and spicy sesame dressing",
+        "price": "$8.25",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Sesame Ginger Chop (Medium)",
+        "description": "Red & green cabbage, romaine, carrots, green onions w/ crispy wontons, peanuts, sesame seeds and spicy sesame dressing",
+        "price": "$11.25",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Sesame Ginger Chop (Large)",
+        "description": "Red & green cabbage, romaine, carrots, green onions w/ crispy wontons, peanuts, sesame seeds and spicy sesame dressing",
+        "price": "$15.00",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Arugula Pear (Small)",
+        "description": "Housemade candied walnuts, mixed greens, gorgonzola, Bartlett pear & balsamic dressing",
+        "price": "$8.25",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Arugula Pear (Medium)",
+        "description": "Housemade candied walnuts, mixed greens, gorgonzola, Bartlett pear & balsamic dressing",
+        "price": "$12.00",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Arugula Pear (Large)",
+        "description": "Housemade candied walnuts, mixed greens, gorgonzola, Bartlett pear & balsamic dressing",
+        "price": "$15.50",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Caesar (Small)",
+        "description": "Wow! Hope you love garlic (you'll need a mint later)",
+        "price": "$8.00",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Caesar (Medium)",
+        "description": "Wow! Hope you love garlic (you'll need a mint later)",
+        "price": "$11.25",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Caesar (Large)",
+        "description": "Wow! Hope you love garlic (you'll need a mint later)",
+        "price": "$15.00",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Greek (Small)",
+        "description": "Red leaf lettuce, grape tomatoes, cucumber, feta, red onions, kalamatas and pepperoncinis",
+        "price": "$8.25",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Greek (Medium)",
+        "description": "Red leaf lettuce, grape tomatoes, cucumber, feta, red onions, kalamatas and pepperoncinis",
+        "price": "$12.00",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Greek (Large)",
+        "description": "Red leaf lettuce, grape tomatoes, cucumber, feta, red onions, kalamatas and pepperoncinis",
+        "price": "$15.50",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "House (Small)",
+        "description": "Red leaf lettuce, grape tomatoes, red onions, carrots, cucumbers and balsamic dressing",
+        "price": "$8.00",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "House (Medium)",
+        "description": "Red leaf lettuce, grape tomatoes, red onions, carrots, cucumbers and balsamic dressing",
+        "price": "$11.25",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "House (Large)",
+        "description": "Red leaf lettuce, grape tomatoes, red onions, carrots, cucumbers and balsamic dressing",
+        "price": "$15.00",
+        "section": "Pizzicato / salads"
+      },
+      {
+        "name": "Fresh Mozzarella",
+        "description": "With tomatoes, whole fresh basil, balsamic and EVOO on ciabatta",
+        "price": "$11.00",
+        "section": "Pizzicato / panini"
+      },
+      {
+        "name": "Portobello & Arugula",
+        "description": "With roasted peppers, arugula pesto mayo & provolone on ciabatta*",
+        "price": "$11.00",
+        "section": "Pizzicato / panini"
+      },
+      {
+        "name": "The Coppa",
+        "description": "With Capicola, Mama Lil’s peppers, provolone, arugula pesto & \u0003mayo on a baguette*",
+        "price": "$11.00",
+        "section": "Pizzicato / panini"
+      },
+      {
+        "name": "Meatball",
+        "description": "With tomato sauce & provolone on a baguette",
+        "price": "$11.00",
+        "section": "Pizzicato / panini"
+      },
+      {
+        "name": "The Club",
+        "description": "With chicken, bacon, avocado, \u0003tomato, basil aioli & provolone \u0003on ciabatta",
+        "price": "$11.00",
+        "section": "Pizzicato / panini"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5052",
+    "name": "2GOOD2B Bakery & Cafe",
+    "sourceUrl": "https://www.yelp.com/biz/2good2b-encinitas-3",
+    "confidence": "high",
+    "notes": "Confirmed permanently closed - multiple Yelp listings and Gayot both explicitly marked CLOSED; address matches 204 N El Camino Real. Own domain (2good2b.com) now redirects to a GoDaddy/parking lander.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5135",
+    "name": "Slater's 50/50",
+    "sourceUrl": "https://slaters5050.com/locations/",
+    "confidence": "high",
+    "notes": "San Marcos (110 Knoll Rd) location confirmed closed - absent from the chain's own current-locations navigation on slaters5050.com, corroborated by Yelp.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5201",
+    "name": "Rusty Spur Cocktails and Dancing",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-source-found: no matching business located anywhere in San Diego County after multiple web searches (name, \"cocktails and dancing\" phrase, area variants); batch supplies no address or website. Absence of search results is not proof of non-existence, so left open rather than retired."
+  },
+  {
+    "restaurantId": "5202",
+    "name": "Bubble Tea",
+    "sourceUrl": "https://www.doordash.com/store/bubble-tea-san-marcos-24887356/",
+    "confidence": "medium",
+    "notes": "Read from DoorDash marketplace schema.org JSON-LD (Restaurant/Menu). Address on the DoorDash listing is 677 South Rancho Santa Fe Road, San Marcos - batch supplied no address to cross-check, but no other \"Bubble Tea\" business was found in the area. Some multi-line upsell descriptions truncated to their first sentence.",
+    "dishes": [
+      {
+        "name": "Blended",
+        "description": "Choice of Ice Slushy or Smoothie (w/ non-dairy creamer) by default.",
+        "price": "$5.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "HOT COMBO - Any Drink + Any Hot Food",
+        "description": "Any Large Blended Drink with Boba + Hot Food of choice. Choose your flavor!",
+        "price": "$14.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "Choose your tea type, flavor, and add-ons!",
+        "price": "$5.25",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Chicken Lumpia",
+        "description": "6pc of Lumpia (Filipino eggrolls) filled with pork/beef",
+        "price": "$8.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "French Fries",
+        "description": "Shoestring-cut fries with a golden crisp",
+        "price": "$6.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Mangofresa Slush",
+        "description": "Mango + Strawberry Slush style",
+        "price": "$5.75",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Thai Milk Tea",
+        "description": "Our house-brewed Thai tea is slow brewed for 7 hours. Served over ice with non-dairy creamer mixed in.",
+        "price": "$5.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Horchata Smoothie",
+        "description": "Prepared as a snow smoothie",
+        "price": "$5.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Churro Bites",
+        "description": "2 Churros cut into bite-sized pieces, tossed in our brown sugar mix, served with a side of chocolate or caramel dipping syrup.",
+        "price": "$6.00",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Tiger Milk Tea",
+        "description": "A unique blend of Boba Milk Tea + Thai Tea",
+        "price": "$5.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "The Original Milk Tea",
+        "description": "The ORIGINAL Bubble Tea house-brewed brown sugar Milk Tea",
+        "price": "$5.50",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Tropical Slush",
+        "description": "Pineapple + Coconut + Watermelon Slush",
+        "price": "$5.75",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Gyoza (Chicken)",
+        "description": "Chicken w/Veggie filled Gyoza (Potstickers) - 6pc",
+        "price": "$8.50",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "Pork Lumpia",
+        "description": "Crispy spring rolls filled with seasoned pork, served with a tangy dipping sauce.",
+        "price": "$8.50",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "Chicken Lumpia",
+        "description": "6pc of Lumpia (Filipino eggrolls) filled with pork/beef",
+        "price": "$8.50",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "Veggie Spring Rolls",
+        "description": "set of 6",
+        "price": "$8.50",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "Churro Bites",
+        "description": "2 Churros cut into bite-sized pieces, tossed in our brown sugar mix, served with a side of chocolate or caramel dipping syrup.",
+        "price": "$6.00",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "French Fries",
+        "description": "Shoestring-cut fries with a golden crisp",
+        "price": "$6.00",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "Side of Ketchup",
+        "description": "Side of Ketchup",
+        "price": "$0.50",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "( Side of Soy Sauce )",
+        "description": "( Side of Soy Sauce )",
+        "price": "$0.50",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "Side of Sriracha",
+        "description": "Sriracha sauce typically made from chili, vinegar, garlic, sugar, and salt.",
+        "price": "$0.50",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "Side of Sweet Chili Sauce",
+        "description": "Side of Sweet and Sour Sauce",
+        "price": "$0.50",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "Side of Ranch",
+        "description": "Side of Ranch",
+        "price": "$0.50",
+        "section": "( Hot Food )"
+      },
+      {
+        "name": "Veggie Spring Roll Rice Bowl",
+        "description": "Crispy spring rolls atop jasmine rice, garnished with chopped scallions, sesame seeds, and a drizzle of sweet chili sauce.",
+        "price": "$11.99",
+        "section": "( Rice Bowls )"
+      },
+      {
+        "name": "Pork Lumpia Rice Bowl",
+        "description": "Three crispy spring rolls atop a bed of steamed rice, garnished with chopped green onions.",
+        "price": "$11.99",
+        "section": "( Rice Bowls )"
+      },
+      {
+        "name": "Gyoza Rice Bowl",
+        "description": "Tender gyoza dumplings atop steamed rice, garnished with seaweed and a drizzle of savory sauce.",
+        "price": "$11.99",
+        "section": "( Rice Bowls )"
+      },
+      {
+        "name": "Chicken Lumpia Rice Bowl",
+        "description": "Three crispy spring rolls atop a bed of steamed rice, garnished with chopped green onions.",
+        "price": "$11.99",
+        "section": "( Rice Bowls )"
+      },
+      {
+        "name": "HOT COMBO - Any Drink + Any Hot Food",
+        "description": "Any Large Blended Drink with Boba + Hot Food of choice. Choose your flavor!",
+        "price": "$14.50",
+        "section": "( Combos )"
+      },
+      {
+        "name": "RICE BOWL COMBO - Rice Bowl + Any Drink",
+        "description": "Rice Bowl Combo: Choice of regular or large rice bowl, paired with any drink. Drink options include milk teas, flavored teas, icy slushes, smoothies, and shakes. Choose from a variety of flavors. Combo also includes a choice of hot food, such as popcorn chicken, lumpia, gyoza, or veggie egg roll.",
+        "price": "$15.99",
+        "section": "( Combos )"
+      },
+      {
+        "name": "FRIES COMBO - HOT FOOD +FRIES",
+        "description": "Hot food options include Popcorn Chicken, Lumpia (Chicken or Pork), Gyoza (Chicken), French Fries, and Veggie Egg Roll. Served with French fries.",
+        "price": "$13.99",
+        "section": "( Combos )"
+      },
+      {
+        "name": "Blended",
+        "description": "Choice of Ice Slushy or Smoothie (w/ non-dairy creamer) by default.",
+        "price": "$5.50",
+        "section": "( Create Your Drink )"
+      },
+      {
+        "name": "Lemonade",
+        "description": "Choose your flavor and add-ons to mix with our house Lemonade!",
+        "price": "$5.30",
+        "section": "( Create Your Drink )"
+      },
+      {
+        "name": "Iced Tea",
+        "description": "Choose your tea type, flavor, and add-ons!",
+        "price": "$5.25",
+        "section": "( Create Your Drink )"
+      },
+      {
+        "name": "Milk Tea",
+        "description": "Regular or large milk tea available in a variety of flavors like almond, dragon fruit, kiwi, and more. Customize to your preference.",
+        "price": "$5.45",
+        "section": "( Create Your Drink )"
+      },
+      {
+        "name": "The Original Milk Tea",
+        "description": "The ORIGINAL Bubble Tea house-brewed brown sugar Milk Tea",
+        "price": "$5.50",
+        "section": "( House Drinks )"
+      },
+      {
+        "name": "Tropical Slush",
+        "description": "Pineapple + Coconut + Watermelon Slush",
+        "price": "$5.75",
+        "section": "( House Drinks )"
+      },
+      {
+        "name": "Peach Nectar Iced Tea",
+        "description": "Peach + Honey + Black Tea over ice",
+        "price": "$5.60",
+        "section": "( House Drinks )"
+      },
+      {
+        "name": "Cap'n Crunch Snow Smoothie",
+        "description": "from Bubble Tea's \"Secret Menu\"",
+        "price": "$5.95",
+        "section": "( House Drinks )"
+      },
+      {
+        "name": "Thai Milk Tea",
+        "description": "Our house-brewed Thai tea is slow brewed for 7 hours. Served over ice with non-dairy creamer mixed in.",
+        "price": "$5.50",
+        "section": "( House Drinks )"
+      },
+      {
+        "name": "Horchata Smoothie",
+        "description": "Prepared as a snow smoothie",
+        "price": "$5.95",
+        "section": "( House Drinks )"
+      },
+      {
+        "name": "Chamango Slush",
+        "description": "Slush of Mango, Chamoy, topped with Tajin",
+        "price": "$6.25",
+        "section": "( House Drinks )"
+      },
+      {
+        "name": "Strawnana Smoothie",
+        "description": "Strawberry Banana Smoothie",
+        "price": "$5.95",
+        "section": "( House Drinks )"
+      },
+      {
+        "name": "Green Dragon Iced Tea",
+        "description": "Dragonfruit+Kiwi+Green Tea over ice",
+        "price": "$5.60",
+        "section": "( House Drinks )"
+      },
+      {
+        "name": "Mangofresa Slush",
+        "description": "Mango + Strawberry Slush style",
+        "price": "$5.75",
+        "section": "( House Drinks )"
+      },
+      {
+        "name": "Tiger Milk Tea",
+        "description": "A unique blend of Boba Milk Tea + Thai Tea",
+        "price": "$5.50",
+        "section": "( House Drinks )"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5223",
+    "name": "Treetops Canteen",
+    "sourceUrl": "https://sandiegozoowildlifealliance.org/story-hub/bites-and-sights",
+    "confidence": "high",
+    "notes": "Confirmed to be a snack/beverage concession stand in the Lost Forest area of the San Diego Zoo Safari Park (Escondido) - no itemized pricing is published anywhere for this stand; treated as a legitimate price-less venue per the park/stadium-concession standard case.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5225",
+    "name": "Vemma",
+    "sourceUrl": "https://www.yelp.com/biz/vemma-nutritional-program-san-diego",
+    "confidence": "high",
+    "notes": "Vemma is a multi-level-marketing nutritional-supplement company (energy drinks / weight-management products), not a food establishment or restaurant - retired as not applicable to this project.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4922",
+    "name": "Chippy's Diner",
+    "sourceUrl": "https://www.yelp.com/biz/chippys-diner-escondido",
+    "confidence": "high",
+    "notes": "Confirmed permanently closed via Yelp; address matches exactly (258 E 2nd Ave, Escondido). Batch-supplied website (myspace.com/themetaphorcafe) was already dead/unrelated (MySpace itself long defunct as a business platform), consistent with closure.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5264",
+    "name": "Little Red Cafe",
+    "sourceUrl": "https://www.yelp.com/biz/little-red-cafe",
+    "confidence": "high",
+    "notes": "Confirmed permanently closed via Yelp.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4909",
+    "name": "Tango Restaurant & Lounge",
+    "sourceUrl": "https://www.yelp.com/biz/tango-restaurant-and-lounge-escondido",
+    "confidence": "high",
+    "notes": "Confirmed permanently closed via Yelp; address matches 417 W Grand Ave. Own domain (tangoongrand.com) no longer resolves, consistent with closure.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5160",
+    "name": "Mikko Sushi",
+    "sourceUrl": "https://mikkosushi.com/",
+    "confidence": "high",
+    "notes": "The Carlsbad address (1025 Carlsbad Village Dr) is confirmed closed - the chain's own current site only lists Vista and Escondido locations, not Carlsbad; the batch-given website belongs to those surviving locations, not this one.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5410",
+    "name": "U31",
+    "sourceUrl": "https://u31bar.com/food-menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-ocr: the Food Menu page has no text/markup menu at all - its entire content (via the WP REST API, page id 11508) is two photographed menu images (IMG_1314, IMG_1315, a \"Chicken and Waffles\" pop-up menu) plus a logo graphic. No price text exists anywhere in the HTML/JSON; bar itself is confirmed active (posted hours, current Instagram feed) at the given address (3112 University Ave, North Park)."
+  },
+  {
+    "restaurantId": "5433",
+    "name": "Ranas",
+    "sourceUrl": "https://www.yelp.com/biz/ranas-mexico-city-cuisine-spring-valley",
+    "confidence": "high",
+    "notes": "Confirmed permanently closed - Yelp lists it CLOSED across many snapshots spanning a full year (Aug 2025 - Sep 2026); its own domain (ranasrestaurant.com) has expired and now serves a Namecheap domain-parking page. Address matches exactly (9683 Campo Rd, Spring Valley).",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5293",
+    "name": "Toast Gastrobrunch",
+    "sourceUrl": "https://www.doordash.com/store/toast-gastrobrunch-carlsbad-649601/",
+    "confidence": "medium",
+    "notes": "Read from DoorDash marketplace schema.org JSON-LD (@type: Menu/MenuItem - a different JSON-LD shape than the usual Restaurant-wrapped one, found alongside a duplicate order.online-style RSC payload with the same known doubled-leading-$ bug, not used here since the JSON-LD prices were already clean). Restaurant's own domain (toastgastrobrunch.com) returned an app-level \"connection error\" page at fetch time, so the marketplace copy was used instead.",
+    "dishes": [
+      {
+        "name": "Classic Monte Cristo",
+        "description": "Smoked turkey, brioche swiss cheese Jackie's jampowdered sugar.",
+        "price": "$15.00",
+        "section": "Lunchie"
+      },
+      {
+        "name": "Smoked Brisket Melt",
+        "description": "Sourdough, Bbq sauce, cheddar and jack cheese and fries.",
+        "price": "$16.00",
+        "section": "Lunchie"
+      },
+      {
+        "name": "The BLT",
+        "description": "Mashed avocado, bacon lettuce tomato, mayo, toasted brioche.",
+        "price": "$15.00",
+        "section": "Lunchie"
+      },
+      {
+        "name": "The Burger",
+        "description": "Wagyu beef bacon. Cheddar red leaf grilled onion, tomato, Up egg. Fries.",
+        "price": "$16.00",
+        "section": "Lunchie"
+      },
+      {
+        "name": "Steak & Eggs",
+        "description": "Flat iron steak, two eggs potatoes, roasted tomatoes.",
+        "price": "$23.00",
+        "section": "Eggs"
+      },
+      {
+        "name": "Green Eggs No Ham",
+        "description": "Gluten free. Egg whites, Asparagus zucchini scallions, grilled chicken. Chimichurri, fruit.",
+        "price": "$17.00",
+        "section": "Eggs"
+      },
+      {
+        "name": "Veggie Hash",
+        "description": "Two up eggs, brussels, bell pepper.potato mushroom, black beans, jalapeño frisee, goat cheese.",
+        "price": "$16.50",
+        "section": "Eggs"
+      },
+      {
+        "name": "Denver Ish Scramble",
+        "description": "Canadian bacon Portuguese linguica sausage tomato bell pepper,  red onion, cheddar.",
+        "price": "$16.00",
+        "section": "Eggs"
+      },
+      {
+        "name": "Classic French Omelet",
+        "description": "Vegetarian. Boursin cheese potatoes. Roasted tomatoes no modifications.",
+        "price": "$15.00",
+        "section": "Eggs"
+      },
+      {
+        "name": "Smoked Brisket Hash",
+        "description": "Potato red onion, bell pepper rosemary, two up eggs and  chipotle cream.",
+        "price": "$18.00",
+        "section": "Eggs"
+      },
+      {
+        "name": "Plain Jane",
+        "description": "Two eggs, bacon or portuguese linguica sausage potatoes or fruit roasted tomatoes.",
+        "price": "$15.00",
+        "section": "Eggs"
+      },
+      {
+        "name": "Shrimp & Grits",
+        "description": "Gluten free. Cheesy grits, Spanish chorizo spinach, up egg.",
+        "price": "$18.00",
+        "section": "Eggs"
+      },
+      {
+        "name": "ABC Hash",
+        "description": "Avocado, pork belly, cheddar potato. Two up eggs. scallions.",
+        "price": "$17.50",
+        "section": "Eggs"
+      },
+      {
+        "name": "Eggs in Purgatory",
+        "description": "Sourdough bread bowl shakshuska, mushroom pork belly, feta, up egg, scallions, mint.",
+        "price": "$17.00",
+        "section": "Eggs"
+      },
+      {
+        "name": "Grilled Caesar",
+        "description": "Gluten free. Without croutons. romaine ,parmesan ,garlic lemon juice ,Caesar, crouton.",
+        "price": "$11.50",
+        "section": "Greens"
+      },
+      {
+        "name": "Smoked Salmon",
+        "description": "Hot. Smoked salmon, egg, pickled onion, capers, jalapeño cream cheese, dill.",
+        "price": "$16.00",
+        "section": "Toasts"
+      },
+      {
+        "name": "Avocado",
+        "description": "Vegetarian. Mashed avocado, chimichurri arugula, Almonds, olive oil.",
+        "price": "$12.50",
+        "section": "Toasts"
+      },
+      {
+        "name": "Crispy Chicken & Cakes",
+        "description": "Hot. Southern fried chicken, buttermilk pancakes, hot sauce syrup.",
+        "price": "$17.00",
+        "section": "Pancakes"
+      },
+      {
+        "name": "Pancake Combo",
+        "description": "Pancakes, 2 eggs any style and choice of bacon or Portuguese linguica sausage.",
+        "price": "$15.00",
+        "section": "Pancakes"
+      },
+      {
+        "name": "Kodiak Cakes",
+        "description": "Vegetarian. 100% whole grain power cakes ,walnuts ,banana.",
+        "price": "$14.00",
+        "section": "Pancakes"
+      },
+      {
+        "name": "Velvet Cakes",
+        "description": "Vegetarian. Cream cheese frostin, cocoa, powdered sugar.",
+        "price": "$13.00",
+        "section": "Pancakes"
+      },
+      {
+        "name": "Coffee Cake Cakes",
+        "description": "Vegetarian. Cinnamon, walnuts, streusel topping.",
+        "price": "$13.00",
+        "section": "Pancakes"
+      },
+      {
+        "name": "Straight Up Pancakes",
+        "description": "Vegetarian.",
+        "price": "$11.00",
+        "section": "Pancakes"
+      },
+      {
+        "name": "The Breakfast Burrito",
+        "description": "Scrambled eggs, black beans, avocado, cheddar salsa fresca, potato, sour cream served wet with your choice of red or green salsa.",
+        "price": "$17.50",
+        "section": "South of the Border"
+      },
+      {
+        "name": "Santa Fe Scramble",
+        "description": "Hot. Jalapeño, Scallions, Onion,  jack cheese, cilantro, tortilla strips, chipotle sauce potatoes roasted tomatoes.",
+        "price": "$14.50",
+        "section": "South of the Border"
+      },
+      {
+        "name": "Good OL Benny",
+        "description": "Wolferman's English muffin, Canadian bacon poached eggs, hollandaise.",
+        "price": "$16.50",
+        "section": "Bennys"
+      },
+      {
+        "name": "Crispy Southern Benny",
+        "description": "",
+        "price": "$17.50",
+        "section": "Bennys"
+      },
+      {
+        "name": "Short Rib Benny",
+        "description": "Vegetarian. Grilled sourdough, braised short rib. Harissa hollandaise poached eggs, Pickled onion.",
+        "price": "$18.00",
+        "section": "Bennys"
+      },
+      {
+        "name": "Southern Fried Chicken Benny",
+        "description": "Crispy chicken, cheddar cornbread, garlic spinach béchamel scallions, poached eggs.",
+        "price": "$18.00",
+        "section": "Bennys"
+      },
+      {
+        "name": "Bacon Benny",
+        "description": "Wolferman's English muffin, bacon, grilled asparagus poached egg, hollandaise, balsamic glaze.",
+        "price": "$17.00",
+        "section": "Bennys"
+      },
+      {
+        "name": "Cali Benny",
+        "description": "Vegetarian. Wolferman's English muffin, grilled tomato mashed avocado, Poached egg nut free pesto hollandaise.",
+        "price": "$16.00",
+        "section": "Bennys"
+      },
+      {
+        "name": "Coconut Pistachio Kanafee",
+        "description": "Vegetarian. Shredded phyllo ricotta and jack cheese coconut orange blossom syrup toasted brioche, topped with pistachios.",
+        "price": "$16.00",
+        "section": "House Specialty"
+      },
+      {
+        "name": "Stuffed French Toast",
+        "description": "Vegetarian. Brioche fresh berries mascarpone vanilla, fresh cream, passion fruit caramel.",
+        "price": "$16.00",
+        "section": "French Toasts"
+      },
+      {
+        "name": "Elvis French Toast",
+        "description": "Brioche banana peanut butter, bacon honey.",
+        "price": "$15.50",
+        "section": "French Toasts"
+      },
+      {
+        "name": "French Toast Combo",
+        "description": "French toast, 2 eggs any style\nchoice of bacon or Portuguese linguica sausage",
+        "price": "$15.00",
+        "section": "French Toasts"
+      },
+      {
+        "name": "Straight Up French Toast",
+        "description": "Vegetarian.",
+        "price": "$12.00",
+        "section": "French Toasts"
+      },
+      {
+        "name": "Veggie Hash",
+        "description": "Vegetarian, gluten free. Without bread, two up eggs brussels, bell pepper ,potato ,mushroom black beans jalapeño frisee, goat cheese.",
+        "price": "$16.50",
+        "section": "The Skinny"
+      },
+      {
+        "name": "Green Eggs No Ham",
+        "description": "Gluten free. Egg whites, asparagus zucchini scallions, grilled chicken ,chimichurri fruit.",
+        "price": "$17.00",
+        "section": "The Skinny"
+      },
+      {
+        "name": "Kodiak Cakes",
+        "description": "Vegetarian. 100% whole grain power cakes, walnuts ,banana.",
+        "price": "$14.00",
+        "section": "The Skinny"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee Bar"
+      },
+      {
+        "name": "Cafe Latte",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee Bar"
+      },
+      {
+        "name": "Nitro Cold Brew",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee Bar"
+      },
+      {
+        "name": "Bottomless Drip Coffee",
+        "description": "Decaf or Regular.",
+        "price": "$3.50",
+        "section": "Coffee Bar"
+      },
+      {
+        "name": "Hammerhead",
+        "description": "Drip coffee with a shot of espresso.",
+        "price": "$3.50",
+        "section": "Coffee Bar"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$2.50",
+        "section": "Coffee Bar"
+      },
+      {
+        "name": "Cafe Americano",
+        "description": "",
+        "price": "$2.50",
+        "section": "Coffee Bar"
+      },
+      {
+        "name": "Bottled Water",
+        "description": "Still or Sparkling (500mL).",
+        "price": "$5.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Organic Hot Tea",
+        "description": "Earl Grey, English Breakfast, Jasmine Green, Chamomile.",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Organic Iced Tea",
+        "description": "Black or Passionfruit.",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Soda",
+        "description": "",
+        "price": "$3.50",
+        "section": "Drinks"
+      },
+      {
+        "name": "Milk",
+        "description": "",
+        "price": "$3.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Orange",
+        "description": "",
+        "price": "$4.00",
+        "section": "Juicy"
+      },
+      {
+        "name": "Grapefruit",
+        "description": "",
+        "price": "$4.00",
+        "section": "Juicy"
+      },
+      {
+        "name": "Apple",
+        "description": "",
+        "price": "$4.00",
+        "section": "Juicy"
+      },
+      {
+        "name": "Mini Me Plate",
+        "description": "Gluten-free. 2 Eggs, bacon, fruit.",
+        "price": "$8.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "Vegetarian. Sourdough bread, cheddar & jack cheese, fries",
+        "price": "$6.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Grilled Chicken Breast",
+        "description": "Gluten-free. Served with fries. ",
+        "price": "$6.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Tiny French Toast",
+        "description": "Vegetarian. Powdered sugar, whipped butter, real maple syrup.",
+        "price": "$6.00",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Solo Pancake",
+        "description": "Vegetarian. ",
+        "price": "$3.00",
+        "section": "Kids Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5459",
+    "name": "Filibertos",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "unresolved-location: batch supplies no address, and the given website (filibertos.com) is the Arizona/Texas corporate chain site with no California menu or locations link at all. Search turned up at least 5 separately-run \"Filiberto's\" locations across San Diego (University Ave, Palm Ave, Ulric St, Clairemont Mesa Blvd, Midway Dr) with no way to determine which one, if any, this batch entry refers to."
+  },
+  {
+    "restaurantId": "5477",
+    "name": "Cafe Bella",
+    "sourceUrl": "https://www.order.online/store/cafe-bella-el-cajon-25478/",
+    "confidence": "medium",
+    "notes": "The batch-given website (cafebellaob.com) belongs to a different, unrelated Cafe Bella location cluster (Ocean Beach/Voltaire/Midway) - not the 1275 Broadway, El Cajon address in the batch. Found the correct branch's order.online storefront instead and read its RSC flight payload. That payload has a known doubled-leading-\"$\" bug in every displayPrice field (confirmed present in the raw source JSON itself, not an artifact of unescaping) - collapsed to a single \"$\" here; any entries that still failed the price regex after that fix were dropped rather than guessed.",
+    "dishes": [
+      {
+        "name": "Special",
+        "description": "16 oz drip, pastry or bagel and topping.",
+        "price": "$6.50",
+        "section": "Special"
+      },
+      {
+        "name": "Breakfast Bagel or croissant",
+        "description": "Ham or bacon or sausage , egg and cheese.",
+        "price": "$8.50",
+        "section": "Breakfast Bagel or croissant "
+      },
+      {
+        "name": "Hot Drip",
+        "description": "Drip coffee, available in 12 oz, 16 oz, 20 oz.",
+        "price": "$2.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Latte",
+        "description": "Hot Latte - Creamy espresso base, choice of 12 oz, 16 oz, or 20 oz.",
+        "price": "$4.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Cappuccino",
+        "description": "Rich espresso blended with steamed milk and a light foam top. Sizes: 12 oz, 16 oz, 20 oz.",
+        "price": "$4.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Americano",
+        "description": "Served hot or iced.",
+        "price": "$3.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Iced Coffee",
+        "description": "",
+        "price": "$4.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Hammerhead",
+        "description": "Espresso and coffee.",
+        "price": "$4.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "Smooth, chilled cold brew coffee. Available in 16 oz or 20 oz.",
+        "price": "$4.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "White Chocolate Cold Brew",
+        "description": "cold brew + white chocolate",
+        "price": "$5.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Mocha",
+        "description": "Rich chocolate and espresso blend, available in 12 oz, 16 oz, 20 oz.",
+        "price": "$5.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Caramel Macchiato",
+        "description": "Hot caramel macchiato with velvety milk, espresso, and caramel sauce. Available in 12 oz, 16 oz, 20 oz.",
+        "price": "$5.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Iced Vietnamese",
+        "description": "Vietnamese coffee, served cold. Choose from 16 oz or 20 oz.",
+        "price": "$5.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Chai Latte",
+        "description": "Warmly spiced chai tea, frothed milk. Sizes: 12 oz, 16 oz, 20 oz.",
+        "price": "$4.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Dirty Chai",
+        "description": "chai + espresso",
+        "price": "$4.70",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot or Iced Tea",
+        "description": "Available in 12 oz, 16 oz, or 20 oz. Choose from iced or hot tea.",
+        "price": "$2.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Yerba Matte Tea",
+        "description": "Hot Yerba Mate Tea served in 12 oz, 16 oz, or 20 oz. Traditional South American herbal brew.",
+        "price": "$3.20",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Yerba Matte Latte",
+        "description": "yerba + honey +almond milk +cinnamon",
+        "price": "$3.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot Green Tea Matcha",
+        "description": "Green tea matcha, hot. Available in 12 oz, 16 oz, 20 oz sizes.",
+        "price": "$4.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Hot London Fog",
+        "description": "tea , vanilla , milk",
+        "price": "$3.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Latte",
+        "description": "Chilled espresso and milk blend, available in 16 oz or 20 oz.",
+        "price": "$4.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Drip",
+        "description": "Drip coffee, served cold. Choice of 16 oz or 20 oz.",
+        "price": "$2.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Americano",
+        "description": "Iced Americano, options for 16 oz or 20 oz.",
+        "price": "$3.60",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Hammerhead",
+        "description": "Espresso and coffee.",
+        "price": "$4.30",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Mocha",
+        "description": "Chilled mocha blend, available in 16 oz or 20 oz.",
+        "price": "$5.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Caramel Macchiato",
+        "description": "16 or 20 oz iced caramel macchiato, layers of milk, espresso, and caramel sauce.",
+        "price": "$5.00",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Chai Latte",
+        "description": "Chilled chai tea latte available in 16 oz or 20 oz.",
+        "price": "$4.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Dirty Chai",
+        "description": "chai + espresso",
+        "price": "$4.70",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Yerba Matte Tea",
+        "description": "Cold yerba mate tea, available in 16 oz or 20 oz.",
+        "price": "$3.20",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Yerba Matte Latte",
+        "description": "yerba + honey + cinnamon + almond milk",
+        "price": "$3.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold Green Tea Matcha",
+        "description": "Cold green tea matcha, options in 16 oz or 20 oz.",
+        "price": "$4.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Cold London Fog",
+        "description": "black tea + vanilla + milk",
+        "price": "$3.50",
+        "section": "Coffee & Tea"
+      },
+      {
+        "name": "Acai",
+        "description": "Acai, banana and strawberry.",
+        "price": "$8.50",
+        "section": "Classic Bella Smoothies"
+      },
+      {
+        "name": "Pitaya",
+        "description": "Pitaya, banana and strawberry.",
+        "price": "$8.50",
+        "section": "Classic Bella Smoothies"
+      },
+      {
+        "name": "TY",
+        "description": "Pitaya, acai, banana and strawberry.",
+        "price": "$8.50",
+        "section": "Classic Bella Smoothies"
+      },
+      {
+        "name": "Pink Passion",
+        "description": "Pitaya, strawberry, banana and peanut butter.",
+        "price": "$8.50",
+        "section": "Classic Bella Smoothies"
+      },
+      {
+        "name": "Pink Sunset",
+        "description": "Pitaya, strawberry, mango and banana.",
+        "price": "$8.50",
+        "section": "Classic Bella Smoothies"
+      },
+      {
+        "name": "PB&S",
+        "description": "Peanut butter, strawberry, banana and almond milk.",
+        "price": "$8.00",
+        "section": "Classic Bella Smoothies"
+      },
+      {
+        "name": "The Hulk",
+        "description": "Kale, spinach, mango, banana, protein, chia seeds and apple juice.",
+        "price": "$9.00",
+        "section": "Great Greens Smoothies"
+      },
+      {
+        "name": "Tropical Greens",
+        "description": "Spinach, pineapple, banana, mango and orange juice.",
+        "price": "$9.00",
+        "section": "Great Greens Smoothies"
+      },
+      {
+        "name": "The Refresher",
+        "description": "Cucumber, kale, mango, banana, coconut water.",
+        "price": "$9.00",
+        "section": "Great Greens Smoothies"
+      },
+      {
+        "name": "Spinach & Orange",
+        "description": "Spinach, banana, chia seeds, orange juice, coconut water.",
+        "price": "$9.00",
+        "section": "Great Greens Smoothies"
+      },
+      {
+        "name": "Green Dragon",
+        "description": "Pitaya, kale, strawberry, banana and vanilla soy.",
+        "price": "$9.00",
+        "section": "Great Greens Smoothies"
+      },
+      {
+        "name": "Peachy Greens",
+        "description": "Peach, kale, spinach, banana and apple juice.",
+        "price": "$9.00",
+        "section": "Great Greens Smoothies"
+      },
+      {
+        "name": "Bella's Piña Colada",
+        "description": "Pineapple, banana and coconut water.",
+        "price": "$8.00",
+        "section": "Fruitastic Smoothies"
+      },
+      {
+        "name": "Tropical Sunrise",
+        "description": "Pineapple, strawberry, banana, mango and orange juice.",
+        "price": "$8.00",
+        "section": "Fruitastic Smoothies"
+      },
+      {
+        "name": "Peach Me Up",
+        "description": "Peach, banana, mango and apple juice.",
+        "price": "$8.00",
+        "section": "Fruitastic Smoothies"
+      },
+      {
+        "name": "Mango Tango",
+        "description": "Mango, banana and orange juice.",
+        "price": "$8.00",
+        "section": "Fruitastic Smoothies"
+      },
+      {
+        "name": "Very Berry Splash",
+        "description": "Strawberry, blackberry, raspberry, blueberry and coconut water.",
+        "price": "$8.00",
+        "section": "Fruitastic Smoothies"
+      },
+      {
+        "name": "Blueberry Bliss",
+        "description": "Blueberry, mango, banana and apple juice.",
+        "price": "$8.00",
+        "section": "Fruitastic Smoothies"
+      },
+      {
+        "name": "Sunshine",
+        "description": "Mango, pineapple, banana and orange juice.",
+        "price": "$8.00",
+        "section": "Fruitastic Smoothies"
+      },
+      {
+        "name": "Pick 2",
+        "description": "Choose 2 fruits - Strawberry, mango, banana, peach, pineapple, blueberry, mixed berries.",
+        "price": "$8.00",
+        "section": "Fruitastic Smoothies"
+      },
+      {
+        "name": "Acai bowl",
+        "description": "Granola strawberries blueberries banana honey and coconut.",
+        "price": "$9.70",
+        "section": "Bowls"
+      },
+      {
+        "name": "Pitaya bowl",
+        "description": "Granola strawberries blueberries banana honey and coconut.",
+        "price": "$9.70",
+        "section": "Bowls"
+      },
+      {
+        "name": "TY bowl",
+        "description": "Pitaya and acai.",
+        "price": "$10.70",
+        "section": "Bowls"
+      },
+      {
+        "name": "Ocean Beach bowl",
+        "description": "Pitaya, mango and chia seeds.",
+        "price": "$10.70",
+        "section": "Bowls"
+      },
+      {
+        "name": "Matcha bowl",
+        "description": "Green tea sorbet.",
+        "price": "$10.70",
+        "section": "Bowls"
+      },
+      {
+        "name": "Bella Parfait",
+        "description": "Yogurt, acai and toppings.",
+        "price": "$8.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Bella (32 Oz)",
+        "description": "Double toppings and peanut butter.",
+        "price": "$15.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Fresh Fruit Bowl",
+        "description": "Banana, strawberry, blueberry and mango.",
+        "price": "$6.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Bagel & Topping",
+        "description": "Everything, onion, blueberry, Cheddar jalapeño, cinnamon raisin, whole wheat, sesame, whole wheat everything.",
+        "price": "$4.50",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "Lox or Turkey Bagel",
+        "description": "Smoked salmon or turkey or ham , cream cheese, spinach and tomato. Gluten free option for an additional charge.",
+        "price": "$9.50",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "Veggie Bagel",
+        "description": "Cream cheese, spinach, cucumber and tomato.",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "Pastries",
+        "description": "Gluten free option for an additional charge.",
+        "price": "$3.50",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "California bagel",
+        "description": "turkey , cream cheese , avocado , bacon , sunflower seeds & tomatoes",
+        "price": "$12.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "breakfast bacon empanadas",
+        "description": "breakfast bacon empanadas",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "breakfast soy chorizo empanadas",
+        "description": "breakfast soy chorizo empanadas",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "cheese jalapeño stuffed croissant",
+        "description": "cheese jalapeño stuffed croissant",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "cheese stuffed croissant",
+        "description": "cheese stuffed croissant",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "ham jalapeno stuffed croissant",
+        "description": "ham jalapeño stuffed croissant \\\\n",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "ham stuffed croissant",
+        "description": "ham stuffed croissant",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "spinach stuffed croissant",
+        "description": "spinach stuffed croissant",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "turkey stuffed croissant",
+        "description": "turkey stuffed croissant\\\\n",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "chicken empanada",
+        "description": "chicken , pepper , cheeses",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "caprese",
+        "description": "Veggies",
+        "price": "$7.00",
+        "section": "Bites & Treats"
+      },
+      {
+        "name": "Funky Monkey",
+        "description": "Mocha, peanut butter and banana.",
+        "price": "$7.50",
+        "section": "Ice Blended With Espresso"
+      },
+      {
+        "name": "Snickers",
+        "description": "mocha, caramel,  peanut butter",
+        "price": "$7.50",
+        "section": "Ice Blended With Espresso"
+      },
+      {
+        "name": "Bellaccino",
+        "description": "choose 1 - Mocha, mint mocha, vanilla, strawberry, caramel, java chip, coffee, cookies and cream.",
+        "price": "$6.50",
+        "section": "Ice Blended With Espresso"
+      },
+      {
+        "name": "Therapy",
+        "description": "Protein, honey, peanut butter, banana, almond milk,",
+        "price": "$7.80",
+        "section": "Ice Blended With Espresso"
+      },
+      {
+        "name": "Green Tea Matcha",
+        "description": "Matcha, coconut milk and banana.",
+        "price": "$7.50",
+        "section": "Ice Blended - No Espresso"
+      },
+      {
+        "name": "The Champion",
+        "description": "Protein, honey, peanut butter, almond milk and banana.",
+        "price": "$7.50",
+        "section": "Ice Blended - No Espresso"
+      },
+      {
+        "name": "The Pablo",
+        "description": "Blueberry, protein, honey, peanut butter, vanilla, cinnamon, almond milk and banana.",
+        "price": "$7.50",
+        "section": "Ice Blended - No Espresso"
+      },
+      {
+        "name": "Italian Soda",
+        "description": "Cream, syrup shot, seltzer and whip.",
+        "price": "$2.50",
+        "section": "Other Drinks - No Espresso"
+      },
+      {
+        "name": "Red Bull",
+        "description": "Invigorating Energy Surge: The Classic Red Bull Experience",
+        "price": "$3.50",
+        "section": "Other Drinks - No Espresso"
+      },
+      {
+        "name": "S.F Red Bull",
+        "description": "",
+        "price": "$3.50",
+        "section": "Other Drinks - No Espresso"
+      },
+      {
+        "name": "bottled of soda",
+        "description": "A carbonated soft drink available in various flavors.",
+        "price": "$2.50",
+        "section": "Other Drinks - No Espresso"
+      },
+      {
+        "name": "evian water",
+        "description": "Naturally sourced spring water with a refreshing and pure taste, with no additives.",
+        "price": "$3.00",
+        "section": "Other Drinks - No Espresso"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "Hershey's, white, Mexican.",
+        "price": "$3.30",
+        "section": "Other Drinks - No Espresso"
+      },
+      {
+        "name": "Apple or Orange Juice",
+        "description": "Freshly squeezed juice available in apple or orange flavors. Choose from 16 oz or 20 oz sizes.",
+        "price": "$2.50",
+        "section": "Other Drinks - No Espresso"
+      },
+      {
+        "name": "Lemonade",
+        "description": "Freshly squeezed lemonade, choice of 16 oz or 20 oz.",
+        "price": "$2.00",
+        "section": "Other Drinks - No Espresso"
+      },
+      {
+        "name": "8 Oz Hot Chocolate",
+        "description": "Hershey's white or mexican.",
+        "price": "$2.50",
+        "section": "Other Drinks - No Espresso"
+      }
+    ]
+  }
+]

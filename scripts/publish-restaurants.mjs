@@ -42,6 +42,27 @@ function flag(name, fallback) {
 const DRY_RUN = process.argv.includes("--dry");
 
 /**
+ * Publish the rows that now qualify without hiding the ones that no longer do.
+ *
+ * The two halves of this script answer different questions and, on 2026-09-03,
+ * had opposite urgencies. The county import had left 1,064 restaurants complete
+ * but unpublished, while 1,328 already-visible rows had lost their menus to the
+ * untrusted-source retirement and were failing the same rule. Running both
+ * halves would have taken the site from 4,327 listings to 4,063 — a net loss,
+ * including names like Bronx Pizza, on the day the ask was "get all of San
+ * Diego on the site".
+ *
+ * So this flag exists for the case where the hide list is an EXTRACTION
+ * BACKLOG rather than a quality problem: those rows have a rating and a real
+ * business behind them, and the menu is coming. It is a deliberate, temporary
+ * deviation from the rule, and the rule is still the default.
+ *
+ * Do not reach for it to inflate a number. If the hide list is rows that should
+ * genuinely not be visible, hide them.
+ */
+const NO_HIDE = process.argv.includes("--no-hide");
+
+/**
  * Fewer dishes than this is not a menu, it is a fragment.
  *
  * Five is low deliberately — a taco shop with five items has told you what it
@@ -91,7 +112,10 @@ console.log(`Do not:           ${rows.length - qualifying.length}`);
 console.log(`  no rating:      ${reasons.noRating.length}`);
 console.log(`  no menu:        ${reasons.noMenu.length}`);
 console.log(`  under ${String(MIN_DISHES).padEnd(2)} dishes: ${reasons.thinMenu.length}`);
-console.log(`\nChanges: ${publishing.length} to publish, ${hiding.length} to hide.`);
+console.log(
+  `\nChanges: ${publishing.length} to publish, ` +
+    (NO_HIDE ? `${hiding.length} to hide — SKIPPED (--no-hide).` : `${hiding.length} to hide.`),
+);
 
 if (hiding.length) {
   console.log(`\nHiding (currently visible, should not be):`);
@@ -121,7 +145,9 @@ if (publishing.length === 0 && hiding.length === 0) {
 }
 
 // One statement, computed in SQL from the same predicate reported above, so the
-// write cannot disagree with the preview.
+// write cannot disagree with the preview. `--no-hide` adds one condition —
+// only ever flip a row ON — rather than a second predicate that could drift
+// from this one.
 await sql.query(
   `WITH d AS (SELECT restaurant_id, count(*)::int AS n FROM dishes GROUP BY restaurant_id)
    UPDATE restaurants r
@@ -129,7 +155,8 @@ await sql.query(
      FROM (SELECT id FROM restaurants) ids
      LEFT JOIN d ON d.restaurant_id = ids.id
     WHERE r.id = ids.id
-      AND r.listed <> (r.rating IS NOT NULL AND coalesce(d.n, 0) >= $1)`,
+      AND r.listed <> (r.rating IS NOT NULL AND coalesce(d.n, 0) >= $1)
+      ${NO_HIDE ? "AND (r.rating IS NOT NULL AND coalesce(d.n, 0) >= $1)" : ""}`,
   [MIN_DISHES],
 );
 

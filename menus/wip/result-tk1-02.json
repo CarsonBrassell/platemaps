@@ -1,0 +1,944 @@
+[
+  {
+    "restaurantId": "3000",
+    "name": "Potato Corner",
+    "sourceUrl": "https://potatocorner.com/menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "franchise corporate site (potatocorner.com/menu) publishes no per-item prices at all (explicit disclaimer: \"Prices may vary across branches\"); the listed branch domain potatocornerusa.com 404s; no DoorDash or Uber Eats storefront found for this National City/Plaza Bonita branch specifically (DoorDash's Potato Corner business page lists only Bakersfield/LA/Montclair/Moreno Valley CA stores); Yelp page not reachable to check for a dated menu photo. Needs another pass to check Yelp photos or find the branch's own ordering link."
+  },
+  {
+    "restaurantId": "6201",
+    "name": "The Orient Thai",
+    "sourceUrl": "https://theorientthaicafeca.smiledining.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: ordering is via Smile POS (theorientthaicafeca.smiledining.com), explicitly a browser-only platform; the restaurant's own site (www.orientthaipb.com) is a static template with no prices, just an ordering CTA to the Smile POS storefront."
+  },
+  {
+    "restaurantId": "3906",
+    "name": "Cielo Rooftop",
+    "sourceUrl": "https://cielo-rooftop-lounge.res-menu.org/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site tequiladelcielo.com (Wix) 404s entirely; its res-menu.org/net microsite (tier-2 hosted menu) returns HTTP 200 but a genuinely blank 9-byte body, matching the documented res-menu blank-page failure mode. No first- or second-tier source reachable; not re-tested against a sibling res-menu store to confirm host-wide vs this-store-only."
+  },
+  {
+    "restaurantId": "4451",
+    "name": "Los Amigos",
+    "sourceUrl": "http://places.singleplatform.com/los-amigos-mexican-food/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website on file; the only priced source found (SinglePlatform, address confirmed 10251 Mast Blvd, Santee, CA 92071) lists fine-dining fusion dishes - Wasabi Crusted Tuna $26, Filet Mignon $29, Chipotle Pork Tenderloin $19, Crab & Shrimp Enchilada $16 - flatly contradicting Yelp's own $ price tier and 'carne asada burritos and beef tacos' description for this same address/name, and a WebSearch summary of a separate cheap-taco-shop menu ($3.49 bean & cheese burrito) that could not be independently verified on any page actually fetched. Sharp disagreement between sources on what this restaurant even serves - per playbook this is unreliable, not correctable, so nothing filed. All other findable listings are barred aggregators (restaurantguru, zmenu, checkle, allmenus) or the barred farm placejoys.com."
+  },
+  {
+    "restaurantId": "3336",
+    "name": "El Kora",
+    "sourceUrl": "https://www.doordash.com/store/el-kora-spring-valley-24367196/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website on file; DoorDash storefront (address confirmed 8415 Paradise Valley Rd, Spring Valley) is the only reachable priced source and its 91 items fail the markup screen: cent distribution is 0:5, 10:6, 20:14, 30:8, 40:9, 50:1, 60:19, 70:11, 90:18 - every single price a multiple of $0.10, only 6/91 conventional raw, and the best divisor in the 1.00-1.35 sweep (1.035) only clears 18/91 to round dollars, so no clean fee factor either confirms or clears it. The restaurant's own res-menu.net hosted menu (a tier-2 first-party page, same as sibling restaurant 3906 in this batch) returned the identical blank 9-byte body, which given two independent res-menu stores both blank in one session looks like a host-wide outage rather than a per-store gate - worth retrying later per playbook. A WebSearch summary claimed lower dine-in photo prices (fish taco ~$2.50-3.50, carne asada taco ~$4.00) but could not be verified on any fetched page, so not used as a cross-check."
+  },
+  {
+    "restaurantId": "5767",
+    "name": "Chung Hing",
+    "sourceUrl": "https://chunghing.netwaiter.com/san-diego/menu/GetMenu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website on file; NetWaiter storefront (chunghing.netwaiter.com) answers {\"Groups\":[],\"ExternalType\":null} - a genuinely empty About-page-only store, not a fetch failure. Uber Eats listing found by search is reported closed/inactive. Only remaining sources are tier-5 aggregators (allmenus, restaurantguru, menupix) with no second independent priced source to corroborate, so nothing filed."
+  },
+  {
+    "restaurantId": "4396",
+    "name": "Lucca's Pizzeria and Market",
+    "sourceUrl": "https://www.doordash.com/store/lucca's-pizza-and-market-san-diego-2281316/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "https://www.luccaspizzeriamarket.com/",
+    "notes": "router screened out the restaurant's own site (Slice-powered, luccaspizzeriamarket.com) for a clean 1.20 markup on 56/56 prices (e.g. site shows $26.40, $27.60, $30.00). Filed from DoorDash instead: 68 items, ALL landing on exact round dollars (0/68 with any cents), and after dropping the 12-item 'Most Ordered' carousel (every one of its items is a duplicate of a named-section item, confirmed by name) 56 unique dishes remain - matching the router's original count. Verified by name: DoorDash's round-dollar prices equal the restaurant's own Slice prices divided by 1.20 exactly (Margarita Pizza $22 = $26.40/1.2, Lucca's Special $25 = $30.00/1.2, Fettuccine Alfredo $23 = $27.60/1.2), confirming the 20% sits on the restaurant's own online-ordering channel and DoorDash carries none.",
+    "dishes": [
+      {
+        "name": "Antipasti Salad",
+        "description": "",
+        "price": "$19.00",
+        "section": "Insalate"
+      },
+      {
+        "name": "Spinaci",
+        "description": "",
+        "price": "$17.00",
+        "section": "Insalate"
+      },
+      {
+        "name": "greek salad",
+        "description": "",
+        "price": "$20.00",
+        "section": "Insalate"
+      },
+      {
+        "name": "gyro salad",
+        "description": "",
+        "price": "$23.00",
+        "section": "Insalate"
+      },
+      {
+        "name": "garden salad",
+        "description": "",
+        "price": "$16.00",
+        "section": "Insalate"
+      },
+      {
+        "name": "Classico",
+        "description": "",
+        "price": "$16.00",
+        "section": "Insalate"
+      },
+      {
+        "name": "Lucca's",
+        "description": "",
+        "price": "$16.00",
+        "section": "Insalate"
+      },
+      {
+        "name": "Polpette",
+        "description": "",
+        "price": "$18.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "Calamari Fritti",
+        "description": "",
+        "price": "$20.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "Caprese Di Burrate",
+        "description": "",
+        "price": "$18.00",
+        "section": "Antipasti"
+      },
+      {
+        "name": "Chef's Special",
+        "description": "",
+        "price": "$27.00",
+        "section": "Fresh Made Pasta"
+      },
+      {
+        "name": "Chicken Parmigiana",
+        "description": "",
+        "price": "$24.00",
+        "section": "Fresh Made Pasta"
+      },
+      {
+        "name": "Cheese Ravioli",
+        "description": "",
+        "price": "$20.00",
+        "section": "Fresh Made Pasta"
+      },
+      {
+        "name": "Cheese Tortellini",
+        "description": "",
+        "price": "$21.00",
+        "section": "Fresh Made Pasta"
+      },
+      {
+        "name": "Eggplant Parm Pasta",
+        "description": "",
+        "price": "$22.00",
+        "section": "Fresh Made Pasta"
+      },
+      {
+        "name": "Lasagna",
+        "description": "",
+        "price": "$24.00",
+        "section": "Fresh Made Pasta"
+      },
+      {
+        "name": "Linguine",
+        "description": "",
+        "price": "$24.00",
+        "section": "Fresh Made Pasta"
+      },
+      {
+        "name": "Pappardelle",
+        "description": "",
+        "price": "$27.00",
+        "section": "Fresh Made Pasta"
+      },
+      {
+        "name": "Fettuccine Alfredo",
+        "description": "",
+        "price": "$23.00",
+        "section": "Fresh Made Pasta"
+      },
+      {
+        "name": "Spaghetti",
+        "description": "",
+        "price": "$22.00",
+        "section": "Fresh Made Pasta"
+      },
+      {
+        "name": "Meatball Calzone",
+        "description": "",
+        "price": "$21.00",
+        "section": "Calzones & Sandwiches"
+      },
+      {
+        "name": "Chicken Parmigiana Sandwich",
+        "description": "",
+        "price": "$21.00",
+        "section": "Calzones & Sandwiches"
+      },
+      {
+        "name": "Italian Sandwich",
+        "description": "",
+        "price": "$18.00",
+        "section": "Calzones & Sandwiches"
+      },
+      {
+        "name": "Create Your Own Calzone",
+        "description": "",
+        "price": "$20.00",
+        "section": "Calzones & Sandwiches"
+      },
+      {
+        "name": "Eggplant Parm Sandwich",
+        "description": "",
+        "price": "$24.00",
+        "section": "Calzones & Sandwiches"
+      },
+      {
+        "name": "Gyro Plate",
+        "description": "",
+        "price": "$22.00",
+        "section": "Calzones & Sandwiches"
+      },
+      {
+        "name": "Meatball Sandwich",
+        "description": "",
+        "price": "$18.00",
+        "section": "Calzones & Sandwiches"
+      },
+      {
+        "name": "gyro sandwich",
+        "description": "",
+        "price": "$21.00",
+        "section": "Calzones & Sandwiches"
+      },
+      {
+        "name": "Spinachi Calzone",
+        "description": "",
+        "price": "$21.00",
+        "section": "Calzones & Sandwiches"
+      },
+      {
+        "name": "Ham & Cheese Calzone",
+        "description": "",
+        "price": "$21.00",
+        "section": "Calzones & Sandwiches"
+      },
+      {
+        "name": "Lucca's Special",
+        "description": "",
+        "price": "$25.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Create Your Own",
+        "description": "",
+        "price": "$23.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Amante Della Carne",
+        "description": "",
+        "price": "$24.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "BBQ Chicken Pizza",
+        "description": "",
+        "price": "$24.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "The Tuscan",
+        "description": "",
+        "price": "$27.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "San Diego Bound",
+        "description": "",
+        "price": "$21.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Milano",
+        "description": "",
+        "price": "$23.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "4 Cheese Pizza",
+        "description": "",
+        "price": "$23.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Wind'n Sea",
+        "description": "",
+        "price": "$27.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Gyro Pizza",
+        "description": "",
+        "price": "$27.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "The Boarder",
+        "description": "",
+        "price": "$24.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Hawaiian Pizza",
+        "description": "",
+        "price": "$23.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Buffalo Chicken Pizza",
+        "description": "",
+        "price": "$24.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "The Garden",
+        "description": "",
+        "price": "$24.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Margarita Pizza",
+        "description": "",
+        "price": "$22.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Healthy, Healthy, Healthy",
+        "description": "",
+        "price": "$23.00",
+        "section": "Pizza"
+      },
+      {
+        "name": "Kids Penne Butter",
+        "description": "",
+        "price": "$12.00",
+        "section": "Just For Kids"
+      },
+      {
+        "name": "12 pc chicken nuggets",
+        "description": "",
+        "price": "$14.00",
+        "section": "Just For Kids"
+      },
+      {
+        "name": "Kids Spaghetti Marinera",
+        "description": "",
+        "price": "$12.00",
+        "section": "Just For Kids"
+      },
+      {
+        "name": "6 pc chicken nuggets",
+        "description": "",
+        "price": "$9.00",
+        "section": "Just For Kids"
+      },
+      {
+        "name": "Kids Pepperoni Pizza",
+        "description": "",
+        "price": "$14.00",
+        "section": "Just For Kids"
+      },
+      {
+        "name": "Kids Cheese Pizza",
+        "description": "",
+        "price": "$13.00",
+        "section": "Just For Kids"
+      },
+      {
+        "name": "zucchini sticks",
+        "description": "",
+        "price": "$9.00",
+        "section": "Finger Foods"
+      },
+      {
+        "name": "Mozzarella sticks",
+        "description": "",
+        "price": "$9.00",
+        "section": "Finger Foods"
+      },
+      {
+        "name": "Jalapeño poppers",
+        "description": "",
+        "price": "$9.00",
+        "section": "Finger Foods"
+      },
+      {
+        "name": "Garlic Bread",
+        "description": "",
+        "price": "$8.00",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6841",
+    "name": "Glazed Coffee & Creamery",
+    "sourceUrl": "https://glazedpb.com/",
+    "confidence": "high",
+    "notes": "router found no known ordering platform, but the homepage itself carries a small first-party \"Awesome Menu\" section (address confirmed 4449 Ocean Blvd, San Diego, matches). No /menu page exists (404) and no separate platform - this is the whole priced menu on the site: a small ice cream/coffee counter with 6 core items. The $12.50 12oz coffee bean bag is retail merchandise, not a prepared dish, so excluded as an adjunct.",
+    "dishes": [
+      {
+        "name": "Soft Serve",
+        "description": "Vanilla, Chocolate, or Vanilla + Chocolate",
+        "price": "$5.00",
+        "section": "Classic Glazed Cones"
+      },
+      {
+        "name": "Soft Serve + Glaze",
+        "description": "Flavors: Chocolate, Cherry, Blue Raspberry, Butterscotch, Peanut Butter, Toasted Coconut, Birthday Cake",
+        "price": "$6.00",
+        "section": "Classic Glazed Cones"
+      },
+      {
+        "name": "Cafe Latte 16oz",
+        "description": "Comes with 2 shots espresso",
+        "price": "$5.50",
+        "section": "Amazing Coffee Concoctions"
+      },
+      {
+        "name": "Caramel Macchiato 16oz",
+        "description": "Comes with 2 shots espresso",
+        "price": "$6.00",
+        "section": "Amazing Coffee Concoctions"
+      },
+      {
+        "name": "Mocha 16oz",
+        "description": "Comes with 2 shots espresso",
+        "price": "$6.00",
+        "section": "Amazing Coffee Concoctions"
+      },
+      {
+        "name": "Affogato 20oz",
+        "description": "Comes with 2 shots espresso",
+        "price": "$7.00",
+        "section": "Amazing Coffee Concoctions"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6515",
+    "name": "Taquería Los Ruiz",
+    "sourceUrl": "https://www.doordash.com/store/taqueria-los-ruiz-san-diego-19099/",
+    "confidence": "medium",
+    "notes": "router found no known platform on the restaurant's own site (a homesteadcloud.com builder page that renders isPublished:false with no content - genuine dead end, not just unread). Filed from DoorDash instead (address confirmed 5010 Cass Street): 91 raw items, 51/91 (56%) already conventional-ending, no divisor in 1.00-1.35 improves on that, so this clears the markup screen. Dropped 'Aguas de sabores' (empty price string, a drink priced only by a size choice not captured here) and 9 of the 12 'Most Ordered' carousel items that duplicate a named-section item by name; kept the 2 (Pozole, Cheese Quesadilla) that appear nowhere else. 81 dishes filed. Several names are truncated in DoorDash's own data (e.g. 'Californ Surf Burri', 'Car Asada burrito') - preserved as given rather than guessed at.",
+    "dishes": [
+      {
+        "name": "Hash Brown Burrito",
+        "description": "",
+        "price": "$10.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Machaca burrito",
+        "description": "",
+        "price": "$10.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Deluxe Burrito",
+        "description": "",
+        "price": "$11.70",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Ham and Egg Burrito",
+        "description": "",
+        "price": "$10.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Bacon And Egg Burrito",
+        "description": "",
+        "price": "$10.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Chorizo Burrito",
+        "description": "",
+        "price": "$10.00",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "",
+        "price": "$14.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Californ Surf Burri",
+        "description": "",
+        "price": "$16.20",
+        "section": "Burritos"
+      },
+      {
+        "name": "El Rey Burrito",
+        "description": "",
+        "price": "$15.15",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fish Burrito",
+        "description": "",
+        "price": "$13.49",
+        "section": "Burritos"
+      },
+      {
+        "name": "Vegetarian Burrito",
+        "description": "",
+        "price": "$13.10",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chicken Burrito",
+        "description": "",
+        "price": "$11.25",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chicken mole burrito",
+        "description": "",
+        "price": "$14.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Hot Cheetos Burrito",
+        "description": "",
+        "price": "$15.22",
+        "section": "Burritos"
+      },
+      {
+        "name": "Azteca Burrito",
+        "description": "",
+        "price": "$15.15",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "",
+        "price": "$13.80",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pastor Burrito",
+        "description": "",
+        "price": "$13.10",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asado Burr",
+        "description": "",
+        "price": "$13.10",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beef Burrito",
+        "description": "",
+        "price": "$11.25",
+        "section": "Burritos"
+      },
+      {
+        "name": "Camaron a la diabla Burrito",
+        "description": "",
+        "price": "$15.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas burrito",
+        "description": "",
+        "price": "$13.10",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "",
+        "price": "$13.10",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Verde Burrito",
+        "description": "",
+        "price": "$13.10",
+        "section": "Burritos"
+      },
+      {
+        "name": "Lengua Burrito",
+        "description": "",
+        "price": "$15.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Monster Burrito",
+        "description": "",
+        "price": "$15.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "PB Surfer Burrito",
+        "description": "",
+        "price": "$16.20",
+        "section": "Burritos"
+      },
+      {
+        "name": "Tsunami Burrito",
+        "description": "",
+        "price": "$16.20",
+        "section": "Burritos"
+      },
+      {
+        "name": "Buche Burrito",
+        "description": "",
+        "price": "$15.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "Car Asada burrito",
+        "description": "",
+        "price": "$13.90",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bean & Cheese Burr",
+        "description": "",
+        "price": "$7.35",
+        "section": "Burritos"
+      },
+      {
+        "name": "Minitacos (three)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Fish Taco",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Shrimp Taco",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Pastor Taco",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Lengua Taco",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Birria Taco",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Buche Taco",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Carnitas Taco",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Nopal Taco",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Sopes",
+        "description": "",
+        "price": "$6.70",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Car Asada taco",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Pollo Asado Taco",
+        "description": "",
+        "price": "$5.99",
+        "section": "Soft Tacos"
+      },
+      {
+        "name": "Papa hard tco",
+        "description": "",
+        "price": "$4.99",
+        "section": "Hard Tacos"
+      },
+      {
+        "name": "Chicken hard  Tco",
+        "description": "",
+        "price": "$4.99",
+        "section": "Hard Tacos"
+      },
+      {
+        "name": "Beef Hard Tco",
+        "description": "",
+        "price": "$4.99",
+        "section": "Hard Tacos"
+      },
+      {
+        "name": "Super Rolled Tacos",
+        "description": "",
+        "price": "$9.95",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "5 Rolled Tco With",
+        "description": "",
+        "price": "$7.75",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "5 Rolled Tco Plain",
+        "description": "",
+        "price": "$6.30",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "3 Rolled Tco Plain",
+        "description": "",
+        "price": "$4.39",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "3 Rolled Tco With",
+        "description": "",
+        "price": "$5.75",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "Car Asada Quesa Tco",
+        "description": "",
+        "price": "$6.99",
+        "section": "Quesa Taco"
+      },
+      {
+        "name": "Pastor Quesa Tco",
+        "description": "",
+        "price": "$6.99",
+        "section": "Quesa Taco"
+      },
+      {
+        "name": "Carnitas Quesa Tco",
+        "description": "",
+        "price": "$6.99",
+        "section": "Quesa Taco"
+      },
+      {
+        "name": "Lengua quesa tco",
+        "description": "",
+        "price": "$6.99",
+        "section": "Quesa Taco"
+      },
+      {
+        "name": "Po Asado Quesa Tco",
+        "description": "",
+        "price": "$6.99",
+        "section": "Quesa Taco"
+      },
+      {
+        "name": "Birria Quesatco",
+        "description": "",
+        "price": "$6.99",
+        "section": "Quesa Taco"
+      },
+      {
+        "name": "Buche Quesa taco",
+        "description": "",
+        "price": "$6.99",
+        "section": "Quesa Taco"
+      },
+      {
+        "name": "Buche Mulita",
+        "description": "",
+        "price": "$7.55",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Pastor Mulita",
+        "description": "",
+        "price": "$7.55",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Birria Mulita",
+        "description": "",
+        "price": "$7.55",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Carnitas Mulita",
+        "description": "",
+        "price": "$7.55",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Lengua Mulita",
+        "description": "",
+        "price": "$7.55",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Pollo Asado Mulita",
+        "description": "",
+        "price": "$7.55",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Car asada mulita",
+        "description": "",
+        "price": "$7.55",
+        "section": "Mulitas"
+      },
+      {
+        "name": "Chorizo W/papa sope",
+        "description": "",
+        "price": "$6.70",
+        "section": "Sopes"
+      },
+      {
+        "name": "Pollo Asado Sope",
+        "description": "",
+        "price": "$6.70",
+        "section": "Sopes"
+      },
+      {
+        "name": "Lengua Sope",
+        "description": "",
+        "price": "$6.70",
+        "section": "Sopes"
+      },
+      {
+        "name": "Pastor Sope",
+        "description": "",
+        "price": "$6.70",
+        "section": "Sopes"
+      },
+      {
+        "name": "Asada Sope",
+        "description": "",
+        "price": "$6.70",
+        "section": "Sopes"
+      },
+      {
+        "name": "Carnitas Sope",
+        "description": "",
+        "price": "$6.70",
+        "section": "Sopes"
+      },
+      {
+        "name": "Lengua quesadilla",
+        "description": "",
+        "price": "$14.45",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Carnitas Quesadilla",
+        "description": "",
+        "price": "$13.94",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Chiken Quesadilla",
+        "description": "",
+        "price": "$12.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Beef Quesadilla",
+        "description": "",
+        "price": "$12.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Birria Quesadilla",
+        "description": "",
+        "price": "$14.45",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Super Quesadilla",
+        "description": "",
+        "price": "$15.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Veggie Quesadilla",
+        "description": "",
+        "price": "$10.70",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Al Pastor Quesadilla",
+        "description": "",
+        "price": "$13.94",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Shrimp Quesadilla",
+        "description": "",
+        "price": "$13.00",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Pozole",
+        "description": "",
+        "price": "$15.95",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "",
+        "price": "$6.95",
+        "section": "Most Ordered"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3587",
+    "name": "Sub-marine",
+    "sourceUrl": "https://www.submarine4u.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: no website on file per router, but found the restaurant's own site (submarine4u.com/menu, a Wix Restaurants ordering widget). All 34 numbered combo subs plus sides/drinks carry priceInfo.price:\"0\" and an empty modifierGroups array in the served data - price attaches only through an interactive size/order step the static page doesn't expose. Exactly one Size 6\"/9\"/12\" = $10.75/$16.25/$17.90 grid appears anywhere on the page, which may be a single flat price for every combo sub, but nothing confirms that the same grid applies to the named specialty subs (#9 House Sub, #33 The Bat, #34 Big Kahuna) rather than a higher one - applying it to all 34 without checking would be exactly the unverified-pattern mistake the playbook warns against. Needs a browser to actually select an item and read the resulting price."
+  }
+]

@@ -1,0 +1,21 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      3 entries (3 with menus, 0 confirmed not-found), 600 dishes
+quarantine: 17 entries, 0 dishes withheld
+
+  Tlaloc Deli (0 dishes) - blocked, not absent: tier-5 aggregator only (allmenus, zmenu, restaurantguru all agree on the same price list) - no first-party site, no ordering-platform storefront found for this address; single-tier-5 rule applies
+  Topo's Tacos (0 dishes) - blocked, not absent: needs-browser: client-rendered SPA storefront (d2pcvm0oig0mh8.cloudfront.net/app_v3.js bootstrap); no discoverable JSON API found in static HTML or bundled JS within time budget
+  Pinoy Express Fastfood (0 dishes) - blocked, not absent: no priced menu source found: no website, not on DoorDash/UberEats under this name, no aggregator listing located
+  Fiesta Pinoy (0 dishes) - blocked, not absent: no priced source found; only descriptive write-ups (Schoolhouse Shopping Center, recent change of ownership), no menu/prices located on any platform
+  FLAVORS EXPRESS SDSU (0 dishes) - blocked, not absent: needs-browser: own-domain storefront renders menu client-side; no static JSON/API path found within time budget
+  Chagee (0 dishes) - blocked, not absent: needs-browser: ordering flow (order.chagee.us) is client-rendered; no static priced catalog found
+  Hot Tasty Pizza (0 dishes) - blocked, not absent: own-domain Slice storefront (menuRequest JSON extracted, 10 categories/~30 core items); divisor sweep found a majority of core single-item prices divide cleanly to whole/round dollars at 1.10 ($44.00->$40, $9.90->$9, $11.00->$10, $15.40->$14, $16.50->$15, $14.30->$13, $53.90->$49), indicating a baked-in ~10% online-ordering fee; true wall price not recoverable without dividing it out, which is prohibited
+  Lò Bánh Cuốn Tân Định (0 dishes) - blocked, not absent: only a single non-first-party pricing source found (pricelisto.com), no independent second source; findaloco.com is a directory listing with no prices of its own
+  Central Cafe (0 dishes) - blocked, not absent: could not verify identity: address given (1252 3rd Avenue, no city) did not match any findable business by that name; multiple same-name cafes exist regionally
+  Cutwater (0 dishes) - blocked, not absent: address is the SAN Airport Terminal 1 location specifically; only the separate Miramar tasting-room menu was found online, which is a different location/menu and was not filed to avoid misattributing prices
+  Beaudevin (0 dishes) - blocked, not absent: no priced menu found; reviews describe a small wine list and small plates but no itemized prices located on any platform
+  Star Gazer Club (0 dishes) - blocked, not absent: no address/website provided in work list; identified candidate (bar/nightclub, Chula Vista) has no priced food/drink menu published anywhere found
+  Coffee Shop (0 dishes) - blocked, not absent: address (890 Palomar Airport Rd, Carlsbad) is a multi-vendor food hall (Windmill Food Hall) with several similarly-named coffee vendors (Immersion Express, Coffee Shop Corner, Palomar Airport Cafe); could not confirm which vendor this record refers to, and no priced menu found for any of them
+  The Propeller Bar and Grill (0 dishes) - blocked, not absent: only tier-5/aggregator-style sources found (zmenu, restaurantguru, mindtrip); no first-party site or ordering platform to corroborate
+  Finca Casa Blanca (0 dishes) - blocked, not absent: needs-browser: same white-label ordering platform as Topo's Tacos (FromTheRestaurant/FOX Ordering, client-rendered SPA); no discoverable JSON API found within time budget
+  La Patrona (0 dishes) - blocked, not absent: identified as a karaoke bar/lounge serving Mexican food and drinks; no itemized priced menu found on its directory listing or elsewhere
+  El huevo estrellado # 2 (0 dishes) - blocked, not absent: needs-browser: first-party domain unreachable via DNS both with and without www; DoorDash listing confirms identity (address matches 2710 Alpine Blvd Ste J) but its menu items are loaded client-side and were not present in the static page fetch

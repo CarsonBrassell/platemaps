@@ -1,0 +1,414 @@
+[
+  {
+    "restaurantId": "1528",
+    "name": "Cups Coffee Cart",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-web-presence: no business found under this exact name in San Diego across organic search and Google Maps search (results return only differently-named coffee-cart-catering businesses); worklist has no address or website to disambiguate"
+  },
+  {
+    "restaurantId": "5077",
+    "name": "Coca Cola Market",
+    "sourceUrl": "https://www.instagram.com/padres/ (Petco Park concession identification)",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "Coca-Cola-branded refill/concession kiosk inside Petco Park (San Diego Padres), identified via the team's own Instagram/TikTok posts. Stadium concession stand selling drink refills at a flat per-cup/all-you-can-drink structure with no itemized food menu published anywhere (team app, ballpark concessions pages) — the standard park/stadium concessions not_found case per the brief."
+  },
+  {
+    "restaurantId": "5078",
+    "name": "All Fried Up",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "host-down: seaworldparks.com returns HTTP 522 (Cloudflare origin timeout) on repeated attempts (reproduced twice); undercovertourist.com (a secondary source with a page for this stand) returns HTTP 403 behind a genuine Cloudflare bot-challenge (cf_chl_opt, \"Just a moment...\"), not bypassable without a browser or CAPTCHA solve; Wayback Machine has no snapshot (404) for the seaworldparks.com path. No positive evidence the stand publishes no prices, so blocked rather than not_found."
+  },
+  {
+    "restaurantId": "5097",
+    "name": "Lake Lindo Grill",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "The worklist address (12128 Woodside Ave, Lakeside) is now occupied by a differently-named, differently-branded successor business (\"Kunduz Kabob\", 4.4 stars / 981 reviews per Google Maps) — a confirmed closed-and-replaced case, not just an unfindable listing. Filed as not_found per the renamed/successor rule."
+  },
+  {
+    "restaurantId": "2602",
+    "name": "Mission Brewing (fka Rough Draft)",
+    "confidence": "medium",
+    "dishes": [],
+    "blocked": "no-platform: missionbrewery.com (the worklist website) is the operator's main site, but has no food/beer prices anywhere (only gift-card denominations); the worklist address (3869 Miramar Street) is the UCSD/Mesa Nueva campus taproom location (the \"(fka Rough Draft)\" branch), which is distinct from Mission Brewing's other branches (downtown 1441 L St, Rehco Rd Miramar, Del Mar, Kensington) that DO have priced sources (e.g. a Grubhub listing for the downtown branch) — those cannot be used here per the branch-isolation rule since they are a different address/location. No priced source found specific to this branch."
+  },
+  {
+    "restaurantId": "2155",
+    "name": "Aromas",
+    "sourceUrl": "https://get.cbord.com/sandiego/full/menu.php (CBORD GET ordering system — merchants \"Aromas: Crepes, Toast, Bagels\" and \"Aromas Express: Full Menu\")",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://triton.news (USD student newspaper article reporting a specialty-toast price increase from $8.75 to $9.50, matching the \"Aromas: Crepes, Toast, Bagels\" merchant's current price)",
+    "notes": "USD campus dining, ordered through get.cbord.com (CBORD 'GET' ordering system) — no public menu page, reverse-engineered by replaying the site's own AJAX calls (fetch merchant list with a cookie jar for session + formToken, POST formToken+due_time to menus.php to get an auto-selected menuId, then POST formToken+due_time+menuId to menu.php for the full server-rendered priced menu; no browser needed). Two merchants exist on the same ordering system for the same physical Aromas location: 'Aromas: Crepes, Toast, Bagels' and 'Aromas Express: Full Menu'. They list overlapping items (Toast, 4 crepes, 3 specialty toasts, 5 bagel items) at DIFFERENT prices (Express ~$0.75-1.00 higher) — a real disagreement between two first-party listings on the operator's own system, not merged. Used the smaller 'Aromas: Crepes, Toast, Bagels' merchant's prices for those overlapping items because they are externally corroborated by a dated campus-newspaper article (specialty toast reported as increased from $8.75 to $9.50, matching this merchant's $9.50); Express's prices for the same items were not used and are presumably a later, further price increase not yet reflected in the smaller merchant. All other (non-overlapping) items came only from Express and are filed at Express's price. Many espresso/tea/coffee drinks price at $0.00 base and require a required 'Size' (or similar) selection with no free option — filed at the cheapest required option's price per the from-price rule, each flagged individually in that dish's notes via the section/price combo (see per-item from-price disclosure baked into price selection above; cheapest required Size chosen, secondary optional modifiers like milk/syrup ignored).",
+    "dishes": [
+      {
+        "name": "Toast",
+        "description": "",
+        "price": "$2.75",
+        "section": "Aromas: Crepes, Toast, Bagels / Toast"
+      },
+      {
+        "name": "Veggie Crepe",
+        "description": "",
+        "price": "$11.50",
+        "section": "Aromas: Crepes, Toast, Bagels / Crepes"
+      },
+      {
+        "name": "Meaty Crepe",
+        "description": "",
+        "price": "$13.25",
+        "section": "Aromas: Crepes, Toast, Bagels / Crepes"
+      },
+      {
+        "name": "Fajita Crepe",
+        "description": "",
+        "price": "$13.25",
+        "section": "Aromas: Crepes, Toast, Bagels / Crepes"
+      },
+      {
+        "name": "Caprese Crepe",
+        "description": "",
+        "price": "$11.50",
+        "section": "Aromas: Crepes, Toast, Bagels / Crepes"
+      },
+      {
+        "name": "Nutella & Fruit Crepe",
+        "description": "",
+        "price": "$13.25",
+        "section": "Aromas: Crepes, Toast, Bagels / Crepes"
+      },
+      {
+        "name": "Honey Avocado Almond Toast",
+        "description": "",
+        "price": "$9.50",
+        "section": "Aromas: Crepes, Toast, Bagels / Specialty Toast"
+      },
+      {
+        "name": "Smashed Chickpea Toast",
+        "description": "",
+        "price": "$9.50",
+        "section": "Aromas: Crepes, Toast, Bagels / Specialty Toast"
+      },
+      {
+        "name": "Avocado, Bacon and Chipotle Ranch Toast",
+        "description": "",
+        "price": "$9.50",
+        "section": "Aromas: Crepes, Toast, Bagels / Specialty Toast"
+      },
+      {
+        "name": "Build a Bagel",
+        "description": "",
+        "price": "$3.50",
+        "section": "Aromas: Crepes, Toast, Bagels / Bagel Bar and Specialty Bagel"
+      },
+      {
+        "name": "Smoked Salmon Bagel",
+        "description": "",
+        "price": "$15.75",
+        "section": "Aromas: Crepes, Toast, Bagels / Bagel Bar and Specialty Bagel"
+      },
+      {
+        "name": "Veggie Bagel",
+        "description": "",
+        "price": "$11.25",
+        "section": "Aromas: Crepes, Toast, Bagels / Bagel Bar and Specialty Bagel"
+      },
+      {
+        "name": "Turkey Bagel Sandwich",
+        "description": "",
+        "price": "$13.50",
+        "section": "Aromas: Crepes, Toast, Bagels / Bagel Bar and Specialty Bagel"
+      },
+      {
+        "name": "Ham Bagel Sandwich",
+        "description": "",
+        "price": "$13.50",
+        "section": "Aromas: Crepes, Toast, Bagels / Bagel Bar and Specialty Bagel"
+      },
+      {
+        "name": "Coffee",
+        "description": "",
+        "price": "$3.40",
+        "section": "Aromas Express: Full Menu / Coffee of the Day"
+      },
+      {
+        "name": "Latte",
+        "description": "",
+        "price": "$5.30",
+        "section": "Aromas Express: Full Menu / Espresso Drinks"
+      },
+      {
+        "name": "Flavored Latte",
+        "description": "",
+        "price": "$5.90",
+        "section": "Aromas Express: Full Menu / Espresso Drinks"
+      },
+      {
+        "name": "Caramel Machiatto",
+        "description": "",
+        "price": "$5.85",
+        "section": "Aromas Express: Full Menu / Espresso Drinks"
+      },
+      {
+        "name": "White Mocha",
+        "description": "",
+        "price": "$5.90",
+        "section": "Aromas Express: Full Menu / Espresso Drinks"
+      },
+      {
+        "name": "Mocha",
+        "description": "",
+        "price": "$5.80",
+        "section": "Aromas Express: Full Menu / Espresso Drinks"
+      },
+      {
+        "name": "Cappuccino",
+        "description": "",
+        "price": "$5.35",
+        "section": "Aromas Express: Full Menu / Espresso Drinks"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$4.10",
+        "section": "Aromas Express: Full Menu / Espresso Drinks"
+      },
+      {
+        "name": "Chocolate Shaken Espresso",
+        "description": "",
+        "price": "$6.00",
+        "section": "Aromas Express: Full Menu / Espresso Drinks"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$2.60",
+        "section": "Aromas Express: Full Menu / Espresso Drinks"
+      },
+      {
+        "name": "Freeze Dried Strawberry  Refresher 16z",
+        "description": "",
+        "price": "$6.50",
+        "section": "Aromas Express: Full Menu / Specialty Drinks"
+      },
+      {
+        "name": "Dragon Fruit Refresher (Energy) 16z",
+        "description": "",
+        "price": "$6.50",
+        "section": "Aromas Express: Full Menu / Specialty Drinks"
+      },
+      {
+        "name": "Peach Refresher 16z",
+        "description": "",
+        "price": "$6.50",
+        "section": "Aromas Express: Full Menu / Specialty Drinks"
+      },
+      {
+        "name": "Pink & Strawberry Refresher 16z",
+        "description": "",
+        "price": "$6.50",
+        "section": "Aromas Express: Full Menu / Specialty Drinks"
+      },
+      {
+        "name": "Mango Passion Fruit Refresher 16z",
+        "description": "",
+        "price": "$6.50",
+        "section": "Aromas Express: Full Menu / Specialty Drinks"
+      },
+      {
+        "name": "Blue Razz Fruit Refresher 16z",
+        "description": "",
+        "price": "$6.50",
+        "section": "Aromas Express: Full Menu / Specialty Drinks"
+      },
+      {
+        "name": "Chai Tea Latte",
+        "description": "",
+        "price": "$5.65",
+        "section": "Aromas Express: Full Menu / Tea& Tea Latte"
+      },
+      {
+        "name": "Loose Leaf Tea",
+        "description": "",
+        "price": "$3.50",
+        "section": "Aromas Express: Full Menu / Tea& Tea Latte"
+      },
+      {
+        "name": "Tea Lemonade",
+        "description": "",
+        "price": "$3.95",
+        "section": "Aromas Express: Full Menu / Tea& Tea Latte"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "",
+        "price": "$4.00",
+        "section": "Aromas Express: Full Menu / Hot Chocolate"
+      },
+      {
+        "name": "Egg & Cheese Melt Sandwich",
+        "description": "",
+        "price": "$9.75",
+        "section": "Aromas Express: Full Menu / Focaccia Sandwiches"
+      },
+      {
+        "name": "Sausage, Egg & Cheese Focaccia Sandwich",
+        "description": "",
+        "price": "$9.75",
+        "section": "Aromas Express: Full Menu / Focaccia Sandwiches"
+      },
+      {
+        "name": "Bacon, Egg & Cheese Focacia Sandwich",
+        "description": "",
+        "price": "$11.50",
+        "section": "Aromas Express: Full Menu / Focaccia Sandwiches"
+      },
+      {
+        "name": "Chorizo, Egg and Cheese Focaccia Sandwich",
+        "description": "",
+        "price": "$11.50",
+        "section": "Aromas Express: Full Menu / Focaccia Sandwiches"
+      },
+      {
+        "name": "Chicken Pesto Focaccia Sandwich",
+        "description": "",
+        "price": "$14.50",
+        "section": "Aromas Express: Full Menu / Focaccia Sandwiches"
+      },
+      {
+        "name": "Avocado Garden Crepe",
+        "description": "",
+        "price": "$12.25",
+        "section": "Aromas Express: Full Menu / Crepes"
+      },
+      {
+        "name": "Berry Bliss Crepe",
+        "description": "",
+        "price": "$12.25",
+        "section": "Aromas Express: Full Menu / Crepes"
+      },
+      {
+        "name": "Chicken Mozzarella Crepe",
+        "description": "",
+        "price": "$14.25",
+        "section": "Aromas Express: Full Menu / Crepes"
+      },
+      {
+        "name": "Strawberry Cheesecake Crepe",
+        "description": "",
+        "price": "$12.25",
+        "section": "Aromas Express: Full Menu / Crepes"
+      },
+      {
+        "name": "Chicken Pesto Crepe",
+        "description": "",
+        "price": "$14.25",
+        "section": "Aromas Express: Full Menu / Crepes"
+      },
+      {
+        "name": "Mediterranean Toast",
+        "description": "",
+        "price": "$9.25",
+        "section": "Aromas Express: Full Menu / Specialty Toast"
+      },
+      {
+        "name": "Coastal Caprese Toast",
+        "description": "",
+        "price": "$10.25",
+        "section": "Aromas Express: Full Menu / Specialty Toast"
+      },
+      {
+        "name": "Peant Butter Banana Crunch Toast",
+        "description": "",
+        "price": "$9.25",
+        "section": "Aromas Express: Full Menu / Specialty Toast"
+      },
+      {
+        "name": "Green Goddess Cottage Toast Toast",
+        "description": "",
+        "price": "$10.25",
+        "section": "Aromas Express: Full Menu / Specialty Toast"
+      },
+      {
+        "name": "Berry Almond Bliss Toast",
+        "description": "",
+        "price": "$9.25",
+        "section": "Aromas Express: Full Menu / Specialty Toast"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "",
+        "price": "$9.75",
+        "section": "Aromas Express: Full Menu / Gluten Free Quesadillas"
+      },
+      {
+        "name": "Chicken or Steak Quesadiila",
+        "description": "",
+        "price": "$11.00",
+        "section": "Aromas Express: Full Menu / Gluten Free Quesadillas"
+      },
+      {
+        "name": "Plain Croissant",
+        "description": "",
+        "price": "$4.00",
+        "section": "Aromas Express: Full Menu / Pastries"
+      },
+      {
+        "name": "Chocolate Croissant",
+        "description": "",
+        "price": "$4.75",
+        "section": "Aromas Express: Full Menu / Pastries"
+      },
+      {
+        "name": "Blueberry Muffin",
+        "description": "",
+        "price": "$5.00",
+        "section": "Aromas Express: Full Menu / Pastries"
+      },
+      {
+        "name": "Chocolate Chip Muffin",
+        "description": "",
+        "price": "$5.00",
+        "section": "Aromas Express: Full Menu / Pastries"
+      },
+      {
+        "name": "Cinnamon Roll",
+        "description": "",
+        "price": "$4.75",
+        "section": "Aromas Express: Full Menu / Pastries"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1202",
+    "name": "El Paso Bar",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-web-presence: MapQuest confirms the address (113 S Coast Hwy Ste 104, Oceanside, CA 92054) and lists garbled/inconsistent hours, but no website, ordering platform, or priced menu source was found under this name; a possible same-address successor name was not pursued for this restaurant's record per the branch/successor-isolation rule (a successor's menu cannot be filed under this id anyway). Lack of findability is a search limitation, not confirmed closure, so blocked rather than not_found."
+  },
+  {
+    "restaurantId": "5598",
+    "name": "Chicken & Crown",
+    "sourceUrl": "https://www.legoland.com/california/things-to-do/theme-park/dining/chicken-and-crown/",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "Legoland's own official page loads, describes the food, and publishes zero itemized prices site-wide; Legoland sells park dining through per-person \"Dining Package\" passes and kiosk-only ordering (corroborated by Yelp reviews mentioning kiosk-only ordering), not itemized menu prices. Theme-park concession stand, the standard not_found case."
+  },
+  {
+    "restaurantId": "5597",
+    "name": "Churro Con Chocolate",
+    "sourceUrl": "https://www.legoland.com/california/things-to-do/theme-park/dining/churro-con-chocolate/",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "Same as Chicken & Crown (id 5598): Legoland's own page describes the item with zero prices anywhere on the page or site; theme-park concession stand paid for via per-person dining passes, not itemized pricing. Standard not_found case."
+  },
+  {
+    "restaurantId": "2507",
+    "name": "Club 42 Tequila Bar",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-web-presence: confirmed as a real, recently opened (Nov 2024, per the airport's own Instagram) bar inside San Diego International Airport Terminal 2's \"Sunset Cove\" food court (address matches worklist: 3225 N Harbor Dr). No priced source found: san.org/shop-dine/ does not list it on a direct fetch, Yelp's menu tab is barred as a source outright, and directory/aggregator pages (MapQuest, Atly, Untappd, a travel blog) describe it but publish no prices. Needs a browser or the airport's own ordering app (not identified) to find pricing."
+  }
+]

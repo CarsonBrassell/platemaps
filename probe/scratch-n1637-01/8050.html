@@ -1,0 +1,1699 @@
+<!doctype html >
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      class="ios-preview-native-scroll">
+<head>
+    <meta charset="utf-8">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    window._currentDevice = 'desktop';
+    window.Parameters = window.Parameters || {
+        HomeUrl: 'https://www.themorninggrove.com/',
+
+        SystemID: 'US_DIRECT_PRODUCTION',
+        SiteAlias: 'af0639b3',
+        SiteType: atob('RFVEQU9ORQ=='),
+        PublicationDate: 'Sep 24, 2025',
+        ExternalUid: null,
+        IsSiteMultilingual: false,
+        InitialPostAlias: '',
+        InitialPostPageUuid: '',
+        InitialDynamicItem: '',
+        DynamicPageInfo: {
+            isDynamicPage: false,
+            base64JsonRowData: 'null',
+        },
+        InitialPageAlias: 'home',
+        InitialPageUuid: '113e0bf6bd7640bdb48e30c74057e8a4',
+        InitialPageId: '1187722350',
+        InitialEncodedPageAlias: 'aG9tZQ==',
+        InitialHeaderUuid: '6fe6edc96d3742a68b30b7d06f8f27e4',
+        CurrentPageUrl: '',
+        IsCurrentHomePage: true,
+        AllowAjax: false,
+        AfterAjaxCommand: null,
+        HomeLinkText: 'Back To Home',
+        UseGalleryModule: false,
+        CurrentThemeName: 'Layout Theme',
+        ThemeVersion: '500000',
+        DefaultPageAlias: '',
+        RemoveDID: true,
+        WidgetStyleID: null,
+        IsHeaderFixed: false,
+        IsHeaderSkinny: false,
+        IsBfs: true,
+        StorePageAlias: 'null',
+        StorePagesUrls: 'e30=',
+        IsNewStore: 'false',
+        StorePath: '',
+        StoreId: 'null',
+        StoreVersion: 0,
+        StoreBaseUrl: '',
+        StoreCleanUrl: true,
+        StoreDisableScrolling: true,
+        IsStoreSuspended: false,
+        HasCustomDomain: true,
+        SimpleSite: false,
+        showCookieNotification: false,
+        cookiesNotificationMarkup: 'null',
+        translatedPageUrl: '',
+        isFastMigrationSite: false,
+        sidebarPosition: 'NA',
+        currentLanguage: 'en',
+        currentLocale: 'en',
+        NavItems: '{}',
+        errors: {
+            general: 'There was an error connecting to the page.<br/> Make sure you are not offline.',
+            password: 'Incorrect name/password combination',
+            tryAgain: 'Try again'
+        },
+        
+        mapConsent: {
+            message: 'This content is served by a third party, {0}. If enabled, {0} may collect information about your activity.',
+            enable: 'Enable'
+        },
+        NavigationAreaParams: {
+            ShowBackToHomeOnInnerPages: true,
+            NavbarSize: -1,
+            NavbarLiveHomePage: 'https://www.themorninggrove.com/',
+            BlockContainerSelector: '.dmBody',
+            NavbarSelector: '#dmNav:has(a)',
+            SubNavbarSelector: '#subnav_main'
+        },
+        hasCustomCode: true,
+        planID: '7',
+        customTemplateId: 'null',
+        siteTemplateId: 'null',
+        productId: 'DM_DIRECT',
+        disableTracking: false,
+        pageType: 'FROM_SCRATCH',
+        isRuntimeServer: true,
+        isInEditor: false,
+        isInPreview: false,
+        hasNativeStore: false,
+        defaultLang: 'en',
+        hamburgerMigration: null,
+        isFlexSite: true
+    };
+
+    window.Parameters.LayoutID = {};
+    window.Parameters.LayoutID[window._currentDevice] = 30;
+    window.Parameters.LayoutVariationID = {};
+    window.Parameters.LayoutVariationID[window._currentDevice] = 5;
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Injecting site-wide to the head -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="d_track_campaign">
+    (function() {
+        if (!window.location.search) {
+            return;
+        }
+        const cleanParams = window.location.search.substring(1); // Strip ?
+        const queryParams = cleanParams.split('&');
+
+        const expires = 'expires=' + new Date().getTime() + 24 * 60 * 60 * 1000;
+        const domain = 'domain=' + window.location.hostname;
+        const path = "path=/";
+
+        queryParams.forEach((param) => {
+            const [key, value = ''] = param.split('=');
+            if (key.startsWith('utm_')) {
+                const cookieName = "_dm_rt_" + key.substring(4);
+                const cookie = cookieName + "=" + value;
+                const joined = [cookie, expires, domain, path].join(";");
+                document.cookie = joined;
+            }
+        });
+    }());
+</script>
+<script type="text/javascript" id="d_track_referrer">
+    (function() {
+        const cookieName = '_dm_entry_referrer';
+        const referrer = document.referrer;
+        if (!referrer) {
+            return;
+        }
+        let referrerOrigin;
+        try {
+            referrerOrigin = new URL(referrer).origin;
+        } catch (e) {
+            return;
+        }
+        // 'null' is what an opaque origin (sandboxed iframe, file://) serializes to.
+        if (!referrerOrigin || referrerOrigin === 'null' || referrerOrigin === window.location.origin) {
+            return;
+        }
+        try {
+            const existing = document.cookie
+                .split('; ')
+                .find((candidate) => candidate.indexOf(cookieName + '=') === 0);
+            if (existing && decodeURIComponent(existing.slice(cookieName.length + 1))) {
+                return;
+            }
+            // No expiry: session-scoped, matching the _dm_rt_ cookies above that a submission
+            // reads alongside this one (session-scoped in practice â see FBN-5389).
+            const secure = window.location.protocol === 'https:' ? ';Secure' : '';
+            document.cookie = cookieName + '=' + encodeURIComponent(referrerOrigin)
+                + ';path=/;SameSite=Lax' + secure;
+        } catch (e) {
+            return;
+        }
+    }());
+</script>
+<script type="text/javascript" >
+    var _dm_gaq = {};
+    var _gaq = _gaq || [];
+    var _dm_insite = [];
+</script>
+
+
+
+
+
+
+<!-- End Injecting site-wide to the head -->
+
+<!-- Inject secured cdn script -->
+
+
+<!-- ========= Meta Tags ========= -->
+<!-- PWA settings -->
+<script>
+    function toHash(str) {
+        var hash = 5381, i = str.length;
+        while (i) {
+            hash = hash * 33 ^ str.charCodeAt(--i)
+        }
+        return hash >>> 0
+    }
+</script>
+<script>
+    (function (global) {
+    //const cacheKey = global.cacheKey;
+    const isOffline = 'onLine' in navigator && navigator.onLine === false;
+    const hasServiceWorkerSupport = 'serviceWorker' in navigator;
+    if (isOffline) {
+        console.log('offline mode');
+    }
+    if (!hasServiceWorkerSupport) {
+        console.log('service worker is not supported');
+    }
+    if (hasServiceWorkerSupport && !isOffline) {
+        window.addEventListener('load', function () {
+            const serviceWorkerPath = '/runtime-service-worker.js?v=3';
+            navigator.serviceWorker
+                .register(serviceWorkerPath, { scope: './' })
+                .then(
+                    function (registration) {
+                        // Registration was successful
+                        console.log(
+                            'ServiceWorker registration successful with scope: ',
+                            registration.scope
+                        );
+                    },
+                    function (err) {
+                        // registration failed :(
+                        console.log('ServiceWorker registration failed: ', err);
+                    }
+                )
+                .catch(function (err) {
+                    console.log(err);
+                });
+        });
+
+        // helper function to refresh the page
+        var refreshPage = (function () {
+            var refreshing;
+            return function () {
+                if (refreshing) return;
+                // prevent multiple refreshes
+                var refreshkey = 'refreshed' + location.href;
+                var prevRefresh = localStorage.getItem(refreshkey);
+                if (prevRefresh) {
+                    localStorage.removeItem(refreshkey);
+                    if (Date.now() - prevRefresh < 30000) {
+                        return; // dont go into a refresh loop
+                    }
+                }
+                refreshing = true;
+                localStorage.setItem(refreshkey, Date.now());
+                console.log('refereshing page');
+                window.location.reload();
+            };
+        })();
+
+        function messageServiceWorker(data) {
+            return new Promise(function (resolve, reject) {
+                if (navigator.serviceWorker.controller) {
+                    var worker = navigator.serviceWorker.controller;
+                    var messageChannel = new MessageChannel();
+                    messageChannel.port1.onmessage = replyHandler;
+                    worker.postMessage(data, [messageChannel.port2]);
+                    function replyHandler(event) {
+                        resolve(event.data);
+                    }
+                } else {
+                    resolve();
+                }
+            });
+        }
+    }
+})(window);
+</script>
+<!-- Add manifest -->
+<!-- End PWA settings -->
+
+
+
+<link rel="canonical" href="https://www.themorninggrove.com/">
+
+<meta id="view" name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, viewport-fit=cover">
+<meta name="dm:lcp-preload" content="dm:lcp-frozen">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Home
+</title>
+
+<!--Add favorites icons-->
+
+<link rel="icon" type="image/x-icon" href="https://static.cdn-website.com/runtime/favicon_d1_res.ico"/>
+
+<!-- End favorite icons -->
+<link rel="preconnect" href="https://irp.cdn-website.com"/>
+<link rel="preconnect" href="https://irp.cdn-website.com" crossorigin/>
+<link rel="preconnect" href="https://static.cdn-website.com"/>
+
+
+
+<!-- render the required CSS and JS in the head section -->
+<script id='d-js-dmapi'>
+    window.SystemID = 'US_DIRECT_PRODUCTION';
+
+    if (!window.dmAPI) {
+        window.dmAPI = {
+            registerExternalRuntimeComponent: function () {
+            },
+            getCurrentDeviceType: function () {
+                return window._currentDevice;
+            },
+            runOnReady: (ns, fn) => {
+                const safeFn = dmAPI.toSafeFn(fn);
+                ns = ns || 'global_' + Math.random().toString(36).slice(2, 11);
+                const eventName = 'afterAjax.' + ns;
+
+                if (document.readyState === 'complete') {
+                    $.DM.events.off(eventName).on(eventName, safeFn);
+                    setTimeout(function () {
+                        safeFn({
+                            isAjax: false,
+                        });
+                    }, 0);
+                } else {
+                    window?.waitForDeferred?.('dmAjax', () => {
+                        $.DM.events.off(eventName).on(eventName, safeFn);
+                        safeFn({
+                            isAjax: false,
+                        });
+                    });
+                }
+            },
+            toSafeFn: (fn) => {
+                if (fn?.safe) {
+                    return fn;
+                }
+                const safeFn = function (...args) {
+                    try {
+                        return fn?.apply(null, args);
+                    } catch (e) {
+                        console.log('function failed ' + e.message);
+                    }
+                };
+                safeFn.safe = true;
+                return safeFn;
+            }
+        };
+    }
+
+    if (!window.requestIdleCallback) {
+        window.requestIdleCallback = function (fn) {
+            setTimeout(fn, 0);
+        }
+    }
+</script>
+
+<!-- loadCSS function header.jsp-->
+
+
+
+
+
+
+<script id="d-js-load-css">
+/**
+ * There are a few <link> tags with CSS resource in them that are preloaded in the page
+ * in each of those there is a "onload" handler which invokes the loadCSS callback
+ * defined here.
+ * We are monitoring 3 main CSS files - the runtime, the global and the page.
+ * When each load we check to see if we can append them all in a batch. If threre
+ * is no page css (which may happen on inner pages) then we do not wait for it
+ */
+(function () {
+  let cssLinks = {};
+  function loadCssLink(link) {
+    link.onload = null;
+    link.rel = "stylesheet";
+    link.type = "text/css";
+  }
+  
+    function checkCss() {
+      const pageCssLink = document.querySelector("[id*='CssLink']");
+      const widgetCssLink = document.querySelector("[id*='widgetCSS']");
+
+        if (cssLinks && cssLinks.runtime && cssLinks.global && (!pageCssLink || cssLinks.page) && (!widgetCssLink || cssLinks.widget)) {
+            const storedRuntimeCssLink = cssLinks.runtime;
+            const storedPageCssLink = cssLinks.page;
+            const storedGlobalCssLink = cssLinks.global;
+            const storedWidgetCssLink = cssLinks.widget;
+
+            storedGlobalCssLink.disabled = true;
+            loadCssLink(storedGlobalCssLink);
+
+            if (storedPageCssLink) {
+                storedPageCssLink.disabled = true;
+                loadCssLink(storedPageCssLink);
+            }
+
+            if(storedWidgetCssLink) {
+                storedWidgetCssLink.disabled = true;
+                loadCssLink(storedWidgetCssLink);
+            }
+
+            storedRuntimeCssLink.disabled = true;
+            loadCssLink(storedRuntimeCssLink);
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    storedRuntimeCssLink.disabled = false;
+                    storedGlobalCssLink.disabled = false;
+                    if (storedPageCssLink) {
+                      storedPageCssLink.disabled = false;
+                    }
+                    if (storedWidgetCssLink) {
+                      storedWidgetCssLink.disabled = false;
+                    }
+                    // (SUP-4179) Clear the accumulated cssLinks only when we're
+                    // sure that the document has finished loading and the document 
+                    // has been parsed.
+                    if(document.readyState === 'interactive') {
+                      cssLinks = null;
+                    }
+                }, 0);
+            });
+        }
+    }
+  
+
+  function loadCSS(link) {
+    try {
+      var urlParams = new URLSearchParams(window.location.search);
+      var noCSS = !!urlParams.get("nocss");
+      var cssTimeout = urlParams.get("cssTimeout") || 0;
+
+      if (noCSS) {
+        return;
+      }
+      if (link.href && link.href.includes("d-css-runtime")) {
+        cssLinks.runtime = link;
+        checkCss();
+      } else if (link.id === "siteGlobalCss") {
+        cssLinks.global = link;
+        checkCss();
+      } 
+      
+      else if (link.id && link.id.includes("CssLink")) {
+        cssLinks.page = link;
+        checkCss();
+      } else if (link.id && link.id.includes("widgetCSS")) {
+        cssLinks.widget = link;
+        checkCss();
+      }
+      
+      else {
+        requestIdleCallback(function () {
+          window.setTimeout(function () {
+            loadCssLink(link);
+          }, parseInt(cssTimeout, 10));
+        });
+      }
+    } catch (e) {
+      throw e
+    }
+  }
+  window.loadCSS = window.loadCSS || loadCSS;
+})();
+</script>
+
+
+
+<script data-role="deferred-init" type="text/javascript">
+    /* usage: window.getDeferred(<deferred name>).resolve() or window.getDeferred(<deferred name>).promise.then(...)*/
+    function Def() {
+        this.promise = new Promise((function (a, b) {
+            this.resolve = a, this.reject = b
+        }).bind(this))
+    }
+
+    const defs = {};
+    window.getDeferred = function (a) {
+        return null == defs[a] && (defs[a] = new Def), defs[a]
+    }
+    window.waitForDeferred = function (b, a, c) {
+        let d = window?.getDeferred?.(b);
+        d
+            ? d.promise.then(a)
+            : c && ["complete", "interactive"].includes(document.readyState)
+                ? setTimeout(a, 1)
+                : c
+                    ? document.addEventListener("DOMContentLoaded", a)
+                    : console.error(`Deferred  does not exist`);
+    };
+</script>
+<style id="forceCssIncludes">
+    /* This file is auto-generated from a `scss` file with the same name */
+
+.videobgwrapper{overflow:hidden;position:absolute;z-index:0;width:100%;height:100%;top:0;left:0;pointer-events:none;border-radius:inherit}.videobgframe{position:absolute;width:101%;height:100%;top:50%;left:50%;transform:translateY(-50%) translateX(-50%);object-fit:fill}#dm video.videobgframe{margin:0}@media (max-width:767px){.dmRoot .dmPhotoGallery.newPhotoGallery:not(.photo-gallery-done){min-height:80vh}}@media (min-width:1025px){.dmRoot .dmPhotoGallery.newPhotoGallery:not(.photo-gallery-done){min-height:45vh}}@media (min-width:768px) and (max-width:1024px){.responsiveTablet .dmPhotoGallery.newPhotoGallery:not(.photo-gallery-done){min-height:45vh}}#dm [data-show-on-page-only]{display:none!important}#dmRoot div.stickyHeaderFix div.site_content{margin-top:0!important}#dmRoot div.stickyHeaderFix div.hamburger-header-container{position:relative}@media (min-width:768px) and (max-width:1024px){.responsiveTablet #dm .dmInner .hide-for-medium,[data-hidden-on-tablet]{display:none!important}}
+    
+
+</style>
+<style id="cssVariables" type="text/css">
+    :root {
+  --color_1: rgba(231,208,155,1);
+  --color_2: rgba(114, 86, 64, 1);
+  --color_3: rgba(149, 101, 58, 1);
+  --color_4: rgba(204, 182, 162, 1);
+  --color_5: rgba(222, 215, 208, 1);
+  --color_6: rgba(199, 178, 154, 1);
+  --color_7: rgba(255, 255, 255, 1);
+  --max-content-width_1: 1200px;
+}
+</style>
+
+
+<style id="hideAnimFix">
+  .dmDesktopBody:not(.editGrid) [data-anim-desktop]:not([data-anim-desktop='none']), .dmDesktopBody:not(.editGrid) [data-anim-extended] {
+    visibility: hidden;
+  }
+
+  .dmDesktopBody:not(.editGrid) .dmNewParagraph[data-anim-desktop]:not([data-anim-desktop='none']), .dmDesktopBody:not(.editGrid) .dmNewParagraph[data-anim-extended] {
+    visibility: hidden !important;
+  }
+
+  #dmRoot:not(.editGrid) .flex-element [data-anim-extended] {
+    visibility: hidden;
+  }
+
+</style>
+
+
+
+<style id="criticalCss">
+    @charset "UTF-8";#flex-sticky [data-layout-grid]>.flex-element.group>.flex-element.group>.flex-element.inner-grid,.flex-element.inner-grid,[data-layout-grid],[data-widget-type]:has(>.dmWidget.flexButton){-ms-grid-columns:minmax(0,1fr);grid-template-columns:minmax(0,1fr)}@font-face{font-family:'Work Sans';font-style:normal;font-weight:100 900;font-display:swap;src:url(https://irp.cdn-website.com/fonts/s/worksans/v24/QGYsz_wNahGAdqQ43Rh_fKDp.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Poppins;font-style:normal;font-weight:400;font-display:swap;src:url(https://irp.cdn-website.com/fonts/s/poppins/v24/pxiEyp8kv8JHgFVrJJfecg.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Aboreto;font-style:normal;font-weight:400;font-display:swap;src:url(https://irp.cdn-website.com/fonts/s/aboreto/v2/5DCXAKLhwDDQ4N8bpKPUAg.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Poppins;font-style:normal;font-weight:600;font-display:swap;src:url(https://irp.cdn-website.com/fonts/s/poppins/v24/pxiByp8kv8JHgFVrLEj6Z1xlFQ.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Poppins;font-style:normal;font-weight:700;font-display:swap;src:url(https://irp.cdn-website.com/fonts/s/poppins/v24/pxiByp8kv8JHgFVrLCz7Z1xlFQ.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}:root{--color_1:rgba(231,208,155,1);--color_2:rgba(114, 86, 64, 1);--color_3:rgba(149, 101, 58, 1);--color_4:rgba(204, 182, 162, 1);--color_5:rgba(222, 215, 208, 1);--color_6:rgba(199, 178, 154, 1);--color_7:rgba(255, 255, 255, 1);--max-content-width_1:1200px;--hover-transform-zoomout:scale(1.06);--hover-transform-float:translateY(-8px);--hover-transform-forward:translateX(8px);--hover-transform-shrink:scale(0.9);--hover-transform-move-top:translateY(-10px);--hover-transform-move-bottom:translateY(10px);--hover-transform-move-left:translateX(-10px);--hover-transform-move-right:translateX(10px);--hover-transform-rotate:rotate(7deg);--hover-transform-opacity:0.7;--hover-scroll-transform:translate3d(0, 0, 0)}[data-layout-grid]{display:-ms-grid;display:grid;justify-content:start;align-items:start}[data-layout-grid]>.flex-element.group{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;justify-self:center;align-self:start;order:0;max-width:1200px}[data-layout-grid]>.flex-element.group>.flex-element.group{align-items:flex-start;align-self:stretch}.flex-element.group,.flex-element.inner-grid,[data-layout-grid],[data-layout-grid]>.flex-element.group,[data-layout-grid]>.flex-element.group>.flex-element.group{background-size:cover;background-repeat:no-repeat;background-position:50% 50%;position:relative}.flex-element.group,[data-layout-grid]>.flex-element.group>.flex-element.group{max-width:100%;display:flex;flex-direction:column;justify-content:center}.flex-element.inner-grid{display:-ms-grid;display:grid;justify-content:start;align-items:start;column-gap:0;row-gap:0;width:50%}.flex-element.widget-wrapper{position:relative;min-width:10px;min-height:10px}#dm [data-flex-id] .widget-wrapper>[data-element-type]{width:100%;height:100%;margin:0;padding:0}[data-flex-id] .widget-wrapper [data-element-type=image] img,[data-flex-id] .widget-wrapper [data-element-type=image] img[width][height]{object-fit:cover;width:100%;height:100%}[data-flex-id] .flex-element.grid>.flex-element,[data-flex-id] .flex-element.inner-grid>.flex-element{-ms-grid-column:1;grid-column-start:1;-ms-grid-column-span:1;grid-column-end:span 1;-ms-grid-row:1;grid-row-start:1;-ms-grid-row-span:1;grid-row-end:span 1}[data-widget-type]:has(>.dmWidget.flexButton){display:-ms-grid;display:grid;-ms-grid-rows:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}#flex-header [data-widget-type=image]{text-align:center}@media (min-width:1025px){#flex-header[data-overlapping-common=true]{background-color:var(--overlapping-background-color);background-image:var(--overlapping-background-image);position:absolute!important;width:100%!important;z-index:101}#flex-header[data-overlapping-common=true]~.layout-drawer{z-index:101}}@media (min-width:768px) and (max-width:1024px){#flex-header[data-overlapping-common=true]:not([data-overlapping-tablet=false]){background-color:var(--overlapping-background-color);background-image:var(--overlapping-background-image);position:absolute!important;width:100%!important;z-index:101}#flex-header[data-overlapping-common=true]:not([data-overlapping-tablet=false])~.layout-drawer{z-index:101}}@media (max-width:767px){#flex-header[data-overlapping-common=true]:not([data-overlapping-mobile=false]){background-color:var(--overlapping-background-color);background-image:var(--overlapping-background-image);position:absolute!important;width:100%!important;z-index:101}#flex-header[data-overlapping-common=true]:not([data-overlapping-mobile=false])~.layout-drawer{z-index:101}}#site_content,.dmInner,[data-flex-id]{position:relative}.dmInner{background:#fff;min-width:auto!important}a,button{font-family:inherit}.text-align-center{text-align:center}#dmRoot{text-decoration-skip-ink:none}[data-layout-grid]{-ms-grid-rows:minmax(0,max-content)!important;grid-template-rows:minmax(0,max-content)!important}.flex-widgets-container{display:none}body.fix-mobile-scrolling{overflow:initial}html{font-family:Source Sans Pro;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}*,:after,:before{box-sizing:border-box}.dmInner ul:not(.defaultList){padding:1px}.clearfix,a,img,li,ul{vertical-align:top}.dmOuter{word-wrap:break-word}img{max-width:100%;-ms-interpolation-mode:bicubic;display:inline-block}#dmFlexHeaderContainer{display:inline}#flex-sticky{position:fixed;inset:0;z-index:20}#flex-sticky [data-layout-grid]>.flex-element.group>.flex-element.group>.flex-element.inner-grid{width:100vw;height:100dvh;-ms-grid-rows:1fr;grid-template-rows:1fr}#flex-sticky [data-layout-grid]>.flex-element.group>.flex-element.group>.flex-element.inner-grid>.flex-element{-ms-grid-row:1;-ms-grid-row-span:1;-ms-grid-column:1;-ms-grid-column-span:1;grid-area:1/1/2/2;max-width:fill-available;max-width:-webkit-fill-available}@media (min-width:1025px){[data-hidden-on-desktop]{display:none!important}[data-layout-grid]>.flex-element.group{max-width:var(--max-content-full_1,var(--max-content-width_1,1200px))}[data-version] [class*=" size-"],[data-version] [class^=font-size-]{font-size:calc(var(--font-size) * var(--font-unit,1px))!important}}@media (min-width:768px) and (max-width:1024px){[data-hidden-on-tablet]{display:none!important}[data-version] [class*=" t-font-size-"],[data-version] [class*=" t-size-"],[data-version] [class^=t-size-]{font-size:calc(var(--font-size) * var(--t-font-unit,1px))!important}}@media (max-width:767px){[data-hidden-on-mobile]{display:none!important}[data-version] [class*=" m-font-size-"],[data-version] [class*=" m-size-"]{font-size:calc(var(--font-size) * var(--m-font-unit,1px))!important}}@supports (-webkit-touch-callout:none){.flex-element.grid,.flex-element.group{background-attachment:scroll!important}}@media (max-width:1024px){[data-layout-grid]>.flex-element.group{max-width:1200px}}body{container-type:inline-size;container-name:body;-webkit-overflow-scrolling:touch}:not(.runtime-module-container) .layout-drawer,:not(.runtime-module-container) .layout-drawer-overlay{visibility:hidden}:not(.runtime-module-container) .layout-drawer{position:fixed;transform:translate(-100%,-100%)}:not(.runtime-module-container) .layout-drawer[data-origin=side-reverse]{transform:translate(100%,0)}:not(.runtime-module-container) .layout-drawer-overlay{opacity:0}.runtime-module-container{width:100%}.runtime-module-container .layout-drawer,.runtime-module-container .layout-drawer-overlay{visibility:visible;height:100%;position:fixed;top:0;left:0}.runtime-module-container .layout-drawer{background-color:#fff;width:75vw;transform:translate(-100%,0);overflow:auto;-webkit-overflow-scrolling:auto;z-index:13;display:flex;flex-direction:column}.runtime-module-container .layout-drawer[data-origin=side-reverse]{transform:translate(100%,0);left:auto;right:0}.runtime-module-container .layout-drawer-overlay{width:100vw;background-color:rgba(0,0,0,.4);opacity:0;z-index:6}@media (min-width:1025px){[data-flex-site] .layout-drawer:not([data-origin=top]){width:30vw}}@media (min-width:768px) and (max-width:1024px){[data-flex-site] .layout-drawer:not([data-origin=top]){width:50vw}}@media (max-width:767px){[data-flex-site] .layout-drawer:not([data-origin=top]){width:80vw}#dm .dmInner .dmWidget{width:100%}}[data-flex-site] .layout-drawer [data-flex-id]{flex:1 0 auto;transform:translateZ(0)}.main-navigation.unifiednav{justify-content:space-around;align-items:stretch;display:flex;overflow:visible}.main-navigation.unifiednav ul{margin:0;padding:0;font-size:1rem;list-style:none}.main-navigation.unifiednav .unifiednav__container{flex-grow:1;list-style:none;display:flex}.main-navigation.unifiednav .unifiednav__container>.unifiednav__item-wrap{justify-content:flex-start;font-weight:400;display:flex;position:relative}.main-navigation.unifiednav .unav-top>.unifiednav__item-wrap:after,.main-navigation.unifiednav .unav-top>.unifiednav__item-wrap:before{content:"";align-self:center;font-weight:700}.main-navigation.unifiednav :where(.unav-item){color:inherit;font-weight:inherit;letter-spacing:.03em;flex-direction:row;justify-content:flex-start;align-items:center;margin:0;padding:12px 15px;text-decoration:none;display:flex;position:relative}.main-navigation.unifiednav .unav-top-item{padding:0 15px}.main-navigation.unifiednav .unav-top-item .nav-item-text:after,.main-navigation.unifiednav .unav-top-item .nav-item-text:before{content:"";opacity:0;border:0 solid transparent;border-top-color:currentColor;width:100%;height:0;display:block}.main-navigation.unifiednav .unav-top-item:is(.dmNavItemSelected,:hover,.hover) .nav-item-text:after,.main-navigation.unifiednav .unav-top-item:is(.dmNavItemSelected,:hover,.hover) .nav-item-text:before{opacity:1}.main-navigation.unifiednav .unav-item .nav-item-text{white-space:nowrap}.main-navigation.unifiednav:is(.effect-bottom,.effect-bottom2,.effect-top-bottom){padding:calc(10px - .2em) 15px}.main-navigation.unifiednav:is(.effect-top-bottom,.effect-bottom,.effect-bottom2) .unav-top-item .nav-item-text:after{margin-top:.2em}.main-navigation.unifiednav:is(.effect-top-bottom,.effect-bottom,.effect-bottom2) .unav-top-item .nav-item-text:before{margin-bottom:.2em}.main-navigation.unifiednav:is(.effect-bottom,.effect-bottom2) .unav-top-item .nav-item-text:after,.main-navigation.unifiednav:is(.effect-bottom,.effect-bottom2) .unav-top-item .nav-item-text:before{border-top-width:2px;transform:scaleX(0)}.main-navigation.unifiednav:is(.effect-bottom,.effect-bottom2) .unav-top-item .nav-item-text:before{border-top-color:transparent}.main-navigation.unifiednav:is(.effect-bottom,.effect-bottom2) .unav-top-item:is(.dmNavItemSelected,:hover,.hover) .nav-item-text:after,.main-navigation.unifiednav:is(.effect-bottom,.effect-bottom2) .unav-top-item:is(.dmNavItemSelected,:hover,.hover) .nav-item-text:before{transform:scaleX(1)}.main-navigation.unifiednav .icon{display:none}.main-navigation.unifiednav:not(.unifiednav_vertical)>.unifiednav__container{justify-content:inherit}#dm .main-navigation.unifiednav[data-nav-structure=VERTICAL]:is([data-show-vertical-sub-items=HIDE],[data-show-vertical-sub-items=HOVER])>.unav-top>.unifiednav__item-wrap .unav-item.dmNavItemSelected>.nav-item-text .icon:before{transform:rotate(180deg)}#dm .main-navigation.unifiednav:not([data-nav-structure=VERTICAL])>.unifiednav__container{justify-content:inherit;flex-wrap:wrap}#dm .main-navigation.unifiednav:not([data-nav-structure=VERTICAL])>.unifiednav__container .nav-item-text:before{text-align:left}#dm .dmInner .dmWidget:not(.displayNone){display:inline-block}#dm .dmInner .dmWidget:not(.flexButton):not(.displayNone)[data-display-type=block]{display:block}#dm .dmInner .dmWidget.flexButton:not(.displayNone){display:flex}#dm .dmInner .dmWidget.flexButton{display:flex;align-items:center;justify-content:center;padding:10px 7px}#dm .dmInner .dmWidget.flexButton .text{padding:0!important;flex-grow:1;max-width:max-content}#dm .dmInner .dmWidget.flexButton:after{display:none}#dm .dmInner .dmWidget{text-decoration:none;margin:10px 0;clear:both;position:relative;text-align:center;line-height:22px;box-shadow:none;background-image:none;padding:0;height:auto;border-style:solid;white-space:nowrap}#dm .dmInner .dmWidget:after{content:"";display:inline-block;height:100%;vertical-align:middle;width:0;margin-right:-.25em}#dm .dmInner .dmWidget .iconBg{position:absolute;left:0;width:50px;top:50%;margin-top:-13px}#dm .dmWidget .text{display:inline-block;vertical-align:middle;font-size:1.125em;line-height:normal;white-space:normal;padding:10px 7px;max-width:98%}#dm div.dmContent [class*=" icon-"],[class*=" icon-"]{font-family:FontAwesome!important;font-weight:400;font-style:normal;text-decoration:inherit;-webkit-font-smoothing:antialiased}[class*=" icon-"]:before{text-decoration:none;display:inline-block;speak:none}a [class*=" icon-"]{display:inline}[class*=" icon-"]{display:inline;width:auto;height:auto;line-height:normal;vertical-align:baseline;background-image:none;background-position:0 0;background-repeat:repeat;margin-top:0}.icon-star:before{content:"\f005"}.icon-angle-down:before{content:"\f107"}.hamburgerButton{display:block;background-color:transparent;border:0;padding:0;margin:0}.hamburgerButton,.hamburgerButton svg{width:100%;height:100%}.dmNewParagraph[data-version] .text-align-center{text-align:center!important}.dmNewParagraph[data-version]{line-height:initial}.dmNewParagraph[data-version] [class*=size-]{width:auto!important;height:auto!important}.dmNewParagraph[data-version] h1,.dmNewParagraph[data-version] h4,.dmNewParagraph[data-version] p{margin-top:0;margin-bottom:0}.dmPhotoGalleryHolder{text-align:center;font-size:medium!important;margin:0;list-style:none}#dm .dmPhotoGallery.newPhotoGallery .dmPhotoGalleryHolder{width:100%;padding:0;display:none}#dm .dmPhotoGallery.newPhotoGallery .layout-container .photogallery-column .photoGalleryThumbs .image-container a img{display:none!important}#dm .dmPhotoGallery .dmPhotoGalleryHolder{width:100%;padding:0}.graphicWidget{width:200px;height:200px;margin:10px auto;text-align:center}.graphicWidget svg.svg{width:100%;height:100%;color:#000;fill:#000}.imageWidget img[width][height],img[width][height]{height:auto}.imageWidget{position:relative}[data-flex-site] #flex-header .imageWidget:after{content:none}[data-flex-site] #flex-header .imageWidget:before{font-size:80px;transform:none}@media (min-width:1025px){#dm div.dmInner,#dm div.dmNewParagraph p{font-size:18px}#dm DIV.dmOuter DIV.dmInner{background-image:none;background-color:var(--color_3)}#dm div.dmContent h1{font-size:50px}#dm div.flex_hfcontainer h4{font-size:20px}.button_2,:root{--btn-text-font-size:14px}}@media (min-width:768px) and (max-width:1024px){#dm div.dmInner,#dm div.dmNewParagraph p{font-size:16px}#dm div.dmContent h1{font-size:50px}#dm div.flex_hfcontainer h4{font-size:20px}.button_2,:root{--btn-text-font-size:16px}:root{--section-padding-left:2%;--section-padding-right:2%}}@media all{#dm div.dmContent h1{color:#666}#dm div.dmInner{font-family:Poppins,"Poppins Fallback";color:var(--color_1)}#dm div.dmContent h1,#dm div.dmNewParagraph p,#dm div.flex_hfcontainer h4{color:var(--color_1);direction:ltr;font-family:Aboreto,"Aboreto Fallback";font-weight:700;font-style:normal;text-decoration:none}#dm div.dmContent .dmNewParagraph[data-version] h1,#dm div.flex_hfcontainer .dmNewParagraph[data-version] h4{text-decoration:inherit}#dm div.dmContent .dmNewParagraph[data-version] h1 *,#dm div.flex_hfcontainer .dmNewParagraph[data-version] h4 *{text-decoration:none}#dm div.dmNewParagraph p{font-family:"Work Sans","Work Sans Fallback";font-weight:400}:root{--btn-text-direction:ltr;--btn-border-r-color:var(--btn-border-color);--btn-border-l-color:var(--btn-border-color);--btn-border-b-width:var(--btn-border-width);--btn-border-width:1px;--btn-border-radius:1px;--btn-border-t-width:var(--btn-border-width);--btn-border-tl-radius:var(--btn-border-radius);--btn-border-br-radius:var(--btn-border-radius);--btn-border-bl-radius:var(--btn-border-radius);--btn-bg-color:var(--color_1);--btn-border-color:rgba(0, 0, 0, 0);--btn-border-tr-radius:var(--btn-border-radius);--btn-border-r-width:var(--btn-border-width);--btn-border-b-color:var(--btn-border-color);--btn-border-l-width:var(--btn-border-width);--btn-border-t-color:var(--btn-border-color);--btn-text-align:center;--btn-text-color:var(--color_3);--btn-text-decoration:none;--btn-text-font-weight:400;--btn-icon-color:rgb(0, 0, 238);--btn-icon-fill:rgb(0, 0, 238);--btn-icon-wrpr-display:none;--btn-hover-border-b-color:var(--btn-hover-border-color);--btn-hover-bg:rgb(65, 67, 69);--btn-hover-border-t-color:var(--btn-hover-border-color);--btn-hover-border-r-color:var(--btn-hover-border-color);--btn-hover-border-l-color:var(--btn-hover-border-color);--btn-hover-border-color:rgb(65, 67, 69);--btn-hover-text-color:var(--color_3);--btn-hover-text-font-weight:var(--btn-text-font-weight);--btn-hover-text-decoration:var(--btn-text-decoration);--btn-hover-text-font-style:var(--btn-text-font-style);--section-padding-top:4%;--section-padding-left:0%;--section-padding-right:0%;--section-padding-bottom:4%;--column-padding-top:16px;--column-padding-right:16px;--column-padding-left:16px;--column-padding-bottom:16px;--inner-column-padding-left:16px;--inner-column-padding-right:16px;--inner-column-padding-top:16px;--inner-column-padding-bottom:16px}.button_2{--btn-text-direction:ltr;--btn-border-r-color:var(--btn-border-color);--btn-border-l-color:var(--btn-border-color);--btn-border-b-width:var(--btn-border-width);--btn-border-width:1px;--btn-border-radius:1px;--btn-border-t-width:var(--btn-border-width);--btn-border-tl-radius:var(--btn-border-radius);--btn-border-br-radius:var(--btn-border-radius);--btn-border-bl-radius:var(--btn-border-radius);--btn-bg-color:rgba(0, 0, 0, 0);--btn-border-color:var(--color_1);--btn-border-tr-radius:var(--btn-border-radius);--btn-border-r-width:var(--btn-border-width);--btn-border-b-color:var(--btn-border-color);--btn-border-l-width:var(--btn-border-width);--btn-border-t-color:var(--btn-border-color);--btn-text-align:center;--btn-text-color:var(--color_1);--btn-text-decoration:none;--btn-text-font-weight:400;--btn-icon-color:rgb(0, 0, 238);--btn-icon-fill:rgb(0, 0, 238);--btn-icon-wrpr-display:none;--btn-hover-border-b-color:var(--btn-hover-border-color);--btn-hover-bg:var(--color_1);--btn-hover-border-t-color:var(--btn-hover-border-color);--btn-hover-border-r-color:var(--btn-hover-border-color);--btn-hover-border-l-color:var(--btn-hover-border-color);--btn-hover-border-color:var(--color_1);--btn-hover-text-color:var(--color_3);--btn-hover-text-font-weight:var(--btn-text-font-weight);--btn-hover-text-decoration:var(--btn-text-decoration);--btn-hover-text-font-style:var(--btn-text-font-style)}}@media (min-width:0px) and (max-width:767px){#dm div.dmInner,#dm div.dmNewParagraph p{font-size:16px}#dm div.dmContent h1{font-size:40px}#dm div.flex_hfcontainer h4{font-size:18px}.button_2,:root{--btn-text-font-size:18px}:root{--section-padding-left:4%;--section-padding-right:4%}}#dm .dmWidget.button_2:not([data-buttonstyle]),#dm .dmWidget:not([data-buttonstyle]){overflow:initial;background-clip:border-box;border-radius:1px}#dm .dmWidget.button_2:not([data-buttonstyle]) .text,#dm .dmWidget:not([data-buttonstyle]) .text,#dm .dmWidget:not([data-buttonstyle]).flexButton{padding:16px 0}#dm .dmWidget.button_2:not([data-buttonstyle]) .iconBg,#dm .dmWidget:not([data-buttonstyle]) .iconBg{display:none}#dm div.dmInner #site_content .dmWidget{background-color:var(--btn-bg-color);border-color:var(--btn-border-t-color) var(--btn-border-r-color) var(--btn-border-b-color) var(--btn-border-l-color);border-radius:var(--btn-border-radius);border-bottom-left-radius:var(--btn-border-bl-radius);border-bottom-right-radius:var(--btn-border-br-radius);border-top-left-radius:var(--btn-border-tl-radius);border-top-right-radius:var(--btn-border-tr-radius);border-width:var(--btn-border-t-width) var(--btn-border-r-width) var(--btn-border-b-width) var(--btn-border-l-width);direction:var(--btn-text-direction);text-align:var(--btn-text-align)}#dm div.dmInner #site_content .dmWidget span.text{color:var(--btn-text-color);font-size:var(--btn-text-font-size);font-weight:var(--btn-text-font-weight);text-decoration:var(--btn-text-decoration)}#dm div.dmInner #site_content .dmWidget span.icon{color:var(--btn-icon-color);fill:var(--btn-icon-fill)}#dm div.dmInner #site_content .dmWidget:not([data-buttonstyle]) .iconBg{display:var(--btn-icon-wrpr-display)}.dmBody [data-layout-grid]>.flex-element.group{padding:var(--section-padding-top) var(--section-padding-right) var(--section-padding-bottom) var(--section-padding-left)}.dmBody [data-layout-grid]>.flex-element.group>.flex-element.group{padding:var(--column-padding-top) var(--column-padding-right) var(--column-padding-bottom) var(--column-padding-left)}.dmBody [data-layout-grid]>.flex-element.group>.flex-element.group .flex-element.group:not([data-layout-type] *):not([data-layout-type]){padding:var(--inner-column-padding-top) var(--inner-column-padding-right) var(--inner-column-padding-bottom) var(--inner-column-padding-left)}@media all{#dm .dmInner .u_1937494221.main-navigation.unifiednav .unifiednav__container:not([data-depth])>.unifiednav__item-wrap>.unifiednav__item{margin:0!important;padding:0 20px!important}#dm .dmInner .u_1937494221{justify-content:center!important}#dm .dmInner .u_1444040303{width:100%!important}#dm .dmInner div.u_1724980913 .svg{color:var(--color_1)!important;fill:var(--color_1)!important}#dm .dmInner nav.u_1937494221.main-navigation.unifiednav:not([data-nav-structure=VERTICAL]) .unifiednav__container:not([data-depth])>.unifiednav__item-wrap:not(:last-child)::after,#dm .dmInner nav.u_1937494221.main-navigation.unifiednav:not([data-nav-structure=VERTICAL]) .unifiednav__container:not([data-depth])>.unifiednav__item-wrap:not(:last-child)::before{font-size:14px!important}#dm .dmInner div#hamburger-drawer.layout-drawer{background-color:var(--color_3)!important}#dm .dmInner div.u_1771865432{color:#253a20!important;direction:ltr!important;text-transform:none!important;text-shadow:none!important;font-weight:700!important;text-decoration:none solid #253a20!important;letter-spacing:normal!important;font-family:Poppins!important;line-height:normal!important;font-style:normal!important}#dm .dmInner a.u_1542533422 span.text{color:var(--color_2)!important}#dm .dmInner a.u_1542533422{background-color:#fff!important;background-image:initial!important;border-style:solid!important;border-width:1px!important;border-color:var(--color_6)!important}#dm .dmInner nav.u_1937494221{justify-content:flex-end!important;background-color:transparent!important;background-image:initial!important}#dm .dmInner nav.u_1937494221.main-navigation.unifiednav .unifiednav__container:not([data-depth])>.unifiednav__item-wrap>.unifiednav__item.dmNavItemSelected{color:#fff!important}#dm .dmInner nav.u_1937494221.main-navigation.unifiednav .unifiednav__container:not([data-depth])>.unifiednav__item-wrap>.unifiednav__item{color:#fff!important;text-transform:uppercase!important;font-size:14px!important;direction:ltr!important;font-weight:400!important;text-decoration:none solid #253a20!important;font-style:normal!important;border-radius:0!important;justify-content:flex-start!important;font-family:Poppins!important;-webkit-border-radius:0!important;margin:0!important;text-align:left!important;padding:0 0 0 60px!important}}@media (min-width:1025px){#dm .dmInner div.u_1771865432{font-size:20px!important}}@media (min-width:768px) and (max-width:1024px){div[dmtemplateid=FlexHeader] .layout-drawer-overlay{background-color:rgba(0,0,0,.6)!important}#dm .dmInner div.u_1771865432{font-size:20px!important}}@media (min-width:0px) and (max-width:767px){#dm .dmInner div.u_1771865432{font-size:18px!important}}@media all{#\39 3739264 a,#flex-header{background-color:transparent}#\32 b46309f,#\36 3a049ca0d35b55b4ef2a5c3,#b25a1b55,#c0504b3a{height:auto;order:0;max-width:100%}#\36 3a049ca0d35b55b4ef2a5c3,#\36 3da2bf2eae8da42b23538a3,#\39 574255b,#\39 9629e10,#d76e8905,#e60c44f9{align-self:auto;grid-area:auto/auto/auto/auto}#\32 b46309f,#\36 3a049ca0d35b55b4ef2a5c3,#\36 3da2bf2eae8da42b23538a3,#\39 574255b,#\39 9629e10,#b25a1b55,#c0504b3a,#d46d767d,#d76e8905,#e60c44f9{grid-area:auto/auto/auto/auto}#\30 ad31b06,#\32 9e77900,#\34 a4ac421,#\35 5254497,#\37 e3ebdf8,#\39 9ad3194,#b503f1e7,#f2774cb2{column-gap:4%;row-gap:24px;margin:0}#\30 ad31b06,#\34 a4ac421,#\35 5254497,#\37 e3ebdf8,#\39 9ad3194,#b503f1e7{min-width:4%;min-height:8px}#flex-header{background-image:initial}#\36 3a049ca0d35b55b4ef2a5c3{width:544px;justify-self:auto}#c0504b3a{width:86.13%}#\32 b46309f,#b25a1b55{width:196px}#\32 9e77900,#\34 a4ac421,#b25a1b55{width:100%}#fdb37e17{min-height:140px;column-gap:0;row-gap:0;max-width:none;width:100%;padding:0 2%;margin:0}#\30 ad31b06,#\39 9ad3194{flex-direction:row;justify-content:flex-start;align-items:center;width:34.9%;padding:16px}#\39 9ad3194{justify-content:flex-end;width:16.16%;padding:2% 16px}#\36 0aa171e,#e60c44f9{width:60px;height:60px;max-width:100%}#e60c44f9{width:88px;height:auto;justify-self:auto;order:0}#\37 e3ebdf8,#b503f1e7{flex-direction:row;align-items:center;width:48.86761894647408%;justify-content:flex-end;padding:16px}#b503f1e7{width:10%}#\39 3739264 svg,#c3d8af0f svg{fill:var(--color_1)}#\39 3739264,#c3d8af0f{width:30px;height:30px}#widget_j9p,#widget_nmi{width:68.9%;height:auto;max-width:100%;order:2}#widget_j9p{width:109.56px;order:1}#\34 a4ac421{align-items:flex-end;padding:16px}#\32 9e77900{min-height:100px;padding:2% 0}#d46d767d{max-width:100%;margin:0}#\36 3da2bf2eae8da42b23538a3,#\39 574255b,#\39 9629e10{max-width:100%;justify-self:auto}#d76e8905{max-width:100%;justify-self:auto;order:1}#\35 5254497,#f2774cb2{width:100%;padding:0}#f2774cb2{min-height:240px;max-width:none;flex-wrap:nowrap}#\33 d02f338{grid-template-rows:minmax(300px,max-content);width:100%;max-width:100%}#dm .dmInner a.u_1295985720{background-color:#fff!important;background-image:initial!important}#dm .dmInner a.u_1295985720 span.text{color:var(--color_2)!important;font-weight:400!important}}@media (min-width:1025px){#widget_s4l{justify-self:auto;align-self:auto;width:95.8158273381295%;grid-area:auto/auto/auto/auto}[data-version] .font-size-14,[data-version] .size-14{--font-size:14}}@media (min-width:768px) and (max-width:1024px){#fdb37e17{padding-left:3%;padding-right:3%;min-height:80px}#\30 ad31b06{width:45%;margin-left:-.0011659701492537314%;justify-content:center;order:0}#\39 9ad3194{width:11.97%;order:2;justify-content:center}#\36 0aa171e{width:30px;height:30px}#\37 e3ebdf8{width:32.72478134110787%;order:1;justify-content:flex-end;padding-right:16px}#e60c44f9{height:auto;width:98px}#b503f1e7{order:3;width:10.2%}#c3d8af0f{width:28px;height:28px}#\32 9e77900{padding-left:4%;padding-right:4%;min-height:0}#\34 a4ac421{justify-content:flex-start}#f2774cb2{padding-left:2%;padding-right:2%}#dm .dmInner div.u_1499440019 img{object-position:50% 50%!important;object-fit:cover!important}}@media (max-width:767px){#\32 9e77900,#f2774cb2,#fdb37e17{padding-left:4%;padding-right:4%}#fdb37e17{min-height:64px}#\30 ad31b06{width:50.34%;justify-content:center;order:0}#\39 9ad3194{width:19.748%;order:2;justify-content:flex-end}#\36 0aa171e{width:30px;height:30px}#\37 e3ebdf8{width:11.582%;order:1}#e60c44f9{height:auto}#b503f1e7{align-items:center;width:18%;order:3}#c3d8af0f{width:26px;height:26px}#\39 3739264{width:27px;height:27px}#\34 a4ac421{width:100%;min-height:59px;height:auto}#\32 9e77900{min-height:unset;flex-direction:column}#\35 5254497{width:100%;align-items:center;min-height:80px}#f2774cb2{min-height:0;flex-direction:column;flex-wrap:nowrap}}#dm .d-page-1716942098 DIV.dmInner{background-repeat:no-repeat!important;background-size:cover!important;background-attachment:fixed!important;background-position:50% 50%!important}@media all{#\35 850407e,#\36 8006c8d,#\36 96779ed,#\38 601a68f,#d62640e6{grid-area:auto/auto/auto/auto}#\32 6079286,#\33 3a5b19b,#\34 0866308,#\36 e6df5c1{min-width:10px;min-height:10px;max-width:100%}#\30 774af12,#d1dfb78c{display:flex}#\30 774af12,#af05c1ab,#d1dfb78c{grid-area:1/1/span 1/span 1;max-width:none}#\36 490623a,#b1ec2440{min-width:4%;min-height:8px;column-gap:4%}#\30 774af12,#\35 9a3c32f,#\39 8bc3e97,#d1dfb78c{align-self:start}#flex-header{--overlapping-background-color:rgba(0, 0, 0, 0);--overlapping-background-image:rgba(0, 0, 0, 0)}#b1ec2440{row-gap:11px;width:100%;align-items:center;padding:6% 16px;margin:0}#\33 1eaaf81,#\34 19ac01b{width:100%;height:42px;max-width:100%;order:2}#\34 19ac01b{height:auto;order:1}#\33 1a32253::before{content:'';display:block;position:absolute;width:100%;height:100%;top:0;left:0;background-color:var(--color_1);opacity:.2;border-radius:inherit}#\33 1a32253{background-image:url(https://lirp.cdn-website.com/af0639b3/dms3rep/multi/opt/coffee-+love_-1920w.jpeg)}#c90e01b0{min-height:923.95px;column-gap:4%;row-gap:24px;width:100%;flex-wrap:nowrap;padding:12% 0;margin:0}#\36 96779ed,#c44033a0{height:auto;max-width:100%}#\36 96779ed{justify-self:auto;align-self:auto;width:100%;order:0}#c44033a0{width:274px;order:3;min-height:55px}#\35 850407e{align-items:center;width:811.64px;row-gap:16px;justify-self:auto;order:0;align-self:center;padding:16px;margin:-100px 0 0}#d62640e6,#widget_anq{align-self:auto;justify-self:auto;order:0}#d62640e6{margin-bottom:10px;width:99.99804400977995%}#widget_anq{width:249px;height:auto;max-width:100%;margin:-300px 0 0 90%;grid-area:auto/auto/auto/auto}#\30 4affc75,#\34 beb2da7{justify-self:auto;align-self:auto;grid-area:auto/auto/auto/auto}#\34 beb2da7{order:0;height:218px}#\30 4affc75{width:100%;height:570px;max-width:100%;order:1}#c31a08ee,#cdb9e2be{width:100%;height:218px;max-width:100%;justify-self:auto;order:1;margin:0;grid-area:auto/auto/auto/auto}#\37 e22745e{justify-content:flex-start;align-items:flex-start;max-height:100%;flex-wrap:nowrap;align-self:auto;grid-area:auto/auto/auto/auto;width:66%;min-height:160px;row-gap:30px;padding:0}#\39 802af26{width:280px;height:auto;min-height:64px;max-width:100%;order:0;grid-area:auto/auto/auto/auto}#\32 6079286,#\33 3a5b19b{position:relative;height:auto;grid-area:auto/auto/auto/auto}#\30 774af12{background-size:cover;background-repeat:no-repeat;flex-direction:row;background-position:50% 50%;column-gap:4%;row-gap:24px;justify-content:flex-start;align-items:center;justify-self:center;flex-wrap:nowrap;padding:8% 6% 1%;margin:0;min-height:132px}#\36 e6df5c1{height:auto;align-self:auto;grid-area:auto/auto/auto/auto}#\34 0866308{position:relative;height:auto;justify-self:auto;align-self:auto;grid-area:auto/auto/auto/auto}#d1dfb78c{min-height:485px;flex-direction:row;column-gap:3%;row-gap:18px;justify-content:flex-start;align-items:center;justify-self:center;flex-wrap:nowrap;padding:1% 6% 3%}#\33 ae31a6e{width:522px;height:auto;order:1;margin:0;grid-area:auto/auto/auto/auto}#af05c1ab{flex-wrap:nowrap;min-height:353px;row-gap:24px;padding:3% 6% 8%}#\31 af969c8,#\36 38567e7{max-width:100%;justify-self:auto;grid-area:auto/auto/auto/auto}#\37 18b992d{width:99.99870751696383%;height:auto;max-width:100%;order:0;justify-self:auto;align-self:auto;grid-area:auto/auto/auto/auto}#\31 d068017,#dd464545{max-width:100%;justify-self:auto;align-self:auto;grid-area:auto/auto/auto/auto}#\36 bf5b9e3,#\36 f18fa9e,#\38 c008d82,#f93bb2ce{height:auto;max-width:100%;grid-area:auto/auto/auto/auto}#\34 3a29d5c,#\38 c76bc95{width:40px;height:auto;max-width:100%;align-self:auto;order:0;margin-bottom:3%;grid-area:auto/auto/auto/auto}#\34 170c25f,#e2829887{width:99.99727413526071%;order:1;margin-bottom:8px;grid-area:auto/auto/auto/auto}#\32 144f64e,#\36 8d66acd{width:99.99727413526071%;height:auto;max-width:100%;grid-area:auto/auto/auto/auto}#f93bb2ce{align-self:auto;width:588.83px;order:1;margin:24px 0 0}#\36 f18fa9e{width:100%;order:0;margin:0}#\35 526cfcb{border-width:0;border-color:#000;border-style:solid;background-color:transparent}#dd464545{width:100%;grid-template-rows:minmax(634px,max-content);order:0;background-color:var(--color_3);background-image:url()}#\39 8bc3e97{align-items:center;justify-self:center;order:0;width:38.51%;min-height:68.95%;background-color:var(--color_4);background-image:initial;height:auto;padding:4%;margin:190px 0 0}#\34 ea14821{width:84.2%;height:auto;max-width:100%;order:2;align-self:auto;margin:24px 0 32px;grid-area:auto/auto/auto/auto}#\32 a15c215,#\36 490623a{row-gap:0;width:100%;padding:0;margin:0}#\36 490623a{align-items:flex-end}#\32 a15c215{min-height:954px;column-gap:0;flex-wrap:nowrap;max-width:none}#ab663812{width:45%;height:800px;justify-self:start;align-self:center;order:0;max-width:100%}#\30 0db7487{width:220px;height:50px;max-width:100%;order:3;margin:0;grid-area:auto/auto/auto/auto}#\35 9a3c32f{width:44.99981862152358%;height:710px;justify-self:end;order:0;max-width:100%;margin-top:45px}#\31 d068017{width:667px;height:auto;order:2;margin-left:-50%;margin-right:-50%}#\32 7e8a6b6,#widget_jag{max-width:100%;justify-self:auto}#\32 7e8a6b6{width:568px;height:auto;align-self:auto;order:1;margin-right:50%;margin-left:-50%;grid-area:auto/auto/auto/auto}#widget_jag{width:51.09%;height:234px;align-self:auto;order:2;margin-bottom:-400px;grid-area:auto/auto/auto/auto}#\32 f1b398f,#\37 687df6b{align-self:auto;width:395px;justify-self:auto;height:495px;grid-area:auto/auto/auto/auto}#\32 f1b398f{order:0;margin-top:340px;margin-bottom:300px}#\37 687df6b{order:1;margin-top:100px;margin-bottom:100px}#widget_vqb{width:64%;order:0;justify-self:auto;align-self:flex-end;margin:-630px -25% 0 500%;grid-area:auto/auto/auto/auto}}@media (min-width:768px) and (max-width:1024px){#\35 9a3c32f,#\39 8bc3e97{align-self:center;grid-area:1/1/span 1/span 1}#b1ec2440{width:100%;min-height:8px}#\33 1eaaf81{height:18px}#\34 19ac01b{width:84.3%}#\33 1a32253::before{content:'';display:block;position:absolute;width:100%;height:100%;top:0;left:0;opacity:.2;border-radius:inherit}#\33 1a32253{background-size:cover;background-repeat:no-repeat}#c90e01b0{flex-direction:row;flex-wrap:nowrap;min-height:460px;padding:16% 4%}#\35 850407e,#\37 18b992d{justify-self:auto;align-self:auto;order:0;margin:0;grid-area:auto/auto/auto/auto}#\36 96779ed{width:100%}#\37 18b992d{width:99.99886077335964%}#dd464545{justify-self:auto;align-self:auto;width:100%;order:0;margin:0;grid-area:auto/auto/auto/auto}#\39 8bc3e97{justify-self:center;height:auto;min-height:70.86%;width:56.23%;padding:6%;margin:0}#\34 ea14821{width:99.93%}#\32 a15c215{min-height:627px;padding:0}#ab663812{height:630px}#\35 9a3c32f{height:539px;justify-self:end;width:45%;margin:0}#\32 f1b398f{align-self:auto;justify-self:auto;order:0;margin:0;grid-area:auto/auto/auto/auto}[data-version] .t-font-size-14,[data-version] .t-size-14{--font-size:14}}@media (max-width:767px){#\34 0866308,#\36 e6df5c1,#c0c49399{align-self:auto;margin:0;grid-area:auto/auto/auto/auto}#c0c49399,#f93bb2ce,#fd339469{order:1}#\35 9a3c32f,#\39 8bc3e97,#ab663812{align-self:start;grid-area:1/1/span 1/span 1}#\30 774af12,#\35 9a3c32f,#\39 8bc3e97,#ab663812,#af05c1ab,#d1dfb78c{grid-area:1/1/span 1/span 1}#b1ec2440{width:100%;min-height:160px;align-items:center;padding-left:8px;padding-right:8px}#\33 1eaaf81{height:22px}#\33 1a32253::before{content:'';display:block;position:absolute;width:100%;height:100%;top:0;left:0;opacity:.2;border-radius:inherit}#\33 1a32253{background-size:cover;background-repeat:no-repeat}#c90e01b0{min-height:0;flex-direction:column;flex-wrap:nowrap;padding:20% 4%}#c44033a0{height:auto;min-height:50px}#c0c49399{justify-self:auto}#\34 0866308,#\36 e6df5c1{justify-self:auto;width:100%;order:0}#af05c1ab{min-height:0;flex-direction:column;row-gap:0;flex-wrap:nowrap;padding:12% 6%}#\38 9e75a94,#fd339469{justify-self:auto;align-self:auto;grid-area:auto/auto/auto/auto;width:100%;margin:0}#\38 9e75a94{height:55px;order:0;min-height:55px}#\36 f18fa9e{order:0;justify-self:auto;align-self:auto;width:99.27819548872179%;margin:0;grid-area:auto/auto/auto/auto}#dd464545{width:100%;grid-template-rows:minmax(670px,max-content)}#\39 8bc3e97{justify-self:center;height:auto;min-height:67.15%;width:79.27%;padding:8%;margin:99px 0 0}#\34 ea14821{order:2;width:99.01%}#\36 490623a{width:100%;min-height:80px;align-items:center}#\32 a15c215{min-height:0;flex-direction:column;flex-wrap:nowrap;padding:0}#ab663812{height:250px;justify-self:start;width:50%;margin:0}#\30 0db7487{order:3}#\35 9a3c32f{height:147px;justify-self:end;width:60.55%;margin:523px 0 0}[data-version] .m-font-size-14,[data-version] .m-size-14{--font-size:14}}#\30 1d8f8a7,#\30 774af12,#\30 ad31b06,#\31 295985720,#\31 629950838,#\31 937494221,#\31 970147497,#\32 a15c215,#\33 3395f07,#\34 39cc2cc,#\35 069dac9,#\36 24ccefd,#\36 3da2bddeae8da42b2353673,#\36 406026c90e1521f6ecb0ecc,#\37 e3ebdf8,#\38 9092430,#\38 c42a691,#\39 2b00c60,#\39 9ad3194,#a732cdd0,#af05c1ab,#c66fd2c1,#c90e01b0,#d1dfb78c,#dcb50019,#f2774cb2,#f9306f5d,#fdb37e17{order:0;flex-direction:row}#\30 4affc75,#\32 144f64e,#\32 6079286,#\32 7e8a6b6,#\33 ab3738e,#\33 ae31a6e,#\34 170c25f,#\34 19ac01b,#\35 5cecda1,#\36 3da2bf2eae8da42b23538a3,#\36 3da2bfbeae8da42b2353a45,#\37 687df6b,#\38 601a68f,#\39 7c0c727,#b9accfbd,#c31a08ee,#d76e8905,#e2829887,#f93bb2ce,#fd339469,#group_ccb,#widget_j9p,#widget_s4l{order:1}#\31 d068017,#\31 febfa89,#\33 1eaaf81,#\34 ea14821,#\36 8006c8d,#\36 8d66acd,#\36 bf5b9e3,#\36 e59b1e1,#\38 272d87a,#bcd5dabd,#c0c49399,#c72e3036,#group_249,#widget_jag,#widget_nmi{order:2}#\30 6c444ab,#\31 998592992,#\32 9e77900,#\32 c78ad56,#\34 14be1da,#\34 a4ac421,#\34 e6bd089,#\35 5254497,#\35 850407e,#\36 3a049320d35b55b4ef2a374,#\36 3a049320d35b55b4ef2a377,#\36 406026c90e1521f6ecb0ecd,#\36 490623a,#\36 7ac5b45,#\37 3f2786c,#\37 e22745e,#\38 96984e4,#\39 8bc3e97,#a427687a,#a5ebbdf4,#b1ec2440,#b23a3a1b,#b7b0af43,#c5a0691e,#db54579c,#e0ed080f,#edb13b52,#ef71ecd9,#f604ae6e,#group_5mc,#group_8af,#group_hn2,#group_n78,#hamburger-drawer{order:0}#\31 998592992,#\32 9e77900,#\32 c78ad56,#\36 3a049320d35b55b4ef2a377,#b7b0af43{flex-direction:row}#\30 0db7487,#\32 bff725e,#\33 fe19fdc,#\36 38567e7,#abf07d35,#b3221efa,#c44033a0,#e17ac8d8{order:3}#ffacd197{order:4}#f3fbe878{order:1;flex-direction:row} #dm .dmPhotoGallery.newPhotoGallery .dmPhotoGalleryHolder:not(.photo-gallery-done) {display: none;} @media (max-width:767px){ [data-hidden-on-mobile] {display:none!important}}
+    .dmDesktopBody [data-anim-desktop]:not([data-anim-desktop='none']) {
+      visibility: hidden;
+    }
+
+    
+</style>
+
+
+
+<style id="fontFallbacks">
+    @font-face {
+  font-family: "Playfair Display Fallback";
+  src: local('Arial');
+  ascent-override: 106.3701%;
+  descent-override: 24.6755%;
+  size-adjust: 101.7204%;
+  line-gap-override: 0%;
+ }@font-face {
+  font-family: "Poppins Fallback";
+  src: local('Arial');
+  ascent-override: 92.326%;
+  descent-override: 30.7753%;
+  line-gap-override: 8.793%;
+  size-adjust: 113.7274%;
+}@font-face {
+  font-family: "Work Sans Fallback";
+  src: local('Arial');
+  ascent-override: 82.1016%;
+  descent-override: 21.4523%;
+  size-adjust: 113.2743%;
+  line-gap-override: 0%;
+ }@font-face {
+  font-family: "Aboreto Fallback";
+  src: local('Arial');
+  ascent-override: 69.3425%;
+  descent-override: 17.1492%;
+  size-adjust: 134.1168%;
+  line-gap-override: 0%;
+ }
+</style>
+
+
+<!-- End render the required css and JS in the head section -->
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.themorninggrove.com/">
+<script type="application/ld+json">
+    {
+        "@context" : "https://schema.org",
+        "@type" : "WebSite",
+        "name" : "The Morning Grove",
+        "url" : "https://www.themorninggrove.com/"
+    }
+</script>
+  <meta name="twitter:card" content="summary"/>
+
+
+
+
+<!-- SYS- VVNfRElSRUNUX1BST0RVQ1RJT04= -->
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body id="dmRoot" data-page-alias="home"  class="dmRoot fix-mobile-scrolling flex-site dmResellerSite "
+      style="padding:0;margin:0;"
+      
+     data-flex-site >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========= Site Content ========= -->
+<div id="dm" class='dmwr'>
+    
+    <div class="dm_wrapper -var5 null ">
+         <div dmwrapped="true" id="1901957768" class="dm-home-page" themewaschanged="true"> <div dmtemplateid="FlexHeader" data-responsive-name="FlexLayout" class="runtime-module-container dm-bfs dm-layout-home hasAnimations hasStickyHeader inMiniHeaderMode rows-1200 hamburger-reverse dmPageBody d-page-1716942098 inputs-css-clean dmDHeader" id="dm-outer-wrapper" data-page-class="1716942098" data-soch="true" data-background-parallax-selector=".dmHomeSection1, .dmSectionParallex"> <div id="dmStyle_outerContainer" class="dmOuter"> <div id="dmStyle_innerContainer" class="dmInner"> <div class="dmLayoutWrapper standard-var dmStandardDesktop"> <div id="site_content"> <div id="dmFlexHeaderContainer" class="flex_hfcontainer"> <div id="flex-header" data-variation-id="variation0" data-overlapping-common="true" role="banner"> <div data-auto="flex-section" id="1448110159" data-flex-id="453ffa06" data-layout-section=""> <div class="flex-widgets-container" id="1262348506"></div> 
+ <section id="3236671d" class="flex-element section" data-auto="flex-element-section"> <div id="11e4f629" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="fdb37e17" class="flex-element group" data-auto="flex-element-group"> <div id="0ad31b06" class="flex-element group" data-auto="flex-element-group"> <div id="e60c44f9" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-keep-proportion="true" data-hidden-on-desktop="" data-hidden-on-tablet="" data-hidden-on-mobile="" data-external-id="1444040303"> <div class="imageWidget align-center u_1444040303" data-element-type="image" data-widget-type="image" id="1444040303" data-binding="W3siYmluZGluZ05hbWUiOiJpbWFnZSIsInZhbHVlIjoic2l0ZV9pbWFnZXMubG9nbyJ9XQ=="><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/_+%281%29-1920w.jpeg" alt="Close-up of iced coffee with large ice cubes, light brown liquid, and a glossy sheen." id="1530583868" class="" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/_+%281%29.jpeg" width="155" height="16" data-diy-image="" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+ <div id="widget_j9p" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-keep-proportion="true" data-external-id="438516417"> <div class="imageWidget align-center" data-element-type="image" data-widget-type="image" id="438516417"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/MGLOGO-White-Tan-1920w.PNG" alt="White line art of a teacup with splashes, "mg" and a leaf on a tan circle." id="1202170512" class="" width="1357" height="1332" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/MGLOGO-White-Tan.PNG" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+ <div id="widget_nmi" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1771865432"> <div class="dmNewParagraph u_1771865432" data-element-type="paragraph" data-version="5" id="1771865432" data-diy-text="" style=""> <h4 class="t-size-26"><span style="color: var(--color_2); display: initial;">The Morning Grove</span></h4> 
+</div> 
+</div> 
+</div> 
+ <div id="7e3ebdf8" class="flex-element group" data-auto="flex-element-group"> <div id="b25a1b55" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="ONELinksMenu" data-hidden-on-tablet="" data-hidden-on-mobile="" data-external-id="1937494221"> <nav class="u_1937494221 effect-bottom main-navigation unifiednav dmLinksMenu" role="navigation" layout-main="horizontal_nav_layout_7" layout-sub="submenu_horizontal_1" data-show-vertical-sub-items="HOVER" id="1937494221" dmle_extension="onelinksmenu" data-element-type="onelinksmenu" data-logo-src="" alt="" data-nav-structure="HORIZONTAL" wr="true" icon="true" surround="true" adwords="" navigation-id="unifiedNav"> <ul role="menubar" class="unifiednav__container unav-top  " data-auto="navigation-pages"> <li role="menuitem" class=" unifiednav__item-wrap " data-auto="more-pages" data-depth="0"> <a href="/" class="unifiednav__item unav-item unav-top-item  dmNavItemSelected  dmUDNavigationItem_010101604450  " target="" data-target-page-alias="" aria-current="page" data-auto="selected-page"> <span class="nav-item-text " data-link-text="Home" data-auto="page-text-style">Home<span class="icon icon-angle-down"></span> 
+</span> 
+</a> 
+</li> 
+ <li role="menuitem" class=" unifiednav__item-wrap " data-auto="more-pages" data-depth="0"> <a href="/menu" class="unifiednav__item unav-item unav-top-item  dmUDNavigationItem_010101564580  " target="" data-target-page-alias=""> <span class="nav-item-text " data-link-text="Menu" data-auto="page-text-style">Menu<span class="icon icon-angle-down"></span> 
+</span> 
+</a> 
+</li> 
+</ul> 
+</nav> 
+</div> 
+</div> 
+ <div id="99ad3194" class="flex-element group" data-auto="flex-element-group"> <div id="2b46309f" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="link" data-hidden-on-tablet="" data-hidden-on-mobile="" data-external-id="1542533422"> <a data-display-type="block" class="align-center dmButtonLink dmWidget dmWwr default dmOnlyButton dmDefaultGradient u_1542533422 button_2" file="false" href="#" data-element-type="dButtonLinkId" id="1542533422" link_type="back_to_top"> <span class="iconBg" aria-hidden="true" id="1931869417"> <span class="icon hasFontIcon icon-star" id="1738559736"></span> 
+</span> 
+ <span class="text" id="1469596979">Call us!</span> 
+</a> 
+</div> 
+ <div id="60aa171e" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="graphic" data-hidden-on-desktop="" data-external-id="1724980913"> <div class="graphicWidget u_1724980913" data-element-type="graphic" data-widget-type="graphic" id="1724980913"> <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1408 1792" id="1679602056" class="svg u_1679602056" data-icon-name="fa-phone"> <title id="1045534891">Blank white image.</title> 
+ <path fill="inherit" d="M1408 1240q0 27-10 70.5t-21 68.5q-21 50-122 106-94 51-186 51-27 0-52.5-3.5t-57.5-12.5-47.5-14.5-55.5-20.5-49-18q-98-35-175-83-128-79-264.5-215.5t-215.5-264.5q-48-77-83-175-3-9-18-49t-20.5-55.5-14.5-47.5-12.5-57.5-3.5-52.5q0-92 51-186 56-101 106-122 25-11 68.5-21t70.5-10q14 0 21 3 18 6 53 76 11 19 30 54t35 63.5 31 53.5q3 4 17.5 25t21.5 35.5 7 28.5q0 20-28.5 50t-62 55-62 53-28.5 46q0 9 5 22.5t8.5 20.5 14 24 11.5 19q76 137 174 235t235 174q2 1 19 11.5t24 14 20.5 8.5 22.5 5q18 0 46-28.5t53-62 55-62 50-28.5q14 0 28.5 7t35.5 21.5 25 17.5q25 15 53.5 31t63.5 35 54 30q70 35 76 53 3 7 3 21z"></path> 
+</svg> 
+</div> 
+</div> 
+</div> 
+ <div id="b503f1e7" class="flex-element group" data-auto="flex-element-group" data-hidden-on-desktop=""> <div id="c3d8af0f" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="hamburgerButton" data-hidden-on-desktop="" data-external-id="1902269374"> <a role="button" class="hamburgerButton" data-element-type="hamburgerButton" id="1902269374" aria-label="Open menu" aria-controls="hamburger-drawer" aria-expanded="false"> <svg width="100pt" height="100pt" version="1.1" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" id="1686442687"> <path d="m3.6172 10.754h-0.050782c-1.9727 0-3.5703 1.5977-3.5703 3.5703 0 1.9727 1.5977 3.5703 3.5703 3.5703h0.054688 92.758 0.050782c1.9727 0 3.5703-1.5977 3.5703-3.5703 0-1.9727-1.5977-3.5703-3.5703-3.5703h-0.054688zm0 35.676h-0.050782c-1.9727 0-3.5703 1.5977-3.5703 3.5703s1.5977 3.5703 3.5703 3.5703h0.054688 92.758 0.050782c1.9727 0 3.5703-1.5977 3.5703-3.5703s-1.5977-3.5703-3.5703-3.5703h-0.054688zm0 35.68h-0.050782c-1.9727 0-3.5703 1.5977-3.5703 3.5703 0 1.9727 1.5977 3.5703 3.5703 3.5703h0.054688 92.758 0.050782c1.9727 0 3.5703-1.5977 3.5703-3.5703 0-1.9727-1.5977-3.5703-3.5703-3.5703h-0.054688z"></path> 
+</svg> 
+</a> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+</div> 
+ <div id="hamburger-drawer" class="hamburger-drawer layout-drawer" layout="5ff40d2f36ae4e5ea1bc96b2e2fcf67e===header" data-origin="side-reverse"> <div data-layout-section="" data-auto="flex-section" id="1647416524" data-flex-id="898aeff0"> <div class="flex-widgets-container" id="1409236263"></div> 
+ <section id="7f6a222e" class="flex-element section" data-auto="flex-element-section"> <div id="9f5ed184" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="29e77900" class="flex-element group" data-auto="flex-element-group"> <div id="4a4ac421" class="flex-element group" data-auto="flex-element-group"> <div id="93739264" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="hamburgerButton" data-hidden-on-desktop="" data-external-id="1762517411"> <a role="button" class="hamburgerButton" data-element-type="hamburgerButton" id="1762517411" aria-label="Close menu" aria-controls="hamburger-drawer" aria-expanded="false"> <svg width="100pt" height="100pt" version="1.1" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" id="1354157090"> <path d="m82 87.883c1.625 1.625 4.2656 1.625 5.8906 0 1.6289-1.6289 1.6289-4.2656 0-5.8945l-32.414-32.41 32.406-32.406c1.6289-1.625 1.6289-4.2656
+ 0-5.8906-1.6289-1.6289-4.2656-1.6289-5.8906 0l-32.406 32.402-32.406-32.406c-1.625-1.625-4.2656-1.625-5.8906 0-1.6289 1.6289-1.6289 4.2656 0
+ 5.8945l32.402 32.406-32.41 32.414c-1.6289 1.625-1.6289 4.2617 0 5.8906 1.625 1.6289 4.2656 1.6289 5.8906 0l32.414-32.414z" fill-rule="evenodd"></path> 
+</svg> 
+</a> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-auto="flex-section" id="1099442592" data-flex-id="63a049320d35b55b4ef2a372" data-layout-section=""> <div class="flex-widgets-container" id="1247649854"></div> 
+ <section id="63a049320d35b55b4ef2a373" class="flex-element section" data-auto="flex-element-section"> <div id="63a049320d35b55b4ef2a376" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="63a049320d35b55b4ef2a377" class="flex-element group" data-auto="flex-element-group"> <div id="63a049320d35b55b4ef2a374" class="flex-element group" data-auto="flex-element-group"> <div id="63a049ca0d35b55b4ef2a5c3" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="ONELinksMenu" data-external-id="1998592992"> <nav class="u_1998592992 effect-bottom2 main-navigation unifiednav dmLinksMenu" role="navigation" layout-main="vertical_nav_layout_2" layout-sub="" data-show-vertical-sub-items="HIDE" id="1998592992" dmle_extension="onelinksmenu" data-element-type="onelinksmenu" data-logo-src="" alt="" data-nav-structure="VERTICAL" wr="true" icon="true" surround="true" adwords="" navigation-id="unifiedNav"> <ul role="menubar" class="unifiednav__container unav-top  " data-auto="navigation-pages"> <li role="menuitem" class=" unifiednav__item-wrap " data-auto="more-pages" data-depth="0"> <a href="/" class="unifiednav__item unav-item unav-top-item  dmNavItemSelected  dmUDNavigationItem_010101604450  " target="" data-target-page-alias="" aria-current="page" data-auto="selected-page"> <span class="nav-item-text " data-link-text="Home" data-auto="page-text-style">Home<span class="icon icon-angle-down"></span> 
+</span> 
+</a> 
+</li> 
+ <li role="menuitem" class=" unifiednav__item-wrap " data-auto="more-pages" data-depth="0"> <a href="/menu" class="unifiednav__item unav-item unav-top-item  dmUDNavigationItem_010101564580  " target="" data-target-page-alias=""> <span class="nav-item-text " data-link-text="Menu" data-auto="page-text-style">Menu<span class="icon icon-angle-down"></span> 
+</span> 
+</a> 
+</li> 
+</ul> 
+</nav> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-auto="flex-section" id="1029527021" data-flex-id="6406026c90e1521f6ecb0eca" data-layout-section=""> <div class="flex-widgets-container" id="1659590659"></div> 
+ <section id="6406026c90e1521f6ecb0ec9" class="flex-element section" data-auto="flex-element-section"> <div id="6406026c90e1521f6ecb0ecb" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="6406026c90e1521f6ecb0ecc" class="flex-element group" data-auto="flex-element-group"> <div id="6406026c90e1521f6ecb0ecd" class="flex-element group" data-auto="flex-element-group"> <div id="widget_s4l" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1287536004"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1287536004" style="" new-inline-bind-applied="true" data-diy-text=""> <h4 class="m-text-align-left" style="line-height: 2;"><span style="color: var(--color_1); display: initial;">Get in touch</span></h4> 
+ <p class="m-text-align-left" style="line-height: 2;"><span style="display: initial;"><span class="inline-data-binding" data-encoded-value="KzU1NSA1NTU1IDU1NTU=" data-inline-binding="content_library.global.phone.phone"><a class="inlineBindingLink" target="_blank" href="tel:760-657-4245">760-657-4245</a></span></span></p><p class="m-text-align-left" style="line-height: 2;"><span style="display: initial;"><span class="inline-data-binding" data-encoded-value="bXltYWlsQG1haWxzZXJ2aWNlLmNvbQ==" data-inline-binding="content_library.global.email.email"><a class="inlineBindingLink" target="_blank" href="mailto:themorninggrove@gmail.com">themorninggrove@gmail.com</a></span></span></p></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+</div> 
+ <div class="layout-drawer-overlay" id="layout-drawer-overlay"></div> 
+</div> 
+ <div dmwrapped="true" id="dmFirstContainer" class="dmBody u_dmStyle_template_home dm-home-page" themewaschanged="true"> <div id="allWrapper" class="allWrapper"><!-- navigation placeholders --> <div id="dm_content" class="dmContent" role="main"> <div dm:templateorder="170" class="dmHomeRespTmpl mainBorder dmRespRowsWrapper dmFullRowRespTmpl" id="1716942098"> <div data-layout-section="" data-auto="flex-section" id="1544262794" data-flex-id="f82fae98" data-page-element-type="section" data-page-element-id="1218088407"> <div class="flex-widgets-container" id="1981418632"></div> 
+ <section id="6ad90457" class="flex-element section" data-auto="flex-element-section"> <div id="31a32253" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="c90e01b0" class="flex-element group" data-auto="flex-element-group"> <div id="b1ec2440" class="flex-element group" data-auto="flex-element-group"> <div id="696779ed" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1214185594"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1214185594" style=""><h1 style="color:rgb(255, 255, 255);" class="text-align-center"><span style="color: rgb(255, 255, 255); display: unset;">Specialty Lattes in a Cozy Carlsbad Spot</span></h1></div> 
+</div> 
+ <div id="419ac01b" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1798442959"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1798442959" style=""><p style="color:rgb(255, 255, 255);" class="text-align-center"><span class="" style="display: unset; color: rgb(255, 255, 255);">Quiet charm and quality coffee come together in every cup.</span></p></div> 
+</div> 
+ <div id="31eaaf81" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="spacer" data-external-id="1925764431"> <div data-element-type="spacer" class="dmSpacer" id="1925764431"></div> 
+</div> 
+ <div id="c44033a0" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="link" data-external-id="1295985720"> <a data-display-type="block" class="align-center dmButtonLink dmWidget dmWwr default dmOnlyButton dmDefaultGradient u_1295985720 flexButton" file="false" href="/menu" data-element-type="dButtonLinkId" id="1295985720"> <span class="iconBg" aria-hidden="true" id="1075447714"> <span class="icon hasFontIcon icon-star" id="1787547754"></span> 
+</span> 
+ <span class="text" id="1479462931">See Our Menu</span> 
+</a> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-auto="flex-section" id="1414483629" data-flex-id="46323a0f" data-layout-section="" data-page-element-type="section" data-page-element-id="1051152845"> <div class="flex-widgets-container" id="1761547809"></div> 
+ <section id="f1a1e9b5" class="flex-element section" data-auto="flex-element-section"> <div id="5526cfcb" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="2a15c215" class="flex-element group" data-auto="flex-element-group"> <div id="6490623a" class="flex-element group" data-auto="flex-element-group"> <div id="dd464545" class="flex-element inner-grid" data-auto="flex-element-inner-grid"> <div id="ab663812" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-external-id="1024058299"> <div class="imageWidget align-center" data-element-type="image" data-widget-type="image" id="1024058299"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/IMG_6388-1920w.jpeg" alt="A hand holding an iced coffee drink with a logo in the background." id="1512742169" class="" width="1600" height="2844" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/IMG_6388.jpeg" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+ <div id="59a3c32f" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-external-id="1499440019"> <div class="imageWidget align-center u_1499440019" data-element-type="image" data-widget-type="image" id="1499440019"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/IMG6927+copy-1920w.jpg" alt="Two hands holding up red drinks in front of a chalkboard sign with floral drawings." id="1788117205" class="" width="1920" height="3413" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/IMG6927+copy.jpg" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+ <div id="98bc3e97" class="flex-element group" data-auto="flex-element-group"> <div id="6f18fa9e" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1039198662"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1039198662" style=""><p class="text-align-center m-size-14 t-size-14 size-14"><span style="display: unset; text-transform: uppercase; color: rgb(255, 255, 255);" class="font-size-14 m-font-size-14 t-font-size-14" m-font-size-set="true" t-font-size-set="true">Awaken Your Senses</span></p></div> 
+</div> 
+ <div id="f93bb2ce" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1474380979"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1474380979" style=""> <h1 class="text-align-center"><span style="display: unset; color: rgb(255, 255, 255);">Crafted Brews for Every Mood</span></h1> 
+</div> 
+</div> 
+ <div id="4ea14821" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1434143094"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1434143094" style=""><p class="text-align-center"><span style="display: initial;">At The Morning Grove, we serve a delightful array of coffee, lattes, teas, and more, all designed to elevate your day.</span></p></div> 
+</div> 
+ <div id="00db7487" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="link" data-external-id="1192425567"> <a data-display-type="block" class="align-center dmButtonLink dmWidget dmWwr default dmOnlyButton dmDefaultGradient u_1192425567" file="false" href="/menu" data-element-type="dButtonLinkId" id="1192425567"> <span class="iconBg" aria-hidden="true" id="1585441165"> <span class="icon hasFontIcon icon-star" id="1879922500"></span> 
+</span> 
+ <span class="text" id="1329602937">Explore Our Menu</span> 
+</a> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-layout-section="" data-auto="flex-section" id="1969509838" data-flex-id="64d0bcf3" data-page-element-type="section" data-page-element-id="1982627500"> <div class="flex-widgets-container" id="1924418985"></div> 
+ <section id="06f3820f" class="flex-element section" data-auto="flex-element-section"> <div id="45045d4a" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="f9306f5d" class="flex-element group" data-auto="flex-element-group"> <div id="edb13b52" class="flex-element group" data-auto="flex-element-group"></div> 
+ <div id="73f2786c" class="flex-element group" data-auto="flex-element-group" data-anim-extended="eyJkZXNrdG9wIjp7InRyaWdnZXIiOiJlbnRyYW5jZSIsImFuaW1hdGlvbiI6ImZhZGVJbkNvbWJvIiwiZHVyYXRpb24iOjEsImRlbGF5IjowLCJpbnRlbnNpdHkiOjEsImRpciI6ImluLXBsYWNlIn19"> <div id="widget_anq" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-keep-proportion="true" data-external-id="3321221300"> <div class="imageWidget align-center u_3321221300" data-element-type="image" data-widget-type="image" id="3321221300"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/Untitled-design--2858-29-1920w.png" alt="Green leaf branch with multiple oval leaflets." id="1688570461" class="" width="460" height="768" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/Untitled-design--2858-29.png" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+ <div id="5850407e" class="flex-element group" data-auto="flex-element-group"> <div id="d62640e6" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1112473321"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1112473321" style=""><p style="text-transform:uppercase;" m-font-size-set="true" class="size-15 t-size-15 m-size-14 text-align-center"><span style="text-transform: uppercase; display: unset;" class="font-size-15 t-font-size-15 m-font-size-14" m-font-size-set="true">Fresh flavors crafted daily</span></p></div> 
+</div> 
+ <div id="55cecda1" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1444868368"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1444868368" style=""> <h2 class="text-align-center"><span style="display: unset;">Smoothies &amp; Smoothie Bowls</span></h2> 
+</div> 
+</div> 
+</div> 
+ <div id="c0c49399" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="photoGallery" data-external-id="1241072009"> <div class="dmPhotoGallery newPhotoGallery dmPhotoGalleryResp u_1241072009 photo-gallery-done text-layout-bottom captionAlignment-center_center photoGallery" galleryoptionsparams="{thumbnailsPerRow: 3, rowsToShow: 3, imageScaleMethod: true}" data-desktop-layout="square" data-desktop-columns="2" data-element-type="dPhotoGalleryId" data-desktop-text-layout="bottom" id="1241072009" data-rows-to-show="100" data-desktop-caption-alignment="center_center" data-mobile-columns="1" data-image-hover-effect="zoomout" data-mobile-layout="square"> <div class="dmPhotoGalleryHolder clearfix gallery shadowEffectToChildren gallery4inArow" id="1362986591"></div> 
+ <div class="layout-container square"> <div class="photogallery-row " data-index=""> <div class="photogallery-column column-2" data-index="0"> <div index="0" class="photoGalleryThumbs animated  " data-index="0"> <div class="thumbnailInnerWrapper" style="opacity: 1;"> <div class="image-container revealed"> <a data-dm-multisize-attr="temp" aria-labelledby="1292851616" data-dm-force-device="mobile" class="u_1210701840" data-image-url="https://irp.cdn-website.com/af0639b3/dms3rep/multi/pexels-photo-7937485.jpeg" style="background-image: url('https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/pexels-photo-7937485-640w.jpeg');"><img id="1230636768" data-src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/pexels-photo-7937485-1920w.jpeg" alt="Three layered fruit smoothies in glass cups on a wooden board: kiwi, blackberry, and strawberry." aria-labelledby="1292851616" onerror="handleImageLoadError(this)"/></a> 
+</div> 
+ <div id="1489712897" class="caption-container u_1489712897" style=""> <span class="caption-inner"> <h3 id="1292851616" class="caption-title u_1292851616">Vibrant Smoothies</h3> 
+ <div id="1860240324" class="caption-text u_1860240324"><p class="rteBlock">Our smoothies combine ripe fruits and wholesome ingredients to perfection</p></div> 
+</span> 
+</div> 
+</div> 
+</div> 
+</div> 
+ <div class="photogallery-column column-2" data-index="1"> <div index="1" class="photoGalleryThumbs animated  " data-index="1"> <div class="thumbnailInnerWrapper" style="opacity: 1;"> <div class="image-container revealed"> <a data-dm-multisize-attr="temp" aria-labelledby="1444290552" data-dm-force-device="mobile" class="u_1612494425" data-image-url="https://irp.cdn-website.com/af0639b3/dms3rep/multi/pexels-photo-1564585.jpeg" style="background-image: url('https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/pexels-photo-1564585-640w.jpeg');"><img id="1024866370" data-src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/pexels-photo-1564585-1920w.jpeg" alt="Green smoothie bowl decorated with blueberries, pomegranate, and butterfly made of mango." aria-labelledby="1444290552" onerror="handleImageLoadError(this)"/></a> 
+</div> 
+ <div id="1271554152" class="caption-container u_1271554152" style=""> <span class="caption-inner"> <h3 id="1444290552" class="caption-title u_1444290552">Nourishing Smoothie Bowls</h3> 
+ <div id="1765865303" class="caption-text u_1765865303"><p class="rteBlock">For smoothie lovers who want the experience of layered flavors and crunch in a scoopable bite</p></div> 
+</span> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-auto="flex-section" id="1436855086" data-flex-id="638f948b" data-layout-section="" data-page-element-type="section" data-page-element-id="1999585547"> <div class="flex-widgets-container" id="1076516118"></div> 
+ <section id="23db9e52" class="flex-element section" data-auto="flex-element-section"> <div id="b542e5fe" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="439cc2cc" class="flex-element group" data-auto="flex-element-group"> <div id="group_n78" class="flex-element group" data-auto="flex-element-group"> <div id="widget_jag" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-external-id="1861111707"> <div class="imageWidget align-center" data-element-type="image" data-widget-type="image" id="1861111707"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/Untitled--28Instagram-Post--2845-29-29-2-copy-1920w.png" alt="Sunny-side-up fried egg with a bright orange yolk and white, slightly browned edges." id="1607177365" class="" width="1051" height="793" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/Untitled--28Instagram-Post--2845-29-29-2-copy.png" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+</div> 
+ <div id="group_hn2" class="flex-element group" data-auto="flex-element-group"> <div id="27e8a6b6" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1113868274"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1113868274" style=""> <h3 class="text-align-center"><span style="display: unset; color: rgb(255, 255, 255);">Rise and Shine with Our Morning Mains</span></h3> 
+</div> 
+</div> 
+ <div id="1d068017" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1794344647"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1794344647" style=""><p class="text-align-center"><span style="color: rgb(255, 255, 255); display: unset;">Start your day right at The Morning Grove with our delicious selection of toasts and egg sandwiches, crafted to fuel your morning adventures.</span></p></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-auto="flex-section" id="1816876655" data-flex-id="5752005f" data-layout-section="" data-page-element-type="section" data-page-element-id="1999585547"> <div class="flex-widgets-container" id="1546272781"></div> 
+ <section id="975adf99" class="flex-element section" data-auto="flex-element-section"> <div id="2eb9f7e1" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="dcb50019" class="flex-element group" data-auto="flex-element-group"> <div id="a427687a" class="flex-element group" data-auto="flex-element-group"> <div id="7687df6b" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-external-id="1047550367"> <div class="imageWidget align-center" data-element-type="image" data-widget-type="image" id="1047550367"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/IMG6732-1920w.png" alt="Bruschetta on wooden board: toasted bread topped with mozzarella, tomatoes, and basil, with succulent plant in background." id="1708050502" class="" width="1920" height="1741" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/IMG6732.png" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+ <div id="1febfa89" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1598657241"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1598657241" style=""><h3 style="" class="text-align-center"><span style="display: unset;">Toast to a Great Morning</span></h3></div> 
+</div> 
+ <div id="2bff725e" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1264274812"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1264274812" style=""><p style="" class="text-align-center"><span style="display: unset;">Indulge in our sweet fruit and ricotta toast, topped with seasonal fruits and a drizzle of honey, or savor the creamy goodness of our avocado toast, customizable with a variety of toppings like poached eggs, feta, or chili flakes. Each bite is a celebration of fresh flavors and wholesome ingredients.</span></p></div> 
+</div> 
+ <div id="ffacd197" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1353607741"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1353607741" style=""><p href="/freebies" runtime_url="/freebies" type="page" style="text-transform:uppercase;" class="m-size-14 t-size-14 size-14 text-align-center"> <span>Explore Our Toasts</span> 
+</p></div> 
+</div> 
+</div> 
+ <div id="4e6bd089" class="flex-element group" data-auto="flex-element-group"> <div id="widget_vqb" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-keep-proportion="true" data-external-id="1840475335"> <div class="imageWidget align-center" data-element-type="image" data-widget-type="image" id="1840475335"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/Untitled--28Instagram-Post--2845-29-29-2-1920w.png" alt="Avocado slices sprinkled with black pepper on toasted brown bread." id="1842661672" class="" width="1080" height="1350" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/Untitled--28Instagram-Post--2845-29-29-2.png" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+ <div id="2f1b398f" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-external-id="1272089710"> <div class="imageWidget align-center" data-element-type="image" data-widget-type="image" id="1272089710"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/IMG_7016-c64bdc5a-1920w.png" alt="Chicken Caesar wrap, cut in half, held in hand. Romaine, croutons, and chicken visible. Setting is "The Morning Grove."" id="1915884650" class="" width="1526" height="1657" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/IMG_7016-c64bdc5a.png" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+ <div id="3ab3738e" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1326879778"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1326879778" style=""><h3 style="" class="text-align-center"><span style="display: unset;">Egg-cellent Sandwiches</span></h3></div> 
+</div> 
+ <div id="6e59b1e1" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1299132800"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1299132800" style=""><p style="" class="text-align-center"><span style="display: unset;">Our egg sandwiches, wraps, and croissants are perfect for those on the go. Choose from classic combinations or try something new with our signature creations, all made with farm-fresh eggs and served on your choice of bread. Whether you prefer a hearty breakfast wrap or a flaky croissant, we&rsquo;ve got the perfect morning pick-me-up for you.</span></p></div> 
+</div> 
+ <div id="abf07d35" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1214942644"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1214942644" style=""><p href="/podcast" runtime_url="/podcast" type="page" style="text-transform:uppercase;" class="m-size-14 t-size-14 size-14 text-align-center"> <span>View Our Sandwiches</span> 
+</p></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-layout-section="" data-auto="flex-section" id="1774296212" data-flex-id="c96bbc05" data-page-element-type="section" data-page-element-id="1249568505"> <div class="flex-widgets-container" id="1933199362"></div> 
+ <section id="fc5f7a2e" class="flex-element section" data-auto="flex-element-section"> <div id="a085d805" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="a732cdd0" class="flex-element group" data-auto="flex-element-group"> <div id="c5a0691e" class="flex-element group" data-auto="flex-element-group"> <div id="b690a2a5" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1449758990"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1449758990" style=""><p><span style="display: unset; text-transform: uppercase; color: var(--color_2);">Fresh Flavors for Your Midday Break</span></p></div> 
+</div> 
+ <div id="682cd04a" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1908431788"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1908431788" style=""> <h1 class="m-size-40 t-size-60 size-70"><span style="display: unset; color: var(--color_2);" class="m-font-size-40 t-font-size-60 font-size-70">Lunch Made Just Right</span></h1> 
+</div> 
+</div> 
+ <div id="99d01a65" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1220339845"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1220339845" style=""><p><span style="display: unset; color: var(--color_2);">Try our sandwiches, wraps, paninis, and salads crafted with fresh, quality ingredients and vegetarian options to satisfy every appetite.</span></p></div> 
+</div> 
+ <div id="b7b0af43" class="flex-element group" data-auto="flex-element-group"> <div id="9802af26" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="link" data-external-id="1970147497"> <a data-display-type="block" class="align-center dmButtonLink dmWidget dmWwr default dmOnlyButton dmDefaultGradient flexButton u_1970147497" file="false" href="/menu" data-element-type="dButtonLinkId" id="1970147497"> <span class="iconBg" aria-hidden="true" id="1486954957"> <span class="icon hasFontIcon icon-star" id="1556722901"></span> 
+</span> 
+ <span class="text" id="1446677529">View Menu</span> 
+</a> 
+</div> 
+</div> 
+</div> 
+ <div id="f3fbe878" class="flex-element group" data-auto="flex-element-group"> <div id="7e22745e" class="flex-element group" data-auto="flex-element-group"> <div id="cdb9e2be" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-external-id="1268254859"> <div class="imageWidget align-center" data-element-type="image" data-widget-type="image" id="1268254859"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/pexels-photo-32318138-1920w.jpeg" alt="Sandwich with lettuce, tomato, and coleslaw on a black plate." id="1505208641" class="" width="1920" height="1280" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/pexels-photo-32318138.jpeg" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+ <div id="c31a08ee" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-external-id="1611660138"> <div class="imageWidget align-center u_1611660138" data-element-type="image" data-widget-type="image" id="1611660138"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/pexels-photo-6107787-1920w.jpeg" alt="Chicken Caesar salad in a white bowl with croutons, tomatoes, and dressing." id="1914799113" class="" width="1920" height="2880" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/pexels-photo-6107787.jpeg" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+</div> 
+ <div id="b9accfbd" class="flex-element group" data-auto="flex-element-group"> <div id="4beb2da7" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-external-id="1449230644"> <div class="imageWidget align-center u_1449230644" data-element-type="image" data-widget-type="image" id="1449230644"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/pexels-photo-1647163-1920w.jpeg" alt="Sandwich on a white plate, cross-section view: bread, meat, cheese, greens, and carrots." id="1445221967" class="" width="1920" height="2880" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/pexels-photo-1647163.jpeg" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+ <div id="04affc75" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="image" data-external-id="1890352609"> <div class="imageWidget align-center" data-element-type="image" data-widget-type="image" id="1890352609"><img src="https://irp.cdn-website.com/af0639b3/dms3rep/multi/opt/pexels-photo-15010305-1920w.jpeg" alt="Cut wrap sandwich with carrot, ham, lettuce, and white sauce." id="1275877292" class="" width="1920" height="2557" data-dm-image-path="https://irp.cdn-website.com/af0639b3/dms3rep/multi/pexels-photo-15010305.jpeg" onerror="handleImageLoadError(this)"/></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-flex-id="0a4a3598" data-auto="flex-section" id="1777135908" data-layout-section="" data-page-element-type="section" data-page-element-id="1777724156"> <div class="flex-widgets-container" id="1244814462"></div> 
+ <section id="deb97545" class="flex-element section" data-auto="flex-element-section"> <div id="bb00c31c" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="0774af12" class="flex-element group" data-auto="flex-element-group"> <div id="b23a3a1b" class="flex-element group" data-auto="flex-element-group"> <div id="33a5b19b" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1723222238"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1723222238" style=""><h2 style="" class="text-align-center"><span style="display: unset;">Your Questions Answered</span></h2></div> 
+</div> 
+ <div id="26079286" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1387013623"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1387013623" style=""><p style="" class="text-align-center"><span style="display: unset;">Find quick answers about our menu, services, and policies to make your visit smooth and enjoyable.</span></p></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-flex-id="70831b75" data-auto="flex-section" id="1993281986" data-layout-section="" data-page-element-type="section" data-page-element-id="1777724156"> <div class="flex-widgets-container" id="1215227114"></div> 
+ <section id="bdc3fedd" class="flex-element section" data-auto="flex-element-section"> <div id="c01b1aa6" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="d1dfb78c" class="flex-element group" data-auto="flex-element-group"> <div id="97c0c727" class="flex-element group" data-auto="flex-element-group"> <div id="40866308" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="ssraccordion" data-external-id="1144743451"> <div id="1144743451" dmle_extension="ssraccordion" data-element-type="ssraccordion" class=""><span id="ssrWrap-1144743451" ><style data-styled="true" data-styled-version="5.3.11">@media all{.fXZVFL{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;gap:8px;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;padding:16px;padding-top:16px;padding-bottom:16px;border-bottom:1px solid #e3e3e3;}}/*!sc*/
+@media all{.tTafJ{aspect-ratio:1 / 1;width:30px;padding:8px;height:30px;}}/*!sc*/
+@media (min-width:1025px){.tTafJ{width:30px;height:30px;}}/*!sc*/
+@media (max-width:1024px) and (min-width:768px){.tTafJ{width:30px;height:30px;}}/*!sc*/
+@media (max-width:767px){}/*!sc*/
+@media all{.nXtpH{width:100%;height:100%;-webkit-transition:-webkit-transform 0.3s ease-in-out;-webkit-transition:transform 0.3s ease-in-out;transition:transform 0.3s ease-in-out;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;position:relative;}}/*!sc*/
+@media all{.jxwvWq{-webkit-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg);position:absolute;background-color:currentColor;width:10%;height:100%;left:50%;margin-left:-5%;top:50%;margin-top:-50%;}}/*!sc*/
+@media all{.kEBKQa{-webkit-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg);background-color:currentColor;position:absolute;width:100%;height:10%;left:50%;margin-left:-50%;top:50%;margin-top:-5%;opacity:0;}}/*!sc*/
+@media all{.dygwmn{overflow:hidden;-webkit-transition:max-height 0.3s ease-out;transition:max-height 0.3s ease-out;height:auto;max-height:0;}}/*!sc*/
+@media all{.chjLlT{padding:16px;padding-top:16px;padding-bottom:16px;margin:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;gap:24px;-webkit-align-items:flex-start;-webkit-box-align:flex-start;-ms-flex-align:flex-start;align-items:flex-start;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;}}/*!sc*/
+@media (max-width:767px){.chjLlT{-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;}}/*!sc*/
+@media all{.hzZYLO{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;gap:16px;text-align:start;-webkit-flex:1;-ms-flex:1;flex:1;}}/*!sc*/
+@media all{.eODSZX{-webkit-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;-webkit-transform:rotate(-90deg);-ms-transform:rotate(-90deg);transform:rotate(-90deg);position:absolute;background-color:currentColor;width:10%;height:100%;left:50%;margin-left:-5%;top:50%;margin-top:-50%;}}/*!sc*/
+@media all{.eyQoqK{-webkit-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;-webkit-transform:rotate(-90deg);-ms-transform:rotate(-90deg);transform:rotate(-90deg);background-color:currentColor;position:absolute;width:100%;height:10%;left:50%;margin-left:-50%;top:50%;margin-top:-5%;opacity:1;}}/*!sc*/
+data-styled.g2[id="sc-gEvEer"]{content:"fXZVFL,tTafJ,nXtpH,jxwvWq,kEBKQa,dygwmn,chjLlT,hzZYLO,eODSZX,eyQoqK,"}/*!sc*/
+@media all{.cqCbBg{-webkit-flex:1;-ms-flex:1;flex:1;}}/*!sc*/
+data-styled.g3[id="sc-eqUAAy"]{content:"cqCbBg,"}/*!sc*/
+@media all{.kOipFV{cursor:pointer;}}/*!sc*/
+data-styled.g6[id="sc-iGgWBj"]{content:"kOipFV,"}/*!sc*/
+@media all{.hKESMj{list-style-type:none;overflow:hidden;margin:0;padding:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;gap:10px;}}/*!sc*/
+data-styled.g7[id="sc-gsFSXq"]{content:"hKESMj,"}/*!sc*/
+@media all{#dm#dm#dm .hUlwnf.hUlwnf{margin:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;gap:8px;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-flex:1;-ms-flex:1;flex:1;text-align:start;}}/*!sc*/
+@media (min-width:1025px){#dm#dm#dm .hUlwnf.hUlwnf{font-size:20px;}}/*!sc*/
+@media (max-width:1024px) and (min-width:768px){#dm#dm#dm .hUlwnf.hUlwnf{font-size:18px;}}/*!sc*/
+@media (max-width:767px){#dm#dm#dm .hUlwnf.hUlwnf{font-size:16px;}}/*!sc*/
+@media all{#dm#dm#dm .jHuCFt.jHuCFt p{margin-block:0;overflow-wrap:anywhere;}}/*!sc*/
+@media (min-width:1025px){#dm#dm#dm .jHuCFt.jHuCFt{font-size:18px;}}/*!sc*/
+@media (max-width:1024px) and (min-width:768px){#dm#dm#dm .jHuCFt.jHuCFt{font-size:16px;}}/*!sc*/
+@media (max-width:767px){#dm#dm#dm .jHuCFt.jHuCFt{font-size:14px;}}/*!sc*/
+data-styled.g9[id="sc-imWYAI"]{content:"hUlwnf,jHuCFt,"}/*!sc*/
+</style><div data-auto="runtime-accordion-widget" class="sc-gEvEer"><ul data-grab="accordion-container" class="sc-gsFSXq hKESMj"><li data-grab="accordion-item-container" class="sc-iGgWBj kOipFV"><div tabindex="0" data-grab="accordion-item-title-wrapper" class="sc-gEvEer fXZVFL"><h3 data-auto="accordion-item-title" data-grab="accordion-item-title" class="sc-imWYAI hUlwnf"><span class="sc-eqUAAy cqCbBg">What are your opening hours?</span></h3><div data-grab="accordion-item-arrow-wrapper" class="sc-gEvEer tTafJ"><div data-grab="accordion-item-arrow" class="sc-gEvEer nXtpH"><div class="sc-gEvEer"><div class="sc-gEvEer jxwvWq"></div><div class="sc-gEvEer kEBKQa"></div></div></div></div></div><div class="sc-gEvEer"><div class="sc-gEvEer dygwmn"><div data-grab="accordion-item-desc" class="sc-gEvEer chjLlT"><div class="sc-gEvEer hzZYLO"><div data-auto="desc" data-grab="accordion-item-desc-text" class="sc-imWYAI jHuCFt"><p class="rteBlock" no_space_b="true" no_space_e="true">We&rsquo;re open Monday to Friday from 8 AM to 2 PM, Saturday from 9 AM to 12 PM and we are closed on Sundays.</p></div></div></div></div></div></li><li data-grab="accordion-item-container" class="sc-iGgWBj kOipFV"><div tabindex="0" data-grab="accordion-item-title-wrapper" class="sc-gEvEer fXZVFL"><h3 data-auto="accordion-item-title" data-grab="accordion-item-title" class="sc-imWYAI hUlwnf"><span class="sc-eqUAAy cqCbBg">Is Wi-Fi available in the shop?</span></h3><div data-grab="accordion-item-arrow-wrapper" class="sc-gEvEer tTafJ"><div data-grab="accordion-item-arrow" class="sc-gEvEer nXtpH"><div class="sc-gEvEer"><div class="sc-gEvEer eODSZX"></div><div class="sc-gEvEer eyQoqK"></div></div></div></div></div><div class="sc-gEvEer"><div class="sc-gEvEer dygwmn"><div data-grab="accordion-item-desc" class="sc-gEvEer chjLlT"><div class="sc-gEvEer hzZYLO"><div data-auto="desc" data-grab="accordion-item-desc-text" class="sc-imWYAI jHuCFt">Yes, free Wi-Fi is available for all customers.</div></div></div></div></div></li></ul></div><script data-role="hydration">;window?.waitForDeferred?.('ssrLibrariesLoaded', () => {window.SSRRuntime.RuntimeReactHelpers.initiateWidget({"type":"SSR_ACCORDION","props":{"layout":"LAYOUT_2","itemsData":[{"title":"What are your opening hours?","desc":"<p class=\"rteBlock\" no_space_b=\"true\" no_space_e=\"true\">We&rsquo;re open Monday to Friday from 8 AM to 2 PM, Saturday from 9 AM to 12 PM and we are closed on Sundays.</p>","button":{"text":"Hours"},"showButton":false,"showMedia":false},{"title":"Is Wi-Fi available in the shop?","desc":"Yes, free Wi-Fi is available for all customers.","button":{"text":"Connect"},"showButton":false,"showMedia":false}],"firstExpanded":true,"closeOthers":true,"addSchemaMarkup":false,"titleTag":null,"_styles":{"container":{"common":{"gap":"10px"}},"itemTitleWrapper":{"common":{"padding":"16px"}},"itemTitle":{"desktop":{"font-size":"20px"},"tablet_implicit":{"font-size":"18px"},"mobile_implicit":{"font-size":"16px"}},"itemArrowWrapper":{"common":{"padding":"8px"},"desktop":{"width":"30px"},"tablet":{"width":"30px"}},"itemDesc":{"common":{"padding":"16px"}},"desc":{"desktop":{"font-size":"18px"},"tablet_implicit":{"font-size":"16px"},"mobile_implicit":{"font-size":"14px"}},"button":{"root":{"common":{},"desktop":{"height":"50px"},"tablet":{"height":"50px"},"mobile":{"width":"240px","height":"45px"}},"text":{},"rootHover":{},"rootHoverText":{},"icon":{},"iconWrapper":{},"buttonTypeCSSClass":"button_2"},"media":{"common":{},"desktop":{"width":"145px"},"tablet":{"width":"145px"}}},"widgetId":"1144743451"},"id":"1144743451"}, false)});</script></span></div> 
+</div> 
+</div> 
+ <div id="8272d87a" class="flex-element group" data-auto="flex-element-group"> <div id="6e6df5c1" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="ssraccordion" data-external-id="1309905971"> <div id="1309905971" dmle_extension="ssraccordion" data-element-type="ssraccordion" class=""><span id="ssrWrap-1309905971" ><style data-styled="true" data-styled-version="5.3.11">@media all{.fXZVFL{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;gap:8px;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;padding:16px;padding-top:16px;padding-bottom:16px;border-bottom:1px solid #e3e3e3;}}/*!sc*/
+@media all{.tTafJ{aspect-ratio:1 / 1;width:30px;padding:8px;height:30px;}}/*!sc*/
+@media (min-width:1025px){.tTafJ{width:30px;height:30px;}}/*!sc*/
+@media (max-width:1024px) and (min-width:768px){.tTafJ{width:30px;height:30px;}}/*!sc*/
+@media (max-width:767px){}/*!sc*/
+@media all{.nXtpH{width:100%;height:100%;-webkit-transition:-webkit-transform 0.3s ease-in-out;-webkit-transition:transform 0.3s ease-in-out;transition:transform 0.3s ease-in-out;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;position:relative;}}/*!sc*/
+@media all{.jxwvWq{-webkit-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg);position:absolute;background-color:currentColor;width:10%;height:100%;left:50%;margin-left:-5%;top:50%;margin-top:-50%;}}/*!sc*/
+@media all{.kEBKQa{-webkit-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg);background-color:currentColor;position:absolute;width:100%;height:10%;left:50%;margin-left:-50%;top:50%;margin-top:-5%;opacity:0;}}/*!sc*/
+@media all{.dygwmn{overflow:hidden;-webkit-transition:max-height 0.3s ease-out;transition:max-height 0.3s ease-out;height:auto;max-height:0;}}/*!sc*/
+@media all{.chjLlT{padding:16px;padding-top:16px;padding-bottom:16px;margin:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;gap:24px;-webkit-align-items:flex-start;-webkit-box-align:flex-start;-ms-flex-align:flex-start;align-items:flex-start;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;}}/*!sc*/
+@media (max-width:767px){.chjLlT{-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;}}/*!sc*/
+@media all{.hzZYLO{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;gap:16px;text-align:start;-webkit-flex:1;-ms-flex:1;flex:1;}}/*!sc*/
+@media all{.eODSZX{-webkit-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;-webkit-transform:rotate(-90deg);-ms-transform:rotate(-90deg);transform:rotate(-90deg);position:absolute;background-color:currentColor;width:10%;height:100%;left:50%;margin-left:-5%;top:50%;margin-top:-50%;}}/*!sc*/
+@media all{.eyQoqK{-webkit-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;-webkit-transform:rotate(-90deg);-ms-transform:rotate(-90deg);transform:rotate(-90deg);background-color:currentColor;position:absolute;width:100%;height:10%;left:50%;margin-left:-50%;top:50%;margin-top:-5%;opacity:1;}}/*!sc*/
+data-styled.g2[id="sc-gEvEer"]{content:"fXZVFL,tTafJ,nXtpH,jxwvWq,kEBKQa,dygwmn,chjLlT,hzZYLO,eODSZX,eyQoqK,"}/*!sc*/
+@media all{.cqCbBg{-webkit-flex:1;-ms-flex:1;flex:1;}}/*!sc*/
+data-styled.g3[id="sc-eqUAAy"]{content:"cqCbBg,"}/*!sc*/
+@media all{.kOipFV{cursor:pointer;}}/*!sc*/
+data-styled.g6[id="sc-iGgWBj"]{content:"kOipFV,"}/*!sc*/
+@media all{.hKESMj{list-style-type:none;overflow:hidden;margin:0;padding:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;gap:10px;}}/*!sc*/
+data-styled.g7[id="sc-gsFSXq"]{content:"hKESMj,"}/*!sc*/
+@media all{#dm#dm#dm .hUlwnf.hUlwnf{margin:0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;gap:8px;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-flex:1;-ms-flex:1;flex:1;text-align:start;}}/*!sc*/
+@media (min-width:1025px){#dm#dm#dm .hUlwnf.hUlwnf{font-size:20px;}}/*!sc*/
+@media (max-width:1024px) and (min-width:768px){#dm#dm#dm .hUlwnf.hUlwnf{font-size:18px;}}/*!sc*/
+@media (max-width:767px){#dm#dm#dm .hUlwnf.hUlwnf{font-size:16px;}}/*!sc*/
+@media all{#dm#dm#dm .jHuCFt.jHuCFt p{margin-block:0;overflow-wrap:anywhere;}}/*!sc*/
+@media (min-width:1025px){#dm#dm#dm .jHuCFt.jHuCFt{font-size:18px;}}/*!sc*/
+@media (max-width:1024px) and (min-width:768px){#dm#dm#dm .jHuCFt.jHuCFt{font-size:16px;}}/*!sc*/
+@media (max-width:767px){#dm#dm#dm .jHuCFt.jHuCFt{font-size:14px;}}/*!sc*/
+data-styled.g9[id="sc-imWYAI"]{content:"hUlwnf,jHuCFt,"}/*!sc*/
+</style><div data-auto="runtime-accordion-widget" class="sc-gEvEer"><ul data-grab="accordion-container" class="sc-gsFSXq hKESMj"><li data-grab="accordion-item-container" class="sc-iGgWBj kOipFV"><div tabindex="0" data-grab="accordion-item-title-wrapper" class="sc-gEvEer fXZVFL"><h3 data-auto="accordion-item-title" data-grab="accordion-item-title" class="sc-imWYAI hUlwnf"><span class="sc-eqUAAy cqCbBg">Do you offer vegan or gluten-free options?</span></h3><div data-grab="accordion-item-arrow-wrapper" class="sc-gEvEer tTafJ"><div data-grab="accordion-item-arrow" class="sc-gEvEer nXtpH"><div class="sc-gEvEer"><div class="sc-gEvEer jxwvWq"></div><div class="sc-gEvEer kEBKQa"></div></div></div></div></div><div class="sc-gEvEer"><div class="sc-gEvEer dygwmn"><div data-grab="accordion-item-desc" class="sc-gEvEer chjLlT"><div class="sc-gEvEer hzZYLO"><div data-auto="desc" data-grab="accordion-item-desc-text" class="sc-imWYAI jHuCFt">We have several vegan and gluten-free choices clearly marked on our menu.</div></div></div></div></div></li><li data-grab="accordion-item-container" class="sc-iGgWBj kOipFV"><div tabindex="0" data-grab="accordion-item-title-wrapper" class="sc-gEvEer fXZVFL"><h3 data-auto="accordion-item-title" data-grab="accordion-item-title" class="sc-imWYAI hUlwnf"><span class="sc-eqUAAy cqCbBg">How can I place an order?</span></h3><div data-grab="accordion-item-arrow-wrapper" class="sc-gEvEer tTafJ"><div data-grab="accordion-item-arrow" class="sc-gEvEer nXtpH"><div class="sc-gEvEer"><div class="sc-gEvEer eODSZX"></div><div class="sc-gEvEer eyQoqK"></div></div></div></div></div><div class="sc-gEvEer"><div class="sc-gEvEer dygwmn"><div data-grab="accordion-item-desc" class="sc-gEvEer chjLlT"><div class="sc-gEvEer hzZYLO"><div data-auto="desc" data-grab="accordion-item-desc-text" class="sc-imWYAI jHuCFt">Orders can be placed in-store, by phone, or through our online platform.</div></div></div></div></div></li><li data-grab="accordion-item-container" class="sc-iGgWBj kOipFV"><div tabindex="0" data-grab="accordion-item-title-wrapper" class="sc-gEvEer fXZVFL"><h3 data-auto="accordion-item-title" data-grab="accordion-item-title" class="sc-imWYAI hUlwnf"><span class="sc-eqUAAy cqCbBg">Do you have a loyalty program?</span></h3><div data-grab="accordion-item-arrow-wrapper" class="sc-gEvEer tTafJ"><div data-grab="accordion-item-arrow" class="sc-gEvEer nXtpH"><div class="sc-gEvEer"><div class="sc-gEvEer eODSZX"></div><div class="sc-gEvEer eyQoqK"></div></div></div></div></div><div class="sc-gEvEer"><div class="sc-gEvEer dygwmn"><div data-grab="accordion-item-desc" class="sc-gEvEer chjLlT"><div class="sc-gEvEer hzZYLO"><div data-auto="desc" data-grab="accordion-item-desc-text" class="sc-imWYAI jHuCFt">Yes, earn points with every purchase and redeem rewards on future visits.</div></div></div></div></div></li></ul></div><script data-role="hydration">;window?.waitForDeferred?.('ssrLibrariesLoaded', () => {window.SSRRuntime.RuntimeReactHelpers.initiateWidget({"type":"SSR_ACCORDION","props":{"layout":"LAYOUT_2","itemsData":[{"title":"Do you offer vegan or gluten-free options?","desc":"We have several vegan and gluten-free choices clearly marked on our menu.","button":{"text":"See options"},"showButton":false,"showMedia":false},{"title":"How can I place an order?","desc":"Orders can be placed in-store, by phone, or through our online platform.","button":{"text":"Order now"},"showButton":false,"showMedia":false},{"title":"Do you have a loyalty program?","desc":"Yes, earn points with every purchase and redeem rewards on future visits.","button":{"text":"Join now"},"showButton":false,"showMedia":false}],"firstExpanded":true,"closeOthers":true,"addSchemaMarkup":false,"titleTag":null,"_styles":{"container":{"common":{"gap":"10px"}},"itemTitleWrapper":{"common":{"padding":"16px"}},"itemTitle":{"desktop":{"font-size":"20px"},"tablet_implicit":{"font-size":"18px"},"mobile_implicit":{"font-size":"16px"}},"itemArrowWrapper":{"common":{"padding":"8px"},"desktop":{"width":"30px"},"tablet":{"width":"30px"}},"itemDesc":{"common":{"padding":"16px"}},"desc":{"desktop":{"font-size":"18px"},"tablet_implicit":{"font-size":"16px"},"mobile_implicit":{"font-size":"14px"}},"button":{"root":{"common":{},"desktop":{"height":"50px"},"tablet":{"height":"50px"},"mobile":{"width":"240px","height":"45px"}},"text":{},"rootHover":{},"rootHoverText":{},"icon":{},"iconWrapper":{},"buttonTypeCSSClass":"button_2"},"media":{"common":{},"desktop":{"width":"145px"},"tablet":{"width":"145px"}}},"widgetId":"1309905971"},"id":"1309905971"}, false)});</script></span></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-flex-id="4c4afa81" data-auto="flex-section" id="1509359569" data-layout-section="" data-page-element-type="section" data-page-element-id="1777724156"> <div class="flex-widgets-container" id="1457923546"></div> 
+ <section id="f74111e1" class="flex-element section" data-auto="flex-element-section"> <div id="28045af6" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="af05c1ab" class="flex-element group" data-auto="flex-element-group"> <div id="414be1da" class="flex-element group" data-auto="flex-element-group"> <div id="1af969c8" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1327807100"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1327807100" style=""><h3 style="" class="text-align-center"><span style="display: unset;">Still have questions?</span></h3></div> 
+</div> 
+ <div id="3ae31a6e" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1342208845"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1342208845" style=""><p style="" class="text-align-center"><span style="display: unset;">Reach out anytime via our contact page or visit us in person. We&rsquo;re happy to help.</span></p></div> 
+</div> 
+ <div id="c72e3036" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="spacer" data-hidden-on-mobile_portrait="" data-hidden-on-mobile_landscape="" data-external-id="1930930384"> <div data-element-type="spacer" class="dmSpacer" id="1930930384"></div> 
+</div> 
+ <div id="638567e7" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="link" data-external-id="1956713104"> <a data-display-type="block" class="align-center dmButtonLink dmWidget dmWwr default dmOnlyButton dmDefaultGradient u_1956713104 button_2" file="false" href="/temp" data-element-type="dButtonLinkId" id="1956713104"> <span class="iconBg" id="1821746438"> <span class="icon hasFontIcon icon-star" id="1065007957"></span> 
+</span> 
+ <span class="text" id="1155120819">Contact us</span> 
+</a> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-layout-section="" data-auto="flex-section" id="1367726983" data-flex-id="f535cfdc" data-page-element-type="section" data-page-element-id="1792783566"> <div class="flex-widgets-container" id="1259688039"></div> 
+ <section id="2ba9da0f" class="flex-element section" data-auto="flex-element-section"> <div id="d064f935" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="624ccefd" class="flex-element group" data-auto="flex-element-group"> <div id="896984e4" class="flex-element group" data-auto="flex-element-group"> <div id="718b992d" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1894292998"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1894292998" style=""><h2 style="" class="text-align-center"><span style="display: unset;">Get in Touch</span></h2></div> 
+</div> 
+ <div id="fd339469" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1016562290"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1016562290" style=""><p style="" class="text-align-center"><span style="display: unset;">Have questions or want to say hello? Reach out through our contact form, follow us on social media, or drop by The Morning Grove. We're here to help and love hearing from you.</span></p></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-layout-section="" data-auto="flex-section" id="1247716655" data-flex-id="0393ad65" data-page-element-type="section" data-page-element-id="1792783566"> <div class="flex-widgets-container" id="1119360596"></div> 
+ <section id="4ef0b51a" class="flex-element section" data-auto="flex-element-section"> <div id="42e6f803" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="c66fd2c1" class="flex-element group" data-auto="flex-element-group"> <div id="06c444ab" class="flex-element group" data-auto="flex-element-group"> <div id="b3221efa" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1893286905"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1893286905" style=""><p class="text-align-center"><a href="mailto:themorninggrove@gmail.com" runtime_url="mailto:themorninggrove@gmail.com" type="email" style="display: unset; color: var(--color_7);">themorninggrove@gmail.com</a></p></div> 
+</div> 
+ <div id="db54579c" class="flex-element group" data-auto="flex-element-group"> <div id="2144f64e" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1978347366"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1978347366" style=""> <h3 class="text-align-center"><span style="display: initial;">Email</span></h3> 
+</div> 
+</div> 
+ <div id="8c76bc95" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="graphic" data-keep-proportion="true" data-external-id="1709826706"> <div class="graphicWidget graphicWidgetV2 graphicWidgetV3 u_1709826706" data-element-type="graphic" data-widget-type="graphic" id="1709826706"> <svg version="1.1" id="1426504392" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewbox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve" class="svg u_1426504392" data-icon-custom="true" data-icon-name="icon_outline_envelope.svg"> <title id="1278117412">An envelope icon in the top left corner.</title> 
+ <path d="M26.5,5.5h-21C3.6,5.5,2,7.1,2,9v14c0,1.9,1.6,3.5,3.5,3.5h21c1.9,0,3.5-1.6,3.5-3.5V9C30,7.1,28.4,5.5,26.5,5.5z M4.6,9
+	c0-0.5,0.4-0.9,0.9-0.9h20.9c0.5,0,0.9,0.4,0.9,0.9v1.2l-9.4,7.7c-1.1,0.9-2.8,0.9-3.9,0l-9.4-7.7C4.6,10.2,4.6,9,4.6,9z M27.4,23
+	c0,0.5-0.4,0.9-0.9,0.9h-21c-0.5,0-0.9-0.4-0.9-0.9v-9.4l7.8,6.4c2.1,1.7,5.1,1.7,7.2,0l7.8-6.4C27.4,13.6,27.4,23,27.4,23z"></path> 
+</svg> 
+</div> 
+</div> 
+ <div id="68006c8d" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1415606299"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1415606299" style=""><p style="" class="text-align-center"><span style="display: unset;">Email us anytime</span></p></div> 
+</div> 
+</div> 
+</div> 
+ <div id="67ac5b45" class="flex-element group" data-auto="flex-element-group"> <div id="bcd5dabd" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1646343103"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1646343103" style=""><p class="text-align-center"><a href="tel:760-657-4245" runtime_url="tel:760-657-4245" type="call" style="display: unset; color: var(--color_7);">+1 (760) 657-4245</a></p></div> 
+</div> 
+ <div id="8601a68f" class="flex-element group" data-auto="flex-element-group"> <div id="4170c25f" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1798559728"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1798559728" style=""> <h3 class="text-align-center"><span style="display: initial;">Phone</span></h3> 
+</div> 
+</div> 
+ <div id="43a29d5c" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-keep-proportion="true" data-widget-type="graphic" data-external-id="1577458326"> <div class="graphicWidget graphicWidgetV2 graphicWidgetV3 u_1577458326" data-element-type="graphic" data-widget-type="graphic" id="1577458326"> <svg version="1.1" id="1370353586" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewbox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve" class="svg u_1370353586" data-icon-custom="true" data-icon-name="icon_outline_phone.svg"> <title id="1432878564">Phone icon.</title> 
+ <path d="M26.1,19.3L22,17.5c-1.3-0.6-2.8-0.2-3.8,0.9l-1,1.2c-1.9-1.1-3.5-2.7-4.7-4.7l1.2-1c1.1-0.9,1.4-2.4,0.9-3.7L13,6.2
+	c-0.6-1.5-2.3-2.3-3.8-1.9L5.3,5.3C3.9,5.8,3,7,3,8.4c0,11.5,9.4,20.9,20.9,20.9c1.5,0,2.7-0.9,3.1-2.4l1-3.8
+	C28.5,21.5,27.6,19.9,26.1,19.3z M24.1,26.1c-0.1,0.2-0.1,0.2-0.2,0.2C14.1,26.3,6,18.2,6,8.4c0-0.1,0.1-0.2,0.2-0.2l3.8-1l0,0
+	c0,0,0,0,0.1,0c0.1,0,0.2,0.1,0.2,0.2l1.8,4.1c0,0.1,0,0.2-0.1,0.2l-2.1,1.7c-0.5,0.4-0.7,1.2-0.4,1.8c1.6,3.4,4.3,6.1,7.7,7.7
+	c0.6,0.3,1.4,0.1,1.8-0.4l1.7-2.1c0,0,0.1-0.1,0.2-0.1l4.1,1.8c0.1,0,0.2,0.1,0.1,0.3L24.1,26.1L24.1,26.1z"></path> 
+ <path d="M21.4,14.9c0,0.8,0.7,1.5,1.5,1.5s1.5-0.7,1.5-1.5c0-3.5-2.9-6.3-6.4-6.3c-0.8,0-1.5,0.7-1.5,1.5s0.7,1.5,1.5,1.5
+	C19.9,11.6,21.4,13.1,21.4,14.9z"></path> 
+ <path d="M18.1,4.3c-0.8,0-1.5,0.7-1.5,1.5s0.7,1.5,1.5,1.5c4.1,0,7.5,3.4,7.5,7.5c0,0.8,0.7,1.5,1.5,1.5s1.5-0.7,1.5-1.5
+	C28.6,9.1,23.9,4.4,18.1,4.3L18.1,4.3z"></path> 
+</svg> 
+</div> 
+</div> 
+ <div id="6bf5b9e3" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1810426299"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1810426299" style=""><p style="" class="text-align-center"><span style="display: unset;">Call us directly</span></p></div> 
+</div> 
+</div> 
+</div> 
+ <div id="f604ae6e" class="flex-element group" data-auto="flex-element-group"> <div id="e17ac8d8" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1300129558"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1300129558" style=""><p class="text-align-center"><a href="https://www.roofriteservices.com/lebanon-roofing" target="_blank" runtime_url="https://www.roofriteservices.com/lebanon-roofing" style="color: var(--color_7); text-decoration: none; display: unset;">5808 Van Allen Way STE 115, Carlsbad, CA 92008</a></p></div> 
+</div> 
+ <div id="a5ebbdf4" class="flex-element group" data-auto="flex-element-group"> <div id="e2829887" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1435726180"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1435726180" style=""> <h3 class="text-align-center"><span style="display: initial;">Store</span></h3> 
+</div> 
+</div> 
+ <div id="8c008d82" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-keep-proportion="true" data-widget-type="graphic" data-external-id="1116543042"> <div class="graphicWidget graphicWidgetV2 graphicWidgetV3 u_1116543042" data-element-type="graphic" data-widget-type="graphic" id="1116543042"> <svg version="1.1" id="1493124288" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewbox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve" class="svg u_1493124288" data-icon-custom="true" data-icon-name="icon_outline_location.svg"> <title id="1407755677">A black location pin icon on a white background.</title> 
+ <path d="M24.5,6.2c-2-2.1-4.8-3.3-7.8-3.4h-0.2c-2.9,0-5.8,1.2-7.9,3.4c-1.9,2-2.9,4.6-2.8,7.4c0.5,9.8,8.9,15.3,9,15.4
+	c0.2,0.1,0.4,0.2,0.5,0.3c0.3,0.1,0.6,0.2,1,0.2h0.2h0.2c0.3,0,0.6-0.1,1-0.2c0.2-0.1,0.4-0.2,0.5-0.3c0.1,0,8.6-5.6,9-15.4
+	C27.4,10.8,26.4,8.2,24.5,6.2L24.5,6.2z M16.7,26.4C16.7,26.4,16.6,26.4,16.7,26.4c-0.1,0-0.1,0-0.1,0c-0.1,0-7.3-4.9-7.6-13
+	c-0.1-1.9,0.6-3.7,2-5.1c1.4-1.5,3.4-2.4,5.5-2.4h0h0.4c2.1,0,4.1,0.9,5.5,2.4c1.4,1.4,2.1,3.2,2,5.1C23.9,21.5,16.7,26.3,16.7,26.4
+	L16.7,26.4z"></path> 
+ <path d="M16.6,8c-3.1,0-5.7,2.6-5.7,5.7s2.6,5.7,5.7,5.7s5.7-2.5,5.7-5.7S19.7,8,16.6,8z M16.6,16.4c-1.5,0-2.7-1.2-2.7-2.7
+	s1.2-2.7,2.7-2.7s2.7,1.2,2.7,2.7S18.1,16.4,16.6,16.4z"></path> 
+</svg> 
+</div> 
+</div> 
+ <div id="68d66acd" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1472983840"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1472983840" style=""><p class="text-align-center"><span style="display: unset;">Visit us here</span></p></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-layout-section="" data-auto="flex-section" id="1526723721" data-flex-id="b018ce9a" data-page-element-type="section" data-page-element-id="1792783566"> <div class="flex-widgets-container" id="1066445652"></div> 
+ <section id="132ce765" class="flex-element section" data-auto="flex-element-section"> <div id="7d3761f9" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="89092430" class="flex-element group" data-auto="flex-element-group"> <div id="e0ed080f" class="flex-element group" data-auto="flex-element-group"> <div id="89e75a94" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="clicktomap" data-external-id="1956357082"> <div class="default align-center inlineMap" data-type="inlineMap" data-lat="33.135372" data-lng="-73.9851187" data-address="1552-1570 Broadway New York NY US 10036" data-height="" data-msid="" data-mapurl="" data-lang="en" data-color-scheme="" data-zoom="13" data-layout="layout4" data-popup-display="" data-popup-show="false" data-popup-title="" data-popup-title-visible="false" data-popup-description="" data-popup-description-visible="false" id="1956357082" dmle_extension="mapextension" data-element-type="mapextension" modedesktop="map" modemobile="button" addresstodisplay="1552-1570 Broadway New York NY US 10036" geocompleteaddress="1552-1570 Broadway New York NY US 10036" data-popup-display-desktop="" data-popup-display-mobile="" data-display-type="block" layout="layout4" modetablet="map" wr="true" icon="true" surround="true" adwords="" icon-name="icon-map-marker" provider="mapbox" lon="-73.9851187" lat="33.135372" zoom="13"> <div class="mapContainer" style="height: 100%; width: 100%; overflow: hidden; z-index: 0;"></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+ <div class="dmFooterContainer flex_hfcontainer"> <div id="flex-footer" role="contentinfo"> <div data-layout-section="" data-auto="flex-section" id="1024942104" data-flex-id="ae41c243"> <div class="flex-widgets-container" id="1416871462"></div> 
+ <section id="86b78673" class="flex-element section" data-auto="flex-element-section"> <div id="36451cf3" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="2c78ad56" class="flex-element group" data-auto="flex-element-group"> <div id="5069dac9" class="flex-element group" data-auto="flex-element-group"> <div id="widget_0gr" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1945223138"> <div class="dmNewParagraph u_1945223138" data-element-type="paragraph" data-version="5" id="1945223138" style="" data-binding="W3siYmluZGluZ05hbWUiOiJ0ZXh0IiwidmFsdWUiOiJjb250ZW50X2xpYnJhcnkuZ2xvYmFsLmNvbXBhbnlfbmFtZSJ9XQ==" data-diy-text="">The Morning Grove</div> 
+</div> 
+</div> 
+ <div id="33395f07" class="flex-element group" data-auto="flex-element-group" data-hidden-on-mobile=""> <div id="widget_9ah" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="ONELinksMenu" data-external-id="1629950838"> <nav class="effect-bottom2 u_1629950838 main-navigation unifiednav dmLinksMenu" role="navigation" layout-main="horizontal_nav_layout_1" layout-sub="submenu_horizontal_1" data-show-vertical-sub-items="HOVER" id="1629950838" dmle_extension="onelinksmenu" data-element-type="onelinksmenu" data-logo-src="" alt="" data-nav-structure="HORIZONTAL" wr="true" icon="true" surround="true" adwords="" navigation-id="unifiedNav"> <ul role="menubar" class="unifiednav__container unav-top  " data-auto="navigation-pages"> <li role="menuitem" class=" unifiednav__item-wrap " data-auto="more-pages" data-depth="0"> <a href="/" class="unifiednav__item unav-item unav-top-item  dmNavItemSelected  dmUDNavigationItem_010101604450  " target="" data-target-page-alias="" aria-current="page" data-auto="selected-page"> <span class="nav-item-text " data-link-text="Home" data-auto="page-text-style">Home<span class="icon icon-angle-down"></span> 
+</span> 
+</a> 
+</li> 
+ <li role="menuitem" class=" unifiednav__item-wrap " data-auto="more-pages" data-depth="0"> <a href="/menu" class="unifiednav__item unav-item unav-top-item  dmUDNavigationItem_010101564580  " target="" data-target-page-alias=""> <span class="nav-item-text " data-link-text="Menu" data-auto="page-text-style">Menu<span class="icon icon-angle-down"></span> 
+</span> 
+</a> 
+</li> 
+</ul> 
+</nav> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-layout-section="" data-auto="flex-section" id="1505184785" data-flex-id="1e0811ea"> <div class="flex-widgets-container" id="1262763219"></div> 
+ <section id="c64df9d4" class="flex-element section" data-auto="flex-element-section"> <div id="3c255966" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="8c42a691" class="flex-element group" data-auto="flex-element-group"> <div id="ef71ecd9" class="flex-element group" data-auto="flex-element-group"> <div id="widget_7vt" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1516911161"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1516911161" style=""> <h3><span style="font-weight: normal; color: var(--color_3); display: unset;">Stay Connected with The Morning Grove</span></h3> 
+</div> 
+</div> 
+</div> 
+ <div id="group_ccb" class="flex-element group" data-auto="flex-element-group" data-hidden-on-mobile=""></div> 
+ <div id="group_249" class="flex-element group" data-auto="flex-element-group"> <div id="99629e10" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1139125315"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1139125315" style=""> <h4 class="text-align-left"><span style="text-transform: none; color: var(--color_3); display: unset;">Contact</span></h4> 
+</div> 
+</div> 
+ <div id="group_8af" class="flex-element group" data-auto="flex-element-group"> <div id="9574255b" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1192443430"> <div class="dmNewParagraph u_1192443430" data-element-type="paragraph" data-version="5" id="1192443430" style="" data-binding="W3siYmluZGluZ05hbWUiOiJ0ZXh0IiwidmFsdWUiOiJjb250ZW50X2xpYnJhcnkuZ2xvYmFsLmVtYWlsLmVtYWlsIn1d" data-diy-text="">themorninggrove@gmail.com</div> 
+</div> 
+ <div id="d76e8905" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1867205647"> <div class="dmNewParagraph u_1867205647" data-element-type="paragraph" data-version="5" id="1867205647" style="" data-binding="W3siYmluZGluZ05hbWUiOiJ0ZXh0IiwidmFsdWUiOiJjb250ZW50X2xpYnJhcnkuZ2xvYmFsLnBob25lLnBob25lIn1d" data-diy-text="">760-657-4245</div> 
+</div> 
+</div> 
+</div> 
+ <div id="3fe19fdc" class="flex-element group" data-auto="flex-element-group"> <div id="d46d767d" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1917709933"> <div class="dmNewParagraph" data-element-type="paragraph" data-version="5" id="1917709933"> <h4 class="text-align-left m-text-align-left"><span style="text-transform: none; color: var(--color_3); display: unset;">Address</span></h4> 
+</div> 
+</div> 
+ <div id="63da2bf2eae8da42b23538a3" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="paragraph" data-external-id="1721508574"> <div class="dmNewParagraph u_1721508574" data-element-type="paragraph" data-version="5" id="1721508574" style="" data-binding="W3siYmluZGluZ05hbWUiOiJ0ZXh0IiwidmFsdWUiOiJjb250ZW50X2xpYnJhcnkuZ2xvYmFsIn1d" data-diy-text="">5808 Van Allen Way, Carlsbad, California 92008, United States</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-layout-section="" data-auto="flex-section" id="1729040291" data-flex-id="a45f55cb"> <div class="flex-widgets-container" id="1450459769"></div> 
+ <section id="c805911f" class="flex-element section" data-auto="flex-element-section"> <div id="a2696297" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="92b00c60" class="flex-element group" data-auto="flex-element-group"> <div id="01d8f8a7" class="flex-element group" data-auto="flex-element-group"> <div id="widget_enc" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="divider" data-external-id="1882662800"> <div class="dmDividerWrapper clearfix u_1882662800" data-element-type="dDividerId" data-layout="divider-style-1" data-widget-version="2" id="1882662800"><hr class="dmDivider" style="border-width:2px; border-top-style:solid; color:grey;" id="1736593144"/></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+ <div data-auto="flex-section" id="1755561873" data-flex-id="63da2bddeae8da42b2353671" data-layout-section=""> <div class="flex-widgets-container" id="1245219930"></div> 
+ <section id="63da2bddeae8da42b2353670" class="flex-element section" data-auto="flex-element-section"> <div id="63da2bddeae8da42b2353672" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="63da2bddeae8da42b2353673" class="flex-element group" data-auto="flex-element-group"> <div id="group_5mc" class="flex-element group" data-auto="flex-element-group"> <div id="c0504b3a" class="flex-element widget-wrapper" data-auto="flex-element-widget-wrapper" data-widget-type="custom" data-external-id="1056813044"> <div class="widget-1f5975 u_1056813044 dmCustomWidget" data-lazy-load="" data-title="" id="1056813044" dmle_extension="custom_extension" data-element-type="custom_extension" icon="false" surround="false" data-widget-id="1f5975986930429f819d4cd2154b5c4a" data-widget-version="25" data-widget-config="eyJyZXZlcnNlRmxhZyI6bnVsbCwiY29weXJpZ2h0VGV4dCI6IjxwIGNsYXNzPVwicnRlQmxvY2tcIj5BbGwgUmlnaHRzIFJlc2VydmVkIHwgVGhlIE1vcm5pbmcgR3JvdmU8L3A+In0="> <div class="copyright"> <div>&copy; 2026&nbsp;</div> 
+ <div><p class="rteBlock">All Rights Reserved | The Morning Grove</p></div> 
+</div> 
+</div> 
+</div> 
+</div> 
+ <div id="63da2bfbeae8da42b2353a45" class="flex-element group" data-auto="flex-element-group"></div> 
+</div> 
+</div> 
+</section> 
+</div> 
+</div> 
+</div> 
+ <div id="dmFlexStickyContainer" class="flex_hfcontainer"> <div id="flex-sticky"> <div data-layout-section="" data-auto="flex-section" id="1384725662" data-flex-id="095e7bdd"> <div class="flex-widgets-container" id="1175374395"></div> 
+ <section id="beeab53f" class="flex-element section" data-auto="flex-element-section"> <div id="6331089c" class="flex-element grid" data-auto="flex-element-grid" data-layout-grid=""> <div id="f2774cb2" class="flex-element group" data-auto="flex-element-group"> <div id="55254497" class="flex-element group" data-auto="flex-element-group"> <div id="3d02f338" class="flex-element inner-grid" data-auto="flex-element-inner-grid"></div> 
+</div> 
+</div> 
+</div> 
+</section> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+    </div>
+</div>
+<!--  Add full CSS and Javascript before the close tag of the body if needed -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Google Fonts Include -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- loadCSS function fonts.jsp-->
+
+
+
+<link rel="preload" href="https://irp.cdn-website.com/fonts/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&family=Aboreto:ital,wght@0,400&amp;subset=latin-ext&amp;display=swap"  as="style" fetchpriority="low" onload="loadCSS(this)" />
+
+
+
+
+
+<!-- RT CSS Include d-css-runtime-flex-new-nav-->
+<link rel="preload" as="style" fetchpriority="low" onload="loadCSS(this)" href="https://static.cdn-website.com/mnlt/production/6737/_dm/s/rt/dist/css/d-css-runtime-flex-new-nav.min.css" />
+
+<!-- End of RT CSS Include -->
+
+<link rel="preload" href="https://irp.cdn-website.com/WIDGET_CSS/e160ec3cddc6d206633b7b33176a668b.css" id="widgetCSS" as="style" fetchpriority="low" onload="loadCSS(this)" />
+
+<!-- Support `img` size attributes -->
+<style>img[width][height] {
+  height: auto;
+}</style>
+
+<!-- Support showing sticky element on page only -->
+<style>
+  body[data-page-alias="home"] #dm [data-show-on-page-only="home"] {
+    display: block !important;
+  }
+</style>
+
+<!-- This is populated in Ajax navigation -->
+<style id="pageAdditionalWidgetsCss" type="text/css">
+</style>
+
+
+
+
+<!-- Site CSS -->
+<link rel="preload" href="https://irp.cdn-website.com/af0639b3/files/af0639b3_withFlex_1.min.css?v=13" id="siteGlobalCss" as="style" fetchpriority="low" onload="loadCSS(this)" />
+
+
+
+<style id="customWidgetStyle" type="text/css">
+    
+</style>
+<style id="innerPagesStyle" type="text/css">
+    
+</style>
+
+
+<style
+        id="additionalGlobalCss" type="text/css"
+>
+</style>
+
+<!-- Page CSS -->
+<link rel="preload" href="https://irp.cdn-website.com/af0639b3/files/af0639b3_home_withFlex_1.min.css?v=13" id="homeCssLink" as="style" fetchpriority="low" onload="loadCSS(this)" />
+
+<style id="pagestyle" type="text/css">
+    
+</style>
+
+<style id="pagestyleDevice" type="text/css">
+    
+</style>
+
+<!-- Flex Sections CSS -->
+
+
+
+
+
+<style id="globalFontSizeStyle" type="text/css">
+    @media (min-width: 1025px) { [data-version] .size-14, [data-version] .font-size-14 {--font-size: 14;}[data-version] .size-15, [data-version] .font-size-15 {--font-size: 15;}[data-version] .size-70, [data-version] .font-size-70 {--font-size: 70;} }@media (min-width: 768px) and (max-width: 1024px) { [data-version] .t-size-14, [data-version] .t-font-size-14 {--font-size: 14;}[data-version] .t-size-15, [data-version] .t-font-size-15 {--font-size: 15;}[data-version] .t-size-60, [data-version] .t-font-size-60 {--font-size: 60;} }@media (max-width: 767px) { [data-version] .m-size-14, [data-version] .m-font-size-14 {--font-size: 14;}[data-version] .m-size-40, [data-version] .m-font-size-40 {--font-size: 40;} }
+</style>
+<style id="pageFontSizeStyle" type="text/css">
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========= JS Section ========= -->
+<script>
+    var isWLR = true;
+
+    window.customWidgetsFunctions = {};
+    window.customWidgetsStrings = {};
+    window.collections = {};
+    window.currentLanguage = "ENGLISH"
+    window.isSitePreview = false;
+</script>
+
+
+
+<script>
+    window.customWidgetsFunctions["1f5975986930429f819d4cd2154b5c4a~25"] = function (element, data, api) {
+        null
+    };
+</script>
+
+
+<script type="text/javascript">
+
+    var d_version = "production_6737";
+    var build = "2026-08-27T10_52_42";
+    window['v' + 'ersion'] = d_version;
+
+    function buildEditorParent() {
+        window.isMultiScreen = true;
+        window.editorParent = {};
+        window.previewParent = {};
+        window.assetsCacheQueryParam = "?version=2026-08-27T10_52_42";
+        try {
+            var _p = window.parent;
+            if (_p && _p.document && _p.$ && _p.$.dmfw) {
+                window.editorParent = _p;
+            } else if (_p.isSitePreview) {
+                window.previewParent = _p;
+            }
+        } catch (e) {
+
+        }
+    }
+
+    buildEditorParent();
+</script>
+
+
+
+<!-- Injecting site-wide before scripts -->
+
+<!-- End Injecting site-wide to the head -->
+
+
+
+
+
+
+<script>
+    window.cookiesNotificationMarkupPreview = 'null';
+</script>
+
+<!-- HEAD RT JS Include -->
+<script id='d-js-params'>
+    window.INSITE = window.INSITE || {};
+    window.INSITE.device = "desktop";
+
+    window.rtCommonProps = {};
+    rtCommonProps["rt.ajax.ajaxScriptsFix"] =true;
+    rtCommonProps["rt.pushnotifs.sslframe.encoded"] = 'aHR0cHM6Ly97c3ViZG9tYWlufS5wdXNoLW5vdGlmcy5jb20=';
+    rtCommonProps["runtimecollector.url"] = 'https://rtc.multiscreensite.com';
+    rtCommonProps["performance.tabletPreview.removeScroll"] = 'false';
+    rtCommonProps["inlineEditGrid.snap"] =true;
+    rtCommonProps["popup.insite.cookie.ttl"] = '0.5';
+    rtCommonProps["rt.pushnotifs.force.button"] =true;
+    rtCommonProps["common.mapbox.token"] = 'pk.eyJ1IjoiZGFubnliMTIzIiwiYSI6ImNqMGljZ256dzAwMDAycXBkdWxwbDgzeXYifQ.Ck5P-0NKPVKAZ6SH98gxxw';
+    rtCommonProps["common.mapbox.js.override"] =false;
+    rtCommonProps["common.here.appId"] = 'iYvDjIQ2quyEu0rg0hLo';
+    rtCommonProps["common.here.appCode"] = '1hcIxLJcbybmtBYTD9Z1UA';
+    rtCommonProps["isCoverage.test"] =false;
+    rtCommonProps["ecommerce.ecwid.script"] = 'https://app.multiscreenstore.com/script.js';
+    rtCommonProps["common.resources.dist.cdn"] =true;
+    rtCommonProps["common.build.dist.folder"] = 'production/6737';
+    rtCommonProps["common.resources.cdn.host"] = 'https://static.cdn-website.com';
+    rtCommonProps["common.resources.folder"] = 'https://static.cdn-website.com/mnlt/production/6737';
+    rtCommonProps["common.fonts.api.v2.url"] = 'https://irp.cdn-website.com/fonts/css2?family=';
+    rtCommonProps["feature.flag.runtime.backgroundSlider.preload.slowly"] =true;
+    rtCommonProps["feature.flag.runtime.newAnimation.enabled"] =true;
+    rtCommonProps["feature.flag.runtime.newAnimation.jitAnimation.enabled"] =true;
+    rtCommonProps["feature.flag.sites.google.analytics.gtag"] =true;
+    rtCommonProps["feature.flag.runOnReadyNewTask"] =true;
+    rtCommonProps["isAutomation.test"] =false;
+    rtCommonProps["booking.cal.api.domain"] = 'api.cal.com';
+
+    
+    rtCommonProps['common.mapsProvider'] = 'mapbox';
+    
+    rtCommonProps['common.mapsProvider.version'] = '0.52.0';
+    rtCommonProps['common.geocodeProvider'] = 'mapbox';
+    rtCommonProps['server.for.resources'] = '';
+    rtCommonProps['feature.flag.lazy.widgets'] = true;
+    rtCommonProps['feature.flag.single.wow'] = false;
+    rtCommonProps['feature.flag.disallowPopupsInEditor'] = true;
+    rtCommonProps['feature.flag.mark.anchors'] = true;
+    rtCommonProps['captcha.public.key'] = '6LffcBsUAAAAAMU-MYacU-6QHY4iDtUEYv_Ppwlz';
+    rtCommonProps['captcha.invisible.public.key'] = '6LeiWB8UAAAAAHYnVJM7_-7ap6bXCUNGiv7bBPME';
+    rtCommonProps["images.sizes.small"] =160;
+    rtCommonProps["images.sizes.mobile"] =640;
+    rtCommonProps["images.sizes.tablet"] =1280;
+    rtCommonProps["images.sizes.desktop"] =1920;
+    rtCommonProps["modules.resources.cdn"] =true;
+    rtCommonProps["import.images.storage.imageCDN"] = 'https://irp.cdn-website.com/';
+    rtCommonProps["feature.flag.runtime.inp.threshold"] =150;
+    rtCommonProps["feature.flag.performance.logs"] =false;
+    rtCommonProps["site.widget.form.captcha.type"] = 'g_recaptcha';
+    rtCommonProps["friendly.captcha.site.key"] = 'FCMGSQG9GVNMFS8K';
+    rtCommonProps["cookiebot.mapbox.consent.category"] = 'marketing';
+    rtCommonProps["termly.mapbox.consent.category"] = 'performance';
+    // feature flags that's used out of runtime module (in  legacy files)
+    rtCommonProps["platform.monolith.personalization.dateTimeCondition.popupMsgAction.moveToclient.enabled"] =true;
+
+    window.rtFlags = {};
+    rtFlags["unsuspendEcwidStoreOnRuntime.enabled"] =true;
+    rtFlags["scripts.widgetCount.enabled"] =true;
+    rtFlags["fnb.animations.tracking.enabled"] =true;
+    rtFlags["ecom.ecwidNewUrlStructure.enabled"] = false;
+    rtFlags["ecom.ecwid.accountPage.emptyBaseUrl.enabled"] = true;
+    rtFlags["ecom.ecwid.accountPage.repeatOrderRedirect.enabled"] = false;
+    rtFlags["ecom.ecwid.pages.links.disable.listeners"] = true;
+    rtFlags["ecom.ecwid.storefrontV3.enabled"] = false;
+    rtFlags["ecom.ecwid.old.store.fix.facebook.share"] = true;
+    rtFlags["ecom.monolith.legacy.js.api.disabled.for.new.sites"] = false;
+    rtFlags["feature.flag.photo.gallery.exact.size"] =true;
+    rtFlags["geocode.search.localize"] =false;
+    rtFlags["feature.flag.runtime.newAnimation.asyncInit.setTimeout.enabled"] =false;
+    rtFlags["twitter.heightLimit.enabled"] = true;
+    rtFlags["runtime.lottieOverflow"] =false;
+    rtFlags["runtime.monitoring.sentry.ignoreErrors"] = "";
+    rtFlags["streamline.monolith.personalization.supportMultipleConditions.enabled"] =false;
+    rtFlags["flex.animation.design.panel.layout"] =true;
+    rtFlags["runtime.cwv.report.cls.enabled"] =false;
+    rtFlags["runtime.cwv.report.lcp.enabled"] =false;
+    rtFlags["runtime.lcp.preload.selfheal.enabled"] =true;
+    rtFlags["runtime.lcp.preload.bootstrap.enabled"] =true;
+    rtFlags["runtime.lcp.preload.monitor.enabled"] =false;
+    rtFlags["runtime.customwidget.heightpin.enabled"] =true;
+    rtFlags["contact.form.useActiveForm"] =true;
+    rtFlags["contact.form.custom.errors.enabled"] =false;
+    rtFlags["runtime.ssr.productStore.internal.observer"] =true;
+    rtFlags["runtime.ssr.productCustomizations"] =true;
+    rtFlags["runtime.ssr.runtime.filter-sort.newFilterSortWidgetWithOptions.enabled"] =true;
+    rtFlags["runtime.ssr.ssrSlider.jumpThreshold.enabled"] =true;
+    rtFlags["runtime.ssr.native.booker.enabled"] =false;
+    rtFlags["termly.map.consent.overlay.enabled"] =false;
+    rtFlags["editor.widget.form.a11y"] =true;
+</script>
+<script src="https://static.cdn-website.com/mnlt/production/6737/_dm/s/rt/dist/scripts/d-js-runtime-flex-package.min.js"  id="d-js-core" defer></script>
+
+<!-- End of HEAD RT JS Include -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () =>
+        window.runtime.initLayout()
+    );
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="d_track_sp">
+    ;(function(p,l,o,w,i,n,g){if(!p[i]){p.GlobalSnowplowNamespace=p.GlobalSnowplowNamespace||[];
+        p.GlobalSnowplowNamespace.push(i);p[i]=function(){(p[i].q=p[i].q||[]).push(arguments)
+        };p[i].q=p[i].q||[];n=l.createElement(o);g=l.getElementsByTagName(o)[0];n.async=1;
+        n.src=w;g.parentNode.insertBefore(n,g)}}(window,document,"script","//d32hwlnfiv2gyn.cloudfront.net/sp-2.0.0-dm-0.1.min.js","snowplow"));
+    window.dmsnowplow  = window.snowplow;
+
+    dmsnowplow('newTracker', 'cf', 'd32hwlnfiv2gyn.cloudfront.net', { // Initialise a tracker
+        appId: 'af0639b3'
+    });
+
+    // snowplow queries element styles so we wait until CSS calculations are done.
+    requestAnimationFrame(() => {
+        dmsnowplow('trackPageView');
+        _dm_insite.forEach((rule) => {
+            // Specifically in popup only the client knows if it is shown or not so we don't always want to track its impression here
+            // the tracking is in popup.js
+            if (rule.actionName !== "popup") {
+                dmsnowplow('trackStructEvent', 'insite', 'impression', rule.ruleType, rule.ruleId);
+            }
+            window?.waitForDeferred?.('dmAjax', () => {
+                $.DM.events.trigger('event-ruleTriggered', {value: rule});
+            });
+        });
+    });
+</script>
+
+
+
+<div style="display:none;" id="P6iryBW0Wu"></div>
+
+<!-- photoswipe markup -->
+
+
+
+
+
+
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div id="fb-root"
+        data-locale="en"></div>
+<!-- Alias: af0639b3 -->
+<script id="d_track_personalization">
+	window?.waitForDeferred?.('dmAjax', () => {
+		// Collects client data and updates cookies used by smart sites
+		window.expireDays = 365;
+		window.visitLength = 30 * 60000;
+		$.setCookie("dm_timezone_offset", (new Date()).getTimezoneOffset(), window.expireDays);
+			setSmartSiteCookiesInternal("dm_this_page_view","dm_last_page_view","dm_total_visits","dm_last_visit");
+	});
+</script>
+<script type="text/javascript">
+    
+    Parameters.NavigationAreaParams.MoreButtonText = 'MORE';
+    
+    Parameters.NavigationAreaParams.LessButtonText = 'LESS';
+    Parameters.HomeLinkText = 'Home';
+    </script>
+<div><script type="text/javascript">
+             try{
+            if (globalThis.parent){
+                 var parentFlags =  globalThis.parent._flags;
+                 var parentStrings =  globalThis.parent.dmStr;
+
+             }
+            } catch(e) {}
+            _flags = window._flags || {};_flags = {...parentFlags,..._flags,...{"runtime.ssr.accordion.scroll.height.fix":true,"runtime.ssr.add.render":true,"runtime.ssr.booking.dryrun.for.default.staffmember":false,"runtime.ssr.checkbox.customizations":true,"runtime.ssr.enabled":true,"runtime.ssr.file.customizations":true,"runtime.ssr.initial-props-in-data-attribute":true,"runtime.ssr.lazyHydrate":true,"runtime.ssr.log.showHydrationDiff":false,"runtime.ssr.log.showHydrationErrors":true,"runtime.ssr.native.booker.enabled":false,"runtime.ssr.non-view-media-server-placeholder":true,"runtime.ssr.productCustomizations":true,"runtime.ssr.productStore.internal.observer":true,"runtime.ssr.render.overrideMarkup":true,"runtime.ssr.runtime.filter-sort.newFilterSortWidgetWithOptions.enabled":true,"runtime.ssr.script-fetch-priority-low":false,"runtime.ssr.search.layout.enabled":true,"runtime.ssr.slider-dev-logging":false,"runtime.ssr.slider-reOrderSelectedToBeFirst":true,"runtime.ssr.slider.alternative.animation.to.reduce.cls.enabled":true,"runtime.ssr.slider.image.fillAvailableSpace.enabled":true,"runtime.ssr.ssrAddToCart.snipcart.new.api.addProduct.enabled":true,"runtime.ssr.ssrSlider.jumpThreshold.enabled":true,"runtime.ssr.ssrSlider.multiplePaginationPerLayout.enabled":true,"runtime.ssr.ssrSlider.slideCleanWrap.enabled":true,"runtime.ssr.widget.migration.addtocart":false,"runtime.ssr.widget.migration.options.variations":false}}
+           
+        
+          var dmStr = {...parentStrings,...dmStr,...{"key.runtime":"some value","placeholder.add-content":"Add Content","second.key":"value2","widget.addtocart.title":"Add to cart","rt.advancedFormInput.requiredMessage":"This is required","ui.ed.breadcrumbs.empty.message":"There aren't any visible pages to show in the breadcrumbs. This message won't appear on your live published site.","ui.ed.ssr.orderConfirmation.content.intro.label":"Confirmation intro","ui.ed.ssr.orderConfirmation.content.intro.with":"With","ui.ed.ssr.orderConfirmation.content.intro.without":"Without","ui.runtimessr.addtocart.subscribe.title":"Subscribe Now","ui.runtimessr.addtocart.subscribe.tooltip.text":"Test your subscription’s checkout by publishing your site and using its live version. ","ui.runtimessr.advancedFormInput.requiredMessage":"This is required","ui.runtimessr.booker.404_page_not_found":"404: This page could not be found.","ui.runtimessr.booker.add_another":"Add another","ui.runtimessr.booker.additional_guests":"Add guests","ui.runtimessr.booker.additional_notes":"Additional notes","ui.runtimessr.booker.attendee_phone_number":"Attendee phone number","ui.runtimessr.booker.availability":"Availability","ui.runtimessr.booker.back":"Back","ui.runtimessr.booker.booker_event_not_found":"We could not find the event you are trying to book.","ui.runtimessr.booker.booking":"Booking","ui.runtimessr.booker.booking_fail":"Could not book the meeting.","ui.runtimessr.booker.booking_full":"No more seats available","ui.runtimessr.booker.cancel":"Cancel","ui.runtimessr.booker.code":"Code","ui.runtimessr.booker.confirm":"Confirm","ui.runtimessr.booker.custom_attendee_location":"Custom attendee location","ui.runtimessr.booker.duration":"Duration","ui.runtimessr.booker.email":"Email","ui.runtimessr.booker.email_address":"Email address","ui.runtimessr.booker.email_validation_error":"That doesn't look like an email address","ui.runtimessr.booker.enter_digit_code":"Enter the 6 digit code we sent to {email}","ui.runtimessr.booker.error_booking_event":"An error occurred when booking the event, please refresh the page and try again","ui.runtimessr.booker.error_required_field":"This field is required.","ui.runtimessr.booker.event_type_seats":"{numberOfSeats} seats","ui.runtimessr.booker.example_name":"John Doe","ui.runtimessr.booker.exclude_emails_match_found_error_message":"Please enter a valid work email address","ui.runtimessr.booker.first_name":"First name","ui.runtimessr.booker.former_time":"Former time","ui.runtimessr.booker.google_meet":"Google Meet","ui.runtimessr.booker.in_person":"In Person (Organizer Address)","ui.runtimessr.booker.in_person_attendee_address":"In Person (Attendee Address)","ui.runtimessr.booker.incorrect_email_verification_code":"Verification code is incorrect.","ui.runtimessr.booker.invalid_number":"Invalid phone number","ui.runtimessr.booker.last_name":"Last name","ui.runtimessr.booker.link_meeting":"Link meeting","ui.runtimessr.booker.loading":"Loading...","ui.runtimessr.booker.location":"Location","ui.runtimessr.booker.no_available_slots":"No available slots","ui.runtimessr.booker.number_in_international_format":"Please enter number in international format.","ui.runtimessr.booker.office_365_video":"MS Teams Video","ui.runtimessr.booker.organizer_default_conferencing_app":"Organizer's default app","ui.runtimessr.booker.phone_call":"Phone call","ui.runtimessr.booker.phone_number":"Phone number","ui.runtimessr.booker.reason_for_reschedule":"Reason for reschedule","ui.runtimessr.booker.remove":"Remove","ui.runtimessr.booker.require_emails_no_match_found_error_message":"You are not allowed to book with this email domain. Please contact the owner of this link.","ui.runtimessr.booker.requires_confirmation":"Requires confirmation","ui.runtimessr.booker.reschedule":"Reschedule","ui.runtimessr.booker.reschedule_placeholder":"Let others know why you need to reschedule","ui.runtimessr.booker.resend":"Resend","ui.runtimessr.booker.seats_available_one":"Seat available","ui.runtimessr.booker.seats_available_other":"Seats available","ui.runtimessr.booker.seats_half_full":"Seats filling fast","ui.runtimessr.booker.seats_nearly_full":"Seats almost full","ui.runtimessr.booker.select":"Select...","ui.runtimessr.booker.select_date":"Select date","ui.runtimessr.booker.sending":"Sending","ui.runtimessr.booker.share_additional_notes":"Please share anything that will help prepare for our meeting.","ui.runtimessr.booker.sms_workflow_consent":"By entering your phone number you consent to receive SMS messages for this event. SMS rates may apply.","ui.runtimessr.booker.somewhere_else":"Somewhere else","ui.runtimessr.booker.time_format":"Time format","ui.runtimessr.booker.timeslot_missing_description":"Please select a timeslot to book the event.","ui.runtimessr.booker.timezone":"Timezone","ui.runtimessr.booker.url_validation_error":"That doesn't look like a URL","ui.runtimessr.booker.user_away":"This user is currently away.","ui.runtimessr.booker.user_away_description":"The person you are trying to book has set themselves to away, and therefore is not accepting new bookings.","ui.runtimessr.booker.verify":"Verify","ui.runtimessr.booker.verify_email_button":"Verify email","ui.runtimessr.booker.verify_your_email":"Verify your email","ui.runtimessr.booker.view_next_month":"View next month","ui.runtimessr.booker.view_previous_month":"View previous month","ui.runtimessr.booker.what_is_this_meeting_about":"What is this meeting about?","ui.runtimessr.booker.your_name":"Your name","ui.runtimessr.booker.zoom":"Zoom","ui.runtimessr.calbooking.back.button":"Back","ui.runtimessr.calbooking.booking.title":"{eventTitle} between {staffMemberName} and {attendeeNames}","ui.runtimessr.calbooking.cancelBooking.cancelButton":"Cancel appointment","ui.runtimessr.calbooking.cancelBooking.cancelling":"Cancelling...","ui.runtimessr.calbooking.cancelBooking.cancelling.placeholder":"Why are you cancelling?","ui.runtimessr.calbooking.cancelBooking.reason":"Reason for cancellation (optional)","ui.runtimessr.calbooking.cancelBooking.title":"Cancel this appointment?","ui.runtimessr.calbooking.canceledBooking.title":"This appointment is canceled","ui.runtimessr.calbooking.confirmation.dryRun.note":"Check back later or contact us for more info","ui.runtimessr.calbooking.confirmation.dryRun.title":"This site isn’t accepting bookings yet","ui.runtimessr.calbooking.confirmation.pending.subtitle":"It’s now awaiting confirmation from our team","ui.runtimessr.calbooking.confirmation.pending.title":"Your booking request was sent","ui.runtimessr.calbooking.confirmation.preview.note":"Go to the live site at its actual domain to make a booking","ui.runtimessr.calbooking.confirmation.preview.title":"You can't create appointments in preview mode","ui.runtimessr.calbooking.confirmation.success.back":"Back","ui.runtimessr.calbooking.confirmation.success.cancel":"Cancel","ui.runtimessr.calbooking.confirmation.success.change":"Need to make a change?","ui.runtimessr.calbooking.confirmation.success.description":"We sent an email with the details to everyone.","ui.runtimessr.calbooking.confirmation.success.host":"Host","ui.runtimessr.calbooking.confirmation.success.or":"or","ui.runtimessr.calbooking.confirmation.success.reschedule":"Reschedule","ui.runtimessr.calbooking.confirmation.success.title":"This meeting is scheduled","ui.runtimessr.calbooking.confirmation.success.videoCallLink":"Video Call","ui.runtimessr.calbooking.confirmation.success.what":"What","ui.runtimessr.calbooking.confirmation.success.when":"When","ui.runtimessr.calbooking.confirmation.success.where":"Where","ui.runtimessr.calbooking.confirmation.success.who":"Who","ui.runtimessr.calbooking.duration.minutes":"{duration} min","ui.runtimessr.calbooking.markup.eventType":"Free Consultation","ui.runtimessr.calbooking.markup.userName":"John Smith","ui.runtimessr.calbooking.meta.price.free":"Free","ui.runtimessr.calbooking.meta.price.includes.tax":"Includes {taxPercentage} tax","ui.runtimessr.calbooking.meta.price.might.change":"Total price might change depending on your location","ui.runtimessr.calbooking.paid.booking.next.step.button":"Next","ui.runtimessr.calbooking.reschedule.booking":"Reschedule Booking","ui.runtimessr.collectionSearch.noResults":"No results.","ui.runtimessr.fileupload.error.upload_failed":"Upload Failed","ui.runtimessr.filtersort.less-filters":"Less Filters ({count})","ui.runtimessr.filtersort.more-filters":"More Filters ({count})","ui.runtimessr.priceOptions.option.oneTimeOnly":"One-time purchase","ui.runtimessr.productCustomizations.checkbox.hint.exactly":"You can choose exactly {exact} options","ui.runtimessr.productCustomizations.checkbox.hint.max":"You can choose up to {max} options","ui.runtimessr.productCustomizations.checkbox.hint.maxReached":"You've reached the maximum number of choices","ui.runtimessr.productCustomizations.checkbox.hint.min":"You can choose at least {min} options","ui.runtimessr.productCustomizations.checkbox.hint.range":"You can choose {min}-{max} options","ui.runtimessr.productCustomizations.errors.checkbox.exactlyChoices":"Choose exactly {exact} choices","ui.runtimessr.productCustomizations.errors.checkbox.maxChoices":"Choose up to {max} choices","ui.runtimessr.productCustomizations.errors.checkbox.minChoices":"Choose at least {min} choices","ui.runtimessr.productCustomizations.errors.checkbox.required":"Choose at least one choice","ui.runtimessr.productCustomizations.errors.file.maxFiles":"Upload up to {max} files","ui.runtimessr.productCustomizations.errors.required":"This field is required","ui.runtimessr.productCustomizations.noCustomizations":"When you add product customizations they will show here.","ui.runtimessr.productCustomizations.quantity.decrementAriaLabel":"Decrease quantity of {label}","ui.runtimessr.productCustomizations.quantity.incrementAriaLabel":"Increase quantity of {label}","ui.runtimessr.productCustomizations.quantity.stepperAriaLabel":"Quantity for {label}","ui.runtimessr.productPrice.omnibus.last.price":"Lowest price in the last {period} days - {displayedPrice}","ui.runtimessr.productPrice.omnibus.total.price.might.change":"Total price might change depending on your location","ui.runtimessr.productPrice.omnibus.vat":"Includes {vatPercentage}% tax","ui.runtimessr.productPriceOptions.autoRenew":"Will auto-renew until canceled","ui.runtimessr.productPriceOptions.expiresAfter":"Expires after","ui.runtimessr.productPriceOptions.frequency.monthly":"month","ui.runtimessr.productPriceOptions.frequency.weekly":"week","ui.runtimessr.productPriceOptions.frequency.yearly":"year","ui.runtimessr.productPriceOptions.frequencyPlural.monthly":"months","ui.runtimessr.productPriceOptions.frequencyPlural.weekly":"weeks","ui.runtimessr.productPriceOptions.frequencyPlural.yearly":"years","ui.runtimessr.productPriceOptions.title":"Price options","ui.runtimessr.staffMemberSelection.anyoneAvailable":"Anyone available","widget.addtocart.disabledText.placeHolder":"OUT OF STOCK","widget.filtersort.clear-all":"clear all","widget.filtersort.filter-by.title":"Filter by","widget.filtersort.sort-by.title":"Sort by","widget.filtersort.title":"Sort & Filter"}}
+
+</script>
+        <script id="ssr-static" fetchpriority="low" type="module"  src="https://ms-cdn.multiscreensite.com/runtime-react/4240/res/js/runtime-react.js"></script></div><!--  End Script tags -->
+<!--  Site Wide Html Markup -->
+<!--  Site Wide Html Markup -->
+</body>
+</html>

@@ -1,0 +1,1388 @@
+[
+  {
+    "restaurantId": "929",
+    "name": "Pavilion Dining",
+    "sourceUrl": "https://www.sandiego.edu/dining/campus/pavilion.php",
+    "confidence": "high",
+    "notes": "USD dining hall page explicitly describes 'Unlimited Access Meals (Dinner, Weekend Brunch) structured for dining-in' with Ozzi reusable-box swipe system and no itemised prices anywhere on the page (3 dollar-signs on page, all in the $10 Ozzi box deposit, none tied to food items). Confirmed AYCE swipe-access dining hall, not an itemised menu.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "4054",
+    "name": "Blackmarket Bakery",
+    "sourceUrl": "https://media-cdn.getbento.com/accounts/c9701234e758302d8ea1f3dea4815d06/media/z64mTtQHeD9Gco0zobOw_PrintBBMenu0225_Go.pdf",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://www.ubereats.com/store/blackmarket-bakery-north-park/fo9YsfPpTDSbfCDAbSU0pg",
+    "notes": "www.blackmarketbakery.com WAF-blocks curl with a 403 (the router's 'no known platform on rapidfeeds.com' was a dead end too), so filed from the restaurant's own printed dine-in menu PDF, hosted on its BentoBox CDN, dated 0225 (Feb 2025) and confirmed for the North Park branch (4686 30th) by the address printed on the PDF and a matching UberEats listing. Sandwich prices are whole dollars ($12-$15), consistent with printed-menu pricing. Beverages list 2-3 prices per size tier (8/12/20oz hot, 16/20oz cold); sizes were inferred ascending by position (smallest first) since the PDF text layer separates size labels from the price list - noted per item. Espresso, drip coffee and hot tea don't offer all three hot sizes; recorded only the prices given. Morning pastries (croissants, scones, brioche rolls) carry no prices anywhere on the menu and were dropped, as were the $3 cookie add-on and $5 'make it a deal' combo upsell (add-ons, not dishes).",
+    "dishes": [
+      {
+        "name": "Hot Potato",
+        "description": "Over Easy Egg, Bacon, Spicy Hash Brown Patty, Pickled Onions, Garlic Aioli on a Toasted Butter Croissant",
+        "price": "$15.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Farmhouse",
+        "description": "Egg, Bacon, Ham, Cheddar on a Toasted Brioche Bun",
+        "price": "$12.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Sunrise",
+        "description": "Egg, Ham, Pimento Cheese on a Buttermilk Biscuit",
+        "price": "$12.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Yo Soy Rizo (V)",
+        "description": "Egg, Spicy Soyrizo, Avocado, Roma Tomatoes, Red Onion, Chipotle Honey Crema on Toasted Lemon Rosemary",
+        "price": "$14.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Fresh Prince (V)",
+        "description": "Egg, Avocado, Roma Tomatoes, Red Onion, Red Pepper Mayo on Toasted Sourdough",
+        "price": "$13.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Burrito (V)",
+        "description": "Scrambled Eggs, Cheddar, Spicy Soyrizo, Hash Brown Patty, Avocado, Chipotle Honey Crema, Pico de Gallo in Flour Tortilla; served until 11am. Add Bacon +$2",
+        "price": "$15.00",
+        "section": "Breakfast"
+      },
+      {
+        "name": "The Phoenix",
+        "description": "Turkey, Pepper Jack, Avocado, Roma Tomatoes, Arugula, Red Pepper Mayo on Toasted Dutch Crunch",
+        "price": "$13.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Dill With It",
+        "description": "Turkey, Avocado, Dill Cream Cheese, Cucumber, Roma Tomatoes on Toasted Classic Sourdough",
+        "price": "$13.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Ranch Hand",
+        "description": "Bacon, Turkey, Cheddar, Arugula, Red Onion, Ranch, Chipotle Honey Mayo on Toasted Dutch Crunch",
+        "price": "$15.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Uncle Tiger",
+        "description": "Bacon, Avocado, Cheddar, Arugula, Pickled Onions, Chipotle Honey Mayo on Toasted Seeded Sourdough",
+        "price": "$14.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "B L A T",
+        "description": "Bacon, Avocado, Roma Tomatoes, Arugula, Mayo on Toasted Croissant. Add Two Fried Eggs +$3",
+        "price": "$14.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Always Sunny Vegan",
+        "description": "Hummus, Avocado, Roma Tomatoes, Red Onion, Cucumber, Arugula, Lemon Vinaigrette on Toasted Lemon Rosemary Sourdough",
+        "price": "$13.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Figaro (V)",
+        "description": "Grilled Swiss, Fig Jam, Caramelized Onion, Avocado, Arugula, Mayo on Classic Sourdough. Add Bacon +$2",
+        "price": "$14.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "The Gobbler",
+        "description": "Grilled Turkey, Bacon, Swiss, Plumped Cranberries, Sliced Apples, Basil Mayo on Dutch Crunch",
+        "price": "$15.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Espresso",
+        "description": "",
+        "price": "$4.00",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Drip Coffee (small)",
+        "description": "",
+        "price": "$4.00",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Drip Coffee (large)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Hot Tea (small)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Hot Tea (large)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Hot Chocolate (small)",
+        "description": "",
+        "price": "$5.70",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Hot Chocolate (large)",
+        "description": "",
+        "price": "$6.20",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Americano (8oz)",
+        "description": "",
+        "price": "$4.20",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Americano (12oz)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Americano (20oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Cappuccino (8oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Cappuccino (12oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Cappuccino (20oz)",
+        "description": "",
+        "price": "$6.70",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Latte (8oz)",
+        "description": "",
+        "price": "$4.70",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Latte (12oz)",
+        "description": "",
+        "price": "$5.20",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Latte (20oz)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Mocha (8oz)",
+        "description": "",
+        "price": "$5.70",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Mocha (12oz)",
+        "description": "",
+        "price": "$6.70",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Mocha (20oz)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Dirty Chai Latte (8oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Dirty Chai Latte (12oz)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Dirty Chai Latte (20oz)",
+        "description": "",
+        "price": "$7.80",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Champ, Honey and Cinnamon (8oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Champ, Honey and Cinnamon (12oz)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Champ, Honey and Cinnamon (20oz)",
+        "description": "",
+        "price": "$7.80",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Matcha Latte (8oz)",
+        "description": "",
+        "price": "$5.70",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Matcha Latte (12oz)",
+        "description": "",
+        "price": "$6.70",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Matcha Latte (20oz)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beverages / Hot"
+      },
+      {
+        "name": "Cold Brew (16oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Cold Brew (20oz)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Americano (16oz)",
+        "description": "",
+        "price": "$4.20",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Americano (20oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Latte (16oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Latte (20oz)",
+        "description": "",
+        "price": "$6.50",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Mocha (16oz)",
+        "description": "",
+        "price": "$6.70",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Mocha (20oz)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Dirty Chai (16oz)",
+        "description": "",
+        "price": "$6.20",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Dirty Chai (20oz)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Champ, Honey and Cinnamon (16oz)",
+        "description": "",
+        "price": "$6.20",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Champ, Honey and Cinnamon (20oz)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Matcha Latte (16oz)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Matcha Latte (20oz)",
+        "description": "",
+        "price": "$8.00",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Tea (16oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Iced Tea (20oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Specialty Lemonade (16oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Specialty Lemonade (20oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Hey Arnold, Iced Tea and Lemonade (16oz)",
+        "description": "",
+        "price": "$5.00",
+        "section": "Beverages / Cold"
+      },
+      {
+        "name": "Hey Arnold, Iced Tea and Lemonade (20oz)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages / Cold"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2078",
+    "name": "Come On In Cafe",
+    "sourceUrl": "https://www.yelp.com/biz/come-on-in-cafe-san-diego-6",
+    "confidence": "high",
+    "dishes": [],
+    "notes": "The router's website, comeonincafe.com, is a real priced menu (breakfast entrees $8.25-$11, sandwiches/pasta/smoothies $8-$12.50) but for a DIFFERENT address: 11011 N. Torrey Pines Rd #100, La Jolla - not this restaurant's 3570 Carmel Mountain Road #170. Yelp confirms 'Come On In Cafe - CLOSED' at 3570 Carmel Mountain Road, San Diego, matching this record's address exactly. Permanently closed at this address; the live site belongs to a different branch/address and its menu must not be attached to this restaurantId."
+  },
+  {
+    "restaurantId": "6107",
+    "name": "Martinez Bakery",
+    "sourceUrl": "https://www.toasttab.com/local/order/martinez-bakery-995-postal-way-108",
+    "confidence": "high",
+    "crossCheckedAgainst": "https://www.doordash.com listing for Martinez Bakery, 995 Postal Way #108, Vista (address match)",
+    "notes": "Filed from the restaurant's own Toast online-ordering page (first-party ordering platform), address 995 Postal Way #108, Vista confirmed against the work-list record. Extracted the Apollo-cache Menu objects embedded in the page (window.__OO_STATE__) rather than parsing rendered HTML. Dropped small modifier/add-on-only lines that are not standalone dishes (extra jalapeño, extra jamon, coffee refill, extra cup, extra crema, extra monitos) and out-of-stock items. Kept a Vendedores/PRECIOS section (bagged bread/pan dulce/bolillo/telera) which reads as bulk or vendor-facing pricing rather than a dine-in dish, flagged here since it is still orderable through the same page. Bakery per-piece prices (/usr/bin/bash.75-.70) are plausible as-is and are not a computed/markup pattern.",
+    "dishes": [
+      {
+        "name": "ROJO PLATANO",
+        "description": "",
+        "price": "$4.35",
+        "section": "Tamales"
+      },
+      {
+        "name": "VERDE PLATANO",
+        "description": "",
+        "price": "$4.35",
+        "section": "Tamales"
+      },
+      {
+        "name": "MOLE",
+        "description": "",
+        "price": "$5.40",
+        "section": "Tamales"
+      },
+      {
+        "name": "RAJAS",
+        "description": "",
+        "price": "$4.10",
+        "section": "Tamales"
+      },
+      {
+        "name": "PUERCO",
+        "description": "",
+        "price": "$4.10",
+        "section": "Tamales"
+      },
+      {
+        "name": "VERDE MAIZ",
+        "description": "",
+        "price": "$4.10",
+        "section": "Tamales"
+      },
+      {
+        "name": "ROJO MAIZ",
+        "description": "",
+        "price": "$4.10",
+        "section": "Tamales"
+      },
+      {
+        "name": "ELOTE",
+        "description": "",
+        "price": "$4.10",
+        "section": "Tamales"
+      },
+      {
+        "name": "YERBA SANTA",
+        "description": "",
+        "price": "$4.50",
+        "section": "Tamales"
+      },
+      {
+        "name": "MASA",
+        "description": "",
+        "price": "$4.00",
+        "section": "Tamales"
+      },
+      {
+        "name": "SALSA VERDE",
+        "description": "",
+        "price": "$0.50",
+        "section": "Tamales"
+      },
+      {
+        "name": "SALSA ROJA",
+        "description": "",
+        "price": "$0.50",
+        "section": "Tamales"
+      },
+      {
+        "name": "Torta Plátano",
+        "description": "",
+        "price": "$7.00",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta Mole",
+        "description": "",
+        "price": "$8.00",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta Maíz",
+        "description": "",
+        "price": "$7.00",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta de Jamón",
+        "description": "",
+        "price": "$9.75",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta de Milanesa",
+        "description": "",
+        "price": "$18.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta Cubana",
+        "description": "",
+        "price": "$22.00",
+        "section": "Tortas"
+      },
+      {
+        "name": "Cemita",
+        "description": "",
+        "price": "$22.00",
+        "section": "Tortas"
+      },
+      {
+        "name": "BOLILLO RELLENO de chorizo con papa",
+        "description": "",
+        "price": "$4.00",
+        "section": "Tortas"
+      },
+      {
+        "name": "Breakfast Torta",
+        "description": "",
+        "price": "$11.00",
+        "section": "Tortas"
+      },
+      {
+        "name": "BOLILLO RELLENO",
+        "description": "",
+        "price": "$3.25",
+        "section": "Tortas"
+      },
+      {
+        "name": "RELLENO QUESO CREMA",
+        "description": "",
+        "price": "$3.50",
+        "section": "Tortas"
+      },
+      {
+        "name": "MINI  BISTEK",
+        "description": "",
+        "price": "$6.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "MINI CHORIZO",
+        "description": "",
+        "price": "$6.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "MINI JAMON Y HUEVO",
+        "description": "",
+        "price": "$6.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "MINI TOSINO",
+        "description": "",
+        "price": "$6.50",
+        "section": "Burritos"
+      },
+      {
+        "name": "CHORIZO",
+        "description": "",
+        "price": "$13.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "JAMON CON HUEVO",
+        "description": "",
+        "price": "$13.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "BISTEK",
+        "description": "",
+        "price": "$17.35",
+        "section": "Burritos"
+      },
+      {
+        "name": "TOSINO",
+        "description": "",
+        "price": "$13.00",
+        "section": "Burritos"
+      },
+      {
+        "name": "REBANADAS",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Payasos",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Mantecadas",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Polvorenes",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "GALLETA",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Puerquitos",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "ELOTES",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "CUERNO(FINO)",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Panaderos",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Puros",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Gusanitos",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Cuerno Pasta",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Magdalena",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "PIERNAS",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "NUVES",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Oljandra",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "COCOLES",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "CONCHA CAFE",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "CONCHA BLANCA",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "CONCHA AMARILLA",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Concha Rositas",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "HUEVITOS",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "LIMAS",
+        "description": "",
+        "price": "$1.30",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "CORTADILLO",
+        "description": "",
+        "price": "$2.60",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "HOJOS DE PANCHA",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Canastas",
+        "description": "",
+        "price": "$2.70",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Yoyos",
+        "description": "",
+        "price": "$2.50",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Chinos",
+        "description": "",
+        "price": "$2.70",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Sombreros",
+        "description": "",
+        "price": "$2.50",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Banderillas",
+        "description": "",
+        "price": "$2.50",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Rellenitos (Guayaba)",
+        "description": "",
+        "price": "$2.70",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Orejas",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Pañales",
+        "description": "",
+        "price": "$2.70",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Manitas",
+        "description": "",
+        "price": "$2.70",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "PALOMAS",
+        "description": "",
+        "price": "$2.70",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "CONOS",
+        "description": "",
+        "price": "$2.50",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "ENPANADAS",
+        "description": "",
+        "price": "$2.70",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "PAN DE TRIGO",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Donuts",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Danes",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Nuez",
+        "description": "",
+        "price": "$2.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Niño envuelto",
+        "description": "",
+        "price": "$3.50",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Chessecake",
+        "description": "",
+        "price": "$3.70",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "TELERA",
+        "description": "",
+        "price": "$0.75",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "BOLILLO",
+        "description": "",
+        "price": "$0.75",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "BOLILLO ESPECIAL",
+        "description": "",
+        "price": "$0.50",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Pan dulce bolsita",
+        "description": "",
+        "price": "$1.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Caja Chica Pan Mini",
+        "description": "",
+        "price": "$4.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "PAN MINI MEDIANA",
+        "description": "",
+        "price": "$5.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "Caja Grande Pan Mini",
+        "description": "",
+        "price": "$10.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "CONCHA ESPECIAL",
+        "description": "",
+        "price": "$1.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "ROLL",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "PAN MUERTO CHICO",
+        "description": "",
+        "price": "$3.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "MINI MANTECADA",
+        "description": "",
+        "price": "$7.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "PAN MINI COLORES",
+        "description": "",
+        "price": "$1.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "PAN MINI",
+        "description": "",
+        "price": "$0.80",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "BOLSITA PAN  4 PC",
+        "description": "",
+        "price": "$6.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "PAN DE MUERTO GRANDE",
+        "description": "",
+        "price": "$10.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "ROSCA CHICA",
+        "description": "",
+        "price": "$16.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "ROSCA MEDIANA",
+        "description": "",
+        "price": "$28.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "ROSCA GRANDE",
+        "description": "",
+        "price": "$48.00",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "CAPIROTADA",
+        "description": "",
+        "price": "$2.50",
+        "section": "Pan Dulce"
+      },
+      {
+        "name": "PICADITAS",
+        "description": "",
+        "price": "$10.00",
+        "section": "Antojitos"
+      },
+      {
+        "name": "EXTRA PICADITAS",
+        "description": "",
+        "price": "$3.50",
+        "section": "Antojitos"
+      },
+      {
+        "name": "TORTILLAS GRANDES",
+        "description": "",
+        "price": "$9.00",
+        "section": "Antojitos"
+      },
+      {
+        "name": "TORTILLAS CHICAS MAIZ",
+        "description": "",
+        "price": "$4.50",
+        "section": "Antojitos"
+      },
+      {
+        "name": "TORTILLAS DE HARINA SS",
+        "description": "",
+        "price": "$3.25",
+        "section": "Antojitos"
+      },
+      {
+        "name": "Tortillas de Harina 12",
+        "description": "",
+        "price": "$4.50",
+        "section": "Antojitos"
+      },
+      {
+        "name": "WHOLE WHEAT TORTILLAS",
+        "description": "",
+        "price": "$3.25",
+        "section": "Antojitos"
+      },
+      {
+        "name": "SNACK SIZE",
+        "description": "",
+        "price": "$2.40",
+        "section": "Antojitos"
+      },
+      {
+        "name": "NO LARD TORTILLAS",
+        "description": "",
+        "price": "$3.25",
+        "section": "Antojitos"
+      },
+      {
+        "name": "Avena Grande",
+        "description": "",
+        "price": "$4.90",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "Avena Mediana",
+        "description": "",
+        "price": "$4.35",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "Avena Chica",
+        "description": "",
+        "price": "$3.80",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "Champurrado Grande",
+        "description": "",
+        "price": "$6.50",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "Champurrado Mediano",
+        "description": "",
+        "price": "$5.40",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "Champurrado Chico",
+        "description": "",
+        "price": "$4.90",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "choco abuelita mediano",
+        "description": "",
+        "price": "$4.90",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "CHOCO MEDIANO",
+        "description": "",
+        "price": "$4.35",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "CAFE GRANDE",
+        "description": "",
+        "price": "$3.80",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "CAFE MEDIANO",
+        "description": "",
+        "price": "$3.25",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "CAFE CHICO",
+        "description": "",
+        "price": "$2.70",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "chocolate abuelita chico",
+        "description": "",
+        "price": "$3.80",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "GRANILLO GRANDE",
+        "description": "",
+        "price": "$6.50",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "GRANILLO MEDIANO",
+        "description": "",
+        "price": "$5.40",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "GRANILLO CHICO",
+        "description": "",
+        "price": "$4.90",
+        "section": "Bebidas Calientes"
+      },
+      {
+        "name": "Monster / Redbull",
+        "description": "",
+        "price": "$4.00",
+        "section": "Energy Drinks"
+      },
+      {
+        "name": "Xs Drink",
+        "description": "",
+        "price": "$5.50",
+        "section": "Energy Drinks"
+      },
+      {
+        "name": "Xs especial",
+        "description": "",
+        "price": "$8.00",
+        "section": "Energy Drinks"
+      },
+      {
+        "name": "KERNS",
+        "description": "",
+        "price": "$1.75",
+        "section": "Juices & Bottled Drinks"
+      },
+      {
+        "name": "SUNNY D",
+        "description": "",
+        "price": "$1.50",
+        "section": "Juices & Bottled Drinks"
+      },
+      {
+        "name": "SNAPPLE/GATORADE",
+        "description": "",
+        "price": "$3.00",
+        "section": "Juices & Bottled Drinks"
+      },
+      {
+        "name": "YOGURT",
+        "description": "",
+        "price": "$2.00",
+        "section": "Juices & Bottled Drinks"
+      },
+      {
+        "name": "GALON DE LECHE",
+        "description": "",
+        "price": "$6.00",
+        "section": "Juices & Bottled Drinks"
+      },
+      {
+        "name": "CAPRI SUN",
+        "description": "",
+        "price": "$0.75",
+        "section": "Juices & Bottled Drinks"
+      },
+      {
+        "name": "AGUA",
+        "description": "",
+        "price": "$1.50",
+        "section": "Juices & Bottled Drinks"
+      },
+      {
+        "name": "nesquik\\starbucks",
+        "description": "",
+        "price": "$3.00",
+        "section": "Juices & Bottled Drinks"
+      },
+      {
+        "name": "JARRITOS / MINERAL /SIDRAL",
+        "description": "",
+        "price": "$2.75",
+        "section": "Sodas"
+      },
+      {
+        "name": "COCA COLA",
+        "description": "",
+        "price": "$1.75",
+        "section": "Sodas"
+      },
+      {
+        "name": "VERDE",
+        "description": "",
+        "price": "$6.00",
+        "section": "Jugos Naturales"
+      },
+      {
+        "name": "ZANAORIA",
+        "description": "",
+        "price": "$6.00",
+        "section": "Jugos Naturales"
+      },
+      {
+        "name": "NARANJA",
+        "description": "",
+        "price": "$6.00",
+        "section": "Jugos Naturales"
+      },
+      {
+        "name": "MIX",
+        "description": "",
+        "price": "$6.00",
+        "section": "Jugos Naturales"
+      },
+      {
+        "name": "AGUA FRESCA",
+        "description": "",
+        "price": "$8.00",
+        "section": "Jugos Naturales"
+      },
+      {
+        "name": "MENUDO",
+        "description": "",
+        "price": "$19.50",
+        "section": "Menudo (Sat/Sun)"
+      },
+      {
+        "name": "POZOLE",
+        "description": "",
+        "price": "$16.50",
+        "section": "Pozole (Sat/Sun)"
+      },
+      {
+        "name": "AGUA",
+        "description": "",
+        "price": "$2.15",
+        "section": "Postres - Gelatinas"
+      },
+      {
+        "name": "LECHE CHICA",
+        "description": "",
+        "price": "$2.70",
+        "section": "Postres - Gelatinas"
+      },
+      {
+        "name": "LECHE MEDIANA",
+        "description": "",
+        "price": "$4.35",
+        "section": "Postres - Gelatinas"
+      },
+      {
+        "name": "GELATINA FRESAS",
+        "description": "",
+        "price": "$3.70",
+        "section": "Postres - Gelatinas"
+      },
+      {
+        "name": "CUADRADO",
+        "description": "",
+        "price": "$4.35",
+        "section": "Postres - Flanes"
+      },
+      {
+        "name": "CHICO VASO",
+        "description": "",
+        "price": "$2.70",
+        "section": "Postres - Flanes"
+      },
+      {
+        "name": "CHOCO",
+        "description": "",
+        "price": "$4.35",
+        "section": "Postres - Flanes"
+      },
+      {
+        "name": "FRESA/REGULAR",
+        "description": "",
+        "price": "$4.35",
+        "section": "Postres - Flanes"
+      },
+      {
+        "name": "FLAN GRANDE",
+        "description": "",
+        "price": "$35.00",
+        "section": "Postres - Flanes"
+      },
+      {
+        "name": "CHICO",
+        "description": "",
+        "price": "$2.70",
+        "section": "Postres - Manzana"
+      },
+      {
+        "name": "1/2 PLANCHA",
+        "description": "",
+        "price": "$80.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "1/4 PLANCHA",
+        "description": "",
+        "price": "$45.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "10”",
+        "description": "",
+        "price": "$45.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "14”",
+        "description": "",
+        "price": "$75.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "5”",
+        "description": "",
+        "price": "$20.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "6”",
+        "description": "",
+        "price": "$20.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "8”",
+        "description": "",
+        "price": "$35.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "9”",
+        "description": "",
+        "price": "$40.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "PLANCHA",
+        "description": "",
+        "price": "$140.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "CUADRITOS",
+        "description": "",
+        "price": "$4.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "MIL HOJAS",
+        "description": "",
+        "price": "$6.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "MINI PASTEL",
+        "description": "",
+        "price": "$10.00",
+        "section": "Postres - Pasteles (Cakes)"
+      },
+      {
+        "name": "BOLSAS DE PAN",
+        "description": "",
+        "price": "$4.00",
+        "section": "Vendedores (Vendor Pricing)"
+      },
+      {
+        "name": "PAN DULCE",
+        "description": "",
+        "price": "$1.25",
+        "section": "Vendedores (Vendor Pricing)"
+      },
+      {
+        "name": "BOLILLO",
+        "description": "",
+        "price": "$0.75",
+        "section": "Vendedores (Vendor Pricing)"
+      },
+      {
+        "name": "BOLSAS DE TELERA",
+        "description": "",
+        "price": "$4.00",
+        "section": "Vendedores (Vendor Pricing)"
+      }
+    ]
+  }
+]

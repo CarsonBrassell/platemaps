@@ -1,0 +1,13 @@
+import { neon } from "@neondatabase/serverless";
+const sql = neon(process.env.DATABASE_URL);
+const [[a]] = [await sql`select count(distinct restaurant_id)::int c from dishes`];
+const [[b]] = [await sql`select count(*)::int c from dishes`];
+const [[t]] = [await sql`select count(*)::int c from restaurants`];
+const led = await sql`select status, count(*)::int c from menu_lookups group by status order by c desc`;
+const d24 = await sql`select count(*)::int c from menu_lookups where attempted_at > now() - interval '24 hours'`;
+const f24 = await sql`select count(*)::int c from menu_lookups where attempted_at > now() - interval '24 hours' and status='found'`;
+console.log("restaurants total: "+t.c);
+console.log("with a menu:       "+a.c+"  ("+(100*a.c/t.c).toFixed(1)+"%)");
+console.log("dishes:            "+b.c);
+console.log("ledger:            "+led.map(r=>r.status+"="+r.c).join("  "));
+console.log("last 24h:          "+d24[0].c+" resolved, "+f24[0].c+" found");

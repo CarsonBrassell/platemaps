@@ -1,0 +1,65 @@
+      if (rows.length) {
+        /*
+         * DoorDash truncates its own schema.org Menu block, and the cut is
+         * invisible: the JSON is well-formed, it stops on a section boundary,
+         * and nothing in it says it is partial. Thirty-five restaurants in this
+         * corpus were filed at exactly 79 dishes and twenty-four at 91, against
+         * one to nine at every neighbouring count - two spikes that are the
+         * artefact, not a coincidence of menu sizes. Pho King lost Fried Rice,
+         * Kid Meals, Beverages, Dessert, Smoothies and Coffee that way, and was
+         * filed as complete.
+         *
+         * The menu book in the same page body is the cross-check. It is what
+         * the rendered category nav is drawn from, it is not virtualised, and
+         * it names every section. A section the book advertises and the JSON-LD
+         * never mentions is a section that was cut off.
+         */
+        const missing = missingSections(res.body, rows);
+        if (!missing.length) {
+          const notes = ["read from the DoorDash schema.org Menu block"];
+          if (multiOffer) notes.push(`${multiOffer} items had several size offers, recorded at the lowest`);
+          return { rows, sourceUrl: res.finalUrl, address, place, payloadName, notes, gateable: true };
+        }
+        ld = { rows, multiOffer, missing };
+      }
+    }
+
+    /* Either there was no JSON-LD Menu, or there was one and it was cut short.
+     * The RSC payload comes out of the same body and is the better source when
+     * it carries more, because it is built from the menu book itself. */
+    const { rows, expected } = rowsFromDoorDashRsc(res.body);
+    if (rows.length && (!ld || rows.length > ld.rows.length)) {
+      const notes = ["read from the Next.js RSC flight payload, not the rendered DOM"];
+      if (ld)
+        notes.push(
+          `the schema.org Menu block was truncated at ${ld.rows.length} items, missing ${ld.missing.join(", ")}`,
+        );
+      let partial = false;
+      if (expected && rows.length < expected * 0.6) {
+        partial = true;
+        notes.push(`RSC carried ${rows.length} of ${expected} catalogued items`);
+      }
+      return { rows, sourceUrl: res.finalUrl, address, place, payloadName, notes, partial, gateable: true };
+    }
+
+    /* The truncated JSON-LD was all there was. Hand it back MARKED, never
+     * silently: a cut menu filed as complete is worse than one flagged for a
+     * browser pass, because nothing downstream will ever look at it again. */
+    if (ld) {
+      const notes = [
+        "read from the DoorDash schema.org Menu block",
+        `TRUNCATED: the page's own menu book lists ${ld.missing.length} section(s) the block never carried - ${ld.missing.join(", ")}`,
+      ];
+      if (ld.multiOffer)
+        notes.push(`${ld.multiOffer} items had several size offers, recorded at the lowest`);
+      return {
+        rows: ld.rows,
+        sourceUrl: res.finalUrl,
+        address,
+        place,
+        payloadName,
+        notes,
+        partial: true,
+        gateable: true,
+      };
+    }

@@ -243,7 +243,15 @@ carry:
 ## 8. Standing constraints
 
 - **Never commit to git.**
-- **Never run a Google or Yelp script.** They cost money; Calvin runs them.
+- **Never run a Google Places or Yelp API script.** They cost money; Calvin runs
+  them. `scripts/serper.mjs` (search and `--maps`) and
+  `scripts/discover-serper.mjs` ARE allowed; Serper is the search tool.
+- **A rating is not required for listing** (2026-09-05). The publish gate is
+  `hold_reason IS NULL` plus coordinates. Do not reintroduce a rating check.
+- **Before `publish-check.mjs` or any bulk UPDATE**, dump `id, listed,
+  hold_reason` to `probe/`; refuse any UPDATE without WHERE.
+- **After any restaurant import** run `exclude-chains.mjs --apply` (without
+  the flag it is a dry run) and then `publish-check.mjs`.
 - **Never enter credentials, API keys or payment details.** Calvin puts keys in
   `.env.local` himself.
 - **Never print raw secrets.** The DB host may be shown; user and password never.

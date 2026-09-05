@@ -1,0 +1,1621 @@
+[
+  {
+    "restaurantId": "7191",
+    "name": "Karihan Filipino Food",
+    "sourceUrl": "https://www.yelp.com/biz/karihan-filipino-food-national-city",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: worklist 'website' (filipinofoodfinder.com) is an unrelated Filipino-restaurant directory that never mentions Karihan; own domain/social not found; only tier-5 aggregators (allmenus, menupix, restaurantguru, menustic) and Yelp review hearsay carry any prices"
+  },
+  {
+    "restaurantId": "6533",
+    "name": "Sinbad Restaurant And Lounge",
+    "sourceUrl": "https://www.yelp.com/biz/sinbad-ultra-lounge-san-marcos-9",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "conflicting-status: Yelp lists 'Sinbad Ultra Lounge' (same address) as CLOSED (Aug 2025) and sinbadrestaurantandlounge.com no longer resolves (DNS failure), but DoorDash/Postmates listings for the same name/address still appear live - not high-confidence closure, so blocked rather than not_found"
+  },
+  {
+    "restaurantId": "7208",
+    "name": "Atelier Manna",
+    "sourceUrl": "https://www.atelier-manna.com/menu",
+    "confidence": "high",
+    "notes": "first-party Squarespace menu page; prices appear as bare integers with no $ glyph in the source (design choice, not a marketplace fee) - copied verbatim and prefixed with $x.00; one item 'fire cider (v18)' has a parenthetical that looks like a price, real price is the trailing 7 outside the parens",
+    "dishes": [
+      {
+        "name": "torrija - spanish style french toast",
+        "description": "",
+        "price": "$27.00",
+        "section": "Menu"
+      },
+      {
+        "name": "breakfast sandwich",
+        "description": "",
+        "price": "$18.00",
+        "section": "Menu"
+      },
+      {
+        "name": "summer porridge",
+        "description": "",
+        "price": "$32.00",
+        "section": "Menu"
+      },
+      {
+        "name": "steak & tortilla",
+        "description": "",
+        "price": "$42.00",
+        "section": "Menu"
+      },
+      {
+        "name": "hamachi crudo ‍",
+        "description": "",
+        "price": "$26.00",
+        "section": "Menu"
+      },
+      {
+        "name": "pistachio bread pudding",
+        "description": "",
+        "price": "$16.00",
+        "section": "Menu"
+      },
+      {
+        "name": "çılbır - turkish eggs",
+        "description": "",
+        "price": "$23.00",
+        "section": "Menu"
+      },
+      {
+        "name": "manna bowl",
+        "description": "",
+        "price": "$22.00",
+        "section": "Menu"
+      },
+      {
+        "name": "greek yogurt panna cotta",
+        "description": "",
+        "price": "$13.00",
+        "section": "Menu"
+      },
+      {
+        "name": "kaffa",
+        "description": "",
+        "price": "$11.00",
+        "section": "Menu"
+      },
+      {
+        "name": "sienna",
+        "description": "",
+        "price": "$12.00",
+        "section": "Menu"
+      },
+      {
+        "name": "jasper",
+        "description": "",
+        "price": "$12.00",
+        "section": "Menu"
+      },
+      {
+        "name": "goldenrod",
+        "description": "",
+        "price": "$12.00",
+        "section": "Menu"
+      },
+      {
+        "name": "mentawai",
+        "description": "",
+        "price": "$11.00",
+        "section": "Menu"
+      },
+      {
+        "name": "every day coffee",
+        "description": "",
+        "price": "$5.00",
+        "section": "Menu"
+      },
+      {
+        "name": "cold brew coffee",
+        "description": "",
+        "price": "$7.00",
+        "section": "Menu"
+      },
+      {
+        "name": "black tea",
+        "description": "",
+        "price": "$5.00",
+        "section": "Menu"
+      },
+      {
+        "name": "white tea",
+        "description": "",
+        "price": "$7.00",
+        "section": "Menu"
+      },
+      {
+        "name": "herbal tea",
+        "description": "",
+        "price": "$6.00",
+        "section": "Menu"
+      },
+      {
+        "name": "cold infusion",
+        "description": "",
+        "price": "$7.00",
+        "section": "Menu"
+      },
+      {
+        "name": "immunity",
+        "description": "",
+        "price": "$6.00",
+        "section": "Menu"
+      },
+      {
+        "name": "fire cider (v18)",
+        "description": "",
+        "price": "$7.00",
+        "section": "Menu"
+      },
+      {
+        "name": "full spec cbd",
+        "description": "",
+        "price": "$6.00",
+        "section": "Menu"
+      },
+      {
+        "name": "mushroom blend",
+        "description": "",
+        "price": "$6.00",
+        "section": "Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7216",
+    "name": "Champagne Bakery",
+    "sourceUrl": "https://champagnebakery.com/wp-content/uploads/sites/2/2026/07/Website_Menu_Champagne-Bakery_July-2026_R1.pdf",
+    "confidence": "high",
+    "notes": "first-party PDF menu linked from champagnebakery.com/location/carmel-mountain/ (matches 11925 Carmel Mountain Rd address); conventional printed cents (.99/.49/.29 etc), no divisor test needed for a first-party PDF; Beverages section dropped - pdftotext -layout scrambled the two-column Regular/Large price pairing and it could not be read back reliably; Kids Meals share one flat $7.69 price per the menu, applied to each named kids item; Postmates/Uber Eats listings for this store run ~15-20% higher (e.g. Croissant Breakfast Sandwich $14.15 vs $11.99 here) - delivery markup, correctly excluded",
+    "dishes": [
+      {
+        "name": "Create-Your-Own Omelet",
+        "description": "",
+        "price": "$12.99",
+        "section": "ALL DAY BREAKFAST"
+      },
+      {
+        "name": "Brioche French Toast",
+        "description": "",
+        "price": "$13.29",
+        "section": "FRENCH TOAST"
+      },
+      {
+        "name": "Mixed Berry French Toast",
+        "description": "",
+        "price": "$13.49",
+        "section": "FRENCH TOAST"
+      },
+      {
+        "name": "Two Eggs Any Style",
+        "description": "",
+        "price": "$11.59",
+        "section": "BREAKFAST FAVORITES"
+      },
+      {
+        "name": "Croissant Breakfast Sandwich",
+        "description": "",
+        "price": "$11.99",
+        "section": "BREAKFAST FAVORITES"
+      },
+      {
+        "name": "Breakfast Panini",
+        "description": "",
+        "price": "$11.99",
+        "section": "BREAKFAST FAVORITES"
+      },
+      {
+        "name": "Le Metro Breakfast Sandwich",
+        "description": "",
+        "price": "$11.99",
+        "section": "BREAKFAST FAVORITES"
+      },
+      {
+        "name": "Vanilla Yogurt Granola Parfait",
+        "description": "",
+        "price": "$9.29",
+        "section": "BREAKFAST FAVORITES"
+      },
+      {
+        "name": "Short Rib Benedict",
+        "description": "",
+        "price": "$19.59",
+        "section": "SPECIALTIES / BENEDICTS"
+      },
+      {
+        "name": "Classic Benedict",
+        "description": "",
+        "price": "$14.99",
+        "section": "SPECIALTIES / BENEDICTS"
+      },
+      {
+        "name": "California Benedict",
+        "description": "",
+        "price": "$16.49",
+        "section": "SPECIALTIES / BENEDICTS"
+      },
+      {
+        "name": "Chicken Florentine Crêpes",
+        "description": "",
+        "price": "$13.49",
+        "section": "CRÊPES"
+      },
+      {
+        "name": "Breakfast Crêpes",
+        "description": "",
+        "price": "$13.49",
+        "section": "CRÊPES"
+      },
+      {
+        "name": "Strawberries & Cream Crêpes",
+        "description": "",
+        "price": "$12.99",
+        "section": "CRÊPES"
+      },
+      {
+        "name": "Quiche Lorraine",
+        "description": "",
+        "price": "$12.79",
+        "section": "QUICHE"
+      },
+      {
+        "name": "Spinach & Goat Cheese Quiche",
+        "description": "",
+        "price": "$12.79",
+        "section": "QUICHE"
+      },
+      {
+        "name": "Seasoned Red Potatoes",
+        "description": "",
+        "price": "$3.79",
+        "section": "À LA CARTE"
+      },
+      {
+        "name": "Chicken Salad",
+        "description": "",
+        "price": "$4.89",
+        "section": "À LA CARTE"
+      },
+      {
+        "name": "Avocado",
+        "description": "",
+        "price": "$3.49",
+        "section": "À LA CARTE"
+      },
+      {
+        "name": "Tuna Salad",
+        "description": "",
+        "price": "$4.89",
+        "section": "À LA CARTE"
+      },
+      {
+        "name": "Applewood Smoked Bacon",
+        "description": "",
+        "price": "$3.99",
+        "section": "À LA CARTE"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$3.59",
+        "section": "À LA CARTE"
+      },
+      {
+        "name": "Pesto Pasta Salad",
+        "description": "",
+        "price": "$4.39",
+        "section": "À LA CARTE"
+      },
+      {
+        "name": "Bag of Chips",
+        "description": "",
+        "price": "$2.29",
+        "section": "À LA CARTE"
+      },
+      {
+        "name": "Fruit Salad",
+        "description": "",
+        "price": "$5.49",
+        "section": "À LA CARTE"
+      },
+      {
+        "name": "Prosciutto & Stracciatella Pesto",
+        "description": "",
+        "price": "$13.99",
+        "section": "COLD SANDWICHES"
+      },
+      {
+        "name": "Chicken Salad Sandwich",
+        "description": "",
+        "price": "$12.29",
+        "section": "COLD SANDWICHES"
+      },
+      {
+        "name": "Turkey & Havarti Sandwich",
+        "description": "",
+        "price": "$11.99",
+        "section": "COLD SANDWICHES"
+      },
+      {
+        "name": "Turkey, Swiss Cheese & Bacon",
+        "description": "",
+        "price": "$12.89",
+        "section": "COLD SANDWICHES"
+      },
+      {
+        "name": "Albacore Tuna Sandwich",
+        "description": "",
+        "price": "$12.29",
+        "section": "COLD SANDWICHES"
+      },
+      {
+        "name": "Homestyle Mac & Cheese",
+        "description": "",
+        "price": "$12.49",
+        "section": "MAC & CHEESE"
+      },
+      {
+        "name": "Chicken Pesto Mac & Cheese",
+        "description": "",
+        "price": "$15.29",
+        "section": "MAC & CHEESE"
+      },
+      {
+        "name": "Prosciutto Bianca",
+        "description": "",
+        "price": "$13.99",
+        "section": "PINSA PIZZA"
+      },
+      {
+        "name": "Choose Any Two",
+        "description": "",
+        "price": "$13.69",
+        "section": "COMBOS"
+      },
+      {
+        "name": "Honey Dijon Turkey Melt",
+        "description": "",
+        "price": "$14.49",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "Turkey Artichoke Grilled Cheese",
+        "description": "",
+        "price": "$12.29",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "Croque Monsieur - The Original",
+        "description": "",
+        "price": "$13.69",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "Croque Madame",
+        "description": "",
+        "price": "$15.99",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "Short Rib Melt",
+        "description": "",
+        "price": "$15.49",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "Garlic Chicken Panini",
+        "description": "",
+        "price": "$13.69",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "French Dip",
+        "description": "",
+        "price": "$13.99",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "Chicken Pesto Sandwich",
+        "description": "",
+        "price": "$13.69",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "Veggie Panini",
+        "description": "",
+        "price": "$12.29",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "Grilled Cheese",
+        "description": "",
+        "price": "$10.69",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "Grilled Brie with Fig & Apple",
+        "description": "",
+        "price": "$11.69",
+        "section": "HOT SANDWICHES"
+      },
+      {
+        "name": "Roasted Beet & Berry with Goat Cheese",
+        "description": "",
+        "price": "$14.99",
+        "section": "PROTEIN BOWLS & SALADS"
+      },
+      {
+        "name": "Green Goddess Chicken with Avocado",
+        "description": "",
+        "price": "$14.99",
+        "section": "PROTEIN BOWLS & SALADS"
+      },
+      {
+        "name": "Chicken, Apple, Walnut Salad",
+        "description": "",
+        "price": "$14.29",
+        "section": "PROTEIN BOWLS & SALADS"
+      },
+      {
+        "name": "Cobb Salad",
+        "description": "",
+        "price": "$14.29",
+        "section": "PROTEIN BOWLS & SALADS"
+      },
+      {
+        "name": "Niçoise Salad",
+        "description": "",
+        "price": "$14.79",
+        "section": "PROTEIN BOWLS & SALADS"
+      },
+      {
+        "name": "Parisian Salad",
+        "description": "",
+        "price": "$13.29",
+        "section": "PROTEIN BOWLS & SALADS"
+      },
+      {
+        "name": "Goat Cheese Salad",
+        "description": "",
+        "price": "$13.29",
+        "section": "PROTEIN BOWLS & SALADS"
+      },
+      {
+        "name": "House Salad",
+        "description": "",
+        "price": "$7.99",
+        "section": "PROTEIN BOWLS & SALADS"
+      },
+      {
+        "name": "Soup - Cup (French Onion, Broccoli Cheddar, or Rustic Tomato)",
+        "description": "",
+        "price": "$6.29",
+        "section": "SOUPS"
+      },
+      {
+        "name": "Soup - Bowl (French Onion, Broccoli Cheddar, or Rustic Tomato)",
+        "description": "",
+        "price": "$9.29",
+        "section": "SOUPS"
+      },
+      {
+        "name": "Petite French Toast (Kids)",
+        "description": "",
+        "price": "$7.69",
+        "section": "KID'S MEALS"
+      },
+      {
+        "name": "Scrambled Eggs (Kids)",
+        "description": "",
+        "price": "$7.69",
+        "section": "KID'S MEALS"
+      },
+      {
+        "name": "Grilled Cheese (Kids)",
+        "description": "",
+        "price": "$7.69",
+        "section": "KID'S MEALS"
+      },
+      {
+        "name": "Chicken Fingers (Kids)",
+        "description": "",
+        "price": "$7.69",
+        "section": "KID'S MEALS"
+      },
+      {
+        "name": "Turkey Swiss Sandwich (Kids)",
+        "description": "",
+        "price": "$7.69",
+        "section": "KID'S MEALS"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7491",
+    "name": "La Corriente La Jolla",
+    "sourceUrl": "https://www.ubereats.com/store/la-corriente-pearl-st/7P4k2FKjX0m7dhvQW-4OfQ",
+    "confidence": "medium",
+    "notes": "Uber Eats JSON-LD, address confirmed 456 Pearl Street/92037 matches worklist; single schema.org Menu block, no duplication found; divisor sweep 1.00-1.35: best is 1.00 with 15/15 rows on .00/.50 (fully conventional); a gotoeat.net 'own site' look-alike was found but rejected - it shows blank '$' for ~28 of 30 rows and its one priced overlap ('La Corriente Ceviche' $27) matches neither of this menu's two ceviche items ($17 tostada, $33.50 platter), so it was not used as a cross-check",
+    "dishes": [
+      {
+        "name": "Red Snapper Tostada",
+        "description": "",
+        "price": "$16.00",
+        "section": "Raw Bar"
+      },
+      {
+        "name": "La Corriente Ceviche Tostada",
+        "description": "",
+        "price": "$17.00",
+        "section": "Raw Bar"
+      },
+      {
+        "name": "Ahi Tuna Tostada",
+        "description": "",
+        "price": "$17.00",
+        "section": "Raw Bar"
+      },
+      {
+        "name": "Shrimp Acuachile \"El Picosito\"",
+        "description": "",
+        "price": "$26.00",
+        "section": "Raw Bar"
+      },
+      {
+        "name": "La Corriente Ceviche Platter",
+        "description": "",
+        "price": "$33.50",
+        "section": "Raw Bar"
+      },
+      {
+        "name": "Fish Taco \"Ensenada Style\"",
+        "description": "",
+        "price": "$12.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "\"Kalifornia\" Taco",
+        "description": "",
+        "price": "$16.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Shrimp Taco \"Ensenada Style\"",
+        "description": "",
+        "price": "$12.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Arabe Shrimp Tacos (2)",
+        "description": "",
+        "price": "$27.00",
+        "section": "Tacos"
+      },
+      {
+        "name": "Soft Shell Crab Taco",
+        "description": "",
+        "price": "$19.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Rib Eye Tacos \"Tijuana\" (2)",
+        "description": "",
+        "price": "$29.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "\"La Corriente\" Burrito",
+        "description": "",
+        "price": "$25.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "\"Sayulita\" Butterfly Fish",
+        "description": "",
+        "price": "$44.00",
+        "section": "From the Crill"
+      },
+      {
+        "name": "\"Zarandeado\" XL Shrimp",
+        "description": "",
+        "price": "$44.00",
+        "section": "From the Crill"
+      },
+      {
+        "name": "Clam Chowder",
+        "description": "",
+        "price": "$22.50",
+        "section": "Soup and Chowder"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7600",
+    "name": "Mila's Ice cream & snacks",
+    "sourceUrl": "https://www.yelp.com/biz/mila-s-ice-cream-and-snacks-vista",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: no own website, no DoorDash/Grubhub/Uber Eats listing found under this name within time budget; only Yelp/Atly/social with no prices"
+  },
+  {
+    "restaurantId": "7682",
+    "name": "Alohana Acai Bowls and Smoothies - San Marcos (San Elijo Hills)",
+    "sourceUrl": "https://www.doordash.com/store/aloha-acai-bowls-sd-san-marcos-32353885/",
+    "confidence": "medium",
+    "notes": "own domain (alohanaacai.com) Popmenu order page is client-rendered with an empty __POPMENU_SSR_CACHE__ - routed to DoorDash instead; DoorDash JSON-LD address confirmed 1646 San Elijo Rd Ste 107/San Marcos matches worklist; deduped two JSON-LD shapes on name+price (no extra rows); all 20 rows land on .00/.50 endings; '(Online)' suffix stripped from names as a platform artifact",
+    "dishes": [
+      {
+        "name": "Lowers Bowl",
+        "description": "",
+        "price": "$10.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Uppers Bowl",
+        "description": "",
+        "price": "$11.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "T-Street Bowl",
+        "description": "",
+        "price": "$11.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Double Rainbow Bowl",
+        "description": "",
+        "price": "$11.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Swamis Bowl",
+        "description": "",
+        "price": "$10.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Rivi Bowl",
+        "description": "",
+        "price": "$11.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Stone Steps Bowl",
+        "description": "",
+        "price": "$11.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Moonlight Bowl",
+        "description": "",
+        "price": "$10.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Mundays Bowl",
+        "description": "",
+        "price": "$11.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Seaside Bowl",
+        "description": "",
+        "price": "$10.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Ponto Pitaya Bowl",
+        "description": "",
+        "price": "$10.00",
+        "section": "Bowls"
+      },
+      {
+        "name": "Doho Bowl",
+        "description": "",
+        "price": "$11.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Campground Bowl",
+        "description": "",
+        "price": "$10.50",
+        "section": "Bowls"
+      },
+      {
+        "name": "Sunset Smoothie",
+        "description": "",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Pendleton Smoothie",
+        "description": "",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Açaí Smoothie",
+        "description": "",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Shaka Smoothie",
+        "description": "",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Sunrise Smoothie",
+        "description": "",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Mango Smoothie",
+        "description": "",
+        "price": "$8.50",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Emerald Bay Smoothie",
+        "description": "",
+        "price": "$8.50",
+        "section": "Smoothies"
+      }
+    ]
+  },
+  {
+    "restaurantId": "7545",
+    "name": "Arevalo's Bakery",
+    "sourceUrl": "https://www.yelp.com/biz/arevalo-s-bakery-vista",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: no own website or delivery platform found; only tier-5 aggregators (menupix, restaurantguru, zmenu demo subdomain) with no reliable prices; two locations exist (950 E Vista Way, 328 Vista Village Dr) - worklist address matches the latter"
+  },
+  {
+    "restaurantId": "2554",
+    "name": "Beer Company",
+    "sourceUrl": "https://www.calcoastbeer.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "identity-mismatch: worklist gives no address; the only website on file (calcoastbeer.com) titles itself 'Brewery Paso Robles | California Coast Beer Company' - Paso Robles does not fit this San Diego-county batch and there is no address to confirm this is the right branch or even the right business"
+  },
+  {
+    "restaurantId": "7234",
+    "name": "Kyodong Noodle Balboa",
+    "sourceUrl": "https://www.doordash.com/store/kyodong-noodles-san-diego-24532244/",
+    "confidence": "medium",
+    "notes": "DoorDash JSON-LD, address confirmed 7725 Balboa Avenue matches worklist; two JSON-LD shapes (Restaurant.hasMenu and standalone Menu) carried identical 40 rows - deduped on name+price to 28, dropping the duplicate 'Most Ordered' carousel; cent distribution 5x.00 / 23x.99, divisor sweep 1.00-1.35 best is 1.00 (28/28 conventional)",
+    "dishes": [
+      {
+        "name": "Kkanpung Shrimp",
+        "description": "",
+        "price": "$26.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Dumplings",
+        "description": "",
+        "price": "$12.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Tangsuyuk",
+        "description": "",
+        "price": "$22.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Kkanpung Chicken",
+        "description": "",
+        "price": "$23.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Jjajangmyeon",
+        "description": "",
+        "price": "$14.99",
+        "section": "Noodle Dishes"
+      },
+      {
+        "name": "Jjamppong",
+        "description": "",
+        "price": "$17.99",
+        "section": "Noodle Dishes"
+      },
+      {
+        "name": "Seafood Jjajjangmyeon",
+        "description": "",
+        "price": "$22.99",
+        "section": "Noodle Dishes"
+      },
+      {
+        "name": "Veggie Jjajangmyeon",
+        "description": "",
+        "price": "$17.99",
+        "section": "Noodle Dishes"
+      },
+      {
+        "name": "Stir Fried Jjamppong",
+        "description": "",
+        "price": "$22.99",
+        "section": "Noodle Dishes"
+      },
+      {
+        "name": "Ulppong",
+        "description": "",
+        "price": "$17.99",
+        "section": "Noodle Dishes"
+      },
+      {
+        "name": "Jjamppong Tangsuyuk Combo",
+        "description": "",
+        "price": "$28.99",
+        "section": "Combos"
+      },
+      {
+        "name": "Ulppong Tangsuyuk Combo",
+        "description": "",
+        "price": "$28.99",
+        "section": "Combos"
+      },
+      {
+        "name": "Ulppong Dumpling Combo",
+        "description": "",
+        "price": "$25.99",
+        "section": "Combos"
+      },
+      {
+        "name": "Jjajangmyeon Dumpling Combo",
+        "description": "",
+        "price": "$21.99",
+        "section": "Combos"
+      },
+      {
+        "name": "Jjamppong Dumpling Combo",
+        "description": "",
+        "price": "$25.99",
+        "section": "Combos"
+      },
+      {
+        "name": "Japchae Rice",
+        "description": "",
+        "price": "$19.99",
+        "section": "Rice Dishes / Fried Rice"
+      },
+      {
+        "name": "Pork Fried Rice",
+        "description": "",
+        "price": "$19.99",
+        "section": "Rice Dishes / Fried Rice"
+      },
+      {
+        "name": "House Fried Rice",
+        "description": "",
+        "price": "$21.99",
+        "section": "Rice Dishes / Fried Rice"
+      },
+      {
+        "name": "Chicken Fried Rice",
+        "description": "",
+        "price": "$19.99",
+        "section": "Rice Dishes / Fried Rice"
+      },
+      {
+        "name": "Japtang Rice",
+        "description": "",
+        "price": "$22.99",
+        "section": "Rice Dishes / Fried Rice"
+      },
+      {
+        "name": "Shrimp Fried Rice",
+        "description": "",
+        "price": "$20.99",
+        "section": "Rice Dishes / Fried Rice"
+      },
+      {
+        "name": "Egg Fried Rice",
+        "description": "",
+        "price": "$18.99",
+        "section": "Rice Dishes / Fried Rice"
+      },
+      {
+        "name": "Coke",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Sprite",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "",
+        "price": "$2.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Water",
+        "description": "",
+        "price": "$1.00",
+        "section": "Drinks"
+      },
+      {
+        "name": "Extra Noodle",
+        "description": "",
+        "price": "$3.99",
+        "section": "Sides"
+      },
+      {
+        "name": "Extra Rice",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sides"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6599",
+    "name": "Rito's Mexican Food",
+    "sourceUrl": "https://www.doordash.com/store/rito%E2%80%99s-mexican-food-vista-23027501/",
+    "confidence": "medium",
+    "notes": "own domain ritosmexicanfoodca.com carries no prices at all - routed to DoorDash; JSON-LD address confirmed 2506 South Santa Fe Avenue matches worklist; two JSON-LD shapes carried identical 91 rows - deduped on name+price to 79, dropping the duplicate 'Most Ordered' carousel; cent distribution scattered (.25/.49/.50/.75/.99) but divisor sweep 1.00-1.35 finds no better fit than 1.00 (62/79 on .00/.50/.95/.99) and cents don't match the .20/.40/.60/.80 fee-baked signature - read as genuine quarter-dollar taco-shop pricing, not fee-baked",
+    "dishes": [
+      {
+        "name": "Heart Taco Platter",
+        "description": "",
+        "price": "$19.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "5 Rolled Tacos",
+        "description": "",
+        "price": "$8.75",
+        "section": "Tacos"
+      },
+      {
+        "name": "1 QuesaBirria",
+        "description": "",
+        "price": "$5.49",
+        "section": "Tacos"
+      },
+      {
+        "name": "Crunchy Tacos",
+        "description": "",
+        "price": "$4.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "1 Fish Tacos",
+        "description": "",
+        "price": "$5.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "1 Mini Taco",
+        "description": "",
+        "price": "$3.25",
+        "section": "Tacos"
+      },
+      {
+        "name": "3 Rolled Tacos",
+        "description": "",
+        "price": "$5.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "2 Ceviche Tostada",
+        "description": "",
+        "price": "$13.99",
+        "section": "Seafood Plates"
+      },
+      {
+        "name": "Camarones Al Mojo de Ajo",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood Plates"
+      },
+      {
+        "name": "Camarones a la Diabla",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood Plates"
+      },
+      {
+        "name": "Camarones Rancheros",
+        "description": "",
+        "price": "$17.99",
+        "section": "Seafood Plates"
+      },
+      {
+        "name": "Coctel de Camarón",
+        "description": "",
+        "price": "$19.99",
+        "section": "Seafood Plates"
+      },
+      {
+        "name": "Mojarra Frita",
+        "description": "",
+        "price": "$18.99",
+        "section": "Seafood Plates"
+      },
+      {
+        "name": "Pozole",
+        "description": "",
+        "price": "$15.99",
+        "section": "Soups / Caldos"
+      },
+      {
+        "name": "Menudo",
+        "description": "",
+        "price": "$16.49",
+        "section": "Soups / Caldos"
+      },
+      {
+        "name": "Birria de Res",
+        "description": "",
+        "price": "$15.99",
+        "section": "Soups / Caldos"
+      },
+      {
+        "name": "Caldo de Pollo",
+        "description": "",
+        "price": "$15.99",
+        "section": "Soups / Caldos"
+      },
+      {
+        "name": "Caldo de Pescado",
+        "description": "",
+        "price": "$18.99",
+        "section": "Soups / Caldos"
+      },
+      {
+        "name": "Caldo de Res",
+        "description": "",
+        "price": "$15.99",
+        "section": "Soups / Caldos"
+      },
+      {
+        "name": "Caldo Siete Mares",
+        "description": "",
+        "price": "$19.99",
+        "section": "Soups / Caldos"
+      },
+      {
+        "name": "Caldo de Camarón",
+        "description": "",
+        "price": "$18.99",
+        "section": "Soups / Caldos"
+      },
+      {
+        "name": "Bean & Cheese Burrito",
+        "description": "",
+        "price": "$6.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Adobada Burrito",
+        "description": "",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fajitas Burrito",
+        "description": "",
+        "price": "$14.49",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fish Burrito",
+        "description": "",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas Burrito",
+        "description": "",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Bean Burrito",
+        "description": "",
+        "price": "$5.49",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asado Burrito",
+        "description": "",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "",
+        "price": "$14.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Chile Relleno Burrito",
+        "description": "",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Surf nTurf Burrito",
+        "description": "",
+        "price": "$16.49",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "",
+        "price": "$14.49",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carne Asada Burrito",
+        "description": "",
+        "price": "$12.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Machaca Burrito",
+        "description": "",
+        "price": "$11.49",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Potato Burrito",
+        "description": "",
+        "price": "$9.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Chorizo Burrito",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Bacon & Egg Burrito",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Ham & Egg Burrito",
+        "description": "",
+        "price": "$10.99",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Chilaquiles",
+        "description": "",
+        "price": "$15.49",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Huevos con Jamón Plate",
+        "description": "",
+        "price": "$13.99",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Huevos Caseros",
+        "description": "",
+        "price": "$13.99",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Huevos Rancheros Plate",
+        "description": "",
+        "price": "$13.99",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Huevos con Tocino",
+        "description": "",
+        "price": "$13.99",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "",
+        "price": "$13.99",
+        "section": "Nachos and Fries"
+      },
+      {
+        "name": "Nachos Supreme",
+        "description": "",
+        "price": "$13.99",
+        "section": "Nachos and Fries"
+      },
+      {
+        "name": "French Fries",
+        "description": "",
+        "price": "$3.99",
+        "section": "Nachos and Fries"
+      },
+      {
+        "name": "Small Bag of Chips",
+        "description": "",
+        "price": "$2.99",
+        "section": "Nachos and Fries"
+      },
+      {
+        "name": "Nachos",
+        "description": "",
+        "price": "$6.99",
+        "section": "Nachos and Fries"
+      },
+      {
+        "name": "Torta Cubana",
+        "description": "",
+        "price": "$15.49",
+        "section": "À la Carte"
+      },
+      {
+        "name": "Tortas",
+        "description": "",
+        "price": "$12.99",
+        "section": "À la Carte"
+      },
+      {
+        "name": "Flautas",
+        "description": "",
+        "price": "$6.99",
+        "section": "À la Carte"
+      },
+      {
+        "name": "Bean Tostada",
+        "description": "",
+        "price": "$6.25",
+        "section": "À la Carte"
+      },
+      {
+        "name": "Tostada Supreme",
+        "description": "",
+        "price": "$10.99",
+        "section": "À la Carte"
+      },
+      {
+        "name": "Chimichanga",
+        "description": "",
+        "price": "$13.50",
+        "section": "À la Carte"
+      },
+      {
+        "name": "Quesadilla Supreme",
+        "description": "",
+        "price": "$12.99",
+        "section": "À la Carte"
+      },
+      {
+        "name": "Quesadilla",
+        "description": "",
+        "price": "$6.25",
+        "section": "À la Carte"
+      },
+      {
+        "name": "Carne Asada Plate",
+        "description": "",
+        "price": "$16.50",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Mole Plate",
+        "description": "",
+        "price": "$15.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Costillas en Salsa Verde",
+        "description": "",
+        "price": "$15.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Fajitas Trio",
+        "description": "",
+        "price": "$19.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Chimichanga Combo",
+        "description": "",
+        "price": "$16.50",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Two Chicken Enchiladas",
+        "description": "",
+        "price": "$13.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Two Cheese Enchiladas",
+        "description": "",
+        "price": "$12.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Carnitas Plate",
+        "description": "",
+        "price": "$16.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Chicken Fajitas",
+        "description": "",
+        "price": "$16.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Chile Relleno Combo",
+        "description": "",
+        "price": "$13.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Beef Taco and Cheese Enchilada Combo",
+        "description": "",
+        "price": "$13.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Two Beef Taco Combo Plate",
+        "description": "",
+        "price": "$13.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Two Fish Taco Combo",
+        "description": "",
+        "price": "$13.99",
+        "section": "Combination Plate"
+      },
+      {
+        "name": "Coca-Cola 500 Ml",
+        "description": "",
+        "price": "$4.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Gatorades",
+        "description": "",
+        "price": "$3.49",
+        "section": "Drinks"
+      },
+      {
+        "name": "Red Bull Energy Drink",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Water Bottle",
+        "description": "",
+        "price": "$1.75",
+        "section": "Drinks"
+      },
+      {
+        "name": "Monster Energy Drink",
+        "description": "",
+        "price": "$4.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Jarritos Mexican Soda",
+        "description": "",
+        "price": "$3.99",
+        "section": "Drinks"
+      },
+      {
+        "name": "Can Soda",
+        "description": "",
+        "price": "$2.49",
+        "section": "Drinks"
+      },
+      {
+        "name": "4 Oz Guacamole",
+        "description": "",
+        "price": "$2.99",
+        "section": "Side Orders"
+      },
+      {
+        "name": "4oz Sour Cream",
+        "description": "",
+        "price": "$1.99",
+        "section": "Side Orders"
+      },
+      {
+        "name": "Extra Tortillas",
+        "description": "",
+        "price": "$1.99",
+        "section": "Side Orders"
+      }
+    ]
+  },
+  {
+    "restaurantId": "2998",
+    "name": "Stone Oven",
+    "sourceUrl": "http://www.stoneoven.com/menu",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "own site (stoneoven.com/menu) lists dish names and descriptions with zero prices anywhere on the page; it is a 13-location chain (Canoga Park, Culver City, Glendale, National City, Newport Beach, Northridge, Ontario Mills, San Diego, Sherman Oaks, Thousand Oaks, Torrance, Valencia, West Covina) and the worklist gives no address to target a specific branch's delivery listing within budget"
+  },
+  {
+    "restaurantId": "2617",
+    "name": "Frost Me Gourmet Cupcakes",
+    "sourceUrl": "https://frostme.com/cafe-menu/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "partial-core-unpriced: same business (Food Network 'Frost Me Gourmet Cupcakes' champion, now operating as Frost Me Cafe and Bakery, sole SD location) but its own cafe-menu page prices only wine/beer/happy-hour drinks - the actual product (cupcakes, pastries, coffee, breakfast/lunch) carries no prices anywhere on the site; frostmecafe.com order-online link and frostcupcakefactory.com (unrelated franchise, do not confuse) not yet checked for a priced catalog"
+  },
+  {
+    "restaurantId": "2305",
+    "name": "iDessert",
+    "sourceUrl": "https://www.yelp.com/biz/idessert-by-jean-philippe-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "conflicting-status: Yelp lists 'iDessert by Jean-Philippe' (1608 India St) as CLOSED; worklist gives no address to confirm this is the same location, and no delivery-platform listing was found within budget to check if it is still trading elsewhere"
+  },
+  {
+    "restaurantId": "2788",
+    "name": "Eppig Brewing North Park",
+    "sourceUrl": "https://www.yelp.com/biz/eppig-brewing-san-diego-2",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "conflicting-status: the North Park taproom (3052 El Cajon Blvd) moved out at the end of 2019 per Beer Maverick/Untappd; Yelp listing for that address shows CLOSED; the Eppig Brewing brand still operates a Vista tasting room and a Waterfront Biergarten but neither is the North Park location the worklist names, so no current priced source for THIS location was found"
+  },
+  {
+    "restaurantId": "6134",
+    "name": "La Flor Bakery",
+    "sourceUrl": "https://www.yellowpages.com/vista-ca/la-flor-bakery",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no-priced-source: address (1839 W Vista Way) confirmed but no own website, social page, or delivery-platform listing carrying prices was found - only directory listings (Yellow Pages, Atly, Orange Book, Restaurantji) with hours/reviews and no menu"
+  },
+  {
+    "restaurantId": "3004",
+    "name": "DQ Orange Julius",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "identity-ambiguous: worklist gives no address; DQ/Orange Julius combo locations are a common franchise format with multiple San Diego-county branches on DoorDash, and without an address the correct branch's listing cannot be confirmed against the worklist row"
+  },
+  {
+    "restaurantId": "2960",
+    "name": "Herb & Eatery",
+    "sourceUrl": "https://www.yelp.com/biz/herb-and-eatery-san-diego-3",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "conflicting-status: address (2210 Kettner Blvd) confirmed but Yelp listing shows CLOSED as of June 2026; herbandeatery.com and the shared Uber Eats 'Herb & Wood and Herb & Eatery' listing not yet confirmed to still be serving this concept at this address"
+  },
+  {
+    "restaurantId": "3118",
+    "name": "Cafe Zzo Coffee Shop and Mini Mart",
+    "sourceUrl": "https://www.yelp.com/biz/cafe-zzo-san-diego",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "conflicting-status: Yelp listing for 'Cafe ZZO' (9800 Mira Lee Way) shows CLOSED (updated May 2024); worklist gives no address to double-check the branch, no delivery-platform listing found within budget"
+  },
+  {
+    "restaurantId": "6758",
+    "name": "Andreas D Best Pizza",
+    "sourceUrl": "https://andreasdbestpizza.getbento.com/menu/menu/",
+    "confidence": "high",
+    "notes": "first-party BentoBox menu; address 1591 E Vista Way confirmed via Yelp listing at the same address; single 'Menu' section, 8 pizzas each with Medium and Large price, no other categories exist on the site (no wings/subs/sides despite Yelp's 'Chicken Wings' category tag) so nothing was dropped as unpriced",
+    "dishes": [
+      {
+        "name": "Pepperoni Pizza (Medium)",
+        "description": "",
+        "price": "$8.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Pepperoni Pizza (Large)",
+        "description": "",
+        "price": "$14.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Hawaiana Pizza (Medium)",
+        "description": "",
+        "price": "$12.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Hawaiana Pizza (Large)",
+        "description": "",
+        "price": "$16.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Margarita Pizza (Medium)",
+        "description": "",
+        "price": "$16.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Margarita Pizza (Large)",
+        "description": "",
+        "price": "$22.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Veggie Pizza (Medium)",
+        "description": "",
+        "price": "$16.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Veggie Pizza (Large)",
+        "description": "",
+        "price": "$22.99",
+        "section": "Menu"
+      },
+      {
+        "name": "BBQ Pizza (Medium)",
+        "description": "",
+        "price": "$16.99",
+        "section": "Menu"
+      },
+      {
+        "name": "BBQ Pizza (Large)",
+        "description": "",
+        "price": "$22.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Pizza Supreme (Medium)",
+        "description": "",
+        "price": "$16.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Pizza Supreme (Large)",
+        "description": "",
+        "price": "$22.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Hawaiana Special (Medium)",
+        "description": "",
+        "price": "$22.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Hawaiana Special (Large)",
+        "description": "",
+        "price": "$27.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Andrea's Pizza (Medium)",
+        "description": "",
+        "price": "$26.99",
+        "section": "Menu"
+      },
+      {
+        "name": "Andrea's Pizza (Large)",
+        "description": "",
+        "price": "$32.99",
+        "section": "Menu"
+      }
+    ]
+  }
+]

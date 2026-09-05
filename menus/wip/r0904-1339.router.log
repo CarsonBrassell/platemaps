@@ -1,0 +1,35 @@
+file:///C:/Users/Calvin%20%20Lensink/Documents/platemaps/node_modules/@neondatabase/serverless/index.mjs:1292
+ye=await(W??fetch)(We,{method:"POST",body:JSON.stringify(J),headers:fe,...X})}catch(ee){let M=new be(
+                                                                                              ^
+
+NeonDbError: Error connecting to database: TypeError: fetch failed
+    at dr.execute (file:///C:/Users/Calvin%20%20Lensink/Documents/platemaps/node_modules/@neondatabase/serverless/index.mjs:1292:95)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///C:/Users/Calvin%20%20Lensink/Documents/platemaps/scripts/route-menus.mjs:2614:5 {
+  severity: undefined,
+  code: undefined,
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: undefined,
+  line: undefined,
+  routine: undefined,
+  sourceError: [TypeError: fetch failed] {
+    [cause]: ConnectTimeoutError: Connect Timeout Error (attempted addresses: 2600:1f10:42f0:8604:810c:1432:7043:ee71:443, 3.227.144.24:443, 2600:1f10:42f0:862f:5600:4529:241d:7a04:443, 54.92.227.85:443, 2600:1f10:42f0:861c:10db:ce23:56b9:a2b3:443, 3.215.191.145:443, timeout: 10000ms)
+        at onConnectTimeout (node:internal/deps/undici/undici:1991:23)
+        at Immediate._onImmediate (node:internal/deps/undici/undici:1957:35)
+        at process.processImmediate (node:internal/timers:504:21) {
+      code: 'UND_ERR_CONNECT_TIMEOUT'
+    }
+  }
+}
+
+Node.js v24.18.1

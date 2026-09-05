@@ -1,0 +1,560 @@
+[
+ {
+  "restaurantId": "2838",
+  "name": "Creme De La Crepe",
+  "dishes": [],
+  "not_found": "San Diego branch (142 University Avenue #Suite C) permanently closed — confirmed via Yelp explicit \"CLOSED\" label, corroborated by the parent chain's own WordPress REST API (wp-json/wp/v2/pages) no longer listing a San Diego location page while all 5 other branches remain listed"
+ },
+ {
+  "restaurantId": "2840",
+  "name": "House of Black",
+  "sourceUrl": "",
+  "confidence": "low",
+  "blocked": "no priced menu found anywhere; confirmed as a genuine bar/event venue at 7576 Trade St, Sorrento Valley (distinct from the similarly-named \"House of Black Coffee Company\" chain), but it is a React/Vite single-page app with no menu API found in its JS bundle and no third-party priced listing located",
+  "dishes": []
+ },
+ {
+  "restaurantId": "2793",
+  "name": "Deli Fruits",
+  "sourceUrl": "https://order.online/store/delifruits-105045",
+  "confidence": "medium",
+  "crossCheckedAgainst": "address match to 427 C St Ste 101, San Diego, CA",
+  "notes": "extracted from the order.online (DoorDash white-label storefront) Next.js RSC flight payload embedded in the page; 83 dishes across categories; ran the markup/divisor sweep (1.00-1.35) — no divisor besides the trivial 1.00 exceeded the 50% clean-cents threshold, so prices are filed as-is with no adjustment; cents-ending distribution looks like genuine scattered POS pricing rather than a computed markup",
+  "dishes": [
+   {
+    "name": "Veggie Sandwich",
+    "description": "Wheat bread sandwich with chipotle dressing, Fresh and smooth Mexican Panela Cheese, loaded with spring mix, tomato, cucumber, and avocado.",
+    "price": "$11.49",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Ham and Cheese Sandwich",
+    "description": "Wheat bread sandwich with chipotle dressing, ham and swiss cheese, spring mix, fresh cut tomato and avocado slices.",
+    "price": "$10.39",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Chicken Salad Sandwich",
+    "description": "Wheat bread sandwich with chipotle dressing, chicken salad, spring mix, tomato, cucumber and avocado slices.",
+    "price": "$10.39",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Turkey Breast Sandwich",
+    "description": "Wheat bread, chipotle dressing, Smoked Turkey Breast, Swiss cheese, spring mix, tomato and avocado slices.",
+    "price": "$10.39",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "BLTA Sandwich",
+    "description": "Slightly toasted wheat bread with chipotle dressing, 12 slices of Bacon, Lettuce \\u0026 Avocado slices.",
+    "price": "$10.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Tuna Sandwich",
+    "description": "Wheat bread, chipotle dressing, tuna, spring mix, tomato, cucumber, and avocado.",
+    "price": "$10.39",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Hot Cheetos Turkey Sandwich",
+    "description": "turkey sandwich with Swiss cheese served on wheat bread, filled with hot Cheetos, spring mix, tomato and avocado.",
+    "price": "$10.50",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Milanesa Sandwich",
+    "description": "Wheat bread sandwich with chipotle dressing, milanesa (breaded chicken), melted swiss cheese, spring mix, tomato and avocado.",
+    "price": "$11.79",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Turkey + Bacon + Apple Sandwich",
+    "description": "Our signature sandwich! Served on wheat bread with spicy flavory chipotle dressing, Turkey, bacon, fresh cut apple slices, spring mix, tomato and avocado slices.",
+    "price": "$10.99",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Hawaiian Sandwich",
+    "description": "Wheat bread sandwich with our own recipe Chipotle dressing, heated ham, fresh pineapple chunks, and melted cheese. Served with spring mix, tomato, and fresh cut avocado slices.",
+    "price": "$11.79",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Chicken Salad + Bacon Sandwich",
+    "description": "Wheat bread sandwich with chipotle dressing, chicken salad + 6 slices of crispy bacon, spring mix, tomato, cucumber and avocado slices.",
+    "price": "$11.79",
+    "section": "Sandwiches"
+   },
+   {
+    "name": "Egg, Swiss, Bacon \\u0026 Avocado Sandwich",
+    "description": "Toasted wheat bread spreaded with chipotle mayo, 2 scrambled eggs, 2 slices of Swiss cheese, 3 slices of bacon and avocado.",
+    "price": "$9.00",
+    "section": "Breakfast Options"
+   },
+   {
+    "name": "Eggs, Ham, Swiss and Avocado Sandwich",
+    "description": "Name says it all. Served on wheat bread with our own recipe Chipotle dressing.",
+    "price": "$9.00",
+    "section": "Breakfast Options"
+   },
+   {
+    "name": "Delifruits Breakfast Sandwich",
+    "description": "Served on wheat bread spreaded with chipotle dressing, with 2 ham slices, 2 eggs, spring mix, tomato and avocado.",
+    "price": "$11.00",
+    "section": "Breakfast Options"
+   },
+   {
+    "name": "Veggie Torta",
+    "description": "Toasted torta bread with our own recipe chipotle dressing, fresh and smooth Mexican Panela cheese, fresh cut tomato, cucumber, and avocado slices.",
+    "price": "$11.99",
+    "section": "Tortas"
+   },
+   {
+    "name": "Ham and Cheese Torta",
+    "description": "Toasted Torta bread, chipotle dressing, ham and swiss cheese, lettuce, tomato and avocado slices.",
+    "price": "$11.29",
+    "section": "Tortas"
+   },
+   {
+    "name": "Chicken Salad Torta",
+    "description": "Toasted Torta bread, chipotle dressing, chicken salad, lettuce, tomato, cucumber and avocado.",
+    "price": "$11.29",
+    "section": "Tortas"
+   },
+   {
+    "name": "Turkey Torta",
+    "description": "Torta bread, chipotle dressing, smoked turkey breast with Swiss cheese, lettuce, tomato and avocado.",
+    "price": "$11.29",
+    "section": "Tortas"
+   },
+   {
+    "name": "BLTA Torta",
+    "description": "Torta bread, chipotle dressing, 12 slices of crispy bacon, lettuce, tomato and avocado.",
+    "price": "$12.00",
+    "section": "Tortas"
+   },
+   {
+    "name": "Tuna Torta",
+    "description": "Torta bread, chipotle dressing, tuna, lettuce, tomato, cucumber and avocado.",
+    "price": "$11.29",
+    "section": "Tortas"
+   },
+   {
+    "name": "Turkey + Bacon + Apple Torta",
+    "description": "Toasted torta bread with chipotle dressing, smoked turkey breast, 6 slices of bacon and fresh cut apple slices. Served with lettuce, tomato, and avocado",
+    "price": "$11.99",
+    "section": "Tortas"
+   },
+   {
+    "name": "Green Salad",
+    "description": "Spring mix with tomatoes, cucumber, carrots, avocado and your choice of protein. \\\\n-tuna -chicken salad -ham -Turkey  -apple \\u0026 strawberries",
+    "price": "$9.00",
+    "section": "Salads"
+   },
+   {
+    "name": "Raspberry Walnut Salad",
+    "description": "Spring mix salad loaded with fresh cut strawberries, diced apple, walnuts, and raspberry vinaigrette dressing on the side.",
+    "price": "$10.50",
+    "section": "Salads"
+   },
+   {
+    "name": "Greens + Fruits Spicy Salad.",
+    "description": "Spring mix salad with diced cucumber, tomato, avocado slices, pineapple pieces, fresh cut strawberries \\u0026 papaya. Spiced with tajin and fresh squeezed lime.",
+    "price": "$10.99",
+    "section": "Salads"
+   },
+   {
+    "name": "Fruit Bowl",
+    "description": "Cantaloupe, honeydew, banana, papaya, pineapple, strawberries, apples, cottage cheese, granola, dried fruit, and honey.",
+    "price": "$9.00",
+    "section": "Fresh \\u0026 Healthy "
+   },
+   {
+    "name": "Fruit Pico De Gallo Cup",
+    "description": "Diced when you order it, fresh cut cucumber, jicama, pineapple and watermelon, served in a cup with chili powder and lime.",
+    "price": "$6.00",
+    "section": "Fresh \\u0026 Healthy "
+   },
+   {
+    "name": "Pick Your Own Fruit",
+    "description": "Choose your favorite fruits with the toppings you like.",
+    "price": "$10.00",
+    "section": "Fresh \\u0026 Healthy "
+   },
+   {
+    "name": "Classic Acai Bowl",
+    "description": "Acai bowl topped with fresh cut strawberries, banana, blueberries,  granola, unsweetened coconut flakes and honey.",
+    "price": "$9.69",
+    "section": "Fresh \\u0026 Healthy "
+   },
+   {
+    "name": "Acai + Peanut Butter Bowl",
+    "description": "Acai with peanut butter, topped with strawberries, bananas, granola, coconut, blueberries and honey.",
+    "price": "$10.29",
+    "section": "Fresh \\u0026 Healthy "
+   },
+   {
+    "name": "Dragon Fruit (Pitaya) Bowl",
+    "description": "Dragon Fruit sorbet, strawberries., bananas. Blueberries, granola, coconut and a mix of Chia, Hemp and Flax seeds.",
+    "price": "$9.79",
+    "section": "Fresh \\u0026 Healthy "
+   },
+   {
+    "name": "Street Style Pico de Gallo Bowl",
+    "description": "iced cantaloupe, cucumber, pineapple, mango, jicama, watermelon, and orange with fresh squeezed lime, tajin \\u0026 Valentina hot sauce. Sorry no -instead ofs- : (",
+    "price": "$10.25",
+    "section": "Fresh \\u0026 Healthy "
+   },
+   {
+    "name": "Citrus-PiñaColada Dragon Fruit Bowl",
+    "description": "Dragon fruit sorbet served in a bowl with fresh cut pineapple, coconut flakes, diced orange topped with a fresh squeezed lime and honey.\\\\n",
+    "price": "$10.29",
+    "section": "Specialty Bowls"
+   },
+   {
+    "name": "4X Fiber Acai Bowl",
+    "description": "(1)Açaí sorbet, fresh cut (2)papaya, diced (3)apple and (4)blueberries, topped with granola and honey.",
+    "price": "$10.29",
+    "section": "Specialty Bowls"
+   },
+   {
+    "name": "Coconut Bowl",
+    "description": "Coconut Cream Sorbet, topped with strawberries, pineapple, blueberries, granola and honey.",
+    "price": "$10.29",
+    "section": "Specialty Bowls"
+   },
+   {
+    "name": "Taro Bowl (Ube)",
+    "description": "Creamy Ube/Taro sorbet bowl. Topped with strawberries, banana, granola. Coconut and honey.",
+    "price": "$10.29",
+    "section": "Specialty Bowls"
+   },
+   {
+    "name": "Plain Greek Yogurt Bowl",
+    "description": "Greek plain yogurt in a bowl, topped with fresh cut bananas and strawberries, blueberries, granola and honey.",
+    "price": "$7.99",
+    "section": "Specialty Bowls"
+   },
+   {
+    "name": "Manguito Bowl",
+    "description": "Delicious and smooth mango sorbet served in a bowl topped with strawberries, pineapple chunks, blueberries \\u0026 coconut flakes.",
+    "price": "$10.29",
+    "section": "Specialty Bowls"
+   },
+   {
+    "name": "Spicy mango bowl",
+    "description": "Delicious and smooth mango sorbet served in a bowl topped with fresh cut mango pieces, pineapple chunks and diced oranges, tamarindo chaca chacas chewy candy, chamoy, lime and tajin.",
+    "price": "$10.29",
+    "section": "Specialty Bowls"
+   },
+   {
+    "name": "Tostilocos",
+    "description": "Served with cucumber, jicama, Japanese peanuts, chacas, cueritos (pork skin), lemon, chamoy, hot sauce and tajin. Everything is served in the box but we send chips on the side.",
+    "price": "$8.99",
+    "section": "Sours \\u0026 Locos "
+   },
+   {
+    "name": "ChurrosLocos",
+    "description": "Served with cucumber, jicama, cueritos (pork skin), Japanese peanuts, chacas, lemon, chamoy, hot sauce and tajin.  Everything is served inside the box but Churros on the side.",
+    "price": "$8.99",
+    "section": "Sours \\u0026 Locos "
+   },
+   {
+    "name": "CueritosLocos",
+    "description": "full plate of cueritos (pork skin) served with cucumber, jicama, Japanese peanuts, chacas, lemon, chamoy, hot sauce and tajin.",
+    "price": "$8.50",
+    "section": "Sours \\u0026 Locos "
+   },
+   {
+    "name": "FrutaLoca",
+    "description": "Cucumber, jicama, pineapple, orange, cueritos (pork rinds) , Chacas tamarind candy,  peanuts, chamoy, hot sauce, and tajin.",
+    "price": "$10.99",
+    "section": "Sours \\u0026 Locos "
+   },
+   {
+    "name": "HOT CHEETOS locos",
+    "description": "served with cucumber, jicama, japanese peanuts, cueritos (pork skin), lemon, chamoy, hot sauce and tajin. Everything is served inside the box, the chips are on the side. .",
+    "price": "$8.99",
+    "section": "Sours \\u0026 Locos "
+   },
+   {
+    "name": "TAKISlocos",
+    "description": "served in a box with cucumber, jicama, japanese peanuts, chacas, lemon, chamoy, hot sauce and tajin.takis are sent on a side, everything is served in the box.",
+    "price": "$8.99",
+    "section": "Sours \\u0026 Locos "
+   },
+   {
+    "name": "Classic with Clam",
+    "description": "Served with cucumber, jicama, and olives. Prepared with spices.",
+    "price": "$7.75",
+    "section": "Clamatos"
+   },
+   {
+    "name": "Shrimp Clamato",
+    "description": "Served with cucumber, jicama, olives, and  fresh shrimp.",
+    "price": "$7.75",
+    "section": "Clamatos"
+   },
+   {
+    "name": "Churro Clamato",
+    "description": "Served with cucumber, jicama, olives, salad, and corn churritos (corn sticks).",
+    "price": "$7.75",
+    "section": "Clamatos"
+   },
+   {
+    "name": "Nachos with Jalapenos",
+    "description": "Nacho chips with cheese and Jalapenos. We pack the cheese and jalapeños on a side.",
+    "price": "$7.50",
+    "section": "Calientitos "
+   },
+   {
+    "name": "TAKIS ELOTES",
+    "description": "Takis fuego served in a box, topped with corn, butter, Mayo, cotija Cheese, lime, Valentina hot sauce and tajin.",
+    "price": "$9.50",
+    "section": "Calientitos "
+   },
+   {
+    "name": "Hot Cheetos Nachos",
+    "description": "Nacho chips and flaming hot Cheetos mix with cheese. We pack cheese on a side.",
+    "price": "$9.00",
+    "section": "Calientitos "
+   },
+   {
+    "name": "Nacho Elotes",
+    "description": "Nacho chips with cheese topped with corn, mayo, cotija cheese, lime, hot sauce and tajin.",
+    "price": "$9.50",
+    "section": "Calientitos "
+   },
+   {
+    "name": "Corn In A Cup",
+    "description": "-Walmart parking lot style- corn in a cup with Butter, mayo, cotija cheese, lime, hot sauce and tajin.",
+    "price": "$6.00",
+    "section": "Calientitos "
+   },
+   {
+    "name": "TOSTI-Elotes",
+    "description": "Tostitos served on a plate topped with corn, butter, mayo, cotija cheese, lime, hot sauce and tajin.",
+    "price": "$9.50",
+    "section": "Calientitos "
+   },
+   {
+    "name": "Milanesa Especial Torta",
+    "description": "Torta bread spreaded with chipotle dressing, milanesa (breaded chicken)  and melted swiss cheese, served with lettuce, tomato and avocado slices",
+    "price": "$14.99",
+    "section": "Specialties"
+   },
+   {
+    "name": "Club Sandwich",
+    "description": "Our biggest sandwich, served in 3 slices of bread with Turkey, bacon, ham, and Swiss cheese with spring mix, tomato, avocado and our Own recipe Chipotle Dressing.",
+    "price": "$13.39",
+    "section": "Specialties"
+   },
+   {
+    "name": "Milanesa Torta",
+    "description": "Torta bread spreaded with chipotle dressing, milanesa (breaded chicken)  and melted swiss cheese, served with lettuce, tomato and avocado slices",
+    "price": "$13.99",
+    "section": "Specialties"
+   },
+   {
+    "name": "Hawaiian Torta",
+    "description": "Ham, pineapple, and melted Swiss cheese. Served with lettuce, tomato, and avocado.",
+    "price": "$13.99",
+    "section": "Specialties"
+   },
+   {
+    "name": "Mexican Torta",
+    "description": "Mollete inspired. Toasted torta bread spreaded with chipotle dressig, refried beans, ham, jalapenos, and melted cheese. Served with fresh lettuce, tomato, and avocado slices.",
+    "price": "$13.99",
+    "section": "Specialties"
+   },
+   {
+    "name": "Strawberries and Cream",
+    "description": "Fresh cut strawberries mixed with our special sweet cream, topped with whipped cream.",
+    "price": "$8.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Escamochas",
+    "description": "Fresh cut fruit mixed with our special sweet cream and orange juice. Topped with granola and dried fruit.",
+    "price": "$8.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Bionicos",
+    "description": "Fresh cut fruit mixed with our special sweet cream and topped with granola and dried fruit.",
+    "price": "$8.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Strawberries, Banana, and Cream",
+    "description": "Fresh cut strawberries and bananas mixed in a cup with our CREMA DULCE (sweet cream)",
+    "price": "$8.25",
+    "section": "Desserts"
+   },
+   {
+    "name": "Apple with worms (manzana con gusanos)",
+    "description": "Green sour apple covered in tamarindo and chili powder, cut in 8 slices, served with chacas (tamarind chewy candy) and sour worms soaked in our secret spicy sauce. Topped with chamoy and tajin.",
+    "price": "$8.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Classic Tamarindo Covered Apple",
+    "description": "Cutted in eight pieces, with spicy tamarind chacas in the middle. Our homemade tamarind paste, Chamoy and Tajin on top.",
+    "price": "$7.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Tamarindo Crazy apple (manzana loca)",
+    "description": "Green sour apple covered in tamarindo and chili powder, cut in 8 slices, served with chacas (tamarind chewy candy), japanese peanuts, cueritos (pork skin), lemon, chamoy, hot sauce and tajin.",
+    "price": "$8.00",
+    "section": "Desserts"
+   },
+   {
+    "name": "Toxic Apple (La Toxica)",
+    "description": "Cut in 8 pieces, served with chaca candies, Japanese peanuts, cueritos (pork rinds), chamoy, hot sauce, tajin and fresh squeezed lime + tamarind paste + spicy gummy worms + sour gummy worms + Tarugo tamarind stick + skwinkles candies + 3 drops of habanero hot sauce.",
+    "price": "$8.99",
+    "section": "Desserts"
+   },
+   {
+    "name": "Mazapán Smoothie",
+    "description": "One size. Classic Peanut Mazapán Mexican candy smoothie topped with whipped cream and mazapán crumbles.",
+    "price": "$7.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Smoothies",
+    "description": "Made with fresh fruit, you can mix your two favorite fruits. Plain or with Orange juice. We don’t use dairy unless you want to add almond milk for an extra charge.",
+    "price": "$5.75",
+    "section": "Beverages"
+   },
+   {
+    "name": "Chamangos",
+    "description": "Fruit smoothie mixed with chamoy, pieces of chacas, and chili powder.",
+    "price": "$5.99",
+    "section": "Beverages"
+   },
+   {
+    "name": "Green Detox Juice",
+    "description": "Parsley, grapefruit, celery, pineapple, and cucumber.",
+    "price": "$7.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "Purple Juice",
+    "description": "Carrots, beets, cucumber and pineapple",
+    "price": "$7.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "Forever 25- Antioxidant Juice",
+    "description": "Apple, carrots, strawberries, blueberries and beets.",
+    "price": "$7.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "Spicy Orange Juice",
+    "description": "Orange, ginger, \\u0026 a dash of cayenne pepper.",
+    "price": "$7.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "Golden Hour Juice",
+    "description": "Orange, Carrots and Turmeric",
+    "price": "$7.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "C-trics juice",
+    "description": "Orange, grapefruit, pineapple, \\u0026 lime.",
+    "price": "$7.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "Aguas Frescas",
+    "description": "Made of fresh fruit. Your choice mix up to 2 fruits.",
+    "price": "$3.50",
+    "section": "Beverages"
+   },
+   {
+    "name": "Fat burner juice",
+    "description": "Cucumber, pineapple, celery and ginger.",
+    "price": "$7.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "Blood Cleanser Juice",
+    "description": "Carrots, cucumber, tomato, celery, and lime.",
+    "price": "$7.00",
+    "section": "Beverages"
+   },
+   {
+    "name": "Quick Meal Smoothie",
+    "description": "Strawberry, banana, oats, honey and almond milk blended with ice.",
+    "price": "$6.99",
+    "section": "Boosted Smoothies"
+   },
+   {
+    "name": "Protein Shake (PB+B)",
+    "description": "Peanut Butter, Banana, Oats, Vanilla Whey Protein and almond milk.",
+    "price": "$9.98",
+    "section": "Boosted Smoothies"
+   },
+   {
+    "name": "Green Protein Smoothie",
+    "description": "Cucumber, spinach, celery, pineapple, and vanilla whey protein.",
+    "price": "$8.49",
+    "section": "Boosted Smoothies"
+   },
+   {
+    "name": "Apple, Avocado + Banana Smoothie",
+    "description": "Green Apple, avocado, banana, almond milk, oats, blended with ice.",
+    "price": "$8.49",
+    "section": "Boosted Smoothies"
+   },
+   {
+    "name": "Protein, Fats and Carbs smoothie",
+    "description": "Vanilla whey protein, almond milk, peanut butter, Banana, oats, chia, flax and hemp seeds.",
+    "price": "$8.99",
+    "section": "Boosted Smoothies"
+   }
+  ]
+ },
+ {
+  "restaurantId": "1196",
+  "name": "Gallopin In",
+  "dishes": [],
+  "not_found": "permanently closed — confirmed via explicit, repeated Yelp \"CLOSED\" label at 7036 Gunzan St, San Diego"
+ },
+ {
+  "restaurantId": "2863",
+  "name": "Fifty 9 Fifty",
+  "dishes": [],
+  "not_found": "permanently closed — confirmed via explicit, repeated Yelp \"CLOSED\" label at 5950 Santo Rd, San Diego (Tierrasanta)"
+ },
+ {
+  "restaurantId": "2711",
+  "name": "AVO Vegan Restaurant",
+  "sourceUrl": "",
+  "confidence": "low",
+  "blocked": "no web presence found — no current website, delivery-platform listing, or Google/Yelp business record located after reasonable search effort",
+  "dishes": []
+ },
+ {
+  "restaurantId": "1163",
+  "name": "Little Vienna",
+  "sourceUrl": "",
+  "confidence": "low",
+  "blocked": "no web presence found — no current website or business record located; only historical Facebook mentions with no menu/prices",
+  "dishes": []
+ },
+ {
+  "restaurantId": "2876",
+  "name": "Sunshine Poke & Sushi Rolls",
+  "sourceUrl": "",
+  "confidence": "low",
+  "blocked": "no priced menu source found — confirmed actual address 224 N Coast Highway, Oceanside, CA 92054 (distinct from a similarly-branded but separate business \"Sunshine Kitchen\" at 1006 Mission Ave, Oceanside, which repeatedly surfaced in searches and was NOT used as a source); only source found was a Facebook marketing page (facebook.com/sunshinepokeandsushirolls) with no prices; no DoorDash/Uber Eats/Grubhub or Google Maps listing found for this specific business",
+  "dishes": []
+ }
+]

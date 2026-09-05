@@ -1,0 +1,6 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      6 entries (6 with menus, 0 confirmed not-found), 341 dishes
+quarantine: 2 entries, 0 dishes withheld
+
+  El Bronco Mexican Food (0 dishes) - blocked, not absent: no first-party site; only reachable priced sources are DoorDash and Uber Eats, both scattered-cents (8% conventional raw). Divisor sweep 1.00-1.35: 1.17 lands 87 of 91 items (96%) on a conventional ending - a ~17% ordering-channel fee baked into every item, not the wall price. No dine-in artefact or fee-free sibling found (Yelp only carries a user-submitted menu tab, which is barred). Re-queue for a browser pass or a fresh search for a first-party page.
+  Nice Food Restaurant (0 dishes) - blocked, not absent: needs-browser: no first-party site; Uber Eats is the only marketplace listing found (no DoorDash store page turned up, and a WebSearch note says DoorDash currently shows no delivery for this restaurant). Address confirmed (609 North Broadway, Escondido, CA 92025) but catalogSectionsMap is null and no catalogItems/labelPrimary blob is in the served HTML - this store's menu is fetched client-side with nothing embedded server-side, tried both the plain URL and with ?diningMode=DELIVERY.

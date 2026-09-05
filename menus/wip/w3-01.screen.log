@@ -1,0 +1,17 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      7 entries (4 with menus, 3 confirmed not-found), 261 dishes
+quarantine: 13 entries, 22 dishes withheld
+
+  FiveO3 Pupusas (0 dishes) - blocked, not absent: needs-browser: item names published but every price lives behind the client-rendered cash.app ordering app; no priced HTML/JSON found
+  Collette’s Collaborative Collective Cuisine (0 dishes) - blocked, not absent: needs-browser: collettesongrand.com unreachable by curl (TCP timeout); Toast storefront's __OO_STATE__ has no items embedded, client-side fetch required
+  Showa Ramen (0 dishes) - blocked, not absent: needs-fee-free-source: order.store catalog carries a clean 1.20x markup on 16/16 items; own site has no prices
+  Chester's (0 dishes) - blocked, not absent: no priced source found for this specific branch; chain pricing varies by franchisee so another branch's menu cannot substitute
+  Surf City Squeeze (22 dishes) - prices are not shaped like a menu: only 0% of 22 land on a conventional ending, but 100% do after dividing by 1.2500 - looks like a fee baked into every price (www.doordash.com)
+  Mombasa Cooker (0 dishes) - blocked, not absent: menu exists only as an image-only PDF; no extractable text/prices found in one attempt
+  EL SAZON DE MAMA (0 dishes) - blocked, not absent: no San Diego-specific priced source found; only a same-named Portland food truck's menu exists, which cannot be used for this branch; location also shows signs of closure
+  Wow Donuts (0 dishes) - blocked, not absent: no priced source found; only review/directory pages with no menu, and the one menu listing (zmenu) is bot-blocked
+  Rising Sun Sushi (0 dishes) - blocked, not absent: no priced source found for this specific location; zmenu bot-blocked, menufy page empty, no delivery-platform listing located
+  Prado Perk (0 dishes) - blocked, not absent: no itemized menu/prices found anywhere; only a vague overall price range ($3-$8) exists
+  Warung RieRie (0 dishes) - blocked, not absent: Wix site menu page has no extractable prices in static HTML; needs browser rendering
+  Thérapie Bistro (0 dishes) - blocked, not absent: site has no extractable prices in static HTML; needs browser rendering
+  El Cilantro Mexican Grill (0 dishes) - blocked, not absent: no itemized menu/prices found on site; menu section is descriptive text only

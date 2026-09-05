@@ -7,6 +7,24 @@
  *   node --env-file=.env.local scripts/enrich-places.mjs --apply --max-calls 5
  *   node --env-file=.env.local scripts/enrich-places.mjs --apply --max-calls 940
  *   node --env-file=.env.local scripts/enrich-places.mjs --apply --ids 6036,6968
+ *   node --env-file=.env.local scripts/enrich-places.mjs --dry --mask pro
+ *   node --env-file=.env.local scripts/enrich-places.mjs --apply --mask pro --max-calls 500
+ *
+ * ## `--mask pro`: the photo alone, for a row that already has a rating
+ *
+ * A row whose rating arrived some other way (Serper's `/maps`, for one) still
+ * needs a place photo, and asking Place Details for `rating` to get there would
+ * bill the whole call at Enterprise for a field already on the row. `--mask
+ * pro` requests exactly `id,businessStatus,photos` — the Pro SKU, ledgered as
+ * `PlaceDetailsPro`, $17/1,000 after 5,000 free a month — and never asks for a
+ * rating field, so it can never be billed at Enterprise. It only selects rows
+ * that already have `rating IS NOT NULL`; a row still missing a rating needs
+ * the default mask regardless of photo status. Cached responses are kept
+ * separate per mask (`<place id>.pro.json`) so a Pro-mask cache entry can never
+ * be mistaken for a full Details response and skip a rating fetch it never
+ * made. The default mask is unchanged; `--max-calls` and the monthly-budget
+ * refusal apply to `PlaceDetailsPro` exactly as they do to
+ * `PlaceDetailsEnterprise`, just against that SKU's own free allowance.
  *
  * ## What this finishes
  *
@@ -47,13 +65,14 @@
  *     out. That file, not a counter in memory, is what the monthly check reads,
  *     so it survives a crash, a re-run and a second terminal.
  *  3. This month's calls **for that SKU** plus the requested cap must stay
- *     under MONTHLY_BUDGET (950 of the 1,000 free). Over that, the script
- *     refuses to start rather than trimming the cap quietly.
+ *     under that SKU's MONTHLY_BUDGET (950 of Enterprise's 1,000 free, 4,950 of
+ *     Pro's 5,000). Over that, the script refuses to start rather than
+ *     trimming the cap quietly.
  *  4. Every response is written to `data/places-details/<place id>.json`
- *     before anything is decided about it, and a place with a cache file is
- *     never requested again. Re-running the matching or the write rules over
- *     the whole corpus therefore costs zero calls. Delete a cache file to
- *     re-ask.
+ *     (`<place id>.pro.json` under `--mask pro`) before anything is decided
+ *     about it, and a place with a cache file for the mask in use is never
+ *     requested again. Re-running the matching or the write rules over the
+ *     whole corpus therefore costs zero calls. Delete a cache file to re-ask.
  *
  * Text Search is not touched here at all. That SKU is at 4,540 of its 5,000
  * free calls for September and this stage has no reason to search — it holds
@@ -84,26 +103,44 @@ import { sql } from "./sql-client.mjs";
 const DETAIL_URL = "https://places.googleapis.com/v1/places";
 
 /**
- * Exactly the fields stage 04 needs, and no more.
+ * Exactly the fields each mask needs, and no more.
  *
- * `rating`, `userRatingCount`, `websiteUri`, `regularOpeningHours` and
- * `nationalPhoneNumber` are Enterprise; `id`, `businessStatus` and `photos` are
- * Pro and ride along free because billing is at the highest tier requested.
- * Adding a field cannot make this cheaper and can make it dearer — do not.
+ * `full` (the default): `rating`, `userRatingCount`, `websiteUri`,
+ * `regularOpeningHours` and `nationalPhoneNumber` are Enterprise; `id`,
+ * `businessStatus` and `photos` are Pro and ride along free because billing is
+ * at the highest tier requested. Adding a field cannot make this cheaper and
+ * can make it dearer — do not.
+ *
+ * `pro`: no Enterprise field at all, so the call can never be billed above
+ * Pro. See the `--mask pro` note above.
  */
-const FIELD_MASK =
-  "id,rating,userRatingCount,websiteUri,regularOpeningHours,nationalPhoneNumber,businessStatus,photos";
+const FIELD_MASKS = {
+  full: "id,rating,userRatingCount,websiteUri,regularOpeningHours,nationalPhoneNumber,businessStatus,photos",
+  pro: "id,businessStatus,photos",
+};
 
-const SKU_DETAILS = "PlaceDetailsEnterprise";
+const MASK = strFlag("mask", "full");
+if (MASK !== "full" && MASK !== "pro") {
+  console.error(`--mask must be "full" or "pro" (got ${JSON.stringify(MASK)}).`);
+  process.exit(1);
+}
+const FIELD_MASK = FIELD_MASKS[MASK];
+
+const SKU_DETAILS = MASK === "pro" ? "PlaceDetailsPro" : "PlaceDetailsEnterprise";
 const SKU_PHOTO = "PlacePhoto";
 
 const LEDGER = "data/google-calls.jsonl";
 const CACHE_DIR = "data/places-details";
 
-/** Google gives 1,000 of each SKU free per calendar month. This leaves 50 spare. */
-const MONTHLY_BUDGET = 950;
-const MONTHLY_FREE = 1000;
-const COST_PER_1K = { [SKU_DETAILS]: 20, [SKU_PHOTO]: 7 };
+/**
+ * Google's free allowance and this script's self-imposed ceiling, per SKU.
+ * Enterprise and Photo get 1,000 free a month, Pro gets 5,000; each budget
+ * leaves 50 free calls spare so a slightly-over estimate never crosses into
+ * billing.
+ */
+const MONTHLY_FREE = { PlaceDetailsEnterprise: 1000, PlaceDetailsPro: 5000, PlacePhoto: 1000 };
+const MONTHLY_BUDGET = { PlaceDetailsEnterprise: 950, PlaceDetailsPro: 4950, PlacePhoto: 950 };
+const COST_PER_1K = { PlaceDetailsEnterprise: 20, PlaceDetailsPro: 17, PlacePhoto: 7 };
 
 /**
  * Below this a Google rating is too thin to present as a sourced number.
@@ -213,7 +250,11 @@ const countSku = (ledger, sku, month) =>
 /* Place ids are already filename-safe, but a stray character must never be
  * able to write outside the cache directory. */
 const safe = (s) => String(s).replace(/[^A-Za-z0-9._-]/g, "_");
-const detailFile = (placeId) => `${CACHE_DIR}/${safe(placeId)}.json`;
+/* A Pro-mask response is missing every Enterprise field, so it is cached under
+ * its own name — never as `<place id>.json` — or a later full-mask run would
+ * read it as a complete Details answer and skip the rating fetch it never
+ * made. */
+const detailFile = (placeId) => `${CACHE_DIR}/${safe(placeId)}${MASK === "pro" ? ".pro" : ""}.json`;
 const photoFile = (placeId) => `${CACHE_DIR}/${safe(placeId)}.photo.json`;
 
 async function readJson(path) {
@@ -483,23 +524,23 @@ const before = {
   [SKU_PHOTO]: countSku(ledger, SKU_PHOTO, month),
 };
 
-console.log(`enrich-places  ${DRY_RUN ? "DRY RUN" : "APPLY"}  month ${month}`);
+console.log(`enrich-places  ${DRY_RUN ? "DRY RUN" : "APPLY"}  mask ${MASK}  month ${month}`);
 for (const sku of [SKU_DETAILS, SKU_PHOTO]) {
   console.log(
     `  ${sku.padEnd(22)} ${String(before[sku]).padStart(4)} calls used of ` +
-      `${MONTHLY_BUDGET} budgeted (${MONTHLY_FREE} free, then $${COST_PER_1K[sku]}/1,000)`,
+      `${MONTHLY_BUDGET[sku]} budgeted (${MONTHLY_FREE[sku]} free, then $${COST_PER_1K[sku]}/1,000)`,
   );
 }
 console.log(`  --max-calls: ${MAX_CALLS} per SKU${MAX_CALLS === 0 ? "  (default — no request will be made)" : ""}`);
 
 for (const sku of [SKU_DETAILS, SKU_PHOTO]) {
-  if (before[sku] + MAX_CALLS > MONTHLY_BUDGET) {
+  if (before[sku] + MAX_CALLS > MONTHLY_BUDGET[sku]) {
     console.error(
       `\nRefusing to run: ${before[sku]} + ${MAX_CALLS} = ${before[sku] + MAX_CALLS} would pass the ` +
-        `${MONTHLY_BUDGET}-call budget for ${sku} in ${month}.`,
+        `${MONTHLY_BUDGET[sku]}-call budget for ${sku} in ${month}.`,
     );
     console.error(
-      `Past ${MONTHLY_FREE} free calls this SKU costs $${COST_PER_1K[sku]} per 1,000. ` +
+      `Past ${MONTHLY_FREE[sku]} free calls this SKU costs $${COST_PER_1K[sku]} per 1,000. ` +
         `Wait for the next calendar month or lower --max-calls.`,
     );
     process.exit(1);
@@ -524,6 +565,21 @@ const all = wantedIds
              EXISTS (SELECT 1 FROM dishes d WHERE d.restaurant_id = r.id) AS has_dishes
       FROM restaurants r
       WHERE r.hold_reason IS NULL AND r.google_place_id IS NOT NULL
+      ORDER BY r.id::int`
+  : MASK === "pro"
+  ? /* Pro mode never asks Google for a rating, so it only makes sense for a row
+     * that already has one — from wherever, Serper included — and is still
+     * missing the photo that mask alone can fetch. */
+    await sql`
+      SELECT r.id::text AS id, r.name, r.neighborhood, r.source_key, r.google_place_id,
+             r.rating, r.review_count, r.website, r.hours, r.photo, r.photo_w, r.photo_h,
+             EXISTS (SELECT 1 FROM dishes d WHERE d.restaurant_id = r.id) AS has_dishes
+      FROM restaurants r
+      WHERE r.hold_reason IS NULL
+        AND r.google_place_id IS NOT NULL
+        AND r.rating IS NOT NULL
+        AND (r.photo IS NULL OR r.photo = '')
+        AND r.google_checked_at IS NULL
       ORDER BY r.id::int`
   : await sql`
       SELECT r.id::text AS id, r.name, r.neighborhood, r.source_key, r.google_place_id,
@@ -566,7 +622,9 @@ console.log(
   `\n${pool.length} rows ` +
     (wantedIds
       ? `named by --ids (of ${all.length} with a place id and no hold).\n`
-      : `eligible (hold_reason NULL, place id present, rating or photo missing, never checked).\n`) +
+      : MASK === "pro"
+        ? `eligible (hold_reason NULL, place id present, rating already set, photo missing, never checked).\n`
+        : `eligible (hold_reason NULL, place id present, rating or photo missing, never checked).\n`) +
     `  a  ${String(a.length).padStart(5)}  already carry dishes\n` +
     `  b  ${String(b.length).padStart(5)}  demo restaurants\n` +
     `  c  ${String(c.length).padStart(5)}  deh: imports (round-robined across ${new Set(c.map((r) => r.neighborhood)).size} neighborhoods)\n` +
@@ -691,11 +749,17 @@ for (const r of ordered) {
     }
 
     const gained = [];
-    if (r.rating == null && rating != null) {
-      tally.gainedRating += 1;
-      gained.push(`rating ${rating} (${reviewCount})`);
-    } else if (!ratingOk) {
-      gained.push(count == null ? "no rating" : `only ${count} reviews`);
+    /* Pro mode never asks Google for rating fields (place.rating is always
+     * absent), and every row it selects already has one — so the "still no
+     * rating" diagnostic below would be true and misleading. Skip it under
+     * that mask; the row's own rating is untouched, which is the intent. */
+    if (MASK !== "pro") {
+      if (r.rating == null && rating != null) {
+        tally.gainedRating += 1;
+        gained.push(`rating ${rating} (${reviewCount})`);
+      } else if (!ratingOk) {
+        gained.push(count == null ? "no rating" : `only ${count} reviews`);
+      }
     }
     if (needsPhoto && photoUri) {
       tally.gainedPhoto += 1;
@@ -753,7 +817,7 @@ console.log(`\nCalls this run:  ${detailCalls} ${SKU_DETAILS}, ${photoCalls} ${S
 for (const sku of [SKU_DETAILS, SKU_PHOTO]) {
   console.log(
     `  ${sku.padEnd(22)} ${before[sku]} -> ${after[sku]} this month ` +
-      `(${MONTHLY_BUDGET - after[sku]} left in budget, ${MONTHLY_FREE - after[sku]} free)`,
+      `(${MONTHLY_BUDGET[sku] - after[sku]} left in budget, ${MONTHLY_FREE[sku] - after[sku]} free)`,
   );
 }
 

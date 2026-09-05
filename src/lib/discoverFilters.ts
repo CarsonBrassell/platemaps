@@ -3,7 +3,7 @@
  * option would return, and how the whole thing round-trips through the URL.
  *
  * It lives here rather than inside the components because three surfaces read
- * it — the desktop rail, the mobile sheet, and the grid — and because facet
+ * it â the desktop rail, the mobile sheet, and the grid â and because facet
  * counting has to use exactly the same predicate the grid does or the numbers
  * lie.
  */
@@ -34,18 +34,18 @@ const QUICK_VALUES = QUICK_FILTERS.map((f) => f.value);
  * What "Top rated" means, in each of the two scales a restaurant carries.
  *
  * Which one is in force follows `SHOW_BLEND_STARS` (lib/ratingDisplay.ts), the
- * same switch the display reads — so the filter always measures what the cards
+ * same switch the display reads â so the filter always measures what the cards
  * are actually showing. A visitor filtering to "Top rated" and then seeing the
  * stars on every result is coherent; filtering on a percent nine cards in ten
  * don't have is not.
  *
  * `TOP_RATED_PERCENT` is the end state and takes over the day the stars go. It
  * excludes a restaurant whose plates haven't cleared the plate-score floor,
- * because that restaurant is unrated rather than well-rated — which is why it
+ * because that restaurant is unrated rather than well-rated â which is why it
  * cannot be the live threshold yet, and why the flag decides.
  *
  * 4.5 is where this sat before the plate score existed, and it is calibrated
- * against the real blend. 85 is not calibrated against anything yet — re-check it
+ * against the real blend. 85 is not calibrated against anything yet â re-check it
  * once there are real dish ratings behind it.
  */
 export const TOP_RATED_STARS = 4.5;
@@ -57,20 +57,20 @@ export type DiscoverFilters = {
   /**
    * Where, as one dimension with three states: everywhere (`neighborhood`
    * null, `nearby` false), within the radius, or one named neighbourhood.
-   * Nearby and a neighbourhood are mutually exclusive — the setters below
+   * Nearby and a neighbourhood are mutually exclusive â the setters below
    * enforce it, so nothing has to reason about "nearby, in North Park".
    */
   neighborhood: string | null;
   nearby: boolean;
   cuisine: string | null;
   price: PriceBand | null;
-  /** A category label from BEST_AT — "Service", "Ambiance", "Drinks"… Never
+  /** A category label from BEST_AT â "Service", "Ambiance", "Drinks"â¦ Never
       "Food": the plate score is the food rating, so it isn't a category. */
   aspect: string | null;
   quick: QuickFilter[];
   /**
    * Free text from the header search, matched against name, cuisine and
-   * neighbourhood — the same three fields that search itself ranks on.
+   * neighbourhood â the same three fields that search itself ranks on.
    *
    * It is what is *left* of a search after `filtersFromSearch` has taken out
    * anything the rail can express: a term naming a real cuisine, neighbourhood,
@@ -91,7 +91,7 @@ export const NO_FILTERS: DiscoverFilters = {
   q: null,
 };
 
-/** How many separate choices are on — what the mobile bar's badge counts. */
+/** How many separate choices are on â what the mobile bar's badge counts. */
 export function activeFilterCount(f: DiscoverFilters): number {
   return (
     (f.neighborhood ? 1 : 0) +
@@ -107,7 +107,7 @@ export function activeFilterCount(f: DiscoverFilters): number {
 /* --- Aspects ---------------------------------------------------------- */
 
 /**
- * The rating a category has to clear to count as "rated well for" it — on the
+ * The rating a category has to clear to count as "rated well for" it â on the
  * same 1-5 the categories are reported on, since `aspectScores` now works
  * natively in those units.
  *
@@ -125,7 +125,7 @@ export const ASPECT_STRONG_SCORE = 4.0;
  * `.has()` reads the same on a Map as it did on the Set this replaced, so
  * matching is unchanged.
  *
- * `score` is null for a restaurant with no plate score — it qualified on votes
+ * `score` is null for a restaurant with no plate score â it qualified on votes
  * alone, so there is a count to show and no number. Callers must handle both;
  * `RestaurantCard` is the one that renders them.
  */
@@ -141,12 +141,12 @@ export type StrongAspects = ReadonlyMap<string, ReadonlyMap<string, StrongAspect
  * Mirror of `RestaurantAspectTally` in lib/db.ts, which owns the shape.
  *
  * Declared locally rather than imported because this module is pulled into
- * client components and db.ts constructs the Neon client at module scope —
+ * client components and db.ts constructs the Neon client at module scope â
  * the repo's standing rule (see CLAUDE.md) is to mirror the row shape rather
  * than risk dragging the driver into the browser bundle. Keep the two in step.
  */
 export type AspectTally = {
-  /** The restaurant's sourced rating on 1-5 — see lib/db.ts. */
+  /** The restaurant's sourced rating on 1-5 â see lib/db.ts. */
   base: number;
   reviewCount: number;
   votes: Record<string, { praised: number; faulted: number }>;
@@ -174,7 +174,7 @@ export function strongAspectsFrom(
     );
     /* Two conditions. The score bar alone would pass every category at a
        well-rated place, since a category nobody mentioned now lands exactly on
-       the restaurant's rating — a 4.6 restaurant would read "rated well for
+       the restaurant's rating â a 4.6 restaurant would read "rated well for
        drinks" on the strength of never having served one. Requiring a positive
        deviation means the category has to be one people actually singled out,
        not merely one at a good restaurant. */
@@ -193,7 +193,7 @@ export function strongAspectsFrom(
 
 /**
  * What one restaurant scored in one category, or null if it isn't rated well
- * for it — including while the tallies are still in flight, which is the same
+ * for it â including while the tallies are still in flight, which is the same
  * "can't evaluate yet" null the filter context uses.
  */
 export function strongAspectScore(
@@ -211,7 +211,7 @@ export function strongAspectScore(
  * Everything a filter needs that isn't the restaurant or the filter itself.
  *
  * All three arrive after the first render, and all three are null until they
- * do — the clock mounts (lib/clock.ts), the visitor grants location, the
+ * do â the clock mounts (lib/clock.ts), the visitor grants location, the
  * tallies come back from /api/restaurants/aspects. A null means the filter
  * that depends on it matches everything for the moment, which shows a superset
  * of the eventual result. The alternative is flashing an empty grid on a
@@ -222,7 +222,7 @@ export type FilterContext = {
   here: Coords | null;
   aspects: StrongAspects | null;
   /**
-   * Every restaurant's plate score, keyed by id — what "Top rated" reads. A
+   * Every restaurant's plate score, keyed by id â what "Top rated" reads. A
    * restaurant absent from the record has no rated plates; null is the whole
    * record still being in flight, and follows the same match-everything rule as
    * the other two.
@@ -230,7 +230,7 @@ export type FilterContext = {
   plates: Record<string, PlateScore> | null;
   /**
    * Which restaurants serve a dish matching the current `q`, and which dish.
-   * Null when the query has no free text, or while the lookup is in flight —
+   * Null when the query has no free text, or while the lookup is in flight â
    * and null follows the same match-everything rule as the fields above, so a
    * pending lookup never hides a row the text already matched.
    *
@@ -251,8 +251,8 @@ export const NO_CONTEXT: FilterContext = {
 /**
  * The text a free-text query is matched against, lowercased once per row.
  *
- * `matchesFilters` runs six times per restaurant per request — once for the
- * grid and once for each facet dimension being counted — so building this
+ * `matchesFilters` runs six times per restaurant per request â once for the
+ * grid and once for each facet dimension being counted â so building this
  * inline would lowercase the whole corpus six times over on every keystroke's
  * worth of navigation. Keyed on the row object, which lib/discover.ts holds for
  * the life of its 60s corpus cache; a `WeakMap` means the entries go when that
@@ -260,18 +260,29 @@ export const NO_CONTEXT: FilterContext = {
  */
 const SEARCHABLE_TEXT = new WeakMap<RestaurantView, string>();
 
+/**
+ * Search text with apostrophes removed, on both the query and the haystack.
+ * 90 listed names carry a curly apostrophe ("Clem’s Station") and 1,100 a
+ * straight one; a visitor types neither reliably, and "clems station" found
+ * nothing. lib/db.ts searchRestaurants strips the same characters in SQL.
+ */
+export function foldSearchText(s: string): string {
+  return s.toLowerCase().replace(/['’`´]/g, "");
+}
+
 function searchable(r: RestaurantView): string {
   let text = SEARCHABLE_TEXT.get(r);
   if (text === undefined) {
     /* `?? ""` rather than interpolating straight in: 557 restaurants have no
        cuisine (the OpenStreetMap import does not always carry one), and a
-       template literal renders that null as the four characters "null" — which
+       template literal renders that null as the four characters "null" â which
        made `?q=null` match every one of them.
 
        `cuisineTags` is guarded for the same reason and is a stronger case: it
        is declared optional, so unguarded it renders the literal "undefined"
        and `?q=undefined` matches every restaurant without tags. */
-    text = `${r.name} ${r.cuisine ?? ""} ${r.cuisineTags ?? ""} ${r.neighborhood ?? ""}`.toLowerCase();
+    text = `${r.name} ${r.cuisine ?? ""} ${r.cuisineTags ?? ""} ${r.neighborhood ?? ""}`;
+    text = foldSearchText(text);
     SEARCHABLE_TEXT.set(r, text);
   }
   return text;
@@ -287,13 +298,13 @@ export function matchesFilters(
     if (milesBetween(ctx.here, { lat: r.lat, lng: r.lng }) > NEARBY_RADIUS_MI) return false;
   }
   if (f.cuisine && r.cuisine !== f.cuisine) return false;
-  // Name, cuisine, cuisine tags, neighbourhood — the same fields the header
+  // Name, cuisine, cuisine tags, neighbourhood â the same fields the header
   // search ranks on and /api/restaurants?q= narrows on, so a term that found a
   // place in the dropdown still finds it here. Substring rather than ranked:
   // this is a filter, and a filter either includes a row or doesn't.
   //
   // The tags are what make the blunt filter vocabulary affordable. "Tacos"
-  // is no longer a cuisine — it folds into Mexican — so it arrives here as
+  // is no longer a cuisine â it folds into Mexican â so it arrives here as
   // free text, and the tag on a shop that was tagged `taco` is what answers
   // it. See data/cuisines.ts.
   //
@@ -302,10 +313,10 @@ export function matchesFilters(
   // the corpus, and 129 restaurants serve it. `ctx.dishes` is null when the
   // lookup has not run, which matches everything the text already matched
   // rather than hiding rows behind a pending request.
-  if (f.q && !searchable(r).includes(f.q.toLowerCase()) && !ctx.dishes?.has(r.id)) {
+  if (f.q && !searchable(r).includes(foldSearchText(f.q)) && !ctx.dishes?.has(r.id)) {
     return false;
   }
-  // A restaurant with no menu has no band and so matches no price — see the
+  // A restaurant with no menu has no band and so matches no price â see the
   // note in data/priceBands.ts about why it isn't given a guessed one.
   if (f.price && r.priceBand !== f.price) return false;
   if (f.aspect && ctx.aspects) {
@@ -313,10 +324,13 @@ export function matchesFilters(
   }
   if (f.quick.includes("top-rated")) {
     if (SHOW_BLEND_STARS) {
-      if (r.rating < TOP_RATED_STARS) return false;
+      // A rating-less restaurant is deliberately excluded here, not just
+      // incidentally: `null < TOP_RATED_STARS` happens to be true, but this
+      // says so rather than leaning on the coercion.
+      if (r.rating === null || r.rating < TOP_RATED_STARS) return false;
     } else if (ctx.plates) {
       // An unrated restaurant fails this, and so does one whose plates haven't
-      // cleared the plate-score floor — see TOP_RATED_PERCENT.
+      // cleared the plate-score floor â see TOP_RATED_PERCENT.
       const percent = ctx.plates[r.id]?.percent ?? null;
       if (percent === null || percent < TOP_RATED_PERCENT) return false;
     }
@@ -325,7 +339,7 @@ export function matchesFilters(
   if (f.quick.includes("open-now") && ctx.now) {
     /*
      * Only a restaurant known to be open passes. This tested `kind === "closed"`
-     * and so let "unknown" through — every restaurant whose hours had not been
+     * and so let "unknown" through â every restaurant whose hours had not been
      * fetched counted as open, and at 5,699 rows that was thousands of them:
      * "Open now" quietly meant "everything we cannot rule out", and its count
      * said 905 of 991.
@@ -333,7 +347,7 @@ export function matchesFilters(
      * Asking to see what is open is a question about restaurants, not about the
      * completeness of our data, and the honest answer for one we know nothing
      * about is to leave it out. This is also now the only place in the product
-     * that judges open or closed — the cards print hours and make no claim.
+     * that judges open or closed â the cards print hours and make no claim.
      */
     const kind = openStateFor(r.hours, ctx.now).kind;
     if (kind !== "open" && kind !== "soon") return false;
@@ -350,7 +364,7 @@ export function applyFilters(
 }
 
 /**
- * Which of a card's own facts are the reason it survived the filter — what the
+ * Which of a card's own facts are the reason it survived the filter â what the
  * grid marks so the reader can see the answer without opening anything.
  *
  * It lives beside `matchesFilters` deliberately, because it is the *same
@@ -360,7 +374,7 @@ export function applyFilters(
  *
  * The free-text leftover (`q`) marks whichever facet it matched. It is a
  * substring test against the same fields `matchesFilters` uses, so a search for
- * "gasl" that lands on Gaslamp lights Gaslamp. It cannot mark the name — that
+ * "gasl" that lands on Gaslamp lights Gaslamp. It cannot mark the name â that
  * is the third field `searchable` covers, and a card whose *name* matched needs
  * no explanation for why it is there.
  *
@@ -371,19 +385,19 @@ export function matchMarksFor(
   r: RestaurantView,
   f: DiscoverFilters,
 ): { cuisine: boolean; neighborhood: boolean; price: string | null } {
-  const q = f.q?.trim().toLowerCase() ?? null;
+  const q = f.q ? foldSearchText(f.q.trim()) : null;
   return {
-    /* Optional-chained because a restaurant can genuinely have neither field —
+    /* Optional-chained because a restaurant can genuinely have neither field â
        557 rows arrived from OpenStreetMap with a null cuisine. Calling
        `.toLowerCase()` on that threw a TypeError *during the server render*,
        which took the whole Discover page down with an error boundary rather
        than simply not matching. Any `?q=` at all hit it. */
     cuisine:
       (f.cuisine !== null && r.cuisine === f.cuisine) ||
-      (q !== null && (r.cuisine?.toLowerCase().includes(q) ?? false)),
+      (q !== null && (r.cuisine ? foldSearchText(r.cuisine).includes(q) : false)),
     neighborhood:
       (f.neighborhood !== null && r.neighborhood === f.neighborhood) ||
-      (q !== null && (r.neighborhood?.toLowerCase().includes(q) ?? false)),
+      (q !== null && (r.neighborhood ? foldSearchText(r.neighborhood).includes(q) : false)),
     // Mirrors the predicate's own note: a restaurant with no menu has no band,
     // so it never matches a price filter and never gets the chip.
     price: f.price !== null && r.priceBand === f.price ? f.price : null,
@@ -394,7 +408,7 @@ export function matchMarksFor(
 
 export type FacetOption = {
   value: string;
-  /** Count with no filters at all — fixes the display order (see below). */
+  /** Count with no filters at all â fixes the display order (see below). */
   total: number;
 };
 
@@ -402,11 +416,11 @@ export type FacetOption = {
  * Options come from the restaurants themselves, never from a hand-kept list.
  *
  * The rail used to offer `neighborhoods` from data/restaurants.ts, which is
- * derived from `neighborhoodCenters` — the map's zone centroids, which that
+ * derived from `neighborhoodCenters` â the map's zone centroids, which that
  * file documents as deliberately independent of where restaurants actually
  * are. Twenty-two of its thirty-seven entries matched nothing, and five
  * neighbourhoods that do hold restaurants (Liberty Station, Del Mar,
- * University Heights, Spring Valley, Scripps Ranch — eight places between
+ * University Heights, Spring Valley, Scripps Ranch â eight places between
  * them) had no option at all, so a fifth of the map was unreachable from the
  * filter.
  *
@@ -439,7 +453,7 @@ export function cuisineOptions(restaurants: readonly RestaurantView[]): FacetOpt
 
 /**
  * Price keeps its canonical cheap-to-expensive order rather than being sorted
- * by count like the data-derived facets — money has an order of its own, and
+ * by count like the data-derived facets â money has an order of its own, and
  * shuffling `$$$` above `$` because more places land there would be nonsense.
  */
 export function priceOptions(restaurants: readonly RestaurantView[]): FacetOption[] {
@@ -452,14 +466,14 @@ export function priceOptions(restaurants: readonly RestaurantView[]): FacetOptio
 }
 
 /**
- * Every category, ordered by how many restaurants earn it — the same rule the
+ * Every category, ordered by how many restaurants earn it â the same rule the
  * neighbourhood and cuisine lists follow, and the one the rail depends on now
  * that it shows only the first few rows before "show more". Ordering by the
  * *unfiltered* total keeps it from reshuffling under the user's finger as they
  * change something else.
  *
  * Options with nothing behind them are kept rather than dropped, and render
- * disabled with a 0 — "nobody has praised the drinks anywhere" is information.
+ * disabled with a 0 â "nobody has praised the drinks anywhere" is information.
  */
 export function aspectOptions(aspects: StrongAspects | null): FacetOption[] {
   const totals = new Map<string, number>();
@@ -490,14 +504,14 @@ export type FacetCounts = {
   anyAspect: number;
   /**
    * What Nearby would return. Null until there are coordinates to measure
-   * from — the row prints nothing rather than a number it can't stand behind.
+   * from â the row prints nothing rather than a number it can't stand behind.
    */
   nearby: number | null;
 };
 
 /**
  * Counts each option against the other filters but not against its own
- * dimension — otherwise every unselected neighbourhood reads 0 the moment one
+ * dimension â otherwise every unselected neighbourhood reads 0 the moment one
  * is picked, which tells the user nothing about where else they could go.
  */
 export function countFacets(
@@ -506,7 +520,7 @@ export function countFacets(
   ctx: FilterContext,
 ): FacetCounts {
   // Nearby shares the "where" dimension with neighbourhood, so clearing that
-  // dimension has to clear both — otherwise every neighbourhood row would be
+  // dimension has to clear both â otherwise every neighbourhood row would be
   // counted inside the radius while Nearby is on.
   const exceptWhere: DiscoverFilters = { ...f, neighborhood: null, nearby: false };
   const exceptCuisine: DiscoverFilters = { ...f, cuisine: null };
@@ -536,8 +550,8 @@ export function countFacets(
     }
     if (matchesFilters(r, exceptCuisine, ctx)) {
       anyCuisine += 1;
-      // A row with no cuisine still counts toward "Any cuisine" — it is a
-      // real result — but contributes to no option. It has nothing to say
+      // A row with no cuisine still counts toward "Any cuisine" â it is a
+      // real result â but contributes to no option. It has nothing to say
       // about which bucket it belongs in, and inventing one is what the
       // vocabulary in data/cuisines.ts exists to stop.
       if (r.cuisine) cuisine.set(r.cuisine, (cuisine.get(r.cuisine) ?? 0) + 1);
@@ -621,7 +635,7 @@ function promote(
   // Null-safe on cuisine, which a restaurant may not have. A term only
   // promotes if some restaurant actually carries it, so the vocabulary in
   // data/cuisines.ts decides this for free: "tacos" names no cuisine any
-  // more, so it stays free text and matches on the search tags instead —
+  // more, so it stays free text and matches on the search tags instead â
   // which is the whole point of keeping the tags.
   const has = (key: "cuisine" | "neighborhood") =>
     restaurants.find((r) => r[key]?.toLowerCase() === q)?.[key] ?? null;
@@ -707,7 +721,7 @@ export function searchFromFilters(search: string, f: DiscoverFilters): string {
   put(PRICE_PARAM, f.price);
   put(ASPECT_PARAM, f.aspect);
   put(QUICK_PARAM, f.quick.length > 0 ? f.quick.join(",") : null);
-  // A promoted term leaves `q` null, which deletes the key — so the moment the
+  // A promoted term leaves `q` null, which deletes the key â so the moment the
   // visitor touches any filter, `?q=Thai` is rewritten as the `?cuisine=Thai`
   // it actually resolved to and the URL stops describing a search it no longer
   // is.

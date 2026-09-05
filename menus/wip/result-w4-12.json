@@ -1,0 +1,82 @@
+[
+  {
+    "restaurantId": "1197",
+    "name": "Crickets",
+    "sourceUrl": "https://sandiego.eater.com/venue/79003/cricket-s-pub",
+    "confidence": "high",
+    "notes": "Cricket's Pub at 3339 El Cajon Blvd (work list gives 3333, same block) is confirmed Permanently Closed by Eater SD; Google Maps for 3333 El Cajon Blvd now returns Venice Pizza House, a differently-named successor. Permanently closed business, not a search gap.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1969",
+    "name": "Trisler's San Diego Wine Bar",
+    "sourceUrl": "https://www.mapquest.com/us/california/trislers-wine-bar-438372045",
+    "confidence": "high",
+    "notes": "Confirmed permanently closed by Mapquest, Yelp and San Diego Reader (all say Permanently Closed / CLOSED), matching address 8555 Station Village Ln. trislers.com is now a parked domain for sale (screenshot of body text confirms 'this domain is for sale').",
+    "dishes": []
+  },
+  {
+    "restaurantId": "2804",
+    "name": "Tutu Taco",
+    "sourceUrl": "https://order.online/store/tu-taco-taco-shop-hilltop-dr-243645",
+    "confidence": "low",
+    "blocked": "Identity confirmed: 'Tutu Taco' = 'Tu Taco Taco Shop', 1419 Hilltop Dr Unit D, Chula Vista CA 91911 (pos.do gives that exact address for 'Tutu Taco'; Facebook/Yelp/Grubhub/Uber Eats/order.online all list the same address under 'Tu Taco Taco Shop'). No first-party site for this location (tutacoshops.com is a same-named but unrelated Tu Taco chain in Myrtle Beach, SC - confirmed by its own page listing Myrtle Beach/Conway/Garden City locations, not Chula Vista - do not use it). DoorDash store page (www.doordash.com/en/business/tu-taco-945161/menu) returned 200 but carried no JSON-LD/price payload at all (client-rendered shell). Grubhub page is a client-side shell. order.online (RSC payload, 117 prices) and Uber Eats are the only priced sources reachable; order.online's raw cent distribution is entirely non-conventional (25:25, 45:21, 65:36, 75:3, 85:14, 05:18 - 0% land on .00/.50/.95/.99) and the best-fit divisor sweep (1.10) only resolves 56/117 (48%) to conventional endings, not a clean single markup. Not confident enough to file as-is and not clean enough to divide out. Needs either the restaurant's own POS/website or a cleaner capture.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1181",
+    "name": "Far East Rock",
+    "sourceUrl": "https://www.sandiegoreader.com/news/2014/mar/26/deal-salty-frog-bar/",
+    "confidence": "high",
+    "notes": "San Diego Reader confirms this Imperial Beach bar (992 Palm Ave, work list gives 987) operated under the name Far East Rock only in the 1980s; it was later renamed and by 2014 was the Salty Frog. Permanently closed under this name decades ago, differently-named successor at the address, not a search gap.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1058",
+    "name": "3 Day Suit Broker",
+    "sourceUrl": "https://www.3daysuitbroker.com/",
+    "confidence": "high",
+    "notes": "Confirmed a men's discount suit and formalwear retailer (own site sells suits, dress shirts, tailoring), not a restaurant. Yelp categorizes it alongside Men's Wearhouse and other clothing stores. Business confirmed not to serve food.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1057",
+    "name": "Winners Circle",
+    "sourceUrl": "https://www.winnerscircleresort.com/",
+    "confidence": "high",
+    "notes": "Winner's Circle Resort is lodging (a motel/resort near Del Mar racetrack), not a restaurant. Its own site explicitly directs guests to 'Ranch 45 Local Provisions, right next door to Winners Circle Resort' for lunch - a separate, adjacent business, not on-site dining. No restaurant of its own found. Business confirmed not to serve food itself.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1012",
+    "name": "Plum Crazy Saloon",
+    "sourceUrl": "https://www.yelp.com/biz/plum-crazy-sports-lounge-san-diego",
+    "confidence": "high",
+    "notes": "1060 Garnet Ave, Pacific Beach. Two independent sources agree it is permanently closed: Yelp ('CLOSED - Updated August 2026') and pubcrawls.com ('This venue appears to be permanently closed'). Permanently closed business.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1103",
+    "name": "Hong Kong Nite Club",
+    "sourceUrl": "https://www.sandiegouniontribune.com/news/nation-world/story/2020-10-17/pandemic-politics-lead-to-closure-of-storied-hong-kong-bar/",
+    "confidence": "high",
+    "notes": "San Diego Union-Tribune news article confirms the storied Hong Kong bar (Broadway/10th Ave, East Village) closed permanently in 2020; a blog (davelandblog.blogspot.com) corroborates it was replaced by El Dorado Cocktail Lounge under Consortium Holdings, a differently-named successor at the address. Yelp separately marks it CLOSED. Permanently closed business, not a Yelp-only claim.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1131",
+    "name": "Nouvelle Latin Cuisine",
+    "sourceUrl": "https://www.apartmentadvisor.com/details/444-g-st-san-diego-ca-92101",
+    "confidence": "low",
+    "blocked": "Could not confirm this is a standalone restaurant with a fixed address. 'Nouvelle Latin Cuisine' appears only as a repeated Points-of-Interest tag on apartment/real-estate aggregator sites (apartmentadvisor, point2homes, streetdir) clustered near 444 G St / Gaslamp, which is the same location as Lime Tequila Bar - whose Yelp bio literally describes it as serving 'nouvelle Latin cuisine', suggesting the POI dataset may have mistaken a cuisine description for a business name. pos.do separately lists a 'Nouvelle Latin Cuisine' at 555 G St, which is currently Parfait Paris (open, unrelated cuisine). Two candidate addresses, no first-party site, no menu found under this name. Confidence too low to retire; needs a definitive address match.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "1139",
+    "name": "Teris East",
+    "sourceUrl": "https://www.mapquest.com/us/california/terrys-east-345932075",
+    "confidence": "low",
+    "blocked": "Identity likely: 'Teris East' = 'Terry's East', 1078 Estes St, El Cajon CA 92020 (Mapquest, Yelp, and multiple apartment-locator sites agree on this address/name for a bar in this exact area). No website or online menu found. The one available description (Yelp snippet via Mapquest) says it serves 'free pizza during happy hour', which may mean no priced food menu at all, but that is not established - no direct source seen. Needs the bar's own Facebook/Instagram page or a menu photo to confirm whether it prices food items.",
+    "dishes": []
+  }
+]

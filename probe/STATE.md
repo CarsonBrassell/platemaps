@@ -1,20 +1,53 @@
 # Menu extraction — where things stand
 
-Snapshot taken 2026-08-31 06:45. Re-run the query at the bottom rather than
-trusting these numbers if any time has passed.
+Snapshot taken 2026-09-03 05:00. Re-run the query at the bottom rather than
+trusting these numbers if any time has passed. The 2026-08-31 snapshot is kept
+below the current one so the series stays readable.
 
 ## Corpus
 
 | | |
 |---|---|
-| Restaurants with a menu | **3,513** |
-| Dishes | **244,934** |
-| Total restaurants | 5,694 |
-| — of them retired (`hold_reason`: closed, duplicate) | 443 |
-| Listable restaurants | 5,251 |
-| Coverage | **66.9%** of listable (61.7% of all 5,694) |
-| Untried queue | 1,269 |
-| Recorded `not_found` | 505 |
+| Restaurants with a menu | **4,158** |
+| Dishes | **299,131** |
+| Total restaurants | 8,564 |
+| — of them retired or held (`hold_reason`) | 2,364 |
+| Live restaurants | 6,200 |
+| — of those actually **listed** (visible to a visitor) | 4,327 |
+| Untried queue | 3,005 |
+| Recorded `not_found` | 523 |
+
+**The denominator moved on 2026-09-02 and the coverage number moved with it.**
+The county-permit import took the table from 5,695 rows to 8,564, so a raw
+percentage now compares against thousands of rows that have never been
+enriched and are not shown to anyone. Three denominators, all true:
+
+- 4,158 of 8,564 total rows = 49%
+- 4,158 of 6,200 live rows = 67%
+- **2,836 of 4,327 LISTED rows = 66%** — the only one a visitor experiences
+
+**Coverage is heavily skewed toward the restaurants people search for**, which
+matters more than any of the three figures above, because the queue has always
+been worked `review_count DESC`:
+
+| reviews | listed rows with a menu |
+|---|---|
+| 1000+ | **92%** |
+| 500–999 | 77% |
+| 200–499 | 62% |
+| 50–199 | 20% |
+| under 50 | 11% |
+
+So the product is far closer to shippable than 66% suggests, and the remaining
+grind is concentrated in the tail — which is also where a user typing what they
+ordered is a better answer than a scraper. Anyone planning extraction work
+should read this table before spending a week on restaurants with 30 reviews.
+
+### Previous snapshot, 2026-08-31 06:45
+
+Restaurants with a menu 3,513 · dishes 244,934 · total 5,694 · retired 443 ·
+listable 5,251 · coverage 66.9% of listable · untried queue 1,269 ·
+`not_found` 505.
 
 **Read the denominator.** Coverage was reported as 59.7% through 2026-08-30 by
 dividing into all 5,694 restaurants, 443 of which are retired and can never
@@ -184,6 +217,19 @@ those storefronts rather than a block — no browser hour will convert them.
 
 ## Open items needing Calvin
 
+- **Discovery dense-cell gap (2026-09-05).** `discover-serper.mjs` scanned 908
+  Maps cells at one page (~20 places) each and imported 694 new `gmap:` rows.
+  Cells that returned a full page were only partly seen; downtown, North Park,
+  Convoy and Hillcrest can hide restaurants that are on none of our sources.
+  A page-2/3 pass over full cells costs a few hundred Serper credits. Offered.
+- **The 694 gmap rows need menus** and are not in the w5 batches. 194 have
+  no cuisine because Google typed them plain "Restaurant".
+- **~1,000 unverified rows** (785 DEH permit-only + 220 OSM pins) are listed
+  because listing no longer needs a rating. Offered to hold them with a
+  "not yet verified" reason; Calvin has not answered.
+- **`menu_lookups` rows with confidence high and 0 dishes** (e.g. 1012, 1017)
+  exist; not investigated.
+
 - **Vercel `DATABASE_URL` is stale** — every dish is invisible in production.
   Not urgent while the site is not live; must be fixed before launch.
 - **GitHub App write access** on `CarsonBrassell/platemaps` — the cloud routine
@@ -341,6 +387,6 @@ that file if it was the wrong call.
 ## Re-measure
 
 ```
-cd "C:/Users/Calvin  Lensink/Documents/platemaps"
-node --env-file=.env.local -e "const {neon}=require('@neondatabase/serverless');const sql=neon(process.env.DATABASE_URL);(async()=>{const [a]=await sql\`SELECT count(DISTINCT restaurant_id)::int n FROM dishes\`;const [b]=await sql\`SELECT count(*)::int n FROM dishes\`;const [q]=await sql\`SELECT count(*)::int n FROM restaurants r WHERE r.hold_reason IS NULL AND NOT EXISTS(SELECT 1 FROM dishes d WHERE d.restaurant_id=r.id) AND NOT EXISTS(SELECT 1 FROM menu_lookups m WHERE m.restaurant_id=r.id)\`;console.log('menus',a.n,'dishes',b.n,'queue',q.n);})();"
+npm run db:stats            # the corpus table above, live, ~120 tokens
+npm run db:stats -- --json  # also writes probe/stats.json
 ```

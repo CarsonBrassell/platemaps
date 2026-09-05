@@ -58,6 +58,51 @@ if (files.length === 0) {
  * a generated page becomes a menu.
  */
 const BARRED = [
+  /*
+   * SERVING MALWARE, 2026-09-03. An extraction agent fetched
+   * `taqueriaimperial.shop` and Windows Defender quarantined the downloaded
+   * body as a virus; the agent stopped rather than retrying, which was right.
+   *
+   * It is the brand-twin shape the rest of this list already covers - a
+   * cheap-TLD domain minted from a restaurant's name - so treat that shape as
+   * hostile rather than merely useless. The row's `website` was nulled so
+   * nothing fetches it again. If a fetch of one of these ever trips the
+   * antivirus, do not retry it under a different user agent: barre it here and
+   * move on.
+   */
+  /(^|\.)taqueriaimperial\.shop$/i,
+  /*
+   * Second one the same day: `caferosarita.com` tripped the antivirus on
+   * fetch and the agent stopped without retrying, which is the correct
+   * response. Note the shape is DIFFERENT from taqueriaimperial.shop - this is
+   * an ordinary `.com` matching the restaurant's real name, not a cheap-TLD
+   * brand twin. So "looks like a normal domain" is not evidence of safety, and
+   * the rule that matters is behavioural: whatever your antivirus flags, bar.
+   */
+  /(^|\.)caferosarita\.com$/i,
+
+  /*
+   * Third one, 2026-09-04: `theirdivebar.com` tripped the antivirus while an
+   * agent was reading it for Instant Replay (id 1082). Same lesson as the
+   * first two - an ordinary .com matching a plausible bar name is not
+   * evidence of safety. The agent stopped on the first hit and did NOT retry
+   * under another user agent, which is the correct handling.
+   */
+  /(^|.)theirdivebar.com$/i,
+  /*
+   * Fourth one, 2026-09-04: `lambersbakery.com` for Lambers Chinese Bakery.
+   * The fetch succeeded, then the written file was Permission denied on the
+   * very next read - antivirus quarantining it between write and read. That
+   * is the same signal as an outright block, just later in the sequence. The
+   * agent stopped and did NOT retry under another user agent.
+   */
+  /(^|.)lambersbakery.com$/i,
+  /*
+   * Fifth one, 2026-09-04: `jaguarpaw.co` - an alternate domain tried after
+   * Jaguar Paw`s listed domain turned out to be parked. A parked primary is a
+   * common setup for these; the alternate is not automatically safer.
+   */
+  /(^|.)jaguarpaw.co$/i,
   /(^|\.)yelp\.com$/i,
   /(^|\.)yelp\.[a-z.]+$/i,
   /(^|\.)locallya\.com$/i,
@@ -90,6 +135,28 @@ const UNTRUSTED = [
   // tier-5 source like the others, not a check on one.
   /(^|\.)restaurantguru\.com$/i,
   /(^|\.)beyondmenu\.com$/i,
+  /*
+   * `sagemenu` and `menupages` are named as tier 5 in PLAYBOOK.md's source
+   * ladder and were missing here, which is the same omission the
+   * restaurantguru comment above describes - and it recurred for the same
+   * reason: the ladder lives in prose an agent reads, the enforcement lives in
+   * this array, and nothing keeps the two in step.
+   *
+   * Found 2026-09-03 when Pho Anh & Grill (id 6050) arrived sourced from
+   * allmenus with `crossCheckedAgainst` pointing at sagemenu, ten items
+   * matching to the cent. Every independence test passed, because sagemenu was
+   * not on any list. Two tier-5 aggregators asked the same question is not
+   * corroboration, and the exact agreement reads as strong evidence when it is
+   * none.
+   *
+   * If a source is named in the ladder's tier 5, it belongs in this array.
+   * Check that when the ladder next changes.
+   */
+  /(^|\.)sagemenu\./i,
+  /(^|\.)menupages\./i,
+  /(^|\.)menutoeat\./i,
+  /(^|\.)foodboss\./i,
+  /(^|\.)checkle\./i,
 ];
 
 /*
@@ -260,6 +327,8 @@ const PLATFORM = [
 const BRAND_TWIN = /\.(us|info|biz|site|online|store|shop|menu)$/i;
 
 /** Below this, a claimed menu is a partial capture, not a small menu. */
+const CAROUSEL_SECTION =
+  /^(featured items|art[ií]culos destacados|most ordered|most popular|popular items|picked for you|recommended)$/i;
 const THIN = 8;
 
 /*
@@ -496,7 +565,77 @@ const INFERRED_PRICING = new Set();
  *
  * Released 2026-08-29, all re-extracted after the ids were held:
  */
+/*
+ * Restaurants whose repeated rows were checked BY HAND and found to be real
+ * dayparts rather than two copies of one menu.
+ *
+ * The doubling check (see `looksDoubled`) assumes "a restaurant genuinely
+ * listing a third of its dishes twice does not happen". A multi-daypart menu on
+ * a restaurant's own site does exactly that, and the assumption cost a real
+ * 221-dish menu before this map existed.
+ *
+ * An entry here is not a blanket exemption. `daypartCleared` also requires that
+ * no dish name carries two different prices, so the dangerous version of a
+ * doubled catalog stays quarantined even for a listed id. Add an id only after
+ * looking at the sections yourself, and say in the note what you looked at.
+ */
+const DAYPART_VERIFIED = new Map([
+  // 6588 - The Henry (Coronado). 221 rows, 131 distinct name+price, 11 section
+  // pairs overlapping >90%. Checked 2026-09-02 against the capture: the repeats
+  // are the weekday Breakfast list reappearing under Weekend Brunch, and the XV
+  // Coffee / Espresso / Bold Blends lists reappearing under Dessert and
+  // Beverage. Zero dish names carry two different prices, so nothing here is a
+  // choice between two candidate figures. Source is the restaurant's own
+  // FOX Restaurant Concepts site, server-rendered and keyed by location id 609,
+  // whose location_page_url confirms the Coronado branch.
+  ["6588", "8 real dayparts on the restaurant's own site, no price conflicts"],
+]);
+
 const RELEASED_IDS = new Map([
+  /*
+   * Three released together on 2026-09-03, and they belong together because
+   * each hold was about a METHOD rather than about the restaurant.
+   *
+   * 2539 Isshido Ramen was held because an agent divided a confirmed markup out
+   * and filed the quotients. 3416 Santorini because an allmenus capture cited a
+   * PRICELESS page as its `crossCheckedAgainst`, which cannot corroborate a
+   * number it does not contain. 909 Flame Bar because two non-overlapping
+   * listings were merged into a menu no source publishes.
+   *
+   * None of those objections describes the new captures, which come off
+   * different hosts by different routes and were each read verbatim from ONE
+   * source with no cross-check claimed. Verified here rather than taken from
+   * the reports: all three are 100% conventional cent endings as read, and in
+   * every case the best divisor between 1.02 and 1.35 makes them WORSE
+   * (Isshido 44% at 1.20, Santorini 36% at 1.22, Flame Bar 46% at 1.11), which
+   * is the signature of a printed menu rather than an uplifted one.
+   *
+   * The lesson to carry: read a QUARANTINE_IDS note for what it actually
+   * objects to. A hold on "this agent divided a markup out" does not bar the
+   * restaurant, or the platform, or even the same source read honestly - it
+   * bars that number. Several of these entries would otherwise sit held
+   * forever over a mistake nobody is making any more.
+   */
+  ["2539", "Toast, read verbatim, 100% conventional endings, no divisor improves it"],
+  ["3416", "Uber Eats, single source, no cross-check claimed, no markup shape"],
+  ["909", "DoorDash, single source, .95/.99/.00 only, no merge"],
+  // 4972 - George Burgers. Held 2026-08-29 because an agent divided a
+  // confirmed 1.20 DoorDash markup out and filed the quotients as the menu.
+  // That objection is about a DERIVED number, and the 2026-09-02 capture does
+  // not contain one: it is Uber Eats (a different owner from DoorDash, so not
+  // the same listing talking to itself), read verbatim, and the agent that
+  // took it REJECTED DoorDash for the very markup the hold is about rather
+  // than dividing it out again.
+  //
+  // Checked here rather than taken on the report's word. All 107 prices land
+  // on a conventional ending as read - $7.99, $8.99, $10.99 - and no divisor
+  // improves that: 1.10 drops it to 25%, 1.15 to 14%, 1.20 to 40%, 1.25 to
+  // 17%. A marketplace applying a uniform uplift cannot produce that shape,
+  // so this storefront is passing the restaurant's own prices through.
+  //
+  // Stays `medium`: Uber Eats is a marketplace, which is tier 3 on the ladder
+  // no matter how clean the arithmetic looks.
+  ["4972", "re-sourced verbatim from a different owner, no markup shape at any divisor"],
   // Held for Burritos, Bowls, Sides and Drinks rendering zero items. The new
   // read has all four, off the restaurant's own Square page.
   ["4378", "empty categories now populated (7 sections, first-party)"],
@@ -606,6 +745,93 @@ const RELEASED_IDS = new Map([
 ]);
 
 const QUARANTINE_IDS = new Set([
+  // 5988 - Lucy's Bakery. Held 2026-09-03, the second mixed payload in two
+  // batches, and the one that shows how the check fails in practice.
+  //
+  // 34 prices, 56% conventional - past the floor. Twelve rows on `.50` and
+  // five on `.00` are the printed menu. The rest scatter across `.35 .33 .92
+  // .67 .12 .85 .98 .40 .75`, and the rows say it plainly: Torta de Milanesa
+  // $10.35, Torta de Chorizo $5.33, Torta Embarazada $13.92. A torta shop does
+  // not price to the odd cent.
+  //
+  // The agent DID look at the rows - the brief told it to - and then wrote that
+  // the scatter "reads as genuine odd pricing, not a divisor fee". That is the
+  // failure mode to guard against: the test was run and then argued away.
+  // Cross-checking made it worse, because DoorDash and Uber Eats carried an
+  // identical catalog, which is two readers of one computed field agreeing.
+  //
+  // Rule of thumb for whoever reads the next one: **if you are constructing an
+  // explanation for why odd cents are legitimate, block instead.** Genuine odd
+  // pricing exists - a per-pound counter, a weight-priced fruteria - but it
+  // does not sit in the same capture as a tight `.50` cluster on the same kind
+  // of item.
+  "5988",
+  // 6316 - D-K-Che Fruteria. Held 2026-09-03, and it is the case that shows a
+  // percentage threshold is not enough on its own.
+  //
+  // 158 prices, 52% on a conventional cent ending - comfortably past the ~30%
+  // floor an agent is told to block under, and no divisor beats 1.000. On the
+  // aggregate numbers it looks fine. Then read the rows: Chicken Wrap $14.83,
+  // Turkey Wrap $14.29, Turkey Sandwich $14.14, Tuna Sandwich $14.68. Nobody
+  // prints those.
+  //
+  // The shape is a MIXED payload, which neither test was built for. Fifty rows
+  // sit on `.95` and are plainly the printed menu; the other 108 scatter across
+  // seventeen endings and are computed. Averaged together they clear the gate,
+  // because the honest half carries the dishonest half over the line.
+  //
+  // So: a threshold answers "is this whole capture computed". It cannot answer
+  // "is PART of it". When the endings show one tight cluster plus a long flat
+  // tail, look at the actual dish rows before believing the percentage - a
+  // sandwich priced to the odd cent is the tell, and no summary statistic
+  // replaces reading six of them.
+  //
+  // Re-queues. The `.95` subset is probably recoverable from a first-party
+  // source; this marketplace payload is not the place to recover it from.
+  "6316",
+  // 6577 - Yingli Restaurant. Held 2026-09-03. Not a markup, not staleness:
+  // these numbers are not menu prices at all, and the tell is the cent column.
+  //
+  // 302 rows, and only 6% land on a conventional ending. Caldo Udon $26.03,
+  // Caldo Pekin $23.24, Caldo Camaron $32.17; the commonest endings are .37
+  // (35 rows), .67 (31), .33 (27), .04 (25). No restaurant prints that. A
+  // fine divisor sweep from 1.0000 to 1.6000 in steps of 0.0005 never gets
+  // past 47%, so it is not one fee applied uniformly either - if it were, some
+  // divisor would snap the distribution back onto .00/.50/.95/.99.
+  //
+  // The capture came off a custom white-label Next.js ordering platform, read
+  // out of an escaped React flight payload under `rawMenus`. The most likely
+  // explanation is that the field read is a computed number - tax or a service
+  // charge folded per item, or a converted currency - rather than the listed
+  // price. Which it is does not matter: whatever produced .37 and .04 endings
+  // at this rate is not the price on the wall.
+  //
+  // The extracting agent reported the figures as "corroborated across 3
+  // independent platforms". Three readers of the same computed field agree
+  // with each other and are all wrong; agreement is about the LISTING, never
+  // about the price level. **A cent distribution that is flat across all 100
+  // endings is evidence no amount of corroboration can overturn.**
+  "6577",
+  // 5795 - Baci Restaurant. Held 2026-09-03 on price level, which the playbook
+  // says overrides every other signal, and on a cross-check that is not one.
+  //
+  // The capture is honestly sourced and internally clean: 223 rows, every
+  // price ending `.00`, no markup shape. It is also priced for about 2012.
+  // Vitello Piccata and Vitello Marsala at $18.00, Salmon Piccata $18.00,
+  // Pollo al Limone $14.00 - white-tablecloth Italian entrees in San Diego do
+  // not run $14-18 in 2026. The extracting agent saw it too and said the wine
+  // list's vintages read like an old snapshot.
+  //
+  // The second problem is the corroboration. `crossCheckedAgainst` names
+  // allmenus against a SinglePlatform source, and those are different
+  // COMPANIES but usually not different DATA: SinglePlatform syndicates
+  // restaurant-submitted feeds outward, and allmenus carries them. Matching to
+  // the cent is what one feed read twice looks like. The ladder's independence
+  // rule is about the number's origin, not the logo on the page.
+  //
+  // Both halves of tier 4's warning fired at once here: restaurant-submitted,
+  // and stale until proved otherwise. Re-queues for a first-party read.
+  "5795",
   // 4539 - Flora. Held 2026-08-30 on section shape alone, and the method that
   // produced it deserves recording because it was exemplary.
   //
@@ -1583,6 +1809,40 @@ for (const file of files) {
     const pairDupes = pairKeys.length - new Set(pairKeys).size;
     const looksDoubled = deduped.length >= 20 && pairDupes / deduped.length > 0.3;
 
+    /*
+     * One dish name carrying TWO DIFFERENT prices across sections.
+     *
+     * This is the signal that actually distinguishes the two ways a catalog
+     * repeats itself, and it is computed here so `DAYPART_VERIFIED` can never
+     * release a menu that has it.
+     *
+     * A doubled Toast catalog is dangerous because the two "online ordering
+     * hours" copies can disagree on price, and picking one is guessing. A real
+     * daypart structure repeats a dish at the SAME price (The Henry serves
+     * Avocado Toast at $15 on both the weekday breakfast and the weekend brunch
+     * menu) - and where a daypart genuinely reprices, the playbook wants both
+     * rows kept, which is why Sogno di Vino's $17.95 lunch / $18.95 dinner
+     * Arancini must never be silently collapsed.
+     *
+     * So a conflict is not by itself proof of anything. It is the thing that
+     * makes a release unsafe, because a released menu is loaded whole.
+     */
+    const pricesByName = new Map();
+    for (const d of deduped) {
+      const n = String(d.name).trim().toLowerCase();
+      if (!pricesByName.has(n)) pricesByName.set(n, new Set());
+      pricesByName.get(n).add(d.price);
+    }
+    const priceConflicts = [...pricesByName.values()].filter((s) => s.size > 1).length;
+    /*
+     * Cleared only when a human checked THIS restaurant and the invariant still
+     * holds at run time. The id alone is not enough: if a later re-extraction
+     * of a cleared restaurant comes back with conflicting prices, the doubling
+     * verdict returns on its own rather than staying switched off.
+     */
+    const daypartCleared =
+      DAYPART_VERIFIED.has(String(e.restaurantId)) && priceConflicts === 0;
+
     e.dishes = deduped;
     const unpricedDropped = originalCount - priced.length;
     if (unpricedDropped > 0) {
@@ -2087,10 +2347,14 @@ for (const file of files) {
         `after dividing by ${surchargeShape.m.toFixed(4)} - looks like a fee baked into every price (${host})`;
     else if (BARRED.some((re) => re.test(host)) && !isDatedYelpPhoto)
       reason = `barred source (${host}) - see BARRED`;
-    else if (looksDoubled)
+    else if (looksDoubled && !daypartCleared)
       reason =
         `catalog looks doubled: ${pairDupes} of ${dishes} rows repeat by name and price ` +
-        `across differently-named sections - see the Toast duplicate-menu finding`;
+        `across differently-named sections - see the Toast duplicate-menu finding` +
+        (priceConflicts === 0
+          ? ` (no dish carries two different prices, so if these are real dayparts ` +
+            `rather than two copies of one menu, verify and add the id to DAYPART_VERIFIED)`
+          : ` (${priceConflicts} dish name(s) carry two different prices - do NOT release this one)`);
     else if (QUARANTINE_IDS.has(String(e.restaurantId)) && !RELEASED_IDS.has(String(e.restaurantId)))
       reason = "held by id - see QUARANTINE_IDS";
     else if (KNOWN_PARTIAL.has(e.name)) reason = "extraction was truncated - see KNOWN_PARTIAL";
@@ -2106,6 +2370,31 @@ for (const file of files) {
     // waves being re-extracted and re-rejected on this, burning a queue slot
     // each time, because the screen was stricter than the rule it enforces.
     else if (!verified && e.confidence === "low") reason = "low confidence and not cross-checked";
+    /*
+     * A marketplace front page opens with a carousel - "Featured Items" on
+     * order.online and Uber Eats, "Artículos destacados" on the Spanish
+     * locale of the same page - and the browser tier has been capturing that
+     * carousel and stopping. JOE & THE JUICE came through as 25 rows spanning
+     * juices, sandwiches, coffee and bottled water in one section, three
+     * alphabetised carousel pages concatenated, filed as the whole menu.
+     *
+     * Twenty-six restaurants reached the corpus this way before anyone looked.
+     * The signature is exact: every row in ONE section, and that section named
+     * for the carousel rather than for food. A real single-section menu names
+     * itself after what it sells ("Cake & Cupcakes", "Smoothies & Bowls"), so
+     * matching the label list rather than the section COUNT keeps those out of
+     * it. A carousel is a partial capture whatever its length, so this sits
+     * above the THIN check and reports the specific cause.
+     */
+    else if (
+      dishes > 0 &&
+      [...new Set((e.dishes || []).map((d) => (d.section || "").trim()))].every((s) =>
+        CAROUSEL_SECTION.test(s),
+      )
+    )
+      reason =
+        `every section is a carousel (${[...new Set((e.dishes || []).map((d) => d.section))].join(", ")}) ` +
+        `- that is the marketplace front page, not a menu; the catalog was never opened (${host})`;
     else if (dishes < THIN && !COMPLETE_BUT_SHORT.has(String(e.restaurantId)))
       reason = `only ${dishes} dishes - likely a partial capture`;
 

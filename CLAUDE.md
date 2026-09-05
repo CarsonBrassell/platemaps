@@ -6,6 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Running the menu extraction pipeline
 
+**Start with `probe/RESUME.md`** (~2K tokens) on any fresh or compacted session, and
+`npm run db:stats` for the corpus numbers. Only then, if a section is needed,
+grep the docs below by their section header and read that section alone.
+Reading RUNBOOK + STATE + CONTEXT + TRIAGE whole cost 65K-450K tokens per
+resume; see `probe/TOKEN-PLAN.md`.
+
 If the task is extracting restaurant menus, **read `probe/RUNBOOK.md` and
 `probe/STATE.md` first.** They are written to be self-contained — a fresh
 session needs no prior conversation.

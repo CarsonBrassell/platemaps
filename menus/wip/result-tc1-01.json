@@ -1,0 +1,116 @@
+[
+  {
+    "restaurantId": "5905",
+    "name": "Los Reyes Mexican Restaurant & Cantina",
+    "sourceUrl": "https://www.doordash.com/store/los-reyes-san-diego-101984/",
+    "confidence": "low",
+    "blocked": "needs-browser: own GoDaddy site (losreyesfood.com) has no menu content, no prices, just a Clover ordering link. The Clover redirect API (clover.com/olov2service/v2/merchants/redirect?slug=los-reyes-mexican-food-san-diego) claims coloV2Enabled:true pointing at los-reyes-mexican-food-san-diego.cloveronline.com, but that subdomain returns NXDOMAIN from authoritative Google Cloud DNS (confirmed via nslookup against 8.8.8.8 and WebFetch getaddrinfo ENOTFOUND) - a dead/unlaunched storefront despite the API's claim. DoorDash's own marketplace page (address confirmed 2496 Broadway match) carries a schema.org Menu JSON-LD block but hasMenuSection is doubly-nested and genuinely empty ([[ ]]), and no other menu payload (catalogSectionsMap-style) was found in the page. Yelp (yelp.com/biz/los-reyes-san-diego) and zmenu.com both 403 to curl and to WebFetch, so WebSearch-reported Yelp prices (King Burrito $19, California Burrito $18, Carne Asada Burrito $15, etc.) could not be verified on the page and were not filed per the summarized-price rule.",
+    "notes": "No dishes captured this pass; nothing was inferred, merged, divided, or truncated.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6365",
+    "name": "Loreto's Taco Shop",
+    "sourceUrl": "https://loretostacoshop.netwaiter.com/spring-valley/menu/GetMenu",
+    "confidence": "low",
+    "blocked": "needs-browser: listed website loretostacoshop.shop serves the default nginx placeholder page (not configured, no content) despite returning 200 directly (not a farm redirect - just an unconfigured server). Found a NetWaiter storefront (loretostacoshop.netwaiter.com, redirects to /spring-valley/about/); POST {} to /spring-valley/menu/GetMenu returned {\"Groups\":[],\"ExternalType\":null} - the documented NetWaiter-empty signature, meaning online ordering is not set up there. No DoorDash/Grubhub/Uber Eats listing found via web search. Yelp (yelp.com/biz/loretos-taco-shop-spring-valley, 97 photos - likely holds a menu photo), zmenu.com, and checkle.com all blocked curl and the r.jina.ai proxy (403/429/Vercel checkpoint); restaurantguru.com/Loretos-Taco-Shop-San-Diego/menu loaded but carries zero prices (category names only). No priced source reached within budget.",
+    "notes": "No dishes captured this pass; nothing was inferred, merged, divided, or truncated.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5940",
+    "name": "Gus's Subs & Pizza Place",
+    "sourceUrl": "https://gusssubspizza.netwaiter.com/la-mesa/menu/GetMenu",
+    "confidence": "low",
+    "blocked": "needs-browser: work-list website is m.facebook.com, which 400s (router-confirmed); the www.facebook.com variant also 400s to a plain curl (bot-gated, no login attempted). Found a NetWaiter storefront (gusssubspizza.netwaiter.com/la-mesa/); POST {} to menu/GetMenu returned {\"Groups\":[],\"ExternalType\":null} - the documented NetWaiter-empty signature. restaurant.com listing is a gift-card deal page with no menu. sirved.com and sagemenu.com pages loaded but carry only 1-2 dollar figures each, both from review-text prose (a $17.31 pastrami sub, a $31 two-sandwich total) rather than a structured price list - not a menu per house rules. zmenu.com, menupix.com and tripadvisor.com all 403. No priced menu listing reached within budget.",
+    "notes": "No dishes captured this pass; nothing was inferred, merged, divided, or truncated.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6183",
+    "name": "El Puerto Taco Shop",
+    "sourceUrl": "https://www.allmenus.com/ca/spring-valley/723814-el-puerto-taco-shop/menu/",
+    "confidence": "low",
+    "blocked": "needs-browser: no website on the work list; found the listed domain elpuertotacoshop.shop 301-redirects to el-puerto-taco-shop.locallya.com - a barred farm domain per house rules, confirming this .shop is a farm twin, not the restaurant's own site. NetWaiter storefront (elpuertotacoshop.netwaiter.com/spring-valley/) answers GetMenu with the documented empty signature {\"Groups\":[],\"ExternalType\":null}. allmenus.com carries a full 122-price menu (tacos $3.19-3.59, tortas $5.99-6.99, combos $8.19-9.19, etc.) - cent distribution is not the .00/.50/.95/.99 printed-menu pattern (only 18% land on .99) but is ~93% consistent on a charm-pricing convention (every price ends in X9 cents: .19/.29/.39/.49/.59/.69/.79/.89/.99), which reads as a real if unusual price ladder rather than scattered noise - no divisor (1.04-1.30, plus CA sales-tax rates 1.0725-1.08) produced a materially better fit. But this is a single tier-5 source: zmenu.com and menupix.com both 403'd, and restaurantguru.com's 4 dollar-figures are review price-range metadata (\"$10-$20 per person\"), not menu items, so no second independent priced source was reachable to corroborate the listing per house rules. Per the rule that a lone tier-5 source is blocked rather than filed, this is not recorded despite the plausible-looking price ladder.",
+    "notes": "No dishes captured this pass; nothing was inferred, merged, divided, or truncated.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6482",
+    "name": "Plazas Mexican Food",
+    "sourceUrl": "https://www.allmenus.com/ca/chula-vista/722925-plazas-mexican-food/menu/",
+    "confidence": "low",
+    "blocked": "needs-browser: work-list website facebook.com/PlazasMexicanFood 400s to curl (router-confirmed). The only reachable priced source is a Grubhub-syndicated allmenus.com listing (page literally reads \"Grubhub.com Plazas Mexican Food\") with 94 prices, but the price level is a clear stale snapshot: $1.00 chips, $1.00 fries, $1.50 sodas, $2.50 tacos, $2.80 bean burrito, combo plates at a flat $7.50 - not plausible 2026 California pricing, so blocked on price-level grounds per house rules regardless of source cleanliness. plazas-mexican-food.res-menu.net returned 200 with a 0-byte body (JS shell, unreadable without a browser). plazas.cafes-guide.com is a barred farm domain, not used. No DoorDash/Uber Eats/Grubhub-direct listing found via web search to provide a current price.",
+    "notes": "No dishes captured this pass; nothing was inferred, merged, divided, or truncated.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6566",
+    "name": "Salt & Straw",
+    "sourceUrl": "https://www.doordash.com/store/salt-&-straw-craft-made-ice-cream-san-diego-774536/",
+    "confidence": "medium",
+    "notes": "Router already screened out saltandstraw.com's Shopify /products.json (88 products, 31% merchandise) as a shipped-nationwide retail catalog, not what the counter serves. Found this location's own DoorDash storefront instead; address confirmed exact match (3705 Caminito Court, San Diego). schema.org Menu JSON-LD gave 6 sections. Dropped 'Most Ordered' (12 items) as a duplicate carousel - every flavor and price in it is identical to the 'Ice Cream Pints' section. Cent distribution across the 6 remaining distinct prices ($14.75 pint, $9.40 Tacolate, $1.95 waffle cone, $93.25 cake, $4.15/$2.40 water) is not testable by a divisor sweep (too few distinct values), but $14.75/pint is in line with Salt & Straw's publicly known pint pricing nationally, so it does not read as a delivery-marketplace markup. This is DoorDash's delivery catalog and appears to be packaged pints only - no by-the-scoop/by-the-cone walk-in pricing was found (scoops likely don't travel for delivery), so this is a partial capture: the pint/pack retail line, not the primary in-person scoop menu. Filed as-is per house rules (small-menu allowance) with this gap stated explicitly.",
+    "dishes": [
+      { "name": "Salted, Malted, Chocolate Chip Cookie Dough", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Chocolate Gooey Brownie", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Sea Salt with Caramel Ribbons", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Coffee and Love Nuts", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Freckled Mint Chocolate Chip (v)", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Hazelnut Cookies and Cream (v)", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Honey Lavender", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Double Fold Vanilla", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Cinnamon Snickerdoodle", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Strawberry Honey Balsamic with Black Pepper", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Arbequina Olive Oil", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Strawberry Coconut Water Sherbet (v)", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Apple Cider Donuts", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Apple and Cheddar Cinnamon Rolls", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Vanilla Apple Custard Tart", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Pear and Blue Cheese", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Hoppy Apple Cider Sorbet (v)", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Wildflower Honey & Lemon Chess Pie", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "Gruyère & Tomato Custard Tart", "description": "", "price": "$14.75", "section": "ICE CREAM PINTS" },
+      { "name": "The Tacolate", "description": "Cinnamon-ancho ice cream in a hand-pressed waffle cone taco", "price": "$9.40", "section": "THE TACOLATE" },
+      { "name": "House Made Waffle Cone (on the side)", "description": "", "price": "$1.95", "section": "WAFFLE CONES & MORE" },
+      { "name": "The Cake", "description": "", "price": "$93.25", "section": "ICE CREAM CAKES" },
+      { "name": "Open Water Sparkling", "description": "", "price": "$4.15", "section": "BEVERAGES" },
+      { "name": "Open Water Still", "description": "", "price": "$2.40", "section": "BEVERAGES" }
+    ]
+  },
+  {
+    "restaurantId": "6575",
+    "name": "Red Fox Room and Steakhouse",
+    "sourceUrl": "https://menucollectors.com/red-fox-room-and-steakhouse-92104-menu/",
+    "confidence": "low",
+    "blocked": "needs-browser: redfoxsd.com is genuinely down - connection refused/timed out on both curl (port 443, 21s) and WebFetch (ECONNREFUSED 208.91.197.46), confirmed from two request paths, so this is a host-down block, not a not-found. SinglePlatform (places.singleplatform.com/red-fox-steak-house/menu) loaded but its address (2223 El Cajon Blvd) does not match the work-list street number (2200 El Cajon Blvd) and its hasOfferCatalog.itemListElement is an empty array ('available':false) - no prices to read regardless. menucollectors.com carries a full dated menu (address matches 2200 El Cajon Blvd exactly) - Dinner/Lunch/Bar menus, ~91 prices, cent distribution 100% on .95 (classic printed-menu charm pricing), price level plausible for a 2026 steakhouse ($20.95-47.95 entrees). But the page is dated May 2023 (3 years stale) and is a single, uncorroborated tier-5-style source: zmenu.com 403'd, sandiegoreader.com and restaurantguru.com carry only 2 and 6 dollar-figures respectively, all review price-range text (\"$30-50 per person\") or a stray drink price in a review quote, not a matching itemized menu. Per house rules a lone unverified source is blocked rather than filed, despite the otherwise clean-looking price ladder.",
+    "notes": "No dishes captured this pass; nothing was inferred, merged, divided, or truncated.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6649",
+    "name": "Todo Sushi",
+    "sourceUrl": "https://www.todosushisd.com/menu2",
+    "confidence": "low",
+    "blocked": "needs-browser: this is a Wix site (router-missed - the platform check apparently didn't catch the Wix menu widget here). The nav lists 6 menu tabs (Starters & Noodles, Entrees, Todo Rolls, Nigiri, Lunch Specials, Beverages) but only two page routes exist on the site (/menu, /menu2), and each server-renders only ONE tab's data in its warmup JSON regardless of which tab looks visually active: /menu ships an empty 'Starters' placeholder (client-fetched, nothing in the static HTML), /menu2 ships a real, address-confirmed (9823 Carroll Canyon Rd) 16-item Entrees+Kids-Meal section with clean .50/.95 pricing ($12.50-$41.95). No ?menu=<slug> URL pattern (the usual Wix per-tab route) exists on this site, and a guessed Wix Restaurants API path (/_api/wix-restaurants-menus-server/v2/menus) 404s. Since the missing tabs are Todo Rolls and Nigiri - the core sections for a sushi restaurant - filing only the Entrees data would misrepresent the menu as not sushi-centric, so this is blocked rather than filed partial; a browser click through the other 4 tabs would finish it in one session.",
+    "notes": "No dishes captured this pass; nothing was inferred, merged, divided, or truncated.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "5708",
+    "name": "La Sierra Cafe",
+    "sourceUrl": "https://www.allmenus.com/ca/national-city/798745-la-sierra-cafe-no-1/menu/",
+    "confidence": "low",
+    "blocked": "needs-browser: no website on the work list. Only reachable priced source is a Grubhub-syndicated allmenus.com listing (address confirmed exact match, 306 Highland Avenue) carrying its own disclaimer that pricing may not reflect recent changes. Price level is implausibly low for 2026: a la carte tacos $1.50-2.75, sodas $2.50, full breakfast plates $7.50-10.95, combo plates $7.25-11.25 - reads as a stale (pre-2015-era) snapshot, blocked on price-level grounds per house rules. No DoorDash/Uber Eats/Grubhub-direct listing found via web search (an Uber Eats result for 'La Sierra Mexican Restaurant & Cantina' is a differently-named business, not used). zmenu.com not attempted given the stale-price block already applies to the only content found.",
+    "notes": "No dishes captured this pass; nothing was inferred, merged, divided, or truncated.",
+    "dishes": []
+  },
+  {
+    "restaurantId": "6488",
+    "name": "Burritos Santana",
+    "sourceUrl": "https://burritossantana.smartonlineorder.com/wp-json/moo-clover/v1/categories",
+    "confidence": "low",
+    "blocked": "needs-browser: santanasmexfood.com is a WordPress/Elementor multi-location site (router missed the platform); wp-json/wp/v2/pages lists only home/locations/coming-soon, no static menu. /locations/ links each branch to its own smartonlineorder.com storefront; the 'Santana Burrito El cajon' entry lists the address as '533 El Cajon Blvd San Diego, CA 92115' (almost certainly a typo for the work-list's 5330 - zip 92115 and street name match exactly, and it is the only El Cajon Blvd location on the page) and links to burritossantana.smartonlineorder.com. Pulled the full catalog via /wp-json/moo-clover/v1/categories then /categories/{uuid}/items (17 categories, 222 priced items, integer cents). Markup test: dividing every price by 1.04 lands 197/222 (88.7%) on a conventional .00/.25/.50/.75/.95/.99 ending, vs only 13/222 (5.9%) at face value - a clean, uniform 4% online-ordering surcharge exactly matching this platform's documented pattern. Per house rules a confirmed uniform fee is unusable and must never be divided out, so nothing was filed. No alternative first-party source (own-site menu page, PDF, printed-menu photo) was found to give wall prices instead.",
+    "notes": "No dishes captured this pass; nothing was inferred, merged, divided, or truncated.",
+    "dishes": []
+  }
+]

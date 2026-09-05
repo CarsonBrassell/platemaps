@@ -1,0 +1,1464 @@
+[
+  {
+    "restaurantId": "1034",
+    "name": "Smittys Downtown",
+    "sourceUrl": "http://www.smittysdowntown.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "site is Squarespace bar page (karaoke/pool, cash-only, 21+); /welcome menu path 404s; no food menu found, homepage never mentions food service"
+  },
+  {
+    "restaurantId": "4553",
+    "name": "Manzanita Roasting Co",
+    "sourceUrl": "https://manzanitaroasting.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "Shopify site lists only Escondido, Rancho Bernardo and Ramona(coming soon) locations/menus; no Poway page or address found to confirm this is the 13330 Paseo Del Verano Norte branch; Rancho Bernardo menu page itself is only a single coffee-menu PNG not yet transcribed"
+  },
+  {
+    "restaurantId": "3703",
+    "name": "Godfather's Diner",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no website on file; only lead is a Facebook profile URL returning HTTP 400; DuckDuckGo search bot-walled (202/anomaly page) within budget"
+  },
+  {
+    "restaurantId": "5735",
+    "name": "Tom's Chinese BBQ",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "listed website toms-chinese-bbq.poi.place redirects to edan.io (barred farm domain); NetWaiter ordering channel genuinely empty ({\"Groups\":[],\"ExternalType\":null}); no marketplace listing found within budget"
+  },
+  {
+    "restaurantId": "4289",
+    "name": "La Nacional",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "listed website la-nacional.weeblyte.com (barred farm domain) unreachable; a Toast page for a same-named 'La Nacional' is 239 W 14 St, New York NY — wrong city, not this restaurant's 279 3rd Avenue location; no correct-branch source found within budget"
+  },
+  {
+    "restaurantId": "4319",
+    "name": "Urban Bubble",
+    "sourceUrl": "https://www.urbanbubblesd.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Wix (Thunderbolt) site, client-rendered; /menu path returns Wix 404 in static fetch; no price data in raw HTML"
+  },
+  {
+    "restaurantId": "7781",
+    "name": "Pizzabilities - Alpine",
+    "sourceUrl": "https://orders.pizzabilities.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Toast ordering confirmed matching location (whiteLabelName 'Pizzabilities 2710 Alpine Blvd Suite M') but __OO_STATE__ menuGroups/menuItems arrays are empty (metadata-only) and rendered static HTML is just a location-picker shell; no item data captured"
+  },
+  {
+    "restaurantId": "4652",
+    "name": "Tenkatori",
+    "sourceUrl": "https://www.tenkatoriusa.com/store-miramar/",
+    "confidence": "high",
+    "crossCheckedAgainst": "",
+    "notes": "first-party menu photos (2 pages) hosted on the restaurant's own domain (wp-content/uploads), linked from the confirmed Miramar store page (6780 Miramar Road matches address); transcribed from images; scattered-cent pricing (e.g. 8.40/13.40/20.10/35.00) reads as genuine oz/qty-scaled printed pricing, not a platform fee — no marketplace or divisor pattern present, plain wordpress-hosted JPGs",
+    "dishes": [
+      {
+        "name": "Boneless Thigh 5pcs",
+        "description": "",
+        "price": "$8.40",
+        "section": "Karaage / Boneless Thigh"
+      },
+      {
+        "name": "Boneless Thigh 8pcs",
+        "description": "",
+        "price": "$13.40",
+        "section": "Karaage / Boneless Thigh"
+      },
+      {
+        "name": "Boneless Thigh 12pcs",
+        "description": "",
+        "price": "$20.10",
+        "section": "Karaage / Boneless Thigh"
+      },
+      {
+        "name": "Boneless Thigh 1kg (2.2lb)",
+        "description": "",
+        "price": "$35.00",
+        "section": "Karaage / Boneless Thigh"
+      },
+      {
+        "name": "Boneless Thigh Sweet & Spicy or Sweet & Sour 5pcs",
+        "description": "",
+        "price": "$9.40",
+        "section": "Karaage / Boneless Thigh"
+      },
+      {
+        "name": "Boneless Thigh Sweet & Spicy or Sweet & Sour 8pcs",
+        "description": "",
+        "price": "$14.60",
+        "section": "Karaage / Boneless Thigh"
+      },
+      {
+        "name": "Boneless Thigh Sweet & Spicy or Sweet & Sour 12pcs",
+        "description": "",
+        "price": "$21.50",
+        "section": "Karaage / Boneless Thigh"
+      },
+      {
+        "name": "Boneless Thigh Sweet & Spicy or Sweet & Sour 1kg (2.2lb)",
+        "description": "",
+        "price": "$36.50",
+        "section": "Karaage / Boneless Thigh"
+      },
+      {
+        "name": "Gizzard 7oz",
+        "description": "",
+        "price": "$8.90",
+        "section": "Karaage / Gizzard"
+      },
+      {
+        "name": "Gizzard 14oz",
+        "description": "",
+        "price": "$17.80",
+        "section": "Karaage / Gizzard"
+      },
+      {
+        "name": "Gizzard 1.3lb",
+        "description": "",
+        "price": "$26.70",
+        "section": "Karaage / Gizzard"
+      },
+      {
+        "name": "Tender 7oz",
+        "description": "",
+        "price": "$8.00",
+        "section": "Karaage / Tender"
+      },
+      {
+        "name": "Tender 14oz",
+        "description": "",
+        "price": "$15.80",
+        "section": "Karaage / Tender"
+      },
+      {
+        "name": "Tender 1.3lb",
+        "description": "",
+        "price": "$23.50",
+        "section": "Karaage / Tender"
+      },
+      {
+        "name": "Wings 5pcs",
+        "description": "",
+        "price": "$10.90",
+        "section": "Karaage / Wings"
+      },
+      {
+        "name": "Wings 8pcs",
+        "description": "",
+        "price": "$17.40",
+        "section": "Karaage / Wings"
+      },
+      {
+        "name": "Wings 12pcs",
+        "description": "",
+        "price": "$25.00",
+        "section": "Karaage / Wings"
+      },
+      {
+        "name": "Cartilage 7oz",
+        "description": "",
+        "price": "$9.30",
+        "section": "Karaage / Cartilage"
+      },
+      {
+        "name": "Cartilage 14oz",
+        "description": "",
+        "price": "$18.60",
+        "section": "Karaage / Cartilage"
+      },
+      {
+        "name": "Cartilage 1.3lb",
+        "description": "",
+        "price": "$27.90",
+        "section": "Karaage / Cartilage"
+      },
+      {
+        "name": "Bento Box - Boneless Thigh",
+        "description": "4pcs Boneless Thigh, served with rice, shredded cabbage, tomatoes and mashed potatoes",
+        "price": "$12.60",
+        "section": "Bento Box"
+      },
+      {
+        "name": "Bento Box - Wings",
+        "description": "3pcs Wings, served with rice, shredded cabbage, tomatoes and mashed potatoes",
+        "price": "$13.20",
+        "section": "Bento Box"
+      },
+      {
+        "name": "Bento Box - Mix (Boneless Thigh & Wings)",
+        "description": "2pcs Boneless Thigh and 2pcs Wings",
+        "price": "$13.80",
+        "section": "Bento Box"
+      },
+      {
+        "name": "Bento Box - Boneless Breast",
+        "description": "7oz Boneless Breast",
+        "price": "$12.80",
+        "section": "Bento Box"
+      },
+      {
+        "name": "Nanban Bento",
+        "description": "4pcs Boneless Thigh with Homemade Tartar Sauce",
+        "price": "$13.80",
+        "section": "Bento Box"
+      },
+      {
+        "name": "Homemade Dipping Sauce - Sweet & Spicy",
+        "description": "",
+        "price": "$1.00",
+        "section": "Sauces"
+      },
+      {
+        "name": "Homemade Dipping Sauce - Spicy Mayo",
+        "description": "",
+        "price": "$1.00",
+        "section": "Sauces"
+      },
+      {
+        "name": "Homemade Dipping Sauce - Sweet & Sour",
+        "description": "",
+        "price": "$1.00",
+        "section": "Sauces"
+      },
+      {
+        "name": "Homemade Dipping Sauce - Yuzu Aioli",
+        "description": "",
+        "price": "$1.30",
+        "section": "Sauces"
+      },
+      {
+        "name": "Homemade Dipping Sauce - Wasabi Mayo",
+        "description": "",
+        "price": "$1.50",
+        "section": "Sauces"
+      },
+      {
+        "name": "Homemade Dipping Sauce - Tartar",
+        "description": "",
+        "price": "$1.50",
+        "section": "Sauces"
+      },
+      {
+        "name": "Party Pack",
+        "description": "8pcs Boneless Thigh, 5pcs Wings, 14oz Tender, French Fries and 3 Dipping Sauce",
+        "price": "$39.80",
+        "section": "Party Pack"
+      },
+      {
+        "name": "Karaage & Chips Original",
+        "description": "12oz Seaweed French Fries and Chopped Boneless Thigh",
+        "price": "$10.30",
+        "section": "Karaage & Chips"
+      },
+      {
+        "name": "Karaage & Chips with Any Sauce",
+        "description": "12oz Seaweed French Fries and Chopped Boneless Thigh",
+        "price": "$11.10",
+        "section": "Karaage & Chips"
+      },
+      {
+        "name": "Karaage Don",
+        "description": "3pcs Boneless Thighs, Seasoned Boiled Egg, Pickled Radish, with Rice and Homemade Bbq Sauce",
+        "price": "$12.00",
+        "section": "Don"
+      },
+      {
+        "name": "Kara Mayo Don",
+        "description": "with spicy mayo",
+        "price": "$12.20",
+        "section": "Don"
+      },
+      {
+        "name": "Mega Karaage Don",
+        "description": "",
+        "price": "$18.40",
+        "section": "Don"
+      },
+      {
+        "name": "Mega Kara Mayo Don",
+        "description": "with spicy mayo",
+        "price": "$18.70",
+        "section": "Don"
+      },
+      {
+        "name": "Pork Katsu Don Single",
+        "description": "Pork Cutlet, Seasoned Boiled Egg, Pickled Radish, with Rice and Homemade Bbq Sauce",
+        "price": "$13.00",
+        "section": "Don"
+      },
+      {
+        "name": "Pork Katsu Don Double",
+        "description": "Pork Cutlet, Seasoned Boiled Egg, Pickled Radish, with Rice and Homemade Bbq Sauce",
+        "price": "$19.00",
+        "section": "Don"
+      },
+      {
+        "name": "Tenkatori Don",
+        "description": "7oz Boneless Breast, Seasoned Boiled Egg, Pickled Radish, Spinach with Rice and Homemade Tartar Sauce",
+        "price": "$13.30",
+        "section": "Don"
+      },
+      {
+        "name": "Chicken Fried Rice",
+        "description": "Rice, Egg, Green Onion, and Chicken",
+        "price": "$12.00",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "Kimchi Fried Rice",
+        "description": "Rice, Egg, Green Onion, Kimchi and Chicken",
+        "price": "$13.80",
+        "section": "Fried Rice"
+      },
+      {
+        "name": "White Rice",
+        "description": "",
+        "price": "$3.50",
+        "section": "Side"
+      },
+      {
+        "name": "French Fries (12oz)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Side"
+      },
+      {
+        "name": "French Fries with Seaweed Salt",
+        "description": "",
+        "price": "$4.80",
+        "section": "Side"
+      },
+      {
+        "name": "Mashed Potato",
+        "description": "",
+        "price": "$3.20",
+        "section": "Side"
+      },
+      {
+        "name": "Vegan Steamed Bun",
+        "description": "",
+        "price": "$3.90",
+        "section": "Side"
+      },
+      {
+        "name": "Fried Dumpling (8pcs)",
+        "description": "",
+        "price": "$6.00",
+        "section": "Side"
+      },
+      {
+        "name": "Coke",
+        "description": "",
+        "price": "$2.10",
+        "section": "Drink"
+      },
+      {
+        "name": "Diet Coke",
+        "description": "",
+        "price": "$2.10",
+        "section": "Drink"
+      },
+      {
+        "name": "Sprite",
+        "description": "",
+        "price": "$2.10",
+        "section": "Drink"
+      },
+      {
+        "name": "Ice Green Tea",
+        "description": "",
+        "price": "$3.10",
+        "section": "Drink"
+      },
+      {
+        "name": "Ice Coffee",
+        "description": "",
+        "price": "$3.10",
+        "section": "Drink"
+      },
+      {
+        "name": "Ramune",
+        "description": "",
+        "price": "$3.80",
+        "section": "Drink"
+      },
+      {
+        "name": "Apple Soda",
+        "description": "",
+        "price": "$3.10",
+        "section": "Drink"
+      },
+      {
+        "name": "Ginger Beer",
+        "description": "",
+        "price": "$5.80",
+        "section": "Drink"
+      }
+    ]
+  },
+  {
+    "restaurantId": "1865",
+    "name": "Hyderabad Cafe",
+    "sourceUrl": "https://hyderabad-cafe-san-diego.cloveronline.com",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Clover COLO2 storefront (found via redirect API) confirms this location's address (9494 Black Mountain Road) but is a Next.js client-rendered app with no price data in static HTML"
+  },
+  {
+    "restaurantId": "6476",
+    "name": "Juice Stop Encinitas",
+    "sourceUrl": "https://www.doordash.com/business/juice-stop-11309457/menu/",
+    "confidence": "medium",
+    "crossCheckedAgainst": "",
+    "notes": "restaurant's own site (juicestopencinitas.com) is dead (ENOTFOUND); DoorDash page confirms exact address match ('Encinitas CA, 1042 N El Camino Real' = worklist '1042 N El Camino Real C, Encinitas, CA 92024'); restaurant's own online-ordering menu page (juicestop-menus.html) was rejected as a source — it showed all items as literal $0.00 placeholders; prices instead taken from DoorDash's embedded Menu JSON-LD raw-cents integer field (e.g. \"price\":540), divided by 100. Cent-ending distribution across 68 items: {20:1,30:4,34:2,40:46,48:1,50:1,56:3,64:1,66:2,80:1,84:2,94:3,95:1}. The dominant .40 ending (46/68) is a single flat base price shared by ~27 standard smoothie flavors, not a rotating divisor sweep; premium/specialty smoothies and non-smoothie items (juices, supplements, snacks) carry genuinely distinct, non-uniform cent endings (.56/.94/.84/.48/.30/.95/.66/.20/.50/.64) — consistent with real flat-rate + tiered-upcharge menu pricing, not a computed/fee-inflated pattern. Marketplace-only source (medium confidence), no first-party cross-check available.",
+    "dishes": [
+      {
+        "name": "America's Cup Smoothie",
+        "description": "Strawberry, banana, yogurt, strawberry juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Cross Cage Smoothie",
+        "description": "Strawberry, banana, orange sherbet, and watermelon juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Eagle Smoothie",
+        "description": "Strawberry, banana, orange sherbet, raspberry juice, cranberry juice, and orange juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Finish Line Smoothie",
+        "description": "Strawberry, banana, lime sherbet, raspberry juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Grand Slam Smoothie",
+        "description": "Strawberry, banana, yogurt, and orange juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Half Nelson Smoothie",
+        "description": "Strawberry, banana, orange sherbet, raspberry juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Homerun Smoothie",
+        "description": "Strawberry, orange sherbet, lemonade.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Jab Step Smoothie",
+        "description": "Strawberry, pineapple, raspberry sherbet, raspberry juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Knockout Smoothie",
+        "description": "Strawberry, banana, yogurt, and apple juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Marathon Smoothie",
+        "description": "Strawberry, banana, and orange juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Butterfly Smoothie",
+        "description": "Raspberry, strawberry, raspberry sherbet, lemonade, strawberry juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Sticky Wicket Smoothie",
+        "description": "Raspberry, strawberry, banana, lime sherbet, raspberry juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Touchdown Smoothie",
+        "description": "Raspberry, banana, yogurt, raspberry juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Tumble Turn Smoothie",
+        "description": "Raspberry, banana, lime sherbet, strawberry juice, lemonade.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Slam Dunk Smoothie",
+        "description": "Blueberry, strawberry, pineapple sherbet, pineapple juice, orange juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Slap Shot Smoothie",
+        "description": "Blueberry, strawberry, yogurt, raspberry sherbet, cranberry juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Tour De France Smoothie",
+        "description": "Blueberry, banana, yogurt, raspberry sherbet, apple juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Triple Crown Smoothie",
+        "description": "Orange sherbet, yogurt, orange juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Cross Trainer Smoothie",
+        "description": "Mango, peach, strawberry, yogurt, pineapple sherbet, mango juice, raspberry juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Freestyle Smoothie",
+        "description": "Mango, peach, strawberry, pineapple sherbet, mango juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Personal Best Smoothie",
+        "description": "Mango, lime sherbet, yogurt, pineapple juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Single Track Smoothie",
+        "description": "Mango, strawberry, raspberry, yogurt, raspberry sherbet, mango juice, watermelon juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Triple Gainer Smoothie",
+        "description": "Mango, peach, pineapple sherbet, lemonade.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Double Axle Smoothie",
+        "description": "Blackberry, strawberry, raspberry, banana, pineapple sherbet, orange juice, and pineapple juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Right Hook Smoothie",
+        "description": "Blackberry, peach, pineapple, yogurt, peach juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Triple Threat Smoothie",
+        "description": "Blackberry, blueberry, raspberry sherbet, papaya juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Volley Smoothie",
+        "description": "Blackberry, blueberry, banana, yogurt, pomegranate/blueberry juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Rip Tide Smoothie",
+        "description": "Acai, raspberry, mango, yogurt, cranberry juice.",
+        "price": "$7.56",
+        "section": "Menu"
+      },
+      {
+        "name": "Surf's Up Smoothie",
+        "description": "Acai, strawberry, blueberry, banana, yogurt, and apple juice.",
+        "price": "$7.56",
+        "section": "Menu"
+      },
+      {
+        "name": "The Gnarly Smoothie",
+        "description": "Acai, pineapple, peach, yogurt, lime sherbet, pomegranate/blueberry juice.",
+        "price": "$7.56",
+        "section": "Menu"
+      },
+      {
+        "name": "1080 Smoothie",
+        "description": "Peach, strawberry, mango, yogurt, strawberry juice, peach juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Hat Trick Smoothie",
+        "description": "Peach, banana, coconut, orange sherbet, papaya juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Round House Smoothie",
+        "description": "Peach, banana, orange sherbet, peach juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Scissor Kick Smoothie",
+        "description": "Pineapple, strawberry, pineapple sherbet, strawberry juice, pineapple juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Strike Three Smoothie",
+        "description": "Pineapple, peach mango, orange sherbet, lemonade.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Squeeze Play Smoothie",
+        "description": "Banana, yogurt, pineapple sherbet, pineapple juice.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Tai Chai",
+        "description": "Watermelon juice, strawberry juice, pineapple sherbet, orange sherbet, dragon fruit, strawberry, and ice.",
+        "price": "$5.94",
+        "section": "Menu"
+      },
+      {
+        "name": "Yoga",
+        "description": "Mango juice, pineapple sherbet, dragon fruit, mangos, peaches, and ice.",
+        "price": "$5.94",
+        "section": "Menu"
+      },
+      {
+        "name": "Berries \\u0026 Green Smoothie",
+        "description": "Spinach, kale, blackberry, blueberry, yogurt, pomegranate/blueberry juice.",
+        "price": "$6.84",
+        "section": "Menu"
+      },
+      {
+        "name": "PB \\u0026 Greens Smoothie",
+        "description": "Spinach, peanut butter, banana, yogurt, almond milk.",
+        "price": "$6.84",
+        "section": "Menu"
+      },
+      {
+        "name": "4X8 Smoothie",
+        "description": "Peanut butter, banana, honey, yogurt, skim milk.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Bench Press Smoothie",
+        "description": "Banana, protein powder, yogurt, skim milk choice of, vanilla, chocolate, or fruit.",
+        "price": "$6.48",
+        "section": "Menu"
+      },
+      {
+        "name": "Cha-Cha Smoothie",
+        "description": "Yogurt, skim milk, choice of, mocha, vanilla latte, coffee, caramel latte, white chocolate latte, heath mocha, java chips, chocolate mint, vanilla bean, cookies n' cream, spiced chai, vanilla chai, raspberry chai, or green tea.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Coaches' Choice",
+        "description": "Cappuccino mix, chocolate, yogurt, skim milk.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Double Dribble Smoothie",
+        "description": "Pineapple, coconut, yogurt, pineapple sherbet, pineapple juice, skim milk.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Free Fall Smoothie",
+        "description": "Banana, yogurt, skim milk, choice of vanilla or chocolate.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Hang Ten Smoothie",
+        "description": "Yogurt, skim milk, choice of fruit.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Shootout Smoothie",
+        "description": "Yogurt, skim milk, choice of vanilla or chocolate.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "World's Cup Smoothie",
+        "description": "Peanut butter, chocolate, yogurt, skim milk.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Tropical Shred",
+        "description": "Low carb juice, vanilla whey protein, pineapple, peach, mango and ice.",
+        "price": "$7.20",
+        "section": "Menu"
+      },
+      {
+        "name": "Bottled Water - 16.9 Oz",
+        "description": "",
+        "price": "$1.80",
+        "section": "Menu"
+      },
+      {
+        "name": "Red Bull",
+        "description": "Red Bull available in Regular, Sugar-Free, and Tropical options.",
+        "price": "$3.30",
+        "section": "Menu"
+      },
+      {
+        "name": "Pink Starburst Smoothie",
+        "description": "Strawberry, Raspberry Sherbet, Yogurt, Lemonade, Strawberry Juice",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Auggie Doggie Smoothie",
+        "description": "Mango, Peach, Pineapple, Orange Sherbet, Pineapple Sherbet, Peach Juice, Pineapple Juice, Lemonade",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "The Coo Smoothie",
+        "description": "Strawberry, Raspberry, Blueberry, Raspberry Sherbet, Orange Sherbet, Strawberry Juice, Raspberry Juice, Blueberry/Pomegranate Juice",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Sour Patch Kid Smoothie",
+        "description": "Choose from Strawberry, Blueberry, or Raspberry with Lime, Pineapple, Raspberry, or Orange Sherbet, and Lemonade.",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Wisdom Teeth Smoothie",
+        "description": "Banana, Yogurt, Raspberry Sherbet, Strawberry Juice",
+        "price": "$5.40",
+        "section": "Menu"
+      },
+      {
+        "name": "Cake Batter Smoothie",
+        "description": "Vanilla Bean Mix, Yogurt, Soy Milk",
+        "price": "$6.30",
+        "section": "Menu"
+      },
+      {
+        "name": "Butterfinger Smoothie",
+        "description": "Heath Mocha Mix, Peanut Butter, Chocolate, Yogurt, Milk",
+        "price": "$5.95",
+        "section": "Menu"
+      },
+      {
+        "name": "Boba Blenders",
+        "description": "Juice, Sherbet, Boba.",
+        "price": "$6.66",
+        "section": "Menu"
+      },
+      {
+        "name": "Red Bull Infusions",
+        "description": "16 oz. Red Bull infused with a choice of regular or sugar-free. Mixed with options of strawberry, blueberry/pomegranate, raspberry, lemonade, peach, or pineapple juice.",
+        "price": "$6.66",
+        "section": "Menu"
+      },
+      {
+        "name": "Octane Packet",
+        "description": "Assorted Octane Packet: Choice of orange, peach mango, or grape energizing drink mixes.",
+        "price": "$3.30",
+        "section": "Menu"
+      },
+      {
+        "name": "Octane Jug",
+        "description": "A refreshing juice choice of orange, peach mango, or grape.",
+        "price": "$71.94",
+        "section": "Menu"
+      },
+      {
+        "name": "Octane on the Rocks ",
+        "description": "Combine the all-in-one-energy and pre-work boost of octane with any of our juices to amplify your day, ",
+        "price": "$4.50",
+        "section": "Menu"
+      },
+      {
+        "name": "Bottled Wheatgrass ",
+        "description": "Freshly pressed wheatgrass juice offering a vibrant green hue and earthy flavor, rich in nutrients and antioxidants.",
+        "price": "$8.34",
+        "section": "Menu"
+      },
+      {
+        "name": "Bottled Ginger",
+        "description": "A refreshing shot of ginger juice, packed with invigorating ginger essence for a quick boost.",
+        "price": "$8.34",
+        "section": "Menu"
+      },
+      {
+        "name": "Protein Bars",
+        "description": "Assorted protein bars, options including chocolate brownie, white chocolate macadamia nut, crunchy peanut butter, and chocolate chip from Cliff Bar; cookies n cream, chocolate chip cookie dough from Quest Bar.",
+        "price": "$3.30",
+        "section": "Menu"
+      },
+      {
+        "name": "Poptarts",
+        "description": "Assorted tart flavors including berry medleys, cookies n cream, cinnamon, and chocolate fudge. Selection for varied tastes.",
+        "price": "$2.64",
+        "section": "Menu"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6211",
+    "name": "Roma's Pizza",
+    "sourceUrl": "https://romaspizzaandgrill.netwaiter.com/oceanside/about/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "NetWaiter GetMenu endpoint returns the genuinely-empty signature ({\"Groups\":[],\"ExternalType\":null}) — this ordering channel has no menu data; own domain otherwise ENOTFOUND per worklist router; no marketplace listing found within budget"
+  },
+  {
+    "restaurantId": "4109",
+    "name": "Deano's Pub East",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "cached homepage (deanospub.com) confirms name and links to /m/orders (Toast) but the live domain itself is unreachable (curl HTTP 000 / worklist ENOTFOUND) — cannot reach the Toast ordering page at all; no marketplace listing found within budget"
+  },
+  {
+    "restaurantId": "5885",
+    "name": "Jack's Donuts",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "two distinct DoorDash listings found (business ids jack's-donuts-57855 and jacks-donuts-789769, a multi-state chain) but neither page's cached HTML contains 'Chula Vista' or 'Broadway' anywhere — could not confirm either listing is the worklist's 1355 Broadway A, Chula Vista branch; filing either would risk a wrong-branch chain mismatch, so blocked instead"
+  },
+  {
+    "restaurantId": "5891",
+    "name": "Angela's Eccentric Kitchen",
+    "sourceUrl": "http://angelaseccentrickitchen.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: Wix (Thunderbolt) site, client-rendered (siteassets.parastorage.com bundles); dedicated /menu page returns 404; homepage mentions 'menu'/'cake' repeatedly (custom-cake bakery) but carries no price data in raw HTML"
+  },
+  {
+    "restaurantId": "5198",
+    "name": "Agave Bar and Grill",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "first-party PDF menu located (references Marriott Marquis San Diego Marina, 333 W Harbor Drive — matches worklist address) and confirms this is a real restaurant with dish names (Kids Menu cheeseburger/quesadilla/grilled cheese/tenders; Quesadillas cheese/chicken/shrimp/carne asada/portobello; Dole soft-serve flavors) but PDF text-extraction carries zero prices anywhere in the document — dish names without prices, blocked per rule (not not_found)"
+  },
+  {
+    "restaurantId": "2488",
+    "name": "Calico's",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "no first-party website on file; only lead is a zmenu (tier-5 aggregator) page which is itself Cloudflare-walled (\"Just a moment\") — even if reachable, a single tier-5 aggregator alone is never a valid source; no other listing found within budget"
+  },
+  {
+    "restaurantId": "6525",
+    "name": "El Mundo De Mariscos Mexican Food",
+    "sourceUrl": "",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "DoorDash and MenuPages captures both Cloudflare-walled (\"Just a moment\"); Uber Eats capture's title is a San Diego listing (city mismatch vs. worklist's Oceanside CA 92054, likely a different branch or generic city rollup); the only city-confirmed, readable capture is allmenus (tier-5 aggregator, title 'Oceanside CA 92054') which cannot stand alone as a source; no corroborating first-party or non-tier-5 source found within budget"
+  },
+  {
+    "restaurantId": "2856",
+    "name": "Leucadia Pizza Point Loma",
+    "sourceUrl": "http://www.leucadiapizza.com/",
+    "confidence": "high",
+    "crossCheckedAgainst": "",
+    "notes": "first-party multi-location chain site (Leucadia Pizzeria & Italian Restaurants); cached branch-specific page mentions 'Point Loma' 12 times confirming this is the Point Loma location's menu (worklist address 4161 Voltaire Street #A; the literal street name did not appear on the page, but the neighborhood name and menu content are Point-Loma-specific, not a generic/other-branch page). Price cent-endings are highly scattered across ~35 distinct values with no repeating divisor or narrow rotating set (subtraction test: differences between size variants of the same dish are irregular, e.g. Cheese Pizza scaling, consistent with genuine independently-set menu prices, not a computed fee). A subset of items (mostly 'Create Your Pizza' build-your-own toppings and fountain drinks) were printed on-site with a trailing '+' meaning 'starting at this price, increases with size/toppings' — the '+' was moved into each dish's description as '(starting price; varies with size/toppings)' and the printed base price itself used verbatim in the price field, per the no-price-construction rule.",
+    "dishes": [
+      {
+        "name": "Cheese Pizza Large 16\"",
+        "description": "Golden-brown crust topped with rich tomato sauce and melted mozzarella cheese. 16 inches.",
+        "price": "$25.98",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Garlic Cheese Bread",
+        "description": "Garlic bread topped with mozzarella cheese and served with a side of marinara sauce.",
+        "price": "$10.53",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Garlic Bread",
+        "description": "Buttery bread that is topped with garlic.",
+        "price": "$4.11",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cheese Pizza Medium 12\"",
+        "description": "A 12-inch pizza topped with melted mozzarella cheese and rich tomato sauce on a golden-brown crust.",
+        "price": "$20.57",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Vodka Penne",
+        "description": "Tomato prosciutto cream vodka sauce and penne pasta. Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$8.86",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cheese Pizza Small 10\"",
+        "description": "Melted mozzarella and tangy tomato sauce on a crispy 10-inch crust.",
+        "price": "$15.51",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Deluxe Pizza",
+        "description": "Pepperoni, sausage, mushrooms, bell peppers, black olives, onions, and tomato sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Famous Chocolate Chip Cookies",
+        "description": "Box of 6",
+        "price": "$6.31",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Romaine, garlic croutons, and sharp cheese.",
+        "price": "$13.90",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Cheese Pizza Mini 7\"",
+        "description": "Golden-brown crust topped with melted mozzarella cheese and rich tomato sauce. Seven inches of classic cheese pizza.",
+        "price": "$6.84",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "BBQ Chicken Pizza",
+        "description": "Tender roasted chicken, red onions, cilantro, gouda cheese, and BBQ sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Margherita Pizza",
+        "description": "Tomatoes, mozzarella, roasted garlic, basil, and virgin olive oil. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Most Ordered"
+      },
+      {
+        "name": "Vodka Penne",
+        "description": "Tomato prosciutto cream vodka sauce and penne pasta. Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$8.86",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Chicken Parmesan",
+        "description": "Lightly breaded chicken breast fried, baked with marinara sauce, mozzarella cheese, and spaghetti marinara. Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$21.10",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Cheesy Lasagna",
+        "description": "Layers of pasta, ricotta and mozzarella cheese topped with Marinara sauce. (starting price; varies with size/toppings)",
+        "price": "$10.88",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Lasagna with Meat Sauce",
+        "description": "Layers of pasta, ricotta, mozzarella cheese, and meat sauce. Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$11.14",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Tomato Basil Pasta",
+        "description": "Angel hair pasta, light tomato basil sauce, and garlic. Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$8.86",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Spaghetti Meatballs",
+        "description": "Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$8.45",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Eggplant Parmesan",
+        "description": "Layers of lightly fried eggplant, mushrooms, mozzarella cheese, tomato sauce, and spaghetti marinara. Served with garlic bread.",
+        "price": "$20.56",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Cheese Ravioli",
+        "description": "Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$10.74",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Spaghetti With Marinara Sauce",
+        "description": "Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$7.52",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Mediterranean Pasta",
+        "description": "Artichokes, sundried tomatoes, olives, feta cilantro, bowtie pasta, and basil pesto sauce. Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$10.63",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Santa Fe Chicken Pasta",
+        "description": "Slices of tender chicken, bell peppers, onions, penne, creamy and spicy santa fe sauce, and cilantro. Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$15.91",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Thai Chicken Pasta",
+        "description": "Tender chicken with a spicy ginger and sesame sauce tossed with scallions, bean sprouts, shredded carrots, cilantro, peanuts and linguine. (starting price; varies with size/toppings)",
+        "price": "$11.16",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Tortellini & Chicken",
+        "description": "Cheese filled tortellini paired with roasted chicken, artichoke hearts, onions and sun-dried tomatoes in an Alfredo sauce. (starting price; varies with size/toppings)",
+        "price": "$11.55",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Spaghetti With Meat Sauce",
+        "description": "Served with garlic bread. (starting price; varies with size/toppings)",
+        "price": "$8.45",
+        "section": "Fresh Entrees."
+      },
+      {
+        "name": "Cheese Pizza Large 16\"",
+        "description": "Golden-brown crust topped with rich tomato sauce and melted mozzarella cheese. 16 inches.",
+        "price": "$25.98",
+        "section": "Create Your Pizza"
+      },
+      {
+        "name": "Cheese Pizza Medium 12\"",
+        "description": "A 12-inch pizza topped with melted mozzarella cheese and rich tomato sauce on a golden-brown crust.",
+        "price": "$20.57",
+        "section": "Create Your Pizza"
+      },
+      {
+        "name": "Gluten Free Cheese Pizza 14\"",
+        "description": "A 14-inch gluten-free pizza topped with melted mozzarella cheese and a rich tomato sauce.",
+        "price": "$22.41",
+        "section": "Create Your Pizza"
+      },
+      {
+        "name": "Cheese Pizza Small 10\"",
+        "description": "Melted mozzarella and tangy tomato sauce on a crispy 10-inch crust.",
+        "price": "$15.51",
+        "section": "Create Your Pizza"
+      },
+      {
+        "name": "Cheese Pizza Mini 7\"",
+        "description": "Golden-brown crust topped with melted mozzarella cheese and rich tomato sauce. Seven inches of classic cheese pizza.",
+        "price": "$6.84",
+        "section": "Create Your Pizza"
+      },
+      {
+        "name": "Deluxe Pizza",
+        "description": "Pepperoni, sausage, mushrooms, bell peppers, black olives, onions, and tomato sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Roasted Garlic Chicken Pizza",
+        "description": "Roasted chicken, roasted garlic, parsley, scallions, butter, and garlic sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Meat Combo Pizza",
+        "description": "Pepperoni, sausage, Canadian bacon, bacon, and tomato sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Margherita Pizza",
+        "description": "Tomatoes, mozzarella, roasted garlic, basil, and virgin olive oil. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Hawaiian Pizza",
+        "description": "Diced pineapple, sliced canadian bacon, tomato sauce, and sprinkled cinnamon. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Five Cheese Pizza",
+        "description": "Gouda, feta, mozzarella, parmesan, ricotta, garlic, basil, and roasted garlic oil. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Vegetarian",
+        "description": "Mushrooms, black olives, zucchini, bell peppers, onions, mozzarella, and tomato sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Pear Gorgonzola Arugula Pizza",
+        "description": "Candied walnuts, carmelized onions, dates, sliced pears, blue cheese crumbles, mozzarella, garlic basil oil, and arugula. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Santa Fe Chicken Pizza",
+        "description": "Roasted chicken, red onions, bell peppers, cilantro, and spicy santa fe cream sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Roasted Garlic Shrimp Pizza",
+        "description": "Seasoned shrimp, roasted garlic, scallions, butter, and garlic sauce. (starting price; varies with size/toppings)",
+        "price": "$14.36",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Thai Chicken Pizza",
+        "description": "Roasted chicken, scallions, bean sprouts, shredded carrots, cilantro, peanuts, mozzarella, and spicy peanut ginger sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Goat Cheese",
+        "description": "Bacon, red onions, sun-dried tomatoes, sweet peppers, sliced tomatoes, goat cheese, mozzarella, and butter-garlic sauce.  No tomato sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Greek Pizza",
+        "description": "Spinach, broccoli, feta cheese, sun dried tomatoes, greek olives, bell peppers, and virgin olive oil. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Ricotta, Spinach and Eggplant Pizza",
+        "description": "Spinach, ricotta, grilled eggplant, roasted bell peppers, and virgin olive oil. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Shrimp Pesto Pizza",
+        "description": "Seasoned shrimp, fresh tomatoes, sun dried tomatoes, and pesto sauce. (starting price; varies with size/toppings)",
+        "price": "$14.36",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Lobster Pizza",
+        "description": "Roasted red bell peppers, mozzarella cheese, and lobster. (starting price; varies with size/toppings)",
+        "price": "$14.36",
+        "section": "Pizzas"
+      },
+      {
+        "name": "BBQ Chicken Pizza",
+        "description": "Tender roasted chicken, red onions, cilantro, gouda cheese, and BBQ sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Rosemary Potato Chicken Pizza",
+        "description": "Roasted chicken, red potatoes, red onions, oregano, rosemary, and butter garlic sauce. (starting price; varies with size/toppings)",
+        "price": "$12.98",
+        "section": "Pizzas"
+      },
+      {
+        "name": "Five Cheese Pizza.",
+        "description": "Gouda, feta, mozzarella, parmesan, ricotta, garlic, basil, and roasted garlic oil. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Deluxe Pizza.",
+        "description": "Pepperoni, sausage, mushrooms, bell peppers, black olives, onions, and tomato sauce. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Goat Cheese.",
+        "description": "Bacon, red onions, sun-dried tomatoes, sweet peppers, sliced tomatoes, goat cheese, mozzarella, and butter-garlic sauce.  No tomato sauce. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Lobster Pizza.",
+        "description": "Roasted red bell peppers, mozzarella cheese, and lobster. (starting price; varies with size/toppings)",
+        "price": "$25.86",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Pear Gorgonzola Arugula Pizza.",
+        "description": "Candied walnuts, carmelized onions, dates, sliced pears, blue cheese crumbles, mozzarella, garlic basil oil, and arugula. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Roasted Garlic Chicken Pizza.",
+        "description": "Roasted chicken, roasted garlic, parsley, scallions, butter, and garlic sauce. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Santa Fe Chicken Pizza.",
+        "description": "Roasted chicken, red onions, bell peppers, cilantro, and spicy santa fe cream sauce. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Ricotta, Spinach and Eggplant Pizza.",
+        "description": "Spinach, ricotta, grilled eggplant, roasted bell peppers, and virgin olive oil. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Shrimp Pesto Pizza.",
+        "description": "Seasoned shrimp, fresh tomatoes, sun dried tomatoes, and pesto sauce. (starting price; varies with size/toppings)",
+        "price": "$25.86",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Margherita Pizza.",
+        "description": "Tomatoes, mozzarella, roasted garlic, basil, and virgin olive oil. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Greek Pizza.",
+        "description": "Spinach, broccoli, feta cheese, sun dried tomatoes, greek olives, bell peppers, and virgin olive oil. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Meat Combo Pizza.",
+        "description": "Pepperoni, sausage, Canadian bacon, bacon, and tomato sauce. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Roasted Garlic Shrimp Pizza.",
+        "description": "Seasoned shrimp, roasted garlic, scallions, butter, and garlic sauce. (starting price; varies with size/toppings)",
+        "price": "$25.86",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Thai Chicken Pizza.",
+        "description": "Roasted chicken, scallions, bean sprouts, shredded carrots, cilantro, peanuts, mozzarella, and spicy peanut ginger sauce. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Vegetarian.",
+        "description": "Mushrooms, black olives, zucchini, bell peppers, onions, mozzarella, and tomato sauce. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Rosemary Potato Chicken Pizza.",
+        "description": "Roasted chicken, red potatoes, red onions, oregano, rosemary, and butter garlic sauce. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "BBQ Chicken Pizza.",
+        "description": "Tender roasted chicken, red onions, cilantro, gouda cheese, and BBQ sauce. (starting price; varies with size/toppings)",
+        "price": "$22.87",
+        "section": "Gluten Free Pizzas"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Romaine, garlic croutons, and sharp cheese.",
+        "price": "$13.90",
+        "section": "Fresh Salad"
+      },
+      {
+        "name": "Apple Walnut Salad",
+        "description": "Crisp apples, glazed walnuts, dried cranberries, shaved parmesan cheese, mixed greens, and blush vinaigrette.",
+        "price": "$14.13",
+        "section": "Fresh Salad"
+      },
+      {
+        "name": "Green Salad",
+        "description": "Mixed greens, sliced tomatoes, grated parmesan, croutons, and red onions.",
+        "price": "$13.90",
+        "section": "Fresh Salad"
+      },
+      {
+        "name": "Greek Style Salad",
+        "description": "Mixed greens, sweet bell peppers, greek olives, feta cheese, pepperoncinos, sun dried tomatoes, and lemon herb dressing",
+        "price": "$14.13",
+        "section": "Fresh Salad"
+      },
+      {
+        "name": "Spinach Salad",
+        "description": "Spinach, caramelized onions, candied walnuts, goat cheese, seasonal berries, and honey champagne vinaigrette.",
+        "price": "$14.13",
+        "section": "Fresh Salad"
+      },
+      {
+        "name": "Roasted Chicken Salad",
+        "description": "Chilled roasted chicken breast, mixed greens, feta cheese, tomatoes, olives, red onions, and cilantro.",
+        "price": "$14.82",
+        "section": "Fresh Salad"
+      },
+      {
+        "name": "Antipasto",
+        "description": "Mixed greens, ham, salami, provolone cheese, sliced tomatoes, olives, pepperoncino, red onions, croutons, and parmesan cheese.",
+        "price": "$14.82",
+        "section": "Fresh Salad"
+      },
+      {
+        "name": "Thai Chicken Salad",
+        "description": "Chicken, lettuce, carrots, scallions, sesame seeds, cilantro, bean sprouts, peanuts, and crispy noodles.",
+        "price": "$14.82",
+        "section": "Fresh Salad"
+      },
+      {
+        "name": "Cobb Salad",
+        "description": "Chopped romaine lettuce, bacon avocado, chicken, eggs, red onions, diced tomatoes, fresh basil, and gorgonzola cheese .",
+        "price": "$16.43",
+        "section": "Fresh Salad"
+      },
+      {
+        "name": "Grilled Shrimp Salad",
+        "description": "Mixed greens, bell pepper, red onions, avocado, grilled shrimp, and poppy seed dressing.",
+        "price": "$18.33",
+        "section": "Fresh Salad"
+      },
+      {
+        "name": "Garlic Cheese Bread",
+        "description": "Garlic bread topped with mozzarella cheese and served with a side of marinara sauce.",
+        "price": "$10.53",
+        "section": "Starters  Appetizers"
+      },
+      {
+        "name": "Chicken Bites",
+        "description": "Breaded, boneless, chicken breast chunks.",
+        "price": "$14.03",
+        "section": "Starters  Appetizers"
+      },
+      {
+        "name": "Lobster Mac and Cheese",
+        "description": "Penne pasta, three cheeses, lobster, and brandy cream sauce.",
+        "price": "$16.40",
+        "section": "Starters  Appetizers"
+      },
+      {
+        "name": "Fried Mozzarella",
+        "description": "Four slices mozzarella breaded, fried pesto aioli, and marinara.",
+        "price": "$14.92",
+        "section": "Starters  Appetizers"
+      },
+      {
+        "name": "Caprese Salad",
+        "description": "Sliced mozzarella, tomatoes, julienne basil, balsamic reduction, and olive oil.",
+        "price": "$14.84",
+        "section": "Starters  Appetizers"
+      },
+      {
+        "name": "Garlic Bread",
+        "description": "Buttery bread that is topped with garlic.",
+        "price": "$4.11",
+        "section": "Starters  Appetizers"
+      },
+      {
+        "name": "Wings",
+        "description": "Orders are prepared with one tossing sauce, and one dipping sauce. tossing sauces: spicy buffalo sauce, bbq sauce, pineapple cinnamon sauce, sweet and spicy apricot sauce, plain without tossing sauce. | dipping sauces: blue cheese, ranch, spicy ranch, pineapple cinnamon sauce, sweet and spicy apricot sauce, spicy buffalo sauce, bbq sauce, honey mustard, thai | additional dipping sauce, side of carrot and celery sticks for an additional charge. wings (8-10 pieces)",
+        "price": "$14.92",
+        "section": "Starters  Appetizers"
+      },
+      {
+        "name": "Calamari",
+        "description": "Deep fried to perfection and served with a side of marinara and spicy ranch.",
+        "price": "$14.92",
+        "section": "Starters  Appetizers"
+      },
+      {
+        "name": "Side of Dressing",
+        "description": "ranch, blue cheese, etc.",
+        "price": "$1.89",
+        "section": "Sides"
+      },
+      {
+        "name": "Side of Meatballs",
+        "description": "3 meatballs with marinara",
+        "price": "$6.44",
+        "section": "Sides"
+      },
+      {
+        "name": "Side of Sausage",
+        "description": "With marinara",
+        "price": "$6.44",
+        "section": "Sides"
+      },
+      {
+        "name": "Diet Pepsi",
+        "description": "20 oz. bottle (starting price; varies with size/toppings)",
+        "price": "$2.73",
+        "section": "Beverages"
+      },
+      {
+        "name": "Pepsi",
+        "description": "20 oz. bottle (starting price; varies with size/toppings)",
+        "price": "$2.73",
+        "section": "Beverages"
+      },
+      {
+        "name": "Sprite",
+        "description": "20 oz. bottle",
+        "price": "$2.73",
+        "section": "Beverages"
+      },
+      {
+        "name": "Dr. Pepper",
+        "description": "20 oz. bottle (starting price; varies with size/toppings)",
+        "price": "$2.73",
+        "section": "Beverages"
+      }
+    ]
+  },
+  {
+    "restaurantId": "3780",
+    "name": "Kind Coffee",
+    "sourceUrl": "http://kindcornersd.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "needs-browser: homepage is a client-rendered SPA shell (webpack-style _assets/*.js and *.ltr.css bundles, no server-rendered content) titled only 'Home'; zero price matches in raw HTML; no other page or marketplace listing found within budget"
+  },
+  {
+    "restaurantId": "2262",
+    "name": "Picasso's Naturals",
+    "sourceUrl": "http://picassonaturals.com/",
+    "confidence": "low",
+    "dishes": [],
+    "blocked": "cached homepage title 'Picasso Naturals' matches the worklist restaurant (minor apostrophe/possessive difference only) but carries zero price matches in raw HTML; no menu subpage or marketplace listing found within budget"
+  }
+]

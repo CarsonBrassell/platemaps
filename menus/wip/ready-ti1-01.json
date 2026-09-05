@@ -1,0 +1,3407 @@
+[
+  {
+    "restaurantId": "6833",
+    "name": "MIO + TUO cafe",
+    "sourceUrl": "https://ritual.co/order/mio-tuo-ninth-ave-b-st-san-diego/d5da",
+    "confidence": "medium",
+    "notes": "Read from the Ritual ordering app's __NEXT_DATA__ blob (props.initialState.menu.data), prices at displayPriceMicro/1e8. Address in the same payload (\"1229 Ninth Avenue\") matches the work list exactly. Cent distribution is scattered across nearly every 5-cent ending (0/5/10/15/25/30/35/45/50/55/60/65/70/75/80/85/90/95/99 all present, no single ending dominant) - divisor sweep at 1.04/1.10/1.15/1.20/1.25/1.30 found no consistent landing on round or .95/.99 values (best was 1.30 at 24/138, 17%), so this reads as ordinary POS-style pricing rather than a baked-in fee. Dropped the 'Most Popular' and 'NEW' carousel categories as duplicates of items shown elsewhere, except two Strawberry Matcha size variants that appeared nowhere else and are kept under section 'Most Popular'.",
+    "dishes": [
+      {
+        "name": "Cold Americano",
+        "description": "",
+        "price": "$4.10",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Cappuccino",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Vanilla Latte",
+        "description": "",
+        "price": "$5.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Caramel Latte",
+        "description": "",
+        "price": "$5.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Cafe con Miel",
+        "description": "",
+        "price": "$5.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Hazelnut Latte",
+        "description": "",
+        "price": "$5.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Salted Caramel Latte",
+        "description": "",
+        "price": "$5.85",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Toffee Latte",
+        "description": "",
+        "price": "$5.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Dirty Chai",
+        "description": "With 1 shot.",
+        "price": "$6.30",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Pumpkin Latte",
+        "description": "",
+        "price": "$5.85",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Cortado",
+        "description": "",
+        "price": "$4.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Caramel Macchiato",
+        "description": "",
+        "price": "$5.85",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Cinnamon Café Mocha",
+        "description": "",
+        "price": "$5.85",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Mint Café Mocha",
+        "description": "",
+        "price": "$5.95",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Mocha",
+        "description": "",
+        "price": "$5.85",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot White Mocha",
+        "description": "",
+        "price": "$5.95",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Horchata Latte",
+        "description": "",
+        "price": "$5.95",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Coffee",
+        "description": "",
+        "price": "$3.70",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Honey Lavender Latte",
+        "description": "",
+        "price": "$6.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Dolce Bianca",
+        "description": "",
+        "price": "$5.95",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Espresso",
+        "description": "",
+        "price": "$1.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$4.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Americano",
+        "description": "",
+        "price": "$4.15",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Cappuccino",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Vanilla Latte",
+        "description": "",
+        "price": "$5.80",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Caramel Latte",
+        "description": "",
+        "price": "$5.80",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Hazelnut Latte",
+        "description": "",
+        "price": "$5.80",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Pumpkin Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Toffee Latte",
+        "description": "",
+        "price": "$5.80",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Cortado",
+        "description": "",
+        "price": "$4.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Caramel Macchiato",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Cinnamon Café Mocha",
+        "description": "",
+        "price": "$6.60",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Mint Café Mocha",
+        "description": "",
+        "price": "$6.60",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Mocha",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold White Mocha",
+        "description": "",
+        "price": "$6.60",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Horchata Latte",
+        "description": "",
+        "price": "$6.60",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Coffee",
+        "description": "",
+        "price": "$1.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Honey Lavender Latte",
+        "description": "",
+        "price": "$7.15",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Dolce Bianca",
+        "description": "",
+        "price": "$6.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Large Espresso",
+        "description": "",
+        "price": "$1.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Cafe con Miel",
+        "description": "",
+        "price": "$6.35",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Salted Caramel Latte",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Dirty Chai",
+        "description": "With 2 shots.",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Macadamia Nut White Mocha",
+        "description": "",
+        "price": "$5.85",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Macadamia Nut White Mocha",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cortez Regular",
+        "description": "",
+        "price": "$5.65",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cortez Large",
+        "description": "",
+        "price": "$6.90",
+        "section": "Coffee"
+      },
+      {
+        "name": "Lavender Matcha Regular",
+        "description": "",
+        "price": "$5.95",
+        "section": "Coffee"
+      },
+      {
+        "name": "Lavender Matcha Large",
+        "description": "",
+        "price": "$6.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Latte",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Latte",
+        "description": "",
+        "price": "$5.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Brown Sugar Vanilla",
+        "description": "",
+        "price": "$5.85",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Brown Sugar Vanilla",
+        "description": "",
+        "price": "$6.50",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Brown Sugar Dirty Chai",
+        "description": "",
+        "price": "$6.00",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Brown Sugar Dirty Chai",
+        "description": "",
+        "price": "$6.60",
+        "section": "Coffee"
+      },
+      {
+        "name": "Hot Pecan Praline",
+        "description": "",
+        "price": "$5.95",
+        "section": "Coffee"
+      },
+      {
+        "name": "Cold Pecan Praline",
+        "description": "",
+        "price": "$6.60",
+        "section": "Coffee"
+      },
+      {
+        "name": "BS Shaken Esp. With Oat",
+        "description": "",
+        "price": "$6.75",
+        "section": "Coffee"
+      },
+      {
+        "name": "Caramel Frappe",
+        "description": "We use coffee beans from Dark Horse, a local roastery from North Park.",
+        "price": "$6.50",
+        "section": "Frappes"
+      },
+      {
+        "name": "Salted Caramel Frappe",
+        "description": "We use coffee beans from Dark Horse, a local roastery from North Park.",
+        "price": "$6.85",
+        "section": "Frappes"
+      },
+      {
+        "name": "Mocha Frappe",
+        "description": "We use coffee beans from Dark Horse, a local roastery from North Park.",
+        "price": "$6.65",
+        "section": "Frappes"
+      },
+      {
+        "name": "Vanilla Frappe",
+        "description": "We use coffee beans from Dark Horse, a local roastery from North Park.",
+        "price": "$6.15",
+        "section": "Frappes"
+      },
+      {
+        "name": "Horchata Frappe",
+        "description": "We use coffee beans from Dark Horse, a local roastery from North Park.",
+        "price": "$6.95",
+        "section": "Frappes"
+      },
+      {
+        "name": "Oreo Frappe",
+        "description": "",
+        "price": "$6.65",
+        "section": "Coffeeless Frappes"
+      },
+      {
+        "name": "Matcha Frappe",
+        "description": "",
+        "price": "$6.35",
+        "section": "Coffeeless Frappes"
+      },
+      {
+        "name": "Java Chip Frappe",
+        "description": "",
+        "price": "$6.15",
+        "section": "Coffeeless Frappes"
+      },
+      {
+        "name": "Taro Frappe",
+        "description": "",
+        "price": "$6.45",
+        "section": "Coffeeless Frappes"
+      },
+      {
+        "name": "Dirty Chai Protein Smoothie",
+        "description": "A shot of espresso, protein powder, peanut butter,chai powder, banana, almond milk. 24oz.",
+        "price": "$10.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Protein Smoothie",
+        "description": "Protein powder, banana, hemp seed, cacao nibs, peanut butter, almond milk. 24oz.",
+        "price": "$11.00",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Real Mango Smoothie",
+        "description": "",
+        "price": "$6.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Real Strawberry Smoothie",
+        "description": "",
+        "price": "$6.65",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry Banana",
+        "description": "",
+        "price": "$6.75",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry Mango Smoothie Regular",
+        "description": "",
+        "price": "$6.15",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Strawberry Mango Smoothie Large",
+        "description": "",
+        "price": "$6.70",
+        "section": "Smoothies"
+      },
+      {
+        "name": "Rose City Genmaicha Tea",
+        "description": "16 oz.",
+        "price": "$4.25",
+        "section": "Premium Tea"
+      },
+      {
+        "name": "Meadow Tea",
+        "description": "16 oz.",
+        "price": "$4.25",
+        "section": "Premium Tea"
+      },
+      {
+        "name": "Red Nectar Tea",
+        "description": "16 oz.",
+        "price": "$4.25",
+        "section": "Premium Tea"
+      },
+      {
+        "name": "Cold Earl Grey Tea",
+        "description": "",
+        "price": "$3.90",
+        "section": "Classic Tea"
+      },
+      {
+        "name": "Cold English Breakfast Tea",
+        "description": "",
+        "price": "$3.90",
+        "section": "Classic Tea"
+      },
+      {
+        "name": "Cold Peppermint Tea",
+        "description": "",
+        "price": "$3.90",
+        "section": "Classic Tea"
+      },
+      {
+        "name": "Hot Earl Grey Tea",
+        "description": "",
+        "price": "$3.90",
+        "section": "Classic Tea"
+      },
+      {
+        "name": "Hot English Breakfast Tea",
+        "description": "",
+        "price": "$3.90",
+        "section": "Classic Tea"
+      },
+      {
+        "name": "Hot Peppermint Tea",
+        "description": "",
+        "price": "$3.90",
+        "section": "Classic Tea"
+      },
+      {
+        "name": "Blue Lemonade",
+        "description": "",
+        "price": "$5.00",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "Pineapple Hibiscus",
+        "description": "",
+        "price": "$5.95",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "Mojito Lemonade",
+        "description": "",
+        "price": "$5.55",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "Guava Coconut",
+        "description": "",
+        "price": "$5.95",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "Lemon Iced Tea",
+        "description": "",
+        "price": "$5.00",
+        "section": "Cold Beverages"
+      },
+      {
+        "name": "Panini Delux",
+        "description": "Roasted chicken, avocado, bacon, provolone, lettuce tomato, pickle, ranch, mustard on pressed sourdough.",
+        "price": "$16.95",
+        "section": "Lunch"
+      },
+      {
+        "name": "Pesto Turkey",
+        "description": "Turkey, basil pesto, roasted red bell pepper, provolone served on ciabatta.",
+        "price": "$14.45",
+        "section": "Lunch"
+      },
+      {
+        "name": "TBA",
+        "description": "Turkey, bacon, avocado, pickle, lettuce, tomato, ranch, mustard on sourdough.",
+        "price": "$15.75",
+        "section": "Lunch"
+      },
+      {
+        "name": "Cali Veggie Crunch",
+        "description": "Avocado, tomato, cucumber, hummus, lettuce, cream cheese on sweet wheat bread.",
+        "price": "$14.45",
+        "section": "Lunch"
+      },
+      {
+        "name": "Turkey BLT",
+        "description": "Bacon, turkey, chopped romaine lettuce, tomato, mayo served on sourdough.",
+        "price": "$14.45",
+        "section": "Lunch"
+      },
+      {
+        "name": "Kettle Style Chips",
+        "description": "",
+        "price": "$2.00",
+        "section": "Lunch"
+      },
+      {
+        "name": "Chocolate Banana Teabread",
+        "description": "",
+        "price": "$4.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Vegan Zucchini Teabread",
+        "description": "",
+        "price": "$4.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Gluten Free Brownie With Walnut",
+        "description": "",
+        "price": "$5.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Gluten Free Lemon Poppyseed Muffin",
+        "description": "",
+        "price": "$3.80",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Gluten-Free Blueberry Muffin",
+        "description": "",
+        "price": "$3.80",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Blackberry Banana Nut Muffin",
+        "description": "",
+        "price": "$4.65",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Blueberry Muffin",
+        "description": "",
+        "price": "$4.65",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Honey Bran Muffin",
+        "description": "",
+        "price": "$4.65",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Apple Cinnamon Muffin",
+        "description": "",
+        "price": "$4.65",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Almond Danish",
+        "description": "",
+        "price": "$4.15",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Cherry Danish",
+        "description": "",
+        "price": "$4.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Cheese Danish",
+        "description": "",
+        "price": "$4.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Madelain Cookie",
+        "description": "",
+        "price": "$3.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Butter Pecan Cookie",
+        "description": "",
+        "price": "$2.85",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Plain Bagel",
+        "description": "",
+        "price": "$3.45",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Everything Bagel",
+        "description": "",
+        "price": "$3.45",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Croissant",
+        "description": "",
+        "price": "$2.85",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Plain Bagel with Cream Cheese",
+        "description": "",
+        "price": "$5.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Everything Bagel with Cream Cheese",
+        "description": "",
+        "price": "$5.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Pecan Coffeecake Teabread",
+        "description": "",
+        "price": "$4.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Gluten Free Paradise Bar with Pecan",
+        "description": "",
+        "price": "$5.25",
+        "section": "Baked Goods"
+      },
+      {
+        "name": "Hot Okinawa Black Tea",
+        "description": "",
+        "price": "$5.05",
+        "section": "Beverages"
+      },
+      {
+        "name": "Iced Okinawa Black Tea",
+        "description": "",
+        "price": "$5.85",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Matcha Latte",
+        "description": "",
+        "price": "$6.05",
+        "section": "Beverages"
+      },
+      {
+        "name": "Iced Matcha Latte",
+        "description": "",
+        "price": "$6.05",
+        "section": "Beverages"
+      },
+      {
+        "name": "Milk Tea Regular",
+        "description": "",
+        "price": "$5.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Brown Sugar Milk Tea Regular",
+        "description": "",
+        "price": "$5.70",
+        "section": "Beverages"
+      },
+      {
+        "name": "Brown Sugar Milk Tea Large",
+        "description": "",
+        "price": "$6.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "Chai Latte Regular",
+        "description": "",
+        "price": "$5.70",
+        "section": "Beverages"
+      },
+      {
+        "name": "Chai Latte Large",
+        "description": "",
+        "price": "$6.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "Taro Latte Regular",
+        "description": "",
+        "price": "$5.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Taro Latte Large",
+        "description": "",
+        "price": "$6.05",
+        "section": "Beverages"
+      },
+      {
+        "name": "Winter Melon Milk Tea Regular",
+        "description": "",
+        "price": "$5.80",
+        "section": "Beverages"
+      },
+      {
+        "name": "Winter Melon Milk Tea Large",
+        "description": "",
+        "price": "$6.25",
+        "section": "Beverages"
+      },
+      {
+        "name": "Jasmine Milk Tea Regular",
+        "description": "",
+        "price": "$5.70",
+        "section": "Beverages"
+      },
+      {
+        "name": "Iced Maple Matcha Latte",
+        "description": "",
+        "price": "$6.45",
+        "section": "Beverages"
+      },
+      {
+        "name": "Hot Maple Matcha Latte",
+        "description": "",
+        "price": "$6.45",
+        "section": "Beverages"
+      },
+      {
+        "name": "Strawberry Matcha - R",
+        "description": "",
+        "price": "$6.55",
+        "section": "Most Popular"
+      },
+      {
+        "name": "Strawberry Matcha - Large",
+        "description": "",
+        "price": "$7.05",
+        "section": "Most Popular"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6868",
+    "name": "Phatties Bake Shop",
+    "sourceUrl": "https://www.toasttab.com/local/order/phattiesbakeshop",
+    "confidence": "high",
+    "notes": "First-party Toast storefront; page's own address1 field reads \"4143 Voltaire Street\", matching the work list exactly (the router had flagged a DIFFERENT phattiesbakeshop Toast page as wrong-branch at \"9379 Poplar Avenue\" - this is the correct slug/page, not that one). Dropped the 'Featured Items' carousel (3 items) as a confirmed duplicate of items already listed under Savory. Cent distribution on the remaining 142 items is almost entirely $.00/$.50 (102/39) with one $.69 outlier - no divisor (1.04/1.10/1.15/1.20/1.25/1.30) produces a clean landing on round or .95/.99 values, so this reads as genuine round/half-dollar bakery pricing, not a fee. 16 sections: Pastries, Savory, Cookies, Grab N' Go, Build A latte, Seasonal, Specialty Drinks, Matcha, Basic Drinks, Teas, Cakes, Cupcakes, Pans, Vegan Gluten Free, Pies.",
+    "dishes": [
+      {
+        "name": "Cinnamon rolls (v)(gf)",
+        "description": "These won't last! Our limited-quantity vegan and gluten-free cinnamon rolls are anything but basic. Imagine: a massive, first-of-its-kind cinnamon roll, handcrafted with a generous swirl of cinnamon, rich dark brown sugar, and vegan butter, all topped with our signature vegan drizzle. It's an ooey-gooey, amazing treat that's sure to sell out fast!",
+        "price": "$15.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Strawberry Biscuit",
+        "description": "",
+        "price": "$7.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Sugar Free Banana foster Nut Loaf",
+        "description": "Sugar free, vegan and gluten free Banana Loaf. Made with fresh banana and walnut.",
+        "price": "$7.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Churro Donut w/Mable Bourbon glaze",
+        "description": "Cinnamon swirl cake donut topped with crunch cinnamon crumble topping. Served with a side of maple bourbon icing for dipping. Vegan and gluten free",
+        "price": "$6.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Lemon Raspberry Donut",
+        "description": "Fluffy lemon donut topped with silky raspberry cream and fresh berries — bright, light, and irresistibly cute.",
+        "price": "$6.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Chocolate Chip Cookie Dough Donut",
+        "description": "",
+        "price": "$6.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "XXX Chocolate Extreme Donut",
+        "description": "",
+        "price": "$6.50",
+        "section": "Pastries"
+      },
+      {
+        "name": "Poptart",
+        "description": "",
+        "price": "$14.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Cinnamon Roll Cookie",
+        "description": "Soft-baked cinnamon cookie with a rich cream glaze — warm, gooey, and dangerously addictive.",
+        "price": "$7.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Strawberry Shortcake Cookie",
+        "description": "Soft vanilla cookie layered with silky cream and strawberries. Light, dreamy, and dangerously good.",
+        "price": "$7.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Blueberry Crumble Muffin",
+        "description": "Larger than life blueberry muffin baked with a crunchy crackle topping. Vegan and gluten free",
+        "price": "$7.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "apple pie scone",
+        "description": "",
+        "price": "$7.00",
+        "section": "Pastries"
+      },
+      {
+        "name": "Juanitos  focaccia frittata sandwich",
+        "description": "",
+        "price": "$16.50",
+        "section": "Savory"
+      },
+      {
+        "name": "Frittata Bagel Sandwich",
+        "description": "Watch out!  Here comes a best seller and what better way to celebrate 5 years strong... A mouth teasing sand which that makes you question all your lifes choices.  \r\n\r\nComing Soon",
+        "price": "$18.00",
+        "section": "Savory"
+      },
+      {
+        "name": "The Frittata",
+        "description": "This groundbreaking item is here for 2026 in honor of 5 years strong Phatties is stepping up and the Frittata filled with Just egg, Cheeses, meats, veggies!  melt in Yo mouth.  Also comes with a small side of hashbrowns",
+        "price": "$12.50",
+        "section": "Savory"
+      },
+      {
+        "name": "Quiche Slice",
+        "description": "Vegan and gluten free",
+        "price": "$16.50",
+        "section": "Savory"
+      },
+      {
+        "name": "The Slice",
+        "description": "GF Vegan pizza crust loaded up with a gravy style sauce, chorizo crumble, just egg, and mozzarella. Toasted and served by the slice",
+        "price": "$8.50",
+        "section": "Savory"
+      },
+      {
+        "name": "Bagel",
+        "description": "Vegan and gluten free",
+        "price": "$8.00",
+        "section": "Savory"
+      },
+      {
+        "name": "Hashbrown",
+        "description": "Golden, crunchy, and perfectly seasoned, these vegan and gluten-free hashbrown rings deliver a crispy bite with fluffy potato goodness inside. Perfect for dipping or snacking! ✨",
+        "price": "$2.69",
+        "section": "Savory"
+      },
+      {
+        "name": "Avocado Bagel",
+        "description": "A toasted bagel topped with creamy fresh avocado and red pepper flakes. (Pro tip: Upgrade to \"Deluxe\" with vegan feta,  pickled onions, balsamic drizzle!).",
+        "price": "$12.50",
+        "section": "Savory"
+      },
+      {
+        "name": "peanut butter cookie",
+        "description": "Super soft and loaded with peanut butter. XXL because size matters when it comes to cookies",
+        "price": "$5.00",
+        "section": "Cookies"
+      },
+      {
+        "name": "Cookies And Cream Cookie",
+        "description": "",
+        "price": "$5.00",
+        "section": "Cookies"
+      },
+      {
+        "name": "Sprinkle cookie",
+        "description": "Soft-baked cookie topped with silky vanilla frosting and a burst of rainbow sprinkles. sweet, playful, and impossible to resist.",
+        "price": "$5.00",
+        "section": "Cookies"
+      },
+      {
+        "name": "chocolate chip cookie",
+        "description": "Gooey and delicious XXL cookie packed with chocolate.",
+        "price": "$5.00",
+        "section": "Cookies"
+      },
+      {
+        "name": "Celebration Cupcake",
+        "description": "",
+        "price": "$6.00",
+        "section": "Grab N’ Go"
+      },
+      {
+        "name": "Edible Cookie dough",
+        "description": "Sweet, soft, and totally safe to eat! This vegan and gluten-free cookie dough is packed with rich vanilla flavor and chocolate chips for the ultimate guilt-free indulgence. 🍪✨",
+        "price": "$8.00",
+        "section": "Grab N’ Go"
+      },
+      {
+        "name": "Triple Berry Shortbread",
+        "description": "",
+        "price": "$12.00",
+        "section": "Grab N’ Go"
+      },
+      {
+        "name": "Hostess XXL Chocolate Cupcake",
+        "description": "A supersized take on the classic! This rich, chocolatey cupcake is filled with creamy vanilla frosting, topped with a smooth chocolate glaze and signature swirl. Vegan, gluten-free, and pure nostalgia in every bite! 🍫✨",
+        "price": "$8.50",
+        "section": "Grab N’ Go"
+      },
+      {
+        "name": "Strawberry Tres",
+        "description": "",
+        "price": "$12.00",
+        "section": "Grab N’ Go"
+      },
+      {
+        "name": "Protein Date Bites",
+        "description": "Naturally sweet, energy-packed bites made with dates, nuts, and plant-based protein. Vegan, gluten-free, and perfect for a quick, nutritious snack on the go! 🌱💪✨",
+        "price": "$10.00",
+        "section": "Grab N’ Go"
+      },
+      {
+        "name": "Chia Seed Pudding",
+        "description": "Creamy, nutrient-packed chia pudding topped with juicy berries for a refreshing, naturally sweet treat. Vegan, gluten-free, and perfect for breakfast or a wholesome snack! 🌱🫐🍓",
+        "price": "$14.00",
+        "section": "Grab N’ Go"
+      },
+      {
+        "name": "Tiramisu Tres Leche",
+        "description": "",
+        "price": "$14.00",
+        "section": "Grab N’ Go"
+      },
+      {
+        "name": "Carrot Cake Pan",
+        "description": "A moist, spiced carrot cake topped with luscious vegan cream cheese frosting. Gluten-free, perfectly sweet, and irresistibly cozy in every bite! 🥕✨",
+        "price": "$14.00",
+        "section": "Grab N’ Go"
+      },
+      {
+        "name": "Build a Latte",
+        "description": "Start with your choice of milk, then pick hot or iced. Choose your size—regular or large—and add a splash of syrup! The perfect latte, just the way you like it. ☕✨",
+        "price": "$7.50",
+        "section": "Build A latte"
+      },
+      {
+        "name": "Ube 4 Matcha",
+        "description": "Coconut Matcha with signature Ube Foam on top",
+        "price": "$8.50",
+        "section": "Seasonal"
+      },
+      {
+        "name": "Cereal Killer Cold Brew",
+        "description": "Vanilla Caramel Cold Brew with Vanilla Foam on top Garnished with Chocolate Ball Cereal",
+        "price": "$8.50",
+        "section": "Seasonal"
+      },
+      {
+        "name": "Pool Party Rita Energy",
+        "description": "Strawberry Dragonfruit Margarita Energy Drink",
+        "price": "$8.00",
+        "section": "Seasonal"
+      },
+      {
+        "name": "Coco Berry Wave Energy",
+        "description": "Blueberry Coconut Energy Drink",
+        "price": "$8.00",
+        "section": "Seasonal"
+      },
+      {
+        "name": "Electric Lemonade",
+        "description": "Refreshing lemonade infused with strawberry and topped with popping candy. Sweet, tangy, and bursting with fun in every sip.",
+        "price": "$6.00",
+        "section": "Seasonal"
+      },
+      {
+        "name": "Banana Bread Latte",
+        "description": "Our signature Banana Bread in drink form.",
+        "price": "$8.50",
+        "section": "Seasonal"
+      },
+      {
+        "name": "Dubai Latte'",
+        "description": "Chocolate, Pistachio, Vanilla, Pistachio Foam",
+        "price": "$8.50",
+        "section": "Seasonal"
+      },
+      {
+        "name": "Mocha",
+        "description": "A rich blend of espresso, velvety steamed milk, and decadent chocolate syrup, topped with a smooth foam. Hot or iced, this indulgent treat is the perfect combination of coffee and chocolate bliss! ☕🍫✨",
+        "price": "$8.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Shroomy Shrooms",
+        "description": "Try this refreshing, immuno boosting, healthy take on a latte. Great for brain function, vision, and your heart. Hints of nuttiness and cacao. chaggachino, monk fruit, cacao.",
+        "price": "$8.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Suh-Ga Daddy",
+        "description": "Phatties take on a old time classic. Vietnamese Coffee. Strong, sweet, delicious",
+        "price": "$8.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Coconut Cold Brew",
+        "description": "The perfect blend of strong espresso and sweet coconut. Enough to take you back to island living",
+        "price": "$8.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "UBE 4 Daze",
+        "description": "Vanilla latte with ube oat foam",
+        "price": "$8.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Salty Canadian",
+        "description": "",
+        "price": "$8.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "PB BLISS Cold Brew",
+        "description": "The strength of cold brew with the sweetness of caramel provide the perfect depth of flavor. Packed with peanut butter protein. Smooth, balanced, tasty",
+        "price": "$8.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "The O.G.",
+        "description": "Creamy oat milk, vanilla, and cinnamon will remind you of the delicacy that is horchata. 2 shots of espresso to get you going. Ole!",
+        "price": "$8.50",
+        "section": "Specialty Drinks"
+      },
+      {
+        "name": "Matcha",
+        "description": "Ceremonial Grade Matcha – Pure, vibrant green matcha made from the finest leaves, offering a smooth, rich flavor and smooth energy boost. Served hot or iced, this antioxidant-packed treat is the perfect balance of tradition and vitality. 🍵💚",
+        "price": "$8.00",
+        "section": "Matcha"
+      },
+      {
+        "name": "Lavender Matcha",
+        "description": "",
+        "price": "$8.50",
+        "section": "Matcha"
+      },
+      {
+        "name": "Iced Oat Horchata Matcha",
+        "description": "",
+        "price": "$8.50",
+        "section": "Matcha"
+      },
+      {
+        "name": "Chaga Matcha",
+        "description": "",
+        "price": "$8.50",
+        "section": "Matcha"
+      },
+      {
+        "name": "Strawberry matcha",
+        "description": "",
+        "price": "$8.50",
+        "section": "Matcha"
+      },
+      {
+        "name": "Banana Matcha",
+        "description": "Matcha and golden Banana.",
+        "price": "$8.50",
+        "section": "Matcha"
+      },
+      {
+        "name": "Coconut Matcha",
+        "description": "Matcha with coconut",
+        "price": "$8.50",
+        "section": "Matcha"
+      },
+      {
+        "name": "Drip Coffee",
+        "description": "",
+        "price": "$4.00",
+        "section": "Basic Drinks"
+      },
+      {
+        "name": "Americano",
+        "description": "",
+        "price": "$4.50",
+        "section": "Basic Drinks"
+      },
+      {
+        "name": "Cold Brew",
+        "description": "",
+        "price": "$6.00",
+        "section": "Basic Drinks"
+      },
+      {
+        "name": "Double Shot",
+        "description": "",
+        "price": "$4.50",
+        "section": "Basic Drinks"
+      },
+      {
+        "name": "Hot Chocolate",
+        "description": "",
+        "price": "$4.50",
+        "section": "Basic Drinks"
+      },
+      {
+        "name": "Cortado",
+        "description": "",
+        "price": "$6.00",
+        "section": "Basic Drinks"
+      },
+      {
+        "name": "Cappaccino",
+        "description": "",
+        "price": "$6.00",
+        "section": "Basic Drinks"
+      },
+      {
+        "name": "Chai Tea",
+        "description": "",
+        "price": "$6.00",
+        "section": "Basic Drinks"
+      },
+      {
+        "name": "Flat white",
+        "description": "",
+        "price": "$6.00",
+        "section": "Basic Drinks"
+      },
+      {
+        "name": "Macchiato",
+        "description": "",
+        "price": "$6.00",
+        "section": "Basic Drinks"
+      },
+      {
+        "name": "Chamomile",
+        "description": "",
+        "price": "$4.50",
+        "section": "Teas"
+      },
+      {
+        "name": "Earl Grey Lavender",
+        "description": "",
+        "price": "$4.50",
+        "section": "Teas"
+      },
+      {
+        "name": "Gun Powder Green",
+        "description": "",
+        "price": "$4.50",
+        "section": "Teas"
+      },
+      {
+        "name": "Butterfly Pea",
+        "description": "",
+        "price": "$4.50",
+        "section": "Teas"
+      },
+      {
+        "name": "Peppermint",
+        "description": "",
+        "price": "$4.50",
+        "section": "Teas"
+      },
+      {
+        "name": "Iced Tea of The Day",
+        "description": "",
+        "price": "$6.00",
+        "section": "Teas"
+      },
+      {
+        "name": "6 pack chocolate",
+        "description": "Emergency six pack cupcakes for every event just let get the room temp after 45 minutes. These slow baked moist triple chocolate cupcakes are always a hit.",
+        "price": "$32.00",
+        "section": "Teas"
+      },
+      {
+        "name": "6 pack Funfetti",
+        "description": "Emergency six pack cupcakes for every event just let get the room temp after 45 minutes. These slow baked moist  vanilla fun fetti cupcakes are always a hit.",
+        "price": "$32.00",
+        "section": "Teas"
+      },
+      {
+        "name": "6 pack lemon cupcakes",
+        "description": "",
+        "price": "$28.00",
+        "section": "Teas"
+      },
+      {
+        "name": "4 inch Cake fun fetti",
+        "description": "Emergent 4 in 3 layer vanilla cake  for every event just let get the room temp after 45 minutes. This slow baked moist vanilla cake with sprinkles is  always a hit.",
+        "price": "$35.00",
+        "section": "Teas"
+      },
+      {
+        "name": "6 in 3 Layer Chocolate Cake",
+        "description": "",
+        "price": "$80.00",
+        "section": "Teas"
+      },
+      {
+        "name": "6 inch 3 layer Vanilla Cake",
+        "description": "",
+        "price": "$80.00",
+        "section": "Teas"
+      },
+      {
+        "name": "6 in 3 Layer Red Velvet Cake",
+        "description": "",
+        "price": "$80.00",
+        "section": "Teas"
+      },
+      {
+        "name": "Whole Quiche",
+        "description": "",
+        "price": "$50.00",
+        "section": "Teas"
+      },
+      {
+        "name": "6 pack mixed bagels",
+        "description": "",
+        "price": "$30.00",
+        "section": "Teas"
+      },
+      {
+        "name": "Ultimate birthday kit",
+        "description": "Candles, cake cutter, matches, cake topper, and a card",
+        "price": "$25.00",
+        "section": "Teas"
+      },
+      {
+        "name": "Goodie box 12.50",
+        "description": "That still in the house is goodie box has 4 to 5 items value up to $24-$30. It’s mixing match baker’s choice. Just look at the room temp after about 20 minutes and enjoy..",
+        "price": "$12.50",
+        "section": "Teas"
+      },
+      {
+        "name": "goodie box 9.50",
+        "description": "",
+        "price": "$9.50",
+        "section": "Teas"
+      },
+      {
+        "name": "Strawberry cream bliss",
+        "description": "How to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select Address- then Pick up or Delivery\r\n3. Select date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product \r\n\r\n6in 3 layer Strawberry with Vanilla sponge in center, Vegan Vanilla cream cheese and covered in V/GF crumbles\r\nFeeds 1-20\r\nV/GF",
+        "price": "$85.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Carrot Cake",
+        "description": "6 in 3 layer Carrot Cake (Contains Nuts) ,Vegan cream cheese frosting, with walnuts on outside.\r\n\r\nHow to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select Address- then Pick up or Delivery\r\n3. Select date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product \r\nFeeds 1-20\r\nV/GF",
+        "price": "$89.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Oreo dreams",
+        "description": "Another top seller!\r\n6 in 3 layers cake with a vanilla sponge, and xxx chocolate on top and bottom.  Oreo cream cheese frosting and oreos along with a chocolate ganache on top\r\nfeeds 1-20\r\n\r\nHow to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select Address- then Pick up or Delivery\r\n3. Select date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product \r\n\r\nV/GF",
+        "price": "$79.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Fruity bliss drip cake",
+        "description": "Fruity Bliss Drip Cake Vibrant and fun, this cereal-inspired cake is a celebration of color and crunch! Featuring a cereal milk sponge cake with Fruity Pebbles frosting",
+        "price": "$109.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Phatties featured Cake",
+        "description": "6in 3 layer vanilla sponge, Pink and white frosting on outside.\r\nFeeds 1-20\r\nV/GF\r\n\r\nHow to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select Address- then Pick up or Delivery\r\n3. Select date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product",
+        "price": "$69.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Lemon lovers",
+        "description": "when life gives you lemons, Phatties makes cakes!!! 6in 3 layer Lemon cake, Lemon Frosting, topped with lemon!",
+        "price": "$60.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Rich Strawberry 3 Tier 6 inch",
+        "description": "Vegan and Gluten Free Strawberry Sponge with vegan cream cheese Frosting topped with Strawberries Cake Collar around the outside",
+        "price": "$85.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Butter pecan bliss cake",
+        "description": "Butter Pecan Bliss Cake\r\nSavor the luxurious flavors of the Butter Pecan Bliss Cake, a butter pecan masterpiece that's as comforting as it is indulgent. Layers of rich and moist maple bourbon cake are frosted with a silky butter pecan buttercream topped with pecans and a golden caramel drizzle that flows over the edges, creating an elegant finish for the season!",
+        "price": "$99.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "lush Red Velvet 3 tier 6 inch",
+        "description": "Vegan and Gluten Free \nRed Velvet Sponge, with a cream cheese frosting naked thin layer on the outside with dollops topped and sprinkled red velvet cake.",
+        "price": "$69.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Seasonal floral cake",
+        "description": "Seasonal Flowers on a cake flavor of your choosing\r\nHow to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select Address- then Pick up or Delivery\r\n3. Select date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product",
+        "price": "$125.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Deluxe Vanilla 3 tier 6 inch",
+        "description": "Vegan and Gluten Free Vanilla cake with Vanilla Frosting",
+        "price": "$60.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "XXX Chocolate Raspberry",
+        "description": "6 in 3 layer chocolate sponge cake with chocolate frosting, Chocolate drip, raspberry cream cheese frosting, and Fresh raspberries on top.  \r\n\r\nHow to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select  Address- then Pick up or Delivery\r\n3. Select date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product \r\n\r\nFeeds 1-20 V/GF",
+        "price": "$89.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Lemon Wave Cake",
+        "description": "10 In XL Wave Cake with Lemon Sponge and Lemon Cream Cheese Frosting and lemon grated on top",
+        "price": "$65.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Rainbow Pride",
+        "description": "6 in 6 layer multi color cake.  Vanilla sponge with  vanilla frosting and fun-fetti on outside.  \r\n\r\nHow to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select Address- then Pick up or Delivery\r\n3. Select date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product \r\n\r\nFeeds 1-20 \r\nV/GF",
+        "price": "$149.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Unicorn Cake",
+        "description": "6 in 3 layer cake for every little girl or boys dreams!  You pick the cake flavor, and frosting is pink vanilla\r\n\r\nHow to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select Pick up or Delivery\r\n3. Select Address- then date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product \r\n\r\nFeeds 1-20\r\nV/GF",
+        "price": "$99.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Chocolate blueberry coconut bliss cake",
+        "description": "6in 3 layer dark chocolate sponge with vegan cream cheese, Coconut, fresh blueberries on top\r\n\r\nHow to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select Address- then Pick up or Delivery\r\n3. Select date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product \r\n\r\nFeeds 1-20\r\nV/GF",
+        "price": "$69.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Chocolate peanut butter cake",
+        "description": "6in 3 layer xxx chocolate sponge, Peanut butter cream cheese frosting on outside.\r\n\r\nHow to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select Address- then Pick up or Delivery\r\n3. Select date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product \r\n\r\nFeeds 1-20\r\nV/GF",
+        "price": "$69.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Chocolate chip cookie dough",
+        "description": "one of our top sellers this cake is one for the Fans of the cookie.  6 in 3 layer cookie dough cake with Brown sugar cream cheese frosting on outside.\r\n\r\nHow to schedule a future order.  \r\n1. Go to www.phattiesbakeshop.com \r\n2. Select Pick up or Delivery\r\n3. Select Address- then date and time (extra fee if picking up before 10 Am)\r\n4. Select Update\r\n5. Choose your product \r\nFeeds 1-20\r\nV/GF",
+        "price": "$74.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Funfetti cake",
+        "description": "6in 3 layer Funfetti cake vanilla sponge, and sprinkles with vanilla cream cheese, and  long sprinkles on the outside",
+        "price": "$69.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Campfire S’mores",
+        "description": "A decadent chocolate cake inspired by classic campfire s'mores, this creation features 3 layers of rich chocolate sponge frosted with vegan marshmallows buttercream and decorated with graham cracker crumbles and chocolate ganache.",
+        "price": "$109.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "Bow heart cake",
+        "description": "",
+        "price": "$115.00",
+        "section": "Cakes"
+      },
+      {
+        "name": "6 pack vanilla",
+        "description": "Orders need to be put in by 5am of that day",
+        "price": "$26.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "6 pack chocolate",
+        "description": "Orders need to be put in by 5am of that day",
+        "price": "$26.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "6 pack mix chocolate/vanilla",
+        "description": "",
+        "price": "$27.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "6 pack lemon cupcakes",
+        "description": "",
+        "price": "$28.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "Dozen vanilla cupcakes",
+        "description": "",
+        "price": "$48.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "Dozen chocolate cupcakes",
+        "description": "",
+        "price": "$48.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "Dozen vanilla and  chocolate cupcakes",
+        "description": "",
+        "price": "$50.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "Dozen assorted  cupcake flavors",
+        "description": "",
+        "price": "$65.00",
+        "section": "Cupcakes"
+      },
+      {
+        "name": "Tiramisu tres leche Pan",
+        "description": "A home run at any event Half Sheet pan Tiramisu tres leche  vegan and gluten free and feeds 1-50\r\n8x8 feeds 1-8\r\nHalf sheet 1-20\r\nFull sheet 1-50",
+        "price": "$24.00",
+        "section": "Pans"
+      },
+      {
+        "name": "Coffee Cake Pan",
+        "description": "A home run at any event Half Sheet pan Coffee Cake Pan  vegan and gluten free and feeds 1-50\r\n\r\n8x8 feeds 1-8\r\nHalf sheet 1-20\r\nFull sheet 1-50",
+        "price": "$24.00",
+        "section": "Pans"
+      },
+      {
+        "name": "24k Carrot Cake Pan",
+        "description": "A home run at any event Half Sheet pan Carrot Cake Pan  vegan and gluten free and feeds 1-50\r\n\r\n8x8 feeds 1-8\r\nHalf sheet 1-20\r\nFull sheet 1-50",
+        "price": "$24.00",
+        "section": "Pans"
+      },
+      {
+        "name": "Marble Cake Pan",
+        "description": "A home run at any event Half Sheet pan Marble Cake Pan  vegan and gluten free and feeds 1-50\r\n8x8 feeds 1-8\r\nHalf sheet 1-20\r\nFull sheet 1-50",
+        "price": "$24.00",
+        "section": "Pans"
+      },
+      {
+        "name": "Red Velvet Cake Pan",
+        "description": "A home run at any event Half Sheet pan Red Velvet Cake Pan vegan and gluten free and feeds 1-50\r\n8x8 feeds 1-8\r\nHalf sheet 1-20\r\nFull sheet 1-50",
+        "price": "$24.00",
+        "section": "Pans"
+      },
+      {
+        "name": "Whole Quiche",
+        "description": "",
+        "price": "$50.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "8 Strawberry Cream Scone",
+        "description": "",
+        "price": "$48.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "8 Blueberry Scones",
+        "description": "",
+        "price": "$48.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "24 regular cc cookies",
+        "description": "",
+        "price": "$69.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "Dozen xl mixed cookies",
+        "description": "",
+        "price": "$54.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "Dozen rice crispy treats",
+        "description": "",
+        "price": "$65.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "12 Mini Bunt Cake assorted Platter",
+        "description": "",
+        "price": "$42.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "24 xl mixed cookies",
+        "description": "",
+        "price": "$110.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "Dozen banana nut loaf sugar free",
+        "description": "",
+        "price": "$70.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "Dozen Assorted Donuts",
+        "description": "",
+        "price": "$65.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "100 xl mixed cookies",
+        "description": "",
+        "price": "$450.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "24 Mini Bunt cake assorted platter",
+        "description": "",
+        "price": "$78.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "12 large bakers choice",
+        "description": "",
+        "price": "$72.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "24 large bakers choice",
+        "description": "",
+        "price": "$125.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "48 large bakers choice",
+        "description": "",
+        "price": "$235.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "120 Assorted Muffins",
+        "description": "",
+        "price": "$540.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "100 medium mixed donuts",
+        "description": "",
+        "price": "$400.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "200 medium mixed Donuts",
+        "description": "",
+        "price": "$750.00",
+        "section": "Vegan Gluten Free"
+      },
+      {
+        "name": "Apple Crumb Pie",
+        "description": "9 in vegan gluten free Apple Crunch Pie Comes in a Phatties Style Box and sure to be the Hit of the Party",
+        "price": "$42.00",
+        "section": "Pies"
+      },
+      {
+        "name": "Cherry Crumb Pie",
+        "description": "9 in Vegan Gluten Free Cherry Crumb Pie in a phatties Style Box. Sure to be a hit of any event.",
+        "price": "$42.00",
+        "section": "Pies"
+      },
+      {
+        "name": "Pumpkin Pie",
+        "description": "9 in vegan GF pumpkin Pie",
+        "price": "$35.00",
+        "section": "Pies"
+      },
+      {
+        "name": "Sweet bourbon Pecan Pie",
+        "description": "9 in pie crust Vegan And Gluten Free.  Come in Phatties Style Box and will be the hit of any event",
+        "price": "$48.00",
+        "section": "Pies"
+      },
+      {
+        "name": "Pumpkin Crunch Pie",
+        "description": "",
+        "price": "$40.00",
+        "section": "Pies"
+      },
+      {
+        "name": "Blueberry Cobbler Pie",
+        "description": "Bursting with juicy blueberries and topped with a golden, crumbly cobbler crust, this vegan and gluten-free pie is the perfect balance of sweet, tart, and buttery goodness. A cozy classic in every bite! 🫐✨🥧",
+        "price": "$48.00",
+        "section": "Pies"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6064",
+    "name": "Sandwich Bags Deli and Catering",
+    "sourceUrl": "https://sandwichbagsdeli.com/wp-content/uploads/2026/01/Menu-2026.pdf",
+    "confidence": "high",
+    "notes": "First-party dated (Jan 2026) PDF menu linked from the restaurant's own homepage; text layer is complete and pairs cleanly with pdftotext -layout/-raw, no image-only pages. Address in the PDF footer (\"10769 Woodside Ave. #108, Santee, CA 92071\") matches the work list. 53 priced items; cents are almost entirely $.95 (43/53) with a handful of $.00/$.50 sides - conventional printed pricing, no markup pattern to test since this is a static PDF, not an ordering channel. Excluded the CATERING section (Assorted Deli Sandwich Tray, Fresh Fruit/Vegetable Tray, per-person Sides) as adjunct party-tray pricing, and excluded 'Sandwich into Salad' (priced as 'Price of Sandwich', not a fixed number). Resolved one layout ambiguity: 'Earl of Sandwich $15.95' and the following paragraph starting 'For the Truly Hungry! Turkey, Roast Beef...' are the name and description of the SAME item (#6), not a separate unpriced dish - pdftotext's column layout separates them.",
+    "dishes": [
+      {
+        "name": "Deluxe Breakfast Sandwich",
+        "description": "Ham, Bacon, Egg, Cheese, your choice of Croissant, Bagel or Toast",
+        "price": "$8.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Deluxe Bagel",
+        "description": "Cream Cheese, Bacon, & Tomato",
+        "price": "$7.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Breakfast Sandwich",
+        "description": "Egg, Cheese, your choice of Bacon, Ham or Sausage and your choice of Croissant, Bagel or Toast",
+        "price": "$7.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Bagel with Cream Cheese",
+        "description": "Plain or Everything Bagel",
+        "price": "$3.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "Toast or Croissant with Jam",
+        "description": "",
+        "price": "$2.95",
+        "section": "Breakfast"
+      },
+      {
+        "name": "East County Native",
+        "description": "Turkey, Bacon, Lettuce, Tomato, Avocado, Provolone Cheese, Mustard, Mayo, Oil & Vinegar on Sourdough",
+        "price": "$15.95",
+        "section": "Specialties"
+      },
+      {
+        "name": "California Cowboy",
+        "description": "Roast Beef, Provolone Cheese, Avocado, Lettuce, Tomato, Mustard, Mayo, Oil & Vinegar on Sourdough",
+        "price": "$12.95",
+        "section": "Specialties"
+      },
+      {
+        "name": "Farmers Market",
+        "description": "Avocado, Lettuce, Cucumber, Tomatoes, Swiss, Provolone Cheese, Mayo, Mustard, Oil & Vinegar on Wheat",
+        "price": "$12.95",
+        "section": "Specialties"
+      },
+      {
+        "name": "West Coast Catch",
+        "description": "Seafood Salad, Avocado, Lettuce, Tomato, Special Sauce on Sourdough",
+        "price": "$12.95",
+        "section": "Specialties"
+      },
+      {
+        "name": "Indian Summer",
+        "description": "Albacore Tuna, Mango Chutney, Slivered Almonds, Curry Mayo, Lettuce, Tomato on Wheat",
+        "price": "$12.95",
+        "section": "Specialties"
+      },
+      {
+        "name": "Earl of Sandwich",
+        "description": "For the Truly Hungry! Turkey, Roast Beef, Jack & Cheddar Cheese, Lettuce, Tomato, Mustard, Mayo, Oil & Vinegar on Sourdough",
+        "price": "$15.95",
+        "section": "Specialties"
+      },
+      {
+        "name": "Awesome Grilled Cheese",
+        "description": "Melted Swiss, Jack & Cheddar Cheese on Buttered & Grilled Sourdough",
+        "price": "$9.95",
+        "section": "Specialties"
+      },
+      {
+        "name": "Chicken Pesto Panini",
+        "description": "Charbroiled Chicken Breast, Onion, Roasted Red Peppers, Provolone Cheese, Pesto Mayo on French Roll",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "Old Bailey",
+        "description": "Pastrami, Ham, Cole Slaw, Provolone, Swiss, Mustard, Special Sauce on Toasted Rye",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "The Reuben",
+        "description": "Corned Beef, Sauerkraut, Swiss, Mustard, Special Sauce on Toasted Rye",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "Meatball Sandwich",
+        "description": "Loaded with Meatballs, Marinara Sauce, Provolone, Parmesan on Toasted French Roll",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "Western BBQ",
+        "description": "Choice of Beef Brisket, Pulled Pork or Chicken, Mayo, Tangy BBQ Sauce, Cole Slaw on Toasted French Roll",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "Southwest Ranch",
+        "description": "Roast Beef, Melted Pepper Jack, Ortega Chili, Chipotle Mayo, Lettuce, Tomato on Sourdough",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "California Cuban",
+        "description": "Pork Loin, Smokey Ham, Mustard, Swiss, Pickle on Buttered & Grilled French Roll",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "Santee Hero",
+        "description": "Ham, Salami, Provolone, Pepperoncini, Red Onion, Lettuce, Tomato, Salt & Pepper, Pesto Mayo on Grilled French Roll",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "Yo Mamas Special",
+        "description": "Roast Beef, Sharp Cheddar, Red Onion, Mayo, Mustard, Lettuce, Tomato on Toasted French Roll",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "Ashley Special",
+        "description": "Turkey, Provolone, Avocado, Tomato, choice of Lettuce or Spinach, Pesto Mayo, on Grilled French Roll",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "Turkey Blueberry",
+        "description": "Turkey, Cheddar, Arugula, Light Mayo, Blueberry Preserves Grilled on Sourdough Bread",
+        "price": "$12.95",
+        "section": "Served Hot"
+      },
+      {
+        "name": "Sydney Special",
+        "description": "Pastrami, Double Provolone Cheese, Grilled Red Onions, Light Mayo on Grilled French Roll",
+        "price": "$12.95",
+        "section": "Standards"
+      },
+      {
+        "name": "Jody Special",
+        "description": "Turkey, Bacon, Pepper Jack Cheese, Lettuce, Tomato, Chipotle Mayo on Grilled Sourdough",
+        "price": "$12.95",
+        "section": "Standards"
+      },
+      {
+        "name": "Ricky Bobby",
+        "description": "Chipotle Mayo & BBQ, Grilled Chicken, Cheddar, Avocado, Tomato, choice of Lettuce or Spinach, on Grilled Sourdough",
+        "price": "$12.95",
+        "section": "Standards"
+      },
+      {
+        "name": "Sandys Ocho Cinco",
+        "description": "Roast Beef, Pepper Jack, Avocado, Lettuce, Tomato, Chipotle Mayo on Grilled Rye",
+        "price": "$12.95",
+        "section": "Standards"
+      },
+      {
+        "name": "Rockin Ronnie",
+        "description": "Turkey, Salami, Provolone, Ortega Chilis, Onions, Lettuce, Tomato, Chipotle Mayo, Salt & Pepper on Grilled French Roll",
+        "price": "$12.95",
+        "section": "Standards"
+      },
+      {
+        "name": "Gnarly Marley",
+        "description": "Chipotle Chicken, Pepper Jack, Ortega Chilis, Avocado, Chipotle Mayo on Grilled French Roll",
+        "price": "$12.95",
+        "section": "Standards"
+      },
+      {
+        "name": "Mels Popper",
+        "description": "Roast Beef, Cheddar, Chipotle Mayo, Cream Cheese, Jalapeno Slices, Lettuce, Tomato on Grilled Sourdough",
+        "price": "$12.95",
+        "section": "Standards"
+      },
+      {
+        "name": "Torpedo",
+        "description": "Cotto Salami, Ham, Mortadella, Provolone, Lettuce, Tomato, Mayo, Mustard on French Roll",
+        "price": "$15.95",
+        "section": "Standards"
+      },
+      {
+        "name": "Triple Decker Club",
+        "description": "Turkey, Ham, Bacon, Swiss, Lettuce, Tomato, Mayo, Mustard on your choice of Bread",
+        "price": "$15.95",
+        "section": "Standards"
+      },
+      {
+        "name": "BLT",
+        "description": "Bacon, Lettuce, Tomato, Mayo, your choice of Bread",
+        "price": "$12.95",
+        "section": "Standards"
+      },
+      {
+        "name": "The Annie",
+        "description": "Turkey, Salami, Cucumbers, Tomato, Spinach, Red Onions, Dijon Mustard, on Toasted Wheat",
+        "price": "$12.95",
+        "section": "Standards"
+      },
+      {
+        "name": "Build Your Own!",
+        "description": "Pick your Bread, Protein, Cheese and Toppings",
+        "price": "$12.95",
+        "section": "Standards"
+      },
+      {
+        "name": "Soup of the Day (12oz)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Soup of the Day (16oz)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Chef Salad",
+        "description": "",
+        "price": "$13.95",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Chicken Caesar Salad",
+        "description": "",
+        "price": "$12.95",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Cobb Salad",
+        "description": "",
+        "price": "$13.95",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Spinach Salad",
+        "description": "",
+        "price": "$12.95",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Large Garden Salad",
+        "description": "",
+        "price": "$7.95",
+        "section": "Soups & Salads"
+      },
+      {
+        "name": "Potato or Macaroni Salad",
+        "description": "",
+        "price": "$2.50",
+        "section": "Sides & Extras"
+      },
+      {
+        "name": "Cole Slaw",
+        "description": "",
+        "price": "$2.50",
+        "section": "Sides & Extras"
+      },
+      {
+        "name": "Chips",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sides & Extras"
+      },
+      {
+        "name": "Fresh Baked Cookies",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sides & Extras"
+      },
+      {
+        "name": "Double Meats",
+        "description": "add-on",
+        "price": "$4.00",
+        "section": "Sides & Extras"
+      },
+      {
+        "name": "Avocado (add-on)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Sides & Extras"
+      },
+      {
+        "name": "Extra Cheese",
+        "description": "",
+        "price": "$2.50",
+        "section": "Sides & Extras"
+      },
+      {
+        "name": "Bacon (add-on)",
+        "description": "",
+        "price": "$3.00",
+        "section": "Sides & Extras"
+      },
+      {
+        "name": "Soup of the Day & 1/2 Sandwich",
+        "description": "Your choice of Sandwich (items 2-5) and Small Soup",
+        "price": "$13.95",
+        "section": "Combos"
+      },
+      {
+        "name": "1/2 Sandwich",
+        "description": "Your choice of Sandwich (items 2-5)",
+        "price": "$9.00",
+        "section": "Combos"
+      },
+      {
+        "name": "Kids Sandwich",
+        "description": "Choice of Bread, Protein, Cheese",
+        "price": "$7.00",
+        "section": "Combos"
+      }
+    ]
+  },
+  {
+    "restaurantId": "6419",
+    "name": "Sinaloa Mexican & Seafood",
+    "sourceUrl": "https://www.ubereats.com/store/sinaloa-mexican-&-seafood/C0bxmTK9Se-RVxx2vQiYuw",
+    "confidence": "medium",
+    "notes": "The listed website (sinaloa.top) redirects to a barred directory farm, so this is read from Uber Eats' escaped catalog payload (catalogSectionsMap/catalogItems, price at labelPrimary.accessibilityText) rather than the restaurant's own site. Address in the JSON-LD block (\"1759 Oceanside Blvd\") matches the work list exactly. 84 items grouped by their real subsectionUuid into 16 categories (Uber Eats left the subsection NAMES empty - 'subsectionsMap':{} - so category labels below are inferred from what's actually in each group, e.g. the group priced flat at $5.85 across Carne Asada/Carnitas/Chorizo/Ham and Cheese/Machaca/Torta al Caribe is clearly Tortas). Several protein names (Carne Asada, Carnitas, Chicken, Pollo Asado) repeat across Tacos/Tortas/Burritos/Plates/A la Carte/Tostadas at different prices - ran the subtraction test on this scatter before trusting it: within each subsection the prices cluster tightly (Tortas flat $5.85, Plates flat $8.99, Combo Plates flat $7.99) and differ only BETWEEN formats (taco vs torta vs burrito vs plate), which fully explains the cent scatter as real format-based pricing rather than a fee - no divisor (1.04-1.30) landed more than 17% of items on round/.95/.99 values. Excluded nothing as adjunct; 'Sides & Add-ons' (guacamole, fries, onions, etc. $0.70-$2.00) are individually priced on the storefront so kept as their own rows.",
+    "dishes": [
+      {
+        "name": "Carne Asada",
+        "description": "Including beans, avocado, lettuce, tomatoes, and onion.",
+        "price": "$5.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carnitas",
+        "description": "Including beans, avocado, lettuce, tomatoes, and onion.",
+        "price": "$5.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Chorizo",
+        "description": "Including beans, avocado, lettuce, tomatoes, and onion.",
+        "price": "$5.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Ham and Cheese",
+        "description": "Including beans, avocado, lettuce, tomatoes, and onion.",
+        "price": "$5.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Machaca",
+        "description": "Including beans, avocado, lettuce, tomatoes, and onion.",
+        "price": "$5.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Torta al Caribe",
+        "description": "Including beans, avocado, lettuce, tomatoes, and onion.",
+        "price": "$5.85",
+        "section": "Tortas"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "Guacamole and Mexican salsa.",
+        "price": "$3.40",
+        "section": "Tacos"
+      },
+      {
+        "name": "Fish Taco",
+        "description": "Lettuce, white sauce, and Mexican salsa.",
+        "price": "$2.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carnitas Taco",
+        "description": "Guacamole and Mexican salsa.",
+        "price": "$2.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Pollo Asado",
+        "description": "Guacamole and Mexican salsa.",
+        "price": "$2.95",
+        "section": "Tacos"
+      },
+      {
+        "name": "Beef Taco",
+        "description": "Cheese, lettuce, and Mexican salsa.",
+        "price": "$2.99",
+        "section": "Tacos"
+      },
+      {
+        "name": "Chicken Taco",
+        "description": "Cheese, lettuce, and Mexican salsa.",
+        "price": "$2.50",
+        "section": "Tacos"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "Including guacamole, cebolla, and cilantro.",
+        "price": "$5.99",
+        "section": "A la Carte"
+      },
+      {
+        "name": "Chicken Salad",
+        "description": "Includes ranch, tomatoes, bell peppers, and cucumber.",
+        "price": "$8.50",
+        "section": "Salads"
+      },
+      {
+        "name": "Eggs, Ham, Bacon, and Cheese",
+        "description": "",
+        "price": "$4.75",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Eggs, Beans, and Cheese",
+        "description": "",
+        "price": "$3.75",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Eggs and Ham",
+        "description": "",
+        "price": "$4.75",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Eggs, Ham, Potatoes, and Cheese",
+        "description": "",
+        "price": "$4.75",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Eggs, Potatoes, and Cheese",
+        "description": "",
+        "price": "$4.75",
+        "section": "Breakfast Burritos"
+      },
+      {
+        "name": "Al Mojo de Ajo",
+        "description": "Jumbo shrimp butter garlic salsa ranchera. Served with rice and beans.",
+        "price": "$14.00",
+        "section": "Mariscos"
+      },
+      {
+        "name": "Filete Empanizado",
+        "description": "Served with rice, beans with tortilla, and salad.",
+        "price": "$8.50",
+        "section": "Mariscos"
+      },
+      {
+        "name": "Fajitas de Camaron",
+        "description": "Served with rice and beans with tortilla.",
+        "price": "$14.23",
+        "section": "Mariscos"
+      },
+      {
+        "name": "Mojarra Frito",
+        "description": "Served with rice, beans with tortilla, and salad.",
+        "price": "$13.99",
+        "section": "Mariscos"
+      },
+      {
+        "name": "Camarones Rancheros",
+        "description": "Served with rice and beans with tortilla.",
+        "price": "$14.23",
+        "section": "Mariscos"
+      },
+      {
+        "name": "Camarones a la Diabla",
+        "description": "Devil shrimp in guajillo sauce, very tasty, hot with rice, beans. Served with rice and beans with tortilla.",
+        "price": "$14.23",
+        "section": "Mariscos"
+      },
+      {
+        "name": "Ceviche Shrimp Tostada",
+        "description": "",
+        "price": "$3.99",
+        "section": "Mariscos"
+      },
+      {
+        "name": "Caldo de Pollo",
+        "description": "Including rice or fries and drink.",
+        "price": "$4.99",
+        "section": "A la Carte Specials"
+      },
+      {
+        "name": "Two Rolls Beef Cream and Cheese",
+        "description": "Including rice or fries and drink.",
+        "price": "$4.99",
+        "section": "A la Carte Specials"
+      },
+      {
+        "name": "Two Mini Tacos (Plain)",
+        "description": "Including rice or fries and drink.",
+        "price": "$4.99",
+        "section": "A la Carte Specials"
+      },
+      {
+        "name": "One Beans and Cheese Burrito",
+        "description": "Including rice or fries and drink.",
+        "price": "$4.99",
+        "section": "A la Carte Specials"
+      },
+      {
+        "name": "Quesadilla",
+        "description": "Including rice or fries and drink.",
+        "price": "$4.99",
+        "section": "A la Carte Specials"
+      },
+      {
+        "name": "Chicken",
+        "description": "Served with guacamole and Mexican salsa.",
+        "price": "$4.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carnitas",
+        "description": "Served with guacamole and Mexican salsa.",
+        "price": "$5.70",
+        "section": "Burritos"
+      },
+      {
+        "name": "Pollo Asado",
+        "description": "Served with guacamole and Mexican salsa.",
+        "price": "$4.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp a la Diabla Burrito",
+        "description": "Served with rice.",
+        "price": "$7.70",
+        "section": "Burritos"
+      },
+      {
+        "name": "California Burrito",
+        "description": "Sour cream, cheese, french fries, and Mexican salsa.",
+        "price": "$6.20",
+        "section": "Burritos"
+      },
+      {
+        "name": "Carne Asada",
+        "description": "Served with guacamole and Mexican salsa.",
+        "price": "$5.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beef Burrito",
+        "description": "Bell peppers, onion, and tomatoes.",
+        "price": "$5.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Beans and Cheese",
+        "description": "",
+        "price": "$2.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "Shrimp Burrito",
+        "description": "Served with rice and salsa ranchera (bell peppers, tomato, and onions).",
+        "price": "$7.70",
+        "section": "Burritos"
+      },
+      {
+        "name": "Fish Burrito",
+        "description": "White sauce, lettuce, and Mexican salsa.",
+        "price": "$4.99",
+        "section": "Burritos"
+      },
+      {
+        "name": "One Enchilada and 1 Taco",
+        "description": "Served with rice and beans.",
+        "price": "$7.99",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Two Tacos Asado Chicken",
+        "description": "Served with rice and beans.",
+        "price": "$7.99",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Two Tacos Asado Beef",
+        "description": "Served with rice and beans.",
+        "price": "$7.99",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Two Tacos Asado Fish",
+        "description": "Served with rice and beans.",
+        "price": "$7.99",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Two Chicken Enchiladas",
+        "description": "Served with rice and beans.",
+        "price": "$7.99",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Two Cheese Enchiladas",
+        "description": "Served with rice and beans.",
+        "price": "$7.99",
+        "section": "Combo Plates"
+      },
+      {
+        "name": "Chilaquiles con Huevo",
+        "description": "Tortilla chips red sauce, scrambled eggs, and sour cream. Served with rice or beans.",
+        "price": "$8.25",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Machaca with Eggs",
+        "description": "Tortilla (corn-flour) shredded beef mixed with peppers, onions, and tomatoes. Served with rice or beans.",
+        "price": "$7.75",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Omelete al Gusto",
+        "description": "Served with rice or beans.",
+        "price": "$7.50",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Huevos Divorciados",
+        "description": "Served with rice or beans.",
+        "price": "$5.99",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Huevos con Verdura",
+        "description": "Served with rice or beans.",
+        "price": "$5.99",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Huevos Rancheros",
+        "description": "Tortilla (corn-flour) 2 eggs over easy. Served on a soft tortilla and covered with our own salsa ranchera. Served with rice or beans.",
+        "price": "$5.99",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Chorizo with Eggs",
+        "description": "Tortilla (corn-flour) our own Mexican sausage with scrambled eggs. Served with rice or beans.",
+        "price": "$7.99",
+        "section": "Breakfast Plates"
+      },
+      {
+        "name": "Fajitas Plate",
+        "description": "Served with rice or beans.",
+        "price": "$9.40",
+        "section": "Plates"
+      },
+      {
+        "name": "Carne Asada Plate",
+        "description": "Served with rice or beans.",
+        "price": "$8.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Carnitas Plate",
+        "description": "Served with rice or beans.",
+        "price": "$8.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Chorizo Plate",
+        "description": "Served with rice or beans.",
+        "price": "$8.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Fajita Trio",
+        "description": "Served with rice or beans.",
+        "price": "$11.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Pollo Asado Plate",
+        "description": "Served with rice or beans.",
+        "price": "$8.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Machaca Plate",
+        "description": "Served with rice or beans.",
+        "price": "$8.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Two Cheese Enchiladas",
+        "description": "Served with rice or beans.",
+        "price": "$7.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Bistec Ranchero",
+        "description": "Served with rice or beans.",
+        "price": "$8.99",
+        "section": "Plates"
+      },
+      {
+        "name": "Quesadilla Pollo Asado",
+        "description": "Grillet chicken.",
+        "price": "$7.75",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Shrimp Quesadilla",
+        "description": "Served with tomatoes and sour cream.",
+        "price": "$7.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Cheese Quesadilla",
+        "description": "Flour large.",
+        "price": "$3.99",
+        "section": "Quesadillas"
+      },
+      {
+        "name": "Rolled Tacos Beef",
+        "description": "Served with guacamole, cream, cheese, and lettuce.",
+        "price": "$4.85",
+        "section": "Rolled Tacos"
+      },
+      {
+        "name": "Beans",
+        "description": "Served with beans, lettuce, sour cream, and cheese.",
+        "price": "$1.99",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Chicken",
+        "description": "Served with beans, lettuce, sour cream, and cheese.",
+        "price": "$2.99",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Beef",
+        "description": "Served with beans, lettuce, sour cream, and cheese.",
+        "price": "$2.99",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Flying Saucer",
+        "description": "Tostada made with a flour fried tortilla choice of beef or chicken.",
+        "price": "$6.49",
+        "section": "Tostadas"
+      },
+      {
+        "name": "Carne Asada Fries",
+        "description": "Seved with guacamole, sour cream, and cheese.",
+        "price": "$7.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Nacho Cheese",
+        "description": "Chips guacamole and cheese.",
+        "price": "$3.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Nachos Supreme",
+        "description": "Carne asada chips, guacamole, cheese, sour beans, and jalapeno.",
+        "price": "$9.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chimichanga",
+        "description": "Guacamole, lettuce, carnitas pollo asado, Mexican salsa, sour, and cheese.",
+        "price": "$5.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Two Enchiladas Pollo o Queso",
+        "description": "Lettuce, sour cream, rice, and beans.",
+        "price": "$4.99",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Guacamole",
+        "description": "",
+        "price": "$0.80",
+        "section": "Sides & Add-ons"
+      },
+      {
+        "name": "Ham",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sides & Add-ons"
+      },
+      {
+        "name": "Fries",
+        "description": "",
+        "price": "$0.80",
+        "section": "Sides & Add-ons"
+      },
+      {
+        "name": "Onions",
+        "description": "",
+        "price": "$0.70",
+        "section": "Sides & Add-ons"
+      },
+      {
+        "name": "Sour Cream",
+        "description": "",
+        "price": "$0.80",
+        "section": "Sides & Add-ons"
+      },
+      {
+        "name": "Beans & Rice (8 oz)",
+        "description": "",
+        "price": "$2.00",
+        "section": "Sides & Add-ons"
+      },
+      {
+        "name": "Bacon",
+        "description": "",
+        "price": "$0.80",
+        "section": "Sides & Add-ons"
+      },
+      {
+        "name": "Lettuce",
+        "description": "",
+        "price": "$1.50",
+        "section": "Sides & Add-ons"
+      }
+    ]
+  },
+  {
+    "restaurantId": "5771",
+    "name": "Chiba Japanese",
+    "sourceUrl": "http://chibarestaurant.com/uploads/1/2/4/1/124192798/chiba_menu__11.67_x_18.67_in_.pdf",
+    "confidence": "high",
+    "notes": "First-party PDF linked from the restaurant's own /menu.html (not the separate dated 2019 PNG also on the homepage). Address confirmed via the site's embedded Google Maps link (\"10435 San Diego Mission Rd, San Diego, CA 92108\"), matching the work list. pdftotext -layout paired names to prices cleanly for most sections (cents are conventional: only $.25/.50/.75/.95 appear, no markup scatter), but this is a large-format (11.67x18.67in) poster PDF with a multi-column layout, and -layout mis-merged columns in several sections so badly that -raw confirmed names and prices land in separate blocks with no reliable line-level correspondence there. Rather than guess, I DROPPED the following as unpairable: the Combination Bento column (Lunch Bento/Chiba Bento/Special Chiba Bento/Special Chiba Combo), the Meat Platters column (Chicken/Beef/Pork/Chicken Katsu/Ton Katsu/Curry/Katsu Curry plates), the entire Seafood Platter section (Seafood Teriyaki, Salmon Teriyaki, Fried Seafood Mix, Fried Salmon, Fried Jumbo Shrimp, Tempura Shrimp, Shrimp Teriyaki - no prices found at all), Oyako Don (two conflicting prices, $12.95 and $13.95, appeared for it - true disagreement, not filed), Chicken/Beef/Vegetable Sukiyaki and Vegetable Rice Bowl (name with no same-line price), Chiba Stamina Noodles/Katsu Curry Noodles/Chiba Noodle (no price found), Ramune and Mogu Fruit Juice (flavors only, no price), Hamachi Kama/Salmon Kama (priced 'Seasonal', not a number), an unnamed nigiri description ('tuna wrapped around a rice ball...' $7.50, no item name survived the layout merge), Shrimp Ball and Volcano nigiri creations (named, no price found), and the entire Beer section (Kirin Ichiban/Kirin Light/Asahi/Sapporo/Sapporo Light/Heineken/Corona/Bud Light - prices visibly off-by-one-row against the names). Kept Mochi Ice Cream ($4.50) despite the price sitting on the 'Desserts' header line above it, since it is the section's only item and only nearby price. This is a partial: Appetizers, Nigiri, Nigiri Platters, Sashimi, Hand Rolls, Regular Rolls, Maki Rolls, and Special Rolls are complete; Entrees/Rice Bowl is reduced to 4 items (Chicken, Beef, Pork, Katsu Don) plus a 1-item Noodles section, and Bento Combos, Seafood Platters, and Beer are entirely missing.",
+    "dishes": [
+      {
+        "name": "Sashimi Salad Mixed",
+        "description": "",
+        "price": "$15.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Seaweed Salad (Small)",
+        "description": "",
+        "price": "$4.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Seaweed Salad (Large)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "House Salad (Small)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "House Salad (Large)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Cucumber Salad",
+        "description": "",
+        "price": "$6.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Edamame (Soybean)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Garlic Edamame",
+        "description": "",
+        "price": "$6.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Vegetable Tempura (12pcs)",
+        "description": "Broccoli, zucchini, & mushroom.",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Tempura Shrimp (1pc)",
+        "description": "",
+        "price": "$2.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Breaded Fried Shrimp (1pc)",
+        "description": "",
+        "price": "$2.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Dynamite Special",
+        "description": "Baked mixture of spicy crab, scallops, & scallions served with seaweed wrap.",
+        "price": "$13.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Sushi Popper (6pcs)",
+        "description": "Spicy crab, shrimp, & cream cheese stuffed in jalapenos & deep-fried.",
+        "price": "$9.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Gyoza (6pcs)",
+        "description": "Pork dumpling.",
+        "price": "$5.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Steamed Gyoza (6pcs)",
+        "description": "Shrimp dumpling.",
+        "price": "$6.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried or Steamed Shumai (6pcs)",
+        "description": "Shrimp dumpling.",
+        "price": "$6.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Egg Roll (2pcs)",
+        "description": "Vegetable.",
+        "price": "$3.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Soft Shell Crab (1pc)",
+        "description": "",
+        "price": "$8.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Salmon (1pc)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Croquette (1pc)",
+        "description": "Potato patty.",
+        "price": "$2.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Chicken Katsu (1pc)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Fried Seafood Mix (3pcs)",
+        "description": "Scallop, imitation crab, & basa.",
+        "price": "$5.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Steamed White Rice (Small)",
+        "description": "",
+        "price": "$3.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Steamed White Rice (Large)",
+        "description": "",
+        "price": "$4.25",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Sushi Rice (Small)",
+        "description": "",
+        "price": "$4.50",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Miso Soup",
+        "description": "",
+        "price": "$2.95",
+        "section": "Appetizers"
+      },
+      {
+        "name": "Combination Platter",
+        "description": "Served with rice, salad & your choice of one entree & side. Choice of Chicken Teriyaki, Chiba Chicken, Ginger Chicken, Garlic Chicken, Pork Teriyaki, Chiba Beef, Beef Teriyaki, or Ginger Beef; side of Fried Seafood Mix, Egg Roll, Fried Gyoza, Fried Shumai, Fried Shrimp & Scallop, California Maki, Fried Fish, or Fried Croquette. Beef entree +$1.00.",
+        "price": "$12.95",
+        "section": "Combination Platter"
+      },
+      {
+        "name": "Albacore Nigiri (2pcs)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Maguro (Tuna) Nigiri (2pcs)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Sake (Salmon) Nigiri (2pcs)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Ebi (Shrimp) Nigiri (2pcs)",
+        "description": "",
+        "price": "$5.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Tako (Octopus) Nigiri (2pcs)",
+        "description": "",
+        "price": "$5.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Hamachi (Yellowtail) Nigiri (2pcs)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Kanikama (Imitation Crab) Nigiri (2pcs)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Unagi (River Eel) Nigiri (2pcs)",
+        "description": "",
+        "price": "$5.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Tamago (Sweet Egg) Nigiri (2pcs)",
+        "description": "",
+        "price": "$3.75",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Inari (Tofu Pocket) Nigiri (2pcs)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Hotategai (Scallop) Nigiri (2pcs)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Masago (Smelt Roe) Nigiri (2pcs)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Baked Mussels",
+        "description": "Green mussels baked with imitation crab mix.",
+        "price": "$8.95",
+        "section": "Nigiri"
+      },
+      {
+        "name": "Nigiri Platter - Small (12-14pcs)",
+        "description": "",
+        "price": "$24.95",
+        "section": "Nigiri Platters"
+      },
+      {
+        "name": "Nigiri Platter - Large (14-16pcs)",
+        "description": "",
+        "price": "$28.95",
+        "section": "Nigiri Platters"
+      },
+      {
+        "name": "Nigiri (5pcs)",
+        "description": "Served with tuna maki (3pcs), California maki (3pcs), & cucumber maki (3pcs).",
+        "price": "$15.95",
+        "section": "Nigiri Platters"
+      },
+      {
+        "name": "Nigiri (7pcs)",
+        "description": "Served with California roll (8pcs).",
+        "price": "$19.95",
+        "section": "Nigiri Platters"
+      },
+      {
+        "name": "Nigiri (10pcs)",
+        "description": "Served with California roll (8pcs).",
+        "price": "$23.95",
+        "section": "Nigiri Platters"
+      },
+      {
+        "name": "Mixed Sashimi (14pcs)",
+        "description": "Served with rice and miso soup.",
+        "price": "$25.95",
+        "section": "Nigiri Platters"
+      },
+      {
+        "name": "Maguro (Tuna) Sashimi (5pcs)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Hamachi (Yellowtail) Sashimi (5pcs)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Sake (Salmon) Sashimi (5pcs)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Tako (Octopus) Sashimi (5pcs)",
+        "description": "",
+        "price": "$12.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Unagi (River Eel) Sashimi (5pcs)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Albacore Sashimi (5pcs)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Seared Ahi Tuna Sashimi (5pcs)",
+        "description": "",
+        "price": "$12.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Mixed Sashimi (5pcs, Chef's Choice)",
+        "description": "",
+        "price": "$10.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Sashimi (8pcs)",
+        "description": "Served with rice and miso soup. Choice of Maguro & Sake, Maguro & Hamachi, Hamachi & Sake, or Mixed (Chef's Choice).",
+        "price": "$18.95",
+        "section": "Sashimi"
+      },
+      {
+        "name": "Spicy Tuna Hand Roll (1pc)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Spicy Albacore Hand Roll (1pc)",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Spicy Scallop Hand Roll (1pc)",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Smoked Salmon Skin Hand Roll (1pc)",
+        "description": "",
+        "price": "$5.95",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Spicy Hamachi Hand Roll (1pc)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Soft Shell Crab Hand Roll (1pc)",
+        "description": "",
+        "price": "$7.25",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Spicy Eel Hand Roll (1pc)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Tempura Shrimp Hand Roll (1pc)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Spicy California Hand Roll (1pc)",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Vegetable Hand Roll (1pc)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Spicy Shrimp Hand Roll (1pc)",
+        "description": "",
+        "price": "$6.75",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Tako Hand Roll (1pc)",
+        "description": "",
+        "price": "$7.95",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Spicy Salmon Hand Roll (1pc)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Philadelphia Hand Roll (1pc)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Hand Rolls"
+      },
+      {
+        "name": "Eel Roll",
+        "description": "In: cucumber & avocado.",
+        "price": "$8.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Shrimp Roll",
+        "description": "In: cucumber & avocado.",
+        "price": "$8.75",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Spicy Crab Roll",
+        "description": "In: cucumber, & imitation crab mixed with spicy mayo.",
+        "price": "$8.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Spicy Tuna Roll",
+        "description": "In: cucumber, & tuna mixed with spicy mayo.",
+        "price": "$8.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Spicy Hamachi Roll",
+        "description": "In: cucumber, & hamachi mixed with spicy mayo.",
+        "price": "$8.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Spicy Scallop Roll",
+        "description": "In: cucumber, & scallop mixed with spicy mayo.",
+        "price": "$8.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Spicy Salmon Roll",
+        "description": "In: cucumber & sriracha.",
+        "price": "$8.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Albacore Roll",
+        "description": "In: cucumber, & albacore mixed with spicy mayo.",
+        "price": "$8.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Philadelphia Roll",
+        "description": "In: salmon, cucumber, & cream cheese.",
+        "price": "$8.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "California Roll",
+        "description": "In: cucumber, avocado & imitation crab.",
+        "price": "$8.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Tako Roll",
+        "description": "In: cucumber & gobo.",
+        "price": "$9.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Chiba Soft Shell Crab Roll (5pcs)",
+        "description": "In: cucumber, avocado, & deep-fried crab.",
+        "price": "$8.95",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Fried Shrimp Roll",
+        "description": "In: fried shrimp, imitation crab, cucumber, & cream cheese.",
+        "price": "$8.75",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Tempura Shrimp Roll",
+        "description": "In: tempura shrimp, avocado, & cucumber, topped with eel sauce.",
+        "price": "$8.50",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Smoked Salmon Skin Roll",
+        "description": "In: cucumber & spicy mayo.",
+        "price": "$7.25",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Vegetable Roll",
+        "description": "In: cucumber, avocado, radish, & gobo.",
+        "price": "$6.95",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Avocado Roll",
+        "description": "",
+        "price": "$6.95",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Cucumber Roll",
+        "description": "",
+        "price": "$6.25",
+        "section": "Regular Rolls"
+      },
+      {
+        "name": "Avocado Maki (6pcs)",
+        "description": "",
+        "price": "$4.25",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Avocado Maki (18pcs)",
+        "description": "",
+        "price": "$10.50",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Tekka (Tuna) Maki (6pcs)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Tekka (Tuna) Maki (18pcs)",
+        "description": "",
+        "price": "$14.50",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Hamachi Maki (6pcs)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Hamachi Maki (18pcs)",
+        "description": "",
+        "price": "$14.50",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Salmon Maki (6pcs)",
+        "description": "",
+        "price": "$5.25",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Salmon Maki (18pcs)",
+        "description": "",
+        "price": "$14.50",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "California Maki (6pcs)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "California Maki (18pcs)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Kappa (Cucumber) Maki (6pcs)",
+        "description": "",
+        "price": "$3.75",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Kappa (Cucumber) Maki (18pcs)",
+        "description": "",
+        "price": "$9.50",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Sushi Trio",
+        "description": "Kappa, Tekka, and California maki.",
+        "price": "$11.95",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Futo Maki (8pcs)",
+        "description": "Avocado, cucumber, Japanese radish, imitation crab, and tamago.",
+        "price": "$11.95",
+        "section": "Maki Rolls"
+      },
+      {
+        "name": "Dragon Roll",
+        "description": "Top: eel, avocado, & eel sauce / In: tempura shrimp, imitation crab, & cucumber.",
+        "price": "$15.75",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Red/White Dragon Roll",
+        "description": "Top: tuna, yellowtail, & avocado / In: tempura shrimp, imitation crab, & cucumber.",
+        "price": "$15.75",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Snapdragon Roll",
+        "description": "Top: salmon, masago, & scallions / In: tempura shrimp, imitation crab, & avocado.",
+        "price": "$15.75",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Rainbow Roll",
+        "description": "Top: mixed sashimi / In: imitation crab, cucumber, & avocado.",
+        "price": "$14.75",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Special Cucumber Roll",
+        "description": "Out: cucumber wrapped / In: tuna, salmon, imitation crab, & eel.",
+        "price": "$18.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Tempura Roll",
+        "description": "Top: deep fried in tempura, spicy mayo & eel sauce / In: red snapper, imitation crab, salmon, & tuna.",
+        "price": "$12.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Special Caterpillar Roll",
+        "description": "Top: avocado, spicy mayo & eel sauce / In: tempura shrimp, cream cheese, imitation crab, and cucumber.",
+        "price": "$14.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Caterpillar Roll",
+        "description": "Top: avocado & eel sauce / In: eel, imitation crab, & cucumber.",
+        "price": "$14.25",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Pizza Roll (8pcs)",
+        "description": "Top: entire roll baked spicy mayo / In: red snapper, salmon, & imitation crab.",
+        "price": "$10.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Crunchy Roll",
+        "description": "Top: crunchy tempura flakes & eel sauce / In: tempura shrimp, imitation crab, avocado & cream cheese.",
+        "price": "$10.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Hawaiian Roll",
+        "description": "Top: spicy tuna, avocado, crunchy tempura flakes & eel sauce / In: tempura shrimp, imitation crab, & cucumber.",
+        "price": "$15.25",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Lemon Roll",
+        "description": "Top: yellowtail, avocado, sliced lemon, scallions, masago, & ponzu / In: spicy tuna, & cucumber.",
+        "price": "$15.75",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Las Vegas Roll",
+        "description": "Top: deep fried in tempura, sliced jalapenos, spicy mayo & eel sauce / In: salmon, avocado, & cream cheese.",
+        "price": "$12.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Tierrasanta Roll",
+        "description": "Top: deep fried in tempura, sliced jalapenos, baked crab mix, crunchy tempura flakes, spicy mayo & eel sauce / In: salmon, avocado, cream cheese.",
+        "price": "$17.50",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Corona Roll",
+        "description": "Top: spicy tuna, albacore, sliced jalapenos & lemon, masago, scallions & ponzu / In: tempura shrimp, cream cheese, & imitation crab.",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Dynamite Roll",
+        "description": "Top: deep fried in tempura, dynamite mix (baked mixture of imitation crab, scallop, shrimp, scallions & mayo) / In: fried shrimp, avocado, & cream cheese.",
+        "price": "$18.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Baked Dynamite Roll (8pcs)",
+        "description": "Top: entire roll baked, dynamite mix (baked mixture of imitation crab, scallop, shrimp, scallions & mayo) / In: fried shrimp, avocado, & cream cheese.",
+        "price": "$18.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Kamakazi Roll",
+        "description": "Top: tuna, salmon, masago, scallions & ponzu / In: imitation crab, shrimp, & avocado.",
+        "price": "$15.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Seared Ahi Roll",
+        "description": "Top: seared tuna, avocado, scallions, masago & ponzu / In: soft shell crab & cucumber.",
+        "price": "$17.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Mission Roll",
+        "description": "Top: tuna, shrimp, imitation crab w/ spicy mayo & crunchy flakes, sriracha / In: tempura shrimp, cream cheese, & avocado.",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Tomato Roll",
+        "description": "Top: tuna, scallop, sliced lemon & jalapeno, masago & ponzu / In: tempura shrimp, avocado, imitation crab, and cucumber.",
+        "price": "$16.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Charger Roll",
+        "description": "Top: baked spicy crab, crunchy flakes, spicy mayo & eel sauce / In: tempura shrimp, cream cheese, avocado, & cucumber.",
+        "price": "$14.95",
+        "section": "Special Rolls"
+      },
+      {
+        "name": "Chicken Teriyaki Bowl (Kids)",
+        "description": "",
+        "price": "$5.75",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Beef Teriyaki Bowl (Kids)",
+        "description": "",
+        "price": "$6.95",
+        "section": "Kids Menu"
+      },
+      {
+        "name": "Chicken Rice Bowl",
+        "description": "Teriyaki, garlic, ginger, or chiba sauce. Served with salad.",
+        "price": "$11.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Beef Rice Bowl",
+        "description": "Teriyaki, garlic, ginger, or chiba sauce. Served with salad.",
+        "price": "$12.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Pork Rice Bowl",
+        "description": "Teriyaki, garlic, ginger, or chiba sauce. Served with salad.",
+        "price": "$12.50",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Katsu Don",
+        "description": "Deep fried chicken, pork, or shrimp with steamed egg, broccoli, and onions. Served with salad.",
+        "price": "$12.95",
+        "section": "Rice Bowl"
+      },
+      {
+        "name": "Udon Noodle Soup",
+        "description": "Served with salad.",
+        "price": "$12.95",
+        "section": "Noodles"
+      },
+      {
+        "name": "Kurosawa Sake (cold)",
+        "description": "",
+        "price": "$13.95",
+        "section": "Sake"
+      },
+      {
+        "name": "Hana Sake (Lychee, White Peach, or Fuji Apple) (cold)",
+        "description": "",
+        "price": "$13.95",
+        "section": "Sake"
+      },
+      {
+        "name": "Nigori Sake (Unfiltered) (cold)",
+        "description": "",
+        "price": "$11.95",
+        "section": "Sake"
+      },
+      {
+        "name": "Hot Sake (Small)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Sake"
+      },
+      {
+        "name": "Hot Sake (Large)",
+        "description": "",
+        "price": "$7.50",
+        "section": "Sake"
+      },
+      {
+        "name": "Chardonnay (Glass)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Wine"
+      },
+      {
+        "name": "Chardonnay (1/2 Liter)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Wine"
+      },
+      {
+        "name": "Chablis (Glass)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Wine"
+      },
+      {
+        "name": "Chablis (1/2 Liter)",
+        "description": "",
+        "price": "$9.95",
+        "section": "Wine"
+      },
+      {
+        "name": "Takara Plum Wine (Glass)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Wine"
+      },
+      {
+        "name": "Merlot (Glass)",
+        "description": "",
+        "price": "$4.75",
+        "section": "Wine"
+      },
+      {
+        "name": "Can Soda (Coke, Diet Coke, Dr. Pepper, Sprite)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Lemonade (1 refill)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Lemon Iced Tea (1 refill)",
+        "description": "",
+        "price": "$2.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Green Iced Tea (unsweetened) (1 refill)",
+        "description": "",
+        "price": "$3.50",
+        "section": "Beverages"
+      },
+      {
+        "name": "Small Green Tea (Hot)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Large Green Tea (Hot)",
+        "description": "",
+        "price": "$2.95",
+        "section": "Beverages"
+      },
+      {
+        "name": "Mochi Ice Cream (2pcs)",
+        "description": "Flavors: Green Tea, Red Bean, Vanilla, Chocolate, Strawberry, Mango.",
+        "price": "$4.50",
+        "section": "Desserts"
+      }
+    ]
+  }
+]

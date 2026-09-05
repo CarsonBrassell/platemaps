@@ -1,0 +1,20 @@
+no DATABASE_URL - brand-twin check falls back to the hand-written allowlist
+clean:      3 entries (3 with menus, 0 confirmed not-found), 178 dishes
+quarantine: 16 entries, 0 dishes withheld
+
+  Home Sweet Home Cafe (0 dishes) - blocked, not absent: host unreachable: connection timed out (shared IP 76.223.105.230 / 13.248.243.5 also seen for Tak Grill and Bistro Pazzo in this batch — looks like a currently-down or bot-filtering shared host, not restaurant-specific)
+  Arizona Chinese Restaurant (0 dishes) - blocked, not absent: GoDaddy Website Builder stub site — homepage only, no working menu link or priced content found
+  Tak Grill Fresh Mediterranean Food (0 dishes) - blocked, not absent: host unreachable: connection timed out (shared IP with Home Sweet Home Cafe and Bistro Pazzo in this batch)
+  Silverlake Ramen (0 dishes) - blocked, not absent: CAPTCHA wall (sgcaptcha meta-refresh) — never bypassed per safety rule
+  Bravo Cafe (0 dishes) - blocked, not absent: domain expired/parked — resolves to an expired-domain marketplace page, no restaurant content; no alternate source checked yet
+  Bistro Pazzo (0 dishes) - blocked, not absent: host unreachable: connection timed out (shared IP with Home Sweet Home Cafe and Tak Grill in this batch)
+  Sushiman (0 dishes) - blocked, not absent: no website on file and no platform pre-identified by the router; no starting point found within time budget
+  House of Pizza (0 dishes) - blocked, not absent: no website on file and no platform pre-identified by the router; no starting point found within time budget
+  Little Ceasar's (0 dishes) - blocked, not absent: needs-browser: store page is a Next.js static-export shell (pageProps empty) that fetches store/menu data client-side, plus a Cloudflare challenge-platform script present
+  Black Radish (0 dishes) - blocked, not absent: needs-browser: Wix site, /menus page SSR body is a near-empty JS shell (nav labels only, no data-hook item widgets and no prices in ~968KB of HTML) — menu content renders client-side
+  Heavenly Donuts (0 dishes) - blocked, not absent: no website on file and no platform pre-identified by the router; no starting point found within time budget
+  Thai Fresh (0 dishes) - blocked, not absent: GoDaddy Website Builder site — menu nav shows 6 category tabs (Appetizers, Soups & Salads, Curries, Woks, Noodles and Rices, Desserts & Drinks, Extra) but static HTML carries zero dollar amounts; item content renders client-side
+  Gotcha (0 dishes) - blocked, not absent: domain unreachable (connect timeout) per router; a prior fetch attempt showed the domain redirecting to an ad-tracking/parked-domain page (purefindresults.com) rather than restaurant content
+  Hino (0 dishes) - blocked, not absent: restaurant-group site (USA Yakyudori Inc., multiple brands) has only an About-style page for Hino with no menu or pricing link found; no PDF or ordering-platform link present
+  Coral Tree Tea House (0 dishes) - blocked, not absent: reservation-only high-tea service; homepage has no menu link, PDF, or pricing — could not confirm whether pricing is per-person/prix-fixe (which would make this not_found) or simply unpublished; not enough evidence yet for a permanent verdict
+  World Famous I Bar (0 dishes) - blocked, not absent: restricted-access Navy MWR officers' bar (cashless, base-access-only) — official page is history/hours/contact only, no menu or pricing published there; not enough evidence yet to rule out a menu existing on another MWR page
