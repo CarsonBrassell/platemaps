@@ -7,6 +7,7 @@ import { ProfileBlockButton } from "@/components/ProfileBlockButton";
 import { getPublicProfile, getRestaurantById } from "@/lib/db";
 import { initials } from "@/lib/format";
 import { rankFor } from "@/lib/ranks";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 /**
  * The public profile, phone version — what anyone, friend or stranger, sees
@@ -77,8 +78,9 @@ export default async function PhonePublicProfilePage({
           </div>
         )}
 
-        <h1 className="font-display mt-4 text-[24px] font-semibold leading-tight tracking-tight text-zinc-900">
+        <h1 className="font-display mt-4 flex items-center justify-center gap-1.5 text-[24px] font-semibold leading-tight tracking-tight text-zinc-900">
           {profile.name}
+          <VerifiedBadge userId={profile.id} />
         </h1>
 
         {/* Same block as `/u/[id]`, drawn smaller — the crest is 64px here

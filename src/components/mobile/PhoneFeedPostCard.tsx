@@ -12,6 +12,7 @@ import { relativeTime } from "@/lib/format";
 import { vibeChip } from "@/data/reviewScales";
 import type { Post } from "@/components/feed/types";
 import { ReportSheet } from "@/components/feed/ReportSheet";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 /**
  * The feed's post card, phone version.
@@ -640,6 +641,7 @@ export function PhoneFeedPostCard(props: PhoneFeedPostCardProps) {
             >
               @{handleFor(post.authorName)}
             </Link>
+            <VerifiedBadge userId={post.userId} className="ml-0.5" />
             {bylineTail.length > 0 && ` · ${bylineTail.join(" · ")}`}
           </p>
         </div>

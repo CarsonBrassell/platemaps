@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PlateStarIcon, InfoIcon } from "@/components/icons";
 import { PointsInfoModal } from "@/components/feed/PointsInfoModal";
-import { POINT_RULES, formatPoints } from "@/lib/points";
+import { formatPoints } from "@/lib/points";
 import { RankInsignia } from "@/components/RankInsignia";
 import { RANKS, rankFor } from "@/lib/ranks";
 
@@ -33,10 +33,11 @@ import { RANKS, rankFor } from "@/lib/ranks";
  *   total is large and bold (34px, semibold — well past the 24px/18.66px-bold
  *   line). The accent must never be used for small type on this panel.
  *
- * The earn rules read from `POINT_RULES`, so the economy is stated in one
- * place: change a number in `lib/points.ts` and this row follows. They are set
- * as type rather than as white pills on purpose — a pill here would wear the
- * rank-3 control costume and read as something you can press.
+ * It used to restate the earn rules under the total ("+1 UPVOTE · +1
+ * COMMENT"). That row is gone — set as a dotted-leader list of amounts it read
+ * as a price list, which is the wrong idea about an economy nobody pays into.
+ * The rules live in `PointsInfoModal` behind the (i), one tap away and in
+ * sentences. `lib/points.ts` is still the single place the economy is stated.
  */
 export function PlatePointsPanel({
   points,
@@ -45,7 +46,7 @@ export function PlatePointsPanel({
 }: {
   points: number;
   /**
-   * Renders the rung you are on under the rules row: your crest, your title,
+   * Renders the rung you are on under the total: your crest, your title,
    * a track toward the next rung and how far is left, with the rung you are
    * climbing toward dimmed at the end.
    *
@@ -53,7 +54,7 @@ export function PlatePointsPanel({
    * the other candidate and it loses here — the panel's job is the total and
    * what it is worth next, and a full ladder turns a four-line panel into the
    * tallest thing on the profile to answer a question nobody asked at their
-   * own total. The rules row above already says how to climb.
+   * own total. The (i) above already explains how to climb.
    *
    * Own-profile surfaces only — the public profile has its own insignia
    * treatment (bigger, beside the avatar, no track, because a stranger is
@@ -81,15 +82,6 @@ export function PlatePointsPanel({
       )
     : 100;
 
-  /* No "post" row — publishing pays 0 now, and a "+0 post" chip in a row of
-     rewards reads as a penalty rather than as "points come from what a post
-     earns". The two that remain are both other-people-acted rules, which is
-     the whole shape of the economy. See lib/points.ts. */
-  const rules = [
-    { label: "upvote", value: POINT_RULES.receiveUpvote },
-    { label: "comment", value: POINT_RULES.receiveComment },
-  ];
-
   return (
     <>
       <div className={`rounded-xl bg-pm-orange-tint px-4 py-3.5 ${className}`}>
@@ -110,36 +102,19 @@ export function PlatePointsPanel({
           </button>
         </div>
 
-        {/* The total and its unit share a baseline: the number is the value,
-            "points" is what it counts, and a unit set at the same size as the
-            figure competes with it. */}
-        <p className="mt-1.5 flex items-baseline gap-1.5">
+        {/* The figure alone. It carried a "points" unit beside it and an earn
+            -rules row beneath — "+1 UPVOTE · +1 COMMENT" — which set out the
+            economy as what read like a price list. Both are gone: the header
+            immediately above already says "Plate Points", so the unit was
+            saying it twice, and the rules belong in the info modal behind the
+            (i), which is where someone asking "how do I earn these?" goes.
+            What is left is the number, which is what the panel is for.
+            POINT_RULES is still the single source for the economy — this
+            panel simply no longer restates it. */}
+        <p className="mt-1.5">
           <span className="font-mono text-[34px] font-semibold leading-none tabular-nums text-pm-orange">
             {formatPoints(points)}
           </span>
-          <span className="font-mono text-[11px] text-pm-orange-text">points</span>
-        </p>
-
-        {/* The leaderboard's dotted leader, in the warm border token rather
-            than a neutral grey — everything either side of it is warm. */}
-        <div
-          aria-hidden="true"
-          className="mt-3 h-px border-b border-dotted border-pm-orange-border"
-        />
-
-        <p className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[10px] uppercase tracking-[0.12em] text-pm-orange-text">
-          {rules.map((rule, i) => (
-            <span key={rule.label} className="flex items-center gap-2">
-              {i > 0 && (
-                <span aria-hidden="true" className="text-pm-orange-border">
-                  ·
-                </span>
-              )}
-              <span className="tabular-nums">
-                +{rule.value} {rule.label}
-              </span>
-            </span>
-          ))}
         </p>
 
         {/* The ladder: what the total has earned and how far the next title

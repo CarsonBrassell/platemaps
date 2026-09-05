@@ -8,6 +8,7 @@ import { RankInsignia } from "@/components/RankInsignia";
 import { rankFor } from "@/lib/ranks";
 import { ProfileFriendButton } from "@/components/ProfileFriendButton";
 import { ProfileBlockButton } from "@/components/ProfileBlockButton";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 /**
  * The public profile — what anyone, friend or stranger, sees when they look
@@ -53,7 +54,10 @@ export default async function PublicProfilePage({
           </div>
         )}
 
-        <h1 className="mt-4 font-display text-2xl font-semibold text-zinc-900">{profile.name}</h1>
+        <h1 className="mt-4 flex items-center justify-center gap-1.5 font-display text-2xl font-semibold text-zinc-900">
+          {profile.name}
+          <VerifiedBadge userId={profile.id} />
+        </h1>
 
         {/* The rank is what someone's lifetime points *mean*, and this is the
             only screen in either tree that shows it — not the feed, not the

@@ -13,6 +13,7 @@ import { initials, relativeTime, avatarPalette } from "@/lib/format";
 import { vibeChip } from "@/data/reviewScales";
 import { ReportSheet } from "@/components/feed/ReportSheet";
 import type { Post } from "./types";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 /** Handle shown next to the avatar — "Maya Ellis" reads as "mayaellis". */
 function handleFor(name: string) {
@@ -396,6 +397,12 @@ export function FoodPostCard(props: FoodPostCardProps) {
             <span className="truncate font-mono text-xs font-medium [text-shadow:0_1px_7px_rgba(0,0,0,0.95),0_0_3px_rgba(0,0,0,0.7)]">
               {handleFor(post.authorName)}
             </span>
+            {/* Outside the truncating span, so a long handle clips its own text
+                and never the badge. */}
+            <VerifiedBadge
+              userId={post.userId}
+              className="[filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.85))]"
+            />
             {/* Plate points ride with the name, here and in the meta row — they
                 say who this is as much as the handle does. */}
             <PointsBadge points={post.authorPoints} tone="photo" className="shrink-0" />
@@ -574,6 +581,7 @@ export function FoodPostCard(props: FoodPostCardProps) {
                   <span className="truncate font-mono text-xs font-medium text-zinc-900">
                     {handleFor(post.authorName)}
                   </span>
+                  <VerifiedBadge userId={post.userId} />
                 </Link>
                 <PointsBadge points={post.authorPoints} className="shrink-0" />
               </>
