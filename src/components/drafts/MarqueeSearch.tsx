@@ -193,10 +193,14 @@ export function MarqueeSearch({
                                 a "did you mean" is still a row you can fly to,
                                 and two shapes for one value inside one panel
                                 reads as two different numbers. */}
-                            <span className="flex shrink-0 items-center gap-1 font-mono text-xs font-medium tabular-nums text-[#ffb07a]">
-                              <StarIcon className="h-3 w-3" />
-                              {r.rating.toFixed(1)}
-                            </span>
+                            {/* Absent rating prints nothing rather than a
+                                zero — see restaurantTypes.ts. */}
+                            {r.rating != null && (
+                              <span className="flex shrink-0 items-center gap-1 font-mono text-xs font-medium tabular-nums text-[#ffb07a]">
+                                <StarIcon className="h-3 w-3" />
+                                {r.rating.toFixed(1)}
+                              </span>
+                            )}
                           </button>
                         </li>
                       ))}
@@ -227,10 +231,12 @@ export function MarqueeSearch({
                           {r.cuisine} · {r.neighborhood}
                         </span>
                       </span>
-                      <span className="flex shrink-0 items-center gap-1 font-mono text-xs font-medium tabular-nums text-[#ffb07a]">
-                        <StarIcon className="h-3 w-3" />
-                        {r.rating.toFixed(1)}
-                      </span>
+                      {r.rating != null && (
+                        <span className="flex shrink-0 items-center gap-1 font-mono text-xs font-medium tabular-nums text-[#ffb07a]">
+                          <StarIcon className="h-3 w-3" />
+                          {r.rating.toFixed(1)}
+                        </span>
+                      )}
                     </button>
                   </li>
                 ))}

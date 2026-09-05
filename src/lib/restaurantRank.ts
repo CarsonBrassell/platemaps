@@ -44,8 +44,17 @@ export type Rankable = {
    */
   matchedDish?: { name: string } | null;
   neighborhood: string;
-  /** Optional: an unrated restaurant still matches, it just cannot win a tie. */
-  rating?: number;
+  /**
+   * Optional: an unrated restaurant still matches, it just cannot win a tie.
+   *
+   * `null` as well as absent, because `RestaurantView.rating` is `number |
+   * null` — a listed restaurant can genuinely have no sourced rating (the
+   * publish gate requires a menu, not a rating). Typing this as `number |
+   * undefined` made every caller holding a real RestaurantView fail to match
+   * this shape. The scoring below already reads it as `?? 0`, which catches
+   * both, so only the type was ever wrong.
+   */
+  rating?: number | null;
 };
 
 /**

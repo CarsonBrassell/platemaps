@@ -331,10 +331,14 @@ export function LanternSearch({
                       </span>
                       {/* Machine value: mono, tabular, the map's own ember
                           rather than the cream world's --pm-orange-text. */}
-                      <span className="flex shrink-0 items-center gap-1 font-mono text-xs font-medium tabular-nums text-[#ffb07a]">
-                        <StarIcon className="h-3 w-3" />
-                        {r.rating.toFixed(1)}
-                      </span>
+                      {/* Absent rating prints nothing rather than a zero —
+                          restaurantTypes.ts calls null "not sourced yet". */}
+                      {r.rating != null && (
+                        <span className="flex shrink-0 items-center gap-1 font-mono text-xs font-medium tabular-nums text-[#ffb07a]">
+                          <StarIcon className="h-3 w-3" />
+                          {r.rating.toFixed(1)}
+                        </span>
+                      )}
                     </button>
                   </li>
                 ))}

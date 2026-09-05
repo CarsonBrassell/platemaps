@@ -38,6 +38,29 @@ export type SearchableRestaurant = Pick<
 /** No row highlighted — the state every fresh keystroke returns to. */
 export const NONE = -1;
 
+/**
+ * Best rating first, unrated last.
+ *
+ * `b.rating - a.rating` was arithmetic on `number | null`, which TypeScript
+ * refused and which would have sorted `null` as 0 had it compiled — putting
+ * an unrated restaurant *below* a one-star one and implying somebody measured
+ * it. restaurantTypes.ts is explicit that null means "not sourced yet, never
+ * zero", so absence is ranked as absence: rated restaurants in order, then
+ * the rest.
+ *
+ * It cannot be `(a.rating ?? 0)` for the same reason. That reads as a score
+ * and this is a position.
+ */
+function byRatingDesc(
+  a: Pick<SearchableRestaurant, "rating">,
+  b: Pick<SearchableRestaurant, "rating">,
+) {
+  if (a.rating == null && b.rating == null) return 0;
+  if (a.rating == null) return 1;
+  if (b.rating == null) return -1;
+  return b.rating - a.rating;
+}
+
 /** Close enough to read the block, same as the shipped field. */
 const RESULT_ZOOM = 16.5;
 
@@ -147,7 +170,7 @@ export function suggestFor(
 
   if (nearMiss.length === 0 && terms.length === 0) {
     return {
-      nearMiss: [...seeds].sort((a, b) => b.rating - a.rating).slice(0, 3),
+      nearMiss: [...seeds].sort(byRatingDesc).slice(0, 3),
       terms: [],
     };
   }
@@ -156,7 +179,7 @@ export function suggestFor(
 
 /** The city's best, for the variants whose resting offer is a standing list. */
 export function topRated(seeds: readonly SearchableRestaurant[], count = 5) {
-  return [...seeds].sort((a, b) => b.rating - a.rating).slice(0, count);
+  return [...seeds].sort(byRatingDesc).slice(0, count);
 }
 
 /* ------------------------------------------------------------------------ */
@@ -404,7 +427,7 @@ export function useInView(
       const bounds = map.getBounds();
       const next = seeds
         .filter((r) => bounds.contains([r.lng, r.lat]))
-        .sort((a, b) => b.rating - a.rating)
+        .sort(byRatingDesc)
         .slice(0, 6);
       // `idle` fires often; only a genuinely different frame is worth a render.
       setInView((prev) =>
