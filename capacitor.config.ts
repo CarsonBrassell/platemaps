@@ -18,7 +18,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
  * a binary built that way — platemap-five.vercel.app is a hosting-provider
  * subdomain that would then be frozen into v1 for everyone who installed it.
  */
-const SITE_URL = process.env.PLATEMAPS_APP_URL ?? 'https://platemaps.com/m';
+const SITE_URL = process.env.PLATEMAPS_APP_URL ?? 'https://platemaps.com/m/feed';
 
 const config: CapacitorConfig = {
   appId: 'com.platemapsapp.ios',
@@ -33,6 +33,13 @@ const config: CapacitorConfig = {
     // /m is Calvin's purpose-built phone experience (own layout, own screens,
     // same lib/ and API routes as the desktop site) — the app should load
     // that, not the desktop site squeezed into a phone-sized WebView.
+    //
+    // **/m/feed, not /m.** The feed is the screen the app opens on: it is the
+    // one that shows what people are actually eating, and Discover is a tab
+    // away in the nav. /m is still Discover and still the Discover tab's href
+    // — this only picks which of the two the app lands on. Because the URL is
+    // compiled in (see below), an already-installed build keeps opening
+    // Discover until it is rebuilt and reinstalled.
     //
     // **This string is compiled into the shipped binary.** It is not read from
     // the server at launch, so changing it later costs a new build, a new

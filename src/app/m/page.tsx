@@ -297,13 +297,28 @@ export default async function PhoneDiscover({
             (165×210) and relies on the caller to size it — see its header
             comment. Sized and set (text-[19px] on the wrapper, which is what
             WordMark's bare span inherits) to echo the desktop header's own
-            brand lockup — see Header.tsx's `text-[22px]` Link. */}
-        <span className="flex items-center gap-2.5 text-[19px]">
-          <BrandMark className="h-9 w-9" />
+            brand lockup — `text-[22px]`, the same size as Header.tsx's Link,
+            rather than the 19px this used to set. At 19 the wordmark read
+            smaller than the 26px page title directly under it, so the brand
+            was the quieter of the two lines in its own header.
+
+            `w-auto`, not `w-9`. A square box letterboxes the mark — it is
+            240x314, so `object-contain` fits it by height and centres it,
+            leaving about 4px of dead space down each side. That padding is
+            invisible on its own and lands entirely on the gap: the 10px
+            `gap-2.5` was reading as ~14px, which is what made the lockup look
+            loosely set. Sizing by height alone makes the box the artwork, so
+            the gap is the gap. (Header.tsx still squares its own 60px mark;
+            at that size the same slack is proportionally smaller and it sits
+            in a wide row rather than against a heading.) */}
+        <span className="flex items-center gap-2.5 text-[22px]">
+          <BrandMark className="h-11 w-auto" />
           <WordMark tone="dark" />
         </span>
 
-        <h1 className="font-display mt-4 text-[26px] font-semibold leading-tight tracking-tight text-zinc-900">
+        {/* mt-5, not mt-4: with the lockup grown, 16px left the brand and the
+            page title reading as one block. */}
+        <h1 className="font-display mt-5 text-[26px] font-semibold leading-tight tracking-tight text-zinc-900">
           {heading}
         </h1>
         {/* Machine value, so mono — the count is generated, not written. */}
