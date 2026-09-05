@@ -941,6 +941,23 @@ img {
   user-drag: none;
 }
 
+/* The same lift, one level up.
+   -------------------------------------------------------------------------
+   Suppressing it on the `img` is not enough when the picture sits inside a
+   link, which in this app is most of them — a feed photo, a restaurant card,
+   an avatar. iOS drags the *anchor*, not the image, and renders a preview of
+   its contents as the drag ghost. So the photo still appears to come away in
+   your thumb, the element responsible is the `<a>`, and the img rule above
+   never applies to it.
+
+   Links keep working normally: this governs the drag session only, not taps,
+   not long-press, not the share sheet. */
+a {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  user-drag: none;
+}
+
 /* Keyboard focus stays visible on every interactive surface in the feed. */
 .focus-ring:focus-visible {
   outline: 2px solid var(--pm-orange);

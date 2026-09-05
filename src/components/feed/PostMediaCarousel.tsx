@@ -120,8 +120,22 @@ export function PostMediaCarousel({
       <div
         ref={trackRef}
         onScroll={onScroll}
+        /* `touch-action: pan-y` on a single-photo post, and nothing on a
+           multi-photo one.
+
+           A horizontal scroll container makes iOS decide, on the opening
+           pixels of a drag, which axis the gesture belongs to — and a thumb
+           landing on a photo and moving mostly-but-not-exactly downward can
+           be read as horizontal. On a post with one photo there is nothing to
+           swipe to, so the ambiguity is pure cost: it can only ever mean a
+           scroll that does not scroll. Declaring the axis removes the
+           decision.
+
+           It cannot be applied to the multi-photo track, where the horizontal
+           gesture is the feature. Those keep the native behaviour, which is
+           also what makes the snap work. */
         className={`snap-track flex aspect-[16/9] w-full overflow-x-auto ${
-          single ? "overflow-x-hidden" : ""
+          single ? "overflow-x-hidden touch-pan-y" : ""
         }`}
         role={single ? undefined : "group"}
         aria-label={single ? undefined : `${media.length} photos, swipe to browse`}
