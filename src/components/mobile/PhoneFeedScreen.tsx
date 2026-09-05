@@ -311,7 +311,22 @@ export function PhoneFeedScreen() {
   if (showMap) {
     return (
       <>
-        <div className="relative h-dvh mb-[calc(-1*var(--phone-nav-space))]">
+        {/* The top inset is cancelled for the same reason as the bottom one,
+            and it is the reason the map used to open with a band of cream
+            above it on a real handset. `.pm-phone-content` spends
+            `env(safe-area-inset-top)` on every /m screen so no header renders
+            under the clock — right for a screen of text, wrong for a map,
+            which should run to the physical edge and let the status bar float
+            over the tiles the way every maps app does.
+
+            It only reproduces in the native shell. In a browser and in the
+            desktop phone frame the inset is 0, so the gap is invisible there
+            and this looked correct until it was on a phone.
+
+            Nothing ends up under the clock as a result: the MapLibre controls
+            carry the same inset themselves further down this file, and the
+            source switch is pinned to the bottom. */}
+        <div className="relative h-dvh mt-[calc(-1*env(safe-area-inset-top))] mb-[calc(-1*var(--phone-nav-space))]">
           {/* The map fills the frame. `inset-0` rather than a flex child now
               that nothing sits above it to take a share of the height. */}
           <div className="absolute inset-0">
