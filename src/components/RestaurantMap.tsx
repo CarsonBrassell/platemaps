@@ -26,7 +26,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 setWorkerUrl("/maplibre-gl-worker.mjs");
 import { MapSearch, type MapMatches } from "@/components/MapSearch";
 import { MyLocation } from "@/components/MyLocation";
-import { claimOpeningCamera, openingCameraClaimed, MY_LOCATION_ZOOM } from "@/lib/mapCamera";
+import { claimOpeningCamera, openingCameraClaimed, MY_LOCATION_OPEN_ZOOM } from "@/lib/mapCamera";
 import { readLastFix } from "@/lib/myLocation";
 import { NEO_NOIR_STYLE } from "@/lib/mapStyle";
 import { openStateFor } from "@/lib/openState";
@@ -1425,13 +1425,21 @@ export function RestaurantMap({
        Otherwise it opens on the whole county, so the first fitBounds below
        plays as a cinematic dive into the urban core rather than a static
        appearance. Starts dead flat either way; syncPitch below owns the tilt
-       from here on. */
+       from here on.
+
+       The zoom is the neighbourhood scale, not the locate button's — the map
+       opening on you is an arrival, not a request to be recentred, and ought
+       to leave enough of the surrounding blocks in frame to get oriented. See
+       lib/mapCamera.ts. */
     const openingFix = readLastFix();
     const map = new MapLibreMap({
       container: containerRef.current,
       style: NEO_NOIR_STYLE,
       ...(openingFix
-        ? { center: [openingFix.lng, openingFix.lat] as [number, number], zoom: MY_LOCATION_ZOOM }
+        ? {
+            center: [openingFix.lng, openingFix.lat] as [number, number],
+            zoom: MY_LOCATION_OPEN_ZOOM,
+          }
         : { bounds: SD_COUNTY_BOUNDS }),
       maxBounds: SD_COUNTY_BOUNDS,
       minZoom: 9,
@@ -1453,6 +1461,13 @@ export function RestaurantMap({
          applies the whole camera each frame, overwriting the write. */
       transformCameraUpdate: ({ zoom }) => ({ pitch: pitchForZoom(zoom) }),
     });
+
+    // Dev-only escape hatch for poking at the live camera from the console —
+    // never runs in a production build.
+    if (process.env.NODE_ENV !== "production") {
+      (window as unknown as { __pmMap?: MapLibreMap }).__pmMap = map;
+    }
+
     /* A map that opened on the reader has already spent its opening camera,
        so the dive to the corpus bounds below must not fire and take it away
        again. Claimed here rather than when the live fix lands, because the

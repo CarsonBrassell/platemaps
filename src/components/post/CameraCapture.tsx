@@ -102,6 +102,28 @@ export function CameraCapture({
       });
     }
 
+    /**
+     * `open`, but if the facingMode + width combination is itself the
+     * problem — some WKWebView builds throw `OverconstrainedError` for a
+     * constraint set a desktop browser accepts without complaint — retry
+     * with just the width. A camera that exists but can't satisfy `ideal`
+     * facingMode should still be usable; only a real refusal (permission,
+     * no device) should reach the "blocked"/"unsupported" states below.
+     */
+    async function openResilient(want: Facing) {
+      try {
+        return await open(want);
+      } catch (err) {
+        if (err instanceof Error && err.name === "OverconstrainedError") {
+          return navigator.mediaDevices.getUserMedia({
+            video: { width: { ideal: 1440 } },
+            audio: false,
+          });
+        }
+        throw err;
+      }
+    }
+
     function stop(stream: MediaStream | null) {
       stream?.getTracks().forEach((t) => t.stop());
     }
@@ -158,7 +180,7 @@ export function CameraCapture({
         setBothLive(false);
         if (!survived) {
           try {
-            const again = await open(live);
+            const again = await openResilient(live);
             if (cancelled) {
               stop(again);
               return;
@@ -186,7 +208,7 @@ export function CameraCapture({
       }
       let stream: MediaStream;
       try {
-        stream = await open(live);
+        stream = await openResilient(live);
       } catch {
         if (!cancelled) setStatus("blocked");
         return;
@@ -449,7 +471,7 @@ export function CameraCapture({
           {status !== "starting" && (
             <p className="max-w-xs text-xs leading-relaxed text-white/55">
               {status === "blocked"
-                ? "PlateMaps takes the photo itself, so this screen needs camera permission. Allow it in your browser and come back — or post without one."
+                ? "PlateMaps takes the photo itself, so this screen needs camera permission. Turn it on in your phone's Settings app under PlateMaps → Camera (or your browser's site settings on the web) and come back — or post without one."
                 : "This browser doesn't offer a camera, and PlateMaps only posts photos it takes. You can still leave a comment."}
             </p>
           )}

@@ -26,14 +26,28 @@
 import type { Map as MapLibreMap } from "maplibre-gl";
 
 /**
- * How close the map sits when it is showing you where you are — block level,
- * near enough to read the street you are standing on. Shared because two
- * places open the camera there: RestaurantMap when it opens on a remembered
- * position, and MyLocation when a live fix arrives or the locate button is
- * pressed. They must agree, or pressing locate would visibly re-zoom a map
- * that was already in the right place.
+ * How close the map sits when the reader *asked* to be shown where they are —
+ * block level, near enough to read the street you are standing on. This is
+ * the locate button's zoom, in MyLocation, whether that is the first press or
+ * a recentring one. It must not drift from what a first press does when no
+ * opening flight has happened yet, or pressing locate would visibly re-zoom a
+ * map that just got there on its own.
  */
 export const MY_LOCATION_ZOOM = 16;
+
+/**
+ * How close the map sits when it opens on the reader's own position without
+ * being asked — neighbourhood scale, a few square miles, enough to see where
+ * you are relative to the streets around you without every restaurant on the
+ * block being legible yet. Deliberately its own constant rather than reusing
+ * `MY_LOCATION_ZOOM`: the two answer different questions (arriving vs. asking
+ * to be recentred) and a designer choosing to change one must not silently
+ * move the other. Used by RestaurantMap for the opening camera (whether it
+ * opens straight on a remembered fix or flies there once a live one lands)
+ * and left alone by the locate button, which still zooms all the way to
+ * `MY_LOCATION_ZOOM`.
+ */
+export const MY_LOCATION_OPEN_ZOOM = 13;
 
 const claimed = new WeakSet<MapLibreMap>();
 

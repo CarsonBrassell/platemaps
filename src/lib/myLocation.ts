@@ -14,10 +14,18 @@
  * The two hooks therefore differ in exactly three options and in
  * `watchPosition` vs `getCurrentPosition`. They deliberately do not share an
  * implementation: collapsing them would mean one of the two surfaces silently
- * paying for the other's accuracy or staleness. They do share the doctrine in
- * nearby.ts's header, which is the part that matters — **location is requested
- * only on a tap that explains why**, never on load, because a denial is sticky
- * per origin and there is only ever one chance at the prompt.
+ * paying for the other's accuracy or staleness.
+ *
+ * They used to also share nearby.ts's doctrine of asking only on a tap that
+ * explains why, never on load. The map is the one exception: opening it *is*
+ * the thing that explains why, the same way opening a native maps app asks
+ * for your position without a separate button for it — so `MyLocation` calls
+ * `request()` itself as soon as the map exists, rather than waiting on a
+ * press. This hook still does nothing on its own until asked; see
+ * `components/MyLocation.tsx` for where and why that ask now happens on open.
+ * Nearby keeps the original doctrine — the filter is not the map, and
+ * defaulting a row nobody has touched into a permission prompt is exactly the
+ * reflex-denial trap that doctrine exists to avoid.
  */
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";

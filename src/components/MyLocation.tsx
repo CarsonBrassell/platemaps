@@ -31,7 +31,7 @@
 import { useCallback, useEffect, useId, useRef, useState, type RefObject } from "react";
 import { Marker, type IControl, type Map as MapLibreMap } from "maplibre-gl";
 import { headingNeedsPermission, useHeading } from "@/lib/heading";
-import { claimOpeningCamera, MY_LOCATION_ZOOM } from "@/lib/mapCamera";
+import { claimOpeningCamera, MY_LOCATION_OPEN_ZOOM, MY_LOCATION_ZOOM } from "@/lib/mapCamera";
 import { milesBetween } from "@/lib/geo";
 import { readLastFix, useMyLocation, type Fix, type MyLocationState } from "@/lib/myLocation";
 
@@ -175,6 +175,15 @@ export function MyLocation({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }
   const pressRef = useRef<() => void>(() => {});
   /** False until the first fix has flown the camera to it. */
   const hasFlownRef = useRef(false);
+  /**
+   * True once the reader has pressed the locate button. Read only by the
+   * opening flight below, to pick between the two zooms in lib/mapCamera.ts:
+   * a press means "take me there and let me read the street", the map opening
+   * on its own means "show me the neighbourhood I'm in". Once the opening
+   * flight has happened this stops mattering — a later press moves the camera
+   * itself, through `press` below, not through this flag.
+   */
+  const explicitRequestRef = useRef(false);
   /* The remembered position the map opened on, if it opened on one — read once
      at mount, because the live fix overwrites the stored value the moment it
      lands and this needs the value from *before* that. */
@@ -223,6 +232,9 @@ export function MyLocation({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }
         duration: 900,
       });
     }
+    // A press is what earns the street-level zoom below if this turns out to
+    // be the very first fix this component has ever seen.
+    explicitRequestRef.current = true;
     requestFix();
     requestHeading();
   }, [fix, map, requestFix, requestHeading]);
@@ -246,14 +258,25 @@ export function MyLocation({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }
   }, [map, state]);
 
   /**
-   * Opening the map already standing on your own marker.
+   * Opening the map asks for your position, the same way opening a native
+   * maps app does. This used to wait for `navigator.permissions.query` to
+   * report `"granted"` — i.e. it only ever fired automatically for a visitor
+   * who had *already* said yes on a previous visit, on this exact origin.
+   * That read as "it just works" in development, where the button had long
+   * since been pressed against `localhost`, and as "the marker never shows
+   * up" on a fresh deploy, where no visitor's browser had that grant yet —
+   * every first-time reader was left staring at a map with no dot on it until
+   * they found and pressed the locate button themselves. That was the deploy
+   * bug this effect exists to fix.
    *
-   * nearby.ts's doctrine — never raise the prompt on load, spend the one
-   * chance at it on a tap that explains itself — is about the *prompt*, not
-   * about the fix. Once permission has been granted for this origin there is
-   * no prompt left to raise, so taking a fix costs the reader nothing and the
-   * map can open where they actually are. Before that, the button is still the
-   * only way in, and it is still the thing that explains itself.
+   * Calling `requestFix()` directly instead needs no permissions-API support
+   * (Firefox has thrown on querying a geolocation descriptor before, and
+   * Safari's support is inconsistent) because the browser raises its own
+   * prompt when one is needed — this is what a tap on the locate button was
+   * already doing. A visitor who denies it, here or previously, lands in
+   * `useMyLocation`'s "denied" state exactly as if they had pressed the
+   * button and said no, and the map falls back to its county framing with no
+   * error. The button remains for retrying and for recentring afterwards.
    *
    * The heading rides along only where reading it raises no dialog of its own
    * — everywhere except iOS, which needs the gesture and gets it from the
@@ -261,23 +284,8 @@ export function MyLocation({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }
    */
   useEffect(() => {
     if (!map || state !== "idle") return;
-    if (typeof navigator === "undefined" || !navigator.permissions?.query) return;
-
-    let cancelled = false;
-    navigator.permissions
-      .query({ name: "geolocation" })
-      .then((status) => {
-        if (cancelled || status.state !== "granted") return;
-        requestFix();
-        if (!headingNeedsPermission()) requestHeading();
-      })
-      /* Firefox has thrown on this query for a geolocation descriptor before.
-         Failing to ask is not an error here — it just leaves the button. */
-      .catch(() => {});
-
-    return () => {
-      cancelled = true;
-    };
+    requestFix();
+    if (!headingNeedsPermission()) requestHeading();
   }, [map, requestFix, requestHeading, state]);
 
   /* What the button looks like and announces. `map` is a dependency because
@@ -328,9 +336,18 @@ export function MyLocation({ mapRef }: { mapRef: RefObject<MapLibreMap | null> }
       const openedFrom = openedFromRef.current;
       const drifted = !openedFrom || milesBetween(openedFrom, fix) > OPENING_DRIFT_MI;
       if (drifted) {
+        /* A press earns the locate button's street-level zoom even on the
+           very first fix it ever produces (no remembered position, first tap
+           == first fix). Anything else — permission already granted on a
+           past visit, or the fresh prompt this component now raises on open
+           — is the map arriving on its own, so it gets the wider
+           neighbourhood framing instead. See lib/mapCamera.ts. */
         map.easeTo({
           center: [fix.lng, fix.lat],
-          zoom: Math.max(map.getZoom(), MY_LOCATION_ZOOM),
+          zoom: Math.max(
+            map.getZoom(),
+            explicitRequestRef.current ? MY_LOCATION_ZOOM : MY_LOCATION_OPEN_ZOOM,
+          ),
           duration: openedFrom ? 700 : 1200,
         });
       }
