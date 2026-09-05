@@ -632,13 +632,37 @@ html.pm-lock-scroll body {
   }
 }
 
-/* The flinch, reusing the chomp the composer's celebration already uses so the
-   two places the mark gets bitten agree about what a bite feels like — two or
-   three pixels and about a degree. Delayed onto the same 1.5s mark as the
-   bite. */
+/*
+ * The flinch, delayed onto the same 1.5s mark as the bite.
+ *
+ * Its own keyframes rather than `post-flash-chomp-a`, which it started as: the
+ * splash wants 9% more travel and the composer's celebration does not, and
+ * those keyframes are shared by the four chomps of the post flash. Widening
+ * them there would have moved a second, unrelated animation.
+ *
+ * So the shape is the chomp's, every value multiplied by 1.09 — same rhythm,
+ * same three beats, a little more of it. Still small on purpose: the mark
+ * taking a hit, not the mark falling over.
+ */
 .phone-splash-shaker {
   display: block;
-  animation: post-flash-chomp-a 0.2s ease-out 1.5s both;
+  animation: phone-splash-chomp 0.2s ease-out 1.5s both;
+}
+
+@keyframes phone-splash-chomp {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(-2.725px, 1.635px) rotate(-1.526deg);
+  }
+  45% {
+    transform: translate(2.725px, -1.09px) rotate(1.199deg);
+  }
+  70% {
+    transform: translate(-1.635px, 0.545px) rotate(-0.654deg);
+  }
 }
 
 /* 84.6% of 2.6s is 2.2s, which is where the hold ends and the 0.4s fade

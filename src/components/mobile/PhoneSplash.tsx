@@ -42,6 +42,20 @@ import { BrandMark } from "@/components/BrandMark";
  * regenerate. Removing that copy at 1.5s *is* the bite. `phone.css` owns the
  * clip and documents where its edges are and why.
  *
+ * ## Size, and why this is the `full` raster
+ *
+ * `h-48` — 192px, about 38% of a 390px screen's width once the mark's own
+ * proportions are applied. That is past what the 240px raster can carry: at 3x
+ * it would be upscaled nearly twice over, on the one screen whose entire job is
+ * showing the logo. `size="full"` is the 660x865 file, which PostFlash already
+ * loads on every /m page for the same reason, so this costs no extra bytes —
+ * it is a file the phone tree was fetching anyway.
+ *
+ * The preload in the root layout still points at the 240 file, deliberately:
+ * that is the one the headers use, the root layout is shared with the web
+ * version, and this <img> is in the first bytes of the document with
+ * `fetchpriority="high"`, so it is discovered during parse regardless.
+ *
  * ## Why it is CSS and not a timer
  *
  * No state, no `useEffect`, no `mounted` flag. A timer would need the overlay
@@ -71,12 +85,12 @@ export function PhoneSplash() {
           are changing, so the two animations cannot fight over `transform`. */}
       <span className="phone-splash-shaker">
         <span className="phone-splash-mark">
-          <BrandMark className="h-24 w-auto" />
+          <BrandMark size="full" className="h-48 w-auto" />
           {/* The mirrored copy that fills the bite in. Sized identically so it
               lands exactly on the mark underneath; phone.css mirrors it and
               clips it to the bitten corner. */}
           <span className="phone-splash-patch">
-            <BrandMark className="h-24 w-auto" />
+            <BrandMark size="full" className="h-48 w-auto" />
           </span>
         </span>
       </span>

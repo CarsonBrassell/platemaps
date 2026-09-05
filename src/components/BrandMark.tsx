@@ -26,9 +26,11 @@
  */
 /** The two rasters, and the size each is for. */
 const SIZES = {
-  /* What every normal call site gets. Nothing in the app draws the mark bigger
-     than 96px CSS — the phone splash's h-24 is the largest — so 240 covers all
-     of them at 3x. */
+  /* What every normal call site gets. No ordinary call site draws the mark
+     bigger than 96px CSS, so 240 covers all of them at 3x. The two that go
+     past it — the phone splash and the post-flash medallion — both ask for
+     `full` instead, and anything else that grows past 96px has to do the
+     same or it will be visibly soft on a 3x screen. */
   mark: { src: "/logo-mark-240", width: 240, height: 314 },
   /* The post-flash medallion only: its disc is up to 250px square and the mark
      fills its height, which is ~573px of pixels on a 3x phone. The 240 would
