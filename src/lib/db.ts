@@ -1038,6 +1038,52 @@ export async function createPost(data: {
     RETURNING created_at
   `;
 
+  /*
+   * A restaurant with no cover adopts the first plate posted there.
+   *
+   * Most listed restaurants have no photo — the Google ones were removed
+   * because we could not use them honestly, and Yelp only covers a slice —
+   * so the alternative is a tone block forever. The people eating there can
+   * fix that in a way no API can, and this is the moment they do it.
+   *
+   * Three conditions, and all three are load-bearing:
+   *
+   * - **`photos_public`.** A cover is the most public surface a photo can
+   *   land on. This is the author's own share-photos setting, frozen onto
+   *   this post at creation, so a photo only ever gets promoted if the person
+   *   who took it had already said their photos may be seen publicly.
+   * - **`isStoredPhotoUrl`.** Our own blob store only. A post's media column
+   *   is client-supplied, and a restaurant cover is exactly the field you
+   *   would want to point at someone else's server.
+   * - **`photo IS NULL` in the WHERE, not in a preceding SELECT.** Two people
+   *   posting the first plate at the same restaurant within the same second
+   *   is rare but not impossible, and read-then-write would let the second
+   *   overwrite the first. Postgres settles it; the loser's update matches no
+   *   rows and does nothing.
+   *
+   * Deliberately never replaces an existing cover. This fills an absence, it
+   * does not run a competition — a restaurant's photo changing every time
+   * somebody posts is churn, not curation.
+   *
+   * Failure is swallowed on purpose. The post is already written and is the
+   * thing the author is waiting on; a cover is a nicety, and a 500 here would
+   * lose a review over a decoration.
+   */
+  const cover = media.find((m) => m.type === "image" && isStoredPhotoUrl(m.url));
+  if (data.restaurantId && cover && data.photosPublic) {
+    try {
+      await sql`
+        UPDATE restaurants
+        SET photo = ${cover.url}, photo_alt = ${cover.alt ?? null},
+            photo_w = NULL, photo_h = NULL
+        WHERE id = ${data.restaurantId}
+          AND (photo IS NULL OR photo = '')
+      `;
+    } catch {
+      /* See above: a cover is never worth failing a post over. */
+    }
+  }
+
   /* One row per aspect the review had an opinion about. Written after the
      post so the FK holds, and guarded so a client that sends the same aspect
      as both its best and its worst can't write a self-cancelling pair — the

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { RestaurantView } from "@/data/restaurantTypes";
-import { RestaurantPhoto } from "@/components/RestaurantPhoto";
+import { RestaurantPhoto, PostFirstPlate, photoCredit } from "@/components/RestaurantPhoto";
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { placeLine } from "@/lib/placeLine";
@@ -34,6 +34,11 @@ export function PhoneRestaurantCard({
   /** Set on the first couple of cards so the fold isn't lazy-loaded. */
   priority?: boolean;
 }) {
+  /* Who to credit, if anyone — derived from the photo's host so the label
+     can never disagree with the file it sits on. Null for a diner's own
+     plate, which needs no third-party credit. */
+  const credit = photoCredit(restaurant.photo);
+
   return (
     <Link
       href={`/m/restaurant/${restaurant.id}`}
@@ -49,7 +54,7 @@ export function PhoneRestaurantCard({
              cellular for a 16:10 slot. */
           sizes="(min-width: 480px) 390px, 100vw"
           priority={priority}
-          fallback={null}
+          fallback={<PostFirstPlate />}
         />
 
         {score.percent !== null ? (
@@ -71,12 +76,18 @@ export function PhoneRestaurantCard({
           </span>
         )}
 
-        {/* Yelp requires attribution wherever their photo appears. The card is
-            one <Link>, so this cannot be the anchor to the business page
-            without nesting anchors — same trade the grid card makes. */}
-        {restaurant.photo && (
+        {/* Yelp requires attribution wherever their photo appears — but only
+            Yelp's. This used to print unconditionally beside any photo at all,
+            which credited Yelp for thousands of photos that were not theirs
+            and would now credit them for a diner's own plate. `photoCredit`
+            reads the host, so the label can only ever name the actual source.
+
+            The card is one <Link>, so this cannot be the anchor to the
+            business page without nesting anchors — same trade the grid card
+            makes. */}
+        {credit && (
           <span className="absolute bottom-2.5 right-2.5 whitespace-nowrap rounded-full bg-white/85 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600">
-            Photo: Yelp
+            Photo: {credit}
           </span>
         )}
       </div>

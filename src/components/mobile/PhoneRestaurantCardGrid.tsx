@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { RestaurantView } from "@/data/restaurantTypes";
-import { RestaurantPhoto } from "@/components/RestaurantPhoto";
+import { RestaurantPhoto, PostFirstPlate } from "@/components/RestaurantPhoto";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { photoRatio } from "@/lib/photoShape";
 import { StarIcon } from "@/components/icons";
@@ -75,7 +75,7 @@ export function PhoneRestaurantCardGrid({
              would arrive soft. */
           sizes="50vw"
           priority={priority}
-          fallback={null}
+          fallback={<PostFirstPlate compact />}
         />
         {/* The same pair, and the same order, as the web card: our percentage
             first in the accent, the sourced blend behind a divider in muted

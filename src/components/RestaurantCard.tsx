@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { RestaurantView } from "@/data/restaurantTypes";
 import { StarIcon } from "@/components/icons";
-import { RestaurantPhoto } from "@/components/RestaurantPhoto";
+import { RestaurantPhoto, PostFirstPlate } from "@/components/RestaurantPhoto";
 import { OpenStatePill } from "@/components/OpenStatePill";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { ASPECT_SCALE_MAX, SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
@@ -124,7 +124,7 @@ export function RestaurantCard({
               : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 220px"
           }
           className="transition-transform duration-500 ease-out group-hover:scale-[1.07]"
-          fallback={null}
+          fallback={<PostFirstPlate />}
         />
         {/* Both numbers ride on the photo so the body below is just name and
             context — one less row competing for attention.

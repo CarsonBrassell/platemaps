@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Restaurant } from "@/data/restaurantTypes";
 import { OpenStatePill } from "@/components/OpenStatePill";
-import { RestaurantPhoto } from "@/components/RestaurantPhoto";
+import { RestaurantPhoto, PostFirstPlate, photoCredit } from "@/components/RestaurantPhoto";
 import { StarRating } from "@/components/StarRating";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import {
@@ -51,6 +51,11 @@ export function PhoneDetailHero({
   /** Always inside `/m`, and carrying `?nav=` while the nav variants are live. */
   backHref: string;
 }) {
+  /* Who to credit, if anyone — derived from the photo's host so the label
+     can never disagree with the file it sits on. Null for a diner's own
+     plate, which needs no third-party credit. */
+  const credit = photoCredit(restaurant.photo);
+
   return (
     <section>
       <div className="relative aspect-[16/10] w-full bg-[var(--pm-tone-1)]">
@@ -62,7 +67,7 @@ export function PhoneDetailHero({
           sizes="(min-width: 480px) 390px, 100vw"
           /* The hero of the screen — never lazy-loaded. */
           priority
-          fallback={null}
+          fallback={<PostFirstPlate />}
         />
 
         {/* `env(safe-area-inset-top)` because the root layout opts into
@@ -92,9 +97,9 @@ export function PhoneDetailHero({
             marks the photo; the *link* back to the business lives in the
             disclosure line below, where it can be a real 44px target instead of
             a 10px label floating on an image. */}
-        {restaurant.photo && (
+        {credit && (
           <span className="absolute bottom-2.5 right-2.5 whitespace-nowrap rounded-full bg-white/85 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600">
-            Photo: Yelp
+            Photo: {credit}
           </span>
         )}
       </div>
@@ -174,7 +179,9 @@ export function PhoneDetailHero({
           <p className="mt-3 font-mono text-[11px] leading-relaxed text-zinc-500">
             {SHOW_BLEND_STARS &&
               "Star rating is a weighted blend of Yelp and Google reviews, not PlateMaps ratings."}
-            {restaurant.yelpUrl && (
+            {/* Only when the photo is actually theirs. The star blend has its
+                own sentence above; this link is the photo credit. */}
+            {credit === "Yelp" && restaurant.yelpUrl && (
               <>
                 {SHOW_BLEND_STARS && " "}
                 <a

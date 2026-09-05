@@ -1,6 +1,6 @@
 import type { Restaurant } from "@/data/restaurantTypes";
 import { OpenStatePill } from "@/components/OpenStatePill";
-import { RestaurantPhoto } from "@/components/RestaurantPhoto";
+import { RestaurantPhoto, PostFirstPlate, photoCredit } from "@/components/RestaurantPhoto";
 import { StarRating } from "@/components/StarRating";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import {
@@ -40,7 +40,7 @@ export function RestaurantHeader({
           sizes="(max-width: 768px) 100vw, 960px"
           /* The hero of the detail page — never lazy-load it. */
           priority
-          fallback={null}
+          fallback={<PostFirstPlate />}
         />
         {restaurant.trending && (
           <span className="mono-label absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1.5 text-zinc-700">
@@ -148,7 +148,10 @@ export function RestaurantHeader({
             covers the photo, and sits in this same line. */}
         <p className="mt-3 font-mono text-[11px] text-zinc-500">
           {SHOW_BLEND_STARS && restaurant.rating != null && <span className="text-zinc-400">{BLEND_DISCLOSURE}</span>}
-          {restaurant.yelpUrl && (
+          {/* Only when the photo is actually Yelp's — a user's plate needs no
+              third-party credit, and crediting one would be a false statement
+              about who took it. */}
+          {photoCredit(restaurant.photo) === "Yelp" && restaurant.yelpUrl && (
             <>
               {" · "}
               <a

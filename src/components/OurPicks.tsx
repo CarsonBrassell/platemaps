@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { RestaurantView } from "@/data/restaurantTypes";
 import { StarIcon } from "@/components/icons";
-import { RestaurantPhoto } from "@/components/RestaurantPhoto";
+import { RestaurantPhoto, PostFirstPlate } from "@/components/RestaurantPhoto";
 import { EMPTY_PLATE_SCORE, plateScoreLabel, type PlateScore } from "@/lib/plateScore";
 import { SHOW_BLEND_STARS, blendLabel } from "@/lib/ratingDisplay";
 import { photoCreditFor } from "@/lib/photoCredit";
@@ -53,7 +53,7 @@ export function OurPicks({
                 /* Above the fold on the homepage, and only ever two of them. */
                 priority
                 className="transition-transform duration-500 ease-out group-hover:scale-[1.06]"
-                fallback={null}
+                fallback={<PostFirstPlate compact />}
               />
               <span className="absolute left-2 top-2 rounded-full bg-white/95 px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-700">
                 Promoted
