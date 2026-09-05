@@ -536,6 +536,23 @@ function escapeHtml(text: string) {
  * restaurant district this spot stands in (see districtDensities). */
 const PIN_SOURCE = "restaurants";
 
+/**
+ * The pins are drawn *under* the place labels, not over them.
+ *
+ * Every `addLayer` below passes this as `beforeId`. Without it MapLibre
+ * appends to the top of the style, and since `place-city` is the last layer in
+ * NEO_NOIR_STYLE that put six layers of ember on top of the city names — worst
+ * exactly where it matters least, because zoomed out the dots are a dense haze
+ * and the label underneath is the only thing telling you where you are.
+ *
+ * Anchoring on `place-neighbourhood` puts the pins above the road and water
+ * labels (where they were, and where they read fine) and below both place
+ * layers. Layer order is static in MapLibre, so this is not conditional on
+ * zoom — the labels simply always win, which is the ordinary cartographic
+ * convention and what the style's own header already claimed was true.
+ */
+const PIN_BEFORE_ID = "place-neighbourhood";
+
 /* How much ground counts as "this restaurant's district" for the aura's
    density read. ~0.35mi is a few walkable blocks — the scale at which Little
    Italy is one thing and the strip mall two exits up is another. Widen it and
@@ -1805,7 +1822,7 @@ export function RestaurantMap({
             "rgba(232,135,90,0.46)",
           ],
         },
-      });
+      }, PIN_BEFORE_ID);
 
       /* The mock's dot family, no clumping tricks: every restaurant is a
          visible neon ember at every zoom — small crisp core in the mock's
@@ -1872,7 +1889,7 @@ export function RestaurantMap({
             withIntensity(16, 12),
           ),
         },
-      });
+      }, PIN_BEFORE_ID);
       map.addLayer({
         id: "restaurant-dot-inner",
         type: "circle",
@@ -1888,7 +1905,7 @@ export function RestaurantMap({
             withIntensity(7, 5),
           ),
         },
-      });
+      }, PIN_BEFORE_ID);
       map.addLayer({
         id: "restaurant-dots",
         type: "circle",
@@ -1928,7 +1945,7 @@ export function RestaurantMap({
             withIntensity(4, 4.5),
           ),
         },
-      });
+      }, PIN_BEFORE_ID);
       /* The mock's ringed actives: the hottest spots wear a thin halo ring
          around their light once the map is close enough to read them. */
       map.addLayer({
@@ -1954,7 +1971,7 @@ export function RestaurantMap({
             withIntensity(10, 5),
           ),
         },
-      });
+      }, PIN_BEFORE_ID);
 
       /* The hover/click target, and NOTHING else — fully transparent, and the
          only layer the pointer events below are bound to.
@@ -1978,7 +1995,7 @@ export function RestaurantMap({
           "circle-opacity": 0,
           "circle-radius": byZoom(14, 16, 19, 24),
         },
-      });
+      }, PIN_BEFORE_ID);
 
       /* One shared name chip for the whole layer, shown by the map's hover
          events — the per-pin .pin-tip died with the DOM pins. */

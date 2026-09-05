@@ -10,7 +10,9 @@
  *
  * Palette: charcoal night base with streets stepping up in brightness and
  * warmth by importance, a PlateMaps-orange glow pooled under the arterials,
- * deep harbor water, and labels that never fight the pins. Every fill sits
+ * deep harbor water, and labels that never fight the pins — which is
+ * enforced by layer order, not hoped for: the pins are inserted below
+ * `place-neighbourhood` (see PIN_BEFORE_ID in RestaurantMap). Every fill sits
  * far enough from the base tone to stay legible on a dim screen.
  */
 /* Labels set in the app's own machine voice: Spline Sans Mono, self-hosted as
@@ -321,9 +323,22 @@ export const NEO_NOIR_STYLE: StyleSpecification = {
         "text-letter-spacing": 0.16,
       },
       paint: {
-        "text-color": "#c6cdd8",
+        /* Brighter than the neighbourhood labels, and deliberately so — this
+           is the one label you need when the map is zoomed out far enough that
+           everything else is a haze of embers. #c6cdd8 was the same grey both
+           place layers shared, which read as a flat hierarchy and lost the
+           city name in the glow.
+
+           The halo does the real work. The pins now draw underneath (see
+           PIN_BEFORE_ID in RestaurantMap), but "underneath" is not the same as
+           "legible": a dense orange field directly behind cream text still
+           eats its edges. Widening the halo to 2 and softening it with a blur
+           gives the name its own pocket of night to sit in, so it stays
+           readable over the brightest part of the county view. */
+        "text-color": "#eef2f8",
         "text-halo-color": "#191c22",
-        "text-halo-width": 1.4,
+        "text-halo-width": 2,
+        "text-halo-blur": 0.6,
       },
     },
   ],
