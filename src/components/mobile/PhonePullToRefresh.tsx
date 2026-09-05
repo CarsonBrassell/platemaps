@@ -37,12 +37,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
  *
  * ## The gesture
  *
- * Armed only when the scroller is already at the top when the finger lands,
- * and only for a downward drag past a few pixels of slop — an upward flick from
- * the top is a normal scroll and must stay one. Once armed, every move is
+ * Armed only when the scroller is already at the top when the finger lands, and
+ * only while the drag is downward — an upward flick from the top is a normal
+ * scroll and must stay one. From the first downward pixel every move is
  * `preventDefault`ed (hence a non-passive listener): that is what stops iOS
  * rubber-banding the scroller underneath the pull, so the finger is moving one
- * thing rather than two.
+ * thing rather than two. See `onMove` for why the claim cannot wait for the
+ * drag to prove itself first.
  */
 
 /** Finger travel is halved on the way to the dial, so the pull feels weighted. */
@@ -165,14 +166,26 @@ export function PhonePullToRefresh({
       if (!tracking) return;
       const dy = e.touches[0].clientY - startY;
 
-      if (!engaged) {
-        /* Downward past the slop claims the gesture. Anything upward first is
-           someone scrolling the feed, and we get out of the way for the rest of
-           this touch rather than fighting them for it. */
-        if (dy < 0) return release();
-        if (dy < SLOP) return;
-        engaged = true;
-      }
+      /* Anything upward is someone scrolling the feed, and we get out of the
+         way for the rest of this touch rather than fighting them for it. */
+      if (dy <= 0) return release();
+
+      /*
+       * Claimed on the FIRST downward pixel, not on the first one past the
+       * slop — and that ordering is the whole gesture on iOS.
+       *
+       * WebKit decides on the opening moves of a touch whether it is scrolling
+       * that element, and once it has, every later `touchmove` arrives with
+       * `cancelable: false`: the rubber-band is already running and cannot be
+       * called off. Letting the first few pixels through to "see if they mean
+       * it" is exactly long enough to lose the gesture, so the pull would fight
+       * the bounce instead of replacing it.
+       *
+       * The slop has not gone anywhere — it moved into `travelled` below, so
+       * the dial still ignores the first few pixels. What it no longer does is
+       * decide who owns the drag.
+       */
+      engaged = true;
 
       /* The scroller can only be at the top for this to be a pull; if content
          got under it somehow, hand the gesture back. */
@@ -183,10 +196,12 @@ export function PhonePullToRefresh({
       }
 
       /* Owning the gesture is what stops iOS rubber-banding the list at the
-         same time — see the header note. The listener is registered non-passive
-         precisely so this call is allowed to do anything. */
-      e.preventDefault();
-      travelled = Math.min((dy - SLOP) * RESISTANCE, MAX_PULL);
+         same time — see above. The listener is registered non-passive precisely
+         so this call is allowed to do anything, and the guard is for the case
+         where the platform has taken the gesture anyway: preventing an
+         uncancelable event only earns a console warning. */
+      if (e.cancelable) e.preventDefault();
+      travelled = Math.max(0, Math.min((dy - SLOP) * RESISTANCE, MAX_PULL));
       setPhase("pulling");
       setPull(travelled);
     };
