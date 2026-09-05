@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import type { VoteDirection } from "./PostActions";
 import type { Comment, Post } from "./types";
@@ -54,25 +54,45 @@ export function usePostFeed({
   /** The same, keyed by comment — floated beside that comment's score. */
   const [commentReactPoints, setCommentReactPoints] = useState<Record<string, number>>({});
 
+  /**
+   * One read of the current endpoint, as a promise.
+   *
+   * It resolves rather than rejects on failure — every caller wants "the fetch
+   * is over", and the outcome is already reported through `posts`/`loadError`.
+   * That is what lets a caller *await* a load: the phone's pull-to-refresh
+   * holds its spinner up until this settles, and a rejection there would be an
+   * unhandled one for a failure the hook has already handled.
+   *
+   * `isStale` is how the mount effect below abandons a response whose endpoint
+   * has since changed — switching tabs mid-flight must not paint the old feed
+   * over the new one. A manual refresh has nothing to abandon and passes
+   * nothing, so it always lands.
+   */
+  const load = useCallback(
+    (isStale: () => boolean = () => false) =>
+      fetch(endpoint)
+        .then((res) => (res.ok ? res.json() : Promise.reject(new Error("failed"))))
+        .then((data) => {
+          if (isStale()) return;
+          setPosts(data.posts as Post[]);
+          setPlaces((data.places as FeedPlaces | undefined) ?? {});
+          setLoadError(false);
+        })
+        .catch(() => {
+          if (isStale()) return;
+          setPosts((prev) => prev ?? []);
+          setLoadError(true);
+        }),
+    [endpoint],
+  );
+
   useEffect(() => {
     let cancelled = false;
-    fetch(endpoint)
-      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("failed"))))
-      .then((data) => {
-        if (cancelled) return;
-        setPosts(data.posts as Post[]);
-        setPlaces((data.places as FeedPlaces | undefined) ?? {});
-        setLoadError(false);
-      })
-      .catch(() => {
-        if (cancelled) return;
-        setPosts((prev) => prev ?? []);
-        setLoadError(true);
-      });
+    void load(() => cancelled);
     return () => {
       cancelled = true;
     };
-  }, [endpoint, reloadKey]);
+  }, [load, reloadKey]);
 
   useEffect(() => {
     function sync() {
@@ -414,6 +434,10 @@ export function usePostFeed({
     posts,
     places,
     setPosts,
+    /* Re-read the feed on demand, and tell the caller when that is done. The
+       phone's pull-to-refresh is the only caller today; the "Try again" button
+       still goes through `reloadKey` because it has nothing to wait for. */
+    refresh: () => load(),
     patchPost,
     loadError,
     offline,

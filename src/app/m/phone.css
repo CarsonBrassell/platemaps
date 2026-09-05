@@ -703,3 +703,95 @@ html.pm-lock-scroll body {
     animation: none;
   }
 }
+
+/*
+ * --- Pull to refresh -----------------------------------------------------
+ *
+ * The wheel that says the feed is being re-read. `PhonePullToRefresh` owns the
+ * gesture and writes the drag into --pm-pull (how far, in px), --pm-pull-lead
+ * (0-1, how close to arming) and --pm-pull-turn; everything here is what those
+ * three numbers look like.
+ *
+ * Only the dial moves. The list underneath deliberately stays put — see the
+ * component's header for why translating `.pm-phone-content` would re-anchor
+ * every fixed overlay in the app for the length of a drag.
+ */
+.pm-phone-shell .phone-refresh {
+  /* Fixed, so inside the desktop frame this is the 390px column and on a
+     handset it is the viewport — the same box `.post-flash` pins to, and the
+     reason neither needs a breakpoint of its own. */
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 4px);
+  left: 0;
+  right: 0;
+  /* Over the sticky tab row's z-30 and under PhoneNav's z-40: the wheel belongs
+     on top of the feed, never on top of the navigation. */
+  z-index: 35;
+  display: flex;
+  justify-content: center;
+  /* Decoration over a live list — a tap here is meant for the card underneath. */
+  pointer-events: none;
+}
+
+.pm-phone-shell .phone-refresh-dial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  width: 36px;
+  border-radius: 9999px;
+  /* White on cream, no border and no shadow: the dial is a very small card, and
+     it has to stay legible when the drag carries it over a white card too. */
+  background: #fff;
+  /*
+   * Hidden at rest by opacity rather than by being parked off screen. The top
+   * inset is a real number on a handset and zero everywhere else, so any
+   * "translate it above the edge" distance is either short of the edge on a
+   * Dynamic Island or leaves the dial hanging over the clock. Fading solves
+   * both without measuring anything.
+   */
+  opacity: var(--pm-pull-lead, 0);
+  transform: translateY(calc(var(--pm-pull, 0px) * 0.6 - 22px))
+    scale(calc(0.72 + 0.28 * var(--pm-pull-lead, 0)));
+  transition:
+    transform 0.22s cubic-bezier(0.2, 0.8, 0.3, 1),
+    opacity 0.16s ease-out;
+}
+
+/* While a finger is down the dial *is* the finger, and a transition would make
+   it trail its own duration behind the drag. Both animated moments — the snap
+   home and the settle into the waiting position — keep the 220ms above, inside
+   the 300ms budget. */
+.pm-phone-shell .phone-refresh[data-phase="pulling"] .phone-refresh-dial {
+  transition: none;
+}
+
+/* Turned by the pull, then spun by the wait. Two rules on the same element
+   rather than one: the animation replaces the transform outright, which is
+   exactly the handover wanted at the moment the finger lifts. */
+.pm-phone-shell .phone-refresh-dial svg {
+  transform: rotate(var(--pm-pull-turn, 0deg));
+}
+
+.pm-phone-shell .phone-refresh[data-phase="refreshing"] .phone-refresh-dial svg {
+  animation: phone-refresh-spin 0.8s linear infinite;
+}
+
+@keyframes phone-refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The wheel still appears, still waits for the request and still leaves when
+     the feed is back — that it is happening is information, not decoration. It
+     simply stops being a wheel: no spin, and no glide into position. */
+  .pm-phone-shell .phone-refresh-dial {
+    transition: none;
+  }
+
+  .pm-phone-shell .phone-refresh[data-phase="refreshing"] .phone-refresh-dial svg {
+    animation: none;
+  }
+}

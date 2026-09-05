@@ -18,6 +18,7 @@ import { PhoneFeedTabs } from "./PhoneFeedTabs";
 import { PhoneStickyBar } from "./PhoneStickyBar";
 import { PhoneFeedPostCard } from "./PhoneFeedPostCard";
 import { PhoneFeedMapPanel } from "./PhoneFeedMapPanel";
+import { PhonePullToRefresh } from "./PhonePullToRefresh";
 
 /**
  * The feed, phone version.
@@ -131,6 +132,7 @@ export function PhoneFeedScreen() {
     voteComment: handleVoteComment,
     remove: handleDelete,
     share: handleShare,
+    refresh: reloadFeed,
   } = usePostFeed({ endpoint, reloadKey });
 
   /* The flame is a Discover-only signal. Friends is explicitly not an
@@ -429,6 +431,18 @@ export function PhoneFeedScreen() {
           the reference design gives the count no room. `PhoneFeedHeader` still
           takes a `subtitle` for the screens that want one. */}
       <PhoneFeedHeader />
+
+      {/* Drag down from the top to re-read the feed. Disabled while the
+          comments screen is up — it is a fixed overlay with its own scroller,
+          so the gesture is not meant for the list behind it — and while the
+          post-publish flash is covering, where a refresh the composer already
+          triggered would be racing the celebration it is playing under.
+
+          `reloadFeed` is usePostFeed's own re-read and returns a promise, so
+          the wheel spins for exactly as long as the request takes rather than
+          for a duration someone picked. The "Try again" button below keeps
+          `reloadKey`: it has nothing to wait for. */}
+      <PhonePullToRefresh onRefresh={reloadFeed} disabled={commentsPostId !== null || flashOpen} />
 
       {/* Tabs get the row to themselves; the sort and search share the next
           one. All three on one row is what this was, and it did not fit — and
