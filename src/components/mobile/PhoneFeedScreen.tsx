@@ -15,6 +15,7 @@ import { announceAward, closePostFlash, takeLanding, usePostFlash } from "@/lib/
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
 import { PhoneFeedTabs } from "./PhoneFeedTabs";
+import { PhoneStickyBar } from "./PhoneStickyBar";
 import { PhoneFeedPostCard } from "./PhoneFeedPostCard";
 import { PhoneFeedMapPanel } from "./PhoneFeedMapPanel";
 
@@ -422,21 +423,28 @@ export function PhoneFeedScreen() {
           search asks for its 36, so the row is over on the sort switch alone.
           Both rows below the tabs are modifiers on the feed the tabs pick,
           which is also why they wear rank 3 and the tabs wear rank 2. */}
-      <div className="px-4">
-        <PhoneFeedTabs active={tab} onChange={setTab} />
-      </div>
+      {/* Both rows ride up out of the way as you read down the feed and come
+          back on the first upward scroll — see PhoneStickyBar. They are one bar
+          rather than two because they are one thing: the tabs pick a feed and
+          the row under them modifies it, and a sort switch that outlives the
+          tabs it belongs to is a control with no subject. */}
+      <PhoneStickyBar>
+        <div className="px-4">
+          <PhoneFeedTabs active={tab} onChange={setTab} />
+        </div>
 
-      {/* Search owns this row and takes the sort switch as its left half — see
-          PhoneFeedSearch for why the two rows it spans have to live in one
-          component. Here a search narrows the list already on screen; the map
-          tab's copy of this control lives in the branch above, in the corner,
-          and keeps the navigate-to-Discover default. */}
-      <div className="mt-0.5">
-        <PhoneFeedSearch
-          leading={tab === "discover" ? <FeedSortSwitch active={sort} onChange={setSort} /> : null}
-          onSearch={setRestaurantFilter}
-        />
-      </div>
+        {/* Search owns this row and takes the sort switch as its left half — see
+            PhoneFeedSearch for why the two rows it spans have to live in one
+            component. Here a search narrows the list already on screen; the map
+            tab's copy of this control lives in the branch above, in the corner,
+            and keeps the navigate-to-Discover default. */}
+        <div className="mt-0.5">
+          <PhoneFeedSearch
+            leading={tab === "discover" ? <FeedSortSwitch active={sort} onChange={setSort} /> : null}
+            onSearch={setRestaurantFilter}
+          />
+        </div>
+      </PhoneStickyBar>
 
       <div className="px-4 pt-2">
         {offline && <OfflineBanner />}
