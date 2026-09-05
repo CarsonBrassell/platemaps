@@ -534,7 +534,7 @@ html.pm-lock-scroll body {
    why this is an animation rather than a timer, and for what it covers that
    the native iOS launch screen does not.
 
-   The hold is 1.4s and the fade 0.4s. `forwards` is what makes it stay gone —
+   The hold is 1.9s and the fade 0.4s. `forwards` is what makes it stay gone —
    without it the overlay snaps back to opacity 1 when the animation ends.
    `visibility` is animated alongside opacity so the finished overlay leaves
    the accessibility tree; opacity 0 alone would leave a transparent sheet
@@ -544,6 +544,26 @@ html.pm-lock-scroll body {
   inset: 0;
   z-index: 100;
   display: grid;
+  /*
+   * Both are needed, and `place-items` alone is what put the mark 179px below
+   * the middle of the screen.
+   *
+   * `BrandMark` renders a `<picture class="contents">`, so the picture's own
+   * box is taken out of the layout and BOTH of its children — the `<source>`
+   * and the `<img>` — become grid items of this container. That is two rows,
+   * not one: an empty one and the mark's. `place-items` only centers an item
+   * inside the track it lands in, and a grid's default `align-content: normal`
+   * behaves as **stretch**, so the 716px of leftover height was split evenly
+   * between the two rows and the empty one pushed the mark down by half of it.
+   * Measured at 375x812: rows of `358px 454px`, mark centred at y=585 against
+   * a viewport centre of 406.
+   *
+   * `place-content` is the axis that positions the tracks themselves. With it
+   * the rows collapse to `0px 96px` and sit in the middle, which puts the mark
+   * dead centre on both axes and stays right whatever the picture element does
+   * with its children.
+   */
+  place-content: center;
   place-items: center;
   /* Cream, not white, and that is forced by the artwork rather than chosen:
      `logo-mark.png` is fully opaque with its own cream ground baked in (there
@@ -555,12 +575,14 @@ html.pm-lock-scroll body {
   background: var(--background);
   /* Never eats the first tap, even during the hold. */
   pointer-events: none;
-  animation: phone-splash-out 1.8s ease-in forwards;
+  animation: phone-splash-out 2.3s ease-in forwards;
 }
 
+/* 82.6% of 2.3s is 1.9s, which is where the hold ends and the 0.4s fade
+   starts. Change the duration and this number moves with it. */
 @keyframes phone-splash-out {
   0%,
-  78% {
+  82.6% {
     opacity: 1;
     visibility: visible;
   }
@@ -576,7 +598,7 @@ html.pm-lock-scroll body {
    asks for. */
 @media (prefers-reduced-motion: reduce) {
   .phone-splash {
-    animation-duration: 1.5s;
+    animation-duration: 2s;
     animation-timing-function: steps(1, end);
   }
 }
