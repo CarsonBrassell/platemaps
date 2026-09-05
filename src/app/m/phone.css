@@ -534,7 +534,8 @@ html.pm-lock-scroll body {
    why this is an animation rather than a timer, and for what it covers that
    the native iOS launch screen does not.
 
-   The hold is 1.9s and the fade 0.4s. `forwards` is what makes it stay gone —
+   The bite lands at 1.5s, the hold runs to 2.2s and the fade is 0.4s.
+   `forwards` is what makes it stay gone —
    without it the overlay snaps back to opacity 1 when the animation ends.
    `visibility` is animated alongside opacity so the finished overlay leaves
    the accessibility tree; opacity 0 alone would leave a transparent sheet
@@ -575,14 +576,78 @@ html.pm-lock-scroll body {
   background: var(--background);
   /* Never eats the first tap, even during the hold. */
   pointer-events: none;
-  animation: phone-splash-out 2.3s ease-in forwards;
+  animation: phone-splash-out 2.6s ease-in forwards;
 }
 
-/* 82.6% of 2.3s is 1.9s, which is where the hold ends and the 0.4s fade
-   starts. Change the duration and this number moves with it. */
+/*
+ * The pin opens whole and is bitten 1.5s in. See PhoneSplash for why the bite
+ * is *uncovered* rather than drawn, and why filling the notch with anything
+ * hand-made is off the table.
+ *
+ * The patch is the same artwork mirrored. `scaleX(-1)` sits on the <img> and
+ * the clip sits on the wrapper, deliberately and not interchangeably: a
+ * clip-path is applied in the element's own coordinates and then transformed
+ * with it, so clipping the mirrored element would land the kept corner on the
+ * opposite side of the mark.
+ *
+ * The clip is two stacked rectangles rather than one, and both edges are
+ * measured off the artwork (240x314) rather than guessed:
+ *
+ * - Everything right of the centre line down to 27.1% (y=85). The centre line
+ *   is free: a mirror is identical to itself there, so that edge cannot seam.
+ *   27.1% is the floor because the knife's tip is the first asymmetric ink on
+ *   this half and it starts at y=86 — a rectangle any taller would paint the
+ *   mirrored fork over it.
+ * - A second, narrower step out to 31.2% (y=98) for the right 30% only, which
+ *   is where the last of the bite reaches. Nothing dark gets past x=155 (64.6%)
+ *   so this band is ring and cream on both sides of the axis.
+ *
+ * Verified by compositing the same two rectangles offline: the ring closes with
+ * no visible seam.
+ */
+.phone-splash-mark {
+  position: relative;
+  display: block;
+}
+
+.phone-splash-patch {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 0, 100% 0, 100% 31.2%, 70% 31.2%, 70% 27.1%, 50% 27.1%);
+  /* `steps(1, end)` holds the whole pin for the entire 1.5s and then jumps —
+     a bite is an event, not a fade. `forwards` keeps it gone afterwards. */
+  animation: phone-splash-bite 1.5s steps(1, end) forwards;
+}
+
+.phone-splash-patch img {
+  transform: scaleX(-1);
+}
+
+@keyframes phone-splash-bite {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* The flinch, reusing the chomp the composer's celebration already uses so the
+   two places the mark gets bitten agree about what a bite feels like — two or
+   three pixels and about a degree. Delayed onto the same 1.5s mark as the
+   bite. */
+.phone-splash-shaker {
+  display: block;
+  animation: post-flash-chomp-a 0.2s ease-out 1.5s both;
+}
+
+/* 84.6% of 2.6s is 2.2s, which is where the hold ends and the 0.4s fade
+   starts. That leaves 0.7s of bitten mark after the 1.5s bite, so the thing
+   the animation was for is on screen in its finished state rather than being
+   faded out mid-chew. Change the duration and this number moves with it. */
 @keyframes phone-splash-out {
   0%,
-  82.6% {
+  84.6% {
     opacity: 1;
     visibility: visible;
   }
@@ -598,8 +663,14 @@ html.pm-lock-scroll body {
    asks for. */
 @media (prefers-reduced-motion: reduce) {
   .phone-splash {
-    animation-duration: 2s;
+    animation-duration: 2.6s;
     animation-timing-function: steps(1, end);
+  }
+
+  /* The bite stays — it is the content, and it is already a cut rather than a
+     movement. The flinch is the movement, so that is what goes. */
+  .phone-splash-shaker {
+    animation: none;
   }
 }
 
