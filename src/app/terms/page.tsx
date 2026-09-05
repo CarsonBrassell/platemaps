@@ -392,8 +392,25 @@ export default function TermsPage() {
               U.S.C. § 512(g). We may terminate accounts of repeat infringers.
             </p>
             <p className="font-mono text-xs text-zinc-500">
-              DMCA Agent: [name to be designated] · [email] · [mailing address] ·
-              registered with the U.S. Copyright Office
+              {/* Filed with the Copyright Office on 4 September 2026, which is
+                  what makes the words "registered with" below true. Until then
+                  this said only "designated", because claiming a registration
+                  we did not hold would have been a claim to a Section 512 safe
+                  harbour we did not actually have.
+
+                  **Designations expire after three years.** This one lapses on
+                  4 September 2029 unless it is renewed, and a lapsed
+                  designation is not a blank in the public directory — it is
+                  displayed as terminated, which reads worse than never having
+                  filed. Renew and move this date, or drop the claim.
+
+                  The service provider on file is the natural person "Carson
+                  Scot Brassell", not an entity, so this covers everything he
+                  personally operates. If PlateMaps is ever moved into an LLC,
+                  the designation has to be re-filed under that entity — the
+                  directory will not follow the name on its own. */}
+              DMCA Agent: Carson Brassell · helloplatemaps@gmail.com · 4812 Campanile Dr,
+              San Diego, CA 92115 · registered with the U.S. Copyright Office
             </p>
           </Section>
 
@@ -561,11 +578,13 @@ export default function TermsPage() {
           <Section id="contact" title="21. Contact Us">
             <p>Questions about these Terms can be sent to:</p>
             <p className="font-mono text-sm text-zinc-900">
-              [PlateMaps legal entity name]
+              Carson Brassell (sole proprietor, d/b/a PlateMaps)
               <br />
-              [mailing address]
+              4812 Campanile Dr
               <br />
-              [contact email]
+              San Diego, CA 92115
+              <br />
+              helloplatemaps@gmail.com
             </p>
           </Section>
 

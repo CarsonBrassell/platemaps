@@ -11,12 +11,14 @@ import { UtensilsIcon, CompassIcon, WifiOffIcon, PlusIcon } from "@/components/i
 import type { FeedTab, Post } from "@/components/feed/types";
 import { FeedSortSwitch } from "@/components/feed/FeedSortSwitch";
 import { FEED_SORT_DEFAULT, type FeedSort } from "@/lib/feedSort";
-import { announceAward, closePostFlash, takeLanding } from "@/lib/postCelebration";
+import { announceAward, closePostFlash, takeLanding, usePostFlash } from "@/lib/postCelebration";
 import { PhoneFeedHeader } from "./PhoneFeedHeader";
 import { PhoneFeedSearch } from "./PhoneFeedSearch";
 import { PhoneFeedTabs } from "./PhoneFeedTabs";
+import { PhoneStickyBar } from "./PhoneStickyBar";
 import { PhoneFeedPostCard } from "./PhoneFeedPostCard";
 import { PhoneFeedMapPanel } from "./PhoneFeedMapPanel";
+import { PhonePullToRefresh } from "./PhonePullToRefresh";
 
 /**
  * The feed, phone version.
@@ -130,6 +132,7 @@ export function PhoneFeedScreen() {
     voteComment: handleVoteComment,
     remove: handleDelete,
     share: handleShare,
+    refresh: reloadFeed,
   } = usePostFeed({ endpoint, reloadKey });
 
   /* The flame is a Discover-only signal. Friends is explicitly not an
@@ -174,6 +177,24 @@ export function PhoneFeedScreen() {
    */
   const slamId =
     landing && posts?.some((p) => p.id === landing.postId) ? landing.postId : null;
+
+  /*
+   * The slam has to wait for the curtain, not for the data.
+   *
+   * `slamId` goes non-null the moment the fetch comes back — often ~500ms in —
+   * but the flash holds a floor of EAT_TOTAL_MS + 90 (3.59s) so the meal can
+   * finish. Applying the classes on the data meant post-spit (0.9s) and
+   * post-impact (0.34s at a 0.45s delay) both ran to completion under the white
+   * screen and were long over by the time it lifted: the bite played, then the
+   * plate was simply *there*. Gating on the flash being down is what makes the
+   * landing something you actually watch.
+   *
+   * Kept separate from `slamId` rather than folded into it because the award
+   * announcement below keys off the data arriving, and should not be delayed
+   * by a curtain PhonePointsFly already waits on itself.
+   */
+  const flashOpen = usePostFlash();
+  const slammingId = slamId && !flashOpen ? slamId : null;
 
   /*
    * Drop the curtain once the feed has an answer — any answer.
@@ -292,7 +313,22 @@ export function PhoneFeedScreen() {
   if (showMap) {
     return (
       <>
-        <div className="relative h-dvh mb-[calc(-1*var(--phone-nav-space))]">
+        {/* The top inset is cancelled for the same reason as the bottom one,
+            and it is the reason the map used to open with a band of cream
+            above it on a real handset. `.pm-phone-content` spends
+            `env(safe-area-inset-top)` on every /m screen so no header renders
+            under the clock — right for a screen of text, wrong for a map,
+            which should run to the physical edge and let the status bar float
+            over the tiles the way every maps app does.
+
+            It only reproduces in the native shell. In a browser and in the
+            desktop phone frame the inset is 0, so the gap is invisible there
+            and this looked correct until it was on a phone.
+
+            Nothing ends up under the clock as a result: the MapLibre controls
+            carry the same inset themselves further down this file, and the
+            source switch is pinned to the bottom. */}
+        <div className="relative h-dvh mt-[calc(-1*env(safe-area-inset-top))] mb-[calc(-1*var(--phone-nav-space))]">
           {/* The map fills the frame. `inset-0` rather than a flex child now
               that nothing sits above it to take a share of the height. */}
           <div className="absolute inset-0">
@@ -396,6 +432,18 @@ export function PhoneFeedScreen() {
           takes a `subtitle` for the screens that want one. */}
       <PhoneFeedHeader />
 
+      {/* Drag down from the top to re-read the feed. Disabled while the
+          comments screen is up — it is a fixed overlay with its own scroller,
+          so the gesture is not meant for the list behind it — and while the
+          post-publish flash is covering, where a refresh the composer already
+          triggered would be racing the celebration it is playing under.
+
+          `reloadFeed` is usePostFeed's own re-read and returns a promise, so
+          the wheel spins for exactly as long as the request takes rather than
+          for a duration someone picked. The "Try again" button below keeps
+          `reloadKey`: it has nothing to wait for. */}
+      <PhonePullToRefresh onRefresh={reloadFeed} disabled={commentsPostId !== null || flashOpen} />
+
       {/* Tabs get the row to themselves; the sort and search share the next
           one. All three on one row is what this was, and it did not fit — and
           it fits less now that the tabs are 16px: measured at 390px they take
@@ -404,21 +452,28 @@ export function PhoneFeedScreen() {
           search asks for its 36, so the row is over on the sort switch alone.
           Both rows below the tabs are modifiers on the feed the tabs pick,
           which is also why they wear rank 3 and the tabs wear rank 2. */}
-      <div className="px-4">
-        <PhoneFeedTabs active={tab} onChange={setTab} />
-      </div>
+      {/* Both rows ride up out of the way as you read down the feed and come
+          back on the first upward scroll — see PhoneStickyBar. They are one bar
+          rather than two because they are one thing: the tabs pick a feed and
+          the row under them modifies it, and a sort switch that outlives the
+          tabs it belongs to is a control with no subject. */}
+      <PhoneStickyBar>
+        <div className="px-4">
+          <PhoneFeedTabs active={tab} onChange={setTab} />
+        </div>
 
-      {/* Search owns this row and takes the sort switch as its left half — see
-          PhoneFeedSearch for why the two rows it spans have to live in one
-          component. Here a search narrows the list already on screen; the map
-          tab's copy of this control lives in the branch above, in the corner,
-          and keeps the navigate-to-Discover default. */}
-      <div className="mt-0.5">
-        <PhoneFeedSearch
-          leading={tab === "discover" ? <FeedSortSwitch active={sort} onChange={setSort} /> : null}
-          onSearch={setRestaurantFilter}
-        />
-      </div>
+        {/* Search owns this row and takes the sort switch as its left half — see
+            PhoneFeedSearch for why the two rows it spans have to live in one
+            component. Here a search narrows the list already on screen; the map
+            tab's copy of this control lives in the branch above, in the corner,
+            and keeps the navigate-to-Discover default. */}
+        <div className="mt-0.5">
+          <PhoneFeedSearch
+            leading={tab === "discover" ? <FeedSortSwitch active={sort} onChange={setSort} /> : null}
+            onSearch={setRestaurantFilter}
+          />
+        </div>
+      </PhoneStickyBar>
 
       <div className="px-4 pt-2">
         {offline && <OfflineBanner />}
@@ -514,7 +569,7 @@ export function PhoneFeedScreen() {
           <>
             {/* The column takes the hit when the spat plate lands — see
                 post-impact in phone.css for why the jolt is delayed. */}
-            <div className={`flex flex-col gap-3 ${slamId ? "post-impact" : ""}`}>
+            <div className={`flex flex-col gap-3 ${slammingId ? "post-impact" : ""}`}>
               {/* Every card runs its photo full width — the card used to take a
                   `featured` flag and this list set it on index 0 only. See
                   PhoneFeedPostCard's header for why the dense treatment went. */}
@@ -544,10 +599,10 @@ export function PhoneFeedScreen() {
                       postRefs.current[post.id] = el;
                     }}
                     /* What PhonePointsFly aims the token away from. */
-                    data-pm-landed={post.id === slamId ? "" : undefined}
+                    data-pm-landed={post.id === slammingId ? "" : undefined}
                     className={`rounded-2xl transition-shadow motion-reduce:transition-none ${
                       post.id === highlighted ? "ring-2 ring-pm-orange" : ""
-                    } ${post.id === slamId ? "post-spit" : ""}`}
+                    } ${post.id === slammingId ? "post-spit" : ""}`}
                   >
                     {tab === "friends" ? (
                       <PhoneFeedPostCard {...shared} surface="friends" onReact={handleHeart} />

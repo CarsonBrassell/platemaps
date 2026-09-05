@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>PlateMaps — No connection</title>
+
+<!--
+  The screen the iOS app shows when it cannot reach the site.
+
+  PlateMaps is not a bundled web app: `capacitor.config.ts` points the WebView
+  at a live URL, so with no network there is nothing local to fall back to and
+  WKWebView paints its own blank white page. That blank page is a documented
+  App Review failure — reviewers test in airplane mode, and "app displays a
+  blank screen" is Guideline 2.1 — so Capacitor's `server.errorPath` hands them
+  this file instead.
+
+  **Everything here has to be local.** This page loads precisely when there is
+  no connection, so a Google Fonts link, a CDN stylesheet or a remote image
+  would each fail exactly when it is needed. Fraunces and Spline Sans Mono are
+  network-loaded in the real app and therefore unavailable here; the type below
+  uses system stacks on purpose rather than pretending otherwise. The mark is
+  the one already copied into the bundle from `public/`.
+-->
+
+<style>
+  /* The design system's tokens, copied rather than imported: this file is
+     served from the app bundle and never sees Tailwind or globals.css. */
+  :root {
+    --pm-cream: #f7f4ec;
+    --pm-charcoal: #232019;
+    --pm-orange: #c9591f;
+    --pm-grey-text: #665c4e;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+  }
+
+  body {
+    /* Cream ground, white card, no borders and no shadows — the same grouping
+       rule the rest of the app follows. */
+    background: var(--pm-cream);
+    color: var(--pm-charcoal);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* The notch and the home indicator. Without `viewport-fit=cover` above,
+       these resolve to 0 and the padding simply does nothing. */
+    padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
+    min-height: 100svh;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 40px 28px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+  }
+
+  .mark {
+    height: 72px;
+    width: auto;
+    margin: 0 auto 24px;
+    display: block;
+  }
+
+  h1 {
+    /* Fraunces is a network font and is not here. A system serif is the
+       closest honest stand-in; it is deliberately not the sans used for prose,
+       so the title still reads as a title. */
+    font-family: ui-serif, Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+  }
+
+  p {
+    margin: 0 0 28px;
+    font-size: 15px;
+    line-height: 1.5;
+    /* zinc-500 fails 4.5:1 on cream; on white it passes, but this text sits on
+       the card and still reads better at the system's own muted step. */
+    color: var(--pm-grey-text);
+  }
+
+  button {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
+    background: var(--pm-orange);
+    color: #fff;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    /* Pill, and at least 44px tall — the accessibility floor the rest of the
+       app holds every target to. */
+    border-radius: 999px;
+    min-height: 44px;
+    padding: 0 28px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  button:active { opacity: 0.8; }
+
+  button:focus-visible {
+    outline: 2px solid var(--pm-orange);
+    outline-offset: 3px;
+  }
+
+  .status {
+    margin: 20px 0 0;
+    /* Machine state, so monospace — the same rule that governs every number
+       and status string in the app. */
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--pm-grey-text);
+    min-height: 16px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <!-- Copied into the bundle from `public/` by `npx cap sync`. If it ever
+         goes missing the alt text would leave a broken-image glyph in the
+         middle of the card, so the handler removes it rather than showing
+         one. -->
+    <img
+      class="mark"
+      src="logo-mark-240.webp"
+      alt="PlateMaps"
+      onerror="this.remove()"
+    />
+
+    <h1>No connection</h1>
+    <p>PlateMaps needs the internet to load plates near you. Check your Wi-Fi or cellular and try again.</p>
+
+    <button type="button" id="retry">Try again</button>
+    <p class="status" id="status"></p>
+  </main>
+
+<script>
+  /*
+   * The site this app is: it must stay identical to `server.url` in
+   * capacitor.config.ts. Both are compiled into the shipped binary, so a
+   * mismatch cannot be fixed without a new build and a new review.
+   *
+   * A plain location.reload() would be wrong here. This page is a local file
+   * in the bundle, so reloading it just re-renders this same screen — the
+   * retry has to name the remote site explicitly to leave.
+   */
+  var SITE = "https://platemaps.com/m";
+
+  var status = document.getElementById("status");
+
+  function retry() {
+    if (navigator.onLine === false) {
+      status.textContent = "Still offline";
+      return;
+    }
+    status.textContent = "Reconnecting…";
+    window.location.replace(SITE);
+  }
+
+  document.getElementById("retry").addEventListener("click", retry);
+
+  /* Coming back onto Wi-Fi should not require noticing this screen and
+     tapping a button — the app should simply return. */
+  window.addEventListener("online", retry);
+</script>
+</body>
+</html>

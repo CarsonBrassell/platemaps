@@ -124,20 +124,29 @@ export function PercentMeter({
         <label htmlFor={id} className="text-sm font-semibold text-zinc-800">
           {label}
         </label>
-        <p className="text-right">
-          {/* Keyed on the value so each step re-fires the kick; only at the
-              top end, where the extra emphasis is the point. */}
-          {/* The numeral takes the chill as a flat colour rather than the
-              meter's gradient: both ends of this mix are readable type
-              colours, where the meter's light stop is a fill and would not
-              hold at 4.5:1. It used to hard-flip to grey at 40; now it walks
-              there from 60, in step with the track under it. */}
+        {/* Width is held at the widest value this can show. Without it the
+            block is only as wide as its digits, so every crossing of 9→10 and
+            99→100 shifted the number sideways mid-drag — the count appeared to
+            wander while you were reading it. Reserved and right-aligned, the
+            "%" stays put and only the digits fill in behind it. */}
+        <p className="min-w-[4ch] text-right">
+          {/* **The numeral never changes size, weight or face while you drag.**
+              It used to carry `pct-kick` — a scale-to-1.14-and-back — re-keyed
+              on every value, so anywhere above 60 a drag fired one pulse per
+              step: forty scale animations between 60 and 100, on the one
+              element you are trying to read while you drag. The emphasis was
+              not worth reading a number that would not sit still, so the kick
+              is gone and only colour moves now.
+
+              The chill is a flat colour rather than the meter's gradient: both
+              ends of this mix are readable type colours, where the meter's
+              light stop is a fill and would not hold at 4.5:1. It used to
+              hard-flip to grey at 40; now it walks there from 60, in step with
+              the track under it. Colour is safe to animate here precisely
+              because it changes nothing about the glyphs' metrics. */}
           <span
-            key={heat === "blazing" || heat === "hot" ? value : "still"}
             style={{ ["--chill" as string]: chill }}
-            className={`pct-chill-text font-display block text-4xl font-semibold leading-none tracking-tight tabular-nums ${
-              heat === "blazing" || heat === "hot" ? "pct-kick" : ""
-            }`}
+            className="pct-chill-text font-display block text-4xl font-semibold leading-none tracking-tight tabular-nums"
           >
             {value}%
           </span>
@@ -164,16 +173,29 @@ export function PercentMeter({
         />
       </div>
 
-      <div className="mt-2 flex items-baseline justify-between text-xs">
+      {/* A grid, not justify-between: the band label changes width as it
+          changes text ("Skip it" to "Depends on the day"), and under
+          justify-between a middle item is positioned by the space the ends
+          leave, so it slid on every band change. A grid centres it on the row
+          instead, and nowrap stops the longest label wrapping and taking the
+          row's height with it as you drag.
+
+          `auto 1fr auto`, not `grid-cols-3`. Equal thirds give the label a
+          third of the row — about 110px at 390px — which "Depends on the day"
+          overflows, and a nowrap overflow runs straight over the 0% and 100%
+          ends. The ends only ever hold four characters, so sizing them to
+          their content and handing the slack to the middle column costs
+          nothing and gives the longest band room to sit in. */}
+      <div className="mt-2 grid grid-cols-[auto_1fr_auto] items-baseline gap-2 text-xs">
         <span className="text-zinc-400">0%</span>
         <span
-          className={`font-semibold transition-colors ${
+          className={`whitespace-nowrap text-center font-semibold transition-colors ${
             heat === "blazing" ? "text-pm-orange-text" : "text-zinc-900"
           }`}
         >
           {bandForPercent(value)}
         </span>
-        <span className="text-zinc-400">100%</span>
+        <span className="text-right text-zinc-400">100%</span>
       </div>
     </div>
   );

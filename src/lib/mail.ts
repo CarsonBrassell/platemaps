@@ -123,3 +123,40 @@ export function sendPasswordResetEmail(
     ].join("\n")
   );
 }
+
+/**
+ * Tells the moderator a plate was reported.
+ *
+ * Goes to `MODERATION_EMAIL`, falling back to `MAIL_FROM` so a deployment that
+ * configured mail at all has somewhere to send this rather than silently
+ * dropping it. A report nobody sees is the same as the button that did nothing.
+ *
+ * Deliberately not sent to the reporter: they already got the confirmation in
+ * the app, and mailing them would tell an abusive reporter exactly how much
+ * attention their reports get.
+ */
+export function sendReportNotice(input: {
+  postId: string;
+  reason: string;
+  note: string | null;
+  reporterName: string;
+  openCount: number;
+}): Promise<SendResult> {
+  const to = process.env.MODERATION_EMAIL || process.env.MAIL_FROM;
+  if (!to) return Promise.resolve({ ok: false, reason: "unconfigured" });
+
+  const lines = [
+    `Reported by: ${input.reporterName}`,
+    `Reason: ${input.reason}`,
+    input.note ? `Note: ${input.note}` : null,
+    "",
+    `Open reports on this plate: ${input.openCount}`,
+    `Post: ${appUrl()}/feed?post=${input.postId}`,
+  ].filter(Boolean);
+
+  return deliver(
+    to,
+    `PlateMaps report — ${input.reason} (${input.openCount} open)`,
+    lines.join("\n"),
+  );
+}

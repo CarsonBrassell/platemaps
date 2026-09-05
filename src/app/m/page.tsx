@@ -7,6 +7,7 @@ import type {
   PhoneFilterGroup,
   PhoneFilterModel,
 } from "@/components/mobile/PhoneFilterSheet";
+import { PhoneStickyBar } from "@/components/mobile/PhoneStickyBar";
 import { PhoneRestaurantCardGrid } from "@/components/mobile/PhoneRestaurantCardGrid";
 import { getDiscoverPage, parseShown, PAGE_SIZE } from "@/lib/discover";
 import { packColumns } from "@/lib/photoShape";
@@ -314,11 +315,21 @@ export default async function PhoneDiscover({
       {/* Search above the filters, because a name is the question most people
           arrive with and Discover is the screen they arrive at. The page could
           already be narrowed by `?q=` — the heading and the summary chip both
-          read it — but nothing here could produce one. */}
-      <div className="flex flex-col gap-2.5 px-4 pb-4">
-        <PhoneDiscoverSearch value={filters.q ?? ""} />
-        <PhoneFilterBar model={model} />
-      </div>
+          read it — but nothing here could produce one.
+
+          The pair rides up out of the way once you are down in the grid and
+          comes back on the first upward scroll (PhoneStickyBar). The brand
+          lockup and the heading above are not in the bar: they say what the
+          page is, which is a thing you read once, and putting them in it would
+          spend three times the height to bring back two controls. Note that
+          PhoneFilterBar's sheet is `position: fixed` — that constraint is why
+          the bar moves a sticky offset rather than a transform. */}
+      <PhoneStickyBar className="pt-1">
+        <div className="flex flex-col gap-2.5 px-4 pb-4">
+          <PhoneDiscoverSearch value={filters.q ?? ""} />
+          <PhoneFilterBar model={model} />
+        </div>
+      </PhoneStickyBar>
 
       {page.results.length === 0 ? (
         <div className="px-4 py-16 text-center">

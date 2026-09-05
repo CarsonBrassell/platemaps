@@ -31,7 +31,7 @@ Explicitly *not* positioning: Plate Points and the leaderboard are a supply-side
 - Used at the moment of deciding — frequently one-handed, on a phone, close to mealtime — which makes proximity and open-now state load-bearing rather than decorative.
 - Scope today is San Diego County: 36 seeded restaurants across Little Italy, North Park, Hillcrest, Pacific Beach, Point Loma, Liberty Station, La Jolla, Mission Valley, Del Mar, Chula Vista, La Mesa, Alpine and others.
 - Open/closed and "closing soon" are computed in `America/Los_Angeles` from real closing times, not stored labels.
-- Deployed on Vercel (project `platemaps`) from `github.com/CarsonBrassell/platemaps`, served at `platemap-five.vercel.app`.
+- Deployed on Vercel (project `platemaps`) from `github.com/CarsonBrassell/platemaps`, served at `platemaps.com`; `platemap-five.vercel.app` remains as an alias.
 
 ## Capabilities and Constraints
 

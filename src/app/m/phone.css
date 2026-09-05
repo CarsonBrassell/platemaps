@@ -424,10 +424,17 @@ html.pm-lock-scroll body {
  * but keeps NO transform afterwards: a lingering `scale(1)` would leave the
  * wrapper a containing block for anything fixed inside the card.
  */
+/* No rotation anywhere in here, deliberately.
+ *
+ * The card used to tumble in from -18deg and unwind through -8 and +4 before
+ * settling, which meant it arrived leaning and corrected itself on the way
+ * down — it read as sideways rather than as dropped. Straight up the vertical
+ * axis, the squash and stretch alone carry the weight, and the card is
+ * symmetrical about its own centre at every frame. */
 @keyframes post-spit {
   0% {
     opacity: 0;
-    transform: translateY(300px) scaleX(0.1) scaleY(0.1) rotate(-18deg);
+    transform: translateY(300px) scaleX(0.1) scaleY(0.1);
   }
   16% {
     opacity: 1;
@@ -436,30 +443,30 @@ html.pm-lock-scroll body {
      pair. Without the stretch on the way in, the squash on landing reads as a
      glitch rather than as the thing having had momentum. */
   34% {
-    transform: translateY(115px) scaleX(0.82) scaleY(1.3) rotate(-8deg);
+    transform: translateY(115px) scaleX(0.82) scaleY(1.3);
   }
   /* Overshoots well past full size before it is allowed to settle. */
   50% {
-    transform: translateY(0) scaleX(1.2) scaleY(1.2) rotate(4deg);
+    transform: translateY(0) scaleX(1.2) scaleY(1.2);
   }
   /* Impact: flattened hard and wide. */
   63% {
-    transform: translateY(0) scaleX(1.18) scaleY(0.8) rotate(0deg);
+    transform: translateY(0) scaleX(1.18) scaleY(0.8);
   }
   76% {
-    transform: translateY(0) scaleX(0.93) scaleY(1.1) rotate(0deg);
+    transform: translateY(0) scaleX(0.93) scaleY(1.1);
   }
   88% {
-    transform: translateY(0) scaleX(1.04) scaleY(0.97) rotate(0deg);
+    transform: translateY(0) scaleX(1.04) scaleY(0.97);
   }
   100% {
-    transform: translateY(0) scaleX(1) scaleY(1) rotate(0deg);
+    transform: translateY(0) scaleX(1) scaleY(1);
   }
 }
 
 /* Every keyframe lists the same functions in the same order. Mixing `scale()`
    and `scaleX()/scaleY()` between frames drops the interpolation to matrices,
-   which takes the rotation with it and makes the tumble wobble. */
+   which would make the squash jump between frames. */
 .pm-phone-shell .post-spit {
   animation: post-spit 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
 }
@@ -527,7 +534,8 @@ html.pm-lock-scroll body {
    why this is an animation rather than a timer, and for what it covers that
    the native iOS launch screen does not.
 
-   The hold is 1.4s and the fade 0.4s. `forwards` is what makes it stay gone —
+   The bite lands at 1.5s, the hold runs to 2.2s and the fade is 0.4s.
+   `forwards` is what makes it stay gone —
    without it the overlay snaps back to opacity 1 when the animation ends.
    `visibility` is animated alongside opacity so the finished overlay leaves
    the accessibility tree; opacity 0 alone would leave a transparent sheet
@@ -537,6 +545,26 @@ html.pm-lock-scroll body {
   inset: 0;
   z-index: 100;
   display: grid;
+  /*
+   * Both are needed, and `place-items` alone is what put the mark 179px below
+   * the middle of the screen.
+   *
+   * `BrandMark` renders a `<picture class="contents">`, so the picture's own
+   * box is taken out of the layout and BOTH of its children — the `<source>`
+   * and the `<img>` — become grid items of this container. That is two rows,
+   * not one: an empty one and the mark's. `place-items` only centers an item
+   * inside the track it lands in, and a grid's default `align-content: normal`
+   * behaves as **stretch**, so the 716px of leftover height was split evenly
+   * between the two rows and the empty one pushed the mark down by half of it.
+   * Measured at 375x812: rows of `358px 454px`, mark centred at y=585 against
+   * a viewport centre of 406.
+   *
+   * `place-content` is the axis that positions the tracks themselves. With it
+   * the rows collapse to `0px 96px` and sit in the middle, which puts the mark
+   * dead centre on both axes and stays right whatever the picture element does
+   * with its children.
+   */
+  place-content: center;
   place-items: center;
   /* Cream, not white, and that is forced by the artwork rather than chosen:
      `logo-mark.png` is fully opaque with its own cream ground baked in (there
@@ -548,12 +576,102 @@ html.pm-lock-scroll body {
   background: var(--background);
   /* Never eats the first tap, even during the hold. */
   pointer-events: none;
-  animation: phone-splash-out 1.8s ease-in forwards;
+  animation: phone-splash-out 2.6s ease-in forwards;
 }
 
+/*
+ * The pin opens whole and is bitten 1.5s in. See PhoneSplash for why the bite
+ * is *uncovered* rather than drawn, and why filling the notch with anything
+ * hand-made is off the table.
+ *
+ * The patch is the same artwork mirrored. `scaleX(-1)` sits on the <img> and
+ * the clip sits on the wrapper, deliberately and not interchangeably: a
+ * clip-path is applied in the element's own coordinates and then transformed
+ * with it, so clipping the mirrored element would land the kept corner on the
+ * opposite side of the mark.
+ *
+ * The clip is two stacked rectangles rather than one, and both edges are
+ * measured off the artwork (240x314) rather than guessed:
+ *
+ * - Everything right of the centre line down to 27.1% (y=85). The centre line
+ *   is free: a mirror is identical to itself there, so that edge cannot seam.
+ *   27.1% is the floor because the knife's tip is the first asymmetric ink on
+ *   this half and it starts at y=86 — a rectangle any taller would paint the
+ *   mirrored fork over it.
+ * - A second, narrower step out to 31.2% (y=98) for the right 30% only, which
+ *   is where the last of the bite reaches. Nothing dark gets past x=155 (64.6%)
+ *   so this band is ring and cream on both sides of the axis.
+ *
+ * Verified by compositing the same two rectangles offline: the ring closes with
+ * no visible seam.
+ */
+.phone-splash-mark {
+  position: relative;
+  display: block;
+}
+
+.phone-splash-patch {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 0, 100% 0, 100% 31.2%, 70% 31.2%, 70% 27.1%, 50% 27.1%);
+  /* `steps(1, end)` holds the whole pin for the entire 1.5s and then jumps —
+     a bite is an event, not a fade. `forwards` keeps it gone afterwards. */
+  animation: phone-splash-bite 1.5s steps(1, end) forwards;
+}
+
+.phone-splash-patch img {
+  transform: scaleX(-1);
+}
+
+@keyframes phone-splash-bite {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/*
+ * The flinch, delayed onto the same 1.5s mark as the bite.
+ *
+ * Its own keyframes rather than `post-flash-chomp-a`, which it started as: the
+ * splash wants 9% more travel and the composer's celebration does not, and
+ * those keyframes are shared by the four chomps of the post flash. Widening
+ * them there would have moved a second, unrelated animation.
+ *
+ * So the shape is the chomp's, every value multiplied by 1.09 — same rhythm,
+ * same three beats, a little more of it. Still small on purpose: the mark
+ * taking a hit, not the mark falling over.
+ */
+.phone-splash-shaker {
+  display: block;
+  animation: phone-splash-chomp 0.2s ease-out 1.5s both;
+}
+
+@keyframes phone-splash-chomp {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(-2.725px, 1.635px) rotate(-1.526deg);
+  }
+  45% {
+    transform: translate(2.725px, -1.09px) rotate(1.199deg);
+  }
+  70% {
+    transform: translate(-1.635px, 0.545px) rotate(-0.654deg);
+  }
+}
+
+/* 84.6% of 2.6s is 2.2s, which is where the hold ends and the 0.4s fade
+   starts. That leaves 0.7s of bitten mark after the 1.5s bite, so the thing
+   the animation was for is on screen in its finished state rather than being
+   faded out mid-chew. Change the duration and this number moves with it. */
 @keyframes phone-splash-out {
   0%,
-  78% {
+  84.6% {
     opacity: 1;
     visibility: visible;
   }
@@ -569,8 +687,14 @@ html.pm-lock-scroll body {
    asks for. */
 @media (prefers-reduced-motion: reduce) {
   .phone-splash {
-    animation-duration: 1.5s;
+    animation-duration: 2.6s;
     animation-timing-function: steps(1, end);
+  }
+
+  /* The bite stays — it is the content, and it is already a cut rather than a
+     movement. The flinch is the movement, so that is what goes. */
+  .phone-splash-shaker {
+    animation: none;
   }
 }
 
@@ -671,6 +795,98 @@ html.pm-lock-scroll body {
   }
 
   .pm-phone-shell .points-chip-hit {
+    animation: none;
+  }
+}
+
+/*
+ * --- Pull to refresh -----------------------------------------------------
+ *
+ * The wheel that says the feed is being re-read. `PhonePullToRefresh` owns the
+ * gesture and writes the drag into --pm-pull (how far, in px), --pm-pull-lead
+ * (0-1, how close to arming) and --pm-pull-turn; everything here is what those
+ * three numbers look like.
+ *
+ * Only the dial moves. The list underneath deliberately stays put — see the
+ * component's header for why translating `.pm-phone-content` would re-anchor
+ * every fixed overlay in the app for the length of a drag.
+ */
+.pm-phone-shell .phone-refresh {
+  /* Fixed, so inside the desktop frame this is the 390px column and on a
+     handset it is the viewport — the same box `.post-flash` pins to, and the
+     reason neither needs a breakpoint of its own. */
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 4px);
+  left: 0;
+  right: 0;
+  /* Over the sticky tab row's z-30 and under PhoneNav's z-40: the wheel belongs
+     on top of the feed, never on top of the navigation. */
+  z-index: 35;
+  display: flex;
+  justify-content: center;
+  /* Decoration over a live list — a tap here is meant for the card underneath. */
+  pointer-events: none;
+}
+
+.pm-phone-shell .phone-refresh-dial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  width: 36px;
+  border-radius: 9999px;
+  /* White on cream, no border and no shadow: the dial is a very small card, and
+     it has to stay legible when the drag carries it over a white card too. */
+  background: #fff;
+  /*
+   * Hidden at rest by opacity rather than by being parked off screen. The top
+   * inset is a real number on a handset and zero everywhere else, so any
+   * "translate it above the edge" distance is either short of the edge on a
+   * Dynamic Island or leaves the dial hanging over the clock. Fading solves
+   * both without measuring anything.
+   */
+  opacity: var(--pm-pull-lead, 0);
+  transform: translateY(calc(var(--pm-pull, 0px) * 0.6 - 22px))
+    scale(calc(0.72 + 0.28 * var(--pm-pull-lead, 0)));
+  transition:
+    transform 0.22s cubic-bezier(0.2, 0.8, 0.3, 1),
+    opacity 0.16s ease-out;
+}
+
+/* While a finger is down the dial *is* the finger, and a transition would make
+   it trail its own duration behind the drag. Both animated moments — the snap
+   home and the settle into the waiting position — keep the 220ms above, inside
+   the 300ms budget. */
+.pm-phone-shell .phone-refresh[data-phase="pulling"] .phone-refresh-dial {
+  transition: none;
+}
+
+/* Turned by the pull, then spun by the wait. Two rules on the same element
+   rather than one: the animation replaces the transform outright, which is
+   exactly the handover wanted at the moment the finger lifts. */
+.pm-phone-shell .phone-refresh-dial svg {
+  transform: rotate(var(--pm-pull-turn, 0deg));
+}
+
+.pm-phone-shell .phone-refresh[data-phase="refreshing"] .phone-refresh-dial svg {
+  animation: phone-refresh-spin 0.8s linear infinite;
+}
+
+@keyframes phone-refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The wheel still appears, still waits for the request and still leaves when
+     the feed is back — that it is happening is information, not decoration. It
+     simply stops being a wheel: no spin, and no glide into position. */
+  .pm-phone-shell .phone-refresh-dial {
+    transition: none;
+  }
+
+  .pm-phone-shell .phone-refresh[data-phase="refreshing"] .phone-refresh-dial svg {
     animation: none;
   }
 }
